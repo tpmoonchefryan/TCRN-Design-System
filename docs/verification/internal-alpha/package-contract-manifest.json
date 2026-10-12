@@ -575,19 +575,7 @@
     ],
     "deferredPrototypeChecks": [
       {
-        "name": "DenseOperationsShellDemo",
-        "exported": false,
-        "packageBacked": false,
-        "disposition": "storybook_only_prototype"
-      },
-      {
         "name": "KnowledgeBaseShellDemo",
-        "exported": false,
-        "packageBacked": false,
-        "disposition": "storybook_only_prototype"
-      },
-      {
-        "name": "CompactToolShellDemo",
         "exported": false,
         "packageBacked": false,
         "disposition": "storybook_only_prototype"
@@ -1864,25 +1852,7 @@
         "requiredRepair": "none"
       },
       {
-        "storybookItem": "DenseOperationsShellDemo",
-        "classification": "storybook_only_prototype",
-        "packageSourcePath": null,
-        "publicExportPath": null,
-        "storybookPath": "apps/storybook/src/stories.tsx",
-        "status": "truthfully_deferred",
-        "requiredRepair": "none"
-      },
-      {
         "storybookItem": "KnowledgeBaseShellDemo",
-        "classification": "storybook_only_prototype",
-        "packageSourcePath": null,
-        "publicExportPath": null,
-        "storybookPath": "apps/storybook/src/stories.tsx",
-        "status": "truthfully_deferred",
-        "requiredRepair": "none"
-      },
-      {
-        "storybookItem": "CompactToolShellDemo",
         "classification": "storybook_only_prototype",
         "packageSourcePath": null,
         "publicExportPath": null,

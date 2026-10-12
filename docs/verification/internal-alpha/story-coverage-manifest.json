@@ -1,5 +1,5 @@
 {
-  "ok": false,
+  "ok": true,
   "requiredStories": [
     {
       "id": "welcome-governance",
@@ -296,6 +296,12 @@
       "storybookId": "tcrn-design-system-components--inputs-sample-members"
     },
     {
+      "id": "composition-three-sample",
+      "group": "Components",
+      "categoryId": "gplus-samples",
+      "storybookId": "tcrn-design-system-components--composition-three-sample"
+    },
+    {
       "id": "forms-patterns",
       "group": "Patterns",
       "categoryId": "forms-workbench",
@@ -435,7 +441,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "a8f0e87c36c7877b41b1d936439550d9a841bdcede80b4e8898eea11f66b0de5",
+    "contractPayloadDigest": "4f8d6eee1ab8e26a88b0ec9345e02a58ed2d7a61d4844a7f99dd160c70fe0b5b",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 23,
@@ -777,6 +783,11 @@
       "visible": true
     },
     {
+      "id": "composition-three-sample",
+      "storybookId": "tcrn-design-system-components--composition-three-sample",
+      "visible": true
+    },
+    {
       "id": "forms-patterns",
       "storybookId": "tcrn-design-system-patterns--forms-patterns",
       "visible": true
@@ -920,41 +931,41 @@
           "top": 0,
           "left": 0,
           "right": 1440,
-          "bottom": 96,
+          "bottom": 52,
           "width": 1440,
-          "height": 96
+          "height": 52
         },
         "sideNavRegion": {
           "top": 96,
           "left": 0,
-          "right": 288,
+          "right": 220,
           "bottom": 900,
-          "width": 288,
+          "width": 220,
           "height": 804
         },
         "pageHead": {
-          "top": 133.44,
-          "left": 324,
+          "top": 89.44,
+          "left": 256,
           "right": 1404,
-          "bottom": 309.38,
-          "width": 1080,
+          "bottom": 265.38,
+          "width": 1148,
           "height": 175.94
         },
-        "firstStoryTop": 393.72,
+        "firstStoryTop": 349.72,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchInputShell": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
@@ -972,26 +983,26 @@
           "padding-right": "64.96px"
         },
         "searchControl": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchIcon": {
-          "top": 41,
+          "top": 19,
           "left": 977,
           "right": 991,
-          "bottom": 55,
+          "bottom": 33,
           "width": 14,
           "height": 14
         },
         "searchShortcut": {
-          "top": 40,
+          "top": 18,
           "left": 1190.97,
           "right": 1219,
-          "bottom": 56,
+          "bottom": 34,
           "width": 28.03,
           "height": 16
         },
@@ -1004,22 +1015,22 @@
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
-          "min-height": "96px"
+          "min-height": "52px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "619.969px 260px",
+          "grid-template-columns": "687.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "746px 320px",
+          "grid-template-columns": "814px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "288px 1152px"
+          "grid-template-columns": "220px 1220px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
@@ -1068,41 +1079,41 @@
           "top": 0,
           "left": 0,
           "right": 1440,
-          "bottom": 96,
+          "bottom": 52,
           "width": 1440,
-          "height": 96
+          "height": 52
         },
         "sideNavRegion": {
           "top": 96,
           "left": 0,
-          "right": 288,
+          "right": 220,
           "bottom": 900,
-          "width": 288,
+          "width": 220,
           "height": 804
         },
         "pageHead": {
-          "top": 133.44,
-          "left": 324,
+          "top": 89.44,
+          "left": 256,
           "right": 1404,
-          "bottom": 309.38,
-          "width": 1080,
+          "bottom": 265.38,
+          "width": 1148,
           "height": 175.94
         },
-        "firstStoryTop": 393.72,
+        "firstStoryTop": 349.72,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchInputShell": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
@@ -1120,26 +1131,26 @@
           "padding-right": "64.96px"
         },
         "searchControl": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchIcon": {
-          "top": 41,
+          "top": 19,
           "left": 977,
           "right": 991,
-          "bottom": 55,
+          "bottom": 33,
           "width": 14,
           "height": 14
         },
         "searchShortcut": {
-          "top": 40,
+          "top": 18,
           "left": 1190.97,
           "right": 1219,
-          "bottom": 56,
+          "bottom": 34,
           "width": 28.03,
           "height": 16
         },
@@ -1152,22 +1163,22 @@
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
-          "min-height": "96px"
+          "min-height": "52px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "619.969px 260px",
+          "grid-template-columns": "687.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "746px 320px",
+          "grid-template-columns": "814px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "288px 1152px"
+          "grid-template-columns": "220px 1220px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
@@ -1210,41 +1221,41 @@
           "top": 0,
           "left": 0,
           "right": 1440,
-          "bottom": 96,
+          "bottom": 52,
           "width": 1440,
-          "height": 96
+          "height": 52
         },
         "sideNavRegion": {
           "top": 96,
           "left": 0,
-          "right": 288,
+          "right": 220,
           "bottom": 900,
-          "width": 288,
+          "width": 220,
           "height": 804
         },
         "pageHead": {
-          "top": 133.44,
-          "left": 324,
+          "top": 89.44,
+          "left": 256,
           "right": 1404,
-          "bottom": 309.38,
-          "width": 1080,
+          "bottom": 265.38,
+          "width": 1148,
           "height": 175.94
         },
-        "firstStoryTop": 393.72,
+        "firstStoryTop": 349.72,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchInputShell": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
@@ -1262,26 +1273,26 @@
           "padding-right": "64.96px"
         },
         "searchControl": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchIcon": {
-          "top": 41,
+          "top": 19,
           "left": 977,
           "right": 991,
-          "bottom": 55,
+          "bottom": 33,
           "width": 14,
           "height": 14
         },
         "searchShortcut": {
-          "top": 40,
+          "top": 18,
           "left": 1190.97,
           "right": 1219,
-          "bottom": 56,
+          "bottom": 34,
           "width": 28.03,
           "height": 16
         },
@@ -1294,22 +1305,22 @@
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
-          "min-height": "96px"
+          "min-height": "52px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "619.969px 260px",
+          "grid-template-columns": "687.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "746px 320px",
+          "grid-template-columns": "814px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "288px 1152px"
+          "grid-template-columns": "220px 1220px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
@@ -1352,41 +1363,41 @@
           "top": 0,
           "left": 0,
           "right": 1440,
-          "bottom": 96,
+          "bottom": 52,
           "width": 1440,
-          "height": 96
+          "height": 52
         },
         "sideNavRegion": {
           "top": 96,
           "left": 0,
-          "right": 288,
+          "right": 220,
           "bottom": 900,
-          "width": 288,
+          "width": 220,
           "height": 804
         },
         "pageHead": {
-          "top": 133.44,
-          "left": 324,
+          "top": 89.44,
+          "left": 256,
           "right": 1404,
-          "bottom": 411.8,
-          "width": 1080,
+          "bottom": 367.8,
+          "width": 1148,
           "height": 278.36
         },
-        "firstStoryTop": 496.14,
+        "firstStoryTop": 452.14,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchInputShell": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
@@ -1404,26 +1415,26 @@
           "padding-right": "64.96px"
         },
         "searchControl": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchIcon": {
-          "top": 41,
+          "top": 19,
           "left": 977,
           "right": 991,
-          "bottom": 55,
+          "bottom": 33,
           "width": 14,
           "height": 14
         },
         "searchShortcut": {
-          "top": 40,
+          "top": 18,
           "left": 1190.97,
           "right": 1219,
-          "bottom": 56,
+          "bottom": 34,
           "width": 28.03,
           "height": 16
         },
@@ -1436,22 +1447,22 @@
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
-          "min-height": "96px"
+          "min-height": "52px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "619.969px 260px",
+          "grid-template-columns": "687.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "746px 320px",
+          "grid-template-columns": "814px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "288px 1152px"
+          "grid-template-columns": "220px 1220px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
@@ -1494,41 +1505,41 @@
           "top": 0,
           "left": 0,
           "right": 1440,
-          "bottom": 96,
+          "bottom": 52,
           "width": 1440,
-          "height": 96
+          "height": 52
         },
         "sideNavRegion": {
           "top": 96,
           "left": 0,
-          "right": 288,
+          "right": 220,
           "bottom": 900,
-          "width": 288,
+          "width": 220,
           "height": 804
         },
         "pageHead": {
-          "top": 133.44,
-          "left": 324,
+          "top": 89.44,
+          "left": 256,
           "right": 1404,
-          "bottom": 309.38,
-          "width": 1080,
+          "bottom": 265.38,
+          "width": 1148,
           "height": 175.94
         },
-        "firstStoryTop": 393.72,
+        "firstStoryTop": 349.72,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchInputShell": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
@@ -1546,26 +1557,26 @@
           "padding-right": "64.96px"
         },
         "searchControl": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchIcon": {
-          "top": 41,
+          "top": 19,
           "left": 977,
           "right": 991,
-          "bottom": 55,
+          "bottom": 33,
           "width": 14,
           "height": 14
         },
         "searchShortcut": {
-          "top": 40,
+          "top": 18,
           "left": 1190.97,
           "right": 1219,
-          "bottom": 56,
+          "bottom": 34,
           "width": 28.03,
           "height": 16
         },
@@ -1578,22 +1589,22 @@
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
-          "min-height": "96px"
+          "min-height": "52px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "619.969px 260px",
+          "grid-template-columns": "687.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "746px 320px",
+          "grid-template-columns": "814px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "288px 1152px"
+          "grid-template-columns": "220px 1220px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
@@ -1636,41 +1647,41 @@
           "top": 0,
           "left": 0,
           "right": 1440,
-          "bottom": 96,
+          "bottom": 52,
           "width": 1440,
-          "height": 96
+          "height": 52
         },
         "sideNavRegion": {
           "top": 96,
           "left": 0,
-          "right": 288,
+          "right": 220,
           "bottom": 900,
-          "width": 288,
+          "width": 220,
           "height": 804
         },
         "pageHead": {
-          "top": 133.44,
-          "left": 324,
+          "top": 89.44,
+          "left": 256,
           "right": 1404,
-          "bottom": 309.38,
-          "width": 1080,
+          "bottom": 265.38,
+          "width": 1148,
           "height": 175.94
         },
-        "firstStoryTop": 393.72,
+        "firstStoryTop": 349.72,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchInputShell": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
@@ -1688,26 +1699,26 @@
           "padding-right": "64.96px"
         },
         "searchControl": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchIcon": {
-          "top": 41,
+          "top": 19,
           "left": 977,
           "right": 991,
-          "bottom": 55,
+          "bottom": 33,
           "width": 14,
           "height": 14
         },
         "searchShortcut": {
-          "top": 40,
+          "top": 18,
           "left": 1190.97,
           "right": 1219,
-          "bottom": 56,
+          "bottom": 34,
           "width": 28.03,
           "height": 16
         },
@@ -1720,22 +1731,22 @@
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
-          "min-height": "96px"
+          "min-height": "52px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "619.969px 260px",
+          "grid-template-columns": "687.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "746px 320px",
+          "grid-template-columns": "814px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "288px 1152px"
+          "grid-template-columns": "220px 1220px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
@@ -1778,41 +1789,41 @@
           "top": 0,
           "left": 0,
           "right": 1440,
-          "bottom": 96,
+          "bottom": 52,
           "width": 1440,
-          "height": 96
+          "height": 52
         },
         "sideNavRegion": {
           "top": 96,
           "left": 0,
-          "right": 288,
+          "right": 220,
           "bottom": 900,
-          "width": 288,
+          "width": 220,
           "height": 804
         },
         "pageHead": {
-          "top": 133.44,
-          "left": 324,
+          "top": 89.44,
+          "left": 256,
           "right": 1404,
-          "bottom": 309.38,
-          "width": 1080,
+          "bottom": 265.38,
+          "width": 1148,
           "height": 175.94
         },
-        "firstStoryTop": 393.72,
+        "firstStoryTop": 349.72,
         "themeToggleRadius": "999px",
         "search": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchInputShell": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
@@ -1830,26 +1841,26 @@
           "padding-right": "64.96px"
         },
         "searchControl": {
-          "top": 32,
+          "top": 10,
           "left": 967,
           "right": 1227,
-          "bottom": 64,
+          "bottom": 42,
           "width": 260,
           "height": 32
         },
         "searchIcon": {
-          "top": 41,
+          "top": 19,
           "left": 977,
           "right": 991,
-          "bottom": 55,
+          "bottom": 33,
           "width": 14,
           "height": 14
         },
         "searchShortcut": {
-          "top": 40,
+          "top": 18,
           "left": 1190.97,
           "right": 1219,
-          "bottom": 56,
+          "bottom": 34,
           "width": 28.03,
           "height": 16
         },
@@ -1862,22 +1873,22 @@
         "headerStyles": {
           "display": "grid",
           "grid-template-columns": "1440px",
-          "min-height": "96px"
+          "min-height": "52px"
         },
         "workspaceStyles": {
           "display": "grid",
-          "grid-template-columns": "619.969px 260px",
+          "grid-template-columns": "687.969px 260px",
           "gap": "23.04px"
         },
         "pageHeadStyles": {
           "display": "grid",
-          "grid-template-columns": "746px 320px",
+          "grid-template-columns": "814px 320px",
           "gap": "14px",
           "border-bottom-style": "solid"
         },
         "layoutStyles": {
           "display": "grid",
-          "grid-template-columns": "288px 1152px"
+          "grid-template-columns": "220px 1220px"
         },
         "currentLocationBeforeSearch": true,
         "searchBeforeControls": true,
@@ -1890,7 +1901,30 @@
     ]
   },
   "mobileHashAnchorOcclusionCheck": {
-    "ok": false,
+    "ok": true,
+    "layerSelfCheck": {
+      "ok": true,
+      "cases": [
+        {
+          "name": "searchInput-transparent-passes",
+          "finding": null,
+          "expected": null,
+          "ok": true
+        },
+        {
+          "name": "header-transparent-fails",
+          "finding": "transparent",
+          "expected": "transparent",
+          "ok": true
+        },
+        {
+          "name": "searchInput-off-contract-fill-fails",
+          "finding": "fill",
+          "expected": "fill",
+          "ok": true
+        }
+      ]
+    },
     "route": "foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
     "viewport": {
       "width": 390,
@@ -2302,31 +2336,11 @@
               "label": "search-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 0,
+              "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
                 {
                   "tag": "div",
                   "id": "",
@@ -2406,6 +2420,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统设计系统 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 英语 日文 韩文"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统设计系统 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어França"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "基础 - TCRN 设计系统契约故事 :root {--tcrn-motion-product-shell: var(--tcrn-motion-emphasi"
                 }
               ]
             },
@@ -2529,10 +2563,8 @@
         "docShellSelectorCount": 6,
         "globalProductShellShellSelectorCount": 0,
         "pageOverflow": false,
-        "ok": false,
-        "failures": [
-          "mobile-layer-transparent:searchInput:rgba(0, 0, 0, 0)"
-        ]
+        "ok": true,
+        "failures": []
       },
       {
         "label": "after-700ms",
@@ -2939,31 +2971,11 @@
               "label": "search-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 0,
+              "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
                 {
                   "tag": "div",
                   "id": "",
@@ -3043,6 +3055,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统设计系统 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 英语 日文 韩文"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统设计系统 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어França"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "基础 - TCRN 设计系统契约故事 :root {--tcrn-motion-product-shell: var(--tcrn-motion-emphasi"
                 }
               ]
             },
@@ -3166,10 +3198,8 @@
         "docShellSelectorCount": 6,
         "globalProductShellShellSelectorCount": 0,
         "pageOverflow": false,
-        "ok": false,
-        "failures": [
-          "mobile-layer-transparent:searchInput:rgba(0, 0, 0, 0)"
-        ]
+        "ok": true,
+        "failures": []
       },
       {
         "label": "after-1500ms",
@@ -3576,31 +3606,11 @@
               "label": "search-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 0,
+              "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
                 {
                   "tag": "div",
                   "id": "",
@@ -3680,6 +3690,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统设计系统 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 英语 日文 韩文"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统设计系统 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어França"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "基础 - TCRN 设计系统契约故事 :root {--tcrn-motion-product-shell: var(--tcrn-motion-emphasi"
                 }
               ]
             },
@@ -3803,10 +3833,8 @@
         "docShellSelectorCount": 6,
         "globalProductShellShellSelectorCount": 0,
         "pageOverflow": false,
-        "ok": false,
-        "failures": [
-          "mobile-layer-transparent:searchInput:rgba(0, 0, 0, 0)"
-        ]
+        "ok": true,
+        "failures": []
       },
       {
         "label": "after-reload-1500ms",
@@ -4213,31 +4241,11 @@
               "label": "search-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 0,
+              "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
                 {
                   "tag": "div",
                   "id": "",
@@ -4317,6 +4325,26 @@
                   "docNavItem": null,
                   "shellControl": null,
                   "text": "TCRN设计系统设计系统 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어Français 简体中文 英语 日文 韩文"
+                },
+                {
+                  "tag": "body",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "Skip to content TCRN设计系统设计系统 当前位置 基础 基础视觉标准 搜索文档 ⌘ K 简体中文简体中文English日本語한국어França"
+                },
+                {
+                  "tag": "html",
+                  "id": "",
+                  "className": "",
+                  "role": null,
+                  "docShell": null,
+                  "docNavItem": null,
+                  "shellControl": null,
+                  "text": "基础 - TCRN 设计系统契约故事 :root {--tcrn-motion-product-shell: var(--tcrn-motion-emphasi"
                 }
               ]
             },
@@ -4440,10 +4468,8 @@
         "docShellSelectorCount": 6,
         "globalProductShellShellSelectorCount": 0,
         "pageOverflow": false,
-        "ok": false,
-        "failures": [
-          "mobile-layer-transparent:searchInput:rgba(0, 0, 0, 0)"
-        ]
+        "ok": true,
+        "failures": []
       }
     ]
   },
@@ -4496,7 +4522,7 @@
         "ok": true,
         "navItemCount": 11,
         "railScrollable": true,
-        "lastItemTop": 21622,
+        "lastItemTop": 14850,
         "reachable": true
       },
       {
@@ -4504,7 +4530,7 @@
         "ok": true,
         "navItemCount": 11,
         "railScrollable": false,
-        "lastItemTop": 11127,
+        "lastItemTop": 11048,
         "reachable": true
       }
     ]
@@ -4851,31 +4877,11 @@
               "label": "mobile-doc-shell-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 0,
+              "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
                 {
                   "tag": "div",
                   "id": "",
@@ -5557,31 +5563,11 @@
               "label": "mobile-doc-shell-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 0,
+              "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
                 {
                   "tag": "div",
                   "id": "",
@@ -6263,31 +6249,11 @@
               "label": "mobile-doc-shell-y125",
               "x": 195,
               "y": 125,
-              "shellIndex": 0,
+              "shellIndex": 1,
               "storyContentIndex": -1,
               "shellPaintsAboveStoryContent": true,
               "storyContentBehindShell": false,
               "stack": [
-                {
-                  "tag": "div",
-                  "id": "",
-                  "className": "tcrn-product-logo tcrn-product-logo--stacked-suffix tcrn-shell-brand-lockup",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
-                {
-                  "tag": "a",
-                  "id": "",
-                  "className": "tcrn-doc-brand",
-                  "role": null,
-                  "docShell": null,
-                  "docNavItem": null,
-                  "shellControl": null,
-                  "text": "TCRN设计系统设计系统"
-                },
                 {
                   "tag": "div",
                   "id": "",
@@ -6643,10 +6609,10 @@
     "metrics": {
       "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components-controls-data.html?locale=zh-CN#table-record-index-spec",
       "activeStoryId": "table-record-index-spec",
-      "targetTop": 96,
-      "previousBottom": 82,
-      "offset": 96,
-      "maxScrollY": 2431,
+      "targetTop": 52,
+      "previousBottom": 38,
+      "offset": 52,
+      "maxScrollY": 2367,
       "scrollY": 1232
     }
   },
@@ -6658,9 +6624,9 @@
       "activeStoryId": "dashboard-page-templates",
       "activeAriaCurrent": "location",
       "targetTop": 654,
-      "offset": 96,
-      "maxScrollY": 195,
-      "scrollY": 195,
+      "offset": 52,
+      "maxScrollY": 151,
+      "scrollY": 151,
       "hash": "#datagrid-fields-patterns",
       "scrollSpyAvailable": true
     }
@@ -7199,20 +7165,11 @@
     "zhCn": {
       "locale": "zh-CN",
       "gating": true,
-      "ok": false,
-      "storyCount": 72,
-      "allowlistedLeakCount": 106,
-      "newLeakCount": 3,
-      "newLeaks": [
-        {
-          "storyId": "foundation-visual-standards",
-          "leaks": [
-            "px rest",
-            "px expanded",
-            "px high"
-          ]
-        }
-      ],
+      "ok": true,
+      "storyCount": 73,
+      "allowlistedLeakCount": 104,
+      "newLeakCount": 0,
+      "newLeaks": [],
       "perStory": [
         {
           "storyId": "welcome-governance",
@@ -7287,11 +7244,7 @@
         {
           "storyId": "foundation-visual-standards",
           "allowlistedLeakCount": 22,
-          "newLeaks": [
-            "px rest",
-            "px expanded",
-            "px high"
-          ]
+          "newLeaks": []
         },
         {
           "storyId": "copy-guidelines",
@@ -7370,7 +7323,7 @@
         },
         {
           "storyId": "records-and-boards-backlog-spec",
-          "allowlistedLeakCount": 2,
+          "allowlistedLeakCount": 1,
           "newLeaks": []
         },
         {
@@ -7405,7 +7358,7 @@
         },
         {
           "storyId": "documents-and-collaboration-density-spec",
-          "allowlistedLeakCount": 5,
+          "allowlistedLeakCount": 4,
           "newLeaks": []
         },
         {
@@ -7460,6 +7413,11 @@
         },
         {
           "storyId": "inputs-sample-members",
+          "allowlistedLeakCount": 0,
+          "newLeaks": []
+        },
+        {
+          "storyId": "composition-three-sample",
           "allowlistedLeakCount": 0,
           "newLeaks": []
         },
@@ -7586,8 +7544,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 72,
-        "leakCount": 113,
+        "storyCount": 73,
+        "leakCount": 108,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7647,7 +7605,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 25
+            "leakCount": 22
           },
           {
             "storyId": "copy-guidelines",
@@ -7711,7 +7669,7 @@
           },
           {
             "storyId": "records-and-boards-backlog-spec",
-            "leakCount": 2
+            "leakCount": 1
           },
           {
             "storyId": "hierarchy-and-relations-spec",
@@ -7739,7 +7697,7 @@
           },
           {
             "storyId": "documents-and-collaboration-density-spec",
-            "leakCount": 5
+            "leakCount": 4
           },
           {
             "storyId": "documents-and-collaboration-templates-spec",
@@ -7783,6 +7741,10 @@
           },
           {
             "storyId": "inputs-sample-members",
+            "leakCount": 0
+          },
+          {
+            "storyId": "composition-three-sample",
             "leakCount": 0
           },
           {
@@ -7884,8 +7846,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 72,
-        "leakCount": 121,
+        "storyCount": 73,
+        "leakCount": 116,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -7945,7 +7907,7 @@
           },
           {
             "storyId": "foundation-visual-standards",
-            "leakCount": 27
+            "leakCount": 24
           },
           {
             "storyId": "copy-guidelines",
@@ -8009,7 +7971,7 @@
           },
           {
             "storyId": "records-and-boards-backlog-spec",
-            "leakCount": 2
+            "leakCount": 1
           },
           {
             "storyId": "hierarchy-and-relations-spec",
@@ -8037,7 +7999,7 @@
           },
           {
             "storyId": "documents-and-collaboration-density-spec",
-            "leakCount": 5
+            "leakCount": 4
           },
           {
             "storyId": "documents-and-collaboration-templates-spec",
@@ -8081,6 +8043,10 @@
           },
           {
             "storyId": "inputs-sample-members",
+            "leakCount": 0
+          },
+          {
+            "storyId": "composition-three-sample",
             "leakCount": 0
           },
           {
@@ -8182,8 +8148,8 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
-        "storyCount": 72,
-        "leakCount": 3060,
+        "storyCount": 73,
+        "leakCount": 3073,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -8251,7 +8217,7 @@
           },
           {
             "storyId": "component-family-index",
-            "leakCount": 106
+            "leakCount": 103
           },
           {
             "storyId": "display-primitives-spec",
@@ -8307,7 +8273,7 @@
           },
           {
             "storyId": "records-and-boards-backlog-spec",
-            "leakCount": 52
+            "leakCount": 53
           },
           {
             "storyId": "hierarchy-and-relations-spec",
@@ -8335,7 +8301,7 @@
           },
           {
             "storyId": "documents-and-collaboration-density-spec",
-            "leakCount": 35
+            "leakCount": 36
           },
           {
             "storyId": "documents-and-collaboration-templates-spec",
@@ -8380,6 +8346,10 @@
           {
             "storyId": "inputs-sample-members",
             "leakCount": 29
+          },
+          {
+            "storyId": "composition-three-sample",
+            "leakCount": 14
           },
           {
             "storyId": "forms-patterns",
@@ -8515,7 +8485,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8551,7 +8521,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8587,7 +8557,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8623,7 +8593,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8659,7 +8629,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8695,7 +8665,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8731,7 +8701,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8767,7 +8737,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8811,7 +8781,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8857,7 +8827,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8901,7 +8871,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8945,7 +8915,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -8991,7 +8961,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9037,7 +9007,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9079,7 +9049,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9125,7 +9095,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9173,7 +9143,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9223,7 +9193,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9265,7 +9235,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9309,7 +9279,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9353,7 +9323,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9399,7 +9369,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9445,7 +9415,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9495,7 +9465,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9520,14 +9490,16 @@
         "icon-sample-project",
         "brand-sample-product",
         "actions-sample-project",
-        "inputs-sample-members"
+        "inputs-sample-members",
+        "composition-three-sample"
       ],
       "expectedStoryIds": [
         "typography-sample-billing",
         "icon-sample-project",
         "brand-sample-product",
         "actions-sample-project",
-        "inputs-sample-members"
+        "inputs-sample-members",
+        "composition-three-sample"
       ]
     },
     {
@@ -9545,7 +9517,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9589,7 +9561,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9637,7 +9609,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9683,7 +9655,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9731,7 +9703,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9775,7 +9747,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9817,7 +9789,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9853,7 +9825,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9889,7 +9861,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9925,7 +9897,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9961,7 +9933,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -9997,7 +9969,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10033,7 +10005,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10069,7 +10041,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10105,7 +10077,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10141,7 +10113,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10177,7 +10149,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10213,7 +10185,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10249,7 +10221,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10285,7 +10257,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10321,7 +10293,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10365,7 +10337,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10411,7 +10383,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10455,7 +10427,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10499,7 +10471,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10545,7 +10517,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10591,7 +10563,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10633,7 +10605,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10679,7 +10651,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10727,7 +10699,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10777,7 +10749,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10819,7 +10791,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10863,7 +10835,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10907,7 +10879,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10953,7 +10925,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -10999,7 +10971,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11049,7 +11021,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11074,14 +11046,16 @@
         "icon-sample-project",
         "brand-sample-product",
         "actions-sample-project",
-        "inputs-sample-members"
+        "inputs-sample-members",
+        "composition-three-sample"
       ],
       "expectedStoryIds": [
         "typography-sample-billing",
         "icon-sample-project",
         "brand-sample-product",
         "actions-sample-project",
-        "inputs-sample-members"
+        "inputs-sample-members",
+        "composition-three-sample"
       ]
     },
     {
@@ -11099,7 +11073,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11143,7 +11117,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11191,7 +11165,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11237,7 +11211,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11285,7 +11259,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11329,7 +11303,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11371,7 +11345,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11407,7 +11381,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11443,7 +11417,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11479,7 +11453,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11515,7 +11489,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11551,7 +11525,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11587,7 +11561,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11623,7 +11597,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11659,7 +11633,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11695,7 +11669,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11731,7 +11705,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11767,7 +11741,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11803,7 +11777,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11839,7 +11813,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11875,7 +11849,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11919,7 +11893,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -11965,7 +11939,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12009,7 +11983,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12053,7 +12027,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12099,7 +12073,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12145,7 +12119,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12187,7 +12161,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12233,7 +12207,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12281,7 +12255,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12331,7 +12305,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12373,7 +12347,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12417,7 +12391,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12461,7 +12435,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12507,7 +12481,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12553,7 +12527,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12603,7 +12577,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12628,14 +12602,16 @@
         "icon-sample-project",
         "brand-sample-product",
         "actions-sample-project",
-        "inputs-sample-members"
+        "inputs-sample-members",
+        "composition-three-sample"
       ],
       "expectedStoryIds": [
         "typography-sample-billing",
         "icon-sample-project",
         "brand-sample-product",
         "actions-sample-project",
-        "inputs-sample-members"
+        "inputs-sample-members",
+        "composition-three-sample"
       ]
     },
     {
@@ -12653,7 +12629,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12697,7 +12673,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12745,7 +12721,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12791,7 +12767,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12839,7 +12815,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12883,7 +12859,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12925,7 +12901,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12961,7 +12937,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -12997,7 +12973,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13033,7 +13009,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13069,7 +13045,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13105,7 +13081,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,
@@ -13141,7 +13117,7 @@
       "activeStoryHiddenByCategory": false,
       "categoryAriaFailures": [],
       "sidebarNoIconLabelReadabilityFailures": [],
-      "docNavItemCount": 65,
+      "docNavItemCount": 66,
       "docCurrentStoryCount": 1,
       "docChapterPagerCount": 1,
       "onThisPageCount": 1,

@@ -1,6 +1,6 @@
 {
-  "ok": false,
-  "violationCount": 12,
+  "ok": true,
+  "violationCount": 0,
   "wordmarkContrastExemption": {
     "rule": "color-contrast",
     "selectors": [
@@ -24,27 +24,9 @@
         "fgColor": "#6577f3",
         "ruling": "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour)",
         "source": "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype)"
-      },
-      {
-        "theme": "dark",
-        "fg": "--tcrn-brand-suffix-tms",
-        "on": "--tcrn-color-panel",
-        "fgColor": "#2c63c8",
-        "ruling": "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour)",
-        "source": "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype)",
-        "pending": "the night suffix colour awaits an Owner ruling (INIT-015 R1 problem P15)"
-      },
-      {
-        "theme": "dark",
-        "fg": "--tcrn-brand-suffix-tms",
-        "on": "--tcrn-color-bg",
-        "fgColor": "#2c63c8",
-        "ruling": "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour)",
-        "source": "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype)",
-        "pending": "the night suffix colour awaits an Owner ruling (INIT-015 R1 problem P15)"
       }
     ],
-    "exemptedNodeCount": 94
+    "exemptedNodeCount": 80
   },
   "sections": [
     {
@@ -61,8 +43,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -89,8 +71,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -117,8 +99,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         },
         {
           "target": [
@@ -138,17 +120,7 @@
       "theme": "dark",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-brand-wordmark__suffix--tms"
-          ],
-          "selector": ".tcrn-brand-wordmark__suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -164,8 +136,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -192,8 +164,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -220,8 +192,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -248,8 +220,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -276,8 +248,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -304,8 +276,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -323,24 +295,8 @@
       "page": "components-navigation-shells.html",
       "viewport": "desktop-1440x900",
       "theme": "light",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 1,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-visible-registered-brand-lockup=\"true\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": [
         {
           "target": [
@@ -348,8 +304,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         },
         {
           "target": [
@@ -357,8 +313,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ebf2f2",
-          "contrastRatio": 3.37
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -367,24 +323,8 @@
       "page": "components-navigation-shells.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 1,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-visible-registered-brand-lockup=\"true\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": []
     },
     {
@@ -401,8 +341,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -429,8 +369,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -457,8 +397,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -485,8 +425,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -513,8 +453,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -541,8 +481,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         },
         {
           "target": [
@@ -561,15 +501,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#ffffff",
           "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-doc-theme-preview[data-tcrn-theme=\"dark\"][data-gplus-matrix-theme=\"night\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLogo\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"sans\"] > div[data-product-id=\"tms\"][data-product-logo-asset-id=\"tcrn-tms-two-line\"][data-product-wordmark=\"sans\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN TMS\"] > .tcrn-brand-wordmark__suffix--tms.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
         }
       ]
     },
@@ -598,15 +529,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#ffffff",
           "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-doc-theme-preview[data-gplus-matrix-theme=\"night\"][data-tcrn-theme=\"dark\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLogo\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"sans\"] > div[aria-label=\"TCRN TMS 艺人管理系统\"][data-product-id=\"tms\"][data-product-logo-asset-id=\"tcrn-tms-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN TMS\"] > .tcrn-brand-wordmark__suffix--tms.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
         }
       ]
     },
@@ -615,87 +537,8 @@
       "page": "components-gplus-samples.html",
       "viewport": "desktop-1440x900",
       "theme": "light",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 10,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-shell=\"ty-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href=\"#typography-sample-billing\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ty-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href=\"#typography-sample-billing\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ic-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#icon-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ic-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#icon-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">Design System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"br-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">Design System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ac-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#actions-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ac-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#actions-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"in-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#inputs-sample-members\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"in-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#inputs-sample-members\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": [
         {
           "target": [
@@ -703,8 +546,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         },
         {
           "target": [
@@ -712,8 +555,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#dde4df",
-          "contrastRatio": 2.95
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         },
         {
           "target": [
@@ -723,24 +566,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#ffffff",
           "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            "div[data-shell=\"br-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#172421",
-          "contrastRatio": 4.18
-        },
-        {
-          "target": [
-            "#brand-sample-product-night-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"Products\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(3) > .tcrn-table-shell__cell[data-label=\"Product\"][role=\"cell\"] > div[data-product-id=\"tms\"][data-product-logo-asset-id=\"tcrn-tms-two-line\"][data-product-wordmark=\"sans\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN TMS\"] > .tcrn-brand-wordmark__suffix--tms.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
         }
       ]
     },
@@ -749,87 +574,8 @@
       "page": "components-gplus-samples.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 10,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-shell=\"ty-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href=\"#typography-sample-billing\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ty-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href=\"#typography-sample-billing\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ic-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#icon-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ic-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#icon-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">设计系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"br-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">设计系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ac-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#actions-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ac-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#actions-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"in-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#inputs-sample-members\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"in-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#inputs-sample-members\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": [
         {
           "target": [
@@ -837,8 +583,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#dde4df",
-          "contrastRatio": 2.95
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         },
         {
           "target": [
@@ -848,24 +594,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#ffffff",
           "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            "div[data-shell=\"br-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#172421",
-          "contrastRatio": 4.18
-        },
-        {
-          "target": [
-            "#brand-sample-product-night-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"产品\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(3) > .tcrn-table-shell__cell[data-label=\"产品\"][role=\"cell\"] > div[aria-label=\"TCRN TMS 艺人管理系统\"][data-product-id=\"tms\"][data-product-logo-asset-id=\"tcrn-tms-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN TMS\"] > .tcrn-brand-wordmark__suffix--tms.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
         }
       ]
     },
@@ -883,8 +611,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -911,8 +639,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -939,8 +667,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -967,8 +695,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -986,94 +714,8 @@
       "page": "proof-proof-visual-instances.html",
       "viewport": "desktop-1440x900",
       "theme": "light",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 11,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-visual-instance-search=\"results\"][data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-primary-ia=\"cockpit-work-only\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(2) > div[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-primary-ia=\"cockpit-work-only\"][data-aos-visual-instance-oracle=\"true\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "a[aria-label=\"AOS 重建工作区首页\"] > div[aria-label=\"TCRN AOS AI 运营系统\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"reduced-motion\"][data-visual-instance-reduced-motion=\"true\"][data-storybook-visual-instance=\"frontend-shell-slice\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(1) > div[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-name=\"OwnerQualityShellOracle\"][data-visual-instance-owner-quality=\"product-first\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(3) > div[data-visual-instance-theme=\"dark\"][data-tcrn-theme=\"dark\"][data-product-shell-theme=\"dark\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"desktop-light-work-queue\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "a[aria-label=\"TCRN AOS首页\"] > div[aria-label=\"TCRN AOS AI 运营系统\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-search=\"results\"][data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-name=\"OwnerQualityShellOracle\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"reduced-motion\"][data-visual-instance-reduced-motion=\"true\"][data-storybook-visual-instance=\"owner-quality-product-shell\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": [
         {
           "target": [
@@ -1081,8 +723,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1091,94 +733,8 @@
       "page": "proof-proof-visual-instances.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 11,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-visual-instance-search=\"results\"][data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-primary-ia=\"cockpit-work-only\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(2) > div[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-primary-ia=\"cockpit-work-only\"][data-aos-visual-instance-oracle=\"true\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "a[aria-label=\"AOS 重建工作区首页\"] > div[aria-label=\"TCRN AOS AI 运营系统\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"reduced-motion\"][data-visual-instance-reduced-motion=\"true\"][data-storybook-visual-instance=\"frontend-shell-slice\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(1) > div[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-name=\"OwnerQualityShellOracle\"][data-visual-instance-owner-quality=\"product-first\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(3) > div[data-visual-instance-theme=\"dark\"][data-product-shell-theme=\"dark\"][data-tcrn-theme=\"dark\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"desktop-light-work-queue\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "a[aria-label=\"TCRN AOS首页\"] > div[aria-label=\"TCRN AOS AI 运营系统\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-search=\"results\"][data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-name=\"OwnerQualityShellOracle\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"reduced-motion\"][data-visual-instance-reduced-motion=\"true\"][data-storybook-visual-instance=\"owner-quality-product-shell\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": []
     },
     {
@@ -1195,8 +751,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1223,8 +779,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1251,8 +807,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1279,8 +835,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1307,8 +863,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1335,8 +891,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1363,8 +919,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1391,8 +947,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ecf4f3",
-          "contrastRatio": 3.42
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1496,17 +1052,7 @@
       "theme": "dark",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-brand-wordmark__suffix--tms"
-          ],
-          "selector": ".tcrn-brand-wordmark__suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -1681,24 +1227,8 @@
       "page": "components-navigation-shells.html",
       "viewport": "mobile-390x844",
       "theme": "light",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 1,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-visible-registered-brand-lockup=\"true\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": [
         {
           "target": [
@@ -1715,8 +1245,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#ebf2f2",
-          "contrastRatio": 3.37
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         }
       ]
     },
@@ -1725,24 +1255,8 @@
       "page": "components-navigation-shells.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 1,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-visible-registered-brand-lockup=\"true\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": []
     },
     {
@@ -1919,15 +1433,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#ffffff",
           "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-doc-theme-preview[data-tcrn-theme=\"dark\"][data-gplus-matrix-theme=\"night\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLogo\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"sans\"] > div[data-product-id=\"tms\"][data-product-logo-asset-id=\"tcrn-tms-two-line\"][data-product-wordmark=\"sans\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN TMS\"] > .tcrn-brand-wordmark__suffix--tms.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
         }
       ]
     },
@@ -1956,15 +1461,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#ffffff",
           "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-doc-theme-preview[data-gplus-matrix-theme=\"night\"][data-tcrn-theme=\"dark\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLogo\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"sans\"] > div[aria-label=\"TCRN TMS 艺人管理系统\"][data-product-id=\"tms\"][data-product-logo-asset-id=\"tcrn-tms-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN TMS\"] > .tcrn-brand-wordmark__suffix--tms.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
         }
       ]
     },
@@ -1973,87 +1469,8 @@
       "page": "components-gplus-samples.html",
       "viewport": "mobile-390x844",
       "theme": "light",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 10,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-shell=\"ty-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href=\"#typography-sample-billing\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ty-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href=\"#typography-sample-billing\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ic-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#icon-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ic-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#icon-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">Design System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"br-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">Design System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ac-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#actions-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ac-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#actions-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"in-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#inputs-sample-members\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"in-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#inputs-sample-members\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">Team · 12 people</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": [
         {
           "target": [
@@ -2070,8 +1487,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#dde4df",
-          "contrastRatio": 2.95
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         },
         {
           "target": [
@@ -2081,24 +1498,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#ffffff",
           "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            "div[data-shell=\"br-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#172421",
-          "contrastRatio": 4.18
-        },
-        {
-          "target": [
-            "#brand-sample-product-night-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"Products\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(3) > .tcrn-table-shell__cell[data-label=\"Product\"][role=\"cell\"] > div[data-product-id=\"tms\"][data-product-logo-asset-id=\"tcrn-tms-two-line\"][data-product-wordmark=\"sans\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN TMS\"] > .tcrn-brand-wordmark__suffix--tms.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
         }
       ]
     },
@@ -2107,87 +1506,8 @@
       "page": "components-gplus-samples.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 10,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-shell=\"ty-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href=\"#typography-sample-billing\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ty-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href=\"#typography-sample-billing\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ic-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#icon-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ic-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#icon-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">设计系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"br-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">设计系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ac-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#actions-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"ac-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#actions-sample-project\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"in-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#inputs-sample-members\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-shell=\"in-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#inputs-sample-members\"] > div[data-brand-lockup=\"shell\"][data-package-backed-brand-lockup=\"shell\"][data-visible-registered-brand-lockup=\"true\"] > .tcrn-shell-brand-lockup__copy > .tcrn-shell-brand-lockup__caption"
-              ],
-              "html": "<span class=\"tcrn-shell-brand-lockup__caption\">团队 · 12 人</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": [
         {
           "target": [
@@ -2195,8 +1515,8 @@
           ],
           "selector": ".tcrn-product-logo__line-one-suffix",
           "fgColor": "#6577f3",
-          "bgColor": "#dde4df",
-          "contrastRatio": 2.95
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
         },
         {
           "target": [
@@ -2206,24 +1526,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#ffffff",
           "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            "div[data-shell=\"br-n\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#172421",
-          "contrastRatio": 4.18
-        },
-        {
-          "target": [
-            "#brand-sample-product-night-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"产品\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(3) > .tcrn-table-shell__cell[data-label=\"产品\"][role=\"cell\"] > div[aria-label=\"TCRN TMS 艺人管理系统\"][data-product-id=\"tms\"][data-product-logo-asset-id=\"tcrn-tms-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN TMS\"] > .tcrn-brand-wordmark__suffix--tms.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#191916",
-          "contrastRatio": 3.12
         }
       ]
     },
@@ -2344,94 +1646,8 @@
       "page": "proof-proof-visual-instances.html",
       "viewport": "mobile-390x844",
       "theme": "light",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 11,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-visual-instance-search=\"results\"][data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-primary-ia=\"cockpit-work-only\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(2) > div[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-primary-ia=\"cockpit-work-only\"][data-aos-visual-instance-oracle=\"true\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "a[aria-label=\"AOS 重建工作区首页\"] > div[aria-label=\"TCRN AOS AI 运营系统\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"reduced-motion\"][data-visual-instance-reduced-motion=\"true\"][data-storybook-visual-instance=\"frontend-shell-slice\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(1) > div[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-name=\"OwnerQualityShellOracle\"][data-visual-instance-owner-quality=\"product-first\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(3) > div[data-visual-instance-theme=\"dark\"][data-tcrn-theme=\"dark\"][data-product-shell-theme=\"dark\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"desktop-light-work-queue\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "a[aria-label=\"TCRN AOS首页\"] > div[aria-label=\"TCRN AOS AI 运营系统\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-search=\"results\"][data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-name=\"OwnerQualityShellOracle\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"reduced-motion\"][data-visual-instance-reduced-motion=\"true\"][data-storybook-visual-instance=\"owner-quality-product-shell\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": [
         {
           "target": [
@@ -2449,94 +1665,8 @@
       "page": "proof-proof-visual-instances.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
-      "violationCount": 1,
-      "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodeCount": 11,
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "nodes": [
-            {
-              "target": [
-                "div[data-visual-instance-search=\"results\"][data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-primary-ia=\"cockpit-work-only\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(2) > div[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-primary-ia=\"cockpit-work-only\"][data-aos-visual-instance-oracle=\"true\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "a[aria-label=\"AOS 重建工作区首页\"] > div[aria-label=\"TCRN AOS AI 运营系统\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"reduced-motion\"][data-visual-instance-reduced-motion=\"true\"][data-storybook-visual-instance=\"frontend-shell-slice\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"AOS Rebuild Workspace home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(1) > div[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-name=\"OwnerQualityShellOracle\"][data-visual-instance-owner-quality=\"product-first\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "section:nth-child(3) > div[data-visual-instance-theme=\"dark\"][data-product-shell-theme=\"dark\"][data-tcrn-theme=\"dark\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"desktop-light-work-queue\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "a[aria-label=\"TCRN AOS首页\"] > div[aria-label=\"TCRN AOS AI 运营系统\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI 运营系统</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #85827a, background color: #172421, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-search=\"results\"][data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-name=\"OwnerQualityShellOracle\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "target": [
-                "div[data-visual-instance-variant=\"reduced-motion\"][data-visual-instance-reduced-motion=\"true\"][data-storybook-visual-instance=\"owner-quality-product-shell\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"TCRN AOS home\"][href=\"/\"] > div[aria-label=\"TCRN AOS AI Operation System\"][data-visible-registered-brand-lockup=\"true\"][data-product-id=\"aos\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-two"
-              ],
-              "html": "<span class=\"tcrn-product-logo__line-two\">AI Operation System</span>",
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.36 (foreground color: #6b675d, background color: #dde4df, font size: 7.9pt (10.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        }
-      ],
+      "violationCount": 0,
+      "violations": [],
       "wordmarkContrastExempted": []
     },
     {
