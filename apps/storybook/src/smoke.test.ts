@@ -535,7 +535,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-doc-chapter-pager="true"/);
   assert.match(combinedHtml, /data-contract-surface="tcrn-design-system-storybook"/);
   assert.match(combinedHtml, /data-anchor-scroll-controlled="true"/);
-  assert.match(combinedHtml, /--tcrn-anchor-scroll-offset: 96px/);
+  // The fixed top bar over the content column is the shell top bar (composition one, O-1).
+  assert.match(combinedHtml, /--tcrn-anchor-scroll-offset: var\(--tcrn-shell-topbar-height\)/);
   assert.match(combinedHtml, /tcrnStorybookScrollToHash/);
   assert.match(combinedHtml, /tcrnStorybookScrollSpy/);
   assert.match(combinedHtml, /keepActiveLinkVisible/);
@@ -1208,10 +1209,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
 	  )),
 	  "Storybook doc shell visual oracle must cite perceptual-signature-backed sidebar evidence"
 	);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 288);
-	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 280);
-	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 360);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 96);
+  // Composition one (O-1): a fixed 220px documentation rail and the 52px shell top bar.
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 220);
+	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 220);
+	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 220);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 52);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx, 260);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 360);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.themeToggleRadiusPx, 999);
