@@ -203,7 +203,6 @@ export const localeInvariantLedger = {
       "or dense density. The same TreeNav is shown at all three. Only the dense modifier carries distinct package styling today",
       "comfortable and compact record the density on data",
       "density but share the default styling.",
-      "Document publishing is not wired in this static DS fixture",
     ],
     "documents-and-collaboration-templates-spec": [
       "Static Design System template fixture",
@@ -270,7 +269,6 @@ export const localeInvariantLedger = {
       "Yu Gothic",
     ],
     "records-and-boards-backlog-spec": [
-      "Add record placeholder",
       "Functional display static mockup content contract",
       "No backend promotion in fixture",
       "Static fixture",
