@@ -60,6 +60,19 @@
 
 集成树合入 W1-A/B/C 后 typecheck 与 build 均 EXIT=0（scratch `logs/integ-w1abc-compile.log`）。
 
+### R3 判断与链写
+
+- R3 判断（`runs/r3/judgment.md` 52 KB、`runs/r3/lessons.json` 5 条）：13 张通过（120–129、131–133；129 目视待做），130、134 判定人为 Owner；返工 7 条归并为 R4 的 6 张经济单（小轮，1 包）；收口用 Owner 事项 S-1…S-6（库门配置、判定 130、判定 134、目视、D8 停点、画板修订）、N-1…N-6、M-1（续派包代理做集成修复偏离批量原则字面，未答复时今后另派集成代理）；重跑 `pnpm scan` 提交回执定为收口步骤。
+- R3 链写：一次 work-batch 83 成员（R3 Subtask 19 张三步转 done、SUB-046/076/078/080 转 done、15 张 Story 与 INIT 的 summary 注解、R4 的 SUB-107…112 建单），WORKSPACE_COMMAND_COMPLETED，version 1751 → 1834，head 73e6dbdb…；读回 Subtask 112 张（done 106、planned 6），Story 15 张 active。知识卡 KB-017…021 已建并读回（017、019 以 --coexist 建）。回执在 scratch `r3-chain/`。
+
+### R4
+
+- 小轮：1 个经济包 P0（SUB-107 → 108 → 109 → 110 → 111 → 112，约 80–120 回合）；摘录 `runs/r4/excerpts/P0.md` 与附件 `P0-annex.md`；R4 末 verify 与 storybook:build 后由一个主力档代理一次做验收与判断（批量原则第 6 条），通过且无新的非 Owner 返工即写收口文件。
+
+| 包 | 档位 | 状态 | 自 | 备注 |
+| --- | --- | --- | --- | --- |
+| P0 | 经济 | 在跑 | 见提交 | 107 → 108 → 109 → 110 → 111 → 112 |
+
 ## 已收到的 B 类裁定（随批末链写注解）
 
 - `.tcrn-icon` 基类进包（icon.css.ts），见 `problems/main.md` M5；并入 W3-D。

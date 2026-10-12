@@ -1,0 +1,65 @@
+{
+ "schemaVersion": "tcrn.work-batch.v1",
+ "members": [
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-107",
+   "kind": "Subtask",
+   "parentId": "work:0fbb3d17f6c255f37614c300",
+   "title": "gplus-samples 类目说明改为同时覆盖构图一五个样板与构图三",
+   "summary": "P0·R4-1：gplus-samples 类目说明改为同时覆盖构图一五个样板与构图三",
+   "body": "改动文件：apps/storybook/src/contract-stories/governance.ts、apps/storybook/src/build/locales/storybook-content-text.ts；依赖：无；判据：governance.ts 只改第 61 行 gplus-samples 的 description，使它同时覆盖构图一的五个样板与构图三（无侧栏、顶部导航）两类页面，保留「light and night」之意；不带工单键、轮次与内部词。storybook-content-text.ts 里该说明的键（现第 2054 行）整条换成新英文键，zh-CN、ja、ko、fr 四语值同步改写；四语值不与同语言里英文不同的其它词条同值（运行时按当前文字反查原文，同值会串键，见 R3 验收 A §5）。其它类目不动。该说明只渲染在文档导航的 sr-only 文本里（page-template.tsx:385、:548），不应改任何视觉签名；zh-CN 新漏译 0 在 SUB-112 的 browser-proof 一并读。判据读数：git grep 旧英文句在 apps、scripts 下 0 处；局部门绿。；档位：经济——文案，判定不变；第一次返工；局部门（前缀 corepack pnpm@10.12.1 -C <包树>，git 命令与探针除外）：run build ‖ --filter @tcrn/design-system-storybook test ‖ run public-output:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash） ‖ run internal-vocab:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）；分包：P0（W1，包内第 1 项，整包经济档）；来源：R4-1（R3 验收 C §3 C3-2、R3M2）；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r4/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-108",
+   "kind": "Subtask",
+   "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+   "title": "契约 README 的几何门与映射门两节按门现状改写，映射报告标签去掉写死的「八项」",
+   "summary": "P0·R4-2：契约 README 的几何门与映射门两节按门现状改写，映射报告标签去掉写死的「八项」",
+   "body": "改动文件：docs/contract/README.md、scripts/storybook-visual-proof.mjs；依赖：无；判据：docs/contract/README.md 几何门一节（现第 89–105 行一带）与映射门一节（现第 116–119 行一带）按门现状改：检查项十项（含 shellFrame）；STORY_PROBES 四个（含 iconStroke）；阈值表加 shellFrame 一行（ProductShell 根内纸面离壳上、尾、下三边 12，壳顶栏 52，容差 0.5，起始边贴侧栏不量）；STORY_MUTATIONS 六条（含 shell-paper-inset-zero、shell-top-bar-68）；映射门检查名十个、ROW_MUTATIONS 十条；测试条数不写死或写现值。每个数字从门源码现读（scripts/geometry-measure-proof.mjs、scripts/lib/gplus-measure.mjs、scripts/storybook-visual-proof.mjs），不抄本拆分。scripts/storybook-visual-proof.mjs 只改第 491 行报告标签：「八项测量」改成不带数字的说法；JSON 字段 eightMeasurements 与常量 EIGHT_MEASUREMENTS 不改名。报告本身由 SUB-112 再生，不手改。判据读数：两节数字与门源码一致；visual-proof 测试与局部门绿。；档位：经济——文档与报告标签，门的判定不变；第一次返工；局部门（前缀 corepack pnpm@10.12.1 -C <包树>，git 命令与探针除外）：exec node --test tests/storybook-visual-proof.test.mjs ‖ run readme:proof（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash） ‖ run public-output:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）；分包：P0（W1，包内第 2 项，整包经济档）；来源：R4-2（R3 验收 C §3 C3-1）；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r4/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-109",
+   "kind": "Subtask",
+   "parentId": "work:f5de8fcf90580fcc9b4192f7",
+   "title": "删掉译文债台账里两条已翻译的条目",
+   "summary": "P0·R4-3：删掉译文债台账里两条已翻译的条目",
+   "body": "改动文件：scripts/lib/locale-invariant-ledger.mjs；依赖：无；判据：translationDebtAllowlist 只删两条：documents-and-collaboration-density-spec 下的「Document publishing is not wired in this static DS fixture」（现第 206 行）与 records-and-boards-backlog-spec 下的「Add record placeholder」（现第 273 行）；其余不动，git diff 只有这两行删除。台账头注（第 22–26 行）要求翻译时同提交删条目，这里补 SUB-104 的遗漏。判据读数在 SUB-112 的 browser-proof 一并读：zh-CN 新漏译 0，已登记债 allowlistedLeakCount 不变（R3 为 104）；本单不另跑 browser-proof。；档位：经济——台账数据维护，判定语义不变；第一次返工；局部门（前缀 corepack pnpm@10.12.1 -C <包树>，git 命令与探针除外）：git -C <包树> grep -n \"locale-invariant-ledger\" -- scripts tests apps（找出消费方，有单测就跑） ‖ --filter @tcrn/design-system-storybook test；分包：P0（W1，包内第 3 项，整包经济档）；来源：R4-3（R3 验收 A §3 A3-1、R3M2）；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r4/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-110",
+   "kind": "Subtask",
+   "parentId": "work:f5de8fcf90580fcc9b4192f7",
+   "title": "知识库样板加一句可见说明：顶栏 52、侧栏画布色与 16 内距来自文档作用域例外",
+   "summary": "P0·R4-4：知识库样板加一句可见说明：顶栏 52、侧栏画布色与 16 内距来自文档作用域例外",
+   "body": "改动文件：apps/storybook/src/contract-stories/story-content.tsx、apps/storybook/src/build/locales/storybook-content-text.ts；依赖：TCRN-DS-SUB-107；判据：条件：Owner 未把 R3M5 的方案 A 改判为方案 B（派工前若已改判，本单作废，SUB-112 的视觉重收一并取消）。在 navigation-focused-shells-spec 的「Knowledge base bookmark shell」面板正文（story-content.tsx 现第 2139–2143 行）加一句（加一个 Text，或接在现有 Text 后）：在 Navigation 家族批次之前，本样板的顶栏 52、侧栏画布色与 16 内距由文档作用域例外提供，包的独立 TopBar 默认 68。不放进顶栏，不改 story 的 title 与 description，不改例外、白名单与门。新英文键与 zh-CN、ja、ko、fr 四语值进 storybook-content-text.ts，四语值不与同语言里英文不同的其它词条同值；不带工单键与内部词。该面板可见，预计只改本 story 三个视口的视觉签名，由 SUB-112 重收；本 story 不在宽限表里，加句后若超出高度上限，缩短句子，不加宽限条目。判据读数：构建产物里该句五语都在；局部门绿。；档位：经济——文案，判定不变；第一次返工；局部门（前缀 corepack pnpm@10.12.1 -C <包树>，git 命令与探针除外）：run build ‖ --filter @tcrn/design-system-storybook test ‖ run doc-shell:proof ‖ run contract:static ‖ run public-output:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash） ‖ run internal-vocab:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）；分包：P0（W1，包内第 4 项，整包经济档）；来源：R4-4（R3 验收 C §3 C3-4、§4 第 1 条；R3M5、R3M6；R3 判断 §3.5 M-2）；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r4/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-111",
+   "kind": "Subtask",
+   "parentId": "work:f5de8fcf90580fcc9b4192f7",
+   "title": "目视清单按 R3 落地现状改正，补夜间分类计数实测与新目视项",
+   "summary": "P0·R4-5：目视清单按 R3 落地现状改正，补夜间分类计数实测与新目视项",
+   "body": "改动文件：docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md；依赖：TCRN-DS-SUB-110；判据：只改 owner-acceptance.md，行号为 HEAD b0501c1，先 grep 再改；只写事实与建议，不勾选。1）待裁第 10 行 N-1（现第 244 行）：删去「随 SUB-101 一起解决」，改为浏览器实测：浅色与夜间文档页侧栏 .tcrn-doc-nav__category-count 的计算字色、自带底色（color-mix(surface-muted 78%, transparent)）合成到侧栏底色后的颜色与对比度（两位小数），写明读法；处置写「待 Owner 二选一，见收口文件 N-1；未答复时保持现状」；不加豁免；实测不低于 4.5 就照实写已达标。2）「R2 按建议先做的项」第 4 行（现第 208 行）改为现状：两个原型名已由 SUB-105（4d0dfde）删去，回退说明补 4d0dfde；第 5 行（现第 209 行）补 R3 现状：夜间底上的 Design System 后缀不再被豁免，回执 80 个豁免节点的底色都是 #ffffff 或 #efeeea。3）Brand 节第 128 行：TMS 后缀写成「浅色 #2c63c8、夜间 #7aa0f5（O-3，SUB-088）」；随后全文搜 #2c63c8，对夜间格成立的句子都带上 #7aa0f5。4）「已知差距」（现第 78 行）加一句：1024 宽下文档页里的构图一样板受文档侧栏挤压，纸面约 406 宽，工具行折行，壳顶栏高到 147；几何门与映射门只量 1440×900（来源 runs/r3/handoff/P1.md 第 79 行）。5）Brand 收起态（现第 131 行一带）加目视项：52 收起栏里收起钮中心 26，标中心 16（在 42 宽的品牌链接里靠起始边），导航图标中心 22，侧栏中心 26，三条中心线不齐；门不量（来源 runs/r3/handoff/P1.md 第 81–84 行）。6）R3 节第 2 行（现第 224 行）补：独立 TopBar 在知识库样板显示 52（文档作用域例外），在构图三显示 68（包默认）；side-nav 一条例外在文档作用域设了包 SideNav 的底色。7）R3 节第 5 行（现第 227 行）补：截成一行的样板顶栏描述没有悬停全文。第 249 行 P18 不由本单改（归 SUB-112）。判据读数：七处与 R3 验收 A §3、B §3–§4、C §3–§4 的事实一致；局部门绿；pnpm scan 对本文件 0 命中。；档位：经济——文档回写，判定不变；第一次返工；局部门（前缀 corepack pnpm@10.12.1 -C <包树>，git 命令与探针除外）：会话 scratch 探针（不进仓）：在包内最近一次 run build 的产物上开浅色与夜间文档页，读 .tcrn-doc-nav__category-count 的计算字色与合成后的底色 ‖ run public-output:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash） ‖ run internal-vocab:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash） ‖ run readme:proof（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash） ‖ run scan（跑完 git -C <包树> checkout -- docs/verification/internal-alpha/no-overclaim-scan.json 还原）；分包：P0（W1，包内第 5 项，整包经济档）；来源：R4-5（R3 验收 A §3 A3-2 (a)(b)、B §3 B3-1、C §3 C3-3、B §4 第 1 条、C §4 第 1 与第 3 条）；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r4/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-112",
+   "kind": "Subtask",
+   "parentId": "work:f5de8fcf90580fcc9b4192f7",
+   "title": "R4 批末再生：样板说明引起的视觉签名重收、回执与映射报告再生、P18 现状",
+   "summary": "P0·R4-6：R4 批末再生：样板说明引起的视觉签名重收、回执与映射报告再生、P18 现状",
+   "body": "改动文件：docs/verification/internal-alpha/**、docs/verification/internal-alpha-hardening-proof.json、docs/verification/internal-alpha-hardening-proof.md、docs/verification/scaffold-proof.json、docs/verification/scaffold-proof.md、docs/verification/readme-public-contract.json、docs/verification/storybook-visual-proof/gplus-map-report.json、docs/verification/storybook-visual-proof/gplus-map-report.md、packages/ui-tokens/fonts/**、docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md；依赖：TCRN-DS-SUB-107、TCRN-DS-SUB-108、TCRN-DS-SUB-109、TCRN-DS-SUB-110、TCRN-DS-SUB-111；判据：顺序做；非视觉检查有红就停下，不写基线，记 problems 交回。0）前提：SUB-107…111 都已在包树提交。1）构建一次，跑 internal-alpha:browser-proof；非视觉检查全绿才继续：axe 0、storyCoverageManifestOk、zh-CN 新漏译 0（覆盖 SUB-107、109、110）、故事高度、clipped、buttonFeedback，门要求的几何检查绿。2）视觉：预期变化只有 navigation-focused-shells-spec 的三个视口（SUB-110）；别的签名有变化就停下，不接受，记问题；三条里有没变的，只接受实际变化的。3）先 git mv docs/verification/internal-alpha/visual-selection-application.json 为 visual-selection-application-r3.json，保留 R3 的 192 条记录（仓内只有 browser-proof 写这个文件，没有读者）。用会话 scratch tmp/r3-P4/gen-selection-r3.mjs 的副本（复制到 tmp/r4-P0/ 再改，只改副本）按当次捕获生成选择：处置 accepted-layout-change，理由写「R4 SUB-110 在知识库样板加一句可见说明（R3 验收 C3-4，方案 A 的条件）；按当前渲染接受签名，不代表目视通过」。带 --update-visual-baseline 应用，两次之间不重建，再复跑 browser-proof：回归 0、新增 0、refused 为空。4）回执：只提交最后一次 browser-proof 后内容有变化的 internal-alpha 回执；再生 hardening、internal-vocab:scan、scaffold、readme 回执，内容变了才提交；fonts-vendor --check 报缺字形时才跑一次 fonts:vendor 并复跑 fonts-proof。no-overclaim-scan.json 一律还原（收口步骤再生，不在本单）；visual-selection-result.json 不入仓，跑完移进会话 scratch 的 trash。5）映射报告：SUB-108 已提交后跑 storybook-visual-proof --write-report，再跑 storybook:visual-proof：23/23 行、redRows []、标签不再写死「八项」，报告不手改。6）owner-acceptance.md 第 249 行 P18：按事实改 R3 的措辞（R3 的基线在 P4 包树——自集成分支 51872c2 切出——上构建并写入；集成树批末 verify 复读回归 0、新增 0），补 R4 的重收条数与理由，并点名优先目视的 29 条（10 个 story，只带底盘与文档壳理由，名单在 runs/r3/handoff/P4.md 第 4 节）。判据读数写进 handoff：重收条目的 story、视口与前后签名 sha256；三次 browser-proof 的非视觉读数；提交的回执清单；映射报告 rowsOk 与 HEAD。；档位：经济——批末再生，判定不变（R3 同类工作 SUB-046 由经济档完成）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>，git 命令与探针除外）：run build ‖ run internal-alpha:contracts ‖ run internal-alpha:browser-proof ‖ exec node scripts/internal-alpha-browser-proof.mjs --update-visual-baseline <selection.json> ‖ run internal-alpha:browser-proof（应用后复跑，不重建） ‖ exec node scripts/internal-alpha-hardening-proof.mjs ‖ run internal-vocab:scan ‖ run scaffold:proof ‖ run readme:proof ‖ exec node scripts/storybook-visual-proof.mjs --write-report ‖ run storybook:visual-proof ‖ run doc-shell:proof ‖ exec node scripts/fonts-vendor.mjs --check ‖ run fonts:vendor（仅当 --check 报 R4 新中文缺字形时） ‖ exec node scripts/fonts-proof.mjs；分包：P0（W1，包内第 6 项，整包经济档）；来源：R4-6（批量原则第 4 条；R3 验收 C3-1 的报告再生、C3-4 的视觉后果、A3-2 (c)；R3M7）；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r4/。"
+  }
+ ]
+}
