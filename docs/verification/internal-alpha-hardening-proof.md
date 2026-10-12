@@ -2,7 +2,7 @@
 
 Route: `route_tcrn_design_system_internal_alpha_hardening_proof_implementation`
 
-Status: failed
+Status: passed
 
 ## Receipts
 
@@ -18,14 +18,14 @@ Status: failed
 
 ## Readback
 
-- Required story count: 65
+- Required story count: 66
 - Removed AOS served-surface standard disposition: removed_from_outward_storybook_contract
 - Design System standard authoring disposition: owner_review_required_for_future_visual_component_admission
 - Design System visual certification readiness: blocked_without_owner_review
 - Component registration disposition: automatic_registration_not_admitted
 - Browser viewports: desktop-1440x900 (1440x900), tablet-1024x768 (1024x768), mobile-390x844 (390x844)
-- Screenshot baseline entries: 307
-- Axe violation count: 12
+- Screenshot baseline entries: 310
+- Axe violation count: 0
 - Dependency/license posture: known_license_groups_requiring_sable_post_implementation_review
 - Route-local DPC review required: true
 

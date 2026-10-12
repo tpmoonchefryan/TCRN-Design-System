@@ -1,5 +1,5 @@
 {
-  "ok": false,
+  "ok": true,
   "route": "route_tcrn_design_system_internal_alpha_hardening_proof_implementation",
   "proofStatus": "repo_local_internal_alpha_evidence",
   "receiptRoot": "docs/verification/internal-alpha",
@@ -31,13 +31,13 @@
       "height": 844
     }
   ],
-  "requiredStoryCount": 65,
-  "screenshotCount": 307,
+  "requiredStoryCount": 66,
+  "screenshotCount": 310,
   "removedAosServedSurfaceStandardDisposition": "removed_from_outward_storybook_contract",
   "designSystemStandardAuthoringDisposition": "owner_review_required_for_future_visual_component_admission",
   "designSystemVisualCertificationReadiness": "blocked_without_owner_review",
   "designSystemComponentRegistrationDisposition": "automatic_registration_not_admitted",
-  "axeViolationCount": 12,
+  "axeViolationCount": 0,
   "dependencyLicensePosture": "known_license_groups_requiring_sable_post_implementation_review",
   "noOverclaim": {
     "github_remote_created": false,
