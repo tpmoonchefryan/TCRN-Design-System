@@ -1,7 +1,7 @@
 {
   "schemaVersion": "tcrn.ds.geometry-measure-proof.v1",
   "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
-  "ok": false,
+  "ok": true,
   "reason": null,
   "thresholds": {
     "clip": {
@@ -41,6 +41,11 @@
     "overlap": {
       "maxOverlaps": 0,
       "minIntersectPx": 1
+    },
+    "shellFrame": {
+      "paperInsetPx": 12,
+      "topBarHeightPx": 52,
+      "tolerancePx": 0.5
     }
   },
   "run": {
@@ -66,7 +71,8 @@
     "icon-sample-project",
     "brand-sample-product",
     "actions-sample-project",
-    "inputs-sample-members"
+    "inputs-sample-members",
+    "composition-three-sample"
   ],
   "selfCheck": {
     "ok": true,
@@ -89,7 +95,8 @@
           "mark": "pass",
           "contrast": "pass",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -100,7 +107,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -118,7 +126,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -129,7 +138,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -147,7 +157,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 1,
@@ -158,7 +169,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -176,7 +188,8 @@
           "mark": "pass",
           "contrast": "pass",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 1,
@@ -187,7 +200,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -205,7 +219,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -216,7 +231,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -234,7 +250,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -245,7 +262,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -263,7 +281,8 @@
           "mark": "pass",
           "contrast": "pass",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -274,7 +293,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -292,7 +312,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -303,7 +324,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -321,7 +343,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -332,7 +355,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -350,7 +374,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -361,7 +386,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -379,7 +405,8 @@
           "mark": "pass",
           "contrast": "pass",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -390,7 +417,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -408,7 +436,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -419,7 +448,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -437,7 +467,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -448,7 +479,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -466,7 +498,8 @@
           "mark": "pass",
           "contrast": "pass",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -477,7 +510,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -495,7 +529,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -506,7 +541,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -524,7 +560,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -535,7 +572,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -553,7 +591,8 @@
           "mark": "pass",
           "contrast": "pass",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -564,7 +603,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -582,7 +622,8 @@
           "mark": "pass",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -593,7 +634,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -611,7 +653,8 @@
           "mark": "fail",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -622,7 +665,8 @@
           "mark": 2,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -640,7 +684,8 @@
           "mark": "fail",
           "contrast": "pass",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -651,7 +696,8 @@
           "mark": 2,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -669,7 +715,8 @@
           "mark": "n/a",
           "contrast": "pass",
           "controlHeight": "n/a",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -680,7 +727,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -698,7 +746,8 @@
           "mark": "n/a",
           "contrast": "fail",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -709,7 +758,8 @@
           "mark": 0,
           "contrast": 13.55,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -727,7 +777,8 @@
           "mark": "n/a",
           "contrast": "fail",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -738,7 +789,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -756,7 +808,8 @@
           "mark": "n/a",
           "contrast": "fail",
           "controlHeight": "n/a",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -767,7 +820,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -785,7 +839,8 @@
           "mark": "pass",
           "contrast": "fail",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -796,7 +851,8 @@
           "mark": 0,
           "contrast": 13.55,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -814,7 +870,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "pass",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -825,7 +882,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -843,7 +901,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "fail",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -854,7 +913,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 2,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -872,7 +932,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "fail",
-          "overlap": "n/a"
+          "overlap": "n/a",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -883,7 +944,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -901,7 +963,8 @@
           "mark": "pass",
           "contrast": "pass",
           "controlHeight": "fail",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -912,7 +975,8 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 2,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -930,7 +994,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "pass"
+          "overlap": "pass",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -941,7 +1006,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 0
+          "overlap": 0,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -959,7 +1025,8 @@
           "mark": "n/a",
           "contrast": "n/a",
           "controlHeight": "n/a",
-          "overlap": "fail"
+          "overlap": "fail",
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -970,7 +1037,8 @@
           "mark": 0,
           "contrast": null,
           "controlHeight": 0,
-          "overlap": 1
+          "overlap": 1,
+          "shellFrame": 0
         },
         "ok": true,
         "problems": []
@@ -988,7 +1056,8 @@
           "mark": "pass",
           "contrast": "pass",
           "controlHeight": "pass",
-          "overlap": "fail"
+          "overlap": "fail",
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -999,7 +1068,132 @@
           "mark": 0,
           "contrast": 0,
           "controlHeight": 0,
-          "overlap": 1
+          "overlap": 1,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-green",
+        "file": "shellFrame.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-red",
+        "file": "shellFrame.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 16
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-paper-flush-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 12
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-top-bar-68-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 16
         },
         "ok": true,
         "problems": []
@@ -1017,7 +1211,8 @@
       "notApplicable": [
         "rail",
         "rowAlign",
-        "controlHeight"
+        "controlHeight",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -1026,7 +1221,8 @@
         "notApplicable": [
           "rail",
           "rowAlign",
-          "controlHeight"
+          "controlHeight",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -1386,6 +1582,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -1400,7 +1607,8 @@
         "rail",
         "rowAlign",
         "mark",
-        "controlHeight"
+        "controlHeight",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -1410,7 +1618,8 @@
           "rail",
           "rowAlign",
           "mark",
-          "controlHeight"
+          "controlHeight",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -1674,6 +1883,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -1688,7 +1908,8 @@
         "rail",
         "rowAlign",
         "mark",
-        "controlHeight"
+        "controlHeight",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -1698,7 +1919,8 @@
           "rail",
           "rowAlign",
           "mark",
-          "controlHeight"
+          "controlHeight",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -1854,6 +2076,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -1866,7 +2099,8 @@
       "failed": [],
       "notApplicable": [
         "rail",
-        "mark"
+        "mark",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -1874,7 +2108,8 @@
         "failed": [],
         "notApplicable": [
           "rail",
-          "mark"
+          "mark",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -2666,6 +2901,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -2679,7 +2925,8 @@
       "notApplicable": [
         "rail",
         "rowAlign",
-        "mark"
+        "mark",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -2688,7 +2935,8 @@
         "notApplicable": [
           "rail",
           "rowAlign",
-          "mark"
+          "mark",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -3036,6 +3284,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -3044,20 +3303,16 @@
       "storyId": "typography-sample-billing",
       "theme": "light",
       "route": "/components-gplus-samples.html#typography-sample-billing",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "contrast",
           "controlHeight"
@@ -3092,42 +3347,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "ty-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "ty-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "pass",
@@ -3179,6 +3407,17 @@
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
             },
             "violationCount": 0,
             "violations": []
@@ -3190,10 +3429,8 @@
       "storyId": "icon-sample-project",
       "theme": "light",
       "route": "/components-gplus-samples.html#icon-sample-project",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "mark",
         "contrast",
@@ -3201,10 +3438,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "mark",
           "contrast",
@@ -3240,42 +3475,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "ic-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "ic-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "pass",
@@ -3327,6 +3535,17 @@
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
             },
             "violationCount": 0,
             "violations": []
@@ -3338,10 +3557,8 @@
       "storyId": "brand-sample-product",
       "theme": "light",
       "route": "/components-gplus-samples.html#brand-sample-product",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "mark",
         "contrast",
@@ -3349,10 +3566,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "mark",
           "contrast",
@@ -3388,42 +3603,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "br-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "br-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "pass",
@@ -3475,6 +3663,17 @@
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
             },
             "violationCount": 0,
             "violations": []
@@ -3486,10 +3685,8 @@
       "storyId": "actions-sample-project",
       "theme": "light",
       "route": "/components-gplus-samples.html#actions-sample-project",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "mark",
         "contrast",
@@ -3497,10 +3694,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "mark",
           "contrast",
@@ -3536,42 +3731,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "ac-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "ac-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "pass",
@@ -3626,6 +3794,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -3634,10 +3813,8 @@
       "storyId": "inputs-sample-members",
       "theme": "light",
       "route": "/components-gplus-samples.html#inputs-sample-members",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rowAlign",
         "mark",
@@ -3646,10 +3823,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rowAlign",
           "mark",
@@ -3686,42 +3861,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "in-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "in-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "n/a",
@@ -3773,6 +3921,149 @@
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "composition-three-sample",
+      "theme": "light",
+      "route": "/components-gplus-samples.html#composition-three-sample",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "mark",
+        "contrast",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "mark",
+          "contrast",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
             },
             "violationCount": 0,
             "violations": []
@@ -3789,7 +4080,8 @@
       "notApplicable": [
         "rail",
         "rowAlign",
-        "controlHeight"
+        "controlHeight",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -3798,7 +4090,8 @@
         "notApplicable": [
           "rail",
           "rowAlign",
-          "controlHeight"
+          "controlHeight",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -4158,6 +4451,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -4172,7 +4476,8 @@
         "rail",
         "rowAlign",
         "mark",
-        "controlHeight"
+        "controlHeight",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -4182,7 +4487,8 @@
           "rail",
           "rowAlign",
           "mark",
-          "controlHeight"
+          "controlHeight",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -4446,6 +4752,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -4460,7 +4777,8 @@
         "rail",
         "rowAlign",
         "mark",
-        "controlHeight"
+        "controlHeight",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -4470,7 +4788,8 @@
           "rail",
           "rowAlign",
           "mark",
-          "controlHeight"
+          "controlHeight",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -4626,6 +4945,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -4638,7 +4968,8 @@
       "failed": [],
       "notApplicable": [
         "rail",
-        "mark"
+        "mark",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -4646,7 +4977,8 @@
         "failed": [],
         "notApplicable": [
           "rail",
-          "mark"
+          "mark",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -5438,6 +5770,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -5451,7 +5794,8 @@
       "notApplicable": [
         "rail",
         "rowAlign",
-        "mark"
+        "mark",
+        "shellFrame"
       ],
       "notApplicableRequired": [],
       "verdict": {
@@ -5460,7 +5804,8 @@
         "notApplicable": [
           "rail",
           "rowAlign",
-          "mark"
+          "mark",
+          "shellFrame"
         ],
         "checks": {
           "clip": {
@@ -5808,6 +6153,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -5816,20 +6172,16 @@
       "storyId": "typography-sample-billing",
       "theme": "dark",
       "route": "/components-gplus-samples.html#typography-sample-billing",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "contrast",
           "controlHeight"
@@ -5864,42 +6216,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "ty-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "ty-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "pass",
@@ -5951,6 +6276,17 @@
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
             },
             "violationCount": 0,
             "violations": []
@@ -5962,10 +6298,8 @@
       "storyId": "icon-sample-project",
       "theme": "dark",
       "route": "/components-gplus-samples.html#icon-sample-project",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "mark",
         "contrast",
@@ -5973,10 +6307,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "mark",
           "contrast",
@@ -6012,42 +6344,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "ic-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "ic-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "pass",
@@ -6099,6 +6404,17 @@
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
             },
             "violationCount": 0,
             "violations": []
@@ -6110,10 +6426,8 @@
       "storyId": "brand-sample-product",
       "theme": "dark",
       "route": "/components-gplus-samples.html#brand-sample-product",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "mark",
         "contrast",
@@ -6121,10 +6435,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "mark",
           "contrast",
@@ -6160,42 +6472,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "br-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "br-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "pass",
@@ -6247,6 +6532,17 @@
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
             },
             "violationCount": 0,
             "violations": []
@@ -6258,10 +6554,8 @@
       "storyId": "actions-sample-project",
       "theme": "dark",
       "route": "/components-gplus-samples.html#actions-sample-project",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "mark",
         "contrast",
@@ -6269,10 +6563,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "mark",
           "contrast",
@@ -6308,42 +6600,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "ac-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "ac-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "pass",
@@ -6398,6 +6663,17 @@
             },
             "violationCount": 0,
             "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
           }
         }
       }
@@ -6406,10 +6682,8 @@
       "storyId": "inputs-sample-members",
       "theme": "dark",
       "route": "/components-gplus-samples.html#inputs-sample-members",
-      "ok": false,
-      "failed": [
-        "rail"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rowAlign",
         "mark",
@@ -6418,10 +6692,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "rail"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rowAlign",
           "mark",
@@ -6458,42 +6730,15 @@
             "violations": []
           },
           "rail": {
-            "status": "fail",
-            "value": 33,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "guideLeftPx": 16,
               "textLeftPx": 48,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "shell": "in-l",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              },
-              {
-                "shell": "in-n",
-                "guideLefts": [
-                  16,
-                  49
-                ],
-                "textLefts": [
-                  48,
-                  77
-                ],
-                "maxDeviationPx": 33,
-                "missingHooks": false
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "rowAlign": {
             "status": "n/a",
@@ -6545,6 +6790,149 @@
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "composition-three-sample",
+      "theme": "dark",
+      "route": "/components-gplus-samples.html#composition-three-sample",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "mark",
+        "contrast",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "mark",
+          "contrast",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
             },
             "violationCount": 0,
             "violations": []
@@ -6592,6 +6980,26 @@
       "theme": "light",
       "status": "fail",
       "value": 8.21,
+      "killed": true
+    },
+    {
+      "id": "shell-paper-inset-zero",
+      "storyId": "icon-sample-project",
+      "check": "shellFrame",
+      "source": "129-GWT3 paper inset",
+      "theme": "light",
+      "status": "fail",
+      "value": 12,
+      "killed": true
+    },
+    {
+      "id": "shell-top-bar-68",
+      "storyId": "icon-sample-project",
+      "check": "shellFrame",
+      "source": "131-GWT4 top bar",
+      "theme": "light",
+      "status": "fail",
+      "value": 16,
       "killed": true
     }
   ],
@@ -6663,8 +7071,8 @@
       "worstValue": 3
     },
     "rail": {
-      "status": "fail",
-      "worstValue": 33
+      "status": "pass",
+      "worstValue": 0
     },
     "rowAlign": {
       "status": "pass",
@@ -6683,6 +7091,10 @@
       "worstValue": 0
     },
     "overlap": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "shellFrame": {
       "status": "pass",
       "worstValue": 0
     }
