@@ -64,7 +64,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
   "owner-quality-product-shell": {
     // 14943 -> 16387 (INC-399 R44): record rows stack at their own compact boundary and row badges wrap in every shell instance.
     // 16387 -> 17029 (TCRN-DS-INIT-015 R2, SUB-075): the full ProductShell instances take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0); not decomposed per instance.
-    recordedHeightPx: 17029,
+    // 17029 -> 16565 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the full ProductShell instances take composition one's geometry, top bar 52 and sidebar 220 (SUB-090), and the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101).
+    recordedHeightPx: 16565,
     owedTo: "beyond-INIT-008",
     note: "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
   },
@@ -90,7 +91,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // INC-399: the registered static MultiSelect bridge adds its public utility row.
     // 3189 -> 3233 (INC-399 R46 I20): the static clipboard bridge adds its public utility row.
     // 3233 -> 3356 (TCRN-DS-INIT-015 R2, SUB-075): ButtonGroup joins the public component roster (SUB-017, 125 -> 126 names) and the roster tables take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0).
-    recordedHeightPx: 3356,
+    // 3356 -> 3206 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101), and the deferred prototype roster drops the dense operations and compact tool shell rows (SUB-105).
+    recordedHeightPx: 3206,
     owedTo: "beyond-INIT-008",
     note: "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
   },
@@ -110,31 +112,36 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 12275 -> 12417 (INC-399 R46): long consumer-verification references wrap inside their panel, so its tables keep the panel width and scroll instead of being cut off.
     // 12417 -> 12973 (INC-399 R46 I20): the clipboard copy contract's value boundary and static migration are read back beside the overlay migration.
     // 12973 -> 13817 (TCRN-DS-INIT-015 R2, SUB-075): the covered-section and required-chapter readbacks list the ten G+ family matrix and sample stories (65 stories in 23 categories, was 55 in 21), and the tables take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0).
-    recordedHeightPx: 13817,
+    // 13817 -> 13173 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101), so the readback tables wrap less; the covered-story lists gain composition three (SUB-092).
+    recordedHeightPx: 13173,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },
   "color-palette": {
     // 4659 -> 5979 (TCRN-DS-INIT-015 R2, SUB-075): the color token index renders every registry color token; SUB-001 and SUB-009 added the 34 G+ color tokens, so it now shows 73 swatches instead of 39.
-    recordedHeightPx: 5979,
+    // 5979 -> 5779 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101); the 73 swatches are unchanged.
+    recordedHeightPx: 5779,
     owedTo: "beyond-INIT-008",
-    note: "39-token color specimen gallery; a catalogue split is future work — gated debt"
+    note: "73-token color specimen gallery; a catalogue split is future work — gated debt"
   },
   "foundation-visual-standards": {
     // 3954 -> 4020 (INC-399 R44): the registry and doc-shell oracle KeyValueLists use the package label-above-value geometry.
     // 4020 -> 4320 (TCRN-DS-INIT-015 R2, SUB-075): the retired exact-PNG disposition names the current storybook-visual-proof gate (SUB-086), the doc-shell oracle search metrics follow G+ (SUB-064), and the registry tables take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0).
-    recordedHeightPx: 4320,
+    // 4320 -> 4096 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101); the doc-shell oracle readback shows 220 and 52.
+    recordedHeightPx: 4096,
     owedTo: "beyond-INIT-008",
     note: "foundation visual-standards catalogue; gated debt"
   },
   "text-styles": {
-    recordedHeightPx: 2409,
+    // 2409 -> 2359 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101).
+    recordedHeightPx: 2359,
     owedTo: "beyond-INIT-008",
     note: "type-scale specimen catalogue; gated debt"
   },
   "icons-motion": {
     // 2076 -> 2222 (TCRN-DS-INIT-015 R2, SUB-075): the icon sample grid renders the 37-icon contract roster, up from 28 (SUB-014).
-    recordedHeightPx: 2222,
+    // 2222 -> 2102 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101).
+    recordedHeightPx: 2102,
     owedTo: "beyond-INIT-008",
     note: "icon + motion specimen catalogue (incl. the S067 motion-slowdown note); gated debt"
   }

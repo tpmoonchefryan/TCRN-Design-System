@@ -15,8 +15,9 @@ changed and what to do, not where a consumer uses each item. Each consumer runs
 the checks in its own tree. Every item names its source: a commit on the INIT-015
 integration branch, the Subtask key, and the package handoff in
 `docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/` (first round, handoffs
-named W1-A and so on) or `runs/r2/handoff/` (second round, handoffs named P1 and
-so on, marked "r2" below).
+named W1-A and so on), `runs/r2/handoff/` (second round, handoffs named P1 and
+so on, marked "r2" below) or `runs/r3/handoff/` (third round, handoffs named P0
+and so on, marked "r3" below).
 
 ## By consumer
 
@@ -43,6 +44,11 @@ so on, marked "r2" below).
    press overrides on them (M15).
 10. If AOS consumed the unreleased `main` with `@tcrn/ui-domain`, import from
     `@tcrn/ui-react` instead (M16).
+11. If AOS renders `ProductShell`, re-baseline it for composition one's desktop
+    geometry; a screen that needs another sidebar width sets
+    `--tcrn-product-shell-sidebar-width` on the shell (M18).
+12. If AOS reads `componentLibraryDeferredPrototypeNames`, expect
+    `KnowledgeBaseShellDemo` alone (M19).
 
 ### TCRN TMS
 
@@ -58,11 +64,14 @@ above; in either case:
    SVG file (M8).
 4. The TMS taglines come from the package: zh-CN 艺人管理系统 (was 人才管理系统),
    en Talent Management System, ko 탤런트 관리 시스템 (M8). The wordmark suffix reads
-   `--tcrn-brand-suffix-tms` (M9).
+   `--tcrn-brand-suffix-tms`: #2c63c8 in the light theme, #7aa0f5 in the dark
+   theme (M9).
 5. Take icons from the roster, not from a third-party set (M6, M7).
 6. Use `Text` props, the link classes (`tcrn-link`, with `tcrn-link--quiet` as its
    modifier), `Button size="lg"`, `ButtonGroup` and the pair-driven inputs instead
    of local variants (M10 to M14).
+7. A `ProductShell` takes composition one's desktop geometry from the shell tokens
+   (M18).
 
 ### Einzbern portal
 
@@ -86,6 +95,8 @@ above; in either case:
    reports `4.0.0`, with a new `tokensDigest`, only after the next docs deployment,
    which is an Owner decision. Until then the hosted file keeps the version it
    reports today (M17).
+7. If the portal renders `ProductShell`, re-baseline it for composition one's
+   desktop geometry (M18).
 
 ## Breaking changes in detail
 
@@ -275,12 +286,18 @@ D5.
 
 Change: the gradient suffix is removed. TCRN and a lockup without `productId` are
 set in ink; the TMS suffix reads `--tcrn-brand-suffix-tms` (#2c63c8) and the Design
-System suffix `--tcrn-brand-suffix-design-system` (#6577f3). Both values are the
-same in both themes until the Owner rules on night values (problem P15).
+System suffix `--tcrn-brand-suffix-design-system` (#6577f3). In the dark theme the
+TMS suffix is #7aa0f5, the bright colour of the TMS mark (a design-session ruling
+of 2026-10-11 on problem P15, open to Owner correction): `--tcrn-brand-suffix-tms`
+is declared in the light and dark theme blocks of `tokens.css`, no longer in the
+theme-independent block. The Design System suffix keeps #6577f3 in both themes.
 
-Do: remove local gradient or suffix colour overrides; update colour assertions.
+Do: remove local gradient or suffix colour overrides; update colour assertions,
+including night assertions on the TMS suffix and any parse of `tokens.css` that
+expects `--tcrn-brand-suffix-tms` in the theme-independent block.
 
-Source: ccb7bea (TCRN-DS-SUB-022); handoffs W2-A and W2-F; minutes D2.
+Source: ccb7bea (TCRN-DS-SUB-022), 52faa47 (TCRN-DS-SUB-088); handoffs W2-A,
+W2-F and P1 (r3); minutes D2.
 
 ### M10 · `Text` props, `Heading` titles, link states
 
@@ -363,8 +380,10 @@ the whole field or recolours its outline, and `.tcrn-field__error` reads
 `--tcrn-color-bad`; the forced-colours outline of a field in error stays. The
 search shortcut text is ink-2 (was ink-3). The `MultiSelect` trigger has the
 `Select` end, `padding-inline-end: 30px` with the caret placed like the `Select`
-chevron, and `.tcrn-multi-select-dropdown` is now a flex container. Dropdown
-options declare their own pair; hover and selection only switch it.
+chevron, and `.tcrn-multi-select-dropdown` is now a flex column
+(`flex-direction: column`, `align-items: stretch`): a static expanded list sits
+directly below the trigger at the trigger's width. Dropdown options declare their
+own pair; hover and selection only switch it.
 
 Do: remove `border-color` overrides and mark errors with `aria-invalid="true"`,
 which selects the invalid pair; point direct-child selectors (`> .tcrn-select`) at the wrappers;
@@ -374,8 +393,8 @@ outline, the shortcut colour and the `MultiSelect` trigger's end padding.
 
 Source: 697d4eb (TCRN-DS-SUB-019), 0daff9d (TCRN-DS-SUB-020), 715533d
 (TCRN-DS-SUB-021), 7213a27 (TCRN-DS-SUB-058), 696f516 (TCRN-DS-SUB-059), fe6a4bb
-(TCRN-DS-SUB-060), 5e799a6 (TCRN-DS-SUB-061), 48399ae (TCRN-DS-SUB-062); handoffs
-W2-E, P2 (r2) and P4 (r2); minutes D2.
+(TCRN-DS-SUB-060), 5e799a6 (TCRN-DS-SUB-061), 48399ae (TCRN-DS-SUB-062), 1a10b84
+(TCRN-DS-SUB-091); handoffs W2-E, P2 (r2), P4 (r2) and P5 (r3); minutes D2.
 
 ### M15 · Product shell toggles
 
@@ -413,6 +432,46 @@ Do: nothing until the deployment. After it, the version and digest the portal
 reads will be 4.0.0 and the new digest.
 
 Source: e8d0317; `apps/storybook/src/build/design-authority.ts`.
+
+### M18 · `ProductShell` takes composition one's desktop geometry
+
+Change: four theme-independent tokens are new: `--tcrn-shell-sidebar-width`
+(220px), `--tcrn-shell-sidebar-width-collapsed` (52px), `--tcrn-shell-topbar-height`
+(52px) and `--tcrn-radius-paper` (14px). `ProductShell` reads them (a
+design-session ruling of 2026-10-11, open to Owner correction): the sidebar is
+220px (was 280) and 52px collapsed (was 92); the shell's top bar has a 52px
+minimum height (was 68); the workspace is a sheet 12px from the shell's top, right
+and bottom edges, with the 14px radius, the s1 shadow and the panel fill; the
+sidebar sits on the shell's canvas colour with no right border; navigation items
+and group titles keep a 16px lead column with the text at 48px.
+`--tcrn-product-shell-sidebar-width` stays the shell's local variable, now
+defaulting to `--tcrn-shell-sidebar-width` (collapsed:
+`--tcrn-shell-sidebar-width-collapsed`). The lead column, the collapsed padding
+and the sheet apply under `@media not all and (max-width: 760px)`; the mobile
+block (max-width: 760px) is unchanged, while the canvas-coloured sidebar and the
+52px top bar minimum apply at every width. The standalone `TopBar` keeps its 68px
+minimum height. The NavItem markup, API and state rules are unchanged.
+
+Do: re-baseline screenshots and geometry assertions of product shell screens
+(sidebar and collapsed widths, top bar height, the workspace's inset, radius and
+shadow, the sidebar's background and right border). A screen that needs another
+sidebar width sets `--tcrn-product-shell-sidebar-width` on the shell. The Storybook
+composition-one samples no longer export `gplusSampleSidebarWidth`; it was never
+part of the packages.
+
+Source: 907de34 (TCRN-DS-SUB-090), 772a464; handoff P1 (r3); the storybook map's
+DIFF-1 and DIFF-3.
+
+### M19 · The deferred prototype roster
+
+Change: `componentLibraryDeferredPrototypeNames` lists `KnowledgeBaseShellDemo`
+only; `DenseOperationsShellDemo` and `CompactToolShellDemo` left it, and the
+`ComponentLibraryDeferredPrototypeName` type with it, after their prototypes were
+retired from the navigation shell stories.
+
+Do: remove reads of the two retired names.
+
+Source: 4d0dfde (TCRN-DS-SUB-105), 95f0e09 (TCRN-DS-SUB-066); handoff P3 (r3).
 
 ## Deprecated token names
 
@@ -489,14 +548,20 @@ These are recorded in `docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.m
 Until they are ruled on, 4.0.0 behaves as described above.
 
 - Composition-one shell geometry (sidebar 220, collapsed 52, top bar 52, paper
-  inset 12) against `ProductShell` today (sidebar 280, collapsed 92): problem P1,
-  storybook map DIFF-1 to DIFF-3.
-- Night values of the TMS and Design System suffix colours: problem P15.
-- Sizes of the shell theme and side-navigation toggles (36 and 38px): M15.
+  inset 12, paper radius 14): implemented in `ProductShell` with four new shell
+  tokens under a design-session ruling of 2026-10-11 that the Owner can correct
+  (M18; problem P1, storybook map DIFF-1 to DIFF-3). A correction would withdraw
+  the four tokens and the new geometry.
+- Night values of the suffix colours: under the same ruling the TMS suffix is
+  #7aa0f5 by night and the Design System suffix keeps one value (M9; problem
+  P15). A correction would restore the single TMS value.
+- Sizes of the shell theme and side-navigation toggles (36 and 38px): kept by
+  default (M15); the 52px collapsed rail holds the 38px toggle.
 - The `.tcrn-icon` base rule in the package, a design-session ruling open to Owner
   correction: M7.
 - The four type declarations that keep a literal (inline numeral 16px, large
-  numeral 44px on 48px, mono text 11.5px): new tokens or existing steps, M3.
+  numeral 44px on 48px, mono text 11.5px): new tokens or existing steps, M3; by
+  default no token is added.
 - Second-round items done as recommended and open to Owner correction: the
   read-only focus ring against the board's state order, the removed error-field
   wash and the shortcut in ink-2 against the board's ink-3 (M14); the

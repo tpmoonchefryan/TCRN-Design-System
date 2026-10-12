@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "scannedFiles": 604,
+  "scannedFiles": 643,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
     {
@@ -45,6 +45,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-component-family-index.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-composition-three-sample.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -460,6 +464,10 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-composition-three-sample.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-contribution-model.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -865,6 +873,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-component-family-index.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-composition-three-sample.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {

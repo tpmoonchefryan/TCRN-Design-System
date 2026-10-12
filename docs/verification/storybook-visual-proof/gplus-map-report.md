@@ -2,85 +2,44 @@
 
 由 `node scripts/storybook-visual-proof.mjs --write-report` 生成，勿手改。映射见 `docs/design/gplus-2026-10/storybook-map.md`；同目录其余文件是已退役的旧像素基线，只作历史保留。
 
-- 生成时间（UTC）：2026-10-11T06:51:09.416Z
-- HEAD：a467b11f57a3a1f6a4eee2770a4dce6cc9a23752
-- 结论：未通过
+- 生成时间（UTC）：2026-10-12T22:00:57.399Z
+- HEAD：e58937deca5c7c60e0258c16bd09f8bf00292120
+- 结论：通过
 - 范围：kind matrix / sample；主题 light / dark；语言 en；视口 1440×900
-- 阈值：scripts/geometry-measure-proof.mjs THRESHOLDS（八项测量 clip、singleLine、shadowBlur、rail、rowAlign、mark、contrast、controlHeight，另有 overlap）
-- 映射：22 行（本次范围 22 行），无 story 25 条，差异 9 条（待 Owner 裁定：DIFF-1、DIFF-2、DIFF-3、DIFF-8）；结构问题 0 条
+- 阈值：scripts/geometry-measure-proof.mjs THRESHOLDS（八项测量 clip、singleLine、shadowBlur、rail、rowAlign、mark、contrast、controlHeight、shellFrame，另有 overlap）
+- 映射：23 行（本次范围 23 行），无 story 24 条，差异 10 条（待 Owner 裁定：无）；结构问题 0 条
 - 板与分段覆盖：齐（板 10 块；缺板 0，缺分段 0，多余分段 0）
-- story 清单对账：一致（映射引用 10 个，清单 10 个）
+- story 清单对账：一致（映射引用 11 个，清单 11 个）
 
 ## 逐行结果
 
 每格是 `浅色 / 夜间` 的状态；pass 通过，FAIL 不通过，n/a 无可测对象（requiredChecks 里的项 n/a 也算不通过）。
 
-| 行 | 板 · 分段 | story | clip | 1line | blur | rail | row | mark | contrast | ctlH | overlap | 格 | 结论 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| typography.A | V2-B1-Typography · A | typography-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | pass / pass | pass / pass | n/a / n/a | pass / pass | — | 通过 |
-| typography.B | V2-B1-Typography · B | typography-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | pass / pass | pass / pass | n/a / n/a | pass / pass | 44/44 / 44/44 | 通过 |
-| typography.D | V2-B1-Typography · D | typography-sample-billing | pass / pass | pass / pass | pass / pass | FAIL / FAIL | pass / pass | pass / pass | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| icon.A | V2-B1-Icon · A | icon-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | — | 通过 |
-| icon.B | V2-B1-Icon · B | icon-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | 28/28 / 28/28 | 通过 |
-| icon.D | V2-B1-Icon · D | icon-sample-project | pass / pass | pass / pass | pass / pass | FAIL / FAIL | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| brand.A | V2-B1-Brand · A | brand-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | — | 通过 |
-| brand.B | V2-B1-Brand · B | brand-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | 10/10 / 10/10 | 通过 |
-| brand.D | V2-B1-Brand · D | brand-sample-product | pass / pass | pass / pass | pass / pass | FAIL / FAIL | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| actions.A | V2-B1-Actions · A | actions-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | pass / pass | n/a / n/a | pass / pass | pass / pass | pass / pass | — | 通过 |
-| actions.B | V2-B1-Actions · B | actions-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | pass / pass | n/a / n/a | pass / pass | pass / pass | pass / pass | 116/116 / 116/116 | 通过 |
-| actions.D | V2-B1-Actions · D | actions-sample-project | pass / pass | pass / pass | pass / pass | FAIL / FAIL | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| inputs.A | V2-B1-Inputs · A | inputs-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | pass / pass | — | 通过 |
-| inputs.B | V2-B1-Inputs · B | inputs-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | pass / pass | 42/42 / 42/42 | 通过 |
-| inputs.D | V2-B1-Inputs · D | inputs-sample-members | pass / pass | pass / pass | pass / pass | FAIL / FAIL | n/a / n/a | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| compositions.1.typography | V2-GPlus-Compositions · 构图一 | typography-sample-billing | pass / pass | pass / pass | pass / pass | FAIL / FAIL | pass / pass | pass / pass | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| compositions.1.icon | V2-GPlus-Compositions · 构图一 | icon-sample-project | pass / pass | pass / pass | pass / pass | FAIL / FAIL | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| compositions.1.brand | V2-GPlus-Compositions · 构图一 | brand-sample-product | pass / pass | pass / pass | pass / pass | FAIL / FAIL | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| compositions.1.actions | V2-GPlus-Compositions · 构图一 | actions-sample-project | pass / pass | pass / pass | pass / pass | FAIL / FAIL | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| compositions.1.inputs | V2-GPlus-Compositions · 构图一 | inputs-sample-members | pass / pass | pass / pass | pass / pass | FAIL / FAIL | n/a / n/a | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | — | 不通过 |
-| logos.A-E | V2-B2-Logos-Draft · A–E | brand-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | — | 通过 |
-| logos.I | V2-B2-Logos-Draft · I | brand-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | — | 通过 |
-
-## 不通过的行与原因
-
-### typography.D（typography-sample-billing）
-
-- 原因：light:rail；dark:rail
-
-### icon.D（icon-sample-project）
-
-- 原因：light:rail；dark:rail
-
-### brand.D（brand-sample-product）
-
-- 原因：light:rail；dark:rail
-
-### actions.D（actions-sample-project）
-
-- 原因：light:rail；dark:rail
-
-### inputs.D（inputs-sample-members）
-
-- 原因：light:rail；dark:rail
-
-### compositions.1.typography（typography-sample-billing）
-
-- 原因：light:rail；dark:rail
-
-### compositions.1.icon（icon-sample-project）
-
-- 原因：light:rail；dark:rail
-
-### compositions.1.brand（brand-sample-product）
-
-- 原因：light:rail；dark:rail
-
-### compositions.1.actions（actions-sample-project）
-
-- 原因：light:rail；dark:rail
-
-### compositions.1.inputs（inputs-sample-members）
-
-- 原因：light:rail；dark:rail
+| 行 | 板 · 分段 | story | clip | 1line | blur | rail | row | mark | contrast | ctlH | overlap | frame | 格 | 结论 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| typography.A | V2-B1-Typography · A | typography-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | pass / pass | pass / pass | n/a / n/a | pass / pass | n/a / n/a | — | 通过 |
+| typography.B | V2-B1-Typography · B | typography-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | pass / pass | pass / pass | n/a / n/a | pass / pass | n/a / n/a | 44/44 / 44/44 | 通过 |
+| typography.D | V2-B1-Typography · D | typography-sample-billing | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| icon.A | V2-B1-Icon · A | icon-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | n/a / n/a | — | 通过 |
+| icon.B | V2-B1-Icon · B | icon-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | n/a / n/a | 28/28 / 28/28 | 通过 |
+| icon.D | V2-B1-Icon · D | icon-sample-project | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| brand.A | V2-B1-Brand · A | brand-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | n/a / n/a | — | 通过 |
+| brand.B | V2-B1-Brand · B | brand-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | n/a / n/a | 10/10 / 10/10 | 通过 |
+| brand.D | V2-B1-Brand · D | brand-sample-product | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| actions.A | V2-B1-Actions · A | actions-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | pass / pass | n/a / n/a | pass / pass | pass / pass | pass / pass | n/a / n/a | — | 通过 |
+| actions.B | V2-B1-Actions · B | actions-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | pass / pass | n/a / n/a | pass / pass | pass / pass | pass / pass | n/a / n/a | 116/116 / 116/116 | 通过 |
+| actions.D | V2-B1-Actions · D | actions-sample-project | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| inputs.A | V2-B1-Inputs · A | inputs-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | pass / pass | n/a / n/a | — | 通过 |
+| inputs.B | V2-B1-Inputs · B | inputs-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | pass / pass | n/a / n/a | 42/42 / 42/42 | 通过 |
+| inputs.D | V2-B1-Inputs · D | inputs-sample-members | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| compositions.1.typography | V2-GPlus-Compositions · 构图一 | typography-sample-billing | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| compositions.1.icon | V2-GPlus-Compositions · 构图一 | icon-sample-project | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| compositions.1.brand | V2-GPlus-Compositions · 构图一 | brand-sample-product | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| compositions.1.actions | V2-GPlus-Compositions · 构图一 | actions-sample-project | pass / pass | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| compositions.1.inputs | V2-GPlus-Compositions · 构图一 | inputs-sample-members | pass / pass | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | pass / pass | — | 通过 |
+| compositions.3 | V2-GPlus-Compositions · 构图三 | composition-three-sample | pass / pass | pass / pass | pass / pass | n/a / n/a | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | — | 通过 |
+| logos.A-E | V2-B2-Logos-Draft · A–E | brand-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | n/a / n/a | — | 通过 |
+| logos.I | V2-B2-Logos-Draft · I | brand-matrix | pass / pass | pass / pass | pass / pass | n/a / n/a | n/a / n/a | n/a / n/a | pass / pass | n/a / n/a | pass / pass | n/a / n/a | — | 通过 |
 
 ## 变异
 
@@ -95,4 +54,5 @@
 | contrast-brand-wordmark-greyed | brand-matrix | contrast | light | 判红 |
 | control-height-actions-primary-34 | actions-matrix | controlHeight | light | 判红 |
 | overlap-brand-logo-row | brand-matrix | overlap | light | 判红 |
+| shell-frame-sample-paper-flush | actions-sample-project | shellFrame | light | 判红 |
 

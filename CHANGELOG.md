@@ -9,10 +9,11 @@ published and not deployed; each of those, like the Owner's visual acceptance, i
 separate Owner decision. The upgrade steps for each consumer are in
 `docs/migration-4.0.md`.
 
-Breaking: token names and values, the rendered output of the first five families,
-and three public APIs change (the icon roster and `IconProps`, the product logo
-registry, `ClipboardCopyButton`), and `lucide-react` leaves `@tcrn/ui-react`. The
-three packages move to 4.0.0 together.
+Breaking: token names and values, the rendered output of the first five families
+and of `ProductShell`, and four public APIs change (the icon roster and
+`IconProps`, the product logo registry, `ClipboardCopyButton`, the deferred
+prototype roster `componentLibraryDeferredPrototypeNames`), and `lucide-react`
+leaves `@tcrn/ui-react`. The three packages move to 4.0.0 together.
 
 **The G+ chassis.** `@tcrn/ui-tokens` takes its G+ values from the design contract
 in `docs/design/gplus-2026-10/contract/`, generated into
@@ -127,7 +128,9 @@ allow-list admits OFL-1.1 for these five packages only, and the packed
   is ink-2 (was ink-3) and reaches 4.5:1 on the night wash. The `MultiSelect`
   trigger keeps the `Select` end, 30px of end padding with the caret where the
   `Select` chevron sits, and `.tcrn-multi-select-dropdown` is now a flex
-  container; its options declare their own pair, and hover and selection only
+  column (`flex-direction: column`, `align-items: stretch`), so the static
+  expanded list sits directly below the trigger at the trigger's width instead
+  of beside it; its options declare their own pair, and hover and selection only
   switch it.
 
 **Four product marks.** `TcrnBrandMark` takes `productId` (`tms`, `einzbern`,
@@ -144,22 +147,62 @@ engine; Mana Orchestrate: 项目记忆助手, Project memory assistant; Design S
 Einzbern and Mana Orchestrate are whole names in the serif with the byline "by
 TCRN". The gradient suffix is gone: TCRN is set in ink, and the TMS and Design
 System suffixes read `--tcrn-brand-suffix-tms` and
-`--tcrn-brand-suffix-design-system`. The definitions of `--tcrn-brand-accent-tms`,
+`--tcrn-brand-suffix-design-system`. By night the TMS suffix is #7aa0f5, the bright
+colour of the TMS mark (#2c63c8 by day; a design-session ruling of 2026-10-11, open
+to Owner correction), so `--tcrn-brand-suffix-tms` moves from the
+theme-independent block into the two theme blocks; the Design System suffix keeps
+#6577f3 in both themes. The definitions of `--tcrn-brand-accent-tms`,
 `--tcrn-brand-accent-workflow`, `--tcrn-brand-accent-design-system-1` to `-4` and
 `--tcrn-color-brand-secondary-readable` are removed. AOS keeps its entry, its
 accent and the mother mark.
+
+**Composition one in the product shell.** `ProductShell` takes the desktop
+geometry of the canvas's composition one (a design-session ruling of 2026-10-11,
+open to Owner correction). The sidebar is 220px wide (was 280) and 52px collapsed
+(was 92); the shell's top bar is at least 52px high (was 68); the workspace is a
+sheet 12px from the shell's top, right and bottom edges, with a 14px radius, the
+s1 shadow and the panel fill; the sidebar sits on the shell's canvas colour with
+no right border; navigation items and group titles keep a 16px lead column, with
+the text starting at 48px. The values come from four new theme-independent
+tokens: `--tcrn-shell-sidebar-width` (220px), `--tcrn-shell-sidebar-width-collapsed`
+(52px), `--tcrn-shell-topbar-height` (52px) and `--tcrn-radius-paper` (14px).
+`--tcrn-product-shell-sidebar-width` stays the shell's local variable and defaults
+to the new token, so a consumer can still set its own width on the shell. The lead
+column, the collapsed padding and the sheet apply outside the mobile layout only
+(`@media not all and (max-width: 760px)`); the mobile block itself is unchanged,
+while the canvas-coloured sidebar and the 52px top bar minimum apply at every
+width. The standalone `TopBar` keeps its 68px minimum height. The 52px collapsed
+rail still holds the 38px collapse toggle.
 
 **Storybook renders only the package.** The docs layer no longer carries component
 CSS of its own, and its scaffolding uses the `tcrn-doc-` prefix. Both tracks load
 the bundled fonts. Each family has a matrix story and a sample story built from the
 contract data (`typography-matrix` through `inputs-sample-members`), and
+composition three has a sample story built from public package components only
+(`composition-three-sample`, Storybook id `compositions--composition-three`): no
+sidebar, a top bar with the navigation, and content centred at most 1040px wide.
+Its top bar differs from the board: the standalone `TopBar` is 68px high against
+the board's 56, the navigation follows the search because `TopBar` has no
+navigation slot, and at 1024px the navigation wraps to four rows.
 `docs/design/gplus-2026-10/storybook-map.md` maps every canvas board to its story
-and records the differences. The dense operations and compact tool shell
-prototypes, which drew their shells with docs-only classes, are retired from the
-navigation shell stories together with the smoke assertions that only guarded
-them; the component inventory page still lists their names. Still open: in the
-navigation shell story the static search results panel covers the heading and the
-first paragraph beneath it.
+and records the differences. The composition-one samples no longer set an inline
+sidebar width, and their module no longer exports `gplusSampleSidebarWidth`. The
+dense operations and compact tool shell prototypes, which drew their shells with
+docs-only classes, are retired from the navigation shell stories together with the
+smoke assertions that only guarded them; the component inventory page no longer
+lists them, and `componentLibraryDeferredPrototypeNames` drops
+`DenseOperationsShellDemo` and `CompactToolShellDemo`, leaving
+`KnowledgeBaseShellDemo`. In the navigation shell story the static search results
+stay in the page flow and push the heading and first paragraph down instead of
+covering them. The documentation shell takes composition one's rail and top bar
+(sidebar 220px, 52px collapsed, top bar 52px, the 16px lead column, the canvas
+colour), and the knowledge-base sample's standalone `TopBar`, `SideNav`, group
+titles and navigation items take the same geometry through four registered docs
+exceptions until the Navigation family's batch. Still open in the documentation
+shell: the brand lockup keeps its 38px mark with the copy starting at 66px, not
+composition one's 48; the pages do not sit on a sheet 12px from the edge; and the
+knowledge-base sample's top bar cuts its description to one line with an ellipsis
+(the full text stays in the DOM).
 
 **New gates.** `contract:proof` (generated sources, icons, marks and matrices
 against the contract), `contract:static` (clauses C2, C5, C6, C7, C8, C11 and C13),
@@ -172,6 +215,28 @@ rewritten contrast proof (C1 thresholds) and the deprecation-notice test;
 `brand-asset:proof` holds the eight product-mark files to their registered digests.
 `.github/workflows/verify.yml` runs `pnpm verify` on branch pushes and pull
 requests; it has not run yet.
+
+**Gate expectations after composition one.** `geometry:measure` adds a
+`shellFrame` check on the composition-one samples (the sheet 12px from the shell
+edge, the shell top bar 52px), and the geometry proof's brand check reads the
+collapsed rail (sidebar 52px, mark 22 by 22, copy not displayed).
+`storybook:visual-proof` maps composition three (23 rows) and takes the kind of a
+story outside the ten family stories from its registry category. The Storybook
+smoke and the AI consumption contract take composition one's values for the
+product shell (top bar 52, collapsed rail 52; were 68 and 92), the documentation
+shell oracle moves from a 288px sidebar (280 to 360) and a 96px top bar to 220
+and 52, and the smoke reads those values from the shell tokens; its focus
+comparison skips the outline width and offset when the outline style is `none`.
+The contrast proof and the axe check withdraw the two night TMS wordmark
+exemptions, which leaves the Design System suffix on panel and bg in the light
+theme. The shell-fidelity guard no longer counts the wrapping properties as
+placement on the C7 single-line carriers, and its registered docs exceptions
+change as listed in `docs/style-scale.md`. The internal-alpha search-overlay check
+and reproducibility probe expect six open menus (were eight) now that the shell
+prototypes are gone, and its mobile hash-anchor check lets the G+ translucent
+header layers through. `shell:parity` expects the sample's collapse toggle 16px
+from the rail edge (was the old documentation shell's `clamp(16px, 1.6vw, 24px)`,
+23.04px at 1440).
 
 `tcrnComponentCss` is now joined from family segment modules in
 `packages/ui-react/src/styles/`; the export and its import path are unchanged.

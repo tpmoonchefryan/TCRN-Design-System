@@ -82,7 +82,7 @@
     {
       "path": "CHANGELOG.md",
       "exists": true,
-      "sha256": "14e2b366b3420251f538207fbab7a23b8ae8bd393e27d830a22be6c9e8d8f2bd"
+      "sha256": "c5499b2a8731d6c64e57a4294a50591a9f88431053ab429a7710e39e69d83a10"
     },
     {
       "path": "LICENSE",
@@ -107,7 +107,7 @@
     {
       "path": "packages/ui-tokens/src/index.ts",
       "exists": true,
-      "sha256": "5977a850a177abe57c20ad857d61597eb18ba9c6202415198c5721fe6fbf75da"
+      "sha256": "755fac03af0d4e95b0f469d23f6b914a4539efa3abe056e5e5e3aee12f5594e3"
     },
     {
       "path": "packages/ui-copy-state/src/index.ts",
@@ -117,7 +117,7 @@
     {
       "path": "packages/ui-react/src/index.tsx",
       "exists": true,
-      "sha256": "3b595385cf261cfe51c8c800eaf7f38bf2b8ef757910889335a4a22579451372"
+      "sha256": "b331d7521b19a136ed00ca66cfc2bf6b20abca93a4d7f564f3f226e057c9f301"
     },
     {
       "path": "apps/storybook/src/stories.tsx",
