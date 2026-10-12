@@ -75,7 +75,7 @@
 | 构图三样板（R3，SUB-092；O-4）：无侧栏、顶部一条导航、内容 max-width 1040 居中（1440 视口下 story 框只给 956）；只用包的公开组件 | [ ] | [ ] |
 | 构图三与构图板的差（请判断是否可接受）：独立 TopBar 高 68，板上顶栏 56（独立 TopBar 高度按裁定不改）；导航排在搜索之后（TopBar 没有导航槽）；导航是 SubNav 胶囊条，板上是文字加 2px 墨线；1024 视口下导航折成 4 行 | [ ] | [ ] |
 
-已知差距（R3 落地后）：ProductShell 的引导列、收起态内距与纸面只作用于 `@media not all and (max-width: 760px)`，移动块未改；侧栏画布色与壳顶栏最小高 52 在所有宽度生效；独立 TopBar 仍为 68。文档壳随构图一改为侧栏 220、收起 52、顶栏 52、引导列 16、画布色侧栏（SUB-101），但仍有三处偏差：品牌锁定组合仍为 38 标、文案起点 66（构图一为 48）；文档页没有离边 12 的纸面；知识库样板顶栏的描述截成一行加省略号（全文仍在 DOM 里）。逐条见「R3 落地项」一节。这些项的裁定在「待 Owner 裁定」第 1 条。机器证据：映射报告中构图一五行的 rail 与 shellFrame 测量、构图三一行的 clip、singleLine、shadowBlur 与 overlap。
+已知差距（R3 落地后）：ProductShell 的引导列、收起态内距与纸面只作用于 `@media not all and (max-width: 760px)`，移动块未改；侧栏画布色与壳顶栏最小高 52 在所有宽度生效；独立 TopBar 仍为 68。文档壳随构图一改为侧栏 220、收起 52、顶栏 52、引导列 16、画布色侧栏（SUB-101），但仍有三处偏差：品牌锁定组合仍为 38 标、文案起点 66（构图一为 48）；文档页没有离边 12 的纸面；知识库样板顶栏的描述截成一行加省略号（全文仍在 DOM 里）。1024 宽下文档页里的构图一样板受文档侧栏挤压，纸面约 406 宽，工具行折行，壳顶栏高到 147；几何门与映射门只量 1440×900（来源 `runs/r3/handoff/P1.md` 第 79 行）。逐条见「R3 落地项」一节。这些项的裁定在「待 Owner 裁定」第 1 条。机器证据：映射报告中构图一五行的 rail 与 shellFrame 测量、构图三一行的 clip、singleLine、shadowBlur 与 overlap。
 
 ## 4 · V2-B1-Typography · 第一批 01 字体
 
@@ -125,10 +125,11 @@ C 动效规范、E 消费方须提供什么、F token 差异、G 许可与分发
 
 | 核对项 | 浅色 | 夜间 |
 | --- | --- | --- |
-| TCRN 为墨色中等字重；TMS 后缀 #2c63c8，Design System 后缀 #6577f3；渐变文字已停用（D2） | [ ] | [ ] |
+| TCRN 为墨色中等字重；TMS 后缀浅色 #2c63c8、夜间 #7aa0f5（O-3，SUB-088），Design System 后缀 #6577f3；渐变文字已停用（D2） | [ ] | [ ] |
 | Einzbern、Mana Orchestrate 为衬线整名加「by TCRN」，产品壳侧栏里不显示 byline | [ ] | [ ] |
 | 标的尺寸分层：ProductLogo 38、ProductLockup 28、产品壳侧栏 22（关于页 56 由消费方覆写） | [ ] | [ ] |
 | 产品壳收起时只留标，文案隐藏 | [ ] | [ ] |
+| 收起态的三条中心线（R3 实测，门不量；来源 `runs/r3/handoff/P1.md` 第 81–84 行）：52 收起栏里收起钮中心 26，标中心 16（在 42 宽的品牌链接里靠起始边），导航图标中心 22，侧栏中心 26，三条中心线不齐。请判断是否可接受 | [ ] | [ ] |
 | AOS 注册项、AOS 后缀与 TCRN 母标保持原样（D5） | [ ] | [ ] |
 | 产品页样板与画板 D 段一致 | [ ] | [ ] |
 | 产品页样板去掉了「资产 ID」整列（R2，SUB-072，7e292ff），与 Brand 板 D 段的四列表（产品、资产 ID、标语 · zh / en、注册）不一致。storybook-map 记为 DIFF-9；R3 按 R2 判断 §3.3 第 2 条改记「待 Owner 知悉」，不恢复资产 ID 列（SUB-093） | [ ] | [ ] |
@@ -205,8 +206,8 @@ R2 实施对话按 R1 判断 §3.4 的建议先做了下列 11 项，Owner 可�
 | 1 | R2-6 只读框获焦补焦点环（与画板状态顺序不同） | inputs-text 加 rf 元组，排在 r 之后：只读框获焦时显示焦点环，底与字色仍为只读态（WCAG 2.4.7）。画板是 r 盖住 f，画板未随之重生成（RM10）。7213a27（SUB-058），P2 交回第 6 节 | inputs 矩阵的 read-only 行：用 Tab 移入只读框，焦点环出现，底与字色不变（矩阵没有单列的 rf 格） | [ ] | [ ] |
 | 2 | R2-10 Field 错误态去掉整块洗底（P29 口径更正） | `.tcrn-field--error` 的整块洗底与 outline 色一并删去，错误文字读 `--tcrn-color-bad`；强制色下的错误轮廓保留。Owner 不接受时恢复这两条声明，并把 126-GWT5 的 err-msg 两格移到第五批。fe6a4bb（SUB-060），P4 交回 | inputs 矩阵的 err-msg 格与邀请成员样板里的错误字段：字段不再整块洗底，错误文字为 bad 色 | [ ] | [ ] |
 | 3 | R2-12 搜索快捷键文字 ink-3 改 ink-2 | Inputs 板画的是 ink-3（`.sw>kbd`），按 C1 文字 4.5 阈值改为 ink-2：夜间 ink-3 在 wash 上为 3.89、3.90，ink-2 为 6.13、6.15；浅色 ink-3 在 wash 叠 bg 上为 4.31，ink-2 为 6.56。要保留 ink-3 须改 token 值或承载底，属契约修订。48399ae（SUB-062），P4 交回 | inputs 矩阵的 SearchInput 与文档壳顶栏搜索框的快捷键文字，对照 Inputs 板 | [ ] | [ ] |
-| 4 | R2-17 密集与紧凑壳原型退役并删除守护断言（C O-4） | dense（hub 与 command-center 两块）与 compact 两个壳原型从静态文档删除，只守它们的 44 条冒烟断言一并删除，删除清单在提交说明里。组件清单页与导出面仍列着两个原型名（P6 问题 #6，进下一批）。Owner 要保留时，回退 95f0e09 的对应部分，在第二批用包组件重画。95f0e09（SUB-066），P6 交回 | `components-navigation-shells.html`：dense 与 compact 两段已不在；dense story 只留面板、说明与密度表，focused story 留知识库壳与紧凑壳的一句选用说明 | [ ] | [ ] |
-| 5 | R2-30 axe 对品牌后缀登记字标豁免 | axe 的 color-contrast 对品牌后缀放行，条目直接从 token-contrast 的 `WORDMARK_EXEMPTIONS` 导入（依据 D2 与 Brand 板 F 段）；标语与壳锁定说明（ink-3）不在豁免内。豁免不分主题与承载面，夜间样板侧栏 6 个 Design System 后缀节点（4.18:1）也被豁免，而 token-contrast 的登记只写了浅色（RM6，与「待 Owner 裁定」第 2 条同组）。cd1d37b（SUB-085），P9 交回 | brand 矩阵与五个样板侧栏里的 TMS、Design System 后缀，浅色与夜间都看是否可辨读 | [ ] | [ ] |
+| 4 | R2-17 密集与紧凑壳原型退役并删除守护断言（C O-4） | dense（hub 与 command-center 两块）与 compact 两个壳原型从静态文档删除，只守它们的 44 条冒烟断言一并删除，删除清单在提交说明里。组件清单页与导出面上的两个原型名已由 SUB-105（4d0dfde，R3）删去（原 P6 问题 #6）。Owner 要保留时，回退 95f0e09 与 4d0dfde 的对应部分，在第二批用包组件重画。95f0e09（SUB-066），P6 交回；4d0dfde（SUB-105） | `components-navigation-shells.html`：dense 与 compact 两段已不在；dense story 只留面板、说明与密度表，focused story 留知识库壳与紧凑壳的一句选用说明 | [ ] | [ ] |
+| 5 | R2-30 axe 对品牌后缀登记字标豁免 | axe 的 color-contrast 对品牌后缀放行，条目直接从 token-contrast 的 `WORDMARK_EXEMPTIONS` 导入（依据 D2 与 Brand 板 F 段）；标语与壳锁定说明（ink-3）不在豁免内。豁免不分主题与承载面，夜间样板侧栏 6 个 Design System 后缀节点（4.18:1）也被豁免，而 token-contrast 的登记只写了浅色（RM6，与「待 Owner 裁定」第 2 条同组）。R3 现状：夜间底上的 Design System 后缀不再被豁免，R3 回执 `a11y-axe-summary.json` 的 80 个豁免节点的底色都是 #ffffff 或 #efeeea。cd1d37b（SUB-085），P9 交回 | brand 矩阵与五个样板侧栏里的 TMS、Design System 后缀，浅色与夜间都看是否可辨读 | [ ] | [ ] |
 | 6 | R2-8 主题钮图标显隐改由 data-current-theme 控制（取 C-9，不取 B-3） | 删去 html 级与默认的 `[data-theme-icon]` 显隐规则，显隐只由 `.tcrn-shell-theme-toggle[data-current-theme]` 的透明度规则决定，块级主题与页级主题同样生效；默认隐藏 moon 的 `[data-theme-icon="dark"]` 也一并删去（RM3，交验收）。6976d2f（SUB-057），P3 交回第 3 节 | 五个样板的外壳主题钮：浅色块显示太阳，夜间块显示月亮，不再两个都不显示 | [ ] | [ ] |
 | 7 | R2-29 clipped 判定排除 C7 合规截断；R2-31 收紧 C7 并改 Button 禁用原因的 title | 浏览器门的 clipped 判定不再计入带 title 的合规截断，被记元素 288 → 0（a4e7534、5583f5a，SUB-084，P9 交回）。C7 对第一批承载元素（今为 `tcrn-button__label`）要求浏览器显示的 title 含可见文字；Button 有禁用原因时 title 为「标签 — 原因」，原因仍走 aria-describedby（e0baaba，SUB-079，P10 交回）。由此带出的两处集成红（非英文语言下这种 title 不翻译、ClipboardCopyButton 测试仍断言旧 title）已交集成修复包 I1（RM14），截至本包切出点 8d8ff8d 未合入 | actions 矩阵与项目页样板里带禁用原因的按钮：悬停提示为「标签 — 原因」；被截断的按钮标签悬停可读全文 | [ ] | [ ] |
 | 8 | R2-16 守卫例外的登记（后续家族沿用 EX-INIT015-* 写法） | SUB-065 的规则级守卫把文档层对包类的声明限定为摆放属性，登记五条例外：EX-INIT015-doc-tooltip-static-preview、-doc-filter-bar、-doc-nav-proof-skip-link、-doc-shell-brand-collapse、-doc-shell-brand-narrow（后两条依 C-21 待 O-1；R3 已随 SUB-101 删除，见「R3 落地项」第 3 行），逐条见 `runs/r2/handoff/P5.md`。守卫实际落在 `scripts/shell-fidelity-proof.mjs` 的 `docsPackageSelectorDuplication`（RM12）。461306d（SUB-065），P5 交回 | 五处文档呈现与改前一致：Tooltip 静态预览为展开态、筛选栏的标签排布、包导航证明框里的跳转链接、侧栏收起时文档壳品牌文案的收起动效、极窄视口下品牌文案隐藏 | [ ] | [ ] |
@@ -221,10 +222,10 @@ R3 按设计会话 2026-10-11 的 B 类裁定（O-1…O-4，Owner 可更正）�
 | # | 事项 | 现状与来源 | 看哪里、看什么 | 浅色 | 夜间 |
 | --- | --- | --- | --- | --- | --- |
 | 1 | 新增例外 EX-INIT015-doc-product-shell-search-static | 选择器 `.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results`，属性 position、inset；重复选择器白名单随之加回 `.tcrn-product-shell-search__results`；删除条件：Navigation 家族批次由包提供静态结果展示。16a15b3（SUB-100，R3-9；R2 判断 §3.3 第 4 条），P3 交回 | `components-navigation-shells.html` 的 ProductShell 故事：展开的静态搜索结果留在版面内，把标题与首段往下推，不再盖住 | [ ] | [ ] |
-| 2 | 新增例外 EX-INIT015-doc-knowledge-shell-topbar、-side-nav、-group-title、-nav-item | 知识库样板的独立 TopBar（min-height 52、padding-block 6）、SideNav（padding 16、画布色）、分组标题（padding-inline 0）、导航项（起始内距为 space-1 减 1px 边框）取构图一几何，作用域为 `.tcrn-doc-knowledge-shell-layout[data-standard-shell]`；重复选择器白名单随之加 `.tcrn-nav-group__label`、`.tcrn-nav-item`；删除条件：Navigation 家族批次让独立件提供构图一几何。20f07a4（SUB-101，R3-10，R3M5 方案 A），P3 交回 | 知识库样板：顶栏 52，侧栏 16 内距与画布色，分组标题与导航项落在 16 引导列，与文档壳侧栏一致 | [ ] | [ ] |
+| 2 | 新增例外 EX-INIT015-doc-knowledge-shell-topbar、-side-nav、-group-title、-nav-item | 知识库样板的独立 TopBar（min-height 52、padding-block 6）、SideNav（padding 16、画布色）、分组标题（padding-inline 0）、导航项（起始内距为 space-1 减 1px 边框）取构图一几何，作用域为 `.tcrn-doc-knowledge-shell-layout[data-standard-shell]`；重复选择器白名单随之加 `.tcrn-nav-group__label`、`.tcrn-nav-item`；删除条件：Navigation 家族批次让独立件提供构图一几何。由此独立 TopBar 在知识库样板显示 52（文档作用域例外），在构图三显示 68（包默认）；side-nav 一条例外在文档作用域设了包 SideNav 的底色。20f07a4（SUB-101，R3-10，R3M5 方案 A），P3 交回 | 知识库样板：顶栏 52，侧栏 16 内距与画布色，分组标题与导航项落在 16 引导列，与文档壳侧栏一致 | [ ] | [ ] |
 | 3 | 删除例外 EX-INIT015-doc-shell-brand-collapse、-narrow | 连同 C-21 的裁定常量、文案淡出的过渡与动画规则、`tcrn-doc-sidebar-copy-reveal` 关键帧一起删除；收起与极窄态跟随包：文案 max-width 0，由文档盒子裁掉，不再淡出。20f07a4（SUB-101） | 文档壳侧栏收起与极窄视口：品牌文案直接收起，没有淡出动效；收起时 38px 标叠在收起钮上方 | [ ] | [ ] |
 | 4 | 文档壳按构图一改（C-21） | 侧栏 220、收起 52、顶栏 52（上下内距 6）、引导列 16、文字列 48、画布色侧栏；品牌格是侧栏顶端 96px 高的一格，侧栏导航从它下面开始。1076172、20f07a4（SUB-101），P3 交回 | 任一文档页：侧栏宽、收起宽与顶栏高与五个样板的包壳一致 | [ ] | [ ] |
-| 5 | 文档壳的现状偏差（未授权或门不量，照实列出） | 品牌锁定组合仍为 38 标、文案起点 66（构图一为 22 标、文案起点 48；要缩须给包类写自定义属性，不在授权内）；文档页没有离边 12 的纸面（不在授权内，门也不量）；`page-template.tsx` 未改，品牌留在顶栏首列的 DOM 里，用负外边距成为侧栏顶端；知识库样板顶栏放不下标题加两行描述，描述截成一行加省略号，全文仍在 DOM 里。R3M6，P3 交回 | 文档壳品牌区、文档页主区与知识库样板顶栏：对照构图板判断是否可接受 | [ ] | [ ] |
+| 5 | 文档壳的现状偏差（未授权或门不量，照实列出） | 品牌锁定组合仍为 38 标、文案起点 66（构图一为 22 标、文案起点 48；要缩须给包类写自定义属性，不在授权内）；文档页没有离边 12 的纸面（不在授权内，门也不量）；`page-template.tsx` 未改，品牌留在顶栏首列的 DOM 里，用负外边距成为侧栏顶端；知识库样板顶栏放不下标题加两行描述，描述截成一行加省略号，全文仍在 DOM 里；截成一行的样板顶栏描述没有悬停全文。R3M6，P3 交回 | 文档壳品牌区、文档页主区与知识库样板顶栏：对照构图板判断是否可接受 | [ ] | [ ] |
 
 ## 待 Owner 裁定
 
@@ -241,7 +242,7 @@ R3 按设计会话 2026-10-11 的 B 类裁定（O-1…O-4，Owner 可更正）�
 | 7 | 等宽字族是否加 Noto 中文回退 | R2 已加（返工 R2-1，121-GWT2）：等宽字栈为 IBM Plex Mono、Noto Sans SC、ui-monospace、Menlo、monospace；fonts:proof 要求四个字族 token 都带 Noto 中文回退（e79092f，SUB-048） | W2-A 交回（问题 P6）；P1 交回 | 目视时核对等宽文字里的中文是否为 Noto Sans SC，Owner 可更正 |
 | 8 | 字标对比度只按 panel 承载面算是否足够 | 门按契约判定字标对，panel 与 bg 都量 | W3-A 交回（问题 P4） | 目视时判定 |
 | 9 | O-11 · 中文子集的「常用 3500 字」 | 按产品用字选上游分片，未加 3500 字表 | P9 | 按默认执行（不加 3500 字），维持分片方案；要 3500 字覆盖须给出字表来源 |
-| 10 | O-2 · 锁定组合标语与壳品牌说明（ink-3）的对比度；附 N-1 文档导航分类计数 | 随 O-1 把侧栏改为画布色解决，不另加豁免：ink-3 于 bg 浅色 4.86、夜间 4.89。N-1（分类计数的 ink-3 落在 acc-bg 洗底上，4.35:1）机制相同，随文档壳画布色侧栏（SUB-101）一起解决。R3 集成树上 P4 跑的 internal-alpha browser-proof：axe 违规 0（字标豁免节点 80）；批末复核读数见 `runs/r3/handoff/P4.md` | R1 判断 O-2；B 127「其它发现」；C O-3 标语部分；设计会话裁定（2026-10-11） | 设计会话 B 类裁定（2026-10-11），Owner 可更正。复核若再出现这两类节点，不自行加豁免，由 Owner 在「字标豁免」与「改 ink-2」之间二选一 |
+| 10 | O-2 · 锁定组合标语与壳品牌说明（ink-3）的对比度；附 N-1 文档导航分类计数 | 随 O-1 把侧栏改为画布色解决，不另加豁免：ink-3 于 bg 浅色 4.86、夜间 4.89。N-1（文档导航分类计数）R4 浏览器实测（R4 P0 包内构建，Chromium 1440×900，`components-navigation-shells.html` 浅色与 `?theme=dark` 夜间；两种主题各 23 个计数节点读数相同）：`.tcrn-doc-nav__category-count` 的计算字色浅色 #6b675d（rgb(107, 103, 93)）、夜间 #85827a（rgb(133, 130, 122)）；自带底色 color-mix(surface-muted 78%, transparent) 合成到侧栏底色（浅色 #efeeea、夜间 #121210）后为浅色 #f6f5f1、夜间 #1c1c19；对比度浅色 5.17、夜间 4.45，夜间低于 4.5。读法：等字体、两帧与全部过渡结束后读 getComputedStyle；侧栏底色取最近的不透明祖先 `.tcrn-doc-sidebar`；按自带底色的 alpha 0.78 在 sRGB 里合成，不取整；对比度按 WCAG 2 相对亮度算，保留两位小数。R3 集成树上 P4 跑的 internal-alpha browser-proof：axe 违规 0（字标豁免节点 80）；批末复核读数见 `runs/r3/handoff/P4.md` | R1 判断 O-2；B 127「其它发现」；C O-3 标语部分；设计会话裁定（2026-10-11） | 设计会话 B 类裁定（2026-10-11），Owner 可更正。复核若再出现这两类节点，不自行加豁免，由 Owner 在「字标豁免」与「改 ink-2」之间二选一。N-1：待 Owner 二选一，见收口文件 N-1；未答复时保持现状，不加豁免 |
 | 11 | O-6 · 组件内字面几何是否补 token（含 RM8 四条） | 不新增 token：按钮内图标 13/15、勾选 16、开关 34×20、末端区 30、贴片圆角 11 等仍为字面值。RM8：typography.scale 余 4 条字面值（numeral-inline 16px、numeral-large 44px 与行高 48px、mono 11.5px）保留，Typography.test 钉住。R3 新增的 4 个壳层 token 属 O-1，不属 O-6 | R1 判断 O-6；B O-6；RM8 | 按默认执行（不新增 token）。要补时在 typography.json 补 4 条刻度 token 并注册，下次契约修订一并补其余字面值 |
 | 12 | O-8 · B1 与 B2 品牌规格分歧 | 保持 B1：字标 500 加后缀 600，标 38/28/22；B2 为 sans 整词 600、示意标 44。doc:sample-style 读到壳内字标 12.5px/600，矩阵为 14px/500 | R1 判断 O-8；B O-4；W2-F #13 | 按默认执行（保持 B1）。请 Owner 目视时点名确认 B1 规格（第 6 节品牌、第 10 节产品标） |
 | 13 | O-9 · secondary 与 danger 默认 edge 的抬升层是浅墨字面量 | `0 1px 1px rgba(22,21,15,.04)` 两主题共用，夜间几乎不可见；维持画板写法 | R1 判断 O-9；A O-4；W1-A P2；W2-D P9 | 按默认执行（维持）。下次画板修订改为主题化 token |
