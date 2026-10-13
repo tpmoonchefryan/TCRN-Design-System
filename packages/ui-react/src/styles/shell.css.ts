@@ -265,6 +265,13 @@ export const shellCss02 = `
 // the panel's space-2, 16 in all, and the bar's lockup ends there too (16 before the right edge).
 // Rows paint with the pair grammar: ink-2 at rest, ink on the 3.5% wash on hover, ink on the 6%
 // wash at weight 600 when selected; a group title is ink-3 with no hover fill (only its pin shows).
+//
+// Behaviour (TCRN-DS-SUB-117): a row's next level opens as a cascade column after the panel, the
+// drop-down width wide and as tall as the panel (the grid row stretches it; its own content does
+// not size the row, contain: size), paper with the s3 shadow, inset space-1h, a 24 title row. While
+// a query is typed the search results replace the columns, in the flow of the panel. Narrower than
+// 1024 the pinned group shows. The panel and the cascades fade in over the fill duration, opacity
+// only; under prefers-reduced-motion nothing animates or transitions.
 export const shellCss03 = `
 .tcrn-shell-menu {
   position: absolute;
@@ -294,6 +301,28 @@ export const shellCss03 = `
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-panel);
   box-shadow: var(--tcrn-shadow-s3);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+.tcrn-shell-menu .tcrn-shell-menu__cascade {
+  contain: size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: var(--tcrn-space-1h);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-shadow-s3);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+@keyframes tcrn-shell-menu-enter {
+  from {
+    opacity: 0;
+  }
 }
 .tcrn-shell-menu .tcrn-shell-menu__search {
   flex: 0 0 auto;
@@ -341,6 +370,13 @@ export const shellCss03 = `
 .tcrn-shell-menu .tcrn-nav-group__label:not([data-nav-pinnable="true"]) {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.tcrn-shell-menu .tcrn-shell-menu__cascade > .tcrn-nav-group__label {
+  flex: 0 0 auto;
+  block-size: var(--tcrn-shell-pinb);
+  margin: var(--tcrn-space-0h) 0 0;
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2h);
+  line-height: var(--tcrn-shell-pinb);
 }
 .tcrn-shell-menu .tcrn-nav-group__items {
   display: flex;
@@ -461,6 +497,73 @@ export const shellCss03 = `
   flex: 0 0 auto;
   color: var(--tcrn-color-ink-3);
 }
+.tcrn-shell-menu .tcrn-product-shell-search__results {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  inline-size: auto;
+  max-block-size: none;
+  margin: var(--tcrn-space-1h) 0 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__results[hidden] {
+  display: none;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result {
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--tcrn-space-2h);
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-row-h);
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:where(:hover, [data-tcrn-preview-state~="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result strong,
+.tcrn-shell-menu .tcrn-product-shell-search__result span {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result strong {
+  font-weight: var(--tcrn-type-weight-medium);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result span {
+  color: var(--tcrn-color-ink-2);
+  font-size: 11.5px;
+}
 .tcrn-shell-menu__pbar {
   display: flex;
   flex: 0 0 auto;
@@ -520,8 +623,17 @@ export const shellCss03 = `
 .tcrn-shell-menu__lockup .tcrn-product-logo__byline {
   display: none;
 }
+@media (min-width: 1024px) {
+  .tcrn-shell-menu .tcrn-shell-menu__col--pinned {
+    display: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-menu__panel,
+  .tcrn-shell-menu .tcrn-shell-menu__cascade {
+    animation: none;
+  }
   .tcrn-shell-menu .tcrn-nav-item {
-    transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
+    transition: none;
   }
 }`;

@@ -10,7 +10,7 @@ import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
 import { createTokenMap } from "@tcrn/ui-tokens";
 import { tcrnComponentCss } from "../../styles/index.js";
 import { shellCss03 } from "../../styles/shell.css.js";
-import { ShellMenu, shellMenuMaxDepth, shellMenuRow, type ShellMenuGroup } from "./ShellMenu.js";
+import { ShellMenu, shellMenuMaxDepth, shellMenuRow, shellMenuSearch, type ShellMenuGroup } from "./ShellMenu.js";
 import { tcrnShellCopy } from "./shell-copy.js";
 
 const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -273,4 +273,45 @@ test("the model stops at the fourth level: a fourth-level row shows no next leve
   const deep = { id: "deep", label: "第四级", children: [{ id: "fifth", label: "第五级" }] };
   assert.doesNotMatch(renderToStaticMarkup(<>{shellMenuRow(deep, 4, context)}</>), /chevron-right/);
   assert.match(renderToStaticMarkup(<>{shellMenuRow(deep, 3, context)}</>), /chevron-right/);
+});
+
+// TCRN-DS-SUB-117: the behaviour's static half — the cascade columns' rule, the pinned group's
+// breakpoint, the reduced-motion block and the built-in search. The interactions are in
+// src/test/shell-menu.dom.spec.tsx.
+test("cascade columns follow the panel at the cascade gap, drop-down wide, as tall as the panel by the grid row", () => {
+  const root = ruleBody(".tcrn-shell-menu");
+  assert.equal(declaration(root, "grid-auto-flow"), "column");
+  assert.equal(declaration(root, "grid-auto-columns"), "var(--tcrn-shell-drop-w)");
+  assert.equal(declaration(root, "column-gap"), "var(--tcrn-shell-cascade-gap)");
+  assert.equal(declaration(root, "align-items"), "stretch");
+  const column = ruleBody(".tcrn-shell-menu .tcrn-shell-menu__cascade");
+  assert.equal(declaration(column, "contain"), "size", "its content does not size the row");
+  assert.equal(declaration(column, "overflow-y"), "auto");
+  assert.equal(declaration(column, "box-shadow"), "var(--tcrn-shadow-s3)");
+  assert.equal(declaration(column, "padding"), "var(--tcrn-space-1h)");
+  // The panel's own height comes from its content; nothing in the menu syncs heights by script.
+  assert.doesNotMatch(renderBoardMenu(), /style="[^"]*height/);
+});
+
+test("narrower than 1024 the pinned group shows; under reduced motion nothing fades or transitions", () => {
+  assert.match(shellCss03, /@media \(min-width: 1024px\) \{\n {2}\.tcrn-shell-menu \.tcrn-shell-menu__col--pinned \{\n {4}display: none;\n {2}\}\n\}/);
+  const reduced = /@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/.exec(shellCss03);
+  assert.ok(reduced, "the segment has a reduced-motion block");
+  assert.match(reduced[1], /\.tcrn-shell-menu__panel,\n {2}\.tcrn-shell-menu \.tcrn-shell-menu__cascade \{\n {4}animation: none;/);
+  assert.match(reduced[1], /\.tcrn-shell-menu \.tcrn-nav-item \{\n {4}transition: none;/);
+  // The fade is opacity only: no transform, so a reading taken while it runs is the final geometry.
+  const keyframes = /@keyframes tcrn-shell-menu-enter \{([\s\S]*?)\n\}/.exec(shellCss03);
+  assert.ok(keyframes);
+  assert.doesNotMatch(keyframes[1], /transform|translate|scale/);
+  const pinned = renderBoardMenu({ pinnedItems: [{ id: "billing", label: "结算单", href: "#billing" }, { id: "talent", label: "艺人" }] });
+  assert.match(pinned, /class="tcrn-nav-group tcrn-shell-menu__col tcrn-shell-menu__col--pinned"/);
+  for (const locale of tcrnSupportedLocales) assert.ok(tcrnShellCopy[locale].pinnedGroup.trim().length > 0, `${locale} pinnedGroup`);
+});
+
+test("the built-in search keeps the entries whose name, or an item above them, holds the query", () => {
+  const titles = (query: string) => shellMenuSearch(boardMenu, query).map((result) => result.title);
+  assert.deepEqual(titles("合约"), ["合约列表", "签约合同", "经纪合同", "活动合同", "保密协议", "审批", "到期提醒"]);
+  assert.deepEqual(titles("  "), []);
+  assert.deepEqual(shellMenuSearch(boardMenu, "名册"), [{ id: "roster", title: "名册", meta: "艺人", href: "#roster" }]);
+  assert.equal(shellMenuSearch(boardMenu, "签约")[0]?.meta, "艺人 › 合约 › 模板");
 });

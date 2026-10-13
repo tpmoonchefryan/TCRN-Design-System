@@ -8,6 +8,8 @@
 // TCRN-DS-SUB-116: the full menu's name ("导航"), its search placeholder and the label of the
 // current position in its bottom bar ("当前位置"). The board's placeholder names the TMS objects
 // ("搜索页面、艺人、合约"); the built-in one is product-neutral and a product may pass its own.
+// TCRN-DS-SUB-117: the full menu's extra group narrower than 1024, where the band shows no pinned
+// items and the menu lists them all ("已固定").
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { resolveDocumentLocale } from "../../utils.js";
 
@@ -24,6 +26,8 @@ export interface TcrnShellCopy {
   searchNavigation: string;
   /** Label of the current position in the full menu's bottom bar; also the name of that trail. */
   currentPosition: string;
+  /** Title of the full menu's group of pinned items, shown narrower than 1024. */
+  pinnedGroup: string;
 }
 
 export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
@@ -33,7 +37,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     pinnedItems: "固定项",
     navigation: "导航",
     searchNavigation: "搜索页面与内容",
-    currentPosition: "当前位置"
+    currentPosition: "当前位置",
+    pinnedGroup: "已固定"
   },
   en: {
     openNavigationOf: (productName) => `Open navigation · ${productName}`,
@@ -41,7 +46,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     pinnedItems: "Pinned items",
     navigation: "Navigation",
     searchNavigation: "Search pages and content",
-    currentPosition: "Current location"
+    currentPosition: "Current location",
+    pinnedGroup: "Pinned"
   },
   ja: {
     openNavigationOf: (productName) => `ナビゲーションを開く · ${productName}`,
@@ -49,7 +55,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     pinnedItems: "固定した項目",
     navigation: "ナビゲーション",
     searchNavigation: "ページとコンテンツを検索",
-    currentPosition: "現在の位置"
+    currentPosition: "現在の位置",
+    pinnedGroup: "固定済み"
   },
   ko: {
     openNavigationOf: (productName) => `내비게이션 열기 · ${productName}`,
@@ -57,7 +64,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     pinnedItems: "고정한 항목",
     navigation: "내비게이션",
     searchNavigation: "페이지와 콘텐츠 검색",
-    currentPosition: "현재 위치"
+    currentPosition: "현재 위치",
+    pinnedGroup: "고정됨"
   },
   fr: {
     openNavigationOf: (productName) => `Ouvrir la navigation · ${productName}`,
@@ -65,7 +73,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     pinnedItems: "Éléments épinglés",
     navigation: "Navigation",
     searchNavigation: "Rechercher des pages et des contenus",
-    currentPosition: "Emplacement actuel"
+    currentPosition: "Emplacement actuel",
+    pinnedGroup: "Épinglés"
   }
 };
 
