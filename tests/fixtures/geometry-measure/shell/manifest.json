@@ -45,6 +45,12 @@
       "trace": { "closesOnOutsideClick": true }
     }
   },
+  "packageFixture": {
+    "about": "Package-hook fixture (TCRN-DS-SUB-174), read with the package hooks in the same 1240 x 900 viewport: the package's pinnable-row markup and grid (base.css.ts: a link and its pin side by side in .tcrn-nav-item-row, the pin keeping its 24 track and showing with opacity), the guide-column hooks the rows will carry (data-guide and data-text = prail on the row icon and label, data-shell-col on the menu columns) and the three 07a B reading cases (彩色标, 面板对画布, 遮罩下的纸, beside a canvas text and a row on a layer above the scrim, which must not read it). green: the gates and checks that must pass on it; every contrast cell on it must read its data-expect (the 07a B numbers); storyMutations: the story mutations that must turn their gate red on it, before the real parts carry the hooks they read.",
+    "file": "tests/fixtures/geometry-measure/shell/package-menu.html",
+    "green": ["pinJitter", "contrast", "prail"],
+    "storyMutations": ["story-pin-display-none-inline", "story-guide-icons-right-4"]
+  },
   "stories": {
     "about": "Package-story side (TCRN-DS-SUB-137). screens: the screens each C-9 story must show, in order, with the C-5 data-state of the shell root (the board screen names of the TCRN-DS-SUB-121 stories; ts-m-s is the board's Sheet screen, so its root reads sheet). behaviour: where the probes run, the focus loop and outside click on a closed screen and the arrows on a screen that shows the full menu; the intro on the intro story in a fresh session.",
     "screens": {

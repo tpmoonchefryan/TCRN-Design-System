@@ -1,6 +1,6 @@
 {
   "schemaVersion": "tcrn.ds.shell-measure-mutations.v1",
-  "about": "One mutation per gate, from the G-section column of the 07b board (Shell-2). ops are applied to a fresh load of the named board (see applyMutationInPage in scripts/shell-measure-proof.mjs); trace mutations patch the manifest trace named by traceOf. A mutation passes when its gate fails and the failing gates are exactly gate + alsoFails. storyMutations (TCRN-DS-SUB-137) are the same eighteen on the package stories with the package hooks: ops are applied to the named story page (en, light) before the readings; probe mutations change the behaviour probe instead (ops after load, or beforeReload between the intro's load and reload). A story mutation passes when its gate fails and, if the unmutated story already fails that gate, the mutation adds a failure the unmutated run does not have.",
+  "about": "One mutation per gate, from the G-section column of the 07b board (Shell-2). ops are applied to a fresh load of the named board (see applyMutationInPage in scripts/shell-measure-proof.mjs); trace mutations patch the manifest trace named by traceOf. A mutation passes when its gate fails and the failing gates are exactly gate + alsoFails. gate also names the checks beyond the G section (prail, TCRN-DS-SUB-174), one board and one story mutation each. storyMutations (TCRN-DS-SUB-137) are the same eighteen on the package stories with the package hooks: ops are applied to the named story page (en, light) before the readings; probe mutations change the behaviour probe instead (ops after load, or beforeReload between the intro's load and reload). A story mutation passes when its gate fails and, if the unmutated story already fails that gate, the mutation adds a failure the unmutated run does not have. The story mutations named in manifest.json packageFixture are also run on the package-hook fixture, so they are shown red before the real parts carry the hooks they read.",
   "mutations": [
     {
       "id": "brand-top-0", "gate": "brandGeometry", "source": "top 改 0", "board": "shell-lower",
@@ -76,6 +76,11 @@
     {
       "id": "sheet-row-32", "gate": "touch", "source": "行高改 32", "board": "shell-upper",
       "ops": [{ "op": "css", "css": "[data-shell=\"ts-m-s\"] .ts-sheet { --row-h: 32px !important; }" }]
+    },
+    {
+      "id": "guide-icons-right-4", "gate": "prail", "source": "引导列图标右移 4", "board": "shell-lower",
+      "about": "the guide icons of the full menu drawn 4px off the guide line (16 to 20); a translate moves no other box, so no other gate reads it",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] [data-guide=\"prail\"] { translate: 4px 0 !important; }" }]
     }
   ],
   "storyMutations": [
@@ -122,8 +127,8 @@
     },
     {
       "id": "story-pin-display-none-inline", "gate": "pinJitter", "source": "图钉 display:none → inline", "story": "shell-top-band",
-      "about": "the pin hidden at rest and shown on hover / on: the text track of a rest row widens by the pin slot",
-      "ops": [{ "op": "css", "css": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] [data-pin-button] { display: none !important; } [data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] .tcrn-nav-item-row:has(> [data-tcrn-preview-state~=\"hover\"]) [data-pin-button], [data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] .tcrn-nav-item-row:has(> [aria-current=\"page\"]) [data-pin-button] { display: inline !important; }" }]
+      "about": "the jittering build the column guards against, as on the board: the pin track sized by content (the row's reserved 24 track taken away) and the pin display:none at rest, inline on hover / on, so a rest row's text box widens by the pin slot; display alone on the reserved track would be an equivalent mutation",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] .tcrn-nav-item-row { grid-template-columns: minmax(0, 1fr) auto !important; } [data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] [data-pin-button] { display: none !important; } [data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] .tcrn-nav-item-row:has(> [data-tcrn-preview-state~=\"hover\"]) [data-pin-button], [data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] .tcrn-nav-item-row:has(> [aria-current=\"page\"]) [data-pin-button] { display: inline-flex !important; }" }]
     },
     {
       "id": "story-lockup-as-button", "gate": "lockupDecor", "source": "改成 button", "story": "shell-top-band",
@@ -155,6 +160,11 @@
     {
       "id": "story-sheet-row-32", "gate": "touch", "source": "行高改 32", "story": "shell-mobile",
       "ops": [{ "op": "css", "css": "[data-shell=\"ts-m-s\"] [data-panel=\"sheet\"] [data-shell-row] { height: 32px !important; min-height: 0 !important; }" }]
+    },
+    {
+      "id": "story-guide-icons-right-4", "gate": "prail", "source": "引导列图标右移 4", "story": "shell-top-band",
+      "about": "the guide icons of the full menu drawn 4px off the guide line, as on the board",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] [data-guide=\"prail\"] { translate: 4px 0 !important; }" }]
     }
   ]
 }

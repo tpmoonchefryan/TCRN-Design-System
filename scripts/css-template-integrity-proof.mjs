@@ -63,12 +63,21 @@ const indexText = readFileSync(join(REPO_ROOT, COMPONENT_CSS_INDEX), "utf8");
 const joinList = /export const tcrnComponentCss\b[^=]*=\s*\[([^\]]*)\]\.join\(""\)/.exec(indexText);
 if (!joinList) findings.push(`${COMPONENT_CSS_INDEX} does not join the family segments into tcrnComponentCss`);
 const joined = new Set((joinList?.[1] ?? "").split(",").map((name) => name.trim()).filter(Boolean));
-const FAMILY_MODULE = /^packages\/ui-react\/src\/styles\/[a-z]+\.css\.ts$/;
-const FAMILY_SEGMENT = /^[a-z]+Css\d+$/;
+// Hyphenated modules and their camel-case segments count as families too (shell-intro.css.ts ›
+// shellIntroCss01, shell-sheet.css.ts › shellSheetCss01; TCRN-DS-SUB-174), so an unjoined one is caught.
+const FAMILY_MODULE = /^packages\/ui-react\/src\/styles\/[a-z]+(?:-[a-z]+)*\.css\.ts$/;
+const FAMILY_SEGMENT = /^[a-z]+(?:[A-Z][a-z]*)*Css\d+$/;
+// The retired parts' sheet (TCRN-DS-SUB-125) joins its segments into tcrnRetiredComponentCss and never into
+// tcrnComponentCss: they are not family segments, so the camel-case pattern does not count them as unjoined.
+const retiredList = /export const tcrnRetiredComponentCss\b[^=]*=\s*\[([^\]]*)\]\.join\(""\)/.exec(indexText);
+const retired = new Set((retiredList?.[1] ?? "").split(",").map((name) => name.trim()).filter(Boolean));
+const familySegments = [];
 for (const { path, segments } of sources) {
   if (!FAMILY_MODULE.test(path)) continue;
   for (const name of new Set(segments.map((segment) => segment.name))) {
-    if (name && FAMILY_SEGMENT.test(name) && !joined.has(name)) {
+    if (!name || !FAMILY_SEGMENT.test(name) || retired.has(name)) continue;
+    familySegments.push({ path, name });
+    if (!joined.has(name)) {
       findings.push(`${path} › ${name} is not joined in ${COMPONENT_CSS_INDEX}, so it never ships`);
     }
   }
@@ -82,6 +91,9 @@ const receipt = {
   modules: sources.map(({ path }) => path),
   segments: segmentCount,
   joinedSegments: joined.size,
+  familySegments: familySegments.length,
+  retiredSegments: [...retired],
+  hyphenatedFamilySegments: familySegments.filter(({ path }) => /-[a-z]+\.css\.ts$/.test(path)).map(({ name }) => name),
   bytes,
   ruleCount,
   findings

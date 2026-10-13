@@ -1,0 +1,79 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Package-hook fixture of scripts/shell-measure-proof.mjs --fixtures (TCRN-DS-SUB-174); see manifest.json packageFixture. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shell gate: package-hook fixture</title>
+<style>
+  body { margin: 0; background: #efeeea; color: #16150f; font: 500 12.5px/1.2 sans-serif; }
+  * { box-sizing: border-box; }
+  /* the shell, with the C-5 hooks the readings need */
+  [data-shell] { position: relative; width: 1240px; height: 520px; display: grid; grid-template-rows: 52px 1fr; }
+  [data-shell-strip] { display: flex; align-items: center; padding: 0 12px; }
+  [data-tab] { display: inline-flex; align-items: center; gap: 10px; width: 134px; height: 40px; padding: 0 9px; border: 0; background: transparent; }
+  [data-tab] b { font-weight: 600; white-space: nowrap; }
+  [data-cluster] { display: flex; align-items: center; height: 40px; margin-left: auto; }
+  [data-cluster] button { width: 32px; height: 32px; border: 0; background: transparent; }
+  [data-paper] { margin: 0 12px 12px; border-radius: 14px; background: #fff; }
+  /* the full menu (07b): left 12, top 52 + 6, panel padding 8, three columns 16 apart */
+  [data-panel="expanded"] { position: absolute; top: 58px; left: 12px; width: 952px; padding: 8px; border-radius: 12px; background: #fff; }
+  [data-shell-cols] { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 16px; }
+  [data-shell-col] { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  /* the package's pinnable row (base.css.ts): a link and its pin side by side; the pin keeps its 24 track
+     and shows with opacity, so a rest row's text box is as wide as a hover or selected one */
+  .tcrn-nav-item-row { display: grid; grid-template-columns: minmax(0, 1fr) 24px; column-gap: 10px; align-items: center; height: 32px; padding-inline-end: 4px; border-radius: 8px; }
+  .tcrn-nav-item-row > [data-shell-row] { display: grid; grid-template-columns: 22px minmax(0, 1fr); column-gap: 10px; align-items: center; height: 100%; min-width: 0; padding-left: 8px; color: #4f4c43; text-decoration: none; }
+  .tcrn-nav-item-row > [aria-current="page"] { color: #16150f; font-weight: 600; }
+  [data-guide="prail"] { display: block; width: 22px; height: 22px; padding: 3px; }
+  [data-text="prail"] { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  [data-pin-button] { display: inline-flex; width: 24px; height: 24px; padding: 0; border: 0; background: transparent; opacity: 0; }
+  .tcrn-nav-item-row:has(> [data-tcrn-preview-state~="hover"]) > [data-pin-button],
+  .tcrn-nav-item-row:has(> [aria-current="page"]) > [data-pin-button] { opacity: 1; }
+  /* the 07a B reading cases */
+  .cases { display: flex; gap: 24px; align-items: flex-start; padding: 24px 12px; }
+  .canvas { padding: 12px; background: #efeeea; }
+  .surface { width: 160px; height: 48px; background: #ffffff; }
+  .phone { position: relative; width: 390px; height: 160px; }
+  .phone .paper { height: 100%; padding: 16px; background: #ffffff; color: #4f4c43; }
+  .phone [data-shell-scrim] { position: absolute; inset: 0; z-index: 1; background: rgba(22, 21, 15, 0.2); }
+  .phone .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; height: 60px; padding: 16px; background: #ffffff; color: #4f4c43; }
+  .ink-2 { color: #4f4c43; }
+</style>
+</head>
+<body>
+  <div data-shell="ts-x-l" data-state="expanded">
+    <div data-shell-strip>
+      <button type="button" data-tab data-shell-brand="v2"><svg data-logo="tms" viewBox="0 0 48 48" width="22" height="22" aria-hidden="true"><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><b>TCRN <em>TMS</em></b></button>
+      <div data-cluster><button type="button" aria-label="Notifications">!</button></div>
+    </div>
+    <main data-paper></main>
+    <section data-panel="expanded" role="dialog" aria-label="Navigation">
+      <div data-shell-cols>
+        <div data-shell-group data-shell-col>
+          <div class="tcrn-nav-item-row"><a href="#roster" data-shell-row aria-current="page"><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Roster</span></a><button type="button" data-pin-button aria-pressed="true" aria-label="Unpin from top bar: Roster">p</button></div>
+          <div class="tcrn-nav-item-row"><a href="#teams" data-shell-row data-tcrn-preview-state="hover"><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Teams</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Teams">p</button></div>
+          <div class="tcrn-nav-item-row"><a href="#contracts" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Contracts</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Contracts">p</button></div>
+        </div>
+        <div data-shell-group data-shell-col>
+          <div class="tcrn-nav-item-row"><a href="#statements" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Statements</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Statements">p</button></div>
+          <div class="tcrn-nav-item-row"><a href="#payouts" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Payouts</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Payouts">p</button></div>
+        </div>
+        <div data-shell-group data-shell-col>
+          <div class="tcrn-nav-item-row"><a href="#schedule" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Schedule</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Schedule">p</button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="cases">
+    <div class="canvas"><svg data-logo="tms" data-cell="brand-mark-l" data-kind="icon" data-exempt data-expect="4.85" viewBox="0 0 48 48" width="44" height="44" role="img" aria-label="TCRN TMS"><path d="M11 23L24 39" stroke="#2c63c8" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="#7aa0f5" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg></div>
+    <div class="canvas"><div class="surface" data-cell="panel-edge-l" data-kind="edge" data-exempt data-expect="1.16"></div></div>
+    <div class="canvas"><span class="ink-2" data-cell="body-canvas-l" data-kind="text" data-expect="7.39">Twelve people</span></div>
+    <div class="phone">
+      <div class="paper"><p data-cell="scrim-paper-l" data-kind="text" data-exempt data-expect="5.57">Twelve people across four teams, updated today.</p></div>
+      <div data-shell-scrim aria-hidden="true"></div>
+      <div class="sheet"><span data-cell="sheet-row-l" data-kind="text" data-expect="8.58">People</span></div>
+    </div>
+  </div>
+</body>
+</html>
