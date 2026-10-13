@@ -32,6 +32,7 @@ import { ShellDropdown } from "./ShellDropdown.js";
 import {
   ShellMenu,
   shellMenuMaxDepth,
+  useShellMenuPresentation,
   useShellTransientLayer,
   type ShellMenuCrumb,
   type ShellMenuGroup,
@@ -2125,7 +2126,11 @@ export function ProductShell({
   const currentTrail: readonly PageHeaderBreadcrumb[] = currentPath.map((step, index) => (
     step.href && index < currentPath.length - 1 ? { id: `${baseId}-crumb-${index}`, label: step.label, href: step.href } : { id: `${baseId}-crumb-${index}`, label: step.label }
   ));
-  const state = shownMenuOpen ? "expanded" : openTarget ? "drop" : "closed";
+  // The full menu shows as the panel or, 760 wide and narrower, as the Sheet; ShellMenu picks the
+  // same presentation from the same context and viewport, and the root reports it: an open Sheet
+  // is data-state="sheet" (C-5; TCRN-DS-SUB-159).
+  const menuPresentation = useShellMenuPresentation();
+  const state = shownMenuOpen ? (menuPresentation === "sheet" ? "sheet" : "expanded") : openTarget ? "drop" : "closed";
   const unread = notifications?.unread ?? 0;
 
   return (

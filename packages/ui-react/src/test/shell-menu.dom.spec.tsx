@@ -9,7 +9,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { act, useRef, useState } from "react";
-import { ShellBrandButton, ShellMenu, type ShellMenuGroup, type ShellMenuOpenChangeReason } from "../index.js";
+import { ProductShell, ShellBrandButton, ShellMenu, type ShellMenuGroup, type ShellMenuOpenChangeReason } from "../index.js";
 import { createDomInteractionHarness, type DomInteractionHarness } from "./dom-harness.js";
 
 const menu: readonly ShellMenuGroup[] = [
@@ -394,6 +394,49 @@ test("the presentation follows the viewport: across 760 the open menu turns from
     assert.ok(panel(harness));
     assert.equal(scrim(harness), null);
     assert.equal(harness.document.activeElement, search(harness));
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+// ProductShell reports the open Sheet (TCRN-DS-SUB-159; 144, C-5): it reads the menu's presentation
+// with useShellMenuPresentation, so its root says data-state="sheet" while the Sheet is open,
+// "expanded" while the panel is, and "closed" with the menu shut. No prop is added for it.
+function ProductShellFixture({ open }: { open: boolean }) {
+  return (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="艺人"
+      brandProductId="tms"
+      currentRouteLabel="名册"
+      navGroups={menu}
+      locales={[{ locale: "zh-CN", nativeName: "简体中文" }]}
+      currentLocale="zh-CN"
+      pageHeader={{ title: "名册" }}
+      menuOpen={open}
+    >
+      <p>名册</p>
+    </ProductShell>
+  );
+}
+
+test("ProductShell's root says data-state=\"sheet\" while the Sheet is open and \"expanded\" while the panel is", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    const viewport = stubViewport(harness, true);
+    const root = () => harness.document.querySelector<HTMLElement>(".tcrn-product-shell");
+    await harness.render(<ProductShellFixture open={false} />);
+    assert.equal(root()?.getAttribute("data-state"), "closed");
+    await harness.render(<ProductShellFixture open />);
+    assert.ok(sheet(harness), "760 wide the open menu is the Sheet");
+    assert.equal(root()?.getAttribute("data-state"), "sheet");
+    await viewport.resize(false);
+    assert.ok(panel(harness), "wider, it is the panel");
+    assert.equal(root()?.getAttribute("data-state"), "expanded");
+    await viewport.resize(true);
+    assert.equal(root()?.getAttribute("data-state"), "sheet", "and back with the viewport");
+    await harness.render(<ProductShellFixture open={false} />);
+    assert.equal(root()?.getAttribute("data-state"), "closed");
   } finally {
     await harness.cleanup();
   }

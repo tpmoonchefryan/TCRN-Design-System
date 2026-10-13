@@ -40,6 +40,7 @@ import {
   type ShellThemeMode
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
+import { shellMenuPresentationContext } from "./ShellMenu.js";
 import { PageHeader, TocRail, ViewTabs } from "../DataDisplay/DomainDisplay.js";
 import { createResolvedTokenMap, createTokenMap } from "@tcrn/ui-tokens";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
@@ -2025,4 +2026,31 @@ test("STORY-143 C7 group titles, search results and pinnable labels carry their 
   assert.match(marked, /<span class="tcrn-nav-item__label" title="Roster"><span class="tcrn-shell-menu__text">Roster<\/span><\/span>/);
   assert.match(renderToStaticMarkup(<NavItem href="#plain">Plain</NavItem>), /<span class="tcrn-nav-item__label">Plain<\/span>/);
   singleLine(rule(".tcrn-shell-menu .tcrn-nav-item__label"));
+});
+
+test("STORY-144 the shell root reports an open Sheet as data-state=\"sheet\", also on the server (TCRN-DS-SUB-159)", () => {
+  const shell = (open: boolean) => (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      menuOpen={open}
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  // A phone screen rendered on the server sets the Sheet through the presentation context.
+  const phone = renderToStaticMarkup(<shellMenuPresentationContext.Provider value="sheet">{shell(true)}</shellMenuPresentationContext.Provider>);
+  assert.match(phone, /^<div data-shell="" class="tcrn-product-shell" data-state="sheet"/);
+  assert.match(phone, /data-panel="sheet"/);
+  const phoneClosed = renderToStaticMarkup(<shellMenuPresentationContext.Provider value="sheet">{shell(false)}</shellMenuPresentationContext.Provider>);
+  assert.match(phoneClosed, /^<div data-shell="" class="tcrn-product-shell" data-state="closed"/);
+  // The panel keeps "expanded"; the state is a value of the root, not a new prop.
+  assert.match(renderToStaticMarkup(shell(true)), /^<div data-shell="" class="tcrn-product-shell" data-state="expanded"/);
+  assert.match(renderToStaticMarkup(<shellMenuPresentationContext.Provider value="panel">{shell(true)}</shellMenuPresentationContext.Provider>), /data-state="expanded"/);
 });
