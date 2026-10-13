@@ -152,25 +152,6 @@ export const baseCss07 = `
 }`;
 
 export const baseCss08 = `
-/* Composition one (O-1, TCRN-DS-SUB-090): the rail is 220 wide and 52 collapsed, both from the
-   shell tokens. --tcrn-product-shell-sidebar-width stays the registered local variable, so a
-   consumer can still set its own width on the shell. */
-.tcrn-product-shell {
-  --tcrn-product-shell-sidebar-width: var(--tcrn-shell-sidebar-width);
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: var(--tcrn-product-shell-sidebar-width) minmax(0, 1fr);
-  background: var(--tcrn-color-surface-canvas);
-  color: var(--tcrn-color-text-primary);
-  font-family: var(--tcrn-type-family-ui);
-  font-size: var(--tcrn-type-size-ui);
-  line-height: var(--tcrn-type-line-ui);
-  letter-spacing: 0;
-  transition: grid-template-columns var(--tcrn-motion-product-shell);
-}
-.tcrn-product-shell[data-product-shell-collapsed="true"] {
-  --tcrn-product-shell-sidebar-width: var(--tcrn-shell-sidebar-width-collapsed);
-}
 .tcrn-product-shell[data-theme-switching="true"]::after {
   content: "";
   position: fixed;
@@ -183,7 +164,9 @@ export const baseCss08 = `
 @keyframes tcrn-product-shell-theme-wash {
   from { opacity: 0.22; }
   to { opacity: 0; }
-}
+}`;
+
+export const baseCss09 = `
 /* Inside the product shell an element with no focus treatment of its own takes the G+
    focus ring (--tcrn-focus-ring: a surface gap, then the accent ring), with a transparent
    outline behind it for forced colours, which paint no box-shadow. The pair-driven
@@ -195,152 +178,15 @@ export const baseCss08 = `
   outline: 2px solid transparent;
   outline-offset: 2px;
   box-shadow: var(--tcrn-focus-ring);
-}
-.tcrn-product-shell__sidebar {
-  position: sticky;
-  top: 0;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  gap: var(--tcrn-space-5);
-  min-width: 0;
-  padding: var(--tcrn-space-4);
-  /* The rail sits on the shell root's canvas colour with no edge of its own: the sheet beside it
-     is what separates the two (composition one, O-1). It used to be an accent wash with a 1px
-     right border. */
-  background: var(--tcrn-color-surface-canvas);
-  /*
-   * The rail is exactly one viewport tall and sticky, so navigation taller than
-   * the viewport used to paint outside its own box with nothing to scroll: the
-   * page scrolled, the sticky rail did not, and the items past the fold were
-   * unreachable at any scroll position. Measured on a rotated 375x760 phone —
-   * 812x375 is above the mobile breakpoint, so it takes this path — where the
-   * last three destinations could not be reached at all (TCRN-AOS-INC-026).
-   * dvh for the same family of reason: vh ignores the browser chrome that
-   * appears and disappears on a phone.
-   */
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}`;
-
-export const baseCss09 = `
-.tcrn-product-shell__sidebar-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 38px;
-  align-items: center;
-  gap: var(--tcrn-space-2);
-}
-.tcrn-product-shell__brand {
-  display: flex;
-  min-width: 0;
-  min-height: 46px;
-  align-items: center;
-  overflow: hidden;
-  text-decoration: none;
-}
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-shell__sidebar-header {
-  grid-template-columns: 1fr;
-  justify-items: center;
-}
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-shell__brand {
-  inline-size: 42px;
-  min-height: 42px;
 }`;
 
 export const baseCss10 = `
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-group__label,
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item__label,
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item__disabled-reason {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-side-nav {
-  align-items: center;
-}
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-group {
-  width: 48px;
-}
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item {
-  grid-template-columns: 20px;
-  justify-content: center;
-  inline-size: 44px;
-  min-height: 42px;
-  padding: var(--tcrn-space-2);
-}
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item[data-nav-item-has-icon="false"]::before {
-  content: "";
-  inline-size: 6px;
-  block-size: 6px;
-  border-radius: var(--tcrn-radius-pill);
-  background: currentColor;
-}
-.tcrn-product-shell__workspace {
-  min-width: 0;
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-.tcrn-product-shell__workspace > .tcrn-top-bar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: center;
-  gap: var(--tcrn-space-4);
-  min-height: var(--tcrn-shell-topbar-height);
-  padding: var(--tcrn-space-3) var(--tcrn-space-5);
-  border: 0;
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: 0;
-  justify-content: stretch;
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
-  backdrop-filter: blur(16px);
-}
-.tcrn-product-shell__utility-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-items: center;
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-}
-.tcrn-product-shell__utility-row > * {
-  min-width: 0;
-}
 .tcrn-product-shell__header-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--tcrn-space-2);
   min-width: 0;
-}
-.tcrn-product-shell__current-location {
-  display: grid;
-  flex: 0 1 240px;
-  gap: var(--tcrn-space-0h);
-  margin-right: auto;
-  min-width: 0;
-  max-width: 240px;
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: var(--tcrn-type-line-caption);
-  letter-spacing: 0;
-}
-.tcrn-product-shell__current-location strong {
-  color: var(--tcrn-color-text-primary);
-  font-size: var(--tcrn-type-size-ui);
-  font-weight: var(--tcrn-type-weight-strong);
-  line-height: var(--tcrn-type-line-ui);
-}
-.tcrn-product-shell__current-location span,
-.tcrn-product-shell__current-location strong {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .tcrn-product-shell-search {
   position: relative;
@@ -658,53 +504,6 @@ export const baseCss10 = `
     content: "";
     position: absolute;
     inset: calc(-1 * var(--tcrn-space-2h));
-  }
-}
-/*
- * Composition one above the mobile breakpoint (O-1, TCRN-DS-SUB-090). The query is the exact
- * complement of the mobile block's (max-width: 760px), so nothing below the breakpoint changes:
- * the stacked mobile shell keeps its own geometry.
- *
- * Rail guide column: marks and icons start 16 from the shell edge (the rail's space-4 padding),
- * labels 48 (space-4 + space-6). Only shell-scoped spacing does it; NavItem keeps its markup,
- * API and states. The item's box reaches space-1 past the rail padding on both sides, so its
- * fill starts 12 from the edge; the start padding is space-1 less the item's 1px border, plus
- * the depth indent as before; the 20px icon column and a space-3 gap put the label on 48.
- * Group titles start on the guide column.
- *
- * Collapsed (52 wide): space-1 inline padding leaves 44, which holds the 38px collapse control
- * and the 44px items; labels and lockup copy stay hidden and the 22px mark is not scaled.
- *
- * Sheet: the workspace is the paper, 12 (space-3) from the shell's top, end and bottom edges and
- * flush with the rail, with the paper radius, shadow s1 and the panel fill. overflow: clip rounds
- * the top bar's corners without making a scroll container, so the bar still sticks. The shell
- * top bar is 52 tall (min-height above); space-1h block padding keeps the one-row bar inside it.
- */
-@media not all and (max-width: 760px) {
-  .tcrn-product-shell .tcrn-nav-item {
-    margin-inline: calc(-1 * var(--tcrn-space-1));
-    padding-inline-start: calc(var(--tcrn-space-1) - 1px + (var(--tcrn-nav-item-depth) * var(--tcrn-space-3)));
-    column-gap: var(--tcrn-space-3);
-  }
-  .tcrn-product-shell .tcrn-nav-group__label {
-    padding-inline: 0;
-  }
-  .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-shell__sidebar {
-    padding-inline: var(--tcrn-space-1);
-  }
-  .tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-nav-item {
-    margin-inline: 0;
-  }
-  .tcrn-product-shell__workspace {
-    margin: var(--tcrn-space-3) var(--tcrn-space-3) var(--tcrn-space-3) 0;
-    border-radius: var(--tcrn-radius-paper);
-    background: var(--tcrn-color-panel);
-    box-shadow: var(--tcrn-shadow-s1);
-    overflow: clip;
-  }
-  .tcrn-product-shell__workspace > .tcrn-top-bar {
-    box-sizing: border-box;
-    padding-block: var(--tcrn-space-1h);
   }
 }`;
 
@@ -2138,93 +1937,21 @@ export const baseCss23 = `
   transform: translateY(0);
 }
 @media (max-width: 760px) {
-  .tcrn-product-shell {
-    --tcrn-product-shell-sidebar-width: 1fr;
-    grid-template-columns: 1fr;
-  }
-  .tcrn-product-shell__sidebar {
-    position: relative;
-    height: auto;
-    border-right: 0;
-    border-bottom: 1px solid var(--tcrn-color-border-subtle);
-  }
-  /* The sidebar owns the persistent mobile navigation trigger. A second sticky
-   * topbar at the same inset would cover it as content scrolls underneath. */
-  .tcrn-product-shell__workspace > .tcrn-top-bar {
-    position: relative;
-    top: auto;
-    z-index: auto;
-  }
-  .tcrn-product-shell__workspace > .tcrn-top-bar,
   .tcrn-top-bar {
     grid-template-columns: 1fr;
     align-items: stretch;
   }
-  /*
-   * Lever 2 of the mobile fold budget. Each of these used to take a full row of
-   * its own, which spent 130px of a 760px screen on three controls before the
-   * page said anything. They sit on one line and wrap only when they must.
-   */
-  .tcrn-product-shell__utility-row {
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--tcrn-space-2);
-  }
-  .tcrn-product-shell__current-location,
   .tcrn-shell-locale-menu {
     flex: 0 1 auto;
     margin-right: 0;
     max-width: none;
     width: auto;
   }
-  .tcrn-product-shell-search,
-  .tcrn-product-shell-search[data-search-expanded="true"] {
-    flex-basis: min(100%, 320px);
-    margin-left: 0;
-    justify-self: start;
-    width: 320px;
-    max-width: 320px;
-  }
-  /*
-   * The width-collapse control stays hidden here, and that ruling has not
-   * changed: narrowing a rail to 92px means nothing in a full-width stacked
-   * layout, and a control that does nothing is what the responsive standard
-   * forbids. What was never ruled on — because the shell had two destinations
-   * when this rule was written and has eleven now — is whether the navigation
-   * can be put away at all. That is the control below, and it is a different one.
-   */
-  .tcrn-product-shell__sidebar-header .tcrn-shell-side-nav-toggle {
-    display: none;
-  }
   .tcrn-shell-mobile-nav-toggle {
     display: inline-flex;
     /* Sole route to the whole IA on the one viewport where it is touched. */
     min-width: 44px;
     min-height: 44px;
-  }
-  /*
-   * Lever 1. display:none rather than a transform: it takes the eleven links
-   * out of the tab order and out of the accessibility tree, which a translated
-   * or merely invisible panel does not. Closed is the CSS default, so a server
-   * render emits the closed nav with no script and no correction after
-   * hydration — the attribute only ever turns it on.
-   */
-  .tcrn-product-shell__sidebar .tcrn-side-nav {
-    display: none;
-  }
-  .tcrn-product-shell[data-mobile-nav-expanded="true"] .tcrn-product-shell__sidebar .tcrn-side-nav {
-    display: grid;
-  }
-  /*
-   * The header carries the only navigation control on this viewport, so it has
-   * to survive the scroll that the shorter page now invites. Without this it
-   * leaves after 79px and the reader has no way back to the navigation at all.
-   */
-  .tcrn-product-shell__sidebar {
-    position: sticky;
-    top: 0;
-    z-index: 2;
   }
   .tcrn-lane-board,
   .tcrn-relation-graph__levels,

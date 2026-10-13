@@ -32,11 +32,16 @@ import {
   tcrnProductTagline,
   readPreferenceCookieValues,
   useProductShellController,
+  type ProductShellControllerConfig,
+  type ProductShellNavGroup,
+  type ProductShellProps,
+  type ProductShellRequestPreferences,
   type ShellThemeMode
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
 import { createResolvedTokenMap, createTokenMap } from "@tcrn/ui-tokens";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
+import * as brandSegments from "../../styles/brand.css.js";
 
 test("tabs use honest segmented navigation semantics", () => {
   const html = renderToStaticMarkup(<ModuleTabs items={[{ id: "overview", label: "Overview", selected: true }, { id: "proof", label: "Proof" }]} />);
@@ -182,29 +187,51 @@ test("nav item density and nesting are data-driven", () => {
 // Composition one (O-1, TCRN-DS-SUB-090): the shell geometry comes from the shell tokens, the
 // rail sits on the canvas colour with no right edge, and above the mobile breakpoint the rail
 // guide column is 16 / 48 and the workspace is a sheet 12 from the shell edges.
-test("product shell geometry follows composition one through the shell tokens", () => {
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell \{\n  --tcrn-product-shell-sidebar-width: var\(--tcrn-shell-sidebar-width\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell\[data-product-shell-collapsed="true"\] \{\n  --tcrn-product-shell-sidebar-width: var\(--tcrn-shell-sidebar-width-collapsed\);\n\}/);
-  const sidebar = /\.tcrn-product-shell__sidebar \{([^}]*)\}/.exec(tcrnComponentCss);
-  assert.ok(sidebar, "the sidebar rule exists");
-  assert.match(sidebar[1], /background: var\(--tcrn-color-surface-canvas\);/, "the rail takes the shell root's canvas colour");
-  assert.doesNotMatch(sidebar[1], /border-right/, "the rail has no right edge");
-  assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-color-brand-secondary-bg\)/, "no accent wash on the rail");
-  const topbar = /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{([^}]*)\}/.exec(tcrnComponentCss);
-  assert.ok(topbar, "the shell top bar rule exists");
-  assert.match(topbar[1], /min-height: var\(--tcrn-shell-topbar-height\);/);
+test("STORY-140 GWT1 product shell is the top band and the paper, through the shell tokens", () => {
+  const rule = (selector: string) => {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const found = new RegExp(`(?:^|\\n)${escaped} \\{([^}]*)\\}`).exec(tcrnComponentCss);
+    assert.ok(found, `${selector} has a rule`);
+    return found[1];
+  };
+  const root = rule(".tcrn-product-shell");
+  assert.match(root, /position: relative;/, "the shell is the full menu's containing block");
+  assert.match(root, /grid-template-rows: var\(--tcrn-shell-strip-h\) minmax\(0, 1fr\);/);
+  assert.match(root, /overflow: clip;/);
+  const strip = rule(".tcrn-shell-strip");
+  assert.match(strip, /block-size: var\(--tcrn-shell-strip-h\);/);
+  assert.match(strip, /padding: 0 var\(--tcrn-space-3\);/, "the brand button starts on the paper's edge");
+  assert.match(strip, /border: 0;/);
+  assert.match(strip, /background: none;/);
+  const paper = rule(".tcrn-product-shell__paper");
+  assert.match(paper, /margin: 0 var\(--tcrn-space-3\) var\(--tcrn-space-3\);/);
+  assert.match(paper, /overflow: hidden;/);
+  assert.match(paper, /border-radius: var\(--tcrn-radius-paper\);/);
+  assert.match(paper, /background: var\(--tcrn-color-panel\);/);
+  assert.match(paper, /box-shadow: var\(--tcrn-shadow-s1\);/);
+  assert.match(rule(".tcrn-shell-cluster"), /gap: var\(--tcrn-space-1h\);[\s\S]*margin-inline-start: auto;/);
+  assert.match(rule(".tcrn-shell-bell"), /inline-size: var\(--tcrn-control-height-md\);\n  block-size: var\(--tcrn-control-height-md\);/);
+  assert.match(rule(".tcrn-shell-avatar"), /inline-size: var\(--tcrn-control-height-sm\);\n  block-size: var\(--tcrn-control-height-sm\);/);
+  // Composition one (O-1) is withdrawn: no rail and its collapsed width, no lead column, no sheet
+  // beside a rail, no top bar, no mobile drawer. The brand module is left out of this reading: it
+  // still scopes three wordmark rules to the rail, which match nothing now and are its owner's.
+  const shellRules = Object.values(brandSegments).reduce((css, segment) => (typeof segment === "string" && segment ? css.replace(segment, "") : css), tcrnComponentCss);
+  for (const retired of [
+    /\.tcrn-product-shell__sidebar/,
+    /\.tcrn-product-shell__workspace/,
+    /\.tcrn-product-shell__utility-row/,
+    /\.tcrn-product-shell__current-location/,
+    /data-product-shell-collapsed/,
+    /data-mobile-nav-expanded/,
+    /--tcrn-product-shell-sidebar-width/,
+    /var\(--tcrn-shell-sidebar-width(?:-collapsed)?\)/,
+    /var\(--tcrn-shell-topbar-height\)/,
+    /@media not all and \(max-width: 760px\)/
+  ]) {
+    assert.doesNotMatch(shellRules, retired);
+  }
   // The standalone TopBar keeps its own height.
   assert.match(tcrnComponentCss, /\.tcrn-top-bar \{\n  display: grid;\n  grid-template-columns: max-content max-content minmax\(0, 1fr\);\n  align-items: center;\n  gap: var\(--tcrn-space-4\);\n  min-height: 68px;/);
-  const desktop = /@media not all and \(max-width: 760px\) \{([\s\S]*?)\n\}/.exec(tcrnComponentCss);
-  assert.ok(desktop, "the composition-one block is the complement of the mobile query");
-  assert.match(desktop[1], /\.tcrn-product-shell \.tcrn-nav-item \{\s*margin-inline: calc\(-1 \* var\(--tcrn-space-1\)\);\s*padding-inline-start: calc\(var\(--tcrn-space-1\) - 1px \+ \(var\(--tcrn-nav-item-depth\) \* var\(--tcrn-space-3\)\)\);\s*column-gap: var\(--tcrn-space-3\);\s*\}/);
-  assert.match(desktop[1], /\.tcrn-product-shell \.tcrn-nav-group__label \{\s*padding-inline: 0;\s*\}/);
-  assert.match(desktop[1], /\.tcrn-product-shell\[data-product-shell-collapsed="true"\] \.tcrn-product-shell__sidebar \{\s*padding-inline: var\(--tcrn-space-1\);\s*\}/);
-  assert.match(desktop[1], /\.tcrn-product-shell__workspace \{\s*margin: var\(--tcrn-space-3\) var\(--tcrn-space-3\) var\(--tcrn-space-3\) 0;\s*border-radius: var\(--tcrn-radius-paper\);\s*background: var\(--tcrn-color-panel\);\s*box-shadow: var\(--tcrn-shadow-s1\);\s*overflow: clip;\s*\}/);
-  // No literal shell geometry is left in the shell rules.
-  for (const rule of tcrnComponentCss.matchAll(/\.tcrn-product-shell(?:\[[^\]]*\])?(?:__sidebar|__workspace(?: > \.tcrn-top-bar)?)? \{([^}]*)\}/g)) {
-    assert.doesNotMatch(rule[1], /\b(?:280|92|68)px\b/, `old shell geometry in ${rule[0].split("{")[0].trim()}`);
-  }
 });
 
 // The five-locale taglines of STORY-127, as the story states them. The registry
@@ -365,124 +392,88 @@ test("TcrnBrandMark draws a registered product mark inline in four renditions an
   assert.match(renderToStaticMarkup(<ProductLockup productId="einzbern" markVariant="tile-deep" />), /data-product-mark-variant="tile-deep"/);
 });
 
-test("product shell renders package-backed side-nav shell and effect boundary", () => {
+const shellLocales = [
+  { locale: "en", nativeName: "English" },
+  { locale: "zh-CN", nativeName: "简体中文" }
+];
+
+const shellNavGroups: ProductShellNavGroup[] = [
+  {
+    id: "talent",
+    label: "Talent",
+    items: [
+      { id: "roster", label: "Roster", href: "/roster", iconName: "users", selected: true },
+      {
+        id: "contracts",
+        label: "Contracts",
+        iconName: "layers",
+        children: [
+          { id: "contracts-active", label: "Active", href: "/contracts/active" },
+          { id: "contracts-drafts", label: "Drafts", href: "/contracts/drafts" }
+        ]
+      }
+    ]
+  },
+  { id: "finance", label: "Finance", items: [{ id: "statements", label: "Statements", href: "/statements", iconName: "database" }] }
+];
+
+test("STORY-140 GWT2 product shell renders one shell: the band, the cluster and the paper, with no side rail", () => {
   const html = renderToStaticMarkup(
     <ProductShell
-      productName="TCRN AOS"
-      moduleName="Frontend shell slice"
-      brandProductId="aos"
-      brandHref="/cockpit"
-      brandMarkSrc="/assets/tcrn-brand-mark.svg"
-      brandMarkAlt="TCRN registered brand mark"
-      currentRouteLabel="Cockpit"
-      currentRouteLabelKey="story.cockpit.title"
-      currentLocationLabelKey="shell.currentLocationLabel"
-      navLabel="Registered AOS modules"
-      collapsed
-      collapsedStorageKey="tcrn-aos-side-nav-collapsed"
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      currentRouteLabelKey="story.roster.title"
+      navGroups={shellNavGroups}
+      pinnedIds={["roster", "contracts"]}
+      onPinnedChange={() => undefined}
+      notifications={{ unread: 3 }}
+      account={{ name: "Lin Xiao" }}
+      locales={shellLocales}
+      currentLocale="en"
       currentTheme="dark"
-      locales={[
-        { locale: "en", nativeName: "English" },
-        { locale: "zh-CN", nativeName: "简体中文" }
-      ]}
-      currentLocale="zh-CN"
-      localeMenuOpen
-      search={{
-        label: "Search AOS shell",
-        placeholder: "Search modules, work items, or proof",
-        query: "shell",
-        expanded: true,
-        results: [
-          { id: "cockpit", title: "Cockpit", titleKey: "story.cockpit.title", meta: "Local proof shell", metaKey: "group.Operations", href: "/cockpit", selected: true }
-        ],
-        "data-product-shell-search-label-key": "shell.searchLabel"
-      }}
-      navGroups={[
-        {
-          id: "registered",
-          label: "Registered shell entries",
-          labelKey: "category.registered",
-          description: "Registered IA routes",
-          descriptionKey: "category.registered.description",
-          sectionLabel: "Operations",
-          sectionLabelKey: "group.Operations",
-          selected: true,
-          items: [
-            { id: "cockpit", label: "Cockpit", labelKey: "story.cockpit.title", href: "/cockpit", iconName: "home", selected: true },
-            { id: "work", label: "Work", labelKey: "story.work.title", href: "/work", iconName: "database" }
-          ]
-        }
-      ]}
     >
-      <section>Fixture-safe cockpit content</section>
+      <section>Fixture-safe roster content</section>
     </ProductShell>
   );
 
-  assert.match(html, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/);
-  assert.match(html, /data-product-shell-pattern="attached-side-nav"/);
-  assert.match(html, /data-product-shell-collapsed="true"/);
+  assert.match(html, /^<div data-shell="" class="tcrn-product-shell" data-state="closed"/);
+  assert.match(html, /data-package-backed-product-shell-boundary="top-band-shell-v2"/);
+  assert.match(html, /data-product-shell-pattern="top-band"/);
   assert.match(html, /data-product-shell-theme="dark"/);
-  assert.match(html, /data-product-shell-responsive="desktop-attached-mobile-stacked"/);
-  assert.match(html, /data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"/);
-  assert.match(html, /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
-  assert.match(html, /data-product-shell-semantic-api="collapse-theme-locale-search"/);
-  assert.match(html, /data-product-shell-current-location-label-key="shell.currentLocationLabel"/);
-  assert.match(html, /data-product-shell-current-route-label-key="story.cockpit.title"/);
-  assert.match(html, /data-registered-brand-lockup="@tcrn\/ui-react\/ShellBrandLockup"/);
-  assert.match(html, /href="\/cockpit"/);
-  assert.match(html, /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
-  assert.match(html, /data-visible-registered-brand-lockup="true"/);
-  assert.match(html, /data-product-id="aos"/);
-  assert.match(html, /data-product-logo-asset-id="tcrn-aos-two-line"/);
-  assert.match(html, /class="tcrn-product-logo__line-one-base">TCRN</);
-  assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--aos">AOS</);
-  // This fixture is a zh-CN shell, so the brand tagline must be Chinese. The
-  // assertion here used to require English and passed — that is what the defect
-  // looked like from inside the proof: the shell knew the reader's locale for its
-  // own utility row and resolved the brand block without it.
-  assert.match(html, /class="tcrn-product-logo__line-two">AI 运营系统</);
-  assert.doesNotMatch(html, />AI Operation System</);
-  assert.doesNotMatch(html, /AOS Rebuild Workspace|Rebuild workspace/);
-  assert.doesNotMatch(html, /tcrn-top-bar__brand/);
-  assert.doesNotMatch(html, /tcrn-top-bar__module/);
-  assert.match(html, /src="\/assets\/tcrn-brand-mark\.svg"/);
-  assert.match(html, /aria-expanded="false"/);
-  assert.match(html, /data-side-nav-persisted-key="tcrn-aos-side-nav-collapsed"/);
-  assert.match(html, /data-side-nav-semantic-api="onCollapsedChange"/);
-  assert.match(html, /data-registered-navigation-only="true"/);
-  assert.match(html, /data-product-shell-nav-group-label-key="category.registered"/);
-  assert.match(html, /data-product-shell-nav-group-description-key="category.registered.description"/);
-  assert.match(html, /data-product-shell-nav-group-section-label-key="group.Operations"/);
-  assert.match(html, /data-product-shell-route="cockpit"/);
-  assert.match(html, /data-product-shell-route-label-key="story.cockpit.title"/);
-  assert.match(html, /data-product-shell-route="work"/);
-  assert.match(html, /data-product-shell-route-label-key="story.work.title"/);
-  assert.match(html, /data-shell-control="product-shell-search"/);
-  assert.match(html, /data-product-shell-search-label-key="shell.searchLabel"/);
-  assert.match(html, /data-search-result-title-key="story.cockpit.title"/);
-  assert.match(html, /data-search-result-meta-key="group.Operations"/);
-  assert.match(html, /data-search-dismissal-contract="blur-outside-pointer-tab-escape"/);
-  assert.match(html, /data-search-semantic-api="onQueryChange-onExpandedChange-onDismiss-onResultActivate"/);
-  assert.match(html, /data-search-expanded="true"/);
-  assert.match(html, /role="listbox"/);
-  assert.match(html, /aria-selected="true"/);
-  assert.match(html, /data-locale-menu-open="true"/);
-  assert.match(html, /data-locale-dismissal-contract="selection-outside-pointer-escape-focus-return"/);
-  assert.match(html, /data-locale-semantic-api="onOpenChange-onLocaleChange"/);
-  assert.match(html, /data-package-backed-shell-control="theme-toggle"/);
-  assert.match(html, /data-theme-transition-contract="whole-page-view-transition-or-token-wash"/);
-  const currentLocationIndex = html.indexOf('class="tcrn-product-shell__current-location"');
-  const searchIndex = html.indexOf('data-shell-control="product-shell-search"');
-  const themeIndex = html.indexOf('data-theme-toggle="true"');
-  const localeIndex = html.indexOf("data-locale-menu-toggle");
-  assert.ok(currentLocationIndex > -1);
-  assert.ok(searchIndex > -1);
-  assert.ok(themeIndex > -1);
-  assert.ok(localeIndex > -1);
-  assert.ok(currentLocationIndex < searchIndex);
-  assert.ok(searchIndex < themeIndex);
-  assert.ok(themeIndex < localeIndex);
-  assert.match(html, /Fixture-safe cockpit content/);
+  assert.match(html, /data-product-shell-current-route-label-key="story.roster.title"/);
+  assert.match(html, /<header class="tcrn-shell-strip" aria-label="Talent shell controls" data-shell-strip=""/);
+  // In the band: the brand button, the pinned items, the cluster; then the paper.
+  const brand = html.indexOf("data-shell-brand=");
+  const pins = html.indexOf("data-pins=");
+  const cluster = html.indexOf("data-cluster=");
+  const paper = html.indexOf("data-paper=");
+  assert.ok(brand > -1 && brand < pins && pins < cluster && cluster < paper, "brand, pins, cluster, paper");
+  assert.match(html, /data-logo="tms"/);
+  assert.match(html, /aria-controls="[^"]*-menu"/, "the brand button controls the full menu");
+  // The current page's pin is the current link; a pinned submenu opens its drop-down.
+  assert.match(html, /<span class="tcrn-shell-pins__pin" data-pin="roster"><a class="tcrn-shell-pins__item" href="\/roster" aria-current="page">/);
+  assert.match(html, /data-pin="contracts"><button type="button" class="tcrn-shell-pins__item" aria-haspopup="dialog" aria-expanded="false" aria-controls="[^"]*-drop-contracts"/);
+  assert.match(html, /aria-label="Notifications · 3 unread" data-shell-bell=""/);
+  assert.match(html, /class="tcrn-shell-bell__dot" aria-hidden="true"/);
+  assert.match(html, /aria-label="Lin Xiao · Account, switch product, theme and language" aria-haspopup="dialog" aria-expanded="false"/);
+  assert.match(html, /<span aria-hidden="true">L<\/span>/);
+  assert.match(html, /<div class="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper"><section id="product-shell-content" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Product shell workspace">/);
+  assert.match(html, /Fixture-safe roster content/);
+  // One shell: no side rail, no collapse control, no drawer toggle, no top bar; closed layers render nothing.
+  for (const retired of [
+    "tcrn-product-shell__sidebar",
+    "tcrn-side-nav",
+    "data-side-nav-toggle",
+    "tcrn-shell-mobile-nav-toggle",
+    "tcrn-product-shell__workspace",
+    "tcrn-top-bar",
+    "data-product-shell-collapsed",
+    "data-panel="
+  ]) {
+    assert.equal(html.includes(retired), false, `${retired} is not in the shell`);
+  }
 });
 
 test("product shell component css keeps motion shorthands valid", () => {
@@ -492,7 +483,6 @@ test("product shell component css keeps motion shorthands valid", () => {
   // redefinition here would silently shadow the package and un-govern the look.
   assert.doesNotMatch(tcrnComponentCss, /--tcrn-elevation-floating:/);
   assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-text-inverse:/);
-  assert.match(tcrnComponentCss, /transition: grid-template-columns var\(--tcrn-motion-product-shell\);/);
   assert.match(tcrnComponentCss, /animation: tcrn-product-shell-theme-wash var\(--tcrn-motion-product-shell\) both;/);
   assert.match(tcrnComponentCss, /flex-basis var\(--tcrn-motion-product-shell-search\),[\s\S]*width var\(--tcrn-motion-product-shell-search\),[\s\S]*max-width var\(--tcrn-motion-product-shell-search\);/);
   assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-motion-emphasis\) ease/);
@@ -547,9 +537,6 @@ test("component-loop CSS ships independent roots for every returned construct", 
 });
 
 test("product shell component css isolates topbar from docs chrome", () => {
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*border: 0;[\s\S]*border-bottom: 1px solid var\(--tcrn-color-border-subtle\);[\s\S]*border-radius: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-4\);[\s\S]*justify-content: stretch;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__workspace > \.tcrn-top-bar \{[\s\S]*background: color-mix\(in srgb, var\(--tcrn-color-surface-panel\), transparent 5%\);/);
   assert.match(tcrnComponentCss, /\.tcrn-product-shell \{[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
   // G+ focus in the shell: an element with no focus treatment of its own takes the focus
   // ring token over a transparent forced-colours outline, and the pair-driven controls
@@ -573,129 +560,82 @@ test("product shell component css isolates topbar from docs chrome", () => {
   assert.doesNotMatch(selectedNavItem[1], /box-shadow:\s*(?!none\b)/);
 });
 
-test("product shell utility row wraps controls within owner-quality story frames", () => {
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*display: flex;[\s\S]*flex-wrap: wrap;[\s\S]*justify-content: flex-end;[\s\S]*min-width: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__utility-row > \* \{[\s\S]*min-width: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__current-location \{[\s\S]*flex: 0 1 240px;[\s\S]*margin-right: auto;[\s\S]*max-width: 240px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-search \{[\s\S]*flex-basis: 260px;[\s\S]*margin-left: auto;[\s\S]*width: 260px;[\s\S]*max-width: min\(100%, 260px\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-search\[data-search-expanded="true"\] \{[\s\S]*flex-basis: 420px;[\s\S]*width: 420px;[\s\S]*max-width: min\(100%, 420px\);/);
-  // The mobile utility row lays out on one line and wraps only when it must.
-  // It used to stretch each control to a full row of its own, which spent 130px
-  // of a 760px screen on three controls before the page said anything — lever 2
-  // of the mobile fold budget (TCRN-AOS-MIN-006).
-  assert.match(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-product-shell__utility-row \{[\s\S]*justify-content: flex-start;[\s\S]*align-items: center;[\s\S]*flex-wrap: wrap;[\s\S]*\.tcrn-product-shell-search,\n  \.tcrn-product-shell-search\[data-search-expanded="true"\] \{[\s\S]*flex-basis: min\(100%, 320px\);[\s\S]*margin-left: 0;[\s\S]*width: 320px;[\s\S]*max-width: 320px;/);
-  assert.doesNotMatch(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-product-shell__utility-row \{[\s\S]*justify-content: stretch;/);
-  assert.match(tcrnComponentCss, /@media \(max-width: 760px\) \{[\s\S]*\.tcrn-shell-locale-menu__trigger \{[\s\S]*width: 100%;[\s\S]*max-width: none;/);
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell__utility-row \{[\s\S]*grid-template-columns: max-content minmax\(220px, 360px\) max-content max-content;/);
-});
-
-test("product shell lets consumers omit shell search when the product has no global search", () => {
+test("product shell puts the product's own controls in the cluster, before the bell and the avatar", () => {
   const html = renderToStaticMarkup(
     <ProductShell
-      productName="TCRN AOS"
-      moduleName="Operations Cockpit"
-      brandProductId="aos"
-      currentRouteLabel="Operations Cockpit"
-      navLabel="AOS operations navigation"
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      navGroups={shellNavGroups}
+      locales={shellLocales}
       currentLocale="en"
-      locales={[{ locale: "en", nativeName: "English" }]}
-      navGroups={[
-        {
-          id: "registered",
-          label: "Registered shell entries",
-          selected: true,
-          items: [{ id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true }]
-        }
-      ]}
+      notifications={{}}
+      headerActions={<button type="button" data-product-header-action="workspace">Workspace</button>}
     >
-      <section>Owner-quality content without global search</section>
+      <div>content</div>
     </ProductShell>
   );
+  assert.match(html, /data-product-shell-header-actions="present"/);
+  const cluster = html.indexOf("data-cluster=");
+  const actions = html.indexOf('data-product-header-action="workspace"');
+  const bell = html.indexOf("data-shell-bell=");
+  const avatar = html.indexOf("data-shell-avatar=");
+  assert.ok(cluster > -1 && cluster < actions && actions < bell && bell < avatar, "the shell's own controls stay rightmost");
+  assert.match(html, /aria-label="Notifications" data-shell-bell=""/);
+  assert.equal(html.includes("tcrn-shell-bell__dot"), false, "nothing unread, no dot");
+  assert.match(html, /aria-label="Account" aria-haspopup="dialog"/, "without an account the avatar names its menu");
 
-  assert.doesNotMatch(html, /data-shell-control="product-shell-search"/);
-  assert.match(html, /data-product-shell-semantic-api="collapse-theme-locale"/);
-  assert.doesNotMatch(html, /data-product-shell-semantic-api="collapse-theme-locale-search"/);
-  assert.match(html, /data-shell-control="theme-toggle"/);
-  assert.match(html, /data-locale-menu-toggle/);
-  assert.match(html, /Owner-quality content without global search/);
-});
-
-test("product shell hosts product-owned header actions without moving its own utilities", () => {
-  const shell = (headerActions?: ReactNode) => renderToStaticMarkup(
-    <ProductShell
-      productName="TCRN AOS"
-      moduleName="Operations Cockpit"
-      brandProductId="aos"
-      currentRouteLabel="Work items"
-      navLabel="AOS operations navigation"
-      currentLocale="en"
-      locales={[{ locale: "en", nativeName: "English" }]}
-      navGroups={[
-        {
-          id: "delivery",
-          label: "Delivery",
-          selected: true,
-          items: [{ id: "work", label: "Work items", href: "/work", iconName: "home", selected: true }]
-        }
-      ]}
-      {...(headerActions ? { headerActions } : {})}
-    >
-      <section>Shell content</section>
+  const bare = renderToStaticMarkup(
+    <ProductShell productName="TCRN TMS" moduleName="Talent" brandProductId="tms" currentRouteLabel="Roster" navGroups={[]} locales={shellLocales} currentLocale="en">
+      <div>content</div>
     </ProductShell>
   );
-
-  const withActions = shell(<span data-product-control="workspace-switcher">cross-project</span>);
-  assert.match(withActions, /data-product-shell-region="header-actions"/);
-  assert.match(withActions, /data-product-shell-header-actions="present"/);
-  assert.match(withActions, /data-product-control="workspace-switcher"/);
-
-  // The shell's own utilities must stay rightmost, so a product adding controls
-  // never shifts the theme and locale affordances users navigate by position.
-  const actionsAt = withActions.indexOf('data-product-shell-region="header-actions"');
-  const themeAt = withActions.indexOf('data-shell-control="theme-toggle"');
-  const localeAt = withActions.indexOf("data-locale-menu-toggle");
-  assert.ok(actionsAt > 0 && actionsAt < themeAt && themeAt < localeAt);
-
-  // Purely additive: omitting the prop renders the row exactly as before.
-  const withoutActions = shell();
-  assert.doesNotMatch(withoutActions, /data-product-shell-region="header-actions"/);
-  assert.match(withoutActions, /data-product-shell-header-actions="absent"/);
-
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell__header-actions \{[\s\S]*display: flex;[\s\S]*align-items: center;/);
+  assert.match(bare, /data-product-shell-header-actions="absent"/);
+  assert.equal(bare.includes("data-shell-bell"), false, "without notifications the cluster is the avatar alone");
+  assert.equal(bare.includes("data-pins"), false, "nothing pinned, no pinned items");
+  assert.match(bare, /data-shell-avatar=""/);
 });
 
-test("product shell can disable side-nav collapse with a truthful package-backed reason", () => {
+test("STORY-140 GWT4 the avatar menu switches products and holds the theme and the language; the full menu lists no products", () => {
   const html = renderToStaticMarkup(
     <ProductShell
-      productName="TCRN AOS"
-      moduleName="Operations Cockpit"
-      brandProductId="aos"
-      currentRouteLabel="Operations Cockpit"
-      navLabel="AOS operations navigation"
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      navGroups={shellNavGroups}
+      locales={shellLocales}
       currentLocale="en"
-      sideNavCollapseDisabledReason="Side navigation stays expanded for owner-review routes"
-      locales={[{ locale: "en", nativeName: "English" }]}
-      navGroups={[
-        {
-          id: "registered",
-          label: "Registered shell entries",
-          selected: true,
-          items: [{ id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true }]
-        }
+      account={{ name: "Lin Xiao", initials: "LX" }}
+      products={[
+        { id: "tms", label: "TCRN TMS", href: "/tms", current: true },
+        { id: "einzbern", label: "Einzbern", href: "/einzbern" }
       ]}
+      accountMenuOpen
+      menuOpen
     >
-      <section>Owner-quality content</section>
+      <div>content</div>
     </ProductShell>
   );
-
-  assert.match(html, /data-package-backed-shell-control="side-nav-collapse"/);
-  assert.match(html, /data-side-nav-action="disabled"/);
-  assert.match(html, /data-side-nav-disabled-reason="Side navigation stays expanded for owner-review routes"/);
-  assert.match(html, /aria-label="Side navigation stays expanded for owner-review routes"/);
-  assert.match(html, /title="Side navigation stays expanded for owner-review routes"/);
-  assert.match(html, /aria-disabled="true"/);
-  assert.match(html, /disabled=""/);
-  assert.match(html, /aria-expanded="true"/);
+  assert.match(html, /data-state="expanded"/);
+  assert.match(html, />LX<\/span>/);
+  const accountStart = html.indexOf('data-panel="account"');
+  const accountEnd = html.indexOf("</section>", accountStart);
+  assert.ok(accountStart > -1 && accountEnd > accountStart, "the avatar menu is open");
+  const account = html.slice(accountStart, accountEnd);
+  assert.match(account, /aria-label="Switch product" data-shell-products=""/);
+  const current = /<a[^>]*data-shell-product="tms"[^>]*>/.exec(account);
+  assert.ok(current, "the current product is listed");
+  assert.match(current[0], /aria-current="page"/);
+  assert.match(account, /data-shell-product="einzbern"/);
+  assert.match(account, /data-theme-toggle="true"/);
+  assert.match(account, /data-locale-menu-toggle/);
+  const menu = html.slice(html.indexOf('data-panel="expanded"'));
+  assert.ok(menu.length > 0 && html.includes('data-panel="expanded"'), "the full menu is open");
+  assert.equal(menu.includes("data-shell-product"), false, "the full menu and its lockup carry no product list");
+  assert.equal(menu.includes('href="/einzbern"'), false);
+  assert.equal(html.includes("data-side-nav-toggle"), false, "no collapse control, open or closed");
 });
 
 test("brand lockup css follows the G+ brand rules", () => {
@@ -841,41 +781,32 @@ interface ProductShellSemanticFixtureProps {
 }
 
 function ProductShellSemanticFixture({ events }: ProductShellSemanticFixtureProps) {
-  const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<ShellThemeMode>("light");
   const [locale, setLocale] = useState("en");
   const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const [expanded, setExpanded] = useState(false);
+  const [pinnedIds, setPinnedIds] = useState<readonly string[]>(["roster", "contracts"]);
 
   return (
     <ProductShell
-      productName="TCRN AOS"
-      moduleName="Frontend shell slice"
-      brandProductId="aos"
-      brandMarkSrc="/assets/tcrn-brand-mark.svg"
-      brandMarkAlt="TCRN registered brand mark"
-      currentRouteLabel="Cockpit"
-      navLabel="Registered AOS modules"
-      collapsed={collapsed}
-      currentTheme={theme}
-      locales={[
-        { locale: "en", nativeName: "English" },
-        { locale: "zh-CN", nativeName: "简体中文" }
-      ]}
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      navGroups={shellNavGroups}
+      locales={shellLocales}
       currentLocale={locale}
+      currentTheme={theme}
       localeMenuOpen={localeMenuOpen}
-      search={{
-        label: "Search AOS shell",
-        placeholder: "Search modules",
-        query,
-        expanded,
-        results: query ? [{ id: "cockpit", title: "Cockpit", meta: "Shell entry", href: "/cockpit", selected: true }] : []
+      account={{ name: "Lin Xiao" }}
+      products={[{ id: "tms", label: "TCRN TMS", href: "/tms", current: true }]}
+      pinnedIds={pinnedIds}
+      onPinnedChange={(id, pinned) => {
+        events.push(`pin:${id}:${pinned}`);
+        setPinnedIds((current) => (pinned ? [...current, id] : current.filter((entry) => entry !== id)));
       }}
-      onCollapsedChange={(nextCollapsed) => {
-        events.push(`collapsed:${nextCollapsed}`);
-        setCollapsed(nextCollapsed);
-      }}
+      onMenuOpenChange={(open, reason) => events.push(`menu:${open}:${reason}`)}
+      onOpenPinChange={(id) => events.push(`drop:${id ?? "none"}`)}
+      onAccountMenuOpenChange={(open) => events.push(`account:${open}`)}
       onThemeChange={(nextTheme) => {
         events.push(`theme:${nextTheme}`);
         setTheme(nextTheme);
@@ -888,34 +819,9 @@ function ProductShellSemanticFixture({ events }: ProductShellSemanticFixtureProp
         events.push(`locale:${nextLocale}`);
         setLocale(nextLocale);
       }}
-      onSearchQueryChange={(nextQuery) => {
-        events.push(`search-query:${nextQuery}`);
-        setQuery(nextQuery);
-      }}
-      onSearchExpandedChange={(nextExpanded, reason) => {
-        events.push(`search-expanded:${nextExpanded}:${reason}`);
-        setExpanded(nextExpanded);
-      }}
-      onSearchDismiss={(reason) => {
-        events.push(`search-dismiss:${reason}`);
-      }}
-      onSearchResultActivate={(result, event) => {
-        event.preventDefault();
-        events.push(`search-result:${result.id}`);
-      }}
-      navGroups={[
-        {
-          id: "registered",
-          label: "Registered shell entries",
-          selected: true,
-          items: [
-            { id: "cockpit", label: "Cockpit", href: "/cockpit", iconName: "home", selected: true },
-            { id: "work", label: "Work", href: "/work", iconName: "database" }
-          ]
-        }
-      ]}
+      onSearchQueryChange={(nextQuery) => events.push(`search-query:${nextQuery}`)}
     >
-      <section>Fixture-safe cockpit content</section>
+      <section>Fixture-safe roster content</section>
     </ProductShell>
   );
 }
@@ -923,7 +829,6 @@ function ProductShellSemanticFixture({ events }: ProductShellSemanticFixtureProp
 function ProductShellControllerFixture({ events }: ProductShellSemanticFixtureProps) {
   const controller = useProductShellController({
     searchRecords: [{ id: "work", title: "Work", meta: "Registered shell entry", href: "/work" }],
-    onCollapsedChange: (collapsed) => events.push(`controller-collapsed:${collapsed}`),
     onThemeChange: (theme) => events.push(`controller-theme:${theme}`),
     onLocaleMenuOpenChange: (open, reason) => events.push(`controller-locale-open:${open}:${reason}`),
     onLocaleChange: (locale) => events.push(`controller-locale:${locale}`),
@@ -938,7 +843,6 @@ function ProductShellControllerFixture({ events }: ProductShellSemanticFixturePr
 
   return (
     <section>
-      <SideNavCollapseButton {...controller.sideNavCollapseButtonProps} />
       <ShellThemeToggle {...controller.shellThemeToggleProps} />
       <ShellLocaleMenu
         locales={[
@@ -980,7 +884,7 @@ async function dispatchMouseDown(harness: ReturnType<typeof createDomInteraction
   });
 }
 
-test("product shell semantic callbacks own collapse theme locale and search behavior", async () => {
+test("product shell keeps one layer open: the full menu, a drop-down or the avatar menu", async () => {
   const harness = createDomInteractionHarness();
   const events: string[] = [];
   try {
@@ -988,74 +892,60 @@ test("product shell semantic callbacks own collapse theme locale and search beha
 
     const shell = harness.document.querySelector(".tcrn-product-shell");
     assert.ok(shell instanceof harness.window.HTMLElement);
-    assert.equal(shell.getAttribute("data-product-shell-semantic-api"), "collapse-theme-locale-search");
+    assert.equal(shell.getAttribute("data-product-shell-semantic-api"), "menu-pins-theme-locale");
+    assert.equal(shell.getAttribute("data-state"), "closed");
 
-    const collapseButton = harness.document.querySelector("[data-side-nav-toggle='true']");
-    assert.ok(collapseButton instanceof harness.window.HTMLButtonElement);
-    await harness.dispatchKeydown(collapseButton, "Enter");
-    assert.ok(events.includes("collapsed:true"));
-    assert.equal(shell.getAttribute("data-product-shell-collapsed"), "true");
+    const brand = harness.document.querySelector("[data-shell-brand]");
+    assert.ok(brand instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchClick(brand);
+    assert.ok(events.includes("menu:true:trigger"));
+    assert.equal(shell.getAttribute("data-state"), "expanded");
+    assert.ok(harness.document.querySelector('[data-panel="expanded"]'));
+    assert.equal(harness.document.querySelector("[data-side-nav-toggle]"), null, "the full menu has no collapse control");
 
-    await harness.dispatchKeydown(collapseButton, " ");
-    assert.ok(events.includes("collapsed:false"));
-    assert.equal(shell.getAttribute("data-product-shell-collapsed"), "false");
+    const search = harness.document.querySelector('[data-shell-search] input[type="search"]');
+    assert.ok(search instanceof harness.window.HTMLInputElement);
+    await updateInputValue(harness, search, "roster");
+    assert.ok(events.includes("search-query:roster"));
 
-    await harness.dispatchClick(collapseButton);
-    assert.ok(events.includes("collapsed:true"));
-    assert.equal(shell.getAttribute("data-product-shell-collapsed"), "true");
+    const contracts = harness.document.querySelector('[data-pin="contracts"] button');
+    assert.ok(contracts instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchClick(contracts);
+    assert.ok(events.includes("drop:contracts"));
+    assert.ok(events.includes("menu:false:trigger"), "opening a drop-down closes the full menu");
+    assert.equal(shell.getAttribute("data-state"), "drop");
+    assert.ok(harness.document.querySelector('[data-panel="drop"]'));
+    assert.equal(harness.document.querySelector('[data-panel="expanded"]'), null);
 
-    const themeButton = harness.document.querySelector("[data-theme-toggle='true']");
+    const avatar = harness.document.querySelector("[data-shell-avatar]");
+    assert.ok(avatar instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchClick(avatar);
+    assert.ok(events.includes("account:true"));
+    assert.ok(events.includes("drop:none"), "opening the avatar menu closes the drop-down");
+    assert.equal(shell.getAttribute("data-state"), "closed");
+    assert.ok(harness.document.querySelector('[data-panel="account"] [data-shell-product="tms"]'));
+
+    const themeButton = harness.document.querySelector("[data-panel='account'] [data-theme-toggle='true']");
     assert.ok(themeButton instanceof harness.window.HTMLButtonElement);
     await harness.dispatchClick(themeButton);
     assert.ok(events.includes("theme:dark"));
     assert.equal(shell.getAttribute("data-product-shell-theme"), "dark");
 
-    const localeTrigger = harness.document.querySelector("[data-locale-menu-toggle]");
+    const localeTrigger = harness.document.querySelector("[data-panel='account'] [data-locale-menu-toggle]");
     assert.ok(localeTrigger instanceof harness.window.HTMLButtonElement);
     await harness.dispatchClick(localeTrigger);
     assert.ok(events.includes("locale-open:true:trigger"));
-    assert.equal(localeTrigger.getAttribute("aria-expanded"), "true");
-
     const localeOption = harness.document.querySelector("[data-locale-option='zh-CN']");
     assert.ok(localeOption instanceof harness.window.HTMLButtonElement);
     await harness.dispatchClick(localeOption);
     await flushReactUpdates();
     assert.ok(events.includes("locale:zh-CN"));
-    assert.ok(events.includes("locale-open:false:selection"));
-    assert.equal(localeTrigger.getAttribute("aria-expanded"), "false");
-    assert.equal(harness.document.activeElement, localeTrigger);
+    assert.ok(harness.document.querySelector('[data-panel="account"]'), "choosing a language keeps the avatar menu open");
 
-    const searchInput = harness.document.querySelector(".tcrn-product-shell-search input");
-    assert.ok(searchInput instanceof harness.window.HTMLInputElement);
-    await focusElement(harness, searchInput);
-    await updateInputValue(harness, searchInput, "cockpit");
-    assert.ok(events.includes("search-expanded:true:focus"));
-    assert.ok(events.includes("search-query:cockpit"));
-
-    const searchWrap = harness.document.querySelector(".tcrn-product-shell-search");
-    assert.ok(searchWrap instanceof harness.window.HTMLElement);
-    assert.equal(searchWrap.getAttribute("data-search-expanded"), "true");
-    assert.equal(searchWrap.getAttribute("data-search-results-visible"), "true");
-
-    const searchResult = harness.document.querySelector("[data-search-result]");
-    assert.ok(searchResult instanceof harness.window.HTMLAnchorElement);
-    await harness.dispatchClick(searchResult);
-    assert.ok(events.includes("search-result:cockpit"));
-
-    await dispatchMouseDown(harness, harness.document.body);
-    assert.ok(events.includes("search-dismiss:outside-pointer"));
-    assert.equal(searchWrap.getAttribute("data-search-expanded"), "false");
-    assert.equal(searchWrap.getAttribute("data-search-results-visible"), "false");
-
-    await focusElement(harness, searchInput);
-    await harness.dispatchKeydown(searchInput, "Tab");
-    assert.ok(events.includes("search-dismiss:tab"));
-    assert.equal(searchWrap.getAttribute("data-search-expanded"), "false");
-
-    await focusElement(harness, searchInput);
-    await harness.dispatchKeydown(searchInput, "Escape");
-    assert.ok(events.includes("search-dismiss:escape"));
-    assert.equal(searchWrap.getAttribute("data-search-expanded"), "false");
+    await harness.dispatchKeydown(harness.document, "Escape");
+    assert.ok(events.includes("account:false"));
+    assert.equal(harness.document.querySelector('[data-panel="account"]'), null);
+    assert.equal(harness.document.activeElement, avatar, "Esc returns focus to the avatar");
   } finally {
     await harness.cleanup();
   }
@@ -1067,19 +957,7 @@ test("product shell controller returns ready prop bundles for registered shell c
   try {
     await harness.render(<ProductShellControllerFixture events={events} />);
 
-    const collapseButton = harness.document.querySelector("[data-side-nav-toggle='true']");
-    assert.ok(collapseButton instanceof harness.window.HTMLButtonElement);
-    await harness.dispatchKeydown(collapseButton, "Enter");
-    assert.ok(events.includes("controller-collapsed:true"));
-    assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "true");
-
-    await harness.dispatchKeydown(collapseButton, " ");
-    assert.ok(events.includes("controller-collapsed:false"));
-    assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "false");
-
-    await harness.dispatchClick(collapseButton);
-    assert.ok(events.includes("controller-collapsed:true"));
-    assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "true");
+    assert.equal(harness.document.querySelector("[data-side-nav-toggle]"), null, "the controller offers no collapse control");
 
     const themeButton = harness.document.querySelector("[data-theme-toggle='true']");
     assert.ok(themeButton instanceof harness.window.HTMLButtonElement);
@@ -1235,18 +1113,16 @@ test("shell chrome says its own words in the reader's language", () => {
   // the shell rendering in one language while its own controls answer in another.
   const zhShell = renderToStaticMarkup(
     <ProductShell
-      productName="TCRN AOS"
+      productName="TCRN TMS"
       moduleName="运营驾驶舱"
+      brandProductId="tms"
       currentRouteLabel="驾驶舱"
-      navLabel="AOS 模块导航"
       currentLocale="zh-CN"
       locales={[{ locale: "zh-CN", nativeName: "简体中文" }]}
-      navGroups={[{
-        id: "registered",
-        label: "已登记入口",
-        items: [{ id: "restricted", label: "受限模块", href: "/restricted", disabled: true }]
-      }]}
-      search={{}}
+      navGroups={[{ id: "registered", label: "已登记入口", items: [{ id: "cockpit", label: "驾驶舱", href: "/cockpit", selected: true }] }]}
+      notifications={{ unread: 2 }}
+      menuOpen
+      accountMenuOpen
     >
       <div>内容</div>
     </ProductShell>
@@ -1254,40 +1130,23 @@ test("shell chrome says its own words in the reader's language", () => {
   assert.match(zhShell, />跳到外壳内容</);
   assert.match(zhShell, /aria-label="产品外壳工作区"/);
   assert.match(zhShell, />当前位置</);
-  // Composed per locale: welding " home" or " shell controls" onto a name the
-  // consumer supplied yields a string in neither language.
-  assert.match(zhShell, /aria-label="TCRN AOS首页"/);
+  // Composed per locale: welding " shell controls" onto a name the consumer
+  // supplied yields a string in neither language.
   assert.match(zhShell, /aria-label="运营驾驶舱外壳控件"/);
-  // Forwarded to the four children that carry defaults of their own. The theme
-  // toggle names the mode it would switch *to*, and the shell defaults to light.
+  // Forwarded to the children that carry defaults of their own. The theme toggle
+  // names the mode it would switch *to*, and the shell defaults to light.
+  assert.match(zhShell, /aria-label="收起导航 · [^"]+"/);
   assert.match(zhShell, /aria-label="切换到夜间模式"/);
-  assert.match(zhShell, /aria-label="收起侧边导航"/);
-  assert.match(zhShell, /aria-label="检索产品外壳"/);
-  assert.match(zhShell, />该导航项在此路由下不可用</);
+  assert.match(zhShell, /aria-label="通知 · 2 条未读"/);
+  assert.match(zhShell, /aria-label="账户"/);
+  assert.match(zhShell, /aria-label="语言"/);
+  assert.match(zhShell, /placeholder="搜索页面与内容"/);
   for (const englishDefault of [
-    "Skip to shell content", "Product shell workspace", ">Current location<", " home\"",
-    " shell controls\"", "Switch to dark mode", "Collapse side navigation",
-    "Search product shell", "Navigation item unavailable in this route"
+    "Skip to shell content", "Product shell workspace", ">Current location<", " shell controls\"",
+    "Switch to dark mode", "Close navigation", "Notifications", "\"Account\"", "Search pages and content"
   ]) {
     assert.equal(zhShell.includes(englishDefault), false, `${englishDefault} is not shipped into a zh-CN shell`);
   }
-
-  // A consumer's own value on `search` still wins over the forwarded locale.
-  const explicitSearchLocale = renderToStaticMarkup(
-    <ProductShell
-      productName="TCRN AOS"
-      moduleName="Cockpit"
-      currentRouteLabel="Cockpit"
-      navLabel="Modules"
-      currentLocale="zh-CN"
-      locales={[{ locale: "zh-CN", nativeName: "简体中文" }]}
-      navGroups={[]}
-      search={{ locale: "ja" }}
-    >
-      <div>content</div>
-    </ProductShell>
-  );
-  assert.match(explicitSearchLocale, /aria-label="製品シェルを検索"/);
 
   // Two more locales, and no locale at all keeps today's English.
   assert.match(renderToStaticMarkup(<ShellThemeToggle locale="fr" currentTheme="dark" />), /aria-label="Passer en mode clair"/);
@@ -1315,40 +1174,40 @@ test("shell chrome says its own words in the reader's language", () => {
 test("product shell controller reads preferences from the request cookie during server render", () => {
   const readings: Array<Record<string, unknown>> = [];
   const cookieKeys = {
-    collapsedKey: "tcrn-side-nav-collapsed",
     themeKey: "tcrn-theme",
     localeKey: "tcrn-locale"
   };
 
   function ServerControllerFixture({ cookie }: { cookie?: string }) {
     const controller = useProductShellController({
-      collapsedStorageKey: "tcrn-side-nav-collapsed",
+      productId: "tms",
       themeStorageKey: "tcrn-theme",
       localeStorageKey: "tcrn-locale",
-      // The parse happens on the consumer's server; only three narrowed values
+      // The parse happens on the consumer's server; only two narrowed values
       // cross the package boundary. The raw header stays outside on purpose —
       // an earlier shape of this prop took the whole header, which would have
       // handed the shell every cookie the consumer's requests carry.
-      requestPreferences: readPreferenceCookieValues(cookie, cookieKeys)
+      // The pins are the product backend's, passed beside the cookie values.
+      requestPreferences: { ...readPreferenceCookieValues(cookie, cookieKeys), pins: cookie ? ["roster"] : undefined }
     });
     readings.push({
-      collapsed: controller.collapsed,
+      pins: controller.pins,
       theme: controller.theme,
       locale: controller.locale
     });
-    return <span>{`${controller.theme}/${controller.locale}/${controller.collapsed}`}</span>;
+    return <span>{`${controller.theme}/${controller.locale}/${controller.pins.join(",") || "none"}`}</span>;
   }
 
   const withCookie = renderToStaticMarkup(
     <ServerControllerFixture cookie="tcrn-theme=dark; tcrn-locale=zh-CN; tcrn-side-nav-collapsed=true" />
   );
-  assert.match(withCookie, /dark\/zh-CN\/true/);
-  assert.deepEqual(readings[0], { collapsed: true, theme: "dark", locale: "zh-CN" });
+  assert.match(withCookie, /dark\/zh-CN\/roster/);
+  assert.deepEqual(readings[0], { pins: ["roster"], theme: "dark", locale: "zh-CN" });
 
   // No cookie is not a preference: the product's defaults still stand, so a
   // client-only consumer that never passes preferences is unaffected.
   const withoutCookie = renderToStaticMarkup(<ServerControllerFixture />);
-  assert.match(withoutCookie, /light\/en\/false/);
+  assert.match(withoutCookie, /light\/en\/none/);
 
   // A cookie naming a preference the shell does not govern changes nothing, and one
   // whose value cannot be percent-decoded is discarded rather than thrown out of the
@@ -1356,19 +1215,169 @@ test("product shell controller reads preferences from the request cookie during 
   const unrelated = renderToStaticMarkup(
     <ServerControllerFixture cookie="unrelated=dark; tcrn-locale=%E0%A4%A; tcrn-theme=dark" />
   );
-  assert.match(unrelated, /dark\/en\/false/);
+  assert.match(unrelated, /dark\/en\/roster/);
 
   // The parser narrows to undefined, never to a default: garbage must not outrank
   // the product's own fallback, and an off-contract locale is garbage even when it
   // is a real language tag.
   assert.deepEqual(
     readPreferenceCookieValues("tcrn-theme=blue; tcrn-locale=de-DE; tcrn-side-nav-collapsed=yes", cookieKeys),
-    { collapsed: undefined, theme: undefined, locale: undefined }
+    { theme: undefined, locale: undefined }
   );
   assert.deepEqual(
     readPreferenceCookieValues(undefined, cookieKeys),
-    { collapsed: undefined, theme: undefined, locale: undefined }
+    { theme: undefined, locale: undefined }
   );
+});
+
+function PinsControllerFixture({ events, productId, initialPins }: { events: string[]; productId: string; initialPins?: readonly string[] }) {
+  const controller = useProductShellController({
+    productId,
+    initialPins,
+    onPinsChange: (pins) => events.push(`pins:${pins.join(",")}`)
+  });
+  return (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      navGroups={pinGroups}
+      locales={shellLocales}
+      {...controller.productShellControlProps}
+    >
+      <button type="button" data-move-first="" onClick={() => controller.movePin("g7", 0)}>
+        Move
+      </button>
+    </ProductShell>
+  );
+}
+
+// Seven pinnable groups, each a link-free group with one page under it.
+const pinGroups: ProductShellNavGroup[] = ["g1", "g2", "g3", "g4", "g5", "g6", "g7"].map((id) => ({
+  id,
+  label: id.toUpperCase(),
+  items: [{ id: `${id}-page`, label: `${id.toUpperCase()} page`, href: `/${id}` }]
+}));
+
+test("STORY-140 GWT3 pinning a seventh entry keeps it in the preference while the band shows six, and a drag's order persists", async () => {
+  const harness = createDomInteractionHarness();
+  const events: string[] = [];
+  try {
+    harness.window.localStorage.clear();
+    await harness.render(<PinsControllerFixture events={events} productId="tms" initialPins={["g1", "g2", "g3", "g4", "g5", "g6"]} />);
+    assert.equal(harness.document.querySelectorAll("[data-pins] [data-pin]").length, 6);
+
+    // Pin the seventh from the full menu: the preference keeps it, the band still shows six.
+    const brand = harness.document.querySelector("[data-shell-brand]");
+    assert.ok(brand instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchClick(brand);
+    const pin = harness.document.querySelector('[data-panel="expanded"] [data-shell-group] [aria-label$="G7"][data-pin-button]');
+    assert.ok(pin instanceof harness.window.HTMLButtonElement, "the seventh group has a pin in the full menu");
+    await harness.dispatchClick(pin);
+    assert.equal(events[events.length - 1], "pins:g1,g2,g3,g4,g5,g6,g7");
+    assert.equal(harness.window.localStorage.getItem("tcrn-shell-pins:tms"), JSON.stringify(["g1", "g2", "g3", "g4", "g5", "g6", "g7"]));
+    assert.deepEqual(
+      [...harness.document.querySelectorAll("[data-pins] [data-pin]")].map((element) => element.getAttribute("data-pin")),
+      ["g1", "g2", "g3", "g4", "g5", "g6"]
+    );
+    assert.ok(harness.document.querySelector('[data-shell-pinned-group] [data-shell-row]'), "the menu lists the pinned entries");
+
+    // The end of a drag: the order is saved to the local fallback and told to the product.
+    const move = harness.document.querySelector("[data-move-first]");
+    assert.ok(move instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchClick(move);
+    assert.equal(events[events.length - 1], "pins:g7,g1,g2,g3,g4,g5,g6");
+    assert.equal(harness.window.localStorage.getItem("tcrn-shell-pins:tms"), JSON.stringify(["g7", "g1", "g2", "g3", "g4", "g5", "g6"]));
+    assert.deepEqual(
+      [...harness.document.querySelectorAll("[data-pins] [data-pin]")].map((element) => element.getAttribute("data-pin")),
+      ["g7", "g1", "g2", "g3", "g4", "g5"]
+    );
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("pins are read back per product: the server preference first, then that product's local fallback", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    harness.window.localStorage.clear();
+    harness.window.localStorage.setItem("tcrn-shell-pins:tms", JSON.stringify(["g2", "g1"]));
+    harness.window.localStorage.setItem("tcrn-shell-pins:einzbern", "not a list");
+    const readings: Record<string, readonly string[]> = {};
+    function Reader({ productId, pins }: { productId: string; pins?: readonly string[] }) {
+      readings[`${productId}:${pins ? "server" : "local"}`] = useProductShellController({ productId, requestPreferences: { pins } }).pins;
+      return null;
+    }
+    await harness.render(
+      <>
+        <Reader productId="tms" />
+        <Reader productId="tms" pins={["g3"]} />
+        <Reader productId="einzbern" />
+      </>
+    );
+    assert.deepEqual(readings["tms:local"], ["g2", "g1"]);
+    assert.deepEqual(readings["tms:server"], ["g3"], "the product's backend outranks the local copy");
+    assert.deepEqual(readings["einzbern:local"], [], "another product's key, and a garbage value is no preference");
+    assert.equal(harness.document.cookie.includes("pins"), false, "pins never go into a cookie");
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+// Type-level only: each retired prop is an error, so a line here that compiles again fails the build.
+test("STORY-140 GWT5 the side rail, collapse and pinned-open props are rejected by the types", () => {
+  const base: ProductShellProps = {
+    productName: "TCRN TMS",
+    moduleName: "Talent",
+    brandProductId: "tms",
+    currentRouteLabel: "Roster",
+    navGroups: [],
+    locales: shellLocales,
+    currentLocale: "en",
+    children: null
+  };
+  const retired: ProductShellProps[] = [
+    // @ts-expect-error the shell has no side rail
+    { ...base, sidebar: true },
+    // @ts-expect-error the rail's collapsed state is retired
+    { ...base, collapsed: true },
+    // @ts-expect-error the collapsed state is no longer stored
+    { ...base, collapsedStorageKey: "tcrn-side-nav-collapsed" },
+    // @ts-expect-error there is nothing to collapse
+    { ...base, onCollapsedChange: () => undefined },
+    // @ts-expect-error there is no collapse control to disable
+    { ...base, sideNavCollapseDisabledReason: "Pinned open" },
+    // @ts-expect-error the mobile drawer went with the rail
+    { ...base, mobileNavExpanded: true },
+    // @ts-expect-error the mobile drawer went with the rail
+    { ...base, onMobileNavExpandedChange: () => undefined },
+    // @ts-expect-error the rail's navigation id and name went with it
+    { ...base, navId: "tcrn-product-shell-side-nav" },
+    // @ts-expect-error the rail's navigation id and name went with it
+    { ...base, navLabel: "Modules" },
+    // @ts-expect-error the rail's brand link went with it
+    { ...base, brandHref: "/" },
+    // @ts-expect-error products pass their key, not brand copy
+    { ...base, brandSuffix: "Design team" },
+    // @ts-expect-error the top bar's search field is the full menu's search
+    { ...base, search: {} }
+  ];
+  assert.equal(retired.length, 12);
+  const config: ProductShellControllerConfig[] = [
+    // @ts-expect-error the controller keeps no collapsed state
+    { initialCollapsed: true },
+    // @ts-expect-error the controller keeps no collapsed state
+    { collapsedStorageKey: "tcrn-side-nav-collapsed" },
+    // @ts-expect-error the controller keeps no collapsed state
+    { onCollapsedChange: () => undefined }
+  ];
+  assert.equal(config.length, 3);
+  // @ts-expect-error a request carries no collapsed preference
+  const request: ProductShellRequestPreferences = { collapsed: true };
+  assert.ok(request);
+  // @ts-expect-error the cookie reader has no collapsed key
+  assert.deepEqual(readPreferenceCookieValues("tcrn-side-nav-collapsed=true", { collapsedKey: "tcrn-side-nav-collapsed" }), { theme: undefined, locale: undefined });
 });
 
 

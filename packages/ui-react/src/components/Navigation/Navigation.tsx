@@ -22,6 +22,22 @@ import {
   tcrnProductMarkWordmark,
   type TcrnProductMark
 } from "./product-marks.generated.js";
+// The shell parts and Navigation.tsx import each other; what this module takes from them is used
+// inside function bodies only, never evaluated when the module loads (C-4).
+import { ShellBrandButton } from "./ShellBrandButton.js";
+import { ShellDropdown } from "./ShellDropdown.js";
+import {
+  ShellMenu,
+  shellMenuMaxDepth,
+  useShellTransientLayer,
+  type ShellMenuCrumb,
+  type ShellMenuGroup,
+  type ShellMenuItem,
+  type ShellMenuOpenChangeReason,
+  type ShellMenuSearchProvider
+} from "./ShellMenu.js";
+import { ShellPins, shellPinsMax, type ShellPinItem } from "./ShellPins.js";
+import { tcrnShellCopyFor } from "./shell-copy.js";
 
 /**
  * The shell's own words about itself, in every supported locale.
@@ -1704,21 +1720,25 @@ export function ProductShellSearch({
   );
 }
 
-export interface ProductShellNavItem {
-  id: string;
-  label: string;
+/**
+ * An entry of the product's menu model below the groups (C-7): a ShellMenuItem plus what a
+ * product already passed — a key into its own dictionary and the flag of the current page. An
+ * item's children are the third level, theirs the fourth and last; a row with children opens
+ * them instead of navigating, so its `href` may be left out.
+ */
+export interface ProductShellNavItem extends ShellMenuItem {
   labelKey?: string;
-  href: string;
-  iconName?: IconName;
+  /** The current page: the shell derives the selected row, the selected pin and the current position from it. */
   selected?: boolean;
-  disabled?: boolean;
-  disabledReason?: string;
-  depth?: number;
+  children?: readonly ProductShellNavItem[];
 }
 
-export interface ProductShellNavGroup {
-  id: string;
-  label: string;
+/**
+ * A group of the product's menu model (C-7): a ShellMenuGroup, one column of the full menu. The
+ * keys, the description and the section label are the product's own metadata for its
+ * dictionary; the shell does not render them.
+ */
+export interface ProductShellNavGroup extends ShellMenuGroup {
   labelKey?: string;
   description?: string;
   descriptionKey?: string;
@@ -1728,279 +1748,417 @@ export interface ProductShellNavGroup {
   items: readonly ProductShellNavItem[];
 }
 
+/** Why the full menu opens or closes: a shell control (the brand button, another layer), ⌘K or Ctrl+K, Esc, a press outside, a choice. */
+export type ProductShellMenuChangeReason = "trigger" | ShellMenuOpenChangeReason;
+
+/** The signed-in reader the 28 avatar of the top-right cluster stands for. */
+export interface ProductShellAccount {
+  name: string;
+  /** What the avatar shows; the first character of the name when omitted. */
+  initials?: string;
+}
+
+/** One product of the avatar menu's product switcher. */
+export interface ProductShellProduct {
+  id: string;
+  label: string;
+  href: string;
+  /** The product this shell belongs to: aria-current="page", the 6% wash and weight 600. */
+  current?: boolean;
+}
+
+/** The bell of the top-right cluster; without it the cluster is the avatar alone. */
+export interface ProductShellNotifications {
+  /** Unread notifications: more than none shows the dot and is said in the bell's name. */
+  unread?: number;
+  onOpen?: () => void;
+}
+
 export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   productName: string;
   moduleName: string;
-  brandProductId?: TcrnProductLogoId;
-  brandHref?: string;
-  brandSuffix?: string;
-  brandCaption?: string;
-  brandMarkSrc?: string;
-  brandMarkAlt?: string;
+  /** The product key: the brand button's mark and wordmark and the full menu's lockup, from logos2 as they are. */
+  brandProductId: TcrnProductMarkId;
+  /** Name of the current page, the current position's last step when no menu entry is selected. */
   currentRouteLabel: string;
   currentRouteLabelKey?: string;
-  currentLocationLabel?: string;
-  currentLocationLabelKey?: string;
-  navLabel: string;
+  /** The menu model: groups → items → children → children (C-7). */
   navGroups: readonly ProductShellNavGroup[];
   locales: readonly ShellLocaleOption[];
   currentLocale: string;
   children: ReactNode;
-  collapsed?: boolean;
-  collapsedStorageKey?: string;
   currentTheme?: ShellThemeMode;
   localeMenuOpen?: boolean;
-  search?: ProductShellSearchProps;
   /**
-   * Product-owned controls for the shell's utility row, rendered between the
-   * search field and the shell's own theme and locale utilities.
-   *
-   * The shell composes its utility row itself, so a product that needs a control
-   * there — a workspace switcher, a data-freshness indicator — previously had
-   * nowhere to put it and had to push it into page content, where it scrolls away
-   * and repeats on every route. Shell utilities stay rightmost so their position
-   * does not move as products add controls.
-   *
-   * Purely additive: omitting it renders the utility row exactly as before.
+   * Product-owned controls for the top-right cluster, before the bell and the avatar, which stay
+   * rightmost so their position does not move as products add controls. Omitting it renders the
+   * cluster without them.
    */
   headerActions?: ReactNode;
-  sideNavCollapseDisabledReason?: string;
-  /**
-   * Whether the navigation is showing, below the mobile breakpoint.
-   *
-   * Deliberately NOT `collapsed`. That one narrows the desktop rail, is
-   * persisted, and is serialized into product links — reusing it here would let
-   * a phone tap rewrite a desktop preference and carry it across routes. This
-   * is a transient view state: it starts closed on every mobile page load,
-   * which is also why the closed state is the CSS default and needs no
-   * client-side media query to arrive at (a server render would otherwise emit
-   * the open nav and collapse it after hydration, which is the flash this
-   * platform has already paid for once).
-   */
-  mobileNavExpanded?: boolean;
-  onMobileNavExpandedChange?: (expanded: boolean) => void;
-  onCollapsedChange?: (collapsed: boolean) => void;
+  /** The signed-in reader; the avatar shows their initials. */
+  account?: ProductShellAccount;
+  /** The products the avatar menu switches between; the full menu and the lockup carry no product list. */
+  products?: readonly ProductShellProduct[];
+  notifications?: ProductShellNotifications;
+  /** Ids of the pinned groups, items and children in the reader's order; the band shows the first six. */
+  pinnedIds?: readonly string[];
+  /** Pins or unpins an entry; without it the menu rows have no pin. */
+  onPinnedChange?: (id: string, pinned: boolean) => void;
+  /** Whether the full menu is open; the shell keeps its own state when omitted. */
+  menuOpen?: boolean;
+  onMenuOpenChange?: (open: boolean, reason: ProductShellMenuChangeReason) => void;
+  /** The pinned item whose drop-down is open; the shell keeps its own state when omitted. */
+  openPinId?: string | null;
+  onOpenPinChange?: (id: string | null) => void;
+  /** Whether the avatar menu is open; the shell keeps its own state when omitted. */
+  accountMenuOpen?: boolean;
+  onAccountMenuOpenChange?: (open: boolean) => void;
+  /** Placeholder of the full menu's search. */
+  searchPlaceholder?: string;
+  /** The full menu's search provider (whole-site targets); the menu model is searched when omitted. */
+  searchProvider?: ShellMenuSearchProvider;
+  onSearchQueryChange?: (query: string) => void;
   onThemeChange?: (theme: ShellThemeMode) => void;
   onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
   onLocaleChange?: (locale: string) => void;
-  onSearchQueryChange?: (query: string) => void;
-  onSearchExpandedChange?: (expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void;
-  onSearchDismiss?: (reason: ProductShellSearchDismissReason) => void;
-  onSearchResultActivate?: (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void;
   contentId?: string;
   contentRole?: "main" | "region";
   contentLabel?: string;
-  navId?: string;
   skipLinkLabel?: string;
 }
 
+/** A pinned entry the menu model holds: its ShellPins item, its drop-down source and the level of the drop-down's rows. */
+interface ProductShellPinTarget {
+  pin: ShellPinItem;
+  source: ShellMenuGroup | ShellMenuItem | null;
+  level: number;
+  /** Ids of the entries under it: a pin is selected when the current page sits in its menu. */
+  holds: ReadonlySet<string>;
+}
+
+function productShellEntryIds(entries: readonly ShellMenuItem[], into: Set<string>, level: number): Set<string> {
+  for (const entry of entries) {
+    into.add(entry.id);
+    if (entry.children && level < shellMenuMaxDepth) productShellEntryIds(entry.children, into, level + 1);
+  }
+  return into;
+}
+
+function productShellFindEntry(groups: readonly ProductShellNavGroup[], id: string): ProductShellPinTarget | null {
+  for (const group of groups) {
+    if (group.id === id) {
+      const source = group.items.length > 0 ? group : null;
+      return { pin: { id, label: group.label, hasMenu: source !== null }, source, level: 2, holds: productShellEntryIds(group.items, new Set(), 2) };
+    }
+    const visit = (entries: readonly ProductShellNavItem[], level: number): ProductShellPinTarget | null => {
+      for (const entry of entries) {
+        const next = level < shellMenuMaxDepth && (entry.children?.length ?? 0) > 0 ? (entry.children ?? []) : [];
+        if (entry.id === id) {
+          const source = next.length > 0 ? entry : null;
+          return { pin: { id, label: entry.label, href: entry.href, hasMenu: source !== null }, source, level: level + 1, holds: productShellEntryIds(next, new Set(), level + 1) };
+        }
+        const found = visit(next, level + 1);
+        if (found) return found;
+      }
+      return null;
+    };
+    const found = visit(group.items, 2);
+    if (found) return found;
+  }
+  return null;
+}
+
+/** The selected entry of the menu model and the current position down to it (group › … › page). */
+function productShellSelection(groups: readonly ProductShellNavGroup[]): { id: string; path: ShellMenuCrumb[] } | null {
+  for (const group of groups) {
+    const visit = (entries: readonly ProductShellNavItem[], path: ShellMenuCrumb[], level: number): { id: string; path: ShellMenuCrumb[] } | null => {
+      for (const entry of entries) {
+        const step: ShellMenuCrumb = entry.href ? { label: entry.label, href: entry.href } : { label: entry.label };
+        if (entry.selected) return { id: entry.id, path: [...path, step] };
+        if (entry.children && level < shellMenuMaxDepth) {
+          const found = visit(entry.children, [...path, step], level + 1);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    const found = visit(group.items, [{ label: group.label }], 2);
+    if (found) return found;
+  }
+  return null;
+}
+
+function productShellInitials(account: ProductShellAccount): string {
+  return account.initials ?? Array.from(account.name.trim())[0] ?? "";
+}
+
+/**
+ * The product shell: the top band and the paper (TCRN-DS-SUB-119; 07a board, section A; 07b board,
+ * section D rows "顶带高" and "纸"). There is one shell and no side rail. The band is the strip-h
+ * token high with no fill and no rule: the brand button (which opens the full menu, ShellMenu),
+ * the pinned items (ShellPins; a pinned group or submenu opens its drop-down, ShellDropdown) and
+ * the top-right cluster — the product's own controls, the bell and the avatar, whose menu holds
+ * the product switcher, the theme and the language. The paper holds the page: space-3 from the
+ * shell's sides and bottom, under the band, with the paper radius and shadow s1. One layer is open
+ * at a time: opening the full menu, a drop-down or the avatar menu closes the other two. The phone
+ * presentation is the full menu's own (C-7); the shell has no branch for it.
+ */
 export function ProductShell({
   productName,
   moduleName,
   brandProductId,
-  brandHref = "/",
-  brandSuffix,
-  brandCaption,
-  brandMarkSrc,
-  brandMarkAlt,
   currentRouteLabel,
   currentRouteLabelKey,
-  currentLocationLabel,
-  currentLocationLabelKey,
-  navLabel,
   navGroups,
   locales,
   currentLocale,
   children,
-  collapsed = false,
-  collapsedStorageKey,
   currentTheme = "light",
   localeMenuOpen = false,
-  search,
   headerActions,
-  sideNavCollapseDisabledReason,
-  mobileNavExpanded = false,
-  onMobileNavExpandedChange,
-  onCollapsedChange,
+  account,
+  products,
+  notifications,
+  pinnedIds = [],
+  onPinnedChange,
+  menuOpen,
+  onMenuOpenChange,
+  openPinId,
+  onOpenPinChange,
+  accountMenuOpen,
+  onAccountMenuOpenChange,
+  searchPlaceholder,
+  searchProvider,
+  onSearchQueryChange,
   onThemeChange,
   onLocaleMenuOpenChange,
   onLocaleChange,
-  onSearchQueryChange,
-  onSearchExpandedChange,
-  onSearchDismiss,
-  onSearchResultActivate,
   contentId = "product-shell-content",
   contentRole = "region",
   contentLabel,
-  navId = "tcrn-product-shell-side-nav",
   skipLinkLabel,
   className,
   ...props
 }: ProductShellProps) {
   const ContentElement = contentRole === "main" ? "main" : "section";
-  // Like `ShellLocaleMenu`, this needs no `locale` prop: `currentLocale` is
-  // required here, so the shell already knows the reader's language and a second
-  // way to say it could only disagree with the first.
-  //
-  // The skip link is the load-bearing one. It is the first thing a keyboard user
-  // reaches on any page in the product, and it was in English on every localized
-  // route of every consumer.
+  // Like `ShellLocaleMenu`, this needs no `locale` prop: `currentLocale` is required here, so the
+  // shell already knows the reader's language and a second way to say it could only disagree.
   const chrome = chromeLabels(currentLocale);
-  const resolvedCurrentLocationLabel = currentLocationLabel ?? chrome.currentLocation;
+  const copy = tcrnShellCopyFor(currentLocale);
   const resolvedContentLabel = contentLabel ?? chrome.shellWorkspace;
   const resolvedSkipLinkLabel = skipLinkLabel ?? chrome.skipToContent;
-  const mergedSearch: ProductShellSearchProps | undefined = search
-    ? {
-        ...search,
-        onQueryChange: (nextQuery) => {
-          search.onQueryChange?.(nextQuery);
-          onSearchQueryChange?.(nextQuery);
-        },
-        onExpandedChange: (nextExpanded, reason) => {
-          search.onExpandedChange?.(nextExpanded, reason);
-          onSearchExpandedChange?.(nextExpanded, reason);
-        },
-        onDismiss: (reason) => {
-          search.onDismiss?.(reason);
-          onSearchDismiss?.(reason);
-        },
-        onResultActivate: (result, event) => {
-          search.onResultActivate?.(result, event);
-          onSearchResultActivate?.(result, event);
-        }
-      }
-    : undefined;
+  const baseId = useId();
+  const menuId = `${baseId}-menu`;
+  const accountId = `${baseId}-account`;
+  const dropIdOf = (id: string) => `${baseId}-drop-${id}`;
+  const brandRef = useRef<HTMLButtonElement>(null);
+  const avatarRef = useRef<HTMLButtonElement>(null);
+  const accountRef = useRef<HTMLElement>(null);
+  const [ownMenuOpen, setOwnMenuOpen] = useState(false);
+  const [ownOpenPin, setOwnOpenPin] = useState<string | null>(null);
+  const [ownAccountOpen, setOwnAccountOpen] = useState(false);
+  const shownMenuOpen = menuOpen ?? ownMenuOpen;
+  const shownOpenPin = openPinId === undefined ? ownOpenPin : openPinId;
+  const shownAccountOpen = accountMenuOpen ?? ownAccountOpen;
+
+  const closeLayers = (keep: "menu" | "pin" | "account") => {
+    if (keep !== "menu" && shownMenuOpen) {
+      setOwnMenuOpen(false);
+      onMenuOpenChange?.(false, "trigger");
+    }
+    if (keep !== "pin" && shownOpenPin !== null) {
+      setOwnOpenPin(null);
+      onOpenPinChange?.(null);
+    }
+    if (keep !== "account" && shownAccountOpen) {
+      setOwnAccountOpen(false);
+      onAccountMenuOpenChange?.(false);
+    }
+  };
+  const changeMenu = (open: boolean, reason: ProductShellMenuChangeReason) => {
+    if (open) closeLayers("menu");
+    setOwnMenuOpen(open);
+    onMenuOpenChange?.(open, reason);
+  };
+  const changeOpenPin = (id: string | null) => {
+    if (id !== null) closeLayers("pin");
+    setOwnOpenPin(id);
+    onOpenPinChange?.(id);
+  };
+  const changeAccount = (open: boolean) => {
+    if (open) closeLayers("account");
+    setOwnAccountOpen(open);
+    onAccountMenuOpenChange?.(open);
+  };
+
+  useShellTransientLayer({
+    open: shownAccountOpen,
+    layerRef: accountRef,
+    triggerRef: avatarRef,
+    onClose: () => changeAccount(false)
+  });
+
+  const pinTargets = pinnedIds
+    .map((id) => productShellFindEntry(navGroups, id))
+    .filter((target): target is ProductShellPinTarget => target !== null);
+  const pinItems = pinTargets.map((target) => target.pin);
+  const shownTargets = pinTargets.slice(0, shellPinsMax());
+  const selection = productShellSelection(navGroups);
+  const selectedId = selection?.id ?? null;
+  const selectedPin = selectedId === null
+    ? undefined
+    : shownTargets.find((target) => target.pin.id === selectedId) ?? shownTargets.find((target) => target.holds.has(selectedId));
+  const openTarget = shownOpenPin === null ? undefined : shownTargets.find((target) => target.pin.id === shownOpenPin && target.source);
+  const currentPath: readonly ShellMenuCrumb[] = selection?.path ?? [{ label: currentRouteLabel }];
+  const state = shownMenuOpen ? "expanded" : openTarget ? "drop" : "closed";
+  const unread = notifications?.unread ?? 0;
 
   return (
     <div
+      // data-shell names the shell for the measurement; a consumer may give it a value.
+      data-shell=""
       {...props}
       className={cx("tcrn-product-shell", className)}
-      data-package-backed-product-shell-boundary="side-nav-shell-v1"
-      data-product-shell-pattern="attached-side-nav"
-      data-product-shell-collapsed={collapsed ? "true" : "false"}
-      data-side-nav-collapsed={collapsed ? "true" : "false"}
+      data-state={state}
+      data-package-backed-product-shell-boundary="top-band-shell-v2"
+      data-product-shell-pattern="top-band"
       data-product-shell-theme={currentTheme}
-      data-product-shell-responsive="desktop-attached-mobile-stacked"
       data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"
       data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"
-      data-product-shell-semantic-api={mergedSearch ? "collapse-theme-locale-search" : "collapse-theme-locale"}
+      data-product-shell-semantic-api="menu-pins-theme-locale"
       data-product-shell-header-actions={headerActions ? "present" : "absent"}
-      data-mobile-nav-expanded={mobileNavExpanded ? "true" : "false"}
+      data-product-shell-current-route-label-key={currentRouteLabelKey}
     >
       <SkipLink href={`#${contentId}`}>{resolvedSkipLinkLabel}</SkipLink>
-      <aside className="tcrn-product-shell__sidebar" data-product-shell-region="side-navigation">
-        <div className="tcrn-product-shell__sidebar-header">
-          <a
-            className="tcrn-product-shell__brand"
-            href={brandHref}
-            // Composed per locale: the product name is the consumer's own, so
-            // welding " home" onto it produces a link name in neither language.
-            aria-label={chrome.brandHomeOf(productName)}
-            data-registered-brand-lockup="@tcrn/ui-react/ShellBrandLockup"
-            data-registered-product-logo="@tcrn/ui-react/ProductLogo"
-          >
-            <ShellBrandLockup
-              productId={brandProductId}
-              // The shell already knows the reader's locale for its own utility
-              // row; the brand block was the one part of it still resolved
-              // without that knowledge.
-              locale={currentLocale}
-              suffix={brandSuffix}
-              caption={brandCaption}
-              brandMarkSrc={brandMarkSrc}
-              brandMarkAlt={brandMarkAlt}
-              data-visible-registered-brand-lockup="true"
-            />
-          </a>
-          <SideNavCollapseButton
-            collapsed={collapsed}
-            controls={navId}
-            locale={currentLocale}
-            disabledReason={sideNavCollapseDisabledReason}
-            persistedKey={collapsedStorageKey}
-            onCollapsedChange={onCollapsedChange}
-          />
-          <MobileNavToggle
-            expanded={mobileNavExpanded}
-            controls={navId}
-            locale={currentLocale}
-            onExpandedChange={onMobileNavExpandedChange}
-          />
-        </div>
-          <SideNav id={navId} label={navLabel} data-registered-navigation-only="true">
-            {navGroups.map((group) => (
-              <NavGroup key={group.id}
-                label={group.label}
-                selected={group.selected}
-                title={group.description}
-                data-storybook-category-id={group.id}
-                data-storybook-category-label={group.label}
-                data-storybook-category-description={group.description}
-                data-storybook-section-label={group.sectionLabel}
-                data-product-shell-nav-group-label-key={group.labelKey}
-                data-product-shell-nav-group-description-key={group.descriptionKey}
-                data-product-shell-nav-group-section-label-key={group.sectionLabelKey}
-              >
-                {group.items.map((item) => (
-                  <NavItem key={item.id}
-                    href={item.href}
-                    iconName={item.iconName}
-                    selected={item.selected}
-                    disabled={item.disabled}
-                    disabledReason={item.disabledReason}
-                    depth={item.depth}
-                    locale={currentLocale}
-                    data-product-shell-route={item.id}
-                    data-product-shell-route-label-key={item.labelKey}
-                  >
-                    {item.label}
-                  </NavItem>
-                ))}
-              </NavGroup>
-            ))}
-          </SideNav>
-      </aside>
-      <div className="tcrn-product-shell__workspace">
-        {/* Composed per locale, for the same reason as the brand link above. */}
-        <header className="tcrn-top-bar" aria-label={chrome.shellControlsOf(moduleName)} data-product-shell-region="topbar">
-          <div className="tcrn-product-shell__utility-row" data-product-shell-region="utility-row">
-            <div
-              className="tcrn-product-shell__current-location"
-              data-product-shell-current-location-label-key={currentLocationLabelKey}
-              data-product-shell-current-route-label-key={currentRouteLabelKey}
-            >
-              <span>{resolvedCurrentLocationLabel}</span>
-              <strong>{currentRouteLabel}</strong>
+      {/* Composed per locale: the module name is the consumer's own. */}
+      <header className="tcrn-shell-strip" aria-label={chrome.shellControlsOf(moduleName)} data-shell-strip="" data-product-shell-region="strip">
+        <ShellBrandButton
+          ref={brandRef}
+          productId={brandProductId}
+          expanded={shownMenuOpen}
+          aria-controls={menuId}
+          locale={currentLocale}
+          onClick={() => changeMenu(!shownMenuOpen, "trigger")}
+        />
+        <ShellPins
+          items={pinItems}
+          selectedId={selectedPin?.pin.id ?? null}
+          openId={openTarget?.pin.id ?? null}
+          onOpenChange={changeOpenPin}
+          menuIdOf={dropIdOf}
+          locale={currentLocale}
+        />
+        <div className="tcrn-shell-cluster" data-cluster="">
+          {headerActions ? (
+            <div className="tcrn-product-shell__header-actions" data-product-shell-region="header-actions">
+              {headerActions}
             </div>
-            {/* `locale` forwarded, and placed before the spread so a consumer who
-                sets it on `search` still wins. Omitting it is the nested-locale
-                bug: the search field would resolve against the document while the
-                shell around it resolves against `currentLocale`. */}
-            {mergedSearch ? <ProductShellSearch locale={currentLocale} {...mergedSearch} /> : null}
-            {headerActions ? (
-              <div
-                className="tcrn-product-shell__header-actions"
-                data-product-shell-region="header-actions"
+          ) : null}
+          {notifications ? (
+            <button type="button" className="tcrn-shell-bell" aria-label={copy.notificationsOf(unread)} data-shell-bell="" onClick={notifications.onOpen}>
+              <Icon name="bell" size={20} />
+              {unread > 0 ? <i className="tcrn-shell-bell__dot" aria-hidden="true" /> : null}
+            </button>
+          ) : null}
+          <div className="tcrn-shell-account" data-shell-account="">
+            <button
+              ref={avatarRef}
+              type="button"
+              className="tcrn-shell-avatar"
+              aria-label={account ? copy.accountMenuOf(account.name) : copy.account}
+              aria-haspopup="dialog"
+              aria-expanded={shownAccountOpen}
+              aria-controls={accountId}
+              data-shell-avatar=""
+              onClick={() => changeAccount(!shownAccountOpen)}
+            >
+              {account ? <span aria-hidden="true">{productShellInitials(account)}</span> : <Icon name="users" size={14} />}
+            </button>
+            {shownAccountOpen ? (
+              <section
+                ref={accountRef}
+                id={accountId}
+                className="tcrn-shell-account__panel"
+                role="dialog"
+                aria-modal="false"
+                aria-label={copy.account}
+                data-panel="account"
               >
-                {headerActions}
-              </div>
+                {account ? (
+                  <p className="tcrn-shell-account__who">
+                    <b title={account.name}>{account.name}</b>
+                    <span title={productName}>{productName}</span>
+                  </p>
+                ) : null}
+                {products && products.length > 0 ? (
+                  <nav className="tcrn-shell-account__products" aria-label={copy.switchProduct} data-shell-products="">
+                    <span className="tcrn-shell-account__heading" aria-hidden="true">
+                      {copy.switchProduct}
+                    </span>
+                    {products.map((product) => (
+                      <NavItem key={product.id}
+                        href={product.href}
+                        selected={product.current}
+                        locale={currentLocale}
+                        title={product.label}
+                        data-shell-product={product.id}
+                      >
+                        {product.label}
+                      </NavItem>
+                    ))}
+                  </nav>
+                ) : null}
+                <div className="tcrn-shell-account__prefs" role="group" aria-label={copy.themeAndLanguage} data-shell-preferences="">
+                  <ShellThemeToggle currentTheme={currentTheme} locale={currentLocale} onThemeChange={onThemeChange} />
+                  <ShellLocaleMenu
+                    locales={locales}
+                    currentLocale={currentLocale}
+                    open={localeMenuOpen}
+                    onOpenChange={onLocaleMenuOpenChange}
+                    onLocaleChange={onLocaleChange}
+                  />
+                </div>
+              </section>
             ) : null}
-            <ShellThemeToggle currentTheme={currentTheme} locale={currentLocale} onThemeChange={onThemeChange} />
-            <ShellLocaleMenu
-              locales={locales}
-              currentLocale={currentLocale}
-              open={localeMenuOpen}
-              onOpenChange={onLocaleMenuOpenChange}
-              onLocaleChange={onLocaleChange}
-            />
           </div>
-        </header>
-        <ContentElement
-          id={contentId}
-          className="tcrn-product-shell__main"
-          data-product-shell-region="content"
-          aria-label={resolvedContentLabel}
-        >
+        </div>
+      </header>
+      <ShellMenu
+        id={menuId}
+        open={shownMenuOpen}
+        onOpenChange={changeMenu}
+        triggerRef={brandRef}
+        productId={brandProductId}
+        groups={navGroups}
+        selectedId={selectedId}
+        currentPath={currentPath}
+        pinnedIds={pinnedIds}
+        onPinnedChange={onPinnedChange}
+        pinnedItems={pinItems}
+        searchPlaceholder={searchPlaceholder}
+        searchProvider={searchProvider}
+        onSearchQueryChange={onSearchQueryChange}
+        locale={currentLocale}
+      />
+      {shownTargets.map((target) =>
+        target.source ? (
+          <ShellDropdown key={target.pin.id}
+            id={dropIdOf(target.pin.id)}
+            source={target.source}
+            level={target.level}
+            open={openTarget === target}
+            onOpenChange={(open) => {
+              if (!open) changeOpenPin(null);
+            }}
+            selectedId={selectedId}
+            pinnedIds={pinnedIds}
+            onPinnedChange={onPinnedChange}
+            locale={currentLocale}
+          />
+        ) : null
+      )}
+      <div className="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper">
+        <ContentElement id={contentId} className="tcrn-product-shell__main" data-product-shell-region="content" aria-label={resolvedContentLabel}>
           {children}
         </ContentElement>
       </div>
@@ -2009,28 +2167,40 @@ export function ProductShell({
 }
 
 /**
- * The three preferences a request may carry, already parsed and narrowed.
+ * The preferences a request may carry, already parsed and narrowed: the two display
+ * preferences of the preference cookies (theme and locale, which
+ * `readPreferenceCookieValues` reads) and the reader's pinned items in this product.
  *
  * Each field is either a value in its own domain or absent. Absent means "the
  * request did not state this preference", so the controller's `initial*` fallback
  * stands — which is why garbage narrows to `undefined` here rather than to a
  * default: a cookie that cannot be trusted must not outrank the product's own
  * fallback.
+ *
+ * The pins are not a cookie preference. They are a server preference per user and
+ * per product that follows the reader across devices, so the product's backend keeps
+ * them and passes them here; the package defines only how they are read and written,
+ * and keeps a local copy as the fallback. The order is the reader's: groups, items
+ * and submenus can be pinned, the band shows the first --tcrn-shell-pins-max (6) and
+ * the full menu marks the rest as pinned.
  */
 export interface ProductShellRequestPreferences {
-  collapsed?: boolean | undefined;
   theme?: ShellThemeMode | undefined;
   locale?: TcrnLocale | undefined;
+  pins?: readonly string[] | undefined;
 }
 
 export interface ProductShellControllerConfig {
-  initialCollapsed?: boolean;
   initialTheme?: ShellThemeMode;
   initialLocale?: string;
-  navId?: string;
-  collapsedStorageKey?: string;
+  /** Pinned ids when neither the request nor the local fallback has any. */
+  initialPins?: readonly string[];
+  /** The product the pins belong to: the local fallback keeps each product's pins under its own key. */
+  productId?: string;
   themeStorageKey?: string;
   localeStorageKey?: string;
+  /** Key of the pins' local fallback (the browser's own store, never a cookie); `tcrn-shell-pins:<productId>` when omitted. */
+  pinsStorageKey?: string;
   /**
    * The request's stored preferences, for a server-rendered product.
    *
@@ -2043,9 +2213,10 @@ export interface ProductShellControllerConfig {
    * Parsed values, deliberately not the raw `Cookie` header. An earlier shape of
    * this prop took the whole header, which handed the design system every cookie
    * the consumer's requests carry — including any future session credential — when
-   * all it may hold is three display preferences. `readPreferenceCookieValues`
+   * all it may hold is two display preferences. `readPreferenceCookieValues`
    * does the narrowing on the consumer's server, so what crosses the package
-   * boundary is exactly the three values this controller governs.
+   * boundary from the cookie is exactly the two values this controller governs.
+   * The pins never travel in a cookie: the product's backend passes them as `pins`.
    *
    * A query parameter still outranks this. The product resolves that itself and
    * passes the winner as `initialTheme`/`initialLocale`, because only the product
@@ -2058,7 +2229,8 @@ export interface ProductShellControllerConfig {
   requestPreferences?: ProductShellRequestPreferences | undefined;
   searchRecords?: readonly ProductShellSearchResult[];
   searchLimit?: number;
-  onCollapsedChange?: (collapsed: boolean) => void;
+  /** Told the pins after every change, in order, for the product's backend to keep. */
+  onPinsChange?: (pins: readonly string[]) => void;
   onThemeChange?: (theme: ShellThemeMode) => void;
   onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
   onLocaleChange?: (locale: string) => void;
@@ -2069,17 +2241,17 @@ export interface ProductShellControllerConfig {
 }
 
 export function useProductShellController({
-  initialCollapsed = false,
   initialTheme = "light",
   initialLocale = "en",
-  navId = "tcrn-product-shell-side-nav",
-  collapsedStorageKey,
+  initialPins,
+  productId,
   themeStorageKey,
   localeStorageKey,
+  pinsStorageKey,
   requestPreferences,
   searchRecords = [],
   searchLimit = 8,
-  onCollapsedChange,
+  onPinsChange,
   onThemeChange,
   onLocaleMenuOpenChange,
   onLocaleChange,
@@ -2088,26 +2260,48 @@ export function useProductShellController({
   onSearchDismiss,
   onSearchResultActivate
 }: ProductShellControllerConfig = {}) {
-  const [collapsed, setCollapsedState] = useState(
-    () => readStoredBoolean(collapsedStorageKey, initialCollapsed, requestPreferences?.collapsed));
+  // The product's backend is the store of record for the pins; the local copy, kept per product,
+  // answers only when the request carries none.
+  const pinsKey = pinsStorageKey ?? (productId ? `tcrn-shell-pins:${productId}` : undefined);
+  const [pins, setPinsState] = useState<readonly string[]>(
+    () => requestPreferences?.pins ?? readStoredPins(pinsKey) ?? initialPins ?? []);
+  const pinsRef = useRef(pins);
   const [theme, setThemeState] = useState<ShellThemeMode>(
     () => readStoredTheme(themeStorageKey, initialTheme, requestPreferences?.theme));
   const [locale, setLocaleState] = useState(
     () => readStoredLocale(localeStorageKey, initialLocale, requestPreferences?.locale));
   const [localeMenuOpen, setLocaleMenuOpenState] = useState(false);
-  // Transient by construction: no storage key, no initial* input, no cookie.
-  // Every mobile page load starts with the navigation put away, which is what
-  // lets the closed state be the CSS default and the server render be correct
-  // before any script runs.
-  const [mobileNavExpanded, setMobileNavExpandedState] = useState(false);
   const [searchQuery, setSearchQueryState] = useState("");
   const [searchExpanded, setSearchExpandedState] = useState(false);
 
-  const setCollapsed = useCallback((nextCollapsed: boolean) => {
-    setCollapsedState(nextCollapsed);
-    writeStoredBoolean(collapsedStorageKey, nextCollapsed);
-    onCollapsedChange?.(nextCollapsed);
-  }, [collapsedStorageKey, onCollapsedChange]);
+  // Every change goes to the local fallback and to the product, which keeps the server
+  // preference. Ids are unique and the order is the reader's; nothing is dropped past the
+  // sixth, which the band does not show and the full menu marks as pinned.
+  const setPins = useCallback((nextPins: readonly string[]) => {
+    const unique = [...new Set(nextPins)];
+    pinsRef.current = unique;
+    setPinsState(unique);
+    writeStoredPins(pinsKey, unique);
+    onPinsChange?.(unique);
+  }, [onPinsChange, pinsKey]);
+
+  /** Pins an entry (a group, an item or a submenu) at the end of the order, or unpins it. */
+  const setPinned = useCallback((id: string, pinned: boolean) => {
+    const current = pinsRef.current;
+    if (pinned === current.includes(id)) return;
+    setPins(pinned ? [...current, id] : current.filter((entry) => entry !== id));
+  }, [setPins]);
+
+  /** Moves a pin to a new place in the order: where a drag in the band or the menu ends. */
+  const movePin = useCallback((id: string, toIndex: number) => {
+    const current = pinsRef.current;
+    const from = current.indexOf(id);
+    if (from < 0) return;
+    const rest = current.filter((entry) => entry !== id);
+    const to = Math.max(0, Math.min(Math.trunc(toIndex), rest.length));
+    if (to === from) return;
+    setPins([...rest.slice(0, to), id, ...rest.slice(to)]);
+  }, [setPins]);
 
   const setTheme = useCallback((nextTheme: ShellThemeMode) => {
     const resolvedTheme = nextTheme === "dark" ? "dark" : "light";
@@ -2157,17 +2351,17 @@ export function useProductShellController({
     onSearchDismiss?.(reason);
   }, [onSearchDismiss, setSearchExpanded]);
 
-  const searchResults = useMemo(() => {
-    const normalizedQuery = searchQuery.trim().toLowerCase();
+  // The records are the whole-site targets; the full menu asks for the results of what is typed in
+  // its search. Without records the menu searches its own model.
+  const searchProvider = useCallback<ShellMenuSearchProvider>((query) => {
+    const normalizedQuery = query.trim().toLowerCase();
     if (!normalizedQuery) return [];
     return searchRecords
       .filter((record) => `${record.title} ${record.meta ?? ""}`.toLowerCase().includes(normalizedQuery))
       .slice(0, searchLimit);
-  }, [searchLimit, searchQuery, searchRecords]);
+  }, [searchLimit, searchRecords]);
 
-  const toggleCollapsed = useCallback(() => {
-    setCollapsed(!collapsed);
-  }, [collapsed, setCollapsed]);
+  const searchResults = useMemo(() => searchProvider(searchQuery, []), [searchProvider, searchQuery]);
 
   const toggleTheme = useCallback(() => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -2207,37 +2401,26 @@ export function useProductShellController({
     onThemeChange: setTheme
   };
 
-  const sideNavCollapseButtonProps = {
-    collapsed,
-    controls: navId,
-    persistedKey: collapsedStorageKey,
-    onCollapsedChange: setCollapsed
-  };
-
+  // What ProductShell takes from the controller. The shell's search is the full menu's: it asks the
+  // provider for the results of the query typed there.
   const productShellControlProps = {
-    collapsed,
-    collapsedStorageKey,
     currentTheme: theme,
     currentLocale: locale,
     localeMenuOpen,
-    mobileNavExpanded,
-    navId,
-    onMobileNavExpandedChange: setMobileNavExpandedState,
-    onCollapsedChange: setCollapsed,
     onThemeChange: setTheme,
     onLocaleMenuOpenChange: setLocaleMenuOpen,
     onLocaleChange: setLocale,
     onSearchQueryChange: setSearchQuery,
-    onSearchExpandedChange: setSearchExpanded,
-    onSearchDismiss: collapseSearch,
-    onSearchResultActivate: handleSearchResultActivate,
-    search: productShellSearchProps
-  };
+    searchProvider: searchRecords.length > 0 ? searchProvider : undefined,
+    pinnedIds: pins,
+    onPinnedChange: setPinned
+  } satisfies Partial<ProductShellProps>;
 
   return {
-    collapsed,
-    setCollapsed,
-    toggleCollapsed,
+    pins,
+    setPins,
+    setPinned,
+    movePin,
     theme,
     setTheme,
     toggleTheme,
@@ -2247,25 +2430,21 @@ export function useProductShellController({
     setLocaleMenuOpen,
     openLocaleMenu,
     closeLocaleMenu,
-    mobileNavExpanded,
-    setMobileNavExpanded: setMobileNavExpandedState,
     searchQuery,
     setSearchQuery,
     searchExpanded,
     setSearchExpanded,
     collapseSearch,
     searchResults,
-    sideNavCollapseButtonProps,
     shellThemeToggleProps,
     shellLocaleMenuProps,
     productShellSearchProps,
     productShellControlProps,
     productShellStateProps: {
-      collapsed,
       currentTheme: theme,
       currentLocale: locale,
       localeMenuOpen,
-      mobileNavExpanded
+      pinnedIds: pins
     }
   };
 }
@@ -2307,10 +2486,26 @@ function readStoredPreference(key: string | undefined): string | null {
   return readCookiePreference(key, readDocumentCookieHeader());
 }
 
-function readStoredBoolean(key: string | undefined, fallback: boolean, requestValue?: boolean): boolean {
-  const value = readStoredPreference(key);
-  if (value !== null) return value === "true";
-  return requestValue ?? fallback;
+/**
+ * The pins' local fallback: the browser's own store and never a cookie, because the
+ * request carries display preferences only. A stored value that is not a list of ids
+ * is no preference.
+ */
+function readStoredPins(key: string | undefined): readonly string[] | undefined {
+  if (!key || typeof window === "undefined") return undefined;
+  const stored = window.localStorage.getItem(key);
+  if (stored === null) return undefined;
+  try {
+    const parsed: unknown = JSON.parse(stored);
+    return Array.isArray(parsed) && parsed.every((entry) => typeof entry === "string") ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function writeStoredPins(key: string | undefined, pins: readonly string[]) {
+  if (!key || typeof window === "undefined") return;
+  window.localStorage.setItem(key, JSON.stringify(pins));
 }
 
 function readStoredTheme(
@@ -2326,8 +2521,8 @@ function readStoredTheme(
 /**
  * Locale is the one preference whose stored value is attacker-writable and lands
  * somewhere that matters: it becomes `<html lang>` and the dictionary index. The
- * theme and collapsed readers each narrow to their own domain (`dark`/`light`,
- * `true`/`false`); this one narrows through the locale contract, so a consumer
+ * theme reader narrows to its own domain (`dark`/`light`); this one narrows
+ * through the locale contract, so a consumer
  * that does not re-resolve it downstream inherits a supported locale regardless
  * of what the store said.
  */
@@ -2339,7 +2534,9 @@ function readStoredLocale(key: string | undefined, fallback: string, requestValu
 
 /**
  * The server-side half of preference transport: the raw `Cookie` header goes in,
- * three narrowed values come out, and nothing else crosses into the shell.
+ * two narrowed values (theme and locale) come out, and nothing else crosses into
+ * the shell. The pins are not read here: they are the product's server preference
+ * and reach the controller as `requestPreferences.pins`.
  *
  * Narrowing to `undefined` rather than to a default is deliberate: an absent or
  * garbage cookie means "the request stated no preference", and the product's own
@@ -2351,26 +2548,19 @@ function readStoredLocale(key: string | undefined, fallback: string, requestValu
 export function readPreferenceCookieValues(
   cookieHeader: string | undefined,
   keys: {
-    collapsedKey?: string | undefined;
     themeKey?: string | undefined;
     localeKey?: string | undefined;
   }
 ): ProductShellRequestPreferences {
   const header = cookieHeader ?? "";
-  const collapsedValue = keys.collapsedKey ? readCookiePreference(keys.collapsedKey, header) : null;
   const themeValue = keys.themeKey ? readCookiePreference(keys.themeKey, header) : null;
   const localeValue = keys.localeKey ? readCookiePreference(keys.localeKey, header) : null;
   return {
-    collapsed: collapsedValue === "true" ? true : collapsedValue === "false" ? false : undefined,
     theme: themeValue === "dark" || themeValue === "light" ? themeValue : undefined,
     locale: localeValue !== null && (tcrnSupportedLocales as readonly string[]).includes(localeValue)
       ? (localeValue as TcrnLocale)
       : undefined
   };
-}
-
-function writeStoredBoolean(key: string | undefined, value: boolean) {
-  writeStoredString(key, String(value));
 }
 
 /**

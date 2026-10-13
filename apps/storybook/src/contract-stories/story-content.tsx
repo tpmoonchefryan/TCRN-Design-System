@@ -2243,27 +2243,12 @@ const legacyContractStories: LegacyContractStory[] = [
           <ProductShell
             productName="AOS Rebuild Workspace"
             moduleName="Frontend shell slice"
-            brandProductId="aos"
-            brandMarkSrc="tcrn-brand-mark.svg"
-            brandMarkAlt="TCRN registered brand mark"
+            brandProductId="design-system"
             currentRouteLabel="Cockpit"
-            navLabel="Registered AOS modules"
-            collapsed={false}
-            collapsedStorageKey="tcrn-aos-side-nav-collapsed"
             currentTheme="light"
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}
-            search={{
-              className: "tcrn-doc-product-shell-search--static-display",
-              label: "Search AOS shell",
-              placeholder: "Search modules, work items, or proof",
-              query: "cockpit",
-              expanded: true,
-              results: [
-                { id: "cockpit", title: "Cockpit", meta: "Registered shell entry", href: "/cockpit", selected: true },
-                { id: "work", title: "Work", meta: "Work module entry", href: "/work" }
-              ]
-            }}
+            searchPlaceholder="Search modules, work items, or proof"
             navGroups={[
               {
                 id: "registered-aos-shell-entries",

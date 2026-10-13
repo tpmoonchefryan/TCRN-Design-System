@@ -458,32 +458,17 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
     <ProductShell
       productName={labels.productName}
       moduleName={labels.moduleName}
-      brandProductId="aos"
-      brandMarkSrc="tcrn-brand-mark.svg"
-      brandMarkAlt="TCRN registered brand mark"
+      brandProductId="design-system"
       currentRouteLabel={currentRouteLabel}
-      navLabel={`${labels.navLabel}: ${variant.id}`}
       navGroups={buildNavGroups(variant)}
-      collapsed={variant.collapsed}
-      collapsedStorageKey={`tcrn-aos-side-nav-collapsed-${variant.id}`}
       currentTheme={variant.theme}
       locales={tcrnLocaleMetadata}
       currentLocale={variant.locale}
       contentId={`${variant.id}-content`}
       contentRole="region"
       contentLabel={`${labels.contentLabel}: ${variant.id}`}
-      navId={`${variant.id}-side-nav`}
       skipLinkLabel={labels.skipLink}
-      search={{
-        label: labels.searchLabel,
-        placeholder: labels.searchPlaceholder,
-        shortcut: "auto",
-        query,
-        expanded: isSearchResults,
-        results: buildSearchResults(variant),
-        resultsLabel: labels.searchResultsLabel,
-        emptyLabel: labels.emptyLabel
-      }}
+      searchPlaceholder={labels.searchPlaceholder}
       data-storybook-visual-instance="frontend-shell-slice"
       data-visual-instance-name="FrontendShellSliceVisualInstance"
       data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
