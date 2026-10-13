@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   compareTokenThemeBlocks,
   createCssVariables,
@@ -241,13 +242,14 @@ test("typography, shape, shadow and motion tokens follow the G+ scale", () => {
   assert.equal(light["--tcrn-radius-stamp"], "3px");
   assert.equal(light["--tcrn-radius-surface"], light["--tcrn-radius-panel"]);
 
-  // Composition one's shell geometry (O-1, TCRN-DS-SUB-090): the paper radius and the three
-  // ProductShell sizes are contract tokens in the theme-independent block.
+  // Shell geometry in the theme-independent block: the paper radius (O-1, TCRN-DS-SUB-090) and
+  // composition one's three ProductShell sizes, retired by the top band (TCRN-DS-SUB-113): the
+  // sidebar widths keep their values, the top bar height is an alias of the band height.
   const shellGeometry: Record<string, readonly [string, string, string]> = {
     "--tcrn-radius-paper": ["14px", "radius.paper", "radius"],
     "--tcrn-shell-sidebar-width": ["220px", "shell.sidebar.width", "container"],
     "--tcrn-shell-sidebar-width-collapsed": ["52px", "shell.sidebar.width.collapsed", "container"],
-    "--tcrn-shell-topbar-height": ["52px", "shell.topbar.height", "container"]
+    "--tcrn-shell-topbar-height": ["var(--tcrn-shell-strip-h)", "shell.topbar.height", "container"]
   };
   for (const [variable, [value, name, group]] of Object.entries(shellGeometry)) {
     const token = tcrnTokens.find((candidate) => candidate.variable === variable);
@@ -284,6 +286,127 @@ test("typography, shape, shadow and motion tokens follow the G+ scale", () => {
   assert.equal(light["--tcrn-selection-glide"], "240ms cubic-bezier(.22,1,.36,1)");
   assert.equal(light["--tcrn-motion-loading-loop"], "900ms linear");
   assert.equal(resolvedLight["--tcrn-motion-ease-out"], "cubic-bezier(.22,1,.36,1)");
+});
+
+// The top-band shell's tokens, row by row from the 07b board's section F (TCRN-DS-SUB-113): the
+// section F name, the contract key, the package variable and the value. This table is the
+// assertion table; the values are the board's, not a second copy of the contract.
+const shellTokenTable: ReadonlyArray<readonly [name: string, key: string, variable: string, value: string]> = [
+  ["shell.strip-h", "shell-strip-h", "--tcrn-shell-strip-h", "52px"],
+  ["shell.brand-h", "shell-brand-h", "--tcrn-shell-brand-h", "40px"],
+  ["shell.brand-w", "shell-brand-w", "--tcrn-shell-brand-w", "134px"],
+  ["shell.toggle", "shell-toggle", "--tcrn-shell-toggle", "20px"],
+  ["shell.pin-h", "shell-pin-h", "--tcrn-shell-pin-h", "32px"],
+  ["shell.pin-gap", "shell-pin-gap", "--tcrn-shell-pin-gap", "8px"],
+  ["shell.pins-max", "shell-pins-max", "--tcrn-shell-pins-max", "6"],
+  ["shell.menu-gap", "shell-menu-gap", "--tcrn-shell-menu-gap", "6px"],
+  ["shell.panel-w-expanded", "shell-panel-w-expanded", "--tcrn-shell-panel-w-expanded", "952px"],
+  ["shell.pbar-h", "shell-pbar-h", "--tcrn-shell-pbar-h", "44px"],
+  ["shell.drop-w", "shell-drop-w", "--tcrn-shell-drop-w", "240px"],
+  ["shell.drop-srch-h", "shell-drop-srch-h", "--tcrn-shell-drop-srch-h", "28px"],
+  ["shell.cascade-gap", "shell-cascade-gap", "--tcrn-shell-cascade-gap", "4px"],
+  ["shell.row-h", "shell-row-h", "--tcrn-shell-row-h", "32px"],
+  ["shell.srch-h", "shell-srch-h", "--tcrn-shell-srch-h", "40px"],
+  ["shell.pinb", "shell-pinb", "--tcrn-shell-pinb", "24px"],
+  ["motion.intro.fade", "intro-fade", "--tcrn-motion-intro-fade", "120ms"],
+  ["motion.intro.move", "intro-move", "--tcrn-motion-intro-move", "240ms"],
+  ["motion.intro.rise", "intro-rise", "--tcrn-motion-intro-rise", "100ms"],
+  ["motion.intro.max", "intro-max", "--tcrn-motion-intro-max", "700ms"]
+];
+
+test("the top-band shell tokens are the 07b board's section F, one to one, in the theme-independent block", () => {
+  assert.equal(tcrnGplusFixedTokens.filter((token) => token.key.startsWith("shell-")).length, 16, "sixteen shell.* tokens");
+  assert.equal(tcrnGplusFixedTokens.filter((token) => token.key.startsWith("intro-")).length, 4, "four motion.intro tokens");
+  const blocks = parseTokenCssBlocks(tcrnTokenStylesheet);
+  const fixedBlock = new Map(blocks[1].declarations);
+  const themeNames = new Set([...blocks[0].declarations, ...blocks[2].declarations].map(([property]) => property));
+  for (const [name, key, variable, value] of shellTokenTable) {
+    const contract = tcrnGplusFixedTokens.find((token) => token.key === key);
+    assert.equal(contract?.cssVar, variable, `${key} is published as ${variable}`);
+    assert.equal(contract?.value, value, `${key} contract value`);
+    assert.equal(contract?.group, key.startsWith("shell-") ? "shell" : "motion", `${key} contract group`);
+    const token = tcrnTokens.find((candidate) => candidate.variable === variable);
+    assert.equal(token?.name, name, `${variable} keeps the section F name`);
+    assert.equal(token?.value, value, `${variable} value`);
+    assert.equal(token?.group, key.startsWith("shell-") ? "container" : "motion", `${variable} group`);
+    assert.equal(token?.scope, "fixed", `${variable} is theme independent`);
+    assert.equal(token?.deprecated, undefined, `${variable} is not deprecated`);
+    // Geometry does not follow the theme: one declaration in the :root theme-independent block,
+    // none in the light or the dark theme block, so both themes read the same property set.
+    assert.equal(fixedBlock.get(variable), value, `${variable} sits in the theme-independent block`);
+    assert.equal(themeNames.has(variable), false, `${variable} is not in a theme block`);
+    assert.equal(resolvedLight[variable], value, `${variable} by day`);
+    assert.equal(resolvedDark[variable], value, `${variable} at night`);
+  }
+  // Relations the board draws: the brand button sits (strip − brand) / 2 from the band's top, and
+  // the band's midline is half its height; the intro's three phases fit under its ceiling, the
+  // first on the fill duration and the second on the movement duration.
+  const px = (variable: string) => Number.parseFloat(light[variable]);
+  assert.equal((px("--tcrn-shell-strip-h") - px("--tcrn-shell-brand-h")) / 2, 6);
+  assert.equal(px("--tcrn-shell-strip-h") / 2, 26);
+  const ms = (variable: string) => Number.parseFloat(light[variable]);
+  assert.equal(light["--tcrn-motion-intro-fade"], light["--tcrn-motion-duration-fill"]);
+  assert.equal(light["--tcrn-motion-intro-move"], light["--tcrn-motion-duration-move"]);
+  const intro = ms("--tcrn-motion-intro-fade") + ms("--tcrn-motion-intro-move") + ms("--tcrn-motion-intro-rise");
+  assert.equal(intro, 460);
+  assert.ok(intro <= ms("--tcrn-motion-intro-max"));
+});
+
+test("the shell tokens share their source with the 07b board CSS (build-shell2.mjs .scr.ts defaults)", () => {
+  // The board builder declares the band's defaults on one `.scr.ts{…}` line; each board variable
+  // equals the contract value of its token, and so does the package value.
+  const builder = readFileSync(new URL("../../../docs/design/gplus-2026-10/tools/build-shell2.mjs", import.meta.url), "utf8");
+  const line = builder.split("\n").find((candidate) => candidate.startsWith(".scr.ts{"));
+  assert.ok(line, "build-shell2.mjs declares the .scr.ts defaults");
+  const board = new Map(
+    [...line.matchAll(/(--[a-z0-9-]+):([^;}]+)/g)].map((match) => [match[1], match[2].trim()] as const)
+  );
+  const boardToContract: Record<string, string> = {
+    "--strip-h": "shell-strip-h",
+    "--tab": "shell-brand-h",
+    "--panel-wx": "shell-panel-w-expanded",
+    "--menu-gap": "shell-menu-gap",
+    "--pin-gap": "shell-pin-gap",
+    "--drop-w": "shell-drop-w",
+    "--cascade-gap": "shell-cascade-gap",
+    "--row-h": "shell-row-h",
+    "--pinb": "shell-pinb",
+    "--srch-h": "shell-srch-h",
+    "--paper-r": "r-paper"
+  };
+  for (const [boardVariable, key] of Object.entries(boardToContract)) {
+    const contract = tcrnGplusFixedTokens.find((token) => token.key === key);
+    assert.ok(board.has(boardVariable), `the board declares ${boardVariable}`);
+    assert.equal(contract?.value, board.get(boardVariable), `${key} equals the board's ${boardVariable}`);
+    assert.equal(light[contract?.cssVar ?? ""], board.get(boardVariable), `${contract?.cssVar} equals the board's ${boardVariable}`);
+  }
+});
+
+test("rail-w, rail-w-collapsed and topbar-h are retired: two without a successor, one an alias of the band height", () => {
+  const retired = new Map(tcrnDeprecatedTokens.map((token) => [token.variable, token] as const));
+  assert.equal(retired.get("--tcrn-shell-sidebar-width")?.replacement, null);
+  assert.equal(retired.get("--tcrn-shell-sidebar-width-collapsed")?.replacement, null);
+  assert.equal(retired.get("--tcrn-shell-topbar-height")?.replacement, "--tcrn-shell-strip-h");
+  // Only the alias has an old → new pair; the two widths keep their values and resolve as before.
+  assert.equal(tcrnDeprecatedTokenAliases["--tcrn-shell-topbar-height"], "--tcrn-shell-strip-h");
+  assert.equal("--tcrn-shell-sidebar-width" in tcrnDeprecatedTokenAliases, false);
+  assert.equal("--tcrn-shell-sidebar-width-collapsed" in tcrnDeprecatedTokenAliases, false);
+  assert.equal(light["--tcrn-shell-sidebar-width"], "220px");
+  assert.equal(light["--tcrn-shell-sidebar-width-collapsed"], "52px");
+  assert.equal(light["--tcrn-shell-topbar-height"], "var(--tcrn-shell-strip-h)");
+  assert.equal(resolvedLight["--tcrn-shell-topbar-height"], resolvedLight["--tcrn-shell-strip-h"]);
+  assert.equal(resolvedDark["--tcrn-shell-topbar-height"], resolvedDark["--tcrn-shell-strip-h"]);
+  for (const variable of ["--tcrn-shell-sidebar-width", "--tcrn-shell-sidebar-width-collapsed"]) {
+    assert.match(tcrnTokens.find((token) => token.variable === variable)?.description ?? "", /^Deprecated\. /);
+  }
+  // A consumer still reading the old names gets a notice per name.
+  const notices = formatDeprecatedTokenNotices(
+    findDeprecatedTokenUsages(".s{inline-size:var(--tcrn-shell-sidebar-width);block-size:var(--tcrn-shell-topbar-height)}")
+  );
+  assert.deepEqual(notices, [
+    "deprecated token --tcrn-shell-sidebar-width (1 use): no G+ successor; plan its removal",
+    "deprecated token --tcrn-shell-topbar-height (1 use): use --tcrn-shell-strip-h"
+  ]);
 });
 
 test("the type scale comes from the generated contract file; no scale value is written by hand", () => {
