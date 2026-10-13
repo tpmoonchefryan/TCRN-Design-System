@@ -205,9 +205,6 @@ export const brandCss01 = `
 }`;
 
 export const brandCss02 = `
-.tcrn-product-shell__sidebar .tcrn-brand-wordmark__suffix--aos {
-  color: var(--tcrn-color-brand-primary);
-}
 /* The side-rail tier (Brand board section E, .lkr): mark 22, wordmark 12.5/600, tagline 10.5,
    10 between mark and copy, no byline. It is written here once (TCRN-DS-SUB-144): a lockup in
    the product shell takes it, and so does any lockup marked as the side-rail lockup with
@@ -224,12 +221,6 @@ export const brandCss02 = `
 }
 .tcrn-product-shell .tcrn-product-logo__byline,
 .tcrn-shell-brand-lockup[data-lockup="lkr"] .tcrn-product-logo__byline {
-  display: none;
-}`;
-
-export const brandCss03 = `
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-shell-brand-lockup__copy,
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-logo__copy {
   display: none;
 }`;
 

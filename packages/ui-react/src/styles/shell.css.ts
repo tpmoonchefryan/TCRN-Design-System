@@ -30,6 +30,7 @@
 // has space-0h above and below its line: the clipping wordmark holds the suffix, and the room is
 // the same on both sides, so the glyphs stay where the flex line centres them.
 export const shellCss01 = `
+/* tcrn:shell-layer-start */
 .tcrn-shell-brand {
   --tcrn-pair-fill: var(--tcrn-pair-fill-d);
   --tcrn-pair-ink: var(--tcrn-pair-ink-d);

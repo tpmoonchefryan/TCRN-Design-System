@@ -41,10 +41,12 @@ import {
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
 import { shellMenuPresentationContext } from "./ShellMenu.js";
+import * as shellSegments from "../../styles/shell.css.js";
+import * as shellIntroSegments from "../../styles/shell-intro.css.js";
+import * as shellSheetSegments from "../../styles/shell-sheet.css.js";
 import { PageHeader, TocRail, ViewTabs } from "../DataDisplay/DomainDisplay.js";
 import { createResolvedTokenMap, createTokenMap } from "@tcrn/ui-tokens";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
-import * as brandSegments from "../../styles/brand.css.js";
 
 test("tabs use honest segmented navigation semantics", () => {
   const html = renderToStaticMarkup(<ModuleTabs items={[{ id: "overview", label: "Overview", selected: true }, { id: "proof", label: "Proof" }]} />);
@@ -181,10 +183,8 @@ test("nav item density and nesting are data-driven", () => {
     tcrnComponentCss,
     /min-height:\s*calc\(\s*var\(--tcrn-space-6\)\s*-\s*var\(--tcrn-space-0h\)\s*\)/,
   );
-  assert.match(
-    tcrnComponentCss,
-    /\.tcrn-product-shell__sidebar \.tcrn-brand-wordmark__suffix--aos \{[\s\S]*color: var\(--tcrn-color-brand-primary\);/,
-  );
+  // The rail-scoped AOS suffix colour went with the rail (TCRN-DS-SUB-145).
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell__sidebar/);
 });
 
 // Composition one (O-1, TCRN-DS-SUB-090): the shell geometry comes from the shell tokens, the
@@ -216,9 +216,9 @@ test("STORY-140 GWT1 product shell is the top band and the paper, through the sh
   assert.match(rule(".tcrn-shell-bell"), /inline-size: var\(--tcrn-control-height-md\);\n  block-size: var\(--tcrn-control-height-md\);/);
   assert.match(rule(".tcrn-shell-avatar"), /inline-size: var\(--tcrn-control-height-sm\);\n  block-size: var\(--tcrn-control-height-sm\);/);
   // Composition one (O-1) is withdrawn: no rail and its collapsed width, no lead column, no sheet
-  // beside a rail, no top bar, no mobile drawer. The brand module is left out of this reading: it
-  // still scopes three wordmark rules to the rail, which match nothing now and are its owner's.
-  const shellRules = Object.values(brandSegments).reduce((css, segment) => (typeof segment === "string" && segment ? css.replace(segment, "") : css), tcrnComponentCss);
+  // beside a rail, no top bar, no mobile drawer. The whole sheet is read, the brand module too: its
+  // three rail-scoped rules are gone (TCRN-DS-SUB-145).
+  const shellRules = tcrnComponentCss;
   for (const retired of [
     /\.tcrn-product-shell__sidebar/,
     /\.tcrn-product-shell__workspace/,
@@ -614,7 +614,13 @@ test("product shell component css keeps motion shorthands valid", () => {
   assert.doesNotMatch(tcrnComponentCss, /--tcrn-elevation-floating:/);
   assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-text-inverse:/);
   assert.match(tcrnComponentCss, /animation: tcrn-product-shell-theme-wash var\(--tcrn-motion-product-shell\) both;/);
-  assert.match(tcrnComponentCss, /flex-basis var\(--tcrn-motion-product-shell-search\),[\s\S]*width var\(--tcrn-motion-product-shell-search\),[\s\S]*max-width var\(--tcrn-motion-product-shell-search\);/);
+  // The old top bar's search sizes and their transition are gone (TCRN-DS-SUB-145): the search takes
+  // the width of the menu, drop-down or page that holds it.
+  assert.doesNotMatch(tcrnComponentCss, /flex-basis: (?:260|420)px|min\(100%, (?:260|420)px\)|var\(--tcrn-motion-product-shell-search\)/);
+  const search = /\n\.tcrn-product-shell-search \{([^}]*)\}/.exec(tcrnComponentCss);
+  assert.ok(search, "the search keeps its own rule");
+  assert.equal(search[1].trim(), "position: relative;", "it only places its results list");
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell-search\[data-search-expanded="true"\] \{/);
   assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-motion-emphasis\) ease/);
 });
 
@@ -812,12 +818,10 @@ test("brand lockup css follows the G+ brand rules", () => {
   );
   const markRule = rule(".tcrn-brand-mark");
   assert.match(markRule, /inline-size: var\(--tcrn-brand-mark-size\);[\s\S]*filter: var\(--tcrn-brand-mark-filter, none\);/);
-  // STORY-127 GWT4 (the CSS part): the mark neither scales nor fades when the rail
-  // collapses, and the lockup copy leaves with display:none rather than a clip.
+  // STORY-127 GWT4 (the CSS part): the mark neither scales nor fades. The rail and its collapsed
+  // state are gone, and so is the rule that hid the lockup copy in it (TCRN-DS-SUB-145).
   assert.doesNotMatch(markRule, /transition/);
-  const collapsedCopy = tcrnComponentCss.match(/\.tcrn-product-shell\[data-product-shell-collapsed="true"\] \.tcrn-shell-brand-lockup__copy,\n\.tcrn-product-shell\[data-product-shell-collapsed="true"\] \.tcrn-product-logo__copy \{[^}]*\}/)?.[0] ?? "";
-  assert.match(collapsedCopy, /display: none;/);
-  assert.doesNotMatch(collapsedCopy, /clip-path|inline-size/);
+  assert.doesNotMatch(tcrnComponentCss, /data-product-shell-collapsed/);
 
   const longNameWordmarkRule = rule(".tcrn-brand-lockup--long-name .tcrn-brand-wordmark");
   assert.match(longNameWordmarkRule, /flex-direction:\s*column;/);
@@ -2053,4 +2057,24 @@ test("STORY-144 the shell root reports an open Sheet as data-state=\"sheet\", al
   // The panel keeps "expanded"; the state is a value of the root, not a new prop.
   assert.match(renderToStaticMarkup(shell(true)), /^<div data-shell="" class="tcrn-product-shell" data-state="expanded"/);
   assert.match(renderToStaticMarkup(<shellMenuPresentationContext.Provider value="panel">{shell(true)}</shellMenuPresentationContext.Provider>), /data-state="expanded"/);
+});
+
+test("the shell layer of the package sheet starts at one stable marker, before its first rule (TCRN-DS-SUB-145)", () => {
+  const marker = "/* tcrn:shell-layer-start */";
+  assert.equal(tcrnComponentCss.split(marker).length - 1, 1, "the marker is written once");
+  const at = tcrnComponentCss.indexOf(marker);
+  // The shell layer is the shell segments (shell.css.ts, shell-intro.css.ts, shell-sheet.css.ts);
+  // its first rule is the brand button's, right after the marker, and every shell segment comes
+  // after the marker in the sheet. A page template cuts the layer off at the marker.
+  assert.ok(tcrnComponentCss.startsWith("\n.tcrn-shell-brand {", at + marker.length), "the brand button's rule follows the marker");
+  const segments: string[] = [...Object.values(shellSegments), ...Object.values(shellIntroSegments), ...Object.values(shellSheetSegments)]
+    .map((segment) => String(segment))
+    .filter((segment) => segment.length > 0);
+  assert.ok(segments.length >= 7, "the shell segments are read");
+  for (const segment of segments) {
+    const where = tcrnComponentCss.indexOf(segment);
+    assert.ok(where >= 0, "the segment is in the sheet");
+    assert.ok(where + segment.length > at && (where >= at || segment.includes(marker)), "the segment starts at or after the marker");
+  }
+  assert.ok(String(shellSegments.shellCss01).startsWith(`\n${marker}\n.tcrn-shell-brand {`), "the marker opens the first shell segment");
 });
