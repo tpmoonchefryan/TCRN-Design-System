@@ -149,7 +149,13 @@ export const brandCss01 = `
    writing unchanged: at the lockup scale a 44 mark and a 16/600 line 14 from it, at the rail
    scale a 22 mark and a 12.5/600 line 10 from it; Einzbern and Mana Orchestrate keep their
    serif whole names. The flex row centres mark and line (align-items center from the lockup
-   rule); nothing nudges the line, so no padding, margin, offset or line-height trim here. */
+   rule); nothing nudges the line, so no margin, offset, one-sided padding or line-height trim
+   here. Written as the brand button's wordmark is (TCRN-DS-SUB-143), each on its own: the word
+   takes its content width and may run up to 1 (half of space-0h) past its line, so a word only a
+   fraction too wide is drawn whole and a longer one ends in an ellipsis under its title; the
+   suffix's line box (Hanken Grotesk ascends 1 and descends 0.303 em) is taller than the line,
+   so the word has space-0h above and below it, the same on both sides, and the clipping word
+   holds the suffix without moving a glyph. */
 .tcrn-brand-lockup--line {
   --tcrn-brand-mark-size: 44px;
   --tcrn-brand-line-one-size: 16px;
@@ -169,6 +175,9 @@ export const brandCss01 = `
 }
 .tcrn-brand-lockup__word {
   display: block;
+  inline-size: max-content;
+  max-inline-size: calc(100% + var(--tcrn-space-0h) / 2);
+  padding-block: var(--tcrn-space-0h);
   overflow: hidden;
   font-size: var(--tcrn-brand-line-one-size);
   font-weight: var(--tcrn-type-weight-strong);

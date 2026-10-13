@@ -701,7 +701,8 @@ function ProductLockupFirstLine({
         <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} aria-hidden="true" />
       )}
       <span className="tcrn-brand-lockup__line" aria-hidden="true">
-        <b className="tcrn-brand-lockup__word">
+        {/* A word too long for its line ends in an ellipsis; the title says it in full (C7). */}
+        <b className="tcrn-brand-lockup__word" title={name}>
           {word}
           {lineSuffix ? (
             <>

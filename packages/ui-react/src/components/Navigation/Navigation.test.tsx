@@ -1804,10 +1804,10 @@ function logos2Inner(fileId: string): string {
 
 test("STORY-145 GWT1 ProductLockup's first line draws the four product marks from logos2 at both scales", () => {
   const words = {
-    tms: '<b class="tcrn-brand-lockup__word">TCRN <em class="tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--tms">TMS</em></b>',
-    "design-system": '<b class="tcrn-brand-lockup__word">TCRN <em class="tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--design-system">Design System</em></b>',
-    einzbern: '<b class="tcrn-brand-lockup__word">Einzbern</b>',
-    "mana-orchestrate": '<b class="tcrn-brand-lockup__word">Mana Orchestrate</b>'
+    tms: '<b class="tcrn-brand-lockup__word" title="TCRN TMS">TCRN <em class="tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--tms">TMS</em></b>',
+    "design-system": '<b class="tcrn-brand-lockup__word" title="TCRN Design System">TCRN <em class="tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--design-system">Design System</em></b>',
+    einzbern: '<b class="tcrn-brand-lockup__word" title="Einzbern">Einzbern</b>',
+    "mana-orchestrate": '<b class="tcrn-brand-lockup__word" title="Mana Orchestrate">Mana Orchestrate</b>'
   } as const;
   for (const mark of tcrnProductMarks) {
     const productId = mark.productId as keyof typeof words;
@@ -1835,7 +1835,7 @@ test("STORY-145 GWT1 ProductLockup's first line draws the four product marks fro
   // Without a product the first line still says the product's whole name.
   const unregistered = renderToStaticMarkup(<ProductLockup firstLine="rail" suffix="Pilot" />);
   assert.match(unregistered, /role="img" aria-label="TCRN Pilot"/);
-  assert.match(unregistered, /<b class="tcrn-brand-lockup__word">TCRN <em class="tcrn-brand-lockup__suffix">Pilot<\/em><\/b>/);
+  assert.match(unregistered, /<b class="tcrn-brand-lockup__word" title="TCRN Pilot">TCRN <em class="tcrn-brand-lockup__suffix">Pilot<\/em><\/b>/);
 });
 
 test("STORY-145 GWT2 the first line is centred by the flex row, at the section E sizes, with no nudge", () => {
@@ -1853,9 +1853,100 @@ test("STORY-145 GWT2 the first line is centred by the flex row, at the section E
   assert.match(rule(".tcrn-brand-lockup__suffix"), /font-style: normal;/);
   assert.match(rule(".tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word"), /font-family: var\(--tcrn-type-family-serif\);[\s\S]*font-size: 18px;/);
   assert.match(rule(".tcrn-brand-lockup--line-rail.tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word"), /font-size: 13\.5px;/);
-  // The r6 nudge (the line moved down 2 or 3) must not come back in any first-line rule.
+  // The r6 nudge (the line moved down 2 or 3) must not come back in any first-line rule: no
+  // margin, offset or one-sided padding. The word's room above and below its line
+  // (TCRN-DS-SUB-143) is a single padding-block value, the same on both sides, so it moves no glyph.
   for (const { selector, body } of rules) {
     if (!/tcrn-brand-lockup(?:--line|__line|__word|__suffix)/.test(selector)) continue;
-    assert.doesNotMatch(body, /(?:^|[;\s])(?:padding|padding-top|padding-block|margin|margin-top|margin-block|top|transform|translate|position|vertical-align)\s*:/, selector);
+    assert.doesNotMatch(
+      body,
+      /(?:^|[;\s])(?:padding|padding-top|padding-bottom|padding-block-start|padding-block-end|margin|margin-top|margin-block|top|transform|translate|position|vertical-align)\s*:/,
+      selector
+    );
+    for (const match of body.matchAll(/(?:^|[;\s])padding-block\s*:\s*([^;]+);/g)) {
+      assert.match(match[1].trim(), /^var\(--tcrn-space-[0-9]+h?\)$/, `${selector}: padding-block is one token, the same on both sides`);
+    }
+  }
+});
+
+// Layout model for the first line (TCRN-DS-SUB-143). The unit tests have no layout engine, so the
+// two readings the shell gate takes in the browser are worked out here from the rules and the
+// tokens. Hanken Grotesk (the vendored latin file) ascends 1000 and descends 303 per 1000 em with
+// no line gap; Chromium rounds the ascent and the descent to whole pixels, which is why the
+// suffix's line box read 17 at 12.5 in the R1 geometry run. TCRN TMS at 12.5/600 read 60.234 wide
+// in the same run.
+const firstLineFont = { ascent: 1, descent: 0.303 } as const;
+const firstLineTmsWidthPx = 60.234;
+
+/** Evaluates a calc() body of px numbers, given the values of its var() references and of 100%. */
+function evaluateLength(expression: string, values: Record<string, number>, percent: number): number {
+  const substituted = expression
+    .replace(/^calc\(([\s\S]*)\)$/, "$1")
+    .replace(/var\((--[a-z0-9-]+)\)/g, (_, name: string) => {
+      assert.ok(name in values, `${name} has a value in the model`);
+      return String(values[name]);
+    })
+    .replace(/100%/g, String(percent))
+    .replace(/(\d+(?:\.\d+)?)px/g, "$1");
+  const parts = substituted.match(/\d+(?:\.\d+)?|[-+*/()]/g) ?? [];
+  assert.equal(parts.join(""), substituted.replace(/\s+/g, ""), `${expression} reduces to arithmetic`);
+  let at = 0;
+  const sum = (): number => {
+    let value = product();
+    while (parts[at] === "+" || parts[at] === "-") value = parts[at++] === "+" ? value + product() : value - product();
+    return value;
+  };
+  const product = (): number => {
+    let value = operand();
+    while (parts[at] === "*" || parts[at] === "/") value = parts[at++] === "*" ? value * operand() : value / operand();
+    return value;
+  };
+  const operand = (): number => {
+    if (parts[at] === "(") {
+      at++;
+      const value = sum();
+      at++;
+      return value;
+    }
+    return Number(parts[at++]);
+  };
+  return sum();
+}
+
+test("STORY-145 the first line draws a word whole when it fits its line within 1, and its suffix stays inside the word (TCRN-DS-SUB-143)", () => {
+  const rules = cssRules(tcrnComponentCss);
+  const rule = (selector: string) => rules.find((candidate) => candidate.selector === selector)?.body ?? "";
+  const declaration = (body: string, property: string) => new RegExp(`(?:^|[;\\s])${property}:\\s*([^;]+);`).exec(body)?.[1].trim() ?? "";
+  const tokens = createTokenMap();
+  const px = (variable: string) => Number.parseFloat(tokens[variable]);
+  const values = Object.fromEntries(Object.keys(tokens).map((name) => [name, px(name)] as const));
+  const word = rule(".tcrn-brand-lockup__word");
+
+  // scrollWidth ≤ clientWidth: the word is as wide as its text and may run 1 past its line, so in a
+  // line 60 wide (the brand button's cell) TCRN TMS is drawn whole; past that it ends in an ellipsis.
+  assert.equal(declaration(word, "inline-size"), "max-content");
+  const maxWidth = (line: number) => evaluateLength(declaration(word, "max-inline-size"), values, line);
+  assert.equal(maxWidth(60), 61);
+  const clientWidth = Math.min(firstLineTmsWidthPx, maxWidth(60));
+  const scrollWidth = firstLineTmsWidthPx;
+  assert.ok(scrollWidth <= clientWidth, `TCRN TMS ${scrollWidth} in a word box ${clientWidth} wide shows no ellipsis`);
+  assert.ok(Math.min(firstLineTmsWidthPx + 2, maxWidth(60)) < firstLineTmsWidthPx + 2, "a word more than 1 too wide is cut, under its title");
+  assert.match(renderToStaticMarkup(<ProductLockup productId="design-system" firstLine="rail" />), /<b class="tcrn-brand-lockup__word" title="TCRN Design System">/);
+
+  // em inside b: at both scales the suffix's line box fits inside the word's box, the same room
+  // above and below.
+  const room = px(/^var\((--[a-z0-9-]+)\)$/.exec(declaration(word, "padding-block"))?.[1] ?? "");
+  assert.equal(room, 2, "space-0h above and below the line");
+  const scales = [
+    { scale: "rail", size: 12.5, line: 12.5 * Number(tokens["--tcrn-type-line-control"]) },
+    { scale: "lockup", size: 16, line: px("--tcrn-type-line-ui") }
+  ];
+  assert.match(rule(".tcrn-brand-lockup--line"), /--tcrn-brand-line-one-height: var\(--tcrn-type-line-ui\);/);
+  for (const { scale, size, line } of scales) {
+    const suffixBox = Math.round(size * firstLineFont.ascent) + Math.round(size * firstLineFont.descent);
+    const wordBox = line + 2 * room;
+    const overhang = (suffixBox - line) / 2;
+    assert.ok(overhang <= room, `${scale}: the suffix's line box (${suffixBox}) stays inside the word (${wordBox})`);
+    assert.ok(suffixBox <= wordBox, `${scale}: em top and bottom inside b`);
   }
 });
