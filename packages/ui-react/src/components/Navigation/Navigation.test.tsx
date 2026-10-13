@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { act, useState, type ReactNode } from "react";
+import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   Tabs,
@@ -1560,5 +1561,73 @@ test("STORY-142 pressing the pin asks for the other state and does not follow th
     assert.equal(link.contains(pin), false);
   } finally {
     await harness.cleanup();
+  }
+});
+
+// TCRN-DS-SUB-127 (STORY-145): the second of the three renditions, the lockup's first line
+// alone, centred on the mark. The mark is logos2's colour file byte for byte, the line keeps the
+// lockup's words, weight and suffix colour, and only the flex row centres the two.
+function logos2Inner(fileId: string): string {
+  // The compiled test sits at packages/ui-react/dist/components/Navigation/, five levels below
+  // the repository root.
+  const file = readFileSync(new URL(`../../../../../docs/design/gplus-2026-10/logos2/${fileId}.svg`, import.meta.url), "utf8");
+  return file.replace(/^<svg\b[^>]*>/u, "").replace(/<\/svg>\s*$/u, "");
+}
+
+test("STORY-145 GWT1 ProductLockup's first line draws the four product marks from logos2 at both scales", () => {
+  const words = {
+    tms: '<b class="tcrn-brand-lockup__word">TCRN <em class="tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--tms">TMS</em></b>',
+    "design-system": '<b class="tcrn-brand-lockup__word">TCRN <em class="tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--design-system">Design System</em></b>',
+    einzbern: '<b class="tcrn-brand-lockup__word">Einzbern</b>',
+    "mana-orchestrate": '<b class="tcrn-brand-lockup__word">Mana Orchestrate</b>'
+  } as const;
+  for (const mark of tcrnProductMarks) {
+    const productId = mark.productId as keyof typeof words;
+    for (const [scale, kind] of [["rail", "lkr-line"], ["lockup", "lk-line"]] as const) {
+      // A mono request does not reach the first line: the top band never shows a mono mark.
+      const html = renderToStaticMarkup(<ProductLockup productId={productId} firstLine={scale} markVariant="mono" locale="zh-CN" />);
+      assert.match(html, new RegExp(`^<div class="tcrn-brand-lockup tcrn-brand-lockup--line${scale === "rail" ? " tcrn-brand-lockup--line-rail" : ""}${mark.font === "serif" ? " tcrn-brand-lockup--line-serif" : ""}" role="img" aria-label="${mark.name}"`), `${productId} ${scale}`);
+      assert.match(html, new RegExp(`data-lockup="${kind}"`));
+      const svg = /<svg([^>]*)>([\s\S]*?)<\/svg>/.exec(html);
+      assert.ok(svg, `${productId} ${scale} draws an inline mark`);
+      assert.match(svg[1], new RegExp(`data-logo="${productId}"`));
+      assert.match(svg[1], /aria-hidden="true"/);
+      assert.match(svg[1], /data-product-mark-variant="color"/);
+      assert.equal(svg[2], logos2Inner(mark.id), `${productId} ${scale}: the mark is logos2/${mark.id}.svg`);
+      assert.ok(html.includes(`<span class="tcrn-brand-lockup__line" aria-hidden="true">${words[productId]}</span>`), `${productId} ${scale} line`);
+      // One line: no tagline, no byline.
+      assert.doesNotMatch(html, /<small|tcrn-product-logo__line-two|tcrn-product-logo__byline|艺人管理系统/);
+    }
+  }
+  // The other two renditions are untouched: the whole lockup still carries its two lines.
+  const whole = renderToStaticMarkup(<ProductLockup productId="tms" locale="zh-CN" />);
+  assert.match(whole, /class="tcrn-product-logo tcrn-brand-lockup"/);
+  assert.match(whole, /<span class="tcrn-product-logo__line-two">艺人管理系统<\/span>/);
+  assert.doesNotMatch(whole, /data-lockup=/);
+  // Without a product the first line still says the product's whole name.
+  const unregistered = renderToStaticMarkup(<ProductLockup firstLine="rail" suffix="Pilot" />);
+  assert.match(unregistered, /role="img" aria-label="TCRN Pilot"/);
+  assert.match(unregistered, /<b class="tcrn-brand-lockup__word">TCRN <em class="tcrn-brand-lockup__suffix">Pilot<\/em><\/b>/);
+});
+
+test("STORY-145 GWT2 the first line is centred by the flex row, at the section E sizes, with no nudge", () => {
+  const rules = cssRules(tcrnComponentCss);
+  const rule = (selector: string) => rules.find((candidate) => candidate.selector === selector)?.body ?? "";
+  const lockup = rules.filter(({ selector }) => selector.split(",").map((part) => part.trim()).includes(".tcrn-brand-lockup")).map(({ body }) => body).join("\n");
+  assert.match(lockup, /display: inline-flex;/);
+  assert.match(lockup, /align-items: center;/);
+  assert.match(rule(".tcrn-brand-lockup--line"), /--tcrn-brand-mark-size: 44px;[\s\S]*--tcrn-brand-line-one-size: 16px;[\s\S]*gap: var\(--tcrn-space-3h\);/);
+  assert.match(rule(".tcrn-brand-lockup--line-rail"), /--tcrn-brand-mark-size: 22px;[\s\S]*--tcrn-brand-line-one-size: 12\.5px;[\s\S]*--tcrn-brand-line-one-height: var\(--tcrn-type-line-control\);[\s\S]*gap: var\(--tcrn-space-2h\);/);
+  const word = rule(".tcrn-brand-lockup__word");
+  assert.match(word, /font-weight: var\(--tcrn-type-weight-strong\);/);
+  assert.match(word, /white-space: nowrap;/);
+  assert.match(word, /text-overflow: ellipsis;/);
+  assert.match(rule(".tcrn-brand-lockup__suffix"), /font-style: normal;/);
+  assert.match(rule(".tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word"), /font-family: var\(--tcrn-type-family-serif\);[\s\S]*font-size: 18px;/);
+  assert.match(rule(".tcrn-brand-lockup--line-rail.tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word"), /font-size: 13\.5px;/);
+  // The r6 nudge (the line moved down 2 or 3) must not come back in any first-line rule.
+  for (const { selector, body } of rules) {
+    if (!/tcrn-brand-lockup(?:--line|__line|__word|__suffix)/.test(selector)) continue;
+    assert.doesNotMatch(body, /(?:^|[;\s])(?:padding|padding-top|padding-block|margin|margin-top|margin-block|top|transform|translate|position|vertical-align)\s*:/, selector);
   }
 });

@@ -610,19 +610,103 @@ export function ProductLogo({
   );
 }
 
+/**
+ * The scale of ProductLockup's first-line rendition: `rail` is the side-rail writing of the
+ * Brand board's section E (mark 22, wordmark 12.5/600), `lockup` the lockup writing (mark 44,
+ * wordmark 16/600). The top band's brand button uses the rail scale.
+ */
+export type ProductLockupFirstLineScale = "rail" | "lockup";
+
 export interface ProductLockupProps extends HTMLAttributes<HTMLDivElement> {
   suffix?: string;
   suffixClassName?: string;
   brandMarkSrc?: string;
   brandMarkAlt?: string;
   productId?: TcrnProductLogoId;
-  /** Passed to `ProductLogo` when `productId` is given; ignored otherwise. */
+  /** Passed to `ProductLogo` when `productId` is given; ignored otherwise and by `firstLine`. */
   markVariant?: TcrnProductMarkVariant;
   /** Passed to `ProductLogo` when `productId` is given; ignored otherwise. */
   locale?: string;
+  /**
+   * The second of the product's three renditions (MIN-20261013-SHELL D2, STORY-145): the
+   * lockup's first line alone, centred on the mark, at the given scale. Nothing is redrawn or
+   * restyled: the mark is the colour mark of logos2 (never mono or faded), the line keeps the
+   * lockup's words, weights and suffix colour, and the two are centred by the flex row, not by
+   * nudging the line. Omitted, the lockup is the whole block (the third rendition).
+   */
+  firstLine?: ProductLockupFirstLineScale;
 }
 
-export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, markVariant, locale, className, ...props }: ProductLockupProps) {
+/** The first-line rendition of ProductLockup: data-lockup lk-line or lkr-line (C-6). */
+function ProductLockupFirstLine({
+  scale,
+  productId,
+  suffix,
+  suffixClassName,
+  brandMarkSrc,
+  brandMarkAlt,
+  locale,
+  className,
+  ...props
+}: Omit<ProductLockupProps, "firstLine" | "markVariant"> & { scale: ProductLockupFirstLineScale }) {
+  const asset = productId ? getTcrnProductLogoAsset(productId) : null;
+  const word = asset ? asset.lineOneBase : "TCRN";
+  const lineSuffix = asset ? asset.lineOneSuffix : requiredText(suffix, chromeLabels(locale).productSuffix);
+  const lineSuffixClassName = asset ? asset.suffixClassName : suffixClassName;
+  const name = asset ? asset.lineOne : `${word} ${lineSuffix}`;
+  return (
+    <div
+      {...props}
+      className={cx(
+        "tcrn-brand-lockup",
+        "tcrn-brand-lockup--line",
+        scale === "rail" && "tcrn-brand-lockup--line-rail",
+        asset?.wordmark === "serif" && "tcrn-brand-lockup--line-serif",
+        className
+      )}
+      role="img"
+      aria-label={name}
+      data-component-source="@tcrn/ui-react"
+      data-brand-lockup="line"
+      data-lockup={scale === "rail" ? "lkr-line" : "lk-line"}
+      data-product-id={asset?.productId}
+    >
+      {asset?.markId ? (
+        <TcrnBrandMark productId={asset.markId} variant="color" aria-hidden="true" data-logo={asset.productId} />
+      ) : (
+        <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} aria-hidden="true" />
+      )}
+      <span className="tcrn-brand-lockup__line" aria-hidden="true">
+        <b className="tcrn-brand-lockup__word">
+          {word}
+          {lineSuffix ? (
+            <>
+              {" "}
+              <em className={cx("tcrn-brand-lockup__suffix", lineSuffixClassName ?? undefined)}>{lineSuffix}</em>
+            </>
+          ) : null}
+        </b>
+      </span>
+    </div>
+  );
+}
+
+export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, markVariant, locale, firstLine, className, ...props }: ProductLockupProps) {
+  if (firstLine) {
+    return (
+      <ProductLockupFirstLine
+        {...props}
+        scale={firstLine}
+        productId={productId}
+        suffix={suffix}
+        suffixClassName={suffixClassName}
+        brandMarkSrc={brandMarkSrc}
+        brandMarkAlt={brandMarkAlt}
+        locale={locale}
+        className={className}
+      />
+    );
+  }
   if (productId) {
     return (
       <ProductLogo
@@ -659,7 +743,7 @@ export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMark
   );
 }
 
-export interface ShellBrandLockupProps extends ProductLockupProps {
+export interface ShellBrandLockupProps extends Omit<ProductLockupProps, "firstLine"> {
   caption?: string;
 }
 
