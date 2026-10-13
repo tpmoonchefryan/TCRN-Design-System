@@ -41,14 +41,10 @@ import {
   LiveRegion,
   LockHint,
   MultiSelect,
-  NavGroup,
-  NavItem,
   Pagination,
   ProductLockup,
   Popover,
-  ProductLauncher,
   ProductShell,
-  ProductSwitcher,
   ReadbackPanel,
   SearchInput,
   SectionTabs,
@@ -64,7 +60,6 @@ import {
   shellIntroTimeline,
   shellMenuCascades,
   ShellThemeToggle,
-  SideNav,
   Progress,
   Skeleton,
   SkipLink,
@@ -83,7 +78,6 @@ import {
   TableToolbar,
   Text,
   Textarea,
-  TopBar,
   TcrnBrandMark,
   tcrnIconNames,
   Tooltip,
@@ -2400,7 +2394,6 @@ const legacyContractStories: LegacyContractStory[] = [
       <section className="alpha-story-stack">
         <ReadbackPanel title="Knowledge base bookmark shell">
           <Text>Design System and other knowledge-base products need side navigation with multi-level bookmarks because the reader path is nested and scroll-driven.</Text>
-          <Text>Until the Navigation family batch, the 52px top bar, the canvas-colored side navigation and its 16px padding in this sample come from exceptions scoped to the documentation; the standalone TopBar of the package defaults to 68px.</Text>
           <KnowledgeBaseShellDemo />
         </ReadbackPanel>
         <ReadbackPanel title="Compact tool shell">
@@ -2413,15 +2406,10 @@ const legacyContractStories: LegacyContractStory[] = [
     id: "navigation-primitives-spec",
     title: "Navigation component primitives",
     group: "Components",
-    description: "Package-backed navigation primitives — top bar, breadcrumb, product switcher, side navigation, segmented nav, and pagination — with the package-backed navigation proof.",
+    description: "Package-backed navigation primitives — breadcrumb, the Tabs family, skip link, and pagination — with the package-backed navigation proof. NavGroup and NavItem rows render in the full menu and the drop-downs of the top-band shell.",
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="Navigation component contracts">
-          <TopBar
-            productName="TCRN Design System"
-            moduleName="Components"
-            actions={<StatusBadge state={{ state: "local_only" }} />}
-          />
           {/* The ancestor crumb carries an href and the current page does not:
               that pairing is the contract, and it is what makes this component
               a way back rather than a label. A story showing every crumb inert
@@ -2434,36 +2422,10 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           />
           <div className="tcrn-doc-nav-component-preview">
-            <ProductSwitcher
-              items={[
-                { id: "aos", label: "TCRN AOS" },
-                { id: "tms", label: "TCRN TMS", selected: true },
-                { id: "design-system", label: "TCRN Design System" }
-              ]}
-            />
-            <ProductLauncher
-              items={[
-                { id: "aos", label: "TCRN AOS" },
-                { id: "tms", label: "TCRN TMS", selected: true },
-                { id: "design-system", label: "TCRN Design System" }
-              ]}
-            />
-            <Text>Deprecated alias of ProductSwitcher. ProductLauncher is code-identical to ProductSwitcher and is retained only for backward compatibility; prefer ProductSwitcher for new surfaces.</Text>
             <div className="tcrn-doc-package-nav-proof" data-package-backed-navigation-proof="true">
               <div className="tcrn-doc-package-nav-proof__skip">
                 <SkipLink href="#navigation-shell-spec">Skip to navigation shell content</SkipLink>
               </div>
-              <SideNav label="Package-backed side navigation">
-                <NavGroup label="Components" selected>
-                  <NavItem href="#component-family-index" iconName="package">Component family index</NavItem>
-                  <NavItem href="#navigation-shell-spec" iconName="panel-left-open" selected>Navigation shell</NavItem>
-                  <NavItem href="#dialog-spec-usage" iconName="external-link">Dialog spec</NavItem>
-                </NavGroup>
-                <NavGroup label="Proof">
-                  <NavItem href="#proof-matrix" iconName="book-open">Proof matrix</NavItem>
-                  <NavItem href="#blocked-actions" iconName="alert-triangle" disabled disabledReason="Proof route is not in this component page">Blocked actions</NavItem>
-                </NavGroup>
-              </SideNav>
               <SegmentedNav
                 items={[
                   { id: "contracts", label: "Contracts", selected: true },

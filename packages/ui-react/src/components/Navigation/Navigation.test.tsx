@@ -26,6 +26,7 @@ import {
   ProductLockup,
   TcrnBrandMark,
   tcrnComponentCss,
+  tcrnRetiredComponentCss,
   tcrnProductLogoRegistry,
   tcrnProductMarkIds,
   tcrnProductMarkSvg,
@@ -39,7 +40,7 @@ import {
   type ShellThemeMode
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
-import { PageHeader, ViewTabs } from "../DataDisplay/DomainDisplay.js";
+import { PageHeader, TocRail, ViewTabs } from "../DataDisplay/DomainDisplay.js";
 import { createResolvedTokenMap, createTokenMap } from "@tcrn/ui-tokens";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
 import * as brandSegments from "../../styles/brand.css.js";
@@ -231,8 +232,9 @@ test("STORY-140 GWT1 product shell is the top band and the paper, through the sh
   ]) {
     assert.doesNotMatch(shellRules, retired);
   }
-  // The standalone TopBar keeps its own height.
-  assert.match(tcrnComponentCss, /\.tcrn-top-bar \{\n  display: grid;\n  grid-template-columns: max-content max-content minmax\(0, 1fr\);\n  align-items: center;\n  gap: var\(--tcrn-space-4\);\n  min-height: 68px;/);
+  // The deprecated TopBar (TCRN-DS-SUB-125) keeps its own height, in the retired sheet only.
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-top-bar\b/);
+  assert.match(tcrnRetiredComponentCss, /\.tcrn-top-bar \{\n  display: grid;\n  grid-template-columns: max-content max-content minmax\(0, 1fr\);\n  align-items: center;\n  gap: var\(--tcrn-space-4\);\n  min-height: 68px;/);
 });
 
 // The five-locale taglines of STORY-127, as the story states them. The registry
@@ -811,12 +813,16 @@ test("brand lockup css follows the G+ brand rules", () => {
 
 test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle__icon \{[\s\S]*inline-size: 20px;[\s\S]*place-items: center;/);
+  // SideNavCollapseButton is deprecated (TCRN-DS-SUB-125): its rules left tcrnComponentCss for the retired sheet.
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle\b/);
+  assert.match(tcrnRetiredComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);
+  assert.match(tcrnRetiredComponentCss, /\.tcrn-shell-side-nav-toggle__icon \{[\s\S]*inline-size: 20px;[\s\S]*place-items: center;/);
   // The three shell toggles are IconButtons: the shell rules size and shape them and leave
   // fill, ink, edge, focus ring and transition to the Actions pair table. No shell rule
   // colours them, shadows them, restyles their hover or focus, or scales them on press.
-  const sheetWithoutComments = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  // The side-nav and mobile-nav toggles are deprecated (TCRN-DS-SUB-125) and ship in the retired
+  // sheet, which a consumer adds after the component sheet; the rule holds for both sheets.
+  const sheetWithoutComments = (tcrnComponentCss + tcrnRetiredComponentCss).replace(/\/\*[\s\S]*?\*\//g, "");
   const shellToggleRules = [...sheetWithoutComments.matchAll(/(?:^|\n)([^{}\n@][^{}]*)\{([^}]*)\}/g)].filter(([, selector]) =>
     selector.split(",").some((part) => /^\s*(?:\.tcrn-button)?\.tcrn-shell-(?:theme|side-nav|mobile-nav)-toggle\s*$/.test(part))
   );
@@ -1591,6 +1597,34 @@ test("STORY-143 GWT2 the five tab forms render one family with one selected stru
   assert.match(sheet, /--tcrn-pair-tab-fill-s: var\(--tcrn-color-wash\);/, "the selected fill is the 6% wash");
   // The old roots are hooks without rules: no package rule styles them any more.
   assert.doesNotMatch(sheet, /\.tcrn-(?:module-tabs|section-tabs|segmented-nav|view-tabs)\b/);
+});
+
+// TCRN-DS-SUB-125 (STORY-143 GWT3). The table of contents is the page's own: it sits in the paper,
+// after the page header, and the shell around it has no resident side rail of any kind.
+test("STORY-143 GWT3 the TocRail sits in the paper and the shell has no resident side rail", () => {
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN Design System"
+      moduleName="Components"
+      brandProductId="design-system"
+      currentRouteLabel="Navigation shell"
+      pageHeader={{ title: "Navigation shell" }}
+      navGroups={[]}
+      locales={shellLocales}
+      currentLocale="en"
+    >
+      <TocRail label="On this page" items={[{ id: "a", label: "Bands", href: "#a", current: true }, { id: "b", label: "Pins", href: "#b" }]} />
+    </ProductShell>
+  );
+  const paper = html.indexOf("data-paper=");
+  const toc = html.indexOf('class="tcrn-toc-rail');
+  assert.ok(paper > 0 && toc > paper, "the TocRail is inside the paper");
+  assert.ok(toc > html.indexOf('data-pattern="page-header"'), "after the page header, as page content");
+  assert.ok(html.indexOf("data-shell-strip") < paper, "the band comes before the paper and holds no TocRail");
+  assert.equal(html.match(/<aside /g)?.length, 1, "the only aside is the page's TocRail");
+  for (const rail of ["tcrn-side-nav", "tcrn-product-shell__sidebar", "data-side-nav-toggle", "tcrn-shell-mobile-nav-toggle", "tcrn-top-bar"]) {
+    assert.equal(html.includes(rail), false, `${rail} is not in the shell`);
+  }
 });
 
 // TCRN-DS-SUB-124 (STORY-143 GWT4). The breadcrumb is the page header's first row, and it keeps to

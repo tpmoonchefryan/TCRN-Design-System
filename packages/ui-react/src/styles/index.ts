@@ -17,7 +17,8 @@ import {
   baseCss09, baseCss10, baseCss11, baseCss12, baseCss13, baseCss14, baseCss15, baseCss16,
   baseCss17, baseCss18, baseCss19, baseCss20, baseCss21, baseCss22, baseCss23, baseCss24,
   baseCss25, baseCss26, baseCss27, baseCss28, baseCss29, baseCss30, baseCss31, baseCss32,
-  baseCss33, baseCss34, baseCss35, baseCss36, baseCss37, baseCss38, baseCss39
+  baseCss33, baseCss34, baseCss35, baseCss36, baseCss37, baseCss38, baseCss39,
+  retiredNavigationCss01
 } from "./base.css.js";
 import {
   typographyCss01, typographyCss02, typographyCss03, typographyCss04, typographyCss05,
@@ -128,3 +129,10 @@ export const tcrnComponentCss: string = [
   shellIntroCss01,
   shellSheetCss01
 ].join("");
+
+// The retired navigation and shell parts' rules (TCRN-DS-SUB-125, STORY-143): SideNav,
+// SideNavCollapseButton, MobileNavToggle, TopBar, ProductLauncher and ProductSwitcher keep their
+// deprecated exports through 4.0.x, but their rules left tcrnComponentCss. A consumer still rendering
+// one of them (the documentation shell, until it moves to the top band) adds this sheet after
+// tcrnComponentCss. It is not part of the cascade list above and goes away with the parts in 4.1.
+export const tcrnRetiredComponentCss: string = [retiredNavigationCss01].join("");

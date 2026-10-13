@@ -97,34 +97,6 @@ export const baseCss06 = `
 .tcrn-shell-theme-toggle[data-current-theme="dark"] .tcrn-shell-theme-toggle__icon[data-theme-icon="light"] {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.58) rotate(90deg);
-}
-.tcrn-shell-side-nav-toggle {
-  inline-size: 38px;
-  block-size: 38px;
-  min-inline-size: 38px;
-  min-block-size: 38px;
-  min-height: 38px;
-  display: inline-grid;
-  place-items: center;
-  padding: 0;
-}
-/*
- * Mobile-only, and hidden by default rather than shown by default: above the
- * breakpoint the navigation is always on screen, so a show/hide control there
- * would be the no-op the responsive standard forbids — the same reason its
- * width-collapse sibling is hidden below the breakpoint. Each control exists
- * exactly where it does something.
- */
-.tcrn-shell-mobile-nav-toggle {
-  display: none;
-  place-items: center;
-  padding: 0;
-}
-.tcrn-shell-side-nav-toggle__icon {
-  display: inline-grid;
-  inline-size: 20px;
-  block-size: 20px;
-  place-items: center;
 }`;
 
 export const baseCss07 = `
@@ -295,32 +267,6 @@ export const baseCss10 = `
   .tcrn-product-shell-section-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-.tcrn-top-bar {
-  display: grid;
-  grid-template-columns: max-content max-content minmax(0, 1fr);
-  align-items: center;
-  gap: var(--tcrn-space-4);
-  min-height: 68px;
-  padding: var(--tcrn-space-3) var(--tcrn-space-5);
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
-  backdrop-filter: blur(16px);
-}
-.tcrn-top-bar__brand {
-  font-weight: var(--tcrn-type-weight-strong);
-}
-.tcrn-top-bar__module {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-ui);
-}
-.tcrn-top-bar__actions {
-  min-width: 0;
-}
-.tcrn-side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: var(--tcrn-space-4);
 }
 .tcrn-nav-group {
   display: grid;
@@ -1969,21 +1915,11 @@ export const baseCss23 = `
   transform: translateY(0);
 }
 @media (max-width: 760px) {
-  .tcrn-top-bar {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-  }
   .tcrn-shell-locale-menu {
     flex: 0 1 auto;
     margin-right: 0;
     max-width: none;
     width: auto;
-  }
-  .tcrn-shell-mobile-nav-toggle {
-    display: inline-flex;
-    /* Sole route to the whole IA on the one viewport where it is touched. */
-    min-width: 44px;
-    min-height: 44px;
   }
   .tcrn-lane-board,
   .tcrn-relation-graph__levels,
@@ -2088,12 +2024,7 @@ export const baseCss27 = `
 }`;
 
 export const baseCss28 = `
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-product-launcher button:active,
-  .tcrn-product-switcher button:active {
-    transform: none;
-  }
-}
+
 
 /* ---- Component families relocated from the docs demo layer (TCRN-DS-STORY-037) ----
    These 24 families are emitted by real @tcrn/ui-react components (Form, Overlay,
@@ -2477,40 +2408,6 @@ export const baseCss30 = `
 /* Navigation tab families — .tcrn-filter-bar stays doc-side (already package-owned via
    the scoped .tcrn-table-toolbar .tcrn-filter-bar rule; introducing a top-level
    .tcrn-filter-bar here would trip the shell-fidelity duplicate-selector gate). */
-/* The same segmented track, for the button-based selectors. These previously
-   said "selected" with a brand-tinted border plus a floating shadow — a lift,
-   which competed with the shell's real elevation language. */
-.tcrn-product-launcher,
-.tcrn-product-switcher {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-0h);
-  padding: var(--tcrn-space-0h);
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  min-width: 0;
-  max-width: 100%;
-}
-
-.tcrn-product-launcher button,
-.tcrn-product-switcher button {
-  min-height: 34px;
-  border: 1px solid transparent;
-  border-radius: var(--tcrn-radius-control);
-  background: transparent;
-  color: var(--tcrn-color-text-secondary);
-  padding: 0 var(--tcrn-space-2h);
-  white-space: nowrap;
-}
-
-.tcrn-product-launcher button[data-selected="true"],
-.tcrn-product-switcher button[data-selected="true"],
-.tcrn-product-launcher button[aria-current="page"],
-.tcrn-product-switcher button[aria-current="page"] {
-  background: var(--tcrn-selection-fill);
-  color: var(--tcrn-color-text-primary);
-}
 
 /* TCRN-DS-STORY-063: interactive feedback family completion. Every clickable navigation / row /
    tab / button surface now answers hover + keyboard focus, and the pressable button families
@@ -2521,8 +2418,6 @@ export const baseCss30 = `
    read as one scale rather than as two unrelated effects. */
 .tcrn-sub-nav > a:hover,
 .tcrn-quick-filters > a:hover,
-.tcrn-product-launcher button:hover,
-.tcrn-product-switcher button:hover,
 .tcrn-toc-rail nav > a:hover {
   background: var(--tcrn-selection-fill-hover);
   color: var(--tcrn-color-text-primary);
@@ -2536,15 +2431,9 @@ export const baseCss30 = `
 .tcrn-record-row[href]:focus-visible,
 .tcrn-tree-nav__item > a:focus-visible,
 .tcrn-toc-rail nav > a:focus-visible,
-.tcrn-search-result-list__head a:focus-visible,
-.tcrn-product-launcher button:focus-visible,
-.tcrn-product-switcher button:focus-visible {
+.tcrn-search-result-list__head a:focus-visible {
   outline: 2px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
-}
-.tcrn-product-launcher button:active,
-.tcrn-product-switcher button:active {
-  transform: scale(var(--tcrn-motion-press-scale));
 }
 /* SearchResultList head anchor previously had no color/decoration at all — bare UA blue
    for package consumers. It reads as an inline result link: brand ink + quiet underline that
@@ -3205,3 +3094,134 @@ export const baseCss39 = `
 .tcrn-page-hierarchy__content{display:grid;gap:var(--tcrn-space-3)}
 @container tcrn-page-hierarchy-third-level (min-width:960px){.tcrn-page-hierarchy__third-level{grid-template-columns:minmax(0,var(--tcrn-container-page-third-level-nav)) minmax(0,1fr)}}
 `;
+
+// The retired parts' rules (TCRN-DS-SUB-125). Not a family segment: styles/index.ts joins it into
+// tcrnRetiredComponentCss, never into tcrnComponentCss.
+export const retiredNavigationCss01 = `
+/*
+ * Retired navigation and shell parts (TCRN-DS-SUB-125, STORY-143; MIN-20261013-SHELL D1: one shell,
+ * the top band, with no resident side rail). SideNav, SideNavCollapseButton, MobileNavToggle, TopBar,
+ * ProductLauncher and ProductSwitcher keep their deprecated exports through 4.0.x, but their rules
+ * are no longer part of tcrnComponentCss: they are joined into tcrnRetiredComponentCss, which a
+ * consumer still rendering them adds after tcrnComponentCss. Removed with the parts in 4.1.
+ */
+.tcrn-shell-side-nav-toggle {
+  inline-size: 38px;
+  block-size: 38px;
+  min-inline-size: 38px;
+  min-block-size: 38px;
+  min-height: 38px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+}
+.tcrn-shell-side-nav-toggle__icon {
+  display: inline-grid;
+  inline-size: 20px;
+  block-size: 20px;
+  place-items: center;
+}
+/*
+ * Mobile-only, and hidden by default rather than shown by default: above the
+ * breakpoint the navigation is always on screen, so a show/hide control there
+ * would be the no-op the responsive standard forbids — the same reason its
+ * width-collapse sibling is hidden below the breakpoint. Each control exists
+ * exactly where it does something.
+ */
+.tcrn-shell-mobile-nav-toggle {
+  display: none;
+  place-items: center;
+  padding: 0;
+}
+.tcrn-top-bar {
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  align-items: center;
+  gap: var(--tcrn-space-4);
+  min-height: 68px;
+  padding: var(--tcrn-space-3) var(--tcrn-space-5);
+  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
+  backdrop-filter: blur(16px);
+}
+.tcrn-top-bar__brand {
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-top-bar__module {
+  color: var(--tcrn-color-text-secondary);
+  font-size: var(--tcrn-type-size-ui);
+}
+.tcrn-top-bar__actions {
+  min-width: 0;
+}
+.tcrn-side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-4);
+}
+@media (max-width: 760px) {
+  .tcrn-top-bar {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .tcrn-shell-mobile-nav-toggle {
+    display: inline-flex;
+    /* Sole route to the whole IA on the one viewport where it is touched. */
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+/* The same segmented track, for the button-based selectors. These previously
+   said "selected" with a brand-tinted border plus a floating shadow — a lift,
+   which competed with the shell's real elevation language. */
+.tcrn-product-launcher,
+.tcrn-product-switcher {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--tcrn-space-0h);
+  padding: var(--tcrn-space-0h);
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-surface);
+  background: var(--tcrn-color-surface-panel);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.tcrn-product-launcher button,
+.tcrn-product-switcher button {
+  min-height: 34px;
+  border: 1px solid transparent;
+  border-radius: var(--tcrn-radius-control);
+  background: transparent;
+  color: var(--tcrn-color-text-secondary);
+  padding: 0 var(--tcrn-space-2h);
+  white-space: nowrap;
+}
+
+.tcrn-product-launcher button[data-selected="true"],
+.tcrn-product-switcher button[data-selected="true"],
+.tcrn-product-launcher button[aria-current="page"],
+.tcrn-product-switcher button[aria-current="page"] {
+  background: var(--tcrn-selection-fill);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-product-launcher button:hover,
+.tcrn-product-switcher button:hover {
+  background: var(--tcrn-selection-fill-hover);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-product-launcher button:focus-visible,
+.tcrn-product-switcher button:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-product-launcher button:active,
+.tcrn-product-switcher button:active {
+  transform: scale(var(--tcrn-motion-press-scale));
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-product-launcher button:active,
+  .tcrn-product-switcher button:active {
+    transform: none;
+  }
+}`;

@@ -281,6 +281,11 @@ export interface TopBarProps extends Omit<HTMLAttributes<HTMLElement>, "children
   brandProps?: HTMLAttributes<HTMLDivElement>;
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): the shell is the top band. Use ProductShell, whose band
+ * holds the brand button, the pins and the cluster. Its rules moved to tcrnRetiredComponentCss; removed
+ * in 4.1 (docs/migration-4.0.md).
+ */
 export function TopBar({ productName, moduleName, actions, brandProps, className, ...rest }: TopBarProps) {
   return (
     <header {...rest} className={cx("tcrn-top-bar", className)}>
@@ -1011,6 +1016,10 @@ export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, "ariaL
   onCollapsedChange?: (collapsed: boolean) => void;
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): there is no side rail left to collapse; the full menu
+ * opens from ProductShell's brand button. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ */
 export function SideNavCollapseButton({
   collapsed,
   controls,
@@ -1105,6 +1114,10 @@ export interface MobileNavToggleProps extends Omit<IconButtonProps, "ariaLabel" 
  *
  * The glyph is a menu, not a chevron pair: a chevron says a thing will move, and
  * on this viewport the navigation appears and disappears.
+ *
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): on a phone ProductShell's brand button opens the full
+ * menu as a Sheet, so there is no separate navigation toggle. Its rules moved to
+ * tcrnRetiredComponentCss; removed in 4.1.
  */
 export function MobileNavToggle({
   expanded,
@@ -1164,6 +1177,10 @@ function LauncherItems({ items }: ProductLauncherProps) {
   );
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): products are switched from the avatar menu; pass
+ * ProductShell its products. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ */
 export function ProductLauncher({ items, locale }: ProductLauncherProps) {
   return (
     <nav className="tcrn-product-launcher" aria-label={chromeLabels(locale).productLauncher}>
@@ -1172,6 +1189,10 @@ export function ProductLauncher({ items, locale }: ProductLauncherProps) {
   );
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): products are switched from the avatar menu; pass
+ * ProductShell its products. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ */
 export function ProductSwitcher({ items, locale }: ProductLauncherProps) {
   return (
     <nav className="tcrn-product-switcher" aria-label={chromeLabels(locale).productSwitcher}>
@@ -1401,6 +1422,11 @@ export interface SideNavProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): the top-band shell has no resident side rail. Give
+ * ProductShell the navigation as its menu model (navGroups); NavGroup and NavItem rows render in the
+ * full menu and the drop-downs. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ */
 export function SideNav({ label, className, children, ...props }: SideNavProps) {
   return (
     <nav {...props} aria-label={label} className={cx("tcrn-side-nav", className)} data-navigation-primitive="side-nav">
@@ -2738,4 +2764,4 @@ export function Pagination({ label, shown, total, nextHref, prevHref, locale }: 
 // The component stylesheet is composed in ../../styles/: one module per family, joined in
 // cascade order by styles/index.ts. It is re-exported here so the public export and every
 // existing import of it from this module keep working.
-export { tcrnComponentCss } from "../../styles/index.js";
+export { tcrnComponentCss, tcrnRetiredComponentCss } from "../../styles/index.js";
