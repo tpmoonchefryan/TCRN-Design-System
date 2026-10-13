@@ -56,4 +56,8 @@ jobs:
       - name: Run the gate chain
         # brand-asset:proof fetches the published brand mark over HTTPS and compares its
         # sha256 with the registered local file, so this job needs outbound network access.
+        # pnpm verify runs geometry:measure, which includes the tab-shell gate
+        # (scripts/shell-measure-proof.mjs: its tests, the eighteen gates on the two Shell
+        # boards with --fixtures, then on the package shell stories), so the shell gate is
+        # required on every push and pull request through this step.
         run: pnpm verify

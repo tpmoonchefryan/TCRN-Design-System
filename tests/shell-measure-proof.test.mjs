@@ -3,6 +3,7 @@
 import test, { after, before } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
+import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 import * as lib from "../scripts/lib/shell-measure.mjs";
@@ -13,15 +14,22 @@ import {
   GATES,
   GATE_IDS,
   READING_GATE_IDS,
+  SHELL_STORY_IDS,
+  STORY_RUN,
   THRESHOLDS,
   applyMutationInPage,
+  checkStoryScreens,
   judgeBehaviour,
+  judgeBehaviourTraces,
   judgeFocusTrace,
   judgeGate,
   judgeIntroTrace,
   judgeShellReadings,
+  judgeStoryMutation,
   openBoardPage,
   parseArgs,
+  probeShellBehaviour,
+  probeShellIntro,
   runFixtures
 } from "../scripts/shell-measure-proof.mjs";
 
@@ -261,6 +269,227 @@ test("149-GWT1 board side: all eighteen gates green on both boards, every mutati
   for (const result of report.mutations) assert.ok(result.ok, `${result.id}: failed ${JSON.stringify(result.failed)}, expected ${JSON.stringify(result.expected)}`);
   assert.ok(report.dSection.every((row) => row.status === "pass"));
   assert.equal(report.ok, true);
+});
+
+// ------------------------------------------------------------------ package stories (TCRN-DS-SUB-137)
+
+const storyMutations = JSON.parse(read(DEFAULT_PATHS.fixtureMutations)).storyMutations;
+
+test("149-GWT2 and 149-GWT3: geometry:measure runs the shell gate, verify runs geometry:measure, the CI step names it", () => {
+  const pkg = JSON.parse(read("package.json"));
+  assert.match(pkg.scripts["geometry:measure"], /&& node --test tests\/shell-measure-proof\.test\.mjs && node scripts\/shell-measure-proof\.mjs --fixtures && node scripts\/shell-measure-proof\.mjs$/);
+  assert.match(pkg.scripts.verify, /&& pnpm geometry:measure &&/);
+  const workflow = read(".github/workflows/verify.yml");
+  const step = workflow.slice(workflow.indexOf("- name: Run the gate chain"));
+  assert.match(step, /^\s+run: pnpm verify$/m);
+  assert.match(step.slice(0, step.indexOf("run: pnpm verify")), /geometry:measure[\s\S]*scripts\/shell-measure-proof\.mjs/);
+});
+
+test("the story run grid is 1440 x 900 and 390 x 844, en and zh-CN (C-11)", () => {
+  assert.deepEqual(Object.values(STORY_RUN.viewports).map((v) => `${v.width}x${v.height}`).sort(), ["1440x900", "390x844"]);
+  assert.deepEqual([...STORY_RUN.locales], ["en", "zh-CN"]);
+  assert.deepEqual(Object.keys(manifest.stories.screens).sort(), [...SHELL_STORY_IDS].sort());
+  for (const [story, screens] of Object.entries(manifest.stories.screens)) for (const screen of screens) assert.ok(["closed", "expanded", "drop", "sheet"].includes(screen.state), `${story} ${screen.id}`);
+  for (const probe of ["focusLoop", "intro"]) assert.ok(SHELL_STORY_IDS.includes(manifest.stories.behaviour[probe].story), probe);
+});
+
+test("149-GWT1 real-part side: one story mutation per gate, the G-section variant, the three behaviour ones included", () => {
+  for (const id of GATE_IDS) assert.equal(storyMutations.filter((m) => m.gate === id).length, 1, id);
+  assert.equal(new Set(storyMutations.map((m) => m.id)).size, storyMutations.length);
+  for (const m of storyMutations) {
+    assert.equal(m.source, mutations.find((f) => f.gate === m.gate).source, `${m.id} source`);
+    assert.ok(SHELL_STORY_IDS.includes(m.story), `${m.id} story`);
+    if (m.probe) assert.ok(BEHAVIOUR_GATE_IDS.includes(m.probe) && ((m.ops && m.ops.length) || (m.beforeReload && m.beforeReload.length)), m.id);
+    else assert.ok(Array.isArray(m.ops) && m.ops.length > 0 && !BEHAVIOUR_GATE_IDS.includes(m.gate), m.id);
+  }
+  const byGate = Object.fromEntries(storyMutations.map((m) => [m.gate, m]));
+  assert.deepEqual(byGate.focusLoop.ops, [{ op: "noFocus", selector: "[data-tab]" }]);
+  assert.deepEqual(byGate.intro.beforeReload, [{ op: "clearSessionStorage" }]);
+  assert.match(byGate.touch.ops[0].css, /\[data-panel="sheet"\] \[data-shell-row\] \{ height: 32px/);
+});
+
+test("story mutations: green to red passes; on a red baseline only a new failure counts", () => {
+  const gate = (status, failures = []) => ({ status, checked: 1, failures });
+  const m = { id: "m", gate: "strip" };
+  const red = gate("fail", [{ at: "s", what: "strip.h", value: 175, expect: 52 }]);
+  assert.equal(judgeStoryMutation(m, { strip: gate("pass") }, { strip: red }).ok, true);
+  const same = judgeStoryMutation(m, { strip: red }, { strip: red });
+  assert.equal(same.ok, false);
+  assert.match(same.verdict, /not distinguishable/);
+  const more = judgeStoryMutation(m, { strip: red }, { strip: gate("fail", [...red.failures, { at: "s", what: "strip.borderBottom", value: 1, expect: 0 }]) });
+  assert.equal(more.ok, true);
+  assert.deepEqual(more.changedGates, ["strip"]);
+  assert.equal(judgeStoryMutation(m, { strip: gate("pass") }, { strip: gate("pass") }).ok, false);
+  assert.throws(() => judgeStoryMutation({ id: "x", gate: "nope" }, {}, {}), /gate_unknown/);
+});
+
+test("story screens: order and the C-5 data-state are checked", () => {
+  const reading = { shells: [{ id: "ts-m-l", state: "closed" }, { id: "ts-m-s", state: "expanded" }] };
+  assert.deepEqual(checkStoryScreens(reading, manifest.stories.screens["shell-mobile"]), [{ what: "data-state", shell: "ts-m-s", value: "expanded", expect: "sheet" }]);
+  assert.equal(checkStoryScreens({ shells: [] }, manifest.stories.screens["shell-mobile"])[0].what, "screens");
+  assert.deepEqual(checkStoryScreens({ shells: [] }, manifest.stories.screens["shell-matrix"]), []);
+});
+
+test("touch: what opens at 390 must be the Sheet, so its rows-44 check cannot pass on a missing Sheet", () => {
+  const phone = (panelKind, rowHeights = [44, 44]) => ({ shells: [{ id: "m", w: 390, tab: { h: 40 }, panel: {}, x: { missing: [], pins: { visibleCount: 0 }, panelKind, rowHeights, touch: { tabHit: true } } }] });
+  assert.equal(judgeGate("touch", phone("sheet")).status, "pass");
+  assert.deepEqual(judgeGate("touch", phone("expanded")).failures.map((f) => f.what), ["layer.notSheet"]);
+  assert.deepEqual(judgeGate("touch", phone("sheet", [44, 32])).failures.map((f) => f.what), ["sheet.row"]);
+});
+
+test("package readings: rows without the row-text hook are a hook gap; aria-owned cascade columns are columns", async () => {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  try {
+    await page.setContent(`<!doctype html><style>body{margin:0}*{box-sizing:border-box}
+      [data-shell]{position:relative;width:1440px;height:900px;display:grid;grid-template-rows:52px 1fr}
+      [data-shell-strip]{display:flex;align-items:center;padding:0 12px}[data-tab]{width:134px;height:40px}
+      [data-pins]{display:flex;gap:8px;margin-left:8px}[data-pin]{height:32px}[data-cluster]{margin-left:auto;height:40px}
+      [data-shell-dropdown]{position:absolute;top:52px;left:154px;display:flex;gap:4px}[data-panel]{width:240px;height:200px}
+      [data-drop-col]{width:240px;height:200px}[data-shell-row]{display:block;height:32px}</style>
+      <div data-shell="pkg" data-state="drop"><div data-shell-strip>
+        <button type="button" data-tab data-shell-brand="v1"><svg data-logo="tms" viewBox="0 0 48 48" width="22" height="22"><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg></button>
+        <nav data-pins><span data-pin="a"><button type="button" data-open-pin aria-expanded="true">A</button></span></nav>
+        <div data-cluster><button type="button" aria-label="Notifications">!</button></div>
+      </div><main data-paper></main>
+      <div data-shell-dropdown><section data-panel="drop" role="dialog" aria-owns="col-2"><a href="#" data-shell-row>One</a><a href="#" data-shell-row>Two</a></section>
+      <div id="col-2" data-drop-col="2" role="group"><a href="#" data-shell-row>Three</a></div></div></div>`);
+    const reading = await lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
+    const [shell] = reading.shells;
+    assert.deepEqual(shell.x.hookGaps, ["rowText"]);
+    assert.equal(shell.x.rowGroups, null);
+    assert.equal(shell.x.dropCols.length, 2);
+    const verdict = judgeShellReadings(reading);
+    assert.deepEqual(verdict.missingHooks, [{ shell: "pkg", missing: ["rowText"] }]);
+    assert.equal(verdict.gates.pinJitter.status, "n/a");
+    assert.equal(verdict.gates.cascade.checked, 1);
+  } finally {
+    await context.close();
+  }
+});
+
+test("package readings: the rendered brand version, and the first-batch shadow probe of a focus ring", async () => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  try {
+    await page.setContent(`<!doctype html><style>body{margin:0;background:#fff}*{box-sizing:border-box}
+      [data-shell]{width:390px;height:600px;display:grid;grid-template-rows:52px 1fr}[data-shell-strip]{display:flex;align-items:center;padding:0 12px}
+      [data-tab]{height:40px;padding:0 9px;border:0;background:transparent}[data-tab] b{display:none}[data-cluster]{margin-left:auto}
+      .ring{box-shadow:0 0 0 2px rgb(44, 99, 200);color:#16150f;background:#fff;border:0}</style>
+      <div data-shell="phone" data-state="closed"><div data-shell-strip>
+        <button type="button" data-tab data-shell-brand="v2"><svg data-logo="tms" viewBox="0 0 48 48" width="22" height="22"><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><b>TCRN <em>TMS</em></b></button>
+        <div data-cluster><button type="button" class="ring" data-cell="ring-l" data-kind="edge" data-expect="5.5" data-probe="shadow">!</button></div>
+      </div><main data-paper></main></div>`);
+    const reading = await lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
+    assert.deepEqual([reading.shells[0].x.brand.version, reading.shells[0].x.brand.declared], ["v1", "v2"]);
+    const [cell] = reading.contrastCells;
+    assert.equal(cell.unknownProbe, undefined);
+    assert.ok(cell.ratio > 5 && cell.ratio < 6, `ring ratio ${cell.ratio}`);
+  } finally {
+    await context.close();
+  }
+});
+
+// A shell that behaves as the G section says (vanilla script), and an intro that plays once a session.
+const PROBE_SHELL = `<!doctype html><meta charset="utf-8"><style>body{margin:0;height:900px}[hidden]{display:none!important}
+  [data-shell]{position:relative;width:900px;height:600px}[data-tab]{width:134px;height:40px}
+  #menu{position:absolute;top:52px;left:12px;width:400px;height:300px;background:#fff}#col2{position:absolute;top:52px;left:416px;width:200px;height:300px}
+  [data-shell-row]{display:block;height:32px}</style>
+  <div data-shell="probe" data-state="closed"><div data-shell-strip><button type="button" data-tab aria-controls="menu">Brand</button></div>
+  <div data-cluster></div><main data-paper></main>
+  <section id="menu" hidden data-panel="expanded" role="dialog"><div data-shell-search><input type="search" aria-label="Search"></div>
+    <a href="#c" data-shell-row aria-controls="col2" aria-expanded="false">Contracts</a><a href="#r" data-shell-row>Roster</a></section>
+  <div id="col2" hidden data-drop-col="2" role="group"><a href="#t" data-shell-row>Templates</a></div></div>
+  <script>
+    const shell = document.querySelector("[data-shell]"), tab = shell.querySelector("[data-tab]"), menu = document.getElementById("menu"), col2 = document.getElementById("col2");
+    const setOpen = (open) => { menu.hidden = !open; col2.hidden = true; shell.dataset.state = open ? "expanded" : "closed"; };
+    tab.addEventListener("click", () => setOpen(menu.hidden));
+    document.addEventListener("keydown", (event) => {
+      const active = document.activeElement;
+      if (event.key === "Escape" && !menu.hidden) { setOpen(false); tab.focus(); }
+      else if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) { event.preventDefault(); setOpen(true); menu.querySelector("input").focus(); }
+      else if (event.key === "ArrowRight" && active && active.hasAttribute("aria-controls") && menu.contains(active)) { col2.hidden = false; col2.querySelector("a").focus(); }
+      else if (event.key === "ArrowLeft" && active && col2.contains(active)) menu.querySelector("[aria-controls]").focus();
+    });
+    document.addEventListener("pointerdown", (event) => { if (!menu.hidden && !menu.contains(event.target) && !col2.contains(event.target) && !tab.contains(event.target)) setOpen(false); });
+  </script>`;
+const PROBE_INTRO = `<!doctype html><meta charset="utf-8"><div data-shell="probe-intro"><main data-paper></main></div>
+  <script>
+    if (sessionStorage.getItem("probe-intro") === null) {
+      sessionStorage.setItem("probe-intro", "played");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const layer = document.createElement("div");
+        layer.setAttribute("data-shell-intro", "");
+        document.body.appendChild(layer);
+        layer.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], { duration: 240 }).finished.then(() => layer.remove());
+      }
+    }
+  </script>`;
+
+async function withProbePages(run) {
+  const server = createServer((request, response) => {
+    response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
+    response.end(request.url.startsWith("/intro") ? PROBE_INTRO : PROBE_SHELL);
+  });
+  await new Promise((done) => server.listen(0, "127.0.0.1", done));
+  try {
+    return await run(`http://127.0.0.1:${server.address().port}`);
+  } finally {
+    await new Promise((done) => server.close(done));
+  }
+}
+
+test("behaviour probes: a shell that keeps the focus loop passes; focus not handed back fails (focusLoop mutation)", async () => {
+  await withProbePages(async (origin) => {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    try {
+      const probe = async (ops) => {
+        const page = await context.newPage();
+        await page.goto(`${origin}/shell`, { waitUntil: "load" });
+        if (ops) await page.evaluate(applyMutationInPage, ops);
+        try {
+          return await probeShellBehaviour(page, { screen: "probe", waitMs: 50 });
+        } finally {
+          await page.close();
+        }
+      };
+      const green = await probe(null);
+      assert.deepEqual(green.trace.focusLoop, { afterEscape: "tab", afterCommandK: "search", cascadeArrowRight: { from: 1, to: 2, row: "Contracts" }, cascadeArrowLeft: { from: 2, to: 1, row: "Contracts" } });
+      assert.equal(green.trace.outsideClick.closesOnOutsideClick, true);
+      const gates = judgeBehaviourTraces(green.trace);
+      assert.equal(gates.focusLoop.status, "pass");
+      assert.equal(gates.noCollapse.status, "pass");
+      const mutated = await probe(storyMutations.find((m) => m.gate === "focusLoop").ops);
+      assert.equal(mutated.trace.focusLoop.afterEscape, "body");
+      const verdict = judgeStoryMutation({ id: "f", gate: "focusLoop" }, gates, judgeBehaviourTraces(mutated.trace));
+      assert.equal(verdict.ok, true);
+      // a static shell (nothing opens) is recorded as unopened, never as a pass
+      const page = await context.newPage();
+      await page.setContent(`<div data-shell="still"><button type="button" data-tab>Brand</button><main data-paper></main></div>`);
+      const still = await probeShellBehaviour(page, { screen: "still", waitMs: 20 });
+      await page.close();
+      assert.equal(still.trace.focusLoop.afterEscape, "unopened");
+      assert.equal(still.trace.outsideClick.closesOnOutsideClick, "unopened");
+      assert.equal(judgeBehaviourTraces(still.trace).focusLoop.status, "fail");
+    } finally {
+      await context.close();
+    }
+  });
+});
+
+test("behaviour probes: an intro played once a session passes; forgetting the session marker fails (intro mutation)", async () => {
+  await withProbePages(async (origin) => {
+    const trace = await probeShellIntro(browser, `${origin}/intro`, { waitMs: 600 });
+    assert.equal(trace.firstLoadPlays, 1);
+    assert.equal(trace.reloadPlays, 0);
+    assert.equal(trace.reducedMotionPlays, 0);
+    assert.deepEqual([...trace.properties].sort(), ["opacity", "transform"]);
+    assert.ok(trace.durationMs >= 200 && trace.durationMs <= THRESHOLDS.intro.maxDurationMs, `durationMs ${trace.durationMs}`);
+    assert.equal(judgeIntroTrace(trace).status, "pass");
+    const mutated = await probeShellIntro(browser, `${origin}/intro`, { waitMs: 600, beforeReload: storyMutations.find((m) => m.gate === "intro").beforeReload });
+    assert.equal(mutated.reloadPlays, 1);
+    assert.equal(judgeIntroTrace(mutated).status, "fail");
+  });
 });
 
 test("parseArgs", () => {

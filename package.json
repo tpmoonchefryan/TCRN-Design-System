@@ -40,7 +40,7 @@
     "component-modifiers:proof": "node scripts/component-modifier-proof.mjs",
     "badge-wrap:proof": "node scripts/badge-wrap-proof.mjs",
     "geometry:proof": "node scripts/geometry-proof.mjs",
-    "geometry:measure": "node --test tests/geometry-measure-proof.test.mjs && node scripts/geometry-measure-proof.mjs",
+    "geometry:measure": "node --test tests/geometry-measure-proof.test.mjs && node scripts/geometry-measure-proof.mjs && node --test tests/shell-measure-proof.test.mjs && node scripts/shell-measure-proof.mjs --fixtures && node scripts/shell-measure-proof.mjs",
     "shell:parity": "node scripts/shell-parity-proof.mjs",
     "doc-shell:proof": "node --test tests/doc-shell-class-proof.test.mjs && node scripts/doc-shell-class-proof.mjs",
     "contract:proof": "node --test tests/contract-proof.test.mjs && node scripts/contract-proof.mjs",
