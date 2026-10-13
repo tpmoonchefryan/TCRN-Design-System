@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "tcrn.ds.shell-measure-fixtures.v1",
+  "about": "Board fixtures for scripts/shell-measure-proof.mjs --fixtures (TCRN-DS-SUB-135). The two finished Shell boards are measured in place (their bytes are the truth; nothing is copied here) with the board hooks of scripts/lib/shell-measure.mjs, at the boards' own screen width (1240, phones 390) in a 1240 x 900 viewport. Every gate must be green on the boards; mutations.json turns each gate red. Behaviour cannot be read from a board, so the intro, focus-loop and outside-click halves are judged on the traces below (the board's stated behaviour); the probes that record them on the real parts land with TCRN-DS-SUB-137. This manifest does not touch ../manifest.json.",
+  "boardWidth": 1240,
+  "viewport": { "width": 1240, "height": 900 },
+  "referenceScript": "docs/design/gplus-2026-10/measure-shell.js",
+  "specGeometry": "docs/design/gplus-2026-10/boards/spec-geom.json",
+  "brandBoard": "docs/design/visual-standard/boards/Brand.dc.html",
+  "boards": [
+    {
+      "id": "shell-upper",
+      "file": "docs/design/visual-standard/boards/Shell.dc.html",
+      "shells": [
+        { "id": "ts-closed-l", "state": "closed", "width": 1240 },
+        { "id": "ts-closed-n", "state": "closed", "width": 1240 },
+        { "id": "ts-x-l", "state": "expanded", "width": 1240 },
+        { "id": "ts-x-n", "state": "expanded", "width": 1240 },
+        { "id": "ts-drop-l", "state": "drop", "width": 1240 },
+        { "id": "ts-drop-n", "state": "drop", "width": 1240 },
+        { "id": "ts-m-l", "state": "closed", "width": 390 },
+        { "id": "ts-m-s", "state": "sheet", "width": 390 }
+      ]
+    },
+    {
+      "id": "shell-lower",
+      "file": "docs/design/visual-standard/boards/Shell-2.dc.html",
+      "shells": [
+        { "id": "spec-closed", "state": "closed", "width": 1240 },
+        { "id": "spec-expanded", "state": "expanded", "width": 1240 },
+        { "id": "spec-drop", "state": "drop", "width": 1240 }
+      ]
+    }
+  ],
+  "behaviourTraces": {
+    "intro": {
+      "source": "G 段登入动画（每会话 1 次；刷新 0 次；reduced-motion 下 0 次）；Shell 板 C 段（只用 transform 与 opacity）；C-2 motion.intro 上限 700ms",
+      "trace": { "firstLoadPlays": 1, "reloadPlays": 0, "reducedMotionPlays": 0, "properties": ["transform", "opacity"], "durationMs": 700 }
+    },
+    "focusLoop": {
+      "source": "G 段焦点回路（Esc 后回标按钮；⌘K 后到搜索框；← → 在级联列间移动）；C-7（⌘K / Ctrl+K 每个壳只注册一次）",
+      "trace": { "afterEscape": "tab", "afterCommandK": "search", "cascadeArrowRight": { "from": 1, "to": 2 }, "cascadeArrowLeft": { "from": 2, "to": 1 }, "commandKRegistrations": 1 }
+    },
+    "outsideClick": {
+      "source": "G 段无收起钮、无常驻侧栏（点外部关闭）；C-7 临时浮层（点外部、Esc、选中即收）",
+      "trace": { "closesOnOutsideClick": true }
+    }
+  }
+}
