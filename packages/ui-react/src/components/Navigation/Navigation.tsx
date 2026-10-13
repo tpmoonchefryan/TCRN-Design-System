@@ -1524,7 +1524,13 @@ export function NavGroup({ label, selected = false, pinned = false, onPinnedChan
           <NavPinButton pinned={pinned} label={pinLabel ?? label} locale={locale} onPinnedChange={onPinnedChange} />
         </div>
       ) : (
-        <div className="tcrn-nav-group__label">{label}</div>
+        // The title row is one line that ends in an ellipsis when it is too long, so its text
+        // carries the whole label as its title (C7; TCRN-DS-SUB-154).
+        <div className="tcrn-nav-group__label">
+          <span className="tcrn-nav-group__label-text" title={label}>
+            {label}
+          </span>
+        </div>
       )}
       <div className="tcrn-nav-group__items">{children}</div>
     </div>
@@ -1566,6 +1572,10 @@ export function NavItem({
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   const resolvedDepth = Number.isInteger(depth) && depth >= 0 ? depth : 0;
   const navStyle = { ...style, "--tcrn-nav-item-depth": resolvedDepth } as CSSProperties;
+  // A pinnable row's label is one line that ends in an ellipsis, so it carries its text as its
+  // title: the label itself, or the title the row was given when the label is markup (C7;
+  // TCRN-DS-SUB-154).
+  const labelTitle = onPinnedChange ? (navItemText(children) ?? (typeof props.title === "string" ? props.title : undefined)) : undefined;
   const link = (
     <a
       {...props}
@@ -1585,7 +1595,9 @@ export function NavItem({
     >
       {iconName ? <Icon name={iconName} /> : null}
       <span className="tcrn-nav-item__content">
-        <span className="tcrn-nav-item__label">{children}</span>
+        <span className="tcrn-nav-item__label" title={labelTitle}>
+          {children}
+        </span>
         {normalizedReason ? (
           <span id={disabledReasonId} className="tcrn-nav-item__disabled-reason">
             {normalizedReason}
@@ -1778,12 +1790,13 @@ export function ProductShellSearch({
         role="listbox"
         aria-label={resolvedResultsLabel}
         data-product-shell-search-results
-        hidden={!isExpanded || !hasResults}
+        hidden={!isExpanded}
       >
         {hasResults ? results.map((result) => (
           <a key={result.id}
             className="tcrn-product-shell-search__result"
             href={result.href}
+            title={result.meta ? `${result.title} — ${result.meta}` : result.title}
             role="option"
             onClick={(event) => handleResultActivate(result, event)}
             aria-selected={result.selected ? "true" : undefined}
@@ -1796,6 +1809,8 @@ export function ProductShellSearch({
             {result.meta ? <span>{result.meta}</span> : null}
           </a>
         )) : (
+          // While the search is open and nothing matches, the empty line shows in place of the
+          // results; it is not hidden with them (TCRN-DS-SUB-154).
           <span className="tcrn-product-shell-search__empty">{resolvedEmptyLabel}</span>
         )}
       </div>

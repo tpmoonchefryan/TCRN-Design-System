@@ -386,6 +386,7 @@ export const baseCss10 = `
   padding-inline-end: var(--tcrn-space-1);
 }
 .tcrn-nav-group__label-text {
+  display: block;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;

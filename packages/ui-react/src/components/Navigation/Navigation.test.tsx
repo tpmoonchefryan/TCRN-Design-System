@@ -1703,7 +1703,7 @@ test("STORY-142 GWT2 a pinnable row's pin is a pressed-state button named after 
   assert.match(plain, /^<a /);
   assert.doesNotMatch(plain, /tcrn-nav-pin|tcrn-nav-item-row/);
   const plainGroup = renderToStaticMarkup(<NavGroup label="Plain"><span /></NavGroup>);
-  assert.match(plainGroup, /<div class="tcrn-nav-group__label">Plain<\/div>/);
+  assert.match(plainGroup, /<div class="tcrn-nav-group__label"><span class="tcrn-nav-group__label-text" title="Plain">Plain<\/span><\/div>/);
 
   // Five locales from the shell copy table; the default without a locale is English.
   for (const [locale, [pin, unpin]] of Object.entries(pinNames)) {
@@ -1963,4 +1963,60 @@ test("STORY-145 the first line draws a word whole when it fits its line within 1
     assert.ok(overhang <= room, `${scale}: the suffix's line box (${suffixBox}) stays inside the word (${wordBox})`);
     assert.ok(suffixBox <= wordBox, `${scale}: em top and bottom inside b`);
   }
+});
+
+test("STORY-143 C7 group titles, search results and pinnable labels carry their titles, and an empty search says so (TCRN-DS-SUB-154)", () => {
+  const rules = cssRules(tcrnComponentCss);
+  const rule = (selector: string) => rules.find((candidate) => candidate.selector === selector)?.body ?? "";
+  const singleLine = (body: string) => {
+    assert.match(body, /overflow: hidden;/);
+    assert.match(body, /text-overflow: ellipsis;/);
+    assert.match(body, /white-space: nowrap;/);
+  };
+  const noop = () => undefined;
+
+  // 1. A group title that cannot be pinned is the same one-line text as a pinnable one, with its title.
+  const plainGroup = renderToStaticMarkup(<NavGroup label="Talent operations and settlements"><span /></NavGroup>);
+  assert.match(
+    plainGroup,
+    /<div class="tcrn-nav-group__label"><span class="tcrn-nav-group__label-text" title="Talent operations and settlements">Talent operations and settlements<\/span><\/div>/
+  );
+  const groupText = rule(".tcrn-nav-group__label-text");
+  assert.match(groupText, /display: block;/, "the text truncates itself in a plain title row too");
+  singleLine(groupText);
+
+  // 2. Each search result link carries its whole text as its title.
+  const results = renderToStaticMarkup(
+    <ProductShellSearch
+      query="ro"
+      expanded
+      results={[
+        { id: "roster", title: "Roster", meta: "People", href: "#roster" },
+        { id: "rota", title: "Rota", href: "#rota" }
+      ]}
+    />
+  );
+  assert.match(results, /<a class="tcrn-product-shell-search__result" href="#roster" title="Roster — People"/);
+  assert.match(results, /<a class="tcrn-product-shell-search__result" href="#rota" title="Rota"/);
+
+  // 3. Open with no match, the empty line shows instead of being hidden with the results; closed,
+  // the list stays hidden.
+  const empty = renderToStaticMarkup(<ProductShellSearch query="zz" expanded results={[]} emptyLabel="No match" />);
+  assert.match(empty, /data-product-shell-search-results="true"><span class="tcrn-product-shell-search__empty">No match<\/span><\/div>/);
+  assert.doesNotMatch(empty, /data-product-shell-search-results="true" hidden=""/);
+  const closed = renderToStaticMarkup(<ProductShellSearch query="" expanded={false} results={[]} />);
+  assert.match(closed, /data-product-shell-search-results="true" hidden=""/);
+
+  // 4. A pinnable row's label is one line with its title: its text, or the row's title when the
+  // label is markup (the full menu's rows); a row that cannot be pinned keeps its markup.
+  const pinnable = renderToStaticMarkup(<NavItem href="#contracts" onPinnedChange={noop}>Contracts and templates</NavItem>);
+  assert.match(pinnable, /<span class="tcrn-nav-item__label" title="Contracts and templates">Contracts and templates<\/span>/);
+  const marked = renderToStaticMarkup(
+    <NavItem href="#roster" title="Roster" onPinnedChange={noop}>
+      <span className="tcrn-shell-menu__text">Roster</span>
+    </NavItem>
+  );
+  assert.match(marked, /<span class="tcrn-nav-item__label" title="Roster"><span class="tcrn-shell-menu__text">Roster<\/span><\/span>/);
+  assert.match(renderToStaticMarkup(<NavItem href="#plain">Plain</NavItem>), /<span class="tcrn-nav-item__label">Plain<\/span>/);
+  singleLine(rule(".tcrn-shell-menu .tcrn-nav-item__label"));
 });

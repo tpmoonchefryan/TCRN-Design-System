@@ -492,11 +492,16 @@ export const shellCss03 = `
   min-inline-size: 0;
   overflow: hidden;
 }
+/* A row's label is one line (C7; TCRN-DS-SUB-154): it clips and ends in an ellipsis, and a
+   pinnable row's label carries its text as its title. The text span inside truncates itself. */
 .tcrn-shell-menu .tcrn-nav-item__label {
   display: flex;
   align-items: center;
   gap: var(--tcrn-space-1h);
   min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .tcrn-shell-menu__text {
   min-inline-size: 0;
