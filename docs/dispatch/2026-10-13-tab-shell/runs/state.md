@@ -28,6 +28,10 @@
 - 调度（并行 ≤3，滚动补位）：可起的包由 scratch `tools/eligible-016.mjs <runDir> <已合入> <在跑>` 算（列出的前置包已合入、更早波次里与它文件相交的包已合入、与在跑包文件不相交）。包树由 scratch `tools/setup-pkg.sh <轮> <包>` 建；摘录由 `tools/make-excerpt-016.mjs <dispatchDir> <轮> <包> <包树> <输出>` 切。P1 各段各自从集成分支最新 HEAD 新建包树（等价于 C-15 的「先把集成分支合进 P1 分支」）。包交回后：核对提交与 `status` 干净 → 按依赖 `git -C <集成树> merge --no-ff` → `git worktree remove` 退役包树 → 派下一个可起的包。
 - W1 已派：P1a（SUB-113→114→115）、P2（SUB-123→127）、P3（SUB-135），包树 scratch `pkg/r1-p1a`、`pkg/r1-p2`、`pkg/r1-p3`，摘录已提交（63d07f9）。
 
+| 包 | 状态 | 包内提交 | 合入 | 备注 |
+| --- | --- | --- | --- | --- |
+| P1a | 已合入，包树已退役（271 MB） | a7a1b0b、b44c4d7、5fe6158、0eb4136 | 36a08dd | 局部门全 0；问题 6 条（`runs/r1/problems/P1a.md`） |
+
 ## 下一步
 
 - W1 各包交回后按上面的合入步骤处理；P1a 与 P2 都合入后起 P1b、P4；P1b 合入后起 P5 与 P1c（P1c 还等 P4 合入）。全部包合入后：批末 verify（逐步、遇红继续）→ 主力档验收与判断 → 一次链写与知识采集 → 下一轮。
