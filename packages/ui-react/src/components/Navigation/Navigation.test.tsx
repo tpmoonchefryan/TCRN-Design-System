@@ -302,11 +302,17 @@ test("registered product logos expose exact DS AOS and TMS lockups", () => {
   assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--design-system">Design System</);
   assert.match(html, />Talent Management System</);
   assert.doesNotMatch(html, /Rebuild workspace/);
-  // TMS and the design system draw their own marks inline; AOS keeps the mother mark. The colour
-  // mark carries data-logo like the first line's (C-6, TCRN-DS-SUB-144).
-  assert.match(html, /<svg data-logo="design-system" class="tcrn-brand-mark"[^>]*data-product-mark="design-system"[^>]*data-product-mark-variant="color"/);
-  assert.match(html, /<svg data-logo="tms" class="tcrn-brand-mark"[^>]*data-product-mark="tms"[^>]*data-product-mark-variant="color"/);
-  assert.doesNotMatch(renderToStaticMarkup(<ProductLogo productId="tms" markVariant="mono" />), /data-logo=/, "a mono mark is not the logos2 file and carries no data-logo");
+  // TMS and the design system draw their own marks inline; AOS keeps the mother mark.
+  assert.match(html, /<svg class="tcrn-brand-mark"[^>]*data-product-mark="design-system"/);
+  assert.match(html, /<svg class="tcrn-brand-mark"[^>]*data-product-mark="tms"/);
+  // A lockup the shell measures (a data-lockup hook) marks its colour mark with data-logo, as the
+  // first line does (C-5, C-6; TCRN-DS-SUB-144); an unmeasured lockup and a mono mark carry none.
+  assert.doesNotMatch(html, /data-logo=/);
+  assert.match(
+    renderToStaticMarkup(<ProductLogo productId="tms" data-lockup="lkr" />),
+    /^<div data-lockup="lkr" class="tcrn-product-logo"[^>]*><svg data-logo="tms" class="tcrn-brand-mark"[^>]*data-product-mark="tms"[^>]*data-product-mark-variant="color"/
+  );
+  assert.doesNotMatch(renderToStaticMarkup(<ProductLogo productId="tms" markVariant="mono" data-lockup="lkr" />), /data-logo=/, "a mono mark is not the logos2 file");
   // The Brand board's section E writing: <b>{word} <em>{suffix}</em></b> and the tagline a <small>.
   assert.match(
     html,
@@ -356,7 +362,7 @@ test("Einzbern and Mana Orchestrate are whole serif names with the byline and no
     assert.match(html, new RegExp(`class="tcrn-product-logo__line-one-base">${entry.lineOne}<`));
     assert.match(html, /class="tcrn-product-logo__byline">by TCRN</);
     assert.doesNotMatch(html, /tcrn-product-logo__line-one-suffix/);
-    assert.match(html, new RegExp(`<svg data-logo="${productId}" class="tcrn-brand-mark"[^>]*data-product-mark="${productId}"`));
+    assert.match(html, new RegExp(`<svg class="tcrn-brand-mark"[^>]*data-product-mark="${productId}"`));
     assert.match(html, new RegExp(`<b class="tcrn-product-logo__line-one" aria-label="${entry.lineOne}"><span class="tcrn-product-logo__line-one-base">${entry.lineOne}</span></b><small class="tcrn-product-logo__line-two">`));
   }
   assert.equal(tcrnProductLogoRegistry.einzbern.lineOne, "Einzbern");

@@ -598,6 +598,7 @@ export function ProductLogo({
   // translation, which is why it is composed here rather than stored.
   const accessibleName = `${asset.lineOne} ${tagline}`;
   const markAlt = brandMarkAlt ?? accessibleName;
+  const measured = (props as { "data-lockup"?: string })["data-lockup"] !== undefined;
 
   return (
     <div
@@ -615,14 +616,16 @@ export function ProductLogo({
       data-product-logo-asset-id={asset.assetId}
       data-product-wordmark={asset.wordmark}
     >
-      {/* The colour mark carries data-logo like the first line's (C-6); other renditions do not,
-          since their bytes are not the logos2 file's. */}
+      {/* A lockup the shell measures (one given a data-lockup hook, such as the full menu's
+          bottom bar) marks its colour mark with data-logo, as the first line does (C-5, C-6). The
+          other renditions do not, since their bytes are not the logos2 file's, and an unmeasured
+          lockup (a card, a launcher) adds no hook. */}
       {asset.markId ? (
         <TcrnBrandMark
           productId={asset.markId}
           variant={markVariant}
           alt={markAlt}
-          data-logo={(markVariant ?? "color") === "color" ? asset.productId : undefined}
+          data-logo={measured && (markVariant ?? "color") === "color" ? asset.productId : undefined}
         />
       ) : (
         <TcrnBrandMark src={brandMarkSrc} alt={markAlt} />
