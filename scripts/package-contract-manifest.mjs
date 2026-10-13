@@ -229,18 +229,45 @@ const storybookConsumption = {
   packageBackedNavigationProofVisible: storybookBodies.some((source) => /data-package-backed-navigation-proof="true"/.test(source.body)),
   noReusableInlineSourceClaim: storybookOnlyMarkers.length > 0 && deepImportHits.length === 0
 };
+// TCRN-DS-SUB-168 (STORY-147): the documentation pages wear the package ProductShell in its
+// top-band state (TCRN-DS-SUB-131). There is no documentation header, rail, rail toggle or header
+// search left, so this contract reads the top-band documentation shell instead of the four old
+// markers (tcrn-doc-header, tcrn-doc-sidebar, data-doc-nav-item, data-doc-nav-category-toggle),
+// which by then survived only in a stale contract text and a test. The shell markers are read from
+// the runtime sources, not the tests, so a test that still quotes a marker cannot hold it up. The
+// README check follows the current prop surface: the section names the top-band parts and the
+// ProductShell callbacks, every callback it names is a ProductShellProps member, and it names none
+// of the retired collapse API.
+const uiReactReadmeShellSection = (() => {
+  const start = uiReactReadme.indexOf("## Storybook Shell Control Boundary");
+  if (start === -1) return "";
+  const end = uiReactReadme.indexOf("\n## ", start + 1);
+  return uiReactReadme.slice(start, end === -1 ? undefined : end);
+})();
+const shellPartNames = ["ProductShell", "ShellBrandButton", "ShellPins", "ShellMenu", "ShellDropdown", "ShellThemeToggle", "ShellLocaleMenu", "ProductLockup", "TcrnBrandMark"];
+const shellCallbackNames = ["onMenuOpenChange", "onOpenPinChange", "onPinnedChange", "onAccountMenuOpenChange", "onThemeChange", "onLocaleMenuOpenChange", "onLocaleChange", "onSearchQueryChange"];
+const retiredShellApiNames = ["sideNavCollapseButtonProps", "onCollapsedChange"];
+const productShellPropsBody = (() => {
+  const source = readFileSync("packages/ui-react/src/components/Navigation/Navigation.tsx", "utf8");
+  const start = source.indexOf("export interface ProductShellProps ");
+  if (start === -1) return "";
+  return source.slice(start, source.indexOf("\n}\n", start));
+})();
 const storybookDocShellControlContract = {
-  uiReactReadmeBoundaryVisible: uiReactReadme.includes("Storybook Shell Control Boundary")
-    && uiReactReadme.includes("registered package-backed product shell/effect boundary")
-    && uiReactReadme.includes("`ProductShell`, `ProductShellSearch`, `ShellThemeToggle`, `ShellLocaleMenu`")
-    && uiReactReadme.includes("`useProductShellController` is the public utility")
-    && uiReactReadme.includes("`productShellControlProps`")
-    && uiReactReadme.includes("`onSearchResultActivate`"),
-  docShellMarkersVisible: storybookBodies.some((source) => /data-doc-shell=["']online-docs["']/.test(source.body))
-    && storybookBodies.some((source) => /tcrn-doc-header/.test(source.body))
-    && storybookBodies.some((source) => /tcrn-doc-sidebar/.test(source.body))
-    && storybookBodies.some((source) => /data-doc-nav-item/.test(source.body))
-    && storybookBodies.some((source) => /data-doc-nav-category-toggle/.test(source.body)),
+  uiReactReadmeBoundaryVisible: uiReactReadmeShellSection.includes("registered package-backed product shell/effect boundary")
+    && /`ProductShell` in its top-band\s+state/.test(uiReactReadmeShellSection)
+    && shellPartNames.every((name) => uiReactReadmeShellSection.includes(`\`${name}\``))
+    && uiReactReadmeShellSection.includes("`useProductShellController` is the public utility")
+    && uiReactReadmeShellSection.includes("`productShellControlProps`")
+    && shellCallbackNames.every((name) => uiReactReadmeShellSection.includes(`\`${name}\``)),
+  uiReactReadmeFollowsProductShellProps: productShellPropsBody.length > 0
+    && shellCallbackNames.every((name) => new RegExp(`\\n\\s+${name}\\?:`).test(productShellPropsBody))
+    && retiredShellApiNames.every((name) => !uiReactReadmeShellSection.includes(name)),
+  docShellMarkersVisible: storybookRuntimeBodies.some((source) => /<ProductShell\b/.test(source.body)
+      && /data-shell=["']doc["']/.test(source.body)
+      && /data-doc-shell=["']online-docs["']/.test(source.body))
+    && storybookRuntimeBodies.some((source) => /data-shell-menu/.test(source.body) && /data-panel=["']account["']/.test(source.body))
+    && storybookRuntimeBodies.some((source) => /tcrnDocShellLayers/.test(source.body)),
   globalProductShellReplacementAbsent: storybookBodies.some((source) => /data-doc-shell=["']online-docs["']/.test(source.body))
     && !storybookRuntimeBodies.some((source) => /data-storybook-shell-authority=["']@tcrn\/ui-react\/ProductShell["']/.test(source.body))
     && !storybookRuntimeBodies.some((source) => /data-storybook-product-shell-skin=["']confirmed-storybook-visual-v1["']/.test(source.body)),
@@ -252,11 +279,12 @@ const storybookDocShellControlContract = {
   localeSelectorRuleVisible: /globe trigger plus the current locale name in that\s+locale/.test(uiReactReadme)
     && /must not use long bilingual\s+labels/.test(uiReactReadme)
     && storybookBodies.some((source) => /data-locale-menu-toggle/.test(source.body)),
-  focusSearchRuleVisible: uiReactReadme.includes("compact at rest and expand on focus")
+  focusSearchRuleVisible: /The shell's search is the full menu's/.test(uiReactReadme)
+    && uiReactReadme.includes("compact at rest and expand on focus")
     && /collapse on\s+blur/.test(uiReactReadme)
     && storybookBodies.some((source) => /data-doc-search-input/.test(source.body))
     && storybookBodies.some((source) => /data-search-expanded/.test(source.body)),
-  aiContractToolbarBoundaryVisible: /not a primary top-bar control for human\s+readers/.test(uiReactReadme)
+  aiContractToolbarBoundaryVisible: /not a top-band control for human\s+readers/.test(uiReactReadme)
     && storybookBodies.some((source) => /data-ai-consumption-contract-story/.test(source.body))
     && !storybookRuntimeBodies.some((source) => /data-ai-consumption-contract-link/.test(source.body))
 };

@@ -303,53 +303,65 @@ marks, and product lockups remain brand assets, not icon-library substitutions.
 ## Storybook Shell Control Boundary
 
 The static Storybook documentation shell and downstream product shells share a
-registered package-backed product shell/effect boundary. Consumers should import
-`ProductShell`, `ProductShellSearch`, `ShellThemeToggle`, `ShellLocaleMenu`,
-`SideNavCollapseButton`, `ShellBrandLockup`, `ProductLockup`, and
-`TcrnBrandMark` from `@tcrn/ui-react` instead of recreating reusable shell
-controls, brand marks, layout effects, or navigation behavior locally.
+registered package-backed product shell/effect boundary: both wear
+`ProductShell` in its top-band state. Consumers should import `ProductShell` and
+the parts it composes (`ShellBrandButton`, `ShellPins`, `ShellMenu`,
+`ShellDropdown`, `ShellThemeToggle`, `ShellLocaleMenu`, `ShellBrandLockup`,
+`ProductLockup`, and `TcrnBrandMark`) from `@tcrn/ui-react` instead of
+recreating reusable shell controls, brand marks, layout effects, or navigation
+behavior locally. The parts the top band retired (the side rail and its
+collapse button, the old top bar, the mobile navigation toggle, and the product
+launcher and switcher) are deprecated since 4.0.0; see `docs/migration-4.0.md`.
 
-- Theme switching stays a single icon-only circular button. It reflects the
-  current light/dark mode and toggles only on explicit activation.
-- Theme changes use a whole-page shell transition. Sidebar, header, and content
-  must not darken as separate independent regions.
+- Theme switching stays a single icon-only circular button, in the avatar menu
+  next to the language. It reflects the current light/dark mode and toggles
+  only on explicit activation.
+- Theme changes use a whole-page shell transition. The band, the paper, and the
+  open menus must not darken as separate independent regions.
 - Language selection uses a globe trigger plus the current locale name in that
   locale. Compact controls must not use long bilingual labels.
-- Shell search may be compact at rest and expand on focus, then collapse on
-  blur. Shortcut labels belong only to shell search with real focus/result
-  behavior.
+- The shell's search is the full menu's: the brand button opens the full menu
+  with its search, and a pinned item's drop-down searches only its own subtree.
+  A standalone `ProductShellSearch` may be compact at rest and expand on focus,
+  then collapse on blur. Shortcut labels belong only to a search with real
+  focus/result behavior.
 - The AI consumption contract remains in the Proof story and static JSON
-  artifact. It is not a primary top-bar control for human readers.
+  artifact. It is not a top-band control for human readers.
 
 `useProductShellController` is the public utility for bounded state/effect glue:
-collapsed navigation state, theme, locale menu open state, and compact/focused
-search state may be route-owned through DS-defined props and callbacks, while
-layout, focus treatment, reduced-motion behavior, and light/dark token posture
-remain owned by the package boundary. Product consumers may provide IA/data,
-route labels, locale labels, search records, content slots, and callbacks only
-through that boundary and must still prove product-specific routes separately.
+theme, locale, the locale menu's open state, the pins (in the reader's order,
+kept per product), and the search query may be route-owned through DS-defined
+props and callbacks, while layout, focus treatment, reduced-motion behavior,
+and light/dark token posture remain owned by the package boundary. Product
+consumers may provide IA/data, route labels, locale labels, search records,
+content slots, and callbacks only through that boundary and must still prove
+product-specific routes separately.
 
-Consumers should pass the returned `productShellControlProps`,
-`productShellSearchProps`, `shellLocaleMenuProps`, `shellThemeToggleProps`, and
-`sideNavCollapseButtonProps` bundles, or use the equivalent ProductShell
-semantic callbacks directly: `onCollapsedChange`, `onThemeChange`,
-`onLocaleMenuOpenChange`, `onLocaleChange`, `onSearchQueryChange`,
-`onSearchExpandedChange`, `onSearchDismiss`, and `onSearchResultActivate`.
-Wrapper-level event delegation around rendered shell controls is not a
-package-backed substitute for those APIs.
+Consumers should spread the returned `productShellControlProps` onto
+`ProductShell` (theme, locale, the locale menu, the pins, and a search provider
+over the controller's `searchRecords`) and pass `shellThemeToggleProps`,
+`shellLocaleMenuProps`, or `productShellSearchProps` to a standalone
+`ShellThemeToggle`, `ShellLocaleMenu`, or `ProductShellSearch`, or use the
+equivalent ProductShell semantic callbacks directly: `onMenuOpenChange`,
+`onOpenPinChange`, `onPinnedChange`, `onAccountMenuOpenChange`,
+`onThemeChange`, `onLocaleMenuOpenChange`, `onLocaleChange`, and
+`onSearchQueryChange`. Wrapper-level event delegation around rendered shell
+controls is not a package-backed substitute for those APIs.
 
 A server-rendered product parses the request's `Cookie` header with the exported
-`readPreferenceCookieValues` and passes the three narrowed values as
-`requestPreferences`. The raw header stays outside the package: it carries every
-cookie the product's requests hold, and the shell governs only theme, locale, and
-collapse. The controller writes each stored preference to both a
-cookie and the client store, and reads whichever store can answer where it runs,
-so the render that produces the first paint already carries the reader's theme,
-locale, and collapse state instead of correcting to them after hydration. A
-client-only product omits the prop and behaves as before. An explicit URL query
-still outranks a stored preference: only the product knows its own URL
-vocabulary, so it resolves that itself and passes the winner as `initialTheme` or
-`initialLocale`.
+`readPreferenceCookieValues` and passes the two narrowed values, theme and
+locale, as `requestPreferences`; the pins are the product's server preference
+and reach the controller from its backend as `requestPreferences.pins`, never
+through a cookie. The raw header stays outside the package: it carries every
+cookie the product's requests hold, and the shell governs only theme, locale,
+and pins. The controller writes theme and locale to both a cookie and the
+client store, keeps a per-product local copy of the pins, and reads whichever
+store can answer where it runs, so the render that produces the first paint
+already carries the reader's theme, locale, and pins instead of correcting to
+them after hydration. A client-only product omits the prop and behaves as
+before. An explicit URL query still outranks a stored preference: only the
+product knows its own URL vocabulary, so it resolves that itself and passes the
+winner as `initialTheme` or `initialLocale`.
 
 `Surface` accepts optional `heading` and `actions` slots. Its shared header wraps
 inside the card, including nested narrow cards and long heading text. Structured

@@ -49,8 +49,14 @@ const SOURCES = [
 // `[data-active]` on the doc theme-transition wash means "this crossfade is
 // running", and widening far enough to catch that would stop the gate meaning
 // what its name says.
+//
+// TCRN-DS-SUB-168: the old documentation sidebar's own marker, [data-doc-nav-item-active], is
+// gone with that sidebar (the documentation page is a top-band ProductShell, TCRN-DS-SUB-131), and
+// no source carries it any more, so that alternative only ever matched nothing and is removed. The
+// documentation shell's selection now comes from the package's own rules, which this gate reads
+// through the package modules.
 const SELECTION_SELECTOR =
-  /\[data-selected|\[aria-current|\[aria-pressed|\[aria-selected|\[data-doc-nav-item-active|--(?:active|selected)\b/;
+  /\[data-selected|\[aria-current|\[aria-pressed|\[aria-selected|--(?:active|selected)\b/;
 
 // Bodies that paint selection the old way. `inset` covers both the 3px left axis
 // and the 2px bottom axis; brand colour is banned in selection because colour now
@@ -87,8 +93,9 @@ for (const { source, text } of SOURCES) {
 // the 6% ink wash and ink, and the label takes the strong weight. Nothing is added on top, so a
 // selected tab rule that draws an edge, an outline, a shadow, an underline or a lift is a second
 // structure, and so is any selection rule left on one of the old roots in the package
-// stylesheet. Only the package modules are read for this check: the doc layers still carry
-// their own copies until the documentation shell moves to the top band.
+// stylesheet. Only the package modules are read for this check: the tab family's selected
+// structure is the package's, and the doc layers carry no tab selection rule of their own (the
+// general check above still reads them for the retired grammar).
 const TAB = { block: "tcrn-tabs", subject: /\.tcrn-tabs__tab\b/u, pair: "--tcrn-pair-tab-fill" };
 const OLD_TAB_ROOTS = /\.tcrn-(?:module-tabs|section-tabs|segmented-nav|view-tabs)\b/u;
 const ADDED_ON_TOP = /(?:^|;)\s*(?:border[a-z-]*|outline[a-z-]*|box-shadow|text-decoration[a-z-]*|transform|translate|scale)\s*:/u;

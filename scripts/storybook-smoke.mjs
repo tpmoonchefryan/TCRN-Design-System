@@ -218,40 +218,78 @@ const expectedStorybookSidebarWidthForViewport = (viewportWidth) => {
 const storybookAlphaStylesSource = readFileSync("apps/storybook/src/alpha-styles.ts", "utf8");
 const storybookStaticCssSource = readFileSync("apps/storybook/src/storybook.css", "utf8");
 const staticRoot = "apps/storybook/storybook-static";
+// TCRN-DS-SUB-168 (STORY-140, STORY-147; judgment §3.4 item 1): the three ProductShell comparators
+// read the top-band shell (TCRN-DS-SUB-121). The band holds the brand button, the pins and the
+// cluster (header actions, bell, avatar); theme and language sit in the avatar menu; the search, the
+// selected row and the current position live in the full menu, and the paper's page header carries
+// the trail. The side rail, its collapse toggle, the top bar and the band search are retired, so their
+// selectors, metrics, motion and state checks went with them. Every part that still exists keeps its
+// checks (the theme toggle, the locale trigger and its chevron, the theme wash), and the band gets
+// its own: its height, no fill and no line, its parts' order, the 26 midline, the paper's inset and
+// top, the brand button and the avatar with their focus ring. Values come from the shell tokens:
+// strip-h 52, brand-w 134 × brand-h 40, the 12 inset (space-3), the avatar 28 (2 × space-3h).
+const shellBandInsetPx = gplusPx("--tcrn-space-3");
+const shellAvatarPx = 2 * gplusPx("--tcrn-space-3h");
 const productShellComparatorContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   // TCRN-DS-STORY-059: the ProductShell contract-proof was split out of navigation-shell-spec
-  // into navigation-product-shell-spec (same navigation-shells category page).
+  // into navigation-product-shell-spec (same navigation-shells category page). It shows the shell
+  // closed with the avatar menu open, so the theme toggle and the locale trigger are measured there.
   storyId: "navigation-product-shell-spec",
   page: "components-navigation-shells.html#navigation-product-shell-spec",
   scopedSelector: ".tcrn-doc-product-shell-contract-proof .tcrn-product-shell",
   componentSelectors: {
-    productLogo: ".tcrn-product-logo",
+    strip: "[data-shell-strip]",
+    brandButton: "[data-shell-brand]",
+    pins: ".tcrn-shell-pins",
+    cluster: "[data-cluster]",
+    avatar: "[data-shell-avatar]",
     themeToggle: ".tcrn-shell-theme-toggle",
     localeTrigger: ".tcrn-shell-locale-menu__trigger",
-    sideNavToggle: ".tcrn-shell-side-nav-toggle",
-    searchWrapper: ".tcrn-product-shell-search",
-    searchInput: ".tcrn-search-input",
-    searchControl: ".tcrn-search-input__control",
-    searchShortcut: ".tcrn-search-input__shortcut",
-    searchResults: ".tcrn-product-shell-search__results",
-    utilityRow: ".tcrn-product-shell__utility-row",
-    currentLocation: ".tcrn-product-shell__current-location",
-    selectedNavItem: ".tcrn-nav-item[data-selected=\"true\"], .tcrn-nav-item[aria-current=\"page\"]",
     localeChevron: ".tcrn-shell-locale-menu__chevron",
-    topBar: ".tcrn-top-bar",
-    sideNavRegion: ".tcrn-product-shell__sidebar",
+    currentLocation: ".tcrn-page-header .tcrn-breadcrumb [aria-current]",
+    searchResults: "[data-shell-menu] [data-product-shell-search-results]",
+    paper: "[data-paper]",
     contentRegion: "[data-product-shell-region=\"content\"]",
     contentStack: ".tcrn-product-shell-content-stack",
     sectionGrid: ".tcrn-product-shell-section-grid"
   },
-  expectedControlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
+  // The band's parts left to right; the pins are left out when the shell has none to show.
+  expectedControlOrder: ["brandButton", "pins", "cluster"],
+  optionalControls: ["pins"],
   expectedControlMetrics: {
+    // MIN-20261013-SHELL D2: the band has no fill and no line; the paper sits 12 in from its edges.
+    strip: {
+      minHeight: gplusPx(shellStripHeightVar),
+      height: gplusPx(shellStripHeightVar),
+      display: "flex",
+      borderStyle: "none",
+      borderWidth: "0px",
+      backgroundColor: "rgba(0, 0, 0, 0)",
+      paddingLeft: `${shellBandInsetPx}px`,
+      paddingRight: `${shellBandInsetPx}px`
+    },
+    brandButton: {
+      width: gplusPx("--tcrn-shell-brand-w"),
+      height: gplusPx("--tcrn-shell-brand-h"),
+      radius: gplusPx("--tcrn-radius-control"),
+      transitionPropertyIncludes: ["background-color", "color", "box-shadow"],
+      transitionDurationIncludes: gplusSeconds("--tcrn-motion-duration-fill"),
+      transitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
+      focus: { ...gplusForcedColorsOutline, boxShadow: { layers: gplusFocusRingLayers } }
+    },
+    avatar: {
+      width: shellAvatarPx,
+      height: shellAvatarPx,
+      radius: 999,
+      backgroundRequired: true,
+      focus: { ...gplusForcedColorsOutline, boxShadow: { layers: gplusFocusRingLayers } }
+    },
     // TCRN-DS-SUB-041: the shell toggles are IconButtons on the Actions pair table (secondary
-    // variant), so weight, motion and the focus ring are the table's. Their box stays what the
-    // base segment sizes it to (36 pill and 38 square at the control radius): G+ has not yet
-    // ruled on these two sizes, recorded in runs/r1/problems/W6-B.md, so the geometry is not
-    // re-pinned here. The Actions base rule sets line-height 1, so the line box is the type size.
+    // variant), so weight, motion and the focus ring are the table's. Its box stays what the base
+    // segment sizes it to (36 pill): G+ has not yet ruled on this size, recorded in
+    // runs/r1/problems/W6-B.md, so the geometry is not re-pinned here. The Actions base rule sets
+    // line-height 1, so the line box is the type size.
     themeToggle: {
       width: 36,
       height: 36,
@@ -260,20 +298,6 @@ const productShellComparatorContract = {
       fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
       fontWeight: gplusActionsWeight,
       lineHeight: `${gplusPx("--tcrn-type-size-control")}px`,
-      transitionPropertyIncludes: ["background-color", "color", "box-shadow"],
-      transitionDurationIncludes: gplusSeconds("--tcrn-motion-duration-fill"),
-      transitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
-      focus: { ...gplusForcedColorsOutline, boxShadow: { layers: gplusFocusRingLayers } }
-    },
-    sideNavToggle: {
-      width: 38,
-      height: 38,
-      radius: gplusPx("--tcrn-radius-control"),
-      backgroundRequired: true,
-      fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
-      fontWeight: gplusActionsWeight,
-      lineHeight: `${gplusPx("--tcrn-type-size-control")}px`,
-      iconCenterDeltaMax: 1,
       transitionPropertyIncludes: ["background-color", "color", "box-shadow"],
       transitionDurationIncludes: gplusSeconds("--tcrn-motion-duration-fill"),
       transitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
@@ -294,98 +318,22 @@ const productShellComparatorContract = {
       transitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
       focus: { ...gplusForcedColorsOutline, boxShadow: { layers: gplusFocusRingLayers } }
     },
-    // G+ SearchInput is a tool form: the control is the box (wash fill at rest, control height,
-    // control radius) and the wrapper only positions the icon and the shortcut over it, so the
-    // wrapper paints nothing and draws nothing on focus-within (TCRN-DS-SUB-020).
-    searchInput: {
-      minHeight: gplusPx("--tcrn-control-height-md"),
-      radius: 0,
-      minWidth: 220,
-      backgroundRequired: false,
-      fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
-      lineHeight: `${gplusTextLine("body")}px`,
-      gap: "normal",
-      focus: { outlineWidth: "0px", outlineStyle: "none", outlineOffset: "0px", boxShadow: "none" }
-    },
-    searchControl: {
-      height: gplusPx("--tcrn-control-height-md"),
-      radius: gplusPx("--tcrn-radius-control"),
-      backgroundColor: gplusColorBothThemes("--tcrn-color-wash"),
-      fontSize: `${gplusPx("--tcrn-type-size-control")}px`,
-      fontWeight: "400",
-      lineHeight: `${gplusTextLine("body")}px`,
-      letterSpacing: "normal",
-      // pairs.json inputs-text: search focus keeps the default variant's focus edge, an inset
-      // 1px acc edge under the focus ring.
-      focus: {
-        ...gplusForcedColorsOutline,
-        boxShadow: { layers: [{ spread: 1, inset: true, colors: gplusColorBothThemes("--tcrn-color-acc") }, ...gplusFocusRingLayers] }
-      }
-    },
-    // The shortcut sits over the control's inline end in the board's 10px mono on a 14px line
-    // with 4px (space-1) side padding.
-    searchShortcut: {
-      position: "absolute",
-      fontFamilyIncludes: gplusFirstFamily("--tcrn-type-family-mono"),
-      fontSize: "10px",
-      fontWeight: "400",
-      lineHeight: "14px",
-      letterSpacing: "normal",
-      paddingLeft: `${gplusPx("--tcrn-space-1")}px`,
-      paddingRight: `${gplusPx("--tcrn-space-1")}px`
-    },
-    currentLocation: { fontSize: "11px", lineHeight: `${gplusTextLine("caption")}px`, letterSpacing: "normal" },
-    // TCRN-DS-STORY-087: selection is ink, pinned under BOTH themes because the parity checks
-    // run in each. Under G+ the selected surface is the wash token (TCRN-DS-SUB-041), read per
-    // theme from the token map, and the selected row reads in the strong weight on the body line.
-    selectedNavItem: {
-      fontSize: "12px",
-      fontWeight: gplusStrongWeight,
-      lineHeight: `${gplusTextLine("body")}px`,
-      boxShadow: ["none"],
-      backgroundColor: gplusColorBothThemes("--tcrn-color-wash")
-    },
-    topBar: {
-      // ProductShell's own top bar reads composition one's height from the shell token (O-1, after
-      // TCRN-DS-SUB-090); the standalone TopBar keeps its own height.
-      minHeight: gplusShellTopBarHeightPx,
-      borderRadius: "0px",
-      borderStyle: "none none solid",
-      borderWidth: "0px 0px 1px",
-      backgroundColor: "color(srgb 1 1 1 / 0.95)",
-      display: "grid",
-      gap: "16px",
-      paddingLeft: "20px",
-      paddingRight: "20px",
-      justifyContent: "stretch",
-      gridColumnCount: 1
+    // The current position is the last step of the page header's trail, in the paper.
+    currentLocation: {},
+    paper: {
+      radius: gplusPx("--tcrn-radius-paper"),
+      backgroundRequired: true
     }
   },
+  // The paper starts at the band's bottom and 12 in from its edges; the band's parts sit on its
+  // midline, the brand button at its start and the cluster at its end.
+  bandGeometry: {
+    midlineTolerancePx: 1,
+    edgeTolerancePx: 1
+  },
   motionProof: {
-    productShellTransition: "grid-template-columns",
-    // TCRN-DS-SUB-041: the shell rail, the locale chevron and the theme wash move on the G+
-    // move duration and the G+ ease; the search keeps its own drawer curve, unchanged.
-    productShellTransitionDuration: gplusSeconds("--tcrn-motion-duration-move"),
-    productShellTransitionTimingFunctionIncludes: gplusEase("--tcrn-motion-ease"),
-    searchTransition: "width",
-    searchTransitionProperties: ["flex-basis", "width", "max-width"],
-    searchTransitionDuration: "0.24s",
-    searchTransitionTimingFunctionIncludes: "cubic-bezier(0.32, 0.72, 0, 1)",
-    searchMotionTimeline: {
-      sampleTimesMs: [0, 60, 120, 180, 240, 300],
-      minIntermediateSamples: 2,
-      // What this guards is that the surface *animated* rather than jumped. It is
-      // not a statement about curve shape, and it used to be read as one: the v1
-      // threshold sat at 75% of the duration, which silently assumed a curve that
-      // spreads travel evenly. The v2 drawer curve deliberately front-loads —
-      // measured, it is 78% travelled at 25% of the duration and 98% at 65% — which
-      // is exactly why it reads as responsive. Holding it to the old threshold would
-      // have been the oracle enforcing a design decision the ruling reversed. The
-      // floor below still catches a real jump (final value at the first sample), and
-      // minIntermediateSamples above still proves genuine in-between frames.
-      finalFrameEarliestMs: 50,
-      endpointTolerancePx: 2
-    },
+    // TCRN-DS-SUB-041: the locale chevron and the theme wash move on the G+ move duration and the
+    // G+ ease. The top band has no rail to animate and no band search to widen.
     localeChevronTransition: "transform",
     localeChevronTransitionDuration: gplusSeconds("--tcrn-motion-duration-move"),
     themeWashPseudo: "tcrn-product-shell-theme-wash",
@@ -394,6 +342,29 @@ const productShellComparatorContract = {
     reducedMotionFallback: "transition-none"
   }
 };
+// The AI consumption contract's shellControlVisualParityProof and owner-quality oracle still
+// describe the old shell (its rail toggle, top-bar search and collapse policy) until its text is
+// rewritten (judgment R2-29). The cross-checks below pin what it says today, apart from the
+// comparator above, so the two can move separately.
+const aiContractShellControlReadback = {
+  controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
+  searchTransitionDuration: "0.24s",
+  searchTransitionProperties: ["flex-basis", "width", "max-width"],
+  ownerQualityAdmittedCollapsedVariants: [
+    "desktop-light-operations-cockpit-collapsed",
+    "desktop-dark-operations-cockpit-collapsed",
+    "desktop-light-work-queue-collapsed"
+  ]
+};
+// The visual instances show the shell closed with the avatar menu closed: the band and the paper
+// are what they render, so those are what they are held to.
+const productShellBandMetrics = {
+  strip: productShellComparatorContract.expectedControlMetrics.strip,
+  brandButton: productShellComparatorContract.expectedControlMetrics.brandButton,
+  avatar: productShellComparatorContract.expectedControlMetrics.avatar,
+  currentLocation: productShellComparatorContract.expectedControlMetrics.currentLocation,
+  paper: productShellComparatorContract.expectedControlMetrics.paper
+};
 const aosFrontendShellVisualInstanceContract = {
   styleSource: "@tcrn/ui-react/tcrnComponentCss",
   storyId: "frontend-shell-slice",
@@ -401,30 +372,8 @@ const aosFrontendShellVisualInstanceContract = {
   scopedSelector: "[data-storybook-visual-instance=\"frontend-shell-slice\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
-  expectedControlMetrics: {
-    themeToggle: productShellComparatorContract.expectedControlMetrics.themeToggle,
-    sideNavToggle: productShellComparatorContract.expectedControlMetrics.sideNavToggle,
-    localeTrigger: productShellComparatorContract.expectedControlMetrics.localeTrigger,
-    searchInput: productShellComparatorContract.expectedControlMetrics.searchInput,
-    searchControl: productShellComparatorContract.expectedControlMetrics.searchControl,
-    searchShortcut: productShellComparatorContract.expectedControlMetrics.searchShortcut,
-    currentLocation: productShellComparatorContract.expectedControlMetrics.currentLocation,
-    selectedNavItem: productShellComparatorContract.expectedControlMetrics.selectedNavItem,
-    topBar: {
-      // ProductShell's own top bar reads composition one's height from the shell token (O-1, after
-      // TCRN-DS-SUB-090); the standalone TopBar keeps its own height.
-      minHeight: gplusShellTopBarHeightPx,
-      borderRadius: "0px",
-      borderStyle: "none none solid",
-      borderWidth: "0px 0px 1px",
-      display: "grid",
-      gap: "16px",
-      paddingLeft: "20px",
-      paddingRight: "20px",
-      justifyContent: "stretch",
-      gridColumnCount: 1
-    }
-  },
+  optionalControls: productShellComparatorContract.optionalControls,
+  expectedControlMetrics: productShellBandMetrics,
   motionProof: productShellComparatorContract.motionProof,
   visualInstanceName: "FrontendShellSliceVisualInstance",
   packageMapping: [
@@ -625,40 +574,13 @@ const aosOwnerQualityProductShellContract = {
   scopedSelector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"]",
   componentSelectors: productShellComparatorContract.componentSelectors,
   expectedControlOrder: productShellComparatorContract.expectedControlOrder,
-  expectedControlMetrics: {
-    themeToggle: productShellComparatorContract.expectedControlMetrics.themeToggle,
-    sideNavToggle: productShellComparatorContract.expectedControlMetrics.sideNavToggle,
-    localeTrigger: productShellComparatorContract.expectedControlMetrics.localeTrigger,
-    searchInput: productShellComparatorContract.expectedControlMetrics.searchInput,
-    searchControl: productShellComparatorContract.expectedControlMetrics.searchControl,
-    searchShortcut: productShellComparatorContract.expectedControlMetrics.searchShortcut,
-    currentLocation: productShellComparatorContract.expectedControlMetrics.currentLocation,
-    selectedNavItem: productShellComparatorContract.expectedControlMetrics.selectedNavItem,
-    topBar: aosFrontendShellVisualInstanceContract.expectedControlMetrics.topBar
-  },
+  optionalControls: productShellComparatorContract.optionalControls,
+  expectedControlMetrics: productShellBandMetrics,
   motionProof: productShellComparatorContract.motionProof,
-  searchRestWidth: {
-    maxPx: 260,
-    expandedMaxPx: 420,
-    mobileMaxPx: 320
-  },
-  ownerQualitySideNavPolicy: {
-    expandedOnly: false,
-    collapseAffordance: "actionable_toggle",
-    expectedAction: "toggle",
-    admittedCollapsedVariants: [
-      "desktop-light-operations-cockpit-collapsed",
-      "desktop-dark-operations-cockpit-collapsed",
-      "desktop-light-work-queue-collapsed"
-    ],
-    mobilePolicy: "hidden_affordance_until_mobile_collapsed_owner_quality_variant_admission",
-    iconCenterDeltaMaxPx: 1,
-    railWidthPx: gplusShellCollapsedRailWidthPx
-  },
   noOverflowProof: true,
   controlBoundsProof: {
-    controls: ["searchWrapper", "searchInput", "localeTrigger", "themeToggle"],
-    containers: ["topBar", "shell", "viewport"]
+    controls: ["brandButton", "avatar"],
+    containers: ["strip", "shell", "viewport"]
   },
   visualInstanceName: "OwnerQualityShellOracle",
   packageMapping: [
@@ -975,8 +897,6 @@ const required = [
   "data-contract-story-id=\"frontend-shell-slice\"",
   "data-contract-story-id=\"owner-quality-product-shell\"",
   "data-registered-product-logo=\"@tcrn/ui-react/ProductLogo\"",
-  "data-product-id=\"aos\"",
-  "data-product-logo-asset-id=\"tcrn-aos-two-line\"",
   "AI Operation System",
   "data-storybook-visual-instance=\"frontend-shell-slice\"",
   "data-visual-instance-name=\"FrontendShellSliceVisualInstance\"",
@@ -1033,7 +953,9 @@ const required = [
   // no-overclaim boundary is carried by the rendered page-head chips (shell.noPackagePublicationClaim
   // / shell.noProductAdoptionClaim / shell.acceptanceDownstreamClaim).
   "data-anchor-scroll-controlled=\"true\"",
-  "Top bar, attached side navigation, content column, and chapter navigation stay one shell"
+  // TCRN-DS-SUB-168: the knowledge-base sample is the top-band shell now (its rail and chapter
+  // navigation sentence retired with the sample's side rail).
+  "The knowledge-base shell is the top-band shell: the navigation opens from the brand button"
 ];
 const componentPage = pages.Components;
 const staticDocStyleIndex = componentPage.indexOf("data-tcrn-static-doc-style-source=\"storybook\"");
@@ -1060,8 +982,9 @@ for (const text of [
   ".tcrn-product-shell",
   ".tcrn-shell-theme-toggle",
   ".tcrn-shell-locale-menu__trigger",
-  ".tcrn-shell-side-nav-toggle",
-  "data-side-nav-action=\"toggle\"",
+  // TCRN-DS-SUB-168: the band's brand button replaced the rail toggle (its rule and its desktop markup).
+  ".tcrn-shell-brand",
+  "data-shell-brand=\"v2\"",
   "--tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer)",
   "flex-basis: 260px",
   "flex-basis: 420px",
@@ -1072,8 +995,11 @@ for (const text of [
   // G+ state rules: the active state is a :where() state rule on the pair table (TCRN-DS-SUB-016).
   gplusStateSelector(".tcrn-link-button", "actions", "a"),
   ".tcrn-search-result-list__head a:focus-visible",
-  ".tcrn-segmented-nav button:focus-visible",
-  ".tcrn-segmented-nav button:active",
+  // TCRN-DS-SUB-168: the tab-shaped forms are one family (TCRN-DS-SUB-124): the tab's focus state
+  // rule and its selected state (the 6% wash and the strong weight) replace SegmentedNav's focus and
+  // press rules.
+  ".tcrn-tabs__tab:where(:focus-visible",
+  ".tcrn-tabs__tab:where([data-selected=\"true\"])",
   ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
   ".tcrn-product-shell[data-theme-switching=\"true\"]::after",
   "tcrn-product-shell-theme-wash",
@@ -1151,6 +1077,22 @@ const payloadTranslationCoverage = [
   "TCRN 디자인 시스템 계약 스토리"
 ];
 const missing = required.filter((text) => !combinedContractText.includes(text));
+// O-9 (judgment §3.1, default until the Owner rules): AOS has no mark in logos2 yet, so its two
+// visual instances wear the design-system mark as a placeholder and keep declaring the AOS asset
+// they are owed. The two AOS pins are read in that placeholder form, not dropped: the owner-quality
+// instance still names tcrn-aos-two-line, and both AOS instances carry the design-system mark.
+for (const storyId of ["frontend-shell-slice", "owner-quality-product-shell"]) {
+  const storyHtml = readStoryHtml(combinedHtml, storyId);
+  if (!/data-aos-visual-instance-oracle="true"|data-visual-instance-product-logo="tcrn-aos-two-line"/.test(storyHtml)) {
+    missing.push(`aos-placeholder:${storyId}:aos-instance`);
+  }
+  if (!storyHtml.includes('data-product-mark="design-system"')) {
+    missing.push(`aos-placeholder:${storyId}:design-system-mark`);
+  }
+}
+if (!readStoryHtml(combinedHtml, "owner-quality-product-shell").includes('data-visual-instance-product-logo="tcrn-aos-two-line"')) {
+  missing.push("aos-placeholder:owner-quality-product-shell:declared-asset:tcrn-aos-two-line");
+}
 for (const text of requiredRendered.filter((text) => !renderedCombinedText.includes(text))) {
   missing.push(`unrendered-dictionary-backed-pin:${text}`);
 }
@@ -1317,16 +1259,16 @@ for (const field of ["transitionProperty", "transitionDuration", "transitionTimi
     missing.push(`contract.shellControlVisualParityProof.motionFields:${field}`);
   }
 }
-if (shellControlVisualParityProof?.controlOrder?.join(">") !== productShellComparatorContract.expectedControlOrder.join(">")) {
+if (shellControlVisualParityProof?.controlOrder?.join(">") !== aiContractShellControlReadback.controlOrder.join(">")) {
   missing.push("contract.shellControlVisualParityProof.controlOrder");
 }
 if (shellControlVisualParityProof?.searchRestWidth?.maxPx !== 260 || shellControlVisualParityProof?.searchRestWidth?.expandedMaxPx !== 420) {
   missing.push("contract.shellControlVisualParityProof.searchRestWidth");
 }
-if (shellControlVisualParityProof?.searchMotionTimeline?.transitionDuration !== productShellComparatorContract.motionProof.searchTransitionDuration) {
+if (shellControlVisualParityProof?.searchMotionTimeline?.transitionDuration !== aiContractShellControlReadback.searchTransitionDuration) {
   missing.push("contract.shellControlVisualParityProof.searchMotionTimeline.transitionDuration");
 }
-if (shellControlVisualParityProof?.searchMotionTimeline?.transitionProperties?.join(">") !== productShellComparatorContract.motionProof.searchTransitionProperties.join(">")) {
+if (shellControlVisualParityProof?.searchMotionTimeline?.transitionProperties?.join(">") !== aiContractShellControlReadback.searchTransitionProperties.join(">")) {
   missing.push("contract.shellControlVisualParityProof.searchMotionTimeline.transitionProperties");
 }
 if (!String(shellControlVisualParityProof?.ownerQualitySideNavCollapsePolicy ?? "").includes("actionable")) {
@@ -1446,7 +1388,7 @@ if (!ownerQualityVisualInstanceOracle) {
   if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.expandedOnly !== false) {
     missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.expandedOnly");
   }
-  for (const variant of aosOwnerQualityProductShellContract.ownerQualitySideNavPolicy.admittedCollapsedVariants) {
+  for (const variant of aiContractShellControlReadback.ownerQualityAdmittedCollapsedVariants) {
     if (!ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.admittedCollapsedVariants?.includes?.(variant)) {
       missing.push(`contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.admittedCollapsedVariants:${variant}`);
     }
@@ -2220,58 +2162,6 @@ function maxCssDurationMs(value) {
   }));
 }
 
-function validateSearchMotionTimeline({ failures, label, proof, contract }) {
-  const expected = contract.motionProof.searchMotionTimeline;
-  const timeline = proof.searchMotionTimeline;
-  if (!timeline || timeline.missing) {
-    failures.push(`${label}:search-motion-timeline-missing`);
-    return;
-  }
-  for (const property of contract.motionProof.searchTransitionProperties ?? [contract.motionProof.searchTransition]) {
-    if (!transitionIncludes(timeline.expand.motion, property) || !transitionIncludes(timeline.collapse.motion, property)) {
-      failures.push(`${label}:search-motion-transition-property:${property}:${timeline.expand.motion.transitionProperty}/${timeline.collapse.motion.transitionProperty}`);
-    }
-  }
-  const expectedDurationMs = maxCssDurationMs(contract.motionProof.searchTransitionDuration);
-  for (const phase of ["expand", "collapse"]) {
-    const phaseTimeline = timeline[phase];
-    const durationMs = maxCssDurationMs(phaseTimeline.motion.transitionDuration);
-    if (Math.abs(durationMs - expectedDurationMs) > 1) {
-      failures.push(`${label}:search-motion-${phase}-duration:${phaseTimeline.motion.transitionDuration}`);
-    }
-    if (!String(phaseTimeline.motion.transitionTimingFunction).includes(contract.motionProof.searchTransitionTimingFunctionIncludes)) {
-      failures.push(`${label}:search-motion-${phase}-timing:${phaseTimeline.motion.transitionTimingFunction}`);
-    }
-    const samples = phaseTimeline.samples ?? [];
-    const start = samples[0]?.width;
-    const end = samples[samples.length - 1]?.width;
-    if (!Number.isFinite(start) || !Number.isFinite(end) || Math.abs(end - start) < 8) {
-      failures.push(`${label}:search-motion-${phase}-insufficient-width-delta:${start}->${end}`);
-      continue;
-    }
-    const direction = end > start ? 1 : -1;
-    const low = Math.min(start, end) + expected.endpointTolerancePx;
-    const high = Math.max(start, end) - expected.endpointTolerancePx;
-    const intermediateCount = samples.filter((sample) => sample.width > low && sample.width < high).length;
-    if (intermediateCount < expected.minIntermediateSamples) {
-      failures.push(`${label}:search-motion-${phase}-intermediate-frames:${intermediateCount}`);
-    }
-    const monotonic = samples.every((sample, index) => {
-      if (index === 0) return true;
-      const previous = samples[index - 1].width;
-      return direction > 0 ? sample.width + 1 >= previous : sample.width - 1 <= previous;
-    });
-    if (!monotonic) {
-      failures.push(`${label}:search-motion-${phase}-non-monotonic`);
-    }
-    const finalWidth = end;
-    const reachedFinal = samples.find((sample) => Math.abs(sample.width - finalWidth) <= expected.endpointTolerancePx);
-    if (reachedFinal && reachedFinal.t < expected.finalFrameEarliestMs) {
-      failures.push(`${label}:search-motion-${phase}-jumped-to-final:${reachedFinal.t}ms`);
-    }
-  }
-}
-
 function validateNoHorizontalOverflow({ failures, label, name, metric }) {
   if (!metric || metric.missing || metric.scrollWidth === undefined || metric.clientWidth === undefined) return;
   if (metric.scrollWidth > metric.clientWidth + 1) {
@@ -2284,7 +2174,7 @@ function validateControlBounds({ failures, label, proof, contract }) {
   const containers = contract.controlBoundsProof?.containers ?? [];
   const containerMetrics = {
     shell: proof.shell,
-    topBar: proof.measured?.topBar,
+    strip: proof.measured?.strip,
     viewport: {
       left: 0,
       right: proof.viewport?.width,
@@ -2316,63 +2206,48 @@ function validateControlBounds({ failures, label, proof, contract }) {
   }
 }
 
-function validateTopbarUtilityAlignment({ failures, label, proof }) {
-  const snapshot = proof.topbarAlignmentReadback;
-  const measured = proof.measured ?? {};
-  const topBar = snapshot?.topBar
-    ? { ...snapshot.topBar, paddingLeft: snapshot.paddingLeft, paddingRight: snapshot.paddingRight }
-    : measured.topBar;
-  const currentLocation = snapshot?.currentLocation ?? measured.currentLocation;
-  const search = snapshot?.search ?? measured.searchWrapper;
-  const theme = snapshot?.theme ?? measured.themeToggle;
-  const locale = snapshot?.locale ?? measured.localeTrigger;
-  const required = { topBar, currentLocation, search, theme, locale };
-  for (const [name, metric] of Object.entries(required)) {
-    if (!metric || metric.missing) {
-      failures.push(`${label}:topbar-utility-alignment-missing-${name}`);
+// The band's relations (MIN-20261013-SHELL D2, STORY-140): every part sits on the band's midline
+// (26 in the 52 band), the brand button starts at the band's inset and the cluster ends at it, and
+// the paper starts at the band's bottom, inset by the band's own 12 on both sides. These replace the
+// top bar's utility alignment, which had a current location, a search and two toggles to line up.
+function validateBandAlignment({ failures, label, proof, contract }) {
+  const band = proof.bandAlignmentReadback;
+  const midlineTolerance = contract.bandGeometry?.midlineTolerancePx ?? 1;
+  const edgeTolerance = contract.bandGeometry?.edgeTolerancePx ?? 1;
+  for (const name of ["strip", "brand", "cluster", "avatar", "paper"]) {
+    if (!band?.[name]) {
+      failures.push(`${label}:band-alignment-missing-${name}`);
       return;
     }
   }
-
-  const leadingTolerance = 4;
-  const trailingTolerance = 4;
-  const orderTolerance = 1;
-  const paddingLeft = parsePixels(topBar.paddingLeft);
-  const paddingRight = parsePixels(topBar.paddingRight);
-  const currentLocationLeadingGap = currentLocation.left - topBar.left - paddingLeft;
-  const utilityTrailingGap = topBar.right - locale.right - paddingRight;
-  const searchTrailingGap = topBar.right - search.right - paddingRight;
-  const themeTrailingGap = topBar.right - theme.right - paddingRight;
-  const searchSharesThemeRow = controlsShareVerticalRow(search, theme);
-  const currentLocationSharesSearchRow = controlsShareVerticalRow(currentLocation, search);
-  const themeSharesLocaleRow = controlsShareVerticalRow(theme, locale);
-
-  if (Math.abs(currentLocationLeadingGap) > leadingTolerance) {
-    failures.push(`${label}:topbar-current-location-leading-gap:${currentLocationLeadingGap.toFixed(2)}:max:${leadingTolerance}`);
+  const midline = band.strip.top + band.strip.height / 2;
+  for (const name of ["brand", "mark", "pins", "cluster", "avatar"]) {
+    const rect = band[name];
+    if (!rect) continue;
+    const centre = rect.top + rect.height / 2;
+    if (Math.abs(centre - midline) > midlineTolerance) {
+      failures.push(`${label}:band-midline-${name}:${(centre - band.strip.top).toFixed(2)}:expected:${(midline - band.strip.top).toFixed(2)}`);
+    }
   }
-  if (Math.abs(utilityTrailingGap) > trailingTolerance) {
-    failures.push(`${label}:topbar-utility-trailing-gap:${utilityTrailingGap.toFixed(2)}:max:${trailingTolerance}`);
+  const insetLeft = parsePixels(band.paddingLeft);
+  const insetRight = parsePixels(band.paddingRight);
+  const brandStart = band.brand.left - band.strip.left;
+  if (Math.abs(brandStart - insetLeft) > edgeTolerance) {
+    failures.push(`${label}:band-brand-start:${brandStart.toFixed(2)}:expected:${insetLeft}`);
   }
-  if (!searchSharesThemeRow && Math.abs(searchTrailingGap) > trailingTolerance) {
-    failures.push(`${label}:topbar-wrapped-search-trailing-gap:${searchTrailingGap.toFixed(2)}:max:${trailingTolerance}`);
+  const clusterEnd = band.strip.right - band.cluster.right;
+  if (Math.abs(clusterEnd - insetRight) > edgeTolerance) {
+    failures.push(`${label}:band-cluster-end:${clusterEnd.toFixed(2)}:expected:${insetRight}`);
   }
-  if (!themeSharesLocaleRow && Math.abs(themeTrailingGap) > trailingTolerance) {
-    failures.push(`${label}:topbar-wrapped-theme-trailing-gap:${themeTrailingGap.toFixed(2)}:max:${trailingTolerance}`);
+  const paperTop = band.paper.top - band.strip.top;
+  if (Math.abs(paperTop - band.strip.height) > edgeTolerance) {
+    failures.push(`${label}:paper-top:${paperTop.toFixed(2)}:expected:${band.strip.height}`);
   }
-  if (currentLocationSharesSearchRow && currentLocation.right > search.left + orderTolerance) {
-    failures.push(`${label}:topbar-current-location-overlaps-search:${currentLocation.right.toFixed(2)}>${search.left.toFixed(2)}`);
+  const paperStart = band.paper.left - band.strip.left;
+  const paperEnd = band.strip.right - band.paper.right;
+  if (Math.abs(paperStart - insetLeft) > edgeTolerance || Math.abs(paperEnd - insetRight) > edgeTolerance) {
+    failures.push(`${label}:paper-inset:${paperStart.toFixed(2)}/${paperEnd.toFixed(2)}:expected:${insetLeft}/${insetRight}`);
   }
-  if (searchSharesThemeRow && search.right > theme.left + orderTolerance) {
-    failures.push(`${label}:topbar-search-overlaps-theme:${search.right.toFixed(2)}>${theme.left.toFixed(2)}`);
-  }
-  if (themeSharesLocaleRow && theme.right > locale.left + orderTolerance) {
-    failures.push(`${label}:topbar-theme-overlaps-locale:${theme.right.toFixed(2)}>${locale.left.toFixed(2)}`);
-  }
-}
-
-function controlsShareVerticalRow(a, b) {
-  const overlap = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
-  return overlap > 1;
 }
 
 async function collectProductShellMetrics(origin, viewport, reducedMotion, contract = productShellComparatorContract, fixture = undefined) {
@@ -2421,24 +2296,24 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
         height: rect.height
       };
     };
-    const readTopbarAlignment = () => {
-      const topBar = shell.querySelector(".tcrn-top-bar");
-      const currentLocation = topBar?.querySelector(".tcrn-product-shell__current-location");
-      const search = topBar?.querySelector(".tcrn-product-shell-search");
-      const theme = topBar?.querySelector(".tcrn-shell-theme-toggle");
-      const locale = topBar?.querySelector(".tcrn-shell-locale-menu__trigger");
-      const topBarStyle = topBar ? getComputedStyle(topBar) : null;
+    // The band's parts and the paper, read once before any focus moves (the relations are checked
+    // by validateBandAlignment).
+    const readBandAlignment = () => {
+      const strip = shell.querySelector("[data-shell-strip]");
+      const stripStyle = strip ? getComputedStyle(strip) : null;
       return {
-        topBar: readRect(topBar),
-        currentLocation: readRect(currentLocation),
-        search: readRect(search),
-        theme: readRect(theme),
-        locale: readRect(locale),
-        paddingLeft: topBarStyle?.paddingLeft ?? "0px",
-        paddingRight: topBarStyle?.paddingRight ?? "0px"
+        strip: readRect(strip),
+        brand: readRect(strip?.querySelector("[data-shell-brand]")),
+        mark: readRect(strip?.querySelector("[data-shell-brand] .tcrn-shell-brand__mark")),
+        pins: readRect(strip?.querySelector(".tcrn-shell-pins")),
+        cluster: readRect(strip?.querySelector("[data-cluster]")),
+        avatar: readRect(strip?.querySelector("[data-shell-avatar]")),
+        paper: readRect(shell.querySelector("[data-paper]")),
+        paddingLeft: stripStyle?.paddingLeft ?? "0px",
+        paddingRight: stripStyle?.paddingRight ?? "0px"
       };
     };
-    const topbarAlignmentReadback = readTopbarAlignment();
+    const bandAlignmentReadback = readBandAlignment();
     // TCRN-DS-SUB-081 (R2-21a): the rest values used to come from a live getComputedStyle object
     // taken before focus and read after focus, a fixed 190ms wait and blur, so a fill transition
     // still on its way back from the focus fill (white) to the rest wash was read as the rest fill.
@@ -2572,16 +2447,12 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
     for (const [name, selector] of Object.entries(requiredContentSelectors)) {
       requiredContent[name] = shell.matches(selector) || Boolean(shell.querySelector(selector));
     }
-    const topBar = shell.querySelector(".tcrn-top-bar");
-    const selectedNavItem = shell.querySelector(".tcrn-nav-item[aria-current=\"page\"]");
-    const searchWrapper = shell.querySelector(contract.componentSelectors.searchWrapper);
-    const utilityRow = shell.querySelector(contract.componentSelectors.utilityRow);
-    const controlOrder = utilityRow
-      ? Array.from(utilityRow.children).map((child) => {
-          if (child.matches(".tcrn-product-shell__current-location")) return "currentLocation";
-          if (child.matches(".tcrn-product-shell-search")) return "searchWrapper";
-          if (child.matches(".tcrn-shell-theme-toggle")) return "themeToggle";
-          if (child.matches(".tcrn-shell-locale-menu")) return "localeTrigger";
+    const strip = shell.querySelector("[data-shell-strip]");
+    const controlOrder = strip
+      ? Array.from(strip.children).map((child) => {
+          if (child.matches("[data-shell-brand]")) return "brandButton";
+          if (child.matches(".tcrn-shell-pins")) return "pins";
+          if (child.matches("[data-cluster]")) return "cluster";
           return child.className || child.tagName.toLowerCase();
         })
       : [];
@@ -2593,100 +2464,18 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
       tcrnTheme: shell.getAttribute("data-tcrn-theme"),
       locale: shell.getAttribute("data-visual-instance-locale"),
       collapsed: shell.getAttribute("data-visual-instance-collapsed"),
-      productShellCollapsed: shell.getAttribute("data-product-shell-collapsed"),
-      sideNavCollapsed: shell.getAttribute("data-side-nav-collapsed"),
       route: shell.getAttribute("data-visual-instance-route"),
-      selectedRoute: selectedNavItem?.getAttribute("data-product-shell-route") ?? null,
       search: shell.getAttribute("data-visual-instance-search"),
-      searchExpanded: searchWrapper?.getAttribute("data-search-expanded") ?? null,
-      searchResultsVisible: searchWrapper?.getAttribute("data-search-results-visible") ?? null,
+      menuState: shell.getAttribute("data-state"),
       viewport: shell.getAttribute("data-visual-instance-viewport"),
       reducedMotion: shell.getAttribute("data-visual-instance-reduced-motion"),
       content: shell.getAttribute("data-visual-instance-content"),
       ownerVisualAdmissionBoundary: shell.getAttribute("data-visual-instance-disposition")
     };
-    const topbarReadback = {
-      text: topBar?.textContent?.replace(/\s+/g, " ").trim() ?? "",
-      staleWorkspaceTitlePresent: Boolean(topBar?.textContent?.includes("AOS Rebuild Workspace")),
-      brandCellPresent: Boolean(topBar?.querySelector(".tcrn-top-bar__brand")),
-      moduleCellPresent: Boolean(topBar?.querySelector(".tcrn-top-bar__module"))
+    const bandReadback = {
+      text: strip?.textContent?.replace(/\s+/g, " ").trim() ?? "",
+      staleWorkspaceTitlePresent: Boolean(strip?.textContent?.includes("AOS Rebuild Workspace"))
     };
-    const sampleSearchMotionTimeline = async () => {
-      if (!searchWrapper) return { missing: true };
-	      const originalExpanded = searchWrapper.getAttribute("data-search-expanded");
-	      const originalResultsVisible = searchWrapper.getAttribute("data-search-results-visible");
-	      const readWidth = () => Number(searchWrapper.getBoundingClientRect().width.toFixed(3));
-	      const readMotion = () => {
-	        const style = getComputedStyle(searchWrapper);
-	        return {
-	          transitionProperty: style.transitionProperty,
-	          transitionDuration: style.transitionDuration,
-	          transitionTimingFunction: style.transitionTimingFunction
-	        };
-	      };
-	      const settle = () => new Promise((resolve) => window.setTimeout(resolve, 440));
-	      const capture = async (name, action) => {
-	        const samples = [];
-	        const start = performance.now();
-	        const read = () => {
-	          samples.push({
-	            t: Number((performance.now() - start).toFixed(1)),
-	            width: readWidth(),
-	            expanded: searchWrapper.getAttribute("data-search-expanded")
-	          });
-	        };
-	        read();
-	        action();
-	        await new Promise((resolve) => {
-	          const tick = () => {
-	            read();
-	            if (performance.now() - start >= 430) {
-	              resolve();
-              } else {
-                requestAnimationFrame(tick);
-	            }
-	          };
-	          requestAnimationFrame(tick);
-	        });
-	        return { name, motion: readMotion(), samples };
-	      };
-	      searchWrapper.setAttribute("data-search-expanded", "false");
-	      searchWrapper.setAttribute("data-search-results-visible", "false");
-	      await settle();
-	      const restWidth = readWidth();
-	      const expand = await capture("expand", () => {
-	        searchWrapper.setAttribute("data-search-expanded", "true");
-	        searchWrapper.setAttribute("data-search-results-visible", "false");
-	      });
-	      await settle();
-	      const expandedWidth = readWidth();
-	      const collapse = await capture("collapse", () => {
-	        searchWrapper.setAttribute("data-search-expanded", "false");
-	        searchWrapper.setAttribute("data-search-results-visible", "false");
-	      });
-	      await settle();
-	      if (originalExpanded === null) {
-	        searchWrapper.removeAttribute("data-search-expanded");
-	      } else {
-	        searchWrapper.setAttribute("data-search-expanded", originalExpanded);
-	      }
-	      if (originalResultsVisible === null) {
-	        searchWrapper.removeAttribute("data-search-results-visible");
-	      } else {
-	        searchWrapper.setAttribute("data-search-results-visible", originalResultsVisible);
-	      }
-	      return {
-	        restWidth,
-	        expandedWidth,
-	        expand,
-	        collapse,
-	        restored: {
-	          expanded: searchWrapper.getAttribute("data-search-expanded"),
-	          resultsVisible: searchWrapper.getAttribute("data-search-results-visible")
-	        }
-	      };
-	    };
-	    const searchMotionTimeline = await sampleSearchMotionTimeline();
 	    const shellText = shell.textContent ?? "";
 	    const forbiddenTextHits = (contract.forbiddenText ?? []).filter((text) => shellText.includes(text));
 	    const fixtureForbiddenTextHits = (fixture?.forbiddenText ?? []).filter((text) => shellText.includes(text));
@@ -2720,11 +2509,10 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	        sourceMarker: document.querySelector("style[data-tcrn-product-shell-comparator-style=\"package-backed\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
 	      },
 	      measured,
-	      searchMotionTimeline,
 	      requiredContent,
       controlOrder,
-      topbarReadback,
-      topbarAlignmentReadback,
+      bandReadback,
+      bandAlignmentReadback,
       state,
 	      forbiddenTextHits,
 	      fixtureForbiddenTextHits,
@@ -2772,7 +2560,7 @@ function validateProductShellReadback({
   }
   if (contract.noOverflowProof) {
     validateNoHorizontalOverflow({ failures, label, name: "root", metric: proof.shell });
-    validateNoHorizontalOverflow({ failures, label, name: "topbar", metric: proof.measured.topBar });
+    validateNoHorizontalOverflow({ failures, label, name: "strip", metric: proof.measured.strip });
     if (proof.viewport.scrollWidth > proof.viewport.width + 1) {
       failures.push(`${label}:viewport-horizontal-overflow:${proof.viewport.scrollWidth}>${proof.viewport.width}`);
     }
@@ -2781,72 +2569,18 @@ function validateProductShellReadback({
     validateControlBounds({ failures, label, proof, contract });
   }
   if (contract.expectedControlOrder) {
-    const expectedOrder = contract.expectedControlOrder.join(">");
+    // An optional part (the pins) is expected only when the shell shows it.
+    const absentOptional = (contract.optionalControls ?? []).filter((name) => !(proof.controlOrder ?? []).includes(name));
+    const expectedOrder = contract.expectedControlOrder.filter((name) => !absentOptional.includes(name)).join(">");
     const actualOrder = (proof.controlOrder ?? []).join(">");
     if (actualOrder !== expectedOrder) {
       failures.push(`${label}:control-order:${actualOrder || "missing"}:expected:${expectedOrder}`);
     }
   }
-  if (proof.topbarReadback?.staleWorkspaceTitlePresent) {
-    failures.push(`${label}:topbar-stale-aos-rebuild-workspace-title`);
+  if (proof.bandReadback?.staleWorkspaceTitlePresent) {
+    failures.push(`${label}:band-stale-aos-rebuild-workspace-title`);
   }
-  if (proof.topbarReadback?.brandCellPresent || proof.topbarReadback?.moduleCellPresent) {
-    failures.push(`${label}:topbar-visible-product-title-cells`);
-  }
-  if (proof.viewport?.width > 760) {
-    validateTopbarUtilityAlignment({ failures, label, proof });
-  }
-  if (contract.searchRestWidth) {
-    const searchWidth = proof.measured.searchWrapper?.width;
-    const searchInputWidth = proof.measured.searchInput?.width;
-    const maxWidth = expectSearchResults
-      ? contract.searchRestWidth.expandedMaxPx
-      : proof.viewport.width <= 760
-        ? (contract.searchRestWidth.mobileMaxPx ?? contract.searchRestWidth.maxPx)
-        : contract.searchRestWidth.maxPx;
-    if (typeof searchWidth !== "number" || searchWidth > maxWidth + 1) {
-      failures.push(`${label}:search-width:${searchWidth ?? "missing"}:max:${maxWidth}`);
-    }
-    if (typeof searchInputWidth !== "number" || searchInputWidth > maxWidth + 1) {
-      failures.push(`${label}:search-input-width:${searchInputWidth ?? "missing"}:max:${maxWidth}`);
-    }
-  }
-  if (contract.ownerQualitySideNavPolicy?.collapseAffordance === "actionable_toggle") {
-    const sideNavToggle = proof.measured.sideNavToggle;
-    if (proof.viewport.width <= 760 && contract.ownerQualitySideNavPolicy.mobilePolicy?.includes("hidden")) {
-      if (sideNavToggle && !sideNavToggle.missing && sideNavToggle.display !== "none" && sideNavToggle.width > 1) {
-        failures.push(`${label}:mobile-side-nav-collapse-affordance-visible:${sideNavToggle.width}`);
-      }
-    } else {
-      if (sideNavToggle?.disabled) {
-        failures.push(`${label}:side-nav-collapse-control-disabled`);
-      }
-      if (sideNavToggle?.ariaDisabled === "true") {
-        failures.push(`${label}:side-nav-collapse-aria-disabled:${sideNavToggle?.ariaDisabled}`);
-      }
-      if (sideNavToggle?.sideNavAction !== contract.ownerQualitySideNavPolicy.expectedAction) {
-        failures.push(`${label}:side-nav-action:${sideNavToggle?.sideNavAction ?? "missing"}`);
-      }
-      if (sideNavToggle?.sideNavKeyboardActivation !== "enter-space") {
-        failures.push(`${label}:side-nav-keyboard-activation:${sideNavToggle?.sideNavKeyboardActivation ?? "missing"}`);
-      }
-      const expectedExpanded = expectedState?.collapsed === "true" ? "false" : "true";
-      if (sideNavToggle?.ariaExpanded !== expectedExpanded) {
-        failures.push(`${label}:side-nav-aria-expanded:${sideNavToggle?.ariaExpanded ?? "missing"}:expected:${expectedExpanded}`);
-      }
-      const maxDelta = contract.ownerQualitySideNavPolicy.iconCenterDeltaMaxPx ?? 1;
-      if (typeof sideNavToggle?.iconCenterDelta !== "number" || sideNavToggle.iconCenterDelta > maxDelta) {
-        failures.push(`${label}:side-nav-icon-center-delta:${sideNavToggle?.iconCenterDelta ?? "missing"}:max:${maxDelta}`);
-      }
-      if (expectedState?.collapsed === "true") {
-        const expectedRailWidth = contract.ownerQualitySideNavPolicy.railWidthPx ?? gplusShellCollapsedRailWidthPx;
-        const railWidth = proof.measured.sideNavRegion?.width;
-        if (typeof railWidth !== "number" || Math.abs(railWidth - expectedRailWidth) > 1) {
-          failures.push(`${label}:side-nav-collapsed-rail-width:${railWidth ?? "missing"}:expected:${expectedRailWidth}`);
-        }
-      }
-    }
-  }
+  validateBandAlignment({ failures, label, proof, contract });
   if (expectedState) {
     for (const [name, expected] of Object.entries(expectedState)) {
       if (["searchExpanded", "searchResultsVisible"].includes(name)) continue;
@@ -2860,21 +2594,9 @@ function validateProductShellReadback({
     if (proof.state?.tcrnTheme !== expectedState.theme) {
       failures.push(`${label}:tcrn-theme:${proof.state?.tcrnTheme ?? "missing"}`);
     }
-    if (proof.state?.productShellCollapsed !== expectedState.collapsed) {
-      failures.push(`${label}:product-shell-collapsed:${proof.state?.productShellCollapsed ?? "missing"}`);
-    }
-    if (proof.state?.sideNavCollapsed !== expectedState.collapsed) {
-      failures.push(`${label}:side-nav-collapsed:${proof.state?.sideNavCollapsed ?? "missing"}`);
-    }
-    if (proof.state?.selectedRoute !== expectedState.route) {
-      failures.push(`${label}:selected-route:${proof.state?.selectedRoute ?? "missing"}`);
-    }
-    if (proof.state?.searchExpanded !== expectedState.searchExpanded) {
-      failures.push(`${label}:search-expanded:${proof.state?.searchExpanded ?? "missing"}`);
-    }
-    if (proof.state?.searchResultsVisible !== expectedState.searchResultsVisible) {
-      failures.push(`${label}:search-results-visible:${proof.state?.searchResultsVisible ?? "missing"}`);
-    }
+    // The rail's collapsed state, the selected rail row and the band search's expanded and
+    // results states are retired with those parts; the variant's own route, search and collapsed
+    // attributes are still read through the loop above.
     if (proof.state?.ownerVisualAdmissionBoundary !== "ds_oracle_review_required_before_owner_admission") {
       failures.push(`${label}:owner-admission-boundary:${proof.state?.ownerVisualAdmissionBoundary ?? "missing"}`);
     }
@@ -2903,42 +2625,23 @@ function validateProductShellReadback({
       }
     };
     auditReducedMotion("product-shell", proof.shell);
-    for (const controlName of ["themeToggle", "sideNavToggle", "localeTrigger", "localeChevron"]) {
-      auditReducedMotion(controlName, proof.measured[controlName]);
+    // Only the parts the shell shows are audited: the avatar menu's controls are absent while it is closed.
+    for (const controlName of ["brandButton", "themeToggle", "localeTrigger", "localeChevron"]) {
+      const measured = proof.measured[controlName];
+      if (measured && !measured.missing) auditReducedMotion(controlName, measured);
     }
-    auditReducedMotion("search", proof.measured.searchWrapper);
     if (proof.shell.themeWashAnimationName !== "none") {
       failures.push(`${label}:reduced-motion-theme-wash:${proof.shell.themeWashAnimationName}`);
     }
   } else {
-    if (!transitionIncludes(proof.shell, contract.motionProof.productShellTransition)) {
-      failures.push(`${label}:product-shell-transition:${proof.shell.transitionProperty}`);
-    }
-    if (proof.shell.transitionDuration !== contract.motionProof.productShellTransitionDuration) {
-      failures.push(`${label}:product-shell-transition-duration:${proof.shell.transitionDuration}`);
-    }
-    if (!String(proof.shell.transitionTimingFunction).includes(contract.motionProof.productShellTransitionTimingFunctionIncludes)) {
-      failures.push(`${label}:product-shell-transition-timing:${proof.shell.transitionTimingFunction}`);
-    }
-    for (const property of contract.motionProof.searchTransitionProperties ?? [contract.motionProof.searchTransition]) {
-      if (!transitionIncludes(proof.measured.searchWrapper, property)) {
-        failures.push(`${label}:search-transition:${property}:${proof.measured.searchWrapper?.transitionProperty}`);
+    // The locale chevron is read where the avatar menu is open; the theme wash is the shell's own.
+    if (proof.measured.localeChevron && !proof.measured.localeChevron.missing) {
+      if (!transitionIncludes(proof.measured.localeChevron, contract.motionProof.localeChevronTransition)) {
+        failures.push(`${label}:locale-chevron-transition:${proof.measured.localeChevron?.transitionProperty}`);
       }
-    }
-    if (Math.abs(maxCssDurationMs(proof.measured.searchWrapper?.transitionDuration) - maxCssDurationMs(contract.motionProof.searchTransitionDuration)) > 1) {
-      failures.push(`${label}:search-transition-duration:${proof.measured.searchWrapper?.transitionDuration}`);
-    }
-    if (!String(proof.measured.searchWrapper?.transitionTimingFunction).includes(contract.motionProof.searchTransitionTimingFunctionIncludes)) {
-      failures.push(`${label}:search-transition-timing:${proof.measured.searchWrapper?.transitionTimingFunction}`);
-    }
-    if (validateMetrics) {
-      validateSearchMotionTimeline({ failures, label, proof, contract });
-    }
-    if (!transitionIncludes(proof.measured.localeChevron, contract.motionProof.localeChevronTransition)) {
-      failures.push(`${label}:locale-chevron-transition:${proof.measured.localeChevron?.transitionProperty}`);
-    }
-    if (proof.measured.localeChevron?.transitionDuration !== contract.motionProof.localeChevronTransitionDuration) {
-      failures.push(`${label}:locale-chevron-transition-duration:${proof.measured.localeChevron?.transitionDuration}`);
+      if (proof.measured.localeChevron?.transitionDuration !== contract.motionProof.localeChevronTransitionDuration) {
+        failures.push(`${label}:locale-chevron-transition-duration:${proof.measured.localeChevron?.transitionDuration}`);
+      }
     }
     if (proof.shell.themeWashAnimationName !== contract.motionProof.themeWashPseudo) {
       failures.push(`${label}:theme-wash-animation:${proof.shell.themeWashAnimationName}`);
@@ -2950,10 +2653,14 @@ function validateProductShellReadback({
       failures.push(`${label}:theme-wash-animation-timing:${proof.shell.themeWashAnimationTimingFunction}`);
     }
   }
-  if (expectSearchResults && proof.measured.searchResults?.display === "none") {
+  // The search results are the full menu's: shown only while the menu is open with a query, so a
+  // results state reads them there and a rest state shows none.
+  const searchResults = proof.measured.searchResults;
+  const searchResultsShown = Boolean(searchResults && !searchResults.missing && searchResults.display !== "none" && searchResults.height > 0);
+  if (expectSearchResults && !searchResultsShown) {
     failures.push(`${label}:search-results-not-visible-for-expanded-proof`);
   }
-  if (!expectSearchResults && proof.measured.searchResults?.display !== "none") {
+  if (!expectSearchResults && searchResultsShown) {
     failures.push(`${label}:search-results-visible-for-rest-proof`);
   }
   for (const [name, present] of Object.entries(proof.requiredContent ?? {})) {
@@ -2981,18 +2688,8 @@ function validateProductShellReadback({
     if (proof.viewport.scrollWidth > proof.viewport.width + 1) {
       failures.push(`${label}:horizontal-overflow:${proof.viewport.scrollWidth}>${proof.viewport.width}`);
     }
-    const mobileSearchMax = contract.searchRestWidth?.mobileMaxPx;
-    if (typeof mobileSearchMax === "number") {
-      for (const [controlName, metric] of Object.entries({
-        searchWrapper: proof.measured.searchWrapper,
-        searchInput: proof.measured.searchInput
-      })) {
-        if (typeof metric?.width !== "number" || metric.width > mobileSearchMax + 1) {
-          failures.push(`${label}:mobile-${controlName}-width:${metric?.width ?? "missing"}:max:${mobileSearchMax}`);
-        }
-      }
-    }
-    if (proof.measured.sideNavToggle?.width > 44 || proof.measured.themeToggle?.width > 44) {
+    const bandControlSizes = [proof.measured.brandButton?.height, proof.measured.avatar?.width, proof.measured.avatar?.height];
+    if (bandControlSizes.some((size) => typeof size === "number" && size > 44)) {
       failures.push(`${label}:mobile-control-size-exceeds-package-shell-boundary`);
     }
     if (proof.measured.contentRegion?.width > proof.viewport.width + 1) {
@@ -3043,9 +2740,10 @@ async function runProductShellComparatorProof(contract = productShellComparatorC
 	    const desktop = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "no-preference", contract);
 	    const reduced = await collectProductShellMetrics(origin, { width: 1440, height: 900 }, "reduce", contract);
 	    const mobile = await collectProductShellMetrics(origin, { width: 390, height: 844 }, "no-preference", contract);
-    validateProductShellReadback({ failures, proof: desktop, contract, label: "desktop", expectSearchResults: true });
-    validateProductShellReadback({ failures, proof: reduced, contract, label: "reduced", expectSearchResults: true, validateMetrics: false });
-    validateProductShellReadback({ failures, proof: mobile, contract, label: "mobile", expectSearchResults: true, validateMetrics: false });
+    // The contract story shows the shell closed with the avatar menu open: no full menu, so no results.
+    validateProductShellReadback({ failures, proof: desktop, contract, label: "desktop", expectSearchResults: false });
+    validateProductShellReadback({ failures, proof: reduced, contract, label: "reduced", expectSearchResults: false, validateMetrics: false });
+    validateProductShellReadback({ failures, proof: mobile, contract, label: "mobile", expectSearchResults: false, validateMetrics: false });
 	    return {
 	      ok: failures.length === 0,
 	      failures,
