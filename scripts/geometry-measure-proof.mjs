@@ -9,15 +9,18 @@
 //   clip           0 elements outside their clipping ancestor (0.5px tolerance)
 //   singleLine     1 line box for every element declared single-line
 //   shadowBlur     box-shadow blur <= 3px
-//   rail           rail guides at 16px and rail text at 48px from the shell edge (0.5px tolerance)
+//   rail           rail guides at 16px and rail text at 48px from the shell edge (0.5px tolerance); since
+//                  the top-band shell no G+ story has a side rail, so rail runs on its fixtures only
 //   rowAlign       first-cell text start of every table / list row identical (spread <= 0.5px)
 //   mark           0 marks that change typesetting
 //   contrast       every data-cell within 0.05 of its data-expect; text >= 4.5, other kinds >= 3 unless exempt
 //   controlHeight  declared control heights match (0.5px) and are 28, 32 or 40
 //   overlap        0 intersecting grid / flex siblings (more than 1px on both axes)
-//   shellFrame     composition one's frame (O-1, TCRN-DS-SUB-094): in every ProductShell [data-shell] the
-//                  paper sits 12px from the shell's top, end and bottom edges and the shell's top bar is
-//                  52px tall (0.5px tolerance); 131's "eight" reads as every required check, ten with this
+//   shellFrame     the top-band shell's frame (TCRN-DS-SUB-134; was composition one's, TCRN-DS-SUB-094): in
+//                  every shell root [data-shell][data-state] the top band [data-shell-strip] is 52px tall
+//                  with no rule and no fill, the paper [data-paper] starts 52px below the shell's top and
+//                  sits 12px from its start, end and bottom edges, every paper corner is rounded 14px
+//                  (0.5px tolerance); 131's "eight" reads as every required check, ten with this
 //
 // Every run starts with the fixture self-check (tests/fixtures/geometry-measure/manifest.json): each
 // check must turn red on its injected violation and stay green on the clean pages, in the Chromium that
@@ -63,7 +66,7 @@ export const THRESHOLDS = deepFreeze({
   contrast: { maxDiff: 0.05, minText: 4.5, minNonText: 3 },
   controlHeight: { allowedPx: [28, 32, 40], tolerancePx: 0.5 },
   overlap: { maxOverlaps: 0, minIntersectPx: 1 },
-  shellFrame: { paperInsetPx: 12, topBarHeightPx: 52, tolerancePx: 0.5 }
+  shellFrame: { paperInsetPx: 12, topBarHeightPx: 52, paperRadiusPx: 14, tolerancePx: 0.5 }
 });
 
 export const DEFAULT_PATHS = Object.freeze({
@@ -81,16 +84,21 @@ export const GPLUS_FAMILIES = deepFreeze(Object.fromEntries(["typography", "icon
 // exercise the four checks any rendered page has. The matrices add their data-cell state grids
 // (contrast); typography adds its marks, actions its state-grid table rows (rowAlign), and actions and
 // inputs their declared control heights (data-h 28 / 32 / 40, SUB-074). The samples carry no data-cell,
-// so contrast is not theirs: each must exercise the rail of its shell (16 / 48) and the shell's frame
-// (paper 12 from the edge, top bar 52; TCRN-DS-SUB-094), and the four with TableShell rows (every
-// sample but inputs-sample-members) their row alignment. The board rows of
-// docs/design/gplus-2026-10/storybook-map.json list the same checks (the any-page four aside). The
-// composition three sample (O-4, TCRN-DS-SUB-093) is a gplus-samples registry story outside the ten
-// fixed ids: no [data-shell], no TableShell rows, no data-cell, so it must exercise the any-page four.
-// In a full run every check must also apply somewhere in the set (SET_REQUIRED_CHECKS).
+// so contrast is not theirs. Since TCRN-DS-SUB-134 every sample is the package ProductShell in its one
+// state, the top band and the paper (MIN-20261013-SHELL D1): each must exercise the shell's frame (band
+// 52 with no rule and no fill, paper 52 from the top and 12 from the other edges, radius 14), and the
+// four with TableShell rows (every sample but inputs-sample-members) their row alignment. The side rail
+// and its guide column (rail 16 / 48) are gone with composition one, so no sample requires rail and each
+// sample shell opts out of it with data-measure-skip="rail" (INIT-016 R1 decomposition problem 24, second
+// choice; the full menu's guide column 16 / 48 is read by scripts/shell-measure-proof.mjs as prail). The
+// composition three sample (a gplus-samples registry story outside the ten fixed ids) is the same shell
+// with its page centred at the content width: no TableShell rows and no data-cell, so it must exercise
+// the any-page four and the frame. The board rows of docs/design/gplus-2026-10/storybook-map.json list
+// the same checks (the any-page four aside). In a full run every check but rail must also apply
+// somewhere in the set (SET_REQUIRED_CHECKS); rail keeps its red and green fixtures in the self-check.
 const ANY_PAGE_CHECKS = ["clip", "singleLine", "shadowBlur", "overlap"];
 const MATRIX_CHECKS = [...ANY_PAGE_CHECKS, "contrast"];
-const SAMPLE_CHECKS = [...ANY_PAGE_CHECKS, "rail", "shellFrame"];
+const SAMPLE_CHECKS = [...ANY_PAGE_CHECKS, "shellFrame"];
 export const REQUIRED_CHECKS = deepFreeze({
   "typography-matrix": [...MATRIX_CHECKS, "mark"],
   "icon-matrix": [...MATRIX_CHECKS],
@@ -102,9 +110,9 @@ export const REQUIRED_CHECKS = deepFreeze({
   "brand-sample-product": [...SAMPLE_CHECKS, "rowAlign"],
   "actions-sample-project": [...SAMPLE_CHECKS, "rowAlign"],
   "inputs-sample-members": [...SAMPLE_CHECKS],
-  "composition-three-sample": [...ANY_PAGE_CHECKS]
+  "composition-three-sample": [...ANY_PAGE_CHECKS, "shellFrame"]
 });
-export const SET_REQUIRED_CHECKS = deepFreeze([...CHECK_IDS]);
+export const SET_REQUIRED_CHECKS = deepFreeze(CHECK_IDS.filter((id) => id !== "rail"));
 
 // { id, storyId, check, css, theme?, source } — injected on the real story; check must turn red.
 // STORY-131 GWT1: the package has no .tcrn-table yet (decomposition P17), so the row mutation uses the
@@ -114,10 +122,12 @@ export const STORY_MUTATIONS = deepFreeze([
   { id: "mark-padding", storyId: "typography-matrix", check: "mark", source: "131-GWT2", css: "mark { padding: 2px !important; }" },
   { id: "shadow-blur-4px", storyId: "actions-matrix", check: "shadowBlur", source: "131-GWT3", css: ".story-body .tcrn-button { box-shadow: 0 1px 4px rgba(22, 21, 15, 0.2) !important; }" },
   { id: "cell-ink-drift", storyId: "actions-matrix", check: "contrast", source: "131 contrast", css: ".story-body .tcrn-button.tcrn-button--primary { color: rgb(120, 200, 190) !important; }" },
-  // TCRN-DS-SUB-094 (O-1, 129-GWT3, 131-GWT4): the paper flush with the shell edge, and the shell top bar
-  // back at the old 68, each turn shellFrame red on a real sample.
-  { id: "shell-paper-inset-zero", storyId: "icon-sample-project", check: "shellFrame", source: "129-GWT3 paper inset", css: "[data-shell] .tcrn-product-shell__workspace { margin: 0 !important; }" },
-  { id: "shell-top-bar-68", storyId: "icon-sample-project", check: "shellFrame", source: "131-GWT4 top bar", css: "[data-shell] .tcrn-product-shell__workspace > .tcrn-top-bar { min-height: 68px !important; }" }
+  // TCRN-DS-SUB-134 (148-GWT3; was SUB-094's paper inset and top bar 68): the paper flush with the
+  // shell's edges, a 1px rule under the top band and the band back at the old top bar's 68 each turn
+  // shellFrame red on a real sample.
+  { id: "shell-paper-inset-zero", storyId: "icon-sample-project", check: "shellFrame", source: "148 paper inset", css: "[data-shell] [data-paper] { margin: 0 !important; }" },
+  { id: "shell-top-band-rule", storyId: "icon-sample-project", check: "shellFrame", source: "148-GWT3 top band rule", css: "[data-shell] [data-shell-strip] { border-bottom: 1px solid #d9d6cc !important; }" },
+  { id: "shell-top-band-68", storyId: "icon-sample-project", check: "shellFrame", source: "148 top band height", css: "[data-shell] [data-shell-strip] { block-size: 68px !important; min-block-size: 68px !important; }" }
 ]);
 
 // Relations the eight checks do not cover, judged in the browser (decomposition P31): the ButtonGroup

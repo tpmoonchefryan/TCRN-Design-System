@@ -75,10 +75,18 @@ test("the map parses and every row, unmapped entry and difference is complete", 
   assert.equal(DEFAULT_PATHS.map, "docs/design/gplus-2026-10/storybook-map.json");
   for (const difference of map.differences) assert.ok(difference.refs.length > 0, difference.id);
   for (const entry of map.unmapped) assert.ok(entry.reason.length > 0 && entry.refs.length > 0, `${entry.board}#${entry.section}`);
-  // R3 (TCRN-DS-SUB-093): the composition one shell geometry is decided under O-1 (design-session B
-  // ruling), so DIFF-1 no longer waits on the Owner; it keeps its P1 origin and cites O-1.
+  // TCRN-DS-SUB-134: the samples' shell is the top-band shell (MIN-20261013-SHELL D1, D4); DIFF-1 keeps its
+  // P1 and O-1 history and cites the shell rulings and the rail disposition (decomposition problem 24).
   const shellGeometry = map.differences.find((item) => item.id === "DIFF-1");
-  assert.ok(shellGeometry.refs.includes("P1") && shellGeometry.refs.includes("O-1"), "the composition one shell geometry cites P1 and O-1");
+  for (const ref of ["P1", "O-1", "SHELL-D1", "SHELL-D4", "I16-P24"]) assert.ok(shellGeometry.refs.includes(ref), `DIFF-1 cites ${ref}`);
+  // C-9: the shell stories stay out of the gplus- categories, so the map keeps 23 rows; the six
+  // composition rows name the top-band shell sample they now check.
+  assert.equal(map.rows.length, 23);
+  for (const row of map.rows.filter((item) => item.row.startsWith("compositions."))) assert.match(row.title, /顶带壳样板/, row.row);
+  for (const row of map.rows.filter((item) => item.kind === "sample")) {
+    assert.ok(row.requiredChecks.includes("shellFrame"), `${row.row}: shellFrame`);
+    assert.ok(!row.requiredChecks.includes("rail"), `${row.row}: no side rail on the top-band shell`);
+  }
   const markdown = readFileSync(new URL("../docs/design/gplus-2026-10/storybook-map.md", import.meta.url), "utf8");
   for (const row of map.rows) assert.ok(markdown.includes(`| ${row.row} |`), `storybook-map.md lacks row ${row.row}`);
   for (const difference of map.differences) assert.ok(markdown.includes(`| ${difference.id} |`), `storybook-map.md lacks ${difference.id}`);
@@ -102,10 +110,16 @@ test("map validation turns red on a missing ruling, an unknown check, a missing 
 test("every canvas board and every lettered section has a map entry", () => {
   const coverage = boardCoverage(map, canvas, boards);
   assert.equal(coverage.ok, true, JSON.stringify(coverage));
-  assert.equal(coverage.boards, 10);
+  // TCRN-DS-INIT-016 added the three tab-shell drafts to the draft canvas (13 boards); their sections
+  // are unmapped (the shell stories are in navigation-shells, I16-C9), except the brand sample's row on
+  // section 1 of the second draft (I16-P4).
+  assert.equal(coverage.boards, 13);
+  assert.equal(map.canvas.boards, coverage.boards);
   assert.deepEqual(coverage.sections["V2-B1-Typography.dc.html"], ["A", "B", "C", "D", "E", "F", "G"]);
   assert.deepEqual(coverage.sections["V2-B2-Logos-Draft.dc.html"], ["A–E", "F", "G", "H", "I"]);
-  for (const board of ["V2-Families.dc.html", "V2-Rejections.dc.html"]) assert.ok(map.unmapped.some((entry) => entry.board === board), board);
+  assert.deepEqual(coverage.sections["V2-B2-Shell-Draft2.dc.html"], ["0", "1", "A", "B", "C"]);
+  assert.equal(map.rows.find((row) => row.row === "brand.D").board, "V2-B2-Shell-Draft2.dc.html");
+  for (const board of ["V2-Families.dc.html", "V2-Rejections.dc.html", "V2-B2-Shell-Draft.dc.html", "V2-B2-Shell-Draft2-b.dc.html"]) assert.ok(map.unmapped.some((entry) => entry.board === board), board);
 });
 
 test("a board or a section without a map entry, or an unknown section, turns coverage red", () => {
@@ -202,11 +216,11 @@ test("a row is red when any of the eight measurements or the overlap check fails
 
 test("a required check that is n/a, or a story that was not measured, turns the row red", () => {
   const row = map.rows.find((item) => item.row === "typography.D");
-  assert.ok(row.requiredChecks.includes("rail"));
+  assert.ok(row.requiredChecks.includes("shellFrame"));
   const verdict = passingVerdict();
-  verdict.checks.rail = { status: "n/a", checked: 0, value: 0, violationCount: 0, violations: [] };
+  verdict.checks.shellFrame = { status: "n/a", checked: 0, value: 0, violationCount: 0, violations: [] };
   const notApplicable = evaluateRow(row, { runs: new Map([["typography-sample-billing@light", verdict]]), facts: new Map(), contract, boards: new Map(), themes: ["light"] });
-  assert.deepEqual(notApplicable.themes.light.requiredNotApplicable, ["rail"]);
+  assert.deepEqual(notApplicable.themes.light.requiredNotApplicable, ["shellFrame"]);
   assert.equal(notApplicable.ok, false);
   const missing = evaluateRow(row, { runs: new Map(), facts: new Map(), contract, boards: new Map(), themes: ["light", "dark"] });
   assert.equal(missing.ok, false);
@@ -238,10 +252,14 @@ test("the boards carry every contract cell with a data-expect", () => {
   assert.deepEqual(parseBoardSections(boards["V2-GPlus.dc.html"]), []);
 });
 
-test("thresholds come from the EPIC-042 gate; the map carries none; one mutation per check", () => {
+test("thresholds come from the EPIC-042 gate; the map carries none; one mutation per check but rail", () => {
   assert.equal(THRESHOLDS, GEOMETRY_THRESHOLDS);
   assert.doesNotMatch(readFileSync(new URL("../docs/design/gplus-2026-10/storybook-map.json", import.meta.url), "utf8"), /"(?:thresholds?|maxDiff|maxBlurPx|tolerancePx)"/);
-  assert.deepEqual([...new Set(ROW_MUTATIONS.map((mutation) => mutation.check))].sort(), [...CHECK_IDS].sort());
+  // TCRN-DS-SUB-134: no story carries the side rail's guide column, so rail has no real-story mutation.
+  assert.deepEqual([...new Set(ROW_MUTATIONS.map((mutation) => mutation.check))].sort(), CHECK_IDS.filter((id) => id !== "rail").sort());
+  const frame = ROW_MUTATIONS.find((mutation) => mutation.check === "shellFrame");
+  assert.match(frame.css, /\[data-paper\]/);
+  assert.doesNotMatch(frame.css, /tcrn-product-shell__workspace|tcrn-top-bar/);
   assert.equal(new Set(ROW_MUTATIONS.map((mutation) => mutation.id)).size, ROW_MUTATIONS.length);
 });
 

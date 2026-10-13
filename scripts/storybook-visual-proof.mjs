@@ -61,19 +61,21 @@ export const MEASURE_OPTIONS = Object.freeze({ markSelector: "mark, .tcrn-highli
 
 // One injected mutation per check on a real story; each must turn its check red (runs when a row in
 // scope references its story). The controlHeight mutation names its control through controlSelector
-// (the actions and inputs matrices also declare data-h since SUB-074); matrices have no shell, so rail
-// and shellFrame run on sample stories.
+// (the actions and inputs matrices also declare data-h since SUB-074); matrices have no shell, so
+// shellFrame runs on a sample story, through the C-5 hooks of the top-band shell (TCRN-DS-SUB-134).
+// rail has none: the side rail went with composition one, no story carries its guide column and every
+// sample shell opts out of it (INIT-016 R1 decomposition problem 24), so rail keeps only the measure
+// fixtures (scripts/geometry-measure-proof.mjs self-check).
 export const ROW_MUTATIONS = Object.freeze([
   { id: "clip-actions-button-out-of-section", storyId: "actions-matrix", check: "clip", css: '[data-gplus-matrix-component="Button"] { overflow: hidden !important; } [data-gplus-matrix-component="Button"] .tcrn-button { transform: translateX(-2000px) !important; }' },
   { id: "single-line-actions-label-first-letter", storyId: "actions-matrix", check: "singleLine", css: ".tcrn-button__label::first-letter { font-size: 48px !important; }" },
   { id: "shadow-blur-brand-logo-cloud", storyId: "brand-matrix", check: "shadowBlur", css: '[data-gplus-matrix-component="ProductLogo"] { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) !important; }' },
-  { id: "rail-sample-guide-off-column", storyId: "typography-sample-billing", check: "rail", css: '[data-shell] [data-guide="rail"] { transform: translateX(6px) !important; }' },
   { id: "row-align-actions-second-row-indented", storyId: "actions-matrix", check: "rowAlign", css: '[data-gplus-matrix="actions"] table tr:nth-child(2) > :first-child { padding-left: 24px !important; }' },
   { id: "mark-typography-padded", storyId: "typography-matrix", check: "mark", css: "mark, .tcrn-highlight__mark { padding: 0 3px !important; }" },
   { id: "contrast-brand-wordmark-greyed", storyId: "brand-matrix", check: "contrast", theme: "light", css: '[data-cell="wm-l"] { color: #a0a0a0 !important; }' },
   { id: "control-height-actions-primary-34", storyId: "actions-matrix", check: "controlHeight", measure: { controlSelector: ".tcrn-button.tcrn-button--primary" }, css: ".tcrn-button.tcrn-button--primary { height: 34px !important; min-height: 34px !important; }" },
   { id: "overlap-brand-logo-row", storyId: "brand-matrix", check: "overlap", css: '[data-gplus-matrix-row="sans"] > :first-child { margin-right: -80px !important; }' },
-  { id: "shell-frame-sample-paper-flush", storyId: "actions-sample-project", check: "shellFrame", css: "[data-shell] .tcrn-product-shell__workspace { margin: 0 !important; }" }
+  { id: "shell-frame-sample-paper-flush", storyId: "actions-sample-project", check: "shellFrame", css: "[data-shell] [data-paper] { margin: 0 !important; }" }
 ].map((mutation) => Object.freeze(mutation)));
 
 const STORY_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

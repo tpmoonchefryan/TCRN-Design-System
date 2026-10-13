@@ -1,11 +1,13 @@
 // The five first-batch sample stories in composition one ("one sheet"): typography-sample-billing,
 // icon-sample-project, brand-sample-product, actions-sample-project and inputs-sample-members. Each
-// is the D section of its B1 board — the package ProductShell with generic product content
-// (billing, projects, products, members) — shown as a light block and a night block that differ
-// only in data-tcrn-theme on the block and the theme the shell control reports.
-// The composition-three sample (composition-three-sample) follows them: the same page language with
-// no rail, one navigation bar across the top and the content centred at 1040px. It belongs to no
-// family, so it has no matrix and is registered after the five family pairs.
+// is the D section of its board — the package ProductShell on the top-band shell (TCRN-DS-SUB-134)
+// with generic product content (billing, projects, products, the roster, invite members) — shown as
+// a light block and a night block that differ only in data-tcrn-theme on the block and the theme the
+// shell control reports. The story ids stay (C-9); the actions sample's page is the roster now, as on
+// its board. The composition-three sample (composition-three-sample) follows them: the same top-band
+// shell with the page centred at the content width (1040px). It belongs to no family, so it has no
+// matrix and is registered after the five family pairs. The story titles and descriptions are the
+// five-locale text of storybook-locale-text.ts and still read as before the top-band shell.
 import type { ContractStory } from "../types.js";
 import { storyCategoryFor, storyGovernanceFor } from "../governance.js";
 import { GplusSampleBoardView, type GplusSampleBoard } from "./samples/composition-one.js";
