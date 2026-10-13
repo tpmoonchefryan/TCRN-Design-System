@@ -1,5 +1,6 @@
-import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
+import { T, cr, fmt, icon, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
 import { pairDecls } from "./data.mjs";
+import { sampleScreens, SAMPLE_CSS } from "./shell-screen.mjs";
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
 
@@ -245,6 +246,7 @@ const motion = kvTable([
   ["禁止", "边框宽度变化、scale、发光扩散", "—", "—", "—", "焦点环是固定几何，不扩散"]
 ], [240, 300, 150, 200, 180]);
 
+// ---------- composition sample: the top-band shell, the same screen() as the Shell boards (shell-screen.mjs) ----------
 function sampleBody(th) {
   return `<div class="ph"><h2>邀请成员</h2><span class="sub">加入 设计组 · 席位 86 / 120</span></div>
 <div class="frm">
@@ -259,17 +261,7 @@ function sampleBody(th) {
 </div>
 <div class="foot"><button type="button" class="btn quiet">取消</button><button type="button" class="btn pri">发送邀请</button></div>`;
 }
-const nav = [
-  { id: "home", icon: "home", label: "工作台" },
-  { id: "projects", icon: "layout-grid", label: "项目", count: "12" },
-  { id: "members", icon: "users", label: "成员", count: "24", on: true },
-  { id: "data", icon: "database", label: "数据" },
-  { group: "团队" },
-  { id: "settings", icon: "settings", label: "设置" }
-];
-const brandHtml = `<div class="brand"><span class="mk" data-guide="rail" style="border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;color:var(--on-acc);font-family:var(--serif);font-weight:500;font-size:13px">T</span><span><b data-text="rail">TCRN 设计组</b><small>团队 · 12 人</small></span></div>`;
-const topbar = `<span class="sw cmd">${icon("search", { size: 13 })}<input type="search" class="in search sm" placeholder="搜索" aria-label="搜索"><kbd>⌘K</kbd></span>`;
-const samples = `<div class="two">${shell({ id: "in-l", night: false, nav, brandHtml, topbar, body: sampleBody("l"), crumbs: ["成员", "邀请"] })}${shell({ id: "in-n", night: true, nav, brandHtml, topbar, body: sampleBody("n"), crumbs: ["成员", "邀请"] })}</div>`;
+const samples = sampleScreens({ id: "in", crumbs: ["成员", "邀请"], body: (th) => sampleBody(th) });
 
 const consumer = `<div class="cols4">
 <div class="box"><h4>Input · Textarea <small>原生属性 · disabledReason</small></h4><p class="lead">一句话：单行与多行文本，一张纸上的一格；禁用时必须说明原因。</p><ul><li><b>须提供</b>：label（同页 for/id 或 aria-label）；<code>disabled</code> 时给 <code>disabledReason</code>；错误时 <code>aria-invalid</code> 加 <code>aria-describedby</code> 指向错误文案。</li><li><b>容器</b>：Field（第五批）或表单网格定宽；控件自身 width 100%。</li><li><b>不用</b>：搜索（用 SearchInput）；数值（用 NumberInput）；封闭集合（用 Select）。</li></ul></div>
@@ -312,7 +304,7 @@ const body = `
 <div>
 <p class="k">Batch one · 05 / 05 · Inputs</p>
 <h1>表单控件：十一件，三张对表<em>，每一种边都能量出 3:1</em></h1>
-<p>Input、Textarea、SearchInput、SuggestInput、Select、MultiSelect、NumberInput、DatePicker、Checkbox、RadioGroup、Switch。文本类控件共用一张 fill/ink/edge 对表，勾选类再加勾的颜色，开关类是轨与钮各自的面与边；状态只切换生效的对。边线按 C1 用 47% 墨的 line-ctl（Owner 2026-10-11 定，与 Actions 板同）。原生控件（select、number、date、datalist）保留浏览器的编辑与可及性行为，只换外观。样板是构图一壳层的邀请成员页，十一件里九件同屏。</p>
+<p>Input、Textarea、SearchInput、SuggestInput、Select、MultiSelect、NumberInput、DatePicker、Checkbox、RadioGroup、Switch。文本类控件共用一张 fill/ink/edge 对表，勾选类再加勾的颜色，开关类是轨与钮各自的面与边；状态只切换生效的对。边线按 C1 用 47% 墨的 line-ctl（Owner 2026-10-11 定，与 Actions 板同）。原生控件（select、number、date、datalist）保留浏览器的编辑与可及性行为，只换外观。样板是顶带壳里的邀请成员页，十一件里九件同屏。</p>
 </div>
 <div class="meta"><b>sm 28 · md 32 · lg 40 · r 8 · 边 line-ctl 47%</b>文字 ≥ 4.5 · 边与勾 ≥ 3 · 禁用豁免但列数<b>Checkbox 16 r 4 · Radio 16 · Switch 34 × 20</b>选中青底白勾、5px 青环、钮行程 14<b>边与环 120ms · 钮行程 240ms</b>cubic-bezier(.22,1,.36,1)</div>
 </header>
@@ -324,11 +316,11 @@ const body = `
 
 <div class="sec"><h3><b>C</b>动效规范 <span>边与环换色，只有开关的钮位移</span></h3>${motion}</div>
 
-<div class="sec"><h3><b>D</b>组合样板 · 构图一 <span>邀请成员：Input、Select、MultiSelect、NumberInput、DatePicker、Textarea、RadioGroup、Switch、Checkbox，顶栏 SearchInput</span></h3>${samples}</div>
+<div class="sec"><h3><b>D</b>组合样板 · 顶带壳 <span>邀请成员：Input、Select、MultiSelect、NumberInput、DatePicker、Textarea、RadioGroup、Switch、Checkbox 九件同屏；左浅色、右夜间，壳几何同壳层板顶带态</span></h3>${samples}</div>
 
 <div class="sec"><h3><b>E</b>消费方须提供什么 · 何时用与不用 <span>十一件各一句话，外加两条机制</span></h3>${consumer}</div>
 
 <div class="sec"><h3><b>F</b>与 G+ 底盘的 token 差异 <span>现值取自 Form.tsx、Navigation.tsx 的 tcrnComponentCss 与 tokens.css</span></h3>${diff}</div>
 `;
 
-write("V2-B1-Inputs.dc.html", page({ title: "表单控件 Inputs · 第一批", css, body, height }));
+write("V2-B1-Inputs.dc.html", page({ title: "表单控件 Inputs · 第一批", css: css + SAMPLE_CSS, body, height }));

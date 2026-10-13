@@ -1,6 +1,7 @@
 // Shared generator library for the batch-one boards (V2-B1-*.dc.html).
 // Contrast math, board chrome, composition-one shell. Tokens, icons, pairs, matrix cells, marks and
-// type scale come from ../contract/*.json through data.mjs (single source; STORY-122).
+// type scale come from ../contract/*.json through data.mjs (single source; STORY-122). The top-band shell
+// (screen(), its CSS and the section D samples of the family boards) lives in shell-screen.mjs.
 import fs from "node:fs";
 import path from "node:path";
 import { T, ICONS, ICON_NEW, ICON_NAMES, boardTokenBlocks, matrixCell } from "./data.mjs";
@@ -193,7 +194,9 @@ export function shellCss() {
 
 export const grain = (id) => `<svg class="grain" aria-hidden="true"><filter id="${id}"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#${id})"/></svg>`;
 
-/** composition-one shell. nav: [{icon,label,count,on}] ; topbarExtra: html ; body: html inside .content */
+/** composition-one shell, kept for the retired V2-B1-Brand draft (build-brand.mjs); the family boards use shell-screen.mjs.
+ *  shellCss() stays in page(): the top-band screen reuses its .scr, .ph, .tabs and .tbl rules.
+ *  nav: [{icon,label,count,on}] ; topbarExtra: html ; body: html inside .content */
 export function shell({ id, night = false, nav, brandHtml, topbar, body, user = { initial: "林", name: "林晓", role: "管理员" }, crumbs = ["设计组", "项目"] }) {
   const navHtml = nav.map((n) => n.group ? `<h6>${n.group}</h6>` : `<a class="nv${n.on ? " on" : ""}" href="#${n.id}"${n.on ? ' aria-current="page"' : ""}>${icon(n.icon, { size: 22, attrs: 'data-guide="rail"' })}<span class="t" data-text="rail">${n.label}</span>${n.count ? `<span class="cnt">${n.count}</span>` : ""}</a>`).join("\n");
   return `<div class="scr gp${night ? " night" : ""}" data-shell="${id}">

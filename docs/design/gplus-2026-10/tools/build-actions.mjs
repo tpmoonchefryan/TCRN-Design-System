@@ -1,5 +1,6 @@
-import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain, over, parseColor, hex, cellAttrs } from "./lib.mjs";
+import { T, cr, fmt, icon, matrixTable, kvTable, page, write, grain, over, parseColor, hex, cellAttrs } from "./lib.mjs";
 import { pairState, pairDecls, tokenValue } from "./data.mjs";
+import { sampleScreens, SAMPLE_CSS } from "./shell-screen.mjs";
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
 
@@ -169,29 +170,20 @@ const motion = kvTable([
   ["禁止", "transform · filter brightness · 阴影放大", "—", "—", "—", "G 板的上浮 1px、亮 7%、青色投影全部不用"]
 ], [240, 330, 180, 200, 180]);
 
+// ---------- composition sample: the top-band shell, the same screen() as the Shell boards (shell-screen.mjs) ----------
 function sampleBody() {
   const rowsHtml = [
-    ["季度复盘", "PRJ-2026-0391", "设计组", "ok", "活跃", true],
-    ["产品发布 · 十月", "PRJ-2026-0377", "产品组", "ok", "活跃", false],
-    ["招聘 · 秋季", "PRJ-2026-0360", "人事", "warn", "待确认", false]
+    ["星野ひかり", "hoshino", "A 组", "ok", "签约", true],
+    ["Mika Lindqvist", "mika", "B 组", "warn", "试用", false],
+    ["陈嘉怡", "chen", "B 组", "ok", "签约", false]
   ].map(([n, id, team, st, stl, sel]) => `<tr${sel ? ' class="sel"' : ""}><td><span class="who"><span class="av">${n[0]}</span><span><b>${n}</b><small>${id}</small></span></span></td><td>${team}</td><td><span class="st ${st}"><i></i>${stl}</span></td><td class="r"><span class="bar" style="justify-content:flex-end"><button type="button" class="btn quiet sm cb" data-state="${sel ? "copied" : "idle"}">${sel ? icon("check", { size: 13 }) : icon("copy", { size: 13 })}${sel ? "已复制" : "复制 ID"}</button><button type="button" class="btn quiet sm ico" aria-label="打开">${icon("arrow-right", { size: 14 })}</button></span></td></tr>`).join("");
-  return `<div class="ph"><h2>项目</h2><span class="sub">12 个项目 · 3 个归档</span><span class="act"><button type="button" class="btn quiet">${icon("history", { size: 14 })}历史</button><button type="button" class="btn secondary">导出${icon("external-link", { size: 14 })}</button><button type="button" class="btn pri">${icon("plus", { size: 14 })}新建项目</button></span></div>
-<div class="bar"><span class="grp" role="group" aria-label="视图"><button type="button" class="btn secondary ico sm" aria-pressed="true" aria-label="列表">${icon("menu", { size: 14 })}</button><i></i><button type="button" class="btn secondary ico sm" aria-pressed="false" aria-label="网格">${icon("layout-grid", { size: 14 })}</button></span><span class="grp" role="group" aria-label="周期"><button type="button" class="btn secondary sm" aria-pressed="false">日</button><i></i><button type="button" class="btn secondary sm" aria-pressed="true">周</button><i></i><button type="button" class="btn secondary sm" aria-pressed="false">月</button></span><span class="sp"></span><a class="btn quiet sm" href="#all">查看全部 12 个${icon("arrow-right", { size: 13 })}</a></div>
+  return `<div class="ph"><h2>名册</h2><span class="sub">24 人 · 3 人待邀请</span><span class="act"><button type="button" class="btn quiet">${icon("history", { size: 14 })}历史</button><button type="button" class="btn secondary">导出${icon("external-link", { size: 14 })}</button><button type="button" class="btn pri">${icon("plus", { size: 14 })}邀请成员</button></span></div>
+<div class="bar"><span class="grp" role="group" aria-label="视图"><button type="button" class="btn secondary ico sm" aria-pressed="true" aria-label="列表">${icon("menu", { size: 14 })}</button><i></i><button type="button" class="btn secondary ico sm" aria-pressed="false" aria-label="网格">${icon("layout-grid", { size: 14 })}</button></span><span class="grp" role="group" aria-label="状态"><button type="button" class="btn secondary sm" aria-pressed="true">全部</button><i></i><button type="button" class="btn secondary sm" aria-pressed="false">签约</button><i></i><button type="button" class="btn secondary sm" aria-pressed="false">试用</button></span><span class="sp"></span><a class="btn quiet sm" href="#all">查看全部 24 人${icon("arrow-right", { size: 13 })}</a></div>
 <table class="tbl"><colgroup><col style="width:300px"><col style="width:120px"><col style="width:120px"><col></colgroup>
-<thead><tr><th>项目</th><th>团队</th><th>状态</th><th class="r">操作</th></tr></thead><tbody>${rowsHtml}</tbody></table>
-<div class="dz" style="margin-top:auto"><div style="min-width:0"><b>删除此项目</b><small>删除后 30 天内可从回收站恢复，之后永久删除。</small></div><span class="sp"></span><button type="button" class="btn secondary">归档</button><button type="button" class="btn danger">${icon("trash", { size: 14 })}删除项目</button></div>`;
+<thead><tr><th>艺人</th><th>分组</th><th>状态</th><th class="r">操作</th></tr></thead><tbody>${rowsHtml}</tbody></table>
+<div class="dz" style="margin-top:auto"><div style="min-width:0"><b>已选 1 人</b><small>移出名册后保留合约与结算记录，30 天内可恢复。</small></div><span class="sp"></span><button type="button" class="btn secondary">取消选择</button><button type="button" class="btn danger">${icon("trash", { size: 14 })}移出名册</button></div>`;
 }
-const nav = [
-  { id: "home", icon: "home", label: "工作台" },
-  { id: "projects", icon: "layout-grid", label: "项目", count: "12", on: true },
-  { id: "library", icon: "book-open", label: "资料库" },
-  { id: "data", icon: "database", label: "数据" },
-  { group: "团队" },
-  { id: "settings", icon: "settings", label: "设置" }
-];
-const brandHtml = `<div class="brand"><span class="mk" data-guide="rail" style="border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;color:var(--on-acc);font-family:var(--serif);font-weight:500;font-size:13px">T</span><span><b data-text="rail">TCRN 设计组</b><small>团队 · 12 人</small></span></div>`;
-const topbar = `<div class="cmd">${icon("search", { size: 13 })}搜索<kbd>⌘K</kbd></div><button type="button" class="btn quiet ico sm" aria-label="夜间模式">${icon("moon", { size: 16 })}</button>`;
-const samples = `<div class="two">${shell({ id: "ac-l", night: false, nav, brandHtml, topbar, body: sampleBody(), crumbs: ["设计组", "项目"] })}${shell({ id: "ac-n", night: true, nav, brandHtml, topbar, body: sampleBody(), crumbs: ["设计组", "项目"] })}</div>`;
+const samples = sampleScreens({ id: "ac", crumbs: ["艺人", "名册"], current: "名册", body: () => sampleBody() });
 
 const consumer = `<div class="cols3">
 <div class="box"><h4>Button <small>variant primary|secondary|quiet|danger · size sm|md|lg · disabledReason</small></h4><p class="lead">一句话：一次动作一个按钮；主按钮每屏最多一个，危险按钮只放在裁决位置，用红字不用红底。</p><ul><li><b>须提供</b>：children 文字（可带 Icon）；<code>disabled</code> 时必须给 <code>disabledReason</code>（变成 title 与 sr 文本）；<code>size</code> 的 lg 为本批新增值。</li><li><b>容器</b>：页头动作区、表单页脚、对话框页脚、工具栏；按钮自身单行，容器负责换行策略（C8）。</li><li><b>不用</b>：导航（用 NavItem / Tabs）；切换主题或语言（用壳层专用件）；表格里的行内链接（用 LinkButton quiet）。</li></ul></div>
@@ -228,7 +220,7 @@ const body = `
 <div>
 <p class="k">Batch one · 04 / 05 · Actions</p>
 <h1>动作：四种变体、七种状态，每一格都是一对 fill 与 ink<em>，状态规则从不写颜色</em></h1>
-<p>Button、IconButton、LinkButton、ClipboardCopyButton 与新增的 ButtonGroup。变体在 CSS 里声明七对 fill/ink，状态只切换生效的对，特异性低于变体，浅色与夜间同一套规则只换 token 值。没有上浮、缩放、亮度与投影放大：按下只换底色。次按钮、危险按钮与按钮组的轮廓定为 line-ctl 47% 墨（3.14:1，Owner 2026-10-11 定，替代 G+ 板的 7% 发丝线）。样板是构图一壳层的项目页：页头三枚、工具栏两个按钮组、行内复制与打开、底部危险区。</p>
+<p>Button、IconButton、LinkButton、ClipboardCopyButton 与新增的 ButtonGroup。变体在 CSS 里声明七对 fill/ink，状态只切换生效的对，特异性低于变体，浅色与夜间同一套规则只换 token 值。没有上浮、缩放、亮度与投影放大：按下只换底色。次按钮、危险按钮与按钮组的轮廓定为 line-ctl 47% 墨（3.14:1，Owner 2026-10-11 定，替代 G+ 板的 7% 发丝线）。样板是顶带壳里的名册页：页头三枚（历史、导出、邀请成员）、工具栏两个按钮组、行内复制与打开、底部危险操作。</p>
 </div>
 <div class="meta"><b>sm 28 · md 32 · lg 40 · r 8 · 500</b>文字 ≥ 4.5 · 图标与边 ≥ 3 · 禁用豁免但列数<b>hover 120ms · press 80ms · 转环 900ms</b>cubic-bezier(.22,1,.36,1)，无 transform<b>5 件 · 4 变体 × 7 状态 × 2 主题 = 52 格文字 + 52 格图标</b>每格脚本计算并在 DOM 复核</div>
 </header>
@@ -240,11 +232,11 @@ const body = `
 
 <div class="sec"><h3><b>C</b>动效规范 <span>只换色，不位移</span></h3>${motion}</div>
 
-<div class="sec"><h3><b>D</b>组合样板 · 构图一 <span>项目页：页头 quiet / secondary / primary，工具栏两个 ButtonGroup，行内 ClipboardCopyButton 与 IconButton，底部 danger</span></h3>${samples}</div>
+<div class="sec"><h3><b>D</b>组合样板 · 顶带壳 <span>名册页：页头 quiet / secondary / primary（历史、导出、邀请成员），工具栏两个 ButtonGroup，行内 ClipboardCopyButton 与 IconButton，底部 danger；左浅色、右夜间，壳几何同壳层板顶带态</span></h3>${samples}</div>
 
 <div class="sec"><h3><b>E</b>消费方须提供什么 · 何时用与不用 <span>五件各一句话，外加状态对机制</span></h3>${consumer}</div>
 
 <div class="sec"><h3><b>F</b>与 G+ 底盘的 token 差异 <span>现值取自 Navigation.tsx 的 tcrnComponentCss 与 tokens.css</span></h3>${diff}</div>
 `;
 
-write("V2-B1-Actions.dc.html", page({ title: "动作 Actions · 第一批", css, body, height }));
+write("V2-B1-Actions.dc.html", page({ title: "动作 Actions · 第一批", css: css + SAMPLE_CSS, body, height }));
