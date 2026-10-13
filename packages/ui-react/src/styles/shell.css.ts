@@ -143,3 +143,111 @@ export const shellCss01 = `
     transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
   }
 }`;
+
+// The pinned items (TCRN-DS-SUB-115; 07a board, section A and the pin rows of section B). The
+// gap before the first item (after the brand button) and between items is --tcrn-shell-pin-gap,
+// three equal readings for four items, with no divider; each item is --tcrn-shell-pin-h high
+// with a 10 inset, its label 12.5 at 500 as on the board. Rest is ink-2 on no fill; hover takes
+// the 3.5% ink wash, an open drop-down and the selected item the 6% wash, and the selected item
+// weight 600 (pair key s) — no side bar, no fill with an edge. Items shrink before they spill and
+// their labels truncate on one line. Narrower than 1024 the whole group is hidden.
+export const shellCss02 = `
+.tcrn-shell-pins {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--tcrn-shell-pin-gap);
+  min-inline-size: 0;
+  margin: 0;
+  margin-inline-start: var(--tcrn-shell-pin-gap);
+}
+.tcrn-shell-pins__pin {
+  display: inline-flex;
+  flex: 0 1 auto;
+  min-inline-size: 0;
+}
+.tcrn-shell-pins__item {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  --tcrn-pair-weight: var(--tcrn-type-weight-medium);
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-edge-h: 0 0 #0000;
+  --tcrn-pair-fill-o: var(--tcrn-color-wash);
+  --tcrn-pair-ink-o: var(--tcrn-color-ink);
+  --tcrn-pair-edge-o: 0 0 #0000;
+  --tcrn-pair-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-edge-s: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-pin-h);
+  margin: 0;
+  padding: 0 var(--tcrn-space-2h);
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-family: var(--tcrn-type-family-ui);
+  font-size: 12.5px;
+  font-weight: var(--tcrn-pair-weight);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-shell-pins__label {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-pins__chevron {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+.tcrn-shell-pins__item:where(:hover, [data-tcrn-preview-state="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-h);
+}
+.tcrn-shell-pins__item:where([aria-expanded="true"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-o);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-o);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-o);
+}
+.tcrn-shell-pins__item:where([aria-current="page"], [aria-current="true"], [data-tcrn-preview-state="selected"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-s);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-s);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-s);
+  --tcrn-pair-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-shell-pins__item:where(:focus-visible, [data-tcrn-preview-state="focus"]) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-shell-pins__item:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+@media (max-width: 1023px) {
+  .tcrn-shell-pins {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-pins__item {
+    transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
+  }
+}`;
