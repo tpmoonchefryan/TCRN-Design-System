@@ -21,7 +21,6 @@ import {
   LinkButton,
   MultiSelect,
   NumberInput,
-  PageHeader,
   ProductLockup,
   ProductShell,
   RadioGroup,
@@ -32,6 +31,7 @@ import {
   Textarea,
   tcrnProductTagline,
   type IconName,
+  type PageHeaderProps,
   type TcrnProductLogoId,
   type TcrnProductMarkId
 } from "@tcrn/ui-react";
@@ -104,6 +104,7 @@ function SampleShell({ storyId, board, theme, spec, children }: { storyId: strin
       moduleName={spec.moduleName}
       brandProductId={spec.brandProductId ?? "design-system"}
       currentRouteLabel={spec.routeLabel}
+      pageHeader={samplePageHeaders[board]}
       navGroups={[
         { id: "workspace", label: "Workspace", items: withSelection(spec.workspace) },
         { id: "team", label: "Team", items: withSelection(teamItems) }
@@ -162,7 +163,6 @@ function Metric({ label, value, unit, note, tone }: { label: string; value: stri
 function BillingPage() {
   return (
     <>
-      <PageHeader title="Billing" description="October 2026 · billed per seat" meta={mono("INV-2026-10-0031")} />
       <div className="tcrn-doc-display-primitive-grid">
         <Metric label="Amount due" value="4,280" unit=".00 CNY" note="Due 10-31" />
         <Metric label="Seats" value="86" unit="/ 120" note="34 seats left" tone="positive" />
@@ -221,17 +221,6 @@ const projectColumns = [
 function IconProjectsPage() {
   return (
     <>
-      <PageHeader
-        title="Projects"
-        description="12 projects · 3 archived"
-        meta={(
-          <div className="tcrn-doc-action-row">
-            <Button variant="quiet"><Icon name="history" />History</Button>
-            <Button variant="secondary"><Icon name="external-link" />Export</Button>
-            <Button variant="primary"><Icon name="plus" />New project</Button>
-          </div>
-        )}
-      />
       <div className="tcrn-doc-action-row">
         <IconButton ariaLabel="List" iconName="menu" variant="quiet" aria-pressed="true" />
         <IconButton ariaLabel="Grid" iconName="layout-grid" variant="quiet" aria-pressed="false" />
@@ -263,11 +252,6 @@ const registeredProducts: readonly TcrnProductLogoId[] = ["design-system", "tms"
 function BrandProductsPage() {
   return (
     <>
-      <PageHeader
-        title="Products"
-        description="4 registered · Latin wordmarks · taglines in five languages"
-        meta={<Button variant="quiet"><Icon name="external-link" />Brand assets</Button>}
-      />
       <TableShell
         label="Products"
         columns={[
@@ -301,17 +285,6 @@ function copiedClipboard(storyId: string, theme: GplusSampleTheme, text: string)
 function ActionsProjectsPage({ storyId, theme }: { storyId: string; theme: GplusSampleTheme }) {
   return (
     <>
-      <PageHeader
-        title="Projects"
-        description="12 projects · 3 archived"
-        meta={(
-          <div className="tcrn-doc-action-row">
-            <Button variant="quiet"><Icon name="history" />History</Button>
-            <Button variant="secondary">Export<Icon name="external-link" /></Button>
-            <Button variant="primary"><Icon name="plus" />New project</Button>
-          </div>
-        )}
-      />
       <div className="tcrn-doc-action-row">
         <ButtonGroup ariaLabel="View">
           <IconButton ariaLabel="List" iconName="menu" size="sm" aria-pressed="true" />
@@ -367,7 +340,6 @@ const inviteProjectOptions = [
 function InviteMembersPage({ storyId, theme }: { storyId: string; theme: GplusSampleTheme }) {
   return (
     <>
-      <PageHeader title="Invite members" description="Joining Design team · seats 86 / 120" />
       <div className="tcrn-doc-interaction-primitive-grid">
         <Field label="Email" hint="Required">
           <Input type="email" defaultValue="wang.yf@tcrn.app" />
@@ -411,6 +383,40 @@ function InviteMembersPage({ storyId, theme }: { storyId: string; theme: GplusSa
     </>
   );
 }
+
+// Each sample's page header is the shell's (TCRN-DS-SUB-129): ProductShell renders it as the paper's
+// first row, and its trail is the sample's current position in the menu model.
+const samplePageHeaders: Readonly<Record<GplusSampleBoard, PageHeaderProps>> = {
+  typography: { title: "Billing", description: "October 2026 · billed per seat", meta: mono("INV-2026-10-0031") },
+  icon: {
+    title: "Projects",
+    description: "12 projects · 3 archived",
+    meta: (
+      <div className="tcrn-doc-action-row">
+        <Button variant="quiet"><Icon name="history" />History</Button>
+        <Button variant="secondary"><Icon name="external-link" />Export</Button>
+        <Button variant="primary"><Icon name="plus" />New project</Button>
+      </div>
+    )
+  },
+  brand: {
+    title: "Products",
+    description: "4 registered · Latin wordmarks · taglines in five languages",
+    meta: <Button variant="quiet"><Icon name="external-link" />Brand assets</Button>
+  },
+  actions: {
+    title: "Projects",
+    description: "12 projects · 3 archived",
+    meta: (
+      <div className="tcrn-doc-action-row">
+        <Button variant="quiet"><Icon name="history" />History</Button>
+        <Button variant="secondary">Export<Icon name="external-link" /></Button>
+        <Button variant="primary"><Icon name="plus" />New project</Button>
+      </div>
+    )
+  },
+  inputs: { title: "Invite members", description: "Joining Design team · seats 86 / 120" }
+};
 
 const sampleSpecs: Readonly<Record<GplusSampleBoard, SampleShellSpec>> = {
   typography: {

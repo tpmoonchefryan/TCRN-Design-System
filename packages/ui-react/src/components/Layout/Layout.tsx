@@ -105,6 +105,10 @@ export interface SettingsLayoutProps extends Omit<HTMLAttributes<HTMLDivElement>
  * including when it is nested inside another shell. Direct SettingRow children
  * share the complete form's label, control, and tools tracks. SettingRowList
  * owns those shared tracks for an explicit group before those rows stack.
+ *
+ * In the shell's paper a settings page is at most --tcrn-layout-content-max-w
+ * (1040) wide and centred, its edges measured from the paper's content edge with
+ * no room kept for a side rail (MIN-20261013-SHELL D1, TCRN-DS-SUB-130).
  */
 export function SettingsLayout({
   navigation,
