@@ -293,9 +293,13 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       return;
     }
     const skipTags = new Set(["SCRIPT", "STYLE"]);
-    // Visual-instance oracles and the locale-invariant subtrees (the shell's brand wordmark) keep
-    // their words in every language.
-    const visualInstanceSelector = "[data-storybook-visual-instance], [data-locale-invariant]";
+    // Visual-instance oracles keep their words in every language, and so does the brand wordmark,
+    // the brand asset's own words (Logos board, section E; TCRN-DS-SUB-166): the brand button's
+    // word (its b and em), a lockup's first line (base and suffix) and the BrandWordmark. A lockup's
+    // description line is copy and is swapped. data-locale-invariant belongs to the English-leak
+    // ledger (scripts/lib/locale-invariant-ledger.mjs), not to this swap: a story that carries it
+    // (the AI contract story) is translated like any other.
+    const visualInstanceSelector = "[data-storybook-visual-instance], .tcrn-shell-brand__word, .tcrn-product-logo__line-one, .tcrn-brand-wordmark";
     const visit = (node) => {
       if (node.nodeType === Node.TEXT_NODE) {
         if (node.parentElement?.closest(visualInstanceSelector)) {
@@ -483,10 +487,19 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       closeLocaleMenu();
     }
   });
+  // Esc closes an open language list and returns focus to its trigger. The event is marked handled
+  // so the documentation shell's layer script leaves the avatar menu around the list open
+  // (TCRN-DS-SUB-166); with the list closed, Esc is the layer script's.
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeLocaleMenu({ restoreFocus: true });
+    if (event.key !== "Escape") {
+      return;
     }
+    const menu = document.querySelector("[data-locale-menu]");
+    if (!menu || menu.hidden) {
+      return;
+    }
+    event.preventDefault();
+    closeLocaleMenu({ restoreFocus: true });
   });
   applyLocale(initialLocale, false);
 })();
@@ -559,6 +572,11 @@ export const docShellLayerScript = `<script>
       return;
     }
     if (event.key !== "Escape") {
+      return;
+    }
+    // An inner list that handled this Esc (the language list in the avatar menu closes itself and
+    // returns focus to its trigger) leaves the layer around it open (TCRN-DS-SUB-166).
+    if (event.defaultPrevented || account.querySelector("[data-locale-menu]:not([hidden])")) {
       return;
     }
     if (!menu.hidden) {

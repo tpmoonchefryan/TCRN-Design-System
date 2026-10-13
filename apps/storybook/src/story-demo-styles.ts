@@ -548,7 +548,7 @@ label {
   max-width: 100%;
 }
 
-.tcrn-doc-shell-demo {
+.tcrn-doc-demo-frame {
   position: relative;
   display: grid;
   gap: var(--tcrn-space-3h);
@@ -649,159 +649,16 @@ label {
   min-width: 0;
 }
 
-.tcrn-doc-shell-demo--knowledge {
+.tcrn-doc-demo-frame--knowledge {
   padding: 0;
   overflow: hidden;
 }
 
-.tcrn-doc-knowledge-shell-layout {
-  --tcrn-knowledge-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
-  --tcrn-knowledge-shell-content-gutter: 18px;
-  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-surface-canvas);
-  --tcrn-knowledge-shell-top-surface: var(--tcrn-color-surface-panel);
-}
-/* The brand cell mirrors the documentation shell's left surface, the canvas colour in both
-   themes since composition one (O-1). */
-/* The layout is the size container its top bar answers to: the demo sits in a story
-   frame, so its own width, not the viewport, decides whether one row fits.
-   The rail is the shell rail width (220, composition one): the brand lockup and its collapse
-   control share it as in the documentation shell's rail head, 16px from each edge. */
-.tcrn-doc-knowledge-shell-layout {
-  container: tcrn-knowledge-shell / inline-size;
-  display: grid;
-  grid-template-areas:
-    "topbar topbar"
-    "sidebar content";
-  grid-template-columns: var(--tcrn-shell-sidebar-width) minmax(0, 1fr);
-  gap: 0;
-  align-items: stretch;
-  min-width: 0;
-  min-height: 540px;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 84%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-canvas);
-  overflow: hidden;
-}
-
-/* The layout places the package TopBar and SideNav, and gives them composition one's rail
-   geometry, which the package applies only inside ProductShell (O-1): the bar is the shell top bar,
-   the side navigation is a canvas rail with the 16px padding, group titles sit on the guide column
-   and items start there. The shell-fidelity guard registers these properties; they go when the
-   Navigation family batch gives the standalone parts this geometry. */
-/* The data-standard-shell qualifier outranks the package rules the story pages scope under
-   .story-body; the side navigation starts under the 96px rail head, as the documentation one does. */
-.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-top-bar {
-  grid-area: topbar;
-  min-height: var(--tcrn-shell-topbar-height);
-  padding-block: var(--tcrn-space-1h);
-}
-
-.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-side-nav {
-  grid-area: sidebar;
-  /* Under the 96px rail head: the bar is the shell top bar plus its 1px bottom edge. */
-  margin-block-start: calc(var(--tcrn-space-6) * 3 - var(--tcrn-shell-topbar-height) - 1px);
-  padding: var(--tcrn-space-4);
-  background: var(--tcrn-color-surface-canvas);
-}
-
-.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-group__label {
-  padding-inline: 0;
-}
-
-.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-item {
-  margin-inline: calc(var(--tcrn-space-1) * -1);
-  padding-inline-start: calc(var(--tcrn-space-1) - 1px);
-}
-
-.tcrn-doc-knowledge-shell__topbar-copy,
-.tcrn-doc-knowledge-shell__actions,
-.tcrn-doc-knowledge-shell__sidebar-intro,
-.tcrn-doc-knowledge-shell__content,
 .tcrn-doc-knowledge-preview__panel,
-.tcrn-doc-knowledge-shell__pager {
+.tcrn-doc-demo-pager {
   display: grid;
   gap: var(--tcrn-space-2);
   min-width: 0;
-}
-
-.tcrn-doc-knowledge-shell__topbar-copy span {
-  overflow: hidden;
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.tcrn-doc-knowledge-shell__actions {
-  align-self: center;
-  justify-self: end;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--tcrn-space-2);
-  width: auto;
-  max-width: 100%;
-  background: transparent;
-  padding: 0;
-}
-
-.tcrn-doc-knowledge-shell__topbar-copy {
-  align-self: stretch;
-  align-content: center;
-  /* Title and one line of description fit the 52px shell top bar's 40px content height, as the
-     documentation bar's current-location block does; the description ends in an ellipsis. */
-  gap: var(--tcrn-space-0h);
-  max-inline-size: 32ch;
-  background: transparent;
-  padding: 0;
-}
-
-/* Placement only: the flex item and its track width. The width also sets the item's
-   intrinsic contribution, so the shrink-wrapped actions row keeps the 260px resting search
-   of the documentation shell; without it the row wraps the placeholder (about 241px). */
-.tcrn-doc-knowledge-shell__actions .tcrn-search-input {
-  flex: 0 1 260px;
-  width: 260px;
-  max-width: 260px;
-}
-
-/* One row needs the rail, the 32ch copy measure and the actions at full width: about
-   1000px of layout, and the search gives up a few pixels between 960px and that. Below
-   960px the brand cell keeps the rail for both rows and the copy and the actions stack
-   beside it, so neither the collapse control nor the search covers text; the search
-   takes its own line there rather than shrinking under its placeholder. */
-@container tcrn-knowledge-shell (max-width: 960px) {
-  .tcrn-doc-knowledge-shell__actions {
-    flex-wrap: wrap;
-  }
-
-  .tcrn-doc-knowledge-shell__actions .tcrn-search-input {
-    flex: 1 1 100%;
-    width: auto;
-    max-width: none;
-  }
-}
-
-.tcrn-doc-knowledge-shell__groups {
-  display: grid;
-  gap: var(--tcrn-space-4);
-  min-width: 0;
-}
-
-.tcrn-doc-knowledge-shell-layout [data-navigation-primitive="nav-item"]:not([data-selected="true"]):not([aria-current="page"]) {
-  background: transparent !important;
-}
-
-.tcrn-doc-knowledge-shell-layout [data-navigation-primitive="nav-group"] > div:first-child {
-  color: var(--tcrn-color-text-secondary) !important;
-}
-
-.tcrn-doc-knowledge-shell__content {
-  grid-area: content;
-  align-content: start;
-  padding: var(--tcrn-space-4h) var(--tcrn-space-4h) var(--tcrn-space-4h) var(--tcrn-knowledge-shell-content-gutter);
 }
 
 .tcrn-doc-knowledge-preview {
@@ -819,12 +676,12 @@ label {
   padding: var(--tcrn-space-3);
 }
 
-.tcrn-doc-knowledge-shell__pager {
+.tcrn-doc-demo-pager {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: auto;
 }
 
-.tcrn-doc-knowledge-shell__pager a {
+.tcrn-doc-demo-pager a {
   display: grid;
   gap: var(--tcrn-space-1);
   min-width: 0;
@@ -836,22 +693,22 @@ label {
   text-decoration: none;
   transition: background-color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast);
 }
-/* TCRN-DS-STORY-065: the chapter pager mirrors the doc-shell chapter navigation, which answers
-   hover + keyboard focus; the demo pager did neither. */
-.tcrn-doc-knowledge-shell__pager a:hover {
+/* TCRN-DS-STORY-065: the demo's chapter pager answers hover and keyboard focus, as the
+   documentation chapter pager does. */
+.tcrn-doc-demo-pager a:hover {
   border-color: var(--tcrn-color-border-control);
   background: var(--tcrn-color-surface-muted);
 }
-.tcrn-doc-knowledge-shell__pager a:focus-visible {
+.tcrn-doc-demo-pager a:focus-visible {
   outline: 2px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
 }
 
-.tcrn-doc-knowledge-shell__pager a:last-child {
+.tcrn-doc-demo-pager a:last-child {
   text-align: right;
 }
 
-.tcrn-doc-knowledge-shell__pager span {
+.tcrn-doc-demo-pager span {
   color: var(--tcrn-color-text-secondary);
   font-size: var(--tcrn-type-size-caption);
   font-weight: 700;
@@ -997,36 +854,12 @@ label {
     width: 100%;
   }
 
-  .tcrn-doc-knowledge-shell-layout {
-    grid-template-areas:
-      "topbar"
-      "sidebar"
-      "content";
-    grid-template-columns: 1fr;
-  }
-
-  .tcrn-doc-knowledge-shell__pager {
+  .tcrn-doc-demo-pager {
     grid-template-columns: 1fr;
   }
 
   .tcrn-doc-dialog-spec-fixture__header {
     grid-template-columns: 1fr;
-  }
-
-  .tcrn-doc-knowledge-shell__topbar-copy,
-  .tcrn-doc-knowledge-shell__actions {
-    grid-column: auto;
-    grid-row: auto;
-  }
-
-  .tcrn-doc-knowledge-shell__topbar-copy,
-  .tcrn-doc-knowledge-shell__actions {
-    width: auto;
-    padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
-  }
-
-  .tcrn-doc-knowledge-shell__content {
-    padding: var(--tcrn-space-4);
   }
 
 }
@@ -1090,8 +923,8 @@ label {
 }
 /* The index links are navigation TILES, not prose links: 100 underlines in a grid read as
    noise, so the rest state stays quiet (text-primary, no underline) and hover floats the
-   quiet brand background + brand text. Pressable => it answers the press like the button
-   family (press-scale on :active). */
+   quiet brand background + brand text. No press scale: the motion press-scale token has no G+
+   successor and the G+ button family does not scale on press. */
 .tcrn-doc-reference-index__item a {
   display: block;
   padding: var(--tcrn-space-0h) var(--tcrn-space-1);
@@ -1099,7 +932,7 @@ label {
   border: 1px solid transparent;
   color: var(--tcrn-color-text-primary);
   text-decoration: none;
-  transition: background-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast), transform var(--tcrn-motion-instant);
+  transition: background-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast);
 }
 .tcrn-doc-reference-index__item a:hover {
   background: var(--tcrn-color-brand-primary-bg);
@@ -1109,9 +942,6 @@ label {
 .tcrn-doc-reference-index__item a:focus-visible {
   outline: none;
   box-shadow: var(--tcrn-elevation-focus);
-}
-.tcrn-doc-reference-index__item a:active {
-  transform: scale(var(--tcrn-motion-press-scale));
 }
 .tcrn-doc-component-reference {
   display: flex;
@@ -1148,46 +978,5 @@ label {
 }
 .tcrn-doc-reference-table td code {
   overflow-wrap: anywhere;
-}
-
-/* TCRN-DS-STORY-065: knowledge-shell brand cell + wordmark moved from alpha-styles (Track B
-   only) into the shared demo layer so the real Storybook renders the topbar branding too. */
-.tcrn-doc-knowledge-shell__brand-cell {
-  grid-column: 1;
-  grid-row: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 38px;
-  justify-content: normal;
-  gap: var(--tcrn-space-2);
-  align-items: center;
-  align-self: stretch;
-  /* Brand lockup relation (composition one): the brand cell is the head of the rail, as the
-     documentation shell's rail head is. It spans the rail track and claims back the top bar's
-     inline-start padding, its block padding and its 1px bottom edge, so the rail surface runs from
-     the bar's top edge into the side navigation with no gap. It is the 96px rail head, as in the
-     documentation shell, and gives back what it overhangs through its block-end margin, so the bar
-     keeps the 52px shell top bar height. */
-  inline-size: var(--tcrn-shell-sidebar-width);
-  block-size: calc(var(--tcrn-space-6) * 3);
-  margin-block: calc(var(--tcrn-space-1h) * -1) calc(var(--tcrn-shell-topbar-height) - var(--tcrn-space-6) * 3 - var(--tcrn-space-1h));
-  margin-inline-start: calc(var(--tcrn-space-5) * -1);
-  background: var(--tcrn-knowledge-shell-left-surface);
-  padding: var(--tcrn-space-3) var(--tcrn-space-4);
-}
-
-.tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup {
-  width: 100%;
-}
-.tcrn-doc-knowledge-shell__brand .tcrn-brand-wordmark__suffix {
-  flex-basis: auto;
-}
-.tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup__caption {
-  white-space: nowrap;
-}
-/* As in the documentation rail head: in the 220px rail a copy line wraps rather than running under
-   the collapse control (only the Japanese tagline needs it). */
-.tcrn-doc-knowledge-shell__brand .tcrn-product-logo__copy *,
-.tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup__copy * {
-  white-space: normal;
 }
 `;

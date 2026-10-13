@@ -319,7 +319,17 @@ const settingsScopedOverrides = `
 @container tcrn-settings-content (width < 720px){.story-body .tcrn-settings-layout__form{grid-template-columns:minmax(0,1fr)}}
 @container tcrn-settings-content (min-width:720px){.story-body .tcrn-settings-layout__form>.tcrn-setting-row,.story-body .tcrn-settings-layout__form .tcrn-setting-row-list .tcrn-setting-row{grid-template-columns:subgrid}.story-body .tcrn-settings-layout__form .tcrn-setting-row__tools{justify-content:flex-end}}
 `;
-const staticStoryComponentCss = compactCss(`${scopeComponentCss(scopedComponentCss, ".story-body")}${settingsScopedOverrides}`);
+// TCRN-DS-SUB-165 (STORY-138, 139, 140, 142, 147, 149): the scoped copy replays the package order
+// inside a story body, so it carries the shell's own segments (shellCss*, shellIntroCss* and
+// shellSheetCss*, the same slice the pages take globally above) after the scoped family segments and
+// the settings overrides, last as they are in tcrnComponentCss. Without them every scoped family rule
+// (one class more, and a later sheet) out-ranked the shell rule it loses to in the package: the
+// shell stories read the old NavItem and NavGroup type, a 260 search in the full menu and the
+// drop-down, the pinned group still shown at 1024 and up, and no static hover. The segment is still
+// located by the brand button's first rule above; the stable segment marker replaces that later.
+const staticStoryComponentCss = compactCss(
+  `${scopeComponentCss(scopedComponentCss, ".story-body")}${settingsScopedOverrides}${scopeComponentCss(shellComponentCss, ".story-body")}`
+);
 
 function globalComponentCssForBody(mainBody: string): string {
   const pageCss = mainBody.includes("data-page-hierarchy")
@@ -503,8 +513,8 @@ function docShellHtml(page: DocShellPage, locale: TcrnLocale = tcrnDefaultLocale
   const collapsedLabel = attributeValue(closed, 'data-shell-brand="', "aria-label");
   let html = setAttributes(closed, 'data-shell-brand="', `data-expanded-label="${expandedLabel}" data-collapsed-label="${collapsedLabel}"`);
   // The wordmark is the brand asset's own words (Logos board, section E) and reads the same in every
-  // language; the page's string swap must not translate its suffix.
-  html = setAttributes(html, 'class="tcrn-shell-brand__word"', 'data-locale-invariant=""');
+  // language: the page's string swap leaves every brand wordmark alone by its class (client-scripts.ts,
+  // TCRN-DS-SUB-166), so the shell needs no data-locale-invariant, which is the English-leak ledger's.
   const avatarEnd = html.indexOf("</button>", html.indexOf('data-shell-avatar=""')) + "</button>".length;
   html = `${html.slice(0, avatarEnd)}${account}${localeSelect}${html.slice(avatarEnd)}`;
   const stripEnd = html.indexOf("</header>") + "</header>".length;
