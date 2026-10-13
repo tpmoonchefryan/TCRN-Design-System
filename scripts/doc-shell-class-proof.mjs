@@ -15,7 +15,10 @@
 // `tcrn-tree-nav--${density}`) are package classes even where tcrnComponentCss has no rule for them; they
 // are reported as packageEmittedWithoutRule and are not counted. A class that a documentation source
 // writes itself is always counted unless tcrnComponentCss defines it or the package writes the same
-// literal.
+// literal. A package literal that reaches the markup through a class-named parameter of another package
+// function (ShellDropdown hands "tcrn-shell-menu__cascade tcrn-shell-dropdown__col" to shellMenuCascades,
+// whose third parameter is className) is a package literal as well (TCRN-DS-SUB-132); the documentation
+// sources are still read without that parameter lookup.
 //
 // The TCRN-DS-INC-010 sub-check is kept: every class the page template writes must have a definition.
 //
@@ -430,10 +433,59 @@ export function packageCssClasses(css) {
   return new Set(cssSelectorTokens(css).filter((entry) => !entry.prefix).map((entry) => entry.token));
 }
 
+function functionParameterNames(node) {
+  return node.parameters.map((parameter) => (ts.isIdentifier(parameter.name) ? parameter.name.text : ""));
+}
+
+/**
+ * String literals the package passes as an argument whose parameter, in a function the package declares,
+ * has a class-like name (className, columnClassName …). Functions are matched by name across the given
+ * files, because the compiled modules import each other's helpers.
+ */
+export function classParameterArguments(files) {
+  const parsed = files.map(({ path, text }) => ({ path, text, sourceFile: ts.createSourceFile(path, text, ts.ScriptTarget.Latest, true, scriptKindFor(path)) }));
+  const classParameters = new Map();
+  const declare = (name, fn) => {
+    const positions = functionParameterNames(fn).flatMap((parameter, index) => (isClassLikeName(parameter) ? [index] : []));
+    if (name && positions.length > 0) classParameters.set(name, positions);
+  };
+  for (const { sourceFile } of parsed) {
+    const visit = (node) => {
+      if (ts.isFunctionDeclaration(node) && node.name) declare(node.name.text, node);
+      if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer && (ts.isArrowFunction(node.initializer) || ts.isFunctionExpression(node.initializer))) {
+        declare(node.name.text, node.initializer);
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(sourceFile);
+  }
+  const occurrences = [];
+  for (const { path, text, sourceFile } of parsed) {
+    const lineOf = lineLocator(text);
+    const visit = (node) => {
+      if (ts.isCallExpression(node)) {
+        const { name } = calleeNames(node.expression);
+        for (const index of classParameters.get(name) ?? []) {
+          const argument = node.arguments[index];
+          if (!argument || !(ts.isStringLiteral(argument) || ts.isNoSubstitutionTemplateLiteral(argument))) continue;
+          const start = argument.getStart(sourceFile) + 1;
+          for (const entry of classListTokens(argument.text)) occurrences.push({ token: entry.token, prefix: entry.prefix, kind: "class-argument", where: `${path}:${lineOf(start)}` });
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(sourceFile);
+  }
+  return occurrences;
+}
+
 /** Class literals and class templates written by the package's compiled components. */
 export function packageEmittedVocabulary(files) {
   const literals = new Set();
   const prefixes = new Set();
+  for (const entry of classParameterArguments(files)) {
+    if (!entry.prefix) literals.add(entry.token);
+  }
   for (const { path, text } of files) {
     for (const entry of codeClassOccurrences(text, path)) {
       if (!["class-context", "markup", "script-string", "script-class"].includes(entry.kind)) continue;

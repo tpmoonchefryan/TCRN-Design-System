@@ -120,12 +120,9 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   // modifier went with TCRN-DS-SUB-026; its position and inset are the registered exception
   // EX-INIT015-doc-product-shell-search-static, and the entry goes with that exception.
   ".tcrn-product-shell-search__results",
-  // The knowledge-base sample's group titles and items, given composition one's rail geometry under
-  // .tcrn-doc-knowledge-shell-layout (TCRN-DS-SUB-101, R3M5); their non-placement properties are the
-  // registered exceptions EX-INIT015-doc-knowledge-shell-group-title and -nav-item, and the entries
-  // go with those exceptions.
-  ".tcrn-nav-group__label",
-  ".tcrn-nav-item",
+  // The knowledge-base sample's .tcrn-nav-group__label and .tcrn-nav-item entries (TCRN-DS-SUB-101,
+  // R3M5) went with their four document-scoped exceptions once the sample and the documentation shell
+  // became the package's top-band ProductShell (TCRN-DS-SUB-132, INIT-015 N-2).
   // Documented demo-chrome hook — not a duplicate (see comment above):
   ".tcrn-filter-bar"
 ]);
@@ -293,7 +290,9 @@ const SINGLE_LINE_CARRIER_CLASSES = new Set(
 // entry names exact selectors (whitespace collapsed, as the CSS reader gives them) and the
 // properties it admits for them, with a ruling reference, a reason and a removal condition.
 // An entry admits nothing else, and an entry no rule used is listed as docExceptionsUnused.
-const JUDGMENT_R3M5 = "runs/r3/problems/main.md（TCRN-DS-INIT-015）R3M5：SUB-101 按方案 A 授权，知识库样板的包件在文档作用域取构图一几何，文档壳按包壳几何重做（O-1、C-21）";
+// The four R3M5 entries (TCRN-DS-SUB-101 plan A: the knowledge-base sample's TopBar, SideNav, group
+// titles and items in composition one's rail geometry) were removed with the documentation shell's move
+// to the top-band ProductShell (TCRN-DS-SUB-132, INIT-015 closeout N-2).
 export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([
   {
     id: "EX-INIT015-doc-tooltip-static-preview",
@@ -335,38 +334,6 @@ export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([
     ruling: "runs/r2/judgment.md（TCRN-DS-INIT-015）§2.2 R3-9 与 §3.3 第 4 条：导航壳故事的静态搜索结果用文档前缀类加登记例外留在版面内，不改包；包的绝对定位是正确的运行时行为，Navigation 家族不在授权内",
     reason: "ProductShell 故事静态展示展开的搜索结果；文档容器让结果列表回到壳的文档流（position static、inset auto），把正文往下推而不是盖住标题与首段，不改颜色、字号与边框",
     until: "Navigation 家族批次由包提供静态结果展示时删除本条"
-  },
-  {
-    id: "EX-INIT015-doc-knowledge-shell-topbar",
-    selectors: ['.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-top-bar'],
-    properties: ["min-height", "padding-block"],
-    ruling: JUDGMENT_R3M5,
-    reason: "知识库样板的独立 TopBar 取壳顶栏高度 52 与上下内距 6，与文档壳顶栏、包 ProductShell 顶栏一致；不改颜色、字号与边框",
-    until: "Navigation 家族批次让独立件提供构图一几何时删除"
-  },
-  {
-    id: "EX-INIT015-doc-knowledge-shell-side-nav",
-    selectors: ['.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-side-nav'],
-    properties: ["padding", "background"],
-    ruling: JUDGMENT_R3M5,
-    reason: "知识库样板的独立 SideNav 取构图一侧栏的 16 内距与画布色，与文档侧栏一致；不改字号与边框",
-    until: "Navigation 家族批次让独立件提供构图一几何时删除"
-  },
-  {
-    id: "EX-INIT015-doc-knowledge-shell-group-title",
-    selectors: ['.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-group__label'],
-    properties: ["padding-inline"],
-    ruling: JUDGMENT_R3M5,
-    reason: "知识库样板的分组标题落在 16 引导列（横向内距 0），与文档导航分类、包 ProductShell 分组标题一致",
-    until: "Navigation 家族批次让独立件提供构图一几何时删除"
-  },
-  {
-    id: "EX-INIT015-doc-knowledge-shell-nav-item",
-    selectors: ['.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-item'],
-    properties: ["padding-inline-start"],
-    ruling: JUDGMENT_R3M5,
-    reason: "知识库样板的导航项起始内距取构图一的 space-1 减 1px 边框（项框向侧栏内距外伸 4 用 margin，属摆放），与文档导航项、包 ProductShell 导航项一致",
-    until: "Navigation 家族批次让独立件提供构图一几何时删除"
   }
 ]);
 
