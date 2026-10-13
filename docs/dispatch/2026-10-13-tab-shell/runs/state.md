@@ -39,7 +39,8 @@
 | P6 | 已合入，包树已退役（273 MB） | f635938、6d11e0a、191d04e | c1bf910 | 局部门除既有红外全 0；ProductShell 新增必填 `pageHeader`；新 token `--tcrn-layout-content-max-w` 1040；geometry:proof 仍退出 1（INC-399 段，归 SUB-126）；问题 10 条（含 1040 落到 DocumentCanvas 超出 Story 点名范围、可单条回退） |
 | P7 | 已合入，包树已退役（273 MB） | 5cb5b72、bac233c（合入集成分支）、a12acd4、eb2b9e5、0cba35f | 080286d | INC-399 六腿全过；geometry:proof 仍退出 1（静态页无壳样式、搜索浮层段 0 个，P1d 问题 1、6）；问题 7 条，两条待设计裁定（夜间遮罩色、Sheet 里下一级怎么开） |
 | P8 | 在跑（自 080286d 后的集成 HEAD） | | | |
-| P9 | 在跑（同上） | | | |
+| P9 | 已合入，包树已退役（273 MB） | a322eff、55f3d48 | 20193f3 | contract:proof 11/11、壳层板与 B 段差 0.00；storybook test 11/12（composition-one 既有红）；问题 7 条（壳层门读不了 8 格、铃铛悬停 3.5% 对板 6%、geometry-proof 展开菜单常数 13→15 等） |
+| P12 | 在跑（自 20193f3 后的集成 HEAD；P8 仍在跑，文件集不相交，滚动补位） | | | |
 | P5 | 已合入，包树已退役（239 MB） | 7eefd5b、5825bcb | f7d6f6d | 局部门全 0（ui-react test 208/209，唯一红是既有红）；问题 5 条，要紧的一条：静态 Storybook 页无客户端 React，ShellIntro 不播放（下一轮）；已经消息让 P1c 交回前把集成分支合进包树、解 `styles/index.ts` 登记冲突 |
 
 - 跨包通告 `runs/r1/excerpts/cross-notes.md`（已知红、已合入包的接口行段、W3 共享文件规则）随每次派工指给子代理，包交回后主线程补行。
