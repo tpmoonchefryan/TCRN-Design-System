@@ -5,6 +5,7 @@
 ## 1. 已知红（批末一次处置，包内不修）
 
 - `--filter @tcrn/ui-react test` 有 1 条既有红：P1a 的 `packages/ui-react/src/components/Navigation/ShellBrandButton.test.tsx` 断言夜间 TMS 后缀对比度 ≥ 4.5，P4 把后缀改回两主题同色后读数 3.07（`runs/r1/problems/P4.md`）。在你的包树里看到它时记一句「既有红」即可，不修、不改那份测试。
+- 静态 Storybook 页没有客户端 React：`ShellIntro` 在服务端与水合时按设计不渲染，登入动画 story 与探针在静态页上看不到播放（`runs/r1/problems/P5.md`）。这是下一轮的事；登记 story 的包照常登记，在问题文件里记一句，不另造客户端挂载。
 - `--filter @tcrn/ui-react test` 在 `dist` 未构建时会以 0 条测试退出 0：先 `--filter @tcrn/ui-react build` 再跑 test，否则读数无效。
 
 ## 2. 已合入包给下游的接口（只读指明的行段）
@@ -16,6 +17,7 @@
 | P3 | `runs/r1/handoff/P3.md` 第 41–52 行（第 4、5 节） | 壳层读数库 `scripts/lib/shell-measure.mjs` 与门 `scripts/shell-measure-proof.mjs`；做壳件的包除 C-5 钩子外要提供：行内文字 `data-text="prail"`、行内图标 `data-guide="prail"`、选中行 `aria-current="page"`、静态悬停 `data-tcrn-preview-state~="hover"`、底栏分隔线是 `[data-shell-pbar]` 的上边框、底栏锁定块 `[data-lockup]`、底栏面包屑是底栏里的 `nav`、标按钮第一版 `data-shell-brand="v1"`、标 `svg[data-logo]` 用彩色原样 |
 | P4 | `runs/r1/handoff/P4.md` 第 39–46 行（第 4 节） | `--tcrn-brand-suffix-tms` 只在主题无关块、没有 dark 值，读夜间值用 `createResolvedTokenMap("dark")`；`WORDMARK_EXEMPTIONS` 4 条，夜间 TMS 两条带 `pending`（D7） |
 | P1b | `runs/r1/handoff/P1b.md` 第 67–77 行（第 4 节） | 新件 `ShellMenu`、`ShellDropdown` 与 C-7 菜单模型类型、可复用的 `useShellTransientLayer`（Esc、点外部、选中即收，Esc 与选中后焦点回触发键）；ProductShell 接线写法（SUB-119 照抄）；壳根要成为 `.tcrn-shell-menu` 的定位包含块；下拉不传 ref 时按 `aria-controls` 找固定项；门用的 DOM 钩子；`shell-copy.ts` 新键；`shell.css.ts` 下一段命名 `shellCss05` |
+| P5 | `runs/r1/handoff/P5.md` 第 43–51 行（第 4 节） | 新导出 `ShellIntro`（`productId`、`card`、`shellRef?`、`sessionMarker?`、`onFinish?`、`locale?`）与 `shellIntroPlan`、`shellIntroTimeline`、`shellIntroSessionMarker`；动画期间压住并淡入 `[data-paper]`、`[data-cluster]`、`[data-pins]` 与标按钮首行；`styles/index.ts` 里 `shellIntroCss01` 在壳层段之后 |
 
 ## 3. W3 共享文件（P1c 与 P5 同时在跑）
 
