@@ -2,6 +2,119 @@
 
 ## 4.0.0
 
+### One release for two batches: the G+ renewal and the top-band shell (TCRN-DS-INIT-015, TCRN-DS-INIT-016)
+
+Status: candidate on the INIT-016 integration branch. It is not tagged, not
+published and not deployed; each of those, like the Owner's visual acceptance
+(`docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md`, one section per board of
+the visual standard), is a separate Owner decision.
+
+4.0.0 carries two batches as one breaking release: the G+ renewal
+(TCRN-DS-INIT-015, the first batch) and the top-band shell (TCRN-DS-INIT-016, the
+second batch). The three packages move to 4.0.0 together, and the major version does
+not move again for the second batch. `docs/migration-4.0.md` gives every breaking
+change a step, by consumer and item by item:
+
+- First batch: the bundled fonts (M1); token names on the G+ contract, with the old
+  names as deprecated aliases (M2); the G+ values (M3); the focus ring (M4); the
+  removed brand accents (M5); `lucide-react` removed (M6); the icon roster and
+  `strokeWidth` (M7); the product logo registry, where `workflow` becomes `einzbern`
+  (M8); the suffix colours (M9); the new `Text` props and the link states (M10);
+  `Highlight` (M11); `Button size="lg"` and the button family (M12); `ButtonGroup`
+  (M13); the inputs (M14); the shell toggles (M15); the deferred prototype roster
+  (M19).
+- Second batch: `ProductShell` is the top band, without its side rail, collapse and
+  drawer props or top bar (M20); the collapsed preference gives way to the pins
+  (M21); the tab forms are one Tabs family and the page header's trail is
+  `Breadcrumb` (M22); `SideNav` and five other parts of the old shell are deprecated
+  (M23); three shell tokens are deprecated (M24); the icon roster has 38 names with
+  `pin` (M25); `ProductLockup` takes a first-line rendition (M26); `ProductShell`
+  requires `pageHeader` (M27); the TMS suffix is one colour in both themes (M28);
+  five shell parts are new (M29).
+
+Overtaken within this release. The entries below keep the wording they were written
+with. The first batch was never published before the second replaced part of it, so
+no consumer receives these first-batch statements:
+
+- "Composition one in the product shell" (the 220 and 52 rail, the 52 top bar, the
+  16 and 48 lead column, the sheet beside the rail) and its
+  `--tcrn-product-shell-sidebar-width` override: the top band and the paper replace
+  them, and three of the four tokens that entry added are deprecated ("Three shell
+  tokens retired by the top band" below); `--tcrn-radius-paper` stays.
+- The night TMS suffix #7aa0f5: the suffix is #2c63c8 in both themes again.
+- The 37-name icon roster: it has 38 names.
+- The product shell's side-navigation and mobile-navigation toggles: the shell no
+  longer renders them, and the theme toggle sits in the avatar menu.
+- In Storybook, composition three's top bar sample, the documentation shell's
+  composition-one rail and top bar, and the gate expectations after composition one:
+  the samples and every documentation page render the top-band shell, and the gates
+  read it (next entry).
+
+### The top-band shell replaces the side rail (TCRN-DS-INIT-016)
+
+Status: candidate on the INIT-016 integration branch, not tagged, published or deployed.
+
+Breaking: `ProductShell`'s props, preferences and rendered output change, and it
+requires `pageHeader`; the steps are `docs/migration-4.0.md` M20, M21 and M24 to M29.
+
+**One shell.** `ProductShell` is the top band over the paper (TCRN-DS-MIN-20261013-SHELL
+D1). The band is 52px on the canvas colour, with no fill and no rule. It holds the
+brand button, 134 by 40 at 12 and 6, with the product's first line and a 20px
+disclosure slot; up to six pinned items, 32px high, 8px from the brand button and
+from each other, with no dividers, hidden below 1024px; and the top-right cluster:
+the product's `headerActions`, the bell and the avatar. The paper sits under the band,
+12px from the sides and the bottom, with the 14px paper radius and the s1 shadow, and
+the page scrolls inside it. The brand button opens the full menu (`ShellMenu`), 952px
+wide and 6px under the button, with a 40px search, three columns of 32px rows, up to
+four levels and a bottom bar with the current position and a decorative lockup; at
+760px and narrower it is a Sheet with 44px rows and search. A pinned group or
+submenu opens a 240px drop-down (`ShellDropdown`) 6px under its pin, whose third and
+fourth levels cascade 4px to the right on click. Esc, a pointer outside and a
+selection close each layer and return focus to its trigger; ⌘K or Ctrl+K opens the
+full menu, with one listener per shell. The avatar menu holds the product switcher,
+the theme toggle and the language menu. The side rail, its collapse control, the
+mobile drawer toggle and the top bar with its caption and search are gone (M20).
+
+**Pins.** `NavItem` and `NavGroup` take `pinned`, `onPinnedChange` and `pinLabel`, and
+with `onPinnedChange` render a 24px pin button; the icon roster adds `pin`, 38 names,
+drawn as an outline that the package's CSS fills where a pin is pressed. The shell
+preference `collapsed` gives way to `pins`, the ordered pinned ids that a product's
+backend keeps per user and per product, with a `localStorage` fallback and no cookie
+(M21, M25).
+
+**The page in the paper.** `ProductShell` requires `pageHeader` and renders it as the
+paper's first row; the trail defaults to the menu's current position. The new
+`--tcrn-layout-content-max-w` (1040px) holds `SettingsLayout` and `DocumentCanvas`
+to that width, centred (M27).
+
+**Brand.** `ProductLockup` takes `firstLine` (`rail` or `lockup`), the brand board's
+first line with the colour mark (M26). Marks come from the approved product-mark
+artwork unchanged; AOS has none in it yet, so an AOS shell has no brand button. The
+TMS suffix is #2c63c8 in both themes, declared once in the theme-independent block.
+By night it is below 4.5:1, so the contrast proof and the axe check carry two
+pending night exemptions, and the night colour is an open Owner decision (M28).
+
+**Sign-in intro.** `ShellIntro` plays once a session after sign-in: a 120ms fade, a
+240ms move and a 100ms rise of the paper, within 700ms, on transform and opacity
+only, and not at all under reduced motion. The product mounts it (M29).
+
+**Tokens.** Twenty theme-independent tokens are new: sixteen `--tcrn-shell-*` sizes
+and four `--tcrn-motion-intro-*` timings (M24).
+
+**Storybook.** The navigation shell category adds `shell-top-band`, `shell-narrow`,
+`shell-mobile`, `shell-intro` and `shell-matrix` (the shell board's 66 cells, from a
+sixth board in the contract's matrices). The six sample stories keep their ids and
+render on the top-band shell, the Actions sample as a roster page. Every
+documentation page renders inside the package's `ProductShell`, with its contents
+rail in the paper and its column 1040px wide. The storybook map keeps 23 rows. The
+sign-in intro does not play on the static pages, which have no client React.
+
+**Gates.** `geometry:measure` runs the shell's eighteen checks
+(`scripts/shell-measure-proof.mjs`) on the two shell boards and on the real stories,
+and its `shellFrame` check reads the band, the paper and the paper's 14px radius.
+`shell:parity`, `doc-shell:proof`, the shell-fidelity guard, `storybook:smoke` and
+the internal-alpha browser proof read the documentation pages' top-band shell.
+
 ### Three shell tokens retired by the top band (TCRN-DS-INIT-016)
 
 Status: candidate on the INIT-016 integration branch, not tagged, published or deployed.
