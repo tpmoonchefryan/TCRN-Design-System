@@ -14,6 +14,8 @@
 // TCRN-DS-SUB-119: the top-right cluster of ProductShell (07a board: the bell "通知 · 3 条未读" and the
 // avatar "林晓 · 账户、切换产品、主题与语言") and its avatar menu: the account, the product switcher,
 // and the theme and language, which moved there from the old top bar (decomposition problem 14).
+// TCRN-DS-SUB-126: the Sheet's two lists, 760 wide and narrower (07a board, screen A8: the pinned
+// entries under "固定项 · 4", then every group under "全部").
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { resolveDocumentLocale } from "../../utils.js";
 
@@ -44,6 +46,10 @@ export interface TcrnShellCopy {
   themeAndLanguage: string;
   /** Bell name, with the unread count when there is one. */
   notificationsOf: (unread: number) => string;
+  /** Title of the Sheet's list of pinned entries, with their count. */
+  pinnedItemsOf: (count: number) => string;
+  /** Title of the Sheet's list of every group. */
+  allNavigation: string;
 }
 
 export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
@@ -60,7 +66,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · 账户、切换产品、主题与语言`,
     switchProduct: "切换产品",
     themeAndLanguage: "主题与语言",
-    notificationsOf: (unread) => (unread > 0 ? `通知 · ${unread} 条未读` : "通知")
+    notificationsOf: (unread) => (unread > 0 ? `通知 · ${unread} 条未读` : "通知"),
+    pinnedItemsOf: (count) => `固定项 · ${count}`,
+    allNavigation: "全部"
   },
   en: {
     openNavigationOf: (productName) => `Open navigation · ${productName}`,
@@ -75,7 +83,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · Account, switch product, theme and language`,
     switchProduct: "Switch product",
     themeAndLanguage: "Theme and language",
-    notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} unread` : "Notifications")
+    notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} unread` : "Notifications"),
+    pinnedItemsOf: (count) => `Pinned items · ${count}`,
+    allNavigation: "All"
   },
   ja: {
     openNavigationOf: (productName) => `ナビゲーションを開く · ${productName}`,
@@ -90,7 +100,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · アカウント、プロダクトの切り替え、テーマと言語`,
     switchProduct: "プロダクトを切り替え",
     themeAndLanguage: "テーマと言語",
-    notificationsOf: (unread) => (unread > 0 ? `通知 · 未読 ${unread} 件` : "通知")
+    notificationsOf: (unread) => (unread > 0 ? `通知 · 未読 ${unread} 件` : "通知"),
+    pinnedItemsOf: (count) => `固定した項目 · ${count}`,
+    allNavigation: "すべて"
   },
   ko: {
     openNavigationOf: (productName) => `내비게이션 열기 · ${productName}`,
@@ -105,7 +117,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · 계정, 제품 전환, 테마와 언어`,
     switchProduct: "제품 전환",
     themeAndLanguage: "테마와 언어",
-    notificationsOf: (unread) => (unread > 0 ? `알림 · 읽지 않음 ${unread}개` : "알림")
+    notificationsOf: (unread) => (unread > 0 ? `알림 · 읽지 않음 ${unread}개` : "알림"),
+    pinnedItemsOf: (count) => `고정한 항목 · ${count}`,
+    allNavigation: "전체"
   },
   fr: {
     openNavigationOf: (productName) => `Ouvrir la navigation · ${productName}`,
@@ -120,7 +134,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · Compte, changer de produit, thème et langue`,
     switchProduct: "Changer de produit",
     themeAndLanguage: "Thème et langue",
-    notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} non lues` : "Notifications")
+    notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} non lues` : "Notifications"),
+    pinnedItemsOf: (count) => `Éléments épinglés · ${count}`,
+    allNavigation: "Tout"
   }
 };
 

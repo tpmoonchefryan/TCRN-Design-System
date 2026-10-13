@@ -38,6 +38,8 @@ import { brandCss01, brandCss02, brandCss03, brandCss04 } from "./brand.css.js";
 import { shellCss01, shellCss02, shellCss03, shellCss04, shellCss05 } from "./shell.css.js";
 // The sign-in intro comes after the top-band shell parts (TCRN-DS-SUB-122, C-8).
 import { shellIntroCss01 } from "./shell-intro.css.js";
+// The Sheet, the full menu 760 wide and narrower, comes after the sign-in intro (TCRN-DS-SUB-126, C-8).
+import { shellSheetCss01 } from "./shell-sheet.css.js";
 
 export const tcrnComponentCss: string = [
   baseCss01,
@@ -123,5 +125,6 @@ export const tcrnComponentCss: string = [
   shellCss03,
   shellCss04,
   shellCss05,
-  shellIntroCss01
+  shellIntroCss01,
+  shellSheetCss01
 ].join("");

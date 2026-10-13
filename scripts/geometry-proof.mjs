@@ -2,9 +2,10 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, normalize, relative, resolve } from "node:path";
 import { chromium } from "@playwright/test";
+import { build } from "esbuild";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { ProductShell, RecordInspector, StatusBadge, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
+import { RecordInspector, StatusBadge, tcrnComponentCss } from "../packages/ui-react/dist/index.js";
 
 import { tcrnTokenCss, tcrnTokens } from "../packages/ui-tokens/dist/index.js";
 import { pathToFileURL } from "node:url";
@@ -315,37 +316,78 @@ async function removeMutation(page) {
   await settle(page);
 }
 
+// INC-399 reachability (TCRN-DS-SUB-126; 07b board, section D row "窄于 1024"): 760 and 390 wide
+// the brand button is still reached after the page has scrolled, and it opens the Sheet. A real
+// ProductShell runs in the page (client React, bundled once with esbuild from the built packages)
+// with a long page in its paper; the paper and the window are scrolled 2000px, the brand button
+// ([data-tab]) is hit at its centre and pressed, and the Sheet is read: [data-panel="sheet"], shown
+// inside the viewport. The shell holds two pins, which the band does not show at these widths. The
+// broken leg lets the band scroll away with the page, the way the old sticky top bar hid the
+// mobile navigation toggle.
+const MOBILE_SCROLL_PX = 2000;
+const MOBILE_HEIGHT_PX = 844;
+const MOBILE_BROKEN_CSS = ".tcrn-product-shell { block-size: auto; overflow: visible; } .tcrn-product-shell__paper, .tcrn-product-shell__paper > .tcrn-product-shell__main { overflow: visible; }";
+const mobileNavigationFixture = `
+import { createElement as h } from "react";
+import { flushSync } from "react-dom";
+import { createRoot } from "react-dom/client";
+import { ProductShell, tcrnComponentCss } from "./packages/ui-react/dist/index.js";
+import { tcrnTokenCss } from "./packages/ui-tokens/dist/index.js";
+const style = document.createElement("style");
+style.textContent = tcrnTokenCss + tcrnComponentCss;
+document.head.append(style);
+const navGroups = [{ id: "pages", label: "Pages", items: [{ id: "settings", label: "Settings", href: "#settings" }, { id: "members", label: "Members", href: "#members" }] }];
+const content = Array.from({ length: 160 }, (_, i) => h("p", { key: i }, "Example content " + i));
+flushSync(() => createRoot(document.getElementById("fixture")).render(h(ProductShell, {
+  productName: "Navigation example", moduleName: "Library", brandProductId: "design-system", currentRouteLabel: "Settings",
+  pageHeader: { title: "Settings" }, navGroups, locales: [{ value: "en", label: "English" }], currentLocale: "en",
+  pinnedIds: ["settings", "members"], onPinnedChange: () => undefined
+}, content)));
+`;
+let mobileNavigationBundle;
+
+async function mobileNavigationScript() {
+  mobileNavigationBundle ??= (await build({
+    stdin: { contents: mobileNavigationFixture, resolveDir: resolve("."), sourcefile: "mobile-navigation-fixture.js", loader: "js" },
+    write: false, bundle: true, platform: "browser", format: "iife", logLevel: "silent"
+  })).outputFiles[0].text;
+  return mobileNavigationBundle;
+}
+
 async function measureMobileNavigation(page, width, broken = false) {
-  await page.setViewportSize({ width, height: 900 });
-  const markup = renderToStaticMarkup(createElement(ProductShell, {
-    productName: "Navigation example", moduleName: "Library", currentRouteLabel: "Settings",
-    navLabel: "Pages", navGroups: [{ label: "Pages", items: [{ label: "Settings", href: "#settings" }] }],
-    locales: [{ value: "en", label: "English" }], currentLocale: "en",
-    headerActions: createElement("select", { "aria-label": "Library" }, createElement("option", null, "Example library")),
-  }, Array.from({ length: 80 }, (_, i) => createElement("p", { key: i }, "Example content " + i))));
-  await page.setContent(`<style>${tcrnComponentCss}</style>${markup}`);
-  await page.evaluate(() => {
-    const toggle = document.querySelector('[data-mobile-nav-toggle]');
-    toggle.addEventListener('click', () => {
-      const shell = toggle.closest('.tcrn-product-shell');
-      const expanded = shell.dataset.mobileNavExpanded !== 'true';
-      shell.dataset.mobileNavExpanded = String(expanded);
-      toggle.setAttribute('aria-expanded', String(expanded));
-    });
-  });
-  if (broken) await page.addStyleTag({ content: '.tcrn-product-shell__workspace > .tcrn-top-bar { position: sticky; top: 0; z-index: 20; }' });
-  await page.evaluate(() => window.scrollTo(0, 500));
-  const observation = await page.locator('[data-mobile-nav-toggle]').evaluate(toggle => {
-    const box = toggle.getBoundingClientRect();
+  await page.setViewportSize({ width, height: MOBILE_HEIGHT_PX });
+  await page.setContent('<!doctype html><meta charset="utf-8"><body style="margin:0"><div id="fixture"></div></body>');
+  await page.addScriptTag({ content: await mobileNavigationScript() });
+  if (broken) await page.addStyleTag({ content: MOBILE_BROKEN_CSS });
+  await settle(page);
+  const scrolled = await page.evaluate((distance) => {
+    const scroller = document.querySelector("[data-paper] > .tcrn-product-shell__main");
+    if (scroller) scroller.scrollTop = distance;
+    window.scrollTo(0, distance);
+    return { paper: scroller ? Math.round(scroller.scrollTop) : null, window: Math.round(window.scrollY) };
+  }, MOBILE_SCROLL_PX);
+  const observation = await page.locator("[data-tab]").evaluate((tab) => {
+    const box = tab.getBoundingClientRect();
     const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
-    return { box: box.toJSON(), hit: hit?.outerHTML, reachable: toggle === hit || toggle.contains(hit) };
+    // Narrower than 1024 the band shows the first version of the brand button and no pinned item.
+    const pinsShown = [...document.querySelectorAll("[data-pins] [data-pin]")].filter((pin) => pin.getBoundingClientRect().width > 0).length;
+    return { box: box.toJSON(), brandVersion: tab.getAttribute("data-shell-brand"), pinsShown, hit: hit ? hit.outerHTML.slice(0, 200) : null, reachable: tab === hit || tab.contains(hit) };
   });
-  let expanded = false;
+  let sheet = null;
   if (observation.reachable) {
-    await page.locator('[data-mobile-nav-toggle]').click();
-    expanded = await page.locator('[data-mobile-nav-toggle]').getAttribute('aria-expanded') === 'true';
+    await page.locator("[data-tab]").click();
+    sheet = await page.evaluate(() => {
+      const panel = document.querySelector('[data-panel="sheet"]');
+      if (!panel) return null;
+      const box = panel.getBoundingClientRect();
+      const band = document.querySelector("[data-shell-strip]")?.getBoundingClientRect();
+      const rows = [...new Set([...panel.querySelectorAll("[data-shell-row]")].map((row) => Math.round(row.getBoundingClientRect().height * 10) / 10))];
+      const search = panel.querySelector("[data-shell-search]")?.getBoundingClientRect().height ?? null;
+      return { box: box.toJSON(), bandBottom: band ? band.bottom : null, rows, search, shown: box.height > 0 && box.top >= 0 && box.bottom <= window.innerHeight + 0.5 };
+    });
   }
-  return { width, broken, ...observation, expanded, ok: observation.reachable && expanded };
+  const expanded = await page.locator("[data-tab]").getAttribute("aria-expanded") === "true";
+  return { width, broken, scrolled, ...observation, expanded, sheet, ok: observation.reachable && expanded && Boolean(sheet?.shown) };
 }
 
 /** Browser-serializable geometry oracle shared by capture qualification and mutation proof.

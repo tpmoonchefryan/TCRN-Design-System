@@ -10,7 +10,17 @@ import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
 import { createTokenMap } from "@tcrn/ui-tokens";
 import { tcrnComponentCss } from "../../styles/index.js";
 import { shellCss03 } from "../../styles/shell.css.js";
-import { ShellMenu, shellMenuMaxDepth, shellMenuRow, shellMenuSearch, type ShellMenuGroup } from "./ShellMenu.js";
+import { shellIntroCss01 } from "../../styles/shell-intro.css.js";
+import { shellSheetCss01 } from "../../styles/shell-sheet.css.js";
+import {
+  ShellMenu,
+  shellMenuPresentationContext,
+  shellMenuMaxDepth,
+  shellMenuRow,
+  shellMenuSearch,
+  shellMenuSheetMediaQuery,
+  type ShellMenuGroup
+} from "./ShellMenu.js";
 import { tcrnShellCopy } from "./shell-copy.js";
 
 const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -314,4 +324,143 @@ test("the built-in search keeps the entries whose name, or an item above them, h
   assert.deepEqual(titles("  "), []);
   assert.deepEqual(shellMenuSearch(boardMenu, "名册"), [{ id: "roster", title: "名册", meta: "艺人", href: "#roster" }]);
   assert.equal(shellMenuSearch(boardMenu, "签约")[0]?.meta, "艺人 › 合约 › 模板");
+});
+
+// The Sheet (TCRN-DS-SUB-126; 07a board, screen A8): the board's four pins and its group icons.
+const sheetMenu: readonly ShellMenuGroup[] = boardMenu.map((group, index) => ({ ...group, iconName: (["users", "calendar", "settings"] as const)[index] }));
+const boardPins = [
+  { id: "roster", label: "名册", href: "#roster" },
+  { id: "contracts", label: "合约", hasMenu: true },
+  { id: "billing", label: "结算单", href: "#billing" },
+  { id: "schedule", label: "排期", hasMenu: true }
+];
+
+function renderBoardSheet(extra: Partial<Parameters<typeof ShellMenu>[0]> = {}) {
+  return renderBoardMenu({ groups: sheetMenu, presentation: "sheet", pinnedItems: boardPins, ...extra });
+}
+
+test("760 wide and narrower the menu is the Sheet: the scrim, one non-modal dialog, the grab line, the search and the two lists", () => {
+  assert.equal(shellMenuSheetMediaQuery, "(max-width: 760px)");
+  const html = renderBoardSheet();
+  assert.match(
+    html,
+    /^<div class="tcrn-shell-sheet__scrim" data-shell-scrim="" aria-hidden="true"><\/div><div class="tcrn-shell-menu tcrn-shell-sheet" data-shell-menu=""><section id="menu" class="tcrn-shell-sheet__panel" role="dialog" aria-modal="false" aria-label="导航" tabindex="-1" data-panel="sheet"><span class="tcrn-shell-sheet__grab" aria-hidden="true"><\/span><div data-shell-search=""/
+  );
+  assert.equal((html.match(/role="dialog"/g) ?? []).length, 1);
+  assert.doesNotMatch(html, /data-panel="expanded"|data-shell-pbar|data-lockup/, "no panel, no bottom bar: the paper shows the current position");
+  // The pinned entries first, then every group (07a board: "固定项 · 4", "全部").
+  const pinnedTitle = html.indexOf(">固定项 · 4<");
+  const allTitle = html.indexOf(">全部<");
+  assert.ok(pinnedTitle > 0 && allTitle > pinnedTitle, "固定项 · 4 comes before 全部");
+  assert.equal((html.match(/data-shell-group=""/g) ?? []).length, 2);
+  assert.equal((html.match(/data-shell-row=""/g) ?? []).length, 7, "four pins and three groups");
+  assert.equal((html.match(/data-shell-level="1"/g) ?? []).length, 7);
+  assert.equal((html.match(/aria-current="page"/g) ?? []).length, 1, "the selected row; no trail in the Sheet");
+  // A group and a pinned entry with a next level open it on a press: five such rows, with the chevron.
+  assert.equal((html.match(/tcrn-shell-menu__sub/g) ?? []).length, 5);
+  assert.equal((html.match(/<a(?=[^>]*role="button")(?=[^>]*aria-expanded="false")[^>]*>/g) ?? []).length, 5);
+  assert.match(html, /<span class="tcrn-shell-menu__text">运营<\/span><svg[^>]*width="12"[^>]*data-icon-name="chevron-right"/);
+  // The rows carry the model's icons; the only buttons are the pins.
+  assert.match(html, /<a(?=[^>]*title="艺人")[^>]*>[\s\S]*?data-icon-name="users"/);
+  const buttons = html.match(/<button[^>]*>/g) ?? [];
+  assert.equal(buttons.length, 7);
+  for (const button of buttons) assert.match(button, /data-pin-button=""/);
+  assert.equal((html.match(/aria-pressed="true"/g) ?? []).length, 4);
+  assert.doesNotMatch(html, /collapse|收起/);
+  // Without pins there is only the list of every group.
+  const bare = renderBoardSheet({ pinnedItems: [] });
+  assert.doesNotMatch(bare, /data-shell-pinned-group/);
+  assert.equal((bare.match(/data-shell-group=""/g) ?? []).length, 1);
+});
+
+test("the presentation is the prop's, else the context's; on the server auto is the panel", () => {
+  const menu = (extra: Partial<Parameters<typeof ShellMenu>[0]> = {}) => <ShellMenu groups={boardMenu} open productId="tms" id="menu" locale="en" {...extra} />;
+  assert.match(renderToStaticMarkup(menu()), /data-panel="expanded"/);
+  assert.match(renderToStaticMarkup(<shellMenuPresentationContext.Provider value="sheet">{menu()}</shellMenuPresentationContext.Provider>), /data-panel="sheet"/);
+  assert.match(renderToStaticMarkup(<shellMenuPresentationContext.Provider value="sheet">{menu({ presentation: "panel" })}</shellMenuPresentationContext.Provider>), /data-panel="expanded"/);
+  assert.match(renderToStaticMarkup(menu({ presentation: "sheet" })), /data-panel="sheet"/);
+  assert.equal(renderToStaticMarkup(menu({ presentation: "sheet", open: false })), "", "closed, nothing is rendered");
+});
+
+test("the Sheet sits on the bottom edge below the top band, at most 84% high, over a scrim of 20% ink", () => {
+  assert.equal(declaration(ruleBody(".tcrn-shell-menu.tcrn-shell-sheet", shellSheetCss01), "display"), "contents");
+  const scrim = ruleBody(".tcrn-shell-sheet__scrim", shellSheetCss01);
+  assert.equal(declaration(scrim, "position"), "fixed");
+  assert.equal(declaration(scrim, "inset"), "0");
+  assert.equal(declaration(scrim, "background"), "color-mix(in srgb, var(--tcrn-color-ink) 20%, transparent)");
+  const panel = ruleBody(".tcrn-shell-sheet__panel", shellSheetCss01);
+  assert.equal(declaration(panel, "position"), "fixed");
+  assert.equal(declaration(panel, "inset-inline"), "0");
+  assert.equal(declaration(panel, "inset-block-end"), "0");
+  assert.equal(declaration(panel, "max-block-size"), "min(84%, calc(100% - var(--tcrn-shell-strip-h)))");
+  assert.equal(declaration(panel, "padding"), "var(--tcrn-space-2) var(--tcrn-space-2) var(--tcrn-space-3)");
+  assert.equal(declaration(panel, "border-radius"), "var(--tcrn-radius-paper) var(--tcrn-radius-paper) 0 0");
+  assert.equal(declaration(panel, "background"), "var(--tcrn-color-panel)");
+  assert.equal(declaration(panel, "box-shadow"), "var(--tcrn-shadow-s3)");
+  assert.equal(declaration(panel, "z-index"), "var(--tcrn-z-overlay)");
+  assert.equal(declaration(scrim, "z-index"), "var(--tcrn-z-overlay)");
+  const tokens = createTokenMap();
+  const px = (variable: string) => Number.parseFloat(tokens[variable]);
+  // 844 high (390 × 844): the Sheet is at most 709 high, so its top (135) stays below the band (52).
+  assert.equal(px("--tcrn-shell-strip-h"), 52);
+  assert.ok(844 - Math.min(0.84 * 844, 844 - px("--tcrn-shell-strip-h")) >= px("--tcrn-shell-strip-h"));
+  assert.deepEqual([px("--tcrn-space-2"), px("--tcrn-space-3"), px("--tcrn-radius-paper")], [8, 12, 14], "inset 8 8 12, radius 14 14 0 0");
+  // The grab line: 36 by 4, the line-2 ink.
+  const grab = ruleBody(".tcrn-shell-sheet__grab", shellSheetCss01);
+  assert.equal(declaration(grab, "inline-size"), "calc(3 * var(--tcrn-space-3))");
+  assert.equal(3 * px("--tcrn-space-3"), 36);
+  assert.equal(declaration(grab, "block-size"), "var(--tcrn-space-1)");
+  assert.equal(px("--tcrn-space-1"), 4);
+  assert.equal(declaration(grab, "background"), "var(--tcrn-color-line-2)");
+});
+
+test("in the Sheet rows and the search are 44 high and a pin takes presses 44 across", () => {
+  const panel = ruleBody(".tcrn-shell-sheet__panel", shellSheetCss01);
+  assert.equal(declaration(panel, "--tcrn-shell-row-h"), "44px");
+  assert.equal(declaration(panel, "--tcrn-shell-srch-h"), "44px");
+  // The rows and the search read these tokens (shellCss03), so the Sheet's are 44 whatever the pointer.
+  assert.equal(declaration(ruleBody(".tcrn-shell-menu .tcrn-nav-item"), "block-size"), "var(--tcrn-shell-row-h)");
+  assert.equal(declaration(ruleBody(".tcrn-shell-menu .tcrn-nav-item-row"), "block-size"), "var(--tcrn-shell-row-h)");
+  assert.equal(declaration(ruleBody(".tcrn-shell-menu__search .tcrn-search-input"), "--tcrn-search-input-block-size"), "var(--tcrn-shell-srch-h)");
+  const hotZone = ruleBody(".tcrn-shell-sheet .tcrn-nav-pin::after", shellSheetCss01);
+  assert.equal(declaration(hotZone, "position"), "absolute");
+  assert.equal(declaration(hotZone, "inset"), "calc(-1 * var(--tcrn-space-2h))");
+  const tokens = createTokenMap();
+  const px = (variable: string) => Number.parseFloat(tokens[variable]);
+  assert.equal(px("--tcrn-shell-pinb") + 2 * px("--tcrn-space-2h"), 44);
+  // The pin ends space-1 before the row's end, so its 44 passes the row by 6: the list's scrollport
+  // reaches the Sheet's edge (space-2 further), its rows stay where they were.
+  const list = ruleBody(".tcrn-shell-sheet__list", shellSheetCss01);
+  assert.equal(declaration(list, "margin-inline"), "calc(-1 * var(--tcrn-space-2))");
+  assert.equal(declaration(list, "padding-inline"), "var(--tcrn-space-2)");
+  assert.ok(px("--tcrn-space-2h") - px("--tcrn-space-1") <= px("--tcrn-space-2"));
+  // The rows keep the full menu's icon column; a row without an icon starts its text in the second.
+  const row = ruleBody(".tcrn-shell-sheet .tcrn-nav-item", shellSheetCss01);
+  assert.equal(declaration(row, "grid-template-columns"), declaration(ruleBody(".tcrn-shell-menu__cols .tcrn-nav-item"), "grid-template-columns"));
+  assert.equal(declaration(row, "padding-inline-start"), "var(--tcrn-space-2)");
+});
+
+test("the light and the night Sheet share their rules; it fades, opacity only, and comes last in the stylesheet", () => {
+  assert.doesNotMatch(shellSheetCss01, /data-tcrn-theme/, "no rule names a theme");
+  assert.doesNotMatch(shellSheetCss01, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i, "colours only through tokens");
+  assert.doesNotMatch(shellSheetCss01, /transform|translate|scale\(/, "nothing moves");
+  assert.equal((shellSheetCss01.match(/animation: tcrn-shell-menu-enter var\(--tcrn-motion-duration-fill\) var\(--tcrn-motion-ease\) both;/g) ?? []).length, 2);
+  const reduced = /@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/.exec(shellSheetCss01);
+  assert.ok(reduced);
+  assert.match(reduced[1], /\.tcrn-shell-sheet__scrim,\n {2}\.tcrn-shell-sheet__panel \{\n {4}animation: none;/);
+  assert.ok(tcrnComponentCss.endsWith(shellIntroCss01 + shellSheetCss01), "after the sign-in intro, last");
+});
+
+test("the Sheet's copy is written in all five locales", () => {
+  for (const locale of tcrnSupportedLocales) {
+    const copy = tcrnShellCopy[locale];
+    assert.ok(copy.allNavigation.trim().length > 0, `${locale} allNavigation`);
+    assert.match(copy.pinnedItemsOf(4), /4/, `${locale} pinnedItemsOf`);
+    assert.notEqual(copy.allNavigation, copy.pinnedGroup);
+    assert.notEqual(copy.pinnedItemsOf(4), copy.pinnedItems);
+    const html = renderBoardSheet({ locale });
+    assert.ok(html.includes(`>${copy.pinnedItemsOf(4)}<`), `${locale} pinned title`);
+    assert.ok(html.includes(`>${copy.allNavigation}<`), `${locale} all title`);
+    assert.match(html, new RegExp(`aria-label="${escapeRegExp(copy.navigation)}" tabindex="-1" data-panel="sheet"`));
+  }
 });
