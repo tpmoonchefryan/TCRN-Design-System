@@ -18,6 +18,7 @@
 | P4 | `runs/r1/handoff/P4.md` 第 39–46 行（第 4 节） | `--tcrn-brand-suffix-tms` 只在主题无关块、没有 dark 值，读夜间值用 `createResolvedTokenMap("dark")`；`WORDMARK_EXEMPTIONS` 4 条，夜间 TMS 两条带 `pending`（D7） |
 | P1b | `runs/r1/handoff/P1b.md` 第 67–77 行（第 4 节） | 新件 `ShellMenu`、`ShellDropdown` 与 C-7 菜单模型类型、可复用的 `useShellTransientLayer`（Esc、点外部、选中即收，Esc 与选中后焦点回触发键）；ProductShell 接线写法（SUB-119 照抄）；壳根要成为 `.tcrn-shell-menu` 的定位包含块；下拉不传 ref 时按 `aria-controls` 找固定项；门用的 DOM 钩子；`shell-copy.ts` 新键；`shell.css.ts` 下一段命名 `shellCss05` |
 | P5 | `runs/r1/handoff/P5.md` 第 43–51 行（第 4 节） | 新导出 `ShellIntro`（`productId`、`card`、`shellRef?`、`sessionMarker?`、`onFinish?`、`locale?`）与 `shellIntroPlan`、`shellIntroTimeline`、`shellIntroSessionMarker`；动画期间压住并淡入 `[data-paper]`、`[data-cluster]`、`[data-pins]` 与标按钮首行；`styles/index.ts` 里 `shellIntroCss01` 在壳层段之后 |
+| P1c | `runs/r1/handoff/P1c.md` 第 52–60 行（第 4 节） | ProductShell 只剩顶带态：`brandProductId` 必填（产品标键），侧栏、收起、品牌文案、顶栏搜索相关 prop 已删（类型层拒绝）；新增 `pinnedIds`/`onPinnedChange`、`account`、`products`、`notifications`、三层浮层的受控 prop、`searchProvider`；控制器 `requestPreferences` 为 `{theme, locale, pins}`，新增 `productId`、`pinsStorageKey`、`onPinsChange`、`setPinned`、`movePin`；固定项不进 cookie。已知：AOS 在 logos2 没有标，三处 AOS story 暂传 `design-system`（待 Owner）；包外门（shell-parity、geometry、smoke、样板 rail 读数）会按 C-12 变红，归各自持有者 |
 
 ## 3. W3 共享文件（P1c 与 P5 同时在跑）
 

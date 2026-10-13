@@ -34,7 +34,8 @@
 | P2 | 已合入，包树已退役（271 MB） | 3f87bb3、04484e0、8c96e48、622c335 | f078b6f | token-extension-proof 在包树红 1 条（`--tcrn-shell-pinb` 未解析，P1a 合入后应转绿，批末核）；问题 12 条 |
 | P3 | 已合入，包树已退役（236 MB） | 5bcc0a7、dad8d00 | a2f3538 | 18 门在两块画板上全绿、18 条变异全红；默认模式（真件）未跑，等 SUB-137；问题 4 条；交回第 5 节列了壳件钩子要求，已用消息转给在跑的 P1b（只做其文件集内的，其余记问题） |
 | P1b | 已合入，包树已退役（239 MB） | f2d2921、867e43e、8391672、35c43d6、2a0a376 | 89a6c03 | 局部门终态全 0（ui-react test 202/202、test:dom 37/37）；越出文件集改了 `styles/index.ts` 两行登记（W2 无人持有，合入无冲突）；问题 8 条，第 5 条（完整菜单里级联列的位置，1440 宽同开两列超出视口 12）是设计待定项 |
-| P1c | 在跑（自 0495e92；摘录 169e732） | | | 允许为登记 `shellCss05…` 改 `styles/index.ts` 两处登记行（cross-notes 第 3 节） |
+| P1c | 已合入，包树已退役（272 MB） | caf6cfa、f85de9f、9872a16（合入集成分支解登记冲突）、abdb929 | c7fd635 | 局部门除既有红外全 0；问题 11 条：AOS 在 logos2 无标（三处 AOS story 暂传 design-system，待 Owner）、顶带无拖排手势（ShellPins.tsx 不在本包）、包外门按 C-12 会红 |
+| P1d | 在跑（自 c7fd635） | | | |
 | P5 | 已合入，包树已退役（239 MB） | 7eefd5b、5825bcb | f7d6f6d | 局部门全 0（ui-react test 208/209，唯一红是既有红）；问题 5 条，要紧的一条：静态 Storybook 页无客户端 React，ShellIntro 不播放（下一轮）；已经消息让 P1c 交回前把集成分支合进包树、解 `styles/index.ts` 登记冲突 |
 
 - 跨包通告 `runs/r1/excerpts/cross-notes.md`（已知红、已合入包的接口行段、W3 共享文件规则）随每次派工指给子代理，包交回后主线程补行。
