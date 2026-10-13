@@ -42,7 +42,8 @@
 | P9 | 已合入，包树已退役（273 MB） | a322eff、55f3d48 | 20193f3 | contract:proof 11/11、壳层板与 B 段差 0.00；storybook test 11/12（composition-one 既有红）；问题 7 条（壳层门读不了 8 格、铃铛悬停 3.5% 对板 6%、geometry-proof 展开菜单常数 13→15 等） |
 | P12 | 在跑（自 20193f3 后的集成 HEAD；P8 仍在跑，文件集不相交，滚动补位） | | | 已消息：P8 合入改了面包屑与 Tabs 的 DOM，交回前合入集成分支、按新 DOM 核对选择器重跑局部门 |
 | P8 | 已合入，包树已退役（273 MB） | 8873a9a、601b6c9、1913b24 | 34e81f6 | 局部门除两条既有红外全 0（ui-react test 的 TMS 后缀、doc-shell:proof 的 `tcrn-shell-dropdown__col` 在 080286d 即有）；问题 10 条（smoke 两处断言旧标记、样板三弃用 TopBar 无样式、roles.json 仍登记 3 个退役类名等） |
-| P10 | 在跑（自 34e81f6 后的集成 HEAD） | | | |
+| P10 | 已合入，包树已退役（272 MB） | 6d10851、6144e08 | 513424c | 文档页全进顶带壳（1440 读数：顶带 52、标按钮 134×40、纸 12/52/14、TocRail 在纸内、页列 1040 居中、夜间计数 ink-2）；doc-shell:proof 与 storybook test 的红与改前相同（`tcrn-shell-dropdown__col`；smoke 断言旧文档头归 SUB-132）；问题 8 条 |
+| P13 | 在跑（自 513424c 后的集成 HEAD） | | | |
 | P11 | 在跑（同上） | | | |
 | P5 | 已合入，包树已退役（239 MB） | 7eefd5b、5825bcb | f7d6f6d | 局部门全 0（ui-react test 208/209，唯一红是既有红）；问题 5 条，要紧的一条：静态 Storybook 页无客户端 React，ShellIntro 不播放（下一轮）；已经消息让 P1c 交回前把集成分支合进包树、解 `styles/index.ts` 登记冲突 |
 
