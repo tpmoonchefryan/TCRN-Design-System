@@ -15,8 +15,9 @@
 //
 // Three exception categories:
 //   exemptSubtreeSelectors  subtrees whose rendered text is deliberately locale-invariant
-//                           (visual-instance oracles; machine tokens in code/pre/kbd/samp;
-//                           explicit data-locale-invariant opt-out). Removed before the scan.
+//                           (visual-instance oracles; the brand wordmark; machine tokens in
+//                           code/pre/kbd/samp; explicit data-locale-invariant opt-out). Removed
+//                           before the scan.
 //   properNouns             standalone Latin tokens that stay Latin on every locale. Stripped
 //                           from a line before runs are measured, so they never seed a run.
 //   translationDebtAllowlist  the CURRENTLY untranslated multi-word strings, per story. This
@@ -32,6 +33,13 @@ export const localeInvariantLedger = {
     // emitted at aos-frontend-shell-slice.tsx / aos-owner-quality-product-shell.tsx. The
     // exemption is attribute-keyed, so it survives S057 relocating the oracles to Proof.
     "[data-storybook-visual-instance]",
+    // The brand wordmark, the brand asset's own words (Logos board, section E), stays Latin on every
+    // locale: the brand button's word (b and em), a lockup's first line and the BrandWordmark. MUST
+    // mirror the wordmark half of the same runtime-swap skip (TCRN-DS-SUB-166); a lockup's
+    // description line is copy, is swapped and stays scanned.
+    ".tcrn-shell-brand__word",
+    ".tcrn-product-logo__line-one",
+    ".tcrn-brand-wordmark",
     // Machine tokens: the 39-token colour index and every <code> identifier/value, plus the
     // pre/kbd/samp siblings. These are API identifiers and token values, not prose; they are
     // English on every locale by design. (The runtime swap does NOT skip <code> — these stay

@@ -513,8 +513,8 @@ function docShellHtml(page: DocShellPage, locale: TcrnLocale = tcrnDefaultLocale
   const collapsedLabel = attributeValue(closed, 'data-shell-brand="', "aria-label");
   let html = setAttributes(closed, 'data-shell-brand="', `data-expanded-label="${expandedLabel}" data-collapsed-label="${collapsedLabel}"`);
   // The wordmark is the brand asset's own words (Logos board, section E) and reads the same in every
-  // language; the page's string swap must not translate its suffix.
-  html = setAttributes(html, 'class="tcrn-shell-brand__word"', 'data-locale-invariant=""');
+  // language: the page's string swap leaves every brand wordmark alone by its class (client-scripts.ts,
+  // TCRN-DS-SUB-166), so the shell needs no data-locale-invariant, which is the English-leak ledger's.
   const avatarEnd = html.indexOf("</button>", html.indexOf('data-shell-avatar=""')) + "</button>".length;
   html = `${html.slice(0, avatarEnd)}${account}${localeSelect}${html.slice(avatarEnd)}`;
   const stripEnd = html.indexOf("</header>") + "</header>".length;
