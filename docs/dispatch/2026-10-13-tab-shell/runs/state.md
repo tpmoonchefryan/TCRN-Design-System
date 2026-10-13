@@ -55,7 +55,16 @@
 
 ### R2
 
-- 拆分：einzbern-economy 单独一次，输入 `runs/r1/judgment.md` §2、§3.1 默认列、§3.4、§5 与 R1 拆分第 1 节约定；Subtask 键号从 `TCRN-DS-SUB-141` 起；产出写 `runs/r2/`。
+- 拆分：einzbern-economy 单独一次并提交（29b78ce）：37 张 Subtask（SUB-141…177，挂原 Story）、13 包 5 波约 1660 响应（K1 经济、K2 主力、K3 主力；K4、K5、K7 主力；K6 主力、K8 经济、K10 主力；K11 主力、K9 经济、K6b 主力；K12 经济）；偏离判断 §5 四处（理由在拆分 2.4 节）；问题 12 条，第 6 条：O-4 不裁则新接的 markText 门对 DS 首行（1.4 > ±1）判红，批末 verify 非 0，只有 Owner 能解。第 12 条的「fonts-vendor 联网」不成立：脚本只从已装 devDependencies 复制，`REGISTRY` 只写进 manifest 元数据。
+- 开工链写：subtasks-batch 37 个 work-create，WORKSPACE_COMMAND_COMPLETED，version 2032 → 2069；读回与 subtasks.json 零差异（planned）。
+- 跨包通告 `runs/r2/excerpts/cross-notes.md`（既有红归属规则、接口指向、fonts-vendor 不联网）。档位按包表：经济包派 einzbern-economy，主力包派 einzbern-main。
+- W1 已派：K1（经济，SUB-141→143→144→154→159→145→146→162）、K2（主力，SUB-165→166→167）、K3（主力，SUB-168→169），包树 scratch `pkg/r2-k1…k3`，摘录 6558994。K7 无前置、文件集与 W1 不相交，有空位即可起。
+
+| 包 | 状态 | 包内提交 | 合入 | 备注 |
+| --- | --- | --- | --- | --- |
+| K1 | 在跑 | | | |
+| K2 | 在跑 | | | |
+| K3 | 在跑 | | | |
 | P14 | 已合入，包树已退役（272 MB） | 4879d45、ad4972d、c4fa1c7（合入集成分支）、5ee8f88 | da61a76 | SUB-134 部分：样板换壳、映射、shellFrame、夹具与测试已交；geometry:measure 单测 70/70、shellFrame 12 run 过、三变异全红，但 12 个样板 run 红在 clip（包内标按钮字标后缀上下超出裁切祖先 1px，问题 1）；visual-proof 23 行中 12 绿；smoke.test.ts 3 红（归 P13 文件）；问题 6 条；两处可更正的选择（样板不要求 rail、Actions 名册人名换 김하늘 记 DIFF-11） |
 | P11 | 已合入，包树已退役（237 MB） | 0f4e670、deaf18b、897317e | 12daf0a | 四块成品板 D 段换顶带壳（Typography、Icon、Actions、Inputs 与对应 V2-B1 草稿板），heights 5836/4271/5216/6530；Shell 两板字面守护 diff 退出 1 是既有 token 块漂移（同 P2 问题 3）；问题 4 条（canvas.json 板高与 y 未跟、Brand 与 Shell 板 D4 关键词残留、Icon 板仍写 37 件） |
 | P14 | 在跑（自 12daf0a 后的集成 HEAD） | | | |
