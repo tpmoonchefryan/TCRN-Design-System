@@ -1,8 +1,8 @@
 import { tcrnDefaultLocale, tcrnFallbackLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { createResolvedTokenMap } from "@tcrn/ui-tokens";
-import { contractStories, contractStoryGroups } from "../stories.js";
+import { contractStories, contractStoriesByGroup, contractStoryGroups } from "../stories.js";
 import { storybookLocaleText } from "./i18n.js";
-import { categoryFileForStory, groupFileName, groupSlug } from "./navigation.js";
+import { categoryFileForStory, categoryFileName, groupFileName, groupSlug, storyCategoriesForGroup } from "./navigation.js";
 
 function canvasColor(theme: "light" | "dark"): string {
   const value = createResolvedTokenMap(theme)["--tcrn-color-bg"];
@@ -74,7 +74,7 @@ export const storybookThemeScript = `<script>
       // Local persistence is helpful, not required for the static proof surface.
     }
   };
-  const themedLinks = () => document.querySelectorAll("[data-story-nav], [data-doc-nav-item], .tcrn-doc-brand, .tcrn-doc-chapter-pager__link");
+  const themedLinks = () => document.querySelectorAll("[data-shell-menu] a[href], [data-pins] a[href], [data-doc-toc] a[href]:not([href^='#']), .tcrn-page-header nav a[href], .tcrn-doc-chapter-pager__link");
   const updateThemeLinks = (theme) => {
     const shell = document.querySelector("[data-contract-surface]");
     const currentLocale = shell?.getAttribute("data-storybook-locale");
@@ -101,6 +101,7 @@ export const storybookThemeScript = `<script>
     document.documentElement.style.colorScheme = resolvedTheme;
     shell?.setAttribute("data-storybook-theme", resolvedTheme);
     shell?.setAttribute("data-tcrn-theme", resolvedTheme);
+    shell?.setAttribute("data-product-shell-theme", resolvedTheme);
     for (const option of document.querySelectorAll("[data-storybook-theme-option]")) {
       option.setAttribute("aria-pressed", option.getAttribute("data-storybook-theme-option") === resolvedTheme ? "true" : "false");
     }
@@ -292,7 +293,9 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       return;
     }
     const skipTags = new Set(["SCRIPT", "STYLE"]);
-    const visualInstanceSelector = "[data-storybook-visual-instance]";
+    // Visual-instance oracles and the locale-invariant subtrees (the shell's brand wordmark) keep
+    // their words in every language.
+    const visualInstanceSelector = "[data-storybook-visual-instance], [data-locale-invariant]";
     const visit = (node) => {
       if (node.nodeType === Node.TEXT_NODE) {
         if (node.parentElement?.closest(visualInstanceSelector)) {
@@ -329,7 +332,7 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
   const updateLocalizedLinks = (locale) => {
     const shell = document.querySelector("[data-contract-surface]");
     const currentTheme = shell?.getAttribute("data-storybook-theme");
-    for (const link of document.querySelectorAll("[data-story-nav], [data-doc-nav-item], .tcrn-doc-brand, .tcrn-doc-chapter-pager__link")) {
+    for (const link of document.querySelectorAll("[data-shell-menu] a[href], [data-pins] a[href], [data-doc-toc] a[href]:not([href^='#']), .tcrn-page-header nav a[href], .tcrn-doc-chapter-pager__link")) {
       const href = link.getAttribute("href");
       if (!href) {
         continue;
@@ -438,10 +441,6 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     // Must follow translateContentTree: it reads the tagline the swap just wrote.
     updateProductLogoAccessibleNames();
     applyClientShortcuts();
-    for (const toggle of document.querySelectorAll("[data-doc-sidebar-toggle]")) {
-      toggle.setAttribute("data-expanded-label", textFor(resolvedLocale, "shell.collapseNavigationLabel"));
-      toggle.setAttribute("data-collapsed-label", textFor(resolvedLocale, "shell.expandNavigationLabel"));
-    }
     updateThemeButtonLabels(resolvedLocale);
     const selector = document.querySelector("[data-i18n-locale-select]");
     if (selector) {
@@ -493,71 +492,118 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
 })();
 </script>`;
 
-export const sidebarToggleScript = `<script>
+// TCRN-DS-SUB-131: the documentation shell is the package ProductShell rendered without client
+// React, so the two layers it opens arrive as markup, hidden (page-template.tsx carries the full
+// menu after the band and the avatar menu after the avatar). This script is the static page's
+// stand-in for ProductShell's own state: the brand button opens the full menu and says so
+// (aria-expanded, its name, the shell's data-state), the avatar opens its menu, one layer is open
+// at a time, ⌘K / Ctrl+K opens the full menu at its search, and Esc or a press outside closes the
+// open layer — Esc returns focus to the button that opened it. Choosing a row closes the menu.
+export const docShellLayerScript = `<script>
 (() => {
-  const shell = document.querySelector("[data-contract-surface]");
-  const toggle = document.querySelector("[data-doc-sidebar-toggle]");
-  if (!shell || !toggle) {
+  const shell = document.querySelector("[data-doc-shell]");
+  const brand = shell?.querySelector("[data-shell-brand]");
+  const menu = shell?.querySelector("[data-shell-menu]");
+  const avatar = shell?.querySelector("[data-shell-avatar]");
+  const account = shell?.querySelector("[data-panel='account']");
+  if (!shell || !brand || !menu || !avatar || !account) {
     return;
   }
-  const storageKey = "tcrn-design-system-storybook-sidebar-collapsed";
-  const motionDuration = 260;
-  let motionTimer = null;
-  const readStoredState = () => {
-    try {
-      return window.localStorage.getItem(storageKey) === "true";
-    } catch {
-      return false;
+  const search = menu.querySelector("[data-doc-search-input]");
+  const setMenu = (open, options = {}) => {
+    if (open && !account.hidden) {
+      setAccount(false);
     }
-  };
-  const writeStoredState = (collapsed) => {
-    try {
-      window.localStorage.setItem(storageKey, collapsed ? "true" : "false");
-    } catch {
-      // Local persistence is helpful, not required for this documentation shell.
-    }
-  };
-  const setCollapsed = (collapsed, persist = true, animate = true) => {
-    const wasCollapsed = shell.getAttribute("data-sidebar-collapsed") === "true";
-    if (motionTimer) {
-      window.clearTimeout(motionTimer);
-      motionTimer = null;
-    }
-    if (animate && wasCollapsed !== collapsed) {
-      shell.setAttribute("data-sidebar-motion", collapsed ? "collapsing" : "expanding");
-      motionTimer = window.setTimeout(() => {
-        shell.removeAttribute("data-sidebar-motion");
-        motionTimer = null;
-      }, motionDuration);
-    } else {
-      shell.removeAttribute("data-sidebar-motion");
-    }
-    shell.setAttribute("data-sidebar-collapsed", collapsed ? "true" : "false");
-    toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    // The SideNavCollapseButton contract keys its two state icons (collapse "<" /
-    // expand ">") off this attribute; without it the collapse icon shows in both
-    // states. React hosts get it from the collapsed prop; this static shell must
-    // mirror it by hand.
-    toggle.setAttribute("data-side-nav-collapsed", collapsed ? "true" : "false");
-    const label = collapsed ? toggle.getAttribute("data-collapsed-label") : toggle.getAttribute("data-expanded-label");
+    menu.hidden = !open;
+    brand.setAttribute("aria-expanded", open ? "true" : "false");
+    const label = brand.getAttribute(open ? "data-expanded-label" : "data-collapsed-label");
     if (label) {
-      toggle.setAttribute("aria-label", label);
-      toggle.setAttribute("title", label);
+      brand.setAttribute("aria-label", label);
     }
-    if (persist) {
-      writeStoredState(collapsed);
+    shell.setAttribute("data-state", open ? "expanded" : "closed");
+    if (open && options.focusSearch) {
+      search?.focus();
+    }
+    if (!open && options.restoreFocus) {
+      brand.focus();
     }
   };
-  window.tcrnUpdateSidebarToggle = () => {
-    setCollapsed(shell.getAttribute("data-sidebar-collapsed") === "true", false);
+  const setAccount = (open, options = {}) => {
+    if (open && !menu.hidden) {
+      setMenu(false);
+    }
+    account.hidden = !open;
+    avatar.setAttribute("aria-expanded", open ? "true" : "false");
+    if (!open && options.restoreFocus) {
+      avatar.focus();
+    }
   };
-  toggle.addEventListener("click", () => {
-    setCollapsed(shell.getAttribute("data-sidebar-collapsed") !== "true");
+  brand.addEventListener("click", () => setMenu(menu.hidden));
+  avatar.addEventListener("click", () => setAccount(account.hidden));
+  menu.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest("a[href]")) {
+      setMenu(false);
+    }
   });
-  window.addEventListener("tcrn-storybook-locale-applied", window.tcrnUpdateSidebarToggle);
-  setCollapsed(readStoredState(), false, false);
+  document.addEventListener("keydown", (event) => {
+    if (event.isComposing) {
+      return;
+    }
+    if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey) && !event.altKey) {
+      const target = event.target;
+      const editable = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
+      if (editable && target !== search) {
+        return;
+      }
+      setMenu(true, { focusSearch: true });
+      return;
+    }
+    if (event.key !== "Escape") {
+      return;
+    }
+    if (!menu.hidden) {
+      setMenu(false, { restoreFocus: true });
+    } else if (!account.hidden) {
+      setAccount(false, { restoreFocus: true });
+    }
+  });
+  document.addEventListener("pointerdown", (event) => {
+    const target = event.target instanceof Node ? event.target : null;
+    if (!target) {
+      return;
+    }
+    if (!menu.hidden && !menu.contains(target) && !brand.contains(target)) {
+      setMenu(false);
+    }
+    if (!account.hidden && !account.contains(target) && !avatar.contains(target)) {
+      setAccount(false);
+    }
+  });
+  window.tcrnDocShellLayers = { setMenu, setAccount };
 })();
 </script>`;
+
+// TCRN-DS-SUB-131: the documentation search is the full menu's search and finds every section,
+// category and story of the site. The rail that used to list every story on every page is gone,
+// so the page carries the site's entries as data: dictionary keys for the labels (resolved in the
+// reader's language when searching) and the destination of each.
+let memoizedSearchIndexJson: string | undefined;
+export function storybookSearchIndexJson(): string {
+  if (memoizedSearchIndexJson === undefined) {
+    const entries = contractStoryGroups.flatMap((group) => {
+      const categories = storyCategoriesForGroup(group, contractStoriesByGroup(group));
+      return [
+        { label: `group.${group}`, href: groupFileName(group) },
+        ...categories.flatMap((category) => [
+          { label: category.label, group: `group.${group}`, href: categoryFileName(group, category.id) },
+          ...category.stories.map((story) => ({ label: `story.${story.id}.title`, group: category.label, href: `${categoryFileForStory(story)}#${story.id}` }))
+        ])
+      ];
+    });
+    memoizedSearchIndexJson = `<script type="application/json" data-doc-search-index>${JSON.stringify(entries).replace(/</g, "\\u003c")}</script>`;
+  }
+  return memoizedSearchIndexJson;
+}
 
 export const storyDisclosureScript = `<script>
 (() => {
@@ -668,8 +714,8 @@ export const storybookSearchScript = `<script>
   if (!(input instanceof HTMLInputElement)) {
     return;
   }
-  const searchRoot = input.closest(".tcrn-doc-header-search");
-  const searchWorkspace = input.closest(".tcrn-doc-header__workspace");
+  const searchRoot = input.closest("[data-shell-search]");
+  const searchWorkspace = searchRoot;
   const maxResults = 8;
   let results = [];
   let activeIndex = -1;
@@ -710,20 +756,19 @@ export const storybookSearchScript = `<script>
     }
     return key;
   };
-  const readItems = () => {
-    const links = Array.from(document.querySelectorAll("[data-story-nav], [data-doc-nav-item]"))
-      .filter((link) => link instanceof HTMLAnchorElement);
-    return links.map((link) => {
-      const group = link.closest("[data-doc-nav-group]");
-      const readLabel = (source) =>
-        source?.querySelector(".tcrn-doc-nav__section-label")?.textContent?.trim() ?? source?.textContent?.trim() ?? "";
-      const groupLabel = readLabel(group?.querySelector("[data-story-nav]"));
-      const label = readLabel(link);
-      const href = link.getAttribute("href") ?? "#";
-      const searchable = [label, groupLabel].filter(Boolean).join(" ");
-      return { href, label, groupLabel, searchable };
-    });
-  };
+  const searchIndex = (() => {
+    try {
+      return JSON.parse(document.querySelector("[data-doc-search-index]")?.textContent ?? "[]");
+    } catch {
+      return [];
+    }
+  })();
+  const readItems = () => searchIndex.map((entry) => {
+    const label = textFor(entry.label);
+    const groupLabel = entry.group ? textFor(entry.group) : "";
+    const searchable = [label, groupLabel].filter(Boolean).join(" ");
+    return { href: entry.href, label, groupLabel, searchable };
+  });
   // TCRN-DS-STORY-060: also surface the current page's ReadbackPanels (by their static anchor id)
   // and, on a reference page, its component API regions — so search jumps to a panel/component,
   // not only to a story. Labels read the RENDERED (localized) heading text so matching follows the
@@ -780,8 +825,8 @@ export const storybookSearchScript = `<script>
       return;
     }
     if (!results.length) {
-      const empty = document.createElement("div");
-      empty.className = "tcrn-doc-search-empty";
+      const empty = document.createElement("span");
+      empty.className = "tcrn-product-shell-search__empty";
       empty.textContent = textFor("shell.searchNoResults");
       resultsBox.append(empty);
       setResultsVisible(true);
@@ -790,7 +835,8 @@ export const storybookSearchScript = `<script>
     }
     results.forEach((result, index) => {
       const option = document.createElement("a");
-      option.className = "tcrn-doc-search-result";
+      option.className = "tcrn-product-shell-search__result";
+      option.setAttribute("data-search-result", "");
       option.id = "tcrn-doc-search-result-" + index;
       option.href = result.href;
       option.setAttribute("role", "option");
@@ -995,7 +1041,7 @@ export const dialogFixtureScript = `<script>
 
 export const anchorScrollScript = `<script>
 (() => {
-  const targetSelector = "[data-doc-nav-item], .tcrn-doc-skip";
+  const targetSelector = "[data-doc-toc] a, .tcrn-skip-link";
   const readOffset = () => {
     const source = document.documentElement;
     const raw = window.getComputedStyle(source).getPropertyValue("--tcrn-anchor-scroll-offset");
@@ -1028,6 +1074,15 @@ export const anchorScrollScript = `<script>
     const target = document.getElementById(targetId);
     if (!target) {
       return false;
+    }
+    // TCRN-DS-SUB-131: the shell scrolls its paper, not the window.
+    const scroller = document.getElementById("content");
+    if (scroller && scroller !== target && scroller.contains(target)) {
+      const nextScrollTop = isFirstStoryTarget(target)
+        ? 0
+        : Math.max(0, target.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - readOffset());
+      scroller.scrollTo({ top: nextScrollTop, left: 0, behavior: "auto" });
+      return true;
     }
     const nextTop = isFirstStoryTarget(target)
       ? 0
@@ -1063,91 +1118,49 @@ export const anchorScrollScript = `<script>
 })();
 </script>`;
 
+// TCRN-DS-SUB-131: the current story is marked in the page's own TocRail (aria-current="location"
+// and the TocRail's selected state) as the reader scrolls the paper, which is the shell's scroller.
 export const activeStoryNavScript = `<script>
 (() => {
-  const storyNodes = Array.from(document.querySelectorAll("[data-story-id]"));
-  const storyLinks = Array.from(document.querySelectorAll("[data-doc-nav-item]"));
-  const categoryToggles = Array.from(document.querySelectorAll("[data-doc-nav-category-toggle]"));
+  const scroller = document.getElementById("content");
+  const storyNodes = Array.from(document.querySelectorAll("article[data-story-id]"));
   const storyIds = storyNodes.map((node) => node.getAttribute("data-story-id")).filter(Boolean);
+  const tocLinks = Array.from(document.querySelectorAll("[data-doc-toc] a[href^='#']"));
   let hashPinnedStoryId = null;
   let suppressScrollSpyUntil = 0;
   let scrollSpyFrame = 0;
   let currentStoryId = storyIds[0] ?? null;
-  const setCategoryOpen = (toggle, open) => {
-    const controls = toggle.getAttribute("aria-controls");
-    const list = controls ? document.getElementById(controls) : null;
-    const category = toggle.closest("[data-doc-nav-category]");
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    category?.setAttribute("data-doc-nav-category-open", open ? "true" : "false");
-    if (list) {
-      list.hidden = !open;
-    }
-  };
-  const openCategoryForLink = (link) => {
-    const category = link?.closest("[data-doc-nav-category]");
-    const toggle = category?.querySelector("[data-doc-nav-category-toggle]");
-    if (toggle) {
-      setCategoryOpen(toggle, true);
-    }
-  };
-  for (const toggle of categoryToggles) {
-    setCategoryOpen(toggle, toggle.getAttribute("aria-expanded") === "true");
-    toggle.addEventListener("click", () => {
-      setCategoryOpen(toggle, toggle.getAttribute("aria-expanded") !== "true");
-    });
-  }
   const readOffset = () => {
     const raw = window.getComputedStyle(document.documentElement).getPropertyValue("--tcrn-anchor-scroll-offset");
     const value = Number.parseFloat(raw);
-    return Number.isFinite(value) ? value : 22;
-  };
-  const keepActiveLinkVisible = (activeLink) => {
-    const sidebar = activeLink.closest(".tcrn-doc-sidebar");
-    if (!(sidebar instanceof HTMLElement)) {
-      return;
-    }
-    const activeGroup = activeLink.closest("[data-doc-nav-group]");
-    const groupSection = activeGroup?.querySelector(".tcrn-doc-nav__section[aria-current='page']");
-    const anchor = groupSection instanceof HTMLElement ? groupSection : activeLink;
-    const maxScrollTop = Math.max(0, sidebar.scrollHeight - sidebar.clientHeight);
-    const nextScrollTop = Math.max(0, Math.min(anchor.offsetTop - 8, maxScrollTop));
-    sidebar.scrollTop = nextScrollTop;
+    return Number.isFinite(value) ? value : 14;
   };
   const setActiveStoryNav = (storyId) => {
     if (!storyId) {
       return;
     }
     currentStoryId = storyId;
-    for (const link of storyLinks) {
-      link.removeAttribute("aria-current");
-      link.removeAttribute("data-doc-nav-item-active");
-    }
-    const activeLink = storyLinks.find((link) => link.getAttribute("data-doc-nav-item") === storyId);
-    if (activeLink) {
-      openCategoryForLink(activeLink);
-      activeLink.setAttribute("aria-current", "location");
-      activeLink.setAttribute("data-doc-nav-item-active", "true");
-      keepActiveLinkVisible(activeLink);
-    }
-    const currentStory = document.querySelector("[data-doc-current-story]");
-    if (currentStory) {
-      const key = "story." + storyId + ".title";
-      currentStory.setAttribute("data-i18n", key);
-      const locale = window.tcrnStorybookResolvedLocale;
-      if (locale && typeof window.tcrnStorybookTextFor === "function") {
-        currentStory.textContent = window.tcrnStorybookTextFor(locale, key);
-      } else if (activeLink?.textContent) {
-        currentStory.textContent = activeLink.textContent.trim();
+    for (const link of tocLinks) {
+      const active = link.getAttribute("href") === "#" + storyId;
+      if (active) {
+        link.setAttribute("aria-current", "location");
+        link.setAttribute("data-selected", "true");
+      } else {
+        link.removeAttribute("aria-current");
+        link.removeAttribute("data-selected");
       }
     }
   };
   window.tcrnUpdateCurrentStoryContext = () => setActiveStoryNav(currentStoryId);
   const readCurrentStoryFromScroll = () => {
-    const maxScrollY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    if (window.scrollY >= maxScrollY - 2) {
+    if (!scroller) {
+      return storyIds[0] ?? null;
+    }
+    const maxScrollTop = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+    if (maxScrollTop > 0 && scroller.scrollTop >= maxScrollTop - 2) {
       return storyIds[storyIds.length - 1] ?? null;
     }
-    const threshold = readOffset() + 10;
+    const threshold = scroller.getBoundingClientRect().top + readOffset() + 10;
     let activeStoryId = storyIds[0] ?? null;
     for (const node of storyNodes) {
       const storyId = node.getAttribute("data-story-id");
@@ -1189,8 +1202,6 @@ export const activeStoryNavScript = `<script>
       setActiveStoryNav(hashPinnedStoryId);
       return;
     }
-    // TCRN-DS-STORY-060: a panel deep link (#storyId--panel-N) is not a storyId, so pin the
-    // OWNING story so the breadcrumb/nav stay correct while the browser scrolls to the panel.
     if (hashId) {
       const target = document.getElementById(hashId);
       if (target && target.matches(".tcrn-readback-panel[id]")) {
@@ -1207,7 +1218,7 @@ export const activeStoryNavScript = `<script>
     syncFromScroll();
   };
   window.addEventListener("hashchange", syncFromHash);
-  window.addEventListener("scroll", scheduleScrollSpy, { passive: true });
+  (scroller ?? window).addEventListener("scroll", scheduleScrollSpy, { passive: true });
   window.addEventListener("resize", scheduleScrollSpy);
   window.tcrnStorybookScrollSpy = { sync: syncFromScroll };
   syncFromHash();
