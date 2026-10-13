@@ -9,7 +9,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createResolvedTokenMap, tcrnGplusBrandTokens, tcrnTokens } from "../packages/ui-tokens/dist/index.js";
-import { cr } from "../docs/design/gplus-2026-10/tools/lib.mjs";
+import { cr, fmt } from "../docs/design/gplus-2026-10/tools/lib.mjs";
 import { marks as contractMarks, tokens as contractTokens } from "../docs/design/gplus-2026-10/tools/data.mjs";
 import { C1, WORDMARK_EXEMPTIONS, runTokenContrastProof } from "../scripts/token-contrast-proof.mjs";
 
@@ -139,30 +139,53 @@ test("the focus ring pairs are read from --tcrn-focus-ring", () => {
 });
 
 test("a wordmark pair below 4.5 without a registration fails and names the pair", () => {
-  // The register holds the two light Design System pairs only; without them those pairs fail.
-  assert.deepEqual([...new Set(WORDMARK_EXEMPTIONS.map((entry) => `${entry.theme} ${entry.fg}`))], ["light --tcrn-brand-suffix-design-system"]);
+  // The register holds the two light Design System pairs and the two night TMS pairs; without
+  // them those four pairs fail.
+  assert.deepEqual([...new Set(WORDMARK_EXEMPTIONS.map((entry) => `${entry.theme} ${entry.fg}`))], ["light --tcrn-brand-suffix-design-system", "dark --tcrn-brand-suffix-tms"]);
   const report = runTokenContrastProof({ exemptions: [] });
-  assert.deepEqual(failing(report), ["wordmark brand-suffix-design-system on bg (light)", "wordmark brand-suffix-design-system on panel (light)"]);
+  assert.deepEqual(failing(report), [
+    "wordmark brand-suffix-design-system on bg (light)",
+    "wordmark brand-suffix-design-system on panel (light)",
+    "wordmark brand-suffix-tms on bg (dark)",
+    "wordmark brand-suffix-tms on panel (dark)"
+  ]);
   assert.match(report.failures.join("\n"), /logotype text passes only through a registered exemption/);
 });
 
-test("O-3: the night TMS suffix passes on bg and panel by itself, with no exemption", () => {
+test("D7: by night the TMS suffix keeps the approved colour, below 4.5 on the paper and the canvas, exempt only as a pending known red", () => {
   const report = runTokenContrastProof();
-  const night = tcrnGplusBrandTokens.find((token) => token.cssVar === "--tcrn-brand-suffix-tms")?.dark;
-  assert.ok(night, "the TMS suffix has a night value");
-  for (const on of ["bg", "panel"]) {
+  const tms = tcrnGplusBrandTokens.find((token) => token.cssVar === "--tcrn-brand-suffix-tms");
+  assert.equal(tms?.dark, undefined, "the TMS suffix has no night value of its own (MIN-20261013-SHELL D2)");
+  assert.equal(tms?.value, "#2c63c8");
+  const measured = {};
+  for (const on of ["panel", "bg"]) {
+    assert.equal(byName(report, `wordmark brand-suffix-tms on ${on} (light)`).status, "pass", `by day the suffix passes on ${on}`);
     const result = byName(report, `wordmark brand-suffix-tms on ${on} (dark)`);
-    assert.equal(result.status, "pass", result.name);
-    assert.equal(result.exemption, undefined, `${result.name} is not exempt`);
-    assert.equal(result.fgValue, night, `${result.name} measures the night value`);
-    assert.ok(result.ratio >= C1.wordmark, `${result.name} ${result.ratio}`);
+    assert.equal(result.status, "exempt", result.name);
+    assert.equal(result.fgValue, tms.value, `${result.name} measures the approved colour`);
+    assert.ok(result.ratio < C1.wordmark, `${result.name} ${result.ratio}`);
+    assert.match(result.exemption.ruling, /MIN-20261013-SHELL D2\b/);
+    assert.match(result.exemption.source, /Shell\.dc\.html section B/);
+    assert.match(result.exemption.pending, /^known red, pending the Owner: TCRN-DS-MIN-20261013-SHELL D7\b.*INIT-015 closure S-6/);
+    measured[on] = fmt(result.ratio);
   }
-  // Mutation: the day value at night falls below 4.5 again and, with no registration, fails.
-  const light = tcrnGplusBrandTokens.find((token) => token.cssVar === "--tcrn-brand-suffix-tms")?.value;
-  const reverted = runTokenContrastProof({
-    resolve: (theme) => ({ ...createResolvedTokenMap(theme), ...(theme === "dark" ? { "--tcrn-brand-suffix-tms": light } : {}) })
+  // The measured figures: the Shell board's section B gives the same two for the suffix row.
+  assert.deepEqual(measured, { panel: "3.13", bg: "3.33" });
+
+  // The register is what holds them: without the two night entries both pairs fail and are named.
+  const unregistered = runTokenContrastProof({ exemptions: WORDMARK_EXEMPTIONS.filter((entry) => entry.fg !== "--tcrn-brand-suffix-tms") });
+  assert.deepEqual(failing(unregistered), ["wordmark brand-suffix-tms on bg (dark)", "wordmark brand-suffix-tms on panel (dark)"]);
+
+  // Once a night colour that passes is ruled (S-6; D7 suggests the mark's bright step), the two
+  // entries are stale and the gate asks for them to be removed.
+  const bright = contractMarks.marks.find((mark) => mark.id === "tms")?.palette.bright;
+  assert.ok(bright, "marks.json has the TMS bright step");
+  const ruled = runTokenContrastProof({
+    resolve: (theme) => ({ ...createResolvedTokenMap(theme), ...(theme === "dark" ? { "--tcrn-brand-suffix-tms": bright } : {}) })
   });
-  assert.deepEqual(failing(reverted), ["wordmark brand-suffix-tms on bg (dark)", "wordmark brand-suffix-tms on panel (dark)"]);
+  const ruledText = ruled.failures.join("\n");
+  assert.match(ruledText, /stale exemption for wordmark brand-suffix-tms on panel \(dark\)/);
+  assert.match(ruledText, /stale exemption for wordmark brand-suffix-tms on bg \(dark\)/);
 });
 
 test("an exemption never covers a non-wordmark pair", () => {
@@ -194,15 +217,16 @@ test("the wordmark scope comes from the contract; suffix-less marks are reported
   assert.match(notes, /--tcrn-brand-suffix-einzbern: the Einzbern wordmark has no suffix/);
   assert.match(notes, /--tcrn-brand-suffix-mana-orchestrate: the Mana Orchestrate wordmark has no suffix/);
 
-  // Without its suffix, the Design System wordmark draws no suffix text: its light registrations
-  // then match nothing. (TMS has no registration left since O-3; without its suffix it simply
-  // drops out of the wordmark pairs.)
+  // Without its suffix, a wordmark draws no suffix text: its registrations then match nothing,
+  // the light Design System pairs and the night TMS pairs alike.
   const marks = contractMarks.marks.map((mark) => (mark.id === "ds" ? { ...mark, suffix: undefined } : mark));
   const noSuffix = runTokenContrastProof({ wordmarkContract: { brand: contractTokens.brand, marks } });
   assert.match(noSuffix.failures.join("\n"), /exemption for brand-suffix-design-system on panel \(light\) matches no wordmark pair/);
   assert.equal(noSuffix.results.some((entry) => entry.fg === "--tcrn-brand-suffix-design-system"), false);
   const tmsMarks = contractMarks.marks.map((mark) => (mark.id === "tms" ? { ...mark, suffix: undefined } : mark));
   const noTmsSuffix = runTokenContrastProof({ wordmarkContract: { brand: contractTokens.brand, marks: tmsMarks } });
-  assert.deepEqual(noTmsSuffix.failures, []);
+  const noTmsText = noTmsSuffix.failures.join("\n");
+  assert.match(noTmsText, /exemption for brand-suffix-tms on panel \(dark\) matches no wordmark pair/);
+  assert.match(noTmsText, /exemption for brand-suffix-tms on bg \(dark\) matches no wordmark pair/);
   assert.equal(noTmsSuffix.results.some((entry) => entry.fg === "--tcrn-brand-suffix-tms"), false);
 });

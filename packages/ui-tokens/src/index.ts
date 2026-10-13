@@ -254,7 +254,7 @@ const retiredContractTokens: Readonly<Record<string, DeprecatedTokenInfo>> = {
 function describe(key: string, group: string, night = false): string {
   if (group === "brand") {
     return night
-      ? "Product wordmark suffix colour: the mark's deep palette step by day and its bright step by night (O-3)."
+      ? "Product wordmark suffix colour: the mark's deep palette step by day and the night value the contract rules by night."
       : "Product wordmark suffix colour (the mark's deep palette step); the same in both themes.";
   }
   return gplusDescriptions[key] ?? `G+ token "${key}" from the design contract.`;
@@ -298,7 +298,10 @@ const gplusThemedEntries: TokenEntry[] = tcrnGplusThemedTokens.map((token) => ({
 // Contract fixed and brand tokens. A brand token with a night value (contract "night", published
 // as dark) is theme-scoped: its light value goes on the light theme block and its night value on
 // the dark block, so both blocks keep the same property names (C5). The rest stay theme
-// independent (TCRN-DS-SUB-088, O-3).
+// independent (TCRN-DS-SUB-088). No brand token has a night value at present: the TMS suffix
+// keeps the approved deep colour in both themes (TCRN-DS-MIN-20261013-SHELL D2), its O-3 night
+// value is withdrawn, and D7 leaves the night colour to the Owner with INIT-015 closure S-6
+// (TCRN-DS-SUB-128).
 const gplusContractFixedTokens: readonly TcrnGplusBrandToken[] = [...tcrnGplusFixedTokens, ...tcrnGplusBrandTokens];
 for (const key of Object.keys(retiredContractTokens)) {
   if (!tcrnGplusFixedTokens.some((token) => token.key === key)) throw new Error(`@tcrn/ui-tokens: the retired contract token "${key}" is not in the contract`);

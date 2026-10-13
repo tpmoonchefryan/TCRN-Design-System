@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: pairs.json, tokens.json
-// contract-sha256: 05f1cd82725bf242420e2c87ebf29910f1866ba100c84582ce0d2879c853ab1d
+// contract-sha256: 578ecd1cda064f431048147a6978bac82c544e3b9f864445d544bac9a52531f9
 
 /** Actions 状态对段：Button · IconButton · LinkButton 的生效对默认值、变体声明与状态规则 */
 export const actionsPairsCss = `
