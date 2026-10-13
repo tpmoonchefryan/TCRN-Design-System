@@ -49,10 +49,14 @@
 //                                  search; arrows move between cascade columns; one Cmd/Ctrl+K per shell
 //                                                                       (mutation: focus not returned)
 //   touch          触摸端           390 wide: the tab is hit at its centre and >= 40 tall, no pinned item in
-//                                  the strip, sheet rows 44                          (mutation: row height 32)
+//                                  the strip, an open layer is the Sheet, sheet rows 44  (mutation: row height 32)
 // Behaviour cannot be read from a board: intro, focusLoop and the outside-click half of noCollapse are
 // judged on behaviour traces. --fixtures judges the traces declared in the fixture manifest and their
-// mutated copies; the probes that record the traces on the real parts land with TCRN-DS-SUB-137.
+// mutated copies; on the package stories the probes below (TCRN-DS-SUB-137) record the traces on the
+// real parts: probeShellBehaviour clicks the tab of a closed screen, presses Esc, Ctrl+K and the arrow
+// keys and clicks outside; probeShellIntro loads the intro story in a fresh session, reloads it, and
+// loads it again under prefers-reduced-motion, counting [data-shell-intro] layers and reading
+// document.getAnimations(). A layer that never opens is recorded as "unopened", never as a pass.
 //
 // D section (07b board) relation rows -> gates:
 //   顶带高             strip, brandGeometry
@@ -74,12 +78,18 @@
 // it lists). The boards' web-font request is answered with the vendored faces of packages/ui-tokens/fonts
 // and every other non-file request is refused, so the readings are taken offline on the boards' own faces.
 // Without --fixtures the gate measures the package stories (C-9 ids) with the package hooks, only at
-// 1440 x 900 and 390 x 844, in en and zh-CN, light and dark.
+// 1440 x 900 and 390 x 844, in en and zh-CN, light and dark, inside each story's body (the region the
+// story disclosure controls; the documentation shell around it is not measured). The run is ok only
+// when all eighteen gates pass on every run, every screen named in the fixture manifest (stories.screens)
+// is there in its data-state, no shell lacks a hook the gates read (missingHooks, including x.hookGaps),
+// and every story mutation (mutations.json, storyMutations) turns its gate red: on a gate that is
+// already red on the real part, the mutation must add a failure that the unmutated run does not have,
+// otherwise it is reported as not distinguishable.
 //
 // Usage: node scripts/shell-measure-proof.mjs --fixtures [--write-report <path>]
 //        node scripts/shell-measure-proof.mjs [--story <id>]... [--write-report [<path>]]
 //   Run from the repository root (stories need `pnpm build` first). Prints the JSON report; exit 1 when
-//   not ok.
+//   not ok. `pnpm geometry:measure` runs this file's tests, --fixtures and the story mode, in that order.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -437,6 +447,8 @@ const READING_JUDGES = {
       if (s.x.pins.visibleCount > 0) fail(g, s.id, "pins.inStrip", s.x.pins.visibleCount, 0);
       if (!(s.tab.h >= t.minTabHeightPx - t.tolerancePx)) fail(g, s.id, "tab.h", s.tab.h, ">= " + t.minTabHeightPx);
       const layerOpen = s.panel !== undefined || s.drop !== undefined;
+      // 窄于 1024 (D section): what opens on a phone is the Sheet, so "Sheet rows 44" cannot pass vacuously
+      if (s.x.panelKind && s.x.panelKind !== "sheet") fail(g, s.id, "layer.notSheet", s.x.panelKind, "sheet");
       if (!layerOpen) {
         if (!s.x.touch || !s.x.touch.tabHit) fail(g, s.id, "tab.hit", s.x.touch ? s.x.touch.hitAt : null, "the tab");
         if (s.x.touch && s.x.touch.pointerEvents === "none") fail(g, s.id, "tab.pointerEvents", "none", "auto");
@@ -492,7 +504,8 @@ export function judgeShellReadings(reading, { thresholds = THRESHOLDS, brandLock
   const ctx = { T: thresholds, brandLockups, traces, compareDescription };
   const gates = {};
   for (const id of READING_GATE_IDS) gates[id] = READING_JUDGES[id](reading, ctx);
-  const missingHooks = (reading.shells || []).filter((s) => !s.x || s.x.missing.length).map((s) => ({ shell: s.id, missing: s.x ? s.x.missing : ["x"] }));
+  const gapsOf = (s) => (s.x && Array.isArray(s.x.hookGaps) ? s.x.hookGaps : []);
+  const missingHooks = (reading.shells || []).filter((s) => !s.x || s.x.missing.length || gapsOf(s).length).map((s) => ({ shell: s.id, missing: s.x ? [...s.x.missing, ...gapsOf(s)] : ["x"] }));
   return { gates, failed: READING_GATE_IDS.filter((id) => gates[id].status === "fail"), missingHooks };
 }
 
@@ -504,6 +517,9 @@ export function judgeShellReadings(reading, { thresholds = THRESHOLDS, brandLock
 //   { op: "insert", selector, html, position? }    insertAdjacentHTML on the first match (default beforeend)
 //   { op: "appendText", selector, text, repeat? }  appends a text node to the first match
 //   { op: "replaceInAttr", selector, name, from, to }  replaces a substring of an attribute of the first match
+//   { op: "noFocus", selector }                     focus() on any element matching selector does nothing
+//                                                   (a layer that does not hand the focus back)
+//   { op: "clearSessionStorage" }                   forgets the session (an intro that keeps no marker)
 export function applyMutationInPage(ops) {
   for (const op of ops) {
     if (op.op === "css") {
@@ -511,6 +527,18 @@ export function applyMutationInPage(ops) {
       style.setAttribute("data-shell-mutation", "");
       style.textContent = op.css;
       document.body.appendChild(style);
+      continue;
+    }
+    if (op.op === "noFocus") {
+      const focus = HTMLElement.prototype.focus;
+      HTMLElement.prototype.focus = function focusUnlessMutated(...args) {
+        if (this.matches(op.selector)) return undefined;
+        return focus.apply(this, args);
+      };
+      continue;
+    }
+    if (op.op === "clearSessionStorage") {
+      window.sessionStorage.clear();
       continue;
     }
     const el = document.querySelector(op.selector);
@@ -661,17 +689,284 @@ export async function runFixtures({ root = process.cwd(), browser, launchOptions
   });
 }
 
+// ------------------------------------------------------------------------------------- behaviour probes
+
+// Browser-side, self-contained: the state of one shell screen. `shell` is a CSS selector of the screen
+// root. focus: "tab" (its brand button), "search" (its search field), "search:other-shell" (another
+// shell's search field), "body" (nothing focused) or "other". column: 1 for the layer's own rows, n for
+// a cascade column n, 0 outside the screen's layers.
+export function shellStateInPage({ shell, selectors: sel }) {
+  const scr = document.querySelector(shell);
+  const visible = (el) => {
+    const cs = getComputedStyle(el);
+    if (cs.display === "none" || cs.visibility === "hidden") return false;
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0;
+  };
+  const layers = scr ? [...scr.querySelectorAll(sel.panelPreferred)].filter(visible) : [];
+  const tab = scr ? scr.querySelector(sel.tab) : null;
+  const active = document.activeElement;
+  let focus = "other";
+  if (!active || active === document.body || active === document.documentElement) focus = "body";
+  else if (tab && (active === tab || tab.contains(active))) focus = "tab";
+  else if (active.closest(sel.search) && active.closest(sel.shell)) focus = active.closest(sel.shell) === scr ? "search" : "search:other-shell";
+  let column = 0;
+  if (active && scr && scr.contains(active)) {
+    const col = active.closest(sel.dropCol);
+    if (col) column = Number(col.getAttribute("data-drop-col")) || (col.hasAttribute("data-drop4") ? 4 : col.hasAttribute("data-drop3") ? 3 : 2);
+    else if (layers.some((layer) => layer.contains(active))) column = 1;
+  }
+  return { found: Boolean(scr), open: layers.length > 0, focus, column };
+}
+
+// Browser-side: a viewport point outside the screen's layers and tab that is not a control (or null).
+export function outsidePointInPage({ shell, selectors: sel }) {
+  const scr = document.querySelector(shell);
+  if (!scr) return null;
+  const layers = [...scr.querySelectorAll(sel.panelAny)];
+  const tab = scr.querySelector(sel.tab);
+  const w = window.innerWidth, h = window.innerHeight;
+  for (const [x, y] of [[w - 6, h - 6], [6, h - 6], [w / 2, h - 6], [w - 6, h / 2], [6, 6]]) {
+    const el = document.elementFromPoint(x, y);
+    if (!el || layers.some((layer) => layer.contains(el)) || (tab && tab.contains(el))) continue;
+    if (el.closest("a, button, input, select, textarea, summary, label, [role='button'], [tabindex]")) continue;
+    return { x, y };
+  }
+  return null;
+}
+
+// Browser-side: focus a row of column 1 that opens a cascade (aria-controls), in the screen's open layer.
+function focusCascadeRowInPage({ shell, selectors: sel }) {
+  const scr = document.querySelector(shell);
+  const layer = scr ? [...scr.querySelectorAll(sel.panelPreferred)][0] : null;
+  if (!layer) return null;
+  const row = [...layer.querySelectorAll(sel.row)].find((r) => r.hasAttribute("aria-controls") && !r.closest(sel.dropCol));
+  if (!row) return null;
+  row.focus();
+  return document.activeElement === row ? row.getAttribute("title") || row.textContent.trim().slice(0, 40) : null;
+}
+
+// Browser-side: move the focus into the screen's open layer (its first row, else its first control).
+function focusIntoLayerInPage({ shell, selectors: sel }) {
+  const scr = document.querySelector(shell);
+  const layer = scr ? [...scr.querySelectorAll(sel.panelPreferred)][0] : null;
+  const target = layer ? layer.querySelector(sel.row) || layer.querySelector("input, button, a[href]") : null;
+  if (target) target.focus();
+  return Boolean(target && document.activeElement === target);
+}
+
+// focusLoop and the outside-click half of noCollapse on the real parts. `screen` is a closed screen
+// (its tab opens the full menu); `cascadeScreen` shows the full menu (default: `screen`, opened first).
+export async function probeShellBehaviour(page, { scope = "body", screen, cascadeScreen = screen, selectors = PACKAGE_SELECTORS, waitMs = 300 } = {}) {
+  const shell = `${scope} [data-shell="${screen}"]`;
+  const cascadeShell = `${scope} [data-shell="${cascadeScreen}"]`;
+  const notes = [];
+  const state = (target = shell) => page.evaluate(shellStateInPage, { shell: target, selectors });
+  const settle = () => page.waitForTimeout(waitMs);
+  const clickTab = async (target = shell) => {
+    try {
+      await page.click(`${target} ${selectors.tab}`, { timeout: 3000 });
+    } catch (error) {
+      notes.push("tab click: " + String(error && error.message ? error.message : error).split("\n")[0]);
+    }
+    await settle();
+  };
+  const closeIfOpen = async () => {
+    if ((await state()).open) {
+      await page.keyboard.press("Escape");
+      await settle();
+    }
+  };
+  const start = await state();
+  if (!start.found) return { trace: null, notes: ["screen missing: " + screen] };
+  if (start.open) notes.push("the probed screen starts open");
+
+  // Esc: open with the tab, move the focus into the layer, press Esc -> the layer closes, focus on the tab
+  await clickTab();
+  let afterEscape = "unopened";
+  if ((await state()).open) {
+    if (!(await page.evaluate(focusIntoLayerInPage, { shell, selectors }))) notes.push("no focusable row in the open layer");
+    await page.keyboard.press("Escape");
+    await settle();
+    const after = await state();
+    afterEscape = after.open ? "unclosed" : after.focus;
+  }
+
+  // Ctrl+K from the closed shell with nothing focused -> the menu opens with the focus in its search
+  await closeIfOpen();
+  await page.evaluate(() => {
+    if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+  });
+  await page.keyboard.press("Control+k");
+  await settle();
+  const afterK = await state();
+  const afterCommandK = !afterK.open ? "unopened" : afterK.focus === "search:other-shell" ? "search" : afterK.focus;
+  await closeIfOpen();
+
+  // arrows: from a column-1 row with a cascade, ArrowRight -> column 2, ArrowLeft -> column 1
+  let cascadeArrowRight = null;
+  let cascadeArrowLeft = null;
+  if (!(await state(cascadeShell)).open) await clickTab(cascadeShell);
+  const row = await page.evaluate(focusCascadeRowInPage, { shell: cascadeShell, selectors });
+  if (row) {
+    const from = (await state(cascadeShell)).column;
+    await page.keyboard.press("ArrowRight");
+    await settle();
+    const right = (await state(cascadeShell)).column;
+    cascadeArrowRight = { from, to: right, row };
+    await page.keyboard.press("ArrowLeft");
+    await settle();
+    cascadeArrowLeft = { from: right, to: (await state(cascadeShell)).column, row };
+  } else notes.push("no column-1 row with a cascade in " + cascadeScreen);
+  if (cascadeShell !== shell && start.open === false) await closeIfOpen();
+
+  // outside click: open with the tab, click a non-control point outside the layer and the tab
+  if (!(await state()).open) await clickTab();
+  let closesOnOutsideClick = "unopened";
+  if ((await state()).open) {
+    const point = await page.evaluate(outsidePointInPage, { shell, selectors });
+    if (!point) closesOnOutsideClick = "no-outside-point";
+    else {
+      await page.mouse.click(point.x, point.y);
+      await settle();
+      closesOnOutsideClick = !(await state()).open;
+    }
+  }
+  return { trace: { focusLoop: { afterEscape, afterCommandK, cascadeArrowRight, cascadeArrowLeft }, outsideClick: { closesOnOutsideClick } }, notes };
+}
+
+// Installed with addInitScript before any page script: counts the [data-shell-intro] layers that enter
+// the document and reads the animations that run while one does (property names, latest end).
+export function installIntroProbe() {
+  const probe = { plays: 0, properties: [], start: null, end: null };
+  window.__tcrnShellIntroProbe = probe;
+  const seen = new WeakSet();
+  const counted = new WeakSet();
+  const kebab = (name) => name.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
+  const sample = () => {
+    for (const animation of document.getAnimations()) {
+      let names = [];
+      if (typeof animation.transitionProperty === "string") names = [animation.transitionProperty];
+      else if (animation.effect && typeof animation.effect.getKeyframes === "function") names = animation.effect.getKeyframes().flatMap((frame) => Object.keys(frame)).filter((key) => !["offset", "computedOffset", "easing", "composite"].includes(key));
+      for (const name of names.map(kebab)) if (!probe.properties.includes(name)) probe.properties.push(name);
+      const timing = animation.effect && typeof animation.effect.getComputedTiming === "function" ? animation.effect.getComputedTiming() : null;
+      if (timing && Number.isFinite(timing.endTime) && typeof animation.startTime === "number" && !counted.has(animation)) {
+        counted.add(animation);
+        const end = animation.startTime + timing.endTime;
+        probe.end = probe.end === null ? end : Math.max(probe.end, end);
+      }
+    }
+  };
+  const watch = () => {
+    for (const layer of document.querySelectorAll("[data-shell-intro]")) {
+      if (seen.has(layer)) continue;
+      seen.add(layer);
+      probe.plays += 1;
+      if (probe.start === null) probe.start = document.timeline.currentTime;
+      const until = performance.now() + 3000;
+      const tick = () => {
+        sample();
+        if (performance.now() < until) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  };
+  new MutationObserver(watch).observe(document, { childList: true, subtree: true });
+}
+
+const readIntroProbe = (page) => page.evaluate(() => {
+  const probe = window.__tcrnShellIntroProbe;
+  if (!probe) return { plays: null, properties: [], durationMs: null };
+  return { plays: probe.plays, properties: probe.properties.slice(), durationMs: probe.start === null || probe.end === null ? null : Math.round(probe.end - probe.start) };
+});
+
+// intro on the real part: a fresh session plays once, a reload in the same session plays 0 times,
+// prefers-reduced-motion plays 0 times. beforeReload: mutation ops applied between load and reload.
+export async function probeShellIntro(browser, url, { viewport = STORY_RUN.viewports.desktop, waitMs = 1500, beforeReload = null } = {}) {
+  const visit = async (options, run) => {
+    const context = await browser.newContext({ viewport, deviceScaleFactor: 1, ...options });
+    try {
+      await context.addInitScript(installIntroProbe);
+      const page = await context.newPage();
+      await page.goto(url, { waitUntil: "load" });
+      await page.waitForTimeout(waitMs);
+      return await run(page);
+    } finally {
+      await context.close();
+    }
+  };
+  const session = await visit({}, async (page) => {
+    const first = await readIntroProbe(page);
+    if (beforeReload) await page.evaluate(applyMutationInPage, beforeReload);
+    await page.reload({ waitUntil: "load" });
+    await page.waitForTimeout(waitMs);
+    return { first, reload: await readIntroProbe(page) };
+  });
+  const reduced = await visit({ reducedMotion: "reduce" }, (page) => readIntroProbe(page));
+  const trace = { firstLoadPlays: session.first.plays, reloadPlays: session.reload.plays, reducedMotionPlays: reduced.plays, properties: session.first.properties };
+  if (typeof session.first.durationMs === "number") trace.durationMs = session.first.durationMs;
+  return trace;
+}
+
+// The behaviour gates of one probe run: intro, focusLoop and the outside-click half of noCollapse.
+export function judgeBehaviourTraces(traces, thresholds = THRESHOLDS) {
+  const verdict = judgeBehaviour(traces, thresholds);
+  return { intro: verdict.intro, focusLoop: verdict.focusLoop, noCollapse: judgeGate("noCollapse", { shells: [] }, { thresholds, traces: { outsideClick: traces && traces.outsideClick } }) };
+}
+
+// ------------------------------------------------------------------------------------- story mutations
+
+const failureKeys = (gate) => new Set((gate && gate.failures ? gate.failures : []).map((f) => `${f.at}|${f.what}|${JSON.stringify(f.value)}`));
+const failureCount = (gate) => (gate && gate.failures ? gate.failures.length : 0) + (gate && gate.moreFailures ? gate.moreFailures : 0);
+const grewOn = (before, after) => {
+  const known = failureKeys(before);
+  return [...failureKeys(after)].filter((key) => !known.has(key));
+};
+
+// A story mutation is red on its gate when the gate fails with the mutation and, if the unmutated real
+// part already fails that gate, the mutation adds a failure the unmutated run does not have.
+export function judgeStoryMutation(mutation, baselineGates, mutatedGates) {
+  const before = baselineGates[mutation.gate];
+  const after = mutatedGates[mutation.gate];
+  if (!before || !after) throw new Error("shell_story_mutation_gate_unknown:" + mutation.gate);
+  const added = grewOn(before, after);
+  const grew = added.length > 0 || failureCount(after) > failureCount(before);
+  const red = after.status === "fail";
+  const ok = red && (before.status !== "fail" || grew);
+  const changedGates = Object.keys(mutatedGates).filter((id) => baselineGates[id] && (grewOn(baselineGates[id], mutatedGates[id]).length > 0 || failureCount(mutatedGates[id]) > failureCount(baselineGates[id])));
+  const verdict = ok ? (before.status === "fail" ? "red on a red baseline, with a new failure" : "turns red") : red ? "not distinguishable: red baseline, no new failure" : "stays " + after.status;
+  return { id: mutation.id, gate: mutation.gate, baseline: before.status, status: after.status, ok, verdict, newFailures: added.slice(0, 5), changedGates };
+}
+
 // ----------------------------------------------------------------------------------------------- stories
 
-// The package stories with the package hooks. Behaviour gates stay n/a until the SUB-137 probes land.
-export async function runStories({ root = process.cwd(), browser, launchOptions, thresholds = THRESHOLDS, storyIds = SHELL_STORY_IDS, staticRoot = DEFAULT_PATHS.staticRoot } = {}) {
+const NO_MOTION_CSS = "*,*::before,*::after{transition:none!important;animation:none!important}";
+
+// The screens a story run must show, in order and in their data-state (fixture manifest, stories.screens).
+export function checkStoryScreens(reading, expected) {
+  if (!Array.isArray(expected)) return [];
+  const failures = [];
+  const ids = (reading.shells || []).map((s) => s.id);
+  if (JSON.stringify(ids) !== JSON.stringify(expected.map((s) => s.id))) failures.push({ what: "screens", value: ids, expect: expected.map((s) => s.id) });
+  for (const want of expected) {
+    const s = (reading.shells || []).find((item) => item.id === want.id);
+    if (s && s.state !== want.state) failures.push({ what: "data-state", shell: s.id, value: s.state, expect: want.state });
+  }
+  return failures;
+}
+
+// The package stories with the package hooks, the behaviour probes and the story mutations.
+export async function runStories({ root = process.cwd(), browser, launchOptions, thresholds = THRESHOLDS, storyIds = SHELL_STORY_IDS, staticRoot = DEFAULT_PATHS.staticRoot, manifestPath = DEFAULT_PATHS.fixtureManifest, mutationsPath = DEFAULT_PATHS.fixtureMutations, behaviour = true, mutations = true } = {}) {
   let registry;
   try {
     registry = await loadStoryRegistry({ root });
   } catch (error) {
     return { schemaVersion: SCHEMA_VERSION, mode: "stories", ok: false, error: error.code || String(error.message || error) };
   }
+  const plan = readJson(resolve(root, manifestPath)).stories || {};
+  const storyMutations = (readJson(resolve(root, mutationsPath)).storyMutations || []).filter((m) => storyIds.includes(m.story));
   const { routes, missing } = resolveStoryRoutes(storyIds, registry);
+  const routeOf = new Map(routes.map((route) => [route.id, route]));
   const staticDir = resolve(root, staticRoot);
   if (!existsSync(staticDir)) return { schemaVersion: SCHEMA_VERSION, mode: "stories", ok: false, error: "static_docs_missing:" + staticRoot, missing };
   const logoSources = loadLogoSources(root);
@@ -683,37 +978,118 @@ export async function runStories({ root = process.cwd(), browser, launchOptions,
         const brandPage = await openBoardPage(context, root, DEFAULT_PATHS.brandBoard);
         const brandLockups = await readBrandLockups(brandPage);
         await brandPage.close();
+        const viewportOf = (id) => STORY_RUN.viewports[STORY_RUN.storyViewport[id] || "desktop"];
+        const openStory = async (route, { locale, theme, ops = null }) => {
+          const page = await context.newPage();
+          try {
+            await page.setViewportSize(viewportOf(route.id));
+            await page.goto(storyUrl(server.origin, route, { theme, locale }), { waitUntil: "load" });
+            await expandStory(page, route.id);
+            await page.addStyleTag({ content: NO_MOTION_CSS });
+            await settlePage(page);
+            if (ops) {
+              await page.evaluate(applyMutationInPage, ops);
+              await settlePage(page);
+            }
+            return page;
+          } catch (error) {
+            await page.close();
+            throw error;
+          }
+        };
+        const measureStory = async (route, options) => {
+          const page = await openStory(route, options);
+          try {
+            const reading = await measureShellPage(page, { selectors: PACKAGE_SELECTORS, selectorSet: "package", root: route.bodySelector, logoSources });
+            return { reading, verdict: judgeShellReadings(reading, { thresholds, brandLockups, compareDescription: options.locale === "zh-CN" }) };
+          } finally {
+            await page.close();
+          }
+        };
+
         const runs = [];
         for (const route of routes) {
           for (const locale of STORY_RUN.locales) {
             for (const theme of STORY_RUN.themes) {
-              const page = await context.newPage();
-              try {
-                await page.setViewportSize(STORY_RUN.viewports[STORY_RUN.storyViewport[route.id] || "desktop"]);
-                await page.goto(storyUrl(server.origin, route, { theme, locale }), { waitUntil: "load" });
-                await expandStory(page, route.id);
-                await page.addStyleTag({ content: "*,*::before,*::after{transition:none!important;animation:none!important}" });
-                await settlePage(page);
-                const reading = await measureShellPage(page, { selectors: PACKAGE_SELECTORS, selectorSet: "package", root: route.bodySelector, logoSources });
-                const verdict = judgeShellReadings(reading, { thresholds, brandLockups, compareDescription: locale === "zh-CN" });
-                runs.push({ story: route.id, locale, theme, shells: reading.shells.length, gates: verdict.gates, failed: verdict.failed, missingHooks: verdict.missingHooks });
-              } finally {
-                await page.close();
-              }
+              const { reading, verdict } = await measureStory(route, { locale, theme });
+              const screenFailures = checkStoryScreens(reading, (plan.screens || {})[route.id]);
+              runs.push({ story: route.id, locale, theme, viewport: viewportOf(route.id), shells: reading.shells.map((s) => s.id), gates: verdict.gates, failed: verdict.failed, missingHooks: verdict.missingHooks, screenFailures });
             }
           }
         }
+
+        const probes = plan.behaviour || {};
+        const probeLoop = async (locale, ops) => {
+          const route = probes.focusLoop && routeOf.get(probes.focusLoop.story);
+          if (!route) return { trace: null, notes: ["focus-loop story not in this run"] };
+          const page = await openStory(route, { locale, theme: "light", ops });
+          try {
+            return await probeShellBehaviour(page, { scope: route.bodySelector, screen: probes.focusLoop.screen, cascadeScreen: probes.focusLoop.cascadeScreen, waitMs: probes.waitMs });
+          } finally {
+            await page.close();
+          }
+        };
+        const probeIntro = async (locale, beforeReload) => {
+          const route = probes.intro && routeOf.get(probes.intro.story);
+          if (!route) return null;
+          return probeShellIntro(active, storyUrl(server.origin, route, { theme: "light", locale }), { viewport: viewportOf(route.id), waitMs: probes.intro.waitMs, beforeReload });
+        };
+        const behaviourRuns = [];
+        if (behaviour) {
+          for (const locale of STORY_RUN.locales) {
+            const loop = await probeLoop(locale, null);
+            const traces = { ...(loop.trace || {}) };
+            const intro = await probeIntro(locale, null);
+            if (intro) traces.intro = intro;
+            behaviourRuns.push({ locale, traces, notes: loop.notes, gates: judgeBehaviourTraces(traces, thresholds) });
+          }
+        }
+
+        const mutationResults = [];
+        if (mutations) {
+          for (const mutation of storyMutations) {
+            const route = routeOf.get(mutation.story);
+            const locale = mutation.locale || STORY_RUN.locales[0];
+            const theme = mutation.theme || "light";
+            let result;
+            if (mutation.probe) {
+              const base = behaviourRuns.find((run) => run.locale === locale);
+              if (!base) {
+                mutationResults.push({ id: mutation.id, gate: mutation.gate, ok: false, verdict: "not run: behaviour probes off" });
+                continue;
+              }
+              const traces = { ...base.traces };
+              if (mutation.probe === "intro") traces.intro = await probeIntro(locale, mutation.beforeReload || null);
+              else Object.assign(traces, (await probeLoop(locale, mutation.ops || null)).trace || {});
+              result = judgeStoryMutation(mutation, base.gates, judgeBehaviourTraces(traces, thresholds));
+            } else {
+              const base = runs.find((run) => run.story === mutation.story && run.locale === locale && run.theme === theme);
+              const { verdict } = await measureStory(route, { locale, theme, ops: mutation.ops });
+              result = judgeStoryMutation(mutation, base.gates, verdict.gates);
+            }
+            mutationResults.push({ ...result, story: mutation.story, source: mutation.source });
+          }
+        }
+
         const gates = {};
-        for (const id of GATE_IDS) gates[id] = BEHAVIOUR_GATE_IDS.includes(id) ? "n/a" : combine(runs.map((r) => r.gates[id].status));
+        for (const id of GATE_IDS) {
+          const statuses = BEHAVIOUR_GATE_IDS.includes(id) ? behaviourRuns.map((run) => run.gates[id].status) : runs.map((run) => run.gates[id].status);
+          if (id === "noCollapse") statuses.push(...behaviourRuns.map((run) => run.gates.noCollapse.status));
+          gates[id] = combine(statuses);
+        }
+        const everyGateMutated = GATE_IDS.every((id) => storyMutations.some((m) => m.gate === id));
         return {
           schemaVersion: SCHEMA_VERSION,
           readingSchemaVersion: SHELL_MEASURE_SCHEMA_VERSION,
           mode: "stories",
-          ok: missing.length === 0 && runs.length > 0 && GATE_IDS.every((id) => gates[id] === "pass") && runs.every((r) => r.missingHooks.length === 0),
+          ok: missing.length === 0 && runs.length > 0 && GATE_IDS.every((id) => gates[id] === "pass") && runs.every((run) => run.missingHooks.length === 0 && run.screenFailures.length === 0) && (!mutations || (everyGateMutated && mutationResults.every((m) => m.ok))),
           missing,
-          behaviour: "behaviour probes land with TCRN-DS-SUB-137",
+          viewports: STORY_RUN.viewports,
           gates,
-          runs
+          runs,
+          behaviour: behaviourRuns,
+          mutations: mutationResults,
+          dSection: D_SECTION_ROWS.map((row) => ({ row: row.row, gates: row.gates, status: combine(row.gates.map((id) => gates[id])) }))
         };
       } finally {
         await context.close();

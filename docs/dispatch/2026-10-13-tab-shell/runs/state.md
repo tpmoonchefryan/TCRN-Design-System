@@ -40,11 +40,12 @@
 | P7 | 已合入，包树已退役（273 MB） | 5cb5b72、bac233c（合入集成分支）、a12acd4、eb2b9e5、0cba35f | 080286d | INC-399 六腿全过；geometry:proof 仍退出 1（静态页无壳样式、搜索浮层段 0 个，P1d 问题 1、6）；问题 7 条，两条待设计裁定（夜间遮罩色、Sheet 里下一级怎么开） |
 | P8 | 在跑（自 080286d 后的集成 HEAD） | | | |
 | P9 | 已合入，包树已退役（273 MB） | a322eff、55f3d48 | 20193f3 | contract:proof 11/11、壳层板与 B 段差 0.00；storybook test 11/12（composition-one 既有红）；问题 7 条（壳层门读不了 8 格、铃铛悬停 3.5% 对板 6%、geometry-proof 展开菜单常数 13→15 等） |
-| P12 | 在跑（自 20193f3 后的集成 HEAD；P8 仍在跑，文件集不相交，滚动补位） | | | 已消息：P8 合入改了面包屑与 Tabs 的 DOM，交回前合入集成分支、按新 DOM 核对选择器重跑局部门 |
+| P12 | 已合入，包树已退役（272 MB） | 549afa6、d06dbce 与 9f90755（两次合入集成分支）、0cb64d8、07e2f07 | 715895f | 夹具模式 18 门全绿、变异全红；对真件 20 次运行 8 绿 9 红 1 n/a（红来自包外缺口：静态页无客户端 React、Sheet 根态、NavItem `data-text`、底栏锁定块 `svg[data-logo]`、下拉搜索被拉到 260、后缀超出 1px、20 格对比度）；给触摸端门加了「390 下打开的层必须是 Sheet」断言，按 C-17 可能算判定语义变化，交判断确认；问题 10 条。已消息 P13、P14：门库「在纸内」限定到被量壳自己的纸，交回前合入集成分支 |
 | P8 | 已合入，包树已退役（273 MB） | 8873a9a、601b6c9、1913b24 | 34e81f6 | 局部门除两条既有红外全 0（ui-react test 的 TMS 后缀、doc-shell:proof 的 `tcrn-shell-dropdown__col` 在 080286d 即有）；问题 10 条（smoke 两处断言旧标记、样板三弃用 TopBar 无样式、roles.json 仍登记 3 个退役类名等） |
 | P10 | 已合入，包树已退役（272 MB） | 6d10851、6144e08 | 513424c | 文档页全进顶带壳（1440 读数：顶带 52、标按钮 134×40、纸 12/52/14、TocRail 在纸内、页列 1040 居中、夜间计数 ink-2）；doc-shell:proof 与 storybook test 的红与改前相同（`tcrn-shell-dropdown__col`；smoke 断言旧文档头归 SUB-132）；问题 8 条 |
 | P13 | 在跑（自 513424c 后的集成 HEAD） | | | |
-| P11 | 在跑（同上） | | | |
+| P11 | 已合入，包树已退役（237 MB） | 0f4e670、deaf18b、897317e | 12daf0a | 四块成品板 D 段换顶带壳（Typography、Icon、Actions、Inputs 与对应 V2-B1 草稿板），heights 5836/4271/5216/6530；Shell 两板字面守护 diff 退出 1 是既有 token 块漂移（同 P2 问题 3）；问题 4 条（canvas.json 板高与 y 未跟、Brand 与 Shell 板 D4 关键词残留、Icon 板仍写 37 件） |
+| P14 | 在跑（自 12daf0a 后的集成 HEAD） | | | |
 | P5 | 已合入，包树已退役（239 MB） | 7eefd5b、5825bcb | f7d6f6d | 局部门全 0（ui-react test 208/209，唯一红是既有红）；问题 5 条，要紧的一条：静态 Storybook 页无客户端 React，ShellIntro 不播放（下一轮）；已经消息让 P1c 交回前把集成分支合进包树、解 `styles/index.ts` 登记冲突 |
 
 - 跨包通告 `runs/r1/excerpts/cross-notes.md`（已知红、已合入包的接口行段、W3 共享文件规则）随每次派工指给子代理，包交回后主线程补行。
