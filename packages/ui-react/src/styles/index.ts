@@ -36,6 +36,8 @@ import {
 import { brandCss01, brandCss02, brandCss03, brandCss04 } from "./brand.css.js";
 // The top-band shell parts come after every family module (TCRN-DS-INIT-016, C-8).
 import { shellCss01, shellCss02, shellCss03, shellCss04 } from "./shell.css.js";
+// The sign-in intro comes after the top-band shell parts (TCRN-DS-SUB-122, C-8).
+import { shellIntroCss01 } from "./shell-intro.css.js";
 
 export const tcrnComponentCss: string = [
   baseCss01,
@@ -119,5 +121,6 @@ export const tcrnComponentCss: string = [
   shellCss01,
   shellCss02,
   shellCss03,
-  shellCss04
+  shellCss04,
+  shellIntroCss01
 ].join("");
