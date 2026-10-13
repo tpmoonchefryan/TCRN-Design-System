@@ -23,8 +23,11 @@
 
 - 开工：主检出 main 合入候选得 `69aa195`；集成工作树建好、依赖已装；库门 0 个（S-1）。
 - 链上正文导出在 scratch `chain/src/`（INIT、6 Epic、16 Story、两份纪要）。
-- 拆分：派 `einzbern-economy` 一次做完，产出写 `runs/r1/`（decomposition.md、subtasks.json、packages.md、problems/decomposition.md、subtasks-batch.json）。
+- 拆分：`einzbern-economy` 一次做完并提交（198b8ae）：28 张 Subtask（SUB-113…140）、18 个包（P1 切 P1a–P1d 四段 + P2…P15）、9 波；问题清单 25 条（`runs/r1/problems/decomposition.md`，均已按建议排进 Subtask，批末判断处置）。
+- 开工链写：一个 work-batch 62 成员（INIT-016 与 16 张 Story 各 planned→ready→active、28 张 Subtask 建单），WORKSPACE_COMMAND_COMPLETED，version 1889 → 1951；读回 Subtask 28 张与 subtasks.json 零差异（planned），Story 16 张 active，INIT-016 active。批文件与回执在 scratch `chain/r1/`。
+- 调度（并行 ≤3，滚动补位）：可起的包由 scratch `tools/eligible-016.mjs <runDir> <已合入> <在跑>` 算（列出的前置包已合入、更早波次里与它文件相交的包已合入、与在跑包文件不相交）。包树由 scratch `tools/setup-pkg.sh <轮> <包>` 建；摘录由 `tools/make-excerpt-016.mjs <dispatchDir> <轮> <包> <包树> <输出>` 切。P1 各段各自从集成分支最新 HEAD 新建包树（等价于 C-15 的「先把集成分支合进 P1 分支」）。包交回后：核对提交与 `status` 干净 → 按依赖 `git -C <集成树> merge --no-ff` → `git worktree remove` 退役包树 → 派下一个可起的包。
+- W1 已派：P1a（SUB-113→114→115）、P2（SUB-123→127）、P3（SUB-135），包树 scratch `pkg/r1-p1a`、`pkg/r1-p2`、`pkg/r1-p3`，摘录已提交（63d07f9）。
 
 ## 下一步
 
-- 拆分交回后：核对产出与提交 → 一次链写（INIT-016 ready→active、16 张 Story ready→active、Subtask 建单）并读回 → 切摘录 → 建包树 → 派 P1 与可并行包（上限 3）。
+- W1 各包交回后按上面的合入步骤处理；P1a 与 P2 都合入后起 P1b、P4；P1b 合入后起 P5 与 P1c（P1c 还等 P4 合入）。全部包合入后：批末 verify（逐步、遇红继续）→ 主力档验收与判断 → 一次链写与知识采集 → 下一轮。
