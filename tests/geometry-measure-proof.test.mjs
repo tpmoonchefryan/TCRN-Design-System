@@ -67,8 +67,8 @@ test("the gate owns the STORY-131 thresholds", () => {
   assert.equal(THRESHOLDS.contrast.maxDiff, 0.05);
   assert.deepEqual([...THRESHOLDS.controlHeight.allowedPx], [28, 32, 40]);
   assert.equal(THRESHOLDS.overlap.maxOverlaps, 0);
-  // TCRN-DS-SUB-094: composition one's frame, paper 12 from the shell edge and the shell top bar 52.
-  assert.deepEqual([THRESHOLDS.shellFrame.paperInsetPx, THRESHOLDS.shellFrame.topBarHeightPx, THRESHOLDS.shellFrame.tolerancePx], [12, 52, 0.5]);
+  // TCRN-DS-SUB-134: the top-band shell's frame, paper 12 from the shell's edges, top band 52, paper radius 14.
+  assert.deepEqual([THRESHOLDS.shellFrame.paperInsetPx, THRESHOLDS.shellFrame.topBarHeightPx, THRESHOLDS.shellFrame.paperRadiusPx, THRESHOLDS.shellFrame.tolerancePx], [12, 52, 14, 0.5]);
   assert.ok(Object.isFrozen(THRESHOLDS.controlHeight.allowedPx));
 });
 
@@ -167,10 +167,17 @@ test("every check has a red and a green fixture", () => {
   assert.deepEqual(fixtureCoverage(manifest), { ok: true, missingRed: [], missingGreen: [] });
   for (const spec of manifest.cases) assert.ok(readFileSync(new URL(`./fixtures/geometry-measure/${spec.file}`, import.meta.url), "utf8").includes("data-measure-root"), spec.file);
   const reds = manifest.cases.filter((spec) => (spec.fail ?? []).length);
+  // TCRN-DS-SUB-134: the clean page all.green.html still carries composition one's frame, which shellFrame
+  // no longer reads, so the top-band frame's injected mutations run on its own clean page.
+  const cleanPage = (id) => (id === "shellFrame" ? "shellFrame.green.html" : "all.green.html");
   for (const id of CHECK_IDS) {
     assert.ok(reds.some((spec) => spec.fail.includes(id) && !spec.mutationCss), `${id}: red fixture file`);
-    assert.ok(reds.some((spec) => spec.fail.includes(id) && spec.mutationCss && spec.file === "all.green.html"), `${id}: injected mutation on the clean page`);
+    assert.ok(reds.some((spec) => spec.fail.includes(id) && spec.mutationCss && spec.file === cleanPage(id)), `${id}: injected mutation on the clean page`);
   }
+  // 148-GWT3: a 1px rule under the top band turns the clean frame red.
+  const rule = manifest.cases.find((spec) => spec.id === "shell-frame-top-band-rule-mutation");
+  assert.deepEqual([rule.file, rule.fail, rule.reasons.shellFrame], ["shellFrame.green.html", ["shellFrame"], ["top_band_rule"]]);
+  assert.match(rule.mutationCss, /\[data-shell-strip\] \{ border-bottom: 1px solid/);
 });
 
 test("the fixture self-check is green as a whole", () => {
@@ -202,14 +209,21 @@ test("the clean page reports every check value", () => {
   const verdict = selfCheck.verdicts["all-green"];
   assert.deepEqual(Object.keys(verdict.checks), [...CHECK_IDS]);
   for (const id of CHECK_IDS) {
-    assert.equal(verdict.checks[id].status, "pass", id);
+    // TCRN-DS-SUB-134: the clean page's composition-one frame has no C-5 shell root, so shellFrame is n/a
+    // there and its readings come from its own clean page below.
+    assert.equal(verdict.checks[id].status, id === "shellFrame" ? "n/a" : "pass", id);
     assert.ok(verdict.checks[id].value === null || typeof verdict.checks[id].value === "number", id);
   }
   assert.equal(verdict.checks.contrast.cells.length, 9);
   assert.deepEqual(verdict.checks.rail.shells[0].guideLefts, [16]);
   assert.deepEqual(verdict.checks.rail.shells[0].textLefts, [48]);
-  assert.deepEqual(verdict.checks.shellFrame.shells[0].paperInsets, { top: 12, end: 12, bottom: 12 });
-  assert.equal(verdict.checks.shellFrame.shells[0].topBarHeightPx, 52);
+  const frame = selfCheck.verdicts["shell-frame-green"].checks.shellFrame;
+  assert.equal(frame.status, "pass");
+  assert.equal(frame.checked, 1, "the data-shell without data-state is not a shell root");
+  assert.deepEqual(frame.shells[0].paperInsets, { top: 52, start: 12, end: 12, bottom: 12 });
+  assert.equal(frame.shells[0].topBarHeightPx, 52);
+  assert.deepEqual(frame.shells[0].paperRadiiPx, [14, 14, 14, 14]);
+  assert.deepEqual([frame.shells[0].topBand.bordersPx, frame.shells[0].topBand.boxShadow, frame.shells[0].topBand.fillAlpha], [[0, 0, 0, 0], null, 0]);
   assert.deepEqual(verdict.checks.controlHeight.controls.map((c) => c.heightPx), [32, 28, 40]);
 });
 
@@ -414,26 +428,28 @@ const ANY_PAGE_FOUR = ["clip", "singleLine", "shadowBlur", "overlap"];
 test("every G+ story has its required checks and the families split the ten ids", () => {
   // TCRN-DS-SUB-093: composition three (O-4) joins the ten fixed ids through the gplus-samples category.
   assert.deepEqual(Object.keys(REQUIRED_CHECKS).sort(), [...GPLUS_STORY_IDS, "composition-three-sample"].sort());
-  assert.deepEqual([...REQUIRED_CHECKS["composition-three-sample"]], ANY_PAGE_FOUR);
+  assert.deepEqual([...REQUIRED_CHECKS["composition-three-sample"]], [...ANY_PAGE_FOUR, "shellFrame"]);
   for (const checks of Object.values(REQUIRED_CHECKS)) for (const id of checks) assert.ok(CHECK_IDS.includes(id), id);
-  assert.deepEqual([...SET_REQUIRED_CHECKS], [...CHECK_IDS]);
+  // TCRN-DS-SUB-134 (decomposition problem 24): no G+ story has a side rail any more; rail keeps its fixtures.
+  assert.deepEqual([...SET_REQUIRED_CHECKS], CHECK_IDS.filter((id) => id !== "rail"));
   assert.deepEqual(Object.keys(GPLUS_FAMILIES), ["typography", "icon", "brand", "actions", "inputs"]);
   assert.deepEqual(Object.values(GPLUS_FAMILIES).flat().sort(), [...GPLUS_STORY_IDS].sort());
 });
 
 // TCRN-DS-SUB-077 (C-12): the required checks follow what each board carries. A sample has no
-// data-cell, so contrast was n/a on all five; rail and the TableShell rows are what a sample carries,
-// and the actions and inputs matrices declare their control heights (data-h, SUB-074).
+// data-cell, so contrast was n/a on all five; the shell's frame and the TableShell rows are what a
+// sample carries (the side rail went with composition one, TCRN-DS-SUB-134), and the actions and
+// inputs matrices declare their control heights (data-h, SUB-074).
 const storybookMap = JSON.parse(readFileSync(new URL("../docs/design/gplus-2026-10/storybook-map.json", import.meta.url), "utf8"));
 const ANY_PAGE = ["clip", "singleLine", "shadowBlur", "overlap"];
 const TABLE_SHELL_SAMPLES = ["typography-sample-billing", "icon-sample-project", "brand-sample-product", "actions-sample-project"];
 
-test("samples must measure rail and their table rows but not contrast; actions and inputs matrices control height", () => {
+test("samples must measure their frame and table rows but not rail or contrast; actions and inputs matrices control height", () => {
   for (const checks of Object.values(REQUIRED_CHECKS)) for (const id of ANY_PAGE) assert.ok(checks.includes(id), id);
   for (const id of GPLUS_SAMPLE_STORY_IDS) {
     assert.ok(!REQUIRED_CHECKS[id].includes("contrast"), `${id}: a sample has no data-cell`);
-    assert.ok(REQUIRED_CHECKS[id].includes("rail"), `${id}: rail`);
-    assert.ok(REQUIRED_CHECKS[id].includes("shellFrame"), `${id}: shellFrame (TCRN-DS-SUB-094)`);
+    assert.ok(!REQUIRED_CHECKS[id].includes("rail"), `${id}: the top-band shell has no side rail (TCRN-DS-SUB-134)`);
+    assert.ok(REQUIRED_CHECKS[id].includes("shellFrame"), `${id}: shellFrame (TCRN-DS-SUB-134)`);
     assert.equal(REQUIRED_CHECKS[id].includes("rowAlign"), TABLE_SHELL_SAMPLES.includes(id), `${id}: rowAlign with TableShell rows only`);
   }
   for (const id of GPLUS_MATRIX_STORY_IDS) {
@@ -457,7 +473,7 @@ test("the storybook map rows list the gate's required checks (the any-page four 
   assert.doesNotMatch(diff6.story, /unknown_probe/);
 });
 
-test("on the built docs no required check is n/a: samples measure rail and rows, actions and inputs control height", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
+test("on the built docs no required check is n/a: samples measure their frame and rows, actions and inputs control height", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
   const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: [...GPLUS_STORY_IDS], themes: ["light"], mutations: [], probes: [] });
   assert.equal(report.reason, null);
   assert.deepEqual(report.missingStories, []);
@@ -475,11 +491,14 @@ test("STORY-131 GWT1-3 each have a real-story mutation on the check they name", 
   assert.match(bySource["131-GWT2"].css, /mark \{ padding: 2px/);
   assert.equal(bySource["131-GWT3"].check, "shadowBlur");
   assert.match(bySource["131-GWT3"].css, /box-shadow: 0 1px 4px/);
-  // TCRN-DS-SUB-094: the paper flush with the shell edge and the top bar back at 68 each name shellFrame.
+  // TCRN-DS-SUB-134: the paper flush with the shell's edges, a 1px rule under the top band (148-GWT3) and
+  // the band at the old top bar's 68 each name shellFrame, through the C-5 hooks.
   const shellFrameMutations = STORY_MUTATIONS.filter((mutation) => mutation.check === "shellFrame");
-  assert.deepEqual(shellFrameMutations.map((mutation) => mutation.id), ["shell-paper-inset-zero", "shell-top-bar-68"]);
-  assert.match(shellFrameMutations[0].css, /\.tcrn-product-shell__workspace \{ margin: 0 !important; \}/);
-  assert.match(shellFrameMutations[1].css, /\.tcrn-top-bar \{ min-height: 68px !important; \}/);
+  assert.deepEqual(shellFrameMutations.map((mutation) => mutation.id), ["shell-paper-inset-zero", "shell-top-band-rule", "shell-top-band-68"]);
+  assert.match(shellFrameMutations[0].css, /\[data-paper\] \{ margin: 0 !important; \}/);
+  assert.match(shellFrameMutations[1].css, /\[data-shell-strip\] \{ border-bottom: 1px solid/);
+  assert.match(shellFrameMutations[2].css, /\[data-shell-strip\] \{ block-size: 68px !important;/);
+  for (const mutation of shellFrameMutations) assert.doesNotMatch(mutation.css, /tcrn-product-shell__workspace|tcrn-top-bar/, mutation.id);
   for (const mutation of shellFrameMutations) assert.ok(GPLUS_SAMPLE_STORY_IDS.includes(mutation.storyId), mutation.id);
   assert.deepEqual(STORY_PROBES.map((probe) => probe.id), ["buttonGroupFocusRing", "datePickerIndicatorHit", "highlightWidth", "iconStroke"]);
   const iconStroke = STORY_PROBES.find((probe) => probe.id === "iconStroke");

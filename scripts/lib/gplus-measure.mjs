@@ -14,9 +14,11 @@
 //   contrast       contrast of every [data-cell] sample against its data-expect value
 //   controlHeight  rendered height of [data-h] controls (and of controlSelector matches)
 //   overlap        in-flow siblings of a grid / flex container must not intersect (descendants included)
-//   shellFrame     composition one's frame inside each ProductShell [data-shell]: the paper's distance
-//                  from the shell's top, end and bottom edges, and the height of the shell's top bar
-//                  (TCRN-DS-SUB-094; not on the canvas script, which left both to the eye)
+//   shellFrame     the top-band shell's frame inside each shell root [data-shell][data-state]: the top
+//                  band's height with no rule and no fill, the paper's distance from the shell's top
+//                  (the band's height), start, end and bottom edges, and the paper's corner radius
+//                  (TCRN-DS-SUB-134, C-5 hooks; was composition one's frame, TCRN-DS-SUB-094; not on the
+//                  canvas script, which left it to the eye)
 //
 // Thresholds are NOT defined here. The gate (scripts/geometry-measure-proof.mjs) owns them and passes
 // them in; measureInPage, measurePage, judgeMeasurements and runMeasureTargets all require them.
@@ -59,7 +61,7 @@ export const THRESHOLD_KEYS = Object.freeze({
   contrast: Object.freeze(["maxDiff", "minText", "minNonText"]),
   controlHeight: Object.freeze(["allowedPx", "tolerancePx"]),
   overlap: Object.freeze(["maxOverlaps", "minIntersectPx"]),
-  shellFrame: Object.freeze(["paperInsetPx", "topBarHeightPx", "tolerancePx"])
+  shellFrame: Object.freeze(["paperInsetPx", "topBarHeightPx", "paperRadiusPx", "tolerancePx"])
 });
 
 // Markup conventions (selectors), not thresholds. measureInPage applies the same values when an
@@ -73,11 +75,13 @@ export const DEFAULT_MEASURE_OPTIONS = Object.freeze({
   markSelector: "mark",
   rowsSelector: "[data-rows]",
   controlSelector: null,
-  // shellFrame reads package classes, not story hooks: the [data-shell] elements that are ProductShell
-  // roots, their paper (the workspace sheet) and the shell's own top bar inside that paper.
-  frameShellSelector: ".tcrn-product-shell",
-  paperSelector: ".tcrn-product-shell__workspace",
-  frameTopBarSelector: ".tcrn-top-bar"
+  // shellFrame reads the C-5 measurement hooks of the top-band shell (TCRN-DS-SUB-134), the same on the
+  // package ProductShell and on the boards: a shell root is a [data-shell] that carries data-state
+  // (closed, expanded, drop, sheet), its top band is [data-shell-strip] and its paper [data-paper]. The
+  // composition-one classes (.tcrn-product-shell__workspace, .tcrn-top-bar) are not read.
+  frameShellSelector: "[data-state]",
+  paperSelector: "[data-paper]",
+  frameTopBarSelector: "[data-shell-strip]"
 });
 
 export function assertThresholds(thresholds) {
@@ -118,9 +122,9 @@ export function measureInPage(options) {
   const markSelector = opts.markSelector || "mark";
   const rowsSelector = opts.rowsSelector || "[data-rows]";
   const controlSelector = opts.controlSelector || null;
-  const frameShellSelector = opts.frameShellSelector || ".tcrn-product-shell";
-  const paperSelector = opts.paperSelector || ".tcrn-product-shell__workspace";
-  const frameTopBarSelector = opts.frameTopBarSelector || ".tcrn-top-bar";
+  const frameShellSelector = opts.frameShellSelector || "[data-state]";
+  const paperSelector = opts.paperSelector || "[data-paper]";
+  const frameTopBarSelector = opts.frameTopBarSelector || "[data-shell-strip]";
 
   const round1 = (v) => Math.round(v * 10) / 10;
   const round2 = (v) => Math.round(v * 100) / 100;
@@ -613,38 +617,65 @@ export function measureInPage(options) {
     checks.overlap = { checked, value: count, violationCount: count, violations };
   }
 
-  // 10. shellFrame — composition one's frame (TCRN-DS-SUB-094, O-1). Inside each [data-shell] that is a
-  // ProductShell root (frameShellSelector), its own paper (paperSelector) must sit paperInsetPx from the
-  // shell's top, end and bottom edges (the start side is flush with the rail), and the shell's own top
-  // bar (frameTopBarSelector, read inside that paper) must be topBarHeightPx tall. A [data-shell] that is
-  // not a ProductShell root is not read; a ProductShell shell without its paper or top bar cannot be
-  // verified and counts as a violation. value is the worst deviation in px; each shell row names its
-  // reasons (paper_inset, top_bar_height, paper_missing, top_bar_missing).
+  // 10. shellFrame — the top-band shell's frame (TCRN-DS-SUB-134; 07b board, section D rows 顶带高 and
+  // 纸; MIN-20261013-SHELL D1: the band has no fill and no rule). Inside each [data-shell] that is a
+  // shell root (frameShellSelector, the C-5 root's data-state), its own top band (frameTopBarSelector)
+  // must be topBarHeightPx tall with every border width within tolerancePx, no box-shadow and a
+  // transparent background with no image; its own paper (paperSelector) must start topBarHeightPx below
+  // the shell's top, sit paperInsetPx from the shell's start, end and bottom edges and round every
+  // corner by paperRadiusPx. A [data-shell] that is not a shell root is not read; a shell root without
+  // its band or paper cannot be verified and counts as a violation. value is the worst deviation in px
+  // (a rule counts its width; a shadow or a fill has no px and only names its reason); each shell row
+  // names its reasons (paper_inset, paper_radius, top_bar_height, top_band_rule, top_band_fill,
+  // paper_missing, top_bar_missing). Composition one's frame (paper flush with the rail, top bar
+  // inside the paper; TCRN-DS-SUB-094) is gone with the side rail.
   if (wanted.has("shellFrame")) {
+    const F = T.shellFrame;
     const shells = scope(shellSelector).filter((s) => s.matches(frameShellSelector) && !skipped(s, "shellFrame") && rendered(s));
     const rows = [];
     let count = 0;
     let worst = 0;
+    const px = (value) => parseFloat(value) || 0;
     for (const shell of shells) {
       const s = shell.getBoundingClientRect();
-      const paper = [...shell.querySelectorAll(paperSelector)].find((el) => el.closest(shellSelector) === shell && rendered(el)) || null;
-      const bar = paper ? [...paper.querySelectorAll(frameTopBarSelector)].find((el) => el.closest(paperSelector) === paper && rendered(el)) || null : null;
-      const row = { shell: shell.getAttribute("data-shell") || describe(shell), paperInsets: null, topBarHeightPx: null, maxDeviationPx: 0, reasons: [] };
+      const own = (selector) => [...shell.querySelectorAll(selector)].find((el) => el.closest(shellSelector) === shell && rendered(el)) || null;
+      const band = own(frameTopBarSelector);
+      const paper = own(paperSelector);
+      const row = { shell: shell.getAttribute("data-shell") || describe(shell), state: shell.getAttribute("data-state"), topBarHeightPx: null, topBand: null, paperInsets: null, paperRadiiPx: null, maxDeviationPx: 0, reasons: [] };
       const deviations = [];
+      if (band) {
+        const bs = styleOf(band);
+        row.topBarHeightPx = round1(band.getBoundingClientRect().height);
+        const heightDeviation = Math.abs(row.topBarHeightPx - F.topBarHeightPx);
+        deviations.push(heightDeviation);
+        if (heightDeviation > F.tolerancePx) row.reasons.push("top_bar_height");
+        const borders = ["Top", "Right", "Bottom", "Left"].map((side) => (/^(none|hidden)$/.test(bs[`border${side}Style`]) ? 0 : round1(px(bs[`border${side}Width`]))));
+        const rulePx = Math.max(...borders);
+        const shadow = bs.boxShadow !== "none";
+        row.topBand = { bordersPx: borders, boxShadow: shadow ? bs.boxShadow : null, fillAlpha: round2(parseColor(bs.backgroundColor)[3]), backgroundImage: bs.backgroundImage !== "none" };
+        deviations.push(rulePx);
+        if (rulePx > F.tolerancePx || shadow) row.reasons.push("top_band_rule");
+        if (row.topBand.fillAlpha > 0 || row.topBand.backgroundImage) row.reasons.push("top_band_fill");
+      } else row.reasons.push("top_bar_missing");
       if (paper) {
         const p = paper.getBoundingClientRect();
+        const ps = styleOf(paper);
         const rtl = styleOf(shell).direction === "rtl";
-        row.paperInsets = { top: round1(p.top - s.top), end: round1(rtl ? p.left - s.left : s.right - p.right), bottom: round1(s.bottom - p.bottom) };
-        const insetDeviation = Math.max(...Object.values(row.paperInsets).map((inset) => Math.abs(inset - T.shellFrame.paperInsetPx)));
+        row.paperInsets = {
+          top: round1(p.top - s.top),
+          start: round1(rtl ? s.right - p.right : p.left - s.left),
+          end: round1(rtl ? p.left - s.left : s.right - p.right),
+          bottom: round1(s.bottom - p.bottom)
+        };
+        const expected = { top: F.topBarHeightPx, start: F.paperInsetPx, end: F.paperInsetPx, bottom: F.paperInsetPx };
+        const insetDeviation = Math.max(...Object.entries(row.paperInsets).map(([side, inset]) => Math.abs(inset - expected[side])));
         deviations.push(insetDeviation);
-        if (insetDeviation > T.shellFrame.tolerancePx) row.reasons.push("paper_inset");
+        if (insetDeviation > F.tolerancePx) row.reasons.push("paper_inset");
+        row.paperRadiiPx = ["TopLeft", "TopRight", "BottomRight", "BottomLeft"].map((corner) => round1(px(ps[`border${corner}Radius`])));
+        const radiusDeviation = Math.max(...row.paperRadiiPx.map((radius) => Math.abs(radius - F.paperRadiusPx)));
+        deviations.push(radiusDeviation);
+        if (radiusDeviation > F.tolerancePx) row.reasons.push("paper_radius");
       } else row.reasons.push("paper_missing");
-      if (bar) {
-        row.topBarHeightPx = round1(bar.getBoundingClientRect().height);
-        const barDeviation = Math.abs(row.topBarHeightPx - T.shellFrame.topBarHeightPx);
-        deviations.push(barDeviation);
-        if (barDeviation > T.shellFrame.tolerancePx) row.reasons.push("top_bar_height");
-      } else row.reasons.push("top_bar_missing");
       row.maxDeviationPx = round1(deviations.length ? Math.max(...deviations) : 0);
       worst = Math.max(worst, row.maxDeviationPx);
       if (row.reasons.length) count++;

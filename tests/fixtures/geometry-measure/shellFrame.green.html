@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <title>geometry-measure fixture: shellFrame (green)</title>
-<!-- shellFrame only: a ProductShell root (data-shell, package class) whose paper sits 12px from the shell's top, end and bottom edges, flush with the rail, and whose top bar is 52px tall. The data-shell element that is not a ProductShell root is not read. Rail is skipped here; the clean page measures both. -->
+<!-- shellFrame only: a top-band shell root (data-shell with data-state, the C-5 hooks) whose top band (data-shell-strip) is 52px tall with no rule and no fill, and whose paper (data-paper) starts 52px below the shell's top, sits 12px from its start, end and bottom edges and is rounded 14px. Inside the paper, the composition-one classes (a flush workspace and a 68px top bar) are not read. The data-shell element without data-state is not a shell root and is not read. Rail is skipped here; the shells have no side rail. -->
 <style>
   body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
   [data-measure-root] { width: 640px; padding: 16px; }
   .part { margin: 0 0 24px; }
-  .frame-shell { position: relative; width: 480px; height: 160px; background: #efeeea; }
-  .frame-rail { width: 200px; height: 100%; }
-  .paper { position: absolute; top: 12px; right: 12px; bottom: 12px; left: 200px; background: #ffffff; }
-  .paper > .tcrn-top-bar { display: block; box-sizing: border-box; height: 52px; border-bottom: 1px solid #dddddd; }
+  .band-shell { position: relative; width: 560px; height: 220px; background: #efeeea; }
+  .band { position: absolute; top: 0; right: 0; left: 0; box-sizing: border-box; height: 52px; margin: 0; padding: 0 12px; border: 0; background: none; }
+  .paper { position: absolute; top: 52px; right: 12px; bottom: 12px; left: 12px; border-radius: 14px; background: #ffffff; box-shadow: 0 1px 2px rgba(22, 21, 15, 0.08); }
+  .paper .tcrn-product-shell__workspace { margin: 0; }
+  .paper .tcrn-top-bar { display: block; box-sizing: border-box; height: 68px; border-bottom: 1px solid #dddddd; }
   .other-shell { width: 200px; height: 40px; background: #fafafa; }
 </style>
 </head>
 <body>
 <main data-measure-root>
 <section class="part">
-<div class="frame-shell tcrn-product-shell" data-shell="frame" data-measure-skip="rail">
-  <nav class="frame-rail" aria-label="Rail"></nav>
-  <div class="paper tcrn-product-shell__workspace"><header class="tcrn-top-bar"></header></div>
+<div class="band-shell" data-shell="frame" data-state="closed" data-measure-skip="rail">
+  <header class="band" data-shell-strip></header>
+  <div class="paper" data-paper><div class="tcrn-product-shell__workspace"><header class="tcrn-top-bar"></header></div></div>
 </div>
 </section>
 <section class="part">
-<div class="other-shell" data-shell="not-a-product-shell" data-measure-skip="rail"></div>
+<div class="other-shell" data-shell="not-a-shell-root" data-measure-skip="rail"></div>
 </section>
 </main>
 </body>
