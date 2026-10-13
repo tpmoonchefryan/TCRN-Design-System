@@ -122,6 +122,7 @@ export const storyRegistryOrder: readonly StoryRegistryEntry[] = [
   { id: "shell-narrow", group: "Components", categoryId: "navigation-shells" },
   { id: "shell-mobile", group: "Components", categoryId: "navigation-shells" },
   { id: "shell-intro", group: "Components", categoryId: "navigation-shells" },
+  { id: "shell-matrix", group: "Components", categoryId: "navigation-shells" },
   { id: "dialog-spec-usage", group: "Components", categoryId: "overlays" },
   { id: "table-record-index-spec", group: "Components", categoryId: "controls-data" },
   { id: "records-and-boards-components-spec", group: "Components", categoryId: "records-and-boards" },

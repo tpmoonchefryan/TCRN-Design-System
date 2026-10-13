@@ -96,6 +96,11 @@ export const ShellIntro: Story = {
   render: () => renderContractStory("shell-intro")
 };
 
+export const ShellMatrix: Story = {
+  name: "Top-band shell matrix",
+  render: () => renderContractStory("shell-matrix")
+};
+
 export const DialogSpecUsage: Story = {
   name: "Dialog spec and usage",
   render: () => renderContractStory("dialog-spec-usage")

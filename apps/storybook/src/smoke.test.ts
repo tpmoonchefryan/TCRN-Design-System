@@ -129,6 +129,7 @@ const expectedContractStoryIds = [
   "shell-narrow",
   "shell-mobile",
   "shell-intro",
+  "shell-matrix",
   "dialog-spec-usage",
   "table-record-index-spec",
   "records-and-boards-components-spec",
@@ -399,7 +400,7 @@ test("static contract story surface is retained and synthetic", () => {
   for (const story of contractStories) {
     assert.ok(story.category.length > 0, `missing category label for ${story.id}`);
     assert.ok(story.categoryId.length > 0, `missing category id for ${story.id}`);
-    const expectedSourcePath = story.categoryId === "gplus-matrices"
+    const expectedSourcePath = story.categoryId === "gplus-matrices" || story.id === "shell-matrix"
       ? gplusMatrixSourcePath
       : story.categoryId === "gplus-samples" ? gplusSampleSourcePath : "apps/storybook/src/contract-stories/story-content.tsx";
     assert.equal(story.sourcePath, expectedSourcePath);
@@ -1584,7 +1585,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, shell-top-band, shell-narrow, shell-mobile, shell-intro, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members, composition-three-sample/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, shell-top-band, shell-narrow, shell-mobile, shell-intro, shell-matrix, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members, composition-three-sample/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, records-and-boards-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
@@ -1971,4 +1972,73 @@ test("top-band shell stories render the package shell with its measurement hooks
   const intro = renderToStaticMarkup(createElement(Fragment, null, contractStories.find((item) => item.id === "shell-intro")?.render()));
   assert.doesNotMatch(intro, /data-shell-intro/);
   assert.match(intro, /<code>sessionStorage\.removeItem\(&quot;tcrn-shell-intro&quot;\)<\/code>/);
+});
+
+// The shell board matrix (TCRN-DS-SUB-136): section B of the 07a board cell by cell on the package's
+// shell parts, light and night. data-cell is the board's name (the brand button's idle and open
+// wordmark and suffix share one, as on the board) and data-expect the board value; contract-proof
+// holds the contract to section B and section A, this test holds the story to the contract.
+test("shell-matrix renders the shell board's 66 cells under the 07a names, light and night", () => {
+  const story = contractStories.find((item) => item.id === "shell-matrix");
+  assert.ok(story, "missing shell-matrix");
+  assert.equal(story.group, "Components");
+  assert.equal(story.categoryId, "navigation-shells");
+  assert.equal(story.sourcePath, gplusMatrixSourcePath);
+  assert.doesNotMatch(`${story.id} ${story.title}`, /\b(?:aos|tms|workflow)\b/i, "product names stay out of the id and title");
+  const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
+  const contractCells = gplusMatrices.shell;
+  assert.equal(contractCells.length, 66);
+  assert.equal(gplusMatrixCellCounts.shell, 66);
+  const nameOf = (cell: (typeof contractCells)[number]) => `${cell.id}-${cell.theme === "light" ? "l" : "n"}`;
+  const cells = Array.from(html.matchAll(/<[a-z][^>]*\sdata-cell="([^"]+)"[^>]*>/g), (match) => ({ tag: match[0], name: match[1], expect: /\sdata-expect="([^"]+)"/.exec(match[0])?.[1] }));
+  assert.equal(cells.length, 66, "one sample per section B cell");
+  assert.deepEqual(
+    cells.map((item) => `${item.name}@${item.expect}`).sort(),
+    contractCells.map((cell) => `${nameOf(cell)}@${cell.expect}`).sort(),
+    "every sample carries the 07a name and the board value of one contract cell"
+  );
+  for (const item of cells) {
+    const cell = contractCells.find((candidate) => nameOf(candidate) === item.name && candidate.expect === item.expect);
+    assert.ok(cell, item.name);
+    assert.match(item.tag, new RegExp(`data-kind="${cell.kind}"`), `${item.name}: data-kind`);
+    assert.equal(/\sdata-exempt(=|\s|>)/.test(item.tag), cell.exempt, `${item.name}: data-exempt only on exempt cells`);
+  }
+  for (const name of ["brand-word-l", "brand-suffix-l", "brand-word-n", "brand-suffix-n"]) {
+    assert.equal(cells.filter((item) => item.name === name).length, 2, `${name}: idle and open, one name as on the board`);
+  }
+  assert.equal(html.match(/data-gplus-matrix-theme="light"/g)?.length, 1, "one light block");
+  assert.equal(html.match(/data-gplus-matrix-theme="night"/g)?.length, 1, "one night block");
+  assert.match(html, /data-tcrn-theme="light" data-gplus-matrix-theme="light"/);
+  assert.match(html, /data-tcrn-theme="dark" data-gplus-matrix-theme="night"/);
+  const night = html.indexOf('data-gplus-matrix-theme="night"');
+  assert.equal(html.slice(0, night).match(/\sdata-cell="[^"]+-l"/g)?.length, 33, "33 light cells in the light block");
+  assert.equal(html.slice(night).match(/\sdata-cell="[^"]+-n"/g)?.length, 33, "33 night cells in the night block");
+  // Package parts, no shell screen: the band parts, the full menu, the drop-down and the Sheet, twice.
+  assert.doesNotMatch(html, /\sdata-shell="/, "no shell root: the screens are the other shell stories");
+  for (const panel of ["expanded", "drop", "sheet"]) assert.equal(html.match(new RegExp(`data-panel="${panel}"`, "g"))?.length, 2, `the ${panel} panel in both blocks`);
+  assert.equal(html.match(/data-shell-brand="v2"/g)?.length, 6, "the brand button idle, on hover (the open pair) and focused in both blocks");
+  // geometry-proof counts [aria-expanded="true"] on this category page: the matrix adds the open pinned
+  // item of each block and nothing else.
+  assert.equal(html.match(/aria-expanded="true"/g)?.length, 2, "two open pinned items, one per block");
+  assert.equal(html.match(/data-shell-bell=""/g)?.length, 4, "the bell at rest and on hover in both blocks");
+  assert.doesNotMatch(html, /data-shell-dropdown=""[^>]*visibility:hidden|visibility:hidden[^>]*data-shell-dropdown=""/, "the drop-down stands in the flow, shown");
+  for (const theme of ["light", "night"]) {
+    assert.match(html, new RegExp(`aria-expanded="true" aria-controls="shell-matrix-${theme}-menu-schedule"[\\s\\S]*<section id="shell-matrix-${theme}-menu-schedule"`), `${theme}: the open pinned item controls the drop-down beside it`);
+  }
+  for (const state of ["hover", "focus"]) assert.match(html, new RegExp(`data-tcrn-preview-state="${state}"`), `static ${state}`);
+  assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, "preview states use data-tcrn-preview-state; no internal vocabulary");
+  // <code> labels are registered machine words; the menu and page copy has five-locale text.
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const machineWords = new Set(
+    Array.from(ledgerSource.slice(ledgerSource.indexOf("matrixMachineWords"), ledgerSource.indexOf("],", ledgerSource.indexOf("matrixMachineWords"))).matchAll(/"((?:[^"\\]|\\.)*)"|'([^']*)'/g), (match) => match[2] ?? match[1])
+  );
+  for (const match of html.matchAll(/<code>([^<]*)<\/code>/g)) {
+    const word = match[1].replace(/&quot;/g, '"');
+    assert.ok(machineWords.has(word), `<code>${word}</code> is a registered machine word`);
+  }
+  const texts = Array.from(html.matchAll(/class="(?:tcrn-shell-menu__text|tcrn-shell-pins__label|tcrn-nav-group__label-text|tcrn-shell-menu__crumb[^"]*|tcrn-text[^"]*)"[^>]*>([^<]+)</g), (match) => match[1].trim()).filter((value) => /[A-Za-z]/.test(value));
+  assert.ok(texts.includes("Roster") && texts.includes("Twelve people across four teams, updated today."), "the menu and page copy is read");
+  for (const text of texts) {
+    assert.ok(storybookContentText[text] !== undefined, `"${text}" needs five-locale text`);
+  }
 });

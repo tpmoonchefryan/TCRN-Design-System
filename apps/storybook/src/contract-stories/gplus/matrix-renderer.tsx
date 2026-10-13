@@ -1,4 +1,5 @@
-// Matrix renderer for the first-batch family matrices (typography, icon, brand, actions, inputs).
+// Matrix renderer for the first-batch family matrices (typography, icon, brand, actions, inputs) and
+// the shell board (07a section B, the shell-matrix story of TCRN-DS-SUB-136).
 //
 // Every sample cell reads its identity, kind, expected contrast and exemption from the contract
 // matrix data in ./generated/matrices.generated.ts; nothing about a cell is written here by hand.
@@ -38,6 +39,27 @@ export function matrixCell(board: GplusMatrixBoard, id: string, theme: MatrixThe
     throw new Error(`missing_matrix_cell:${board}:${cellId}`);
   }
   return cell;
+}
+
+/**
+ * The attributes of one shell cell. data-cell is the 07a name, the cell id plus the theme suffix: the
+ * brand button shows its wordmark and suffix idle and open under one name on the board, and the
+ * contract keeps the two cells apart by their cellId (an -open key), so both samples carry the name.
+ */
+export function shellCellAttributes(key: string, theme: MatrixTheme, probe?: MatrixCellProbe): MatrixCellAttributes {
+  const cell = matrixCell("shell", key, theme);
+  const attributes: MatrixCellAttributes = {
+    "data-cell": `${cell.id}-${themeSuffix[theme]}`,
+    "data-kind": cell.kind,
+    "data-expect": cell.expect
+  };
+  if (cell.exempt) {
+    attributes["data-exempt"] = "";
+  }
+  if (probe) {
+    attributes["data-probe"] = probe;
+  }
+  return attributes;
 }
 
 /** data-cell, data-kind, data-expect, data-exempt (disabled cells) and data-probe for one cell. */
@@ -220,6 +242,11 @@ export function applyMarkupEdits(html: string, edits: readonly MarkupEdit[]): st
 
 export function cellEdit(marker: string, attributes: MatrixCellAttributes, nth?: number): MarkupEdit {
   return { marker, nth, set: attributes };
+}
+
+/** Package markup already rendered (a part of a larger package element) with attribute edits applied. */
+export function StaticHtml({ html, edits, id }: { html: string; edits: readonly MarkupEdit[]; id: string }) {
+  return <span data-gplus-static-markup={id} dangerouslySetInnerHTML={{ __html: applyMarkupEdits(html, edits) }} />;
 }
 
 /** Renders a package element and applies attribute edits to its markup. */

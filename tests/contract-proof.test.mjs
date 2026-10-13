@@ -18,8 +18,10 @@ import {
   CONTRACT_DIR,
   DIST_ENTRY,
   EXPECTED_CELLS,
+  EXPECTED_SHELL_NAMED,
   GENERATOR,
   LOGO_DIR,
+  SHELL_BOARD,
   TOOLS,
   boardCells,
   compositeParts,
@@ -30,6 +32,7 @@ import {
   pairBaseClasses,
   pairStateAtoms,
   runContractProof,
+  shellBoardMatrix,
   stateRuleLiterals
 } from "../scripts/contract-proof.mjs";
 
@@ -38,7 +41,7 @@ const distEntry = join(repoRoot, DIST_ENTRY);
 const GENERATED = [...generate().keys()];
 const ACTIONS_PAIRS = "packages/ui-react/src/styles/generated/actions.pairs.ts";
 const INPUTS_PAIRS = "packages/ui-react/src/styles/generated/inputs.pairs.ts";
-const COPIED = [GENERATOR, ...TOOLS, ...GENERATED, CONSUMPTION_CONTRACT, CONTRACT_DIR, LOGO_DIR, ...Object.values(BOARD_FILES).map((file) => `${BOARD_DIR}/${file}`)];
+const COPIED = [GENERATOR, ...TOOLS, ...GENERATED, CONSUMPTION_CONTRACT, CONTRACT_DIR, LOGO_DIR, ...Object.values(BOARD_FILES).map((file) => `${BOARD_DIR}/${file}`), SHELL_BOARD];
 
 const read = (root, rel) => readFileSync(join(root, rel), "utf8");
 const write = (root, rel, text) => writeFileSync(join(root, rel), text);
@@ -92,7 +95,7 @@ function changeOneInk(root) {
   return assert.fail("pairs.json has no ink token outside the matrix cells");
 }
 
-test("the tree: every check is green, with the 38 icons, the 8 mark files and the 240 matrix cells", async () => {
+test("the tree: every check is green, with the 38 icons, the 8 mark files and the 306 matrix cells", async () => {
   await realUi();
   const result = await runContractProof();
   assert.equal(result.ok, true, formatResult(result));
@@ -103,7 +106,7 @@ test("the tree: every check is green, with the 38 icons, the 8 mark files and th
   assert.match(checkOf(result, "icon-roster").summary, /same 38 names/u);
   assert.match(checkOf(result, "product-marks").summary, /the 8 SVG files/u);
   const cells = Object.values(EXPECTED_CELLS).reduce((sum, count) => sum + count, 0);
-  assert.match(checkOf(result, "matrix-expect").summary, new RegExp(`5 boards, ${cells} cells \\(44/28/10/116/42\\).*largest difference 0\\.00`, "u"));
+  assert.match(checkOf(result, "matrix-expect").summary, new RegExp(`6 boards, ${cells} cells \\(44/28/10/116/42/66\\).*section B and ${EXPECTED_SHELL_NAMED} 07a names \\(largest difference 0\\.00`, "u"));
 });
 
 test("state rules: the pairs.json conditions decide what a state rule is; only a transparent outline is allowed", () => {
@@ -327,5 +330,28 @@ test("matrix: every cell's expect must equal the board data-expect at two decima
     assert.ok(matrix.failures.includes(`actions/${first.cellId}: data-expect ${bumped} on the board, ${first.expect} from the contract (difference 0.01)`), formatResult(result));
     assert.ok(matrix.failures.includes(`actions: ${BOARD_FILES.actions} has ${EXPECTED_CELLS.actions - 1} data-cell elements; the board has ${EXPECTED_CELLS.actions}`), formatResult(result));
     assert.ok(matrix.failures.includes(`actions/${last.cellId}: no data-cell element on ${BOARD_FILES.actions}`), formatResult(result));
+  });
+});
+
+test("shell matrix (TCRN-DS-SUB-136): section B gives 66 cells in contract order; a changed data-cr, a changed section A value or a renamed section A cell turns matrix-expect red", async () => {
+  const board = shellBoardMatrix(read(repoRoot, SHELL_BOARD));
+  assert.equal(board.rows.length, 33);
+  assert.equal(board.rows.flatMap((row) => row.cells).length, EXPECTED_CELLS.shell);
+  assert.deepEqual(board.rows.map((row) => row.cells.map((cell) => cell.exempt)).filter(([light, night]) => light || night).length, 3, "three exempt rows: the colour mark, the panel against the canvas and the paper under the scrim");
+  await withCopy(async (root) => {
+    const html = read(root, SHELL_BOARD);
+    // Row 2 (idle wordmark) light is 15.75; section A's open-state pin-rest-l and the tgl-n name.
+    const changed = html
+      .replace('<td class="n " data-cr="15.75">15.75</td>', '<td class="n " data-cr="15.70">15.70</td>')
+      .replace('data-cell="pin-rest-l" data-kind="text" data-expect="7.39"', 'data-cell="pin-rest-l" data-kind="text" data-expect="7.40"')
+      .replaceAll('data-cell="tgl-n"', 'data-cell="toggle-n"');
+    assert.notEqual(changed, html);
+    write(root, SHELL_BOARD, changed);
+    const result = await runContractProof({ root, distEntry });
+    const matrix = checkOf(result, "matrix-expect");
+    assert.equal(matrix.ok, false);
+    assert.ok(matrix.failures.includes("shell/brand-word-l: section B row 2 (idle · 字标 TCRN) light data-cr 15.70, 15.75 from the contract (difference 0.05)"), formatResult(result));
+    assert.ok(matrix.failures.includes("shell/pin-rest-l: section A names pin-rest-l with 7.40 text; the contract gives 7.39 text"), formatResult(result));
+    assert.ok(matrix.failures.includes(`shell: ${EXPECTED_SHELL_NAMED - 1} cells carry a name section A uses; ${EXPECTED_SHELL_NAMED} do on the board`), formatResult(result));
   });
 });

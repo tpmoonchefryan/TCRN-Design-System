@@ -1,7 +1,9 @@
 // The five first-batch family matrices as contract stories: typography-matrix, icon-matrix,
 // brand-matrix, actions-matrix and inputs-matrix. Each board renders the contract cell count
 // (typography 44, icon 28, brand 10, actions 116, inputs 42) as a light block and a night block,
-// and every package component of the family has its own labelled section.
+// and every package component of the family has its own labelled section. The shell board (07a
+// section B) is the shell-matrix story of the navigation-shells category (TCRN-DS-SUB-136): its 66
+// cells on the package shell parts, light and night, under the board names.
 import {
   Button,
   ButtonGroup,
@@ -20,17 +22,28 @@ import {
   NumberInput,
   ProductLockup,
   ProductLogo,
+  ProductShell,
   RadioGroup,
   SearchInput,
   Select,
+  ShellBrandButton,
+  ShellDropdown,
+  ShellMenu,
+  ShellPins,
   SuggestInput,
+  Surface,
   Switch,
   TcrnBrandMark,
   Text,
   Textarea,
-  type IconName
+  type IconName,
+  type ShellMenuGroup,
+  type ShellMenuItem,
+  type ShellPinItem
 } from "@tcrn/ui-react";
 import type { CSSProperties, ReactNode } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { tcrnDefaultLocale, tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import type { ContractStory } from "../types.js";
 import { storyCategoryFor, storyGovernanceFor } from "../governance.js";
 import type { GplusMatrixBoard } from "./generated/matrices.generated.js";
@@ -41,17 +54,23 @@ import {
   MatrixSection,
   NoState,
   StateGrid,
+  StaticHtml,
   StaticMarkup,
   cellAttributes,
   cellEdit,
   previewState,
+  shellCellAttributes,
+  type MatrixCellProbe,
   type MatrixTheme
 } from "./matrix-renderer.js";
 
 export const gplusMatrixSourcePath = "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx";
 
+/** The five first-batch family boards; the shell board has its own story (shellMatrixStory). */
+export type GplusFamilyMatrixBoard = Exclude<GplusMatrixBoard, "shell">;
+
 /** The 23 first-batch package components, by family matrix. */
-export const gplusMatrixComponents: Readonly<Record<GplusMatrixBoard, readonly string[]>> = {
+export const gplusMatrixComponents: Readonly<Record<GplusFamilyMatrixBoard, readonly string[]>> = {
   typography: ["Heading", "Text", "Highlight"],
   icon: ["Icon"],
   brand: ["TcrnBrandMark", "ProductLogo", "ProductLockup"],
@@ -59,7 +78,7 @@ export const gplusMatrixComponents: Readonly<Record<GplusMatrixBoard, readonly s
   inputs: ["Input", "Textarea", "SearchInput", "SuggestInput", "Select", "MultiSelect", "NumberInput", "DatePicker", "Checkbox", "RadioGroup", "Switch"]
 };
 
-export const gplusMatrixStoryIds: Readonly<Record<GplusMatrixBoard, string>> = {
+export const gplusMatrixStoryIds: Readonly<Record<GplusFamilyMatrixBoard, string>> = {
   typography: "typography-matrix",
   icon: "icon-matrix",
   brand: "brand-matrix",
@@ -477,7 +496,7 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
   );
 }
 
-const boardRenderers: Record<GplusMatrixBoard, (props: { theme: MatrixTheme }) => ReactNode> = {
+const boardRenderers: Record<GplusFamilyMatrixBoard, (props: { theme: MatrixTheme }) => ReactNode> = {
   typography: TypographyMatrix,
   icon: IconMatrix,
   brand: BrandMatrix,
@@ -491,7 +510,7 @@ interface MatrixStoryText {
 }
 
 /** English source text; the five locales live in storybook-locale-text.ts under story.<id>.*. */
-export const gplusMatrixStoryText: Readonly<Record<GplusMatrixBoard, MatrixStoryText>> = {
+export const gplusMatrixStoryText: Readonly<Record<GplusFamilyMatrixBoard, MatrixStoryText>> = {
   typography: {
     title: "Typography matrix",
     description: "Heading, Text and Highlight in every style on paper and canvas, light and night, each sample with its contrast target."
@@ -515,9 +534,9 @@ export const gplusMatrixStoryText: Readonly<Record<GplusMatrixBoard, MatrixStory
 };
 
 // Boards whose two blocks sit side by side to stay inside the story height budget.
-const columnBoards: ReadonlySet<GplusMatrixBoard> = new Set<GplusMatrixBoard>(["typography", "inputs"]);
+const columnBoards: ReadonlySet<GplusFamilyMatrixBoard> = new Set<GplusFamilyMatrixBoard>(["typography", "inputs"]);
 
-function matrixStory(board: GplusMatrixBoard): ContractStory {
+function matrixStory(board: GplusFamilyMatrixBoard): ContractStory {
   const id = gplusMatrixStoryIds[board];
   const governance = storyGovernanceFor(id, "Components");
   const category = storyCategoryFor("Components", governance.categoryId);
@@ -536,6 +555,229 @@ function matrixStory(board: GplusMatrixBoard): ContractStory {
   };
 }
 
-export const gplusMatrixBoardsInOrder: readonly GplusMatrixBoard[] = ["typography", "icon", "brand", "actions", "inputs"];
+export const gplusMatrixBoardsInOrder: readonly GplusFamilyMatrixBoard[] = ["typography", "icon", "brand", "actions", "inputs"];
 
 export const gplusMatrixStories: ContractStory[] = gplusMatrixBoardsInOrder.map(matrixStory);
+
+// ---------- The shell board: 07a (Shell.dc.html) section B, the shell-matrix story ----------
+//
+// Every cell of section B on the package part that shows it, light and night: the brand button idle,
+// on hover (its open pair is the same) and focused, the pinned items, the bell and the avatar on the canvas; the full menu (search,
+// group title, rows, pins, bottom bar and side-rail lockup), the pinned drop-down's search and the
+// phone Sheet over the paper. Static states use data-tcrn-preview-state, aria-current and
+// aria-expanded as the package reads them. The floating layers stand in the flow of the matrix (a
+// shell places them under the band), so their position is the only attribute switched besides the
+// cell attributes; the Sheet keeps its fixed scrim and panel inside a layout-contained phone block.
+// The bell and the avatar are parts of ProductShell's cluster, taken from its own markup.
+const shellMatrixHref = "#shell-matrix";
+const shellMatrixPins: readonly ShellPinItem[] = [
+  { id: "roster", label: "Roster", href: shellMatrixHref },
+  { id: "contracts", label: "Contracts", hasMenu: true },
+  { id: "statements", label: "Statements", href: shellMatrixHref },
+  { id: "schedule", label: "Schedule", hasMenu: true }
+];
+const shellMatrixSchedule: ShellMenuItem = {
+  id: "schedule",
+  label: "Schedule",
+  iconName: "calendar",
+  children: [
+    { id: "this-week", label: "This week", href: shellMatrixHref },
+    { id: "month-view", label: "Month view", href: shellMatrixHref },
+    { id: "conflict-check", label: "Conflict check", href: shellMatrixHref }
+  ]
+};
+const shellMatrixGroups: readonly ShellMenuGroup[] = [
+  {
+    id: "people",
+    label: "People",
+    items: [
+      { id: "roster", label: "Roster", href: shellMatrixHref, iconName: "users" },
+      { id: "teams", label: "Teams", href: shellMatrixHref, iconName: "layers" },
+      {
+        id: "contracts",
+        label: "Contracts",
+        iconName: "book-open",
+        children: [
+          { id: "all-contracts", label: "All contracts", href: shellMatrixHref },
+          { id: "approvals", label: "Approvals", href: shellMatrixHref }
+        ]
+      }
+    ]
+  }
+];
+const shellMatrixInFlow = "position:relative;top:0;left:0;margin-top:0";
+const shellMatrixPhoneBlock: CSSProperties = { contain: "layout", position: "relative", inlineSize: "390px", blockSize: "320px" };
+const shellMatrixPinItem = 'class="tcrn-shell-pins__item"';
+
+/** One button of ProductShell's markup, found by a marker in its opening tag. */
+function productShellButton(html: string, marker: string): string {
+  const at = html.indexOf(marker);
+  const start = at < 0 ? -1 : html.lastIndexOf("<button", at);
+  const end = at < 0 ? -1 : html.indexOf("</button>", at);
+  if (start < 0 || end < 0) {
+    throw new Error(`shell_matrix_part_missing:${marker}`);
+  }
+  return html.slice(start, end + "</button>".length);
+}
+
+function ShellMatrix({ theme }: { theme: MatrixTheme }) {
+  const cell = (key: string, probe?: MatrixCellProbe) => shellCellAttributes(key, theme, probe);
+  const prefix = `shell-matrix-${theme}`;
+  const menuIdOf = (id: string) => `${prefix}-menu-${id}`;
+  const shellHtml = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="People"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={[]}
+      locales={tcrnLocaleMetadata}
+      currentLocale={tcrnDefaultLocale}
+      account={{ name: "Lin Xia", initials: "LX" }}
+      notifications={{ unread: 3 }}
+    >
+      <Text>Twelve people across four teams, updated today.</Text>
+    </ProductShell>,
+    { identifierPrefix: `${prefix}-shell-` }
+  );
+  const bell = productShellButton(shellHtml, 'class="tcrn-shell-bell"');
+  const avatar = productShellButton(shellHtml, 'class="tcrn-shell-avatar"');
+  return (
+    <>
+      <div className="tcrn-doc-form-stack" data-gplus-matrix-canvas="ShellBrandButton">
+        <MatrixRow label="idle">
+          <StaticMarkup
+            id={`${prefix}-brand-idle`}
+            element={<ShellBrandButton productId="tms" />}
+            edits={[
+              cellEdit('data-logo="tms"', cell("brand-mark")),
+              cellEdit('class="tcrn-shell-brand__word"', cell("brand-word")),
+              cellEdit('class="tcrn-shell-brand__suffix', cell("brand-suffix")),
+              cellEdit('class="tcrn-shell-brand__toggle"', cell("tgl"))
+            ]}
+          />
+          <code>hover</code>
+          {/* Section B row "hover / open": the open pair equals the hover pair, so the sample is the hover
+              preview, and the matrix adds no aria-expanded="true" for the brand button. */}
+          <StaticMarkup
+            id={`${prefix}-brand-hover`}
+            element={<ShellBrandButton productId="tms" />}
+            edits={[
+              { marker: 'class="tcrn-shell-brand"', set: previewState("hover") },
+              cellEdit('class="tcrn-shell-brand__word"', cell("brand-word-open")),
+              cellEdit('class="tcrn-shell-brand__suffix', cell("brand-suffix-open"))
+            ]}
+          />
+          <code>focus</code>
+          <StaticMarkup
+            id={`${prefix}-brand-focus`}
+            element={<ShellBrandButton productId="tms" />}
+            edits={[{ marker: 'class="tcrn-shell-brand"', set: { ...previewState("focus"), ...cell("brand-focus", "shadow") } }]}
+          />
+        </MatrixRow>
+        <MatrixRow label="pins">
+          <StaticMarkup
+            id={`${prefix}-pins`}
+            element={<ShellPins items={shellMatrixPins} selectedId="roster" openId="schedule" menuIdOf={menuIdOf} />}
+            edits={[
+              cellEdit(shellMatrixPinItem, cell("pin-on"), 0),
+              cellEdit(shellMatrixPinItem, cell("pin-rest"), 1),
+              cellEdit('class="tcrn-icon tcrn-shell-pins__chevron"', cell("pin-chev"), 0),
+              { marker: shellMatrixPinItem, nth: 2, set: { ...previewState("hover"), ...cell("pin-hover") } },
+              cellEdit(shellMatrixPinItem, cell("pin-open"), 3)
+            ]}
+          />
+          <code>cluster</code>
+          <StaticHtml id={`${prefix}-bell`} html={bell} edits={[cellEdit('class="tcrn-shell-bell"', cell("bell"))]} />
+          <StaticHtml id={`${prefix}-bell-hover`} html={bell} edits={[{ marker: 'class="tcrn-shell-bell"', set: { ...previewState("hover"), ...cell("bell-hover") } }]} />
+          <StaticHtml id={`${prefix}-avatar`} html={avatar} edits={[cellEdit('class="tcrn-shell-avatar"', cell("avatar"))]} />
+        </MatrixRow>
+      </div>
+      <div className="tcrn-doc-form-stack" data-gplus-matrix-canvas="ShellMenu">
+        <code>expanded</code>
+        <StaticMarkup
+          id={`${prefix}-menu`}
+          block
+          element={
+            <ShellMenu
+              groups={shellMatrixGroups}
+              open
+              productId="tms"
+              selectedId="roster"
+              currentPath={[{ label: "People" }, { label: "Roster" }]}
+              pinnedIds={["roster", "contracts"]}
+              onPinnedChange={() => undefined}
+              previewStates={{ people: "hover", teams: "hover" }}
+              presentation="panel"
+              shortcut={false}
+            />
+          }
+          edits={[
+            { marker: 'data-shell-menu=""', set: { style: shellMatrixInFlow } },
+            cellEdit('class="tcrn-shell-menu__panel"', cell("panel-edge")),
+            cellEdit('class="tcrn-input tcrn-search-input__control"', cell("srch-ph", "ph")),
+            cellEdit('class="tcrn-search-input__shortcut"', cell("srch-kbd")),
+            cellEdit('class="tcrn-nav-group__label-text"', cell("grp-hover")),
+            cellEdit('title="Roster" data-shell-row=""', cell("it-on")),
+            cellEdit('aria-label="Unpin from top bar: Roster"', cell("pinb-on-wash")),
+            cellEdit('title="Teams" data-shell-row=""', cell("it-hover")),
+            cellEdit('aria-label="Pin to top bar: Teams"', cell("pinb-outline")),
+            cellEdit('title="Contracts" data-shell-row=""', cell("it-rest")),
+            cellEdit('data-icon-name="chevron-right"', cell("it-chev")),
+            cellEdit('aria-label="Unpin from top bar: Contracts"', cell("pinb-on")),
+            cellEdit('class="tcrn-shell-menu__crumbs-label"', cell("pbar-label")),
+            cellEdit('class="tcrn-product-logo__line-one-base"', cell("lk-b")),
+            cellEdit('class="tcrn-product-logo__line-one-suffix', cell("lk-em")),
+            cellEdit('class="tcrn-product-logo__line-two"', cell("lk-small"))
+          ]}
+        />
+        <MatrixRow label="drop">
+          <StaticMarkup
+            id={`${prefix}-drop`}
+            block
+            element={<ShellDropdown id={menuIdOf("schedule")} source={shellMatrixSchedule} open />}
+            edits={[{ marker: 'data-shell-dropdown=""', set: { style: shellMatrixInFlow } }, cellEdit('class="tcrn-input tcrn-search-input__control"', cell("drop-srch", "ph"))]}
+          />
+          <code>sheet</code>
+          <div style={shellMatrixPhoneBlock} data-shell-matrix-phone="">
+            <Surface>
+              <Text {...cell("scrim-paper")}>Twelve people across four teams, updated today.</Text>
+            </Surface>
+            <StaticMarkup
+              id={`${prefix}-sheet`}
+              block
+              element={<ShellMenu groups={shellMatrixGroups} open productId="tms" presentation="sheet" shortcut={false} />}
+              edits={[cellEdit('title="People" data-shell-row=""', cell("sheet-row"))]}
+            />
+          </div>
+        </MatrixRow>
+      </div>
+    </>
+  );
+}
+
+/** English source text; the five locales live in storybook-locale-text.ts under story.shell-matrix.*. */
+export const shellMatrixStoryText: MatrixStoryText = {
+  title: "Top-band shell matrix",
+  description: "Every state of the top-band shell with its contrast target, light and night: the brand button, pinned items, bell and avatar on the canvas; the full menu, the drop-down and the phone sheet on paper."
+};
+
+function shellMatrixStoryOf(): ContractStory {
+  const id = "shell-matrix";
+  const governance = storyGovernanceFor(id, "Components");
+  const category = storyCategoryFor("Components", governance.categoryId);
+  return {
+    id,
+    title: shellMatrixStoryText.title,
+    group: "Components",
+    description: shellMatrixStoryText.description,
+    ...governance,
+    sourcePath: gplusMatrixSourcePath,
+    category: category.label,
+    render: () => <MatrixBoard board="shell">{(theme) => <ShellMatrix theme={theme} />}</MatrixBoard>
+  };
+}
+
+/** The shell-matrix story of the navigation-shells category (C-9 of TCRN-DS-INIT-016). */
+export const shellMatrixStory: ContractStory = shellMatrixStoryOf();
