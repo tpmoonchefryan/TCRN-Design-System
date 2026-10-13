@@ -1,0 +1,113 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-13T13:11:33Z"
+  },
+  "title": "TCRN 视觉设计标准",
+  "launch": {
+    "view": "canvas",
+    "page": "std"
+  },
+  "pages": [
+    {
+      "id": "std",
+      "name": "视觉设计标准 · 成品"
+    }
+  ],
+  "boards": {
+    "Tokens.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 2640,
+      "h": 3451,
+      "title": "01 · 底盘 Token",
+      "page": "std"
+    },
+    "Typography.dc.html": {
+      "x": 0,
+      "y": 3571,
+      "w": 2640,
+      "h": 5111,
+      "title": "02 · 字体 Typography",
+      "page": "std"
+    },
+    "Icon.dc.html": {
+      "x": 0,
+      "y": 8802,
+      "w": 2640,
+      "h": 3547,
+      "title": "03 · 图标 Icon",
+      "page": "std"
+    },
+    "Brand.dc.html": {
+      "x": 0,
+      "y": 12469,
+      "w": 2640,
+      "h": 3372,
+      "title": "04 · 品牌 Brand · 产品标",
+      "page": "std"
+    },
+    "Actions.dc.html": {
+      "x": 0,
+      "y": 15961,
+      "w": 2640,
+      "h": 4470,
+      "title": "05 · 动作 Actions",
+      "page": "std"
+    },
+    "Inputs.dc.html": {
+      "x": 0,
+      "y": 20551,
+      "w": 2640,
+      "h": 5806,
+      "title": "06 · 表单控件 Inputs",
+      "page": "std"
+    },
+    "Shell.dc.html": {
+      "x": 0,
+      "y": 26477,
+      "w": 2640,
+      "h": 5324,
+      "title": "07a · 壳层 · 顶带壳 · 标三版、三态、矩阵、动效",
+      "page": "std"
+    },
+    "Shell-2.dc.html": {
+      "x": 0,
+      "y": 31921,
+      "w": 2640,
+      "h": 4895,
+      "title": "07b · 壳层 · 顶带壳 · 几何、契约、token、门",
+      "page": "std"
+    }
+  },
+  "order": [
+    "Tokens.dc.html",
+    "Typography.dc.html",
+    "Icon.dc.html",
+    "Brand.dc.html",
+    "Actions.dc.html",
+    "Inputs.dc.html",
+    "Shell.dc.html",
+    "Shell-2.dc.html"
+  ],
+  "notes": {
+    "std-title": {
+      "x": 0,
+      "y": -280,
+      "text": "TCRN 视觉设计标准 · 成品：底盘 Token、第一批五家族（品牌 = 四枚产品标）、壳层",
+      "kind": "title1",
+      "maxW": 2640,
+      "page": "std"
+    },
+    "std-rule": {
+      "x": 2720,
+      "y": 0,
+      "w": 560,
+      "text": "本画布只承载成品，一板一版，更新原地替换，不新增草稿版本。草稿在「DS 视觉方向方案 · 草稿」里打，通过后搬到这里。\n\n来源：底盘 G+（2026-10-11 裁定 D1）；字体、图标、动作、表单控件（D2 五项裁定，组合样板随第二批换壳后补）；品牌 = 四枚产品标（2026-10-11 通过，TCRN 母标另行重设计）；壳层（2026-10-13 顶带壳）。\n\n已知待裁：产品色后缀 #2c63c8 在夜间低于 4.5（壳层板 B 段红格）。",
+      "fill": "teal",
+      "page": "std"
+    }
+  },
+  "designSystems": []
+}

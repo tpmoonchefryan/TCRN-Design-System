@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>底盘 Token</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600&amp;family=Noto+Serif+SC:wght@300;400&amp;display=swap">
+<style>
+
+body{margin:0}
+*{box-sizing:border-box}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.board{position:relative;width:2640px;padding:48px;display:flex;flex-direction:column;gap:40px;background:#efeeea;color:#16150f;font-family:"Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums;overflow:hidden}
+.bh{display:grid;grid-template-columns:1560px minmax(0,1fr);column-gap:48px;align-items:end;padding-bottom:22px;border-bottom:1px solid rgba(22,21,15,.16)}
+.bh .k{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b675d;font-weight:500}
+.bh h1{margin:6px 0 0;font-family:"Source Serif 4","Noto Serif SC",Georgia,serif;font-size:44px;line-height:1.05;font-weight:400;letter-spacing:-.01em}
+.bh h1 em{font-style:normal;color:#8e2d24}
+.bh p{margin:10px 0 0;font-size:14px;color:#4f4c43;line-height:1.6;max-width:1400px}
+.bh .meta{font-size:12px;color:#6b675d;line-height:1.6;text-align:right}
+.bh .meta b{display:block;color:#16150f;font-weight:500}
+.sec{display:flex;flex-direction:column;gap:18px}
+.sec>h3{margin:0;font-size:11px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:#6b675d;font-weight:500;padding-bottom:8px;border-bottom:1px solid rgba(22,21,15,.16);display:flex;align-items:center;gap:14px}
+.sec>h3 b{font-family:"IBM Plex Mono",ui-monospace,monospace;color:#16150f;font-weight:500}
+.sec>h3 span{letter-spacing:0;text-transform:none;font-weight:400;color:#4f4c43;font-size:12.5px;line-height:16px}
+.two{display:grid;grid-template-columns:1248px 1248px;column-gap:48px;align-items:start}
+.pane{position:relative;padding:24px 28px 28px;border-radius:14px;background:var(--bg);color:var(--ink);box-shadow:var(--s1);display:flex;flex-direction:column;gap:22px;font-family:var(--sans);overflow:hidden}
+.pane>.grain{position:absolute;left:0;top:0;width:100%;height:100%;opacity:var(--grain);mix-blend-mode:var(--blend);pointer-events:none;z-index:0}
+.pane>.ptag{position:absolute;top:14px;right:18px;z-index:2;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.pane>.blk{position:relative;z-index:1;display:flex;flex-direction:column;gap:14px}
+.blk>h6{margin:0;font-size:10.5px;line-height:16px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500;display:flex;align-items:center;gap:10px}
+.blk>h6 span{letter-spacing:0;text-transform:none;font-weight:400;color:var(--ink-2);font-size:12px;line-height:16px}
+.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.row.top{align-items:flex-start}
+.cell{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0}
+.cell>small{font-size:10.5px;color:var(--ink-3);font-family:var(--mono);white-space:nowrap}
+.paper{padding:16px 18px;border-radius:var(--r-panel);background:var(--panel);box-shadow:var(--s1);--surface:var(--panel);display:flex;flex-direction:column;gap:14px}
+.mx{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;background:#ffffff;border-radius:12px;box-shadow:0 0 0 1px rgba(22,21,15,.08);overflow:hidden}
+.mx th{text-align:left;height:34px;padding:0 10px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#6b675d;font-weight:500;border-bottom:1px solid #16150f;background:#f6f5f1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mx td{height:34px;padding:0 10px;border-bottom:1px solid rgba(22,21,15,.09);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4f4c43;vertical-align:middle}
+.mx tr:last-child td{border-bottom:0}
+.mx td.c{color:#16150f;font-weight:600}
+.mx td.m{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:#16150f}
+.mx td.n{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;color:#16150f;text-align:right}
+.mx td.n.lo{color:#a8321f}
+.mx td.n.ex{color:#6b675d}
+.mx tr.grp td{background:#f6f5f1;color:#16150f;font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;height:28px}
+.mx .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px;box-shadow:inset 0 0 0 1px rgba(22,21,15,.14)}
+.mx td.r{text-align:right}
+.box{background:#ffffff;border-radius:12px;box-shadow:0 0 0 1px rgba(22,21,15,.08);padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box h4{margin:0;font-size:13px;font-weight:600}
+.box h4 small{font-weight:400;color:#6b675d;margin-left:8px;font-size:12px}
+.box p,.box li{margin:0;font-size:12.5px;color:#4f4c43;line-height:1.55}
+.box ol,.box ul{margin:0;padding-left:18px}
+.box li{margin:3px 0}
+.box b{color:#16150f;font-weight:600}
+.box code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;color:#16150f}
+.box .lead{font-size:13.5px;color:#16150f}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.cols4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:start}
+.ic{display:inline-block;flex:0 0 auto;vertical-align:middle}
+.spin{animation:spin var(--t-loop) linear infinite;transform-origin:50% 50%}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.gp{--bg:#efeeea;--bg-2:#e7e5df;--panel:#ffffff;--panel-2:#f8f7f3;--line:rgba(22,21,15,.09);--line-2:rgba(22,21,15,.16);--line-3:rgba(22,21,15,.30);--line-ctl:rgba(22,21,15,.47);--rule:#16150f;--ink:#16150f;--ink-2:#4f4c43;--ink-3:#6b675d;--acc:#0b6b65;--acc-2:#0a5f5a;--acc-3:#084f4a;--acc-bg:rgba(11,107,101,.08);--acc-ul:rgba(11,107,101,.7);--on-acc:#ffffff;--red:#8e2d24;--red-bg:rgba(142,45,36,.06);--red-bg-2:rgba(142,45,36,.11);--ok:#2f6b3a;--warn:#8a5a08;--bad:#a8321f;--bad-bg:rgba(168,50,31,.08);--wash:rgba(22,21,15,.06);--hover:rgba(22,21,15,.035);--dis:rgba(22,21,15,.05);--s1:0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07);--s2:0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08);--s3:0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10);--glass:rgba(255,255,255,.78);--edge:inset 0 0 0 1px rgba(255,255,255,.8);--grain:.035;--blend:multiply;--av-bg:#e7e5df;--av-ink:#16150f;--knob:#ffffff;--chrome:rgba(239,238,234,.82);--surface:var(--bg);--focus:0 0 0 2px var(--surface),0 0 0 4px var(--acc);--serif:"Source Serif 4","Noto Serif SC",Georgia,serif;--sans:"Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--r-ctl:8px;--r-sm:6px;--r-panel:12px;--r-check:4px;--r-stamp:3px;--h-sm:28px;--h-md:32px;--h-lg:40px;--pad-sm:10px;--pad-md:12px;--pad-lg:16px;--fs-sm:12px;--fs-md:13px;--fs-lg:14px;--ico-sm:14px;--ico-md:16px;--ico-lg:20px;--ease:cubic-bezier(.22,1,.36,1);--t-fill:120ms;--t-press:80ms;--t-move:240ms;--t-loop:900ms}
+.gp.night{--bg:#121210;--bg-2:#0d0d0b;--panel:#191916;--panel-2:#1f1f1b;--line:rgba(255,255,255,.07);--line-2:rgba(255,255,255,.13);--line-3:rgba(255,255,255,.26);--line-ctl:rgba(255,255,255,.36);--rule:#ebe8df;--ink:#ebe8df;--ink-2:#a9a69c;--ink-3:#85827a;--acc:#3fc7b7;--acc-2:#5ad3c5;--acc-3:#34b3a4;--acc-bg:rgba(63,199,183,.10);--acc-ul:rgba(63,199,183,.7);--on-acc:#07211e;--red:#d98d82;--red-bg:rgba(217,141,130,.08);--red-bg-2:rgba(217,141,130,.14);--ok:#6fcf97;--warn:#d9ab52;--bad:#e5897b;--bad-bg:rgba(229,137,123,.10);--wash:rgba(235,232,223,.07);--hover:rgba(235,232,223,.04);--dis:rgba(235,232,223,.05);--s1:0 1px 1px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.06);--s2:0 1px 2px rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.07);--s3:0 2px 3px rgba(0,0,0,.4),0 3px 3px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.09);--glass:rgba(25,25,22,.74);--edge:inset 0 1px 0 rgba(255,255,255,.06);--grain:.06;--blend:screen;--av-bg:#2a2a26;--av-ink:#ebe8df;--knob:#ffffff;--chrome:rgba(18,18,16,.82)}
+
+.scr{position:relative;width:1240px;height:640px;overflow:hidden;background:var(--bg);color:var(--ink);border-radius:14px;box-shadow:var(--s1);font-size:13px;line-height:1.5;font-family:var(--sans)}
+.scr>.grain{position:absolute;left:0;top:0;width:100%;height:100%;opacity:var(--grain);mix-blend-mode:var(--blend);pointer-events:none;z-index:0}
+.scr>.lay{position:relative;z-index:1;width:100%;height:100%;display:grid;grid-template-columns:220px minmax(0,1fr)}
+.rail{display:flex;flex-direction:column;gap:2px;padding:16px 12px 14px;min-height:0}
+.brand{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center;padding:2px 4px 14px;min-width:0}
+.brand .mk{width:22px;height:22px;display:block;flex:0 0 auto}
+.brand b{display:block;font-size:12.5px;font-weight:600;line-height:1.2;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{display:block;font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nv{display:grid;grid-template-columns:22px minmax(0,1fr) auto;column-gap:10px;align-items:center;height:32px;padding:0 6px 0 4px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-size:12.5px;font-weight:500;white-space:nowrap;min-width:0}
+.nv>span.t{overflow:hidden;text-overflow:ellipsis}
+.nv .ic{width:22px;height:22px;padding:3px;color:var(--ink-3)}
+.nv .cnt{justify-self:end;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.nv:hover{background:var(--hover);color:var(--ink)}
+.nv.on{background:var(--panel);color:var(--ink);box-shadow:var(--s1)}
+.nv.on .ic{color:var(--ink)}
+.rail h6{margin:12px 0 4px 4px;padding:0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.rail .user{margin-top:auto;padding:12px 4px 2px;border-top:1px solid var(--line);display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center;min-width:0}
+.rail .user .av{width:22px;height:22px;font-size:10px}
+.rail .user b{display:block;font-size:12px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail .user small{display:block;font-size:10.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:500;background:var(--av-bg);color:var(--av-ink);flex:0 0 auto;box-shadow:inset 0 0 0 1px var(--line)}
+.sheet{margin:12px 12px 12px 0;background:var(--panel);border-radius:14px;box-shadow:var(--s1);display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;--surface:var(--panel)}
+.topbar{display:flex;align-items:center;gap:12px;height:52px;padding:0 28px;border-bottom:1px solid var(--line);flex:0 0 auto;min-width:0}
+.crumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);white-space:nowrap;flex:0 0 auto}
+.crumbs a{color:var(--ink-2);text-decoration:none}
+.crumbs b{color:var(--ink);font-weight:600}
+.crumbs .ic{width:11px;height:11px}
+.sp{flex:1 1 auto;min-width:0}
+.content{padding:18px 28px 14px;flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.ph{display:flex;align-items:flex-end;gap:14px;padding-bottom:12px;border-bottom:1px solid var(--line-2);min-width:0}
+.ph h2{margin:0;font-family:var(--serif);font-size:26px;line-height:1.1;font-weight:400;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ph .sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;white-space:nowrap;padding-bottom:4px;flex:0 0 auto}
+.ph .act{margin-left:auto;display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.tabs{display:flex;gap:18px;border-bottom:1px solid var(--line)}
+.tabs a{position:relative;padding:4px 0 9px;font-size:12.5px;color:var(--ink-3);text-decoration:none;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.tabs a.on{color:var(--ink);font-weight:600}
+.tabs a.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--rule)}
+.tabs .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.tbl{width:calc(100% + 16px);margin:0 -8px;border-collapse:collapse;table-layout:fixed;font-size:12.5px}
+.tbl th{height:30px;text-align:left;padding:0 10px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--line-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbl th:first-child,.tbl td:first-child{padding-left:8px}
+.tbl th:last-child,.tbl td:last-child{padding-right:8px}
+.tbl th.r,.tbl td.r{text-align:right}
+.tbl td{height:38px;padding:0 10px;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;color:var(--ink-2)}
+.tbl tr.sel td{background:var(--wash);color:var(--ink)}
+.tbl tr.sel td:first-child{border-radius:6px 0 0 6px}
+.tbl tr.sel td:last-child{border-radius:0 6px 6px 0}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);white-space:nowrap}
+.st i{width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.st.ok{color:var(--ok)}.st.warn{color:var(--warn)}.st.bad{color:var(--bad)}
+.chip{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:4px;font-size:11px;font-weight:500;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-2);white-space:nowrap}
+.mono{font-family:var(--mono);font-size:11.5px}
+.tfoot{display:flex;align-items:center;gap:8px;padding:8px 0 0;font-size:11px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;font-weight:500;white-space:nowrap}
+.stamp{display:inline-flex;align-items:center;gap:8px;padding:5px 10px;border:1px solid var(--red);border-radius:var(--r-stamp);color:var(--red);font-family:var(--serif);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.2;white-space:nowrap}
+.stamp i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+.mx td .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px;box-shadow:inset 0 0 0 1px rgba(22,21,15,.14)}
+.two{grid-template-columns:1248px 1248px}
+</style>
+</helmet>
+<div class="board" style="width: 2640px; height: 3451px">
+
+<header class="bh">
+<div>
+<p class="k">Visual standard · Tokens · G+ base · 2026-10-13</p>
+<h1>底盘 Token：画布、纸、三档墨、强调色<em>，浅色与夜间同一键集</em></h1>
+<p>底盘是 G+（Owner 2026-10-11 裁定 D1）。浅色与夜间键集相同、只换值；阴影紧贴（模糊 ≤ 3px），玻璃只给浮层与滚动时的顶带，颗粒极淡。控件轮廓用 line-ctl（浅 rgba(22,21,15,.47)、夜 rgba(255,255,255,.36)，非文字 ≥ 3:1）。所有组件板与壳层板只引用这里的键。</p>
+</div>
+<div class="meta"><b>39 个键 × 2 主题</b>键集相同，只换值<b>固定值 27 项</b>圆角、高度、内距、字号、图标、动效<b>对比度</b>墨于画布与纸全部 ≥ 4.5</div>
+</header>
+<div class="sec"><h3><b>A</b>色彩、线、面与状态底 <span>两主题并列；色块为实际值</span></h3><table class="mx"><colgroup><col style="width:200px"><col style="width:260px"><col><col></colgroup><thead><tr><th>token</th><th>含义</th><th>浅色</th><th>夜间</th></tr></thead><tbody><tr><td class="c"><b>面</b></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="c">bg</td><td class="">画布</td><td class=""><span class="sw" style="background:#efeeea"></span>#efeeea</td><td class=""><span class="sw" style="background:#121210"></span>#121210</td></tr><tr><td class="c">bg2</td><td class="">画布 · 深一档</td><td class=""><span class="sw" style="background:#e7e5df"></span>#e7e5df</td><td class=""><span class="sw" style="background:#0d0d0b"></span>#0d0d0b</td></tr><tr><td class="c">panel</td><td class="">纸 / 面板</td><td class=""><span class="sw" style="background:#ffffff"></span>#ffffff</td><td class=""><span class="sw" style="background:#191916"></span>#191916</td></tr><tr><td class="c">panel2</td><td class="">面板 · 次</td><td class=""><span class="sw" style="background:#f8f7f3"></span>#f8f7f3</td><td class=""><span class="sw" style="background:#1f1f1b"></span>#1f1f1b</td></tr><tr><td class="c"><b>线</b></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="c">line</td><td class="">发丝线</td><td class=""><span class="sw" style="background:rgba(22,21,15,.09)"></span>rgba(22,21,15,.09)</td><td class=""><span class="sw" style="background:rgba(255,255,255,.07)"></span>rgba(255,255,255,.07)</td></tr><tr><td class="c">line2</td><td class="">线 · 二</td><td class=""><span class="sw" style="background:rgba(22,21,15,.16)"></span>rgba(22,21,15,.16)</td><td class=""><span class="sw" style="background:rgba(255,255,255,.13)"></span>rgba(255,255,255,.13)</td></tr><tr><td class="c">line3</td><td class="">线 · 三</td><td class=""><span class="sw" style="background:rgba(22,21,15,.30)"></span>rgba(22,21,15,.30)</td><td class=""><span class="sw" style="background:rgba(255,255,255,.26)"></span>rgba(255,255,255,.26)</td></tr><tr><td class="c">lineCtl</td><td class="">控件轮廓 line-ctl</td><td class=""><span class="sw" style="background:rgba(22,21,15,.47)"></span>rgba(22,21,15,.47)</td><td class=""><span class="sw" style="background:rgba(255,255,255,.36)"></span>rgba(255,255,255,.36)</td></tr><tr><td class="c">rule</td><td class="">墨线</td><td class=""><span class="sw" style="background:#16150f"></span>#16150f</td><td class=""><span class="sw" style="background:#ebe8df"></span>#ebe8df</td></tr><tr><td class="c"><b>墨</b></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="c">ink</td><td class="">墨</td><td class=""><span class="sw" style="background:#16150f"></span>#16150f</td><td class=""><span class="sw" style="background:#ebe8df"></span>#ebe8df</td></tr><tr><td class="c">ink2</td><td class="">墨 · 二</td><td class=""><span class="sw" style="background:#4f4c43"></span>#4f4c43</td><td class=""><span class="sw" style="background:#a9a69c"></span>#a9a69c</td></tr><tr><td class="c">ink3</td><td class="">墨 · 三</td><td class=""><span class="sw" style="background:#6b675d"></span>#6b675d</td><td class=""><span class="sw" style="background:#85827a"></span>#85827a</td></tr><tr><td class="c"><b>强调</b></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="c">acc</td><td class="">强调</td><td class=""><span class="sw" style="background:#0b6b65"></span>#0b6b65</td><td class=""><span class="sw" style="background:#3fc7b7"></span>#3fc7b7</td></tr><tr><td class="c">acc2</td><td class="">强调 · 二</td><td class=""><span class="sw" style="background:#0a5f5a"></span>#0a5f5a</td><td class=""><span class="sw" style="background:#5ad3c5"></span>#5ad3c5</td></tr><tr><td class="c">acc3</td><td class="">强调 · 三</td><td class=""><span class="sw" style="background:#084f4a"></span>#084f4a</td><td class=""><span class="sw" style="background:#34b3a4"></span>#34b3a4</td></tr><tr><td class="c">accBg</td><td class="">强调底</td><td class=""><span class="sw" style="background:rgba(11,107,101,.08)"></span>rgba(11,107,101,.08)</td><td class=""><span class="sw" style="background:rgba(63,199,183,.10)"></span>rgba(63,199,183,.10)</td></tr><tr><td class="c">accUl</td><td class="">强调下划</td><td class=""><span class="sw" style="background:rgba(11,107,101,.7)"></span>rgba(11,107,101,.7)</td><td class=""><span class="sw" style="background:rgba(63,199,183,.7)"></span>rgba(63,199,183,.7)</td></tr><tr><td class="c">onAcc</td><td class="">强调上的字</td><td class=""><span class="sw" style="background:#ffffff"></span>#ffffff</td><td class=""><span class="sw" style="background:#07211e"></span>#07211e</td></tr><tr><td class="c"><b>语义</b></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="c">red</td><td class="">印章红</td><td class=""><span class="sw" style="background:#8e2d24"></span>#8e2d24</td><td class=""><span class="sw" style="background:#d98d82"></span>#d98d82</td></tr><tr><td class="c">redBg</td><td class="">印章红底</td><td class=""><span class="sw" style="background:rgba(142,45,36,.06)"></span>rgba(142,45,36,.06)</td><td class=""><span class="sw" style="background:rgba(217,141,130,.08)"></span>rgba(217,141,130,.08)</td></tr><tr><td class="c">redBg2</td><td class="">印章红底 · 二</td><td class=""><span class="sw" style="background:rgba(142,45,36,.11)"></span>rgba(142,45,36,.11)</td><td class=""><span class="sw" style="background:rgba(217,141,130,.14)"></span>rgba(217,141,130,.14)</td></tr><tr><td class="c">ok</td><td class="">通过</td><td class=""><span class="sw" style="background:#2f6b3a"></span>#2f6b3a</td><td class=""><span class="sw" style="background:#6fcf97"></span>#6fcf97</td></tr><tr><td class="c">warn</td><td class="">提醒</td><td class=""><span class="sw" style="background:#8a5a08"></span>#8a5a08</td><td class=""><span class="sw" style="background:#d9ab52"></span>#d9ab52</td></tr><tr><td class="c">bad</td><td class="">失败</td><td class=""><span class="sw" style="background:#a8321f"></span>#a8321f</td><td class=""><span class="sw" style="background:#e5897b"></span>#e5897b</td></tr><tr><td class="c">badBg</td><td class="">失败底</td><td class=""><span class="sw" style="background:rgba(168,50,31,.08)"></span>rgba(168,50,31,.08)</td><td class=""><span class="sw" style="background:rgba(229,137,123,.10)"></span>rgba(229,137,123,.10)</td></tr><tr><td class="c"><b>状态底</b></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="c">wash</td><td class="">墨洗 6%（选中）</td><td class=""><span class="sw" style="background:rgba(22,21,15,.06)"></span>rgba(22,21,15,.06)</td><td class=""><span class="sw" style="background:rgba(235,232,223,.07)"></span>rgba(235,232,223,.07)</td></tr><tr><td class="c">hover</td><td class="">墨洗 3.5%（悬停）</td><td class=""><span class="sw" style="background:rgba(22,21,15,.035)"></span>rgba(22,21,15,.035)</td><td class=""><span class="sw" style="background:rgba(235,232,223,.04)"></span>rgba(235,232,223,.04)</td></tr><tr><td class="c">dis</td><td class="">禁用底</td><td class=""><span class="sw" style="background:rgba(22,21,15,.05)"></span>rgba(22,21,15,.05)</td><td class=""><span class="sw" style="background:rgba(235,232,223,.05)"></span>rgba(235,232,223,.05)</td></tr><tr><td class="c"><b>阴影与玻璃</b></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="c">s1</td><td class="">阴影 s1</td><td class="">0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07)</td><td class="">0 1px 1px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.06)</td></tr><tr><td class="c">s2</td><td class="">阴影 s2</td><td class="">0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08)</td><td class="">0 1px 2px rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.07)</td></tr><tr><td class="c">s3</td><td class="">阴影 s3</td><td class="">0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10)</td><td class="">0 2px 3px rgba(0,0,0,.4),0 3px 3px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.09)</td></tr><tr><td class="c">glass</td><td class="">玻璃（只给浮层）</td><td class=""><span class="sw" style="background:rgba(255,255,255,.78)"></span>rgba(255,255,255,.78)</td><td class=""><span class="sw" style="background:rgba(25,25,22,.74)"></span>rgba(25,25,22,.74)</td></tr><tr><td class="c">edge</td><td class="">玻璃边</td><td class="">inset 0 0 0 1px rgba(255,255,255,.8)</td><td class="">inset 0 1px 0 rgba(255,255,255,.06)</td></tr><tr><td class="c">chrome</td><td class="">滚动时顶带（玻璃）</td><td class=""><span class="sw" style="background:rgba(239,238,234,.82)"></span>rgba(239,238,234,.82)</td><td class=""><span class="sw" style="background:rgba(18,18,16,.82)"></span>rgba(18,18,16,.82)</td></tr><tr><td class="c"><b>颗粒与杂项</b></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="c">grain</td><td class="">颗粒不透明度</td><td class="">.035</td><td class="">.06</td></tr><tr><td class="c">blend</td><td class="">颗粒混合</td><td class="">multiply</td><td class="">screen</td></tr><tr><td class="c">avBg</td><td class="">头像底</td><td class=""><span class="sw" style="background:#e7e5df"></span>#e7e5df</td><td class=""><span class="sw" style="background:#2a2a26"></span>#2a2a26</td></tr><tr><td class="c">avInk</td><td class="">头像字</td><td class=""><span class="sw" style="background:#16150f"></span>#16150f</td><td class=""><span class="sw" style="background:#ebe8df"></span>#ebe8df</td></tr><tr><td class="c">knob</td><td class="">开关钮</td><td class=""><span class="sw" style="background:#ffffff"></span>#ffffff</td><td class=""><span class="sw" style="background:#ffffff"></span>#ffffff</td></tr></tbody></table></div>
+<div class="sec"><h3><b>B</b>对比度 <span>墨于画布 / 于纸；文字 ≥ 4.5，非文字 ≥ 3</span></h3><table class="mx"><colgroup><col style="width:300px"><col><col></colgroup><thead><tr><th>墨 / 面</th><th>浅色 于画布 / 于纸</th><th>夜间 于画布 / 于纸</th></tr></thead><tbody><tr><td class="c">ink</td><td class="">15.75 / 18.29</td><td class="">15.31 / 14.38</td></tr><tr><td class="c">ink2</td><td class="">7.39 / 8.58</td><td class="">7.70 / 7.23</td></tr><tr><td class="c">ink3</td><td class="">4.86 / 5.64</td><td class="">4.89 / 4.59</td></tr><tr><td class="c">acc</td><td class="">5.47 / 6.35</td><td class="">8.99 / 8.44</td></tr><tr><td class="c">red</td><td class="">7.09 / 8.23</td><td class="">7.22 / 6.78</td></tr><tr><td class="c">ok</td><td class="">5.51 / 6.39</td><td class="">9.87 / 9.27</td></tr><tr><td class="c">warn</td><td class="">5.10 / 5.92</td><td class="">8.84 / 8.30</td></tr><tr><td class="c">bad</td><td class="">5.76 / 6.69</td><td class="">7.32 / 6.88</td></tr><tr><td class="c">onAcc 于 acc</td><td class="">6.35</td><td class="">8.08</td></tr><tr><td class="c">line-ctl 于纸（非文字 ≥ 3）</td><td class="">3.16</td><td class="">3.34</td></tr></tbody></table></div>
+<div class="sec"><h3><b>C</b>固定值 <span>字体、圆角、高度、内距、字号、图标、动效</span></h3><table class="mx"><colgroup><col style="width:220px"><col style="width:760px"><col></colgroup><thead><tr><th>token</th><th>值</th><th>含义</th></tr></thead><tbody><tr><td class="c">--surface</td><td class="">var(--bg)</td><td class="">承载面（焦点环间隙色）</td></tr><tr><td class="c">--focus</td><td class="">0 0 0 2px var(--surface),0 0 0 4px var(--acc)</td><td class="">焦点环：2px 承载面间隙 + 2px 强调</td></tr><tr><td class="c">--serif</td><td class="">&quot;Source Serif 4&quot;,&quot;Noto Serif SC&quot;,Georgia,serif</td><td class="">衬线：标题与数字</td></tr><tr><td class="c">--sans</td><td class="">&quot;Hanken Grotesk&quot;,&quot;Noto Sans SC&quot;,system-ui,sans-serif</td><td class="">无衬线：界面</td></tr><tr><td class="c">--mono</td><td class="">&quot;IBM Plex Mono&quot;,ui-monospace,Menlo,monospace</td><td class="">等宽：编号与键</td></tr><tr><td class="c">--r-ctl</td><td class="">8px</td><td class="">控件圆角</td></tr><tr><td class="c">--r-sm</td><td class="">6px</td><td class="">小圆角</td></tr><tr><td class="c">--r-panel</td><td class="">12px</td><td class="">面板圆角</td></tr><tr><td class="c">--r-check</td><td class="">4px</td><td class="">勾选框圆角</td></tr><tr><td class="c">--r-stamp</td><td class="">3px</td><td class="">印章圆角</td></tr><tr><td class="c">--h-sm</td><td class="">28px</td><td class="">控件高 sm</td></tr><tr><td class="c">--h-md</td><td class="">32px</td><td class="">控件高 md</td></tr><tr><td class="c">--h-lg</td><td class="">40px</td><td class="">控件高 lg</td></tr><tr><td class="c">--pad-sm</td><td class="">10px</td><td class="">内距 sm</td></tr><tr><td class="c">--pad-md</td><td class="">12px</td><td class="">内距 md</td></tr><tr><td class="c">--pad-lg</td><td class="">16px</td><td class="">内距 lg</td></tr><tr><td class="c">--fs-sm</td><td class="">12px</td><td class="">字号 sm</td></tr><tr><td class="c">--fs-md</td><td class="">13px</td><td class="">字号 md</td></tr><tr><td class="c">--fs-lg</td><td class="">14px</td><td class="">字号 lg</td></tr><tr><td class="c">--ico-sm</td><td class="">14px</td><td class="">图标 sm</td></tr><tr><td class="c">--ico-md</td><td class="">16px</td><td class="">图标 md</td></tr><tr><td class="c">--ico-lg</td><td class="">20px</td><td class="">图标 lg</td></tr><tr><td class="c">--ease</td><td class="">cubic-bezier(.22,1,.36,1)</td><td class="">缓动</td></tr><tr><td class="c">--t-fill</td><td class="">120ms</td><td class="">换底时长</td></tr><tr><td class="c">--t-press</td><td class="">80ms</td><td class="">按压时长</td></tr><tr><td class="c">--t-move</td><td class="">240ms</td><td class="">位移时长</td></tr><tr><td class="c">--t-loop</td><td class="">900ms</td><td class="">循环时长</td></tr></tbody></table></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2640,"height":3451}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
