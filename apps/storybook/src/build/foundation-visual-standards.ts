@@ -537,15 +537,18 @@ export const storybookDocShellVisualOracle = {
   oracleRecoveryReceipt:
     "internal DS doc-shell restoration plan (owner-held governance record)",
   baselineManifestClassification: "owner_declared_original_storybook_doc_shell_standard",
+  // metricSourceDisposition and metricRevisionDisposition render on the docs in five locales, so their wording stays
+  // the translated one until it is rewritten for the top-band shell together with its translations; the numbers
+  // below (shellMetrics, metricEvidence) are the top-band readings (TCRN-DS-SUB-132).
   metricSourceDisposition:
-    "desktop band, brand button, side rail, and search metrics are read back on the built Storybook documentation shell, which since TCRN-DS-SUB-131 is the package's top-band ProductShell ([data-shell=\"doc\"]): no resident side rail, the 52px band, the 134 x 40 brand button, and the search inside the full menu (TCRN-DS-SUB-132; the earlier pre-d1d1291 rail-and-header metrics are retired with that shell).",
+    "desktop sidebar, header, search rest, and search expanded metrics are retained only after the owner-approved restoration re-expresses the pre-d1d1291 Storybook documentation shell through current Storybook-owned doc-shell selectors and committed proof receipts.",
   sourceHead: "generated_by_internal_alpha_visual_signature_baseline",
   sourceHeadDisposition:
     "This oracle's visual baseline is now the internal-alpha perceptual visual-signature baseline (docs/verification/internal-alpha/visual-signature-baseline.json, tolerance meanAbsolute<=2 / maxCell<=8) enforced by scripts/internal-alpha-browser-proof.mjs; reviewers must use the internal-alpha browser-proof metric readbacks and signature entries plus the final DS commit SHA rather than treating this static field as a freshness claim.",
   retiredExactPngProofDisposition:
     "The prior canonicalized_raw_png_exact_v1 exact-PNG visual oracle (docs/verification/storybook-visual-proof/, sourceHead ec57b606) is retired as early history, is not part of pnpm verify, and is superseded by the internal-alpha perceptual visual-signature baseline. By an earlier ruling, unreproducible exact-PNG signatures are not signed in as an oracle. The command name now belongs to the current gate: pnpm storybook:visual-proof runs scripts/storybook-visual-proof.mjs (no --check mode) inside pnpm verify after pnpm geometry:measure; it reconciles the G+ canvas board map (docs/design/gplus-2026-10/storybook-map.json) with the story list and measures every mapped row on the static docs without pixel comparison, and only with --write-report does it write gplus-map-report.json and gplus-map-report.md next to the retired history files. The gate list is docs/contract/README.md.",
   metricRevisionDisposition:
-    "Search metrics follow the top-band shell: the search is the full menu's field, 936px wide in the 952px panel at the 1440px proof viewport and 40px high (shell.srch-h); focusing it does not widen it, so rest and expanded read the same width (TCRN-DS-SUB-132; the former 260px rest and 360px focused header search is retired).",
+    "Search shell metrics are intentionally revised to 260px rest and 360px focused/expanded by the visual-unification repair so localized placeholder plus Ctrl K fit without clipping.",
   storybookRoute: "index.html#welcome-governance",
   shellAuthority: "storybook_doc_shell_with_package_primitives",
   packagePrimitives: [
