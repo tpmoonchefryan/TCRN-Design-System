@@ -144,13 +144,31 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     recordedHeightPx: 2102,
     owedTo: "beyond-INIT-008",
     note: "icon + motion specimen catalogue (incl. the S067 motion-slowdown note); gated debt"
+  },
+  "shell-top-band": {
+    // 5556 (TCRN-DS-INIT-016 R1, SUB-121): the 07a board's section A as six full-window ProductShell
+    // screens (closed, full menu, drop-down; light and night). The shell's block size is the window
+    // (100dvh), so each screen is 900 tall at 1440x900. Measured with the shell segments of the
+    // package stylesheet in the page; while the static pages leave them out the story renders 4023.
+    recordedHeightPx: 5556,
+    owedTo: "beyond-INIT-016",
+    note: "Six full-window shell screens are the measured surface of the shell gate (C-11), one per board screen; splitting them across stories would split the board's section A — gated debt"
   }
 };
 
 export const CATEGORY_STORY_COUNT_CAP = 8;
 
-// Preventive ceiling — GREEN today (current max stories/category is 4). No debt owed.
-export const CATEGORY_STORY_COUNT_GRACE_ALLOWLIST = {};
+// Preventive ceiling. The one audited exception is the navigation-shells category: the top-band
+// shell's stories are fixed by id in that category (C-9 of TCRN-DS-INIT-016: shell-top-band,
+// shell-narrow, shell-mobile and shell-intro, then shell-matrix) beside its five earlier stories.
+export const CATEGORY_STORY_COUNT_GRACE_ALLOWLIST = {
+  "Components/navigation-shells": {
+    // 5 -> 9 (TCRN-DS-INIT-016 R1, SUB-121): the four top-band shell stories.
+    recordedStoryCount: 9,
+    owedTo: "beyond-INIT-016",
+    note: "The shell stories' ids and category are fixed (C-9) and the shell gate resolves them there; the earlier navigation stories retire or move with the navigation family's consolidation"
+  }
+};
 
 /**
  * Pure, budget-agnostic evaluator. Mirrors the two-directional intent of

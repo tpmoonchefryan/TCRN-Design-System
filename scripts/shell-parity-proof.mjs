@@ -7,8 +7,14 @@ import { extname, normalize, relative, resolve } from "node:path";
 import { chromium } from "@playwright/test";
 
 const staticRoot = resolve("apps/storybook/storybook-static");
-const route = "/components-navigation-shells.html?theme=light&locale=en#navigation-product-shell-spec";
-const packageStorySelector = 'article[data-story-id="navigation-product-shell-spec"]';
+// The package side is the top-band ProductShell (TCRN-DS-SUB-121): the shell-top-band story, the 07a
+// board's section A. Its first screen (ts-closed-l) carries the band and the paper; the full-menu
+// screen (ts-x-l) carries what the side rail and the top bar used to hold (the menu groups, their
+// titles and rows, the search and the current position); the locale menu sits in the avatar menu, which
+// the ProductShell contract story shows open (a role's packageStory names that story). The document
+// side is the documentation shell's, which moves to the top band separately.
+const route = "/components-navigation-shells.html?theme=light&locale=en#shell-top-band";
+const packageStorySelector = 'article[data-story-id="shell-top-band"]';
 const expectedParityRoleCount = 19;
 const sampleShellRoot = '[data-story-id="navigation-focused-shells-spec"] [data-standard-shell="online-docs"]';
 const brandLockupRole = {
@@ -28,15 +34,15 @@ const brandLockupRole = {
 };
 
 export const parityRoles = [
-  { id: "canvas", document: ".tcrn-doc-shell", package: ".tcrn-product-shell", authority: "package", properties: ["backgroundColor"] },
-  { id: "package-topbar", document: ".tcrn-doc-global-bar", package: ".tcrn-product-shell__workspace > .tcrn-top-bar", authority: "package", properties: ["gap", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
-  { id: "sidebar-group-spacing", document: ".tcrn-doc-nav__groups", package: ".tcrn-side-nav", authority: "package", properties: ["gap"] },
-  { id: "package-group-title", document: ".tcrn-doc-nav__category-toggle", package: ".tcrn-nav-group__label", authority: "package", properties: ["fontSize", "fontWeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
-  { id: "breadcrumb", document: ".tcrn-doc-current-location__story", package: ".tcrn-product-shell__current-location", authority: "package", properties: ["fontSize"] },
-  { id: "search", document: ".tcrn-doc-header-search .tcrn-search-input", package: ".tcrn-product-shell-search .tcrn-search-input", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
-  { id: "locale", document: ".tcrn-doc-locale-control-slot .tcrn-shell-locale-menu__trigger", package: ".tcrn-shell-locale-menu__trigger", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
-  { id: "sidebar-surface", document: ".tcrn-doc-sidebar", package: ".tcrn-product-shell__sidebar", authority: "document", properties: ["backgroundColor"] },
-  { id: "package-nav-item", document: ".tcrn-doc-nav__stories:not([hidden]) a", package: ".tcrn-nav-item", authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "canvas", document: ".tcrn-doc-shell", package: '[data-shell="ts-closed-l"]', authority: "package", properties: ["backgroundColor"] },
+  { id: "top-band", document: ".tcrn-doc-global-bar", package: '[data-shell="ts-closed-l"] [data-shell-strip]', authority: "package", properties: ["gap", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "menu-group-spacing", document: ".tcrn-doc-nav__groups", package: '[data-shell="ts-x-l"] [data-shell-cols]', authority: "package", properties: ["gap"] },
+  { id: "package-group-title", document: ".tcrn-doc-nav__category-toggle", package: '[data-shell="ts-x-l"] [data-shell-group] > .tcrn-nav-group__label', authority: "package", properties: ["fontSize", "fontWeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "breadcrumb", document: ".tcrn-doc-current-location__story", package: '[data-shell="ts-x-l"] [data-shell-pbar] nav .tcrn-shell-menu__crumb--current', authority: "package", properties: ["fontSize"] },
+  { id: "search", document: ".tcrn-doc-header-search .tcrn-search-input", package: '[data-shell="ts-x-l"] [data-shell-search] .tcrn-search-input', authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "locale", document: ".tcrn-doc-locale-control-slot .tcrn-shell-locale-menu__trigger", package: '[data-panel="account"] .tcrn-shell-locale-menu__trigger', packageStory: "navigation-product-shell-spec", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "paper", document: ".tcrn-doc-sidebar", package: '[data-shell="ts-closed-l"] [data-paper]', authority: "document", properties: ["backgroundColor"] },
+  { id: "package-nav-item", document: ".tcrn-doc-nav__stories:not([hidden]) a", package: '[data-shell="ts-x-l"] [data-shell-row]', authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   brandLockupRole
 ];
 
@@ -219,7 +225,7 @@ async function expandAllStories(page) {
 }
 
 async function addMutation(page) {
-  await addCssMutation(page, `${packageStorySelector} .tcrn-nav-item { font-size: 99px !important; }`);
+  await addCssMutation(page, `${packageStorySelector} [data-shell-row] { font-size: 99px !important; }`);
 }
 
 async function addCssMutation(page, cssText) {
@@ -943,7 +949,8 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       if (role.kind === "element-inventory") return measureElementInventory(role);
       if (role.kind === "visible-string-source") return measureVisibleStringSources(role);
       const documentNode = document.querySelector(role.document);
-      const packageNode = document.querySelector(storySelector)?.querySelector(role.package);
+      const packageRoot = document.querySelector(role.packageStory ? `article[data-story-id="${role.packageStory}"]` : storySelector);
+      const packageNode = packageRoot?.querySelector(role.package);
       const differences = [];
       const accepted = [];
       if (!documentNode || !packageNode) {

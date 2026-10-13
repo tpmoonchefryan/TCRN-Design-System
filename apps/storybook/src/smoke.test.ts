@@ -125,6 +125,10 @@ const expectedContractStoryIds = [
   "navigation-focused-shells-spec",
   "navigation-primitives-spec",
   "navigation-product-shell-spec",
+  "shell-top-band",
+  "shell-narrow",
+  "shell-mobile",
+  "shell-intro",
   "dialog-spec-usage",
   "table-record-index-spec",
   "records-and-boards-components-spec",
@@ -514,7 +518,7 @@ test("static contract story surface is retained and synthetic", () => {
   // ProductShell renders in two designated homes: Components (navigation-shell-spec comparator +
   // component examples) and Proof (the AOS visual-instance oracles, moved there by TCRN-DS-STORY-057).
   for (const { group, html } of pages.filter((page) => page.group !== "Components" && page.group !== "Proof")) {
-    assert.doesNotMatch(html, /data-package-backed-product-shell-boundary="side-nav-shell-v1"/, `unexpected ProductShell boundary outside component examples: ${group}`);
+    assert.doesNotMatch(html, /data-package-backed-product-shell-boundary="top-band-shell-v2"/, `unexpected ProductShell boundary outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-product-shell-region="side-navigation"/, `unexpected ProductShell side nav outside component examples: ${group}`);
     assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__sidebar/, `unexpected ProductShell sidebar outside component examples: ${group}`);
     assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__main/, `unexpected ProductShell main outside component examples: ${group}`);
@@ -753,11 +757,11 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-storybook-only="knowledge-shell-prototype"/);
   assert.match(readGroupPage("Components"), /data-package-backed-navigation-proof="true"/);
   assert.match(readGroupPage("Components"), /data-package-backed-product-shell-proof="true"/);
-  assert.match(readGroupPage("Components"), /data-package-backed-product-shell-boundary="side-nav-shell-v1"/);
-  assert.match(readGroupPage("Components"), /data-product-shell-pattern="attached-side-nav"/);
+  assert.match(readGroupPage("Components"), /data-package-backed-product-shell-boundary="top-band-shell-v2"/);
+  assert.match(readGroupPage("Components"), /data-product-shell-pattern="top-band"/);
   assert.match(readGroupPage("Components"), /data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"/);
   assert.match(readGroupPage("Components"), /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
-  assert.match(readGroupPage("Components"), /data-product-shell-semantic-api="collapse-theme-locale-search"/);
+  assert.match(readGroupPage("Components"), /data-product-shell-semantic-api="menu-pins-theme-locale"/);
   assert.match(readGroupPage("Components"), /data-side-nav-semantic-api="onCollapsedChange"/);
   assert.match(readGroupPage("Components"), /data-side-nav-action="toggle"/);
   assert.match(readGroupPage("Components"), /data-shell-control="product-shell-search"/);
@@ -1580,7 +1584,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members, composition-three-sample/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, shell-top-band, shell-narrow, shell-mobile, shell-intro, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members, composition-three-sample/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, records-and-boards-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
@@ -1878,4 +1882,93 @@ test("composition-three sample story renders a top bar and centred content with 
   assert.deepEqual(navLabels, ["Composition three sample: projects", "Composition three sample: projects (night)"]);
   for (const label of navLabels) assert.ok(storybookContentText[label] !== undefined, `composition three: landmark "${label}" needs five-locale text`);
   assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, "composition three: no internal vocabulary");
+});
+
+test("top-band shell stories render the package shell with its measurement hooks, light and night", () => {
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const listFrom = (key: string) => new Set(
+    Array.from(ledgerSource.slice(ledgerSource.indexOf(key), ledgerSource.indexOf("],", ledgerSource.indexOf(key))).matchAll(/"((?:[^"\\]|\\.)*)"/g), (match) => match[1])
+  );
+  const sampleWords = listFrom("sampleMachineWords:");
+  const properNouns = listFrom("properNouns:");
+  const decode = (value: string) => value.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').trim();
+  // [data-shell, data-state, data-tcrn-theme of the block]: the 07a board's screen names (C-5, C-9).
+  const expectedScreens: Record<string, ReadonlyArray<readonly [string, string, string]>> = {
+    "shell-top-band": [
+      ["ts-closed-l", "closed", "light"], ["ts-closed-n", "closed", "dark"],
+      ["ts-x-l", "expanded", "light"], ["ts-x-n", "expanded", "dark"],
+      ["ts-drop-l", "drop", "light"], ["ts-drop-n", "drop", "dark"]
+    ],
+    "shell-narrow": [["ts-narrow-l", "closed", "light"], ["ts-narrow-x-l", "expanded", "light"]],
+    "shell-mobile": [["ts-m-l", "closed", "light"], ["ts-m-s", "expanded", "light"]],
+    "shell-intro": [["ts-intro-l", "closed", "light"]]
+  };
+  for (const [storyId, screens] of Object.entries(expectedScreens)) {
+    const story = contractStories.find((item) => item.id === storyId);
+    assert.ok(story, `missing shell story ${storyId}`);
+    assert.equal(story.group, "Components");
+    assert.equal(story.categoryId, "navigation-shells");
+    assert.doesNotMatch(`${story.id} ${story.title}`, /\b(?:aos|tms|workflow)\b/i, `${storyId}: product names stay out of the id and title`);
+    const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
+    const blocks = Array.from(html.matchAll(/<div data-tcrn-theme="(light|dark)" data-shell-story-block="([^"]+)" style="contain:layout[^"]*"/g), (match) => [match[2], match[1]]);
+    assert.deepEqual(blocks, screens.map(([screen, , theme]) => [screen, theme]), `${storyId}: one layout-contained block per screen, in board order`);
+    const shells = html.split(/(?=<div data-shell=")/).slice(1);
+    assert.deepEqual(
+      shells.map((shell) => /^<div data-shell="([^"]+)" class="tcrn-product-shell" data-state="([^"]+)"/.exec(shell)?.slice(1, 3)),
+      screens.map(([screen, state]) => [screen, state]),
+      `${storyId}: the package ProductShell of every screen, named by the board and in its state`
+    );
+    for (const [index, [screen, state]] of screens.entries()) {
+      const shell = shells[index];
+      for (const hook of [/data-shell-strip=""/, /data-tab="" data-shell-brand="v2"/, /<svg[^>]*data-logo="tms"/, /data-shell-toggle=""/, /data-pins=""/, /data-cluster=""/, /data-paper=""/]) {
+        assert.match(shell, hook, `${screen}: ${hook.source}`);
+      }
+      assert.equal(shell.match(/data-pin="/g)?.length, 4, `${screen}: the four pinned items of the board`);
+      if (state === "closed" && storyId !== "shell-intro") {
+        assert.match(shell, /<a class="tcrn-shell-pins__item" href="#[^"]+" data-tcrn-preview-state="hover">/, `${screen}: the third pinned item under the pointer`);
+      }
+      if (state === "expanded") {
+        for (const hook of [/data-panel="expanded"/, /data-shell-search=""/, /data-shell-group=""/, /data-shell-row=""/, /data-pin-button=""/, /data-shell-pbar=""/, /data-lockup="lkr"/, /data-shell-pinned-group=""/]) {
+          assert.match(shell, hook, `${screen}: ${hook.source}`);
+        }
+        assert.match(shell, /<a title="Teams" data-shell-row="" data-shell-level="2"[^>]* data-tcrn-preview-state="hover"/, `${screen}: the Teams row under the pointer`);
+        assert.match(shell, /aria-current="page"/, `${screen}: the row of the current page`);
+      }
+      if (state === "drop") {
+        assert.match(shell, /<button [^>]*aria-expanded="true" aria-controls="([^"]+)" data-open-pin="" style="anchor-name:--[a-z0-9-]+"/, `${screen}: the open pinned item is the anchor`);
+        assert.match(shell, /<div class="tcrn-shell-menu tcrn-shell-dropdown" style="position-anchor:--[a-z0-9-]+;left:anchor\(left\);top:anchor\(bottom\)" data-shell-dropdown="">/, `${screen}: the drop-down hangs from the pinned item, not hidden`);
+        assert.match(shell, /data-panel="drop"[^>]* aria-owns="[^"]+-col-templates"|aria-owns="[^"]+-col-templates"[^>]*data-panel="drop"/, `${screen}: the panel owns the open cascade column`);
+        assert.match(shell, /title="Templates"[^>]*role="button" aria-expanded="true"/, `${screen}: the Templates row is open`);
+        assert.equal(shell.match(/data-drop-col="2"/g)?.length, 1, `${screen}: one cascade column, the third-level rows' children`);
+        assert.equal(shell.match(/data-shell-level="4"/g)?.length, 4, `${screen}: the cascade lists the four templates`);
+      }
+    }
+    // One shell and no side rail: no resident sidebar and no collapse control (STORY-140).
+    assert.doesNotMatch(html, /tcrn-product-shell__sidebar|data-shell-control="side-nav-collapse"|data-mobile-nav-toggle/, `${storyId}: no side rail`);
+    // Copy: every Latin text of the menu model, the pinned items, the current position, the pages and
+    // the intro readback has five-locale text, or is a proper noun or a registered sample machine word;
+    // the shell's own control copy is the package's (shell-copy.ts) and is left out.
+    const texts = [
+      ...Array.from(html.matchAll(/class="(?:tcrn-shell-menu__text|tcrn-shell-pins__label|tcrn-nav-group__label-text|tcrn-shell-menu__crumb[^"]*)"[^>]*>([^<]+)</g), (match) => match[1]),
+      ...shells.flatMap((shell) => Array.from(shell.slice(shell.indexOf('class="tcrn-product-shell__main"')).replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1])),
+      ...Array.from((html.includes("tcrn-readback-panel") ? html.slice(html.indexOf("tcrn-readback-panel")) : "").replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1])
+    ].map(decode).filter((value) => /[A-Za-z]/.test(value));
+    assert.ok(texts.includes("Roster"), `${storyId}: the page copy is read`);
+    for (const text of texts) {
+      const residue = text.split(/\s+/).filter((word) => !properNouns.has(word) && !/^\d+$/.test(word) && word !== "ms").join(" ");
+      assert.ok(
+        storybookContentText[text] !== undefined || sampleWords.has(text) || !/[A-Za-z]/.test(residue),
+        `${storyId}: "${text}" needs five-locale text or a sample machine word`
+      );
+    }
+    for (const label of Array.from(html.matchAll(/class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="([^"]+)"/g), (match) => decode(match[1]))) {
+      assert.ok(storybookContentText[label] !== undefined, `${storyId}: content region "${label}" needs five-locale text`);
+    }
+    assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, `${storyId}: no internal vocabulary`);
+  }
+  // The intro does not render on the server (07a board, section C): the static page shows the shell
+  // in its final state and says how a client mount replays it.
+  const intro = renderToStaticMarkup(createElement(Fragment, null, contractStories.find((item) => item.id === "shell-intro")?.render()));
+  assert.doesNotMatch(intro, /data-shell-intro/);
+  assert.match(intro, /<code>sessionStorage\.removeItem\(&quot;tcrn-shell-intro&quot;\)<\/code>/);
 });
