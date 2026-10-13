@@ -5,6 +5,9 @@
 // TCRN-DS-SUB-114: the brand button's name, which says what pressing it does to the full menu
 // and names the product (07a board: "展开导航 · TCRN TMS" closed, "收起导航 · TCRN TMS" open).
 // TCRN-DS-SUB-115: the name of the pinned items group in the top band (07a board: "固定项").
+// TCRN-DS-SUB-116: the full menu's name ("导航"), its search placeholder and the label of the
+// current position in its bottom bar ("当前位置"). The board's placeholder names the TMS objects
+// ("搜索页面、艺人、合约"); the built-in one is product-neutral and a product may pass its own.
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { resolveDocumentLocale } from "../../utils.js";
 
@@ -15,33 +18,54 @@ export interface TcrnShellCopy {
   closeNavigationOf: (productName: string) => string;
   /** Name of the pinned items group in the top band. */
   pinnedItems: string;
+  /** Name of the full menu (the dialog the brand button opens). */
+  navigation: string;
+  /** Placeholder of the full menu's search. */
+  searchNavigation: string;
+  /** Label of the current position in the full menu's bottom bar; also the name of that trail. */
+  currentPosition: string;
 }
 
 export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
   "zh-CN": {
     openNavigationOf: (productName) => `展开导航 · ${productName}`,
     closeNavigationOf: (productName) => `收起导航 · ${productName}`,
-    pinnedItems: "固定项"
+    pinnedItems: "固定项",
+    navigation: "导航",
+    searchNavigation: "搜索页面与内容",
+    currentPosition: "当前位置"
   },
   en: {
     openNavigationOf: (productName) => `Open navigation · ${productName}`,
     closeNavigationOf: (productName) => `Close navigation · ${productName}`,
-    pinnedItems: "Pinned items"
+    pinnedItems: "Pinned items",
+    navigation: "Navigation",
+    searchNavigation: "Search pages and content",
+    currentPosition: "Current location"
   },
   ja: {
     openNavigationOf: (productName) => `ナビゲーションを開く · ${productName}`,
     closeNavigationOf: (productName) => `ナビゲーションを閉じる · ${productName}`,
-    pinnedItems: "固定した項目"
+    pinnedItems: "固定した項目",
+    navigation: "ナビゲーション",
+    searchNavigation: "ページとコンテンツを検索",
+    currentPosition: "現在の位置"
   },
   ko: {
     openNavigationOf: (productName) => `내비게이션 열기 · ${productName}`,
     closeNavigationOf: (productName) => `내비게이션 닫기 · ${productName}`,
-    pinnedItems: "고정한 항목"
+    pinnedItems: "고정한 항목",
+    navigation: "내비게이션",
+    searchNavigation: "페이지와 콘텐츠 검색",
+    currentPosition: "현재 위치"
   },
   fr: {
     openNavigationOf: (productName) => `Ouvrir la navigation · ${productName}`,
     closeNavigationOf: (productName) => `Fermer la navigation · ${productName}`,
-    pinnedItems: "Éléments épinglés"
+    pinnedItems: "Éléments épinglés",
+    navigation: "Navigation",
+    searchNavigation: "Rechercher des pages et des contenus",
+    currentPosition: "Emplacement actuel"
   }
 };
 
