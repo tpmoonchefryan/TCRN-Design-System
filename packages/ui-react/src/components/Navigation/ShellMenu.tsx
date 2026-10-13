@@ -29,13 +29,29 @@
 // The menu model is the product's: groups, their items, the items' children (third level) and
 // theirs (fourth level, the last); deeper entries are not shown.
 //
+// The Sheet (TCRN-DS-SUB-126; 07a board, section A, screens A7 and A8; 07b board, section D row
+// "窄于 1024"): on a viewport 760 wide or narrower the menu is not the panel but a Sheet that rises
+// from the bottom edge and stays below the top band (at most 84% of the viewport high), over a
+// scrim of 20% ink. Top to bottom it holds a grab line (a picture), the search and one list: the
+// pinned entries first under "固定项 · n", then every group under "全部". Rows and the search are 44
+// high there, and a pin takes presses 44 across. A row with a next level opens it on a press, as
+// in the panel; the level follows the lists in the Sheet, titled with the row's name. There is no
+// bottom bar: on a phone the paper shows the current position. The Sheet is the same transient
+// layer (a press on the scrim is a press outside); opened by a press it takes focus itself, so no
+// on-screen keyboard rises, and opened by ⌘K focus goes to the search. ShellMenu picks the
+// presentation itself (useShellMenuPresentation); a page rendered on the server, which cannot see
+// the viewport, sets it through shellMenuPresentationContext or the presentation prop.
+//
 // This module and Navigation.tsx may import each other; what it takes from Navigation.tsx is
 // used inside function bodies only, never evaluated when the module loads (C-4).
 import {
   Fragment,
+  createContext,
   useCallback,
+  useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   type HTMLAttributes,
@@ -137,6 +153,8 @@ export interface ShellTransientLayerOptions {
   controlsId?: string;
   /** Asks to close the layer. */
   onClose: (reason: ShellLayerCloseReason) => void;
+  /** Changes when the layer is another element while it stays open (the full menu's panel and Sheet); the listeners move to it. */
+  layerKey?: string;
 }
 
 /**
@@ -147,7 +165,7 @@ export interface ShellTransientLayerOptions {
  * ([data-pin-button]) are not choices and keep the layer open. The layer is non-modal: focus is
  * never trapped.
  */
-export function useShellTransientLayer({ open, layerRef, triggerRef, controlsId, onClose }: ShellTransientLayerOptions): void {
+export function useShellTransientLayer({ open, layerRef, triggerRef, controlsId, onClose, layerKey }: ShellTransientLayerOptions): void {
   const onCloseRef = useRef(onClose);
   useEffect(() => {
     onCloseRef.current = onClose;
@@ -187,7 +205,7 @@ export function useShellTransientLayer({ open, layerRef, triggerRef, controlsId,
       doc.removeEventListener("pointerdown", onPointerDown);
       layer.removeEventListener("click", onClick);
     };
-  }, [open, layerRef, triggerRef, controlsId]);
+  }, [open, layerRef, triggerRef, controlsId, layerKey]);
 }
 
 /** What a row needs from the menu that renders it (the full menu, a cascade or a drop-down). */
@@ -400,6 +418,41 @@ export function useShellMenuCascade(rootRef: RefObject<HTMLElement | null>, firs
   return { openPath, setOpenPath, toggle, onKeyDown };
 }
 
+/** How the full menu shows: the panel under the brand button or the Sheet from the bottom edge; "auto" follows the viewport. */
+export type ShellMenuPresentation = "auto" | "panel" | "sheet";
+
+/** Viewports that match this show the Sheet instead of the panel: 760 wide and narrower (C-7). */
+export const shellMenuSheetMediaQuery = "(max-width: 760px)";
+
+/**
+ * The presentation of the full menus inside it that are given none; "auto" by default. A page
+ * rendered on the server does not know the viewport, so one that shows a phone screen with the
+ * menu open sets "sheet" here.
+ */
+export const shellMenuPresentationContext = createContext<ShellMenuPresentation>("auto");
+
+/**
+ * The presentation a full menu shows: the one given, else the context's; "auto" is the Sheet on a
+ * viewport that matches shellMenuSheetMediaQuery and the panel otherwise. The viewport is read once
+ * mounted, before the browser paints, and followed as it changes; on the server and in the first
+ * render "auto" is the panel. ProductShell can read it to report data-state="sheet".
+ */
+export function useShellMenuPresentation(presentation?: ShellMenuPresentation): "panel" | "sheet" {
+  const inherited = useContext(shellMenuPresentationContext);
+  const wanted = presentation ?? inherited;
+  const [narrow, setNarrow] = useState(false);
+  useLayoutEffect(() => {
+    if (wanted !== "auto" || typeof window === "undefined" || typeof window.matchMedia !== "function") return undefined;
+    const list = window.matchMedia(shellMenuSheetMediaQuery);
+    const update = () => setNarrow(list.matches);
+    update();
+    list.addEventListener("change", update);
+    return () => list.removeEventListener("change", update);
+  }, [wanted]);
+  if (wanted === "auto") return narrow ? "sheet" : "panel";
+  return wanted;
+}
+
 export interface ShellMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "title"> {
   /** The menu model: groups → items → children → children. */
   groups: readonly ShellMenuGroup[];
@@ -433,6 +486,8 @@ export interface ShellMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
   locale?: TcrnLocale | string;
   /** Static states for documentation, by row or group id: data-tcrn-preview-state. */
   previewStates?: Readonly<Record<string, string>>;
+  /** The panel or the Sheet; shellMenuPresentationContext's (by default "auto", the viewport's) when omitted. */
+  presentation?: ShellMenuPresentation;
 }
 
 export function ShellMenu({
@@ -452,6 +507,7 @@ export function ShellMenu({
   shortcut = true,
   locale,
   previewStates,
+  presentation,
   id,
   className,
   onKeyDown,
@@ -460,14 +516,23 @@ export function ShellMenu({
   const generatedId = useId();
   const dialogId = id ?? `${generatedId}-menu`;
   const rootRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLElement>(null);
   const [query, setQuery] = useState("");
-  const cascade = useShellMenuCascade(rootRef, 2);
+  const shown = useShellMenuPresentation(presentation);
+  const sheet = shown === "sheet";
+  // The Sheet's first list holds the groups themselves (level 1); the panel's columns are groups,
+  // so its first rows are items (level 2).
+  const firstLevel = sheet ? 1 : 2;
+  const cascade = useShellMenuCascade(rootRef, firstLevel);
   const { setOpenPath } = cascade;
   const openRef = useRef(open);
   const onOpenChangeRef = useRef(onOpenChange);
+  const sheetShownRef = useRef(sheet);
+  const openedByShortcut = useRef(false);
   useEffect(() => {
     openRef.current = open;
     onOpenChangeRef.current = onOpenChange;
+    sheetShownRef.current = sheet;
   });
 
   useShellTransientLayer({
@@ -475,7 +540,8 @@ export function ShellMenu({
     layerRef: rootRef,
     triggerRef,
     controlsId: dialogId,
-    onClose: (reason) => onOpenChangeRef.current?.(false, reason)
+    onClose: (reason) => onOpenChangeRef.current?.(false, reason),
+    layerKey: shown
   });
 
   // ⌘K / Ctrl+K: one listener per shell, on the document, removed on unmount.
@@ -485,21 +551,45 @@ export function ShellMenu({
       if (event.key.toLowerCase() !== "k" || !(event.metaKey || event.ctrlKey) || event.altKey || event.shiftKey) return;
       event.preventDefault();
       if (openRef.current) rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]')?.focus();
-      else onOpenChangeRef.current?.(true, "shortcut");
+      else {
+        openedByShortcut.current = true;
+        onOpenChangeRef.current?.(true, "shortcut");
+      }
     };
     document.addEventListener("keydown", onShortcut);
     return () => document.removeEventListener("keydown", onShortcut);
   }, [shortcut]);
 
-  // Opening puts focus in the search; closing forgets the query and the open cascades.
+  // Opening puts focus in the search — or, for a Sheet opened by a press, on the Sheet itself, so
+  // that no on-screen keyboard rises over it; closing forgets the query and the open cascades.
   useEffect(() => {
     if (open) {
-      rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]')?.focus();
+      const search = rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]');
+      (sheetShownRef.current && !openedByShortcut.current ? sheetRef.current : search)?.focus();
+      openedByShortcut.current = false;
       return;
     }
     setQuery("");
     setOpenPath([]);
   }, [open, setOpenPath]);
+
+  // The open path's levels mean different rows in the two presentations: switching forgets it.
+  // Focus that was in the presentation that left went with it; it moves into the one that came.
+  useEffect(() => {
+    setOpenPath((path) => (path.length > 0 ? [] : path));
+    const root = rootRef.current;
+    if (!openRef.current || !root) return;
+    const active = root.ownerDocument.activeElement;
+    if (active && active !== root.ownerDocument.body) return;
+    (sheet ? sheetRef.current : root.querySelector<HTMLElement>('[data-shell-search] input[type="search"]'))?.focus();
+  }, [sheet, setOpenPath]);
+
+  // In the Sheet a level opens after the lists: a press that opens one brings it into view.
+  const lastOpen = cascade.openPath[cascade.openPath.length - 1];
+  useEffect(() => {
+    if (!sheet || !lastOpen) return;
+    rootRef.current?.ownerDocument.getElementById(`${generatedId}-col-${lastOpen}`)?.scrollIntoView?.({ block: "nearest" });
+  }, [sheet, lastOpen, generatedId]);
 
   if (!open) return null;
   const copy = tcrnShellCopyFor(locale);
@@ -511,13 +601,77 @@ export function ShellMenu({
     locale,
     previewStates,
     openPath: cascade.openPath,
-    firstLevel: 2,
+    firstLevel,
     columnIdOf,
     onToggle: cascade.toggle
+  };
+  const results = query.trim() ? searchProvider(query, groups) : [];
+  const searching = query.trim().length > 0;
+  const searchField = (
+    <ProductShellSearch
+      className="tcrn-shell-menu__search"
+      locale={locale}
+      placeholder={searchPlaceholder ?? copy.searchNavigation}
+      query={query}
+      expanded={searching}
+      results={results}
+      onQueryChange={(next) => {
+        setQuery(next);
+        setOpenPath([]);
+        onSearchQueryChange?.(next);
+      }}
+      data-shell-search=""
+    />
+  );
+  const onRootKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(event);
+    if (!event.defaultPrevented) cascade.onKeyDown(event);
   };
   // The pinned group lists the pinned entries as the model has them (a pinned group opens its
   // items as a cascade); an id the model does not hold is a plain link to the pin's destination.
   const levelTwo: ShellMenuItem[] = groups.flatMap((group) => group.items);
+
+  if (sheet) {
+    // The Sheet's lists: the pinned entries, then every group as a row that opens its items. The
+    // levels of the open path follow the lists, one titled column each.
+    const groupRows: ShellMenuItem[] = groups.map((group) => ({ id: group.id, label: group.label, iconName: group.iconName, children: group.items }));
+    const pinnedSheetRows: ShellMenuItem[] = pinnedItems.map(
+      (pin) => groupRows.find((row) => row.id === pin.id) ?? levelTwo.find((entry) => entry.id === pin.id) ?? { id: pin.id, label: pin.label, href: pin.href }
+    );
+    const levels = shellMenuCascades([...groupRows, ...pinnedSheetRows.filter((row) => !groupRows.includes(row))], context, "tcrn-shell-sheet__group");
+    return (
+      <>
+        <div className="tcrn-shell-sheet__scrim" data-shell-scrim="" aria-hidden="true" />
+        <div {...props} ref={rootRef} className={cx("tcrn-shell-menu", "tcrn-shell-sheet", className)} data-shell-menu="" onKeyDown={onRootKeyDown}>
+          <section ref={sheetRef} id={dialogId} className="tcrn-shell-sheet__panel" role="dialog" aria-modal="false" aria-label={copy.navigation} tabIndex={-1} data-panel="sheet">
+            <span className="tcrn-shell-sheet__grab" aria-hidden="true" />
+            {searchField}
+            {searching ? null : (
+              <div className="tcrn-shell-sheet__list" data-shell-cols="">
+                {pinnedSheetRows.length > 0 ? (
+                  <NavGroup
+                    label={copy.pinnedItemsOf(pinnedSheetRows.length)}
+                    locale={locale}
+                    className="tcrn-shell-sheet__group"
+                    data-shell-group=""
+                    data-shell-col=""
+                    data-shell-pinned-group=""
+                  >
+                    {pinnedSheetRows.map((row) => shellMenuRow(row, firstLevel, context, { iconName: row.iconName }))}
+                  </NavGroup>
+                ) : null}
+                <NavGroup label={copy.allNavigation} locale={locale} className="tcrn-shell-sheet__group" data-shell-group="" data-shell-col="">
+                  {groupRows.map((row) => shellMenuRow(row, firstLevel, context, { iconName: row.iconName }))}
+                </NavGroup>
+                {levels}
+              </div>
+            )}
+          </section>
+        </div>
+      </>
+    );
+  }
+
   const pinnedRows: ShellMenuItem[] = pinnedItems.map((pin) => {
     const group = groups.find((candidate) => candidate.id === pin.id);
     if (group) return { id: group.id, label: group.label, children: group.items };
@@ -525,8 +679,6 @@ export function ShellMenu({
   });
   const cascadeFirst = [...levelTwo, ...pinnedRows.filter((row) => !levelTwo.includes(row))];
   const cascades = shellMenuCascades(cascadeFirst, context, "tcrn-shell-menu__cascade");
-  const results = query.trim() ? searchProvider(query, groups) : [];
-  const searching = query.trim().length > 0;
   const last = currentPath.length - 1;
   const ownedColumns = cascade.openPath.map(columnIdOf).join(" ");
   return (
@@ -535,10 +687,7 @@ export function ShellMenu({
       ref={rootRef}
       className={cx("tcrn-shell-menu", className)}
       data-shell-menu=""
-      onKeyDown={(event) => {
-        onKeyDown?.(event);
-        if (!event.defaultPrevented) cascade.onKeyDown(event);
-      }}
+      onKeyDown={onRootKeyDown}
     >
       <section
         id={dialogId}
@@ -549,20 +698,7 @@ export function ShellMenu({
         aria-owns={cascades.length > 0 ? ownedColumns : undefined}
         data-panel="expanded"
       >
-        <ProductShellSearch
-          className="tcrn-shell-menu__search"
-          locale={locale}
-          placeholder={searchPlaceholder ?? copy.searchNavigation}
-          query={query}
-          expanded={searching}
-          results={results}
-          onQueryChange={(next) => {
-            setQuery(next);
-            setOpenPath([]);
-            onSearchQueryChange?.(next);
-          }}
-          data-shell-search=""
-        />
+        {searchField}
         {searching ? null : (
           <div className="tcrn-shell-menu__cols" data-shell-cols="">
             {groups.map((group) => (

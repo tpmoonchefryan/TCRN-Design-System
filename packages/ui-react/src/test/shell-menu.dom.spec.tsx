@@ -3,6 +3,9 @@
 // choice closes it, a pin does not; ↑↓ walk a column, → opens and enters a row's next level, ←
 // returns; the search keeps only the related entries; the ⌘K key is registered once and removed
 // on unmount.
+// The Sheet (TCRN-DS-SUB-126; 144-GWT2, GWT3): 760 wide and narrower the brand button opens the Sheet,
+// which takes focus itself; the scrim, Esc and a choice close it; a group opens its items after the
+// lists; the presentation follows the viewport while the menu is open.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { act, useRef, useState } from "react";
@@ -272,6 +275,125 @@ test("the pinned group lists every pinned item; the ⌘K key is registered once 
     await harness.render(<div />);
     await press(harness, { key: "k", metaKey: true });
     assert.equal(requests.length, 2, "unmounted, the shell no longer answers ⌘K");
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+// The Sheet (TCRN-DS-SUB-126): jsdom has no matchMedia, so the viewport is the test's — 760 wide or
+// narrower while `narrow` — and a resize tells the listeners the query's answer changed.
+function stubViewport(harness: DomInteractionHarness, narrow: boolean) {
+  const listeners = new Set<() => void>();
+  const state = { narrow };
+  harness.window.matchMedia = ((query: string) => ({
+    get matches() {
+      return query === "(max-width: 760px)" ? state.narrow : false;
+    },
+    media: query,
+    addEventListener: (_type: string, listener: () => void) => listeners.add(listener),
+    removeEventListener: (_type: string, listener: () => void) => listeners.delete(listener)
+  })) as unknown as typeof harness.window.matchMedia;
+  return {
+    async resize(next: boolean) {
+      state.narrow = next;
+      await act(async () => {
+        for (const listener of listeners) listener();
+      });
+    }
+  };
+}
+
+const sheet = (harness: DomInteractionHarness) => harness.document.querySelector<HTMLElement>('[data-panel="sheet"]');
+const scrim = (harness: DomInteractionHarness) => harness.document.querySelector<HTMLElement>("[data-shell-scrim]");
+
+test("760 wide a press on the brand button opens the Sheet with focus on it; the scrim and Esc close it; ⌘K focuses the search", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    stubViewport(harness, true);
+    const requests: Request[] = [];
+    await harness.render(<Shell requests={requests} pins={["roster", "billing"]} />);
+    await harness.dispatchClick(brand(harness) as Element);
+    assert.ok(sheet(harness), "the brand button opens the Sheet");
+    assert.equal(panel(harness), null, "and not the panel");
+    assert.ok(scrim(harness));
+    assert.equal(harness.document.activeElement, sheet(harness), "the Sheet takes focus, so no on-screen keyboard rises");
+    assert.deepEqual(
+      [...harness.document.querySelectorAll("[data-shell-group] > .tcrn-nav-group__label")].map((label) => label.textContent),
+      ["固定项 · 2", "全部"]
+    );
+    await pointerDown(harness, sheet(harness) as Element);
+    assert.ok(sheet(harness), "a press inside keeps it open");
+    await pointerDown(harness, scrim(harness) as Element);
+    assert.equal(sheet(harness), null, "a press on the scrim is a press outside");
+    assert.equal(scrim(harness), null);
+    await harness.dispatchClick(brand(harness) as Element);
+    await press(harness, { key: "Escape" }, harness.document.activeElement ?? harness.document);
+    assert.equal(sheet(harness), null);
+    assert.equal(harness.document.activeElement, brand(harness), "Esc returns focus to the brand button");
+    await press(harness, { key: "k", metaKey: true });
+    assert.ok(sheet(harness));
+    assert.equal(harness.document.activeElement, search(harness), "⌘K asks for the search");
+    assert.deepEqual(requests, [[false, "outside-pointer"], [false, "escape"], [true, "shortcut"]]);
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("in the Sheet a group opens its items after the lists; → enters a level, ← closes it; a choice closes the Sheet", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    stubViewport(harness, true);
+    const requests: Request[] = [];
+    await harness.render(<Shell requests={requests} initiallyOpen />);
+    // Mounted open, the menu first renders the panel and turns into the Sheet before it paints;
+    // the focus and the layer's listeners follow it there.
+    assert.equal(harness.document.activeElement, sheet(harness));
+    await pointerDown(harness, sheet(harness) as Element);
+    assert.ok(sheet(harness), "a press inside the Sheet is not outside");
+    const talent = row(harness, "艺人") as HTMLElement;
+    assert.equal(talent.getAttribute("aria-expanded"), "false");
+    await harness.dispatchClick(talent);
+    assert.equal(talent.getAttribute("aria-expanded"), "true");
+    const level = harness.document.getElementById(talent.getAttribute("aria-controls") ?? "");
+    assert.ok(level && sheet(harness)?.contains(level), "the level opens inside the Sheet");
+    assert.equal(level.getAttribute("role"), "group");
+    assert.equal(level.getAttribute("aria-label"), "艺人");
+    assert.equal(level.getAttribute("data-drop-col"), "2");
+    assert.ok(level.compareDocumentPosition(talent) & harness.window.Node.DOCUMENT_POSITION_PRECEDING, "after the lists");
+    assert.ok(sheet(harness), "opening a level is not a choice");
+    const contracts = row(harness, "合约") as HTMLElement;
+    contracts.focus();
+    await press(harness, { key: "ArrowRight" }, contracts);
+    assert.equal(contracts.getAttribute("aria-expanded"), "true");
+    assert.equal(harness.document.activeElement, row(harness, "合约列表"));
+    await press(harness, { key: "ArrowLeft" }, harness.document.activeElement as Element);
+    assert.equal(contracts.getAttribute("aria-expanded"), "false");
+    assert.equal(harness.document.activeElement, contracts);
+    await harness.dispatchClick(row(harness, "分组") as Element);
+    assert.equal(sheet(harness), null, "a choice closes the Sheet");
+    assert.equal(harness.document.activeElement, brand(harness));
+    assert.deepEqual(requests, [[false, "selection"]]);
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("the presentation follows the viewport: across 760 the open menu turns from the panel to the Sheet and back", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    const viewport = stubViewport(harness, false);
+    await harness.render(<Shell requests={[]} initiallyOpen />);
+    assert.ok(panel(harness));
+    assert.equal(sheet(harness), null);
+    assert.equal(harness.document.activeElement, search(harness));
+    await viewport.resize(true);
+    assert.ok(sheet(harness));
+    assert.equal(panel(harness), null);
+    assert.equal(harness.document.activeElement, sheet(harness), "focus moves into the Sheet");
+    await viewport.resize(false);
+    assert.ok(panel(harness));
+    assert.equal(scrim(harness), null);
+    assert.equal(harness.document.activeElement, search(harness));
   } finally {
     await harness.cleanup();
   }
