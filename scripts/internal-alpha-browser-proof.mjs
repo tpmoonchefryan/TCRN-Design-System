@@ -551,6 +551,7 @@ async function collectPageHealth(page) {
     const sectionRows = Array.from(menuRowsByPage.entries()).filter(([rowPage]) => sectionFiles.includes(rowPage)).map(([, link]) => link);
     const categoryGroups = Array.from(menuRowsByPage.entries()).filter(([rowPage]) => rowPage.endsWith(".html") && !sectionFiles.includes(rowPage)).map(([, link]) => link);
     const currentMenuRows = Array.from(menuRowsByPage.values()).filter((link) => link.getAttribute("aria-current") === "page");
+    const currentMenuRowPages = currentMenuRows.map((link) => (link.getAttribute("href") ?? "").split(/[?#]/)[0]);
     // The open full menu's rows stand in for the former side rail's labels (read open, then closed again).
     const menuWasHidden = Boolean(storybookNav?.hasAttribute("hidden"));
     if (window.innerWidth >= 900 && menuWasHidden) {
@@ -641,6 +642,7 @@ async function collectPageHealth(page) {
       docNavGroupCount: sectionRows.length,
       docNavCategoryCount: categoryGroups.length,
       docNavOpenCategoryCount: currentMenuRows.length,
+      currentMenuRowPages,
       activeStoryHiddenByCategory: false,
       categoryAriaFailures,
       sidebarNoIconLabelReadbacks,
@@ -1304,6 +1306,11 @@ for (const viewport of viewports) {
       // first story active (the scroll-spy no-ops with zero story regions), so the active-nav
       // assertion targets that story instead of a nonexistent rendered body.
       expectedActiveStoryId: isCategory ? (sectionStories[0]?.id ?? null) : (groupFirstStory?.id ?? null),
+      // TCRN-DS-SUB-168: the full menu's current row on a page without stories: a section index page's
+      // own row, and on a reference page the row of the category that owns the section's first story.
+      expectedCurrentMenuRow: section.kind === "index"
+        ? section.file
+        : section.kind === "reference" ? (groupFirstStory ? categoryFileForStory(groupFirstStory) : null) : null,
       consoleMessages,
       pageErrors,
       failedRequests,
@@ -2083,58 +2090,70 @@ for (const width of breakpointBoundaryWidths) {
   }
 }
 /**
- * Every navigation destination is reachable, including where the rail is
+ * Every navigation destination is reachable, including where the full menu is
  * taller than the window.
  *
- * The rail is one viewport tall and sticky. With navigation taller than the
- * viewport and nothing to scroll, the items past the fold painted outside the
- * rail's own box and could not be reached at any page scroll position — the
- * page scrolled, the sticky rail did not. It showed up on a rotated phone
- * (812x375 is above the mobile breakpoint, so it takes the desktop path) where
- * the last three destinations were simply unavailable (TCRN-AOS-INC-026).
+ * The rail this check was written for (TCRN-AOS-INC-026: on a rotated phone,
+ * 812x375, the last three destinations painted outside the sticky rail and
+ * could not be reached) is gone: the top-band shell's navigation is the full
+ * menu the brand button opens (TCRN-DS-SUB-121). The same failure has the same
+ * shape there, a menu taller than the window whose lowest rows cannot be
+ * scrolled into view, so the check now measures the full menu (TCRN-DS-SUB-168,
+ * judgment §3.4 item 1). It reads the documentation page's own shell, whose
+ * menu is opened through the page's layer hook and holds the whole site's
+ * sections and categories, a production-scale menu.
  *
- * Asserted the way a reader would find out: scroll the rail, then ask whether
- * the last item is inside both the rail and the window. A landscape viewport
- * is included precisely because the breakpoint only looks at width, so this is
- * the shape no width-based check can see.
+ * Asserted the way a reader would find out: open the menu, scroll its scroll
+ * container to the end, then ask whether the lowest row is inside the scroll
+ * container, the menu and the window. The landscape viewport stays because the
+ * breakpoint only looks at width, so it is the shape no width-based check can
+ * see; there the menu is taller than the window and has to scroll.
  */
 const railReachabilityViewports = [
-  { name: "landscape-812x375", width: 812, height: 375 },
-  { name: "desktop-1440x900", width: 1440, height: 900 }
+  { name: "landscape-812x375", width: 812, height: 375, menuTallerThanWindow: true },
+  { name: "desktop-1440x900", width: 1440, height: 900, menuTallerThanWindow: false }
 ];
 const railReachabilityReadbacks = [];
 for (const viewport of railReachabilityViewports) {
   const railPage = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height } });
   try {
     await railPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-visual-instances.html?theme=light&locale=en`);
-    await railPage.waitForSelector("[data-storybook-visual-instance]", { state: "attached" });
-    await expandAllStoriesForContentRead(railPage);
+    await railPage.waitForSelector('[data-shell="doc"] [data-shell-menu]', { state: "attached" });
     const readback = await railPage.evaluate(async () => {
-      // The visual-instance attribute and the shell class sit on the SAME
-      // element, so a descendant selector finds nothing. Named, not first:
-      // the first shell on this page is the two-item frontend-shell-slice
-      // oracle, whose rail can never be taller than a window — a check that
-      // measured it would be measuring something that cannot fail.
-      const shell = document.querySelector('[data-storybook-visual-instance="owner-quality-product-shell"].tcrn-product-shell');
-      const rail = shell?.querySelector(".tcrn-product-shell__sidebar");
-      const items = rail ? [...rail.querySelectorAll(".tcrn-nav-item")] : [];
-      if (!rail || items.length === 0) return { navItemCount: items.length, reachable: false, reason: "rail-or-items-missing" };
-      // The rail must actually be the production-scale one, or this check is
-      // green for the same reason it would be green on an empty page.
-      if (items.length < 11) return { navItemCount: items.length, reachable: false, reason: "rail-below-production-ia-scale" };
-      const last = items[items.length - 1];
-      rail.scrollTop = rail.scrollHeight;
+      const layers = window.tcrnDocShellLayers;
+      if (!layers) return { rowCount: 0, reachable: false, reason: "menu-layer-hook-missing" };
+      layers.setMenu(true);
+      await new Promise((resolve) => setTimeout(resolve, 240));
+      const menu = document.querySelector('[data-shell="doc"] [data-shell-menu]:not([data-paper] *)');
+      const rows = menu && !menu.hidden ? [...menu.querySelectorAll("[data-shell-row]")] : [];
+      if (!menu || rows.length === 0) return { rowCount: rows.length, reachable: false, reason: "menu-or-rows-missing" };
+      // The menu must be the production-scale one, or this check is green for the same reason it
+      // would be green on an empty page.
+      if (rows.length < 11) return { rowCount: rows.length, reachable: false, reason: "menu-below-production-ia-scale" };
+      const scroller = [menu, ...menu.querySelectorAll("*")].find((node) => /(auto|scroll)/.test(getComputedStyle(node).overflowY)
+        && node.scrollHeight > node.clientHeight + 1) ?? null;
+      if (scroller) scroller.scrollTop = scroller.scrollHeight;
       await new Promise((resolve) => setTimeout(resolve, 120));
-      const itemRect = last.getBoundingClientRect();
-      const railRect = rail.getBoundingClientRect();
+      const lowest = rows.reduce((best, row) => (row.getBoundingClientRect().bottom > best.getBoundingClientRect().bottom ? row : best), rows[0]);
+      const rowRect = lowest.getBoundingClientRect();
+      const menuRect = menu.getBoundingClientRect();
+      const clipRect = (scroller ?? menu).getBoundingClientRect();
+      const inside = (outer) => rowRect.top >= outer.top - 1 && rowRect.bottom <= outer.bottom + 1;
+      const windowBox = { top: 0, bottom: window.innerHeight };
+      layers.setMenu(false);
       return {
-        navItemCount: items.length,
-        railScrollable: rail.scrollHeight > rail.clientHeight + 1,
-        lastItemTop: Math.round(itemRect.top),
-        reachable: itemRect.top >= railRect.top - 1 && itemRect.bottom <= railRect.bottom + 1
+        rowCount: rows.length,
+        menuScrollable: Boolean(scroller),
+        menuContentHeight: Math.round((scroller ?? menu).scrollHeight + (clipRect.top - menuRect.top)),
+        windowHeight: window.innerHeight,
+        lowestRow: lowest.textContent.trim().slice(0, 40),
+        lowestRowBottom: Math.round(rowRect.bottom),
+        reachable: inside(clipRect) && inside(menuRect) && inside(windowBox)
       };
     });
-    railReachabilityReadbacks.push({ viewport: viewport.name, ok: readback.reachable, ...readback });
+    // On the landscape phone the menu has to be taller than the window, or the hard case is not exercised.
+    const exercised = !viewport.menuTallerThanWindow || readback.menuScrollable === true;
+    railReachabilityReadbacks.push({ viewport: viewport.name, ok: readback.reachable && exercised, exercised, ...readback });
   } finally {
     await railPage.close();
   }
@@ -2142,7 +2161,7 @@ for (const viewport of railReachabilityViewports) {
 const railReachabilityCheck = {
   ok: railReachabilityReadbacks.every((item) => item.ok),
   route: "proof-proof-visual-instances.html?theme=light&locale=en",
-  rule: "every navigation destination is reachable, including where the rail is taller than the window",
+  rule: "every navigation destination is reachable, including where the full menu is taller than the window",
   readbacks: railReachabilityReadbacks
 };
 
@@ -3664,6 +3683,13 @@ const staticSectionChecks = browserSummaries.map((summary) => {
   const isIndex = summary.pageKind === "index" || summary.pageKind === "reference";
   const expectedStorySectionCount = isIndex ? 0 : 1;
   const expectedCurrentStoryNav = summary.expectedActiveStoryId ?? summary.expectedStoryIds[0];
+  // TCRN-DS-SUB-168 (judgment §3.4 item 1): an index or reference page has no story, and its contents
+  // rail lists category pages, so no story is marked current there and its "current" is the full
+  // menu's current row instead: the section's own row on a section index page, the owning category's
+  // row on a reference page. A category page keeps the contents rail's current story.
+  const currentMenuRowOk = Array.isArray(summary.currentMenuRowPages)
+    && summary.currentMenuRowPages.length === 1
+    && summary.currentMenuRowPages[0] === summary.expectedCurrentMenuRow;
   const ok = summary.activeSection === summary.expectedSection
     && summary.shellAuthority === "online-docs"
     && summary.docShellSelectorCount >= 6
@@ -3676,7 +3702,7 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     && summary.categoryAriaFailures.length === 0
     && summary.sidebarNoIconLabelReadabilityFailures.length === 0
     && summary.docNavItemCount === summary.expectedStoryIds.length
-    && summary.docCurrentStoryCount === 1
+    && summary.docCurrentStoryCount === (isIndex ? 0 : 1)
     && summary.docChapterPagerCount === 1
     && summary.onThisPageCount === 1
     && summary.mandatoryBoundaryVisible
@@ -3695,7 +3721,7 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     // (a fixed expectation); on a short category page the scroll-spy legitimately marks whichever
     // of the category's own stories is in view at rest (often the last), so accept any of them.
     && (isIndex
-      ? summary.currentStoryNav === expectedCurrentStoryNav
+      ? currentMenuRowOk
       : summary.expectedStoryIds.includes(summary.currentStoryNav))
     && summary.storySections.length === expectedStorySectionCount
     && (isIndex || summary.storySections[0] === summary.expectedSection)
@@ -3732,6 +3758,8 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     currentNav: summary.currentNav,
     currentStoryNav: summary.currentStoryNav,
     expectedCurrentStoryNav,
+    currentMenuRowPages: summary.currentMenuRowPages,
+    expectedCurrentMenuRow: summary.expectedCurrentMenuRow,
     storySections: summary.storySections,
     visibleStoryIds,
     expectedStoryIds: summary.expectedStoryIds
