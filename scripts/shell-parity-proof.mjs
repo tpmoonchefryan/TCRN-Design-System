@@ -12,7 +12,14 @@ const staticRoot = resolve("apps/storybook/storybook-static");
 // screen (ts-x-l) carries what the side rail and the top bar used to hold (the menu groups, their
 // titles and rows, the search and the current position); the locale menu sits in the avatar menu, which
 // the ProductShell contract story shows open (a role's packageStory names that story). The document
-// side is the documentation shell's, which moves to the top band separately.
+// side is the documentation page's own top-band ProductShell (TCRN-DS-SUB-131, SUB-132): its root
+// [data-shell="doc"], band, paper, full menu [data-shell-menu] and avatar menu [data-panel="account"].
+// The two menus are hidden until the page script opens them, so a role's documentLayer names the layer
+// measureParity opens through window.tcrnDocShellLayers before it reads that role, and closes after.
+// The stories render inside the documentation page's paper, so a document selector names the shell's own
+// layer with :not([data-paper] *) — a story's band, menu or avatar menu inside the paper never matches it.
+const docShell = '[data-shell="doc"]';
+const docOwn = (layer) => `${docShell} ${layer}:not([data-paper] *)`;
 const route = "/components-navigation-shells.html?theme=light&locale=en#shell-top-band";
 const packageStorySelector = 'article[data-story-id="shell-top-band"]';
 const expectedParityRoleCount = 19;
@@ -34,15 +41,15 @@ const brandLockupRole = {
 };
 
 export const parityRoles = [
-  { id: "canvas", document: ".tcrn-doc-shell", package: '[data-shell="ts-closed-l"]', authority: "package", properties: ["backgroundColor"] },
-  { id: "top-band", document: ".tcrn-doc-global-bar", package: '[data-shell="ts-closed-l"] [data-shell-strip]', authority: "package", properties: ["gap", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
-  { id: "menu-group-spacing", document: ".tcrn-doc-nav__groups", package: '[data-shell="ts-x-l"] [data-shell-cols]', authority: "package", properties: ["gap"] },
-  { id: "package-group-title", document: ".tcrn-doc-nav__category-toggle", package: '[data-shell="ts-x-l"] [data-shell-group] > .tcrn-nav-group__label', authority: "package", properties: ["fontSize", "fontWeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
-  { id: "breadcrumb", document: ".tcrn-doc-current-location__story", package: '[data-shell="ts-x-l"] [data-shell-pbar] nav .tcrn-shell-menu__crumb--current', authority: "package", properties: ["fontSize"] },
-  { id: "search", document: ".tcrn-doc-header-search .tcrn-search-input", package: '[data-shell="ts-x-l"] [data-shell-search] .tcrn-search-input', authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
-  { id: "locale", document: ".tcrn-doc-locale-control-slot .tcrn-shell-locale-menu__trigger", package: '[data-panel="account"] .tcrn-shell-locale-menu__trigger', packageStory: "navigation-product-shell-spec", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
-  { id: "paper", document: ".tcrn-doc-sidebar", package: '[data-shell="ts-closed-l"] [data-paper]', authority: "document", properties: ["backgroundColor"] },
-  { id: "package-nav-item", document: ".tcrn-doc-nav__stories:not([hidden]) a", package: '[data-shell="ts-x-l"] [data-shell-row]', authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "canvas", document: docShell, package: '[data-shell="ts-closed-l"]', authority: "package", properties: ["backgroundColor"] },
+  { id: "top-band", document: docOwn("[data-shell-strip]"), package: '[data-shell="ts-closed-l"] [data-shell-strip]', authority: "package", properties: ["gap", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "menu-group-spacing", document: `${docOwn("[data-shell-menu]")} [data-shell-cols]`, documentLayer: "menu", package: '[data-shell="ts-x-l"] [data-shell-cols]', authority: "package", properties: ["gap"] },
+  { id: "package-group-title", document: `${docOwn("[data-shell-menu]")} [data-shell-group] > .tcrn-nav-group__label`, documentLayer: "menu", package: '[data-shell="ts-x-l"] [data-shell-group] > .tcrn-nav-group__label', authority: "package", properties: ["fontSize", "fontWeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "breadcrumb", document: `${docOwn("[data-shell-menu]")} [data-shell-pbar] nav .tcrn-shell-menu__crumb--current`, documentLayer: "menu", package: '[data-shell="ts-x-l"] [data-shell-pbar] nav .tcrn-shell-menu__crumb--current', authority: "package", properties: ["fontSize"] },
+  { id: "search", document: `${docOwn("[data-shell-menu]")} [data-shell-search] .tcrn-search-input`, documentLayer: "menu", package: '[data-shell="ts-x-l"] [data-shell-search] .tcrn-search-input', authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "locale", document: `${docOwn('[data-panel="account"]')} .tcrn-shell-locale-menu__trigger`, documentLayer: "account", package: '[data-panel="account"] .tcrn-shell-locale-menu__trigger', packageStory: "navigation-product-shell-spec", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
+  { id: "paper", document: docOwn("[data-paper]"), package: '[data-shell="ts-closed-l"] [data-paper]', authority: "document", properties: ["backgroundColor"] },
+  { id: "package-nav-item", document: `${docOwn("[data-shell-menu]")} [data-shell-row]`, documentLayer: "menu", package: '[data-shell="ts-x-l"] [data-shell-row]', authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   brandLockupRole
 ];
 
@@ -942,7 +949,20 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         ok: differences.length === 0,
       };
     };
+    const documentLayers = window.tcrnDocShellLayers;
+    const setDocumentLayer = (layer, open) => {
+      if (!layer || !documentLayers) return;
+      (layer === "account" ? documentLayers.setAccount : documentLayers.setMenu)(open);
+    };
     const results = roleTable.map((role) => {
+      setDocumentLayer(role.documentLayer, true);
+      try {
+        return measureRole(role);
+      } finally {
+        setDocumentLayer(role.documentLayer, false);
+      }
+    });
+    function measureRole(role) {
       if (role.kind === "brand-lockup") return measureBrandLockup(role);
       if (role.kind === "sample-shell-relations") return measureSampleShellRelations(role);
       if (role.kind === "sample-shell") return measureSampleShell(role);
@@ -977,7 +997,7 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         }
       }
       return { id: role.id, document: role.document, package: role.package, differences, accepted, ok: differences.length === 0 };
-    });
+    }
     return {
       roleCount: results.length,
       roles: results,
@@ -989,24 +1009,31 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
   }, { roles, exceptionTable: exceptions, storySelector: packageStorySelector, enforceRoleCount: roles === parityRoles, expectedRoleCount: expectedParityRoleCount });
 }
 
-// Compare actual content edges, not padding strings: desktop uses the global
-// bar's grid gap; mobile uses a stacked header. Missing/hidden samples fail.
+// Compare actual content edges, not padding strings. On the top-band documentation shell
+// (TCRN-DS-SUB-131) the current location is the page header's breadcrumb in the paper, the content is
+// the paper's scroll container #content, and the page head is the governance section of the page body.
+// Missing/hidden samples fail.
 async function measureDocumentContentEdge(page) {
   return page.evaluate(() => {
-    const location = document.querySelector(".tcrn-doc-current-location");
-    const content = document.querySelector(".tcrn-doc-content");
-    const heading = document.querySelector(".tcrn-doc-page-head");
-    if (!location || !content || !heading) return { ok: false, reason: "missing-surface" };
+    const location = document.querySelector('[data-shell="doc"] [data-paper] .tcrn-page-header .tcrn-breadcrumb');
+    const content = document.querySelector('[data-shell="doc"] [data-paper] #content');
+    const heading = document.querySelector('[data-shell="doc"] .tcrn-doc-page-head');
+    // The page body is the centred 1040 column (TCRN-DS-SUB-130, SUB-131); the page head starts on its edge.
+    const column = document.querySelector('[data-shell="doc"] .tcrn-doc-page__body');
+    if (!location || !content || !heading || !column) return { ok: false, reason: "missing-surface" };
     const locationRect = location.getBoundingClientRect();
     const headingRect = heading.getBoundingClientRect();
     const contentRect = content.getBoundingClientRect();
     const style = getComputedStyle(content);
     const contentLeft = contentRect.left + parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft);
     const delta = locationRect.left - contentLeft;
+    const columnRect = column.getBoundingClientRect();
+    const columnStyle = getComputedStyle(column);
+    const columnLeft = columnRect.left + parseFloat(columnStyle.borderLeftWidth) + parseFloat(columnStyle.paddingLeft);
     return {
       ok: locationRect.width > 0 && locationRect.height > 0 && headingRect.width > 0
-        && Math.abs(delta) <= 1 && Math.abs(headingRect.left - contentLeft) <= 1,
-      locationLeft: locationRect.left, contentLeft, headingLeft: headingRect.left, delta
+        && Math.abs(delta) <= 1 && Math.abs(headingRect.left - columnLeft) <= 1,
+      locationLeft: locationRect.left, contentLeft, headingLeft: headingRect.left, columnLeft, delta
     };
   });
 }
@@ -1018,18 +1045,16 @@ async function documentContentEdgeProof(page, origin) {
       for (const width of [195, 390, 760, 1024, 1440, 1920]) {
         await page.setViewportSize({ width, height: 900 });
         await page.goto(`${origin}/style-guide.html?theme=${theme}&locale=${locale}`);
-        for (const collapsed of [false, true]) {
-          await page.locator(".tcrn-doc-shell").evaluate((node, value) => {
-            node.setAttribute("data-sidebar-collapsed", String(value));
-          }, collapsed);
-          await settle(page);
-          await page.locator(".tcrn-doc-shell").evaluate(async (node) => {
-            await Promise.all(node.getAnimations({ subtree: true })
-              .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
-              .map((animation) => animation.finished.catch(() => {})));
-          });
-          matrix.push({ locale, theme, width, collapsed, ...(await measureDocumentContentEdge(page)) });
-        }
+        // The top-band shell has no side rail to collapse (MIN-20261013-SHELL D1), so each cell is read once.
+        await settle(page);
+        await page.evaluate(async () => {
+          const node = document.querySelector('[data-shell="doc"]');
+          if (!node) return;
+          await Promise.all(node.getAnimations({ subtree: true })
+            .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+            .map((animation) => animation.finished.catch(() => {})));
+        });
+        matrix.push({ locale, theme, width, ...(await measureDocumentContentEdge(page)) });
       }
     }
   }
@@ -1039,7 +1064,7 @@ async function documentContentEdgeProof(page, origin) {
     await page.goto(`${origin}/style-guide.html?theme=light&locale=en`);
     await settle(page);
     // Recreate the consumer's extra nested inset; the shared package is untouched.
-    await addCssMutation(page, ".tcrn-doc-header__workspace { padding-left: 48px !important; }");
+    await addCssMutation(page, '[data-shell="doc"] [data-paper] .tcrn-page-header { padding-left: 48px !important; }');
     const mutated = await measureDocumentContentEdge(page);
     await removeMutation(page);
     await settle(page);
@@ -1048,6 +1073,16 @@ async function documentContentEdgeProof(page, origin) {
   }
   return { matrix, negative, ok: matrix.every((entry) => entry.ok) && negative.every((entry) => entry.ok) };
 }
+
+// Attribute reads and writes that do not wait for the node: a missing node leaves the role red in the
+// report (measureParity lists it) instead of ending the run on a locator timeout.
+const attributeOf = (page, selector, name) => page.evaluate(([target, attribute]) => document.querySelector(target)?.getAttribute(attribute) ?? null, [selector, name]);
+const writeAttribute = (page, selector, name, value) => page.evaluate(([target, attribute, next]) => {
+  const node = document.querySelector(target);
+  if (!node) return;
+  if (next === null) node.removeAttribute(attribute);
+  else node.setAttribute(attribute, next);
+}, [selector, name, value]);
 
 async function main() {
   if (!existsSync(staticRoot)) throw new Error("shell_parity_missing_static_surface");
@@ -1094,14 +1129,11 @@ async function main() {
       }
       if (role.kind === "visible-string-source") {
         const localeRootSelector = `${sampleShellRoot} .tcrn-shell-locale-menu`;
-        const originalSource = await page.locator(localeRootSelector).getAttribute("data-i18n-aria-label");
-        await page.locator(localeRootSelector).evaluate((node) => node.setAttribute("data-i18n-aria-label", "shell.searchLabel"));
+        const originalSource = await attributeOf(page, localeRootSelector, "data-i18n-aria-label");
+        await writeAttribute(page, localeRootSelector, "data-i18n-aria-label", "shell.searchLabel");
         await settle(page);
         const sourceMutated = await measureParity(page, [role]);
-        await page.locator(localeRootSelector).evaluate((node, value) => {
-          if (value === null) node.removeAttribute("data-i18n-aria-label");
-          else node.setAttribute("data-i18n-aria-label", value);
-        }, originalSource);
+        await writeAttribute(page, localeRootSelector, "data-i18n-aria-label", originalSource);
         await settle(page);
         const sourceRestored = await measureParity(page, [role]);
         sampleShellMutations[role.id] = {
@@ -1122,7 +1154,7 @@ async function main() {
         restored: restoredRole
       };
       if (role.id === "collapse-toggle") {
-        const baselineLabel = await page.locator(role.documentControl).getAttribute("aria-label");
+        const baselineLabel = await attributeOf(page, role.documentControl, "aria-label");
         await page.evaluate((selector) => document.querySelector(selector)?.setAttribute("aria-label", "SAMPLE_ARIA_MUTATION"), role.documentControl);
         await settle(page);
         const ariaMutated = await measureParity(page, [role]);
@@ -1183,7 +1215,7 @@ async function main() {
         sampleNetGapMatrix.push({ locale, width, ...(await measureParity(page, [collapseRole])) });
       }
     }
-    const stringSourceLocales = await page.evaluate(() => [...document.querySelectorAll(".tcrn-doc-locale-control-slot [data-locale-menu-option]")]
+    const stringSourceLocales = await page.evaluate(() => [...document.querySelectorAll('[data-shell="doc"] [data-panel="account"]:not([data-paper] *) [data-locale-menu-option]')]
       .map((node) => node.getAttribute("data-locale"))
       .filter((locale, index, all) => typeof locale === "string" && all.indexOf(locale) === index));
     const stringSourceMatrix = [];
@@ -1207,8 +1239,8 @@ async function main() {
     await settle(page);
     await expandAllStories(page);
     const stringSourceMutationRoot = `${sampleShellRoot} .tcrn-shell-locale-menu`;
-    const stringSourceOriginalMarker = await page.locator(stringSourceMutationRoot).getAttribute("data-i18n-aria-label");
-    await page.locator(stringSourceMutationRoot).evaluate((node) => node.setAttribute("data-i18n-aria-label", "shell.searchLabel"));
+    const stringSourceOriginalMarker = await attributeOf(page, stringSourceMutationRoot, "data-i18n-aria-label");
+    await writeAttribute(page, stringSourceMutationRoot, "data-i18n-aria-label", "shell.searchLabel");
     await settle(page);
     const stringSourceEmptyExceptionProbe = await measureParity(page, [stringSourceRole], []);
     const stringSourceExceptionProbe = await measureParity(page, [stringSourceRole], [{
@@ -1217,15 +1249,12 @@ async function main() {
       acceptedAt: "synthetic-proof",
       reason: "SYNTHETIC_STRING_SOURCE_EXCEPTION"
     }]);
-    await page.locator(stringSourceMutationRoot).evaluate((node, value) => {
-      if (value === null) node.removeAttribute("data-i18n-aria-label");
-      else node.setAttribute("data-i18n-aria-label", value);
-    }, stringSourceOriginalMarker);
+    await writeAttribute(page, stringSourceMutationRoot, "data-i18n-aria-label", stringSourceOriginalMarker);
     await settle(page);
     await addMutation(page);
     const mutated = await measureParity(page);
     await removeMutation(page);
-    await addCssMutation(page, ".tcrn-doc-locale-control-slot .tcrn-shell-locale-menu__trigger { border-radius: 1px !important; }");
+    await addCssMutation(page, `${docOwn('[data-panel="account"]')} .tcrn-shell-locale-menu__trigger { border-radius: 1px !important; }`);
     const exceptionProbe = await measureParity(page, [parityRoles.find((role) => role.id === "locale")], [{
       role: "locale",
       property: "borderRadius",
