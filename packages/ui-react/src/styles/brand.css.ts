@@ -107,6 +107,7 @@ export const brandCss01 = `
 .tcrn-product-logo__line-one-suffix {
   flex: 0 1 auto;
   min-width: 0;
+  font-style: normal;
   font-weight: var(--tcrn-type-weight-strong);
   white-space: nowrap;
 }
@@ -207,7 +208,12 @@ export const brandCss02 = `
 .tcrn-product-shell__sidebar .tcrn-brand-wordmark__suffix--aos {
   color: var(--tcrn-color-brand-primary);
 }
-.tcrn-product-shell .tcrn-shell-brand-lockup {
+/* The side-rail tier (Brand board section E, .lkr): mark 22, wordmark 12.5/600, tagline 10.5,
+   10 between mark and copy, no byline. It is written here once (TCRN-DS-SUB-144): a lockup in
+   the product shell takes it, and so does any lockup marked as the side-rail lockup with
+   data-lockup="lkr" (C-6), such as the full menu's bottom bar wherever the menu is rendered. */
+.tcrn-product-shell .tcrn-shell-brand-lockup,
+.tcrn-shell-brand-lockup[data-lockup="lkr"] {
   --tcrn-brand-mark-size: 22px;
   --tcrn-brand-line-one-size: 12.5px;
   --tcrn-brand-line-one-height: 16px;
@@ -216,7 +222,8 @@ export const brandCss02 = `
   --tcrn-brand-line-two-height: 14px;
   gap: var(--tcrn-space-2h);
 }
-.tcrn-product-shell .tcrn-product-logo__byline {
+.tcrn-product-shell .tcrn-product-logo__byline,
+.tcrn-shell-brand-lockup[data-lockup="lkr"] .tcrn-product-logo__byline {
   display: none;
 }`;
 

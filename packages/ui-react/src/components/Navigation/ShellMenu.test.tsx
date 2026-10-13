@@ -6,8 +6,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
+import { JSDOM } from "jsdom";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
 import { createTokenMap } from "@tcrn/ui-tokens";
+import { brandCss02 } from "../../styles/brand.css.js";
 import { tcrnComponentCss } from "../../styles/index.js";
 import { shellCss03 } from "../../styles/shell.css.js";
 import { shellIntroCss01 } from "../../styles/shell-intro.css.js";
@@ -159,6 +161,20 @@ test("the bottom bar holds the current position and the lockup, which is a pictu
   assert.match(lockup[1], /class="tcrn-product-logo [^"]*tcrn-shell-brand-lockup tcrn-shell-menu__lockup"/);
   assert.doesNotMatch(lockup[1], /tabindex|onclick|href/i);
   assert.doesNotMatch(bar[1], /<button|<a [^>]*data-lockup/);
+  // C-6: the lockup is the Brand board's section E writing, as the shell gate reads it — the colour
+  // mark as svg[data-logo], the wordmark as <b>{word} <em>{suffix}</em></b> and the tagline as a
+  // <small> (TCRN-DS-SUB-144).
+  const lockupMarkup = bar[1].slice(lockup.index);
+  assert.match(lockupMarkup, /^<div [^>]*data-lockup="lkr"[^>]*><svg [^>]*data-logo="tms"[^>]*data-product-mark-variant="color"/);
+  assert.match(lockupMarkup, /<b class="tcrn-product-logo__line-one"[^>]*><span class="tcrn-product-logo__line-one-base">TCRN<\/span> <em class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--tms">TMS<\/em><\/b>/);
+  assert.match(lockupMarkup, /<\/b><small class="tcrn-product-logo__line-two">艺人管理系统<\/small>/);
+  const { document } = new JSDOM(`<!doctype html><body>${html}</body>`).window;
+  const node = document.querySelector('[data-lockup="lkr"]');
+  assert.equal(node?.querySelector("svg[data-logo]")?.getAttribute("data-logo"), "tms", "[data-lockup] svg[data-logo]");
+  assert.equal(node?.querySelector("b")?.textContent, "TCRN TMS", "[data-lockup] b");
+  assert.equal(node?.querySelector("b > em")?.textContent, "TMS", "[data-lockup] b > em");
+  assert.equal(node?.querySelector("small")?.textContent, "艺人管理系统", "[data-lockup] small");
+  assert.equal(node?.querySelectorAll("button, a, [tabindex]").length, 0, "nothing in the lockup takes focus");
   // The lockup has no hover rule, so it never answers the pointer.
   assert.doesNotMatch(tcrnComponentCss, /tcrn-shell-menu__lockup[^{,]*:hover/);
 });
@@ -227,9 +243,17 @@ test("the bottom bar is pbar-h plus the panel's bottom inset, its rule a 1px lin
   assert.equal(declaration(bar, "margin"), "var(--tcrn-space-1h) 0 0");
   const lockup = ruleBody(".tcrn-shell-menu__lockup");
   assert.equal(declaration(lockup, "margin-inline-start"), "auto");
-  assert.equal(declaration(lockup, "--tcrn-brand-mark-size"), "22px");
-  assert.equal(declaration(lockup, "--tcrn-brand-line-one-size"), "12.5px");
-  assert.equal(declaration(lockup, "--tcrn-brand-line-two-size"), "10.5px");
+  // The side-rail sizes are written once, in the brand tier of brand.css.ts, which the lockup takes
+  // through its data-lockup="lkr" hook; the bar's rule only places it (C13, TCRN-DS-SUB-144).
+  assert.doesNotMatch(lockup, /--tcrn-brand-|gap:/);
+  assert.doesNotMatch(shellCss03, /tcrn-product-logo__byline/);
+  const tier = ruleBody('.tcrn-shell-brand-lockup[data-lockup="lkr"]', brandCss02);
+  assert.equal(declaration(tier, "--tcrn-brand-mark-size"), "22px");
+  assert.equal(declaration(tier, "--tcrn-brand-line-one-size"), "12.5px");
+  assert.equal(declaration(tier, "--tcrn-brand-line-two-size"), "10.5px");
+  assert.equal(declaration(tier, "gap"), "var(--tcrn-space-2h)");
+  assert.match(brandCss02, /\.tcrn-shell-brand-lockup\[data-lockup="lkr"\] \.tcrn-product-logo__byline \{\n {2}display: none;/);
+  assert.doesNotMatch(shellCss03, /--tcrn-brand-line-|--tcrn-brand-mark-size/, "no copy of the side-rail sizes in the menu segment");
   const tokens = createTokenMap();
   const px = (variable: string) => Number.parseFloat(tokens[variable]);
   assert.equal(px("--tcrn-shell-pbar-h") + px("--tcrn-space-2"), 52);

@@ -619,20 +619,12 @@ export const shellCss03 = `
   flex: 0 0 auto;
   color: var(--tcrn-color-ink-3);
 }
+/* The bar places the lockup; its side-rail sizes are the brand tier of brand.css.ts, which the
+   lockup takes through its data-lockup="lkr" hook (TCRN-DS-SUB-144). */
 .tcrn-shell-menu__lockup {
-  --tcrn-brand-mark-size: 22px;
-  --tcrn-brand-line-one-size: 12.5px;
-  --tcrn-brand-line-one-height: 16px;
-  --tcrn-brand-line-one-base-weight: var(--tcrn-type-weight-strong);
-  --tcrn-brand-line-two-size: 10.5px;
-  --tcrn-brand-line-two-height: 14px;
   flex: 0 0 auto;
-  gap: var(--tcrn-space-2h);
   margin-inline-start: auto;
   padding: var(--tcrn-space-1h) var(--tcrn-space-1);
-}
-.tcrn-shell-menu__lockup .tcrn-product-logo__byline {
-  display: none;
 }
 @media (min-width: 1024px) {
   .tcrn-shell-menu .tcrn-shell-menu__col--pinned {

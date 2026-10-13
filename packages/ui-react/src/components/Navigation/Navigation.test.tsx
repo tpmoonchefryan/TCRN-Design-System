@@ -302,9 +302,17 @@ test("registered product logos expose exact DS AOS and TMS lockups", () => {
   assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--design-system">Design System</);
   assert.match(html, />Talent Management System</);
   assert.doesNotMatch(html, /Rebuild workspace/);
-  // TMS and the design system draw their own marks inline; AOS keeps the mother mark.
-  assert.match(html, /<svg class="tcrn-brand-mark"[^>]*data-product-mark="design-system"/);
-  assert.match(html, /<svg class="tcrn-brand-mark"[^>]*data-product-mark="tms"/);
+  // TMS and the design system draw their own marks inline; AOS keeps the mother mark. The colour
+  // mark carries data-logo like the first line's (C-6, TCRN-DS-SUB-144).
+  assert.match(html, /<svg data-logo="design-system" class="tcrn-brand-mark"[^>]*data-product-mark="design-system"[^>]*data-product-mark-variant="color"/);
+  assert.match(html, /<svg data-logo="tms" class="tcrn-brand-mark"[^>]*data-product-mark="tms"[^>]*data-product-mark-variant="color"/);
+  assert.doesNotMatch(renderToStaticMarkup(<ProductLogo productId="tms" markVariant="mono" />), /data-logo=/, "a mono mark is not the logos2 file and carries no data-logo");
+  // The Brand board's section E writing: <b>{word} <em>{suffix}</em></b> and the tagline a <small>.
+  assert.match(
+    html,
+    /<b class="tcrn-product-logo__line-one" aria-label="TCRN TMS"><span class="tcrn-product-logo__line-one-base">TCRN<\/span> <em class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--tms">TMS<\/em><\/b><small class="tcrn-product-logo__line-two">Talent Management System<\/small>/
+  );
+  assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-one-suffix \{[^}]*font-style: normal;/);
   assert.match(html, /<img[^>]*class="tcrn-brand-mark"[^>]*src="tcrn-brand-mark\.svg"[^>]*>/);
   assert.equal((html.match(/<img\b/g) ?? []).length, 1);
 
@@ -348,7 +356,8 @@ test("Einzbern and Mana Orchestrate are whole serif names with the byline and no
     assert.match(html, new RegExp(`class="tcrn-product-logo__line-one-base">${entry.lineOne}<`));
     assert.match(html, /class="tcrn-product-logo__byline">by TCRN</);
     assert.doesNotMatch(html, /tcrn-product-logo__line-one-suffix/);
-    assert.match(html, new RegExp(`<svg class="tcrn-brand-mark"[^>]*data-product-mark="${productId}"`));
+    assert.match(html, new RegExp(`<svg data-logo="${productId}" class="tcrn-brand-mark"[^>]*data-product-mark="${productId}"`));
+    assert.match(html, new RegExp(`<b class="tcrn-product-logo__line-one" aria-label="${entry.lineOne}"><span class="tcrn-product-logo__line-one-base">${entry.lineOne}</span></b><small class="tcrn-product-logo__line-two">`));
   }
   assert.equal(tcrnProductLogoRegistry.einzbern.lineOne, "Einzbern");
   assert.equal(tcrnProductLogoRegistry["mana-orchestrate"].lineOne, "Mana Orchestrate");
@@ -788,7 +797,12 @@ test("brand lockup css follows the G+ brand rules", () => {
   // Mark sizes by container: product logo 38, lockup 28, the shell's side rail 22.
   assert.match(tcrnComponentCss, /\.tcrn-brand-lockup,\n\.tcrn-shell-brand-lockup,\n\.tcrn-product-logo \{[^}]*--tcrn-brand-mark-size: 38px;/);
   assert.match(rule(".tcrn-brand-lockup"), /--tcrn-brand-mark-size: 28px;/);
-  assert.match(rule(".tcrn-product-shell .tcrn-shell-brand-lockup"), /--tcrn-brand-mark-size: 22px;/);
+  // The side-rail tier is one rule: a lockup in the product shell, or one marked data-lockup="lkr"
+  // such as the full menu's bottom bar (TCRN-DS-SUB-144).
+  assert.match(
+    tcrnComponentCss,
+    /\n\.tcrn-product-shell \.tcrn-shell-brand-lockup,\n\.tcrn-shell-brand-lockup\[data-lockup="lkr"\] \{[^}]*--tcrn-brand-mark-size: 22px;/
+  );
   const markRule = rule(".tcrn-brand-mark");
   assert.match(markRule, /inline-size: var\(--tcrn-brand-mark-size\);[\s\S]*filter: var\(--tcrn-brand-mark-filter, none\);/);
   // STORY-127 GWT4 (the CSS part): the mark neither scales nor fades when the rail
@@ -1830,7 +1844,7 @@ test("STORY-145 GWT1 ProductLockup's first line draws the four product marks fro
   // The other two renditions are untouched: the whole lockup still carries its two lines.
   const whole = renderToStaticMarkup(<ProductLockup productId="tms" locale="zh-CN" />);
   assert.match(whole, /class="tcrn-product-logo tcrn-brand-lockup"/);
-  assert.match(whole, /<span class="tcrn-product-logo__line-two">艺人管理系统<\/span>/);
+  assert.match(whole, /<small class="tcrn-product-logo__line-two">艺人管理系统<\/small>/);
   assert.doesNotMatch(whole, /data-lockup=/);
   // Without a product the first line still says the product's whole name.
   const unregistered = renderToStaticMarkup(<ProductLockup firstLine="rail" suffix="Pilot" />);

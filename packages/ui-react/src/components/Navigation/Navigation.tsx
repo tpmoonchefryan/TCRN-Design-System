@@ -615,19 +615,32 @@ export function ProductLogo({
       data-product-logo-asset-id={asset.assetId}
       data-product-wordmark={asset.wordmark}
     >
+      {/* The colour mark carries data-logo like the first line's (C-6); other renditions do not,
+          since their bytes are not the logos2 file's. */}
       {asset.markId ? (
-        <TcrnBrandMark productId={asset.markId} variant={markVariant} alt={markAlt} />
+        <TcrnBrandMark
+          productId={asset.markId}
+          variant={markVariant}
+          alt={markAlt}
+          data-logo={(markVariant ?? "color") === "color" ? asset.productId : undefined}
+        />
       ) : (
         <TcrnBrandMark src={brandMarkSrc} alt={markAlt} />
       )}
+      {/* The Brand board's section E writing (C-6): the wordmark is <b>{word} <em>{suffix}</em></b>
+          and the tagline a <small>; the space between word and suffix is the copy's, the flex gap
+          draws it. */}
       <span className="tcrn-product-logo__copy" aria-hidden="true">
-        <span className="tcrn-product-logo__line-one" aria-label={asset.lineOne}>
+        <b className="tcrn-product-logo__line-one" aria-label={asset.lineOne}>
           <span className="tcrn-product-logo__line-one-base">{asset.lineOneBase}</span>
           {asset.lineOneSuffix ? (
-            <span className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName ?? undefined)}>{asset.lineOneSuffix}</span>
+            <>
+              {" "}
+              <em className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName ?? undefined)}>{asset.lineOneSuffix}</em>
+            </>
           ) : null}
-        </span>
-        <span className="tcrn-product-logo__line-two">{tagline}</span>
+        </b>
+        <small className="tcrn-product-logo__line-two">{tagline}</small>
         {asset.byline ? <span className="tcrn-product-logo__byline">{asset.byline}</span> : null}
       </span>
     </div>
