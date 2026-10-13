@@ -1,27 +1,24 @@
 import { createCssVariables, createThemeCssVariables } from "@tcrn/ui-tokens";
 import { demoStoryCss } from "./story-demo-styles.js";
 
+// The static documentation sheet. Since TCRN-DS-SUB-131 the documentation pages wear the package
+// ProductShell in its top-band state and the shell's rules come with the package sheet, so this
+// sheet holds no shell: no header, rail, rail head, rail toggle or navigation of its own. What is
+// left is the documentation's own layout inside the paper (the page column, 1040 at most and
+// centred, with the TocRail beside it), its typography and the demo layer.
 export const alphaStoryCss = `${createCssVariables()}${createThemeCssVariables("dark")}
 * { box-sizing: border-box; }
 html {
-  /* The fixed top bar over the content column is the shell top bar, 52px (composition one, O-1). */
-  --tcrn-anchor-scroll-offset: var(--tcrn-shell-topbar-height);
-  --tcrn-doc-motion-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* The shell scrolls its paper; an anchor lands this far under the paper's top edge. */
+  --tcrn-anchor-scroll-offset: var(--tcrn-space-3h);
   --tcrn-doc-motion-smooth: 0.4s ease;
   --tcrn-doc-theme-crossfade-duration: 0.4s;
   --tcrn-doc-theme-crossfade-easing: ease;
-  --tcrn-doc-header-search-resting-width: 260px;
-  --tcrn-doc-header-search-expanded-width: 360px;
   scroll-padding-top: var(--tcrn-anchor-scroll-offset);
   color-scheme: light;
 }
 html[data-tcrn-theme="dark"] {
   color-scheme: dark;
-}
-@property --tcrn-doc-shell-side-width {
-  syntax: "<length-percentage>";
-  inherits: true;
-  initial-value: 360px;
 }
 @keyframes tcrn-doc-theme-root-fade-out {
   from { opacity: 1; }
@@ -80,263 +77,75 @@ body {
 .tcrn-doc-theme-transition-wash[data-active="true"] {
   opacity: 1;
 }
-.tcrn-doc-shell[data-storybook-locale="en"],
-.tcrn-doc-shell[data-storybook-locale="fr"] {
+[data-doc-shell][data-storybook-locale="en"],
+[data-doc-shell][data-storybook-locale="fr"] {
   --tcrn-type-family-ui: var(--tcrn-type-family-latin);
 }
-.tcrn-doc-shell[data-storybook-locale="zh-CN"] {
+[data-doc-shell][data-storybook-locale="zh-CN"] {
   --tcrn-type-family-ui: var(--tcrn-type-family-zh-cn);
 }
-.tcrn-doc-shell[data-storybook-locale="ja"] {
+[data-doc-shell][data-storybook-locale="ja"] {
   --tcrn-type-family-ui: var(--tcrn-type-family-ja);
 }
-.tcrn-doc-shell[data-storybook-locale="ko"] {
+[data-doc-shell][data-storybook-locale="ko"] {
   --tcrn-type-family-ui: var(--tcrn-type-family-ko);
 }
+/* The page has no client React: the full menu and the avatar menu are carried in the markup and
+   opened by the page script, as ProductShell mounts them. Closed, they are not rendered at all. */
+[data-doc-shell] [data-shell-menu][hidden],
+[data-doc-shell] [data-panel="account"][hidden] {
+  display: none;
+}
 
-.tcrn-doc-shell {
+/* The page inside the paper: the body column is --tcrn-layout-content-max-w (1040) at most and
+   centred in the paper; the TocRail (this page's contents) sits in the paper beside it and stays in
+   view while the paper scrolls. Narrower, the contents lead the column. */
+.tcrn-doc-page {
   display: grid;
-  gap: var(--tcrn-space-4);
-  width: 100%;
-  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--tcrn-layout-content-max-w)) minmax(0, 1fr);
+  column-gap: var(--tcrn-space-4);
+  row-gap: var(--tcrn-space-4h);
+  align-items: start;
+  min-inline-size: 0;
 }
-.tcrn-doc-shell {
-  /* The rail is 220 wide and 52 collapsed, from the shell tokens (composition one, O-1). */
-  --tcrn-doc-shell-side-width: var(--tcrn-shell-sidebar-width);
-  --tcrn-doc-content-inset: calc(var(--tcrn-space-5) + var(--tcrn-space-4));
-  --tcrn-doc-shell-side-expanded-width: var(--tcrn-shell-sidebar-width);
-  --tcrn-doc-shell-side-collapsed-width: var(--tcrn-shell-sidebar-width-collapsed);
-  /* The rail head above the side navigation holds the brand lockup beside its collapse control,
-     and the mark above the control when collapsed (38 + 4 + 38): 96px, three 32px steps. */
-  --tcrn-doc-rail-head-height: calc(var(--tcrn-space-6) * 3);
-  --tcrn-doc-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
-  /* The rail and the brand cell above it sit on the canvas colour with no edge of their own, as the
-     package ProductShell rail does since composition one (O-1); they were an accent wash. */
-  --tcrn-doc-shell-left-surface: var(--tcrn-color-surface-canvas);
-  --tcrn-doc-shell-top-surface: var(--tcrn-color-surface-panel);
-  min-height: 100vh;
-  max-width: none;
-  margin: 0;
-  gap: 0;
-  background: var(--tcrn-color-surface-canvas);
-  padding: var(--tcrn-anchor-scroll-offset) 0 0;
-  transition:
-    --tcrn-doc-shell-side-width var(--tcrn-motion-emphasis),
-    background-color var(--tcrn-doc-motion-smooth),
-    color var(--tcrn-doc-motion-smooth);
+.tcrn-doc-page__body {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  gap: var(--tcrn-space-4h);
+  align-content: start;
+  min-inline-size: 0;
 }
-.tcrn-doc-shell[data-sidebar-collapsed="true"] {
-  --tcrn-doc-shell-side-width: var(--tcrn-doc-shell-side-collapsed-width);
+.tcrn-doc-page__toc {
+  grid-column: 3;
+  grid-row: 1;
+  position: sticky;
+  top: 0;
+  min-inline-size: 0;
 }
-html[data-tcrn-theme="dark"] .tcrn-doc-shell {
-  --tcrn-doc-shell-top-surface: var(--tcrn-color-surface-panel);
-}
-@keyframes tcrn-doc-nav-label-reveal {
-  0% {
-    opacity: 0;
-    transform: translateX(-10px) scale(0.78);
+@media (max-width: 1279px) {
+  .tcrn-doc-page {
+    grid-template-columns: minmax(0, var(--tcrn-layout-content-max-w));
+    justify-content: center;
   }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
+  .tcrn-doc-page__toc {
+    grid-column: 1;
+    grid-row: 1;
+    position: static;
   }
-}
-@keyframes tcrn-doc-nav-abbr-release {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.76);
-  }
-}
-@keyframes tcrn-doc-nav-stories-fold {
-  0% {
-    max-height: 420px;
-    opacity: 1;
-    transform: translateY(0) scaleY(1);
-    visibility: visible;
-  }
-  100% {
-    max-height: 0;
-    opacity: 0;
-    transform: translateY(-8px) scaleY(0.22);
-    visibility: visible;
-  }
-}
-@keyframes tcrn-doc-nav-stories-unfold {
-  0% {
-    max-height: 0;
-    opacity: 0;
-    transform: translateY(-8px) scaleY(0.22);
-    visibility: visible;
-  }
-  100% {
-    max-height: 420px;
-    opacity: 1;
-    transform: translateY(0) scaleY(1);
-    visibility: visible;
+  .tcrn-doc-page__body {
+    grid-column: 1;
+    grid-row: 2;
   }
 }
 
-.tcrn-doc-skip {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 20;
-  transform: translateY(-160%);
-  border: 1px solid var(--tcrn-color-border-strong);
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-panel);
-  color: var(--tcrn-color-text-primary);
-  padding: var(--tcrn-space-2) var(--tcrn-space-2h);
-}
-.tcrn-doc-skip:focus-visible {
-  transform: translateY(0);
-}
-.tcrn-doc-header {
-  position: fixed;
-  inset-block-start: 0;
-  inset-inline: 0;
-  z-index: 15;
-  display: grid;
-  gap: 0;
-  width: 100%;
-  min-height: var(--tcrn-anchor-scroll-offset);
-  background: var(--tcrn-doc-shell-top-surface);
-  padding: 0;
-  box-shadow: none;
-  transition:
-    background var(--tcrn-doc-motion-smooth),
-    background-color var(--tcrn-doc-motion-smooth),
-    color var(--tcrn-doc-motion-smooth);
-}
-/* The bar carries the package TopBar surface itself rather than leaving the header to
-   paint it, so the sample shells that mirror this bar can show the package background and
-   still match it. Over the header's panel colour the two paint the same pixels. */
-.tcrn-doc-global-bar {
-  display: grid;
-  grid-template-columns: var(--tcrn-doc-shell-side-width) minmax(320px, 1fr) auto;
-  align-items: center;
-  gap: var(--tcrn-space-4);
-  min-width: 0;
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
-  min-height: calc(var(--tcrn-space-6) + var(--tcrn-space-5) + var(--tcrn-space-3) + var(--tcrn-space-1));
-  padding: var(--tcrn-space-3) var(--tcrn-space-5);
-  transition: grid-template-columns var(--tcrn-motion-emphasis);
-}
-.tcrn-doc-header__copy {
-  display: grid;
-  gap: var(--tcrn-space-2);
-  max-width: 820px;
-  min-width: 0;
-  padding: var(--tcrn-space-1) var(--tcrn-space-2) var(--tcrn-space-1h);
-}
-.tcrn-doc-header__spacer {
-  align-self: stretch;
-  min-width: 0;
-  background: transparent;
-}
-.tcrn-doc-header__workspace {
-  align-self: stretch;
-  display: grid;
-  grid-template-columns: minmax(180px, 1fr) var(--tcrn-doc-header-search-resting-width);
-  align-items: center;
-  gap: clamp(var(--tcrn-space-3h), 1.6vw, 24px);
-  min-width: 0;
-  /* The global bar already supplies the content inset through its inline
-     padding and column gap. Do not add a second inset inside that grid cell. */
-  padding: var(--tcrn-space-3) clamp(var(--tcrn-space-2), 1vw, var(--tcrn-space-3h)) var(--tcrn-space-3) 0;
-  border-left: 0;
-  transition: grid-template-columns var(--tcrn-doc-motion-spring);
-}
-.tcrn-doc-header__workspace:focus-within,
-.tcrn-doc-header__workspace[data-search-expanded="true"] {
-  grid-template-columns: minmax(180px, 1fr) var(--tcrn-doc-header-search-expanded-width);
-}
-.tcrn-doc-current-location {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  min-width: 0;
-}
-.tcrn-doc-current-location__label {
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 800;
-  line-height: 1;
-}
-.tcrn-doc-current-location__path {
-  display: flex;
-  align-items: center;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-}
-.tcrn-doc-current-location__group,
-.tcrn-doc-current-location__story {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.tcrn-doc-current-location__group {
-  flex: 0 1 auto;
-  color: var(--tcrn-color-text-primary);
-  font-size: var(--tcrn-type-size-section);
-  font-weight: 800;
-  line-height: 1.15;
-}
-.tcrn-doc-current-location__separator {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  color: var(--tcrn-color-text-tertiary);
-}
-.tcrn-doc-current-location__separator-icon {
-  width: 14px;
-  height: 14px;
-}
-.tcrn-doc-current-location__story {
-  flex: 1 1 auto;
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 700;
-  line-height: 1.2;
-}
-.tcrn-doc-header-search {
-  position: relative;
-  justify-self: end;
-  width: 100%;
-  min-width: 0;
-}
-/* The header search is the package SearchInput in its tool form: the wrapper paints
-   nothing, and the control takes the package's 32px height, wash fill and control radius.
-   The block-level wrapper already fills this slot, so no doc rule sizes or repaints it
-   (TCRN-DS-SUB-064). */
-
+/* The governed-section boundary under the page header: its eyebrow and the three claims. */
 .tcrn-doc-page-head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
-  gap: var(--tcrn-space-3h);
-  align-items: start;
-  min-width: 0;
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
-  padding: var(--tcrn-space-0h) 0 var(--tcrn-space-4);
-}
-.tcrn-doc-page-head h2 {
-  font-size: var(--tcrn-type-size-page);
-  line-height: var(--tcrn-type-line-page);
-}
-.tcrn-doc-page-head__intro {
-  display: grid;
   gap: var(--tcrn-space-1h);
   min-width: 0;
-}
-.tcrn-doc-page-head__intro p {
-  max-width: 74ch;
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-body);
-  line-height: var(--tcrn-type-line-body);
+  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  padding: 0 0 var(--tcrn-space-4);
 }
 .tcrn-doc-page-head__eyebrow {
   color: var(--tcrn-color-focus-ring);
@@ -344,44 +153,12 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   font-weight: 800;
   letter-spacing: 0;
 }
-.tcrn-doc-on-this-page {
-  display: grid;
+.tcrn-doc-boundary-strip {
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--tcrn-space-1h);
   min-width: 0;
-  border-left: 1px solid var(--tcrn-color-border-subtle);
-  padding-left: var(--tcrn-space-3h);
 }
-.tcrn-doc-on-this-page strong {
-  color: var(--tcrn-color-text-primary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.3;
-}
-.tcrn-doc-on-this-page ol {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.tcrn-doc-on-this-page li {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--tcrn-space-2);
-  min-width: 0;
-}
-.tcrn-doc-on-this-page a {
-  min-width: 0;
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-  text-decoration: none;
-}
-.tcrn-doc-on-this-page a:hover,
-.tcrn-doc-on-this-page a:focus-visible {
-  color: var(--tcrn-color-text-primary);
-}
-.tcrn-doc-on-this-page span,
 .tcrn-doc-boundary-strip span {
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-color-surface-muted);
@@ -391,49 +168,11 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   line-height: 1.2;
   padding: var(--tcrn-space-0h) var(--tcrn-space-1h);
 }
-.tcrn-doc-boundary-strip {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-}
 .tcrn-doc-eyebrow {
   color: var(--tcrn-color-focus-ring);
   font-size: var(--tcrn-type-size-meta);
   font-weight: 700;
   letter-spacing: 0;
-}
-.tcrn-doc-header-controls {
-  position: relative;
-  align-self: center;
-  justify-self: end;
-  display: flex;
-  min-width: 0;
-  width: max-content;
-  max-width: none;
-  background: transparent;
-  color: var(--tcrn-color-text-primary);
-  padding: 0;
-}
-.tcrn-doc-header-controls__row {
-  display: inline-flex;
-  gap: var(--tcrn-space-2h);
-  align-items: center;
-  height: 36px;
-  min-width: 0;
-}
-.tcrn-doc-theme-control-slot,
-.tcrn-doc-locale-control-slot {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  height: 36px;
-  flex: 0 0 auto;
-}
-[data-tcrn-theme="dark"] .tcrn-doc-locale-control-slot select,
-[data-tcrn-theme="dark"] .tcrn-doc-header-search input {
-  color-scheme: dark;
 }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(root),
@@ -447,31 +186,6 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 }
 .tcrn-doc-claim {
   color: var(--tcrn-color-text-secondary);
-}
-.tcrn-doc-layout {
-  display: grid;
-  grid-template-columns: var(--tcrn-doc-shell-side-width) minmax(0, 1fr);
-  gap: 0;
-  align-items: stretch;
-  min-width: 0;
-  width: 100%;
-  min-height: calc(100vh - var(--tcrn-anchor-scroll-offset));
-  padding: 0;
-  transition: grid-template-columns var(--tcrn-motion-emphasis);
-}
-/* While the collapse/expand motion runs (the runtime holds data-sidebar-motion for
-   its 260ms window), off-screen stories skip per-frame layout and paint so the grid
-   transition keeps its frame budget on long pages. Outside the motion window the rule
-   is inert, so captures, anchors, and search see fully rendered content. */
-.tcrn-doc-shell[data-sidebar-motion] article[data-story-id] {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 900px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-doc-sidebar-toggle-slot,
-  .tcrn-doc-global-brand .tcrn-doc-brand {
-    transition: none;
-  }
 }
 /* Progressive disclosure: a page opens as a compact index — story title, one-line
    locator, ledger +/- notation — and each story reveals on demand. Hash navigation
@@ -529,120 +243,6 @@ article[data-story-collapsed="false"] > .tcrn-doc-story-disclosure__heading {
   box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
   padding-left: var(--tcrn-space-2h);
 }
-/* The collapse motion is travel; under reduced motion, travel is removed and the
-   width snaps (v2 reduced-motion semantics — comprehension cues stay, movement goes). */
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-doc-layout,
-  .tcrn-doc-global-bar {
-    transition: none;
-  }
-}
-.tcrn-doc-sidebar {
-  position: sticky;
-  top: var(--tcrn-anchor-scroll-offset);
-  display: grid;
-  align-content: start;
-  gap: 0;
-  height: calc(100vh - var(--tcrn-anchor-scroll-offset));
-  max-height: calc(100vh - var(--tcrn-anchor-scroll-offset));
-  overflow: auto;
-  border-right: 0;
-  background: var(--tcrn-doc-shell-left-surface);
-  box-shadow: none;
-  padding: var(--tcrn-space-4) clamp(var(--tcrn-space-4), 1.6vw, 24px) var(--tcrn-space-4h) clamp(var(--tcrn-space-4h), 2vw, 30px);
-  /* padding is a layout property; it snaps with the collapse rather than animating. */
-  transition: background-color var(--tcrn-motion-standard);
-}
-
-.tcrn-doc-global-brand {
-  align-self: stretch;
-  position: relative;
-  display: block;
-  min-height: calc(var(--tcrn-anchor-scroll-offset) - var(--tcrn-space-3) - var(--tcrn-space-3));
-  border-right: 0;
-  border-radius: 0;
-  background: var(--tcrn-doc-shell-left-surface);
-  box-shadow: none;
-  padding: 0;
-  /* TCRN-DS-INC-022: the brand surface is the first painted row of the shell;
-     do not leave the global bar's top padding as a white strip above it. */
-  margin-block-start: calc(var(--tcrn-space-3) * -1);
-  /* The global bar keeps its 20px rhythm for the workspace and controls. Let
-     only the brand surface claim that padding back so it shares the sidebar's
-     outer left/right edges and reaches the layout row below. */
-  margin-inline: calc(var(--tcrn-space-5) * -1) var(--tcrn-space-5);
-  margin-block-end: calc(var(--tcrn-space-3) * -1);
-  overflow: hidden;
-  transition: background-color var(--tcrn-motion-standard);
-}
-.tcrn-doc-global-brand .tcrn-doc-brand {
-  position: absolute;
-  transition:
-    left var(--tcrn-motion-emphasis),
-    top var(--tcrn-motion-emphasis);
-  top: calc((var(--tcrn-anchor-scroll-offset) - 52px) / 2);
-  left: clamp(18px, 2vw, 30px);
-  width: calc(var(--tcrn-doc-shell-side-expanded-width) - clamp(18px, 2vw, 30px) - 68px);
-  padding: 0;
-  transform: none;
-}
-.tcrn-doc-sidebar-toggle-slot {
-  position: absolute;
-  transition: left var(--tcrn-motion-emphasis);
-  /* 38px = the SideNavCollapseButton's real size (tcrn-icon-button); the old 32px
-     assumption left the control off-centre in both anchoring states. */
-  top: calc((var(--tcrn-anchor-scroll-offset) - 38px) / 2);
-  left: calc(var(--tcrn-doc-shell-side-expanded-width) - clamp(16px, 1.6vw, 24px) - 38px);
-  transform: none;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-global-brand {
-  padding: 0;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-global-brand .tcrn-doc-brand {
-  /* TCRN-DS-INC-001: in the 120px collapsed rail the mark is CENTERED (matching the icon nav
-     below), not left-anchored beside the toggle. The 40px mark and 38px toggle stack vertically,
-     both horizontally centered, and the pair is centered in the header band. */
-  top: calc((var(--tcrn-anchor-scroll-offset) - 82px) / 2);
-  left: calc((120px - 40px) / 2);
-  width: 40px;
-  transform: none;
-}
-/* Collapsed, the rail keeps the mark and drops the copy at once, as the package ProductShell does:
-   the copy column closes and the brand clips it; nothing fades. */
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-brand {
-  grid-template-columns: 38px minmax(0, 0fr);
-  gap: 0;
-  overflow: hidden;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy,
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-brand .tcrn-product-logo__copy {
-  max-width: 0;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar-toggle-slot {
-  /* TCRN-DS-INC-001: the toggle sits centered directly BELOW the centered mark (mark 40px + 4px
-     gap), so the collapsed rail reads as one centered vertical column: mark, toggle, nav icons. */
-  top: calc((var(--tcrn-anchor-scroll-offset) - 82px) / 2 + 44px);
-  left: calc((120px - 38px) / 2);
-  transform: none;
-}
-
-.tcrn-doc-sidebar__label {
-  color: var(--tcrn-color-text-primary);
-  font-weight: 800;
-}
-.tcrn-doc-sidebar__summary {
-  margin: 0;
-  color: var(--tcrn-color-text-secondary);
-}
-.tcrn-doc-content {
-  display: grid;
-  gap: var(--tcrn-space-4h);
-  align-content: start;
-  min-width: 0;
-  background: var(--tcrn-color-surface-canvas);
-  padding: clamp(24px, 2.6vw, 48px) var(--tcrn-doc-content-inset);
-  transition: padding var(--tcrn-motion-emphasis);
-}
 article {
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-surface);
@@ -659,312 +259,6 @@ article {
 .alpha-story-card > h1 + p {
   margin-top: -8px;
 }
-
-.tcrn-doc-nav,
-.tcrn-doc-nav__groups,
-.tcrn-doc-nav__categories,
-.tcrn-doc-nav__stories {
-  display: grid;
-  gap: var(--tcrn-space-1);
-}
-.tcrn-doc-nav__groups {
-  gap: var(--tcrn-space-4);
-}
-.tcrn-doc-nav__groups,
-.tcrn-doc-nav__categories,
-.tcrn-doc-nav__stories {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.tcrn-doc-nav__group {
-  display: grid;
-  gap: var(--tcrn-space-1h);
-}
-.tcrn-doc-nav__group + .tcrn-doc-nav__group {
-  margin-top: 0;
-  transition: margin-top var(--tcrn-motion-emphasis);
-}
-.tcrn-doc-nav__section,
-.tcrn-doc-nav__stories a {
-  position: relative;
-  align-items: center;
-  overflow: hidden;
-  color: var(--tcrn-color-text-secondary);
-  text-decoration: none;
-  overflow-wrap: normal;
-  white-space: nowrap;
-  word-break: normal;
-}
-.tcrn-doc-nav__section {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  min-height: 34px;
-  margin-inline: calc(var(--tcrn-space-1) * -1);
-  padding: var(--tcrn-space-1h) var(--tcrn-space-2h) var(--tcrn-space-1h) var(--tcrn-space-1);
-}
-.tcrn-doc-nav__section-icon {
-  display: none;
-  color: var(--tcrn-color-text-primary);
-  font-weight: 700;
-  transition:
-    min-height var(--tcrn-motion-emphasis),
-    padding var(--tcrn-motion-emphasis),
-    background-color var(--tcrn-motion-standard),
-    color var(--tcrn-motion-standard);
-}
-.tcrn-doc-nav__section-label {
-  display: block;
-  min-width: 0;
-  overflow: hidden;
-  opacity: 1;
-  text-overflow: ellipsis;
-  transform: translateX(0) scale(1);
-  transform-origin: left center;
-  transition:
-    opacity var(--tcrn-motion-standard),
-    transform var(--tcrn-motion-emphasis);
-}
-.tcrn-doc-nav__section-abbr {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  color: var(--tcrn-color-text-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 800;
-  line-height: 1;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -50%) scale(0.76);
-  transform-origin: center;
-  transition:
-    opacity var(--tcrn-motion-standard),
-    transform var(--tcrn-motion-emphasis);
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar {
-  overflow: hidden auto;
-  padding: var(--tcrn-space-3h) var(--tcrn-space-1);
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__groups {
-  justify-items: stretch;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__group {
-  justify-items: stretch;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__group + .tcrn-doc-nav__group {
-  margin-top: 8px;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section {
-  justify-content: center;
-  min-height: 40px;
-  padding: 0;
-  place-items: center;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-icon {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-icon svg[data-icon-name] {
-  width: 20px;
-  height: 20px;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-abbr {
-  display: none;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-abbr {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__stories {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  transform: translateY(-8px) scaleY(0.22);
-  transform-origin: top center;
-  visibility: hidden;
-  transition:
-    max-height var(--tcrn-motion-emphasis),
-    opacity var(--tcrn-motion-standard),
-    padding-left var(--tcrn-motion-emphasis),
-    transform var(--tcrn-motion-emphasis),
-    visibility 0s linear var(--tcrn-motion-emphasis);
-}
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__categories {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  visibility: hidden;
-}
-.tcrn-doc-nav__section[aria-current="page"] {
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-strong);
-  background: var(--tcrn-selection-fill);
-}
-.tcrn-doc-nav__categories {
-  padding-left: 0;
-  transition:
-    max-height var(--tcrn-motion-emphasis),
-    opacity var(--tcrn-motion-standard),
-    padding-left var(--tcrn-motion-emphasis),
-    visibility 0s linear 0s;
-}
-.tcrn-doc-nav__category {
-  display: grid;
-  gap: var(--tcrn-space-0h);
-  min-width: 0;
-}
-.tcrn-doc-nav__category-toggle {
-  display: grid;
-  /* No disclosure arrow: the whole row toggles and the count badge already signals
-     content. The label takes the first column. */
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--tcrn-space-2);
-  width: 100%;
-  min-height: 26px;
-  min-width: 0;
-  border: 1px solid transparent;
-  border-radius: var(--tcrn-radius-control);
-  background: transparent;
-  color: var(--tcrn-color-text-secondary);
-  /* Group titles sit on the 16px guide column, as the package rail's group labels do. */
-  padding: 0;
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: var(--tcrn-type-weight-strong);
-  text-align: left;
-}
-/* With no inline padding the hover fill reaches 4px past the label through a spread, so the
-   label never touches the fill's edge. */
-.tcrn-doc-nav__category-toggle:hover {
-  border-color: transparent;
-  box-shadow: 0 0 0 var(--tcrn-space-1) var(--tcrn-color-surface-muted);
-}
-.tcrn-doc-nav__category-label {
-  grid-column: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.tcrn-doc-nav__category-count {
-  grid-column: 3;
-  border-radius: var(--tcrn-radius-pill);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 78%, transparent);
-  color: var(--tcrn-color-text-tertiary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 800;
-  line-height: 1;
-  padding: var(--tcrn-space-0h) var(--tcrn-space-1);
-}
-.tcrn-doc-nav__category-toggle:hover,
-.tcrn-doc-nav__category-toggle:focus-visible {
-  border-color: var(--tcrn-color-border-subtle);
-  background: var(--tcrn-color-surface-muted);
-  color: var(--tcrn-color-text-primary);
-}
-.tcrn-doc-nav__stories {
-  padding-left: 0;
-  max-height: 420px;
-  opacity: 1;
-  overflow: hidden;
-  transform: translateY(0) scaleY(1);
-  transform-origin: top center;
-  visibility: visible;
-  transition:
-    max-height var(--tcrn-motion-emphasis),
-    opacity var(--tcrn-motion-standard),
-    padding-left var(--tcrn-motion-emphasis),
-    transform var(--tcrn-motion-emphasis),
-    visibility 0s linear 0s;
-}
-.tcrn-doc-nav__stories[hidden] {
-  display: none;
-}
-.tcrn-doc-nav__stories a {
-  display: flex;
-  border: 1px solid transparent;
-  min-height: 30px;
-  /* As the package rail's items: the box reaches 4px into the rail padding and the start padding
-     gives back 4px less the 1px border, so the label starts on the 16px guide column. */
-  margin-inline: calc(var(--tcrn-space-1) * -1);
-  padding: var(--tcrn-space-1) var(--tcrn-space-2h) var(--tcrn-space-1) calc(var(--tcrn-space-1) - 1px);
-  font-size: var(--tcrn-type-size-meta);
-  line-height: 1.35;
-}
-/* TCRN-DS-STORY-089: the story-level nav item. It marks itself with
-   aria-current="location" rather than data-selected, which is why the first
-   sweep for selection rules missed it: the fourth copy of a grammar that should
-   only ever have had one home. */
-.tcrn-doc-nav__stories a[aria-current="location"],
-.tcrn-doc-nav__stories a[data-doc-nav-item-active="true"] {
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-strong);
-  background: var(--tcrn-selection-fill);
-}
-/* Collapsed, the same bar sits on the same axis and the icon takes the brand colour. */
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section[aria-current="page"] {
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-strong);
-  background: var(--tcrn-selection-fill);
-}
-.tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-nav__groups,
-.tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-nav__group {
-  justify-items: stretch;
-}
-.tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-nav__section-label {
-  opacity: 0;
-  transform: translateX(-10px) scale(0.78);
-}
-.tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-nav__section-abbr {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-.tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-nav__stories {
-  animation: tcrn-doc-nav-stories-fold var(--tcrn-motion-emphasis) both;
-  visibility: visible;
-}
-.tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-nav__groups,
-.tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-nav__group {
-  justify-items: stretch;
-}
-.tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-nav__section-label {
-  animation: tcrn-doc-nav-label-reveal var(--tcrn-motion-emphasis) both;
-}
-.tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-nav__section-abbr {
-  animation: tcrn-doc-nav-abbr-release var(--tcrn-motion-emphasis) both;
-}
-.tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-nav__stories {
-  animation: tcrn-doc-nav-stories-unfold var(--tcrn-motion-emphasis) both;
-  pointer-events: none;
-  visibility: visible;
-}
-.tcrn-doc-nav__section:focus-visible,
-.tcrn-doc-nav__category-toggle:focus-visible,
-.tcrn-doc-nav__stories a:focus-visible {
-  outline: none;
-  border-color: var(--tcrn-color-focus-ring);
-  box-shadow:
-    0 0 0 1px var(--tcrn-color-focus-ring),
-    var(--tcrn-elevation-focus);
-}
-.tcrn-doc-nav__section:hover,
-.tcrn-doc-nav__stories a:hover {
-  background: var(--tcrn-selection-fill-hover);
-  color: var(--tcrn-color-text-primary);
-}
-
 .tcrn-doc-chapter-pager {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1020,11 +314,6 @@ article {
 }
 .tcrn-doc-chapter-pager__placeholder {
   min-height: 78px;
-}
-.tcrn-doc-nav__section-icon-svg {
-  display: block;
-  inline-size: 18px;
-  block-size: 18px;
 }
 .tcrn-doc-component-reference__intro {
   margin: 0;
@@ -1105,11 +394,7 @@ input,
 select {
   font: inherit;
 }
-
-.tcrn-doc-header :focus-visible,
-.tcrn-doc-sidebar :focus-visible,
-.tcrn-doc-chapter-pager :focus-visible,
-.tcrn-doc-sidebar-toggle-slot :focus-visible {
+.tcrn-doc-chapter-pager :focus-visible {
   outline: 2px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
   box-shadow: var(--tcrn-elevation-focus);
@@ -1177,227 +462,12 @@ html[data-tcrn-theme="dark"] .tcrn-doc-dialog-spec-fixture {
   background: var(--tcrn-color-surface-muted);
 }
 
-/* Composition one (O-1) above the mobile breakpoint, the exact complement of the 760px block below:
-   the fixed top bar is the 52px shell top bar; the brand cell in its first column is the rail head,
-   96px from the top of the viewport, and gives back what it overhangs through its block-end margin,
-   so the bar keeps 52px and the side navigation starts under the head. */
-@media not all and (max-width: 760px) {
-  .tcrn-doc-global-bar {
-    min-height: var(--tcrn-shell-topbar-height);
-    padding: var(--tcrn-space-1h) var(--tcrn-space-5);
-  }
-  .tcrn-doc-header__workspace {
-    padding-block: 0;
-  }
-  .tcrn-doc-global-brand {
-    block-size: var(--tcrn-doc-rail-head-height);
-    min-height: 0;
-    margin-block: calc(var(--tcrn-space-1h) * -1) calc(var(--tcrn-shell-topbar-height) - var(--tcrn-doc-rail-head-height) - var(--tcrn-space-1h));
-  }
-  .tcrn-doc-global-brand .tcrn-doc-brand {
-    top: calc((var(--tcrn-doc-rail-head-height) - 52px) / 2);
-    left: var(--tcrn-space-4);
-    width: calc(var(--tcrn-doc-shell-side-expanded-width) - var(--tcrn-space-4) - var(--tcrn-space-2) - 38px - var(--tcrn-space-4));
-  }
-  /* The 142px the 220px rail head leaves the lockup holds every locale's copy on one line except
-     Japanese, whose tagline wraps rather than running under the collapse control. */
-  .tcrn-doc-shell:not([data-sidebar-collapsed="true"]) .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo__copy *,
-  .tcrn-doc-shell:not([data-sidebar-collapsed="true"]) .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-shell-brand-lockup__copy * {
-    white-space: normal;
-  }
-  .tcrn-doc-sidebar-toggle-slot {
-    top: calc((var(--tcrn-doc-rail-head-height) - 38px) / 2);
-    left: calc(var(--tcrn-doc-shell-side-expanded-width) - var(--tcrn-space-4) - 38px);
-  }
-  /* Collapsed, the head stacks the 38px mark over the 38px control with a 4px gap; the brand box is
-     the mark's own square, so the stack is exact. */
-  .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-global-brand .tcrn-doc-brand {
-    top: calc((var(--tcrn-doc-rail-head-height) - 38px - var(--tcrn-space-1) - 38px) / 2);
-    left: calc((var(--tcrn-doc-shell-side-collapsed-width) - 38px) / 2);
-    width: 38px;
-    height: 38px;
-    padding-block: 0;
-  }
-  .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar-toggle-slot {
-    top: calc((var(--tcrn-doc-rail-head-height) - 38px - var(--tcrn-space-1) - 38px) / 2 + 38px + var(--tcrn-space-1));
-    left: calc((var(--tcrn-doc-shell-side-collapsed-width) - 38px) / 2);
-  }
-  /* The side navigation starts under the rail head and keeps the package rail's 16px padding. */
-  .tcrn-doc-sidebar {
-    top: var(--tcrn-doc-rail-head-height);
-    height: calc(100vh - var(--tcrn-doc-rail-head-height));
-    max-height: calc(100vh - var(--tcrn-doc-rail-head-height));
-    margin-block-start: calc(var(--tcrn-doc-rail-head-height) - var(--tcrn-anchor-scroll-offset));
-    gap: var(--tcrn-space-4);
-    padding: var(--tcrn-space-4);
-  }
-  .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar {
-    padding: var(--tcrn-space-3h) var(--tcrn-space-1);
-  }
-  /* The 220px rail is narrower than the longest story titles: the navigation tracks shrink to the
-     rail and the items clip their titles instead of widening the rail. */
-  .tcrn-doc-sidebar {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .tcrn-doc-nav,
-  .tcrn-doc-nav__groups,
-  .tcrn-doc-nav__group,
-  .tcrn-doc-nav__categories,
-  .tcrn-doc-nav__stories {
-    grid-template-columns: minmax(0, 1fr);
-    min-width: 0;
-  }
-}
 @media (max-width: 760px) {
-  html {
-    --tcrn-anchor-scroll-offset: 412px;
-    --tcrn-doc-mobile-brand-height: 219px;
-  }
-  .tcrn-doc-shell {
-    --tcrn-doc-content-inset: var(--tcrn-space-4);
-    padding: 0;
-  }
-  .tcrn-doc-header {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    isolation: isolate;
-    min-height: 0;
-    background-color: var(--tcrn-color-surface-panel);
-    background-image: none;
-    padding: var(--tcrn-space-2h) 0;
-    box-shadow: var(--tcrn-elevation-floating);
-  }
-  .tcrn-doc-global-bar {
-    grid-template-columns: 1fr;
-    gap: 0;
-    min-height: 0;
-    padding: 0;
-    background-color: var(--tcrn-color-surface-panel);
-    background-image: none;
-  }
-  .tcrn-doc-header__workspace {
-    grid-template-columns: 1fr;
-    gap: var(--tcrn-space-2h);
-    padding: var(--tcrn-space-2h) var(--tcrn-doc-content-inset);
-    background-color: var(--tcrn-color-surface-panel);
-    background-image: none;
-  }
-  .tcrn-doc-header__workspace:focus-within,
-  .tcrn-doc-header__workspace[data-search-expanded="true"] {
-    grid-template-columns: 1fr;
-  }
-  .tcrn-doc-current-location__path {
-    flex-wrap: wrap;
-  }
-  .tcrn-doc-header-search {
-    justify-self: stretch;
-    width: 100%;
-    background-color: var(--tcrn-color-surface-panel);
-    background-image: none;
-  }
-  .tcrn-doc-current-location {
-    background-color: var(--tcrn-color-surface-panel);
-    background-image: none;
-  }
-  .tcrn-doc-global-brand {
-    min-height: var(--tcrn-doc-mobile-brand-height);
-    background-color: var(--tcrn-color-surface-panel);
-    background-image: var(--tcrn-doc-shell-left-surface);
-    border-right: 0;
-    border-bottom: 0;
-    margin: 0;
-  }
-  .tcrn-doc-global-brand .tcrn-doc-brand {
-    top: calc((var(--tcrn-doc-mobile-brand-height) - 52px) / 2);
-  }
-  .tcrn-doc-layout {
-    grid-template-columns: 1fr;
-    padding: 0;
-  }
-  .tcrn-doc-header-controls,
-  .tcrn-doc-locale-control-slot {
-    width: max-content;
-    max-width: none;
-  }
-  .tcrn-doc-header-controls {
-    justify-self: end;
-    padding: var(--tcrn-space-2) var(--tcrn-space-4) var(--tcrn-space-3);
-    background-color: var(--tcrn-color-surface-panel);
-    background-image: none;
-  }
-  .tcrn-doc-header-controls__row {
-    display: inline-flex;
-    background-color: var(--tcrn-color-surface-panel);
-    background-image: none;
-  }
-  .tcrn-doc-page-head {
-    grid-template-columns: 1fr;
-  }
-  .tcrn-doc-on-this-page {
-    border-left: 0;
-    border-top: 1px solid var(--tcrn-color-border-subtle);
-    padding: var(--tcrn-space-3) 0 0;
-  }
-  .tcrn-doc-sidebar {
-    position: static;
-    height: auto;
-    max-height: none;
-    border-right: 0;
-    border-bottom: 1px solid var(--tcrn-color-border-subtle);
-  }
-  .tcrn-doc-content {
-    padding: var(--tcrn-space-4) var(--tcrn-doc-content-inset);
-  }
   .tcrn-doc-chapter-pager {
     grid-template-columns: 1fr;
   }
   .tcrn-doc-brand-system {
     grid-template-columns: 1fr;
-  }
-  .tcrn-doc-knowledge-shell__brand-cell {
-    grid-column: auto;
-    grid-row: auto;
-  }
-  .tcrn-doc-knowledge-shell__brand-cell {
-    padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
-  }
-}
-@media (max-width: 240px) {
-  .tcrn-doc-shell {
-    --tcrn-doc-content-inset: var(--tcrn-space-2);
-  }
-  /* 390px at 200% zoom is a 195px CSS viewport. Keep the brand mark and
-     collapse control in one row and let the remaining header controls wrap
-     within the viewport instead of expanding the document. */
-  .tcrn-doc-global-brand {
-    min-height: var(--tcrn-space-6);
-  }
-  .tcrn-doc-global-brand .tcrn-doc-brand {
-    --tcrn-brand-mark-size: 40px;
-    top: var(--tcrn-space-4);
-    left: var(--tcrn-space-2);
-    width: 40px;
-  }
-  .tcrn-doc-global-brand .tcrn-doc-brand {
-    overflow: hidden;
-  }
-  .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-shell-brand-lockup__copy,
-  .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo__copy {
-    max-width: 0;
-  }
-  .tcrn-doc-sidebar-toggle-slot {
-    top: var(--tcrn-space-4);
-    left: calc(100% - var(--tcrn-space-2) - 38px);
-  }
-  .tcrn-doc-header__workspace {
-    padding-inline: var(--tcrn-doc-content-inset);
-  }
-  .tcrn-doc-header-controls {
-    padding-inline: var(--tcrn-space-2);
-  }
-  .tcrn-doc-header-controls__row {
-    gap: var(--tcrn-space-1);
   }
 }
 
