@@ -12,7 +12,9 @@
 // the board re-declares for the Sheet take their touch value, 44 (07b board, section F: shell.row-h
 // and shell.srch-h, 44 under a coarse pointer), so every row and the search are 44 high here
 // whatever the pointer; a pin keeps its 24 box and takes presses 44 across, as the nav-item pin
-// does under a coarse pointer (base.css.ts). Rows keep the full menu's icon column, so a row
+// does under a coarse pointer (base.css.ts). The list's scrollport reaches into the Sheet's side
+// inset (its margin takes the inset back as padding, so the rows do not move), so the part of a
+// pin's 44 that passes the row's end is not clipped. Rows keep the full menu's icon column, so a row
 // without an icon starts its text where the others do. The grab line is a picture: 36 by space-1,
 // the line-2 ink, a pill.
 //
@@ -67,6 +69,8 @@ export const shellSheetCss01 = `
   flex-direction: column;
   gap: var(--tcrn-space-0h);
   min-block-size: 0;
+  margin-inline: calc(-1 * var(--tcrn-space-2));
+  padding-inline: var(--tcrn-space-2);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;

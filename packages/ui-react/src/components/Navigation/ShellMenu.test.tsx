@@ -428,6 +428,12 @@ test("in the Sheet rows and the search are 44 high and a pin takes presses 44 ac
   const tokens = createTokenMap();
   const px = (variable: string) => Number.parseFloat(tokens[variable]);
   assert.equal(px("--tcrn-shell-pinb") + 2 * px("--tcrn-space-2h"), 44);
+  // The pin ends space-1 before the row's end, so its 44 passes the row by 6: the list's scrollport
+  // reaches the Sheet's edge (space-2 further), its rows stay where they were.
+  const list = ruleBody(".tcrn-shell-sheet__list", shellSheetCss01);
+  assert.equal(declaration(list, "margin-inline"), "calc(-1 * var(--tcrn-space-2))");
+  assert.equal(declaration(list, "padding-inline"), "var(--tcrn-space-2)");
+  assert.ok(px("--tcrn-space-2h") - px("--tcrn-space-1") <= px("--tcrn-space-2"));
   // The rows keep the full menu's icon column; a row without an icon starts its text in the second.
   const row = ruleBody(".tcrn-shell-sheet .tcrn-nav-item", shellSheetCss01);
   assert.equal(declaration(row, "grid-template-columns"), declaration(ruleBody(".tcrn-shell-menu__cols .tcrn-nav-item"), "grid-template-columns"));
