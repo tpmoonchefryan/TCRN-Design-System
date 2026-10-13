@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "tcrn.ds.shell-measure-mutations.v1",
+  "about": "One mutation per gate, from the G-section column of the 07b board (Shell-2). ops are applied to a fresh load of the named board (see applyMutationInPage in scripts/shell-measure-proof.mjs); trace mutations patch the manifest trace named by traceOf. A mutation passes when its gate fails and the failing gates are exactly gate + alsoFails.",
+  "mutations": [
+    {
+      "id": "brand-top-0", "gate": "brandGeometry", "source": "top 改 0", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-closed\"] [data-tab] { align-self: flex-start !important; }" }]
+    },
+    {
+      "id": "mark-path-coordinate", "gate": "brandDigest", "source": "改一处路径坐标", "board": "shell-lower",
+      "ops": [{ "op": "replaceInAttr", "selector": "[data-shell=\"spec-closed\"] [data-tab] svg[data-logo] path", "name": "d", "from": "M11 23", "to": "M12 23" }]
+    },
+    {
+      "id": "strip-bottom-line", "gate": "strip", "source": "顶带加 1px 底线", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-closed\"] .ts-strip { border-bottom: 1px solid var(--line-2) !important; }" }]
+    },
+    {
+      "id": "cluster-padding-8", "gate": "edges", "source": "簇 padding 改 8", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-closed\"] [data-cluster] { padding: 8px !important; }" }]
+    },
+    {
+      "id": "pins-left-line", "gate": "pinSpacing", "source": "加回 1px 左边线", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-closed\"] [data-pins] { border-left: 1px solid var(--line-2) !important; }" }]
+    },
+    {
+      "id": "menu-top-60", "gate": "continuation", "source": "菜单 top 改 60", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] { top: 60px !important; }" }]
+    },
+    {
+      "id": "panel-bottom-padding-16", "gate": "barCentering", "source": "面板底内距改 16", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] { padding-bottom: 16px !important; }" }]
+    },
+    {
+      "id": "word-padding-top-4", "gate": "markText", "source": "字标加 padding-top 4", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-closed\"] [data-tab] b { padding-top: 4px !important; }" }]
+    },
+    {
+      "id": "column-2-height-auto", "gate": "cascade", "source": "列二 height:auto", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-drop\"] [data-drop2] { height: auto !important; }" }]
+    },
+    {
+      "id": "x-button-back", "gate": "noCollapse", "source": "加回 x 钮", "board": "shell-lower",
+      "ops": [{ "op": "insert", "selector": "[data-shell=\"spec-expanded\"] [data-panel=\"expanded\"]", "position": "afterbegin", "html": "<button type=\"button\" class=\"ts-x\" aria-label=\"收起菜单\" style=\"position:absolute;top:8px;right:8px;width:24px;height:24px;padding:0;border:0;background:transparent\">×</button>" }]
+    },
+    {
+      "id": "pin-display-none-inline", "gate": "pinJitter", "source": "图钉 display:none → inline", "board": "shell-lower",
+      "about": "the board keeps a fixed 24 track for the pin, so hiding the pin alone cannot move the text; the mutation is the jittering build the column guards against: the pin track sized by content, the pin display:none at rest and inline on hover / on",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] .ts-it { grid-template-columns: 22px minmax(0, 1fr) auto !important; } [data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] .ts-it .ts-pinb { display: none !important; } [data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] .ts-it.is-hover .ts-pinb, [data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] .ts-it.on .ts-pinb { display: inline !important; }" }]
+    },
+    {
+      "id": "lockup-as-button", "gate": "lockupDecor", "source": "改成 button", "board": "shell-lower",
+      "alsoFails": ["contrast"],
+      "about": "the button's own UA background repaints the lockup's three text cells, so their contrast leaves data-expect as well",
+      "ops": [{ "op": "retag", "selector": "[data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] [data-lockup]", "tag": "button" }]
+    },
+    {
+      "id": "placeholder-ink-3", "gate": "contrast", "source": "占位改 ink-3", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-expanded\"] .ts-srch .ph2 { color: var(--ink-3) !important; }" }]
+    },
+    {
+      "id": "label-plus-40", "gate": "singleLine", "source": "标签加长 40 字", "board": "shell-lower",
+      "ops": [{ "op": "appendText", "selector": "[data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] .ts-it span.t", "text": "长", "repeat": 40 }]
+    },
+    {
+      "id": "panel-shadow-12", "gate": "shadowBlur", "source": "面板阴影改 12px", "board": "shell-lower",
+      "ops": [{ "op": "css", "css": "[data-shell=\"spec-expanded\"] [data-panel=\"expanded\"] { box-shadow: 0 6px 12px rgba(22, 21, 15, 0.12) !important; }" }]
+    },
+    {
+      "id": "intro-no-session-marker", "gate": "intro", "source": "去掉会话标记", "traceOf": "intro",
+      "trace": { "reloadPlays": 1 }
+    },
+    {
+      "id": "focus-not-returned", "gate": "focusLoop", "source": "关闭时不还焦点", "traceOf": "focusLoop",
+      "trace": { "afterEscape": "body" }
+    },
+    {
+      "id": "sheet-row-32", "gate": "touch", "source": "行高改 32", "board": "shell-upper",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-m-s\"] .ts-sheet { --row-h: 32px !important; }" }]
+    }
+  ]
+}
