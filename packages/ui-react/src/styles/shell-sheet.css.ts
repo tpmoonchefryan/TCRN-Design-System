@@ -9,10 +9,10 @@
 // edge, as wide as the viewport and at most 84% of it high, and never higher than the space below
 // the top band. Its inset is space-2 at the top and sides and space-3 at the bottom, its top
 // corners the paper radius, its fill the paper with the s3 shadow. Inside it the two shell tokens
-// the board re-declares for the Sheet take their touch value, 44 (07b board, section F: shell.row-h
-// and shell.srch-h, 44 under a coarse pointer), so every row and the search are 44 high here
-// whatever the pointer; a pin keeps its 24 box and takes presses 44 across, as the nav-item pin
-// does under a coarse pointer (base.css.ts). The list's scrollport reaches into the Sheet's side
+// the board re-declares for the Sheet point at the touch token, shell.touch (44; 07b board,
+// section F: shell.row-h and shell.srch-h, 44 under a coarse pointer, TCRN-DS-SUB-142), so every
+// row and the search are 44 high here whatever the pointer; a pin keeps its 24 box and takes
+// presses 44 across, as the nav-item pin does under a coarse pointer (base.css.ts). The list's scrollport reaches into the Sheet's side
 // inset (its margin takes the inset back as padding, so the rows do not move), so the part of a
 // pin's 44 that passes the row's end is not clipped. Rows keep the full menu's icon column, so a row
 // without an icon starts its text where the others do. The grab line is a picture: 36 by space-1,
@@ -35,8 +35,8 @@ export const shellSheetCss01 = `
   animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
 }
 .tcrn-shell-sheet__panel {
-  --tcrn-shell-row-h: 44px;
-  --tcrn-shell-srch-h: 44px;
+  --tcrn-shell-row-h: var(--tcrn-shell-touch);
+  --tcrn-shell-srch-h: var(--tcrn-shell-touch);
   position: fixed;
   inset-inline: 0;
   inset-block-end: 0;

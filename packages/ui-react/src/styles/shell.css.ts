@@ -12,8 +12,14 @@
 // (--tcrn-pair-fill, --tcrn-pair-ink, --tcrn-pair-edge) and declares the pair of every state;
 // a state rule is a :where() rule at the specificity of the base class, switches the live pair
 // and writes no colour. Geometry comes from the shell tokens of @tcrn/ui-tokens (07b board,
-// section F); the brand sizes are the brand side-rail tier of brand.css.ts (Brand board,
-// section E: mark 22, wordmark 12.5 at 600), and geometry does not change with the theme.
+// section F, and the three R2 additions: shell.mark, shell.touch, shell.crumb-icon): a size,
+// inset, gap, padding, margin or radius here is a token or calc() built on tokens, and the one
+// literal length is a 1px line (C10, TCRN-DS-SUB-142, read by scripts/shell-fidelity-proof.mjs;
+// type sizes and the forced-colours outline are not geometry). The brand sizes are the brand
+// side-rail tier (Brand board, section E: mark 22, the shell.mark token, wordmark 12.5 at 600),
+// and geometry does not change with the theme. The touch height under a coarse pointer is a
+// token-layer switch (@tcrn/ui-tokens points shell.row-h and shell.srch-h at shell.touch), so
+// no rule here re-declares a shell token at the root.
 
 // The brand button (TCRN-DS-SUB-114; 07a board, section 1 and section A). Second version:
 // mark, wordmark and toggle on a --tcrn-shell-brand-w by --tcrn-shell-brand-h box with a 6 inset
@@ -73,7 +79,7 @@ export const shellCss01 = `
   inline-size: auto;
 }
 .tcrn-shell-brand__line {
-  --tcrn-brand-mark-size: 22px;
+  --tcrn-brand-mark-size: var(--tcrn-shell-mark);
   display: flex;
   align-items: center;
   column-gap: var(--tcrn-space-2h);
@@ -138,16 +144,6 @@ export const shellCss01 = `
   }
   .tcrn-shell-brand[data-shell-brand-auto] .tcrn-shell-brand__word {
     display: none;
-  }
-}
-/* Touch (07b board, section F: shell.row-h and shell.srch-h are 32 and 40, 44 under a coarse
-   pointer; no separate token). The token stylesheet has no media blocks, so the coarse values
-   re-declare the two shell tokens here, at the root like the token sheet, and every rule that
-   reads var(--tcrn-shell-row-h) or var(--tcrn-shell-srch-h) follows. */
-@media (pointer: coarse) {
-  :root {
-    --tcrn-shell-row-h: 44px;
-    --tcrn-shell-srch-h: 44px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

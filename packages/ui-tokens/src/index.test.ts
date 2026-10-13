@@ -9,6 +9,8 @@ import {
   findDeprecatedTokenUsages,
   formatDeprecatedTokenNotices,
   parseTokenCssBlocks,
+  tcrnCoarsePointerMedia,
+  tcrnCoarsePointerTokens,
   tcrnDarkThemeTokens,
   tcrnDeprecatedTokenAliases,
   tcrnDeprecatedTokens,
@@ -17,6 +19,7 @@ import {
   tcrnGplusThemeSelectors,
   tcrnGplusThemedTokens,
   tcrnThemeModes,
+  tcrnTokenBlockKinds,
   tcrnTokenCss,
   tcrnTokenStylesheet,
   tcrnTokens
@@ -26,6 +29,22 @@ import { tcrnGplusTypeTokens } from "./gplus-tokens.generated.js";
 
 const light = createTokenMap();
 const dark = Object.fromEntries(tcrnDarkThemeTokens.map((token) => [token.variable, token.value]));
+
+// The published sheet's top-level blocks by kind: the light theme block, the theme-independent
+// block and the dark block; the coarse-pointer block sits in an @media rule (TCRN-DS-SUB-142).
+function publishedBlocks() {
+  const blocks = parseTokenCssBlocks(tcrnTokenStylesheet);
+  const top = blocks.filter((block) => block.media === null);
+  const fixedBlock = top.find((block) => block.kind === "theme-independent");
+  const themeBlocks = top.filter((block) => block.kind === "theme");
+  assert.ok(fixedBlock, "the sheet has a theme-independent block");
+  assert.equal(themeBlocks.length, 2, "the sheet has the light and the dark theme block");
+  return {
+    fixed: new Map(fixedBlock.declarations),
+    themeNames: new Set(themeBlocks.flatMap((block) => block.declarations.map(([property]) => property))),
+    coarse: blocks.filter((block) => block.media !== null)
+  };
+}
 const resolvedLight = createResolvedTokenMap("light");
 const resolvedDark = createResolvedTokenMap("dark");
 
@@ -135,10 +154,11 @@ test("theme blocks declare the same property names; theme-independent tokens sit
   assert.equal(tcrnGplusThemeSelectors.light, ':root, [data-tcrn-theme="light"]');
   assert.equal(tcrnGplusThemeSelectors.dark, '[data-tcrn-theme="dark"]');
   const blocks = parseTokenCssBlocks(tcrnTokenStylesheet);
-  assert.deepEqual(blocks.map((block) => [block.selector, block.kind]), [
-    [':root, [data-tcrn-theme="light"]', "theme"],
-    [":root", "theme-independent"],
-    ['[data-tcrn-theme="dark"]', "theme"]
+  assert.deepEqual(blocks.map((block) => [block.selector, block.kind, block.media]), [
+    [':root, [data-tcrn-theme="light"]', "theme", null],
+    [":root", "theme-independent", null],
+    [":root", "pointer-coarse", "(pointer: coarse)"],
+    ['[data-tcrn-theme="dark"]', "theme", null]
   ]);
   assert.ok(tcrnTokenCss.startsWith(':root, [data-tcrn-theme="light"] {\n  /* tcrn-token-block: theme */\n'));
   const fixedNames = new Set(blocks[1].declarations.map(([property]) => property));
@@ -309,18 +329,22 @@ const shellTokenTable: ReadonlyArray<readonly [name: string, key: string, variab
   ["shell.row-h", "shell-row-h", "--tcrn-shell-row-h", "32px"],
   ["shell.srch-h", "shell-srch-h", "--tcrn-shell-srch-h", "40px"],
   ["shell.pinb", "shell-pinb", "--tcrn-shell-pinb", "24px"],
+  // Added in INIT-016 R2 (TCRN-DS-SUB-142) for the literals the shell still wrote: the mark in the
+  // brand button, the touch height and the breadcrumb separator icon. They are not on the board
+  // yet; the design session adds them to section F under these names.
+  ["shell.mark", "shell-mark", "--tcrn-shell-mark", "22px"],
+  ["shell.touch", "shell-touch", "--tcrn-shell-touch", "44px"],
+  ["shell.crumb-icon", "shell-crumb-icon", "--tcrn-shell-crumb-icon", "11px"],
   ["motion.intro.fade", "intro-fade", "--tcrn-motion-intro-fade", "120ms"],
   ["motion.intro.move", "intro-move", "--tcrn-motion-intro-move", "240ms"],
   ["motion.intro.rise", "intro-rise", "--tcrn-motion-intro-rise", "100ms"],
   ["motion.intro.max", "intro-max", "--tcrn-motion-intro-max", "700ms"]
 ];
 
-test("the top-band shell tokens are the 07b board's section F, one to one, in the theme-independent block", () => {
-  assert.equal(tcrnGplusFixedTokens.filter((token) => token.key.startsWith("shell-")).length, 16, "sixteen shell.* tokens");
+test("the top-band shell tokens are the 07b board's section F, one to one, plus the three R2 additions, in the theme-independent block", () => {
+  assert.equal(tcrnGplusFixedTokens.filter((token) => token.key.startsWith("shell-")).length, 19, "sixteen section F shell.* tokens and three R2 additions");
   assert.equal(tcrnGplusFixedTokens.filter((token) => token.key.startsWith("intro-")).length, 4, "four motion.intro tokens");
-  const blocks = parseTokenCssBlocks(tcrnTokenStylesheet);
-  const fixedBlock = new Map(blocks[1].declarations);
-  const themeNames = new Set([...blocks[0].declarations, ...blocks[2].declarations].map(([property]) => property));
+  const { fixed: fixedBlock, themeNames } = publishedBlocks();
   for (const [name, key, variable, value] of shellTokenTable) {
     const contract = tcrnGplusFixedTokens.find((token) => token.key === key);
     assert.equal(contract?.cssVar, variable, `${key} is published as ${variable}`);
@@ -351,6 +375,47 @@ test("the top-band shell tokens are the 07b board's section F, one to one, in th
   const intro = ms("--tcrn-motion-intro-fade") + ms("--tcrn-motion-intro-move") + ms("--tcrn-motion-intro-rise");
   assert.equal(intro, 460);
   assert.ok(intro <= ms("--tcrn-motion-intro-max"));
+});
+
+test("a coarse pointer points the menu row and the full menu search at the touch token, in a token-layer block after the theme-independent block", () => {
+  // 07b board, section F: shell.row-h and shell.srch-h are 44 under a coarse pointer. The switch
+  // is the token sheet's own block right after the theme-independent block, so it follows the
+  // base values it re-points wherever a page puts the token sheet (TCRN-DS-SUB-142).
+  assert.equal(tcrnCoarsePointerMedia, "(pointer: coarse)");
+  assert.equal(tcrnTokenBlockKinds.coarse, "pointer-coarse");
+  assert.deepEqual(
+    tcrnCoarsePointerTokens.map((entry) => [entry.variable, entry.value]),
+    [
+      ["--tcrn-shell-row-h", "var(--tcrn-shell-touch)"],
+      ["--tcrn-shell-srch-h", "var(--tcrn-shell-touch)"]
+    ]
+  );
+  const { fixed: fixedBlock, themeNames, coarse } = publishedBlocks();
+  assert.equal(coarse.length, 1, "one coarse-pointer block");
+  assert.equal(coarse[0].selector, ":root");
+  assert.equal(coarse[0].media, tcrnCoarsePointerMedia);
+  assert.deepEqual([...coarse[0].declarations], tcrnCoarsePointerTokens.map((entry) => [entry.variable, entry.value]));
+  for (const [property] of coarse[0].declarations) {
+    assert.ok(fixedBlock.has(property), `${property} is re-pointed, not introduced`);
+    assert.equal(themeNames.has(property), false, `${property} is not a theme name`);
+  }
+  assert.equal(Number.parseFloat(resolvedLight["--tcrn-shell-touch"]), 44);
+  assert.equal(Number.parseFloat(resolvedDark["--tcrn-shell-touch"]), 44);
+  // The text: inside @media, after the theme-independent block and before the dark block.
+  const coarseText = '@media (pointer: coarse) {\n  :root {\n    /* tcrn-token-block: pointer-coarse */\n    --tcrn-shell-row-h: var(--tcrn-shell-touch);\n    --tcrn-shell-srch-h: var(--tcrn-shell-touch);\n  }\n}\n';
+  const at = tcrnTokenCss.indexOf(coarseText);
+  assert.ok(at > tcrnTokenCss.indexOf("/* tcrn-token-block: theme-independent */"), "after the theme-independent block");
+  assert.ok(at < tcrnTokenCss.indexOf('[data-tcrn-theme="dark"] {'), "before the dark block");
+  assert.equal(tcrnTokenCss.split("@media").length, 2, "the coarse-pointer block is the sheet's one @media rule");
+  // A token list without the touch token gets no block that would point at nothing.
+  assert.equal(createCssVariables(tcrnTokens.filter((token) => token.variable !== "--tcrn-shell-touch")).includes("@media"), false);
+  // The comparison bites: the block may neither re-point a theme name nor introduce a name.
+  const themed = compareTokenThemeBlocks(tcrnTokenCss.replace("    --tcrn-shell-srch-h: var(--tcrn-shell-touch);\n", "    --tcrn-shell-srch-h: var(--tcrn-shell-touch);\n    --tcrn-color-ink: #000000;\n"));
+  assert.equal(themed.ok, false);
+  assert.match(themed.problems.join("; "), /re-declares the theme name --tcrn-color-ink/);
+  const introduced = compareTokenThemeBlocks(tcrnTokenCss.replace("    --tcrn-shell-srch-h: var(--tcrn-shell-touch);\n", "    --tcrn-shell-srch-h: var(--tcrn-shell-touch);\n    --tcrn-shell-extra: 44px;\n"));
+  assert.equal(introduced.ok, false);
+  assert.match(introduced.problems.join("; "), /declares --tcrn-shell-extra, which the theme-independent block does not/);
 });
 
 test("the shell tokens share their source with the 07b board CSS (shell-screen.mjs .scr.ts defaults)", async () => {
@@ -430,9 +495,8 @@ test("the paper's content width for document and settings pages is one theme-ind
   assert.equal(token?.scope, "fixed");
   assert.equal(token?.deprecated, undefined);
   assert.match(token?.description ?? "", /document and settings pages/);
-  const blocks = parseTokenCssBlocks(tcrnTokenStylesheet);
-  assert.equal(new Map(blocks[1].declarations).get("--tcrn-layout-content-max-w"), "1040px", "in the theme-independent block");
-  const themeNames = new Set([...blocks[0].declarations, ...blocks[2].declarations].map(([property]) => property));
+  const { fixed: fixedBlock, themeNames } = publishedBlocks();
+  assert.equal(fixedBlock.get("--tcrn-layout-content-max-w"), "1040px", "in the theme-independent block");
   assert.equal(themeNames.has("--tcrn-layout-content-max-w"), false, "in no theme block");
   assert.equal(resolvedLight["--tcrn-layout-content-max-w"], "1040px");
   assert.equal(resolvedDark["--tcrn-layout-content-max-w"], "1040px");
