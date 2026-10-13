@@ -546,6 +546,59 @@ your backend and store the list `onPinsChange` reports.
 
 Source: TCRN-DS-SUB-120; handoff P1c (INIT-016 r1).
 
+### M22 · The navigation family takes its place in the top-band shell
+
+Change: the five tab-shaped forms are one family. `Tabs`, `ModuleTabs`, `SectionTabs`,
+`SegmentedNav` and `ViewTabs` render one block, `tcrn-tabs`, in three variants:
+`tcrn-tabs--panel` (`Tabs`, the ARIA pattern that swaps a panel), `tcrn-tabs--nav`
+(`ModuleTabs`, `SectionTabs`, `ViewTabs`) and `tcrn-tabs--segmented` (`SegmentedNav`).
+Every tab is `tcrn-tabs__tab` with its label in `tcrn-tabs__label` and as a `title`; the
+chosen tab carries `data-selected="true"` and takes the 6% ink wash and the strong
+weight, nothing else (the panel tabs' bottom edge is gone). The old roots
+(`tcrn-module-tabs`, `tcrn-section-tabs`, `tcrn-segmented-nav`, `tcrn-view-tabs`) stay on
+the element through 4.0.x as hooks without rules; `SegmentedNav` leaves the family list
+as a variant of `Tabs`. `PageHeader` renders `Breadcrumb` as its first row:
+`nav.tcrn-breadcrumb > span.tcrn-breadcrumb__item > a|span|b.tcrn-breadcrumb__crumb[title]`
+with the board's 11 chevron as `svg.tcrn-breadcrumb__separator`; the current page is
+`b[aria-current="page"]`, and the trail keeps to one line. The
+`tcrn-page-header__breadcrumbs`, `__breadcrumb`, `__crumb` and `__crumb-separator` classes
+are gone. `TreeNav` drops its panel frame and its rows take the menu row's grammar, for
+use in the full menu and the drop-downs.
+
+Do: restyle any override of the old tab roots or of `tcrn-tabs__tab--selected` against
+`.tcrn-tabs__tab[data-selected="true"]`; select the page header's trail as
+`.tcrn-page-header .tcrn-breadcrumb`; in a `Breadcrumb` mark the current page with
+`selected`.
+
+Source: TCRN-DS-SUB-124; handoff P8 (INIT-016 r1).
+
+### M23 · Six parts of the old shell are deprecated; their rules leave the component sheet
+
+Change: the top band is the only shell, so the parts built for the side rail and the old
+top bar are deprecated. Each keeps its export, its place in
+`componentLibraryPublicComponentNames` and a JSDoc `@deprecated` through 4.0.x, is listed
+in the new `componentLibraryDeprecatedComponentNames`, and is removed in 4.1. Their rules
+are no longer in `tcrnComponentCss`: they are in the new `tcrnRetiredComponentCss`, which a
+consumer that still renders one of them adds after `tcrnComponentCss`. `SubNav` stays as
+the page's own second-level navigation; `TocRail` and bookmarks are page content in the
+paper, never in the shell.
+
+| Part | Family | Do instead |
+| --- | --- | --- |
+| `SideNav` | navigation | Give `ProductShell` the navigation as `navGroups`; `NavGroup` and `NavItem` rows render in the full menu and the drop-downs. |
+| `SideNavCollapseButton` | navigation | Remove it: there is no rail to collapse, and the full menu opens from the brand button. |
+| `MobileNavToggle` | navigation | Remove it: on a phone the brand button opens the full menu as a Sheet. |
+| `TopBar` | shell | Use `ProductShell`: its band holds the brand button, the pins and the cluster. |
+| `ProductLauncher` | shell | Pass `ProductShell` its `products`; the avatar menu switches products. |
+| `ProductSwitcher` | shell | Pass `ProductShell` its `products`; the avatar menu switches products. |
+
+Do: replace each part as the table says, then drop `tcrnRetiredComponentCss`. Until then,
+add `tcrnRetiredComponentCss` after `tcrnComponentCss` wherever a deprecated part still
+renders. Put a `TocRail` in the page's own content (for a document, at its side) inside
+`ProductShell`'s children.
+
+Source: TCRN-DS-SUB-125; handoff P8 (INIT-016 r1).
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is

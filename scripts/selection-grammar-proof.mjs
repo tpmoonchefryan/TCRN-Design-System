@@ -81,11 +81,70 @@ for (const { source, text } of SOURCES) {
   }
 }
 
+// TCRN-DS-SUB-124 (STORY-143 GWT2) — one family, one selected structure. The five tab-shaped
+// forms (Tabs, ModuleTabs, SectionTabs, SegmentedNav, ViewTabs) render one block, tcrn-tabs, and
+// the family says "selected" exactly one way: the tab's pair switches to its selected values,
+// the 6% ink wash and ink, and the label takes the strong weight. Nothing is added on top, so a
+// selected tab rule that draws an edge, an outline, a shadow, an underline or a lift is a second
+// structure, and so is any selection rule left on one of the old roots in the package
+// stylesheet. Only the package modules are read for this check: the doc layers still carry
+// their own copies until the documentation shell moves to the top band.
+const TAB = { block: "tcrn-tabs", subject: /\.tcrn-tabs__tab\b/u, pair: "--tcrn-pair-tab-fill" };
+const OLD_TAB_ROOTS = /\.tcrn-(?:module-tabs|section-tabs|segmented-nav|view-tabs)\b/u;
+const ADDED_ON_TOP = /(?:^|;)\s*(?:border[a-z-]*|outline[a-z-]*|box-shadow|text-decoration[a-z-]*|transform|translate|scale)\s*:/u;
+
+export function oneStructureFindings(sources) {
+  const found = [];
+  const bodies = new Set();
+  let selectedRules = 0;
+  let washValue = null;
+  for (const { source, text } of sources) {
+    for (const match of text.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
+      const selector = match[1].replace(/\/\*[\s\S]*?\*\//gu, "").trim();
+      const body = match[2].replace(/\s+/gu, " ").trim();
+      if (TAB.subject.test(selector) && !SELECTION_SELECTOR.test(selector)) {
+        const wash = /--tcrn-pair-tab-fill-s:\s*([^;]+)/u.exec(body);
+        if (wash) washValue = wash[1].trim();
+      }
+      if (!SELECTION_SELECTOR.test(selector)) continue;
+      const short = selector.split("\n").map((line) => line.trim()).filter(Boolean).join(" ").slice(0, 120);
+      if (OLD_TAB_ROOTS.test(selector)) {
+        found.push({ source, rule: "tabs-old-root-selection", selector: short, body: body.slice(0, 160) });
+        continue;
+      }
+      if (!TAB.subject.test(selector)) continue;
+      selectedRules += 1;
+      bodies.add(body);
+      if (!/--tcrn-pair-tab-fill:\s*var\(--tcrn-pair-tab-fill-s\)/u.test(body)) found.push({ source, rule: "tabs-selected-not-wash", selector: short, body: body.slice(0, 160) });
+      if (!/font-weight:\s*var\(--tcrn-type-weight-strong\)/u.test(body)) found.push({ source, rule: "tabs-selected-not-weight", selector: short, body: body.slice(0, 160) });
+      if (ADDED_ON_TOP.test(body)) found.push({ source, rule: "tabs-selected-adds-on-top", selector: short, body: body.slice(0, 160) });
+    }
+  }
+  if (selectedRules === 0) found.push({ source: "package stylesheet", rule: "tabs-selected-missing", selector: ".tcrn-tabs__tab", body: "no selected rule for the tab" });
+  if (bodies.size > 1) found.push({ source: "package stylesheet", rule: "tabs-selected-two-structures", selector: ".tcrn-tabs__tab", body: [...bodies].join(" | ").slice(0, 160) });
+  if (washValue !== "var(--tcrn-color-wash)") found.push({ source: "package stylesheet", rule: "tabs-selected-pair-not-6pc-wash", selector: ".tcrn-tabs__tab", body: `--tcrn-pair-tab-fill-s: ${washValue}` });
+  return { selectedRules, findings: found };
+}
+
+const packageSources = SOURCES.filter(({ source }) => !DOC_SOURCES.includes(source));
+const tabsFamily = oneStructureFindings(packageSources);
+findings.push(...tabsFamily.findings);
+
+// The check has to be able to refuse: the old bottom edge put back on a selected tab is red.
+const mutant = oneStructureFindings([{ source: "mutant", text: [
+  ".tcrn-tabs__tab { --tcrn-pair-tab-fill-s: var(--tcrn-color-wash); }",
+  '.tcrn-tabs__tab:where([data-selected="true"]) { --tcrn-pair-tab-fill: var(--tcrn-pair-tab-fill-s); font-weight: var(--tcrn-type-weight-strong); border-block-end-color: var(--tcrn-selection-edge); }'
+].join("\n") }]);
+if (!mutant.findings.some((finding) => finding.rule === "tabs-selected-adds-on-top")) {
+  findings.push({ source: "selection-grammar-proof", rule: "tabs-check-cannot-fail", selector: ".tcrn-tabs__tab", body: "an edge on the selected tab was not refused" });
+}
+
 const result = {
   ok: findings.length === 0,
   grammar: "selection is ink: surface-bearing controls take --tcrn-selection-fill, framed controls promote their border to --tcrn-selection-edge",
   sourcesScanned: SOURCES.length,
   selectionRulesScanned: ruleCount,
+  tabsFamily: { block: TAB.block, selectedRules: tabsFamily.selectedRules, structure: "the 6% ink wash and the strong weight" },
   findings
 };
 

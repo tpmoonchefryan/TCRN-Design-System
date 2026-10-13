@@ -12,7 +12,8 @@ import type {
 } from "react";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { IconButton, type IconButtonProps } from "../Button/index.js";
-// PageHeader is the paper's first row (TCRN-DS-SUB-129); DomainDisplay imports nothing from here.
+// PageHeader is the paper's first row (TCRN-DS-SUB-129). DomainDisplay imports Breadcrumb from here for
+// that header's trail (TCRN-DS-SUB-124); both sides use the other only inside function bodies.
 import { PageHeader, type PageHeaderBreadcrumb, type PageHeaderProps } from "../DataDisplay/DomainDisplay.js";
 import { SearchInput, type SearchInputProps } from "../Form/index.js";
 import { Icon, type IconName } from "../Icon/index.js";
@@ -280,6 +281,11 @@ export interface TopBarProps extends Omit<HTMLAttributes<HTMLElement>, "children
   brandProps?: HTMLAttributes<HTMLDivElement>;
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): the shell is the top band. Use ProductShell, whose band
+ * holds the brand button, the pins and the cluster. Its rules moved to tcrnRetiredComponentCss; removed
+ * in 4.1 (docs/migration-4.0.md).
+ */
 export function TopBar({ productName, moduleName, actions, brandProps, className, ...rest }: TopBarProps) {
   return (
     <header {...rest} className={cx("tcrn-top-bar", className)}>
@@ -1010,6 +1016,10 @@ export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, "ariaL
   onCollapsedChange?: (collapsed: boolean) => void;
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): there is no side rail left to collapse; the full menu
+ * opens from ProductShell's brand button. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ */
 export function SideNavCollapseButton({
   collapsed,
   controls,
@@ -1104,6 +1114,10 @@ export interface MobileNavToggleProps extends Omit<IconButtonProps, "ariaLabel" 
  *
  * The glyph is a menu, not a chevron pair: a chevron says a thing will move, and
  * on this viewport the navigation appears and disappears.
+ *
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): on a phone ProductShell's brand button opens the full
+ * menu as a Sheet, so there is no separate navigation toggle. Its rules moved to
+ * tcrnRetiredComponentCss; removed in 4.1.
  */
 export function MobileNavToggle({
   expanded,
@@ -1163,6 +1177,10 @@ function LauncherItems({ items }: ProductLauncherProps) {
   );
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): products are switched from the avatar menu; pass
+ * ProductShell its products. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ */
 export function ProductLauncher({ items, locale }: ProductLauncherProps) {
   return (
     <nav className="tcrn-product-launcher" aria-label={chromeLabels(locale).productLauncher}>
@@ -1171,6 +1189,10 @@ export function ProductLauncher({ items, locale }: ProductLauncherProps) {
   );
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): products are switched from the avatar menu; pass
+ * ProductShell its products. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ */
 export function ProductSwitcher({ items, locale }: ProductLauncherProps) {
   return (
     <nav className="tcrn-product-switcher" aria-label={chromeLabels(locale).productSwitcher}>
@@ -1198,7 +1220,7 @@ export interface BreadcrumbItem extends NavItem {
 }
 
 export interface BreadcrumbProps {
-  items: BreadcrumbItem[];
+  items: readonly BreadcrumbItem[];
   /** Accessible name for the trail. Omit it and the reader's language is used. */
   label?: string;
   /** Which language the built-in label is said in; defaults to the page's own. */
@@ -1206,7 +1228,9 @@ export interface BreadcrumbProps {
 }
 
 /**
- * The ancestor trail, and the product's way back.
+ * The ancestor trail, and the product's way back. It is also the page header's first row:
+ * PageHeader renders this component for its trail (TCRN-DS-SUB-124, STORY-143 GWT4; 07b board
+ * .ts-crumbs and section D row 面包屑), so there is one trail in the system, not two.
  *
  * Every crumb used to render as an inert `<span>`, which made the component
  * decorative: it told you where you were and offered no way to leave. A
@@ -1214,20 +1238,27 @@ export interface BreadcrumbProps {
  * browser's own back button — true of every page in their product, because this
  * was the component they were using for the job.
  *
- * A crumb with an `href` is now a link. The current page is still inert, which
- * is the point: `aria-current="page"` plus no link is what tells a screen-reader
- * user which end of the trail they are standing on.
+ * A crumb with an `href` is a link. The current page is inert, which is the point:
+ * `aria-current="page"` plus no link is what tells a screen-reader user which end
+ * of the trail they are standing on. It is set as a `b` in the ink and weight of the
+ * board's current crumb.
+ *
+ * The trail stays on one line at every width: the separators (the board's 11 chevron)
+ * keep their size, a crumb that does not fit gives way and ends in an ellipsis, and
+ * every crumb carries its label as a title.
  */
 export function Breadcrumb({ items, label, locale }: BreadcrumbProps) {
   return (
     <nav className="tcrn-breadcrumb" aria-label={label ?? chromeLabels(locale).breadcrumb}>
       {items.map((item, index) => (
         <span key={item.id} className="tcrn-breadcrumb__item">
-          {index > 0 ? <Icon name="chevron-right" className="tcrn-breadcrumb__separator" /> : null}
-          {item.href && !item.selected ? (
-            <a href={item.href}>{item.label}</a>
+          {index > 0 ? <Icon name="chevron-right" size={11} className="tcrn-breadcrumb__separator" /> : null}
+          {item.selected ? (
+            <b className="tcrn-breadcrumb__crumb" title={item.label} aria-current="page">{item.label}</b>
+          ) : item.href ? (
+            <a className="tcrn-breadcrumb__crumb" href={item.href} title={item.label}>{item.label}</a>
           ) : (
-            <span aria-current={item.selected ? "page" : undefined}>{item.label}</span>
+            <span className="tcrn-breadcrumb__crumb" title={item.label}>{item.label}</span>
           )}
         </span>
       ))}
@@ -1236,15 +1267,32 @@ export function Breadcrumb({ items, label, locale }: BreadcrumbProps) {
 }
 
 /**
+ * The Tabs family (TCRN-DS-SUB-124, STORY-143 GWT2). Five tab-shaped forms grew up
+ * separately — this component, ModuleTabs, SectionTabs, SegmentedNav and ViewTabs — and
+ * said "selected" three different ways (a bottom edge here, a track fill there, a fill
+ * without weight elsewhere). They are now one block, `tcrn-tabs`, in three variants:
+ *
+ * - `tcrn-tabs--panel`: this component, the ARIA tab pattern that swaps a panel;
+ * - `tcrn-tabs--nav`: ModuleTabs, SectionTabs and ViewTabs, navigation between pages or
+ *   views (`aria-current`);
+ * - `tcrn-tabs--segmented`: SegmentedNav, a few stable peer views.
+ *
+ * Every variant renders the same tab, `tcrn-tabs__tab` with its label in
+ * `tcrn-tabs__label`, marks the chosen one with `data-selected="true"` and says so one
+ * way: the 6% ink wash and the strong weight, nothing added on top. The old names stay
+ * exported as the family's variant exports, and their old root class stays on the root
+ * through 4.0.x as a hook without rules.
+ */
+export type TabsVariant = "panel" | "nav" | "segmented";
+
+/**
  * The ARIA tab pattern, with the keyboard behaviour that makes it one.
  *
- * This repository already had three tab-shaped components — ModuleTabs,
- * SectionTabs, SegmentedNav — and none of them is this. They render buttons with
- * `aria-current`, which is correct for navigation that changes the page. A tab
- * does not change the page: it swaps a panel, and the contract for that is
- * `role="tablist"` / `role="tab"` / `role="tabpanel"` plus `aria-controls` and
- * `aria-selected`. Announcing "2 of 4 selected" instead of "link, current page"
- * is the whole difference to a screen reader.
+ * The nav variants below render buttons or links with `aria-current`, which is correct
+ * for navigation that changes the page. A tab does not change the page: it swaps a
+ * panel, and the contract for that is `role="tablist"` / `role="tab"` /
+ * `role="tabpanel"` plus `aria-controls` and `aria-selected`. Announcing "2 of 4
+ * selected" instead of "link, current page" is the whole difference to a screen reader.
  *
  * The keyboard half is what hand-rolled tabs drop. Arrow keys move between tabs,
  * Home and End jump to the ends, and only the selected tab is in the tab order —
@@ -1285,7 +1333,7 @@ export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps
     else if (event.key === "End") { event.preventDefault(); const last = enabled[enabled.length - 1]; if (last) onSelect(last.id); }
   };
   return (
-    <div className="tcrn-tabs" data-tabs="true">
+    <div className="tcrn-tabs tcrn-tabs--panel" data-tabs="true">
       <div className="tcrn-tabs__list" role="tablist" aria-label={label} onKeyDown={onKeyDown}>
         {items.map((item) => {
           const selected = item.id === selectedId;
@@ -1293,14 +1341,16 @@ export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps
             <button key={item.id} type="button"
               id={`tcrn-tab-${item.id}`}
               role="tab"
-              className={cx("tcrn-tabs__tab", selected && "tcrn-tabs__tab--selected")}
+              className="tcrn-tabs__tab"
+              data-selected={selected ? "true" : undefined}
               aria-selected={selected}
               aria-controls={`tcrn-tabpanel-${item.id}`}
               disabled={item.disabled}
               tabIndex={selected ? 0 : -1}
+              title={typeof item.label === "string" ? item.label : undefined}
               onClick={() => onSelect(item.id)}
             >
-              {item.label}
+              <span className="tcrn-tabs__label">{item.label}</span>
             </button>
           );
         })}
@@ -1312,16 +1362,19 @@ export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps
   );
 }
 
+/** The Tabs family's nav variant for a module's sections (root hook `tcrn-module-tabs` through 4.0.x). */
 export function ModuleTabs({ items, locale, label, onSelect }: SelectableNavProps) {
-  return <TabList items={items} locale={locale} label={label} onSelect={onSelect} className="tcrn-module-tabs" />;
+  return <TabList items={items} label={label ?? chromeLabels(locale).moduleSections} onSelect={onSelect} variant="nav" legacyClassName="tcrn-module-tabs" />;
 }
 
+/** The Tabs family's nav variant for a page's sections (root hook `tcrn-section-tabs` through 4.0.x). */
 export function SectionTabs({ items, locale, label, onSelect }: SelectableNavProps) {
-  return <TabList items={items} locale={locale} label={label} onSelect={onSelect} className="tcrn-section-tabs" />;
+  return <TabList items={items} label={label ?? chromeLabels(locale).sectionNavigation} onSelect={onSelect} variant="nav" legacyClassName="tcrn-section-tabs" />;
 }
 
+/** The Tabs family's segmented variant (root hook `tcrn-segmented-nav` through 4.0.x). */
 export function SegmentedNav({ items, locale, label, onSelect }: SelectableNavProps) {
-  return <TabList items={items} locale={locale} label={label} onSelect={onSelect} className="tcrn-segmented-nav" />;
+  return <TabList items={items} label={label ?? chromeLabels(locale).sectionNavigation} onSelect={onSelect} variant="segmented" legacyClassName="tcrn-segmented-nav" />;
 }
 
 /**
@@ -1338,17 +1391,26 @@ export interface SelectableNavProps extends ProductLauncherProps {
   onSelect?: (id: string) => void;
 }
 
-function TabList({ items, locale, className, label, onSelect }: SelectableNavProps & { className: string }) {
-  const chrome = chromeLabels(locale);
+interface TabListProps {
+  items: NavItem[];
+  label: string;
+  onSelect?: (id: string) => void;
+  variant: Exclude<TabsVariant, "panel">;
+  legacyClassName: string;
+}
+
+function TabList({ items, label, onSelect, variant, legacyClassName }: TabListProps) {
   return (
-    <nav className={className} aria-label={label ?? (className === "tcrn-module-tabs" ? chrome.moduleSections : chrome.sectionNavigation)} data-tab-semantics="segmented-navigation">
+    <nav className={cx("tcrn-tabs", `tcrn-tabs--${variant}`, legacyClassName)} aria-label={label} data-tab-semantics="segmented-navigation">
       {items.map((item) => (
         <button key={item.id} type="button"
+          className="tcrn-tabs__tab"
+          title={item.label}
           aria-current={item.selected ? "page" : undefined}
           data-selected={item.selected ? "true" : undefined}
           onClick={onSelect ? () => onSelect(item.id) : undefined}
         >
-          {item.label}
+          <span className="tcrn-tabs__label">{item.label}</span>
         </button>
       ))}
     </nav>
@@ -1360,6 +1422,11 @@ export interface SideNavProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
 }
 
+/**
+ * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): the top-band shell has no resident side rail. Give
+ * ProductShell the navigation as its menu model (navGroups); NavGroup and NavItem rows render in the
+ * full menu and the drop-downs. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ */
 export function SideNav({ label, className, children, ...props }: SideNavProps) {
   return (
     <nav {...props} aria-label={label} className={cx("tcrn-side-nav", className)} data-navigation-primitive="side-nav">
@@ -2697,4 +2764,4 @@ export function Pagination({ label, shown, total, nextHref, prevHref, locale }: 
 // The component stylesheet is composed in ../../styles/: one module per family, joined in
 // cascade order by styles/index.ts. It is re-exported here so the public export and every
 // existing import of it from this module keep working.
-export { tcrnComponentCss } from "../../styles/index.js";
+export { tcrnComponentCss, tcrnRetiredComponentCss } from "../../styles/index.js";

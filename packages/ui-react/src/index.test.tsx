@@ -106,3 +106,23 @@ test("the checks can fail — a name removed from the roster is caught", () => {
 
   assert.deepEqual(undeclared, ["Button"]);
 });
+
+// TCRN-DS-SUB-125 (STORY-143 GWT1): every retired part keeps a deprecated export through 4.0.x and
+// a migration step, and its rules left the component stylesheet for the retired sheet.
+test("STORY-143 GWT1 each deprecated component is exported, declared and given a migration step", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const { componentLibraryDeprecatedComponentNames, tcrnComponentCss, tcrnRetiredComponentCss } = await import("./index.js");
+  const migration = await readFile(new URL("../../../docs/migration-4.0.md", import.meta.url), "utf8");
+  const changelog = await readFile(new URL("../../../CHANGELOG.md", import.meta.url), "utf8");
+  assert.deepEqual([...componentLibraryDeprecatedComponentNames].sort(), ["MobileNavToggle", "ProductLauncher", "ProductSwitcher", "SideNav", "SideNavCollapseButton", "TopBar"]);
+  for (const name of componentLibraryDeprecatedComponentNames) {
+    assert.equal(typeof (packageExports as Record<string, unknown>)[name], "function", `${name} is still exported`);
+    assert.ok(declaredComponents.includes(name), `${name} stays in the public roster through 4.0.x`);
+    assert.match(migration, new RegExp(`^\\| \`${name}\` \\| [^|]+ \\| [^|]*\\S[^|]* \\|`, "mu"), `${name} has a row with a migration step in docs/migration-4.0.md`);
+    assert.match(changelog, new RegExp(`\`${name}\``), `${name} is listed in the CHANGELOG`);
+  }
+  for (const block of ["tcrn-side-nav", "tcrn-shell-side-nav-toggle", "tcrn-shell-mobile-nav-toggle", "tcrn-top-bar", "tcrn-product-launcher", "tcrn-product-switcher"]) {
+    assert.doesNotMatch(tcrnComponentCss, new RegExp(`\\.${block}\\b`), `${block} left tcrnComponentCss`);
+    assert.match(tcrnRetiredComponentCss, new RegExp(`\\.${block}\\b`), `${block} is in the retired sheet`);
+  }
+});

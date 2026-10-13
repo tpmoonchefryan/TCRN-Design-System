@@ -97,34 +97,6 @@ export const baseCss06 = `
 .tcrn-shell-theme-toggle[data-current-theme="dark"] .tcrn-shell-theme-toggle__icon[data-theme-icon="light"] {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.58) rotate(90deg);
-}
-.tcrn-shell-side-nav-toggle {
-  inline-size: 38px;
-  block-size: 38px;
-  min-inline-size: 38px;
-  min-block-size: 38px;
-  min-height: 38px;
-  display: inline-grid;
-  place-items: center;
-  padding: 0;
-}
-/*
- * Mobile-only, and hidden by default rather than shown by default: above the
- * breakpoint the navigation is always on screen, so a show/hide control there
- * would be the no-op the responsive standard forbids — the same reason its
- * width-collapse sibling is hidden below the breakpoint. Each control exists
- * exactly where it does something.
- */
-.tcrn-shell-mobile-nav-toggle {
-  display: none;
-  place-items: center;
-  padding: 0;
-}
-.tcrn-shell-side-nav-toggle__icon {
-  display: inline-grid;
-  inline-size: 20px;
-  block-size: 20px;
-  place-items: center;
 }`;
 
 export const baseCss07 = `
@@ -295,32 +267,6 @@ export const baseCss10 = `
   .tcrn-product-shell-section-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-.tcrn-top-bar {
-  display: grid;
-  grid-template-columns: max-content max-content minmax(0, 1fr);
-  align-items: center;
-  gap: var(--tcrn-space-4);
-  min-height: 68px;
-  padding: var(--tcrn-space-3) var(--tcrn-space-5);
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
-  backdrop-filter: blur(16px);
-}
-.tcrn-top-bar__brand {
-  font-weight: var(--tcrn-type-weight-strong);
-}
-.tcrn-top-bar__module {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-ui);
-}
-.tcrn-top-bar__actions {
-  min-width: 0;
-}
-.tcrn-side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: var(--tcrn-space-4);
 }
 .tcrn-nav-group {
   display: grid;
@@ -1077,7 +1023,6 @@ a.tcrn-relationship-chip:focus-visible {
 .tcrn-sub-nav,
 .tcrn-saved-view-toolbar,
 .tcrn-page-header,
-.tcrn-view-tabs,
 .tcrn-quick-filters,
 .tcrn-record-row,
 .tcrn-record-table,
@@ -1094,7 +1039,6 @@ a.tcrn-relationship-chip:focus-visible {
   min-width: 0;
 }
 .tcrn-page-header,
-.tcrn-view-tabs,
 .tcrn-quick-filters,
 .tcrn-record-row,
 .tcrn-record-table,
@@ -1113,7 +1057,6 @@ a.tcrn-relationship-chip:focus-visible {
   --tcrn-density-gap: var(--tcrn-space-2h);
 }
 .tcrn-page-header--dense,
-.tcrn-view-tabs--dense,
 .tcrn-quick-filters--dense,
 .tcrn-record-row--dense,
 .tcrn-record-table--dense,
@@ -1140,44 +1083,6 @@ a.tcrn-relationship-chip:focus-visible {
   align-items: center;
   gap: var(--tcrn-space-2);
   min-width: 0;
-}
-/*
- * The trail (07b board .ts-crumbs and section D row 面包屑, TCRN-DS-SUB-129): one line at every
- * width. The separators keep their size; a crumb that does not fit gives way and ends in an
- * ellipsis, and every crumb carries its label as a title.
- */
-.tcrn-page-header__breadcrumbs,
-.tcrn-page-header__breadcrumb {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-  white-space: nowrap;
-}
-.tcrn-page-header__breadcrumbs {
-  overflow: hidden;
-  color: var(--tcrn-color-text-muted);
-  font-size: var(--tcrn-type-size-meta);
-}
-.tcrn-page-header__breadcrumb {
-  flex: 0 1 auto;
-}
-.tcrn-page-header__crumb-separator {
-  flex: none;
-}
-.tcrn-page-header__crumb {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-a.tcrn-page-header__crumb {
-  color: var(--tcrn-color-text-secondary);
-  text-decoration: none;
-}
-b.tcrn-page-header__crumb {
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-strong);
 }
 .tcrn-page-header__body {
   display: grid;
@@ -1231,17 +1136,6 @@ export const baseCss15 = `
   display: grid;
   gap: var(--tcrn-space-3);
 }
-.tcrn-view-tabs {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--tcrn-space-0h);
-  padding: var(--tcrn-space-0h);
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  max-width: 100%;
-}
 /* Quick filters wrap across lines by design, so they get no track — a frame that
    wraps is not a frame. The item grammar is the same either way, which is the
    point of inking the item rather than decorating the container. */
@@ -1251,8 +1145,6 @@ export const baseCss15 = `
   align-items: center;
   gap: var(--tcrn-space-0h);
 }
-.tcrn-view-tabs > a,
-.tcrn-view-tabs > span,
 .tcrn-quick-filters > a,
 .tcrn-quick-filters > span {
   display: inline-flex;
@@ -1289,7 +1181,6 @@ export const baseCss15 = `
    Brand colour leaves selection entirely and stays with actionability and focus,
    so colour means "you can act" and structure means "this is the state". */
 .tcrn-sub-nav [data-selected="true"],
-.tcrn-view-tabs [data-selected="true"],
 .tcrn-quick-filters [data-selected="true"] {
   background: var(--tcrn-selection-fill);
   color: var(--tcrn-color-text-primary);
@@ -1824,7 +1715,6 @@ export const baseCss22 = `
 .tcrn-search-result-list {
   min-width: 0;
 }
-.tcrn-tree-nav,
 .tcrn-document-canvas,
 .tcrn-toc-rail,
 .tcrn-inline-comment-list__item,
@@ -1835,7 +1725,6 @@ export const baseCss22 = `
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-surface-panel);
 }
-.tcrn-tree-nav,
 .tcrn-document-canvas,
 .tcrn-toc-rail,
 .tcrn-inline-comment-list__item,
@@ -1854,8 +1743,45 @@ export const baseCss22 = `
 .tcrn-tree-nav__item {
   min-width: 0;
 }
+/*
+ * TreeNav sits in a panel (TCRN-DS-SUB-124, STORY-143): in the top-band shell a tree of
+ * destinations lives in the full menu and the drop-downs, so the tree carries no frame of its
+ * own and its rows speak the menu row's grammar: the shell row height, ink-2 at rest, ink on the
+ * 3.5% hover wash, ink on the 6% wash and the strong weight when current, one line with the
+ * title as a title. The state rules only switch the row's pair; current comes after hover.
+ */
 .tcrn-tree-nav__item > a,
-.tcrn-tree-nav__item > span,
+.tcrn-tree-nav__item > span {
+  --tcrn-pair-tree-fill-d: transparent;
+  --tcrn-pair-tree-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-tree-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-tree-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-tree-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-tree-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-tree-fill: var(--tcrn-pair-tree-fill-d);
+  --tcrn-pair-tree-ink: var(--tcrn-pair-tree-ink-d);
+  display: flex;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  min-height: var(--tcrn-shell-row-h);
+  min-width: 0;
+  padding: 0 var(--tcrn-space-2h);
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-tree-fill);
+  color: var(--tcrn-pair-tree-ink);
+  font-size: var(--tcrn-type-size-ui);
+  text-decoration: none;
+}
+.tcrn-tree-nav__item > a:where(:hover, [data-tcrn-preview-state~="hover"]) {
+  --tcrn-pair-tree-fill: var(--tcrn-pair-tree-fill-h);
+  --tcrn-pair-tree-ink: var(--tcrn-pair-tree-ink-h);
+}
+.tcrn-tree-nav__item > a:where([data-selected="true"]),
+.tcrn-tree-nav__item > span:where([data-selected="true"]) {
+  --tcrn-pair-tree-fill: var(--tcrn-pair-tree-fill-s);
+  --tcrn-pair-tree-ink: var(--tcrn-pair-tree-ink-s);
+  font-weight: var(--tcrn-type-weight-strong);
+}
 .tcrn-toc-rail nav > a,
 .tcrn-toc-rail nav > span {
   display: flex;
@@ -1868,9 +1794,7 @@ export const baseCss22 = `
   color: var(--tcrn-color-text-primary);
   text-decoration: none;
 }
-/* TCRN-DS-STORY-062: same single-axis selection as the doc shell — 3px left rail + brand
-   text, no row fill, zero radius on the selected element. */
-.tcrn-tree-nav__item > [data-selected="true"],
+/* The table of contents marks the reader's place with the 6% wash and the strong weight. */
 .tcrn-toc-rail nav > [data-selected="true"] {
   color: var(--tcrn-color-text-primary);
   font-weight: var(--tcrn-type-weight-strong);
@@ -1991,21 +1915,11 @@ export const baseCss23 = `
   transform: translateY(0);
 }
 @media (max-width: 760px) {
-  .tcrn-top-bar {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-  }
   .tcrn-shell-locale-menu {
     flex: 0 1 auto;
     margin-right: 0;
     max-width: none;
     width: auto;
-  }
-  .tcrn-shell-mobile-nav-toggle {
-    display: inline-flex;
-    /* Sole route to the whole IA on the one viewport where it is touched. */
-    min-width: 44px;
-    min-height: 44px;
   }
   .tcrn-lane-board,
   .tcrn-relation-graph__levels,
@@ -2024,8 +1938,6 @@ export const baseCss23 = `
   }
   .tcrn-sub-nav > a,
   .tcrn-sub-nav > span,
-  .tcrn-view-tabs > a,
-  .tcrn-view-tabs > span,
   .tcrn-quick-filters > a,
   .tcrn-quick-filters > span {
     /*
@@ -2042,7 +1954,6 @@ export const baseCss23 = `
     flex: 0 0 auto;
     max-width: 100%;
   }
-  .tcrn-view-tabs,
   .tcrn-quick-filters {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -2113,15 +2024,7 @@ export const baseCss27 = `
 }`;
 
 export const baseCss28 = `
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-product-launcher button:active,
-  .tcrn-product-switcher button:active,
-  .tcrn-module-tabs button:active,
-  .tcrn-section-tabs button:active,
-  .tcrn-segmented-nav button:active {
-    transform: none;
-  }
-}
+
 
 /* ---- Component families relocated from the docs demo layer (TCRN-DS-STORY-037) ----
    These 24 families are emitted by real @tcrn/ui-react components (Form, Overlay,
@@ -2422,45 +2325,56 @@ export const baseCss29 = `
 
 export const baseCss30 = `
 
-/* Navigation breadcrumb */
+/*
+ * Navigation breadcrumb: the trail, and the page header's first row (TCRN-DS-SUB-124, STORY-143
+ * GWT4; 07b board .ts-crumbs and section D row 面包屑). One line at every width: the separators
+ * keep their size, a crumb that does not fit gives way and ends in an ellipsis, and every crumb
+ * carries its label as a title. The separators are ink-3, the ancestors ink-2 and the page itself
+ * ink at the strong weight.
+ */
 .tcrn-breadcrumb {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: var(--tcrn-space-1h);
   min-width: 0;
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-}
-
-.tcrn-breadcrumb__item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-}
-
-.tcrn-breadcrumb__separator {
-  width: 14px;
-  height: 14px;
+  overflow: hidden;
   color: var(--tcrn-color-text-muted);
+  font-size: var(--tcrn-type-size-meta);
+  white-space: nowrap;
 }
-
+.tcrn-breadcrumb__item {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-breadcrumb__separator {
+  flex: none;
+}
+.tcrn-breadcrumb__crumb {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .tcrn-breadcrumb [aria-current="page"] {
   color: var(--tcrn-color-text-primary);
-  font-weight: 700;
+  font-weight: var(--tcrn-type-weight-strong);
 }
 
-/* An ancestor crumb is now a link (it previously rendered as an inert span, so
-   there was nothing to style). Quiet by default and underlined on hover: the
-   trail is chrome, and a row of permanently underlined links competes with the
-   page title it sits above. These rules belong to the Navigation family, which
-   keeps its pre-G+ form until its batch (EX-INIT015-navigation). The quiet link
-   for other chrome positions is the quiet variant of the link pair table
+/* An ancestor crumb is a link (it once rendered as an inert span, so there was nothing
+   to style). Quiet by default and underlined on hover: the trail is chrome, and a row of
+   permanently underlined links competes with the page title it sits above. The quiet
+   link for other chrome positions is the quiet variant of the link pair table
    (tcrn-link tcrn-link--quiet, generated from contract/typography.json). */
 .tcrn-breadcrumb a {
-  color: inherit;
+  color: var(--tcrn-color-text-secondary);
   text-decoration: none;
 }
 .tcrn-breadcrumb a:hover {
@@ -2494,52 +2408,6 @@ export const baseCss30 = `
 /* Navigation tab families — .tcrn-filter-bar stays doc-side (already package-owned via
    the scoped .tcrn-table-toolbar .tcrn-filter-bar rule; introducing a top-level
    .tcrn-filter-bar here would trip the shell-fidelity duplicate-selector gate). */
-/* The same segmented track, for the button-based selectors. These previously
-   said "selected" with a brand-tinted border plus a floating shadow — a lift,
-   which competed with the shell's real elevation language. */
-.tcrn-product-launcher,
-.tcrn-product-switcher,
-.tcrn-module-tabs,
-.tcrn-section-tabs,
-.tcrn-segmented-nav {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-0h);
-  padding: var(--tcrn-space-0h);
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  min-width: 0;
-  max-width: 100%;
-}
-
-.tcrn-product-launcher button,
-.tcrn-product-switcher button,
-.tcrn-module-tabs button,
-.tcrn-section-tabs button,
-.tcrn-segmented-nav button {
-  min-height: 34px;
-  border: 1px solid transparent;
-  border-radius: var(--tcrn-radius-control);
-  background: transparent;
-  color: var(--tcrn-color-text-secondary);
-  padding: 0 var(--tcrn-space-2h);
-  white-space: nowrap;
-}
-
-.tcrn-product-launcher button[data-selected="true"],
-.tcrn-product-switcher button[data-selected="true"],
-.tcrn-module-tabs button[data-selected="true"],
-.tcrn-section-tabs button[data-selected="true"],
-.tcrn-segmented-nav button[data-selected="true"],
-.tcrn-product-launcher button[aria-current="page"],
-.tcrn-product-switcher button[aria-current="page"],
-.tcrn-module-tabs button[aria-current="page"],
-.tcrn-section-tabs button[aria-current="page"],
-.tcrn-segmented-nav button[aria-current="page"] {
-  background: var(--tcrn-selection-fill);
-  color: var(--tcrn-color-text-primary);
-}
 
 /* TCRN-DS-STORY-063: interactive feedback family completion. Every clickable navigation / row /
    tab / button surface now answers hover + keyboard focus, and the pressable button families
@@ -2549,14 +2417,7 @@ export const baseCss30 = `
 /* Hover is half a step toward selection in the same material, so the two states
    read as one scale rather than as two unrelated effects. */
 .tcrn-sub-nav > a:hover,
-.tcrn-view-tabs > a:hover,
 .tcrn-quick-filters > a:hover,
-.tcrn-product-launcher button:hover,
-.tcrn-product-switcher button:hover,
-.tcrn-module-tabs button:hover,
-.tcrn-section-tabs button:hover,
-.tcrn-segmented-nav button:hover,
-.tcrn-tree-nav__item > a:hover,
 .tcrn-toc-rail nav > a:hover {
   background: var(--tcrn-selection-fill-hover);
   color: var(--tcrn-color-text-primary);
@@ -2566,26 +2427,13 @@ export const baseCss30 = `
   color: var(--tcrn-color-text-primary);
 }
 .tcrn-sub-nav > a:focus-visible,
-.tcrn-view-tabs > a:focus-visible,
 .tcrn-quick-filters > a:focus-visible,
 .tcrn-record-row[href]:focus-visible,
 .tcrn-tree-nav__item > a:focus-visible,
 .tcrn-toc-rail nav > a:focus-visible,
-.tcrn-search-result-list__head a:focus-visible,
-.tcrn-product-launcher button:focus-visible,
-.tcrn-product-switcher button:focus-visible,
-.tcrn-module-tabs button:focus-visible,
-.tcrn-section-tabs button:focus-visible,
-.tcrn-segmented-nav button:focus-visible {
+.tcrn-search-result-list__head a:focus-visible {
   outline: 2px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
-}
-.tcrn-product-launcher button:active,
-.tcrn-product-switcher button:active,
-.tcrn-module-tabs button:active,
-.tcrn-section-tabs button:active,
-.tcrn-segmented-nav button:active {
-  transform: scale(var(--tcrn-motion-press-scale));
 }
 /* SearchResultList head anchor previously had no color/decoration at all — bare UA blue
    for package consumers. It reads as an inline result link: brand ink + quiet underline that
@@ -3004,24 +2852,108 @@ export const baseCss33 = `
 
 export const baseCss34 = `
 
+/*
+ * Tabs, one family (TCRN-DS-SUB-124, STORY-143 GWT2). The ARIA tabs that swap a panel (panel
+ * variant), the module, section and view navs (nav variant) and the segmented nav (segmented
+ * variant) render one block. A row of tabs is one control, so the row carries one frame, the
+ * track; the tabs inside it are frameless, keep to one line and truncate with their label as a
+ * title, and the track scrolls itself, not the page, when they do not fit.
+ *
+ * Selection is the family's one structural change: the chosen tab takes the 6% ink wash and the
+ * strong weight, and nothing is added on top: no edge, no axis, no lift, no brand colour. The
+ * state rules only switch the tab's pair (ink-2 at rest, ink on the 3.5% hover wash, ink on the
+ * 6% wash when selected, ink-3 when disabled) and selected comes after hover, so it wins. The
+ * focus ring is the tab's own outline, drawn inside it, which the focus state only widens.
+ */
+.tcrn-tabs {
+  min-width: 0;
+  max-width: 100%;
+}
+.tcrn-tabs--panel {
+  display: grid;
+  gap: var(--tcrn-space-3);
+}
+.tcrn-tabs__list,
+.tcrn-tabs--nav,
+.tcrn-tabs--segmented {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--tcrn-space-0h);
+  min-width: 0;
+  max-width: 100%;
+  padding: var(--tcrn-space-0h);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-surface);
+  background: var(--tcrn-color-surface-panel);
+}
 .tcrn-tabs__list {
-  display: flex;
-  gap: var(--tcrn-space-1);
-  border-block-end: 1px solid var(--tcrn-color-border-subtle);
+  justify-self: start;
 }
 .tcrn-tabs__tab {
-  padding: var(--tcrn-space-2) var(--tcrn-space-3);
+  --tcrn-pair-tab-fill-d: transparent;
+  --tcrn-pair-tab-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-tab-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-tab-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-tab-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-tab-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-tab-ink-x: var(--tcrn-color-ink-3);
+  --tcrn-pair-tab-fill: var(--tcrn-pair-tab-fill-d);
+  --tcrn-pair-tab-ink: var(--tcrn-pair-tab-ink-d);
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--tcrn-control-height-md);
+  padding: 0 var(--tcrn-space-2h);
   border: 0;
-  background: none;
-  color: var(--tcrn-color-text-secondary);
+  border-radius: var(--tcrn-radius-control);
+  outline: 0 solid var(--tcrn-color-focus-ring);
+  outline-offset: -2px;
+  background: var(--tcrn-pair-tab-fill);
+  color: var(--tcrn-pair-tab-ink);
+  font: inherit;
+  font-size: var(--tcrn-type-size-ui);
+  text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
-  border-block-end: 2px solid transparent;
 }
-.tcrn-tabs__tab--selected { color: var(--tcrn-color-text-primary); border-block-end-color: var(--tcrn-selection-edge); font-weight: 600; }
-.tcrn-tabs__tab:focus-visible { outline: 2px solid var(--tcrn-color-focus-ring); outline-offset: -2px; }
-.tcrn-tabs__tab:disabled { color: var(--tcrn-color-text-muted); cursor: not-allowed; }
-.tcrn-tabs__panel { padding-block-start: var(--tcrn-space-3); }
-.tcrn-tabs__panel:focus-visible { outline: 2px solid var(--tcrn-color-focus-ring); outline-offset: 2px; }
+.tcrn-tabs__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-tabs__tab:where(:hover, [data-tcrn-preview-state~="hover"]) {
+  --tcrn-pair-tab-fill: var(--tcrn-pair-tab-fill-h);
+  --tcrn-pair-tab-ink: var(--tcrn-pair-tab-ink-h);
+}
+.tcrn-tabs__tab:where([data-selected="true"]) {
+  --tcrn-pair-tab-fill: var(--tcrn-pair-tab-fill-s);
+  --tcrn-pair-tab-ink: var(--tcrn-pair-tab-ink-s);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-tabs__tab:where(:disabled, [aria-disabled="true"]) {
+  --tcrn-pair-tab-fill: var(--tcrn-pair-tab-fill-d);
+  --tcrn-pair-tab-ink: var(--tcrn-pair-tab-ink-x);
+  cursor: not-allowed;
+}
+.tcrn-tabs__tab:where(:focus-visible, [data-tcrn-preview-state~="focus"]) {
+  outline-width: 2px;
+}
+.tcrn-tabs__panel {
+  min-width: 0;
+  outline: 0 solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-tabs__panel:where(:focus-visible) {
+  outline-width: 2px;
+}
 
 .tcrn-menu {
   display: flex;
@@ -3091,7 +3023,7 @@ export const baseCss38 = `
 .tcrn-settings-layout__frame{container:tcrn-settings-layout-frame/inline-size;min-inline-size:0}
 .tcrn-settings-layout__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-4);min-inline-size:0}
 .tcrn-settings-layout__nav{min-inline-size:0;max-inline-size:100%;overflow-x:auto}
-.tcrn-settings-layout__nav>:is(.tcrn-segmented-nav,.tcrn-section-tabs,.tcrn-module-tabs){flex-wrap:nowrap;max-inline-size:max-content}
+.tcrn-settings-layout__nav>.tcrn-tabs{flex-wrap:nowrap;max-inline-size:max-content}
 .tcrn-settings-layout__content{display:grid;gap:var(--tcrn-space-4);min-inline-size:0;container:tcrn-settings-content/inline-size}
 .tcrn-settings-layout__form{display:grid;gap:var(--tcrn-space-2);min-inline-size:0}
 .tcrn-settings-layout__form>.tcrn-setting-row-list{display:grid;grid-template-columns:minmax(0,1fr);min-inline-size:0}
@@ -3162,3 +3094,134 @@ export const baseCss39 = `
 .tcrn-page-hierarchy__content{display:grid;gap:var(--tcrn-space-3)}
 @container tcrn-page-hierarchy-third-level (min-width:960px){.tcrn-page-hierarchy__third-level{grid-template-columns:minmax(0,var(--tcrn-container-page-third-level-nav)) minmax(0,1fr)}}
 `;
+
+// The retired parts' rules (TCRN-DS-SUB-125). Not a family segment: styles/index.ts joins it into
+// tcrnRetiredComponentCss, never into tcrnComponentCss.
+export const retiredNavigationCss01 = `
+/*
+ * Retired navigation and shell parts (TCRN-DS-SUB-125, STORY-143; MIN-20261013-SHELL D1: one shell,
+ * the top band, with no resident side rail). SideNav, SideNavCollapseButton, MobileNavToggle, TopBar,
+ * ProductLauncher and ProductSwitcher keep their deprecated exports through 4.0.x, but their rules
+ * are no longer part of tcrnComponentCss: they are joined into tcrnRetiredComponentCss, which a
+ * consumer still rendering them adds after tcrnComponentCss. Removed with the parts in 4.1.
+ */
+.tcrn-shell-side-nav-toggle {
+  inline-size: 38px;
+  block-size: 38px;
+  min-inline-size: 38px;
+  min-block-size: 38px;
+  min-height: 38px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+}
+.tcrn-shell-side-nav-toggle__icon {
+  display: inline-grid;
+  inline-size: 20px;
+  block-size: 20px;
+  place-items: center;
+}
+/*
+ * Mobile-only, and hidden by default rather than shown by default: above the
+ * breakpoint the navigation is always on screen, so a show/hide control there
+ * would be the no-op the responsive standard forbids — the same reason its
+ * width-collapse sibling is hidden below the breakpoint. Each control exists
+ * exactly where it does something.
+ */
+.tcrn-shell-mobile-nav-toggle {
+  display: none;
+  place-items: center;
+  padding: 0;
+}
+.tcrn-top-bar {
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  align-items: center;
+  gap: var(--tcrn-space-4);
+  min-height: 68px;
+  padding: var(--tcrn-space-3) var(--tcrn-space-5);
+  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  background: color-mix(in srgb, var(--tcrn-color-surface-panel), transparent 5%);
+  backdrop-filter: blur(16px);
+}
+.tcrn-top-bar__brand {
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-top-bar__module {
+  color: var(--tcrn-color-text-secondary);
+  font-size: var(--tcrn-type-size-ui);
+}
+.tcrn-top-bar__actions {
+  min-width: 0;
+}
+.tcrn-side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-4);
+}
+@media (max-width: 760px) {
+  .tcrn-top-bar {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .tcrn-shell-mobile-nav-toggle {
+    display: inline-flex;
+    /* Sole route to the whole IA on the one viewport where it is touched. */
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+/* The same segmented track, for the button-based selectors. These previously
+   said "selected" with a brand-tinted border plus a floating shadow — a lift,
+   which competed with the shell's real elevation language. */
+.tcrn-product-launcher,
+.tcrn-product-switcher {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--tcrn-space-0h);
+  padding: var(--tcrn-space-0h);
+  border: 1px solid var(--tcrn-color-border-subtle);
+  border-radius: var(--tcrn-radius-surface);
+  background: var(--tcrn-color-surface-panel);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.tcrn-product-launcher button,
+.tcrn-product-switcher button {
+  min-height: 34px;
+  border: 1px solid transparent;
+  border-radius: var(--tcrn-radius-control);
+  background: transparent;
+  color: var(--tcrn-color-text-secondary);
+  padding: 0 var(--tcrn-space-2h);
+  white-space: nowrap;
+}
+
+.tcrn-product-launcher button[data-selected="true"],
+.tcrn-product-switcher button[data-selected="true"],
+.tcrn-product-launcher button[aria-current="page"],
+.tcrn-product-switcher button[aria-current="page"] {
+  background: var(--tcrn-selection-fill);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-product-launcher button:hover,
+.tcrn-product-switcher button:hover {
+  background: var(--tcrn-selection-fill-hover);
+  color: var(--tcrn-color-text-primary);
+}
+.tcrn-product-launcher button:focus-visible,
+.tcrn-product-switcher button:focus-visible {
+  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline-offset: 2px;
+}
+.tcrn-product-launcher button:active,
+.tcrn-product-switcher button:active {
+  transform: scale(var(--tcrn-motion-press-scale));
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-product-launcher button:active,
+  .tcrn-product-switcher button:active {
+    transform: none;
+  }
+}`;
