@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import {
   AttachmentList,
   MetadataRail,
+  PageHeader,
   RecordInspector,
   RecordRow,
   RecordTable,
@@ -87,4 +88,30 @@ test("RecordInspector composes core detail inspection for hierarchy and details"
   assert.match(html, /data-pattern="record-inspector"/);
   assert.equal((html.match(/tcrn-detail-inspector/g) ?? []).length, 2);
   assert.match(html, /data-pattern="attachment-list"/);
+});
+
+test("PageHeader keeps its trail on one line: every crumb carries its label as a title and the page is the last", () => {
+  const html = renderToStaticMarkup(
+    <PageHeader
+      title="Roster"
+      breadcrumbs={[
+        { id: "talent", label: "Talent", href: "/talent" },
+        { id: "people", label: "People" },
+        { id: "roster", label: "Roster" }
+      ]}
+    />
+  );
+  assert.match(html, /<nav class="tcrn-page-header__breadcrumbs" aria-label="Breadcrumbs">/);
+  assert.match(html, /<a class="tcrn-page-header__crumb" href="\/talent" title="Talent">Talent<\/a>/);
+  assert.match(html, /<span class="tcrn-page-header__crumb" title="People">People<\/span>/);
+  assert.match(html, /<b class="tcrn-page-header__crumb" title="Roster" aria-current="page">Roster<\/b>/);
+  // One separator between two crumbs, none before the first; separators are not read out.
+  assert.equal(html.match(/class="tcrn-page-header__crumb-separator" aria-hidden="true"/g)?.length, 2);
+  assert.ok(html.indexOf("tcrn-page-header__crumb-separator") > html.indexOf("Talent</a>"));
+  // A trail whose last crumb is a link names no current page; the trail's name follows the locale.
+  const linked = renderToStaticMarkup(<PageHeader title="Contracts" locale="ja" breadcrumbs={[{ id: "contracts", label: "Contracts", href: "/contracts" }]} />);
+  assert.doesNotMatch(linked, /aria-current/);
+  assert.match(linked, /aria-label="パンくずリスト"/);
+  // Without a trail there is no navigation landmark.
+  assert.doesNotMatch(renderToStaticMarkup(<PageHeader title="Settings" />), /<nav/);
 });

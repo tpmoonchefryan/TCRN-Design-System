@@ -580,6 +580,8 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
       moduleName={copy.moduleName}
       brandProductId="design-system"
       currentRouteLabel={currentRouteLabel}
+      // The paper's first row: the current route, under its trail in the menu model (TCRN-DS-SUB-129).
+      pageHeader={{ title: currentRouteLabel }}
       navGroups={navGroups(variant)}
       currentTheme={variant.theme}
       locales={tcrnLocaleMetadata}
