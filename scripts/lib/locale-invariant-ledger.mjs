@@ -66,7 +66,10 @@ export const localeInvariantLedger = {
     "placeholder", "read-only", "error", "state", "variant",
     "h1", "h2", "h3", "h4", "body", "strong", "reading", "meta", "caption", "link", "numeral", "caps", "mono", "mark",
     "size", "sm", "md", "lg", "ink", "host", "status", "canvas",
-    "sans", "serif", "suffix"
+    "sans", "serif", "suffix",
+    // The shell-matrix story (TCRN-DS-SUB-136): the idle brand button, the band rows and the floating
+    // layers by their state words.
+    "idle", "pins", "cluster", "expanded", "drop", "sheet"
   ],
   // Cat 5 — machine values of the composition-one sample stories (apps/storybook/src/contract-stories/
   // gplus/samples): record IDs, the invoice number, the avatar initials, and the registered

@@ -164,7 +164,8 @@ export const CATEGORY_STORY_COUNT_CAP = 8;
 export const CATEGORY_STORY_COUNT_GRACE_ALLOWLIST = {
   "Components/navigation-shells": {
     // 5 -> 9 (TCRN-DS-INIT-016 R1, SUB-121): the four top-band shell stories.
-    recordedStoryCount: 9,
+    // 9 -> 10 (TCRN-DS-INIT-016 R1, SUB-136): shell-matrix, the shell board matrix (07a section B).
+    recordedStoryCount: 10,
     owedTo: "beyond-INIT-016",
     note: "The shell stories' ids and category are fixed (C-9) and the shell gate resolves them there; the earlier navigation stories retire or move with the navigation family's consolidation"
   }

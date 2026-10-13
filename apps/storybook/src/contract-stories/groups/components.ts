@@ -1,6 +1,6 @@
 import type { ContractStory } from "../types.js";
 import { selectStory } from "../story-content.js";
-import { gplusMatrixStories } from "../gplus/matrix-stories.js";
+import { gplusMatrixStories, shellMatrixStory } from "../gplus/matrix-stories.js";
 import { gplusCompositionThreeStory, gplusSampleStories } from "../gplus/sample-stories.js";
 
 export const componentsStories: ContractStory[] = [
@@ -19,6 +19,8 @@ export const componentsStories: ContractStory[] = [
   selectStory("shell-narrow"),
   selectStory("shell-mobile"),
   selectStory("shell-intro"),
+  // The shell board matrix (07a section B) closes the top-band shell stories (C-9).
+  shellMatrixStory,
   selectStory("dialog-spec-usage"),
   selectStory("table-record-index-spec"),
   selectStory("records-and-boards-components-spec"),

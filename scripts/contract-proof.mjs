@@ -35,7 +35,14 @@
 //   matrix-expect          per board, the contract cells, the generated matrix data and the board data-cell
 //                          elements are the same cells (44/28/10/116/42); every cell's expect (the contract
 //                          values through the board cr/fmt, two decimals) equals the generated expect and
-//                          the board data-expect with difference 0, and kind and exemption agree.
+//                          the board data-expect with difference 0, and kind and exemption agree. The shell
+//                          board (07a, Shell.dc.html; TCRN-DS-SUB-136) is read through its section B matrix:
+//                          its 33 rows give 66 cells (the contract lists the light cells in row order, then
+//                          the night cells), each data-cr equals the cell's expect with difference 0 and the
+//                          ex mark equals the exemption; a cell whose 07a name (id plus the theme suffix) is
+//                          a data-cell of section A must equal one of those elements in data-expect and
+//                          data-kind (the brand button's idle and open states share a name there), and
+//                          the rows only section B has carry names section A does not use.
 //
 // The package CSS and exports come from the built dist (build first); no source layout of
 // packages/ui-react is read. The proof writes nothing.
@@ -64,7 +71,13 @@ export const BOARD_FILES = Object.freeze({
   actions: "V2-B1-Actions.dc.html",
   inputs: "V2-B1-Inputs.dc.html"
 });
-export const EXPECTED_CELLS = Object.freeze({ typography: 44, icon: 28, brand: 10, actions: 116, inputs: 42 });
+// The shell board is the 07a board of the visual standard (TCRN-DS-SUB-136); its matrix is section B.
+export const SHELL_BOARD = "docs/design/visual-standard/boards/Shell.dc.html";
+export const EXPECTED_CELLS = Object.freeze({ typography: 44, icon: 28, brand: 10, actions: 116, inputs: 42, shell: 66 });
+// Shell cells whose 07a name is a data-cell of section A (26 of the 33 rows, light and night); the
+// other seven rows (the colour mark, the focus ring, the bell on hover, the panel against the canvas,
+// the sub-item arrow, the Sheet row and the paper under the scrim) are section B only.
+export const EXPECTED_SHELL_NAMED = 52;
 export const EXPECTED_ICON_COUNT = 38;
 export const EXPECTED_MARK_FILES = 8;
 export const MATRIX_DATA = "apps/storybook/src/contract-stories/gplus/generated/matrices.generated.ts";
@@ -260,6 +273,27 @@ export function boardCells(html) {
     cells.push({ cellId: match[1], kind: attribute("data-kind"), expect: attribute("data-expect"), exempt: /\sdata-exempt(?=[\s/>=])/u.test(tag) });
   }
   return cells;
+}
+
+/**
+ * The shell board's matrix and names: rows of section B ([{ label, cells: [{ expect, exempt }] }],
+ * light then night in each row, from data-cr and the ex mark) and the data-cell elements of the
+ * part before section B (section A's screens), or null when the board has no section B.
+ */
+export function shellBoardMatrix(html) {
+  const text = String(html);
+  const start = text.indexOf('<div class="sec"><h3><b>B</b>');
+  if (start < 0) return null;
+  const next = text.indexOf('<div class="sec">', start + 1);
+  const section = text.slice(start, next < 0 ? text.length : next);
+  const rows = [];
+  for (const row of section.matchAll(/<tr>([\s\S]*?)<\/tr>/gu)) {
+    const label = /<td class="c">([^<]*)<\/td>/u.exec(row[1])?.[1];
+    if (label === undefined) continue;
+    const cells = Array.from(row[1].matchAll(/<td class="n((?: [a-z]+)*) ?" data-cr="([^"]*)"/gu), (cell) => ({ expect: cell[2], exempt: /\bex\b/u.test(cell[1]) }));
+    rows.push({ label, cells });
+  }
+  return { rows, named: boardCells(text.slice(0, start)) };
 }
 
 /** gplusMatrices and gplusMatrixCellCounts of the generated matrix module, or null. */
@@ -477,21 +511,92 @@ function checkProductMarks({ root, data, ui, uiError, loadError }) {
   };
 }
 
+// The shell board (07a): section B's rows against the contract by position, light cells then night
+// cells in row order; the 07a names against section A's data-cell elements. Pushes into failures and
+// returns the cell count read from section B, the largest difference and how many cells section A names.
+function checkShellMatrix({ root, data, lib, generatedData, wanted, contractCells, dataCells, failures }) {
+  const result = { cells: 0, largest: 0, named: 0 };
+  if (contractCells.length !== wanted) failures.push(`shell: matrices.json has ${contractCells.length} cells; the board has ${wanted}`);
+  if (generatedData && dataCells.length !== wanted) failures.push(`shell: the generated matrix data has ${dataCells.length} cells; the board has ${wanted}`);
+  if (generatedData && generatedData.counts.shell !== wanted) failures.push(`shell: gplusMatrixCellCounts says ${generatedData.counts.shell}; the board has ${wanted}`);
+  for (const id of duplicatesOf(dataCells.map((cell) => cell.cellId))) failures.push(`shell/${id}: more than one cell in the generated matrix data`);
+  const contractIds = new Set(contractCells.map((cell) => cell.cellId));
+  if (generatedData) for (const cell of dataCells) if (!contractIds.has(cell.cellId)) failures.push(`shell/${cell.cellId}: a generated matrix cell with no matrices.json cell`);
+  const boardPath = join(root, SHELL_BOARD);
+  if (!existsSync(boardPath)) {
+    failures.push(`${SHELL_BOARD}: missing`);
+    return result;
+  }
+  const board = shellBoardMatrix(readFileSync(boardPath, "utf8"));
+  if (!board) {
+    failures.push(`${SHELL_BOARD}: no section B`);
+    return result;
+  }
+  result.cells = board.rows.reduce((sum, row) => sum + row.cells.length, 0);
+  if (result.cells !== wanted) failures.push(`shell: section B of ${SHELL_BOARD} has ${result.cells} cells; the board has ${wanted}`);
+  for (const row of board.rows) if (row.cells.length !== 2) failures.push(`shell: section B row ${JSON.stringify(row.label)} has ${row.cells.length} contrast cells, not a light and a night one`);
+  const themed = { light: contractCells.filter((cell) => cell.theme === "light"), night: contractCells.filter((cell) => cell.theme === "night") };
+  if (themed.light.length !== board.rows.length || themed.night.length !== board.rows.length) failures.push(`shell: matrices.json has ${themed.light.length} light and ${themed.night.length} night cells; section B has ${board.rows.length} rows`);
+  const dataMap = new Map(dataCells.map((cell) => [cell.cellId, cell]));
+  board.rows.forEach((row, index) => {
+    if (themed.light[index] && themed.night[index] && themed.light[index].id !== themed.night[index].id) failures.push(`shell: row ${index + 1} is ${themed.light[index].id} in the light cells and ${themed.night[index].id} in the night cells`);
+    ["light", "night"].forEach((theme, column) => {
+      const cell = themed[theme][index];
+      const boardCell = row.cells[column];
+      if (!cell || !boardCell) return;
+      const resolved = data.matrixCell("shell", cell.cellId);
+      const expect = lib.fmt(lib.cr(resolved.inkValue, resolved.fillValue, resolved.surfaceValue));
+      const generatedCell = dataMap.get(cell.cellId);
+      if (generatedData && !generatedCell) failures.push(`shell/${cell.cellId}: missing from the generated matrix data`);
+      if (generatedCell) {
+        if (generatedCell.expect !== expect) failures.push(`shell/${cell.cellId}: the generated expect is ${generatedCell.expect}; the contract gives ${expect}`);
+        if (generatedCell.kind !== resolved.kind || generatedCell.exempt !== resolved.exempt) failures.push(`shell/${cell.cellId}: the generated cell is ${generatedCell.kind}${generatedCell.exempt ? " exempt" : ""}; matrices.json says ${resolved.kind}${resolved.exempt ? " exempt" : ""}`);
+      }
+      const where = `section B row ${index + 1} (${row.label}) ${theme}`;
+      if (!/^\d+\.\d{2}$/u.test(boardCell.expect)) {
+        failures.push(`shell/${cell.cellId}: ${where} data-cr ${JSON.stringify(boardCell.expect)} is not a two-decimal number`);
+      } else {
+        const difference = Math.abs(Math.round(Number(boardCell.expect) * 100) - Math.round(Number(expect) * 100)) / 100;
+        result.largest = Math.max(result.largest, difference);
+        if (boardCell.expect !== expect) failures.push(`shell/${cell.cellId}: ${where} data-cr ${boardCell.expect}, ${expect} from the contract (difference ${difference.toFixed(2)})`);
+      }
+      if (boardCell.exempt !== resolved.exempt) failures.push(`shell/${cell.cellId}: ${where} is ${boardCell.exempt ? "marked ex" : "not marked ex"}; matrices.json says ${resolved.exempt ? "exempt" : "not exempt"}`);
+      const name = `${cell.id}-${theme === "light" ? "l" : "n"}`;
+      const onBoard = board.named.filter((element) => element.cellId === name);
+      if (onBoard.length === 0) return;
+      result.named += 1;
+      if (!onBoard.some((element) => element.expect === expect && element.kind === resolved.kind && element.exempt === resolved.exempt)) {
+        failures.push(`shell/${cell.cellId}: section A names ${name} with ${[...new Set(onBoard.map((element) => `${element.expect} ${element.kind}${element.exempt ? " exempt" : ""}`))].join(", ")}; the contract gives ${expect} ${resolved.kind}${resolved.exempt ? " exempt" : ""}`);
+      }
+    });
+  });
+  if (result.named !== EXPECTED_SHELL_NAMED) failures.push(`shell: ${result.named} cells carry a name section A uses; ${EXPECTED_SHELL_NAMED} do on the board`);
+  return result;
+}
+
 function checkMatrices({ root, data, lib, loadError }) {
   if (!data || !lib) return { summary: "not run: the contract does not load", failures: [loadError] };
   const failures = [];
   const boards = Object.keys(EXPECTED_CELLS);
   const contractBoards = Object.keys(data.matrices.boards);
-  if (contractBoards.join(",") !== boards.join(",")) failures.push(`matrices.json boards are ${contractBoards.join(", ")}; the five boards are ${boards.join(", ")}`);
+  if (contractBoards.join(",") !== boards.join(",")) failures.push(`matrices.json boards are ${contractBoards.join(", ")}; the six boards are ${boards.join(", ")}`);
   const dataPath = join(root, MATRIX_DATA);
   const generatedData = existsSync(dataPath) ? generatedMatrixData(readFileSync(dataPath, "utf8")) : null;
   if (!generatedData) failures.push(`${MATRIX_DATA}: missing, or no gplusMatrices and gplusMatrixCellCounts`);
   let total = 0;
   let largest = 0;
+  let shellNamed = 0;
   for (const board of boards) {
     const wanted = EXPECTED_CELLS[board];
     const contractCells = data.matrices.boards[board]?.cells ?? [];
     const dataCells = generatedData?.matrices[board] ?? [];
+    if (board === "shell") {
+      const shell = checkShellMatrix({ root, data, lib, generatedData, wanted, contractCells, dataCells, failures });
+      total += shell.cells;
+      largest = Math.max(largest, shell.largest);
+      shellNamed = shell.named;
+      continue;
+    }
     const boardPath = join(root, BOARD_DIR, BOARD_FILES[board]);
     if (!existsSync(boardPath)) {
       failures.push(`${BOARD_DIR}/${BOARD_FILES[board]}: missing`);
@@ -539,7 +644,7 @@ function checkMatrices({ root, data, lib, loadError }) {
   return {
     summary:
       failures.length === 0
-        ? `${boards.length} boards, ${total} cells (${counts}): every expect equals the generated data and the board data-expect at two decimals (largest difference ${largest.toFixed(2)})`
+        ? `${boards.length} boards, ${total} cells (${counts}): every expect equals the generated data and the board data-expect at two decimals, the shell board through section B and ${shellNamed} 07a names (largest difference ${largest.toFixed(2)})`
         : `${failures.length} problem(s) in the matrix expectations (largest difference ${largest.toFixed(2)})`,
     failures
   };
