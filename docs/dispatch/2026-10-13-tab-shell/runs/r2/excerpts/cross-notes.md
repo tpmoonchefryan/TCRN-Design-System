@@ -17,6 +17,7 @@
 
 | 包 | 交回物与行段 | 要点 |
 | --- | --- | --- |
+| K2 | `runs/r2/handoff/K2.md` 第 94–110 行（第 5、6 节） | `.story-body` 比对副本末尾已带壳层段（SUB-170 只改段首定位）；换字跳过与台账都认三个字标类，`[data-locale-invariant]` 只给台账用；内层 Esc 经 `defaultPrevented` 告知外层（SUB-151 保留）；文档层示例类改名 `tcrn-doc-demo-frame`、`tcrn-doc-demo-pager`；不要再加「Change Log」内容键。既有红：`smoke.test.ts:826/831/832` 断言旧类（归 SUB-173）、tokens:proof 的「铛」（归 SUB-177） |
 
 ## 4. 其他事实
 
