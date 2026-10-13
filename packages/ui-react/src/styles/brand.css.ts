@@ -143,6 +143,55 @@ export const brandCss01 = `
   line-height: 14px;
   text-transform: uppercase;
   white-space: nowrap;
+}
+/* ProductLockup first line (STORY-145, TCRN-DS-SUB-127; MIN-20261013-SHELL D2): the second of
+   the three renditions, the lockup's first line alone. It is the Brand board's section E
+   writing unchanged: at the lockup scale a 44 mark and a 16/600 line 14 from it, at the rail
+   scale a 22 mark and a 12.5/600 line 10 from it; Einzbern and Mana Orchestrate keep their
+   serif whole names. The flex row centres mark and line (align-items center from the lockup
+   rule); nothing nudges the line, so no padding, margin, offset or line-height trim here. */
+.tcrn-brand-lockup--line {
+  --tcrn-brand-mark-size: 44px;
+  --tcrn-brand-line-one-size: 16px;
+  --tcrn-brand-line-one-height: var(--tcrn-type-line-ui);
+  gap: var(--tcrn-space-3h);
+  color: var(--tcrn-color-ink);
+}
+.tcrn-brand-lockup--line-rail {
+  --tcrn-brand-mark-size: 22px;
+  --tcrn-brand-line-one-size: 12.5px;
+  --tcrn-brand-line-one-height: var(--tcrn-type-line-control);
+  gap: var(--tcrn-space-2h);
+}
+.tcrn-brand-lockup__line {
+  display: block;
+  min-width: 0;
+}
+.tcrn-brand-lockup__word {
+  display: block;
+  overflow: hidden;
+  font-size: var(--tcrn-brand-line-one-size);
+  font-weight: var(--tcrn-type-weight-strong);
+  line-height: var(--tcrn-brand-line-one-height);
+  letter-spacing: -0.005em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-brand-lockup--line-rail .tcrn-brand-lockup__word {
+  letter-spacing: 0;
+}
+.tcrn-brand-lockup__suffix {
+  font-style: normal;
+}
+.tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word {
+  font-family: var(--tcrn-type-family-serif);
+  font-size: 18px;
+  font-weight: var(--tcrn-type-weight-regular);
+  letter-spacing: 0.03em;
+}
+.tcrn-brand-lockup--line-rail.tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word {
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
 }`;
 
 export const brandCss02 = `

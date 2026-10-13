@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: icons.json
-// contract-sha256: 66ea60f3d25c51994b1916f9b61abc5b9cba88808ea94f93da0003a7b03986d6
+// contract-sha256: b37a28fbebe8f5a14e7b7b50ee85557923953783ae2db2d384d03588385dac4b
 
 
 export const tcrnIconViewBox = "0 0 20 20";
@@ -44,13 +44,14 @@ export const tcrnIconPathNames = [
   "trash",
   "calendar",
   "more-horizontal",
-  "chevron-up"
+  "chevron-up",
+  "pin"
 ] as const;
 
 export type TcrnIconPathName = (typeof tcrnIconPathNames)[number];
 
 /** names added in the G+ batch */
-export const tcrnIconNewNames: readonly TcrnIconPathName[] = ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up"];
+export const tcrnIconNewNames: readonly TcrnIconPathName[] = ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up", "pin"];
 
 /** SVG children on the 20 grid; stroke and caps come from the svg element */
 export const tcrnIconPaths: Readonly<Record<TcrnIconPathName, string>> = {
@@ -90,5 +91,6 @@ export const tcrnIconPaths: Readonly<Record<TcrnIconPathName, string>> = {
   "trash": "<path d=\"M3.5 5.5h13\"/><path d=\"M8 5.5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5\"/><path d=\"M5 5.5l.8 10A1.5 1.5 0 0 0 7.3 17h5.4a1.5 1.5 0 0 0 1.5-1.5l.8-10\"/><path d=\"M8.5 9v5\"/><path d=\"M11.5 9v5\"/>",
   "calendar": "<rect x=\"3\" y=\"4.5\" width=\"14\" height=\"12.5\" rx=\"2\"/><path d=\"M3 9h14\"/><path d=\"M7 3v3\"/><path d=\"M13 3v3\"/>",
   "more-horizontal": "<path d=\"M4.5 10h1\"/><path d=\"M9.5 10h1\"/><path d=\"M14.5 10h1\"/>",
-  "chevron-up": "<path d=\"M5 12l5-5 5 5\"/>"
+  "chevron-up": "<path d=\"M5 12l5-5 5 5\"/>",
+  "pin": "<path d=\"M8 3.5h4v5.5l2.5 2.5v1.5h-9v-1.5L8 9z\"/><path d=\"M6.5 3.5h7\"/><path d=\"M10 13v3.5\"/>"
 };

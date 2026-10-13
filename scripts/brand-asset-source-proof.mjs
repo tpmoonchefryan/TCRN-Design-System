@@ -10,6 +10,9 @@
 // one byte of a mark — in the file or in what the package draws — turns it red. The
 // product marks are not published yet (publication is an Owner stop), so they have no
 // remote URL to fetch; the mother mark keeps its published-asset check unchanged.
+//
+// TCRN-DS-SUB-127 — what the package draws includes ProductLockup's first line (the second of
+// the three renditions), at the rail and the lockup scale, held to the colour files the same way.
 
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
@@ -123,6 +126,24 @@ if (!existsSync(packageEntryPath)) {
         const tileMatches = svg.includes(`rx="${tile.radius}" fill="${fill}"/>`) && svg.includes(`<g transform="${tile.inset}">`);
         if (!tileMatches) markFailures.push(`tcrnProductMarkSvg(${mark.productId}, ${variant}) does not follow marks.json tile (radius ${tile.radius}, ${tile.inset}, fill ${fill})`);
         packageChecks.push({ productId: mark.productId, variant, tileMatches });
+      }
+    }
+
+    // TCRN-DS-SUB-127 (STORY-145): ProductLockup's first line, the second of the three
+    // renditions, draws the colour file at both of its scales; its svg[data-logo] names the
+    // product and holds the file's bytes.
+    if (typeof ui.ProductLockup !== "function") {
+      markFailures.push("@tcrn/ui-react does not export ProductLockup");
+    } else {
+      for (const file of fileResults) {
+        if (file.variant !== "color" || typeof file.text !== "string") continue;
+        for (const scale of ["rail", "lockup"]) {
+          const rendered = renderToStaticMarkup(createElement(ui.ProductLockup, { productId: file.productId, firstLine: scale }));
+          const svg = /<svg\b[^>]*\bdata-logo="([^"]*)"[^>]*>([\s\S]*?)<\/svg>/u.exec(rendered);
+          const firstLineMatches = svg !== null && svg[1] === file.productId && svg[2] === innerOf(file.text);
+          if (!firstLineMatches) markFailures.push(`ProductLockup ${file.productId} first line (${scale}) does not draw ${file.path}`);
+          packageChecks.push({ productId: file.productId, variant: `first-line-${scale}`, firstLineMatches });
+        }
       }
     }
   }

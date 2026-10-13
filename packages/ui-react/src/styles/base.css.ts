@@ -530,6 +530,137 @@ export const baseCss10 = `
   word-break: normal;
 }
 /*
+ * Pinnable rows (TCRN-DS-SUB-123, STORY-142). NavItem and NavGroup render a pin only when the
+ * consumer handles pinning. The pin keeps its slot (the shell pin-button token, 24) at the end
+ * of the row whether it shows or not: it shows with opacity on row hover, on focus inside the
+ * row, on its own keyboard focus and when pinned, never with display, so the text box is as
+ * wide at rest as on hover.
+ *
+ * A link cannot hold a button, so a pinnable item is a row of two siblings, the link and its
+ * pin. The row paints the item's fill and ink through its own pair and the link inside it
+ * paints none, so pointing at the pin keeps the whole row lit. The pair is the menu row of the
+ * board in the G+ names: ink-2 at rest, ink on the 3.5% hover wash, ink on the 6% wash when
+ * selected; selected wins over hover, as on the board.
+ *
+ * The pin is ink-3 at rest and on hover (where it gains the 6% wash), acc when pinned; the
+ * pinned glyph fills the pin body, the first child of the icon (icons.json, pin variant
+ * solid). State rules only switch the pin pair. On a coarse pointer the hit area grows by
+ * space-2h on every side, 24 to 44.
+ */
+.tcrn-nav-item-row {
+  --tcrn-pair-row-fill-d: transparent;
+  --tcrn-pair-row-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-row-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-row-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-row-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-row-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-d);
+  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-d);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--tcrn-shell-pinb);
+  align-items: center;
+  padding-inline-end: var(--tcrn-space-1);
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-row-fill);
+}
+.tcrn-nav-item-row:where(:hover) {
+  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-h);
+  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-h);
+}
+.tcrn-nav-item-row[data-selected="true"] {
+  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-s);
+  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-s);
+}
+.tcrn-nav-item-row > .tcrn-nav-item {
+  min-width: 0;
+  background: transparent;
+  color: var(--tcrn-pair-row-ink);
+}
+.tcrn-nav-group__label[data-nav-pinnable="true"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--tcrn-shell-pinb);
+  align-items: center;
+  column-gap: var(--tcrn-space-2h);
+  padding-inline-end: var(--tcrn-space-1);
+}
+.tcrn-nav-group__label-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-nav-pin {
+  --tcrn-pair-pin-fill-d: transparent;
+  --tcrn-pair-pin-ink-d: var(--tcrn-color-ink-3);
+  --tcrn-pair-pin-glyph-d: none;
+  --tcrn-pair-pin-fill-h: var(--tcrn-color-wash);
+  --tcrn-pair-pin-ink-h: var(--tcrn-color-ink-3);
+  --tcrn-pair-pin-glyph-h: none;
+  --tcrn-pair-pin-fill-s: transparent;
+  --tcrn-pair-pin-ink-s: var(--tcrn-color-acc);
+  --tcrn-pair-pin-glyph-s: currentColor;
+  --tcrn-pair-pin-fill-sh: var(--tcrn-color-wash);
+  --tcrn-pair-pin-ink-sh: var(--tcrn-color-acc);
+  --tcrn-pair-pin-glyph-sh: currentColor;
+  --tcrn-pair-pin-edge-d: 0 0 #0000;
+  --tcrn-pair-pin-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-pin-fill: var(--tcrn-pair-pin-fill-d);
+  --tcrn-pair-pin-ink: var(--tcrn-pair-pin-ink-d);
+  --tcrn-pair-pin-glyph: var(--tcrn-pair-pin-glyph-d);
+  --tcrn-pair-pin-edge: var(--tcrn-pair-pin-edge-d);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  inline-size: var(--tcrn-shell-pinb);
+  block-size: var(--tcrn-shell-pinb);
+  padding: 0;
+  border: 0;
+  border-radius: var(--tcrn-radius-small);
+  background: var(--tcrn-pair-pin-fill);
+  box-shadow: var(--tcrn-pair-pin-edge);
+  color: var(--tcrn-pair-pin-ink);
+  font: inherit;
+  cursor: pointer;
+  opacity: 0;
+}
+.tcrn-nav-pin .tcrn-icon > :first-child {
+  fill: var(--tcrn-pair-pin-glyph);
+}
+.tcrn-nav-pin:where(:hover) {
+  --tcrn-pair-pin-fill: var(--tcrn-pair-pin-fill-h);
+  --tcrn-pair-pin-ink: var(--tcrn-pair-pin-ink-h);
+  --tcrn-pair-pin-glyph: var(--tcrn-pair-pin-glyph-h);
+}
+.tcrn-nav-pin:where([aria-pressed="true"]) {
+  --tcrn-pair-pin-fill: var(--tcrn-pair-pin-fill-s);
+  --tcrn-pair-pin-ink: var(--tcrn-pair-pin-ink-s);
+  --tcrn-pair-pin-glyph: var(--tcrn-pair-pin-glyph-s);
+}
+.tcrn-nav-pin:where([aria-pressed="true"]:hover) {
+  --tcrn-pair-pin-fill: var(--tcrn-pair-pin-fill-sh);
+  --tcrn-pair-pin-ink: var(--tcrn-pair-pin-ink-sh);
+  --tcrn-pair-pin-glyph: var(--tcrn-pair-pin-glyph-sh);
+}
+/* Forced colours paint no box-shadow; the transparent outline is recoloured there. */
+.tcrn-nav-pin:where(:focus-visible) {
+  --tcrn-pair-pin-edge: var(--tcrn-pair-pin-edge-f);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+:where(.tcrn-nav-item-row:hover, .tcrn-nav-item-row:focus-within, .tcrn-nav-group__label:hover, .tcrn-nav-group__label:focus-within) > .tcrn-nav-pin,
+.tcrn-nav-pin:where([aria-pressed="true"], :focus-visible) {
+  opacity: 1;
+}
+@media (pointer: coarse) {
+  .tcrn-nav-pin::after {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--tcrn-space-2h));
+  }
+}
+/*
  * Composition one above the mobile breakpoint (O-1, TCRN-DS-SUB-090). The query is the exact
  * complement of the mobile block's (max-width: 760px), so nothing below the breakpoint changes:
  * the stacked mobile shell keeps its own geometry.

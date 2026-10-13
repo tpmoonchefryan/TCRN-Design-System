@@ -10,7 +10,7 @@ import { tcrnIconNewNames, tcrnIconPaths } from "./icon-paths.generated.js";
 interface IconContract {
   viewBox: string;
   strokeWidth: number;
-  icons: { name: string; new: boolean; body: string }[];
+  icons: { name: string; new: boolean; body: string; variants?: Record<string, { fill: number[] }> }[];
 }
 
 // The compiled test sits at packages/ui-react/dist/components/Icon/, five levels below
@@ -35,20 +35,45 @@ function childrenAsContractMarkup(markup: string): string {
   return inner.replace(/<(path|circle|ellipse|rect) vector-effect="non-scaling-stroke"([^>]*)><\/\1>/g, "<$1$2/>");
 }
 
-test("the roster is the icons.json name set: 37 names, the 9 new ones included", () => {
-  assert.equal(tcrnIconNames.length, 37);
+test("the roster is the icons.json name set: 38 names, the 9 G+ ones and pin included", () => {
+  assert.equal(tcrnIconNames.length, 38);
   assert.deepEqual([...tcrnIconNames], iconContract.icons.map((icon) => icon.name));
   assert.equal(new Set(tcrnIconNames).size, tcrnIconNames.length);
   assert.deepEqual(
     [...tcrnIconNewNames],
     iconContract.icons.filter((icon) => icon.new).map((icon) => icon.name)
   );
-  for (const name of ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up"] as const) {
+  for (const name of ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up", "pin"] as const) {
     assert.ok(tcrnIconNames.includes(name), name);
   }
   for (const name of ["search", "menu", "panel-left-close", "sun", "moon", "globe-2", "loader-circle"] as const) {
     assert.ok(tcrnIconNames.includes(name), name);
   }
+});
+
+// TCRN-DS-SUB-123 (STORY-142 GWT3): the pin that replaces the star has two states, the outline
+// one a row shows on hover and focus and the solid one a pinned row keeps. They are one roster
+// name with two variants, so the roster counts 38, not 39; a variant names the body children it
+// fills with currentColor and leaves the rest stroked.
+test("pin is one roster name with an outline and a solid variant", () => {
+  const pin = iconContract.icons.find((icon) => icon.name === "pin");
+  assert.ok(pin, "icons.json lists pin");
+  assert.equal(iconContract.icons.filter((icon) => icon.name.startsWith("pin")).length, 1, "the solid pin is a variant, not a second name");
+  assert.deepEqual(Object.keys(pin.variants ?? {}).sort(), ["outline", "solid"]);
+  assert.deepEqual(pin.variants?.outline.fill, []);
+  assert.deepEqual(pin.variants?.solid.fill, [0]);
+  // The filled child is the pin body (the closed head and shoulders), not the bar or the needle.
+  const children = [...pin.body.matchAll(/<path d="([^"]*)"\/>/g)].map((match) => match[1]);
+  assert.deepEqual(children, ["M8 3.5h4v5.5l2.5 2.5v1.5h-9v-1.5L8 9z", "M6.5 3.5h7", "M10 13v3.5"]);
+  for (const icon of iconContract.icons) {
+    for (const [variant, { fill }] of Object.entries(icon.variants ?? {})) {
+      const count = [...icon.body.matchAll(/<(?:path|circle|ellipse|rect)\b/g)].length;
+      for (const index of fill) assert.ok(Number.isInteger(index) && index >= 0 && index < count, `${icon.name}/${variant}: child ${index} exists`);
+    }
+  }
+  // The package draws the outline; the solid state is the same paths with the body filled,
+  // so the rendered children are the contract body either way.
+  assert.equal(childrenAsContractMarkup(renderToStaticMarkup(<Icon name="pin" />)), pin.body);
 });
 
 test("every icon renders its contract paths on the 20 grid with a 1.25 non-scaling stroke", () => {
