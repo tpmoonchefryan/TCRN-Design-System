@@ -110,7 +110,10 @@ test("the geometry reads the shell tokens: 134 by 40, a 20 toggle, 6 from the ba
   const line = ruleBody(".tcrn-shell-brand__line");
   assert.match(line, /display: flex;/);
   assert.match(line, /align-items: center;/);
-  assert.doesNotMatch(`${line}${ruleBody(".tcrn-shell-brand__word")}`, /translate|margin|padding-block|vertical-align/);
+  assert.doesNotMatch(`${line}${ruleBody(".tcrn-shell-brand__word")}`, /translate|margin|padding-top|padding-bottom|padding-block-(?:start|end)|vertical-align/);
+  // The wordmark's room above and below its line is one padding-block token, the same on both
+  // sides, so it moves no glyph (TCRN-DS-SUB-143).
+  assert.match(ruleBody(".tcrn-shell-brand__word"), /\n {2}padding-block: var\(--tcrn-space-0h\);/);
 
   const tokens = createTokenMap();
   const px = (variable: string) => Number.parseFloat(tokens[variable]);
@@ -124,6 +127,96 @@ test("the geometry reads the shell tokens: 134 by 40, a 20 toggle, 6 from the ba
   // The touch height is the button's own: no coarse-pointer rule shrinks or grows it.
   assert.ok(px("--tcrn-shell-brand-h") >= 40);
   assert.ok(tcrnComponentCss.includes(shellCss01), "the shell segment is part of tcrnComponentCss");
+});
+
+// Layout model of the wordmark (TCRN-DS-SUB-143). The unit tests have no layout engine, so the two
+// readings the shell gate takes in the browser are worked out here from the rules and the tokens.
+// Hanken Grotesk (the vendored latin file) ascends 1000 and descends 303 per 1000 em with no line
+// gap; Chromium rounds the ascent and the descent to whole pixels, which is why the suffix's line
+// box read 17 at 12.5 in the R1 geometry run. TCRN TMS at 12.5/600 read 60.234 wide in that run.
+const wordmarkFont = { ascent: 1, descent: 0.303 } as const;
+const tmsWordmarkWidthPx = 60.234;
+
+/** Evaluates a calc() body of px numbers, given the values of its var() references and of 100%. */
+function evaluateLength(expression: string, values: Record<string, number>, percent: number): number {
+  const substituted = expression
+    .replace(/^calc\(([\s\S]*)\)$/, "$1")
+    .replace(/var\((--[a-z0-9-]+)\)/g, (_, name: string) => {
+      assert.ok(name in values, `${name} has a value in the model`);
+      return String(values[name]);
+    })
+    .replace(/100%/g, String(percent))
+    .replace(/(\d+(?:\.\d+)?)px/g, "$1");
+  const parts = substituted.match(/\d+(?:\.\d+)?|[-+*/()]/g) ?? [];
+  assert.equal(parts.join(""), substituted.replace(/\s+/g, ""), `${expression} reduces to arithmetic`);
+  let at = 0;
+  const sum = (): number => {
+    let value = product();
+    while (parts[at] === "+" || parts[at] === "-") value = parts[at++] === "+" ? value + product() : value - product();
+    return value;
+  };
+  const product = (): number => {
+    let value = operand();
+    while (parts[at] === "*" || parts[at] === "/") value = parts[at++] === "*" ? value * operand() : value / operand();
+    return value;
+  };
+  const operand = (): number => {
+    if (parts[at] === "(") {
+      at++;
+      const value = sum();
+      at++;
+      return value;
+    }
+    return Number(parts[at++]);
+  };
+  return sum();
+}
+
+test("the wordmark takes its content width: TCRN TMS is drawn whole in the 134 box, and the suffix stays inside the wordmark", () => {
+  const tokens = createTokenMap();
+  const px = (variable: string) => Number.parseFloat(tokens[variable]);
+  const declaration = (body: string, property: string) => new RegExp(`(?:^|\\n) {2}${property}: ([^;]+);`).exec(body)?.[1].trim() ?? "";
+  const line = ruleBody(".tcrn-shell-brand__line");
+  const word = ruleBody(".tcrn-shell-brand__word");
+  // The mark size is a length or a shell token, whichever the line declares.
+  const markDeclared = declaration(line, "--tcrn-brand-mark-size");
+  const markToken = /^var\((--[a-z0-9-]+)\)$/.exec(markDeclared)?.[1];
+  const markSize = markToken ? px(markToken) : Number.parseFloat(markDeclared);
+  assert.equal(markSize, 22);
+  const values: Record<string, number> = Object.fromEntries(Object.keys(tokens).map((name) => [name, px(name)] as const));
+  values["--tcrn-brand-mark-size"] = markSize;
+
+  // scrollWidth ≤ clientWidth. The line is the 134 box less its two 6 insets, the 20 toggle and
+  // the 10 between them: 92. The wordmark does not shrink and may run 1 past what the 22 mark and
+  // the 10 gap leave it (60), so TCRN TMS keeps its 60.234 and shows no ellipsis.
+  assert.equal(declaration(word, "flex"), "none");
+  const lineWidth = px("--tcrn-shell-brand-w") - 2 * px("--tcrn-space-1h") - px("--tcrn-shell-toggle") - px("--tcrn-space-2h");
+  assert.equal(lineWidth, 92);
+  const cell = lineWidth - markSize - px("--tcrn-space-2h");
+  assert.equal(cell, 60);
+  const cap = evaluateLength(declaration(word, "max-inline-size"), values, lineWidth);
+  assert.equal(cap, cell + 1, "1 past the cell");
+  const clientWidth = Math.min(tmsWordmarkWidthPx, cap);
+  const scrollWidth = tmsWordmarkWidthPx;
+  assert.ok(scrollWidth <= clientWidth, `TCRN TMS ${scrollWidth} in a wordmark box ${clientWidth} wide shows no ellipsis`);
+  // The overrun stays in the 10 before the toggle: the box keeps 134 and the toggle does not move.
+  assert.ok(cap - cell < px("--tcrn-space-2h"));
+  // Past the 1 the wordmark is cut with an ellipsis, and its title says the name in full.
+  assert.ok(Math.min(tmsWordmarkWidthPx + 2, cap) < tmsWordmarkWidthPx + 2);
+  assert.match(renderToStaticMarkup(<ShellBrandButton productId="design-system" />), /<b class="tcrn-shell-brand__word" title="TCRN Design System">/);
+
+  // em inside b: the suffix's line box (17 at 12.5) is taller than the 1.2 line (15) by 1 above and
+  // 1 below; the wordmark's space-0h above and below holds it, so the clipping wordmark cuts nothing.
+  assert.equal(declaration(word, "font-size"), "12.5px");
+  assert.equal(declaration(word, "line-height"), "1.2");
+  const room = px("--tcrn-space-0h");
+  assert.equal(room, 2);
+  const lineBox = 12.5 * 1.2;
+  const suffixBox = Math.round(12.5 * wordmarkFont.ascent) + Math.round(12.5 * wordmarkFont.descent);
+  assert.equal(suffixBox, 17, "the R1 reading");
+  const overhang = (suffixBox - lineBox) / 2;
+  assert.ok(overhang <= room, `the suffix overhangs the line by ${overhang} above and below, within the ${room} of room`);
+  assert.ok(suffixBox <= lineBox + 2 * room, "em top and bottom inside b");
 });
 
 test("states switch the pair and write no colour; hover and open take the 3.5% ink wash", () => {
@@ -165,17 +258,30 @@ function parseColour(text: string): [number, number, number, number] {
   throw new Error(`unparsed colour ${text}`);
 }
 
-test("the TMS suffix reads at 4.5 or more on the hover wash, by day and at night", () => {
-  for (const theme of ["light", "dark"] as const) {
-    const tokens = createResolvedTokenMap(theme);
-    const [br, bg, bb] = parseColour(tokens["--tcrn-color-bg"]);
-    const [wr, wg, wb, wa] = parseColour(tokens["--tcrn-color-hover"]);
-    const washed = [wr * wa + br * (1 - wa), wg * wa + bg * (1 - wa), wb * wa + bb * (1 - wa)];
-    const suffix = parseColour(tokens["--tcrn-brand-suffix-tms"]).slice(0, 3);
-    const [light, dark] = [luminance(washed), luminance(suffix)].sort((a, b) => b - a);
-    const ratio = (light + 0.05) / (dark + 0.05);
-    assert.ok(ratio >= 4.5, `${theme}: the suffix on the wash is ${ratio.toFixed(2)}`);
-  }
+/** Contrast of the TMS suffix on the hover wash over the canvas, in `theme`. */
+function suffixOnWash(theme: "light" | "dark"): number {
+  const tokens = createResolvedTokenMap(theme);
+  const [br, bg, bb] = parseColour(tokens["--tcrn-color-bg"]);
+  const [wr, wg, wb, wa] = parseColour(tokens["--tcrn-color-hover"]);
+  const washed = [wr * wa + br * (1 - wa), wg * wa + bg * (1 - wa), wb * wa + bb * (1 - wa)];
+  const suffix = parseColour(tokens["--tcrn-brand-suffix-tms"]).slice(0, 3);
+  const [light, dark] = [luminance(washed), luminance(suffix)].sort((a, b) => b - a);
+  return (light + 0.05) / (dark + 0.05);
+}
+
+test("the TMS suffix reads at 4.5 or more on the hover wash by day; by night it keeps the day colour, a known red pending D7", () => {
+  const day = suffixOnWash("light");
+  assert.ok(day >= 4.5, `light: the suffix on the wash is ${day.toFixed(2)}`);
+  // By night the suffix keeps the approved colour, its mark's deep step, the same in both themes
+  // (TCRN-DS-MIN-20261013-SHELL D2), so on the night wash it reads 3.07, below 4.5. That is the
+  // known red the token-contrast gate registers in WORDMARK_EXEMPTIONS with its pending note:
+  // D7 keeps the approved colour by night and rules the night value together with INIT-015
+  // closure S-6. Until that ruling this test holds the colour and records the reading; once the
+  // night value is ruled, the night side goes back to 4.5 like the day side.
+  const dayColour = createResolvedTokenMap("light")["--tcrn-brand-suffix-tms"];
+  assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-tms"], dayColour, "dark: the suffix keeps the day colour (D2)");
+  const night = suffixOnWash("dark");
+  assert.equal(night.toFixed(2), "3.07", "dark: the recorded reading of the suffix on the wash (pending D7)");
 });
 
 test("the ref reaches the button, and an automatic button reports the first version on a narrow viewport", async () => {

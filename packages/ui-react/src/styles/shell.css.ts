@@ -21,7 +21,16 @@
 // Idle it has no fill and no edge; hover and open take the 3.5% ink wash (--tcrn-color-hover).
 // The mark and the wordmark are centred by the flex line alone: no line-height nudge, no
 // optical shift, so the wordmark's ink midline is the mark's midline.
+// The wordmark takes its content width, as the board's 22 auto 20 columns do (TCRN-DS-SUB-143):
+// it does not shrink, and it may run up to 1 (half of space-0h) past the cell the mark and the
+// toggle leave it, so a wordmark that is only a fraction too wide (TCRN TMS reads 60.234 in the
+// 60 cell) is drawn whole; a longer one stops there with an ellipsis, and the title says it in
+// full. The outer box stays 134 by 40 and the toggle does not move. The suffix's line box is
+// taller than the 1.2 line (Hanken Grotesk ascends 1 and descends 0.303 em), so the wordmark
+// has space-0h above and below its line: the clipping wordmark holds the suffix, and the room is
+// the same on both sides, so the glyphs stay where the flex line centres them.
 export const shellCss01 = `
+/* tcrn:shell-layer-start */
 .tcrn-shell-brand {
   --tcrn-pair-fill: var(--tcrn-pair-fill-d);
   --tcrn-pair-ink: var(--tcrn-pair-ink-d);
@@ -72,7 +81,10 @@ export const shellCss01 = `
 }
 .tcrn-shell-brand__word {
   display: block;
+  flex: none;
   min-inline-size: 0;
+  max-inline-size: calc(100% - var(--tcrn-brand-mark-size) - var(--tcrn-space-2h) + var(--tcrn-space-0h) / 2);
+  padding-block: var(--tcrn-space-0h);
   overflow: hidden;
   font-size: 12.5px;
   font-weight: var(--tcrn-type-weight-strong);
@@ -481,11 +493,16 @@ export const shellCss03 = `
   min-inline-size: 0;
   overflow: hidden;
 }
+/* A row's label is one line (C7; TCRN-DS-SUB-154): it clips and ends in an ellipsis, and a
+   pinnable row's label carries its text as its title. The text span inside truncates itself. */
 .tcrn-shell-menu .tcrn-nav-item__label {
   display: flex;
   align-items: center;
   gap: var(--tcrn-space-1h);
   min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .tcrn-shell-menu__text {
   min-inline-size: 0;
@@ -608,20 +625,12 @@ export const shellCss03 = `
   flex: 0 0 auto;
   color: var(--tcrn-color-ink-3);
 }
+/* The bar places the lockup; its side-rail sizes are the brand tier of brand.css.ts, which the
+   lockup takes through its data-lockup="lkr" hook (TCRN-DS-SUB-144). */
 .tcrn-shell-menu__lockup {
-  --tcrn-brand-mark-size: 22px;
-  --tcrn-brand-line-one-size: 12.5px;
-  --tcrn-brand-line-one-height: 16px;
-  --tcrn-brand-line-one-base-weight: var(--tcrn-type-weight-strong);
-  --tcrn-brand-line-two-size: 10.5px;
-  --tcrn-brand-line-two-height: 14px;
   flex: 0 0 auto;
-  gap: var(--tcrn-space-2h);
   margin-inline-start: auto;
   padding: var(--tcrn-space-1h) var(--tcrn-space-1);
-}
-.tcrn-shell-menu__lockup .tcrn-product-logo__byline {
-  display: none;
 }
 @media (min-width: 1024px) {
   .tcrn-shell-menu .tcrn-shell-menu__col--pinned {
@@ -704,8 +713,9 @@ export const shellCss04 = `
 // pinned items and the top-right cluster in one flex row centred on the band's midline (26), with
 // space-3 at both ends, so the brand button's start edge, the paper's and the full menu's are one
 // line and the cluster's end edge is the paper's. The cluster: the product's own controls, the
-// bell (control-height-md, the 3.5% wash on hover, the unread dot in the danger red on a band
-// ring) and the avatar (control-height-sm, a circle in the avatar pair with a hairline edge,
+// bell (control-height-md, the 6% wash on hover as the 07a board's section B draws it, the
+// unread dot in the danger red on a band ring) and the avatar (control-height-sm, a circle in
+// the avatar pair with a hairline edge,
 // caption size at weight 500), space-1h apart. The avatar menu hangs from the avatar at the menu
 // hand-off gap, end edges aligned, the drop-down width wide: paper with the s3 shadow, radius 12,
 // inset space-1h. The paper is space-3 from the shell's sides and bottom with the paper radius and
@@ -755,7 +765,7 @@ export const shellCss05 = `
   --tcrn-pair-fill-d: transparent;
   --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
   --tcrn-pair-edge-d: 0 0 #0000;
-  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-fill-h: var(--tcrn-color-wash);
   --tcrn-pair-ink-h: var(--tcrn-color-ink);
   --tcrn-pair-edge-h: 0 0 #0000;
   --tcrn-pair-edge-f: var(--tcrn-focus-ring);

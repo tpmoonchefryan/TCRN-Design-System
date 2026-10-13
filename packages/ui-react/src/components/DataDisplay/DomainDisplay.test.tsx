@@ -162,3 +162,36 @@ test("STORY-146 GWT4 SplitView and DetailLayout start at the paper's content edg
   assert.match(detail, /class="tcrn-detail-layout/);
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-(?:split-view|detail-layout)[^{]*\{[^}]*--tcrn-layout-content-max-w/);
 });
+
+test("STORY-146 the page header's title row is the board's .ph: gap 14, a line-2 rule, the title in serif 26 (TCRN-DS-SUB-162)", () => {
+  const rule = (selector: string) => {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const found = new RegExp(`\\n${escaped} \\{([^}]*)\\}`).exec(tcrnComponentCss);
+    assert.ok(found, `${selector} has a rule`);
+    return found[1];
+  };
+  const tokens = createTokenMap();
+  const px = (variable: string) => Number.parseFloat(tokens[variable]);
+  // 07b board .ph: gap 14 between the title and what follows it, padding-bottom 12, a 1 line-2 rule.
+  const body = rule(".tcrn-page-header__body");
+  assert.match(body, /\n {2}gap: var\(--tcrn-space-3h\);/);
+  assert.equal(px("--tcrn-space-3h"), 14);
+  const header = [...tcrnComponentCss.matchAll(/\n\.tcrn-page-header \{([^}]*)\}/g)].map((match) => match[1]).join("\n");
+  assert.match(header, /border-bottom: 1px solid var\(--tcrn-color-line-2\);/);
+  assert.doesNotMatch(header, /border-subtle/);
+  assert.match(header, /padding-block-end: var\(--tcrn-space-3\);/);
+  assert.equal(px("--tcrn-space-3"), 12);
+
+  // The title is a class, not an element: .tcrn-page-header__title holds the heading of level 2
+  // in the scale's writing, which is the board's h2 glyph (serif, 26, regular, tracking -.005em,
+  // one line with an ellipsis).
+  const html = renderToStaticMarkup(<PageHeader title="Roster" />);
+  assert.match(html, /<div class="tcrn-page-header__title"><h2 title="Roster" class="tcrn-heading tcrn-heading--2">Roster<\/h2>/);
+  const heading = /\.tcrn-heading--2\{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
+  assert.match(heading, /font-family:var\(--tcrn-type-family-serif\)/);
+  assert.match(heading, /font-size:var\(--tcrn-type-size-heading-2\)/);
+  assert.equal(px("--tcrn-type-size-heading-2"), 26);
+  assert.match(heading, /font-weight:var\(--tcrn-type-weight-regular\)/);
+  assert.match(heading, /letter-spacing:-\.005em/);
+  assert.match(heading, /white-space:nowrap;overflow:hidden;text-overflow:ellipsis/);
+});

@@ -107,6 +107,7 @@ export const brandCss01 = `
 .tcrn-product-logo__line-one-suffix {
   flex: 0 1 auto;
   min-width: 0;
+  font-style: normal;
   font-weight: var(--tcrn-type-weight-strong);
   white-space: nowrap;
 }
@@ -149,7 +150,13 @@ export const brandCss01 = `
    writing unchanged: at the lockup scale a 44 mark and a 16/600 line 14 from it, at the rail
    scale a 22 mark and a 12.5/600 line 10 from it; Einzbern and Mana Orchestrate keep their
    serif whole names. The flex row centres mark and line (align-items center from the lockup
-   rule); nothing nudges the line, so no padding, margin, offset or line-height trim here. */
+   rule); nothing nudges the line, so no margin, offset, one-sided padding or line-height trim
+   here. Written as the brand button's wordmark is (TCRN-DS-SUB-143), each on its own: the word
+   takes its content width and may run up to 1 (half of space-0h) past its line, so a word only a
+   fraction too wide is drawn whole and a longer one ends in an ellipsis under its title; the
+   suffix's line box (Hanken Grotesk ascends 1 and descends 0.303 em) is taller than the line,
+   so the word has space-0h above and below it, the same on both sides, and the clipping word
+   holds the suffix without moving a glyph. */
 .tcrn-brand-lockup--line {
   --tcrn-brand-mark-size: 44px;
   --tcrn-brand-line-one-size: 16px;
@@ -169,6 +176,9 @@ export const brandCss01 = `
 }
 .tcrn-brand-lockup__word {
   display: block;
+  inline-size: max-content;
+  max-inline-size: calc(100% + var(--tcrn-space-0h) / 2);
+  padding-block: var(--tcrn-space-0h);
   overflow: hidden;
   font-size: var(--tcrn-brand-line-one-size);
   font-weight: var(--tcrn-type-weight-strong);
@@ -195,10 +205,12 @@ export const brandCss01 = `
 }`;
 
 export const brandCss02 = `
-.tcrn-product-shell__sidebar .tcrn-brand-wordmark__suffix--aos {
-  color: var(--tcrn-color-brand-primary);
-}
-.tcrn-product-shell .tcrn-shell-brand-lockup {
+/* The side-rail tier (Brand board section E, .lkr): mark 22, wordmark 12.5/600, tagline 10.5,
+   10 between mark and copy, no byline. It is written here once (TCRN-DS-SUB-144): a lockup in
+   the product shell takes it, and so does any lockup marked as the side-rail lockup with
+   data-lockup="lkr" (C-6), such as the full menu's bottom bar wherever the menu is rendered. */
+.tcrn-product-shell .tcrn-shell-brand-lockup,
+.tcrn-shell-brand-lockup[data-lockup="lkr"] {
   --tcrn-brand-mark-size: 22px;
   --tcrn-brand-line-one-size: 12.5px;
   --tcrn-brand-line-one-height: 16px;
@@ -207,13 +219,8 @@ export const brandCss02 = `
   --tcrn-brand-line-two-height: 14px;
   gap: var(--tcrn-space-2h);
 }
-.tcrn-product-shell .tcrn-product-logo__byline {
-  display: none;
-}`;
-
-export const brandCss03 = `
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-shell-brand-lockup__copy,
-.tcrn-product-shell[data-product-shell-collapsed="true"] .tcrn-product-logo__copy {
+.tcrn-product-shell .tcrn-product-logo__byline,
+.tcrn-shell-brand-lockup[data-lockup="lkr"] .tcrn-product-logo__byline {
   display: none;
 }`;
 

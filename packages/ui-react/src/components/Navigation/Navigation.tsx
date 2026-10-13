@@ -32,6 +32,7 @@ import { ShellDropdown } from "./ShellDropdown.js";
 import {
   ShellMenu,
   shellMenuMaxDepth,
+  useShellMenuPresentation,
   useShellTransientLayer,
   type ShellMenuCrumb,
   type ShellMenuGroup,
@@ -598,6 +599,7 @@ export function ProductLogo({
   // translation, which is why it is composed here rather than stored.
   const accessibleName = `${asset.lineOne} ${tagline}`;
   const markAlt = brandMarkAlt ?? accessibleName;
+  const measured = (props as { "data-lockup"?: string })["data-lockup"] !== undefined;
 
   return (
     <div
@@ -615,19 +617,34 @@ export function ProductLogo({
       data-product-logo-asset-id={asset.assetId}
       data-product-wordmark={asset.wordmark}
     >
+      {/* A lockup the shell measures (one given a data-lockup hook, such as the full menu's
+          bottom bar) marks its colour mark with data-logo, as the first line does (C-5, C-6). The
+          other renditions do not, since their bytes are not the logos2 file's, and an unmeasured
+          lockup (a card, a launcher) adds no hook. */}
       {asset.markId ? (
-        <TcrnBrandMark productId={asset.markId} variant={markVariant} alt={markAlt} />
+        <TcrnBrandMark
+          productId={asset.markId}
+          variant={markVariant}
+          alt={markAlt}
+          data-logo={measured && (markVariant ?? "color") === "color" ? asset.productId : undefined}
+        />
       ) : (
         <TcrnBrandMark src={brandMarkSrc} alt={markAlt} />
       )}
+      {/* The Brand board's section E writing (C-6): the wordmark is <b>{word} <em>{suffix}</em></b>
+          and the tagline a <small>; the space between word and suffix is the copy's, the flex gap
+          draws it. */}
       <span className="tcrn-product-logo__copy" aria-hidden="true">
-        <span className="tcrn-product-logo__line-one" aria-label={asset.lineOne}>
+        <b className="tcrn-product-logo__line-one" aria-label={asset.lineOne}>
           <span className="tcrn-product-logo__line-one-base">{asset.lineOneBase}</span>
           {asset.lineOneSuffix ? (
-            <span className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName ?? undefined)}>{asset.lineOneSuffix}</span>
+            <>
+              {" "}
+              <em className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName ?? undefined)}>{asset.lineOneSuffix}</em>
+            </>
           ) : null}
-        </span>
-        <span className="tcrn-product-logo__line-two">{tagline}</span>
+        </b>
+        <small className="tcrn-product-logo__line-two">{tagline}</small>
         {asset.byline ? <span className="tcrn-product-logo__byline">{asset.byline}</span> : null}
       </span>
     </div>
@@ -701,7 +718,8 @@ function ProductLockupFirstLine({
         <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} aria-hidden="true" />
       )}
       <span className="tcrn-brand-lockup__line" aria-hidden="true">
-        <b className="tcrn-brand-lockup__word">
+        {/* A word too long for its line ends in an ellipsis; the title says it in full (C7). */}
+        <b className="tcrn-brand-lockup__word" title={name}>
           {word}
           {lineSuffix ? (
             <>
@@ -1510,7 +1528,13 @@ export function NavGroup({ label, selected = false, pinned = false, onPinnedChan
           <NavPinButton pinned={pinned} label={pinLabel ?? label} locale={locale} onPinnedChange={onPinnedChange} />
         </div>
       ) : (
-        <div className="tcrn-nav-group__label">{label}</div>
+        // The title row is one line that ends in an ellipsis when it is too long, so its text
+        // carries the whole label as its title (C7; TCRN-DS-SUB-154).
+        <div className="tcrn-nav-group__label">
+          <span className="tcrn-nav-group__label-text" title={label}>
+            {label}
+          </span>
+        </div>
       )}
       <div className="tcrn-nav-group__items">{children}</div>
     </div>
@@ -1552,6 +1576,10 @@ export function NavItem({
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   const resolvedDepth = Number.isInteger(depth) && depth >= 0 ? depth : 0;
   const navStyle = { ...style, "--tcrn-nav-item-depth": resolvedDepth } as CSSProperties;
+  // A pinnable row's label is one line that ends in an ellipsis, so it carries its text as its
+  // title: the label itself, or the title the row was given when the label is markup (C7;
+  // TCRN-DS-SUB-154).
+  const labelTitle = onPinnedChange ? (navItemText(children) ?? (typeof props.title === "string" ? props.title : undefined)) : undefined;
   const link = (
     <a
       {...props}
@@ -1571,7 +1599,9 @@ export function NavItem({
     >
       {iconName ? <Icon name={iconName} /> : null}
       <span className="tcrn-nav-item__content">
-        <span className="tcrn-nav-item__label">{children}</span>
+        <span className="tcrn-nav-item__label" title={labelTitle}>
+          {children}
+        </span>
         {normalizedReason ? (
           <span id={disabledReasonId} className="tcrn-nav-item__disabled-reason">
             {normalizedReason}
@@ -1764,12 +1794,13 @@ export function ProductShellSearch({
         role="listbox"
         aria-label={resolvedResultsLabel}
         data-product-shell-search-results
-        hidden={!isExpanded || !hasResults}
+        hidden={!isExpanded}
       >
         {hasResults ? results.map((result) => (
           <a key={result.id}
             className="tcrn-product-shell-search__result"
             href={result.href}
+            title={result.meta ? `${result.title} — ${result.meta}` : result.title}
             role="option"
             onClick={(event) => handleResultActivate(result, event)}
             aria-selected={result.selected ? "true" : undefined}
@@ -1782,6 +1813,8 @@ export function ProductShellSearch({
             {result.meta ? <span>{result.meta}</span> : null}
           </a>
         )) : (
+          // While the search is open and nothing matches, the empty line shows in place of the
+          // results; it is not hidden with them (TCRN-DS-SUB-154).
           <span className="tcrn-product-shell-search__empty">{resolvedEmptyLabel}</span>
         )}
       </div>
@@ -2093,7 +2126,11 @@ export function ProductShell({
   const currentTrail: readonly PageHeaderBreadcrumb[] = currentPath.map((step, index) => (
     step.href && index < currentPath.length - 1 ? { id: `${baseId}-crumb-${index}`, label: step.label, href: step.href } : { id: `${baseId}-crumb-${index}`, label: step.label }
   ));
-  const state = shownMenuOpen ? "expanded" : openTarget ? "drop" : "closed";
+  // The full menu shows as the panel or, 760 wide and narrower, as the Sheet; ShellMenu picks the
+  // same presentation from the same context and viewport, and the root reports it: an open Sheet
+  // is data-state="sheet" (C-5; TCRN-DS-SUB-159).
+  const menuPresentation = useShellMenuPresentation();
+  const state = shownMenuOpen ? (menuPresentation === "sheet" ? "sheet" : "expanded") : openTarget ? "drop" : "closed";
   const unread = notifications?.unread ?? 0;
 
   return (
@@ -2241,7 +2278,10 @@ export function ProductShell({
         ) : null
       )}
       <div className="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper">
-        <ContentElement id={contentId} className="tcrn-product-shell__main" data-product-shell-region="content" aria-label={resolvedContentLabel}>
+        {/* The paper scrolls inside this region, so it takes keyboard focus to be scrolled
+            (axe scrollable-region-focusable; TCRN-DS-SUB-146); its name is the aria-label and
+            its focus ring the shell's focus-visible rule. */}
+        <ContentElement id={contentId} className="tcrn-product-shell__main" data-product-shell-region="content" aria-label={resolvedContentLabel} tabIndex={0}>
           <PageHeader {...pageHeader} breadcrumbs={pageHeader.breadcrumbs ?? currentTrail} locale={pageHeader.locale ?? currentLocale} />
           {children}
         </ContentElement>

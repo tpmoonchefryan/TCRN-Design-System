@@ -1,6 +1,5 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import {
   compareTokenThemeBlocks,
   createCssVariables,
@@ -354,12 +353,18 @@ test("the top-band shell tokens are the 07b board's section F, one to one, in th
   assert.ok(intro <= ms("--tcrn-motion-intro-max"));
 });
 
-test("the shell tokens share their source with the 07b board CSS (build-shell2.mjs .scr.ts defaults)", () => {
-  // The board builder declares the band's defaults on one `.scr.ts{…}` line; each board variable
-  // equals the contract value of its token, and so does the package value.
-  const builder = readFileSync(new URL("../../../docs/design/gplus-2026-10/tools/build-shell2.mjs", import.meta.url), "utf8");
-  const line = builder.split("\n").find((candidate) => candidate.startsWith(".scr.ts{"));
-  assert.ok(line, "build-shell2.mjs declares the .scr.ts defaults");
+test("the shell tokens share their source with the 07b board CSS (shell-screen.mjs .scr.ts defaults)", async () => {
+  // The board screen module (moved out of build-shell2.mjs, which imports it) exports the screen CSS
+  // shared by the Shell boards; it declares the band's defaults on one `.scr.ts{…}` line. Each board
+  // variable equals the contract value of its token, and so does the package value. The module only
+  // reads the logo and the contract files when imported; it writes nothing.
+  const screenModule = new URL("../../../docs/design/gplus-2026-10/tools/shell-screen.mjs", import.meta.url);
+  const { SCREEN_CSS } = (await import(screenModule.href)) as { SCREEN_CSS?: unknown };
+  assert.equal(typeof SCREEN_CSS, "string", "shell-screen.mjs exports SCREEN_CSS");
+  const line = String(SCREEN_CSS)
+    .split("\n")
+    .find((candidate) => candidate.startsWith(".scr.ts{"));
+  assert.ok(line, "shell-screen.mjs declares the .scr.ts defaults");
   const board = new Map(
     [...line.matchAll(/(--[a-z0-9-]+):([^;}]+)/g)].map((match) => [match[1], match[2].trim()] as const)
   );

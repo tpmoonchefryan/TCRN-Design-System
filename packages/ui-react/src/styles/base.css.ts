@@ -160,24 +160,11 @@ export const baseCss10 = `
   gap: var(--tcrn-space-2);
   min-width: 0;
 }
+/* The search holds its results list, which is placed against it. The old top bar's sizes (260
+   at rest, 420 while searching, pushed to the bar's end) are gone with the bar (TCRN-DS-SUB-145):
+   the search takes the width of the place that holds it, the full menu, a drop-down or a page. */
 .tcrn-product-shell-search {
   position: relative;
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: 260px;
-  margin-left: auto;
-  justify-self: end;
-  width: 260px;
-  max-width: min(100%, 260px);
-  transition:
-    flex-basis var(--tcrn-motion-product-shell-search),
-    width var(--tcrn-motion-product-shell-search),
-    max-width var(--tcrn-motion-product-shell-search);
-}
-.tcrn-product-shell-search[data-search-expanded="true"] {
-  flex-basis: 420px;
-  width: 420px;
-  max-width: min(100%, 420px);
 }
 .tcrn-product-shell-search__results {
   position: absolute;
@@ -386,6 +373,7 @@ export const baseCss10 = `
   padding-inline-end: var(--tcrn-space-1);
 }
 .tcrn-nav-group__label-text {
+  display: block;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1070,11 +1058,13 @@ a.tcrn-relationship-chip:focus-visible {
   --tcrn-density-padding: var(--tcrn-space-2);
   --tcrn-density-row-min: 34px;
 }
+/* The page header's title row is the board's .ph (TCRN-DS-SUB-162): the rule under it is line-2,
+   space-3 below the row, and the title and its meta sit space-3h apart. */
 .tcrn-page-header {
   display: grid;
   gap: var(--tcrn-density-gap);
   padding-block-end: var(--tcrn-space-3);
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  border-bottom: 1px solid var(--tcrn-color-line-2);
 }
 .tcrn-page-header__meta,
 .tcrn-page-header__actions {
@@ -1088,7 +1078,7 @@ a.tcrn-relationship-chip:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: var(--tcrn-space-3);
+  gap: var(--tcrn-space-3h);
   min-width: 0;
 }
 .tcrn-page-header__title {
