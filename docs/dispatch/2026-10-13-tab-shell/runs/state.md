@@ -44,7 +44,8 @@
 | P8 | 已合入，包树已退役（273 MB） | 8873a9a、601b6c9、1913b24 | 34e81f6 | 局部门除两条既有红外全 0（ui-react test 的 TMS 后缀、doc-shell:proof 的 `tcrn-shell-dropdown__col` 在 080286d 即有）；问题 10 条（smoke 两处断言旧标记、样板三弃用 TopBar 无样式、roles.json 仍登记 3 个退役类名等） |
 | P10 | 已合入，包树已退役（272 MB） | 6d10851、6144e08 | 513424c | 文档页全进顶带壳（1440 读数：顶带 52、标按钮 134×40、纸 12/52/14、TocRail 在纸内、页列 1040 居中、夜间计数 ink-2）；doc-shell:proof 与 storybook test 的红与改前相同（`tcrn-shell-dropdown__col`；smoke 断言旧文档头归 SUB-132）；问题 8 条 |
 | P13 | 在跑（自 513424c 后的集成 HEAD） | | | |
-| P11 | 在跑（同上） | | | |
+| P11 | 已合入，包树已退役（237 MB） | 0f4e670、deaf18b、897317e | 12daf0a | 四块成品板 D 段换顶带壳（Typography、Icon、Actions、Inputs 与对应 V2-B1 草稿板），heights 5836/4271/5216/6530；Shell 两板字面守护 diff 退出 1 是既有 token 块漂移（同 P2 问题 3）；问题 4 条（canvas.json 板高与 y 未跟、Brand 与 Shell 板 D4 关键词残留、Icon 板仍写 37 件） |
+| P14 | 在跑（自 12daf0a 后的集成 HEAD） | | | |
 | P5 | 已合入，包树已退役（239 MB） | 7eefd5b、5825bcb | f7d6f6d | 局部门全 0（ui-react test 208/209，唯一红是既有红）；问题 5 条，要紧的一条：静态 Storybook 页无客户端 React，ShellIntro 不播放（下一轮）；已经消息让 P1c 交回前把集成分支合进包树、解 `styles/index.ts` 登记冲突 |
 
 - 跨包通告 `runs/r1/excerpts/cross-notes.md`（已知红、已合入包的接口行段、W3 共享文件规则）随每次派工指给子代理，包交回后主线程补行。
