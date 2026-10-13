@@ -12,7 +12,15 @@ function setHeight(html, name) {
   if (!h) return html.replace(/<div class="board" style="width: 2640px; (?:height: \d+px|min-height: 800px)">/, '<div class="board" style="width: 2640px; min-height: 800px">');
   return html.replace(/<div class="board" style="width: 2640px; (?:height: \d+px|min-height: 800px)">/, `<div class="board" style="width: 2640px; height: ${h}px">`).replace(/"\$preview":\{"width":2640,"height":\d+\}/, `"$preview":{"width":2640,"height":${h}}`);
 }
-function cutD(h, name) { const i = h.indexOf('<div class="sec"><h3><b>D</b>'), j = h.indexOf('<div class="sec"><h3><b>E</b>'); if (i < 0 || j < 0 || j < i) throw new Error("D/E section not found in " + name); return h.slice(0, i) + h.slice(j); }
+// D 段（组合样板）随板进成品：四板的样板已换顶带壳（shell-screen.mjs 的 screen()，TCRN-DS-SUB-133），不再剪掉
+function hasD(h, name) { const i = h.indexOf('<div class="sec"><h3><b>D</b>组合样板 · 顶带壳'), j = h.indexOf('<div class="sec"><h3><b>E</b>'); if (i < 0 || j < 0 || j < i) throw new Error("顶带壳 D 段不存在：" + name); return h; }
+// D4 关键词审计（发布前须清零；「侧栏尺度」是壳层板定义的词，不计）
+const D4 = ["构图一", "顶栏", "侧栏", "钉住", "待 Owner", "待裁定", "草案"];
+function auditD4(h, name) {
+  const text = h.replace(/<style[\s\S]*?<\/style>/g, "").split("侧栏尺度").join("");
+  const hits = D4.map((k) => [k, text.split(k).length - 1]).filter(([, n]) => n > 0);
+  console.log(hits.length ? `  ${name}：D4 关键词 ${hits.map(([k, n]) => k + " × " + n).join("、")}，请检查` : `  ${name}：D4 关键词 0`);
+}
 // 矩阵行：与 lib.matrixTable 同一写法
 function mxRow(name, note, cells) {
   const tds = cells.map((c) => { const s = over(parseColor(c.surface), [255, 255, 255, 1]); const f = over(parseColor(c.fill), s); const i = over(parseColor(c.ink), f); const v = cr(c.ink, c.fill, c.surface); const min = c.kind === "text" ? 4.5 : 3; const cls = v < min ? "lo" : ""; return `<td class="m"><span class="sw" style="background:${hex(f)}"></span>${c.fillLabel}</td><td class="m"><span class="sw" style="background:${hex(i)}"></span>${c.inkLabel}</td><td class="n ${cls}" data-cr="${fmt(v)}">${fmt(v)}</td>`; }).join("");
@@ -35,33 +43,30 @@ function fixIcon(h) {
   }
   h = must(h, "当前 ink 于纸（侧栏选中）", "当前 ink 于墨洗（菜单选中）", "Icon");
   h = must(h, "成员导航（Inputs 板侧栏）、顶栏通知按钮", "成员导航（菜单项）、顶带通知按钮", "Icon");
-  h = must(h, "样板是构图一壳层里的项目列表页，只用名册里的名字。", "组合样板随顶带壳重渲染后补入（第二批）。", "Icon");
   h = h.replace(/docs 层（待裁定）<\/td><td[^>]*>进包<\/td><td[^>]*>style-scale\.md 记为待 Owner 裁定，本批建议进包/, "docs 层</td><td>进包</td><td>已进包：packages/ui-react/src/styles/icon.css.ts（2026-10-11 裁定）");
-  if (/待 Owner|待裁定/.test(h.replace(/<style[\s\S]*?<\/style>/, ""))) console.log("  Icon：仍有待裁字样，请检查");
   return h;
 }
 function fixInputs(h) {
   h = must(h, "sm 28 · 顶栏 220 宽", "sm 28 · 下拉与紧凑工具栏", "Inputs");
   h = must(h, "顶栏、列表上方过滤、命令面板入口", "菜单面板与下拉顶部、列表上方过滤、命令面板入口", "Inputs");
   h = h.split("表单内与顶栏同一工具形态").join("表单内与菜单面板同一工具形态");
-  h = must(h, "样板是构图一壳层的邀请成员页，十一件里九件同屏。", "组合样板随顶带壳重渲染后补入（第二批）。", "Inputs");
   return h;
 }
 function fixTypography(h) {
   h = must(h, "正文落在画布色上：侧栏、页脚与空状态说明会用到。", "正文落在画布色上：顶带固定项、页脚与空状态说明会用到。", "Typography");
-  h = must(h, "下半部分是放进构图一壳层的账单页样板，最后是消费方契约与 token 差异。", "最后是消费方契约与 token 差异；组合样板随顶带壳重渲染后补入（第二批）。", "Typography");
   return h;
 }
+// Actions 草稿板与标准一致（D 段样板已是顶带壳），不需改字
 function fixActions(h) {
-  h = must(h, "样板是构图一壳层的项目页：页头三枚、工具栏两个按钮组、行内复制与打开、底部危险区。", "组合样板随顶带壳重渲染后补入（第二批）。", "Actions");
   return h;
 }
 const FAM = [["V2-B1-Typography", "Typography", "字体 Typography", "Typography", fixTypography], ["V2-B1-Icon", "Icon", "图标 Icon", "Icon", fixIcon], ["V2-B1-Actions", "Actions", "动作 Actions", "Actions", fixActions], ["V2-B1-Inputs", "Inputs", "表单控件 Inputs", "Inputs", fixInputs]];
 for (const [src, name, title, en, fix] of FAM) {
   let h = fs.readFileSync(SRC + src + ".dc.html", "utf8");
-  h = cutD(h, src);
+  h = hasD(h, src);
   h = h.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`).replace(/<p class="k">Batch one · 0\d \/ 05 · [^<]*<\/p>/, `<p class="k">Visual standard · ${en} · 2026-10-13</p>`);
   h = fix(h);
+  auditD4(h, name);
   h = setHeight(h, name);
   fs.writeFileSync(OUT + name + ".dc.html", h); console.log("wrote", name, h.length);
 }
