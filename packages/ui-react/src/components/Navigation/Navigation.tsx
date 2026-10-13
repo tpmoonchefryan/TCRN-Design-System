@@ -12,6 +12,8 @@ import type {
 } from "react";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { IconButton, type IconButtonProps } from "../Button/index.js";
+// PageHeader is the paper's first row (TCRN-DS-SUB-129); DomainDisplay imports nothing from here.
+import { PageHeader, type PageHeaderBreadcrumb, type PageHeaderProps } from "../DataDisplay/DomainDisplay.js";
 import { SearchInput, type SearchInputProps } from "../Form/index.js";
 import { Icon, type IconName } from "../Icon/index.js";
 import { resolveTcrnLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
@@ -1786,6 +1788,14 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   navGroups: readonly ProductShellNavGroup[];
   locales: readonly ShellLocaleOption[];
   currentLocale: string;
+  /**
+   * The page's header, the paper's first row: the trail, the title and the page's actions (07b
+   * board, section E, "PageHeader 必有"). Required, so a shell page without one does not type-check.
+   * An omitted trail is the current position in `navGroups` (group › … › page); an omitted locale is
+   * `currentLocale`.
+   */
+  pageHeader: PageHeaderProps;
+  /** The page below its header. */
   children: ReactNode;
   currentTheme?: ShellThemeMode;
   localeMenuOpen?: boolean;
@@ -1899,7 +1909,8 @@ function productShellInitials(account: ProductShellAccount): string {
  * the pinned items (ShellPins; a pinned group or submenu opens its drop-down, ShellDropdown) and
  * the top-right cluster — the product's own controls, the bell and the avatar, whose menu holds
  * the product switcher, the theme and the language. The paper holds the page: space-3 from the
- * shell's sides and bottom, under the band, with the paper radius and shadow s1. One layer is open
+ * shell's sides and bottom, under the band, with the paper radius and shadow s1. Its first row is
+ * the page header (`pageHeader`, required: TCRN-DS-SUB-129), then the page. One layer is open
  * at a time: opening the full menu, a drop-down or the avatar menu closes the other two. The phone
  * presentation is the full menu's own (C-7); the shell has no branch for it.
  */
@@ -1912,6 +1923,7 @@ export function ProductShell({
   navGroups,
   locales,
   currentLocale,
+  pageHeader,
   children,
   currentTheme = "light",
   localeMenuOpen = false,
@@ -2010,6 +2022,10 @@ export function ProductShell({
     : shownTargets.find((target) => target.pin.id === selectedId) ?? shownTargets.find((target) => target.holds.has(selectedId));
   const openTarget = shownOpenPin === null ? undefined : shownTargets.find((target) => target.pin.id === shownOpenPin && target.source);
   const currentPath: readonly ShellMenuCrumb[] = selection?.path ?? [{ label: currentRouteLabel }];
+  // The page header's trail defaults to the current position; its last step, the page, is no link.
+  const currentTrail: readonly PageHeaderBreadcrumb[] = currentPath.map((step, index) => (
+    step.href && index < currentPath.length - 1 ? { id: `${baseId}-crumb-${index}`, label: step.label, href: step.href } : { id: `${baseId}-crumb-${index}`, label: step.label }
+  ));
   const state = shownMenuOpen ? "expanded" : openTarget ? "drop" : "closed";
   const unread = notifications?.unread ?? 0;
 
@@ -2159,6 +2175,7 @@ export function ProductShell({
       )}
       <div className="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper">
         <ContentElement id={contentId} className="tcrn-product-shell__main" data-product-shell-region="content" aria-label={resolvedContentLabel}>
+          <PageHeader {...pageHeader} breadcrumbs={pageHeader.breadcrumbs ?? currentTrail} locale={pageHeader.locale ?? currentLocale} />
           {children}
         </ContentElement>
       </div>

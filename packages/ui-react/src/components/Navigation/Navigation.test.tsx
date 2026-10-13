@@ -424,6 +424,7 @@ test("STORY-140 GWT2 product shell renders one shell: the band, the cluster and 
       moduleName="Talent"
       brandProductId="tms"
       currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
       currentRouteLabelKey="story.roster.title"
       navGroups={shellNavGroups}
       pinnedIds={["roster", "contracts"]}
@@ -474,6 +475,112 @@ test("STORY-140 GWT2 product shell renders one shell: the band, the cluster and 
   ]) {
     assert.equal(html.includes(retired), false, `${retired} is not in the shell`);
   }
+});
+
+test("STORY-146 GWT1 the page header is required and is the paper's first row", () => {
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster", description: "24 people · 3 to invite" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+    >
+      <section>Fixture-safe roster content</section>
+    </ProductShell>
+  );
+  // The paper holds the content region, and the page header opens it, before the page.
+  assert.match(
+    html,
+    /<div class="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper"><section id="product-shell-content" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Product shell workspace"><header class="tcrn-page-header tcrn-page-header--compact" data-pattern="page-header"/
+  );
+  assert.equal(html.match(/data-pattern="page-header"/g)?.length, 1, "one page header");
+  assert.ok(html.indexOf('data-pattern="page-header"') < html.indexOf("Fixture-safe roster content"), "the header comes before the page");
+  assert.match(html, /<h2 title="Roster" class="tcrn-heading tcrn-heading--2">Roster<\/h2><p class="tcrn-text[^"]*">24 people · 3 to invite<\/p>/);
+  // An omitted trail is the current position in the menu model: the group, then the page, which is no link.
+  assert.match(
+    html,
+    /<nav class="tcrn-page-header__breadcrumbs" aria-label="Breadcrumbs"><span class="tcrn-page-header__breadcrumb"><span class="tcrn-page-header__crumb" title="Talent">Talent<\/span><\/span><span class="tcrn-page-header__breadcrumb"><span class="tcrn-page-header__crumb-separator" aria-hidden="true">\/<\/span><b class="tcrn-page-header__crumb" title="Roster" aria-current="page">Roster<\/b><\/span><\/nav>/
+  );
+  // The consumer's own trail and language win over the shell's.
+  const own = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Active"
+      pageHeader={{ title: "Active", locale: "fr", breadcrumbs: [{ id: "contracts", label: "Contracts", href: "/contracts" }, { id: "active", label: "Active" }] }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+    >
+      <section>Fixture-safe contract content</section>
+    </ProductShell>
+  );
+  assert.match(own, /aria-label="Fil d’Ariane"><span class="tcrn-page-header__breadcrumb"><a class="tcrn-page-header__crumb" href="\/contracts" title="Contracts">Contracts<\/a>/);
+  assert.match(own, /<b class="tcrn-page-header__crumb" title="Active" aria-current="page">Active<\/b>/);
+  assert.equal(own.includes('title="Talent"'), false, "the derived trail is not added to the consumer's");
+
+  // Type level: a shell page without a page header, or with one without a title, does not compile.
+  const missing = (
+    // @ts-expect-error the page header is required
+    <ProductShell productName="TCRN TMS" moduleName="Talent" brandProductId="tms" currentRouteLabel="Roster" navGroups={[]} locales={shellLocales} currentLocale="en">
+      <div>content</div>
+    </ProductShell>
+  );
+  assert.ok(missing);
+  const untitled: Pick<ProductShellProps, "pageHeader"> = {
+    // @ts-expect-error a page header has a title
+    pageHeader: { description: "No title" }
+  };
+  assert.ok(untitled);
+});
+
+test("STORY-146 GWT2 the trail stays on one line: crumbs give way with an ellipsis and carry a title", () => {
+  const rule = (selector: string) => {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const found = new RegExp(`(?:^|\\n)${escaped} \\{([^}]*)\\}`).exec(tcrnComponentCss);
+    assert.ok(found, `${selector} has a rule`);
+    return found[1];
+  };
+  const trail = rule(".tcrn-page-header__breadcrumbs,\n.tcrn-page-header__breadcrumb");
+  assert.match(trail, /flex-wrap: nowrap;/);
+  assert.match(trail, /white-space: nowrap;/);
+  assert.match(trail, /min-width: 0;/);
+  assert.match(trail, /gap: var\(--tcrn-space-1h\);/, "the board's crumb gap 6");
+  const nav = rule(".tcrn-page-header__breadcrumbs");
+  assert.match(nav, /overflow: hidden;/);
+  assert.match(nav, /font-size: var\(--tcrn-type-size-meta\);/, "the board's crumb size 12");
+  assert.match(rule(".tcrn-page-header__crumb-separator"), /flex: none;/);
+  const crumb = rule(".tcrn-page-header__crumb");
+  assert.match(crumb, /overflow: hidden;/);
+  assert.match(crumb, /text-overflow: ellipsis;/);
+  assert.match(crumb, /min-width: 0;/);
+  // The paper's inset and row gap are the board's .ts-content (14 28 12, gap 10), from space tokens.
+  const main = rule(".tcrn-product-shell__main");
+  assert.match(main, /padding: var\(--tcrn-space-3h\) calc\(2 \* var\(--tcrn-space-3h\)\) var\(--tcrn-space-3\);/);
+  assert.match(main, /gap: var\(--tcrn-space-2h\);/);
+  assert.match(main, /grid-template-columns: minmax\(0, 1fr\);/);
+  // A long trail: every crumb carries its whole label as its title.
+  const labels = ["Operations and partner management", "Contracts awaiting countersignature", "Agency renewals for the autumn season"];
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel={labels[2]}
+      pageHeader={{ title: labels[2], breadcrumbs: labels.map((label, index) => ({ id: `crumb-${index}`, label, href: index < 2 ? "/" : undefined })) }}
+      navGroups={[]}
+      locales={shellLocales}
+      currentLocale="en"
+    >
+      <section>Fixture-safe content</section>
+    </ProductShell>
+  );
+  for (const label of labels) assert.match(html, new RegExp(`class="tcrn-page-header__crumb"[^>]* title="${label}"|title="${label}"[^>]*aria-current="page"`));
 });
 
 test("product shell component css keeps motion shorthands valid", () => {
@@ -567,6 +674,7 @@ test("product shell puts the product's own controls in the cluster, before the b
       moduleName="Talent"
       brandProductId="tms"
       currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
       navGroups={shellNavGroups}
       locales={shellLocales}
       currentLocale="en"
@@ -587,7 +695,7 @@ test("product shell puts the product's own controls in the cluster, before the b
   assert.match(html, /aria-label="Account" aria-haspopup="dialog"/, "without an account the avatar names its menu");
 
   const bare = renderToStaticMarkup(
-    <ProductShell productName="TCRN TMS" moduleName="Talent" brandProductId="tms" currentRouteLabel="Roster" navGroups={[]} locales={shellLocales} currentLocale="en">
+    <ProductShell productName="TCRN TMS" moduleName="Talent" brandProductId="tms" currentRouteLabel="Roster" pageHeader={{ title: "Roster" }} navGroups={[]} locales={shellLocales} currentLocale="en">
       <div>content</div>
     </ProductShell>
   );
@@ -604,6 +712,7 @@ test("STORY-140 GWT4 the avatar menu switches products and holds the theme and t
       moduleName="Talent"
       brandProductId="tms"
       currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
       navGroups={shellNavGroups}
       locales={shellLocales}
       currentLocale="en"
@@ -792,6 +901,7 @@ function ProductShellSemanticFixture({ events }: ProductShellSemanticFixtureProp
       moduleName="Talent"
       brandProductId="tms"
       currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
       navGroups={shellNavGroups}
       locales={shellLocales}
       currentLocale={locale}
@@ -1117,6 +1227,7 @@ test("shell chrome says its own words in the reader's language", () => {
       moduleName="运营驾驶舱"
       brandProductId="tms"
       currentRouteLabel="驾驶舱"
+      pageHeader={{ title: "驾驶舱" }}
       currentLocale="zh-CN"
       locales={[{ locale: "zh-CN", nativeName: "简体中文" }]}
       navGroups={[{ id: "registered", label: "已登记入口", items: [{ id: "cockpit", label: "驾驶舱", href: "/cockpit", selected: true }] }]}
@@ -1141,9 +1252,12 @@ test("shell chrome says its own words in the reader's language", () => {
   assert.match(zhShell, /aria-label="账户"/);
   assert.match(zhShell, /aria-label="语言"/);
   assert.match(zhShell, /placeholder="搜索页面与内容"/);
+  // The page header's trail is named in the shell's language and walks the current position.
+  assert.match(zhShell, /<nav class="tcrn-page-header__breadcrumbs" aria-label="面包屑导航">/);
+  assert.match(zhShell, /title="已登记入口">已登记入口<\/span>/);
   for (const englishDefault of [
     "Skip to shell content", "Product shell workspace", ">Current location<", " shell controls\"",
-    "Switch to dark mode", "Close navigation", "Notifications", "\"Account\"", "Search pages and content"
+    "Switch to dark mode", "Close navigation", "Notifications", "\"Account\"", "Search pages and content", "\"Breadcrumbs\""
   ]) {
     assert.equal(zhShell.includes(englishDefault), false, `${englishDefault} is not shipped into a zh-CN shell`);
   }
@@ -1242,6 +1356,7 @@ function PinsControllerFixture({ events, productId, initialPins }: { events: str
       moduleName="Talent"
       brandProductId="tms"
       currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
       navGroups={pinGroups}
       locales={shellLocales}
       {...controller.productShellControlProps}
@@ -1332,6 +1447,7 @@ test("STORY-140 GWT5 the side rail, collapse and pinned-open props are rejected 
     moduleName: "Talent",
     brandProductId: "tms",
     currentRouteLabel: "Roster",
+    pageHeader: { title: "Roster" },
     navGroups: [],
     locales: shellLocales,
     currentLocale: "en",

@@ -3,6 +3,24 @@ import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
 import { AppStatusBar, CollapsibleRegion, DisclosurePanel, Divider, PageHierarchy, SettingsLayout, Surface } from "./Layout.js";
 import { PageHeader, SubNav } from "../DataDisplay/DomainDisplay.js";
+import { createTokenMap } from "@tcrn/ui-tokens";
+import { tcrnComponentCss } from "../../styles/index.js";
+
+// The body of the top-level rule whose selector is exactly `selector` (a rule nested in an at-rule
+// is indented and not read).
+function topLevelRule(selector: string): string {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const found = new RegExp(`(?:^|\\n)${escaped} ?\\{([^}]*)\\}`).exec(tcrnComponentCss);
+  assert.ok(found, `${selector} has a top-level rule`);
+  return found[1];
+}
+
+const tokens = createTokenMap();
+const px = (variable: string) => {
+  const value = Number.parseFloat(tokens[variable] ?? "");
+  assert.ok(Number.isFinite(value), `${variable} is a length`);
+  return value;
+};
 
 test("layout primitives include surfaces and dividers", () => {
   const html = renderToStaticMarkup(
@@ -137,4 +155,48 @@ test("page hierarchy reserves the internal local navigation slot for explicit th
   assert.match(html, /data-page-hierarchy-region="third-level"/);
   assert.match(html, /data-page-hierarchy-slot="local-navigation"/);
   assert.match(html, /data-page-hierarchy-slot="content"/);
+});
+
+test("STORY-146 GWT3 a settings page is at most the layout content width, centred in the paper", () => {
+  const settings = topLevelRule(".tcrn-settings-layout");
+  assert.match(settings, /inline-size:100%/);
+  assert.match(settings, /max-inline-size:var\(--tcrn-layout-content-max-w\)/);
+  assert.match(settings, /margin-inline:auto/);
+  assert.equal(tokens["--tcrn-layout-content-max-w"], "1040px");
+  // At 1440: the paper is space-3 from both sides and its content twice space-3h inside it, so the
+  // content row is 1360 and the settings page 1040, with equal room left and right.
+  const paperContent = 1440 - 2 * px("--tcrn-space-3") - 2 * 2 * px("--tcrn-space-3h");
+  assert.equal(paperContent, 1360);
+  const width = Math.min(paperContent, px("--tcrn-layout-content-max-w"));
+  const left = px("--tcrn-space-3") + 2 * px("--tcrn-space-3h") + (paperContent - width) / 2;
+  const right = 1440 - left - width;
+  assert.ok(width <= 1040);
+  assert.equal(left, right, "centred");
+  assert.equal(left, 200);
+  // A document page is held to the same width, its border and inset included.
+  const canvas = topLevelRule(".tcrn-document-canvas");
+  assert.match(canvas, /box-sizing: border-box;/);
+  assert.match(canvas, /max-inline-size: var\(--tcrn-layout-content-max-w\);/);
+  assert.match(canvas, /margin-inline: auto;/);
+  const html = renderToStaticMarkup(
+    <SettingsLayout navigation={<nav>Sections</nav>} navigationLabel="Settings sections" contentLabel="Settings">
+      <p>Row</p>
+    </SettingsLayout>
+  );
+  assert.match(html, /^<div class="tcrn-settings-layout" data-settings-layout="true"/);
+});
+
+test("Surface and Divider take their spacing from the space tokens; only the 1px rule is a literal", () => {
+  const spacing = /^(?:padding|margin|gap|row-gap|column-gap)(?:-[a-z-]+)?$/;
+  for (const selector of [".tcrn-divider", ".tcrn-surface__head", ".tcrn-surface__head-actions"]) {
+    for (const declaration of topLevelRule(selector).split(";").map((part) => part.trim()).filter(Boolean)) {
+      const [property, value] = declaration.split(/:(.*)/s).map((part) => part.trim());
+      if (!spacing.test(property ?? "")) continue;
+      assert.match(value ?? "", /^(?:0|var\(--tcrn-space-[0-9a-z]+\))(?: (?:0|var\(--tcrn-space-[0-9a-z]+\)))*$/, `${selector} ${property} comes from the space tokens`);
+    }
+  }
+  assert.match(topLevelRule(".tcrn-divider"), /border-top: 1px solid var\(--tcrn-color-border-subtle\);/);
+  // The surface card rule is shared with the other panels: its inset and gap are tokens too.
+  assert.match(tcrnComponentCss, /\.tcrn-action-drawer \{[^}]*padding: var\(--tcrn-space-3\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-action-drawer \{[^}]*gap: var\(--tcrn-space-2h\);/);
 });

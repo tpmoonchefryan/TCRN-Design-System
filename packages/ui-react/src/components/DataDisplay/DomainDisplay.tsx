@@ -228,21 +228,40 @@ export interface ActionDescriptor {
 export interface PageHeaderProps {
   title: string;
   description?: ReactNode;
-  breadcrumbs?: PageHeaderBreadcrumb[];
+  /**
+   * The trail down to this page, on one line above the title (07b board, section D row 面包屑).
+   * The last crumb without an href is the current page. Inside ProductShell an omitted trail is the
+   * current position in the shell's menu model.
+   */
+  breadcrumbs?: readonly PageHeaderBreadcrumb[];
   meta?: ReactNode;
   actions?: ActionDescriptor[];
   density?: Density;
+  /** Which language the trail's built-in name is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
 }
 
-export function PageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact" }: PageHeaderProps) {
+/**
+ * The page's header: the trail, the title and the page's actions. In ProductShell it is the paper's
+ * first row and required (07b board, section E, "PageHeader 必有"). The trail stays on one line at
+ * every width: a crumb that does not fit ends in an ellipsis and carries its label as a title.
+ */
+export function PageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact", locale }: PageHeaderProps) {
   return (
     <header className={cx("tcrn-page-header", `tcrn-page-header--${density}`)} data-pattern="page-header" data-density={density}>
       {breadcrumbs.length ? (
-        <nav className="tcrn-page-header__breadcrumbs" aria-label="Breadcrumbs">
+        <nav className="tcrn-page-header__breadcrumbs" aria-label={patternLabels(locale).breadcrumbs}>
           {breadcrumbs.map((breadcrumb, index) => (
             <span key={breadcrumb.id} className="tcrn-page-header__breadcrumb">
-              {breadcrumb.href ? <a href={breadcrumb.href}>{breadcrumb.label}</a> : <span>{breadcrumb.label}</span>}
-              {index < breadcrumbs.length - 1 ? <span aria-hidden="true">/</span> : null}
+              {index > 0 ? <span className="tcrn-page-header__crumb-separator" aria-hidden="true">/</span> : null}
+              {breadcrumb.href ? (
+                <a className="tcrn-page-header__crumb" href={breadcrumb.href} title={breadcrumb.label}>{breadcrumb.label}</a>
+              ) : index === breadcrumbs.length - 1 ? (
+                // The page itself, set in the ink and weight of the board's current crumb.
+                <b className="tcrn-page-header__crumb" title={breadcrumb.label} aria-current="page">{breadcrumb.label}</b>
+              ) : (
+                <span className="tcrn-page-header__crumb" title={breadcrumb.label}>{breadcrumb.label}</span>
+              )}
             </span>
           ))}
         </nav>
@@ -1319,6 +1338,8 @@ interface PatternLabels {
   versionHistory: string;
   templates: string;
   searchResults: string;
+  /** Name of PageHeader's trail of crumbs. */
+  breadcrumbs: string;
   /**
    * The four names this file composes from a value it did not author.
    *
@@ -1361,6 +1382,7 @@ const patternLabelTable: Record<TcrnLocale, PatternLabels> = {
     versionHistory: "版本历史",
     templates: "模板",
     searchResults: "搜索结果",
+    breadcrumbs: "面包屑导航",
     relationshipsOf: (title) => `${title}的关联`,
     relationshipFallbackOf: (label) => `${label}关联回退表`,
     referencesOf: (id) => `${id}的引用`
@@ -1389,6 +1411,7 @@ const patternLabelTable: Record<TcrnLocale, PatternLabels> = {
     versionHistory: "Version history",
     templates: "Templates",
     searchResults: "Search results",
+    breadcrumbs: "Breadcrumbs",
     relationshipsOf: (title) => `${title} relationships`,
     relationshipFallbackOf: (label) => `${label} relationship fallback`,
     referencesOf: (id) => `${id} references`
@@ -1417,6 +1440,7 @@ const patternLabelTable: Record<TcrnLocale, PatternLabels> = {
     versionHistory: "バージョン履歴",
     templates: "テンプレート",
     searchResults: "検索結果",
+    breadcrumbs: "パンくずリスト",
     relationshipsOf: (title) => `${title}の関連`,
     relationshipFallbackOf: (label) => `${label}の関連フォールバック表`,
     referencesOf: (id) => `${id}の参照`
@@ -1445,6 +1469,7 @@ const patternLabelTable: Record<TcrnLocale, PatternLabels> = {
     versionHistory: "버전 기록",
     templates: "템플릿",
     searchResults: "검색 결과",
+    breadcrumbs: "이동 경로",
     relationshipsOf: (title) => `${title} 관계`,
     relationshipFallbackOf: (label) => `${label} 관계 대체 표`,
     referencesOf: (id) => `${id} 참조`
@@ -1473,6 +1498,7 @@ const patternLabelTable: Record<TcrnLocale, PatternLabels> = {
     versionHistory: "Historique des versions",
     templates: "Modèles",
     searchResults: "Résultats de recherche",
+    breadcrumbs: "Fil d’Ariane",
     relationshipsOf: (title) => `Relations : ${title}`,
     relationshipFallbackOf: (label) => `Tableau de secours des relations : ${label}`,
     referencesOf: (id) => `Références : ${id}`

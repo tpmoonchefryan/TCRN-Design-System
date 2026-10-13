@@ -691,6 +691,8 @@ function ShellStoryShell({ storyId, screen }: { storyId: string; screen: ShellSt
       moduleName="People"
       brandProductId="tms"
       currentRouteLabel="Roster"
+      // The paper's first row (TCRN-DS-SUB-129): its trail is the current position, People › Roster.
+      pageHeader={{ title: "Roster" }}
       navGroups={shellStoryNavGroups(storyId)}
       locales={tcrnLocaleMetadata}
       currentLocale={tcrnDefaultLocale}
@@ -706,7 +708,6 @@ function ShellStoryShell({ storyId, screen }: { storyId: string; screen: ShellSt
       data-shell={screen.screen}
     >
       <div className="tcrn-product-shell-content-stack">
-        <Heading level={2}>Roster</Heading>
         <Text>Twelve people across four teams, updated today.</Text>
       </div>
     </ProductShell>
@@ -2503,6 +2504,7 @@ const legacyContractStories: LegacyContractStory[] = [
             moduleName="Frontend shell slice"
             brandProductId="design-system"
             currentRouteLabel="Cockpit"
+            pageHeader={{ title: "Cockpit" }}
             currentTheme="light"
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}

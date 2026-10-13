@@ -242,9 +242,19 @@ export const baseCss10 = `
   color: var(--tcrn-color-text-secondary);
   font-size: var(--tcrn-type-size-meta);
 }
+/*
+ * The paper's content (07b board .ts-content, TCRN-DS-SUB-129): the page header is its first row,
+ * then the page, one column with the board's row gap. The inset is the board's 14 28 12: space-3h,
+ * twice space-3h at the sides (no space token is 28) and space-3. A grid rather than a flex column,
+ * so every row keeps its content height and the paper scrolls instead of squeezing a row.
+ */
 .tcrn-product-shell__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: var(--tcrn-space-2h);
   min-width: 0;
-  padding: var(--tcrn-space-5);
+  padding: var(--tcrn-space-3h) calc(2 * var(--tcrn-space-3h)) var(--tcrn-space-3);
 }
 /*
  * The content stack is the size container for the section grid it holds, the
@@ -1098,6 +1108,10 @@ a.tcrn-relationship-chip:focus-visible {
   --tcrn-density-padding: var(--tcrn-space-3);
   --tcrn-density-row-min: 40px;
 }
+/* The trail sits the board's row gap above the title (07b board .ts-content gap 10); dense keeps its own. */
+.tcrn-page-header {
+  --tcrn-density-gap: var(--tcrn-space-2h);
+}
 .tcrn-page-header--dense,
 .tcrn-view-tabs--dense,
 .tcrn-quick-filters--dense,
@@ -1119,8 +1133,6 @@ a.tcrn-relationship-chip:focus-visible {
   padding-block-end: var(--tcrn-space-3);
   border-bottom: 1px solid var(--tcrn-color-border-subtle);
 }
-.tcrn-page-header__breadcrumbs,
-.tcrn-page-header__breadcrumb,
 .tcrn-page-header__meta,
 .tcrn-page-header__actions {
   display: flex;
@@ -1129,14 +1141,43 @@ a.tcrn-relationship-chip:focus-visible {
   gap: var(--tcrn-space-2);
   min-width: 0;
 }
-.tcrn-page-header__breadcrumbs {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-meta);
-  font-weight: var(--tcrn-type-weight-strong);
+/*
+ * The trail (07b board .ts-crumbs and section D row 面包屑, TCRN-DS-SUB-129): one line at every
+ * width. The separators keep their size; a crumb that does not fit gives way and ends in an
+ * ellipsis, and every crumb carries its label as a title.
+ */
+.tcrn-page-header__breadcrumbs,
+.tcrn-page-header__breadcrumb {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+  min-width: 0;
+  white-space: nowrap;
 }
-.tcrn-page-header__breadcrumbs a {
-  color: inherit;
+.tcrn-page-header__breadcrumbs {
+  overflow: hidden;
+  color: var(--tcrn-color-text-muted);
+  font-size: var(--tcrn-type-size-meta);
+}
+.tcrn-page-header__breadcrumb {
+  flex: 0 1 auto;
+}
+.tcrn-page-header__crumb-separator {
+  flex: none;
+}
+.tcrn-page-header__crumb {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+a.tcrn-page-header__crumb {
+  color: var(--tcrn-color-text-secondary);
   text-decoration: none;
+}
+b.tcrn-page-header__crumb {
+  color: var(--tcrn-color-text-primary);
+  font-weight: var(--tcrn-type-weight-strong);
 }
 .tcrn-page-header__body {
   display: grid;
@@ -1876,6 +1917,19 @@ export const baseCss22 = `
 .tcrn-document-canvas__meta {
   color: var(--tcrn-color-text-secondary);
   font-size: var(--tcrn-type-size-meta);
+}
+/*
+ * A document page's content is at most the layout content width and centred in the paper, like a
+ * settings page (MIN-20261013-SHELL D1, TCRN-DS-SUB-130); list and detail pages (RecordTable,
+ * SplitView, DetailLayout) keep the whole paper. Their edges are the paper's content edge: the
+ * paper's own inset, with no room kept for a side rail. The canvas has a border and an inset, so
+ * the width it is held to includes them.
+ */
+.tcrn-document-canvas {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: var(--tcrn-layout-content-max-w);
+  margin-inline: auto;
 }`;
 
 export const baseCss23 = `
@@ -2001,8 +2055,9 @@ export const baseCss23 = `
     max-width: none;
     justify-content: space-between;
   }
+  /* The phone paper's inset (07b board .scr.ts.m .ts-content: 12 16). */
   .tcrn-product-shell__main {
-    padding: var(--tcrn-space-4);
+    padding: var(--tcrn-space-3) var(--tcrn-space-4);
   }
 }`;
 
@@ -3030,7 +3085,9 @@ export const baseCss37 = `
 .tcrn-setting-choice__hint{color:var(--tcrn-color-text-secondary)}.tcrn-setting-choice__error{color:var(--tcrn-color-state-blocked)}`;
 
 export const baseCss38 = `
-.tcrn-settings-layout{min-inline-size:0;max-inline-size:100%}
+/* A settings page's content is at most the layout content width and centred in the paper
+   (MIN-20261013-SHELL D1, TCRN-DS-SUB-130); its edges are measured from the paper's content edge. */
+.tcrn-settings-layout{inline-size:100%;min-inline-size:0;max-inline-size:var(--tcrn-layout-content-max-w);margin-inline:auto}
 .tcrn-settings-layout__frame{container:tcrn-settings-layout-frame/inline-size;min-inline-size:0}
 .tcrn-settings-layout__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-4);min-inline-size:0}
 .tcrn-settings-layout__nav{min-inline-size:0;max-inline-size:100%;overflow-x:auto}
