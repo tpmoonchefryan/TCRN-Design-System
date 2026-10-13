@@ -1058,11 +1058,13 @@ a.tcrn-relationship-chip:focus-visible {
   --tcrn-density-padding: var(--tcrn-space-2);
   --tcrn-density-row-min: 34px;
 }
+/* The page header's title row is the board's .ph (TCRN-DS-SUB-162): the rule under it is line-2,
+   space-3 below the row, and the title and its meta sit space-3h apart. */
 .tcrn-page-header {
   display: grid;
   gap: var(--tcrn-density-gap);
   padding-block-end: var(--tcrn-space-3);
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  border-bottom: 1px solid var(--tcrn-color-line-2);
 }
 .tcrn-page-header__meta,
 .tcrn-page-header__actions {
@@ -1076,7 +1078,7 @@ a.tcrn-relationship-chip:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: var(--tcrn-space-3);
+  gap: var(--tcrn-space-3h);
   min-width: 0;
 }
 .tcrn-page-header__title {
