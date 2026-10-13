@@ -1012,11 +1012,13 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
 // Compare actual content edges, not padding strings. On the top-band documentation shell
 // (TCRN-DS-SUB-131) the current location is the page header's breadcrumb in the paper, the content is
 // the paper's scroll container #content, and the page head is the governance section of the page body.
+// Every story renders inside that paper, so the readings name the page's own #content and its direct
+// page header rather than any [data-paper] (a story shell's paper is nested in the page's).
 // Missing/hidden samples fail.
 async function measureDocumentContentEdge(page) {
   return page.evaluate(() => {
-    const location = document.querySelector('[data-shell="doc"] [data-paper] .tcrn-page-header .tcrn-breadcrumb');
-    const content = document.querySelector('[data-shell="doc"] [data-paper] #content');
+    const location = document.querySelector('[data-shell="doc"] #content > .tcrn-page-header .tcrn-breadcrumb');
+    const content = document.querySelector('[data-shell="doc"] #content');
     const heading = document.querySelector('[data-shell="doc"] .tcrn-doc-page-head');
     // The page body is the centred 1040 column (TCRN-DS-SUB-130, SUB-131); the page head starts on its edge.
     const column = document.querySelector('[data-shell="doc"] .tcrn-doc-page__body');
@@ -1064,7 +1066,7 @@ async function documentContentEdgeProof(page, origin) {
     await page.goto(`${origin}/style-guide.html?theme=light&locale=en`);
     await settle(page);
     // Recreate the consumer's extra nested inset; the shared package is untouched.
-    await addCssMutation(page, '[data-shell="doc"] [data-paper] .tcrn-page-header { padding-left: 48px !important; }');
+    await addCssMutation(page, '[data-shell="doc"] #content > .tcrn-page-header { padding-left: 48px !important; }');
     const mutated = await measureDocumentContentEdge(page);
     await removeMutation(page);
     await settle(page);

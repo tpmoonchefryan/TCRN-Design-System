@@ -899,24 +899,27 @@ const aosOwnerQualityProductShellContract = {
     "no owner/product/release/live-dispatch readiness claim"
   ]
 };
+// The documentation pages render in the package's top-band ProductShell (TCRN-DS-SUB-131): the band, the
+// brand button that opens the full menu, the menu's groups and rows, and the paper's contents rail with
+// the current story (TCRN-DS-SUB-132). There is no side rail and no collapse control (MIN-20261013-SHELL D1).
 const required = [
   "data-doc-shell=\"online-docs\"",
-  "class=\"tcrn-doc-header\"",
-  "class=\"tcrn-doc-global-bar\"",
-  "class=\"tcrn-doc-sidebar\"",
-  "class=\"tcrn-doc-nav\"",
-  "data-doc-nav-item=\"",
-  "data-doc-nav-category-toggle=\"",
-  "data-doc-nav-item-active=\"true\"",
+  "data-shell=\"doc\" data-doc-shell=\"online-docs\"",
+  "<header class=\"tcrn-shell-strip\"",
+  "<div class=\"tcrn-shell-menu\" data-shell-menu=\"\" hidden=\"\">",
+  "data-shell-group=\"\"",
+  "data-shell-row=\"\"",
+  "<div class=\"tcrn-doc-page__toc\" data-doc-toc=\"\">",
+  "aria-current=\"location\" data-selected=\"true\"",
   "data-anchor-scroll-controlled=\"true\"",
   "data-shell-control=\"theme-toggle\"",
   "data-shell-control=\"locale-menu\"",
-  "data-shell-control=\"side-nav-collapse\"",
+  "data-tab=\"\"",
   "data-doc-chapter-pager=\"true\"",
   "<link rel=\"icon\" href=\"tcrn-brand-mark.svg\" type=\"image/svg+xml\" />",
-  `--tcrn-anchor-scroll-offset: var(${shellTopbarHeightVar})`,
+  "--tcrn-anchor-scroll-offset: var(--tcrn-space-3h)",
   "tcrnStorybookScrollToHash",
-  "keepActiveLinkVisible",
+  "tcrnStorybookScrollSpy",
   "data-i18n-locale-select",
   "data-storybook-locale=\"en\"",
   "data-storybook-supported-locales=\"zh-CN,en,ja,ko,fr\"",
@@ -929,7 +932,6 @@ const required = [
   "data-theme-icon=\"dark\"",
   "data-icon-name=\"sun\"",
   "data-icon-name=\"moon\"",
-  "--tcrn-doc-motion-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
   "--tcrn-doc-motion-smooth: 0.4s ease",
   "--tcrn-doc-theme-crossfade-duration: 0.4s",
   "::view-transition-old(root)",
@@ -938,7 +940,7 @@ const required = [
   "tcrn-doc-theme-transition-wash",
   "document.startViewTransition",
   "runFallbackThemeTransition",
-  "class=\"tcrn-doc-search-results\"",
+  "<input data-doc-search-input=\"\"",
   "data-doc-search-results",
   "data-doc-search-result",
   "data-locale-menu-toggle",
@@ -1213,11 +1215,19 @@ for (const forbiddenGlobalShellMarker of [
 for (const forbiddenGlobalShellPattern of [
   /data-product-shell-region="side-navigation"/,
   /class="[^"]*tcrn-product-shell__sidebar/,
-  /class="[^"]*tcrn-product-shell__main/,
   /class="[^"]*tcrn-product-shell-search__results/
 ]) {
   if (forbiddenGlobalShellPattern.test(nonComponentHtml)) {
     missing.push(`forbidden-global-shell-pattern:${forbiddenGlobalShellPattern.source}`);
+  }
+}
+// The page chrome is itself a ProductShell (TCRN-DS-SUB-131): outside Components and Proof its main region
+// occurs once per page, on the documentation shell, and never on a story.
+{
+  const docShellRoots = nonComponentHtml.match(/data-shell="doc"/g)?.length ?? 0;
+  const productShellMains = nonComponentHtml.match(/class="[^"]*tcrn-product-shell__main/g)?.length ?? 0;
+  if (docShellRoots === 0 || productShellMains !== docShellRoots) {
+    missing.push(`forbidden-global-shell-pattern:tcrn-product-shell__main:${productShellMains}/${docShellRoots}`);
   }
 }
 const brandIdentityStoryHtml = readStoryHtml(pages["Style Guide"], "brand-identity");
@@ -1908,10 +1918,9 @@ for (const story of requiredStories) {
   if (!owningPageStory.test(pages[story.group])) {
     missing.push(`owning-page-story-governance-metadata:${story.group}:${story.id}`);
   }
-  for (const html of Object.values(pages)) {
-    if (!html.includes(`data-doc-nav-item="${story.id}"`)) {
-      missing.push(`missing-doc-nav-item:${story.id}`);
-    }
+  // Each story is a link of its own page's contents rail (TocRail in the paper), not of a global side rail.
+  if (!new RegExp(`data-doc-toc=""[\\s\\S]*?<a href="#${story.id}"`).test(pages[story.group])) {
+    missing.push(`missing-doc-toc-item:${story.group}:${story.id}`);
   }
   for (const [group, html] of Object.entries(pages)) {
     if (group !== story.group && html.includes(`data-story-id="${story.id}"`)) {
