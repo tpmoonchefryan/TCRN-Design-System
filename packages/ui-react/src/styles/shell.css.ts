@@ -251,3 +251,448 @@ export const shellCss02 = `
     transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
   }
 }`;
+
+// The full menu (TCRN-DS-SUB-116; 07a board, section A, expanded; 07b board, section D "完整菜单",
+// "右下角锁定块"). The positioned box hangs under the brand button: top is the band's inset above the
+// button plus the button plus the hand-off gap, start is the paper's edge (space-3), and it is the
+// expanded panel token wide (never wider than the viewport less both paper edges). It is a one-row
+// grid: the panel is its first column and the cascades of SUB-117 follow at the cascade gap. The
+// panel is paper with the s3 shadow (no blur above 3px), radius 12, inset space-2 at the top and
+// sides and none at the bottom, where the bar takes the inset into its own height (pbar-h + space-2,
+// the 07b decomposition 44 + 8), so its content centres between the bar's top rule and the panel's
+// bottom edge. Columns: three, gap space-4; a group title row is 28 (control-height-sm) with a
+// space-1h margin above, an item row --tcrn-shell-row-h; the row's content starts space-2 inside
+// the panel's space-2, 16 in all, and the bar's lockup ends there too (16 before the right edge).
+// Rows paint with the pair grammar: ink-2 at rest, ink on the 3.5% wash on hover, ink on the 6%
+// wash at weight 600 when selected; a group title is ink-3 with no hover fill (only its pin shows).
+//
+// Behaviour (TCRN-DS-SUB-117): a row's next level opens as a cascade column after the panel, the
+// drop-down width wide and as tall as the panel (the grid row stretches it; its own content does
+// not size the row, contain: size), paper with the s3 shadow, inset space-1h, a 24 title row. While
+// a query is typed the search results replace the columns, in the flow of the panel. Narrower than
+// 1024 the pinned group shows. The panel and the cascades fade in over the fill duration, opacity
+// only; under prefers-reduced-motion nothing animates or transitions.
+export const shellCss03 = `
+.tcrn-shell-menu {
+  position: absolute;
+  top: calc((var(--tcrn-shell-strip-h) - var(--tcrn-shell-brand-h)) / 2 + var(--tcrn-shell-brand-h) + var(--tcrn-shell-menu-gap));
+  left: var(--tcrn-space-3);
+  z-index: var(--tcrn-z-popover);
+  display: grid;
+  grid-template-columns: min(var(--tcrn-shell-panel-w-expanded), calc(100vw - 2 * var(--tcrn-space-3)));
+  grid-auto-columns: var(--tcrn-shell-drop-w);
+  grid-auto-flow: column;
+  align-items: stretch;
+  column-gap: var(--tcrn-shell-cascade-gap);
+  inline-size: min(var(--tcrn-shell-panel-w-expanded), calc(100vw - 2 * var(--tcrn-space-3)));
+  margin: 0;
+  color: var(--tcrn-color-ink);
+  font-family: var(--tcrn-type-family-ui);
+}
+.tcrn-shell-menu__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  max-block-size: calc(100vh - var(--tcrn-shell-strip-h));
+  margin: 0;
+  padding: var(--tcrn-space-2) var(--tcrn-space-2) 0;
+  overflow: hidden;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-shadow-s3);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+.tcrn-shell-menu .tcrn-shell-menu__cascade {
+  contain: size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: var(--tcrn-space-1h);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-shadow-s3);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+@keyframes tcrn-shell-menu-enter {
+  from {
+    opacity: 0;
+  }
+}
+.tcrn-shell-menu .tcrn-shell-menu__search {
+  flex: 0 0 auto;
+  inline-size: auto;
+  max-inline-size: none;
+  margin: 0 0 var(--tcrn-space-1h);
+  transition: none;
+}
+.tcrn-shell-menu__search .tcrn-search-input {
+  --tcrn-search-input-block-size: var(--tcrn-shell-srch-h);
+  inline-size: 100%;
+}
+.tcrn-shell-menu__cols {
+  display: grid;
+  flex: 0 1 auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: start;
+  gap: 0 var(--tcrn-space-4);
+  min-block-size: 0;
+  padding: 0 0 var(--tcrn-space-1);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.tcrn-shell-menu .tcrn-shell-menu__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+}
+.tcrn-shell-menu .tcrn-nav-group__label {
+  align-items: center;
+  block-size: var(--tcrn-control-height-sm);
+  min-inline-size: 0;
+  margin: var(--tcrn-space-1h) 0 0;
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-control);
+  color: var(--tcrn-color-ink-3);
+  font-size: 10px;
+  font-weight: var(--tcrn-type-weight-medium);
+  letter-spacing: 0.14em;
+  line-height: var(--tcrn-control-height-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tcrn-shell-menu .tcrn-nav-group__label:not([data-nav-pinnable="true"]) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tcrn-shell-menu .tcrn-shell-menu__cascade > .tcrn-nav-group__label {
+  flex: 0 0 auto;
+  block-size: var(--tcrn-shell-pinb);
+  margin: var(--tcrn-space-0h) 0 0;
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2h);
+  line-height: var(--tcrn-shell-pinb);
+}
+.tcrn-shell-menu .tcrn-nav-group__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+}
+.tcrn-shell-menu .tcrn-nav-item {
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-icon-d: var(--tcrn-color-ink-3);
+  --tcrn-pair-weight-d: var(--tcrn-type-weight-medium);
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-icon-s: var(--tcrn-color-ink);
+  --tcrn-pair-weight-s: var(--tcrn-type-weight-strong);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-icon: var(--tcrn-pair-icon-d);
+  --tcrn-pair-weight: var(--tcrn-pair-weight-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--tcrn-space-2h);
+  min-inline-size: 0;
+  min-block-size: 0;
+  block-size: var(--tcrn-shell-row-h);
+  margin: 0;
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2h);
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-size: 12.5px;
+  font-weight: var(--tcrn-pair-weight);
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-shell-menu__cols .tcrn-nav-item {
+  grid-template-columns: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h)) minmax(0, 1fr);
+  padding-inline-start: var(--tcrn-space-2);
+}
+.tcrn-shell-menu__cols .tcrn-nav-item[data-nav-item-has-icon="false"] > .tcrn-nav-item__content {
+  grid-column: 2;
+}
+.tcrn-shell-menu .tcrn-nav-item > .tcrn-icon {
+  justify-self: center;
+  color: var(--tcrn-pair-icon);
+}
+.tcrn-shell-menu .tcrn-nav-item:where(:hover, [data-tcrn-preview-state~="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+}
+.tcrn-shell-menu .tcrn-nav-item:where([aria-current="page"], [aria-expanded="true"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-s);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-s);
+  --tcrn-pair-icon: var(--tcrn-pair-icon-s);
+  --tcrn-pair-weight: var(--tcrn-pair-weight-s);
+}
+.tcrn-shell-menu .tcrn-nav-item:where(:focus-visible, [data-tcrn-preview-state~="focus"]) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-shell-menu .tcrn-nav-item:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-shell-menu .tcrn-nav-item-row {
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-row-h);
+  column-gap: var(--tcrn-space-2h);
+}
+.tcrn-shell-menu .tcrn-nav-item-row > .tcrn-nav-item {
+  block-size: 100%;
+  padding-inline-end: 0;
+  background: transparent;
+  color: var(--tcrn-pair-row-ink);
+}
+.tcrn-shell-menu .tcrn-nav-item-row:where(:has(> [data-tcrn-preview-state~="hover"])) {
+  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-h);
+  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-h);
+}
+.tcrn-shell-menu .tcrn-nav-item-row:where(:has(> [aria-expanded="true"])) {
+  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-s);
+  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-s);
+}
+:where(.tcrn-shell-menu .tcrn-nav-item-row:has(> [data-tcrn-preview-state~="hover"]), .tcrn-shell-menu .tcrn-nav-group[data-tcrn-preview-state~="hover"] > .tcrn-nav-group__label) > .tcrn-nav-pin {
+  opacity: 1;
+}
+.tcrn-shell-menu .tcrn-nav-item__content {
+  display: block;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+.tcrn-shell-menu .tcrn-nav-item__label {
+  display: flex;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+  min-inline-size: 0;
+}
+.tcrn-shell-menu__text {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-menu__sub {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__results {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  inline-size: auto;
+  max-block-size: none;
+  margin: var(--tcrn-space-1h) 0 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__results[hidden] {
+  display: none;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result {
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--tcrn-space-2h);
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-row-h);
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:where(:hover, [data-tcrn-preview-state~="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result strong,
+.tcrn-shell-menu .tcrn-product-shell-search__result span {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result strong {
+  font-weight: var(--tcrn-type-weight-medium);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result span {
+  color: var(--tcrn-color-ink-2);
+  font-size: 11.5px;
+}
+.tcrn-shell-menu__pbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--tcrn-space-3);
+  min-inline-size: 0;
+  block-size: calc(var(--tcrn-shell-pbar-h) + var(--tcrn-space-2));
+  margin: var(--tcrn-space-1h) 0 0;
+  padding: 0 var(--tcrn-space-2);
+  border-top: 1px solid var(--tcrn-color-line);
+}
+.tcrn-shell-menu__crumbs {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+  min-inline-size: 0;
+  overflow: hidden;
+  color: var(--tcrn-color-ink-2);
+  font-size: 11.5px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.tcrn-shell-menu__crumbs-label {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+.tcrn-shell-menu__crumb {
+  min-inline-size: 0;
+  overflow: hidden;
+  color: var(--tcrn-color-ink-2);
+  font-weight: var(--tcrn-type-weight-medium);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-menu__crumb--current {
+  color: var(--tcrn-color-ink);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-shell-menu__crumb-sep {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+.tcrn-shell-menu__lockup {
+  --tcrn-brand-mark-size: 22px;
+  --tcrn-brand-line-one-size: 12.5px;
+  --tcrn-brand-line-one-height: 16px;
+  --tcrn-brand-line-one-base-weight: var(--tcrn-type-weight-strong);
+  --tcrn-brand-line-two-size: 10.5px;
+  --tcrn-brand-line-two-height: 14px;
+  flex: 0 0 auto;
+  gap: var(--tcrn-space-2h);
+  margin-inline-start: auto;
+  padding: var(--tcrn-space-1h) var(--tcrn-space-1);
+}
+.tcrn-shell-menu__lockup .tcrn-product-logo__byline {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .tcrn-shell-menu .tcrn-shell-menu__col--pinned {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-menu__panel,
+  .tcrn-shell-menu .tcrn-shell-menu__cascade {
+    animation: none;
+  }
+  .tcrn-shell-menu .tcrn-nav-item {
+    transition: none;
+  }
+}`;
+
+// The drop-down of a pinned group or submenu and its cascades (TCRN-DS-SUB-118; 07a board,
+// section A, the drop-down state; 07b board, section D "固定二级菜单下拉", "三、四级级联"). Its root
+// also carries tcrn-shell-menu, so the rows, the search, the results and the cascade columns are
+// the full menu's rules; this segment only re-places and re-sizes it. It is fixed to the pinned
+// item: ShellDropdown writes the item's start edge and bottom as left and top, and the hand-off gap
+// is the token, as a top margin. The first column is the drop-down width; cascades follow at the
+// cascade gap, as wide, stretched to its height. The panel is paper with the s3 shadow, radius 12,
+// inset space-1h; the search is the drop-down search height with a space-2 inset and the small
+// icon, space-1 above the rows; the rows have no icon column, so their text starts at space-1h +
+// space-2h (16).
+export const shellCss04 = `
+.tcrn-shell-menu.tcrn-shell-dropdown {
+  position: fixed;
+  grid-template-columns: var(--tcrn-shell-drop-w);
+  inline-size: var(--tcrn-shell-drop-w);
+  margin-top: var(--tcrn-shell-menu-gap);
+}
+.tcrn-shell-dropdown__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  max-block-size: calc(100vh - var(--tcrn-shell-strip-h));
+  margin: 0;
+  padding: var(--tcrn-space-1h);
+  overflow: hidden;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-shadow-s3);
+  color: var(--tcrn-color-ink-2);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+.tcrn-shell-dropdown .tcrn-shell-dropdown__search {
+  margin: 0 0 var(--tcrn-space-1);
+}
+.tcrn-shell-dropdown__search .tcrn-search-input {
+  --tcrn-search-input-block-size: var(--tcrn-shell-drop-srch-h);
+  --tcrn-search-input-padding-inline: var(--tcrn-space-2);
+  --tcrn-search-input-icon-size: var(--tcrn-icon-size-sm);
+}
+.tcrn-shell-dropdown__list {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.tcrn-shell-dropdown .tcrn-product-shell-search__result {
+  padding-inline-start: var(--tcrn-space-2h);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-dropdown__panel {
+    animation: none;
+  }
+}`;
