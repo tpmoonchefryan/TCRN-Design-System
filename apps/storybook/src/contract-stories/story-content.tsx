@@ -5,6 +5,8 @@ import {
   Card,
   Button,
   Breadcrumb,
+  ModuleTabs,
+  Tabs,
   Checkbox,
   SearchableList,
   ClipboardCopyButton,
@@ -2479,6 +2481,16 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
             rows={navigationComponentRows}
           />
+        </ReadbackPanel>
+        {/* The Tabs family (TCRN-DS-SUB-124, STORY-143 GWT2): the five tab-shaped forms render one
+            block in three variants and say "selected" one way, the 6% ink wash and the strong weight. */}
+        <ReadbackPanel title="Tabs family">
+          <Text>Five forms, one family: the chosen tab takes the 6% ink wash and the strong weight, and nothing else.</Text>
+          <Tabs label="Tabs family" selectedId="usage" onSelect={() => {}} items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage" }, { id: "proof", label: "Proof" }]} />
+          <ModuleTabs items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage", selected: true }, { id: "proof", label: "Proof" }]} />
+          <SectionTabs items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage", selected: true }, { id: "proof", label: "Proof" }]} />
+          <SegmentedNav items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage", selected: true }, { id: "proof", label: "Proof" }]} />
+          <ViewTabs tabs={[{ id: "contracts", label: "Contracts", href: "#navigation-primitives-spec" }, { id: "usage", label: "Usage", href: "#navigation-primitives-spec", current: true }, { id: "proof", label: "Proof", href: "#navigation-primitives-spec" }]} />
         </ReadbackPanel>
         <ReadbackPanel title="Pagination and skip-link boundary">
           <Text>Pagination and skip links belong to shared navigation primitives because they preserve orientation, keyboard access, and proof context across long surfaces.</Text>
