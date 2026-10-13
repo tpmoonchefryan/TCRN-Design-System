@@ -9,6 +9,8 @@ import { chromium } from "@playwright/test";
 import * as lib from "../scripts/lib/shell-measure.mjs";
 import {
   BEHAVIOUR_GATE_IDS,
+  CHECKS,
+  CHECK_IDS,
   DEFAULT_PATHS,
   D_SECTION_ROWS,
   GATES,
@@ -115,13 +117,15 @@ test("the D section's twelve relation rows each land on gates named in the gate 
   }
 });
 
-test("every gate has exactly one mutation, taken from the G section", () => {
-  for (const id of GATE_IDS) assert.equal(mutations.filter((m) => m.gate === id).length, 1, id);
+test("every gate has exactly one mutation, taken from the G section; every check beyond it one of its own", () => {
+  for (const id of [...GATE_IDS, ...CHECK_IDS]) assert.equal(mutations.filter((m) => m.gate === id).length, 1, id);
   assert.equal(new Set(mutations.map((m) => m.id)).size, mutations.length);
+  assert.deepEqual(CHECK_IDS.filter((id) => GATE_IDS.includes(id)), []);
   const boards = new Set(manifest.boards.map((board) => board.id));
   for (const m of mutations) {
-    const name = GATES.find((gate) => gate.id === m.gate).name;
-    assert.ok(boardSource.includes(`["${name}", "`) && boardSource.includes(`", "${m.source}"]`), `${m.id} source`);
+    const gate = GATES.find((item) => item.id === m.gate);
+    if (gate) assert.ok(boardSource.includes(`["${gate.name}", "`) && boardSource.includes(`", "${m.source}"]`), `${m.id} source`);
+    else assert.ok(CHECKS.some((check) => check.id === m.gate) && typeof m.source === "string" && m.source.length > 0, `${m.id} check`);
     if (m.trace) assert.ok(traces[m.traceOf], `${m.id} trace`);
     else assert.ok(boards.has(m.board) && Array.isArray(m.ops) && m.ops.length > 0, `${m.id} board`);
   }
@@ -155,6 +159,41 @@ test("contrast keeps the night suffix cells pending under D7 and fails any other
   assert.equal(judgeGate("contrast", { contrastCells: [cell("brand-suffix-l", 3.33)] }).status, "fail");
   assert.equal(judgeGate("contrast", { contrastCells: [cell("srch-ph-l", 5.1, 7.59)] }).status, "fail");
   assert.equal(judgeGate("contrast", { contrastCells: [{ ...cell("srch-ph-l", 7.59), expect: null }] }).status, "fail");
+});
+
+test("contrast: the 07a B cells marked 不进门 / 豁免 / 按设计不读 are listed with their reading, not compared (TCRN-DS-SUB-174)", () => {
+  const cell = (name, ratio, expect, extra = {}) => ({ cell: name, kind: "text", probe: "color", exempt: false, expect, ratio, ...extra });
+  assert.deepEqual([...THRESHOLDS.contrast.listOnly], ["brand-mark", "panel-edge", "scrim-paper"]);
+  const listed = judgeGate("contrast", { contrastCells: [
+    cell("brand-mark-l", 5.64, 4.85, { kind: "icon", probe: "mark", exempt: true }),
+    cell("panel-edge-n", 1.0, 1.06, { kind: "edge", probe: "own-bg", exempt: true }),
+    cell("scrim-paper-l", 8.58, 5.57, { exempt: true, underScrim: { scrims: 1, ratio: 5.57 } }),
+    cell("tgl-l", 7.39, 7.39)
+  ] });
+  assert.equal(listed.status, "pass");
+  assert.equal(listed.checked, 1);
+  // the B reading is listed: 遮罩下的纸 under its scrim, with the cell's own reading beside it
+  assert.deepEqual(listed.listed.map((c) => [c.cell, c.ratio, c.expect]), [["brand-mark-l", 5.64, 4.85], ["panel-edge-n", 1, 1.06], ["scrim-paper-l", 5.57, 5.57]]);
+  assert.deepEqual([listed.listed[2].scrims, listed.listed[2].unscrimmed], [1, 8.58]);
+  // only listed when the cell is exempt and named by the B section: any other cell is still compared
+  assert.equal(judgeGate("contrast", { contrastCells: [cell("brand-mark-l", 5.64, 4.85)] }).status, "fail");
+  assert.equal(judgeGate("contrast", { contrastCells: [cell("dis-l", 4.0, 5.1, { exempt: true })] }).status, "fail");
+  // a cell whose probe has nothing to read is a failure, never a silent pass
+  assert.deepEqual(judgeGate("contrast", { contrastCells: [cell("x-l", null, 4.5, { unreadable: true, probe: "mark" })] }).failures.map((f) => f.what), ["reading"]);
+  assert.equal(judgeGate("contrast", { contrastCells: [cell("brand-mark-l", 3.33, 3.33, { exempt: true })] }).status, "n/a");
+});
+
+test("prail: the guide column of the full menu and the Sheet, icons at 16 and texts at 48 (TCRN-DS-SUB-174)", () => {
+  assert.deepEqual(THRESHOLDS.prail, { iconLeftPx: 16, textLeftPx: 48, tolerancePx: 0.5 });
+  const shell = (prail) => ({ shells: [{ id: "s", x: { missing: [], prail } }] });
+  assert.equal(judgeGate("prail", shell({ columns: 3, icons: [16], texts: [48] })).status, "pass");
+  assert.equal(judgeGate("prail", shell({ columns: 1, icons: [16.4], texts: [47.6] })).status, "pass");
+  assert.deepEqual(judgeGate("prail", shell({ columns: 3, icons: [16, 20], texts: [48] })).failures.map((f) => [f.what, f.value]), [["prail.icon", 20]]);
+  assert.deepEqual(judgeGate("prail", shell({ columns: 3, icons: [16], texts: [52] })).failures.map((f) => [f.what, f.value]), [["prail.text", 52]]);
+  // no open full menu or Sheet: nothing to check (a missing hook is a hook gap, see the package readings)
+  assert.equal(judgeGate("prail", shell(undefined)).status, "n/a");
+  assert.equal(judgeGate("prail", shell({ columns: 0, icons: [], texts: [] })).status, "n/a");
+  assert.equal(judgeGate("prail", shell(null)).status, "n/a");
 });
 
 test("single line: text cut by its box passes only as ellipsis with a title", () => {
@@ -258,13 +297,20 @@ test("mutation ops: a missing target is an error, not a silent green", async () 
   }
 });
 
-test("149-GWT1 board side: all eighteen gates green on both boards, every mutation red on its gate", async () => {
+test("149-GWT1 board side: all eighteen gates and the checks green on both boards, every mutation red on its gate, the package-hook fixture proves its story mutations", async () => {
   const report = await runFixtures({ root, browser });
   for (const id of GATE_IDS) assert.equal(report.gates[id], "pass", `gate ${id}`);
+  for (const id of CHECK_IDS) assert.equal(report.checks[id], "pass", `check ${id}`);
   for (const board of report.boards) {
     assert.deepEqual(board.failed, [], `${board.id} failed gates`);
+    assert.deepEqual(board.failedChecks, [], `${board.id} failed checks`);
     assert.deepEqual(board.fixtureFailures, [], `${board.id} fixture`);
   }
+  const pf = report.packageFixture;
+  assert.deepEqual(pf.fixtureFailures, [], "package fixture");
+  assert.deepEqual(pf.green, Object.fromEntries(manifest.packageFixture.green.map((id) => [id, "pass"])));
+  assert.deepEqual(pf.mutations.map((m) => [m.id, m.ok]), manifest.packageFixture.storyMutations.map((id) => [id, true]));
+  assert.deepEqual(pf.listed.map((c) => c.cell).sort(), ["brand-mark-l", "panel-edge-l", "scrim-paper-l"]);
   assert.equal(report.mutations.length, mutations.length);
   for (const result of report.mutations) assert.ok(result.ok, `${result.id}: failed ${JSON.stringify(result.failed)}, expected ${JSON.stringify(result.expected)}`);
   assert.ok(report.dSection.every((row) => row.status === "pass"));
@@ -293,8 +339,8 @@ test("the story run grid is 1440 x 900 and 390 x 844, en and zh-CN (C-11)", () =
   for (const probe of ["focusLoop", "intro"]) assert.ok(SHELL_STORY_IDS.includes(manifest.stories.behaviour[probe].story), probe);
 });
 
-test("149-GWT1 real-part side: one story mutation per gate, the G-section variant, the three behaviour ones included", () => {
-  for (const id of GATE_IDS) assert.equal(storyMutations.filter((m) => m.gate === id).length, 1, id);
+test("149-GWT1 real-part side: one story mutation per gate and check, the board variant, the three behaviour ones included", () => {
+  for (const id of [...GATE_IDS, ...CHECK_IDS]) assert.equal(storyMutations.filter((m) => m.gate === id).length, 1, id);
   assert.equal(new Set(storyMutations.map((m) => m.id)).size, storyMutations.length);
   for (const m of storyMutations) {
     assert.equal(m.source, mutations.find((f) => f.gate === m.gate).source, `${m.id} source`);
@@ -410,6 +456,89 @@ test("package readings: a shell inside another shell's paper is read against its
     assert.equal(reading.marks[0].shell, "inner");
   } finally {
     await context.close();
+  }
+});
+
+// The package-hook fixture of --fixtures (manifest packageFixture, TCRN-DS-SUB-174).
+async function openPackageFixture() {
+  const context = await browser.newContext({ viewport: manifest.viewport, deviceScaleFactor: 1 });
+  const page = await openBoardPage(context, root, manifest.packageFixture.file);
+  return { page, close: () => context.close() };
+}
+const readPackage = (page) => lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
+
+test("package readings: a pinnable row's pin is found in its .tcrn-nav-item-row, its column is the wrapper's parent, and the guide column reads every column as the first", async () => {
+  const { page, close } = await openPackageFixture();
+  try {
+    const reading = await readPackage(page);
+    const [shell] = reading.shells;
+    assert.deepEqual([shell.x.missing, shell.x.hookGaps], [[], []]);
+    assert.equal(shell.x.rowGroups.length, 3);
+    assert.deepEqual(shell.x.rowGroups[0], { rest: [223.3], hover: [223.3], on: [223.3] });
+    assert.deepEqual(shell.pinVisibleOn, { on: 1, hover: 1 });
+    assert.deepEqual(shell.pinButtons, ["24x24"]);
+    // o.prail (measure-shell.js) stays panel-relative; x.prail reads each column as the first
+    assert.deepEqual(shell.prail.icons, [16, 333.3, 650.7]);
+    assert.deepEqual(shell.x.prail, { columns: 3, icons: [16], texts: [48] });
+    const verdict = judgeShellReadings(reading);
+    assert.equal(verdict.gates.pinJitter.status, "pass");
+    assert.equal(verdict.checks.prail.status, "pass");
+    // menu columns with rows but without the guide hooks are a hook gap, not an empty pass
+    await page.evaluate(() => { for (const el of document.querySelectorAll('[data-guide="prail"]')) el.removeAttribute("data-guide"); });
+    const bare = await readPackage(page);
+    assert.deepEqual([bare.shells[0].x.hookGaps, bare.shells[0].x.prail], [["prail"], null]);
+    const gapVerdict = judgeShellReadings(bare);
+    assert.equal(gapVerdict.checks.prail.status, "n/a");
+    assert.deepEqual(gapVerdict.missingHooks, [{ shell: "ts-x-l", missing: ["prail"] }]);
+  } finally {
+    await close();
+  }
+});
+
+test("pinJitter story mutation: the pin display alone on the reserved 24 track is an equivalent mutation; taking the track away turns the gate red", async () => {
+  const story = storyMutations.find((m) => m.gate === "pinJitter");
+  assert.match(story.ops[0].css, /\.tcrn-nav-item-row \{ grid-template-columns: minmax\(0, 1fr\) auto !important; \}/);
+  const displayOnly = [{ op: "css", css: story.ops[0].css.replace(/^[^}]*\.tcrn-nav-item-row \{[^}]*\}\s*/, "") }];
+  assert.doesNotMatch(displayOnly[0].css, /grid-template-columns/);
+  for (const [ops, want] of [[displayOnly, "pass"], [story.ops, "fail"]]) {
+    const { page, close } = await openPackageFixture();
+    try {
+      await page.evaluate(applyMutationInPage, ops);
+      const verdict = judgeShellReadings(await readPackage(page));
+      // display alone leaves every text box as wide (the hidden pins read 0 x 0, which the pin-size half
+      // of the gate reports either way); without the track the rest rows widen by the pin slot
+      const jitter = verdict.gates.pinJitter.failures.filter((f) => /textWidths$/.test(f.what));
+      assert.deepEqual(jitter.map((f) => f.what), want === "fail" ? ["column1.textWidths"] : [], JSON.stringify(verdict.gates.pinJitter.failures));
+      if (want === "fail") assert.equal(verdict.gates.pinJitter.status, "fail");
+    } finally {
+      await close();
+    }
+  }
+});
+
+test("package readings: the three 07a B reading cases (彩色标, 面板对画布, 遮罩下的纸) read the B-section numbers", async () => {
+  const { page, close } = await openPackageFixture();
+  try {
+    const reading = await readPackage(page);
+    const byCell = Object.fromEntries(reading.contrastCells.map((c) => [c.cell, c]));
+    const near = (c, want) => assert.ok(Math.abs(c.ratio - want) <= THRESHOLDS.contrast.maxDiff, `${c.cell} ${c.ratio} vs ${want}`);
+    assert.deepEqual([byCell["brand-mark-l"].probe, byCell["brand-mark-l"].autoProbe], ["mark", true]);
+    near(byCell["brand-mark-l"], 4.85);
+    assert.deepEqual([byCell["panel-edge-l"].probe, byCell["panel-edge-l"].autoProbe], ["own-bg", true]);
+    near(byCell["panel-edge-l"], 1.16);
+    // 遮罩下的纸: the cell keeps its own reading (8.58) and reads 5.57 under the scrim
+    near(byCell["scrim-paper-l"], 8.58);
+    assert.equal(byCell["scrim-paper-l"].underScrim.scrims, 1);
+    near({ cell: "scrim-paper-l under the scrim", ratio: byCell["scrim-paper-l"].underScrim.ratio }, 5.57);
+    // a row on a layer above the scrim does not read it; a plain cell keeps the colour probe
+    assert.equal(byCell["sheet-row-l"].underScrim, undefined);
+    near(byCell["sheet-row-l"], 8.58);
+    assert.deepEqual([byCell["body-canvas-l"].probe, byCell["body-canvas-l"].autoProbe], ["color", undefined]);
+    const verdict = judgeShellReadings(reading);
+    assert.equal(verdict.gates.contrast.status, "pass");
+    assert.deepEqual(verdict.gates.contrast.listed.map((c) => [c.cell, c.ratio]), [["brand-mark-l", 4.85], ["panel-edge-l", 1.16], ["scrim-paper-l", 5.57]]);
+  } finally {
+    await close();
   }
 });
 

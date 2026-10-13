@@ -29,9 +29,16 @@
 // Cascade columns that a panel adopts with aria-owns (the package renders them next to the dropdown
 // panel, not inside it) are read as the panel's columns. A C-5 hook that the gates need and an open
 // layer lacks is listed in x.hookGaps (rows without the row-text hook: their text widths cannot be
-// read, so x.rowGroups is null rather than an empty, silently passing list). A shell that sits inside
-// another shell's paper (a story on a documentation page, which renders in the top-band shell) is read
-// against its own paper only.
+// read, so x.rowGroups is null rather than an empty, silently passing list; menu columns whose rows
+// carry no guide-column hooks: "prail"). A shell that sits inside another shell's paper (a story on a
+// documentation page, which renders in the top-band shell) is read against its own paper only.
+// TCRN-DS-SUB-174 (R2-27): a row's pin is looked up in the row's own wrapper (rowScope: the package
+// renders a pinnable item as a link and its pin side by side in .tcrn-nav-item-row) and the row's
+// column is that wrapper's parent; x.prail reads the guide column of the full menu and the Sheet with
+// every column read as the first (col); the [data-cell] samples gain the three 07a B readings: a
+// coloured mark (probe "mark", taken by any svg[data-logo] cell), a surface against what is behind it
+// (probe "own-bg", taken by an edge cell with a fill of its own) and the paper under a scrim (a cell
+// that a scrim is painted over gets a second reading, underScrim, with the scrim over its fill).
 //
 // API:
 //   SHELL_MEASURE_SCHEMA_VERSION, SELECTOR_KEYS, BOARD_SELECTORS, PACKAGE_SELECTORS
@@ -57,7 +64,8 @@ export const SELECTOR_KEYS = Object.freeze([
   "panelPreferred", "panelAny", "panelExpanded", "panelDrop", "sheet", "dropCol", "dropCol2", "dropRow",
   "row", "rowText", "rowHover", "rowOn", "group", "search", "pinButton", "pbar", "barLockup", "lockupText",
   "crumbs", "lock", "panelClose", "close", "closeName", "sidebar", "lockup", "lockupAny", "opticalAny",
-  "dropPanelAny", "stateRuleScope", "singleLineText", "pageCrumbs", "clipExempt", "intro"
+  "dropPanelAny", "stateRuleScope", "singleLineText", "pageCrumbs", "clipExempt", "intro", "rowScope", "col",
+  "scrim"
 ]);
 
 // Board hooks: the selectors of measure-shell.js, key by key.
@@ -104,7 +112,10 @@ export const BOARD_SELECTORS = Object.freeze({
   singleLineText: "[data-tab] b, .ts-pin-it, .ts-it > span.t, .ts-grp h6, .ts-srch .ph2, .ts-srch kbd, .ts-crumbs, [data-lockup] b, [data-lockup] small",
   pageCrumbs: "[data-paper] .ts-crumbs",
   clipExempt: ".grain, .sr",
-  intro: "[data-shell-intro]"
+  intro: "[data-shell-intro]",
+  rowScope: ".ts-it",
+  col: ".ts-col",
+  scrim: ".ts-scrim"
 });
 
 // Package hooks (C-5). dropRow is filtered to rows outside the cascade columns, which matches the
@@ -152,7 +163,10 @@ export const PACKAGE_SELECTORS = Object.freeze({
   singleLineText: '[data-tab] b, [data-pin] .tcrn-shell-pins__label, [data-shell-row] [data-text="prail"], [data-shell-group] .tcrn-nav-group__label-text, [data-shell-group] > .tcrn-nav-group__label:not(:has(.tcrn-nav-group__label-text)), [data-shell-pbar] nav, [data-lockup] b, [data-lockup] small',
   pageCrumbs: "[data-paper] .tcrn-breadcrumb",
   clipExempt: ".tcrn-sr-only",
-  intro: "[data-shell-intro]"
+  intro: "[data-shell-intro]",
+  rowScope: ".tcrn-nav-item-row",
+  col: "[data-shell-col]",
+  scrim: "[data-shell-scrim]"
 });
 
 // Browser-side. Self-contained (page.evaluate serialises it): nothing from module scope is used.
@@ -377,9 +391,17 @@ export function readShellInPage(options) {
       const pinbs = [...panel.querySelectorAll(sel.pinButton)];
       o.pinButtons = [...new Set(pinbs.map((e) => { const r = e.getBoundingClientRect(); return r1(r.width) + "x" + r1(r.height); }))];
       const items = [...panel.querySelectorAll(sel.row)];
+      // a row's pin sits in the row's own wrapper (the board's row holds its pin; the package renders a
+      // pinnable item as a link and its pin side by side in a wrapper), and the row's column is the
+      // wrapper's parent, so rows of one column are compared with each other
+      const scopeOf = (it) => {
+        const w = sel.rowScope ? it.closest(sel.rowScope) : null;
+        return w && w !== it && panel.contains(w) && w.querySelectorAll(sel.row).length === 1 ? w : it;
+      };
       const widths = items.map((it) => {
-        const t = it.querySelector(sel.rowText); const pb = it.querySelector(sel.pinButton);
-        return { hover: it.matches(sel.rowHover), on: it.matches(sel.rowOn), w: t ? r1(t.getBoundingClientRect().width) : null, op: pb ? getComputedStyle(pb).opacity : null, parent: it.parentElement };
+        const scope = scopeOf(it);
+        const t = it.querySelector(sel.rowText); const pb = scope.querySelector(sel.pinButton);
+        return { hover: it.matches(sel.rowHover), on: it.matches(sel.rowOn), w: t ? r1(t.getBoundingClientRect().width) : null, op: pb ? getComputedStyle(pb).opacity : null, parent: scope.parentElement };
       });
       o.textColWidths = [...new Set(widths.map((v) => v.w))]; o.pinVisibleOn = widths.filter((v) => v.op === "1").map((v) => (v.hover ? "hover" : v.on ? "on" : "rest")).reduce((m, k) => ((m[k] = (m[k] || 0) + 1), m), {});
       const srch = panel.querySelector(sel.search); if (srch) o.search = { h: rel(srch).h };
@@ -415,6 +437,22 @@ export function readShellInPage(options) {
       if (!rowTextReadable) x.hookGaps.push("rowText");
       x.rowGroups = rowTextReadable ? [...groups.values()].map((gr) => ({ rest: [...new Set(gr.rest)], hover: [...new Set(gr.hover)], on: [...new Set(gr.on)] })) : null;
       x.panelKind = panel.matches(sel.sheet) ? "sheet" : panel.matches(sel.panelExpanded) ? "expanded" : panel.matches(sel.panelDrop) ? "drop" : "other";
+      // extra: the guide column of the full menu and the Sheet (07b: 引导列 面板内图标 16 · 文字 48) on the
+      // o.prail hooks, every column read as the first: a value is the element's left edge from the
+      // panel's left minus its column's offset from the first column (one column: the o.prail values).
+      // Menu columns with rows but without both hook lists are a hook gap, not an empty reading.
+      if (x.panelKind === "expanded" || x.panelKind === "sheet") {
+        const colEls = sel.col ? [...panel.querySelectorAll(sel.col)].filter(visible) : [];
+        const firstLeft = colEls.length ? Math.min(...colEls.map((c) => c.getBoundingClientRect().left)) : pl;
+        const shiftOf = (el) => { const c = sel.col ? el.closest(sel.col) : null; return c && colEls.includes(c) ? c.getBoundingClientRect().left - firstLeft : 0; };
+        const lefts = (list) => [...new Set(list.filter(visible).map((e) => r1(e.getBoundingClientRect().left - pl - shiftOf(e))))];
+        const icons = lefts([...panel.querySelectorAll('[data-guide="prail"]')]);
+        const texts = lefts([...panel.querySelectorAll('[data-text="prail"]')]);
+        const colRows = colEls.reduce((n, c) => n + c.querySelectorAll(sel.row).length, 0);
+        const gap = colRows > 0 && (!icons.length || !texts.length);
+        if (gap) x.hookGaps.push("prail");
+        x.prail = gap ? null : { columns: colEls.length, icons, texts };
+      }
       x.rowHeights = [...panel.querySelectorAll(sel.row)].map((e) => r1(e.getBoundingClientRect().height));
       const firstRow = panel.querySelector(sel.row);
       x.firstRowTop = firstRow ? r1(firstRow.getBoundingClientRect().top - s.top) : null;
@@ -532,6 +570,39 @@ export function readShellInPage(options) {
   out.descendantStateRulesWithColour = bad;
 
   // extra: every [data-cell] sample (ink = computed colour or the data-probe source, fill = effective background)
+  // 07a B 彩色标: the mark's deep colour, the darkest paint its shapes draw with (stroke, else fill, as in
+  // measure-shell.js markContrast; currentColor is the svg's colour)
+  const DRAWING = "path, circle, ellipse, rect, polygon, polyline, line";
+  const markInk = (el) => {
+    const svg = el.matches("svg") ? el : el.querySelector("svg[data-logo]");
+    if (!svg) return null;
+    const own = parseAny(getComputedStyle(svg).color);
+    let deep = null;
+    for (const shape of svg.querySelectorAll(DRAWING)) {
+      const st = getComputedStyle(shape);
+      const paint = st.stroke && st.stroke !== "none" ? st.stroke : st.fill;
+      if (!paint || paint === "none" || /^url\(/i.test(paint)) continue;
+      const c = /^currentcolor$/i.test(paint) ? own : parseAny(paint);
+      if (c[3] > 0 && (!deep || lum(c) < lum(deep))) deep = c;
+    }
+    return deep;
+  };
+  // 07a B 遮罩下的纸: a scrim painted over a cell (not its ancestor, above it at the cell's centre) tints
+  // what the cell stands on; the scrims over a cell, bottom first (read as underScrim below)
+  const scrimEls = sel.scrim ? [...rootEl.querySelectorAll(sel.scrim)].filter(visible) : [];
+  const scrimsOver = (el) => {
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const under = scrimEls.filter((sc) => { if (sc.contains(el)) return false; const q = sc.getBoundingClientRect(); return cx >= q.left && cx <= q.right && cy >= q.top && cy <= q.bottom; });
+    if (!under.length) return [];
+    el.scrollIntoView({ block: "center", inline: "center" });
+    const p = el.getBoundingClientRect();
+    const stack = document.elementsFromPoint(p.left + p.width / 2, p.top + p.height / 2);
+    const at = stack.findIndex((n) => n === el || el.contains(n) || n.contains(el));
+    return at < 0 ? [] : stack.slice(0, at).filter((n) => under.includes(n)).reverse();
+  };
+  // 07a B 面板对画布 ("own-bg"): a surface's own fill is the ink, the effective background behind it the fill
+  const fills = { "own-bg": (el) => (el.parentElement ? effBg(el.parentElement) : [255, 255, 255, 1]) };
   const probes = {
     "": (el, ccs) => parseAny(ccs.color),
     color: (el, ccs) => parseAny(ccs.color),
@@ -542,18 +613,42 @@ export function readShellInPage(options) {
     // the first-batch vocabulary (scripts/lib/gplus-measure.mjs): a focus ring drawn as a box-shadow
     shadow: (el, ccs) => ringColor(ccs.boxShadow) || parseAny(ccs.color),
     "after-shadow": (el, ccs) => ringColor(getComputedStyle(el, "::after").boxShadow) || parseAny(ccs.color),
-    "after-border": (el) => parseAny(getComputedStyle(el, "::after").borderBottomColor)
+    "after-border": (el) => parseAny(getComputedStyle(el, "::after").borderBottomColor),
+    mark: (el) => markInk(el),
+    "own-bg": (el, ccs) => parseAny(ccs.backgroundColor)
   };
   out.contrastCells = [...rootEl.querySelectorAll("[data-cell]")].map((el) => {
     const ccs = getComputedStyle(el);
-    const probe = el.getAttribute("data-probe") || "";
+    const kind = el.getAttribute("data-kind") || "text";
+    const declared = el.getAttribute("data-probe") || "";
+    // without data-probe: a mark cell reads the mark, an edge cell with a fill of its own reads that fill
+    const auto = declared ? "" : el.matches("svg[data-logo]") ? "mark" : kind === "edge" && parseAny(ccs.backgroundColor)[3] > 0 ? "own-bg" : "";
+    const probe = declared || auto;
     const expectAttr = el.getAttribute("data-expect");
     const expect = expectAttr === null || expectAttr.trim() === "" ? null : Number(expectAttr);
     const reader = Object.prototype.hasOwnProperty.call(probes, probe) ? probes[probe] : null;
-    const row = { cell: el.getAttribute("data-cell"), kind: el.getAttribute("data-kind") || "text", probe: probe || "color", exempt: el.hasAttribute("data-exempt"), expect: Number.isFinite(expect) ? expect : null, ratio: null };
-    if (reader) { const fill = effBg(el); row.ratio = r2(contrast(over(reader(el, ccs), fill), fill)); } else row.unknownProbe = true;
+    const row = { cell: el.getAttribute("data-cell"), kind, probe: probe || "color", exempt: el.hasAttribute("data-exempt"), expect: Number.isFinite(expect) ? expect : null, ratio: null };
+    if (auto) row.autoProbe = true;
+    if (!reader) row.unknownProbe = true;
+    else {
+      const ink = reader(el, ccs);
+      if (!ink) row.unreadable = true;
+      else {
+        const fill = fills[probe] ? fills[probe](el) : effBg(el);
+        row.ratio = r2(contrast(over(ink, fill), fill));
+        // a second reading under the scrims painted over the cell; ratio stays the cell's own (the board
+        // screens keep their state cells under the Sheet's scrim and read them as measure-shell.js does)
+        const scrims = scrimsOver(el);
+        if (scrims.length) {
+          let tinted = fill;
+          for (const sc of scrims) tinted = over(parseAny(getComputedStyle(sc).backgroundColor), tinted);
+          row.underScrim = { scrims: scrims.length, ratio: r2(contrast(over(ink, tinted), tinted)) };
+        }
+      }
+    }
     return row;
   });
+  if (scrimEls.length) window.scrollTo(0, 0);
 
   // extra: brand marks — every svg[data-logo] by canonical drawing form, and the logos2 sources in the same form
   const forms = [];
