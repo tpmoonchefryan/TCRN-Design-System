@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: controlHeight (red)</title>
+<!-- Violation for the controlHeight measurement only: The button declares data-h="32" but renders 34px tall. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .ctl-row { display: flex; gap: 8px; align-items: center; }
+  .ctl-btn { box-sizing: border-box; height: 34px; padding: 0 12px; font: inherit; }
+  .ctl-field { box-sizing: border-box; height: 28px; width: 160px; font: inherit; }
+  .ctl-bar { box-sizing: border-box; height: 40px; width: 120px; background: #eeeeee; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<div class="ctl-row">
+  <button type="button" class="ctl-btn" data-h="32">Save</button>
+  <input class="ctl-field" data-h="28" aria-label="Name">
+  <div class="ctl-bar" data-h="40"></div>
+</div>
+</main>
+</body>
+</html>

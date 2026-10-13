@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { JSDOM } from "jsdom";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   RadioGroup,
@@ -24,6 +25,19 @@ import {
   Switch,
   Textarea
 } from "./Form.js";
+import { tcrnComponentCss } from "../../styles/index.js";
+import { inputsCheckPairsCss, inputsSwitchPairsCss, inputsTextPairsCss } from "../../styles/generated/inputs.pairs.js";
+
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** The body of the first rule in the sheet whose whole selector text is `selector`. */
+function cssRule(selector: string): string {
+  const match = new RegExp(`(?:^|\\}|\\*\\/)\\s*${escapeRegExp(selector)}\\s*\\{([^}]*)\\}`).exec(tcrnComponentCss);
+  assert.ok(match, `missing rule: ${selector}`);
+  return match[1];
+}
 
 test("core primitives render normalized class names and accessibility attributes", () => {
   const html = renderToStaticMarkup(
@@ -348,4 +362,285 @@ test("STORY-092 a date picker keeps the machine format in the value and the read
   assert.match(html, /value="2026-08-18"/);
   assert.match(html, /min="2026-01-01"/);
   assert.match(html, /max="2026-12-31"/);
+});
+
+
+// TCRN-DS-SUB-019 (STORY-126). The text-like controls share one pair table. The family
+// base only reads the live pair; the segment generated from the design contract declares
+// it, and its state rules decide which pair is live.
+
+test("STORY-126 every text-like control carries a shared pair target", () => {
+  const html = renderToStaticMarkup(
+    <>
+      <Input name="a" />
+      <Textarea name="b" />
+      <NumberInput name="c" />
+      <DatePicker name="d" />
+      <SuggestInput name="e" suggestions={["one"]} />
+      <Select name="f" options={[{ value: "a", label: "A" }]} />
+      <MultiSelect name="g" presentation="dropdown" emptySelectionLabel="Nothing chosen" defaultValue={["a"]} options={[{ value: "a", label: "Alpha" }]} />
+    </>
+  );
+  assert.equal((html.match(/class="tcrn-input[ "]/g) ?? []).length, 5);
+  assert.match(html, /type="date" class="tcrn-input tcrn-date-picker" data-date-picker="true"/);
+  assert.match(html, /<select[^>]*class="tcrn-select"/);
+  assert.match(html, /class="tcrn-select tcrn-multi-select-dropdown__trigger"/);
+  // The summary is cut to one line, so it carries its full text as a title.
+  assert.match(html, /<span data-multi-select-summary="[^"]*" title="Alpha">Alpha<\/span>/);
+  // Attribute order is the Icon component's business, so each attribute is looked for on its own.
+  assert.match(html, /<svg(?=[^>]*\swidth="14")(?=[^>]*\sheight="14")(?=[^>]*class="[^"]*tcrn-multi-select-dropdown__caret")(?=[^>]*data-icon-name="chevron-down")[^>]*>/);
+
+  const disabled = renderToStaticMarkup(
+    <MultiSelect presentation="dropdown" disabled disabledReason="Choices are locked" emptySelectionLabel="Nothing chosen" options={[{ value: "a", label: "Alpha" }]} />
+  );
+  assert.match(disabled, /title="Choices are locked"/);
+  assert.doesNotMatch(disabled, /data-multi-select-summary="[^"]*" title=/);
+});
+
+test("STORY-126 the text-control base reads the live pair and paints nothing itself", () => {
+  const base = cssRule(".tcrn-input,\n.tcrn-select");
+  for (const declaration of [
+    "border: 0;",
+    "background-color: var(--tcrn-pair-fill);",
+    "color: var(--tcrn-pair-ink);",
+    "box-shadow: var(--tcrn-pair-edge);",
+    "block-size: var(--tcrn-control-height-md);",
+    "border-radius: var(--tcrn-radius-control);"
+  ]) {
+    assert.ok(base.includes(declaration), `base declares ${declaration}`);
+  }
+  assert.doesNotMatch(base, /--tcrn-color-/);
+  assert.doesNotMatch(base, /--tcrn-pair-[a-z-]+\s*:/);
+  const segment = tcrnComponentCss.indexOf(inputsTextPairsCss.trim());
+  assert.notEqual(segment, -1, "the generated text pair segment is joined into the sheet");
+  assert.ok(segment > tcrnComponentCss.indexOf(".tcrn-input,\n.tcrn-select {"), "the pair segment follows the base it serves");
+});
+
+test("STORY-126 GWT1 and GWT2: line-ctl edge by default, red edge and red ring when invalid and focused", () => {
+  for (const target of ["tcrn-input", "tcrn-select"]) {
+    const declarations = new RegExp(`^\\.${target}\\{([^}]*)\\}`, "m").exec(inputsTextPairsCss)?.[1] ?? "";
+    assert.match(declarations, /--tcrn-pair-edge-d:inset 0 0 0 1px var\(--tcrn-color-line-ctl\)/);
+    assert.match(declarations, /--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-ink-2\)/);
+    assert.match(declarations, /--tcrn-pair-edge-f:inset 0 0 0 1px var\(--tcrn-color-acc\),var\(--tcrn-focus-ring\)/);
+    assert.match(declarations, /--tcrn-pair-edge-e:inset 0 0 0 1px var\(--tcrn-color-bad\)/);
+    const invalidFocus = /--tcrn-pair-edge-ef:([^;}]*)/.exec(declarations)?.[1] ?? "";
+    assert.match(invalidFocus, /var\(--tcrn-color-bad\)[\s\S]*var\(--tcrn-color-bad\)/);
+    assert.doesNotMatch(invalidFocus, /acc|focus-ring/);
+    for (const slot of ["fill-e", "ink-e"]) {
+      assert.doesNotMatch(new RegExp(`--tcrn-pair-${slot}:([^;}]*)`).exec(declarations)?.[1] ?? "acc", /acc/);
+    }
+  }
+  const focusRule = tcrnComponentCss.indexOf(".tcrn-input:where(:focus-visible,");
+  const invalidRule = tcrnComponentCss.indexOf('.tcrn-input:where([aria-invalid="true"]),');
+  const invalidFocusRule = tcrnComponentCss.indexOf('.tcrn-input:where([aria-invalid="true"]:focus-visible,');
+  assert.ok(focusRule !== -1 && focusRule < invalidRule && invalidRule < invalidFocusRule, "the invalid rules follow the focus rule, so they win");
+  assert.doesNotMatch(tcrnComponentCss, /aria-invalid[^{}]*\{[^}]*--tcrn-color-acc/);
+});
+
+test("STORY-126 GWT5: a read-only field that takes focus shows the focus ring over its read-only surface (WCAG 2.4.7)", () => {
+  // The read-only rule comes after the focus rule (the Inputs board order), so on its own it hid
+  // the ring of a focused read-only field. The readonly-focus tuple rf follows it: the read-only
+  // fill and ink stay, the edge becomes the focus ring (TCRN-DS-SUB-058).
+  for (const target of ["tcrn-input", "tcrn-select"]) {
+    const declarations = new RegExp(`^\\.${target}\\{([^}]*)\\}`, "m").exec(inputsTextPairsCss)?.[1] ?? "";
+    assert.match(declarations, /--tcrn-pair-edge-rf:inset 0 0 0 1px var\(--tcrn-color-acc\),var\(--tcrn-focus-ring\)/);
+  }
+  const focusRule = inputsTextPairsCss.indexOf(".tcrn-input:where(:focus-visible,");
+  const readonlyRule = inputsTextPairsCss.indexOf(".tcrn-input:where([readonly],");
+  const readonlyFocusRule = inputsTextPairsCss.indexOf(".tcrn-input:where([readonly]:focus-visible,");
+  const invalidRule = inputsTextPairsCss.indexOf('.tcrn-input:where([aria-invalid="true"]),');
+  assert.ok(focusRule !== -1 && focusRule < readonlyRule && readonlyRule < readonlyFocusRule && readonlyFocusRule < invalidRule, "rf follows r and precedes the invalid rules");
+  const readonlyFocus = /(\.tcrn-input:where\(\[readonly\]:focus-visible,[^{]*)\{([^}]*)\}/.exec(inputsTextPairsCss);
+  assert.ok(readonlyFocus, "the generated segment has the readonly-focus rule");
+  assert.match(readonlyFocus[1], /\[aria-readonly="true"\]\[data-tcrn-preview-state="focus"\]/);
+  assert.equal(readonlyFocus[2], "--tcrn-pair-edge:var(--tcrn-pair-edge-rf)", "rf only switches the edge");
+
+  // The live pair of rendered fields, cascaded by jsdom over the whole sheet.
+  const markup = renderToStaticMarkup(
+    <>
+      <Input aria-label="Project key" readOnly defaultValue="PRJ-2026-0412" data-tcrn-preview-state="focus" data-probe="readonly-focus" />
+      <Input aria-label="Project key" readOnly defaultValue="PRJ-2026-0412" data-probe="readonly" />
+      <Input aria-label="Project name" defaultValue="季度复盘" data-tcrn-preview-state="focus" data-probe="focus" />
+    </>
+  );
+  const livePairs = (css: string) => {
+    const dom = new JSDOM(`<!doctype html><html><head></head><body>${markup}</body></html>`);
+    const style = dom.window.document.createElement("style");
+    style.textContent = css;
+    dom.window.document.head.append(style);
+    const pair = (probe: string) => {
+      const element = dom.window.document.querySelector(`[data-probe="${probe}"]`);
+      assert.ok(element, `rendered ${probe}`);
+      const computed = dom.window.getComputedStyle(element);
+      return { fill: computed.getPropertyValue("--tcrn-pair-fill").trim(), edge: computed.getPropertyValue("--tcrn-pair-edge").trim() };
+    };
+    return { readonlyFocus: pair("readonly-focus"), readonly: pair("readonly"), focus: pair("focus") };
+  };
+  const live = livePairs(tcrnComponentCss);
+  assert.deepEqual(live.readonlyFocus, { fill: "var(--tcrn-pair-fill-r)", edge: "var(--tcrn-pair-edge-rf)" }, "focused read-only: read-only surface, focus-ring edge");
+  assert.deepEqual(live.readonly, { fill: "var(--tcrn-pair-fill-r)", edge: "var(--tcrn-pair-edge-r)" });
+  assert.deepEqual(live.focus, { fill: "var(--tcrn-pair-fill-f)", edge: "var(--tcrn-pair-edge-f)" });
+  // Without the rf rule the read-only edge covers the ring again.
+  const rfRule = /\.tcrn-input:where\(\[readonly\]:focus-visible,[^{]*\{[^}]*\}/g;
+  assert.equal(tcrnComponentCss.match(rfRule)?.length, 1);
+  assert.equal(livePairs(tcrnComponentCss.replace(rfRule, "")).readonlyFocus.edge, "var(--tcrn-pair-edge-r)");
+});
+
+test("STORY-126 number, date, placeholder and collection details follow the Inputs board", () => {
+  assert.match(cssRule(".tcrn-number-input"), /appearance:textfield/);
+  assert.match(tcrnComponentCss, /\.tcrn-number-input::-webkit-inner-spin-button,\.tcrn-number-input::-webkit-outer-spin-button\{-webkit-appearance:none;margin:0\}/);
+  // GWT4: the native indicator stays the click target, transparent over the end 30px.
+  const indicator = cssRule(".tcrn-date-picker::-webkit-calendar-picker-indicator");
+  for (const declaration of ["position: absolute;", "inset-inline-end: 0;", "inline-size: 30px;", "block-size: 100%;", "opacity: 0;", "cursor: pointer;"]) {
+    assert.ok(indicator.includes(declaration), `indicator declares ${declaration}`);
+  }
+  assert.match(cssRule(".tcrn-date-picker"), /position: relative; padding-inline-end: 30px;/);
+  assert.match(cssRule(".tcrn-input::placeholder"), /color: var\(--tcrn-color-ink-3\);\s*opacity: 1;/);
+  assert.match(cssRule(".tcrn-select.tcrn-multi-select"), /block-size:auto/);
+  // The dropdown option keeps its pair on its own class (no fill, the hover fill, the wash
+  // and 600 once selected); the base reads the live pair and the two state rules only
+  // switch it at the specificity of one class, the hover rule last (TCRN-DS-SUB-059).
+  const option = cssRule(".tcrn-multi-select-dropdown__option");
+  for (const declaration of [
+    "--tcrn-pair-fill-d:transparent",
+    "--tcrn-pair-fill-h:var(--tcrn-color-hover)",
+    "--tcrn-pair-fill-s:var(--tcrn-color-wash)",
+    "--tcrn-pair-fill:var(--tcrn-pair-fill-d)",
+    "font-weight:var(--tcrn-pair-weight)",
+    "background-color:var(--tcrn-pair-fill)"
+  ]) {
+    assert.ok(option.includes(declaration), `option declares ${declaration}`);
+  }
+  const selectedOption = '.tcrn-multi-select-dropdown__option:where([aria-selected="true"])';
+  const hoveredOption = '.tcrn-multi-select-dropdown__option:where(:not(:disabled):hover,[data-tcrn-preview-state="hover"])';
+  assert.equal(cssRule(selectedOption), "--tcrn-pair-fill:var(--tcrn-pair-fill-s);--tcrn-pair-weight:600");
+  assert.equal(cssRule(hoveredOption), "--tcrn-pair-fill:var(--tcrn-pair-fill-h)");
+  assert.ok(tcrnComponentCss.indexOf(selectedOption) < tcrnComponentCss.indexOf(hoveredOption), "the hover rule follows the selected rule");
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-multi-select-dropdown__option(?::not\(:disabled\):hover|\[aria-selected="true"\])\s*\{/);
+});
+
+
+// TCRN-DS-SUB-020 (STORY-126). Checkable controls take a fill, edge and mark triple,
+// the switch a track, edge, knob and knob-edge quadruple; SearchInput is the quiet tool
+// form; the field no longer washes as a whole on focus.
+
+test("STORY-126 checkbox and radio draw a 16px box from the pair table with a border-drawn tick", () => {
+  const box = cssRule(".tcrn-checkbox,\n.tcrn-radio-group__control");
+  for (const declaration of [
+    "appearance: none;",
+    "inline-size: 16px;",
+    "block-size: 16px;",
+    "border: 0;",
+    "border-radius: var(--tcrn-radius-check);",
+    "background-color: var(--tcrn-pair-fill);",
+    "box-shadow: var(--tcrn-pair-edge);"
+  ]) {
+    assert.ok(box.includes(declaration), `box declares ${declaration}`);
+  }
+  assert.doesNotMatch(box, /--tcrn-color-/);
+  const tick = cssRule(".tcrn-checkbox::after");
+  assert.match(tick, /border: solid var\(--tcrn-pair-mark\);/);
+  assert.match(tick, /border-width: 0 1\.5px 1\.5px 0;/);
+  assert.match(tick, /transform: rotate\(45deg\);/);
+  assert.match(cssRule(".tcrn-radio-group__control"), /border-radius: 50%;/);
+  assert.match(cssRule(".tcrn-radio-group__control::after"), /box-shadow: inset 0 0 0 5px var\(--tcrn-pair-mark\);/);
+  assert.doesNotMatch(tcrnComponentCss, /url\(\s*["']?data:/);
+  assert.ok(tcrnComponentCss.includes(inputsCheckPairsCss.trim()), "the generated check pair segment is joined into the sheet");
+  assert.match(inputsCheckPairsCss, /^\.tcrn-checkbox\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-acc\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-on-acc\)/m);
+  assert.match(inputsCheckPairsCss, /^\.tcrn-radio-group__control\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-panel\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-acc\)/m);
+});
+
+test("STORY-126 the switch is a 34 by 20 track whose 16px knob travels 14px and turns on-acc when on", () => {
+  const track = cssRule(".tcrn-switch__control");
+  for (const declaration of [
+    "appearance: none;",
+    "inline-size: 34px;",
+    "block-size: 20px;",
+    "border: 0;",
+    "border-radius: var(--tcrn-radius-pill);",
+    "background-color: var(--tcrn-pair-fill);",
+    "box-shadow: var(--tcrn-pair-edge);"
+  ]) {
+    assert.ok(track.includes(declaration), `track declares ${declaration}`);
+  }
+  const knob = cssRule(".tcrn-switch__control::before");
+  for (const declaration of ["inline-size: 16px;", "block-size: 16px;", "background-color: var(--tcrn-pair-knob);", "box-shadow: var(--tcrn-pair-knob-edge);"]) {
+    assert.ok(knob.includes(declaration), `knob declares ${declaration}`);
+  }
+  assert.match(cssRule(".tcrn-switch__control:where(:checked)::before"), /transform: translateX\(14px\);/);
+  assert.ok(tcrnComponentCss.includes(inputsSwitchPairsCss.trim()), "the generated switch pair segment is joined into the sheet");
+  assert.match(inputsSwitchPairsCss, /--tcrn-pair-fill-c:var\(--tcrn-color-acc\);[^}]*--tcrn-pair-knob-c:var\(--tcrn-color-on-acc\)/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-switch[^{]*\{[^}]*opacity:/);
+  const html = renderToStaticMarkup(<Switch label="Archive automatically" defaultChecked />);
+  assert.match(html, /type="checkbox" role="switch"[^>]*class="tcrn-switch__control"/);
+});
+
+test("STORY-126 GWT3 SearchInput is a quiet tool: wash without an edge, ink-2 placeholder, paper and ring on focus", () => {
+  const search = /^\.tcrn-input\.tcrn-search-input__control\{([^}]*)\}/m.exec(inputsTextPairsCss)?.[1] ?? "";
+  assert.match(search, /--tcrn-pair-fill-d:var\(--tcrn-color-wash\);--tcrn-pair-edge-d:0 0 #0000/);
+  assert.match(search, /--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-line-2\)/);
+  assert.match(search, /--tcrn-pair-fill-f:var\(--tcrn-color-panel\)/);
+  assert.match(cssRule(".tcrn-input.tcrn-search-input__control::placeholder"), /color: var\(--tcrn-color-ink-2\);/);
+  // The shortcut label is text on the same wash: ink-2, as the placeholder (TCRN-DS-SUB-062).
+  assert.match(cssRule(".tcrn-search-input__shortcut"), /\bcolor: var\(--tcrn-color-ink-2\);/);
+  assert.doesNotMatch(cssRule(".tcrn-search-input .tcrn-search-input__control"), /background|box-shadow|border|color:/);
+  assert.doesNotMatch(cssRule(".tcrn-search-input"), /background|border|box-shadow|outline/);
+  // The wrapper paints nothing, so no state rule on it is left to clear (TCRN-DS-SUB-059).
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:(?:focus-within|where\(:focus-within\))/);
+  const html = renderToStaticMarkup(<SearchInput placeholder="Search members" shortcut="auto" />);
+  assert.match(html, /class="tcrn-input tcrn-search-input__control"/);
+  assert.match(html, /data-shortcut-visible="true"/);
+});
+
+test("STORY-126 the field no longer washes on focus, and every ring keeps a forced-colours outline", () => {
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-field:focus-within/);
+  // An error neither washes nor rings the field (TCRN-DS-SUB-060): the message is set in
+  // bad on the surface the field sits on, and only forced colours outline the field.
+  assert.doesNotMatch(tcrnComponentCss, /(?:^|\}|\*\/)\s*\.tcrn-field--error\s*\{/);
+  assert.doesNotMatch(tcrnComponentCss, /state-blocked-bg\) 62%/);
+  assert.match(cssRule(".tcrn-field__error"), /^\s*color: var\(--tcrn-color-bad\);\s*$/);
+  assert.match(tcrnComponentCss, /@media \(forced-colors: active\) \{\s*\.tcrn-field--error \{\s*outline: 2px solid Highlight;\s*outline-offset: 2px;\s*\}/);
+  for (const control of [".tcrn-input", ".tcrn-select", ".tcrn-checkbox", ".tcrn-radio-group__control", ".tcrn-switch__control"]) {
+    assert.match(tcrnComponentCss, new RegExp(`${escapeRegExp(control)}:where\\(:focus-visible\\)[^{]*\\{\\s*outline: 2px solid transparent;\\s*outline-offset: 2px;`));
+  }
+  assert.match(tcrnComponentCss, /@media \(forced-colors: active\) \{[\s\S]*\.tcrn-checkbox,\s*\.tcrn-radio-group__control,\s*\.tcrn-switch__control \{\s*-webkit-appearance: auto;\s*appearance: auto;/);
+});
+
+test("STORY-126 Select and DatePicker draw their end icon in the 30px the control keeps clear", () => {
+  const html = renderToStaticMarkup(
+    <>
+      <Select name="role" options={[{ value: "member", label: "Member" }]} />
+      <DatePicker name="due" />
+    </>
+  );
+  // Each control sits in a wrapper that only positions its icon: chevron-down for Select,
+  // calendar for DatePicker, sm (14), decorative.
+  assert.match(html, /<span class="tcrn-select-wrap"><select[^>]*class="tcrn-select"[^>]*>[\s\S]*?<\/select><svg(?=[^>]*class="tcrn-icon tcrn-select-wrap__icon")(?=[^>]*data-icon-name="chevron-down")(?=[^>]*\swidth="14")(?=[^>]*aria-hidden="true")[^>]*>/);
+  assert.match(html, /<span class="tcrn-date-picker-wrap"><input[^>]*type="date" class="tcrn-input tcrn-date-picker" data-date-picker="true"[^>]*\/><svg(?=[^>]*class="tcrn-icon tcrn-date-picker-wrap__icon")(?=[^>]*data-icon-name="calendar")(?=[^>]*\swidth="14")(?=[^>]*aria-hidden="true")[^>]*>/);
+
+  // The icon is centred in the end 30px, in ink-3, and lets the pointer through to the
+  // native select or to the transparent date indicator over the same area (GWT4).
+  const icon = cssRule(".tcrn-select-wrap__icon,\n.tcrn-date-picker-wrap__icon");
+  for (const declaration of [
+    "position: absolute;",
+    "inset-inline-end: calc((30px - var(--tcrn-icon-size-sm)) / 2);",
+    "inline-size: var(--tcrn-icon-size-sm);",
+    "block-size: var(--tcrn-icon-size-sm);",
+    "color: var(--tcrn-color-ink-3);",
+    "pointer-events: none;"
+  ]) {
+    assert.ok(icon.includes(declaration), `the end icon declares ${declaration}`);
+  }
+  assert.doesNotMatch(icon, /transform/);
+  // With the chevron drawn the native arrow goes and the label stops short of it; a bare
+  // select outside the wrapper keeps the native arrow.
+  const select = cssRule(".tcrn-select-wrap > .tcrn-select");
+  for (const declaration of ["appearance: none;", "padding-inline-end: 30px;", "text-overflow: ellipsis;", "white-space: nowrap;"]) {
+    assert.ok(select.includes(declaration), `the wrapped select declares ${declaration}`);
+  }
+  assert.doesNotMatch(cssRule(".tcrn-input,\n.tcrn-select"), /appearance/);
+  // The wrapper draws nothing.
+  const wrapper = cssRule(".tcrn-select-wrap,\n.tcrn-date-picker-wrap");
+  assert.match(wrapper, /position: relative;[\s\S]*display: inline-flex;/);
+  assert.doesNotMatch(wrapper, /(?:background|border|box-shadow|outline|color)\s*:/);
 });

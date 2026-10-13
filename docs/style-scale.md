@@ -1,22 +1,31 @@
 # TCRN style scale (radius, spacing, type)
 
 The single source of truth for every visual scale is `packages/ui-tokens/src/index.ts`.
-`tokens-sync` regenerates `packages/ui-tokens/src/tokens.css` and the `storybook.css`
-`:root` block from it; `createCssVariables()` emits the same tokens into the deployed
-docs page. New styles take values from this table — never a raw literal.
+Since the G+ renewal (TCRN-DS-INIT-015) its G+ values are not typed there by hand: they come
+from the design contract `docs/design/gplus-2026-10/contract/tokens.json` (and
+`typography.json` for the type roles), which `node scripts/contract-generate.mjs` writes into
+`packages/ui-tokens/src/gplus-tokens.generated.ts`; change the contract and regenerate, never
+the generated file. `tokens-sync` regenerates `packages/ui-tokens/src/tokens.css` and the
+`storybook.css` `:root` block from the package; `createCssVariables()` emits the same tokens
+into the deployed docs page. New styles take values from these tables — never a raw literal.
 
 ## Radius hierarchy
 
 | Role | Token | Value |
 |---|---|---|
 | Navigation / left indicators | *(none — flat)* | `0` |
-| Controls (button, input, chip, toggle) | `--tcrn-radius-control` | `4px` |
-| Cards / story containers / framed surfaces | `--tcrn-radius-surface` | `6px` |
-| Panels | `--tcrn-radius-panel` | `6px` (alias of surface — kept as a distinct name) |
-| Badges / pills / abbreviation dots | `--tcrn-radius-pill` | `999px` |
+| Controls (button, input, select, toggle) | `--tcrn-radius-control` | `8px` |
+| Chips and compact controls | `--tcrn-radius-small` | `6px` |
+| Panels, popovers, cards, framed surfaces | `--tcrn-radius-panel` | `12px` |
+| Cards / story containers (older name) | `--tcrn-radius-surface` | `12px` (carries the panel value) |
+| Checkbox box | `--tcrn-radius-check` | `4px` |
+| Stamps and badges | `--tcrn-radius-stamp` | `3px` |
+| Pills / abbreviation dots | `--tcrn-radius-pill` | `999px` |
 
+- G+ moved the control radius from `4px` to `8px` and the surface radius from `6px` to `12px`
+  (contract keys `r-ctl`, `r-sm`, `r-panel`, `r-check`, `r-stamp`).
 - The navigation's flat corners (INIT-005) are deliberate and must not regress.
-- `state-chip-radius` was retired into `--tcrn-radius-control` (both `4px`).
+- `state-chip-radius` was retired into `--tcrn-radius-control` (both `4px` at the time).
 - `--tcrn-radius-pill` was a dangling token (referenced, never defined, rendering
   square corners) until INIT-006 E4 defined it.
 
@@ -42,78 +51,254 @@ suffix. Gap and padding values come from this scale.
 
 ## Type scale
 
-| Token | Value | Role |
+| Token | Size / line | Role |
 |---|---|---|
-| `--tcrn-type-size-caption` | `11px` | caption / metadata |
-| `--tcrn-type-size-meta` | `12px` | dense metadata: counts, badges, tool labels |
-| `--tcrn-type-size-ui` / `-body` / `-control` | `13px` | dense UI / body / control text |
-| `--tcrn-type-size-reading` | `14px` | readable prose |
-| `--tcrn-type-size-heading-3` | `16px` | h3 |
-| `--tcrn-type-size-section` | `18px` | section / story heading |
-| `--tcrn-type-size-heading-2` | `22px` | h2 |
-| `--tcrn-type-size-page` | `28px` | page title |
+| `--tcrn-type-size-caption` | `11px` / `16px` | caption / metadata |
+| `--tcrn-type-size-meta` | `12px` / `16px` | dense metadata: counts, badges, tool labels |
+| `--tcrn-type-size-control-sm` | `12px` | small control text |
+| `--tcrn-type-size-ui` / `-body` / `-control` | `13px` / `20px` | dense UI / body / control text |
+| `--tcrn-type-size-reading` | `14px` / `22px` | readable prose |
+| `--tcrn-type-size-control-lg` | `14px` | large control text |
+| `--tcrn-type-size-heading-3` | `20px` / `26px` | h3 |
+| `--tcrn-type-size-section` | `20px` / `26px` | section / story heading |
+| `--tcrn-type-size-heading-2` | `26px` / `30px` | h2 |
+| `--tcrn-type-size-page` | `36px` / `40px` | page title (h1) |
 | `--tcrn-type-size-stamp-min` | `12px` | stamp floor (CJK serif) |
 
 - `--tcrn-type-size-meta` was a dangling token until INIT-006 E3.
-- The `.tcrn-heading--1` fluid clamp `clamp(28px, 3vw, 44px)` stays literal.
+- G+ replaced the `.tcrn-heading--1` fluid clamp with the fixed 36/40 serif step; every
+  heading level stays on one line and ends in an ellipsis (see the G+ type roles below).
+- Line heights are the matching `--tcrn-type-line-*` tokens; control text uses the unitless
+  `--tcrn-type-line-control` (`1.2`) inside the fixed control heights.
+
+## G+ scale (TCRN-DS-INIT-015)
+
+The first-batch families (Typography, Icon, Brand, Actions, Inputs) are drawn on the steps
+below. Values are the contract's (`docs/design/gplus-2026-10/contract/tokens.json` and
+`typography.json`); the gates named with each table hold them. Gate commands, criteria,
+thresholds and exemption registers are listed in `docs/contract/README.md`.
+
+### Type families
+
+| Token | Stack | Use |
+|---|---|---|
+| `--tcrn-type-family-serif` (also `--tcrn-type-family-heading`) | Source Serif 4, Noto Serif SC, Georgia, serif | headings and numerals |
+| `--tcrn-type-family-ui` | Hanken Grotesk, Noto Sans SC, system-ui, sans-serif | UI and body text |
+| `--tcrn-type-family-mono` | IBM Plex Mono, ui-monospace, Menlo, monospace | keys, codes, identifiers |
+
+- The faces are vendored in `@tcrn/ui-tokens` (`fonts.css` and `fonts/`); nothing loads from a
+  font CDN. `pnpm fonts:proof` checks the files and their licences; `pnpm fonts:render` checks
+  in Chromium that each family draws with its vendored face, that a Chinese heading in the
+  heading stack falls back to the Noto Serif SC face, and that no page requests a remote font.
+
+### Type roles
+
+| Role | Class | Family | Size / line | Weight | Notes |
+|---|---|---|---|---|---|
+| Heading 1 | `.tcrn-heading--1` | serif | 36 / 40 | 400 | tracking -0.01em |
+| Heading 2 | `.tcrn-heading--2` | serif | 26 / 30 | 400 | tracking -0.005em |
+| Heading 3 | `.tcrn-heading--3` | serif | 20 / 26 | 400 | |
+| Heading 4 | `.tcrn-heading--4` | ui | 13 / 20 | 600 | |
+| Text (default body) | `.tcrn-text`, `.tcrn-text--body` | inherited | 13 / 20 | inherited | secondary ink; `tone="strong"` adds 600 on the primary ink |
+| Text reading | `.tcrn-text--reading` | inherited | 14 / 22 | inherited | |
+| Text meta | `.tcrn-text--meta` | inherited | 12 / 16 | inherited | tertiary ink |
+| Text caption | `.tcrn-text--caption` | inherited | 11 / 16 | inherited | tertiary ink |
+| Numeral | `.tcrn-text--numeral` | serif | 26 / 30 | 300 | tabular lining figures; inline 16 / 20, large 44 / 48 |
+| Caps label | `.tcrn-text--caps` | ui | 11 / 16 | 500 | uppercase, tracking 0.14em, mono numbering prefix |
+| Mono | `.tcrn-text--mono` | mono | 11.5 / 16 | inherited | |
+
+- Headings, numerals and caps labels are single-line roles: they never wrap, end in an
+  ellipsis and carry their text as a title (contract clause C7). The rules are generated from
+  `typography.json` into `packages/ui-react/src/styles/generated/typography.scale.ts`.
+
+### Controls
+
+| Scale | sm | md (default) | lg |
+|---|---|---|---|
+| Control height `--tcrn-control-height-*` | `28px` | `32px` | `40px` |
+| Inline padding `--tcrn-control-padding-*` | `10px` | `12px` | `16px` |
+| Control text `--tcrn-type-size-control*` | `12px` | `13px` | `14px` |
+| Icon size `--tcrn-icon-size-*` | `14px` | `16px` | `20px` |
+
+- `Button`, `IconButton` and `LinkButton` take `size="sm" | "md" | "lg"` (default `md`) and take
+  the height, inline padding and control text of that step; an `IconButton` is as wide as it is
+  high.
+- `pnpm geometry:measure` (`controlHeight`) fails a declared control whose height is not 28, 32
+  or 40px (0.5px tolerance).
+
+### Elevation: three levels at most
+
+| Token | Level |
+|---|---|
+| `--tcrn-shadow-s1` | lowest raised surface |
+| `--tcrn-shadow-s2` | middle level |
+| `--tcrn-shadow-s3` | floating level (menus, popovers); the old `--tcrn-elevation-floating` points here |
+| `--tcrn-shadow-edge` | inset 1px edge highlight, not a level |
+| `--tcrn-focus-ring` | focus ring: a 2px gap in `--tcrn-color-surface`, then a 2px accent ring |
+
+- There are no other elevation steps, and no shadow layer blurs more than 3px.
+  `pnpm geometry:measure` (`shadowBlur`) measures the rendered stories and `pnpm contract:static`
+  (C11) reads the package CSS for the same limit. Gradients are on the C11 forbidden list too.
+- Light and night values differ per token; both theme blocks declare the same token set (C5).
+
+### Guide column (rail)
+
+- In the shell and in lists, the guide column sits 16px and the text it leads sits 48px from
+  the shell edge. `pnpm geometry:measure` (`rail`, 0.5px tolerance) measures both sides on the
+  rendered sample stories, as a relation between the real elements rather than a property list
+  (clause C17).
+
+### Motion
+
+| Token | Value | Use |
+|---|---|---|
+| `--tcrn-motion-ease` | `cubic-bezier(.22,1,.36,1)` | the single G+ easing curve |
+| `--tcrn-motion-duration-press` | `80ms` | press feedback |
+| `--tcrn-motion-duration-fill` | `120ms` | fill and colour changes (hover, state) |
+| `--tcrn-motion-duration-move` | `240ms` | movement (menus, panels, indicators) |
+| `--tcrn-motion-duration-loop` | `900ms` | looping indicator period |
+
+### Contrast
+
+- Text pairs need 4.5:1, control edges and the focus ring 3:1 in both themes (C1).
+  `pnpm tokens:proof` (token-contrast-proof) checks the token pairs and `pnpm geometry:measure`
+  (`contrast`) the rendered matrix cells against their board values.
 
 ## Component CSS lives in the package; the docs keep only demo chrome
 
-The package-truth component stylesheet is the `tcrnComponentCss` template literal in
-`packages/ui-react/src/components/Navigation/Navigation.tsx`. Every style for a class that
-a real `@tcrn/ui-react` component emits belongs there so downstream consumers get it. The
-docs stylesheets (`apps/storybook/src/storybook.css`, `apps/storybook/src/alpha-styles.ts`,
-and their shared single source `apps/storybook/src/story-demo-styles.ts`) are presentation
-layers only. INIT-007 (TCRN-DS-STORY-037) relocated the 24 genuine component families out
-of the docs layer into the package; the shell-fidelity duplicate-selector gate
-(`scripts/shell-fidelity-proof.mjs`, `docsPackageSelectorDuplication`) fails closed if a
-top-level class selector appears in both `storybook.css` and the package component CSS.
+The package-truth component stylesheet is `tcrnComponentCss`. Its rules live in the family
+segment modules under `packages/ui-react/src/styles/` (`base`, `typography`, `icon`, `actions`,
+`inputs`, `brand`, plus the contract-generated segments in `styles/generated/`), and
+`packages/ui-react/src/styles/index.ts` concatenates them in cascade order (TCRN-DS-SUB-010).
+Every style for a class that a real `@tcrn/ui-react` component emits belongs there so
+downstream consumers get it. The docs stylesheets (`apps/storybook/src/storybook.css`,
+`apps/storybook/src/alpha-styles.ts`, and their shared single source
+`apps/storybook/src/story-demo-styles.ts`) are presentation layers only: Storybook renders
+the package, and the docs layer never repaints a package component.
+
+Three gates hold that line:
+
+- `scripts/doc-shell-class-proof.mjs` collects every `tcrn-*` class the built docs and the
+  docs sources write or style, subtracts the classes `tcrnComponentCss` defines, and fails on
+  anything left. Documentation-private classes therefore use the `tcrn-doc-` prefix, which the
+  gate exempts (TCRN-DS-STORY-128).
+- `scripts/shell-fidelity-proof.mjs` (`docsPackageSelectorDuplication`) runs two checks under
+  one name:
+  - the duplicate-selector check fails when a rule in `storybook.css` or `alpha-styles.ts`
+    takes as its key subject a package class that `tcrnComponentCss` also styles, unless that
+    class is on the gate's whitelist (`DUPLICATE_SELECTOR_WHITELIST`, listed below);
+  - the rule-level guard (TCRN-DS-SUB-065) reads the three docs style sources
+    (`storybook.css` with its generated demo layer blanked, `alpha-styles.ts` and
+    `story-demo-styles.ts`). A rule whose subject compound carries a package class may declare
+    only placement properties (`PLACEMENT_PROPERTIES`: grid placement, `order`, margins, self
+    alignment, flex item sizing, inline size and text wrapping); any other property, custom
+    properties included, is a finding unless a registered exception
+    (`DOC_PACKAGE_CLASS_EXCEPTIONS`, listed below) admits that property for that exact
+    selector. For the C7 single-line carriers that `docs/contract/roles.json` registers under
+    `singleLine`, the wrapping properties (`white-space`, `overflow-wrap`, `word-break`) do not
+    count as placement (TCRN-DS-SUB-102). A registered exception that no rule used is listed
+    as `docExceptionsUnused`.
+- `scripts/selection-grammar-proof.mjs` reads the same three docs style sources, with the
+  package component CSS, for the retired selection shapes.
+
+`scripts/contract-static-proof.mjs` (`pnpm contract:static`) also reads the doc-shell-class
+difference as contract clause C13, so the same leak fails both gates (TCRN-DS-STORY-132).
 
 ### Demo-chrome exemption list
 
 These classes legitimately stay in the docs demo layer — they are presentation scaffolding
-that no shipped component emits, not component styles. A future gate that widens the
-duplicate/parallel-implementation check (S035) must treat this set as allowed to live
-doc-side, and must not expect them in the package.
+that no shipped component emits, not component styles. Since TCRN-DS-SUB-025 every
+documentation-private `tcrn-*` class carries the `tcrn-doc-` prefix; the doc-layer copies of
+package components (loading, skeleton, changelog token, typography and locale cards, brand
+lockup cards, the shell demo top bars, the dense and compact shell prototypes, the bookmark
+nav and the entry strip) were deleted rather than renamed, and the stories render the package
+components instead.
 
 - **Story scaffolding:** `.alpha-frame`, `.alpha-story-card`, `.alpha-story-stack`,
-  `.tcrn-story-kicker`, `.tcrn-static-section`.
-- **Token / scale demos:** `.tcrn-token-swatch*`, `.tcrn-typography-sample`,
-  `.tcrn-type-scale-demo*`, `.tcrn-icon-sample*`, `.tcrn-locale-grid`, `.tcrn-locale-card`,
-  `.tcrn-theme-preview`.
-- **Motion / loading demos:** `.tcrn-motion-demo*` (incl. `@keyframes tcrn-motion-*`),
-  `.tcrn-loading-*` (spinner / progress / skeleton demo variants), and the docs-only
-  blanket `@media (prefers-reduced-motion: reduce)` `animation-duration` clamp.
-- **Layout / grid demos:** `.tcrn-guidance-grid`, `.tcrn-spec-grid`, `.tcrn-guidance-list`,
-  `.tcrn-status-cloud`, `.tcrn-form-stack`, `.tcrn-action-row`,
-  `.tcrn-display-primitive-grid`, `.tcrn-interaction-primitive-row`,
-  `.tcrn-interaction-primitive-grid`, `.tcrn-inline-proof-token`.
-- **Changelog demos:** `.tcrn-changelog-records`, `.tcrn-changelog-record*`,
-  `.tcrn-changelog-token*`.
-- **Shell / doc-chrome demos:** `.tcrn-shell-demo*`, `.tcrn-compact-shell*`,
-  `.tcrn-shell-*` (mega-menu, hub, domain, task-lane, quick-rail, layer, density),
-  `.tcrn-entry-shell-strip*`, `.tcrn-nav-component-preview`, `.tcrn-package-nav-proof*`,
-  `.tcrn-storybook-component-example *` (scoped top-bar / nav-item demos),
-  `.tcrn-doc-*` (doc-brand, doc-search-*), `.tcrn-bookmark-*`, `.tcrn-knowledge-shell*`,
-  `.tcrn-knowledge-preview*`.
-- **Overlay demos / fixtures:** `.tcrn-overlay-mode-matrix`, `.tcrn-overlay-static-modes`,
-  `.tcrn-overlay-mode-grid`, `.tcrn-overlay-drawer-grid`, `.tcrn-overlay-mode-card`,
-  `.tcrn-overlay-static-card`, `.tcrn-dialog-spec-fixture*`, `.alpha-overlay-demo`,
+  `.tcrn-doc-story-kicker`, `.tcrn-doc-static-section` (and `--category-index`),
+  `.tcrn-doc-story-disclosure*`.
+- **Token / scale demos:** `.tcrn-doc-token-swatch*`, `.tcrn-doc-token-swatch-grid`,
+  `.tcrn-doc-type-scale-demo`, `.tcrn-doc-icon-sample*`, `.tcrn-doc-locale-grid`,
+  `.tcrn-doc-theme-preview`.
+- **Motion / loading demos:** `.tcrn-doc-motion-demo*` (incl. `@keyframes tcrn-motion-travel`),
+  `.tcrn-doc-motion-demo-grid`, `.tcrn-doc-loading-motion-grid`, `.tcrn-doc-loading-card__row`,
+  `.tcrn-doc-loading-copy`, and the docs-only blanket
+  `@media (prefers-reduced-motion: reduce)` `animation-duration` clamp.
+- **Layout / grid demos:** `.tcrn-doc-guidance-grid`, `.tcrn-doc-spec-grid` (and
+  `--record-index`), `.tcrn-doc-status-cloud`, `.tcrn-doc-form-stack`, `.tcrn-doc-action-row`,
+  `.tcrn-doc-display-primitive-grid`, `.tcrn-doc-interaction-primitive-row`,
+  `.tcrn-doc-interaction-primitive-grid`, `.tcrn-doc-reference-strip`.
+- **Changelog demos:** `.tcrn-doc-changelog-records`, `.tcrn-doc-changelog-record*`.
+- **Reference and brand pages:** `.tcrn-doc-component-reference*`, `.tcrn-doc-reference-index*`,
+  `.tcrn-doc-reference-table*`, `.tcrn-doc-brand-system*`, `.tcrn-doc-brand-lockups`.
+- **Shell / doc-chrome demos:** `.tcrn-doc-shell-demo` (and `--compact`, `--dense`,
+  `--knowledge`), `.tcrn-doc-nav-component-preview`, `.tcrn-doc-package-nav-proof*`,
+  `.tcrn-doc-knowledge-shell-layout`, `.tcrn-doc-knowledge-shell__*`,
+  `.tcrn-doc-knowledge-preview*`, and the docs-shell chrome in `alpha-styles.ts`
+  (`.tcrn-doc-brand`, `.tcrn-doc-search-*`, `.tcrn-doc-nav*` and the rest of `.tcrn-doc-*`).
+- **Overlay demos / fixtures:** `.tcrn-doc-overlay-mode-matrix*`,
+  `.tcrn-doc-overlay-static-modes`, `.tcrn-doc-overlay-mode-grid`, `.tcrn-doc-overlay-mode-card`,
+  `.tcrn-doc-overlay-static-card`, `.tcrn-doc-dialog-spec-fixture*`, `.alpha-overlay-demo`,
   `.alpha-overlay-demo__dialog`.
+- **Package components placed by doc scaffolding:** a rule scoped under a `.tcrn-doc-*`
+  container may place a package component (the placement properties above: grid placement,
+  order, margins, self alignment, flex item sizing, inline size, wrapping) but does not
+  repaint it, for example `.tcrn-doc-knowledge-shell-layout > .tcrn-top-bar { grid-area: topbar; }`.
+  The key subjects these placements need are the shell-fidelity whitelist: `.tcrn-top-bar`,
+  `.tcrn-side-nav`, `.tcrn-search-input`, `.tcrn-product-switcher`, `.tcrn-segmented-nav`,
+  `.tcrn-field`, `.tcrn-brand-wordmark__suffix`, `.tcrn-product-logo__copy`,
+  `.tcrn-tooltip__content`, `.tcrn-shell-brand-lockup`, `.tcrn-shell-brand-lockup__copy`,
+  `.tcrn-shell-brand-lockup__caption`, `.tcrn-product-shell-search__results`,
+  `.tcrn-nav-group__label` and `.tcrn-nav-item`, plus the infra primitive `.tcrn-skip-link`
+  that the package-nav proof places; the whitelist's last entry, `.tcrn-filter-bar`, is the
+  demo hook described below. The docs shell's verbatim copies of `.tcrn-sr-only` and
+  `.tcrn-skip-link` were removed (TCRN-DS-SUB-063), and `.tcrn-brand-wordmark__base` and
+  `.tcrn-brand-wordmark` left the whitelist with their last doc rules (TCRN-DS-SUB-063,
+  TCRN-DS-SUB-065). `.tcrn-product-shell-search__results`, `.tcrn-nav-group__label` and
+  `.tcrn-nav-item` leave together with the registered exceptions that need them.
+- **Registered exceptions** (`DOC_PACKAGE_CLASS_EXCEPTIONS` in
+  `scripts/shell-fidelity-proof.mjs`; each entry names exact selectors and the non-placement
+  properties it admits, with a ruling, a reason and a removal condition):
+  - `EX-INIT015-doc-tooltip-static-preview`: `opacity` and `transform` on the content of the
+    tooltip static-preview hook (one selector per placement variant); goes when the Overlay
+    family's batch has the package provide a static revealed state.
+  - `EX-INIT015-doc-filter-bar`: `display`, `flex-wrap` and `gap` on the top-level
+    `.tcrn-filter-bar` demo hook; goes when the Navigation family's batch gives FilterBar a
+    layout of its own.
+  - `EX-INIT015-doc-nav-proof-skip-link`: the package-nav proof's skip link, a 1px
+    screen-reader box until focused and an inline flex box on focus; goes when the Navigation
+    family's batch has the proof render its skip link through the package component.
+  - `EX-INIT015-doc-product-shell-search-static` (TCRN-DS-SUB-100): `position` and `inset` on
+    `.tcrn-product-shell-search__results` under
+    `.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"]`, so the
+    ProductShell story's opened static result list stays in the shell's flow and pushes the
+    body down instead of covering the title and first paragraph; goes when the Navigation
+    family's batch has the package provide a static result display.
+  - `EX-INIT015-doc-knowledge-shell-topbar`, `-side-nav`, `-group-title` and `-nav-item`
+    (TCRN-DS-SUB-101), all under `.tcrn-doc-knowledge-shell-layout[data-standard-shell]`: the
+    knowledge-base sample's standalone TopBar takes the shell top bar's 52px height and 6px
+    block padding (`min-height`, `padding-block`), its SideNav the 16px padding and canvas
+    colour of composition one's rail (`padding`, `background`), its group titles the 16px lead
+    column (`padding-inline`) and its nav items composition one's start padding
+    (`padding-inline-start`; the 4px reach into the rail padding is a margin, which is
+    placement). All four go when the Navigation family's batch has the standalone components
+    provide composition one's geometry.
+  - Removed: `EX-INIT015-doc-shell-brand-collapse` and `EX-INIT015-doc-shell-brand-narrow`
+    (TCRN-DS-SUB-101). The docs shell's collapsed and very narrow states now follow the
+    package: the lockup copy takes `max-width: 0` and the docs box clips it, with no fade.
 - **Component-scoped demo hooks** (same base class as a package component, but a
-  presentation-only variant/hook that the component never emits):
-  `.tcrn-input--short` and `.tcrn-search-input--compact` (docs demo widths),
-  `.tcrn-filter-bar` (demo tab layout; the package owns it only via the scoped
-  `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level `.tcrn-filter-bar` here does
-  not duplicate a package selector), the tooltip static-preview hook
-  `.tcrn-tooltip[data-storybook-static-tooltip="true"]` (and its `[data-placement]`
-  variants), which forces the revealed state for static docs screenshots, and
-  `.tcrn-product-shell-search__results` when scoped under the
-  `navigation-product-shell-spec` static-display modifier (the docs proof keeps the
-  open result panel in flow; the package default remains the interactive overlay).
-- **Deferred primitive:** `.tcrn-icon` base rule (Icon-emitted) remains doc-side for now —
-  it is outside STORY-037's named 24 families and awaits an explicit Owner call to promote
-  or keep it.
+  presentation-only hook that the component never emits): `.tcrn-filter-bar` (demo tab
+  layout; the package owns it only via the scoped `.tcrn-table-toolbar .tcrn-filter-bar` rule,
+  so a top-level `.tcrn-filter-bar` here does not duplicate a package selector) and the
+  tooltip static-preview hook `.tcrn-tooltip[data-storybook-static-tooltip="true"]` (and its
+  `[data-placement]` variants), which forces the revealed state for static docs screenshots.
+- **Icon base class (promoted):** the `.tcrn-icon` base rule (Icon-emitted) is the
+  package's, in `packages/ui-react/src/styles/icon.css.ts` (Icon board section E; design
+  session ruling of 2026-10-11 under STORY-128, open to Owner correction). The docs layer
+  keeps only sample layout (`.tcrn-doc-icon-sample`, `.tcrn-icon-sample*`) and placements
+  inside `.tcrn-doc-*` containers, and addresses a package icon there as
+  `svg[data-icon-name]`, so no docs rule takes `.tcrn-icon` as its subject and the class is
+  not on the shell-fidelity whitelist.
 
 ## Settings controls and container thresholds
 

@@ -1,0 +1,66 @@
+[
+ {
+  "subject": "Story 转 done 要求库里有覆盖它的必需门，门数为 0 的库一张也转不了",
+  "summary": "einzbern 2.x 对 Story 的 done 转态检查门覆盖：没有已启用的必需门精确覆盖该 Story 的 work id、且没以该 --work-id 跑过 gates-run，就以 WORK_DONE_GATES_NOT_COVERED 拒绝，被拒原因与执行者无关。DS 库门数为 0，INIT-015 两轮验收后机器判据满足的 13 张 Story 全部停在 active。",
+  "snippet": "reasonCode WORK_DONE_GATES_NOT_COVERED：no enabled required gate declares an exact work-id cover for the Story；gates-config-list 读回门数 0。",
+  "body": "INIT-015 R2 链写首次提交把 8 张 Story 转 done，整个批次被拒（RM20），重做的批次去掉转态、改写 summary「转 done 待库门配置」；R3 后机器判据满足的增至 13 张，仍全部 active。声明门是库的持久配置（A 类），实施对话不做。规划含 Story 收口的批次时：先用 gates-config-list 现读；门数为 0 就不要在链写里计划 Story 转 done（会让整个批次被拒），改用 work-annotate 写结论；并在第一轮就把「声明覆盖这些 Story 的必需门并跑 gates-run」列为 Owner 前置，免得到收口才发现 goal 的「全部 done」终态够不着。",
+  "tags": ["einzbern", "chain", "story-done", "gates", "planning", "design-system"],
+  "evidence": [
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/problems/main.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/acceptance/A.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/judgment.md"
+  ]
+ },
+ {
+  "subject": "axe 违规 0 证明不了带自身半透明底色的小字达标",
+  "summary": "文档导航分类计数用 ink-3 字、自带 color-mix(surface-muted 78%, transparent) 底色，按 token 合成到侧栏底色后夜间约 4.45:1；同一树上 axe 回执违规 0，且这个类在汇总里出现 0 次，因为门只读 violations。token 对表（ink-3 于 panel 夜间 4.59）也没有算元素自己的底色。",
+  "snippet": "静态 sRGB 合成：浅色约 5.17、夜间约 4.45；R2 引的 4.59 是 ink-3 直接落在 panel 上的值，按同法算 R2 的夜间约 4.37。",
+  "body": "INIT-015 R2 判断以为分类计数会随侧栏改画布色一起达标（O-2 合并 N-1），R3 验收 A 把计数自己的半透明底色合成进去，夜间仍低于 4.5。internal-alpha-browser-proof 的 runAxe 只读 result.violations（scripts/internal-alpha-browser-proof.mjs:650–664），回执里没有这个类，所以「axe 0」不能当作每段小字都过线的证据。查对比度时，对带半透明底色的元素按实际底色层叠合成，或在浏览器里读计算样式，不能只看字色 token 与容器底色 token 的配对；在门能读到这类节点之前，把它们记为门的盲区。",
+  "tags": ["contrast", "axe", "a11y", "gates", "design-system"],
+  "evidence": [
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/acceptance/A.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/judgment.md",
+   "apps/storybook/src/alpha-styles.ts",
+   "scripts/internal-alpha-browser-proof.mjs"
+  ]
+ },
+ {
+  "subject": "demo-styles-sync 读 dist：局部门要按 build、同步、再 build 的顺序跑",
+  "summary": "scripts/demo-styles-sync.mjs 从包的 dist 读样式。INIT-015 R3 拆分给 P3 的局部门把同步排在 build 之前，照抄会得到假绿；P3 实际按先 build、再同步、再 build 跑过，验收 A、B 都建议以后的拆分照此写。",
+  "snippet": "R3 P3 问题 4 第 1 条：demo-styles-sync 读 dist，要先 build、再同步、再 build；拆分里的局部门顺序相反。",
+  "body": "R3 的 P3（文档层与残留）改了包样式后要同步 demo 样式副本。同步脚本的输入是构建产物，而不是源文件；局部门若先同步后构建，同步拿到的是上一次构建的样式。凡改包样式且要同步 demo 样式的单，拆分时把局部门写成 build → demo-styles-sync → build（之后再跑 --check），不要按「先改源、再生成、最后构建」的直觉排序；派工摘录照抄局部门时一并核对顺序。",
+  "tags": ["design-system", "demo-styles", "build-order", "decomposition", "gates"],
+  "evidence": [
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/problems/P3.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/acceptance/A.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/acceptance/B.md",
+   "scripts/demo-styles-sync.mjs"
+  ]
+ },
+ {
+  "subject": "pnpm scan 扫的是整个工作树文件系统：调度文档与未跟踪产物都算",
+  "summary": "no-private-input-scan 遍历工作树里的文件，不看 git 索引：派工摘录抄了禁用短语原文就会红；回执记录的 scannedFiles 随任何新增文件变化，每次 verify 后都会漂移（R3 为 643 → 646）。回执只在最后一次文档提交时再生并提交一次。",
+  "snippet": "R3M2：摘录限制节抄了短语表，scan 报 6 条命中，3113b5e 改为指向脚本；R3M7：两次 verify 后 scannedFiles 643 → 646，多出两份交回文档与未跟踪的 visual-selection-result.json。",
+  "body": "INIT-015 R3 两次碰到同一机制。其一，主线程为提醒代理避开禁用短语，把表原文写进派工摘录，扫描把调度文档也当作待扫文件，报 6 条命中；改为只写「表在 scripts/no-private-input-scan.mjs」。其二，入仓回执记录扫到的文件数，每提交一份交回文档，或 browser-proof 生成一个未跟踪文件，这个数就变；verify 不读入仓值，退出码不受影响，但每次 verify 后工作树都脏。做法：调度文档、摘录与交回只引用规则所在的脚本，不抄原文；轮中只存档并还原这份回执，等收口文件写好、最后一次文档提交时再跑一次 scan，确认 0 命中后连同收口文件提交。",
+  "tags": ["privacy-scan", "receipts", "dispatch", "verify", "design-system"],
+  "evidence": [
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/problems/main.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/verify/steps.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/acceptance/A.md",
+   "scripts/no-private-input-scan.mjs"
+  ]
+ },
+ {
+  "subject": "文档壳与样板共用一批壳选择器时，让文档壳跟随包壳会把独立导航件夹在中间",
+  "summary": "INIT-015 的 SUB-101 要文档壳按构图一改，但知识库样板用的是独立 TopBar、SideNav、NavGroup、NavItem（包默认几何），同一批文档元素既对包壳又对样板，shell:parity 两边不能同时转绿。方案 A 登记 4 条文档作用域例外解决，代价是独立 TopBar 在两个样板里显示 52 与 68 两种高度，且有一条例外让文档 CSS 设了包件的底色。",
+  "snippet": "EX-INIT015-doc-knowledge-shell-topbar、-side-nav、-group-title、-nav-item（scripts/shell-fidelity-proof.mjs:340–371），删除条件：Navigation 家族批次让独立件提供构图一几何。",
+  "body": "R3 拆分把「文档壳跟随包壳几何」当作只动文档样式与 oracle 的单，没有查哪些文档样板复用同一批壳选择器。P3 做到一半才发现知识库样板的独立导航件仍是包默认几何，只能在「改门的比对数据（Owner 才能定）」与「给样板登记文档作用域例外」之间选，主线程按批量原则第 5 条先取后者。拆分同类改动前，先列出复用这些选择器的样板与它们用的包件；包件本身缺所需几何时，把「独立件提供该几何」放进对应家族批次，文档层例外只作过渡，不放行填色类属性，并在样板里写明。",
+  "tags": ["design-system", "storybook", "navigation", "decomposition", "doc-exceptions"],
+  "evidence": [
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/problems/main.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/acceptance/C.md",
+   "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/judgment.md",
+   "scripts/shell-fidelity-proof.mjs"
+  ]
+ }
+]

@@ -1,7 +1,7 @@
 {
   "ok": true,
   "outputRoot": "apps/storybook/storybook-static",
-  "scannedPages": 35,
+  "scannedPages": 37,
   "pages": [
     "change-log-governance-records.html",
     "change-log.html",
@@ -16,6 +16,8 @@
     "components-controls-data.html",
     "components-detail-and-inspection.html",
     "components-documents-and-collaboration.html",
+    "components-gplus-matrices.html",
+    "components-gplus-samples.html",
     "components-hierarchy-and-relations.html",
     "components-navigation-shells.html",
     "components-overlays.html",

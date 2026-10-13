@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { ClipboardCopyButton } from "./Clipboard.js";
 import { DEFAULT_RESET_DELAY_MS, clipboardLabelsFor } from "./clipboard-copy.js";
 import { mountStaticClipboardCopyButton } from "./static-clipboard.js";
+import { tcrnComponentCss } from "../../styles/index.js";
 
 test("clipboard copy button renders as a native button without exposing copied text", () => {
   const html = renderToStaticMarkup(
@@ -104,4 +105,77 @@ test("the button and the static bridge read one five-locale label table", () => 
     assert.equal(new Set([labels.idle, labels.copying, labels.copied, labels.failed, labels.unsupported]).size, 5, `${locale} states are distinct`);
   }
   assert.equal(DEFAULT_RESET_DELAY_MS, 2000);
+});
+
+test("copied, failed and unsupported change the ink only; idle and copying keep the variant's pair", () => {
+  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  for (const [state, token] of [
+    ["copied", "ok"],
+    ["failed", "bad"],
+    ["unsupported", "ink-3"]
+  ] as const) {
+    const rule = new RegExp(`\\.tcrn-button\\[data-clipboard-copy-state="${state}"\\]\\s*\\{([^}]*)\\}`).exec(sheet);
+    assert.ok(rule, `${state} has its rule`);
+    const declarations = rule[1].split(";").map((item) => item.trim()).filter(Boolean);
+    // Default, hover, active and focus all carry the result: the pointer and the focus are
+    // still on the button when it arrives. Fill and edge are never touched.
+    assert.deepEqual(
+      declarations,
+      ["d", "h", "a", "f"].map((slot) => `--tcrn-pair-ink-${slot}: var(--tcrn-color-${token})`)
+    );
+  }
+  // Idle and copying keep the variant's pair: a rule keyed on either state may pick an icon,
+  // but it never sets a pair variable or a colour.
+  for (const [, body] of sheet.matchAll(/[^{}]*data-clipboard-copy-state="(?:idle|copying)"[^{}]*\{([^}]*)\}/g)) {
+    assert.doesNotMatch(body, /--tcrn-pair-|color|background|box-shadow/);
+  }
+});
+
+test("the copy button carries one icon per settled state and the stylesheet shows the current one", () => {
+  const html = renderToStaticMarkup(<ClipboardCopyButton text="x" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" />);
+  // idle copy, copied check, failed alert-triangle, unsupported info (Actions board); all
+  // four are in the markup, so the static bridge only has to switch the state attribute.
+  for (const [state, name] of [
+    ["idle", "copy"],
+    ["copied", "check"],
+    ["failed", "alert-triangle"],
+    ["unsupported", "info"]
+  ] as const) {
+    assert.match(html, new RegExp(`<svg(?=[^>]*data-clipboard-state-icon="${state}")(?=[^>]*data-icon-name="${name}")(?=[^>]*aria-hidden="true")[^>]*>`));
+  }
+  assert.doesNotMatch(html, /data-clipboard-state-icon="copying"/);
+  // The icons come before the label, after the loader.
+  assert.match(html, /tcrn-button__spinner[\s\S]*data-clipboard-state-icon="idle"[\s\S]*<span class="tcrn-button__label">Copy trace ID<\/span>/);
+
+  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  // Hidden by default, in the loader's box.
+  assert.match(sheet, /\.tcrn-icon\[data-clipboard-state-icon\] \{\s*display: none;\s*inline-size: 13px;\s*block-size: 13px;\s*\}/);
+  assert.match(sheet, /\.tcrn-button--lg > \.tcrn-icon\[data-clipboard-state-icon\] \{\s*inline-size: 15px;\s*block-size: 15px;\s*\}/);
+  // Shown only where the button's state names it; copying shows none of them.
+  const shown = /((?:\[data-clipboard-copy-state="[a-z]+"\] > \.tcrn-icon\[data-clipboard-state-icon="[a-z]+"\],?\s*)+)\{\s*display: inline-block;\s*\}/.exec(sheet);
+  assert.ok(shown, "the show rule exists");
+  const pairs = [...shown[1].matchAll(/\[data-clipboard-copy-state="([a-z]+)"\] > \.tcrn-icon\[data-clipboard-state-icon="([a-z]+)"\]/g)].map(([, state, icon]) => [state, icon]);
+  assert.deepEqual(pairs, [
+    ["idle", "idle"],
+    ["copied", "copied"],
+    ["failed", "failed"],
+    ["unsupported", "unsupported"]
+  ]);
+});
+
+test("the copy button carries the loader for its busy state and repeats its label in title", () => {
+  const html = renderToStaticMarkup(<ClipboardCopyButton text="x" ariaLabel="Copy trace ID" idleLabel="Copy trace ID" />);
+  // Rendered in every state and shown by the stylesheet only while aria-busy is set, so the
+  // static bridge, which only sets aria-busy, shows the same loader.
+  assert.match(html, /data-icon-name="loader-circle"/);
+  assert.match(html, /class="[^"]*\btcrn-button__spinner\b[^"]*"/);
+  assert.doesNotMatch(html, /aria-busy/);
+  assert.match(html, /<span class="tcrn-button__label">Copy trace ID<\/span>/);
+  assert.match(html, /title="Copy trace ID"/);
+
+  // A disabled copy button puts the reason after its label in title (TCRN-DS-SUB-079).
+  const blocked = renderToStaticMarkup(
+    <ClipboardCopyButton text="x" ariaLabel="Copy audit ID" disabledReason="Requires owning product permission" />
+  );
+  assert.match(blocked, /title="Copy — Requires owning product permission"/);
 });

@@ -41,8 +41,10 @@ pnpm build
 pnpm test
 pnpm storybook:smoke
 node --test scripts/readme-public-contract.test.mjs
-pnpm storybook:visual-proof -- --check
+pnpm storybook:visual-proof
 pnpm verify
 ```
+
+La liste des portes de contrat, leur ordre dans `pnpm verify` et la façon de lancer chacune seule se trouvent dans [docs/contract/README.md](docs/contract/README.md).
 
 Ce README ne revendique pas la publication npm/package, la préparation de publication des docs Storybook, hosted-doc readiness, l'adoption produit, release readiness, l'acceptation produit ou l'acceptation MVP finale.

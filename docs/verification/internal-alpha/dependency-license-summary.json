@@ -63,11 +63,10 @@
     },
     {
       "license": "ISC",
-      "packageCount": 7,
+      "packageCount": 6,
       "packageNames": [
         "electron-to-chromium",
         "lru-cache",
-        "lucide-react",
         "picocolors",
         "saxes",
         "semver",
@@ -303,6 +302,17 @@
         "axe-core",
         "lightningcss",
         "lightningcss-darwin-arm64"
+      ]
+    },
+    {
+      "license": "OFL-1.1",
+      "packageCount": 5,
+      "packageNames": [
+        "@fontsource-variable/hanken-grotesk",
+        "@fontsource-variable/noto-sans-sc",
+        "@fontsource-variable/noto-serif-sc",
+        "@fontsource-variable/source-serif-4",
+        "@fontsource/ibm-plex-mono"
       ]
     }
   ]

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "tcrn.ds.contract-roles.v1",
+  "description": "C7、C8 与 C11 story 层的角色登记。singleLine 是条款 C7 列出的单行角色在包 CSS 里的承载类：门要求其基础规则同时声明 white-space: nowrap、text-overflow: ellipsis 与 overflow: hidden（或 clip），且任何上下文规则不得把它改回可折行；story 层另要求渲染出的承载元素有文字时带 title（自身、内部，或只含这一个承载元素的组件根以内的祖先）：第一批承载元素（包类属 families.json 中 scope.batch 批次的家族，现为按钮 tcrn-button__label）的 title 须含该元素的可见文字，两边折叠空白后包含即满足，「标签 — 原因」满足，只写原因或只写部分文字不满足；后续批次家族的承载元素在进入检查范围前仍只要求 title 非空。所有承载元素都不得含 <br>、块级元素或使其折行的行内样式。toolbars 是条款 C8 的工具栏：container 是行容器，yield 是唯一让步项（须声明非零 min-width 或 min-inline-size，且可收缩），fixed 是固定项（须 flex-shrink: 0）；story 层要求每个渲染出的工具栏恰有一个让步项、让步项不在固定项里、行里其余各项都是固定项（登记为 fixed，或包 CSS 声明 flex-shrink 0）。shell 是 C11「通用件拼壳」的壳层登记。家族归属以类名对 families.json 的根类为准，后续批次家族的条目按 exemptions.json 豁免（TCRN-DS-SUB-036 静态部分，TCRN-DS-SUB-037 story 层）。",
+  "singleLine": [
+    { "role": "按钮", "class": "tcrn-button__label", "components": ["Button", "LinkButton", "ClipboardCopyButton", "ButtonGroup"], "note": "LinkButton 与 ClipboardCopyButton 的文字同样包在 tcrn-button__label 里；IconButton 的 tcrn-icon-button__label 是视觉隐藏文本，不是可见单行角色" },
+    { "role": "面包屑项", "class": "tcrn-breadcrumb__item", "components": ["Breadcrumb"] },
+    { "role": "导航项", "class": "tcrn-nav-item__label", "components": ["NavItem"] },
+    { "role": "徽标", "class": "tcrn-badge__label", "components": ["Badge", "StatusBadge"] },
+    { "role": "表格单元", "class": "tcrn-table-shell__cell", "components": ["TableShell"] },
+    { "role": "页头标题", "class": "tcrn-page-header__title", "components": ["PageHeader"] }
+  ],
+  "unregistered": [
+    { "role": "标签", "note": "包 CSS 暂无独立的标签类（LabelSet 只有容器类 tcrn-label-set），随展示件家族开工时登记" }
+  ],
+  "toolbars": [
+    { "toolbar": "顶栏", "container": "tcrn-top-bar", "yield": "tcrn-product-shell-search", "fixed": ["tcrn-top-bar__brand", "tcrn-top-bar__actions"], "note": "STORY-132 用例：顶栏里的搜索框是唯一让步项，min-width 140" }
+  ],
+  "shell": {
+    "description": "C11「通用件拼壳」的壳层登记（story 层）。bars 是壳层条的承载类；controls 是壳层控件位（渲染属性 data-shell-control 的取值）与其专用类；searchComponents 是壳层条里允许承载文本输入的搜索组件类。控件位缺专用类、壳层条里出现原生 select、搜索组件之外的文本输入，都按通用件拼壳判红。依据：画板 V2-Rejections 第二节 2026-08-14 INIT-036 门户视觉整改（quiet 按钮当主题切换、原生 select 当语言菜单、单层 input 当搜索）。",
+    "bars": ["tcrn-top-bar"],
+    "controls": [
+      { "slot": "theme-toggle", "class": "tcrn-shell-theme-toggle" },
+      { "slot": "locale-menu", "class": "tcrn-shell-locale-menu" },
+      { "slot": "product-shell-search", "class": "tcrn-product-shell-search" },
+      { "slot": "side-nav-collapse", "class": "tcrn-shell-side-nav-toggle" },
+      { "slot": "mobile-nav-toggle", "class": "tcrn-shell-mobile-nav-toggle" }
+    ],
+    "searchComponents": ["tcrn-search-input", "tcrn-product-shell-search"]
+  }
+}

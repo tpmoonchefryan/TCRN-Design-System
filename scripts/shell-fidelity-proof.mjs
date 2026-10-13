@@ -22,6 +22,8 @@
 import { readFileSync } from "node:fs";
 import { resolve, dirname, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { componentCssModules } from "./lib/component-css-sources.mjs";
+import { compounds, parseCompound, parseCss, shadowLayers, splitTopLevel } from "./lib/css-rules.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -31,12 +33,15 @@ const SURFACES = [
   "apps/storybook/src/story-demo-styles.ts"
 ];
 
+// The published token table. The soft-cloud shadow check reads it with the package
+// segments, because a blurred elevation token reaches every component that uses it.
+const TOKEN_TABLE = "packages/ui-tokens/src/tokens.css";
+
 // Gradients that encode state rather than decorate a surface.
+// The doc-layer loading and bookmark demos that carried the other entries were removed
+// with the doc-layer parallel implementations (TCRN-DS-SUB-025).
 const FUNCTIONAL_GRADIENT_SELECTORS = [
-  ".tcrn-loading-progress__bar",
-  ".tcrn-loading-skeleton__line",
-  ".tcrn-skeleton::after",
-  ".tcrn-bookmark-nav--tracked"
+  ".tcrn-skeleton::after"
 ];
 
 // Radii the shell may state literally, because they are shape declarations rather
@@ -51,14 +56,10 @@ const ALLOWED_RADIUS_LITERALS = ["50%", "0", "inherit"];
 // a drifted value cannot pass by being merely present.
 const SPACING_SCALE_PX = new Set([2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 32]);
 
-// Package-truth component CSS sources. Every `tcrnComponentCss` rule currently lives in
-// Navigation.tsx (the only `export const *Css` in the package), so this is a one-element
-// list today — but the dup gate reads a LIST so that when a STORY-037-style relocation
-// moves component families into other component sources, they stay covered without a
-// further edit to this gate.
-const COMPONENT_CSS_SOURCES = [
-  "packages/ui-react/src/components/Navigation/Navigation.tsx"
-];
+// Package-truth component CSS sources. Since TCRN-DS-SUB-010 the `tcrnComponentCss` rules
+// live in the family segment modules under packages/ui-react/src/styles/, and the list
+// comes from scripts/lib/component-css-sources.mjs, so a family module or generated
+// segment added there is covered without a further edit to this gate.
 
 // The doc-only presentation layers the dup gate must scan for re-implementations of
 // package classes. alpha-styles.ts is already in SURFACES for the per-line drift checks,
@@ -74,53 +75,57 @@ const DUPLICATE_DOCS_SURFACES = [
 // Two kinds live here, and nothing else may be added speculatively — a whitelist entry
 // blinds the gate to that class ("门只保护它读过的字节"), so it must name a class that is
 // genuinely a demo override, never a re-implementation the gate exists to catch:
-//   1. Infra primitives the docs shell reproduces verbatim (.tcrn-sr-only, .tcrn-skip-link).
+//   1. Infra primitives placed by a doc demo (.tcrn-skip-link inside the package-nav proof).
+//      The docs shell's verbatim copies of .tcrn-sr-only and .tcrn-skip-link were removed
+//      (TCRN-DS-SUB-063); the package defines both.
 //   2. LEGITIMATE demo overrides whose STYLED SUBJECT is a package class but which are
 //      demo-SCOPED (rendered only under a documented demo container) — the key-subject
-//      extractor deliberately flags e.g. `.tcrn-storybook-component-example .tcrn-nav-item`
-//      (key-subject `.tcrn-nav-item`), which is demo scoping, not a parallel component.
+//      extractor deliberately flags e.g. `.tcrn-doc-knowledge-shell-layout > .tcrn-top-bar`
+//      (key-subject `.tcrn-top-bar`), which is demo scoping, not a parallel component.
 // The authoritative list of what may live doc-side is docs/style-scale.md
 // § "Demo-chrome exemption list". Every entry below is a key-subject the expanded gate
 // flags only because it is scoped under one of those documented demo containers
-// (.tcrn-storybook-component-example, .tcrn-doc-*, .tcrn-compact-shell*,
-// .tcrn-knowledge-shell*, .tcrn-nav-component-preview, .tcrn-package-nav-proof*,
-// .tcrn-form-stack, the tooltip static-preview hook), or — for .tcrn-filter-bar — is
-// documented there as non-duplicating (the package owns it only via the scoped
+// (.tcrn-doc-*, which since TCRN-DS-SUB-025 covers the knowledge-shell, nav-preview,
+// package-nav-proof and form-stack scaffolding, and the tooltip static-preview hook), or —
+// for .tcrn-filter-bar — is documented there as non-duplicating (the package owns it only via the scoped
 // `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level docs `.tcrn-filter-bar`
 // shares the key-subject but not the selector).
+// A whitelisted subject is still held to placement by the rule-level guard below
+// (TCRN-DS-SUB-065): only placement properties, or an exception registered for that exact
+// selector, pass. Entries go when their last doc rule goes (.tcrn-sr-only and
+// .tcrn-brand-wordmark__base with TCRN-DS-SUB-063, .tcrn-brand-wordmark with SUB-065).
 const DUPLICATE_SELECTOR_WHITELIST = new Set([
-  ".tcrn-sr-only",
   ".tcrn-skip-link",
-  // Demo-scoped overrides of package classes (docs/style-scale.md exemption list):
-  ".tcrn-nav-item",
-  ".tcrn-nav-item__content",
-  ".tcrn-nav-item__label",
-  ".tcrn-nav-item__disabled-reason",
+  // Demo-scoped overrides of package classes (docs/style-scale.md exemption list). The
+  // nav-item, top-bar track and module-tabs entries went with the doc rules that needed
+  // them (TCRN-DS-SUB-025):
   ".tcrn-top-bar",
-  ".tcrn-top-bar__actions",
-  ".tcrn-top-bar__brand",
-  ".tcrn-top-bar__module",
   ".tcrn-search-input",
   ".tcrn-product-switcher",
-  ".tcrn-module-tabs",
   ".tcrn-segmented-nav",
   ".tcrn-field",
-  ".tcrn-brand-wordmark",
-  ".tcrn-brand-wordmark__base",
   ".tcrn-brand-wordmark__suffix",
   ".tcrn-product-logo__copy",
   ".tcrn-tooltip__content",
   // Doc-shell layout/collapse overrides of the brand lockup and the attached side nav
-  // (scoped under .tcrn-doc-brand / .tcrn-doc-shell[collapsed] / .tcrn-knowledge-shell__brand
-  // / .tcrn-package-nav-proof). The package owns their appearance; docs only position them
+  // (scoped under .tcrn-doc-brand / .tcrn-doc-shell[collapsed] / .tcrn-doc-knowledge-shell__brand
+  // / .tcrn-doc-package-nav-proof). The package owns their appearance; docs only position them
   // and hide the copy on collapse. Their bare re-implementations were removed in INIT-007.
   ".tcrn-side-nav",
   ".tcrn-shell-brand-lockup",
   ".tcrn-shell-brand-lockup__copy",
   ".tcrn-shell-brand-lockup__caption",
-  // Static ProductShell proof keeps its intentionally-open result panel in flow;
-  // the modifier is Storybook-only and does not change the package default.
+  // The ProductShell story's opened static result list, kept in the shell's flow under the doc
+  // container .tcrn-doc-product-shell-search--static-display (TCRN-DS-SUB-100, R3-9). The old
+  // modifier went with TCRN-DS-SUB-026; its position and inset are the registered exception
+  // EX-INIT015-doc-product-shell-search-static, and the entry goes with that exception.
   ".tcrn-product-shell-search__results",
+  // The knowledge-base sample's group titles and items, given composition one's rail geometry under
+  // .tcrn-doc-knowledge-shell-layout (TCRN-DS-SUB-101, R3M5); their non-placement properties are the
+  // registered exceptions EX-INIT015-doc-knowledge-shell-group-title and -nav-item, and the entries
+  // go with those exceptions.
+  ".tcrn-nav-group__label",
+  ".tcrn-nav-item",
   // Documented demo-chrome hook — not a duplicate (see comment above):
   ".tcrn-filter-bar"
 ]);
@@ -138,7 +143,7 @@ function isTokenDefinitionOrComment(line) {
 // scan only ever saw a bare single class at the start of a line, so it was blind to the
 // shapes a docs re-implementation actually takes: dark-scope
 // (`[data-tcrn-theme="dark"] .tcrn-button--primary`), descendant
-// (`.tcrn-storybook-component-example .tcrn-nav-item`), attribute
+// (`.tcrn-doc-nav-component-preview .tcrn-nav-item`), attribute
 // (`.tcrn-nav-item[data-selected="true"]`) and compound (`.tcrn-a.tcrn-b`). Instead we
 // parse every CSS rule prelude (the text before `{`) and record the class of the KEY
 // SUBJECT — the rightmost compound after the final combinator (` `, `>`, `+`, `~`). That
@@ -146,12 +151,12 @@ function isTokenDefinitionOrComment(line) {
 // styles IT, but NOT when the package class is merely ancestor CONTEXT for a demo child
 // (`.tcrn-nav-item .demo-child` → subject `.demo-child`).
 //
-// JSX-parsing mitigation: this runs over Navigation.tsx, a .tsx file. It is safe because
-// (a) the class match is dot-anchored — `\.(tcrn-…)` — and a TSX `className="tcrn-…"`
-// carries no leading dot, and (b) the prelude character class `[^{}();]` resets at every
-// `(` / `)` / `;`, so a leading-dot string inside a call such as `querySelector(".tcrn-x")`
-// is never captured as a rule subject. Verified: parsing the whole Navigation.tsx yields
-// exactly the same subject set as slicing only the `tcrnComponentCss` template body.
+// The package side is fed only the CSS text of the stylesheet segments (the template
+// literal bodies), never the TypeScript around them, so module comments and imports
+// cannot be mistaken for rule preludes. The docs side still reads whole files; there the
+// class match is dot-anchored — `\.(tcrn-…)` — and the prelude character class `[^{}();]`
+// resets at every `(` / `)` / `;`, so a leading-dot string inside a call such as
+// `querySelector(".tcrn-x")` is never captured as a rule subject.
 function ruleSubjectClasses(text) {
   const classes = new Set();
   for (const m of text.matchAll(/([^{}();]*)\{/g)) {
@@ -172,6 +177,244 @@ function ruleSubjectClasses(text) {
 // A shadow is elevation drift once it blurs; a 1px hairline offset is a drawn edge.
 const MAX_SHADOW_BLUR_PX = 3;
 
+// The CSS a docs surface carries. storybook.css is CSS; the two .ts surfaces carry theirs
+// in template literals, so everything outside a literal and every ${…} interpolation is
+// blanked to spaces (newlines kept), which keeps rule line numbers equal to file lines.
+export function docSurfaceCss(surface, text) {
+  if (!surface.endsWith(".ts")) return text;
+  const blank = (chunk) => chunk.replace(/[^\n]/g, " ");
+  let out = "";
+  let index = 0;
+  let inTemplate = false;
+  while (index < text.length) {
+    const char = text[index];
+    if (!inTemplate) {
+      let end = index + 1;
+      if (char === "/" && text[index + 1] === "/") {
+        end = text.indexOf("\n", index);
+        if (end < 0) end = text.length;
+      } else if (char === "/" && text[index + 1] === "*") {
+        end = text.indexOf("*/", index + 2);
+        end = end < 0 ? text.length : end + 2;
+      } else if (char === '"' || char === "'") {
+        end = index + 1;
+        while (end < text.length && text[end] !== char && text[end] !== "\n") end += text[end] === "\\" ? 2 : 1;
+        end += 1;
+      } else if (char === "`") {
+        inTemplate = true;
+      }
+      out += blank(text.slice(index, end));
+      index = end;
+      continue;
+    }
+    if (char === "\\") { out += text.slice(index, index + 2); index += 2; continue; }
+    if (char === "`") { inTemplate = false; out += " "; index += 1; continue; }
+    if (char === "$" && text[index + 1] === "{") {
+      let depth = 0;
+      let end = index + 1;
+      for (; end < text.length; end += 1) {
+        if (text[end] === "{") depth += 1;
+        else if (text[end] === "}" && --depth === 0) break;
+      }
+      out += blank(text.slice(index, end + 1));
+      index = end + 1;
+      continue;
+    }
+    out += char;
+    index += 1;
+  }
+  return out;
+}
+
+// Declarations that carry a shadow list: box-shadow and text-shadow, and the custom
+// properties that feed them (shadow and elevation tokens, the pair edges, the focus ring).
+function isShadowDeclaration(prop) {
+  return prop === "box-shadow" || prop === "text-shadow"
+    || (prop.startsWith("--") && /shadow|elevation|edge|focus-ring/.test(prop));
+}
+
+// TCRN-DS-SUB-050: blur is read per shadow layer with shadowLayers (scripts/lib/css-rules.mjs),
+// so the third length is the blur only where it is one: `inset 0 0 0 5px` is a 5px spread
+// with no blur. A layer that is only a var() reference resolves to a token the token table
+// scan reads, so a list such as `var(--tcrn-focus-ring), 0 1px 1px …` still has its literal
+// layers read. Values that are not shadow lists (a colour, `none`) give no layers.
+export function shadowBlurFindings(css, source) {
+  const findings = [];
+  for (const rule of parseCss(css, { source }).rules) {
+    for (const declaration of rule.declarations) {
+      if (!isShadowDeclaration(declaration.prop)) continue;
+      for (const rawLayer of splitTopLevel(declaration.value, ",")) {
+        const layers = shadowLayers(rawLayer.trim());
+        for (const layer of layers ?? []) {
+          if (layer.blur > MAX_SHADOW_BLUR_PX) {
+            findings.push({ where: `${source}:${rule.line}`, selector: rule.selectorText, blur: layer.blur });
+          }
+        }
+      }
+    }
+  }
+  return findings;
+}
+
+// TCRN-DS-SUB-065 (STORY-128 GWT3): rule-level guard. In the three docs style sources a rule
+// whose subject compound (the rightmost compound of a selector) carries a package class may
+// only place that component. doc:sample-style compares only the samples a matrix shares a
+// signature with, and the duplicate-selector check only asks whether the package styles the
+// same subject, so a docs rule that repainted a package component (the global ShellBrandLockup
+// wordmark size, TCRN-DS-SUB-063) passed every gate. A package class is any tcrn-* class
+// outside the docs' own tcrn-doc- prefix, so classes a component writes without a rule count.
+// Placement is what docs/style-scale.md ("Package components placed by doc scaffolding": grid
+// area, track width, wrapping) and the R2-16 ruling (grid-area, order, margins, self
+// alignment) allow: grid placement, order, margins, self alignment, flex item sizing, inline
+// size and text wrapping. Every other property, custom properties included, is a finding
+// unless an exception below registers that selector and property.
+const PLACEMENT_PROPERTIES = new Set([
+  "grid-area", "grid-row", "grid-row-start", "grid-row-end", "grid-column", "grid-column-start", "grid-column-end",
+  "order",
+  "margin", "margin-top", "margin-right", "margin-bottom", "margin-left",
+  "margin-block", "margin-block-start", "margin-block-end", "margin-inline", "margin-inline-start", "margin-inline-end",
+  "align-self", "justify-self", "place-self",
+  "flex", "flex-grow", "flex-shrink", "flex-basis",
+  "width", "min-width", "max-width", "inline-size", "min-inline-size", "max-inline-size",
+  "white-space", "overflow-wrap", "word-break"
+]);
+
+// C7 single-line carriers (TCRN-DS-SUB-102): the classes docs/contract/roles.json registers under
+// singleLine keep their text on one line in the package, so for a subject that carries one of them
+// the wrapping properties are not placement: a doc rule that sets white-space, overflow-wrap or
+// word-break on a carrier is a finding like any repaint. The list is read from roles.json, not
+// copied here.
+const WRAPPING_PROPERTIES = new Set(["white-space", "overflow-wrap", "word-break"]);
+const SINGLE_LINE_CARRIER_CLASSES = new Set(
+  JSON.parse(readFileSync(resolve(root, "docs/contract/roles.json"), "utf8")).singleLine.map((entry) => entry.class)
+);
+
+// Registered exceptions, written the EX-INIT015-* way (docs/contract/exemptions.json): each
+// entry names exact selectors (whitespace collapsed, as the CSS reader gives them) and the
+// properties it admits for them, with a ruling reference, a reason and a removal condition.
+// An entry admits nothing else, and an entry no rule used is listed as docExceptionsUnused.
+const JUDGMENT_R3M5 = "runs/r3/problems/main.md（TCRN-DS-INIT-015）R3M5：SUB-101 按方案 A 授权，知识库样板的包件在文档作用域取构图一几何，文档壳按包壳几何重做（O-1、C-21）";
+export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([
+  {
+    id: "EX-INIT015-doc-tooltip-static-preview",
+    selectors: [
+      '.tcrn-tooltip[data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
+      '.tcrn-tooltip[data-placement="top"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
+      '.tcrn-tooltip[data-placement="bottom"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
+      '.tcrn-tooltip[data-placement="right"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
+      '.tcrn-tooltip[data-placement="left"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content'
+    ],
+    properties: ["opacity", "transform"],
+    ruling: "docs/style-scale.md「Demo-chrome exemption list」Component-scoped demo hooks 条：tooltip 静态预览钩子为静态文档强制显示展开态；Tooltip 属 Overlay 家族，TCRN-DS-INIT-015 scope 不授权改动后续批次家族（同 EX-INIT015-overlay）",
+    reason: "静态文档页没有悬停，钩子只把包的 tooltip 内容移到展开位置并显示（opacity、transform），不改颜色、字号与边框",
+    until: "Overlay 家族所在批次获得授权、包提供静态展开态时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-filter-bar",
+    selectors: [".tcrn-filter-bar"],
+    properties: ["display", "flex-wrap", "gap"],
+    ruling: "docs/style-scale.md「Demo-chrome exemption list」Component-scoped demo hooks 条：顶层 .tcrn-filter-bar 是文档的标签排布钩子，包只在 .tcrn-table-toolbar .tcrn-filter-bar 里定义它；所属 Navigation 家族属后续批次（同 EX-INIT015-navigation）",
+    reason: "包没有独立 FilterBar 的排布规则，文档只给演示行排布（display、flex-wrap、gap），不改颜色、字号与边框",
+    until: "Navigation 家族所在批次获得授权、包给 FilterBar 独立排布时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-nav-proof-skip-link",
+    selectors: [
+      ".tcrn-doc-package-nav-proof__skip .tcrn-skip-link:not(:focus)",
+      ".tcrn-doc-package-nav-proof__skip .tcrn-skip-link:focus"
+    ],
+    properties: ["position", "height", "overflow", "clip", "clip-path", "border", "padding", "transform", "display", "align-items"],
+    ruling: "docs/style-scale.md「Demo-chrome exemption list」Package components placed by doc scaffolding 条：文档保留基础原件 .tcrn-skip-link 的演示放置；包导航证明框属 Navigation 家族演示，TCRN-DS-INIT-015 scope 不授权改动后续批次家族（同 EX-INIT015-navigation）",
+    reason: "证明框里的跳转链接未获焦时收成 1px 的读屏隐藏框（position、height、overflow、clip、clip-path、border、padding、transform），获焦时按行内弹性盒显示（display、align-items）；文档壳自己的 .tcrn-skip-link 副本已删（TCRN-DS-SUB-063）",
+    until: "Navigation 家族所在批次获得授权、包导航证明框改由包组件呈现跳转链接时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-product-shell-search-static",
+    selectors: ['.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results'],
+    properties: ["position", "inset"],
+    ruling: "runs/r2/judgment.md（TCRN-DS-INIT-015）§2.2 R3-9 与 §3.3 第 4 条：导航壳故事的静态搜索结果用文档前缀类加登记例外留在版面内，不改包；包的绝对定位是正确的运行时行为，Navigation 家族不在授权内",
+    reason: "ProductShell 故事静态展示展开的搜索结果；文档容器让结果列表回到壳的文档流（position static、inset auto），把正文往下推而不是盖住标题与首段，不改颜色、字号与边框",
+    until: "Navigation 家族批次由包提供静态结果展示时删除本条"
+  },
+  {
+    id: "EX-INIT015-doc-knowledge-shell-topbar",
+    selectors: ['.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-top-bar'],
+    properties: ["min-height", "padding-block"],
+    ruling: JUDGMENT_R3M5,
+    reason: "知识库样板的独立 TopBar 取壳顶栏高度 52 与上下内距 6，与文档壳顶栏、包 ProductShell 顶栏一致；不改颜色、字号与边框",
+    until: "Navigation 家族批次让独立件提供构图一几何时删除"
+  },
+  {
+    id: "EX-INIT015-doc-knowledge-shell-side-nav",
+    selectors: ['.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-side-nav'],
+    properties: ["padding", "background"],
+    ruling: JUDGMENT_R3M5,
+    reason: "知识库样板的独立 SideNav 取构图一侧栏的 16 内距与画布色，与文档侧栏一致；不改字号与边框",
+    until: "Navigation 家族批次让独立件提供构图一几何时删除"
+  },
+  {
+    id: "EX-INIT015-doc-knowledge-shell-group-title",
+    selectors: ['.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-group__label'],
+    properties: ["padding-inline"],
+    ruling: JUDGMENT_R3M5,
+    reason: "知识库样板的分组标题落在 16 引导列（横向内距 0），与文档导航分类、包 ProductShell 分组标题一致",
+    until: "Navigation 家族批次让独立件提供构图一几何时删除"
+  },
+  {
+    id: "EX-INIT015-doc-knowledge-shell-nav-item",
+    selectors: ['.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-item'],
+    properties: ["padding-inline-start"],
+    ruling: JUDGMENT_R3M5,
+    reason: "知识库样板的导航项起始内距取构图一的 space-1 减 1px 边框（项框向侧栏内距外伸 4 用 margin，属摆放），与文档导航项、包 ProductShell 导航项一致",
+    until: "Navigation 家族批次让独立件提供构图一几何时删除"
+  }
+]);
+
+function isPackageClass(name) {
+  return name.startsWith("tcrn-") && !name.startsWith("tcrn-doc-");
+}
+
+// The guard's view of a docs surface: docSurfaceCss, and for storybook.css the generated demo
+// layer blanked as well. That region is a copy of story-demo-styles.ts, which the guard reads
+// directly, and demo-styles-sync --check holds the copy to it.
+const DEMO_LAYER_START = "/* Demo layer generated from story-demo-styles.ts";
+const DEMO_LAYER_END = "/* End demo layer generated from story-demo-styles.ts */";
+export function guardSurfaceCss(surface, text) {
+  const css = docSurfaceCss(surface, text);
+  const start = css.indexOf(DEMO_LAYER_START);
+  const end = start < 0 ? -1 : css.indexOf(DEMO_LAYER_END, start);
+  if (start < 0 || end < 0) return css;
+  return css.slice(0, start) + css.slice(start, end).replace(/[^\n]/g, " ") + css.slice(end);
+}
+
+// Findings of the rule-level guard in one stylesheet text: one per selector whose subject
+// compound carries a package class, listing the properties that are neither placement nor
+// admitted by an exception for that exact selector. `used` collects the exception ids that
+// admitted something.
+export function packageClassAppearanceFindings(css, source, exceptions = DOC_PACKAGE_CLASS_EXCEPTIONS, used = new Set()) {
+  const findings = [];
+  for (const rule of parseCss(css, { source }).rules) {
+    if (rule.kind !== "style") continue;
+    for (const selector of rule.selectors) {
+      const parts = compounds(selector);
+      const subject = parts[parts.length - 1]?.text ?? "";
+      const subjectClasses = parseCompound(subject).classes;
+      if (!subjectClasses.some(isPackageClass)) continue;
+      const singleLineCarrier = subjectClasses.some((name) => SINGLE_LINE_CARRIER_CLASSES.has(name));
+      const entries = exceptions.filter((entry) => entry.selectors.includes(selector));
+      const offending = [];
+      for (const { prop } of rule.declarations) {
+        if (PLACEMENT_PROPERTIES.has(prop) && !(singleLineCarrier && WRAPPING_PROPERTIES.has(prop))) continue;
+        const admitted = entries.find((entry) => entry.properties.includes(prop));
+        if (admitted) used.add(admitted.id);
+        else if (!offending.includes(prop)) offending.push(prop);
+      }
+      if (offending.length > 0) findings.push({ where: `${source}:${rule.line}`, selector, value: offending.join(", ") });
+    }
+  }
+  return findings;
+}
+
 export const UNCHECKED_CLAIMS = Object.freeze({
   nestedCards: "compositional judgement; no machine check exists in this repository",
   genericLeftRailAdminShellCreep: "compositional judgement; no machine check exists in this repository",
@@ -191,7 +434,8 @@ function owningSelector(lines, index) {
 export function scanShellFidelity() {
   const findings = {
     decorativeGradients: [], radiusLiterals: [], softCloudShadows: [], reducedMotionKillSwitches: [],
-    hexLiterals: [], fontSizeLiterals: [], spacingLiterals: [], pillLiterals: [], duplicateSelectors: []
+    hexLiterals: [], fontSizeLiterals: [], spacingLiterals: [], pillLiterals: [], duplicateSelectors: [],
+    packageClassAppearance: [], docExceptionsUnused: []
   };
 
   for (const surface of SURFACES) {
@@ -245,19 +489,22 @@ export function scanShellFidelity() {
         const allowed = ALLOWED_RADIUS_LITERALS.includes(value);
         if (!tokenised && !allowed) findings.radiusLiterals.push({ where, selector, value });
       }
-
-      // A bare `0` is legal CSS for a zero offset, so the offsets must not require a
-      // unit — requiring `0px` was how this check first reported a cheerful zero while
-      // `box-shadow: 0 10px 24px …` sat right there in the file.
-      for (const shadow of line.matchAll(/(-?\d+)(?:px)?\s+(-?\d+)(?:px)?\s+(\d+)px/g)) {
-        const blur = Number(shadow[3]);
-        const isShadowContext = /box-shadow|shadow:/.test(line) || /box-shadow/.test(lines[index - 1] ?? "") || /box-shadow/.test(lines[index - 2] ?? "");
-        if (isShadowContext && blur > MAX_SHADOW_BLUR_PX) {
-          findings.softCloudShadows.push({ where, selector, blur });
-        }
-      }
     });
   }
+
+  // Soft-cloud elevation (TCRN-DS-SUB-050, STORY-121 GWT4): the blur ceiling covers the three
+  // docs surfaces, every package stylesheet segment (componentCssModules) and the token
+  // table, read per shadow layer. The old per-line pattern read only the docs surfaces and
+  // took the fourth length of `inset 0 0 0 5px` for a blur. Package segments are reported as
+  // module path plus the line inside the joined segment text.
+  for (const surface of SURFACES) {
+    const css = docSurfaceCss(surface, readFileSync(resolve(root, surface), "utf8"));
+    findings.softCloudShadows.push(...shadowBlurFindings(css, surface));
+  }
+  for (const { path, css } of componentCssModules(root)) {
+    findings.softCloudShadows.push(...shadowBlurFindings(css, `${path} (segments)`));
+  }
+  findings.softCloudShadows.push(...shadowBlurFindings(readFileSync(resolve(root, TOKEN_TABLE), "utf8"), TOKEN_TABLE));
 
   // A blanket `* { transition-duration: <n> !important }` inside a reduced-motion block
   // is the v1 kill switch: it collapses the v2 comprehension cue (opacity/colour at a
@@ -291,8 +538,8 @@ export function scanShellFidelity() {
   // compound). Both doc surfaces are read here; the whitelist admits only the demo-scoped
   // overrides documented in docs/style-scale.md.
   const packageSubjects = new Set();
-  for (const src of COMPONENT_CSS_SOURCES) {
-    for (const c of ruleSubjectClasses(readFileSync(resolve(root, src), "utf8"))) packageSubjects.add(c);
+  for (const { css } of componentCssModules(root)) {
+    for (const c of ruleSubjectClasses(css)) packageSubjects.add(c);
   }
   for (const docsSurface of DUPLICATE_DOCS_SURFACES) {
     const docsSubjects = ruleSubjectClasses(readFileSync(resolve(root, docsSurface), "utf8"));
@@ -301,6 +548,17 @@ export function scanShellFidelity() {
         findings.duplicateSelectors.push({ where: `${docsSurface} ∩ componentCss`, selector });
       }
     }
+  }
+
+  // Rule-level guard (TCRN-DS-SUB-065): package-class subjects in the three docs sources
+  // declare placement only, apart from the registered exceptions.
+  const usedExceptions = new Set();
+  for (const surface of SURFACES) {
+    const css = guardSurfaceCss(surface, readFileSync(resolve(root, surface), "utf8"));
+    findings.packageClassAppearance.push(...packageClassAppearanceFindings(css, surface, DOC_PACKAGE_CLASS_EXCEPTIONS, usedExceptions));
+  }
+  for (const entry of DOC_PACKAGE_CLASS_EXCEPTIONS) {
+    if (!usedExceptions.has(entry.id)) findings.docExceptionsUnused.push({ where: "scripts/shell-fidelity-proof.mjs", selector: entry.id });
   }
 
   return findings;
@@ -317,7 +575,8 @@ export function fidelityRejectChecks() {
     fontSizeLiteralOffScale: findings.fontSizeLiterals.length > 0,
     spacingLiteralOffScale: findings.spacingLiterals.length > 0,
     pillRadiusLiteral: findings.pillLiterals.length > 0,
-    docsPackageSelectorDuplication: findings.duplicateSelectors.length > 0,
+    // The rule-level guard (TCRN-DS-SUB-065) reports under the same check.
+    docsPackageSelectorDuplication: findings.duplicateSelectors.length > 0 || findings.packageClassAppearance.length > 0,
     findings
   };
 }
@@ -333,7 +592,7 @@ export function assertDetectorShapes() {
   const pkg = ruleSubjectClasses(".tcrn-button--primary{}\n.tcrn-nav-item{}\n.tcrn-widget{}");
   const cases = [
     ['[data-tcrn-theme="dark"] .tcrn-button--primary{}', ".tcrn-button--primary", true],
-    ['.tcrn-storybook-component-example .tcrn-nav-item{}', ".tcrn-nav-item", true],
+    ['.tcrn-doc-nav-component-preview .tcrn-nav-item{}', ".tcrn-nav-item", true],
     ['.tcrn-nav-item[data-selected="true"]{}', ".tcrn-nav-item", true],
     ['.tcrn-widget.tcrn-nav-item{}', ".tcrn-nav-item", true],
     ['.tcrn-nav-item .demo-child{}', ".tcrn-nav-item", false] // ancestor-only, must NOT flag
@@ -344,6 +603,62 @@ export function assertDetectorShapes() {
       console.error(`shell-fidelity detector self-test FAILED: ${css} (expected subject ${cls} ${expect ? "caught" : "ignored"})`);
       process.exit(1);
     }
+  }
+
+  // Soft-cloud mutations (TCRN-DS-SUB-050) on a copy of a real package segment: a blurred
+  // cloud is one new finding, also when it follows a var() layer in a pair edge list, and a
+  // spread-only inset ring adds none.
+  const segment = componentCssModules(root).find(({ css }) => css.trim()).css;
+  const baseline = shadowBlurFindings(segment, "self-test").length;
+  const shadowCases = [
+    [".tcrn-detector-probe{box-shadow:0 8px 24px rgba(22, 21, 15, 0.2)}", 1],
+    [".tcrn-detector-probe{--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 8px 24px rgba(22, 21, 15, 0.2)}", 1],
+    [".tcrn-detector-probe{box-shadow:inset 0 0 0 5px var(--tcrn-color-acc)}", 0]
+  ];
+  for (const [probe, added] of shadowCases) {
+    const found = shadowBlurFindings(`${segment}\n${probe}`, "self-test").length - baseline;
+    if (found !== added) {
+      console.error(`shell-fidelity soft-cloud self-test FAILED: ${probe} (expected ${added} new finding(s), got ${found})`);
+      process.exit(1);
+    }
+  }
+
+  // Rule-level guard mutations (TCRN-DS-SUB-065) on a copy of the real story-demo-styles.ts
+  // CSS: a package-class subject that repaints is one new finding (also under a dark scope and
+  // a state); placement only, or a package class used as ancestor context, adds none.
+  const docCss = guardSurfaceCss("apps/storybook/src/story-demo-styles.ts", readFileSync(resolve(root, "apps/storybook/src/story-demo-styles.ts"), "utf8"));
+  const docBaseline = packageClassAppearanceFindings(docCss, "self-test").length;
+  const guardCases = [
+    [".tcrn-doc-x .tcrn-button{background:red}", 1],
+    ['[data-tcrn-theme="dark"] .tcrn-doc-x .tcrn-button--primary:hover{color:red}', 1],
+    [".tcrn-doc-x .tcrn-button{--tcrn-pair-fill:red}", 1],
+    [".tcrn-doc-x .tcrn-button{grid-area:a;order:2;margin:0 auto;justify-self:end;flex:1 1 auto;width:100%;white-space:nowrap}", 0],
+    [".tcrn-button .tcrn-doc-x{background:red}", 0],
+    // A C7 single-line carrier (roles.json singleLine) taken back to wrapping is a finding
+    // (TCRN-DS-SUB-102); placement on it, and wrapping on a non-carrier, stay allowed.
+    [".tcrn-doc-x .tcrn-button__label{white-space:normal;overflow-wrap:anywhere}", 1],
+    [".tcrn-doc-x .tcrn-button__label{word-break:break-all}", 1],
+    [".tcrn-doc-x .tcrn-button__label{margin-inline-start:4px;max-width:100%}", 0]
+  ];
+  if (!SINGLE_LINE_CARRIER_CLASSES.has("tcrn-button__label")) {
+    console.error("shell-fidelity rule-level guard self-test FAILED: docs/contract/roles.json singleLine no longer lists tcrn-button__label");
+    process.exit(1);
+  }
+  for (const [probe, added] of guardCases) {
+    const found = packageClassAppearanceFindings(`${docCss}\n${probe}`, "self-test").length - docBaseline;
+    if (found !== added) {
+      console.error(`shell-fidelity rule-level guard self-test FAILED: ${probe} (expected ${added} new finding(s), got ${found})`);
+      process.exit(1);
+    }
+  }
+  // An exception admits only its own selector and properties.
+  const probeExceptions = [{ id: "self-test", selectors: [".tcrn-doc-x .tcrn-tooltip__content"], properties: ["opacity"] }];
+  const admitted = packageClassAppearanceFindings(".tcrn-doc-x .tcrn-tooltip__content{opacity:1}", "self-test", probeExceptions);
+  const partly = packageClassAppearanceFindings(".tcrn-doc-x .tcrn-tooltip__content{opacity:1;color:red}", "self-test", probeExceptions);
+  const otherSelector = packageClassAppearanceFindings(".tcrn-doc-y .tcrn-tooltip__content{opacity:1}", "self-test", probeExceptions);
+  if (admitted.length !== 0 || partly.length !== 1 || partly[0].value !== "color" || otherSelector.length !== 1) {
+    console.error("shell-fidelity rule-level guard self-test FAILED: exception scoping");
+    process.exit(1);
   }
 }
 

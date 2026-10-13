@@ -1,6 +1,33 @@
 {
   "ok": true,
   "violationCount": 0,
+  "wordmarkContrastExemption": {
+    "rule": "color-contrast",
+    "selectors": [
+      ".tcrn-brand-wordmark__suffix",
+      ".tcrn-product-logo__line-one-suffix"
+    ],
+    "register": "scripts/token-contrast-proof.mjs WORDMARK_EXEMPTIONS",
+    "entries": [
+      {
+        "theme": "light",
+        "fg": "--tcrn-brand-suffix-design-system",
+        "on": "--tcrn-color-panel",
+        "fgColor": "#6577f3",
+        "ruling": "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour)",
+        "source": "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype)"
+      },
+      {
+        "theme": "light",
+        "fg": "--tcrn-brand-suffix-design-system",
+        "on": "--tcrn-color-bg",
+        "fgColor": "#6577f3",
+        "ruling": "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour)",
+        "source": "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype)"
+      }
+    ],
+    "exemptedNodeCount": 80
+  },
   "sections": [
     {
       "section": "Welcome",
@@ -8,7 +35,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Welcome",
@@ -16,7 +54,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Welcome",
@@ -24,7 +63,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Welcome",
@@ -32,7 +82,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -40,7 +91,27 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            ".tcrn-brand-wordmark__suffix--design-system.tcrn-brand-wordmark__suffix"
+          ],
+          "selector": ".tcrn-brand-wordmark__suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Style Guide",
@@ -48,7 +119,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -56,7 +128,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Style Guide",
@@ -64,7 +147,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -72,7 +156,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Style Guide",
@@ -80,7 +175,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Foundations",
@@ -88,7 +184,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Foundations",
@@ -96,7 +203,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Foundations",
@@ -104,7 +212,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Foundations",
@@ -112,7 +231,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -120,7 +240,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -128,7 +259,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -136,7 +268,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -144,7 +287,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -152,7 +296,27 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            "a[data-doc-brand-link=\"true\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            ".tcrn-doc-knowledge-shell__brand > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -160,7 +324,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -168,7 +333,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -176,7 +352,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -184,7 +361,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -192,7 +380,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -200,7 +389,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -208,7 +408,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -216,7 +417,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -224,7 +436,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -232,7 +445,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -240,7 +464,138 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
+    },
+    {
+      "section": "Components",
+      "page": "components-gplus-matrices.html",
+      "viewport": "desktop-1440x900",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-shell-brand-lockup > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            "span[data-gplus-static-markup=\"brand-logo-ds-light\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        },
+        {
+          "target": [
+            ".tcrn-doc-theme-preview[data-gplus-matrix-theme=\"light\"][data-tcrn-theme=\"light\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLockup\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"suffix\"] > .tcrn-brand-lockup.tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
+    },
+    {
+      "section": "Components",
+      "page": "components-gplus-matrices.html",
+      "viewport": "desktop-1440x900",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            "span[data-gplus-static-markup=\"brand-logo-ds-light\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        },
+        {
+          "target": [
+            ".tcrn-doc-theme-preview[data-tcrn-theme=\"light\"][data-gplus-matrix-theme=\"light\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLockup\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"suffix\"] > .tcrn-brand-lockup.tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
+    },
+    {
+      "section": "Components",
+      "page": "components-gplus-samples.html",
+      "viewport": "desktop-1440x900",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-doc-brand > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            "#brand-sample-product-light-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"Products\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(2) > .tcrn-table-shell__cell[data-label=\"Product\"][role=\"cell\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
+    },
+    {
+      "section": "Components",
+      "page": "components-gplus-samples.html",
+      "viewport": "desktop-1440x900",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            "#brand-sample-product-light-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"产品\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(2) > .tcrn-table-shell__cell[data-label=\"产品\"][role=\"cell\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Patterns",
@@ -248,7 +603,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Patterns",
@@ -256,7 +622,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -264,7 +631,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Patterns",
@@ -272,7 +650,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -280,7 +659,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Patterns",
@@ -288,7 +678,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Proof",
@@ -296,7 +687,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Proof",
@@ -304,7 +706,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Proof",
@@ -312,7 +715,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-brand-wordmark__suffix--design-system"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Proof",
@@ -320,7 +734,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Change Log",
@@ -328,7 +743,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Change Log",
@@ -336,7 +762,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -344,7 +771,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -352,7 +790,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -360,7 +799,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -368,7 +818,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -376,7 +827,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -384,7 +846,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -392,7 +855,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -400,7 +874,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -408,7 +883,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -416,7 +902,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -424,7 +911,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -432,7 +930,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -440,7 +939,18 @@
       "viewport": "desktop-1440x900",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -448,7 +958,8 @@
       "viewport": "desktop-1440x900",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Welcome",
@@ -456,7 +967,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Welcome",
@@ -464,7 +986,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Welcome",
@@ -472,7 +995,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Welcome",
@@ -480,7 +1014,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -488,7 +1023,27 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        },
+        {
+          "target": [
+            ".tcrn-brand-wordmark__suffix--design-system.tcrn-brand-wordmark__suffix"
+          ],
+          "selector": ".tcrn-brand-wordmark__suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Style Guide",
@@ -496,7 +1051,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -504,7 +1060,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Style Guide",
@@ -512,7 +1079,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -520,7 +1088,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Style Guide",
@@ -528,7 +1107,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Foundations",
@@ -536,7 +1116,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Foundations",
@@ -544,7 +1135,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Foundations",
@@ -552,7 +1144,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Foundations",
@@ -560,7 +1163,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -568,7 +1172,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -576,7 +1191,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -584,7 +1200,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -592,7 +1219,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -600,7 +1228,27 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            "a[data-doc-brand-link=\"true\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        },
+        {
+          "target": [
+            ".tcrn-doc-knowledge-shell__brand > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Components",
@@ -608,7 +1256,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -616,7 +1265,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -624,7 +1284,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -632,7 +1293,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -640,7 +1312,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -648,7 +1321,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -656,7 +1340,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -664,7 +1349,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -672,7 +1368,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -680,7 +1377,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -688,7 +1396,138 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
+    },
+    {
+      "section": "Components",
+      "page": "components-gplus-matrices.html",
+      "viewport": "mobile-390x844",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-shell-brand-lockup > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        },
+        {
+          "target": [
+            "span[data-gplus-static-markup=\"brand-logo-ds-light\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        },
+        {
+          "target": [
+            ".tcrn-doc-theme-preview[data-gplus-matrix-theme=\"light\"][data-tcrn-theme=\"light\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLockup\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"suffix\"] > .tcrn-brand-lockup.tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
+    },
+    {
+      "section": "Components",
+      "page": "components-gplus-matrices.html",
+      "viewport": "mobile-390x844",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            "span[data-gplus-static-markup=\"brand-logo-ds-light\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        },
+        {
+          "target": [
+            ".tcrn-doc-theme-preview[data-tcrn-theme=\"light\"][data-gplus-matrix-theme=\"light\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLockup\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"suffix\"] > .tcrn-brand-lockup.tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
+    },
+    {
+      "section": "Components",
+      "page": "components-gplus-samples.html",
+      "viewport": "mobile-390x844",
+      "theme": "light",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-doc-brand > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        },
+        {
+          "target": [
+            "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            "#brand-sample-product-light-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"Products\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(2) > .tcrn-table-shell__cell[data-label=\"Product\"][role=\"cell\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
+    },
+    {
+      "section": "Components",
+      "page": "components-gplus-samples.html",
+      "viewport": "mobile-390x844",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            "#brand-sample-product-light-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"产品\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(2) > .tcrn-table-shell__cell[data-label=\"产品\"][role=\"cell\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Patterns",
@@ -696,7 +1535,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Patterns",
@@ -704,7 +1554,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -712,7 +1563,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Patterns",
@@ -720,7 +1582,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -728,7 +1591,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Patterns",
@@ -736,7 +1610,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Proof",
@@ -744,7 +1619,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Proof",
@@ -752,7 +1638,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Proof",
@@ -760,7 +1647,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-brand-wordmark__suffix--design-system"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Proof",
@@ -768,7 +1666,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Change Log",
@@ -776,7 +1675,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Change Log",
@@ -784,7 +1694,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -792,7 +1703,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -800,7 +1722,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -808,7 +1731,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -816,7 +1750,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -824,7 +1759,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -832,7 +1778,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -840,7 +1787,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -848,7 +1806,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -856,7 +1815,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -864,7 +1834,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -872,7 +1843,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -880,7 +1862,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -888,7 +1871,18 @@
       "viewport": "mobile-390x844",
       "theme": "light",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            ".tcrn-product-logo__line-one-suffix"
+          ],
+          "selector": ".tcrn-product-logo__line-one-suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
+        }
+      ]
     },
     {
       "section": "Components",
@@ -896,7 +1890,8 @@
       "viewport": "mobile-390x844",
       "theme": "dark",
       "violationCount": 0,
-      "violations": []
+      "violations": [],
+      "wordmarkContrastExempted": []
     }
   ]
 }

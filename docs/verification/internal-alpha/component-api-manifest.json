@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 125,
+  "componentCount": 126,
   "coverage": {
-    "registryComponentCount": 125,
+    "registryComponentCount": 126,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -15,6 +15,7 @@
       "Badge",
       "Breadcrumb",
       "Button",
+      "ButtonGroup",
       "Card",
       "Checkbox",
       "ClipboardCopyButton",
@@ -142,6 +143,7 @@
       "Badge",
       "Breadcrumb",
       "Button",
+      "ButtonGroup",
       "Card",
       "Checkbox",
       "ClipboardCopyButton",
@@ -508,13 +510,20 @@
           "required": false
         },
         {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
           "name": "size",
           "type": "Size",
           "required": false,
           "default": "\"md\"",
           "enumValues": [
             "sm",
-            "md"
+            "md",
+            "lg"
           ]
         },
         {
@@ -533,7 +542,8 @@
       "variants": {
         "size": [
           "sm",
-          "md"
+          "md",
+          "lg"
         ],
         "variant": [
           "primary",
@@ -543,6 +553,42 @@
         ]
       },
       "slots": []
+    },
+    "ButtonGroup": {
+      "name": "ButtonGroup",
+      "kind": "forwardRef",
+      "props": [
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "variant",
+          "type": "\"secondary\" | \"quiet\"",
+          "required": false,
+          "default": "\"secondary\"",
+          "enumValues": [
+            "secondary",
+            "quiet"
+          ]
+        }
+      ],
+      "variants": {
+        "variant": [
+          "secondary",
+          "quiet"
+        ]
+      },
+      "slots": [
+        "children"
+      ]
     },
     "Card": {
       "name": "Card",
@@ -656,7 +702,8 @@
           "required": false,
           "enumValues": [
             "sm",
-            "md"
+            "md",
+            "lg"
           ]
         },
         {
@@ -694,7 +741,8 @@
       "variants": {
         "size": [
           "sm",
-          "md"
+          "md",
+          "lg"
         ],
         "variant": [
           "primary",
@@ -1599,7 +1647,16 @@
             "search",
             "settings",
             "shield-check",
-            "sun"
+            "sun",
+            "plus",
+            "minus",
+            "users",
+            "bell",
+            "copy",
+            "trash",
+            "calendar",
+            "more-horizontal",
+            "chevron-up"
           ]
         },
         {
@@ -1643,7 +1700,16 @@
           "search",
           "settings",
           "shield-check",
-          "sun"
+          "sun",
+          "plus",
+          "minus",
+          "users",
+          "bell",
+          "copy",
+          "trash",
+          "calendar",
+          "more-horizontal",
+          "chevron-up"
         ]
       },
       "slots": [],
@@ -1701,8 +1767,22 @@
             "search",
             "settings",
             "shield-check",
-            "sun"
+            "sun",
+            "plus",
+            "minus",
+            "users",
+            "bell",
+            "copy",
+            "trash",
+            "calendar",
+            "more-horizontal",
+            "chevron-up"
           ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false
         },
         {
           "name": "size",
@@ -1710,7 +1790,8 @@
           "required": false,
           "enumValues": [
             "sm",
-            "md"
+            "md",
+            "lg"
           ]
         },
         {
@@ -1754,11 +1835,21 @@
           "search",
           "settings",
           "shield-check",
-          "sun"
+          "sun",
+          "plus",
+          "minus",
+          "users",
+          "bell",
+          "copy",
+          "trash",
+          "calendar",
+          "more-horizontal",
+          "chevron-up"
         ],
         "size": [
           "sm",
-          "md"
+          "md",
+          "lg"
         ],
         "variant": [
           "primary",
@@ -2027,6 +2118,17 @@
       "kind": "function",
       "props": [
         {
+          "name": "size",
+          "type": "Size",
+          "required": false,
+          "default": "\"md\"",
+          "enumValues": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
           "name": "variant",
           "type": "\"primary\" | \"secondary\" | \"quiet\"",
           "required": false,
@@ -2039,6 +2141,11 @@
         }
       ],
       "variants": {
+        "size": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "variant": [
           "primary",
           "secondary",
@@ -2323,6 +2430,11 @@
           "required": true
         },
         {
+          "name": "loading",
+          "type": "boolean",
+          "required": false
+        },
+        {
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
@@ -2338,7 +2450,8 @@
           "required": false,
           "enumValues": [
             "sm",
-            "md"
+            "md",
+            "lg"
           ]
         },
         {
@@ -2356,7 +2469,8 @@
       "variants": {
         "size": [
           "sm",
-          "md"
+          "md",
+          "lg"
         ],
         "variant": [
           "primary",
@@ -2545,7 +2659,16 @@
             "search",
             "settings",
             "shield-check",
-            "sun"
+            "sun",
+            "plus",
+            "minus",
+            "users",
+            "bell",
+            "copy",
+            "trash",
+            "calendar",
+            "more-horizontal",
+            "chevron-up"
           ]
         },
         {
@@ -2589,7 +2712,16 @@
           "search",
           "settings",
           "shield-check",
-          "sun"
+          "sun",
+          "plus",
+          "minus",
+          "users",
+          "bell",
+          "copy",
+          "trash",
+          "calendar",
+          "more-horizontal",
+          "chevron-up"
         ]
       },
       "slots": [
@@ -2663,8 +2795,8 @@
           "type": "OperationFeedbackPhase",
           "required": true,
           "enumValues": [
-            "idle",
             "loading",
+            "idle",
             "success",
             "error"
           ]
@@ -2677,8 +2809,8 @@
       ],
       "variants": {
         "phase": [
-          "idle",
           "loading",
+          "idle",
           "success",
           "error"
         ]
@@ -2955,14 +3087,26 @@
           "required": false
         },
         {
+          "name": "markVariant",
+          "type": "TcrnProductMarkVariant",
+          "required": false,
+          "enumValues": [
+            "color",
+            "mono",
+            "tile-tint",
+            "tile-deep"
+          ]
+        },
+        {
           "name": "productId",
           "type": "TcrnProductLogoId",
           "required": false,
           "enumValues": [
-            "design-system",
-            "aos",
             "tms",
-            "workflow"
+            "einzbern",
+            "mana-orchestrate",
+            "design-system",
+            "aos"
           ]
         },
         {
@@ -2977,11 +3121,18 @@
         }
       ],
       "variants": {
+        "markVariant": [
+          "color",
+          "mono",
+          "tile-tint",
+          "tile-deep"
+        ],
         "productId": [
-          "design-system",
-          "aos",
           "tms",
-          "workflow"
+          "einzbern",
+          "mana-orchestrate",
+          "design-system",
+          "aos"
         ]
       },
       "slots": [],
@@ -3008,23 +3159,42 @@
           "required": false
         },
         {
+          "name": "markVariant",
+          "type": "TcrnProductMarkVariant",
+          "required": false,
+          "enumValues": [
+            "color",
+            "mono",
+            "tile-tint",
+            "tile-deep"
+          ]
+        },
+        {
           "name": "productId",
           "type": "TcrnProductLogoId",
           "required": true,
           "enumValues": [
-            "design-system",
-            "aos",
             "tms",
-            "workflow"
+            "einzbern",
+            "mana-orchestrate",
+            "design-system",
+            "aos"
           ]
         }
       ],
       "variants": {
+        "markVariant": [
+          "color",
+          "mono",
+          "tile-tint",
+          "tile-deep"
+        ],
         "productId": [
-          "design-system",
-          "aos",
           "tms",
-          "workflow"
+          "einzbern",
+          "mana-orchestrate",
+          "design-system",
+          "aos"
         ]
       },
       "slots": [],
@@ -3060,10 +3230,11 @@
           "type": "TcrnProductLogoId",
           "required": false,
           "enumValues": [
-            "design-system",
-            "aos",
             "tms",
-            "workflow"
+            "einzbern",
+            "mana-orchestrate",
+            "design-system",
+            "aos"
           ]
         },
         {
@@ -3256,10 +3427,11 @@
       ],
       "variants": {
         "brandProductId": [
-          "design-system",
-          "aos",
           "tms",
-          "workflow"
+          "einzbern",
+          "mana-orchestrate",
+          "design-system",
+          "aos"
         ],
         "contentRole": [
           "main",
@@ -4419,14 +4591,26 @@
           "required": false
         },
         {
+          "name": "markVariant",
+          "type": "TcrnProductMarkVariant",
+          "required": false,
+          "enumValues": [
+            "color",
+            "mono",
+            "tile-tint",
+            "tile-deep"
+          ]
+        },
+        {
           "name": "productId",
           "type": "TcrnProductLogoId",
           "required": false,
           "enumValues": [
-            "design-system",
-            "aos",
             "tms",
-            "workflow"
+            "einzbern",
+            "mana-orchestrate",
+            "design-system",
+            "aos"
           ]
         },
         {
@@ -4441,11 +4625,18 @@
         }
       ],
       "variants": {
+        "markVariant": [
+          "color",
+          "mono",
+          "tile-tint",
+          "tile-deep"
+        ],
         "productId": [
-          "design-system",
-          "aos",
           "tms",
-          "workflow"
+          "einzbern",
+          "mana-orchestrate",
+          "design-system",
+          "aos"
         ]
       },
       "slots": [],
@@ -4530,6 +4721,11 @@
           "required": false
         },
         {
+          "name": "loading",
+          "type": "boolean",
+          "required": false
+        },
+        {
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
@@ -4545,7 +4741,8 @@
           "required": false,
           "enumValues": [
             "sm",
-            "md"
+            "md",
+            "lg"
           ]
         },
         {
@@ -4567,7 +4764,8 @@
         ],
         "size": [
           "sm",
-          "md"
+          "md",
+          "lg"
         ],
         "variant": [
           "primary",
@@ -4631,6 +4829,11 @@
           "required": false
         },
         {
+          "name": "loading",
+          "type": "boolean",
+          "required": false
+        },
+        {
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
@@ -4651,7 +4854,8 @@
           "required": false,
           "enumValues": [
             "sm",
-            "md"
+            "md",
+            "lg"
           ]
         },
         {
@@ -4669,7 +4873,8 @@
       "variants": {
         "size": [
           "sm",
-          "md"
+          "md",
+          "lg"
         ],
         "variant": [
           "primary",
@@ -5328,13 +5533,49 @@
           "required": false
         },
         {
+          "name": "productId",
+          "type": "TcrnProductMarkId",
+          "required": false,
+          "enumValues": [
+            "tms",
+            "einzbern",
+            "mana-orchestrate",
+            "design-system"
+          ]
+        },
+        {
           "name": "src",
           "type": "string",
           "required": false,
           "default": "\"tcrn-brand-mark.svg\""
+        },
+        {
+          "name": "variant",
+          "type": "TcrnProductMarkVariant",
+          "required": false,
+          "default": "\"color\"",
+          "enumValues": [
+            "color",
+            "mono",
+            "tile-tint",
+            "tile-deep"
+          ]
         }
       ],
-      "variants": {},
+      "variants": {
+        "productId": [
+          "tms",
+          "einzbern",
+          "mana-orchestrate",
+          "design-system"
+        ],
+        "variant": [
+          "color",
+          "mono",
+          "tile-tint",
+          "tile-deep"
+        ]
+      },
       "slots": [],
       "propsType": "TcrnBrandMarkProps"
     },
@@ -5382,10 +5623,55 @@
     "Text": {
       "name": "Text",
       "kind": "function",
-      "props": [],
-      "variants": {},
+      "props": [
+        {
+          "name": "size",
+          "type": "TextSize",
+          "required": false,
+          "enumValues": [
+            "body",
+            "reading",
+            "meta",
+            "caption"
+          ]
+        },
+        {
+          "name": "tone",
+          "type": "TextTone",
+          "required": false,
+          "enumValues": [
+            "default",
+            "strong"
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "TextVariant",
+          "required": false,
+          "enumValues": [
+            "numeral",
+            "caps"
+          ]
+        }
+      ],
+      "variants": {
+        "size": [
+          "body",
+          "reading",
+          "meta",
+          "caption"
+        ],
+        "tone": [
+          "default",
+          "strong"
+        ],
+        "variant": [
+          "numeral",
+          "caps"
+        ]
+      },
       "slots": [],
-      "propsType": "HTMLAttributes<HTMLParagraphElement>"
+      "propsType": "TextProps"
     },
     "Textarea": {
       "name": "Textarea",

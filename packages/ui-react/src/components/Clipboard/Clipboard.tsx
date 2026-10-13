@@ -2,6 +2,7 @@ import type { MouseEvent } from "react";
 import { forwardRef, useCallback, useEffect, useId, useRef, useState } from "react";
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { Button, type ButtonProps } from "../Button/index.js";
+import { Icon, type IconName } from "../Icon/index.js";
 import { mergeIds } from "../../utils.js";
 import {
   DEFAULT_RESET_DELAY_MS,
@@ -13,8 +14,18 @@ import {
 
 export type { ClipboardCopyState } from "./clipboard-copy.js";
 
+// One icon for each settled state (Actions board): copy while idle, check once the value is
+// copied, alert-triangle when the copy failed and info where the browser cannot copy at all.
+// Copying has none of its own; the loader stands in that place while the button is busy.
+const clipboardStateIcons = [
+  ["idle", "copy"],
+  ["copied", "check"],
+  ["failed", "alert-triangle"],
+  ["unsupported", "info"]
+] as const satisfies ReadonlyArray<readonly [Exclude<ClipboardCopyState, "copying">, IconName]>;
+
 export interface ClipboardCopyButtonProps
-  extends Omit<ButtonProps, "aria-label" | "children" | "disabledReason" | "onClick" | "type" | "value"> {
+  extends Omit<ButtonProps, "aria-label" | "children" | "disabledReason" | "loading" | "onClick" | "type" | "value"> {
   text: string;
   ariaLabel: string;
   children?: never;
@@ -145,6 +156,15 @@ export const ClipboardCopyButton = forwardRef<HTMLButtonElement, ClipboardCopyBu
       disabledReason={disabledReason}
       onClick={handleCopy}
     >
+      {/* Present in every state and shown only while the button is busy (copying), so the
+          static bridge, which only sets aria-busy, shows the same loader the component does. */}
+      <Icon name="loader-circle" className="tcrn-button__spinner" />
+      {/* All four state icons are rendered and the stylesheet shows the one that
+          data-clipboard-copy-state names, so the static bridge, which only switches that
+          attribute, shows the same icon without drawing one. */}
+      {clipboardStateIcons.map(([iconState, iconName]) => (
+        <Icon key={iconState} name={iconName} data-clipboard-state-icon={iconState} />
+      ))}
       {visibleLabel}
       <span id={liveRegionId} aria-live="polite" role="status" className="tcrn-sr-only">
         {disabledReason || liveMessage}

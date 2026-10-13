@@ -24,7 +24,8 @@ import {
   tableToolbarScript,
   storybookI18nScript,
   storybookThemeScript,
-  storybookSearchScript
+  storybookSearchScript,
+  storybookCanvasColors
 } from "./client-scripts.js";
 import { escapeHtml, i18nText, localeText, storybookContentText } from "./i18n.js";
 import { categoryDomId, categoryFileForStory, categoryFileName, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
@@ -78,82 +79,172 @@ function scopeComponentSelector(selector: string, scope: string): string {
   return `${scope} ${trimmed}`;
 }
 
-function scopeComponentCss(css: string, scope: string): string {
-  const lines = css.split("\n");
-  const output: string[] = [];
-  const selectorBuffer: string[] = [];
-  const blockStack: Array<"rule" | "media" | "keyframes" | "property"> = [];
-  const insideRule = () => blockStack[blockStack.length - 1] === "rule";
-  const insideKeyframes = () => blockStack.includes("keyframes");
-  const popBlock = () => {
-    blockStack.pop();
-  };
+// TCRN-DS-SUB-035: the static pages carry the package CSS a second time under `.story-body` so the
+// package wins inside a story. This scoper used to split selectors at every comma and to assume one
+// rule per line: `:where(:hover,[data-tcrn-preview-state="hover"])` state rules were cut into invalid
+// selectors (the browser dropped the whole rule, so the scoped base rule beat every hover, active,
+// focus, disabled and selected state), and the rules after a one-line rule were copied unscoped. It
+// now walks the stylesheet: a selector list splits only at top-level commas (never inside (), [] or a
+// string), any number of rules may share a line, conditional group rules (@media, @supports,
+// @container, @layer, @scope, @starting-style, @document) are scoped inside, and other at-rules
+// (@keyframes, @font-face, @property, ...) and statements (`@layer a, b;`) are copied verbatim.
+const scopedGroupAtRules = new Set(["media", "supports", "container", "layer", "scope", "starting-style", "document"]);
 
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      output.push(line);
+function skipCssString(css: string, index: number): number {
+  const quote = css[index];
+  let cursor = index + 1;
+  while (cursor < css.length) {
+    const char = css[cursor];
+    if (char === "\\") {
+      cursor += 2;
       continue;
     }
-
-    if (selectorBuffer.length > 0 && !trimmed.includes("{")) {
-      selectorBuffer.push(line);
-      continue;
-    }
-
-    if (insideKeyframes()) {
-      output.push(line);
-      if (trimmed === "}") popBlock();
-      continue;
-    }
-
-    if (trimmed.startsWith("@keyframes")) {
-      output.push(line);
-      blockStack.push("keyframes");
-      continue;
-    }
-
-    if (trimmed.startsWith("@property")) {
-      output.push(line);
-      blockStack.push("property");
-      continue;
-    }
-
-    if (trimmed.startsWith("@media") || trimmed.startsWith("@supports") || trimmed.startsWith("@container")) {
-      output.push(line);
-      blockStack.push("media");
-      continue;
-    }
-
-    if (insideRule() || blockStack[blockStack.length - 1] === "property") {
-      output.push(line);
-      if (trimmed === "}") popBlock();
-      continue;
-    }
-
-    if (trimmed.endsWith(",") && !trimmed.includes("{")) {
-      selectorBuffer.push(line);
-      continue;
-    }
-
-    if (trimmed.includes("{")) {
-      const braceIndex = line.indexOf("{");
-      const selectorText = [...selectorBuffer, line.slice(0, braceIndex)].join("\n");
-      selectorBuffer.length = 0;
-      const scopedSelector = selectorText
-        .split(",")
-        .map((selector) => scopeComponentSelector(selector, scope))
-        .join(",\n");
-      output.push(`${scopedSelector}${line.slice(braceIndex)}`);
-      blockStack.push("rule");
-      continue;
-    }
-
-    output.push(line);
-    if (trimmed === "}") popBlock();
+    if (char === quote) return cursor + 1;
+    cursor += 1;
   }
+  return cursor;
+}
 
-  return output.join("\n");
+function skipCssComment(css: string, index: number): number {
+  const end = css.indexOf("*/", index + 2);
+  return end === -1 ? css.length : end + 2;
+}
+
+// Index of the `}` closing the block whose `{` is at `open`; strings, comments and nested blocks are
+// skipped. An unterminated block runs to the end of the input.
+function matchingCssBrace(css: string, open: number): number {
+  let depth = 0;
+  let cursor = open;
+  while (cursor < css.length) {
+    const char = css[cursor];
+    if (char === "\"" || char === "'") {
+      cursor = skipCssString(css, cursor);
+      continue;
+    }
+    if (char === "/" && css[cursor + 1] === "*") {
+      cursor = skipCssComment(css, cursor);
+      continue;
+    }
+    if (char === "\\") {
+      cursor += 2;
+      continue;
+    }
+    if (char === "{") depth += 1;
+    if (char === "}") {
+      depth -= 1;
+      if (depth === 0) return cursor;
+    }
+    cursor += 1;
+  }
+  return css.length;
+}
+
+function stripCssComments(text: string): string {
+  let output = "";
+  let cursor = 0;
+  while (cursor < text.length) {
+    const char = text[cursor];
+    if (char === "\"" || char === "'") {
+      const end = skipCssString(text, cursor);
+      output += text.slice(cursor, end);
+      cursor = end;
+      continue;
+    }
+    if (char === "/" && text[cursor + 1] === "*") {
+      cursor = skipCssComment(text, cursor);
+      output += " ";
+      continue;
+    }
+    output += char;
+    cursor += 1;
+  }
+  return output;
+}
+
+// Splits a selector list at its top-level commas only: the commas inside `:where()`, `:is()`,
+// `:not()`, `:has()`, an attribute selector or a string stay with their selector.
+export function splitTopLevelSelectors(selectorList: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  let cursor = 0;
+  while (cursor < selectorList.length) {
+    const char = selectorList[cursor];
+    if (char === "\"" || char === "'") {
+      cursor = skipCssString(selectorList, cursor);
+      continue;
+    }
+    if (char === "/" && selectorList[cursor + 1] === "*") {
+      cursor = skipCssComment(selectorList, cursor);
+      continue;
+    }
+    if (char === "\\") {
+      cursor += 2;
+      continue;
+    }
+    if (char === "(" || char === "[") depth += 1;
+    else if ((char === ")" || char === "]") && depth > 0) depth -= 1;
+    else if (char === "," && depth === 0) {
+      parts.push(selectorList.slice(start, cursor));
+      start = cursor + 1;
+    }
+    cursor += 1;
+  }
+  parts.push(selectorList.slice(start));
+  return parts;
+}
+
+export function scopeComponentCss(css: string, scope: string): string {
+  let output = "";
+  let preludeStart = 0;
+  let cursor = 0;
+  while (cursor < css.length) {
+    const char = css[cursor];
+    if (char === "\"" || char === "'") {
+      cursor = skipCssString(css, cursor);
+      continue;
+    }
+    if (char === "/" && css[cursor + 1] === "*") {
+      cursor = skipCssComment(css, cursor);
+      continue;
+    }
+    if (char === "\\") {
+      cursor += 2;
+      continue;
+    }
+    if (char === ";" || char === "}") {
+      // A statement at-rule (`@layer a, b;`), or a stray token: copy it as written.
+      output += css.slice(preludeStart, cursor + 1);
+      cursor += 1;
+      preludeStart = cursor;
+      continue;
+    }
+    if (char !== "{") {
+      cursor += 1;
+      continue;
+    }
+    const raw = css.slice(preludeStart, cursor);
+    const leading = /^(?:\s|\/\*[\s\S]*?\*\/)*/.exec(raw)?.[0] ?? "";
+    const prelude = stripCssComments(raw.slice(leading.length)).trim();
+    const close = matchingCssBrace(css, cursor);
+    const body = css.slice(cursor + 1, close);
+    const closing = close < css.length ? "}" : "";
+    if (prelude.startsWith("@")) {
+      const name = /^@([\w-]+)/.exec(prelude)?.[1]?.toLowerCase() ?? "";
+      output += scopedGroupAtRules.has(name)
+        ? `${leading}${prelude} {${scopeComponentCss(body, scope)}${closing}`
+        : `${raw}{${body}${closing}`;
+    } else {
+      const scopedSelector = splitTopLevelSelectors(prelude)
+        .map((selector) => scopeComponentSelector(selector, scope))
+        .filter(Boolean)
+        .join(",\n");
+      output += `${leading}${scopedSelector} {${body}${closing}`;
+    }
+    cursor = close + 1;
+    preludeStart = cursor;
+  }
+  return output + css.slice(preludeStart);
 }
 
 // The package export stays readable for consumers and source-level proof. Static
@@ -349,7 +440,6 @@ function docHeaderWorkspaceHtml(group: ContractStoryGroup, activeStory: Contract
             <span class="tcrn-sr-only">${i18nText("shell.searchLabel")}</span>
             ${renderToStaticMarkup(
               <SearchInput
-                className="tcrn-search-input--compact"
                 placeholder={localeText("shell.searchLabel")}
                 aria-label={localeText("shell.searchLabel")}
                 data-i18n-placeholder="shell.searchLabel"
@@ -420,7 +510,7 @@ function injectReadbackPanelAnchors(html: string, storyId: string): string {
 }
 
 function storyHtml(group: ContractStoryGroup, stories: ContractStory[]): string {
-  return `<section class="tcrn-static-section" id="${groupSlug(group)}" data-story-section="${group}">
+  return `<section class="tcrn-doc-static-section" id="${groupSlug(group)}" data-story-section="${group}">
   <h2>${i18nText(`group.${group}`)}</h2>
 ${stories.map((story) => {
   // Each story is rendered in its own renderToStaticMarkup pass, so React's useId counter
@@ -431,7 +521,7 @@ ${stories.map((story) => {
     identifierPrefix: `${story.id}-`
   }), story.id);
   return `  <article id="${story.id}" data-contract-story-id="${story.id}" data-story-id="${story.id}" data-story-group="${story.group}" data-story-category="${escapeHtml(story.category)}" data-story-category-id="${escapeHtml(story.categoryId)}" data-story-source-path="${escapeHtml(story.sourcePath)}" data-story-package-authority="${escapeHtml(story.packageAuthority)}" data-story-readiness="${escapeHtml(story.readiness)}" data-story-proof-posture="${escapeHtml(story.proofPosture)}" data-story-collapsed="true">
-  <h2 class="tcrn-story-disclosure__heading"><button type="button" class="tcrn-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}"><span class="tcrn-story-disclosure__title">${i18nText(`story.${story.id}.title`)}</span><span class="tcrn-story-disclosure__chevron" aria-hidden="true">${iconHtml("chevron-right", "tcrn-story-disclosure__chevron-svg", "story-disclosure")}</span></button></h2>
+  <h2 class="tcrn-doc-story-disclosure__heading"><button type="button" class="tcrn-doc-story-disclosure" aria-expanded="false" aria-controls="${story.id}-region" data-story-disclosure="${story.id}"><span class="tcrn-doc-story-disclosure__title">${i18nText(`story.${story.id}.title`)}</span><span class="tcrn-doc-story-disclosure__chevron" aria-hidden="true">${iconHtml("chevron-right", "tcrn-doc-story-disclosure__chevron-svg", "story-disclosure")}</span></button></h2>
   <p>${i18nText(`story.${story.id}.description`)}</p>
   <div class="story-body" id="${story.id}-region">${body}</div>
 </article>`;
@@ -446,7 +536,7 @@ ${stories.map((story) => {
 function sectionIndexBodyHtml(group: ContractStoryGroup): string {
   const stories = contractStoriesByGroup(group);
   const categories = storyCategoriesForGroup(group, stories);
-  return `<section class="tcrn-static-section tcrn-static-section--category-index" id="${groupSlug(group)}" data-doc-category-index="${group}">
+  return `<section class="tcrn-doc-static-section tcrn-doc-static-section--category-index" id="${groupSlug(group)}" data-doc-category-index="${group}">
   <ol class="tcrn-doc-category-index">
 ${categories.map((category) => {
   const categoryLabel = localeText(category.label);
@@ -542,7 +632,7 @@ function renderContractDocument(options: {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
-  <meta name="theme-color" content="#fafaf9" data-storybook-theme-color />
+  <meta name="theme-color" content="${storybookCanvasColors.light}" data-storybook-theme-color />
   <link rel="icon" href="tcrn-brand-mark.svg" type="image/svg+xml" />
   <link rel="alternate" type="application/json" href="ai-consumption-contract.json" title="TCRN AI consumption contract" data-tcrn-ai-consumption-contract="true" />
   <link rel="help" type="text/plain" href="llms.txt" data-tcrn-ai-consumption-contract-help="true" />
@@ -646,9 +736,9 @@ function componentReferenceRegionHtml(component: ComponentApiEntry): string {
   const anchor = referenceComponentAnchor(component.name);
   const propsType = component.propsType ? `<code>${escapeHtml(component.propsType)}</code>` : "<code>—</code>";
   const propsBody = component.props.length === 0
-    ? `<p class="tcrn-component-reference__empty">${i18nText("reference.noProps")}</p>`
-    : `<div class="tcrn-reference-table-scroll">
-      <table class="tcrn-reference-table">
+    ? `<p class="tcrn-doc-component-reference__empty">${i18nText("reference.noProps")}</p>`
+    : `<div class="tcrn-doc-reference-table-scroll">
+      <table class="tcrn-doc-reference-table">
         <thead>
           <tr>
             <th scope="col">${i18nText("reference.colProp")}</th>
@@ -670,14 +760,14 @@ ${component.props.map((prop) => `          <tr>
   const variantKeys = Object.keys(component.variants);
   const variantsBody = variantKeys.length === 0
     ? ""
-    : `<p class="tcrn-component-reference__facet">${i18nText("reference.variants")}: ${variantKeys.map((axis) =>
+    : `<p class="tcrn-doc-component-reference__facet">${i18nText("reference.variants")}: ${variantKeys.map((axis) =>
         `<code>${escapeHtml(axis)}</code> (${component.variants[axis].map((value) => `<code>${escapeHtml(String(value))}</code>`).join(", ")})`).join("; ")}</p>`;
   const slotsBody = component.slots.length === 0
     ? ""
-    : `<p class="tcrn-component-reference__facet">${i18nText("reference.slots")}: ${component.slots.map((slot) => `<code>${escapeHtml(slot)}</code>`).join(", ")}</p>`;
-  return `      <article class="tcrn-component-reference" data-component-reference-id="${escapeHtml(component.name)}" id="${anchor}">
+    : `<p class="tcrn-doc-component-reference__facet">${i18nText("reference.slots")}: ${component.slots.map((slot) => `<code>${escapeHtml(slot)}</code>`).join(", ")}</p>`;
+  return `      <article class="tcrn-doc-component-reference" data-component-reference-id="${escapeHtml(component.name)}" id="${anchor}">
         <h2 class="tcrn-heading"><code>${escapeHtml(component.name)}</code></h2>
-        <p class="tcrn-component-reference__meta">${i18nText("reference.propsType")}: ${propsType}</p>
+        <p class="tcrn-doc-component-reference__meta">${i18nText("reference.propsType")}: ${propsType}</p>
         ${propsBody}
         ${variantsBody}
         ${slotsBody}
@@ -686,7 +776,7 @@ ${component.props.map((prop) => `          <tr>
 
 function referenceBodyHtml(page: ReferencePage): string {
   return `<section class="alpha-story-stack" data-reference-page="${page.pageIndex}">
-      <p class="tcrn-component-reference__intro">${i18nText("reference.intro")}</p>
+      <p class="tcrn-doc-component-reference__intro">${i18nText("reference.intro")}</p>
 ${page.components.map(componentReferenceRegionHtml).join("\n")}
     </section>`;
 }

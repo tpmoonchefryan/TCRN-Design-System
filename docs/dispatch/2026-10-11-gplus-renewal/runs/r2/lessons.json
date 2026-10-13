@@ -1,0 +1,64 @@
+[
+  {
+    "subject": "Chromium 在 outline-style 为 none 时仍报 outline-width 3px",
+    "summary": "删掉写 outline:0 的规则后，Chromium 149 对 outline-style 为 none 的元素报 outline-width 为初始值 medium（3px）。按 width 比较的门会出假红，应在 style 为 none 时跳过 width 与 offset，而不是在包里回加 outline:0。",
+    "snippet": "期望 {outlineWidth:\"0px\", outlineStyle:\"none\"}，读数 {outlineWidth:\"3px\", outlineStyle:\"none\"}：storybook:smoke 三个子证明共 14 条同根红，视觉上没有任何 outline。",
+    "body": "INIT-015 R2 的 SUB-059 按判断删掉了壳内搜索的 focus-within 规则（它顺带写了 outline:0），包裹层的 outline-width 因此回到初值 medium。Chromium 149 的 getComputedStyle 在 outline-style 为 none 时仍把它报成 3px，而 scripts/storybook-smoke.mjs:293 的期望写死 outlineWidth 0px，于是 comparator、visual-instance parity、owner-quality 三个子证明共 14 条 searchInput:focus-outline-width:3px。style 为 none 时浏览器不画 outline，这是读数口径问题，不是视觉缺陷。处置：比较器在 outlineStyle 为 none 时不比 outlineWidth 与 outlineOffset；不在包里回加 outline:0 迁就读数（R3-5）。写任何按计算样式比较 outline 的门时，先判 style 再比 width。",
+    "tags": ["design-system", "storybook-smoke", "chromium", "outline", "gates"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/acceptance/B.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/acceptance/C.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/verify/steps.md",
+      "scripts/storybook-smoke.mjs"
+    ]
+  },
+  {
+    "subject": "红步归因按门输出的失败字段，不按先前的假设",
+    "summary": "R2 把第 30 步的手机锚点红记成「文档顶栏过高，待 C-21/O-1」，实际失败字段是 searchInput 透明层：同一门的两个读数循环只有一个放行 G+ 透明层。错误归因把非 Owner 的红记成了 Owner 阻塞，也报错了 SUB-046 的阻塞面。",
+    "snippet": "mobileHashAnchorOcclusionCheck 的 failures 为 mobile-layer-transparent:searchInput:rgba(0, 0, 0, 0)；titleReadableBelowTopbar 与 articleReadableBelowTopbar 都为 true。",
+    "body": "主线程、P12 与 I1 的交回都沿用了 P9 早先记的「390px 下文档顶栏 401px 高」这一假设，把 mobileHashAnchorOcclusionCheck 归到 C-21/O-1。验收 C 读了回执里的 failures 字段：四次读数都是 searchInput 层透明，标题与正文都在顶栏下可读，顶栏 395px 而 R1 入仓回执 398.69px 时这条是通过的。根因是 SUB-064 让文档顶栏搜索包裹层按 G+ 不作画后，internal-alpha-browser-proof.mjs 的锚点循环（:1789–1797）没有沿用知识库壳循环（:2116–2129）已有的 gplusMobileHeaderFillLayers 放行。同一批里三条 zh-CN 漏译的来源也记错了提交（28933c7，实为 496c1d7）。做法：归因前先读失败字段与改动该字符串的提交；归到 Owner 事项之前，确认失败字段确实落在该事项的几何或取值上。",
+    "tags": ["attribution", "internal-alpha", "verify", "owner-items", "process"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/acceptance/C.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/verify/steps.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/problems/main.md",
+      "scripts/internal-alpha-browser-proof.mjs"
+    ]
+  },
+  {
+    "subject": "批末再生清单要从 verify 改写的回执反推",
+    "summary": "SUB-046 手列的再生清单漏了 internal-vocab:scan，入仓回执停在 35 页，批末实扫 37 页。verify 跑完后被改写的回执集合，才是批末必须再生的集合。",
+    "snippet": "internal-vocabulary-scan.json 最后一次提交是 79b1953（早于 INIT-015），scannedPages 35；批末第 25 步扫了 37 页并改写它，按惯例被还原。",
+    "body": "R2 的批末再生单 SUB-046 列了 internal-alpha 四段、scaffold、readme、pack 与 storybook:build，却没有 pnpm internal-vocab:scan，而这份回执就在它的文件集 docs/verification/internal-alpha/** 里；新增的两张 G+ 页面因此从未进入入仓回执。no-overclaim-scan 也有同类偏差（604 对 605），来自 SUB-046 之后的调度文档提交。做法：批末单的清单从「verify 跑完后 git status 里被改写的回执」反推，逐份对应再生命令；no-overclaim 一类按文件计数的扫描放在最后一次文档提交之后再跑。",
+    "tags": ["batch-end", "receipts", "verify", "decomposition"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/acceptance/A.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/verify/steps.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/problems/main.md"
+    ]
+  },
+  {
+    "subject": "改规则或退役之前，查别的家族里钉着它的测试与门",
+    "summary": "R2 三次被隐性消费者绊住：Navigation.test 钉着 Inputs 的规则；geometry-proof 写死 openMenus 8，其中两个是被退役原型的菜单；doc-class-map 把门依赖的静态展示类判成可删。拆分的文件集与退役调查要按选择器、类名与计数 grep 全仓的测试与门。",
+    "snippet": "geometry-proof.mjs:227、:251 写死 openMenus === 8；doc-class-map.json:39 把 tcrn-product-shell-search--static-display 判为 delete-package-provided；Navigation.test.tsx 约 533、753 行钉着壳内搜索的旧规则。",
+    "body": "三处都不在改动方的文件集里，改动方的局部门也照不到：P4 删壳内 focus-within 后，P3 持有的 Navigation.test.tsx 两条断言转红，只能作为集成修复交 P2（RM1）；SUB-066 退役密集与紧凑原型后，geometry-proof 的全局菜单计数少了两个，执行方视改数为改阈值而停下（RM15）；R1 按 doc-class-map 删掉静态展示类后，searchOverlay 的「基线绿、变异红」前提消失，因为门的变异样式恰好等于包的默认定位（C2-1）。做法：改某家族的规则时，grep 全仓测试里针对该选择器的断言并列进文件集；删类或退役 story 之前，grep scripts/ 与 tests/ 里对它的引用和全局计数，在拆分里写明随改的门。",
+    "tags": ["decomposition", "file-set", "retirement", "coupling", "gates"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/problems/main.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/acceptance/C.md",
+      "scripts/geometry-proof.mjs",
+      "docs/design/gplus-2026-10/doc-class-map.json"
+    ]
+  },
+  {
+    "subject": "goal 判定人为 Owner 的 Story，机器判据全满足也不由实施侧转 done",
+    "summary": "INIT-015 的 130、134 的 goal 写「判定人：Owner」，134 的前置又含 130。收口规划要按 goal 的判定人一行区分「门判」「门判与 Owner 目视」「Owner」三类，否则会把 Owner 判定的单算进可转 done 的预期。",
+    "snippet": "130 判定人：Owner；134 判定人：Owner，前置为 EPIC-039 至 042 全部 Story done（含 130）。124、126、127、129 为「门判与 Owner 目视」。",
+    "body": "R1 判断预计 O-1 解决后 130 可随样板行转绿而转 done；R2 判断逐张读了 15 张 Story 的 goal，发现 130 与 134 的判定人是 Owner。因此即使 R3 让 verify 全绿，130 与 134 也只能停在 active，由 Owner 判定；134 的前置条件也要等 Owner 判 130 才成立。「门判与 Owner 目视」的单按 R1 §5 与 D8 的做法在机器判据满足时转 done、目视另行，这一点同样列给 Owner，可事后更正。规划收口与估计可转 done 的张数之前，先读每张 Story goal 里的判定人。",
+    "tags": ["closure", "story-judge", "owner", "planning"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r2/judgment.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r1/judgment.md"
+    ]
+  }
+]

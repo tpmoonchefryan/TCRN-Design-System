@@ -1,0 +1,55 @@
+[
+  {
+    "subject": "browser-proof 每次写基线都占用同一个记录文件名，下一次写入前要先改名",
+    "summary": "带 --update-visual-baseline 的 browser-proof 把逐条选择、理由与前后签名写进 docs/verification/internal-alpha/visual-selection-application.json，文件名固定，仓内没有读者；正常复跑又会把 intentional-diff-manifest.json 覆盖回 comparison-only，所以这个文件是逐条理由唯一的入仓记录。R4 先用 git mv 把 R3 的 192 条改名为 -r3.json 并单独提交（同一 blob），再让 R4 的 3 条占用原名。",
+    "snippet": "7dd7102：visual-selection-application.json 改名为 visual-selection-application-r3.json，改名 100%，ee01f8f 与 510c972 上同为 blob a9c7dfe；824641d 在原名下写入 R4 的 3 条。",
+    "body": "INIT-015 R3 判断 J-6 定下做法，R4 SUB-112 执行。不先改名，下一次写入会把上一轮的逐条理由整份替换掉；git 历史里虽然还在，入仓的现行文件却只剩最新一轮，目视验收时找不到早先那批签名为什么被接受。做法：每轮写基线前，把现有记录 git mv 成带轮次后缀的名字并单独提交，核对 blob 不变，再让写入占用原名；下一轮写入前同样把 R4 的这份改名为 -r4.json。visual-selection-result.json 是临时捕获，不入仓。",
+    "tags": ["design-system", "visual-baseline", "receipts", "batch-end", "browser-proof"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r4/handoff/P0.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/judgment.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/handoff/P4.md",
+      "docs/verification/internal-alpha/visual-selection-application-r3.json",
+      "docs/verification/internal-alpha/visual-selection-application.json"
+    ]
+  },
+  {
+    "subject": "fr 的「记录的漏译」把译好的法语也算进去，数字变大不说明译文变差",
+    "summary": "browser-proof 的 localeLeakRecorded 按拉丁字母多词片段计数，法语本身是拉丁字母，检测器分不出没译的英文和法语译文。R4 给一个面板加一句正确的法语后，navigation-focused-shells-spec 的 fr 记录值 51 → 61，全仓 3073 → 3083；ja、ko 不变。这个读数只记录、不进门。",
+    "snippet": "R3 批末（3f9d658）与 R4 批末（510c972）的 browser-proof 汇总逐字段比对：38 个字段 37 个相同，只有 localeLeakRecorded.fr 3073 → 3083。",
+    "body": "INIT-015 R4 P0 问题清单第 1 条。fr 读数会随新增的法语文案上升，拿它判断法语覆盖率或译文质量会得出相反的结论；比较两轮读数时，先扣掉本轮新增法语文案带来的增量。要让 fr 读数有意义就得改检测口径，等于改门的语义，需要单独授权。门真正读的是 zh-CN 的新漏译与已登记债（R4 为 0 与 104）。",
+    "tags": ["design-system", "i18n", "locale-leak", "browser-proof", "fr"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r4/problems/P0.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r4/handoff/P0.md",
+      "docs/verification/internal-alpha/browser-proof-summary.json",
+      "docs/verification/internal-alpha/story-coverage-manifest.json"
+    ]
+  },
+  {
+    "subject": "在活的清单里插一行，上一轮判断引用的行号就全部错位",
+    "summary": "R4 的 SUB-111 在目视清单第 131 行后插入一行，之后各行都下移一行：R3 判断（§1、§2.2、§3）引用的清单第 169、174、224、227、244、246、247、249 行，现在是 170、175、225、228、245、247、248、250。收口文件要按条目编号或独有短语引用，写前对 HEAD 重新 grep 行号。",
+    "snippet": "R3 判断写「O-8 请在清单第 246 行点名确认」；R4 插行后第 246 行是待裁第 11 行（O-6），O-8 在第 247 行。",
+    "body": "INIT-015 的拆分与判断习惯用「现第 N 行」定位清单条目，好处是改动能精确对位，坏处是同一文件只要有一处插行或删行，之前所有文档里引用后面行号的地方都会悄悄指错，门不会发现。写给 Owner 的收口文件最怕这种错：Owner 按行号去看，看到的是别的条目。做法：拆分里的行号注明基于哪个 HEAD、先 grep 再改（R4 拆分已这样做）；判断与收口文件引用清单时，优先写条目编号（如待裁第 12 行、P18）或独有短语，写前对 HEAD 重新 grep 行号并注明 HEAD。",
+    "tags": ["design-system", "owner-checklist", "line-references", "closeout", "dispatch"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/judgment.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r4/acceptance.md"
+    ]
+  },
+  {
+    "subject": "判据里替实施方写好的事实句，实施方会照抄，验收要回到出处核对",
+    "summary": "R4 拆分给 SUB-112 的判据直接写好了 P18 要用的事实（R3 基线在自 51872c2 切出的 P4 包树上写入；集成树批末 verify 复读视觉回归 0、新增 0）。包代理照原文写进 Owner 清单，并在交回里注明没有在集成树上复核。R4 验收回到 R3 交回与 R3 批末日志核对，两处都属实。",
+    "snippet": "核对出处：runs/r3/handoff/P4.md 第 3 行（自集成分支 HEAD 51872c2 切出）；R3 批末 verify（3f9d658，退出 0）的 browser-proof 汇总 visualSignatureRegressions 0、visualSignatureNewBaselines 0。",
+    "body": "拆分为了省回合，常把要写进文档的事实句直接放进判据。实施方没有义务、也常常没有条件去复核这些句子（R4 的包树不是集成树），于是句子对不对完全取决于拆分作者的记忆。写给 Owner 的清单与收口文件里，这类句子一旦有误，就会被当成机器证据引用。做法：判据里给出事实句时同时写出处（文件与行号，或日志与字段）；实施方照抄时在交回里标出未复核（R4 P0 已这样做）；验收对每条这样的句子回到出处核对一次，并把核对结果写进验收。",
+    "tags": ["design-system", "decomposition", "acceptance", "evidence", "owner-checklist"],
+    "evidence": [
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r4/decomposition.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r4/handoff/P0.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r3/handoff/P4.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md",
+      "docs/dispatch/2026-10-11-gplus-renewal/runs/r4/acceptance.md"
+    ]
+  }
+]

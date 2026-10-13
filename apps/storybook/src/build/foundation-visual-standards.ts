@@ -543,7 +543,7 @@ export const storybookDocShellVisualOracle = {
   sourceHeadDisposition:
     "This oracle's visual baseline is now the internal-alpha perceptual visual-signature baseline (docs/verification/internal-alpha/visual-signature-baseline.json, tolerance meanAbsolute<=2 / maxCell<=8) enforced by scripts/internal-alpha-browser-proof.mjs; reviewers must use the internal-alpha browser-proof metric readbacks and signature entries plus the final DS commit SHA rather than treating this static field as a freshness claim.",
   retiredExactPngProofDisposition:
-    "The prior canonicalized_raw_png_exact_v1 exact-PNG visual oracle (docs/verification/storybook-visual-proof/, sourceHead ec57b606) is retired as pre-INIT-001 history, is not part of pnpm verify, and is superseded by the internal-alpha perceptual visual-signature baseline. Per the INIT-002 ruling, unreproducible exact-PNG signatures are not signed in as an oracle.",
+    "The prior canonicalized_raw_png_exact_v1 exact-PNG visual oracle (docs/verification/storybook-visual-proof/, sourceHead ec57b606) is retired as early history, is not part of pnpm verify, and is superseded by the internal-alpha perceptual visual-signature baseline. By an earlier ruling, unreproducible exact-PNG signatures are not signed in as an oracle. The command name now belongs to the current gate: pnpm storybook:visual-proof runs scripts/storybook-visual-proof.mjs (no --check mode) inside pnpm verify after pnpm geometry:measure; it reconciles the G+ canvas board map (docs/design/gplus-2026-10/storybook-map.json) with the story list and measures every mapped row on the static docs without pixel comparison, and only with --write-report does it write gplus-map-report.json and gplus-map-report.md next to the retired history files. The gate list is docs/contract/README.md.",
   metricRevisionDisposition:
     "Search shell metrics are intentionally revised to 260px rest and 360px focused/expanded by the visual-unification repair so localized placeholder plus Ctrl K fit without clipping.",
   storybookRoute: "index.html#welcome-governance",
@@ -566,23 +566,23 @@ export const storybookDocShellVisualOracle = {
   metricEvidence: [
     {
       metric: "desktopSidebarWidthPx",
-      value: 360,
+      value: 220,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
       signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
       signatureKey: "welcome-governance@desktop-1440x900",
       comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
-      extraction: "Sidebar geometry (responsive clamp(280px, 20vw, 360px), maxing at 360px and yielding 288px at the 1440px proof viewport) is asserted by the internal-alpha browser-proof sidebar-width metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
+      extraction: "Sidebar geometry (composition one: a fixed 220px rail from --tcrn-shell-sidebar-width, 52px collapsed from --tcrn-shell-sidebar-width-collapsed, so 220px at the 1440px proof viewport) is asserted by the internal-alpha browser-proof sidebar-width metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "desktopTopbarHeightPx",
-      value: 96,
+      value: 52,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
       signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
       signatureKey: "welcome-governance@desktop-1440x900",
       comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
-      extraction: "Header/control band height=96px is asserted by the internal-alpha browser-proof topbar-height metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
+      extraction: "Header/control band height=52px (the shell top bar over the content column, --tcrn-shell-topbar-height; composition one) is asserted by the internal-alpha browser-proof topbar-height metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "searchRestWidthPx",
@@ -606,18 +606,26 @@ export const storybookDocShellVisualOracle = {
     }
   ],
   shellMetrics: {
-    desktopSidebarWidthPx: 288,
-    desktopSidebarMinWidthPx: 280,
+    // Composition one (O-1): the documentation rail is the shell rail, 220px at every desktop
+    // width (min and max are both 220, so the viewport ratio no longer moves it), and the top bar
+    // over the content column is the 52px shell top bar.
+    desktopSidebarWidthPx: 220,
+    desktopSidebarMinWidthPx: 220,
     desktopSidebarPreferredViewportRatio: 0.2,
-    desktopSidebarMaxWidthPx: 360,
+    desktopSidebarMaxWidthPx: 220,
     desktopSidebarTolerancePx: 2,
-    desktopTopbarHeightPx: 96,
+    desktopTopbarHeightPx: 52,
     desktopTopbarTolerancePx: 2,
     searchRestWidthPx: 260,
     searchExpandedWidthPx: 360,
-    searchHeightPx: 36,
-    searchBorderColor: "rgb(142, 142, 136)",
-    searchBorderRadiusPx: 4,
+    // The header search is the package SearchInput in its G+ tool form (TCRN-DS-SUB-064):
+    // control height --tcrn-control-height-md (32px), wash fill, no border (border-style
+    // none; the edge is the inputs pair box-shadow, transparent at rest, so the resting
+    // edge colour reads back as rgba(0, 0, 0, 0)), radius --tcrn-radius-control (8px).
+    // Values read back in the built doc shell, light and dark; tolerances unchanged.
+    searchHeightPx: 32,
+    searchBorderColor: "rgba(0, 0, 0, 0)",
+    searchBorderRadiusPx: 8,
     themeToggleSizePx: 36,
     themeToggleRadiusPx: 999,
     localeTriggerHeightPx: 36,
@@ -644,7 +652,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
       "apps/storybook/src/build/foundation-visual-standards.ts",
       "apps/storybook/src/alpha-styles.ts",
       "apps/storybook/src/story-demo-styles.ts",
-      "packages/ui-react/src/components/Navigation/Navigation.tsx"
+      "packages/ui-react/src/styles/index.ts"
     ],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "proof.html#ai-consumption-contract"],
     authorityLevel: "storybook_visual_oracle",
@@ -658,7 +666,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "layout-rhythm",
     label: "Layout and rhythm",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/styles/index.ts"],
     storybookRoutes: ["index.html#welcome-governance", "patterns.html#forms-patterns"],
     authorityLevel: "storybook_visual_oracle",
     readbackFields: ["sidebarWidth", "topbarHeight", "contentStart", "pageHeadPosition", "crossSectionSignature"],
@@ -701,7 +709,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "color-elevation-border-radius-focus",
     label: "Color, elevation, border radius, and focus",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/styles/index.ts"],
     storybookRoutes: ["style-guide.html#color-palette", "components.html#navigation-shell-spec"],
     authorityLevel: "package_authority",
     readbackFields: ["surfaceColor", "borderColor", "controlRadius", "themeToggleRadius", "focusOutline", "boxShadow"],
@@ -727,7 +735,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "interaction-motion-accessibility",
     label: "Interaction, motion, and accessibility",
     category: "Foundation",
-    sourcePaths: ["packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/Form/Form.tsx", "packages/ui-react/src/components/Overlay/Overlay.tsx", "scripts/internal-alpha-browser-proof.mjs", "scripts/ds-consumption-proof.mjs", "scripts/full-surface-remediation-proof.mjs"],
+    sourcePaths: ["packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/styles/index.ts", "packages/ui-react/src/components/Form/Form.tsx", "packages/ui-react/src/components/Overlay/Overlay.tsx", "scripts/internal-alpha-browser-proof.mjs", "scripts/ds-consumption-proof.mjs", "scripts/full-surface-remediation-proof.mjs"],
     storybookRoutes: ["style-guide.html#icons-motion", "components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#overlay-focus"],
     authorityLevel: "proof_contract",
     readbackFields: ["transitionProperty", "duration", "easing", "keyboardActivation", "focusReturn", "reducedMotion", "overlayBoundaryContract", "operationFeedbackContract", "consumerEvidenceContract"],
@@ -740,7 +748,7 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     id: "responsive-mobile",
     label: "Responsive and mobile",
     category: "Foundation",
-    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/Layout/Layout.tsx"],
+    sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/styles/index.ts", "packages/ui-react/src/components/Layout/Layout.tsx"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#owner-quality-product-shell"],
     authorityLevel: "storybook_visual_oracle",
     readbackFields: ["viewport", "searchMaxWidth", "collapsePolicy", "pageOverflow", "tableLocalOverflow", "overlayBoundaryContract", "pageHierarchyContract"],

@@ -1,7 +1,24 @@
 import { tcrnDefaultLocale, tcrnFallbackLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
+import { createResolvedTokenMap } from "@tcrn/ui-tokens";
 import { contractStories, contractStoryGroups } from "../stories.js";
 import { storybookLocaleText } from "./i18n.js";
 import { categoryFileForStory, groupFileName, groupSlug } from "./navigation.js";
+
+function canvasColor(theme: "light" | "dark"): string {
+  const value = createResolvedTokenMap(theme)["--tcrn-color-bg"];
+  if (!/^#[0-9a-f]{6}$/i.test(value ?? "")) {
+    throw new Error(`storybook_canvas_token_unresolved:${theme}:${value ?? "missing"}`);
+  }
+  return value;
+}
+
+// The docs canvas paints with the G+ ground token --tcrn-color-bg. The first-paint
+// theme-color meta (page-template.tsx) and the theme-switch mirror below read the light and
+// dark values from @tcrn/ui-tokens instead of keeping a hand-copied pair.
+export const storybookCanvasColors = Object.freeze({
+  light: canvasColor("light"),
+  dark: canvasColor("dark")
+});
 
 export const hashRouteScript = `<script>
 (() => {
@@ -31,8 +48,8 @@ export const storybookThemeScript = `<script>
   const defaultTheme = "light";
   const storageKey = "tcrn-design-system-storybook-theme";
   const themeColors = {
-    light: "#fafaf9",
-    dark: "#111214"
+    light: ${JSON.stringify(storybookCanvasColors.light)},
+    dark: ${JSON.stringify(storybookCanvasColors.dark)}
   };
   const themeTransitionMs = 400;
   const isSupported = (theme) => supportedThemes.includes(theme);
@@ -171,6 +188,9 @@ export const storybookThemeScript = `<script>
 // in page-template.tsx). The locale dictionary (`storybookLocaleText`, shell/nav/titles) stays
 // WHOLE on every page — it is small and the nav/shell gates read every entry. Only the large
 // content dictionary is pruned, which is where the ~370KB/page payload lived.
+// TCRN-DS-SUB-079 gives a button with a disabled reason the title "label — reason". The dictionary
+// holds the label and the reason, not the pair, so attributeTextFor translates such a value part by
+// part (TCRN-DS-INIT-015 R2 integration item RM14).
 export const storybookI18nScript = (pageContentTranslations: Record<string, Record<TcrnLocale, string>>) => `<script>
 (() => {
   const supportedLocales = ${JSON.stringify(tcrnSupportedLocales)};
@@ -219,6 +239,30 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     }
     return contentTranslations[source]?.[locale] ?? contentTranslations[source]?.[fallbackLocale] ?? value;
   };
+  // An attribute value the dictionary does not hold whole but that joins two parts with " — " (a
+  // button title "label — reason") is translated on each side and joined again. A side the
+  // dictionary does not hold stays as it is; when neither side is held the value is left alone.
+  const partSeparator = " — ";
+  const attributeTextFor = (locale, value) => {
+    const trimmed = String(value ?? "").trim();
+    if (contentCanonicalLookup.has(trimmed) || !trimmed.includes(partSeparator)) {
+      return contentTextFor(locale, value);
+    }
+    const parts = trimmed.split(partSeparator);
+    let partial = null;
+    for (let cut = 1; cut < parts.length; cut += 1) {
+      const sides = [parts.slice(0, cut).join(partSeparator), parts.slice(cut).join(partSeparator)];
+      const held = sides.filter((side) => contentCanonicalLookup.has(side.trim())).length;
+      const joined = sides.map((side) => contentTextFor(locale, side)).join(partSeparator);
+      if (held === sides.length) {
+        return joined;
+      }
+      if (held > 0 && partial === null) {
+        partial = joined;
+      }
+    }
+    return partial ?? value;
+  };
   const searchShortcutLabel = () => {
     // TCRN-DS-STORY-060: show the platform-correct modifier — the Command glyph on Apple
     // platforms, Ctrl elsewhere. Keyboard shortcut labels are locale-invariant symbols, not
@@ -266,7 +310,7 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       for (const attributeName of ["title", "aria-label", "data-label", "data-disabled-reason", "data-expanded-label", "data-collapsed-label", "placeholder"]) {
         const current = node.getAttribute(attributeName);
         if (current) {
-          node.setAttribute(attributeName, contentTextFor(locale, current));
+          node.setAttribute(attributeName, attributeTextFor(locale, current));
         }
       }
       if (node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement) {
@@ -689,7 +733,7 @@ export const storybookSearchScript = `<script>
       const heading = panel.querySelector(":scope > h2.tcrn-heading, :scope > h3.tcrn-heading, :scope > h4.tcrn-heading");
       const label = heading?.textContent?.trim() ?? "";
       const story = panel.closest("[data-contract-story-id]");
-      const groupLabel = story?.querySelector(".tcrn-story-disclosure__title")?.textContent?.trim() ?? "";
+      const groupLabel = story?.querySelector(".tcrn-doc-story-disclosure__title")?.textContent?.trim() ?? "";
       const href = "#" + panel.id;
       const searchable = [label, groupLabel].filter(Boolean).join(" ");
       return { href, label, groupLabel, searchable };

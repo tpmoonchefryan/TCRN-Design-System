@@ -1,6 +1,245 @@
 # Changelog
 
-## Unreleased
+## 4.0.0
+
+### The G+ renewal: chassis, bundled fonts, five families, four product marks (TCRN-DS-INIT-015)
+
+Status: candidate on the INIT-015 integration branch. It is not tagged, not
+published and not deployed; each of those, like the Owner's visual acceptance, is a
+separate Owner decision. The upgrade steps for each consumer are in
+`docs/migration-4.0.md`.
+
+Breaking: token names and values, the rendered output of the first five families
+and of `ProductShell`, and four public APIs change (the icon roster and
+`IconProps`, the product logo registry, `ClipboardCopyButton`, the deferred
+prototype roster `componentLibraryDeferredPrototypeNames`), and `lucide-react`
+leaves `@tcrn/ui-react`. The three packages move to 4.0.0 together.
+
+**The G+ chassis.** `@tcrn/ui-tokens` takes its G+ values from the design contract
+in `docs/design/gplus-2026-10/contract/`, generated into
+`src/gplus-tokens.generated.ts`: from `tokens.json` the themed colours and shadows,
+the focus ring, radius, control height and padding, icon size, motion, the three
+font stacks and the brand suffixes; from `typography.json` the 29 type scale steps
+(sizes, line heights, weights, tracking and tabular numerals). The generated file
+names `tokens.json`, `marks.json` and `typography.json` in its header, so a change
+to any of them rewrites its `contract-sha256` line. Names that predate G+ and have
+no contract entry keep a hand-written value (the Japanese, Korean and stamp font
+stacks, for example) or stay as aliases. Colour names follow the contract
+(`--tcrn-color-bg`, `-panel`, `-ink`, `-ink-2`, `-ink-3`, `-line-ctl`, `-acc`, `-ok`,
+`-warn`, `-bad` and the rest), joined by `--tcrn-shadow-s1|s2|s3|edge`,
+`--tcrn-focus-ring` and `--tcrn-brand-suffix-<product>`. `tokens.css` holds three
+marked blocks: the light theme block on `:root, [data-tcrn-theme="light"]`, a
+`:root` theme-independent block, and a `[data-tcrn-theme="dark"]` block declaring
+the same names as the light block. Because the light block also answers to
+`data-tcrn-theme="light"`, a light container inside a night page takes the light
+values again instead of inheriting the night ones; `tcrnGplusThemeSelectors.light`
+carries the same list, `parseTokenCssBlocks` reports a selector list in canonical
+form, and `compareTokenThemeBlocks` matches lists in any order and spacing. Type,
+radius, control height and padding, icon size, shadow and motion move to the G+
+scale; line heights carry px units; `--tcrn-type-family-heading` (Source Serif 4) is
+new. The type scale rules of `@tcrn/ui-react`
+(`src/styles/generated/typography.scale.ts`) are generated from `typography.json`
+and refer to the type tokens through `var(--tcrn-type-*)`; the generator stops
+when a token's value and its scale entry disagree. Four declarations still carry a
+literal because no token exists for them: the inline numeral size 16px, the large
+numeral 44px on a 48px line, and the mono text size 11.5px. Whether to add tokens
+for them is an open Owner decision. Control outlines use `line-ctl`, at least
+3:1 against the page. Fifty earlier names stay defined as deprecated aliases
+(`--old: var(--new)`), and
+`--tcrn-motion-press-scale` stays defined with no successor, because a G+ press
+changes the fill and does not scale. The focus ring is a box-shadow, a 2px gap in
+the surface colour and then 2px of accent, with a transparent outline kept for
+forced colours. New exports: `compareTokenThemeBlocks`, `parseTokenCssBlocks`,
+`createResolvedTokenMap`, `tcrnDeprecatedTokenAliases`, `tcrnDeprecatedTokens`,
+`findDeprecatedTokenUsages`, `formatDeprecatedTokenNotices`, `tcrnTokenStylesheet`,
+and the contract tables `tcrnGplusThemedTokens`, `tcrnGplusFixedTokens`,
+`tcrnGplusBrandTokens` and `tcrnGplusThemeSelectors`; `DesignToken` gains the
+optional `scope` and `deprecated` fields. `scripts/token-deprecation-notice.mjs`
+lists the old names a source tree still uses and never fails a build; the Storybook
+build runs it over its own sources.
+
+**Bundled fonts.** Hanken Grotesk, Source Serif 4, IBM Plex Mono, Noto Sans SC and
+Noto Serif SC ship in `@tcrn/ui-tokens` as WOFF2 files copied byte for byte from
+pinned `@fontsource` packages (the Chinese faces as the upstream unicode-range
+slices that cover product text), with `@tcrn/ui-tokens/fonts.css`,
+`fonts/manifest.json`, the five SIL OFL 1.1 licence texts in `licenses/`, and
+`FONT-LICENSES.md`. Each of the four family tokens follows its Latin face with a
+bundled Chinese face: Noto Sans SC in the UI and mono stacks (mono is
+`"IBM Plex Mono","Noto Sans SC",ui-monospace,Menlo,monospace`, so Chinese set in
+mono no longer falls to a system face), Noto Serif SC in the serif and heading
+stacks; `fonts:proof` is red when a family token loses that fallback.
+`tokens.css` imports `fonts.css`; the JS export `tcrnTokenCss`
+does not. No font CDN is referenced. This replaces the 2.0.0 position that the
+system ships no font software; the 2.0.0 entry below stays as written. The licence
+allow-list admits OFL-1.1 for these five packages only, and the packed
+`@tcrn/ui-tokens` grows by the font files.
+
+**The first batch: five families on the contract.**
+
+- Typography: `Text` gains `size` (`body`, `reading`, `meta`, `caption`), `tone`
+  (`default`, `strong`) and `variant` (`numeral`, `caps`); with no props its markup
+  is unchanged. `Heading` levels 1 to 4 and the single-line `Text` variants repeat
+  their text in `title`. Heading sizes come from the contract scale, and the clamp
+  sizes are gone. `Highlight` marks with `tcrn-highlight__mark` (was
+  `tcrn-highlight-mark`) and only adds a background. `tcrn-link` takes the
+  contract link rules, and its states go through a pair table like Actions and
+  Inputs (live pair `--tcrn-pair-ink`, `--tcrn-pair-underline`,
+  `--tcrn-pair-edge`): the link rests in acc with an acc-ul underline, hover
+  switches ink and underline to acc-2, and focus draws the focus ring over a
+  transparent outline kept for forced colours. `tcrn-link--quiet` is now a
+  modifier of `tcrn-link` and has no styles alone: write
+  `class="tcrn-link tcrn-link--quiet"` (no bare use exists in this repository).
+  The quiet link rests in the current text colour with a transparent underline;
+  its hover underline moves from a 0.2em offset in the accent to the 2px link
+  offset in acc-2.
+- Icon: `Icon` draws 37 names from the contract on a 20-unit grid, the 28 existing
+  ones plus `plus`, `minus`, `users`, `bell`, `copy`, `trash`, `calendar`,
+  `more-horizontal` and `chevron-up`, with a 1.25 non-scaling stroke at every size.
+  `strokeWidth` is removed from `IconProps`, `lucide-react` is removed from
+  `@tcrn/ui-react`, and the `.tcrn-icon` base rule now ships in the package.
+- Brand: the product marks below.
+- Actions: `Button`, `IconButton` and `LinkButton` read a state pair table (fill,
+  ink and edge per state). `size="lg"` (40px) joins `sm` and `md`; `loading` sets
+  `aria-busy` and shows the loader; the press scale and transforms are gone. The new
+  `ButtonGroup` takes a required `ariaLabel` and `variant` `secondary` or `quiet`.
+  With a disabled reason, the `Button` title reads "label — reason", the visible
+  label first, so a cut label can still be read in full; a button without visible
+  text keeps the reason alone, and the reason stays the `aria-describedby`
+  description. `ClipboardCopyButton` shows one icon per settled state and no
+  longer accepts `loading`. The product shell's theme, side-navigation and
+  mobile-navigation toggles follow the Actions pairs; their sizes (36 and 38px)
+  are unchanged. The theme toggle shows its sun or moon by its own
+  `data-current-theme`: the default and `html[data-tcrn-theme="dark"]` icon
+  display rules are gone, so a toggle inside a block-level theme shows the current
+  icon instead of neither.
+- Inputs: the text controls and the `Select` and `MultiSelect` triggers read one
+  pair table with `border: 0` and an inset box-shadow edge; `Checkbox`, `Radio` and
+  `Switch` read their own pair tuples, and `Switch` drops the disabled opacity.
+  `SearchInput` takes the ink-wash tool form in the top bar and in forms. `Select`
+  and `DatePicker` draw their end icon (`chevron-down`, `calendar`) inside a
+  wrapper. `.tcrn-field:focus-within` no longer washes the field. Inside the
+  product shell, the focus rule leaves buttons, links and these inputs to their own
+  ring and gives other elements the G+ ring in place of the 3px outline. A focused
+  read-only text field shows the focus ring and keeps its read-only fill and ink
+  (the new `rf` state, ordered after `r`; the Inputs board lets read-only cover
+  focus, so this differs from the board on purpose). `.tcrn-field--error` no
+  longer washes the whole field or recolours its outline, and its error text reads
+  `--tcrn-color-bad`; the forced-colours outline stays. The search shortcut text
+  is ink-2 (was ink-3) and reaches 4.5:1 on the night wash. The `MultiSelect`
+  trigger keeps the `Select` end, 30px of end padding with the caret where the
+  `Select` chevron sits, and `.tcrn-multi-select-dropdown` is now a flex
+  column (`flex-direction: column`, `align-items: stretch`), so the static
+  expanded list sits directly below the trigger at the trigger's width instead
+  of beside it; its options declare their own pair, and hover and selection only
+  switch it.
+
+**Four product marks.** `TcrnBrandMark` takes `productId` (`tms`, `einzbern`,
+`mana-orchestrate`, `design-system`) and `variant` (`color`, `mono`, `tile-tint`,
+`tile-deep`) and draws the registered mark inline; without `productId` it renders
+the mother mark as before. `tcrnProductMarkSvg`, `tcrnProductMarkIds` and
+`tcrnProductMarkVariants` are new, and `ProductLogo`, `ProductLockup` and
+`ShellBrandLockup` take `markVariant`. In `tcrnProductLogoRegistry` the `workflow`
+entry becomes `einzbern` and `mana-orchestrate` is added. The four marked products
+take their name, wordmark face and five-locale tagline from the contract (TMS:
+艺人管理系统, Talent Management System; Einzbern: 项目记忆引擎, Project memory
+engine; Mana Orchestrate: 项目记忆助手, Project memory assistant; Design System:
+设计系统, Design System) and carry the new fields `markId`, `wordmark` and `byline`.
+Einzbern and Mana Orchestrate are whole names in the serif with the byline "by
+TCRN". The gradient suffix is gone: TCRN is set in ink, and the TMS and Design
+System suffixes read `--tcrn-brand-suffix-tms` and
+`--tcrn-brand-suffix-design-system`. By night the TMS suffix is #7aa0f5, the bright
+colour of the TMS mark (#2c63c8 by day; a design-session ruling of 2026-10-11, open
+to Owner correction), so `--tcrn-brand-suffix-tms` moves from the
+theme-independent block into the two theme blocks; the Design System suffix keeps
+#6577f3 in both themes. The definitions of `--tcrn-brand-accent-tms`,
+`--tcrn-brand-accent-workflow`, `--tcrn-brand-accent-design-system-1` to `-4` and
+`--tcrn-color-brand-secondary-readable` are removed. AOS keeps its entry, its
+accent and the mother mark.
+
+**Composition one in the product shell.** `ProductShell` takes the desktop
+geometry of the canvas's composition one (a design-session ruling of 2026-10-11,
+open to Owner correction). The sidebar is 220px wide (was 280) and 52px collapsed
+(was 92); the shell's top bar is at least 52px high (was 68); the workspace is a
+sheet 12px from the shell's top, right and bottom edges, with a 14px radius, the
+s1 shadow and the panel fill; the sidebar sits on the shell's canvas colour with
+no right border; navigation items and group titles keep a 16px lead column, with
+the text starting at 48px. The values come from four new theme-independent
+tokens: `--tcrn-shell-sidebar-width` (220px), `--tcrn-shell-sidebar-width-collapsed`
+(52px), `--tcrn-shell-topbar-height` (52px) and `--tcrn-radius-paper` (14px).
+`--tcrn-product-shell-sidebar-width` stays the shell's local variable and defaults
+to the new token, so a consumer can still set its own width on the shell. The lead
+column, the collapsed padding and the sheet apply outside the mobile layout only
+(`@media not all and (max-width: 760px)`); the mobile block itself is unchanged,
+while the canvas-coloured sidebar and the 52px top bar minimum apply at every
+width. The standalone `TopBar` keeps its 68px minimum height. The 52px collapsed
+rail still holds the 38px collapse toggle.
+
+**Storybook renders only the package.** The docs layer no longer carries component
+CSS of its own, and its scaffolding uses the `tcrn-doc-` prefix. Both tracks load
+the bundled fonts. Each family has a matrix story and a sample story built from the
+contract data (`typography-matrix` through `inputs-sample-members`), and
+composition three has a sample story built from public package components only
+(`composition-three-sample`, Storybook id `compositions--composition-three`): no
+sidebar, a top bar with the navigation, and content centred at most 1040px wide.
+Its top bar differs from the board: the standalone `TopBar` is 68px high against
+the board's 56, the navigation follows the search because `TopBar` has no
+navigation slot, and at 1024px the navigation wraps to four rows.
+`docs/design/gplus-2026-10/storybook-map.md` maps every canvas board to its story
+and records the differences. The composition-one samples no longer set an inline
+sidebar width, and their module no longer exports `gplusSampleSidebarWidth`. The
+dense operations and compact tool shell prototypes, which drew their shells with
+docs-only classes, are retired from the navigation shell stories together with the
+smoke assertions that only guarded them; the component inventory page no longer
+lists them, and `componentLibraryDeferredPrototypeNames` drops
+`DenseOperationsShellDemo` and `CompactToolShellDemo`, leaving
+`KnowledgeBaseShellDemo`. In the navigation shell story the static search results
+stay in the page flow and push the heading and first paragraph down instead of
+covering them. The documentation shell takes composition one's rail and top bar
+(sidebar 220px, 52px collapsed, top bar 52px, the 16px lead column, the canvas
+colour), and the knowledge-base sample's standalone `TopBar`, `SideNav`, group
+titles and navigation items take the same geometry through four registered docs
+exceptions until the Navigation family's batch. Still open in the documentation
+shell: the brand lockup keeps its 38px mark with the copy starting at 66px, not
+composition one's 48; the pages do not sit on a sheet 12px from the edge; and the
+knowledge-base sample's top bar cuts its description to one line with an ellipsis
+(the full text stays in the DOM).
+
+**New gates.** `contract:proof` (generated sources, icons, marks and matrices
+against the contract), `contract:static` (clauses C2, C5, C6, C7, C8, C11 and C13),
+`geometry:measure` (eight DOM measurements on the matrix and sample stories),
+`storybook:visual-proof` (rebuilt on the canvas map), `doc:sample-style` and
+`fonts:render` join `pnpm verify` after `pnpm build`. `tokens:proof` runs the
+rewritten contrast proof (C1 thresholds) and the deprecation-notice test;
+`fonts:proof` checks the font digests, stylesheet, licences and coverage;
+`doc-shell:proof` counts out-of-package classes in the docs layer;
+`brand-asset:proof` holds the eight product-mark files to their registered digests.
+`.github/workflows/verify.yml` runs `pnpm verify` on branch pushes and pull
+requests; it has not run yet.
+
+**Gate expectations after composition one.** `geometry:measure` adds a
+`shellFrame` check on the composition-one samples (the sheet 12px from the shell
+edge, the shell top bar 52px), and the geometry proof's brand check reads the
+collapsed rail (sidebar 52px, mark 22 by 22, copy not displayed).
+`storybook:visual-proof` maps composition three (23 rows) and takes the kind of a
+story outside the ten family stories from its registry category. The Storybook
+smoke and the AI consumption contract take composition one's values for the
+product shell (top bar 52, collapsed rail 52; were 68 and 92), the documentation
+shell oracle moves from a 288px sidebar (280 to 360) and a 96px top bar to 220
+and 52, and the smoke reads those values from the shell tokens; its focus
+comparison skips the outline width and offset when the outline style is `none`.
+The contrast proof and the axe check withdraw the two night TMS wordmark
+exemptions, which leaves the Design System suffix on panel and bg in the light
+theme. The shell-fidelity guard no longer counts the wrapping properties as
+placement on the C7 single-line carriers, and its registered docs exceptions
+change as listed in `docs/style-scale.md`. The internal-alpha search-overlay check
+and reproducibility probe expect six open menus (were eight) now that the shell
+prototypes are gone, and its mobile hash-anchor check lets the G+ translucent
+header layers through. `shell:parity` expects the sample's collapse toggle 16px
+from the rail edge (was the old documentation shell's `clamp(16px, 1.6vw, 24px)`,
+23.04px at 1440).
+
+`tcrnComponentCss` is now joined from family segment modules in
+`packages/ui-react/src/styles/`; the export and its import path are unchanged.
 
 ### The repository root no longer carries an agent entry (TCRN-CROSS-SUB-443)
 

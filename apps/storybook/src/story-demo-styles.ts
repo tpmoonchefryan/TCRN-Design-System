@@ -7,7 +7,12 @@
 // it; storybook.css carries a generated copy between markers, kept in sync by
 // `scripts/demo-styles-sync.mjs` (run via `pnpm demo-styles:sync`; `pnpm tokens:proof`
 // fails on drift). Do NOT put the token :root blocks here (tokens-sync owns those),
-// the alpha-only docs-shell chrome (.tcrn-doc-*), or the Track-A-only scaffolding.
+// the alpha-only docs-shell chrome (alpha-styles.ts), or the Track-A-only scaffolding.
+//
+// TCRN-DS-SUB-025: component styles come from the package (`tcrnComponentCss`), never
+// from this layer. Every documentation-private class uses the `tcrn-doc-` prefix; rules
+// may place a package component inside that scaffolding but do not repaint it.
+// scripts/doc-shell-class-proof.mjs counts any other tcrn-* class the package does not define.
 export const demoStoryCss = `.alpha-frame {
   display: grid;
   gap: var(--tcrn-space-4);
@@ -33,14 +38,14 @@ export const demoStoryCss = `.alpha-frame {
   min-width: 0;
 }
 
-.tcrn-story-kicker {
+.tcrn-doc-story-kicker {
   color: var(--tcrn-color-brand-primary);
   font-size: var(--tcrn-type-size-meta);
   font-weight: 700;
   letter-spacing: 0;
 }
 
-.tcrn-static-section {
+.tcrn-doc-static-section {
   display: grid;
   gap: var(--tcrn-space-3h);
 }
@@ -55,15 +60,9 @@ label {
   overflow-wrap: anywhere;
 }
 
-
-.tcrn-icon {
-  display: inline-block;
-  flex: none;
-  color: currentColor;
-  fill: none;
-  stroke: currentColor;
-  vertical-align: -0.125em;
-}
+/* The .tcrn-icon base rule is the package's (styles/icon.css.ts); the docs layer only
+   lays icon samples out, and it addresses a package icon as svg[data-icon-name] so that
+   no docs rule takes .tcrn-icon as its subject. */
 
 /* .tcrn-highlight-text / .tcrn-highlight-mark (Typography-emitted) moved into the
    package component CSS — TCRN-DS-STORY-037. */
@@ -73,13 +72,13 @@ label {
   gap: var(--tcrn-space-3);
 }
 
-.tcrn-changelog-records {
+.tcrn-doc-changelog-records {
   display: grid;
   gap: var(--tcrn-space-3);
   min-width: 0;
 }
 
-.tcrn-changelog-record {
+.tcrn-doc-changelog-record {
   display: grid;
   gap: var(--tcrn-space-3);
   min-width: 0;
@@ -89,7 +88,7 @@ label {
   padding: var(--tcrn-space-3);
 }
 
-.tcrn-changelog-record__header {
+.tcrn-doc-changelog-record__header {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
@@ -97,30 +96,30 @@ label {
   min-width: 0;
 }
 
-.tcrn-changelog-record__header h3,
-.tcrn-changelog-record__header p {
+.tcrn-doc-changelog-record__header h3,
+.tcrn-doc-changelog-record__header p {
   margin: 0;
 }
 
-.tcrn-changelog-record__evidence-grid {
+.tcrn-doc-changelog-record__evidence-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--tcrn-space-2h);
   min-width: 0;
 }
 
-.tcrn-changelog-record__evidence-list {
+.tcrn-doc-changelog-record__evidence-list {
   display: grid;
   gap: var(--tcrn-space-2);
   min-width: 0;
 }
 
-.tcrn-changelog-record__evidence-list h4 {
+.tcrn-doc-changelog-record__evidence-list h4 {
   margin: 0;
   font-size: var(--tcrn-type-size-body);
 }
 
-.tcrn-changelog-record__evidence-list ul {
+.tcrn-doc-changelog-record__evidence-list ul {
   display: grid;
   gap: var(--tcrn-space-1h);
   margin: 0;
@@ -128,12 +127,12 @@ label {
   min-width: 0;
 }
 
-.tcrn-changelog-record__evidence-list li {
+.tcrn-doc-changelog-record__evidence-list li {
   min-width: 0;
 }
 
-.tcrn-changelog-record__artifact,
-.tcrn-changelog-record__boundary {
+.tcrn-doc-changelog-record__artifact,
+.tcrn-doc-changelog-record__boundary {
   display: inline-block;
   max-width: 100%;
   overflow: hidden;
@@ -143,36 +142,8 @@ label {
   white-space: nowrap;
 }
 
-.tcrn-changelog-token {
-  display: inline-grid;
-  gap: var(--tcrn-space-0h);
-  width: min(100%, max-content);
-  max-width: 100%;
-  min-width: 0;
-}
-
-.tcrn-changelog-token__label {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: var(--tcrn-type-weight-strong);
-  line-height: var(--tcrn-type-line-caption);
-}
-
-.tcrn-changelog-token__value {
-  display: block;
-  max-width: min(46ch, 100%);
-  min-width: 0;
-  overflow: hidden;
-  color: var(--tcrn-color-text-primary);
-  font-family: var(--tcrn-type-family-mono);
-  font-size: var(--tcrn-type-size-meta);
-  line-height: 1.35;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.tcrn-guidance-grid,
-.tcrn-spec-grid {
+.tcrn-doc-guidance-grid,
+.tcrn-doc-spec-grid {
   display: grid;
   gap: var(--tcrn-space-3);
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -182,12 +153,12 @@ label {
 /* The record-index panel carries two status chips per row. Reserve the wider
    half for that scan surface so the chips stay on one line after the badge's
    geometry is corrected; the paired empty-state panel remains readable. */
-.tcrn-spec-grid--record-index {
+.tcrn-doc-spec-grid--record-index {
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
 }
 
 @media (max-width: 760px) {
-  .tcrn-spec-grid--record-index {
+  .tcrn-doc-spec-grid--record-index {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -196,40 +167,32 @@ label {
    220px demo-card floor at that effective width so the page itself never grows
    a horizontal scrollbar; tables retain their own local overflow contract. */
 @media (max-width: 240px) {
-  .tcrn-spec-grid {
+  .tcrn-doc-spec-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .tcrn-spec-grid > * {
+  .tcrn-doc-spec-grid > * {
     min-inline-size: 0;
     max-inline-size: 100%;
   }
 }
 
-.tcrn-guidance-list {
-  display: grid;
-  gap: var(--tcrn-space-2);
-  margin: 0;
-  padding-inline-start: 18px;
-}
-
-.tcrn-status-cloud {
+.tcrn-doc-status-cloud {
   display: flex;
   flex-wrap: wrap;
   gap: var(--tcrn-space-2);
 }
 
-.tcrn-form-stack {
+.tcrn-doc-form-stack {
   display: grid;
   gap: var(--tcrn-space-3);
   min-width: 0;
 }
 
-.tcrn-form-stack .tcrn-field {
+.tcrn-doc-form-stack .tcrn-field {
   margin-bottom: 0;
 }
 
-.tcrn-action-row,
-.tcrn-storybook-component-example .tcrn-top-bar__actions {
+.tcrn-doc-action-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -237,34 +200,20 @@ label {
   min-width: 0;
 }
 
-.tcrn-locale-grid {
+.tcrn-doc-locale-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--tcrn-space-2);
 }
 
-.tcrn-locale-card {
-  display: grid;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  padding: var(--tcrn-space-2h);
-  background: var(--tcrn-color-surface-panel);
-}
-
-.tcrn-locale-card span {
-  color: var(--tcrn-color-text-secondary);
-}
-
-.tcrn-token-swatch-grid {
+.tcrn-doc-token-swatch-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--tcrn-space-2h);
   min-width: 0;
 }
 
-.tcrn-token-swatch {
+.tcrn-doc-token-swatch {
   display: grid;
   grid-template-columns: 38px minmax(0, 1fr);
   gap: var(--tcrn-space-1) var(--tcrn-space-2h);
@@ -275,7 +224,7 @@ label {
   min-width: 0;
 }
 
-.tcrn-token-swatch__color {
+.tcrn-doc-token-swatch__color {
   grid-row: span 3;
   width: 34px;
   height: 34px;
@@ -283,37 +232,22 @@ label {
   border-radius: var(--tcrn-radius-control);
 }
 
-.tcrn-token-swatch strong,
-.tcrn-token-swatch code,
-.tcrn-token-swatch p {
+.tcrn-doc-token-swatch strong,
+.tcrn-doc-token-swatch code,
+.tcrn-doc-token-swatch p {
   min-width: 0;
 }
 
-.tcrn-token-swatch code {
+.tcrn-doc-token-swatch code {
   color: var(--tcrn-color-text-secondary);
   overflow-wrap: anywhere;
 }
 
-.tcrn-token-swatch p {
+.tcrn-doc-token-swatch p {
   margin: 0;
 }
 
-.tcrn-typography-sample {
-  display: grid;
-  gap: var(--tcrn-space-2);
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  padding: var(--tcrn-space-3);
-  background: var(--tcrn-color-surface-panel);
-  min-width: 0;
-}
-
-.tcrn-typography-sample h3,
-.tcrn-typography-sample p {
-  margin: 0;
-}
-
-.tcrn-type-scale-demo {
+.tcrn-doc-type-scale-demo {
   display: grid;
   gap: var(--tcrn-space-2h);
   border: 1px solid var(--tcrn-color-border-subtle);
@@ -323,50 +257,7 @@ label {
   min-width: 0;
 }
 
-.tcrn-type-scale-demo__page,
-.tcrn-type-scale-demo__section,
-.tcrn-type-scale-demo__body,
-.tcrn-type-scale-demo__caption,
-.tcrn-type-scale-demo__code {
-  margin: 0;
-  min-width: 0;
-}
-
-.tcrn-type-scale-demo__page {
-  font-size: var(--tcrn-type-size-page);
-  line-height: var(--tcrn-type-line-page);
-  font-weight: var(--tcrn-type-weight-strong);
-}
-
-.tcrn-type-scale-demo__section {
-  font-size: var(--tcrn-type-size-section);
-  line-height: var(--tcrn-type-line-section);
-  font-weight: var(--tcrn-type-weight-strong);
-}
-
-.tcrn-type-scale-demo__body {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-body);
-  line-height: var(--tcrn-type-line-body);
-  font-weight: var(--tcrn-type-weight-regular);
-}
-
-.tcrn-type-scale-demo__caption {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: var(--tcrn-type-line-caption);
-  font-weight: var(--tcrn-type-weight-medium);
-}
-
-.tcrn-type-scale-demo__code {
-  font-family: var(--tcrn-type-family-mono);
-  font-size: var(--tcrn-type-size-meta);
-  line-height: 1.4;
-  color: var(--tcrn-color-text-secondary);
-  overflow-wrap: anywhere;
-}
-
-.tcrn-icon-sample-grid {
+.tcrn-doc-icon-sample-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
   gap: var(--tcrn-space-2);
@@ -376,7 +267,7 @@ label {
   min-width: 0;
 }
 
-.tcrn-icon-sample {
+.tcrn-doc-icon-sample {
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
   align-items: center;
@@ -390,14 +281,13 @@ label {
   padding: var(--tcrn-space-2) var(--tcrn-space-2h);
 }
 
-.tcrn-icon-sample .tcrn-icon {
-  width: 18px;
-  height: 18px;
+/* The sample only places the package icon in its track: size (Icon's default md, 16px)
+   and colour stay the package's. */
+.tcrn-doc-icon-sample svg[data-icon-name] {
   justify-self: center;
-  color: var(--tcrn-color-brand-primary);
 }
 
-.tcrn-icon-sample code {
+.tcrn-doc-icon-sample code {
   min-width: 0;
   display: block;
   white-space: nowrap;
@@ -410,14 +300,14 @@ label {
   line-height: 1.3;
 }
 
-.tcrn-motion-demo-grid {
+.tcrn-doc-motion-demo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--tcrn-space-2h);
   min-width: 0;
 }
 
-.tcrn-motion-demo {
+.tcrn-doc-motion-demo {
   display: grid;
   gap: var(--tcrn-space-2h);
   border: 1px solid var(--tcrn-color-border-subtle);
@@ -427,12 +317,12 @@ label {
   background: var(--tcrn-color-surface-panel);
 }
 
-.tcrn-motion-demo h3,
-.tcrn-motion-demo p {
+.tcrn-doc-motion-demo h3,
+.tcrn-doc-motion-demo p {
   margin: 0;
 }
 
-.tcrn-motion-demo__track {
+.tcrn-doc-motion-demo__track {
   position: relative;
   min-height: 28px;
   border-radius: var(--tcrn-radius-control);
@@ -440,7 +330,7 @@ label {
   overflow: hidden;
 }
 
-.tcrn-motion-demo__dot {
+.tcrn-doc-motion-demo__dot {
   position: absolute;
   top: 6px;
   left: 8px;
@@ -451,24 +341,24 @@ label {
   animation: tcrn-motion-travel var(--tcrn-motion-standard) infinite alternate;
 }
 
-.tcrn-motion-demo--instant .tcrn-motion-demo__dot {
+.tcrn-doc-motion-demo--instant .tcrn-doc-motion-demo__dot {
   animation-duration: 700ms;
   animation-timing-function: ease-out;
 }
 
-.tcrn-motion-demo--standard .tcrn-motion-demo__dot {
+.tcrn-doc-motion-demo--standard .tcrn-doc-motion-demo__dot {
   background: var(--tcrn-color-brand-secondary);
   animation-duration: 1100ms;
   animation-timing-function: ease;
 }
 
-.tcrn-motion-demo--emphasis .tcrn-motion-demo__dot {
+.tcrn-doc-motion-demo--emphasis .tcrn-doc-motion-demo__dot {
   background: var(--tcrn-color-brand-accent);
   animation-duration: 1400ms;
   animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
-.tcrn-motion-demo--reduced .tcrn-motion-demo__dot {
+.tcrn-doc-motion-demo--reduced .tcrn-doc-motion-demo__dot {
   left: 50%;
   background: var(--tcrn-color-brand-neutral);
   animation: none;
@@ -483,31 +373,14 @@ label {
   }
 }
 
-.tcrn-loading-motion-grid {
+.tcrn-doc-loading-motion-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--tcrn-space-2h);
   min-width: 0;
 }
 
-.tcrn-loading-card {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-  align-content: start;
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  padding: var(--tcrn-space-3);
-  min-width: 0;
-  background: var(--tcrn-color-surface-panel);
-}
-
-.tcrn-loading-card h3,
-.tcrn-loading-card p {
-  margin: 0;
-}
-
-.tcrn-loading-card__row,
-.tcrn-loading-status {
+.tcrn-doc-loading-card__row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -515,118 +388,13 @@ label {
   min-width: 0;
 }
 
-.tcrn-loading-spinner {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 auto;
-  border: 3px solid var(--tcrn-color-brand-primary-bg);
-  border-top-color: var(--tcrn-color-brand-primary);
-  border-radius: var(--tcrn-radius-pill);
-  animation: tcrn-motion-spin var(--tcrn-motion-loading-loop) infinite;
-}
-
-.tcrn-loading-copy {
+.tcrn-doc-loading-copy {
   display: grid;
   gap: var(--tcrn-space-1);
   min-width: 0;
 }
 
-.tcrn-loading-progress {
-  position: relative;
-  min-height: 10px;
-  border-radius: var(--tcrn-radius-pill);
-  background: var(--tcrn-color-surface-muted);
-  overflow: hidden;
-}
-
-.tcrn-loading-progress__bar {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 46%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--tcrn-color-brand-secondary), var(--tcrn-color-brand-primary));
-  animation: tcrn-motion-progress var(--tcrn-motion-progress-loop) infinite;
-}
-
-.tcrn-loading-skeleton {
-  display: grid;
-  gap: var(--tcrn-space-2);
-  padding: var(--tcrn-space-1) 0;
-}
-
-.tcrn-loading-skeleton__line {
-  min-height: 12px;
-  border-radius: var(--tcrn-radius-pill);
-  background: linear-gradient(90deg, var(--tcrn-color-surface-muted), var(--tcrn-color-brand-primary-bg), var(--tcrn-color-surface-muted));
-  background-size: 220% 100%;
-  animation: tcrn-motion-shimmer var(--tcrn-motion-skeleton-loop) infinite;
-}
-
-.tcrn-loading-skeleton__line--short {
-  width: 56%;
-}
-
-.tcrn-loading-skeleton__line--medium {
-  width: 76%;
-}
-
-.tcrn-loading-status__chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-control);
-  padding: var(--tcrn-space-1) var(--tcrn-space-2);
-  color: var(--tcrn-color-text-primary);
-  background: var(--tcrn-color-surface-muted);
-  transition:
-    background-color var(--tcrn-motion-standard),
-    border-color var(--tcrn-motion-standard),
-    color var(--tcrn-motion-standard);
-}
-
-/* TCRN-DS-STORY-087 — "selection is ink". This chip marks which state of the
-   transition the record is in right now, which is exactly the "this is the
-   state" the grammar reserves structure for, so it takes the selection edge
-   rather than brand paint. It keeps its own surface: the chip is framed and
-   surface-bearing, and ink promotes the frame instead of adding a layer. */
-.tcrn-loading-status__chip--active {
-  border-color: var(--tcrn-selection-edge);
-  color: var(--tcrn-color-text-primary);
-}
-
-.tcrn-loading-status__arrow {
-  width: 16px;
-  height: 16px;
-  color: var(--tcrn-color-text-secondary);
-}
-
-@keyframes tcrn-motion-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes tcrn-motion-progress {
-  0% {
-    transform: translateX(-105%);
-  }
-  55%,
-  100% {
-    transform: translateX(220%);
-  }
-}
-
-@keyframes tcrn-motion-shimmer {
-  from {
-    background-position: 120% 0;
-  }
-  to {
-    background-position: -120% 0;
-  }
-}
-
-.tcrn-theme-preview {
+.tcrn-doc-theme-preview {
   display: grid;
   gap: var(--tcrn-space-2h);
   color: var(--tcrn-color-text-primary);
@@ -640,13 +408,11 @@ label {
   padding: var(--tcrn-space-3);
 }
 
-
-
 /* Feedback families .tcrn-state-view / .tcrn-skeleton* (+ @keyframes
    tcrn-skeleton-shimmer) / .tcrn-state-surface* moved into the package component CSS —
    TCRN-DS-STORY-037. (.tcrn-state-surface__action stays out of scope; it is S036.) */
 
-.tcrn-display-primitive-grid {
+.tcrn-doc-display-primitive-grid {
   display: grid;
   gap: var(--tcrn-space-3);
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -656,34 +422,22 @@ label {
 /* A wrapping reference strip must not take its longest reference as its minimum width:
    inside a panel's grid that minimum widens the whole track and the panel clips its
    tables instead of letting them scroll. */
-.tcrn-reference-strip[data-reference-wrap="true"] {
+.tcrn-doc-reference-strip[data-reference-wrap="true"] {
   min-width: 0;
 }
 
-.tcrn-interaction-primitive-row {
+.tcrn-doc-interaction-primitive-row {
   display: flex;
   flex-wrap: wrap;
   gap: var(--tcrn-space-3);
   align-items: center;
 }
 
-.tcrn-interaction-primitive-grid {
+.tcrn-doc-interaction-primitive-grid {
   display: grid;
   gap: var(--tcrn-space-3);
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   align-items: start;
-}
-
-.tcrn-inline-proof-token {
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-muted);
-  padding: 0 var(--tcrn-space-2h);
-  font-family: var(--tcrn-type-family-mono);
-  font-size: var(--tcrn-type-size-meta);
 }
 
 /* Tooltip base, content, the :hover/:focus-within reveal and the four data-placement
@@ -713,96 +467,6 @@ label {
   transform: translate(0, -50%);
 }
 
-/* Layout .tcrn-collapsible-region* / .tcrn-disclosure-panel* and the component
-   reduced-motion + forced-colors handling moved into the package component CSS —
-   TCRN-DS-STORY-037. */
-
-
-/* Form families .tcrn-field* and .tcrn-input / .tcrn-select moved into the package
-   component CSS — TCRN-DS-STORY-037. .tcrn-input--short is a docs-only demo width (not
-   component-emitted) and stays here; it leans on the package .tcrn-input base. */
-.tcrn-input--short {
-  width: min(18ch, 100%);
-}
-
-/* The TopBar surface is the package's own; demos frame and position the bar but do not
-   repaint it, so a docs demo and a consuming product show the same background. */
-.tcrn-storybook-component-example .tcrn-top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  padding: var(--tcrn-space-2h) var(--tcrn-space-3);
-  min-width: 0;
-}
-
-.tcrn-storybook-component-example .tcrn-top-bar__brand {
-  font-weight: 700;
-  letter-spacing: 0;
-}
-
-.tcrn-storybook-component-example .tcrn-top-bar__module {
-  color: var(--tcrn-color-text-secondary);
-}
-
-.tcrn-storybook-component-example .tcrn-top-bar__brand,
-.tcrn-storybook-component-example .tcrn-top-bar__module {
-  min-width: 0;
-}
-
-.tcrn-entry-shell-strip {
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) minmax(160px, auto) auto;
-  align-items: center;
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  padding: var(--tcrn-space-2h) var(--tcrn-space-3);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tcrn-color-surface-panel) 78%, transparent);
-}
-
-.tcrn-entry-shell-strip__brand,
-.tcrn-entry-shell-strip__module {
-  display: inline-flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.tcrn-entry-shell-strip__brand {
-  gap: var(--tcrn-space-2h);
-  --tcrn-brand-mark-size: 36px;
-  --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
-}
-
-.tcrn-entry-shell-strip__brand span {
-  display: grid;
-  gap: var(--tcrn-space-0h);
-  min-width: 0;
-}
-
-.tcrn-entry-shell-strip__brand strong,
-.tcrn-entry-shell-strip__module span {
-  color: var(--tcrn-color-text-primary);
-  font-weight: 800;
-}
-
-.tcrn-entry-shell-strip__brand small {
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.tcrn-entry-shell-strip__module {
-  justify-self: center;
-  gap: var(--tcrn-space-1h);
-  color: var(--tcrn-color-text-secondary);
-}
-
 /* Navigation families .tcrn-breadcrumb* and the tab layouts (.tcrn-product-launcher,
    .tcrn-product-switcher, .tcrn-module-tabs, .tcrn-section-tabs, .tcrn-segmented-nav,
    including their button + selected rules) moved into the package component CSS —
@@ -817,7 +481,7 @@ label {
   min-width: 0;
 }
 
-.tcrn-nav-component-preview {
+.tcrn-doc-nav-component-preview {
   display: grid;
   gap: var(--tcrn-space-3);
   min-width: 0;
@@ -827,16 +491,12 @@ label {
   padding: var(--tcrn-space-3);
 }
 
-.tcrn-nav-component-preview .tcrn-product-switcher {
+.tcrn-doc-nav-component-preview .tcrn-product-switcher {
   width: max-content;
   max-width: 100%;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 62%, var(--tcrn-color-surface-panel));
-  padding: var(--tcrn-space-1);
 }
 
-.tcrn-package-nav-proof {
+.tcrn-doc-package-nav-proof {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
@@ -849,33 +509,26 @@ label {
   min-width: 0;
 }
 
-.tcrn-package-nav-proof__skip {
+.tcrn-doc-package-nav-proof__skip {
   position: relative;
   grid-area: skip;
   min-width: 0;
   min-height: 0;
 }
 
-.tcrn-package-nav-proof > .tcrn-side-nav {
+.tcrn-doc-package-nav-proof > .tcrn-side-nav {
   grid-area: sidenav;
   justify-self: stretch;
   min-width: min(180px, 100%);
   width: 100%;
 }
 
-.tcrn-package-nav-proof > .tcrn-segmented-nav {
+.tcrn-doc-package-nav-proof > .tcrn-segmented-nav {
   grid-area: tabs;
   align-self: start;
 }
 
-
-
-
-
-
-
-
-.tcrn-package-nav-proof__skip .tcrn-skip-link:not(:focus) {
+.tcrn-doc-package-nav-proof__skip .tcrn-skip-link:not(:focus) {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -889,13 +542,13 @@ label {
   transform: none;
 }
 
-.tcrn-package-nav-proof__skip .tcrn-skip-link:focus {
+.tcrn-doc-package-nav-proof__skip .tcrn-skip-link:focus {
   display: inline-flex;
   align-items: center;
   max-width: 100%;
 }
 
-.tcrn-shell-demo {
+.tcrn-doc-shell-demo {
   position: relative;
   display: grid;
   gap: var(--tcrn-space-3h);
@@ -905,197 +558,6 @@ label {
   background: var(--tcrn-color-surface-panel);
   padding: var(--tcrn-space-3h);
   box-shadow: var(--tcrn-elevation-floating);
-}
-
-.tcrn-shell-demo--compact {
-  padding: 0;
-  overflow: hidden;
-}
-
-.tcrn-compact-shell {
-  display: grid;
-  min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 84%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 54%, var(--tcrn-color-surface-panel));
-  overflow: hidden;
-}
-
-.tcrn-compact-shell .tcrn-top-bar {
-  display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) auto;
-  min-height: 72px;
-  border: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 80%, transparent);
-  border-radius: 0;
-  padding: 0 var(--tcrn-space-4);
-}
-
-.tcrn-compact-shell__brand {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  min-width: 0;
-  --tcrn-brand-mark-size: 38px;
-  --tcrn-brand-mark-filter: drop-shadow(0 1px 2px rgba(28, 29, 33, 0.10));
-}
-
-.tcrn-compact-shell .tcrn-top-bar__module {
-  justify-self: center;
-  text-align: center;
-}
-
-.tcrn-compact-shell .tcrn-top-bar__actions {
-  justify-self: end;
-}
-
-.tcrn-compact-shell__body {
-  display: grid;
-  grid-template-columns: minmax(240px, 0.34fr) minmax(0, 1fr);
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-  padding: var(--tcrn-space-3h);
-}
-
-.tcrn-compact-shell__summary,
-.tcrn-compact-shell__switcher,
-.tcrn-compact-shell__metric {
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 82%, transparent);
-}
-
-.tcrn-compact-shell__summary,
-.tcrn-compact-shell__switcher {
-  display: grid;
-  align-content: start;
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-  padding: var(--tcrn-space-3);
-}
-
-.tcrn-compact-shell__summary {
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 84%, transparent);
-}
-
-.tcrn-compact-shell__summary > span {
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 800;
-}
-
-.tcrn-compact-shell__summary > strong {
-  font-size: var(--tcrn-type-size-section);
-  line-height: 1.2;
-}
-
-.tcrn-compact-shell__summary p,
-.tcrn-compact-shell__metric small {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-}
-
-.tcrn-compact-shell__switcher .tcrn-module-tabs {
-  display: inline-flex;
-  width: max-content;
-  max-width: 100%;
-  gap: var(--tcrn-space-1);
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 62%, var(--tcrn-color-surface-panel));
-  padding: var(--tcrn-space-1);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--tcrn-color-surface-panel) 74%, transparent);
-}
-
-.tcrn-compact-shell__switcher .tcrn-module-tabs button {
-  min-height: 34px;
-  border-color: transparent;
-  border-radius: var(--tcrn-radius-control);
-  background: transparent;
-  padding: 0 var(--tcrn-space-3);
-  box-shadow: none;
-}
-
-.tcrn-compact-shell__switcher .tcrn-module-tabs button[data-selected="true"],
-.tcrn-compact-shell__switcher .tcrn-module-tabs button[aria-current="page"] {
-  background: var(--tcrn-selection-fill);
-}
-
-.tcrn-compact-shell__panel {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-}
-
-.tcrn-compact-shell__metric {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--tcrn-space-2);
-  min-width: 0;
-  padding: var(--tcrn-space-2h);
-}
-
-.tcrn-compact-shell__metric .tcrn-icon {
-  flex: 0 0 auto;
-  color: var(--tcrn-color-brand-primary);
-  margin-top: 1px;
-}
-
-.tcrn-compact-shell__metric span {
-  display: grid;
-  gap: var(--tcrn-space-0h);
-  min-width: 0;
-}
-
-.tcrn-shell-demo--dense {
-  align-content: start;
-  grid-template-rows: max-content;
-  gap: 0;
-  min-height: 474px;
-  overflow: visible;
-  padding: 0;
-}
-
-.tcrn-shell-demo__topbar {
-  display: grid;
-  align-items: center;
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 84%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 82%, transparent);
-  padding: var(--tcrn-space-2h);
-}
-
-.tcrn-shell-demo__topbar--dense {
-  position: relative;
-  z-index: 3;
-  grid-template-columns: 44px minmax(220px, 1fr) minmax(180px, 280px) auto;
-  min-height: 72px;
-  border: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
-  border-radius: calc(var(--tcrn-radius-surface) - 1px) calc(var(--tcrn-radius-surface) - 1px) 0 0;
-  background: var(--tcrn-color-surface-panel);
-  padding: 0 var(--tcrn-space-4);
-}
-
-.tcrn-shell-demo__topbar--docs {
-  grid-template-columns: minmax(220px, 1fr) minmax(180px, 260px) auto;
-}
-
-.tcrn-shell-demo__brand {
-  display: grid;
-  gap: var(--tcrn-space-0h);
-  min-width: 0;
-}
-
-.tcrn-shell-demo__brand span {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
 }
 
 .tcrn-doc-brand {
@@ -1124,18 +586,8 @@ label {
 }
 
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
-  display: grid;
-  gap: var(--tcrn-space-0h);
   max-width: 220px;
   min-width: 0;
-  opacity: 1;
-  overflow: hidden;
-  transform: translateX(0);
-  visibility: visible;
-  transition:
-    opacity var(--tcrn-motion-emphasis),
-    transform var(--tcrn-motion-emphasis),
-    visibility 0s linear 0s;
 }
 
 .tcrn-doc-brand .tcrn-shell-brand-lockup__copy,
@@ -1148,13 +600,7 @@ label {
 .tcrn-doc-brand .tcrn-shell-brand-lockup__caption {
   max-width: 100%;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 700;
-  line-height: 1.25;
 }
 
 .tcrn-doc-search-results {
@@ -1197,393 +643,36 @@ label {
   font-size: var(--tcrn-type-size-meta);
 }
 
-
-
-
-.tcrn-shell-demo__menu-button,
-.tcrn-shell-domain-item,
-.tcrn-shell-hub-action,
-.tcrn-shell-task-lane a,
-.tcrn-shell-quick-list a,
-.tcrn-bookmark-nav a {
-  position: relative;
-  min-height: 34px;
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 92%, transparent);
-  color: var(--tcrn-color-text-primary);
-  text-decoration: none;
-}
-/* TCRN-DS-STORY-067: the TMS dense-shell prototype's clickable rows/actions/links (and the
-   knowledge bookmark links) answered neither hover nor keyboard focus. Minimal feedback keeps the
-   interactive semantics honest without changing the prototype's shape. */
-.tcrn-shell-domain-item:hover,
-.tcrn-shell-hub-action:hover,
-.tcrn-shell-task-lane a:hover,
-.tcrn-shell-quick-list a:hover,
-.tcrn-bookmark-nav a:hover {
-  border-color: var(--tcrn-color-border-control);
-  background: var(--tcrn-color-surface-muted);
-}
-.tcrn-shell-domain-item:focus-visible,
-.tcrn-shell-hub-action:focus-visible,
-.tcrn-shell-task-lane a:focus-visible,
-.tcrn-shell-quick-list a:focus-visible,
-.tcrn-bookmark-nav a:focus-visible {
-  outline: 2px solid var(--tcrn-color-focus-ring);
-  outline-offset: 2px;
-}
-
-.tcrn-shell-demo__menu-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  min-width: 36px;
-  gap: 0;
-  padding: 0;
-  font-weight: 700;
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 42%, var(--tcrn-color-border-subtle));
-  background: var(--tcrn-color-surface-panel);
-}
-
-.tcrn-shell-demo__menu-button .tcrn-icon {
-  width: 16px;
-  height: 16px;
-}
-
-.tcrn-shell-demo__topbar .tcrn-search-input {
-  max-width: 240px;
-}
-
-.tcrn-shell-demo__topbar .tcrn-search-input--compact {
-  min-width: 0;
-}
-
-.tcrn-shell-density-stack {
-  display: grid;
-  gap: var(--tcrn-space-4);
-  min-width: 0;
-}
-
-.tcrn-shell-layer {
-  position: absolute;
-  top: 84px;
-  left: 14px;
-  right: 14px;
-  z-index: 5;
-  display: grid;
-  min-width: 0;
-}
-
-.tcrn-shell-density-stack .tcrn-shell-demo--dense {
-  grid-template-rows: max-content max-content;
-  min-height: 0;
-}
-
-.tcrn-shell-density-stack .tcrn-shell-layer {
-  position: relative;
-  top: auto;
-  left: auto;
-  right: auto;
-  z-index: 2;
-  margin: 14px 14px 14px;
-}
-
-.tcrn-shell-mega-menu {
-  display: grid;
-  grid-template-columns: minmax(278px, 0.34fr) minmax(400px, 1fr) minmax(196px, 0.28fr);
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 78%, var(--tcrn-color-surface-panel));
-  padding: var(--tcrn-space-3);
-  box-shadow: var(--tcrn-elevation-floating);
-}
-
-.tcrn-shell-hub-menu {
-  display: grid;
-  grid-template-columns: minmax(230px, 0.32fr) minmax(430px, 1fr) minmax(210px, 0.3fr);
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 82%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  padding: var(--tcrn-space-3);
-  box-shadow: var(--tcrn-elevation-floating);
-}
-
-.tcrn-shell-domain-nav,
-.tcrn-shell-domain-group,
-.tcrn-shell-domain-list,
-.tcrn-shell-command-board,
-.tcrn-shell-hub-summary,
-.tcrn-shell-hub-actions,
-.tcrn-shell-hub-action,
-.tcrn-shell-hub-sidecar,
-.tcrn-shell-task-lanes,
-.tcrn-shell-task-lane,
-.tcrn-shell-quick-rail,
-.tcrn-shell-quick-list,
-.tcrn-bookmark-nav__group,
-.tcrn-bookmark-nav__children,
-.tcrn-knowledge-preview {
+.tcrn-doc-knowledge-preview {
   display: grid;
   gap: var(--tcrn-space-2);
   min-width: 0;
 }
 
-.tcrn-shell-domain-nav,
-.tcrn-shell-command-board,
-.tcrn-shell-hub-summary,
-.tcrn-shell-hub-sidecar,
-.tcrn-shell-quick-rail {
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 80%, transparent);
-  padding: var(--tcrn-space-2h);
-}
-
-.tcrn-shell-domain-nav {
-  align-content: start;
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 76%, transparent);
-}
-
-.tcrn-shell-hub-summary {
-  align-content: start;
-  gap: var(--tcrn-space-2);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 84%, transparent);
-}
-
-.tcrn-shell-hub-summary > span {
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 800;
-}
-
-.tcrn-shell-hub-summary > strong {
-  font-size: var(--tcrn-type-size-section);
-  line-height: 1.2;
-}
-
-.tcrn-shell-hub-summary p,
-.tcrn-shell-hub-sidecar li {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-body);
-  line-height: 1.45;
-}
-
-.tcrn-shell-hub-actions {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--tcrn-space-2h);
-}
-
-.tcrn-shell-hub-action {
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--tcrn-space-2);
-  min-height: 88px;
-  padding: var(--tcrn-space-3);
-  background: var(--tcrn-color-surface-panel);
-}
-
-.tcrn-shell-hub-action .tcrn-icon {
-  color: var(--tcrn-color-brand-primary);
-  margin-top: 2px;
-}
-
-.tcrn-shell-hub-action span {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  min-width: 0;
-}
-
-.tcrn-shell-hub-action small {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-}
-
-.tcrn-shell-hub-action em {
-  border-radius: var(--tcrn-radius-pill);
-  background: color-mix(in srgb, var(--tcrn-color-brand-primary-bg) 70%, transparent);
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-style: normal;
-  font-weight: 800;
-  padding: var(--tcrn-space-0h) var(--tcrn-space-1h);
-  white-space: nowrap;
-}
-
-.tcrn-shell-hub-action[data-selected="true"] {
-  border-color: var(--tcrn-selection-edge);
-}
-
-.tcrn-shell-hub-sidecar {
-  align-content: start;
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 82%, transparent);
-}
-
-.tcrn-shell-hub-sidecar ul {
-  display: grid;
-  gap: var(--tcrn-space-2);
-  margin: 0;
-  padding-left: var(--tcrn-space-4h);
-}
-
-.tcrn-shell-domain-group {
-  gap: var(--tcrn-space-1h);
-}
-
-.tcrn-shell-domain-group > strong,
-.tcrn-shell-hub-sidecar > strong,
-.tcrn-shell-quick-rail > strong,
-.tcrn-shell-task-lane__title strong {
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-}
-
-.tcrn-shell-domain-list {
-  gap: var(--tcrn-space-1h);
-}
-
-.tcrn-shell-domain-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--tcrn-space-2);
-  width: 100%;
-  text-align: left;
-  padding: var(--tcrn-space-2) var(--tcrn-space-2h);
-}
-
-.tcrn-shell-domain-item .tcrn-icon {
-  flex: 0 0 auto;
-  color: var(--tcrn-color-brand-primary);
-  margin-top: 1px;
-}
-
-.tcrn-shell-domain-item span {
-  display: grid;
-  gap: var(--tcrn-space-0h);
-  min-width: 0;
-}
-
-.tcrn-shell-domain-item small,
-.tcrn-shell-command-board__header p,
-.tcrn-shell-quick-rail p,
-.tcrn-shell-quick-list small {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-caption);
-  line-height: 1.35;
-}
-
-.tcrn-shell-command-board {
-  align-content: start;
-  gap: var(--tcrn-space-2h);
-}
-
-.tcrn-shell-command-board__header {
-  display: grid;
-  gap: var(--tcrn-space-0h);
-  border-bottom: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 72%, transparent);
-  padding: var(--tcrn-space-0h) var(--tcrn-space-0h) var(--tcrn-space-2h);
-}
-
-.tcrn-shell-command-board__header > span {
-  color: var(--tcrn-color-brand-primary);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 700;
-}
-
-.tcrn-shell-task-lanes {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--tcrn-space-2h);
-}
-
-.tcrn-shell-task-lane {
-  align-content: start;
-  gap: var(--tcrn-space-1h);
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
-  border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 72%, transparent);
-  padding: var(--tcrn-space-2h);
-}
-
-.tcrn-shell-task-lane__title {
-  display: flex;
-  align-items: center;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-  color: var(--tcrn-color-text-primary);
-}
-
-.tcrn-shell-task-lane__title .tcrn-icon {
-  color: var(--tcrn-color-brand-secondary);
-}
-
-.tcrn-shell-task-lane a,
-.tcrn-shell-quick-list a {
-  display: grid;
-  gap: var(--tcrn-space-0h);
-  min-height: 32px;
-  padding: var(--tcrn-space-1h) var(--tcrn-space-2);
-}
-
-.tcrn-shell-domain-item[data-selected="true"],
-.tcrn-shell-task-lane a[data-selected="true"],
-/* TCRN-DS-STORY-065 → STORY-087: the knowledge-base shell demo claims to mirror the active TCRN
-   documentation shell, so its bookmark selection must speak whatever language the doc shell speaks.
-   That language is now ink, not the 3px left-edge brand rail this comment used to describe — the
-   rail was deleted in the "selection is one grammar" change and this sentence was left standing
-   above the rule that replaced it. */
-/* TCRN-DS-STORY-089 / DS-INC-004: these rules used to be a byte-for-byte copy of
-   the package's NavItem selection style, so the docs shell only looked consistent
-   by coincidence and would have silently fallen behind the package. They now
-   express the package's own selection tokens, which is what "the same visual
-   instance" is supposed to mean. */
-.tcrn-bookmark-nav__group > a[data-selected="true"],
-.tcrn-bookmark-nav__children a[data-selected="true"] {
-  color: var(--tcrn-color-text-primary);
-  background: var(--tcrn-selection-fill);
-}
-
-.tcrn-shell-quick-rail {
-  align-content: start;
-  gap: var(--tcrn-space-2);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 78%, transparent);
-}
-
-.tcrn-shell-demo--knowledge {
+.tcrn-doc-shell-demo--knowledge {
   padding: 0;
   overflow: hidden;
 }
 
-.tcrn-knowledge-shell-layout {
+.tcrn-doc-knowledge-shell-layout {
   --tcrn-knowledge-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
   --tcrn-knowledge-shell-content-gutter: 18px;
-  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
+  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-surface-canvas);
   --tcrn-knowledge-shell-top-surface: var(--tcrn-color-surface-panel);
 }
-/* TCRN-DS-STORY-065: the deployed doc shell switches its left surface to the panel color in dark
-   mode; the demo kept a brand-tinted left rail. Mirror the shell so the demo stays faithful. */
-[data-tcrn-theme="dark"] .tcrn-knowledge-shell-layout {
-  --tcrn-knowledge-shell-left-surface: var(--tcrn-color-surface-panel);
-}
+/* The brand cell mirrors the documentation shell's left surface, the canvas colour in both
+   themes since composition one (O-1). */
 /* The layout is the size container its top bar answers to: the demo sits in a story
    frame, so its own width, not the viewport, decides whether one row fits.
-   The rail holds the brand lockup beside its collapse control, as the documentation
-   shell's own rail does: a 38px mark, its 12px gap and the 112px tagline, the 8px gap,
-   the 38px control and at most 54px of cell padding need 262px, so the rail never
-   drops below 264px. A narrower rail cut the tagline and ran it under the control. */
-.tcrn-knowledge-shell-layout {
-  --tcrn-knowledge-shell-rail-min: 264px;
+   The rail is the shell rail width (220, composition one): the brand lockup and its collapse
+   control share it as in the documentation shell's rail head, 16px from each edge. */
+.tcrn-doc-knowledge-shell-layout {
   container: tcrn-knowledge-shell / inline-size;
   display: grid;
   grid-template-areas:
     "topbar topbar"
     "sidebar content";
-  grid-template-columns: minmax(var(--tcrn-knowledge-shell-rail-min), 0.32fr) minmax(0, 1fr);
+  grid-template-columns: var(--tcrn-shell-sidebar-width) minmax(0, 1fr);
   gap: 0;
   align-items: stretch;
   min-width: 0;
@@ -1594,59 +683,57 @@ label {
   overflow: hidden;
 }
 
-/* The published TopBar tracks (brand, module, actions) lay the bar out; the demo only
-   sizes its own slot contents. */
-.tcrn-knowledge-shell__topbar {
+/* The layout places the package TopBar and SideNav, and gives them composition one's rail
+   geometry, which the package applies only inside ProductShell (O-1): the bar is the shell top bar,
+   the side navigation is a canvas rail with the 16px padding, group titles sit on the guide column
+   and items start there. The shell-fidelity guard registers these properties; they go when the
+   Navigation family batch gives the standalone parts this geometry. */
+/* The data-standard-shell qualifier outranks the package rules the story pages scope under
+   .story-body; the side navigation starts under the 96px rail head, as the documentation one does. */
+.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-top-bar {
   grid-area: topbar;
-  min-height: 68px;
-  border-bottom: 0;
+  min-height: var(--tcrn-shell-topbar-height);
+  padding-block: var(--tcrn-space-1h);
 }
 
-.tcrn-knowledge-shell__brand-slot {
-  align-self: stretch;
-  inline-size: max(var(--tcrn-knowledge-shell-rail-min), calc(100cqi * 0.32 / 1.32));
-  min-width: 0;
-  margin-block: calc(var(--tcrn-space-3) * -1);
-  margin-inline: calc(var(--tcrn-space-5) * -1) var(--tcrn-space-5);
+.tcrn-doc-knowledge-shell-layout[data-standard-shell] > .tcrn-side-nav {
+  grid-area: sidebar;
+  /* Under the 96px rail head: the bar is the shell top bar plus its 1px bottom edge. */
+  margin-block-start: calc(var(--tcrn-space-6) * 3 - var(--tcrn-shell-topbar-height) - 1px);
+  padding: var(--tcrn-space-4);
+  background: var(--tcrn-color-surface-canvas);
 }
 
-.tcrn-knowledge-shell__topbar .tcrn-top-bar__module {
-  min-width: 0;
+.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-group__label {
+  padding-inline: 0;
 }
 
-.tcrn-knowledge-shell__topbar .tcrn-top-bar__actions {
-  align-self: stretch;
-  display: grid;
-  align-content: center;
+.tcrn-doc-knowledge-shell-layout[data-standard-shell] .tcrn-nav-item {
+  margin-inline: calc(var(--tcrn-space-1) * -1);
+  padding-inline-start: calc(var(--tcrn-space-1) - 1px);
 }
 
-.tcrn-knowledge-shell__brand {
-  min-width: 0;
-  border-right: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-}
-
-.tcrn-knowledge-shell__topbar-copy,
-.tcrn-knowledge-shell__actions,
-.tcrn-knowledge-shell__sidebar-intro,
-.tcrn-knowledge-shell__content,
-.tcrn-knowledge-preview__panel,
-.tcrn-knowledge-shell__pager {
+.tcrn-doc-knowledge-shell__topbar-copy,
+.tcrn-doc-knowledge-shell__actions,
+.tcrn-doc-knowledge-shell__sidebar-intro,
+.tcrn-doc-knowledge-shell__content,
+.tcrn-doc-knowledge-preview__panel,
+.tcrn-doc-knowledge-shell__pager {
   display: grid;
   gap: var(--tcrn-space-2);
   min-width: 0;
 }
 
-.tcrn-knowledge-shell__topbar-copy span {
+.tcrn-doc-knowledge-shell__topbar-copy span {
+  overflow: hidden;
   color: var(--tcrn-color-text-secondary);
   font-size: var(--tcrn-type-size-caption);
   line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.tcrn-knowledge-shell__actions {
+.tcrn-doc-knowledge-shell__actions {
   align-self: center;
   justify-self: end;
   display: flex;
@@ -1660,15 +747,21 @@ label {
   padding: 0;
 }
 
-.tcrn-knowledge-shell__topbar-copy {
+.tcrn-doc-knowledge-shell__topbar-copy {
   align-self: stretch;
   align-content: center;
+  /* Title and one line of description fit the 52px shell top bar's 40px content height, as the
+     documentation bar's current-location block does; the description ends in an ellipsis. */
+  gap: var(--tcrn-space-0h);
   max-inline-size: 32ch;
   background: transparent;
-  padding: var(--tcrn-space-2h) 0;
+  padding: 0;
 }
 
-.tcrn-knowledge-shell__actions .tcrn-search-input {
+/* Placement only: the flex item and its track width. The width also sets the item's
+   intrinsic contribution, so the shrink-wrapped actions row keeps the 260px resting search
+   of the documentation shell; without it the row wraps the placeholder (about 241px). */
+.tcrn-doc-knowledge-shell__actions .tcrn-search-input {
   flex: 0 1 260px;
   width: 260px;
   max-width: 260px;
@@ -1680,86 +773,38 @@ label {
    beside it, so neither the collapse control nor the search covers text; the search
    takes its own line there rather than shrinking under its placeholder. */
 @container tcrn-knowledge-shell (max-width: 960px) {
-  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__brand {
-    grid-row: span 2;
-  }
-
-  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__module,
-  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__actions {
-    grid-column: 2 / -1;
-  }
-
-  .tcrn-knowledge-shell__actions {
+  .tcrn-doc-knowledge-shell__actions {
     flex-wrap: wrap;
   }
 
-  .tcrn-knowledge-shell__actions .tcrn-search-input {
+  .tcrn-doc-knowledge-shell__actions .tcrn-search-input {
     flex: 1 1 100%;
     width: auto;
     max-width: none;
   }
 }
 
-.tcrn-bookmark-panel {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-  border: 0;
-  border-radius: 0;
-  background: var(--tcrn-knowledge-shell-left-surface);
-  padding: var(--tcrn-space-3);
-}
-
-.tcrn-knowledge-shell__sidebar {
-  grid-area: sidebar;
-  align-content: start;
-  border-right: 0;
-  background: var(--tcrn-knowledge-shell-left-surface);
-  box-shadow: none;
-  gap: 0 !important;
-  padding: var(--tcrn-space-4) clamp(var(--tcrn-space-4), 1.6vw, 24px) var(--tcrn-space-4h) clamp(var(--tcrn-space-4h), 2vw, 30px);
-}
-
-.tcrn-knowledge-shell__groups {
+.tcrn-doc-knowledge-shell__groups {
   display: grid;
   gap: var(--tcrn-space-4);
   min-width: 0;
 }
 
-.tcrn-knowledge-shell-layout [data-navigation-primitive="nav-item"]:not([data-selected="true"]):not([aria-current="page"]) {
+.tcrn-doc-knowledge-shell-layout [data-navigation-primitive="nav-item"]:not([data-selected="true"]):not([aria-current="page"]) {
   background: transparent !important;
 }
 
-.tcrn-knowledge-shell-layout [data-navigation-primitive="nav-group"] > div:first-child {
+.tcrn-doc-knowledge-shell-layout [data-navigation-primitive="nav-group"] > div:first-child {
   color: var(--tcrn-color-text-secondary) !important;
 }
 
-.tcrn-bookmark-nav__group {
-  display: grid;
-  gap: var(--tcrn-space-1);
-}
-
-/* TCRN-DS-STORY-065: the "tracked" variant no longer paints a gradient fill + gradient capsule +
-   halo ring (the pre-INIT-005 selection language the shell standardized away). Selection comes from
-   the ink rule above — a fill, not the rail this comment used to name; text sits at normal padding. */
-.tcrn-bookmark-nav__children {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  padding-left: var(--tcrn-space-3);
-}
-
-.tcrn-bookmark-nav__children a {
-  min-height: 30px;
-  color: var(--tcrn-color-text-secondary);
-}
-
-.tcrn-knowledge-shell__content {
+.tcrn-doc-knowledge-shell__content {
   grid-area: content;
   align-content: start;
   padding: var(--tcrn-space-4h) var(--tcrn-space-4h) var(--tcrn-space-4h) var(--tcrn-knowledge-shell-content-gutter);
 }
 
-.tcrn-knowledge-preview {
+.tcrn-doc-knowledge-preview {
   align-content: start;
   border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 84%, transparent);
   border-radius: var(--tcrn-radius-surface);
@@ -1767,19 +812,19 @@ label {
   padding: var(--tcrn-space-3h);
 }
 
-.tcrn-knowledge-preview__panel {
+.tcrn-doc-knowledge-preview__panel {
   border: 1px solid var(--tcrn-color-border-subtle);
   border-radius: var(--tcrn-radius-control);
   background: color-mix(in srgb, var(--tcrn-color-surface-panel) 90%, transparent);
   padding: var(--tcrn-space-3);
 }
 
-.tcrn-knowledge-shell__pager {
+.tcrn-doc-knowledge-shell__pager {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: auto;
 }
 
-.tcrn-knowledge-shell__pager a {
+.tcrn-doc-knowledge-shell__pager a {
   display: grid;
   gap: var(--tcrn-space-1);
   min-width: 0;
@@ -1793,31 +838,20 @@ label {
 }
 /* TCRN-DS-STORY-065: the chapter pager mirrors the doc-shell chapter navigation, which answers
    hover + keyboard focus; the demo pager did neither. */
-.tcrn-knowledge-shell__pager a:hover {
+.tcrn-doc-knowledge-shell__pager a:hover {
   border-color: var(--tcrn-color-border-control);
   background: var(--tcrn-color-surface-muted);
 }
-.tcrn-knowledge-shell__pager a:focus-visible {
+.tcrn-doc-knowledge-shell__pager a:focus-visible {
   outline: 2px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;
 }
 
-.tcrn-knowledge-shell__pager a:last-child {
+.tcrn-doc-knowledge-shell__pager a:last-child {
   text-align: right;
 }
 
-.tcrn-knowledge-shell__pager-icon {
-  width: 16px;
-  height: 16px;
-  color: var(--tcrn-color-brand-primary);
-}
-
-.tcrn-knowledge-shell__pager a:last-child .tcrn-knowledge-shell__pager-icon {
-  justify-self: end;
-  color: var(--tcrn-color-brand-secondary);
-}
-
-.tcrn-knowledge-shell__pager span {
+.tcrn-doc-knowledge-shell__pager span {
   color: var(--tcrn-color-text-secondary);
   font-size: var(--tcrn-type-size-caption);
   font-weight: 700;
@@ -1828,8 +862,8 @@ label {
   gap: var(--tcrn-space-3);
 }
 
-.tcrn-overlay-mode-matrix,
-.tcrn-overlay-static-modes {
+.tcrn-doc-overlay-mode-matrix,
+.tcrn-doc-overlay-static-modes {
   display: grid;
   gap: var(--tcrn-space-3);
   border: 1px solid var(--tcrn-color-border-subtle);
@@ -1838,20 +872,19 @@ label {
   padding: var(--tcrn-space-3);
 }
 
-.tcrn-overlay-mode-matrix__intro {
+.tcrn-doc-overlay-mode-matrix__intro {
   display: grid;
   gap: var(--tcrn-space-1h);
 }
 
-.tcrn-overlay-mode-grid,
-.tcrn-overlay-drawer-grid {
+.tcrn-doc-overlay-mode-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--tcrn-space-2h);
 }
 
-.tcrn-overlay-mode-card,
-.tcrn-overlay-static-card {
+.tcrn-doc-overlay-mode-card,
+.tcrn-doc-overlay-static-card {
   display: grid;
   gap: var(--tcrn-space-2h);
   min-width: 0;
@@ -1861,26 +894,22 @@ label {
   padding: var(--tcrn-space-3);
 }
 
-.tcrn-overlay-mode-card {
+.tcrn-doc-overlay-mode-card {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
 }
 
-.tcrn-overlay-mode-card > div {
+.tcrn-doc-overlay-mode-card > div {
   display: grid;
   gap: var(--tcrn-space-1h);
   min-width: 0;
 }
 
-.tcrn-overlay-static-modes {
+.tcrn-doc-overlay-static-modes {
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
 }
 
-.tcrn-overlay-drawer-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.tcrn-dialog-spec-fixture {
+.tcrn-doc-dialog-spec-fixture {
   display: grid;
   gap: var(--tcrn-space-3);
   border: 1px solid var(--tcrn-color-border-subtle);
@@ -1889,37 +918,30 @@ label {
   padding: var(--tcrn-space-3);
 }
 
-.tcrn-dialog-spec-fixture__header {
+.tcrn-doc-dialog-spec-fixture__header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--tcrn-space-3);
   align-items: start;
 }
 
-.tcrn-dialog-spec-fixture__summary,
-.tcrn-dialog-spec-fixture__dialog {
+.tcrn-doc-dialog-spec-fixture__summary {
   min-width: 0;
 }
 
-.tcrn-dialog-spec-fixture__summary {
+.tcrn-doc-dialog-spec-fixture__summary {
   display: grid;
   gap: var(--tcrn-space-1h);
 }
 
-.tcrn-dialog-spec-fixture__actions,
-.tcrn-dialog-spec-fixture__dialog-actions {
+.tcrn-doc-dialog-spec-fixture__actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--tcrn-space-2);
 }
 
-.tcrn-dialog-spec-fixture__dialog {
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 26%, transparent);
-  box-shadow: var(--tcrn-elevation-floating);
-}
-
-.tcrn-dialog-spec-fixture [data-dialog-fixture-panel],
-.tcrn-dialog-spec-fixture [data-popover-fixture-panel] {
+.tcrn-doc-dialog-spec-fixture [data-dialog-fixture-panel],
+.tcrn-doc-dialog-spec-fixture [data-popover-fixture-panel] {
   display: grid;
   gap: var(--tcrn-space-2h);
   max-height: 0;
@@ -1934,18 +956,18 @@ label {
     transform var(--tcrn-motion-emphasis);
 }
 
-.tcrn-dialog-spec-fixture [data-dialog-fixture-panel][data-overlay-transition-state="open"],
-.tcrn-dialog-spec-fixture [data-dialog-fixture-panel][data-overlay-transition-state="opening"],
-.tcrn-dialog-spec-fixture [data-popover-fixture-panel][data-overlay-transition-state="open"],
-.tcrn-dialog-spec-fixture [data-popover-fixture-panel][data-overlay-transition-state="opening"] {
+.tcrn-doc-dialog-spec-fixture [data-dialog-fixture-panel][data-overlay-transition-state="open"],
+.tcrn-doc-dialog-spec-fixture [data-dialog-fixture-panel][data-overlay-transition-state="opening"],
+.tcrn-doc-dialog-spec-fixture [data-popover-fixture-panel][data-overlay-transition-state="open"],
+.tcrn-doc-dialog-spec-fixture [data-popover-fixture-panel][data-overlay-transition-state="opening"] {
   max-height: 720px;
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0) scale(1);
 }
 
-.tcrn-dialog-spec-fixture [data-dialog-fixture-panel][hidden],
-.tcrn-dialog-spec-fixture [data-popover-fixture-panel][hidden] {
+.tcrn-doc-dialog-spec-fixture [data-dialog-fixture-panel][hidden],
+.tcrn-doc-dialog-spec-fixture [data-popover-fixture-panel][hidden] {
   display: none;
 }
 
@@ -1962,37 +984,20 @@ label {
     padding: var(--tcrn-space-4);
   }
 
-  .tcrn-shell-demo__topbar,
-  .tcrn-shell-hub-menu,
-  .tcrn-shell-mega-menu,
-  .tcrn-overlay-mode-grid,
-  .tcrn-overlay-static-modes,
-  .tcrn-overlay-drawer-grid,
-  .tcrn-compact-shell__body,
-  .tcrn-compact-shell__panel,
-  .tcrn-shell-hub-actions,
-  .tcrn-shell-task-lanes {
+  .tcrn-doc-overlay-mode-grid,
+  .tcrn-doc-overlay-static-modes {
     grid-template-columns: 1fr;
   }
 
-  .tcrn-entry-shell-strip,
-  .tcrn-package-nav-proof {
+  .tcrn-doc-package-nav-proof {
     grid-template-columns: 1fr;
   }
 
-  .tcrn-entry-shell-strip__module {
-    justify-self: start;
-  }
-
-  .tcrn-nav-component-preview .tcrn-product-switcher {
+  .tcrn-doc-nav-component-preview .tcrn-product-switcher {
     width: 100%;
   }
 
-  .tcrn-compact-shell__switcher .tcrn-module-tabs {
-    width: 100%;
-  }
-
-  .tcrn-knowledge-shell-layout {
+  .tcrn-doc-knowledge-shell-layout {
     grid-template-areas:
       "topbar"
       "sidebar"
@@ -2000,94 +1005,36 @@ label {
     grid-template-columns: 1fr;
   }
 
-  .tcrn-knowledge-shell__pager {
+  .tcrn-doc-knowledge-shell__pager {
     grid-template-columns: 1fr;
   }
 
-  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__brand,
-  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__module,
-  .tcrn-knowledge-shell__topbar > .tcrn-top-bar__actions {
-    grid-row: auto;
-    grid-column: auto;
-  }
-
-  .tcrn-knowledge-shell__brand-slot {
-    inline-size: auto;
-    margin-inline: calc(var(--tcrn-space-5) * -1);
-  }
-
-  .tcrn-dialog-spec-fixture__header {
+  .tcrn-doc-dialog-spec-fixture__header {
     grid-template-columns: 1fr;
   }
 
-  .tcrn-knowledge-shell__sidebar {
-    border-right: 0;
-    border-bottom: 1px solid var(--tcrn-color-border-subtle);
-  }
-
-  .tcrn-knowledge-shell__topbar-copy,
-  .tcrn-knowledge-shell__actions {
+  .tcrn-doc-knowledge-shell__topbar-copy,
+  .tcrn-doc-knowledge-shell__actions {
     grid-column: auto;
     grid-row: auto;
   }
 
-  .tcrn-knowledge-shell__brand {
-    padding: 0;
-  }
-
-  .tcrn-knowledge-shell__topbar-copy,
-  .tcrn-knowledge-shell__actions {
+  .tcrn-doc-knowledge-shell__topbar-copy,
+  .tcrn-doc-knowledge-shell__actions {
     width: auto;
     padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
   }
 
-  .tcrn-knowledge-shell__content {
+  .tcrn-doc-knowledge-shell__content {
     padding: var(--tcrn-space-4);
-  }
-
-  .tcrn-shell-layer {
-    position: static;
-    padding: var(--tcrn-space-3);
-  }
-
-  .tcrn-shell-demo__topbar .tcrn-search-input {
-    max-width: none;
-  }
-
-  .tcrn-shell-demo--dense {
-    gap: var(--tcrn-space-3);
-    min-height: 0;
-    padding: var(--tcrn-space-3);
-  }
-
-  .tcrn-shell-demo__topbar--dense {
-    border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 84%, transparent);
-    border-radius: var(--tcrn-radius-surface);
-    padding: var(--tcrn-space-2h);
-  }
-
-}
-
-@media (max-width: 520px) {
-  .tcrn-storybook-component-example .tcrn-top-bar {
-    align-items: flex-start;
-    flex-direction: column;
   }
 
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tcrn-motion-demo__dot,
-  .tcrn-loading-spinner,
-  .tcrn-loading-progress__bar,
-  .tcrn-loading-skeleton__line {
+  .tcrn-doc-motion-demo__dot {
     animation-duration: var(--tcrn-motion-reduced-duration);
     animation-iteration-count: 1;
-  }
-
-  .tcrn-loading-spinner,
-  .tcrn-loading-progress__bar {
-    transform: none;
   }
 
 /* Reduced motion stops loops and cancels travel, but does not flatten the v2
@@ -2130,7 +1077,7 @@ label {
 }
 
 /* TCRN-DS-STORY-058: component API reference pages + the index links grid. */
-.tcrn-reference-index {
+.tcrn-doc-reference-index {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2138,14 +1085,14 @@ label {
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: var(--tcrn-space-1);
 }
-.tcrn-reference-index__item {
+.tcrn-doc-reference-index__item {
   margin: 0;
 }
 /* The index links are navigation TILES, not prose links: 100 underlines in a grid read as
    noise, so the rest state stays quiet (text-primary, no underline) and hover floats the
    quiet brand background + brand text. Pressable => it answers the press like the button
    family (press-scale on :active). */
-.tcrn-reference-index__item a {
+.tcrn-doc-reference-index__item a {
   display: block;
   padding: var(--tcrn-space-0h) var(--tcrn-space-1);
   border-radius: var(--tcrn-radius-control);
@@ -2154,19 +1101,19 @@ label {
   text-decoration: none;
   transition: background-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast), transform var(--tcrn-motion-instant);
 }
-.tcrn-reference-index__item a:hover {
+.tcrn-doc-reference-index__item a:hover {
   background: var(--tcrn-color-brand-primary-bg);
   color: var(--tcrn-color-brand-primary);
   border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 25%, transparent);
 }
-.tcrn-reference-index__item a:focus-visible {
+.tcrn-doc-reference-index__item a:focus-visible {
   outline: none;
   box-shadow: var(--tcrn-elevation-focus);
 }
-.tcrn-reference-index__item a:active {
+.tcrn-doc-reference-index__item a:active {
   transform: scale(var(--tcrn-motion-press-scale));
 }
-.tcrn-component-reference {
+.tcrn-doc-component-reference {
   display: flex;
   flex-direction: column;
   gap: var(--tcrn-space-1h);
@@ -2176,36 +1123,36 @@ label {
   background: var(--tcrn-color-surface-panel);
   scroll-margin-top: var(--tcrn-anchor-scroll-offset);
 }
-.tcrn-component-reference__meta,
-.tcrn-component-reference__facet,
-.tcrn-component-reference__empty {
+.tcrn-doc-component-reference__meta,
+.tcrn-doc-component-reference__facet,
+.tcrn-doc-component-reference__empty {
   color: var(--tcrn-color-text-secondary);
   margin: 0;
 }
-.tcrn-reference-table-scroll {
+.tcrn-doc-reference-table-scroll {
   overflow-x: auto;
 }
-.tcrn-reference-table {
+.tcrn-doc-reference-table {
   width: 100%;
   border-collapse: collapse;
 }
-.tcrn-reference-table th,
-.tcrn-reference-table td {
+.tcrn-doc-reference-table th,
+.tcrn-doc-reference-table td {
   text-align: left;
   padding: var(--tcrn-space-1) var(--tcrn-space-1h);
   border-bottom: 1px solid var(--tcrn-color-border-subtle);
   vertical-align: top;
 }
-.tcrn-reference-table th {
+.tcrn-doc-reference-table th {
   color: var(--tcrn-color-text-secondary);
 }
-.tcrn-reference-table td code {
+.tcrn-doc-reference-table td code {
   overflow-wrap: anywhere;
 }
 
 /* TCRN-DS-STORY-065: knowledge-shell brand cell + wordmark moved from alpha-styles (Track B
    only) into the shared demo layer so the real Storybook renders the topbar branding too. */
-.tcrn-knowledge-shell__brand-cell {
+.tcrn-doc-knowledge-shell__brand-cell {
   grid-column: 1;
   grid-row: 1;
   display: grid;
@@ -2214,26 +1161,33 @@ label {
   gap: var(--tcrn-space-2);
   align-items: center;
   align-self: stretch;
-  height: calc(100% + (var(--tcrn-space-0h) * 0.5));
+  /* Brand lockup relation (composition one): the brand cell is the head of the rail, as the
+     documentation shell's rail head is. It spans the rail track and claims back the top bar's
+     inline-start padding, its block padding and its 1px bottom edge, so the rail surface runs from
+     the bar's top edge into the side navigation with no gap. It is the 96px rail head, as in the
+     documentation shell, and gives back what it overhangs through its block-end margin, so the bar
+     keeps the 52px shell top bar height. */
+  inline-size: var(--tcrn-shell-sidebar-width);
+  block-size: calc(var(--tcrn-space-6) * 3);
+  margin-block: calc(var(--tcrn-space-1h) * -1) calc(var(--tcrn-shell-topbar-height) - var(--tcrn-space-6) * 3 - var(--tcrn-space-1h));
+  margin-inline-start: calc(var(--tcrn-space-5) * -1);
   background: var(--tcrn-knowledge-shell-left-surface);
-  padding: var(--tcrn-space-3) clamp(var(--tcrn-space-4), 1.6vw, 24px) var(--tcrn-space-3) clamp(var(--tcrn-space-4h), 2vw, 30px);
+  padding: var(--tcrn-space-3) var(--tcrn-space-4);
 }
 
-.tcrn-knowledge-shell__brand .tcrn-shell-brand-lockup {
+.tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup {
   width: 100%;
 }
-.tcrn-knowledge-shell__brand .tcrn-brand-wordmark {
-  align-items: flex-start;
-  flex-direction: column;
-  gap: var(--tcrn-space-0h);
-  font-size: var(--tcrn-type-size-heading-3);
-  line-height: 1.05;
-}
-.tcrn-knowledge-shell__brand .tcrn-brand-wordmark__suffix {
+.tcrn-doc-knowledge-shell__brand .tcrn-brand-wordmark__suffix {
   flex-basis: auto;
-  line-height: 1.06;
 }
-.tcrn-knowledge-shell__brand .tcrn-shell-brand-lockup__caption {
+.tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup__caption {
   white-space: nowrap;
+}
+/* As in the documentation rail head: in the 220px rail a copy line wraps rather than running under
+   the collapse control (only the Japanese tagline needs it). */
+.tcrn-doc-knowledge-shell__brand .tcrn-product-logo__copy *,
+.tcrn-doc-knowledge-shell__brand .tcrn-shell-brand-lockup__copy * {
+  white-space: normal;
 }
 `;

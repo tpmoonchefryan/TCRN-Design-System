@@ -1,6 +1,6 @@
 {
   "name": "@tcrn/ui-react",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "type": "module",
   "private": false,
   "license": "Apache-2.0",
@@ -22,8 +22,7 @@
     "@radix-ui/react-dialog": "1.1.17",
     "@radix-ui/react-popover": "1.1.17",
     "@tcrn/ui-copy-state": "workspace:*",
-    "@tcrn/ui-tokens": "workspace:*",
-    "lucide-react": "1.21.0"
+    "@tcrn/ui-tokens": "workspace:*"
   },
   "devDependencies": {
     "@types/jsdom": "21.1.7",

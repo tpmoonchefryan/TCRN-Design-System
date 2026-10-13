@@ -8,6 +8,7 @@ import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.m
 import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE, validateBaselineSelection, applyBaselineSelection } from "./lib/visual-signature.mjs";
 import { measureRecordContainment } from "./geometry-proof.mjs";
 import { storybookId } from "./lib/storybook-id.mjs";
+import { componentCssSourcePaths } from "./lib/component-css-sources.mjs";
 import { localeInvariantLedger, findLatinLeaks, partitionStoryLeaks } from "./lib/locale-invariant-ledger.mjs";
 import {
   STORY_HEIGHT_BUDGET_PX,
@@ -17,6 +18,91 @@ import {
 } from "./lib/story-budget.mjs";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
+import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
+import { WORDMARK_EXEMPTIONS } from "./token-contrast-proof.mjs";
+// G+ expectations (TCRN-DS-SUB-041): values below come from the G+ design contract
+// (docs/design/gplus-2026-10/contract) and the resolved @tcrn/ui-tokens map, serialized the way
+// getComputedStyle reports them, never copied from a rendering.
+const gplusPairsContract = JSON.parse(readFileSync("docs/design/gplus-2026-10/contract/pairs.json", "utf8"));
+const gplusLightTokens = createResolvedTokenMap("light");
+const gplusDarkTokens = createResolvedTokenMap("dark");
+const gplusComputedColor = (raw) => {
+  const value = String(raw).trim();
+  const hex = /^#([0-9a-f]{6})$/i.exec(value);
+  if (hex) return `rgb(${[0, 2, 4].map((offset) => Number.parseInt(hex[1].slice(offset, offset + 2), 16)).join(", ")})`;
+  const rgba = /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/i.exec(value);
+  if (!rgba) return value;
+  const [r, g, bl] = rgba.slice(1, 4).map(Number);
+  return rgba[4] === undefined || Number(rgba[4]) === 1 ? `rgb(${r}, ${g}, ${bl})` : `rgba(${r}, ${g}, ${bl}, ${Number(rgba[4])})`;
+};
+const gplusWashColors = [gplusComputedColor(gplusLightTokens["--tcrn-color-wash"]), gplusComputedColor(gplusDarkTokens["--tcrn-color-wash"])];
+const gplusControlRadius = gplusLightTokens["--tcrn-radius-control"];
+// Layers of the mobile doc header that G+ draws translucent or not at all: the theme toggle is an
+// IconButton whose fill comes from the Actions pair table (secondary and quiet fills, wash and
+// hover included, translucent by contract), and the SearchInput wrapper paints nothing
+// (TCRN-DS-SUB-016, TCRN-DS-SUB-020). Both sit on the opaque header layers, which keep the floor.
+const gplusTransparent = "rgba(0, 0, 0, 0)";
+const gplusActionsFillColors = [...new Set(["secondary", "quiet"]
+  .flatMap((variant) => Object.values(gplusPairsContract.tables.actions.variants[variant]).map((state) => state.fill))
+  .flatMap((key) => [gplusLightTokens, gplusDarkTokens].map((tokens) => (key === "#0000" ? gplusTransparent : gplusComputedColor(tokens[`--tcrn-color-${key}`] ?? key)))))];
+const gplusMobileHeaderFillLayers = { themeToggle: gplusActionsFillColors, searchInput: [gplusTransparent] };
+// TCRN-DS-SUB-099 (R3-6): one judgment for a layer of the mobile doc header, used by the hash-anchor
+// loop and the knowledge doc-shell loop alike. A layer listed in gplusMobileHeaderFillLayers
+// (searchInput, themeToggle) must show one of its contract fills, transparent included; every other
+// layer keeps the opaque floor (alpha 0.98), so the header layers are never let through transparent.
+// Returns null when the layer passes, "fill" or "transparent" when it does not.
+function mobileHeaderLayerFillFinding(name, layer) {
+  const contractFills = gplusMobileHeaderFillLayers[name];
+  if (contractFills) return contractFills.includes(layer.backgroundColor) ? null : "fill";
+  return layer.backgroundAlpha < 0.98 ? "transparent" : null;
+}
+// Self-check of that judgment, run before the browser starts: the transparent SearchInput wrapper
+// passes; a transparent header (.tcrn-doc-header) still fails; a SearchInput wrapper painted in a
+// colour outside its contract fills fails.
+const mobileHeaderLayerSelfCheck = (() => {
+  const cases = [
+    { name: "searchInput-transparent-passes", layer: "searchInput", reading: { backgroundColor: gplusTransparent, backgroundAlpha: 0 }, expected: null },
+    { name: "header-transparent-fails", layer: "topbar", reading: { backgroundColor: gplusTransparent, backgroundAlpha: 0 }, expected: "transparent" },
+    { name: "searchInput-off-contract-fill-fails", layer: "searchInput", reading: { backgroundColor: "rgb(255, 0, 0)", backgroundAlpha: 1 }, expected: "fill" }
+  ].map((entry) => {
+    const finding = mobileHeaderLayerFillFinding(entry.layer, entry.reading);
+    return { name: entry.name, finding, expected: entry.expected, ok: finding === entry.expected };
+  });
+  return { ok: cases.every((entry) => entry.ok), cases };
+})();
+if (!mobileHeaderLayerSelfCheck.ok) {
+  console.error(JSON.stringify({ ok: false, mobileHeaderLayerSelfCheck }, null, 2));
+  process.exit(1);
+}
+// TCRN-DS-SUB-085 (R2-30): axe color-contrast and the product wordmark suffix. The suffix is logotype,
+// and the token-contrast gate already registers each suffix pair below 4.5 in WORDMARK_EXEMPTIONS with
+// its ruling (D2) and source (V2-B1-Brand board, section F). The axe run reads that same register
+// instead of keeping a second one: each entry is carried over with its ruling and source, plus the
+// suffix colour it names, resolved from @tcrn/ui-tokens for its theme. The register names token pairs
+// (suffix colour, theme, panel or bg); a rendered suffix also sits on carriers the token gate does not
+// hold (the doc top bar, sample sidebars, preview panels), so a color-contrast node is exempt when it
+// lies inside one of the two suffix selectors AND axe measured its foreground as a registered suffix
+// colour. The pairs themselves stay with the token gate. A suffix drawn in any other colour is not
+// exempt, and the tagline and the shell lockup caption (ink-3) stay outside the exemption (R1 judgment
+// §3 O-2), so they still count.
+const AXE_WORDMARK_SUFFIX_SELECTORS = Object.freeze([".tcrn-brand-wordmark__suffix", ".tcrn-product-logo__line-one-suffix"]);
+const axeWordmarkContrastExemption = Object.freeze({
+  rule: "color-contrast",
+  selectors: AXE_WORDMARK_SUFFIX_SELECTORS,
+  register: "scripts/token-contrast-proof.mjs WORDMARK_EXEMPTIONS",
+  entries: WORDMARK_EXEMPTIONS.map((entry) => Object.freeze({
+    theme: entry.theme,
+    fg: entry.fg,
+    on: entry.on,
+    fgColor: String(createResolvedTokenMap(entry.theme)[entry.fg] ?? "").trim().toLowerCase(),
+    ruling: entry.ruling,
+    source: entry.source,
+    ...(entry.pending ? { pending: entry.pending } : {})
+  }))
+});
+const axeWordmarkSuffixColors = [...new Set(axeWordmarkContrastExemption.entries
+  .map((entry) => entry.fgColor)
+  .filter((value) => /^#[0-9a-f]{6}$/.test(value)))];
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -268,17 +354,72 @@ async function collectPageHealth(page) {
     // false positive deterministically without weakening real-clip (ellipsis / fixed-height
     // cut) detection, which always sets a clipping overflow.
     const clipsAxis = (value) => value !== "visible";
+    // TCRN-DS-SUB-084 (R2-29): two overflows on a single nowrap line are not text cut off from view.
+    // (1) Horizontal: a single-line role with nowrap and an ellipsis whose title holds its visible text
+    //     (both sides whitespace-collapsed, the C7 reading) truncates the way C7 declares; the whole text
+    //     is one hover away. The title is the one the browser shows over the element (its own or the
+    //     nearest ancestor's) or one inside it.
+    // (2) Vertical: when the line box fits the element's content box, the only vertical overflow a single
+    //     nowrap line can have is the part of the font's content area hanging past the line box (a 26px
+    //     serif on a 30px line reports scrollHeight 33 against clientHeight 30). The excess is left out
+    //     only while it stays within that overhang; past it, something taller than the text is cut.
+    // Truncation without such a title, a line box taller than its box, an excess past the overhang and
+    // wrapped text still count.
+    const collapseWhitespace = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+    const titlesOver = (node) => [node.closest("[title]"), ...node.querySelectorAll("[title]")]
+      .filter(Boolean)
+      .map((holder) => collapseWhitespace(holder.getAttribute("title")));
+    const textLineMetrics = (node) => {
+      const rects = [];
+      const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+      for (let textNode = walker.nextNode(); textNode; textNode = walker.nextNode()) {
+        if (!textNode.data.trim() || textNode.parentElement?.closest(".tcrn-sr-only")) continue;
+        const range = document.createRange();
+        range.selectNodeContents(textNode);
+        for (const rect of range.getClientRects()) {
+          if (rect.width > 0 && rect.height > 0) rects.push(rect);
+        }
+      }
+      // Line boxes are counted by clustering the text fragments' vertical centres.
+      const fragments = rects
+        .map((rect) => ({ centre: (rect.top + rect.bottom) / 2, height: rect.bottom - rect.top }))
+        .sort((a, b) => a.centre - b.centre);
+      let lines = 0;
+      let reference = null;
+      for (const fragment of fragments) {
+        if (!reference || fragment.centre - reference.centre > 0.5 * Math.min(reference.height, fragment.height)) {
+          lines += 1;
+          reference = fragment;
+        }
+      }
+      return { lines, contentArea: Math.max(0, ...fragments.map((fragment) => fragment.height)) };
+    };
     const clipped = Array.from(document.querySelectorAll("button, select, .tcrn-badge, .tcrn-heading, h1, h2, h3"))
       .filter((node) => !node.classList.contains("tcrn-sr-only"))
       .map((node) => {
         const style = getComputedStyle(node);
         const text = visibleText(node);
+        let cutX = clipsAxis(style.overflowX) && node.scrollWidth > node.clientWidth + 1;
+        let cutY = clipsAxis(style.overflowY) && node.scrollHeight > node.clientHeight + 1;
+        if (text.length > 0 && (cutX || cutY) && style.whiteSpace === "nowrap") {
+          const { lines, contentArea } = textLineMetrics(node);
+          if (lines === 1) {
+            if (cutX && style.textOverflow === "ellipsis" && titlesOver(node).some((title) => title.includes(text))) {
+              cutX = false;
+            }
+            const declaredLineBox = Number.parseFloat(style.lineHeight);
+            const lineBox = Number.isFinite(declaredLineBox) ? declaredLineBox : contentArea;
+            const contentBox = node.clientHeight - (Number.parseFloat(style.paddingTop) || 0) - (Number.parseFloat(style.paddingBottom) || 0);
+            const overhang = Math.max(0, contentArea - lineBox);
+            if (cutY && lineBox <= contentBox + 1 && node.scrollHeight - node.clientHeight <= overhang + 1) {
+              cutY = false;
+            }
+          }
+        }
         return {
           tag: node.tagName.toLowerCase(),
           text: text.slice(0, 80),
-          clipped: text.length > 0
-            && ((clipsAxis(style.overflowX) && node.scrollWidth > node.clientWidth + 1)
-              || (clipsAxis(style.overflowY) && node.scrollHeight > node.clientHeight + 1))
+          clipped: text.length > 0 && (cutX || cutY)
         };
       })
       .filter((item) => item.clipped);
@@ -354,7 +495,7 @@ async function collectPageHealth(page) {
       copyStateSource: node.getAttribute("data-copy-state-source"),
       visible: node.getBoundingClientRect().width > 0 && node.getBoundingClientRect().height > 0
     }));
-    const packageBackedDisabledNavItems = Array.from(document.querySelectorAll(".tcrn-package-nav-proof [data-navigation-primitive='nav-item'][aria-disabled='true']")).map((node) => {
+    const packageBackedDisabledNavItems = Array.from(document.querySelectorAll(".tcrn-doc-package-nav-proof [data-navigation-primitive='nav-item'][aria-disabled='true']")).map((node) => {
       const describedByIds = (node.getAttribute("aria-describedby") ?? "").split(/\s+/).filter(Boolean);
       const describedReason = describedByIds
         .map((id) => document.getElementById(id))
@@ -508,28 +649,54 @@ async function collectPageHealth(page) {
 
 async function runAxe(page) {
   await page.addScriptTag({ path: axePath });
-  return await page.evaluate(async () => {
+  return await page.evaluate(async ({ suffixSelectors, suffixColors }) => {
     const result = await window.axe.run(document, {
       resultTypes: ["violations"],
+      elementRef: true,
       rules: {
         region: { enabled: false }
       }
     });
+    // TCRN-DS-SUB-085: color-contrast nodes inside a wordmark suffix drawn in a registered suffix
+    // colour leave the violation and are listed, with axe's own reading, under
+    // wordmarkContrastExempted; see axeWordmarkContrastExemption for the register and its rulings.
+    const wordmarkContrastExempted = [];
+    const violations = result.violations
+      .map((violation) => {
+        if (violation.id !== "color-contrast") return { violation, nodes: violation.nodes };
+        const nodes = violation.nodes.filter((node) => {
+          const reading = node.any.find((check) => check.id === "color-contrast")?.data ?? {};
+          const fgColor = String(reading.fgColor ?? "").toLowerCase();
+          const suffix = node.element instanceof Element ? node.element.closest(suffixSelectors.join(", ")) : null;
+          if (!suffix || !suffixColors.includes(fgColor)) return true;
+          wordmarkContrastExempted.push({
+            target: node.target,
+            selector: suffixSelectors.find((selector) => suffix.matches(selector)),
+            fgColor,
+            bgColor: reading.bgColor ?? null,
+            contrastRatio: reading.contrastRatio ?? null
+          });
+          return false;
+        });
+        return { violation, nodes };
+      })
+      .filter(({ nodes }) => nodes.length > 0);
     return {
-      violationCount: result.violations.length,
-      violations: result.violations.map((violation) => ({
+      violationCount: violations.length,
+      violations: violations.map(({ violation, nodes }) => ({
         id: violation.id,
         impact: violation.impact,
-        nodeCount: violation.nodes.length,
+        nodeCount: nodes.length,
         help: violation.help,
-        nodes: violation.nodes.map((node) => ({
+        nodes: nodes.map((node) => ({
           target: node.target,
           html: node.html.slice(0, 500),
           failureSummary: node.failureSummary
         }))
-      }))
+      })),
+      wordmarkContrastExempted
     };
-  });
+  }, { suffixSelectors: [...AXE_WORDMARK_SUFFIX_SELECTORS], suffixColors: axeWordmarkSuffixColors });
 }
 
 function targetTopMatchesAnchorOffset(metrics) {
@@ -578,6 +745,30 @@ async function pinAnimations(page) {
   await page.evaluate(PIN_ANIMATIONS);
 }
 
+/**
+ * Wait until every finite animation in the document has finished, without touching any of them
+ * (TCRN-DS-SUB-083, R2-21b). A computed-style read taken while a transition runs reports a point on
+ * the way rather than the value the surface settles to: the Button fill eases over the pair
+ * transition, longer still under reduced motion, so the fixed 80ms pause the hover readback used to
+ * take read a fill that had not arrived. No duration is named here. Infinite loops (skeleton,
+ * progress) never finish and are left out; the bounded rounds cover a finished transition that
+ * starts another.
+ */
+async function settleAnimations(page) {
+  return await page.evaluate(async () => {
+    if (typeof document.getAnimations !== "function") return { settled: true, rounds: 0, awaited: 0 };
+    let awaited = 0;
+    for (let round = 0; round < 20; round += 1) {
+      const running = document.getAnimations().filter((animation) => animation.playState === "running"
+        && animation.effect?.getComputedTiming?.().iterations !== Infinity);
+      if (running.length === 0) return { settled: true, rounds: round, awaited };
+      awaited += running.length;
+      await Promise.all(running.map((animation) => animation.finished.catch(() => undefined)));
+    }
+    return { settled: false, rounds: 20, awaited };
+  });
+}
+
 async function setTransientScreenshotChromeHidden(page, hidden) {
   await page.evaluate(([shouldHide, pinSource]) => {
     const styleId = "tcrn-proof-screenshot-chrome-hidden";
@@ -622,8 +813,10 @@ function captureInputDigest() {
     }
   };
   visit("apps/storybook/storybook-static");
-  // The measurement source itself is part of the proof input.
-  for (const path of ["scripts/internal-alpha-browser-proof.mjs", "scripts/geometry-proof.mjs", "scripts/lib/visual-signature.mjs", "packages/ui-react/src/components/Navigation/Navigation.tsx", "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx", "packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx", "apps/storybook/src/alpha-styles.ts", "apps/storybook/src/build/page-template.tsx", "apps/storybook/src/build/ai-consumption-contract.ts", "pnpm-lock.yaml"]) hash.update(path).update(readFileSync(path));
+  // The measurement source itself is part of the proof input. The component stylesheet
+  // is the family segment modules under packages/ui-react/src/styles/ (TCRN-DS-SUB-010);
+  // Navigation.tsx stays in the list for the shell markup it still renders.
+  for (const path of ["scripts/internal-alpha-browser-proof.mjs", "scripts/geometry-proof.mjs", "scripts/lib/visual-signature.mjs", "packages/ui-react/src/components/Navigation/Navigation.tsx", ...componentCssSourcePaths(), "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx", "packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx", "apps/storybook/src/alpha-styles.ts", "apps/storybook/src/build/page-template.tsx", "apps/storybook/src/build/ai-consumption-contract.ts", "pnpm-lock.yaml"]) hash.update(path).update(readFileSync(path));
   return hash.digest("hex");
 }
 const inputSha256 = captureInputDigest();
@@ -689,7 +882,9 @@ for (const page of contractPages) {
   assertBuiltSurface(`apps/storybook/storybook-static/${page.file}`);
 }
 
-const expectedCategoryCount = 21;
+// 21 + the two G+ categories under Components: gplus-matrices (TCRN-DS-SUB-030) and
+// gplus-samples (TCRN-DS-SUB-031).
+const expectedCategoryCount = 23;
 // TCRN-DS-STORY-056 TRAP GUARD: the nav-group count is 7 and MUST stay decoupled from the
 // emitted-page count (7 index + 20 category = 27 pages). Deriving it from a page-list length
 // would silently mis-assert. Pin it to the number of distinct top-level sections.
@@ -1127,8 +1322,14 @@ const browserProofReproducibility = {
   normalizedProjectionDigests: reproducibilityBytes.map((bytes) => hashText(bytes)),
   projections: reproducibilityProbes.map((probe) => probe.projection)
 };
+// The page holds six expanded controls ([aria-expanded="true"], counted over the whole document as
+// before): the doc sidebar toggle, the navigation-shells category toggle, the knowledge-shell sidebar
+// toggle, the ProductShell story disclosure, the ProductShell side-nav toggle and the open ProductShell
+// search. The other two of the former eight were the prototype menu buttons ("Open compact operations
+// hub", "Open dense navigation menu") that left with the dense shell prototype (TCRN-DS-SUB-066,
+// delete-demo), so 8 -> 6 (R2 judgment §3.3 B ruling; R3 integration item I-P2b-3).
 browserProofReproducibility.ok = browserProofReproducibility.normalizedBytesEqual
-  && reproducibilityProbes.every((probe) => probe.projection.openMenus === 8);
+  && reproducibilityProbes.every((probe) => probe.projection.openMenus === 6);
 
 const storybookPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components`);
@@ -1248,7 +1449,8 @@ for (const route of firstStoryHashShellParityRoutes) {
     const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
     const searchInput = document.querySelector(".tcrn-search-input__control");
     const searchInputShell = rectFor(".tcrn-search-input");
-    const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius"]);
+    const searchInputShellStyles = styleFor(".tcrn-search-input", ["border-color", "border-radius", "border-top-style", "border-top-width", "background-color"]);
+    const searchControlStyles = styleFor(".tcrn-doc-header-search .tcrn-search-input__control", ["border-radius", "background-color", "padding-left", "padding-right"]);
     const searchControl = rectFor(".tcrn-doc-header-search .tcrn-search-input__control");
     const searchIcon = rectFor(".tcrn-doc-header-search .tcrn-search-input__icon");
     const searchShortcut = rectFor(".tcrn-doc-header-search .tcrn-search-input__shortcut");
@@ -1256,8 +1458,12 @@ for (const route of firstStoryHashShellParityRoutes) {
     const searchFitFailures = [];
     if (searchInputShell && searchControl && searchIcon && searchShortcut) {
       if (searchControl.width < 84) searchFitFailures.push(`control-width:${searchControl.width}`);
-      if (searchIcon.left < searchInputShell.left - 1 || searchIcon.right > searchControl.left + 1) searchFitFailures.push("icon-track-overlap");
-      if (searchShortcut.left < searchControl.right - 1 || searchShortcut.right > searchInputShell.right + 1) searchFitFailures.push("shortcut-track-overlap");
+      // G+ tool form (TCRN-DS-SUB-020): the icon and the shortcut sit over the control, inside
+      // its box, and the control's inline padding keeps the text clear of both.
+      const controlPaddingStart = Number.parseFloat(searchControlStyles?.["padding-left"] ?? "0");
+      const controlPaddingEnd = Number.parseFloat(searchControlStyles?.["padding-right"] ?? "0");
+      if (searchIcon.left < searchControl.left - 1 || searchIcon.right > searchControl.left + controlPaddingStart + 1) searchFitFailures.push("icon-track-overlap");
+      if (searchShortcut.right > searchControl.right + 1 || searchShortcut.left < searchControl.right - controlPaddingEnd - 1) searchFitFailures.push("shortcut-track-overlap");
     } else {
       searchFitFailures.push("search-track-missing");
     }
@@ -1312,7 +1518,7 @@ for (const route of firstStoryHashShellParityRoutes) {
       categoryLabelCount: navRoot.querySelectorAll(".tcrn-doc-nav__category-label").length,
       docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
       docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-      docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("组件库") && !(brandNode?.textContent ?? "").includes("Component Library"),
+      docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("设计系统") && !(brandNode?.textContent ?? "").includes("Component Library"),
       docShellEnglishLeaks,
       ownerVisibleCaptionHits,
       brandIdentityLogoSectionReadback,
@@ -1327,6 +1533,7 @@ for (const route of firstStoryHashShellParityRoutes) {
       search,
       searchInputShell,
       searchInputShellStyles,
+      searchControlStyles,
       searchControl,
       searchIcon,
       searchShortcut,
@@ -1399,11 +1606,20 @@ for (const route of firstStoryHashShellParityRoutes) {
   if (!widthWithin(metrics.searchInputShell?.height, expectedStorybookVisualSkin.searchHeightPx, 2)) {
     failures.push(`storybook-skin-search-height:${metrics.searchInputShell?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.searchHeightPx}`);
   }
-  if (metrics.searchInputShellStyles?.["border-color"] !== expectedStorybookVisualSkin.searchBorderColor) {
-    failures.push(`storybook-skin-search-border:${metrics.searchInputShellStyles?.["border-color"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderColor}`);
+  // G+ SearchInput (TCRN-DS-SUB-020): the wrapper paints nothing; the control is the box, with
+  // the wash fill at rest and the control radius. The docs contract's former wrapper border
+  // colour and radius describe the retired outlined field and are not read here.
+  const searchWrapperPaints = (metrics.searchInputShellStyles?.["border-top-style"] ?? "none") !== "none"
+    && Number.parseFloat(metrics.searchInputShellStyles?.["border-top-width"] ?? "0") > 0;
+  const searchWrapperFill = metrics.searchInputShellStyles?.["background-color"] ?? "missing";
+  if (searchWrapperPaints || !["rgba(0, 0, 0, 0)", "transparent"].includes(searchWrapperFill)) {
+    failures.push(`storybook-skin-search-wrapper-paints:${metrics.searchInputShellStyles?.["border-top-style"] ?? "missing"}:${searchWrapperFill}`);
   }
-  if (metrics.searchInputShellStyles?.["border-radius"] !== `${expectedStorybookVisualSkin.searchBorderRadiusPx}px`) {
-    failures.push(`storybook-skin-search-radius:${metrics.searchInputShellStyles?.["border-radius"] ?? "missing"}:expected:${expectedStorybookVisualSkin.searchBorderRadiusPx}px`);
+  if (!gplusWashColors.includes(metrics.searchControlStyles?.["background-color"])) {
+    failures.push(`storybook-skin-search-fill:${metrics.searchControlStyles?.["background-color"] ?? "missing"}:expected:${gplusWashColors.join("|")}`);
+  }
+  if (metrics.searchControlStyles?.["border-radius"] !== gplusControlRadius) {
+    failures.push(`storybook-skin-search-radius:${metrics.searchControlStyles?.["border-radius"] ?? "missing"}:expected:${gplusControlRadius}`);
   }
   if (typeof metrics.utilityTrailingGap !== "number" || metrics.utilityTrailingGap < 16 || metrics.utilityTrailingGap > 32) {
     failures.push(`utility-trailing-gap:${metrics.utilityTrailingGap}`);
@@ -1610,8 +1826,9 @@ const collectMobileHashAnchorMetrics = async (label) => {
       failures.push(`mobile-layer-missing:${name}`);
       continue;
     }
-    if (layer.backgroundAlpha < 0.98) {
-      failures.push(`mobile-layer-transparent:${name}:${layer.backgroundColor}`);
+    const fillFinding = mobileHeaderLayerFillFinding(name, layer);
+    if (fillFinding) {
+      failures.push(`mobile-layer-${fillFinding}:${name}:${layer.backgroundColor}`);
     }
     if (layer.opacity < 0.98) failures.push(`mobile-layer-opacity:${name}:${layer.opacity}`);
   }
@@ -1638,7 +1855,8 @@ await mobileHashAnchorPage.waitForTimeout(1500);
 mobileHashAnchorReadbacks.push(await collectMobileHashAnchorMetrics("after-reload-1500ms"));
 await mobileHashAnchorPage.close();
 const mobileHashAnchorOcclusionCheck = {
-  ok: mobileHashAnchorReadbacks.every((item) => item.ok),
+  ok: mobileHeaderLayerSelfCheck.ok && mobileHashAnchorReadbacks.every((item) => item.ok),
+  layerSelfCheck: mobileHeaderLayerSelfCheck,
   route: "foundations.html?theme=light&locale=zh-CN#foundation-visual-standards",
   viewport: { width: 390, height: 844 },
   readbacks: mobileHashAnchorReadbacks
@@ -1937,8 +2155,9 @@ const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
       failures.push(`mobile-knowledge-layer-missing:${name}`);
       continue;
     }
-    if (layer.backgroundAlpha < 0.98) {
-      failures.push(`mobile-knowledge-layer-transparent:${name}:${layer.backgroundColor}`);
+    const fillFinding = mobileHeaderLayerFillFinding(name, layer);
+    if (fillFinding) {
+      failures.push(`mobile-knowledge-layer-${fillFinding}:${name}:${layer.backgroundColor}`);
     }
     if (layer.opacity < 0.98) failures.push(`mobile-knowledge-layer-opacity:${name}:${layer.opacity}`);
   }
@@ -2512,12 +2731,32 @@ await storybookPage.evaluate(() => {
 });
 const buttonHoverButton = storybookPage.locator("[data-contract-story-id='button-spec-usage'] .tcrn-button--primary.tcrn-button--md:not(.tcrn-icon-button):not([disabled])").first();
 await buttonHoverButton.waitFor({ state: "visible" });
+// TCRN-DS-SUB-083: both reads wait for running transitions to end (settleAnimations) instead of a
+// fixed pause, and the readings travel into browser-proof-summary.json with how the wait ended.
+const buttonRestSettle = await settleAnimations(storybookPage);
 const buttonRestBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
 await buttonHoverButton.hover();
-await storybookPage.waitForTimeout(80);
+const buttonHoverSettle = await settleAnimations(storybookPage);
 const buttonHoverBackground = await buttonHoverButton.evaluate((el) => getComputedStyle(el).backgroundColor);
 await storybookPage.mouse.move(4, 4);
-const buttonFeedbackReadback = { ok: buttonRestBackground !== buttonHoverBackground, restBackground: buttonRestBackground, hoverBackground: buttonHoverBackground };
+// TCRN-DS-SUB-041: under G+ the rest and hover fills are the Actions pair table's primary d and h
+// fills (pairs.json), resolved through the light token map and serialized as getComputedStyle
+// reports them; the hover must land on that value, not merely differ from rest.
+const gplusActionsPrimary = gplusPairsContract.tables.actions.variants.primary;
+const gplusFillColor = (tokenKey) => gplusComputedColor(gplusLightTokens[`--tcrn-color-${tokenKey}`] ?? tokenKey);
+const buttonExpectedRestBackground = gplusFillColor(gplusActionsPrimary.d.fill);
+const buttonExpectedHoverBackground = gplusFillColor(gplusActionsPrimary.h.fill);
+const buttonFeedbackReadback = {
+  ok: buttonRestBackground === buttonExpectedRestBackground
+    && buttonHoverBackground === buttonExpectedHoverBackground
+    && buttonRestBackground !== buttonHoverBackground,
+  restBackground: buttonRestBackground,
+  hoverBackground: buttonHoverBackground,
+  expectedRestBackground: buttonExpectedRestBackground,
+  expectedHoverBackground: buttonExpectedHoverBackground,
+  restSettle: buttonRestSettle,
+  hoverSettle: buttonHoverSettle
+};
 
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-governance.html?locale=en#blocked-actions`);
 await storybookPage.waitForSelector("[data-contract-story-id='blocked-actions']");
@@ -2961,6 +3200,10 @@ for (const proofCase of settingsLayoutProofCases) {
       const nestedRows = Array.from(nestedLayout?.querySelectorAll("[data-setting-row='true']") ?? []);
       const descendants = Array.from(layout?.querySelectorAll("*") ?? []);
       const noHiddenOverflow = descendants.every((node) => {
+        // G+ Inputs draw the Select chevron and the DatePicker calendar as Icon SVGs
+        // (TCRN-DS-SUB-021, icons.json). An SVG's user-agent overflow: hidden clips only its
+        // own graphic to its viewport; it conceals no label, control box or tool.
+        if (node instanceof SVGElement) return true;
         const style = getComputedStyle(node);
         return style.overflowX !== "hidden" && style.overflowY !== "hidden";
       });
@@ -3317,6 +3560,11 @@ componentStorybookParityReadback.packageBackedDisabledNavItemReasonReadback.ok =
 const axeSummary = {
   ok: axeSummaries.every((summary) => summary.violationCount === 0),
   violationCount: axeSummaries.reduce((total, summary) => total + summary.violationCount, 0),
+  // TCRN-DS-SUB-085: the register the color-contrast exemption reads, each entry with its ruling.
+  wordmarkContrastExemption: {
+    ...axeWordmarkContrastExemption,
+    exemptedNodeCount: axeSummaries.reduce((total, summary) => total + summary.wordmarkContrastExempted.length, 0)
+  },
   sections: axeSummaries
 };
 const storyCoverageManifest = {
@@ -3379,6 +3627,9 @@ const browserProofSummary = {
   viewports,
   settingsLayoutBrowserProof,
   pageHierarchyBrowserProof,
+  // TCRN-DS-SUB-083: the Button rest and hover readings behind buttonFeedbackOk, kept so the
+  // verdict can be read back from the receipt rather than inferred.
+  buttonFeedbackReadback,
   aiContractTraceabilityCheck,
   componentStorybookParityReadback,
   localeLeakScan,
@@ -3589,6 +3840,7 @@ console.log(JSON.stringify({
   viewportCount: viewports.length,
   screenshotCount: visualEntries.length,
   axeViolationCount: axeSummary.violationCount,
+  axeWordmarkContrastExemptedNodes: axeSummary.wordmarkContrastExemption.exemptedNodeCount,
   disclosureOk,
   localizationPolicyBindingOk: localizationPolicyBinding.ok,
   shellFidelityDrift: shellFidelityTripped.length,

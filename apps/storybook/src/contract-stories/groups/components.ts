@@ -1,5 +1,7 @@
 import type { ContractStory } from "../types.js";
 import { selectStory } from "../story-content.js";
+import { gplusMatrixStories } from "../gplus/matrix-stories.js";
+import { gplusCompositionThreeStory, gplusSampleStories } from "../gplus/sample-stories.js";
 
 export const componentsStories: ContractStory[] = [
   selectStory("component-family-index"),
@@ -24,5 +26,14 @@ export const componentsStories: ContractStory[] = [
   selectStory("detail-and-inspection-inspector-spec"),
   selectStory("documents-and-collaboration-components-spec"),
   selectStory("documents-and-collaboration-density-spec"),
-  selectStory("documents-and-collaboration-templates-spec")
+  selectStory("documents-and-collaboration-templates-spec"),
+  // Each family matrix is followed by its composition sample, the order the family CSF adapters
+  // (typography, icon, brand, actions, inputs) export them in.
+  ...gplusMatrixStories.flatMap((matrix, index) => {
+    const sample = gplusSampleStories[index];
+    return sample ? [matrix, sample] : [matrix];
+  }),
+  // The composition-three sample belongs to no family and has no matrix: it follows the five pairs,
+  // as the last export of the compositions CSF adapter.
+  gplusCompositionThreeStory
 ];

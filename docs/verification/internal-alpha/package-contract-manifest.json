@@ -23,6 +23,10 @@
         "exported": true
       },
       {
+        "name": "ButtonGroup",
+        "exported": true
+      },
+      {
         "name": "ClipboardCopyButton",
         "exported": true
       },
@@ -571,19 +575,7 @@
     ],
     "deferredPrototypeChecks": [
       {
-        "name": "DenseOperationsShellDemo",
-        "exported": false,
-        "packageBacked": false,
-        "disposition": "storybook_only_prototype"
-      },
-      {
         "name": "KnowledgeBaseShellDemo",
-        "exported": false,
-        "packageBacked": false,
-        "disposition": "storybook_only_prototype"
-      },
-      {
-        "name": "CompactToolShellDemo",
         "exported": false,
         "packageBacked": false,
         "disposition": "storybook_only_prototype"
@@ -619,6 +611,15 @@
       },
       {
         "storybookItem": "LinkButton",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ButtonGroup",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
         "publicExportPath": "@tcrn/ui-react",
@@ -1851,25 +1852,7 @@
         "requiredRepair": "none"
       },
       {
-        "storybookItem": "DenseOperationsShellDemo",
-        "classification": "storybook_only_prototype",
-        "packageSourcePath": null,
-        "publicExportPath": null,
-        "storybookPath": "apps/storybook/src/stories.tsx",
-        "status": "truthfully_deferred",
-        "requiredRepair": "none"
-      },
-      {
         "storybookItem": "KnowledgeBaseShellDemo",
-        "classification": "storybook_only_prototype",
-        "packageSourcePath": null,
-        "publicExportPath": null,
-        "storybookPath": "apps/storybook/src/stories.tsx",
-        "status": "truthfully_deferred",
-        "requiredRepair": "none"
-      },
-      {
-        "storybookItem": "CompactToolShellDemo",
         "classification": "storybook_only_prototype",
         "packageSourcePath": null,
         "publicExportPath": null,
@@ -1889,11 +1872,11 @@
       "storybookOnlyMarkers": [
         {
           "file": "apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx",
-          "markerCount": 8
+          "markerCount": 2
         },
         {
           "file": "apps/storybook/src/smoke.test.ts",
-          "markerCount": 4
+          "markerCount": 2
         }
       ],
       "packageBackedComponentParityMarkers": true,
@@ -1914,17 +1897,25 @@
     "noPackagePublicationClaimed": true
   },
   "iconLibraryContract": {
-    "sourcePackage": "lucide-react",
-    "sourcePackageLicense": "ISC",
+    "source": "tcrn-icon-contract",
+    "sourceContract": "docs/design/gplus-2026-10/contract/icons.json",
+    "sourceContractSha256": "e07177332187054f9ed8f00b09a0d1460ff6c41dc06a168513c7e983a2cc0e11",
+    "generatedPathsModule": "packages/ui-react/src/components/Icon/icon-paths.generated.ts",
+    "generatedPathsModulePresent": true,
+    "viewBox": "0 0 20 20",
+    "strokeWidth": 1.25,
     "wrapperPackage": "@tcrn/ui-react",
     "wrapperExport": "Icon",
-    "dependencyVersion": "1.21.0",
-    "dependencyExact": true,
     "iconExported": true,
     "iconNamesExported": true,
-    "iconNameCount": 28,
+    "iconNameCount": 37,
+    "contractIconNameCount": 37,
+    "iconNamesMatchContract": true,
+    "thirdPartyIconDependencies": [],
+    "packageSourceThirdPartyIconImports": [],
     "storybookContractVisible": true,
-    "storybookDirectLucideImports": [],
+    "storybookThirdPartySourceClaims": [],
+    "storybookDirectThirdPartyIconImports": [],
     "notBrandIdentity": true,
     "noPackagePublicationClaimed": true
   },
@@ -1937,7 +1928,7 @@
       "typePath": "packages/ui-tokens/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "45b44d9335fd077dbafe2b2df95af8ffdb004ddb295f724ac61bc4ac9d32a5bf"
+      "manifestSha256": "312e1814467f756816fbfe92ec7274d9a3086ab1f774904d5fbf3a272e766c76"
     },
     {
       "name": "@tcrn/ui-copy-state",
@@ -1947,7 +1938,7 @@
       "typePath": "packages/ui-copy-state/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "dc6dfb8833128148058f47fb3300fc5a09b55f88af404af1b39fdfd1845bd22a"
+      "manifestSha256": "708c4178512fbe375abc0f1ab8986fd93f804656519f7b851c439673ddb9a4ca"
     },
     {
       "name": "@tcrn/ui-react",
@@ -1957,10 +1948,45 @@
       "typePath": "packages/ui-react/dist/index.d.ts",
       "jsExists": true,
       "typeExists": true,
-      "manifestSha256": "2a61c3843a29f69512644ab97c71d50e68f16451fe50051d95c51e36a5e19617"
+      "manifestSha256": "04bec2493fcbe25f6b82a69db840d03a220b2835e422be26b04c54a8269e9928"
     }
   ],
   "exactDependencyChecks": [
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@fontsource-variable/hanken-grotesk",
+      "version": "5.3.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@fontsource-variable/noto-sans-sc",
+      "version": "5.3.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@fontsource-variable/noto-serif-sc",
+      "version": "5.3.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@fontsource-variable/source-serif-4",
+      "version": "5.3.0",
+      "exact": true
+    },
+    {
+      "manifestPath": "package.json",
+      "section": "devDependencies",
+      "name": "@fontsource/ibm-plex-mono",
+      "version": "5.3.0",
+      "exact": true
+    },
     {
       "manifestPath": "package.json",
       "section": "devDependencies",
@@ -2110,13 +2136,6 @@
     },
     {
       "manifestPath": "packages/ui-react/package.json",
-      "section": "dependencies",
-      "name": "lucide-react",
-      "version": "1.21.0",
-      "exact": true
-    },
-    {
-      "manifestPath": "packages/ui-react/package.json",
       "section": "devDependencies",
       "name": "@types/jsdom",
       "version": "21.1.7",
@@ -2223,11 +2242,10 @@
       },
       {
         "license": "ISC",
-        "packageCount": 7,
+        "packageCount": 6,
         "packageNames": [
           "electron-to-chromium",
           "lru-cache",
-          "lucide-react",
           "picocolors",
           "saxes",
           "semver",
@@ -2463,6 +2481,17 @@
           "axe-core",
           "lightningcss",
           "lightningcss-darwin-arm64"
+        ]
+      },
+      {
+        "license": "OFL-1.1",
+        "packageCount": 5,
+        "packageNames": [
+          "@fontsource-variable/hanken-grotesk",
+          "@fontsource-variable/noto-sans-sc",
+          "@fontsource-variable/noto-serif-sc",
+          "@fontsource-variable/source-serif-4",
+          "@fontsource/ibm-plex-mono"
         ]
       }
     ]

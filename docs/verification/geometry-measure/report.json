@@ -1,0 +1,7102 @@
+{
+  "schemaVersion": "tcrn.ds.geometry-measure-proof.v1",
+  "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
+  "ok": true,
+  "reason": null,
+  "thresholds": {
+    "clip": {
+      "maxLeaks": 0,
+      "tolerancePx": 0.5
+    },
+    "singleLine": {
+      "maxLines": 1
+    },
+    "shadowBlur": {
+      "maxBlurPx": 3
+    },
+    "rail": {
+      "guideLeftPx": 16,
+      "textLeftPx": 48,
+      "tolerancePx": 0.5
+    },
+    "rowAlign": {
+      "maxSpreadPx": 0.5
+    },
+    "mark": {
+      "maxViolations": 0
+    },
+    "contrast": {
+      "maxDiff": 0.05,
+      "minText": 4.5,
+      "minNonText": 3
+    },
+    "controlHeight": {
+      "allowedPx": [
+        28,
+        32,
+        40
+      ],
+      "tolerancePx": 0.5
+    },
+    "overlap": {
+      "maxOverlaps": 0,
+      "minIntersectPx": 1
+    },
+    "shellFrame": {
+      "paperInsetPx": 12,
+      "topBarHeightPx": 52,
+      "tolerancePx": 0.5
+    }
+  },
+  "run": {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "locale": "en",
+    "family": null,
+    "fullSet": true
+  },
+  "storyIds": [
+    "typography-matrix",
+    "icon-matrix",
+    "brand-matrix",
+    "actions-matrix",
+    "inputs-matrix",
+    "typography-sample-billing",
+    "icon-sample-project",
+    "brand-sample-product",
+    "actions-sample-project",
+    "inputs-sample-members",
+    "composition-three-sample"
+  ],
+  "selfCheck": {
+    "ok": true,
+    "coverage": {
+      "ok": true,
+      "missingRed": [],
+      "missingGreen": []
+    },
+    "cases": [
+      {
+        "id": "all-green",
+        "file": "all.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "clip-green",
+        "file": "clip.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "clip-red",
+        "file": "clip.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "fail",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 1,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "clip-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "fail",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 1,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "single-line-green",
+        "file": "singleLine.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "pass",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "single-line-red",
+        "file": "singleLine.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "fail",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 3,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "single-line-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "fail",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 3,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shadow-blur-green",
+        "file": "shadowBlur.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "pass",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shadow-blur-red",
+        "file": "shadowBlur.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "fail",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 4,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shadow-blur-pseudo-mutation",
+        "file": "shadowBlur.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "fail",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 8,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shadow-blur-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "fail",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 4,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "rail-green",
+        "file": "rail.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "pass",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "pass",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "rail-red",
+        "file": "rail.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "fail",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "pass",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 4,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "rail-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "fail",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 4,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "row-align-green",
+        "file": "rowAlign.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "pass",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "row-align-red",
+        "file": "rowAlign.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "fail",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 8,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "row-align-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "fail",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 8,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "mark-green",
+        "file": "mark.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "pass",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "mark-red",
+        "file": "mark.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "fail",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 2,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "mark-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "fail",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 2,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-green",
+        "file": "contrast.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "pass",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "pass",
+          "controlHeight": "n/a",
+          "overlap": "pass",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-red",
+        "file": "contrast.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "fail",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 13.55,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-minimum-red",
+        "file": "contrast.minimum.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "fail",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-missing-expect-red",
+        "file": "contrast.missing-expect.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "fail",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "contrast-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "fail",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 13.55,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "control-height-green",
+        "file": "controlHeight.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "control-height-red",
+        "file": "controlHeight.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "fail",
+          "overlap": "pass",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 2,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "control-height-unlisted-red",
+        "file": "controlHeight.unlisted.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "fail",
+          "overlap": "n/a",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "control-height-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "fail",
+          "overlap": "pass",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 2,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "overlap-green",
+        "file": "overlap.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "pass",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "overlap-red",
+        "file": "overlap.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "fail",
+          "shellFrame": "n/a"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 1,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "overlap-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "fail",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 1,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-green",
+        "file": "shellFrame.green.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "pass"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 0
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-red",
+        "file": "shellFrame.red.html",
+        "mutation": false,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "n/a",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 0,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 16
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-paper-flush-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 12
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-top-bar-68-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 16
+        },
+        "ok": true,
+        "problems": []
+      }
+    ]
+  },
+  "missingStories": [],
+  "runs": [
+    {
+      "storyId": "typography-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#typography-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "h1-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h2-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h3-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h4-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "body-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "strong-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "read-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "meta-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "cap-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "link-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "link-hover-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "num-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "unit-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "num-inl-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "caps-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "id-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "mark-l",
+                7.63,
+                7.63,
+                0
+              ],
+              [
+                "sel-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "body-canvas-l",
+                7.39,
+                7.39,
+                0
+              ],
+              [
+                "strong-canvas-l",
+                15.75,
+                15.75,
+                0
+              ],
+              [
+                "meta-canvas-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "link-canvas-l",
+                5.47,
+                5.47,
+                0
+              ],
+              [
+                "h1-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h2-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h3-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h4-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "body-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "strong-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "read-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "meta-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "cap-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "link-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "link-hover-n",
+                9.7,
+                9.7,
+                0
+              ],
+              [
+                "num-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "unit-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "num-inl-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "caps-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "id-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "mark-n",
+                6.09,
+                6.09,
+                0
+              ],
+              [
+                "sel-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "body-canvas-n",
+                7.7,
+                7.7,
+                0
+              ],
+              [
+                "strong-canvas-n",
+                15.31,
+                15.31,
+                0
+              ],
+              [
+                "meta-canvas-n",
+                4.89,
+                4.89,
+                0
+              ],
+              [
+                "link-canvas-n",
+                8.99,
+                8.99,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "icon-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#icon-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "roster-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ink-panel-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ink2-panel-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ink3-panel-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "acc-panel-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "onacc-acc-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ink-wash-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "red-panel-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ok-panel-l",
+                6.39,
+                6.39,
+                0
+              ],
+              [
+                "warn-panel-l",
+                5.92,
+                5.92,
+                0
+              ],
+              [
+                "bad-panel-l",
+                6.69,
+                6.69,
+                0
+              ],
+              [
+                "ink2-bg-l",
+                7.39,
+                7.39,
+                0
+              ],
+              [
+                "ink3-bg-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "roster-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ink-panel-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ink2-panel-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ink3-panel-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "acc-panel-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "onacc-acc-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ink-wash-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "red-panel-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ok-panel-n",
+                9.27,
+                9.27,
+                0
+              ],
+              [
+                "warn-panel-n",
+                8.3,
+                8.3,
+                0
+              ],
+              [
+                "bad-panel-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "ink2-bg-n",
+                7.7,
+                7.7,
+                0
+              ],
+              [
+                "ink3-bg-n",
+                4.89,
+                4.89,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "brand-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#brand-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "tagline-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "wm-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "suffix-ink-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "rail-wm-l",
+                15.75,
+                15.75,
+                0
+              ],
+              [
+                "rail-tag-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "tagline-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "wm-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "suffix-ink-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "rail-wm-n",
+                15.31,
+                15.31,
+                0
+              ],
+              [
+                "rail-tag-n",
+                4.89,
+                4.89,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "actions-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#actions-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "mark",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "mark",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "pri-d-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "pri-h-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "pri-a-l",
+                9.43,
+                9.43,
+                0
+              ],
+              [
+                "pri-f-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "pri-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "pri-l-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "sec-d-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-h-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "sec-a-l",
+                14.52,
+                14.52,
+                0
+              ],
+              [
+                "sec-f-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "sec-l-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "quiet-d-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-h-l",
+                17.04,
+                17.04,
+                0
+              ],
+              [
+                "quiet-a-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "quiet-f-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-x-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "quiet-l-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "danger-d-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "danger-h-l",
+                7.46,
+                7.46,
+                0
+              ],
+              [
+                "danger-a-l",
+                6.85,
+                6.85,
+                0
+              ],
+              [
+                "danger-f-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "danger-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "danger-l-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-pri-d-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-pri-h-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "ico-pri-a-l",
+                9.43,
+                9.43,
+                0
+              ],
+              [
+                "ico-pri-f-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-pri-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-pri-l-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-sec-d-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-h-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "ico-sec-a-l",
+                14.52,
+                14.52,
+                0
+              ],
+              [
+                "ico-sec-f-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-sec-l-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-quiet-d-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-h-l",
+                17.04,
+                17.04,
+                0
+              ],
+              [
+                "ico-quiet-a-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-quiet-f-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-x-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "ico-quiet-l-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-danger-d-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-danger-h-l",
+                7.46,
+                7.46,
+                0
+              ],
+              [
+                "ico-danger-a-l",
+                6.85,
+                6.85,
+                0
+              ],
+              [
+                "ico-danger-f-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-danger-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-danger-l-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "cb-idle-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cb-copying-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cb-copied-l",
+                6.39,
+                6.39,
+                0
+              ],
+              [
+                "cb-failed-l",
+                6.69,
+                6.69,
+                0
+              ],
+              [
+                "cb-unsupported-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "grp-sel-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "pri-d-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "pri-h-n",
+                9.28,
+                9.28,
+                0
+              ],
+              [
+                "pri-a-n",
+                6.53,
+                6.53,
+                0
+              ],
+              [
+                "pri-f-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "pri-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "pri-l-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "sec-d-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-h-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "sec-a-n",
+                15.88,
+                15.88,
+                0
+              ],
+              [
+                "sec-f-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "sec-l-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "quiet-d-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-h-n",
+                13.13,
+                13.13,
+                0
+              ],
+              [
+                "quiet-a-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "quiet-f-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-x-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "quiet-l-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "danger-d-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "danger-h-n",
+                6.02,
+                6.02,
+                0
+              ],
+              [
+                "danger-a-n",
+                5.41,
+                5.41,
+                0
+              ],
+              [
+                "danger-f-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "danger-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "danger-l-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-pri-d-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-pri-h-n",
+                9.28,
+                9.28,
+                0
+              ],
+              [
+                "ico-pri-a-n",
+                6.53,
+                6.53,
+                0
+              ],
+              [
+                "ico-pri-f-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-pri-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-pri-l-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-sec-d-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-h-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "ico-sec-a-n",
+                15.88,
+                15.88,
+                0
+              ],
+              [
+                "ico-sec-f-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-sec-l-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-quiet-d-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-h-n",
+                13.13,
+                13.13,
+                0
+              ],
+              [
+                "ico-quiet-a-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-quiet-f-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-x-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "ico-quiet-l-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-danger-d-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-danger-h-n",
+                6.02,
+                6.02,
+                0
+              ],
+              [
+                "ico-danger-a-n",
+                5.41,
+                5.41,
+                0
+              ],
+              [
+                "ico-danger-f-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-danger-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-danger-l-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "cb-idle-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cb-copying-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cb-copied-n",
+                9.27,
+                9.27,
+                0
+              ],
+              [
+                "cb-failed-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "cb-unsupported-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "grp-sel-n",
+                12.15,
+                12.15,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "inputs-matrix",
+      "theme": "light",
+      "route": "/components-gplus-matrices.html#inputs-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "in-ph-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "in-text-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "in-focus-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "in-ro-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "in-dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "in-err-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "err-msg-l",
+                6.69,
+                6.69,
+                0
+              ],
+              [
+                "search-focus-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "search-ph-l",
+                7.59,
+                7.59,
+                0
+              ],
+              [
+                "chev-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "opt-sel-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "num-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "date-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cal-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "ck-edge-l",
+                3.16,
+                3.16,
+                0
+              ],
+              [
+                "ck-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ck-dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "rd-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "rd-edge-l",
+                3.16,
+                3.16,
+                0
+              ],
+              [
+                "sw-edge-l",
+                3,
+                3,
+                0
+              ],
+              [
+                "sw-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "in-ph-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "in-text-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "in-focus-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "in-ro-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "in-dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "in-err-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "err-msg-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "search-focus-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "search-ph-n",
+                6.11,
+                6.11,
+                0
+              ],
+              [
+                "chev-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "opt-sel-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "num-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "date-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cal-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "ck-edge-n",
+                3.34,
+                3.34,
+                0
+              ],
+              [
+                "ck-on-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ck-dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "rd-on-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "rd-edge-n",
+                3.34,
+                3.34,
+                0
+              ],
+              [
+                "sw-edge-n",
+                3.29,
+                3.29,
+                0
+              ],
+              [
+                "sw-on-n",
+                8.08,
+                8.08,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "typography-sample-billing",
+      "theme": "light",
+      "route": "/components-gplus-samples.html#typography-sample-billing",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "icon-sample-project",
+      "theme": "light",
+      "route": "/components-gplus-samples.html#icon-sample-project",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "mark",
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "mark",
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "brand-sample-product",
+      "theme": "light",
+      "route": "/components-gplus-samples.html#brand-sample-product",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "mark",
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "mark",
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "actions-sample-project",
+      "theme": "light",
+      "route": "/components-gplus-samples.html#actions-sample-project",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "mark",
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "mark",
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "inputs-sample-members",
+      "theme": "light",
+      "route": "/components-gplus-samples.html#inputs-sample-members",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rowAlign",
+        "mark",
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rowAlign",
+          "mark",
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "composition-three-sample",
+      "theme": "light",
+      "route": "/components-gplus-samples.html#composition-three-sample",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "mark",
+        "contrast",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "mark",
+          "contrast",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "typography-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#typography-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "h1-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h2-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h3-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "h4-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "body-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "strong-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "read-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "meta-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "cap-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "link-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "link-hover-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "num-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "unit-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "num-inl-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "caps-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "id-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "mark-l",
+                7.63,
+                7.63,
+                0
+              ],
+              [
+                "sel-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "body-canvas-l",
+                7.39,
+                7.39,
+                0
+              ],
+              [
+                "strong-canvas-l",
+                15.75,
+                15.75,
+                0
+              ],
+              [
+                "meta-canvas-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "link-canvas-l",
+                5.47,
+                5.47,
+                0
+              ],
+              [
+                "h1-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h2-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h3-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "h4-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "body-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "strong-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "read-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "meta-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "cap-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "link-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "link-hover-n",
+                9.7,
+                9.7,
+                0
+              ],
+              [
+                "num-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "unit-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "num-inl-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "caps-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "id-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "mark-n",
+                6.09,
+                6.09,
+                0
+              ],
+              [
+                "sel-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "body-canvas-n",
+                7.7,
+                7.7,
+                0
+              ],
+              [
+                "strong-canvas-n",
+                15.31,
+                15.31,
+                0
+              ],
+              [
+                "meta-canvas-n",
+                4.89,
+                4.89,
+                0
+              ],
+              [
+                "link-canvas-n",
+                8.99,
+                8.99,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "icon-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#icon-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "roster-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ink-panel-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ink2-panel-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ink3-panel-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "acc-panel-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "onacc-acc-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ink-wash-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "red-panel-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ok-panel-l",
+                6.39,
+                6.39,
+                0
+              ],
+              [
+                "warn-panel-l",
+                5.92,
+                5.92,
+                0
+              ],
+              [
+                "bad-panel-l",
+                6.69,
+                6.69,
+                0
+              ],
+              [
+                "ink2-bg-l",
+                7.39,
+                7.39,
+                0
+              ],
+              [
+                "ink3-bg-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "roster-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ink-panel-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ink2-panel-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ink3-panel-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "acc-panel-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "onacc-acc-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ink-wash-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "red-panel-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ok-panel-n",
+                9.27,
+                9.27,
+                0
+              ],
+              [
+                "warn-panel-n",
+                8.3,
+                8.3,
+                0
+              ],
+              [
+                "bad-panel-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "ink2-bg-n",
+                7.7,
+                7.7,
+                0
+              ],
+              [
+                "ink3-bg-n",
+                4.89,
+                4.89,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "brand-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#brand-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "tagline-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "wm-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "suffix-ink-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "rail-wm-l",
+                15.75,
+                15.75,
+                0
+              ],
+              [
+                "rail-tag-l",
+                4.86,
+                4.86,
+                0
+              ],
+              [
+                "tagline-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "wm-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "suffix-ink-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "rail-wm-n",
+                15.31,
+                15.31,
+                0
+              ],
+              [
+                "rail-tag-n",
+                4.89,
+                4.89,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "actions-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#actions-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "mark",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "mark",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "pri-d-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "pri-h-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "pri-a-l",
+                9.43,
+                9.43,
+                0
+              ],
+              [
+                "pri-f-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "pri-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "pri-l-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "sec-d-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-h-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "sec-a-l",
+                14.52,
+                14.52,
+                0
+              ],
+              [
+                "sec-f-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "sec-l-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "sec-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "quiet-d-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-h-l",
+                17.04,
+                17.04,
+                0
+              ],
+              [
+                "quiet-a-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "quiet-f-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-x-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "quiet-l-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "quiet-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "danger-d-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "danger-h-l",
+                7.46,
+                7.46,
+                0
+              ],
+              [
+                "danger-a-l",
+                6.85,
+                6.85,
+                0
+              ],
+              [
+                "danger-f-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "danger-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "danger-l-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-pri-d-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-pri-h-l",
+                7.51,
+                7.51,
+                0
+              ],
+              [
+                "ico-pri-a-l",
+                9.43,
+                9.43,
+                0
+              ],
+              [
+                "ico-pri-f-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-pri-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-pri-l-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ico-sec-d-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-h-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "ico-sec-a-l",
+                14.52,
+                14.52,
+                0
+              ],
+              [
+                "ico-sec-f-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-sec-l-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "ico-sec-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-quiet-d-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-h-l",
+                17.04,
+                17.04,
+                0
+              ],
+              [
+                "ico-quiet-a-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-quiet-f-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-x-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "ico-quiet-l-l",
+                8.58,
+                8.58,
+                0
+              ],
+              [
+                "ico-quiet-s-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "ico-danger-d-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-danger-h-l",
+                7.46,
+                7.46,
+                0
+              ],
+              [
+                "ico-danger-a-l",
+                6.85,
+                6.85,
+                0
+              ],
+              [
+                "ico-danger-f-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "ico-danger-x-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "ico-danger-l-l",
+                8.23,
+                8.23,
+                0
+              ],
+              [
+                "cb-idle-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cb-copying-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cb-copied-l",
+                6.39,
+                6.39,
+                0
+              ],
+              [
+                "cb-failed-l",
+                6.69,
+                6.69,
+                0
+              ],
+              [
+                "cb-unsupported-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "grp-sel-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "pri-d-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "pri-h-n",
+                9.28,
+                9.28,
+                0
+              ],
+              [
+                "pri-a-n",
+                6.53,
+                6.53,
+                0
+              ],
+              [
+                "pri-f-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "pri-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "pri-l-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "sec-d-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-h-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "sec-a-n",
+                15.88,
+                15.88,
+                0
+              ],
+              [
+                "sec-f-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "sec-l-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "sec-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "quiet-d-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-h-n",
+                13.13,
+                13.13,
+                0
+              ],
+              [
+                "quiet-a-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "quiet-f-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-x-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "quiet-l-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "quiet-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "danger-d-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "danger-h-n",
+                6.02,
+                6.02,
+                0
+              ],
+              [
+                "danger-a-n",
+                5.41,
+                5.41,
+                0
+              ],
+              [
+                "danger-f-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "danger-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "danger-l-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-pri-d-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-pri-h-n",
+                9.28,
+                9.28,
+                0
+              ],
+              [
+                "ico-pri-a-n",
+                6.53,
+                6.53,
+                0
+              ],
+              [
+                "ico-pri-f-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-pri-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-pri-l-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ico-sec-d-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-h-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "ico-sec-a-n",
+                15.88,
+                15.88,
+                0
+              ],
+              [
+                "ico-sec-f-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-sec-l-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "ico-sec-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-quiet-d-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-h-n",
+                13.13,
+                13.13,
+                0
+              ],
+              [
+                "ico-quiet-a-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-quiet-f-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-x-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "ico-quiet-l-n",
+                7.23,
+                7.23,
+                0
+              ],
+              [
+                "ico-quiet-s-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "ico-danger-d-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-danger-h-n",
+                6.02,
+                6.02,
+                0
+              ],
+              [
+                "ico-danger-a-n",
+                5.41,
+                5.41,
+                0
+              ],
+              [
+                "ico-danger-f-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "ico-danger-x-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "ico-danger-l-n",
+                6.78,
+                6.78,
+                0
+              ],
+              [
+                "cb-idle-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cb-copying-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cb-copied-n",
+                9.27,
+                9.27,
+                0
+              ],
+              [
+                "cb-failed-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "cb-unsupported-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "grp-sel-n",
+                12.15,
+                12.15,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "inputs-matrix",
+      "theme": "dark",
+      "route": "/components-gplus-matrices.html#inputs-matrix",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "rowAlign",
+        "mark",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "rowAlign",
+          "mark",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": [
+              [
+                "in-ph-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "in-text-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "in-focus-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "in-ro-l",
+                17.06,
+                17.06,
+                0
+              ],
+              [
+                "in-dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "in-err-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "err-msg-l",
+                6.69,
+                6.69,
+                0
+              ],
+              [
+                "search-focus-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "search-ph-l",
+                7.59,
+                7.59,
+                0
+              ],
+              [
+                "chev-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "opt-sel-l",
+                16.18,
+                16.18,
+                0
+              ],
+              [
+                "num-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "date-l",
+                18.29,
+                18.29,
+                0
+              ],
+              [
+                "cal-l",
+                5.64,
+                5.64,
+                0
+              ],
+              [
+                "ck-edge-l",
+                3.16,
+                3.16,
+                0
+              ],
+              [
+                "ck-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "ck-dis-l",
+                5.1,
+                5.1,
+                0
+              ],
+              [
+                "rd-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "rd-edge-l",
+                3.16,
+                3.16,
+                0
+              ],
+              [
+                "sw-edge-l",
+                3,
+                3,
+                0
+              ],
+              [
+                "sw-on-l",
+                6.35,
+                6.35,
+                0
+              ],
+              [
+                "in-ph-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "in-text-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "in-focus-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "in-ro-n",
+                13.5,
+                13.5,
+                0
+              ],
+              [
+                "in-dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "in-err-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "err-msg-n",
+                6.88,
+                6.88,
+                0
+              ],
+              [
+                "search-focus-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "search-ph-n",
+                6.11,
+                6.11,
+                0
+              ],
+              [
+                "chev-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "opt-sel-n",
+                12.15,
+                12.15,
+                0
+              ],
+              [
+                "num-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "date-n",
+                14.38,
+                14.38,
+                0
+              ],
+              [
+                "cal-n",
+                4.59,
+                4.59,
+                0
+              ],
+              [
+                "ck-edge-n",
+                3.34,
+                3.34,
+                0
+              ],
+              [
+                "ck-on-n",
+                8.08,
+                8.08,
+                0
+              ],
+              [
+                "ck-dis-n",
+                4.09,
+                4.09,
+                0
+              ],
+              [
+                "rd-on-n",
+                8.44,
+                8.44,
+                0
+              ],
+              [
+                "rd-edge-n",
+                3.34,
+                3.34,
+                0
+              ],
+              [
+                "sw-edge-n",
+                3.29,
+                3.29,
+                0
+              ],
+              [
+                "sw-on-n",
+                8.08,
+                8.08,
+                0
+              ]
+            ]
+          },
+          "controlHeight": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "typography-sample-billing",
+      "theme": "dark",
+      "route": "/components-gplus-samples.html#typography-sample-billing",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "icon-sample-project",
+      "theme": "dark",
+      "route": "/components-gplus-samples.html#icon-sample-project",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "mark",
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "mark",
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "brand-sample-product",
+      "theme": "dark",
+      "route": "/components-gplus-samples.html#brand-sample-product",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "mark",
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "mark",
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "actions-sample-project",
+      "theme": "dark",
+      "route": "/components-gplus-samples.html#actions-sample-project",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "mark",
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "mark",
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "inputs-sample-members",
+      "theme": "dark",
+      "route": "/components-gplus-samples.html#inputs-sample-members",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rowAlign",
+        "mark",
+        "contrast",
+        "controlHeight"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rowAlign",
+          "mark",
+          "contrast",
+          "controlHeight"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    },
+    {
+      "storyId": "composition-three-sample",
+      "theme": "dark",
+      "route": "/components-gplus-samples.html#composition-three-sample",
+      "ok": true,
+      "failed": [],
+      "notApplicable": [
+        "rail",
+        "mark",
+        "contrast",
+        "controlHeight",
+        "shellFrame"
+      ],
+      "notApplicableRequired": [],
+      "verdict": {
+        "ok": true,
+        "failed": [],
+        "notApplicable": [
+          "rail",
+          "mark",
+          "contrast",
+          "controlHeight",
+          "shellFrame"
+        ],
+        "checks": {
+          "clip": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxLeaks": 0,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "singleLine": {
+            "status": "pass",
+            "value": 1,
+            "limit": {
+              "maxLines": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shadowBlur": {
+            "status": "pass",
+            "value": 3,
+            "limit": {
+              "maxBlurPx": 3
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rail": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "guideLeftPx": 16,
+              "textLeftPx": 48,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "rowAlign": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxSpreadPx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "mark": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "maxViolations": 0
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "contrast": {
+            "status": "n/a",
+            "value": null,
+            "limit": {
+              "maxDiff": 0.05,
+              "minText": 4.5,
+              "minNonText": 3
+            },
+            "violationCount": 0,
+            "violations": [],
+            "cells": []
+          },
+          "controlHeight": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "allowedPx": [
+                28,
+                32,
+                40
+              ],
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "overlap": {
+            "status": "pass",
+            "value": 0,
+            "limit": {
+              "maxOverlaps": 0,
+              "minIntersectPx": 1
+            },
+            "violationCount": 0,
+            "violations": []
+          },
+          "shellFrame": {
+            "status": "n/a",
+            "value": 0,
+            "limit": {
+              "paperInsetPx": 12,
+              "topBarHeightPx": 52,
+              "tolerancePx": 0.5
+            },
+            "violationCount": 0,
+            "violations": []
+          }
+        }
+      }
+    }
+  ],
+  "mutations": [
+    {
+      "id": "row-first-cell-padding",
+      "storyId": "table-record-index-spec",
+      "check": "rowAlign",
+      "source": "131-GWT1",
+      "theme": "light",
+      "status": "fail",
+      "value": 4,
+      "killed": true
+    },
+    {
+      "id": "mark-padding",
+      "storyId": "typography-matrix",
+      "check": "mark",
+      "source": "131-GWT2",
+      "theme": "light",
+      "status": "fail",
+      "value": 4,
+      "killed": true
+    },
+    {
+      "id": "shadow-blur-4px",
+      "storyId": "actions-matrix",
+      "check": "shadowBlur",
+      "source": "131-GWT3",
+      "theme": "light",
+      "status": "fail",
+      "value": 4,
+      "killed": true
+    },
+    {
+      "id": "cell-ink-drift",
+      "storyId": "actions-matrix",
+      "check": "contrast",
+      "source": "131 contrast",
+      "theme": "light",
+      "status": "fail",
+      "value": 8.21,
+      "killed": true
+    },
+    {
+      "id": "shell-paper-inset-zero",
+      "storyId": "icon-sample-project",
+      "check": "shellFrame",
+      "source": "129-GWT3 paper inset",
+      "theme": "light",
+      "status": "fail",
+      "value": 12,
+      "killed": true
+    },
+    {
+      "id": "shell-top-bar-68",
+      "storyId": "icon-sample-project",
+      "check": "shellFrame",
+      "source": "131-GWT4 top bar",
+      "theme": "light",
+      "status": "fail",
+      "value": 16,
+      "killed": true
+    }
+  ],
+  "probes": [
+    {
+      "id": "buttonGroupFocusRing",
+      "storyId": "actions-matrix",
+      "source": "125-GWT4",
+      "theme": "light",
+      "status": "pass",
+      "checked": 10,
+      "value": 0,
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "id": "datePickerIndicatorHit",
+      "storyId": "inputs-matrix",
+      "source": "126-GWT4",
+      "theme": "light",
+      "status": "pass",
+      "checked": 2,
+      "value": 0,
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "id": "highlightWidth",
+      "storyId": "typography-matrix",
+      "source": "123-GWT2",
+      "theme": "light",
+      "status": "pass",
+      "checked": 4,
+      "value": 0.02,
+      "violationCount": 0,
+      "violations": []
+    },
+    {
+      "id": "iconStroke",
+      "storyId": "icon-matrix",
+      "source": "124-GWT1",
+      "theme": "light",
+      "status": "pass",
+      "checked": 74,
+      "children": 180,
+      "value": 0,
+      "strokeWidths": [
+        "1.25px"
+      ],
+      "vectorEffects": [
+        "non-scaling-stroke"
+      ],
+      "violationCount": 0,
+      "violations": []
+    }
+  ],
+  "checksNeverApplied": [],
+  "summary": {
+    "clip": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "singleLine": {
+      "status": "pass",
+      "worstValue": 1
+    },
+    "shadowBlur": {
+      "status": "pass",
+      "worstValue": 3
+    },
+    "rail": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "rowAlign": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "mark": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "contrast": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "controlHeight": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "overlap": {
+      "status": "pass",
+      "worstValue": 0
+    },
+    "shellFrame": {
+      "status": "pass",
+      "worstValue": 0
+    }
+  }
+}

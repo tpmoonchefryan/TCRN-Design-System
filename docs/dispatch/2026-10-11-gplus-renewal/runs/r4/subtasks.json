@@ -1,0 +1,186 @@
+[
+ {
+  "key": "TCRN-DS-SUB-107",
+  "parentKey": "TCRN-DS-STORY-130",
+  "parentId": "work:0fbb3d17f6c255f37614c300",
+  "title": "gplus-samples 类目说明改为同时覆盖构图一五个样板与构图三",
+  "files": [
+   "apps/storybook/src/contract-stories/governance.ts",
+   "apps/storybook/src/build/locales/storybook-content-text.ts"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test",
+   "corepack pnpm@10.12.1 -C <包树> run public-output:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）",
+   "corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）"
+  ],
+  "package": "P0",
+  "wave": "W1",
+  "tier": "经济",
+  "sources": [
+   "R4-1",
+   "C3-2",
+   "R3M2"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-108",
+  "parentKey": "TCRN-DS-STORY-133",
+  "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+  "title": "契约 README 的几何门与映射门两节按门现状改写，映射报告标签去掉写死的「八项」",
+  "files": [
+   "docs/contract/README.md",
+   "scripts/storybook-visual-proof.mjs"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> exec node --test tests/storybook-visual-proof.test.mjs",
+   "corepack pnpm@10.12.1 -C <包树> run readme:proof（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）",
+   "corepack pnpm@10.12.1 -C <包树> run public-output:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）"
+  ],
+  "package": "P0",
+  "wave": "W1",
+  "tier": "经济",
+  "sources": [
+   "R4-2",
+   "C3-1"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-109",
+  "parentKey": "TCRN-DS-STORY-134",
+  "parentId": "work:f5de8fcf90580fcc9b4192f7",
+  "title": "删掉译文债台账里两条已翻译的条目",
+  "files": [
+   "scripts/lib/locale-invariant-ledger.mjs"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "git -C <包树> grep -n \"locale-invariant-ledger\" -- scripts tests apps（找出消费方，有单测就跑）",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test"
+  ],
+  "package": "P0",
+  "wave": "W1",
+  "tier": "经济",
+  "sources": [
+   "R4-3",
+   "A3-1",
+   "R3M2"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-110",
+  "parentKey": "TCRN-DS-STORY-134",
+  "parentId": "work:f5de8fcf90580fcc9b4192f7",
+  "title": "知识库样板加一句可见说明：顶栏 52、侧栏画布色与 16 内距来自文档作用域例外",
+  "files": [
+   "apps/storybook/src/contract-stories/story-content.tsx",
+   "apps/storybook/src/build/locales/storybook-content-text.ts"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-107"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test",
+   "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof",
+   "corepack pnpm@10.12.1 -C <包树> run contract:static",
+   "corepack pnpm@10.12.1 -C <包树> run public-output:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）",
+   "corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）"
+  ],
+  "package": "P0",
+  "wave": "W1",
+  "tier": "经济",
+  "sources": [
+   "R4-4",
+   "C3-4",
+   "R3M5",
+   "R3M6"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-111",
+  "parentKey": "TCRN-DS-STORY-134",
+  "parentId": "work:f5de8fcf90580fcc9b4192f7",
+  "title": "目视清单按 R3 落地现状改正，补夜间分类计数实测与新目视项",
+  "files": [
+   "docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-110"
+  ],
+  "localGates": [
+   "会话 scratch 探针（不进仓）：在包内最近一次 run build 的产物上开浅色与夜间文档页，读 .tcrn-doc-nav__category-count 的计算字色与合成后的底色",
+   "corepack pnpm@10.12.1 -C <包树> run public-output:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）",
+   "corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）",
+   "corepack pnpm@10.12.1 -C <包树> run readme:proof（跑完 git -C <包树> checkout -- docs/verification 还原回执，新出现的未跟踪文件移进会话 scratch 的 trash）",
+   "corepack pnpm@10.12.1 -C <包树> run scan（跑完 git -C <包树> checkout -- docs/verification/internal-alpha/no-overclaim-scan.json 还原）"
+  ],
+  "package": "P0",
+  "wave": "W1",
+  "tier": "经济",
+  "sources": [
+   "R4-5",
+   "A3-2",
+   "B3-1",
+   "C3-3",
+   "B §4-1",
+   "C §4-1",
+   "C §4-3"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-112",
+  "parentKey": "TCRN-DS-STORY-134",
+  "parentId": "work:f5de8fcf90580fcc9b4192f7",
+  "title": "R4 批末再生：样板说明引起的视觉签名重收、回执与映射报告再生、P18 现状",
+  "files": [
+   "docs/verification/internal-alpha/**",
+   "docs/verification/internal-alpha-hardening-proof.json",
+   "docs/verification/internal-alpha-hardening-proof.md",
+   "docs/verification/scaffold-proof.json",
+   "docs/verification/scaffold-proof.md",
+   "docs/verification/readme-public-contract.json",
+   "docs/verification/storybook-visual-proof/gplus-map-report.json",
+   "docs/verification/storybook-visual-proof/gplus-map-report.md",
+   "packages/ui-tokens/fonts/**",
+   "docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-107",
+   "TCRN-DS-SUB-108",
+   "TCRN-DS-SUB-109",
+   "TCRN-DS-SUB-110",
+   "TCRN-DS-SUB-111"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:contracts",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/internal-alpha-browser-proof.mjs --update-visual-baseline <selection.json>",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof（应用后复跑，不重建）",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/internal-alpha-hardening-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan",
+   "corepack pnpm@10.12.1 -C <包树> run scaffold:proof",
+   "corepack pnpm@10.12.1 -C <包树> run readme:proof",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/storybook-visual-proof.mjs --write-report",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:visual-proof",
+   "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/fonts-vendor.mjs --check",
+   "corepack pnpm@10.12.1 -C <包树> run fonts:vendor（仅当 --check 报 R4 新中文缺字形时）",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/fonts-proof.mjs"
+  ],
+  "package": "P0",
+  "wave": "W1",
+  "tier": "经济",
+  "sources": [
+   "R4-6",
+   "批量原则第 4 条",
+   "C3-1",
+   "C3-4",
+   "A3-2 (c)",
+   "R3M7"
+  ]
+ }
+]

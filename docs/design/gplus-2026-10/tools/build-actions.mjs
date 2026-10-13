@@ -1,8 +1,11 @@
-import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain, over, parseColor, hex } from "./lib.mjs";
+import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain, over, parseColor, hex, cellAttrs } from "./lib.mjs";
+import { pairState, pairDecls, tokenValue } from "./data.mjs";
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
 
 // ---------- component css: pairs on variants, states only switch which pair is live ----------
+// the board declares the d/h/a/x/s pairs; focus and loading reuse the default pair (contract/pairs.json)
+const AB = { states: ["d", "h", "a", "x", "s"], refEdge: true };
 const css = `
 .btn{--fill:var(--fill-d);--ink-c:var(--ink-d);--edge:var(--edge-d);--fw:500;position:relative;height:var(--h-md);padding:0 var(--pad-md);border:0;border-radius:var(--r-ctl);background:var(--fill);color:var(--ink-c);box-shadow:var(--edge);font-family:var(--sans);font-size:var(--fs-md);font-weight:var(--fw);line-height:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;cursor:pointer;text-decoration:none;flex:0 0 auto;transition:background-color var(--t-fill) var(--ease),color var(--t-fill) var(--ease),box-shadow var(--t-fill) var(--ease)}
 .btn .ic{flex:0 0 auto}
@@ -12,10 +15,10 @@ const css = `
 .btn.ico.sm{width:var(--h-sm)}
 .btn.ico.lg{width:var(--h-lg)}
 /* variants: every state pair is declared here, nowhere else */
-.btn.secondary{--fill-d:var(--panel);--ink-d:var(--ink);--edge-d:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl);--fill-h:var(--panel-2);--ink-h:var(--ink);--edge-h:var(--edge-d);--fill-a:var(--bg-2);--ink-a:var(--ink);--edge-a:var(--edge-d);--fill-x:var(--dis);--ink-x:var(--ink-3);--edge-x:0 0 0 1px var(--line-2);--fill-s:var(--wash);--ink-s:var(--ink);--edge-s:var(--edge-d)}
-.btn.pri{--fill-d:var(--acc);--ink-d:var(--on-acc);--edge-d:0 0 #0000;--fill-h:var(--acc-2);--ink-h:var(--on-acc);--edge-h:var(--edge-d);--fill-a:var(--acc-3);--ink-a:var(--on-acc);--edge-a:var(--edge-d);--fill-x:var(--dis);--ink-x:var(--ink-3);--edge-x:var(--edge-d);--fill-s:var(--acc-3);--ink-s:var(--on-acc);--edge-s:var(--edge-d)}
-.btn.quiet{--fill-d:#0000;--ink-d:var(--ink-2);--edge-d:0 0 #0000;--fill-h:var(--hover);--ink-h:var(--ink);--edge-h:var(--edge-d);--fill-a:var(--wash);--ink-a:var(--ink);--edge-a:var(--edge-d);--fill-x:#0000;--ink-x:var(--ink-3);--edge-x:var(--edge-d);--fill-s:var(--wash);--ink-s:var(--ink);--edge-s:var(--edge-d)}
-.btn.danger{--fill-d:var(--panel);--ink-d:var(--red);--edge-d:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--line-ctl);--fill-h:var(--red-bg);--ink-h:var(--red);--edge-h:var(--edge-d);--fill-a:var(--red-bg-2);--ink-a:var(--red);--edge-a:var(--edge-d);--fill-x:var(--dis);--ink-x:var(--ink-3);--edge-x:0 0 0 1px var(--line-2);--fill-s:var(--red-bg);--ink-s:var(--red);--edge-s:var(--edge-d)}
+.btn.secondary{${pairDecls("actions", "secondary", AB)}}
+.btn.pri{${pairDecls("actions", "primary", AB)}}
+.btn.quiet{${pairDecls("actions", "quiet", AB)}}
+.btn.danger{${pairDecls("actions", "danger", AB)}}
 /* states: lower specificity than any variant (0,1,0); they never name a colour */
 .btn:where(:hover,.is-hover){--fill:var(--fill-h);--ink-c:var(--ink-h);--edge:var(--edge-h)}
 .btn:where(:active,.is-active){--fill:var(--fill-a);--ink-c:var(--ink-a);--edge:var(--edge-a)}
@@ -75,22 +78,20 @@ const STATES = [
   { k: "l", name: "loading", attr: ' aria-busy="true"' },
   { k: "s", name: "selected", attr: ' aria-pressed="true"' }
 ];
-// pair tables mirror the css above (fill, ink) per variant per state
+// pair tables (fill, ink) per variant per state, resolved for a theme from contract/pairs.json
 function pairs(t) {
-  return {
-    pri: { d: [t.acc, t.onAcc], h: [t.acc2, t.onAcc], a: [t.acc3, t.onAcc], f: [t.acc, t.onAcc], x: [t.dis, t.ink3], l: [t.acc, t.onAcc], s: [t.acc3, t.onAcc] },
-    sec: { d: [t.panel, t.ink], h: [t.panel2, t.ink], a: [t.bg2, t.ink], f: [t.panel, t.ink], x: [t.dis, t.ink3], l: [t.panel, t.ink], s: [t.wash, t.ink] },
-    quiet: { d: ["#0000", t.ink2], h: [t.hover, t.ink], a: [t.wash, t.ink], f: ["#0000", t.ink2], x: ["#0000", t.ink3], l: ["#0000", t.ink2], s: [t.wash, t.ink] },
-    danger: { d: [t.panel, t.red], h: [t.redBg, t.red], a: [t.redBg2, t.red], f: [t.panel, t.red], x: [t.dis, t.ink3], l: [t.panel, t.red], s: [t.redBg, t.red] }
-  };
+  const theme = t === T.night ? "night" : "light";
+  return Object.fromEntries(VARIANTS.map((v) => [v.k, Object.fromEntries(STATES.map((s) => {
+    const p = pairState("actions", v.name, s.k);
+    return [s.k, [tokenValue(theme, p.fill), tokenValue(theme, p.ink)]];
+  }))]));
 }
 
 function btn(v, s, { size = "", label, ico = false, surface, t, th, cellId } = {}) {
   const sel = s.k === "s" && (v.k === "pri" || v.k === "danger");
-  const p = pairs(t)[v.k][s.k];
   const cls = `btn ${v.c}${size ? " " + size : ""}${ico ? " ico" : ""}${s.attr.includes("class=") ? " " + s.attr.match(/class="([^"]+)"/)[1] : ""}`;
   const attrs = s.attr.replace(/ class="[^"]+"/, "");
-  const cell = cellId ? ` data-cell="${cellId}-${th}" data-kind="${ico ? "icon" : "text"}" data-expect="${fmt(cr(p[1], p[0], surface))}"${s.k === "x" ? " data-exempt" : ""}` : "";
+  const cell = cellId && !sel ? ` ${cellAttrs("actions", `${cellId}-${th}`)}` : "";
   const inner = s.k === "l" ? `${icon("loader-circle", { size: size === "lg" ? 15 : 13, cls: "spin" })}${ico ? "" : "保存中"}` : ico ? icon(v.k === "danger" ? "x" : v.k === "pri" ? "check" : "settings", { size: size === "lg" ? 20 : size === "sm" ? 14 : 16 }) : (label || v.label);
   const aria = ico ? ` aria-label="${v.zh}"` : "";
   if (sel) return `<span class="lab"><small>—</small></span>`;
@@ -108,10 +109,9 @@ function pane(night) {
   const withIcon = `<span class="lab"><button type="button" class="btn pri">${icon("check", { size: 14 })}已保存</button><small>图标在前 14</small></span><span class="lab"><button type="button" class="btn secondary">导出${icon("external-link", { size: 14 })}</button><small>图标在后</small></span><span class="lab"><button type="button" class="btn quiet">${icon("history", { size: 14 })}历史</button><small>quiet</small></span><span class="lab"><button type="button" class="btn secondary lg">${icon("arrow-right", { size: 16 })}下一步</button><small>lg · 16</small></span><span class="lab"><button type="button" class="btn secondary sm">${icon("chevron-down", { size: 14 })}更多</button><small>sm · 14</small></span>`;
   const links = [["pri", "查看账单"], ["secondary", "打开项目"], ["quiet", "返回"]].map(([k, l]) => `<span class="lab"><a class="btn ${k}" href="#x">${l}${icon("arrow-right", { size: 14 })}</a><small>LinkButton ${k}</small></span>`).join("") + `<span class="lab"><a class="btn secondary is-focus" href="#y">打开项目</a><small>focus</small></span><span class="lab"><a class="btn secondary is-hover" href="#z">打开项目</a><small>hover</small></span>`;
   const cb = [["idle", "复制 ID", "", "copy"], ["copying", "复制中…", ' aria-busy="true"', "spin"], ["copied", "已复制", "", "check"], ["failed", "复制失败", "", "alert-triangle"], ["unsupported", "不支持复制", "", "info"]].map(([st, l, a, ic]) => {
-    const ink = st === "copied" ? t.ok : st === "failed" ? t.bad : st === "unsupported" ? t.ink3 : t.ink;
-    return `<span class="lab"><button type="button" class="btn secondary sm cb" data-state="${st}"${a} data-cell="cb-${st}-${th}" data-kind="text" data-expect="${fmt(cr(ink, t.panel, P))}">${ic === "spin" ? icon("loader-circle", { size: 13, cls: "spin" }) : ic ? icon(ic, { size: 13 }) : ""}${l}</button><small>${st}</small></span>`;
+    return `<span class="lab"><button type="button" class="btn secondary sm cb" data-state="${st}"${a} ${cellAttrs("actions", `cb-${st}-${th}`)}>${ic === "spin" ? icon("loader-circle", { size: 13, cls: "spin" }) : ic ? icon(ic, { size: 13 }) : ""}${l}</button><small>${st}</small></span>`;
   }).join("");
-  const groups = `<span class="lab"><span class="grp" role="group" aria-label="视图"><button type="button" class="btn secondary ico" aria-pressed="true" aria-label="列表" data-cell="grp-sel-${th}" data-kind="icon" data-expect="${fmt(cr(t.ink, t.wash, P))}">${icon("menu", { size: 16 })}</button><i></i><button type="button" class="btn secondary ico" aria-pressed="false" aria-label="网格">${icon("layout-grid", { size: 16 })}</button></span><small>toggle · aria-pressed</small></span>
+  const groups = `<span class="lab"><span class="grp" role="group" aria-label="视图"><button type="button" class="btn secondary ico" aria-pressed="true" aria-label="列表" ${cellAttrs("actions", `grp-sel-${th}`)}>${icon("menu", { size: 16 })}</button><i></i><button type="button" class="btn secondary ico" aria-pressed="false" aria-label="网格">${icon("layout-grid", { size: 16 })}</button></span><small>toggle · aria-pressed</small></span>
 <span class="lab"><span class="grp" role="group" aria-label="导入导出"><button type="button" class="btn secondary">导入</button><i></i><button type="button" class="btn secondary">导出</button><i></i><button type="button" class="btn secondary ico" aria-label="更多">${icon("chevron-down", { size: 16 })}</button></span><small>attached · 三件</small></span>
 <span class="lab"><span class="grp" role="group" aria-label="周期"><button type="button" class="btn secondary sm" aria-pressed="true">日</button><i></i><button type="button" class="btn secondary sm" aria-pressed="false">周</button><i></i><button type="button" class="btn secondary sm" aria-pressed="false">月</button></span><small>sm · 单选</small></span>
 <span class="lab"><span class="grp quiet" role="group" aria-label="工具"><button type="button" class="btn quiet ico" aria-label="撤销">${icon("arrow-left", { size: 16 })}</button><button type="button" class="btn quiet ico" aria-label="重做">${icon("arrow-right", { size: 16 })}</button><i></i><button type="button" class="btn quiet ico" aria-label="历史">${icon("history", { size: 16 })}</button></span><small>quiet · 无轮廓</small></span>

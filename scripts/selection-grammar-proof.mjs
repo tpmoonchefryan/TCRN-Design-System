@@ -21,14 +21,21 @@
 //
 // Scope note, in the spirit of "a gate only protects the bytes it reads": this
 // scans the package component stylesheet and both docs presentation layers. A
-// selection style introduced anywhere else is still invisible to it.
+// selection style introduced anywhere else is still invisible to it. The package
+// stylesheet is read as the CSS text of each family segment module under
+// packages/ui-react/src/styles/ (TCRN-DS-SUB-010), so a family module or generated
+// segment added there is scanned without editing this list.
 import { readFileSync } from "node:fs";
+import { componentCssModules } from "./lib/component-css-sources.mjs";
 
-const SOURCES = [
-  "packages/ui-react/src/components/Navigation/Navigation.tsx",
+const DOC_SOURCES = [
   "apps/storybook/src/storybook.css",
   "apps/storybook/src/story-demo-styles.ts",
   "apps/storybook/src/alpha-styles.ts"
+];
+const SOURCES = [
+  ...componentCssModules().map(({ path, css }) => ({ source: path, text: css })),
+  ...DOC_SOURCES.map((source) => ({ source, text: readFileSync(source, "utf8") }))
 ];
 
 // Selectors that mark "this one is chosen". aria-current="location" is included
@@ -57,8 +64,7 @@ const FORBIDDEN_BODY = [
 const findings = [];
 let ruleCount = 0;
 
-for (const source of SOURCES) {
-  const text = readFileSync(source, "utf8");
+for (const { source, text } of SOURCES) {
   for (const match of text.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
     const [, selector, body] = match;
     if (!SELECTION_SELECTOR.test(selector)) continue;

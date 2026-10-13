@@ -1,8 +1,16 @@
 {
   "ok": true,
-  "scannedFiles": 282,
+  "scannedFiles": 669,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-actions-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-actions-sample-project.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-ai-consumption-contract.png",
       "reason": "binary_visual_receipt_not_text_scanned"
@@ -20,6 +28,14 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-brand-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-brand-sample-product.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-button-spec-usage.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -29,6 +45,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-component-family-index.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-composition-three-sample.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -124,7 +144,23 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-icon-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-icon-sample-project.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-icons-motion.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-inputs-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-inputs-sample-members.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -225,6 +261,14 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-documents-and-collaboration.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-gplus-matrices.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-page-components-gplus-samples.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -360,11 +404,27 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-typography-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-typography-sample-billing.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-workbench-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-actions-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-actions-sample-project.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -384,6 +444,14 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-brand-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-brand-sample-product.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-button-spec-usage.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -393,6 +461,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-component-family-index.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-composition-three-sample.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -488,7 +560,23 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-icon-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-icon-sample-project.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-icons-motion.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-inputs-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-inputs-sample-members.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -585,6 +673,14 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-documents-and-collaboration.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-gplus-matrices.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-page-components-gplus-samples.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -720,11 +816,27 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-typography-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-typography-sample-billing.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-welcome-governance.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-workbench-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-actions-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-actions-sample-project.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -744,6 +856,14 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-brand-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-brand-sample-product.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-button-spec-usage.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -753,6 +873,10 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-component-family-index.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-composition-three-sample.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -848,7 +972,23 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-icon-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-icon-sample-project.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-icons-motion.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-inputs-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-inputs-sample-members.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -945,6 +1085,14 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-documents-and-collaboration.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-gplus-matrices.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-page-components-gplus-samples.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -1077,6 +1225,14 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-tokens-copy-state.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-typography-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-typography-sample-billing.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {

@@ -1,0 +1,415 @@
+{
+ "schemaVersion": "tcrn.work-batch.v1",
+ "members": [
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-047",
+   "kind": "Subtask",
+   "parentId": "work:dc8820c6d2ee0915cfda3878",
+   "title": "浅色主题块选择器扩为 :root 与 [data-tcrn-theme=\"light\"]，tokens-sync 与 C5 接受选择器列表",
+   "summary": "P1·R2-3：浅色主题块选择器扩为 :root 与 light 属性块，tokens-sync 与 C5 接受选择器列表",
+   "body": "改动文件：scripts/contract-generate.mjs、packages/ui-tokens/src/index.ts、packages/ui-tokens/src/index.test.ts、scripts/tokens-sync.mjs、scripts/contract-static-proof.mjs、tests/contract-static-proof.test.mjs、tests/token-deprecation-notice.test.mjs、scripts/doc-sample-style-proof.mjs、tests/doc-sample-style-proof.test.mjs、packages/ui-tokens/src/gplus-tokens.generated.ts、packages/ui-tokens/src/tokens.css、apps/storybook/src/storybook.css（doc-sample-style-proof 与其测试仅当它按字面 :root 取浅色块时改；gplus-tokens.generated.ts 只由 contract-generate 写，tokens.css 与 storybook.css 的 token 块只由 tokens-sync 写）；依赖：TCRN-DS-SUB-048、TCRN-DS-SUB-049；判据：120-GWT5（夜间页浅色块继承夜间值，第 18 步五矩阵浅色格全偏、第 19 步 12 行 dark:contrast 红）：contract-generate 把 tcrnGplusThemeSelectors.light 写成 :root, [data-tcrn-theme=\"light\"]；index.ts 按它输出主题块（保留 tcrn-token-block: theme 标记，dark 块排在其后），parseTokenCssBlocks、compareTokenThemeBlocks 与 tokens-sync 接受选择器列表；再生 tokens.css 与 storybook.css 的 token 块，不手改；contract-static-proof 的 checkC5 把该列表当浅色侧（C5），测试补选择器列表的正反用例；tests/token-deprecation-notice.test.mjs 补一条浏览器用例：夜间祖先内的 [data-tcrn-theme=\"light\"] 块解析到浅色值（写法同该文件 GWT4 用例；放进既有文件，tokens:proof 链不变）；取单块选择器列表，不另复制浅色块（取 A-6，不取 C-13）。复核第 18–20 步：五矩阵浅色格不再因继承夜间值偏差，dark:contrast 12 行不再因此红（其它原因的红照记）；复核 A 2.1 观察的 ink-3 是否落在 panel-2、bg-2、hover、wash 上，有则写进 problems/P1.md 交设计权威。；档位：主力（改生成器的主题输出结构与 C5 的分组判定（共享契约与门的判定语义））；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：exec node scripts/contract-generate.mjs ‖ exec node scripts/tokens-sync.mjs ‖ exec node scripts/tokens-sync.mjs --check ‖ --filter @tcrn/ui-tokens build ‖ --filter @tcrn/ui-tokens test ‖ run build ‖ exec node --test tests/token-deprecation-notice.test.mjs ‖ run contract:static ‖ run contract:proof ‖ run geometry:measure ‖ run storybook:visual-proof ‖ run doc:sample-style；分包：P1（W1，包内第 3 项，整包主力档）；来源：R2-3、A-6、B-13、C-13、M6；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-048",
+   "kind": "Subtask",
+   "parentId": "work:f777d0aeec6779529a566622",
+   "title": "mono 字族栈补 Noto Sans SC 中文回退，fonts-proof 字族检查同步",
+   "summary": "P1·R2-1：mono 字族栈补 Noto Sans SC 中文回退，fonts-proof 字族检查同步（顺手 O-10 注释）",
+   "body": "改动文件：docs/design/gplus-2026-10/contract/tokens.json、scripts/fonts-proof.mjs、packages/ui-tokens/src/index.test.ts、scripts/fonts-render-proof.mjs、packages/ui-tokens/src/gplus-tokens.generated.ts、packages/ui-tokens/src/tokens.css、apps/storybook/src/storybook.css、packages/ui-react/src/styles/generated/actions.pairs.ts、packages/ui-react/src/styles/generated/inputs.pairs.ts、packages/ui-react/src/styles/generated/typography.scale.ts、apps/storybook/src/contract-stories/gplus/generated/matrices.generated.ts（生成物只由 contract-generate 与 tokens-sync 写；actions.pairs、inputs.pairs、typography.scale、matrices.generated 只变 contract-sha256 头（其 contract files 含 tokens.json）；fonts-render-proof 的 mono 中文探针可选，加了就要绿）；依赖：无；判据：121-GWT2 的 mono 部分（A-2）：--tcrn-type-family-mono 为 \"IBM Plex Mono\",\"Noto Sans SC\",ui-monospace,Menlo,monospace，值只来自 contract/tokens.json（依次 contract-generate、tokens-sync）；fonts-proof 的 TOKEN_FAMILY_STACKS 给 mono 加 fallback: \"ui-zh-fallback\"，mono 缺中文回退判红；index.test.ts 的 mono 断言同步；contract:proof 的 generated-sources 绿。顺手 O-10（§3.4 第 9 项）：tokens.json 里 surface 条目的 note 改为与焦点环实际行为一致（包与画板都显示 bg 色间隙），只改注释、不改值。tests/fonts-proof.test.mjs 在 SUB-049 修好之前仍红，属预期，本单跑 fonts-proof 门本体。；档位：主力（改 contract/*.json 与 token 值（共享契约））；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：exec node scripts/contract-generate.mjs ‖ exec node scripts/tokens-sync.mjs ‖ exec node scripts/tokens-sync.mjs --check ‖ --filter @tcrn/ui-tokens build ‖ --filter @tcrn/ui-tokens test ‖ run build ‖ exec node scripts/fonts-proof.mjs ‖ run fonts:render ‖ run contract:proof；分包：P1（W1，包内第 1 项，整包主力档）；来源：R2-1、A-2、O-10；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-049",
+   "kind": "Subtask",
+   "parentId": "work:f777d0aeec6779529a566622",
+   "title": "fonts-proof 单测夹具改用 G+ 字族 token 并补 token-families 变异",
+   "summary": "P1·R2-2：fonts-proof 单测夹具改用 G+ 字族 token 并补 token-families 变异，tokens:proof 解堵",
+   "body": "改动文件：tests/fonts-proof.test.mjs；依赖：TCRN-DS-SUB-048；判据：120-GWT5 解堵（A-1；第 6 步 tokens:proof 卡在本测试）：tests/fonts-proof.test.mjs 第 58、72、151 行三条转绿；夹具 openTokens（第 13 行）改为四个 G+ 字族 token，值与契约一致（含 SUB-048 的 mono 回退），distributable-* 栈只留专有字体用例；补三条变异——缺 token、缺中文回退、fonts.css 有字族未被 token 点名——均判红；门的判定不变。修后 tokens:proof 12 段逐段跑完，fonts-proof 门本体、stamp-whitelist、shell-fidelity、token-extension、selection-grammar 五个子门的结果写进 problems/P1.md（见红只记，不在本包修）。；档位：经济（只改测试夹具，门的判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：exec node scripts/css-template-integrity-proof.mjs ‖ exec node scripts/tokens-sync.mjs --check ‖ exec node scripts/demo-styles-sync.mjs --check ‖ exec node --test tests/token-contrast-proof.test.mjs ‖ exec node scripts/token-contrast-proof.mjs ‖ exec node --test tests/token-deprecation-notice.test.mjs ‖ exec node --test tests/fonts-proof.test.mjs ‖ exec node scripts/fonts-proof.mjs ‖ exec node scripts/stamp-whitelist-proof.mjs ‖ exec node scripts/shell-fidelity-proof.mjs ‖ exec node scripts/token-extension-proof.mjs ‖ exec node scripts/selection-grammar-proof.mjs；分包：P1（W1，包内第 2 项，整包主力档）；来源：R2-2、A-1、C 2.7；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-050",
+   "kind": "Subtask",
+   "parentId": "work:f777d0aeec6779529a566622",
+   "title": "shell-fidelity 阴影模糊检查扩到包段与 token 表，按层解析区分扩展半径",
+   "summary": "P5·R2-15：shell-fidelity 阴影模糊检查扩到包段与 token 表，按层解析区分扩展半径",
+   "body": "改动文件：scripts/shell-fidelity-proof.mjs（只读复用 scripts/lib/css-rules.mjs 的 shadowLayers 与 scripts/lib/component-css-sources.mjs 的 componentCssModules，不改这两个库）；依赖：TCRN-DS-SUB-064、TCRN-DS-SUB-049；判据：121-GWT4 的阴影部分（A-3）：MAX_SHADOW_BLUR_PX 检查从文档层三个文件（SURFACES，约 29–33 行）扩到 componentCssModules(root) 的全部段与 token 表（tokens.css 或 tcrnTokenCss），用 shadowLayers 按层解析，inset 0 0 0 5px（inputs.css.ts:343，扩展半径）不再读成模糊 5；其余检查的扫描面不变；变异写进脚本既有的自检（assertDetectorShapes 一带）：包段副本注入 0 8px 24px rgba(…) 判红、inset 0 0 0 5px 不判红；不新增测试文件、不改 package.json；包内现有阴影模糊均不超过 3，扩面后 shell-fidelity 段仍绿。；档位：主力（扩门的检查范围（门的判定语义））；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ exec node scripts/shell-fidelity-proof.mjs ‖ exec node scripts/css-template-integrity-proof.mjs ‖ exec node scripts/tokens-sync.mjs --check ‖ exec node scripts/demo-styles-sync.mjs --check ‖ exec node --test tests/token-contrast-proof.test.mjs ‖ exec node scripts/token-contrast-proof.mjs ‖ exec node --test tests/token-deprecation-notice.test.mjs ‖ exec node --test tests/fonts-proof.test.mjs ‖ exec node scripts/fonts-proof.mjs ‖ exec node scripts/stamp-whitelist-proof.mjs ‖ exec node scripts/token-extension-proof.mjs ‖ exec node scripts/selection-grammar-proof.mjs；分包：P5（W2，包内第 3 项，整包主力档）；来源：R2-15、A-3；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-051",
+   "kind": "Subtask",
+   "parentId": "work:f777d0aeec6779529a566622",
+   "title": "FONT-LICENSES 正文去掉 CDN 主机名",
+   "summary": "P11·R2-33：随包 FONT-LICENSES 正文去掉字体 CDN 主机名",
+   "body": "改动文件：packages/ui-tokens/FONT-LICENSES.md；依赖：无；判据：121-GWT1 的字面搜索（A-9，按判断列入）：packages/ui-tokens/FONT-LICENSES.md 第 6 行改为不含主机名的说法（意思不变：外部字体 CDN 在部分地区不可靠）；ui-tokens 包内容与 pack 产物里对两个 CDN 主机名的字面搜索为 0；其余正文与许可信息不动。；档位：经济（单个随包文档的措辞，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：--filter @tcrn/ui-tokens build ‖ run pack:smoke；分包：P11（W3，包内第 2 项，整包经济档）；来源：R2-33、A-9；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-052",
+   "kind": "Subtask",
+   "parentId": "work:bcf1f36ee2f93d7c8b69518c",
+   "title": "字体刻度登记进契约并由生成器输出，typography.scale 改为引用 token",
+   "summary": "P2·R2-4：字体刻度登记进契约并由生成器输出，typography.scale 改为引用 token",
+   "body": "改动文件：docs/design/gplus-2026-10/contract/tokens.json、docs/design/gplus-2026-10/contract/typography.json、scripts/contract-generate.mjs、packages/ui-tokens/src/index.ts、packages/ui-tokens/src/index.test.ts、packages/ui-tokens/src/gplus-tokens.generated.ts、packages/ui-react/src/styles/generated/actions.pairs.ts、packages/ui-react/src/styles/generated/inputs.pairs.ts、packages/ui-react/src/styles/generated/typography.scale.ts、apps/storybook/src/contract-stories/gplus/generated/matrices.generated.ts（登记位置二选一（tokens.json 的 fixed 段或 typography.json）；生成物只由 contract-generate 写；tokens.css 与 storybook.css 不在本单文件集）；依赖：TCRN-DS-SUB-047；判据：122 目的锚「单一真值」与 R1 跨包约定第 1 条（A-5）：family-heading、weight-light、weight-semibold、tracking-caps、numeric-tabular、line-meta、line-heading-2、line-heading-3 与其余字体刻度名连同 cssVar 登记进契约；contract-generate 把刻度生成进 gplus-tokens.generated.ts；typography.scale.ts 的字体声明改为引用 var(--tcrn-type-size-*|line-*|weight-*|tracking-caps|numeric-tabular)，numeral 变体引用 --tcrn-type-numeric-tabular，生成段不再有字面字号行高；index.ts（约 246–255、325–342 行）从生成物取值，删去 index.test.ts 的手写交叉核对；contract:proof 的 generated-sources 绿；只引用已有 token，不新增几何 token（O-6）。拆分新增约束：tokens.css 与 storybook.css 的输出字节不变（tokens-sync --check 绿且 git diff 两文件为空），以保证 P2 可与 P5 并行——做不到就停下记 problems/P2.md，等 P5 合入后再做。CHANGELOG 第 17–19 行由 SUB-087 改正，本单不改。；档位：主力（登记 token 键集、改 contract/*.json 与生成器）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：exec node scripts/contract-generate.mjs ‖ exec node scripts/tokens-sync.mjs --check ‖ git -C <包树> diff --exit-code -- packages/ui-tokens/src/tokens.css apps/storybook/src/storybook.css ‖ --filter @tcrn/ui-tokens build ‖ --filter @tcrn/ui-tokens test ‖ --filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build ‖ run contract:proof ‖ run contract:static；分包：P2（W2，包内第 1 项，整包主力档）；来源：R2-4、A-5、W2-A P4、W2-A P5、W2-B P7；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-053",
+   "kind": "Subtask",
+   "parentId": "work:bcf1f36ee2f93d7c8b69518c",
+   "title": "contract-proof 字面量扫描扩到全部状态规则，locale 触发器状态改用 token",
+   "summary": "P3·R2-7：contract-proof 字面量扫描扩到全部状态规则，locale 触发器状态改用 token",
+   "body": "改动文件：packages/ui-react/src/styles/base.css.ts、scripts/contract-proof.mjs、tests/contract-proof.test.mjs；依赖：无；判据：122-GWT2 后半句（A-4）：dist tcrnComponentCss 的全部状态规则（伪类，以及 aria、data 状态属性条件）不含颜色字面量——contract-proof 的 package-css 字面量扫描从 pairs.json 目标基类的 38 条扩到全部状态规则，保留只含 transparent 的 outline 放行；tests/contract-proof.test.mjs 补非 pairs 目标的变异（状态规则注入 rgba(…) 判红）；base.css.ts 约 63–69 行 .tcrn-shell-locale-menu__trigger 的 hover 与 [aria-expanded=\"true\"] 改 background: var(--tcrn-color-hover)、box-shadow: var(--tcrn-shadow-s1)，边线与文字改 G+ 名（最小改动，不动该件几何、不留弃用名）；扩范围后若命中其它家族的规则，不在本单改，列进 problems/P3.md。；档位：主力（扩门的判定范围）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：--filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build ‖ run contract:proof ‖ run contract:static；分包：P3（W1，包内第 1 项，整包主力档）；来源：R2-7、A-4、W2-H P3、W3-D P10；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-054",
+   "kind": "Subtask",
+   "parentId": "work:bcf1f36ee2f93d7c8b69518c",
+   "title": "退役失效的 s254-component-contract-proof 脚本",
+   "summary": "P11·R2-34：退役失效的 s254-component-contract-proof 脚本（先复核引用）",
+   "body": "改动文件：scripts/s254-component-contract-proof.mjs（用 git rm；只有在发现现行引用时改走修复（同一文件））；依赖：无；判据：122 的门清理（A-10、W1-B P2）：先全仓 grep 复核引用——拆分时只查到 docs/reports/init-029-component-loop/evidence/STORY-254-component-return.md 第 70、72 行的历史复核命令（历史记录不改）；没有 verify、CI、package.json 或现行文档引用就 git rm 该脚本，提交信息写明历史引用保留原样及失效原因（SUB-010 拆段后正则匹配为空，八项检查全失败，不在 verify 链）；若 grep 发现现行引用，改用 scripts/lib/component-css-sources.mjs 的 componentCssText() 修复而不删，并在交回说明写明。；档位：经济（孤立的失效脚本，不在 verify 链）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：git -C <包树> grep -n \"s254-component-contract-proof\" -- . \":!docs/dispatch\"；分包：P11（W3，包内第 3 项，整包经济档）；来源：R2-34、A-10、W1-B P2；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-055",
+   "kind": "Subtask",
+   "parentId": "work:88be4a8b40a73ef49bda49ce",
+   "title": "链接与 quiet 链接状态改走对表，焦点补透明 outline 回退",
+   "summary": "P2·R2-5：链接与 quiet 链接状态改走对表，焦点补透明 outline 回退",
+   "body": "改动文件：docs/design/gplus-2026-10/contract/typography.json、scripts/contract-generate.mjs、packages/ui-react/src/styles/base.css.ts、packages/ui-react/src/styles/typography.css.ts、packages/ui-react/src/components/Typography/Typography.test.tsx、packages/ui-react/src/styles/generated/typography.scale.ts（typography.scale.ts 只由 contract-generate 写）；依赖：TCRN-DS-SUB-052、TCRN-DS-SUB-053、TCRN-DS-SUB-057；判据：123-GWT4 部分与 132-GWT4 的 C2 三条（B-1、C-10）：contract/typography.json 链接段改为对表（ink-d 为 acc、下划线 acc-ul、h 为 acc-2、edge-f 为焦点环；quiet 的 ink-d 为 currentColor、ink-h 为 acc-2）；生成器输出变体声明，基础规则读生效对，:where() 状态规则只切换生效对，不写 color、text-decoration-color、box-shadow（C2）；焦点加 outline: 2px solid transparent; outline-offset: 2px，强制色下可见；base.css.ts（约 2494–2506 行）把 .tcrn-link--quiet:hover 从面包屑共用的选择器列表拆出并入对表，不再引用已停用的 --tcrn-color-brand-primary；.tcrn-breadcrumb a 留在导航家族豁免（EX-INIT015-navigation）；重生成 typography.scale.ts，同步 typography.css.ts 与 Typography.test.tsx；contract:static 的 typography C2 为 0，contract:proof 绿。；档位：主力（改 contract/typography.json 与生成器）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：exec node scripts/contract-generate.mjs ‖ --filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build ‖ run contract:static ‖ run contract:proof ‖ run component-modifiers:proof；分包：P2（W2，包内第 2 项，整包主力档）；来源：R2-5、B-1、C-10、W3-D P6、W4-B Q1、W4-B Q2；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-056",
+   "kind": "Subtask",
+   "parentId": "work:cd0044cd4e877982b2380237",
+   "title": "几何门加 iconStroke 探针，实测 16px 图标描边 1.25px",
+   "summary": "P8·R2-28：几何门加 iconStroke 探针，实测 16px 图标描边 1.25px",
+   "body": "改动文件：scripts/geometry-measure-proof.mjs、tests/geometry-measure-proof.test.mjs（探针实现放在 geometry-measure-proof.mjs，不改 scripts/lib/gplus-measure.mjs 的签名（R1 约定 9））；依赖：TCRN-DS-SUB-077；判据：124-GWT1（B-11）：加 probe iconStroke（source 124-GWT1）：icon-matrix 16px 行每个 svg.tcrn-icon > * 的计算 stroke-width 为 1.25px、vector-effect 为 non-scaling-stroke；测试里配一个把描边改成 2 的红夹具（判红）；第 18 步 probes 列出 iconStroke，icon-matrix 该探针全绿。；档位：主力（门增项）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ exec node --test tests/geometry-measure-proof.test.mjs ‖ run geometry:measure；分包：P8（W2，包内第 2 项，整包主力档）；来源：R2-28、B-11、拆分 P31；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-057",
+   "kind": "Subtask",
+   "parentId": "work:91e4b795d04577ade46f29ab",
+   "title": "主题钮图标显隐改由 data-current-theme 控制，去掉 html 级主题显隐规则",
+   "summary": "P3·R2-8：主题钮图标显隐改由 data-current-theme 控制，去掉 html 级主题显隐规则",
+   "body": "改动文件：packages/ui-react/src/styles/base.css.ts、packages/ui-react/src/components/Navigation/Navigation.test.tsx；依赖：TCRN-DS-SUB-053；判据：132-GWT4 的 C5 一条与 125-GWT3（取 C-9 改法，不取 B-3）：删去 base.css.ts 约 602–612 行三条显隐规则里挂在 html[data-tcrn-theme] 上的 [data-theme-icon] 部分，侧栏图标规则保留；显隐交给已有的 .tcrn-shell-theme-toggle[data-current-theme] 透明度规则（约 88–99 行）；contract:static 的 C5 为 0；Navigation.test.tsx 的主题钮用例绿（随新机制改写断言，不删用例），并断言块级 data-tcrn-theme=\"dark\" 祖先下当前图标可见（对应样板夜间块）；§3.4 第 6 项在交回说明回显。；档位：经济（单文件组件 CSS，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：--filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build ‖ run contract:static；分包：P3（W1，包内第 2 项，整包主力档）；来源：R2-8、C-9、B-3、W5-A P2；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-058",
+   "kind": "Subtask",
+   "parentId": "work:c6f950c965e3dd9fc23e854f",
+   "title": "inputs-text 对表补只读获焦态，只读框获焦显示焦点环",
+   "summary": "P2·R2-6：inputs-text 对表补只读获焦态，只读框获焦显示焦点环",
+   "body": "改动文件：docs/design/gplus-2026-10/contract/pairs.json、scripts/contract-generate.mjs、packages/ui-react/src/components/Form/Form.test.tsx、packages/ui-react/src/styles/generated/inputs.pairs.ts、packages/ui-react/src/styles/generated/actions.pairs.ts、apps/storybook/src/contract-stories/gplus/generated/matrices.generated.ts（contract-generate.mjs 仅当新元组需要生成器支持时改；三个生成物只由 contract-generate 写（actions.pairs 与 matrices.generated 只变头））；依赖：TCRN-DS-SUB-055、TCRN-DS-SUB-060；判据：126-GWT5 的只读焦点（B-7，WCAG 2.4.7）：只读框可获焦时显示焦点环——contract/pairs.json 的 inputs-text 加 rf 元组（r 的底加 f 的环），或把 f 排到 r 之后，二选一并写明理由；重生成 inputs.pairs.ts，不手改；Form.test.tsx 加只读获焦用例（断言生效对含焦点环）；contract:proof 的矩阵逐格期望若因此变化，只在契约与生成物内调整，不改门；与画板状态顺序不同，按 §3.4 第 1 项先做并在交回说明回显。；档位：主力（改 contract/pairs.json 与生成物）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：exec node scripts/contract-generate.mjs ‖ --filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build ‖ run contract:proof ‖ run contract:static；分包：P2（W2，包内第 3 项，整包主力档）；来源：R2-6、B-7、W2-E P5；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-059",
+   "kind": "Subtask",
+   "parentId": "work:c6f950c965e3dd9fc23e854f",
+   "title": "SearchInput 壳内焦点与 MultiSelect 选项状态改为只切换对",
+   "summary": "P4·R2-9：SearchInput 壳内焦点与 MultiSelect 选项状态改为只切换对",
+   "body": "改动文件：packages/ui-react/src/styles/inputs.css.ts；依赖：无；判据：132-GWT4 的 C2 四条与 126-GWT5（B-2、C-11）：.tcrn-product-shell .tcrn-search-input:focus-within（约 23 行，特异性 0,3,0）删除（包裹层已不作画），或改为 :where(.tcrn-product-shell) .tcrn-search-input:where(:focus-within)；.tcrn-multi-select-dropdown__option 在本类上声明 fill-d 透明、fill-h hover、fill-s wash、选中字重 600，基础规则读生效对，:where(:not(:disabled):hover,[data-tcrn-preview-state=\"hover\"]) 与 :where([aria-selected=\"true\"]) 只切换（约 519–520 行）；contract:static 的 inputs C2 减 4 条且无新增；不在 pairs.json 新定元组名——若必须新定，停下记 problems/P4.md（属主力）。；档位：经济（组件 CSS，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：--filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build ‖ run contract:static；分包：P4（W1，包内第 1 项，整包经济档）；来源：R2-9、B-2、C-11、W4-B Q3、W4-B Q4；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-060",
+   "kind": "Subtask",
+   "parentId": "work:c6f950c965e3dd9fc23e854f",
+   "title": "Field 错误态去掉整块洗底，错误文字改读 --tcrn-color-bad",
+   "summary": "P4·R2-10：Field 错误态去掉整块洗底，错误文字改读 --tcrn-color-bad",
+   "body": "改动文件：packages/ui-react/src/styles/inputs.css.ts、apps/storybook/src/smoke.test.ts、packages/ui-react/src/components/Form/Form.test.tsx；依赖：TCRN-DS-SUB-059；判据：126-GWT5 的 err-msg 两格（根因取 B-4，C-14 合并；err-msg-l 6.20 对 6.69、err-msg-n 6.27 对 6.88）：删去 .tcrn-field--error 的 color-mix(… state-blocked-bg 62% …) 整块底与 outline-color（约 141–143 行；强制色块里的系统色 outline 保留，约 405 行）；.tcrn-field__error（约 159–161 行）改读 var(--tcrn-color-bad)；第 18 步 err-msg-l、err-msg-n 的实测对比回到矩阵期望；smoke.test.ts 与 Form.test.tsx 的相关断言同步；§3.4 第 2 项（P29 口径更正）在交回说明回显。；档位：经济（组件 CSS，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：--filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build ‖ --filter @tcrn/design-system-storybook test ‖ run geometry:measure；分包：P4（W1，包内第 2 项，整包经济档）；来源：R2-10、B-4、C-14；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-061",
+   "kind": "Subtask",
+   "parentId": "work:c6f950c965e3dd9fc23e854f",
+   "title": "MultiSelect 触发器补 30px 末端区并与 Select 对齐 min-height",
+   "summary": "P4·R2-11：MultiSelect 触发器补 30px 末端区并与 Select 对齐 min-height",
+   "body": "改动文件：packages/ui-react/src/styles/inputs.css.ts；依赖：TCRN-DS-SUB-060；判据：126-GWT5 与第 28 步两例（B-5、C-15；paddingRight 10px 对 30px，minHeight 0px 对 auto）：.tcrn-multi-select-dropdown__trigger（约 512 行）设 padding-inline-end: 30px，caret 定位与 .tcrn-select-wrap__icon 相同（calc((30px - var(--tcrn-icon-size-sm)) / 2)）；minHeight 先确认「Chrome 把非 flex/grid 项的 auto 读成 0px」的推断，再在组件侧让两者处于同一布局语境或声明相同的显式 min-height；不改门的比对字段（需要时停下记问题，属主力）；closed-select-family-empty 一例转绿；public-popup-family-dark 一例另需 SUB-083，本包里仍红属预期。；档位：经济（组件 CSS，判据不改）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：--filter @tcrn/ui-react build ‖ run build ‖ run full-surface:proof；分包：P4（W1，包内第 3 项，整包经济档）；来源：R2-11、B-5、C-15、W6-B P6；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-062",
+   "kind": "Subtask",
+   "parentId": "work:c6f950c965e3dd9fc23e854f",
+   "title": "搜索快捷键文字改用 ink-2，夜间对比达 4.5",
+   "summary": "P4·R2-12：搜索快捷键文字改用 ink-2，夜间对比达 4.5",
+   "body": "改动文件：packages/ui-react/src/styles/inputs.css.ts；依赖：TCRN-DS-SUB-061；判据：C1 文字 4.5（B-6、C-23；夜间 #85827a 于 #282724、#272724 为 3.89–3.9）：.tcrn-search-input__shortcut（约 96 行）颜色由 ink-3 改 ink-2，理由同已采纳的「夜间占位升 ink-2」；交回说明按 token 值写出夜间 ink-2 于这两种底的对比（不低于 4.5），axe 复核留给 R2 末次 verify 第 30 步；若 Inputs 板本身画的是 ink-3，以 C1 阈值为准并回显（§3.4 第 3 项）。；档位：经济（组件 CSS）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：--filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build；分包：P4（W1，包内第 4 项，整包经济档）；来源：R2-12、B-6、C-23；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-063",
+   "kind": "Subtask",
+   "parentId": "work:3800d0d94195b75cbab2931a",
+   "title": "清除文档层改包组件外观的覆写（图标 18px、全局字标字号、包类副本）",
+   "summary": "P5·R2-13：清除文档层改包组件外观的覆写（图标 18px、全局字标字号、包类副本）",
+   "body": "改动文件：apps/storybook/src/story-demo-styles.ts、apps/storybook/src/alpha-styles.ts、apps/storybook/src/storybook.css、scripts/shell-fidelity-proof.mjs（storybook.css 只改文档块，由 demo-styles-sync 写；shell-fidelity-proof 只删白名单里规则已删的条目）；依赖：TCRN-DS-SUB-047；判据：128-GWT3（C-1、B-10；第 20 步 72 处）：story-demo-styles.ts 约 284–289 行的 .tcrn-doc-icon-sample svg[data-icon-name] 只留摆放（图标回到 Icon 默认 md 16，标记不改）；alpha-styles.ts 约 1230–1232 行全局 ShellBrandLockup 字标字号、647–661 行文档顶栏字标、1160、1213、1223 行复刻的 .tcrn-sr-only 与 .tcrn-skip-link；story-demo-styles.ts 736、784、800、1042 行知识库壳锁定组合的底色、阴影与内距；.tcrn-doc-knowledge-shell__actions .tcrn-search-input 的外观声明；W2-E P13 的 .tcrn-checkbox 文档规则——全部删外观声明只留摆放，或整条删除。拆分补入：删去只服务 dense 原型的文档包裹规则 .tcrn-doc-shell-demo--dense（story-demo-styles.ts 约 573、1056 行，原型由 SUB-066 退役）。跑 demo-styles-sync 同步 storybook.css；shell-fidelity-proof 约 86 行起白名单里规则已删的条目同步删；doc:sample-style 图标部分 failing 为 0，tokens:proof 的 demo-styles-sync 与 shell-fidelity 两段、doc-shell:proof 绿；smoke.test.ts 不在本包文件集（其 icon-sample-grid、skip-link、knowledge-shell 断言针对标记与网格规则，本单不删这些），若转红就记 problems/P5.md。；档位：经济（文档层，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：exec node scripts/demo-styles-sync.mjs ‖ exec node scripts/demo-styles-sync.mjs --check ‖ exec node scripts/shell-fidelity-proof.mjs ‖ run build ‖ run doc-shell:proof ‖ run doc:sample-style；分包：P5（W2，包内第 1 项，整包主力档）；来源：R2-13、C-1、B-10、W2-E P13、W3-B P3；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-064",
+   "kind": "Subtask",
+   "parentId": "work:3800d0d94195b75cbab2931a",
+   "title": "文档壳顶栏搜索框改按包工具形态，文档壳视觉 oracle 的搜索三项按 G+ 重写",
+   "summary": "P5·R2-14：文档壳顶栏搜索框改按包工具形态，文档壳视觉 oracle 搜索三项按 G+ 重写",
+   "body": "改动文件：apps/storybook/src/alpha-styles.ts、apps/storybook/src/build/foundation-visual-standards.ts、apps/storybook/src/build/ai-consumption-contract.ts（ai-consumption-contract.ts 仅当 oracle 项退役改变导出形状时改）；依赖：TCRN-DS-SUB-063；判据：128-GWT3 与第 11、17、30 步的顶栏搜索框（C-2）：删 alpha-styles.ts 约 317–325、1208 行给 .tcrn-doc-header-search .tcrn-search-input 的 38px 块高变量与 panel 底，包裹层不作画，控件取包的 32px、wash 底与 control 圆角；foundation-visual-standards.ts 约 618–620 行 storybookDocShellVisualOracle.shellMetrics 的 searchHeightPx 改 32，searchBorderColor 与 searchBorderRadiusPx 按包的 G+ 计算值重写，容差不放宽；退役后两项只在确认 storybook-smoke.mjs 与 internal-alpha-browser-proof.mjs 对空值跳过该比较时才可选（这两个门脚本属 P6、P9，本包不改）；smoke.test.ts 只断言 oracle 的侧栏、顶栏与搜索宽度，不在本包文件集，若因本包转红就记 problems/P5.md；从 oracle 读值的门脚本（storybook-smoke.mjs:187、internal-alpha-browser-proof.mjs:757）不改；shell:parity 的顶栏搜索框高度不再离群，storybook:smoke 的 cross-section 七条「包裹层作画」消失（其余红照记）；oracle 前后值写进交回说明（§3.2 知悉，拆分 P18）。；档位：主力（改 Owner 声明的文档壳 oracle，即门的期望值来源）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run shell:parity ‖ run storybook:smoke ‖ --filter @tcrn/design-system-storybook test；分包：P5（W2，包内第 2 项，整包主力档）；来源：R2-14、C-2、W6-B P3；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-065",
+   "kind": "Subtask",
+   "parentId": "work:3800d0d94195b75cbab2931a",
+   "title": "新增规则级守卫：文档样式源里以包类为主体的规则只准声明摆放属性",
+   "summary": "P5·R2-16：新增规则级守卫，文档样式源里以包类为主体的规则只准声明摆放属性",
+   "body": "改动文件：scripts/shell-fidelity-proof.mjs、scripts/doc-shell-class-proof.mjs、tests/doc-shell-class-proof.test.mjs、apps/storybook/src/story-demo-styles.ts、apps/storybook/src/alpha-styles.ts、apps/storybook/src/storybook.css（守卫落点二选一：shell-fidelity-proof 的 docsPackageSelectorDuplication（首选，变异进其自检），或 doc-shell-class-proof 与其测试；样式源只删命中的外观声明，storybook.css 由 demo-styles-sync 写）；依赖：TCRN-DS-SUB-063、TCRN-DS-SUB-064、TCRN-DS-SUB-050；判据：128-GWT3（C-3；doc:sample-style 只比得到有同签名样本的规则，未覆盖 1248 处）：三份文档样式源（story-demo-styles.ts、alpha-styles.ts、storybook.css 文档块）里，主体复合选择器带包类的规则只准声明摆放类属性（grid-area、order、外边距、自身对齐等），其余属性判红；例外逐条登记并带裁定引用（沿用 EX-INIT015-* 写法）；变异：注入 .tcrn-doc-x .tcrn-button{background:red} 判红；先跑一遍列全命中，与 SUB-063 的清理一起清（只删外观声明，不改包）；交回说明逐条列出登记的例外（§3.4 第 8 项）。；档位：主力（新增门的判定规则）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：exec node scripts/demo-styles-sync.mjs ‖ exec node scripts/demo-styles-sync.mjs --check ‖ exec node scripts/shell-fidelity-proof.mjs ‖ run doc-shell:proof ‖ run build ‖ run doc:sample-style；分包：P5（W2，包内第 4 项，整包主力档）；来源：R2-16、C-3、W3-B P3；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-066",
+   "kind": "Subtask",
+   "parentId": "work:3800d0d94195b75cbab2931a",
+   "title": "密集与紧凑壳原型按 delete-demo 退役，并删除只守护它们的冒烟断言",
+   "summary": "P6·R2-17：密集与紧凑壳原型按 delete-demo 退役，并删除只守护它们的冒烟断言",
+   "body": "改动文件：apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx、apps/storybook/src/contract-stories/story-content.tsx、apps/storybook/src/smoke.test.ts、scripts/storybook-smoke.mjs、scripts/geometry-proof.mjs、apps/storybook/src/build/locales/storybook-content-text.ts、apps/storybook/src/build/locales/storybook-locale-text.ts、scripts/lib/locale-invariant-ledger.mjs（geometry-proof 只改测量宿主路由常量（见判据）；三份文案与 ledger 文件只删随原型失效的条目（若有）；packages/ui-react/src/index.tsx 与 content/component-rows.ts 不在本单文件集）；依赖：TCRN-DS-SUB-060、TCRN-DS-SUB-071；判据：128-GWT3（C-4；C 2.7 判「只删类留元素」不能作终态）：同一提交内完成三件事——从 storybook-shell-demos.tsx 删 DenseOperationsShellDemo 与 CompactToolShellDemo（及只服务它们的局部件）；从 story-content.tsx 删渲染它们的块与 import（navigation-dense-operations-shell-spec、navigation-focused-shells-spec 两条 story 保留其余内容，story 注册与路由不动）；删 smoke.test.ts（约 746–817 行一带）与 storybook-smoke.mjs（约 1016 行起）只守护这两个原型的断言；提交信息逐条列出删掉的断言并引 doc-class-map.json 的 delete-demo 条目。拆分补入：(1) geometry-proof.mjs 的 badgeRoute、copyRoute、badgeStory 指向 dense story，测量宿主是原型里的 StatusBadge 与 ShellBrandLockup，删后 badges.length > 0 必红——改指仍渲染这两件的现存 story（候选 navigation-product-shell-spec），断言与阈值不变，提交信息写明；没有等价宿主就停下记问题，不新造演示；(2) componentLibraryDeferredPrototypeNames（ui-react 导出面）与 content/component-rows.ts 两行不改，有门因此判红就记问题。验收：静态页 components-navigation-shells 不再有 dense、compact 段的裸元素；与原型无关的断言不减少；删后 navigation-focused-shells-spec 若仍超高度预算，记 problems/P6.md（不进宽限表）；§3.4 第 4 项回显。；档位：主力（删门内断言，并改 geometry-proof 的测量宿主）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ --filter @tcrn/design-system-storybook test ‖ run storybook:smoke ‖ run geometry:proof ‖ run shell:parity；分包：P6（W2，包内第 1 项，整包主力档）；来源：R2-17、C-4、C 2.7；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-067",
+   "kind": "Subtask",
+   "parentId": "work:3800d0d94195b75cbab2931a",
+   "title": "字号样本标签五语随 token 拼接，s254 折叠选择器改用 tcrn-doc- 前缀",
+   "summary": "P6·R2-18：字号样本标签五语随 token 拼接，s254 折叠选择器改用 tcrn-doc- 前缀",
+   "body": "改动文件：apps/storybook/src/contract-stories/story-content.tsx、apps/storybook/src/build/locales/storybook-content-text.ts、scripts/s254-story-dom-proof.mjs；依赖：TCRN-DS-SUB-066；判据：128 的 SUB-027 残项（B-12、C-5）：text-styles 渲染的「Page title / 36px」「Section title / 20px」（story-content.tsx 约 992–993 行由 token 值拼出）只翻译前缀、尺寸由 token 拼接，或把 storybook-content-text.ts 约 480、482 行两条键与五语值改成现值；第 30 步 localeLeakZhCnNewLeaks 为 0；s254-story-dom-proof.mjs 约 43 行改查 .tcrn-doc-story-disclosure，storyExpanded 为 true。；档位：经济（文案与孤立脚本选择器）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ exec node scripts/s254-story-dom-proof.mjs ‖ --filter @tcrn/design-system-storybook test ‖ run internal-alpha:browser-proof（跑完 git -C <包树> checkout -- docs/verification/internal-alpha 还原回执）；分包：P6（W2，包内第 2 项，整包主力档）；来源：R2-18、B-12、C-5、W6-B P8；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-068",
+   "kind": "Subtask",
+   "parentId": "work:3800d0d94195b75cbab2931a",
+   "title": "加载示例的 status 角色从 Card 移到外层包裹元素",
+   "summary": "P6·R2-19：加载示例的 status 角色从 Card 移到外层包裹元素",
+   "body": "改动文件：apps/storybook/src/contract-stories/story-content.tsx；依赖：TCRN-DS-SUB-067；判据：128-GWT3 与第 30 步 axe（.tcrn-card--neutral[role=\"status\"] 4 个节点；由 3e2c46f 引入，属文档层）：story-content.tsx 约 1157 行 <Card role=\"status\"> 的 status 角色挪到允许该角色的外层包裹元素（或改用 live region 的 div），Card 不带 role；axe 结果里这 4 个节点消失。；档位：经济（文档 story 标记）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ --filter @tcrn/design-system-storybook test ‖ run internal-alpha:browser-proof（跑完 git -C <包树> checkout -- docs/verification/internal-alpha 还原回执）；分包：P6（W2，包内第 3 项，整包主力档）；来源：R2-19、C 第 4 节；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-069",
+   "kind": "Subtask",
+   "parentId": "work:3800d0d94195b75cbab2931a",
+   "title": "doc-shell 清零差集证据入仓",
+   "summary": "P12·R2-37a：doc-shell 清零差集证据入仓",
+   "body": "改动文件：docs/verification/doc-shell-class/r2-clearance.md（新增文件；baseline.json 不改）；依赖：TCRN-DS-SUB-075；判据：128 的 Implementation Notes：doc-shell-class-proof.mjs --details 的清零差集（R1 起点与 R2 末的包外 tcrn- 类计数、逐类去向，引 doc-class-map 的处置）写进 docs/verification/doc-shell-class/r2-clearance.md；不用 --write-baseline 改基线；doc-shell:proof 绿。；档位：经济（证据入仓，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run doc-shell:proof ‖ exec node scripts/doc-shell-class-proof.mjs --details；分包：P12（W4，包内第 2 项，整包经济档）；来源：R2-37a、C 第 4 节；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-070",
+   "kind": "Subtask",
+   "parentId": "work:12a5dfa99cb91f55647b2a88",
+   "title": "inputs 矩阵的 MultiSelect 以静态展开态渲染，opt-sel 两格可见",
+   "summary": "P7·R2-23：inputs 矩阵的 MultiSelect 以静态展开态渲染，opt-sel 两格可见",
+   "body": "改动文件：apps/storybook/src/contract-stories/gplus/matrix-stories.tsx；依赖：无；判据：126-GWT5、129-GWT1 与 130 的 inputs.B（B-14、C-6；声明 42、可见 40）：matrix-stories.tsx 约 415 行的 MultiSelect 以静态展开态渲染（用包的展开入口；没有就用 StaticMarkup 改写展开属性），opt-sel-l、opt-sel-n 可见并带 data-cell；inputs.B 可见 42；不写文档 CSS；不做 B-14 的可选项（visual-proof 已对缺格判红）。；档位：经济（story 标记）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ --filter @tcrn/design-system-storybook test ‖ run geometry:measure ‖ run storybook:visual-proof；分包：P7（W1，包内第 1 项，整包经济档）；来源：R2-23、B-14、C-6；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-071",
+   "kind": "Subtask",
+   "parentId": "work:12a5dfa99cb91f55647b2a88",
+   "title": "矩阵分节与样板壳的 landmark 名按主题块区分",
+   "summary": "P7·R2-24：矩阵分节与样板壳的 landmark 名按主题块区分",
+   "body": "改动文件：apps/storybook/src/contract-stories/gplus/matrix-renderer.tsx、apps/storybook/src/contract-stories/gplus/samples/composition-one.tsx、apps/storybook/src/build/locales/storybook-content-text.ts、scripts/lib/locale-invariant-ledger.mjs（新文案进 storybook-content-text.ts 的 gplus 段（约 2053–2140 行）；ledger 仅当登记机器词时改）；依赖：TCRN-DS-SUB-070；判据：129-GWT2（axe landmark-unique 110 个节点，归属取 C：92 个是矩阵 .tcrn-doc-theme-preview 两块中同名的分节，18 个是样板两只壳的 nav 与内容区）：matrix-renderer.tsx 约 106 行分节 Surface 的 aria-label 带本地化块名（浅色、夜间），或去掉 aria-label 让分节不成 landmark；composition-one.tsx 夜间块壳的 nav 与内容区换不同的可访问名（走 ProductShell 入参，没有就用 StaticMarkup 改写）；新文案五语齐，或作为机器词登记进 ledger；渲染文本不含工单键；axe landmark-unique 中这 110 个节点消失。；档位：经济（story 标记与文案）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ --filter @tcrn/design-system-storybook test ‖ run internal-alpha:browser-proof（跑完 git -C <包树> checkout -- docs/verification/internal-alpha 还原回执）；分包：P7（W1，包内第 2 项，整包经济档）；来源：R2-24、B-16、C-7；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-072",
+   "kind": "Subtask",
+   "parentId": "work:12a5dfa99cb91f55647b2a88",
+   "title": "品牌样板表去掉 Asset ID 列里的仓库名标识",
+   "summary": "P7·R2-25：品牌样板表去掉 Asset ID 列里的仓库名标识",
+   "body": "改动文件：apps/storybook/src/contract-stories/gplus/samples/composition-one.tsx、apps/storybook/src/build/locales/storybook-content-text.ts（storybook-content-text.ts 仅当列头文案随列删除时改）；依赖：TCRN-DS-SUB-071；判据：129-GWT2 与第 25 步唯一命中（C-8）：composition-one.tsx 约 292 行删掉 Asset ID 列，或改显示不含仓库名的标识；不给扫描器加豁免；internal-vocab:scan 零命中。；档位：经济（story 内容）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run internal-vocab:scan；分包：P7（W1，包内第 3 项，整包经济档）；来源：R2-25、C-8；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-073",
+   "kind": "Subtask",
+   "parentId": "work:12a5dfa99cb91f55647b2a88",
+   "title": "矩阵渲染器的 JSX key 属性不再独占行首，隐私扫描转绿",
+   "summary": "P7·R2-26：矩阵渲染器的 JSX key 属性不再独占行首，隐私扫描转绿",
+   "body": "改动文件：apps/storybook/src/contract-stories/gplus/matrix-renderer.tsx；依赖：TCRN-DS-SUB-072；判据：129-GWT2 与 internal-alpha:proof 的 scan 段（本判断补入；批末停在 browser-proof，scan 没跑）：matrix-renderer.tsx 约 88 行独占一行的 JSX key 属性写到同一行其他属性之后，不再独占行首；不改扫描器口径（改口径需授权）；pnpm scan（no-private-input-scan）退出 0。；档位：经济（一行标记）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run scan ‖ run build；分包：P7（W1，包内第 4 项，整包经济档）；来源：R2-26、W7-A P1、W6-A P2；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-074",
+   "kind": "Subtask",
+   "parentId": "work:12a5dfa99cb91f55647b2a88",
+   "title": "Actions 与 Inputs 矩阵控件补 data-h 测量钩子",
+   "summary": "P7·R2-27a：Actions 与 Inputs 矩阵控件补 data-h 测量钩子",
+   "body": "改动文件：apps/storybook/src/contract-stories/gplus/matrix-stories.tsx；依赖：TCRN-DS-SUB-073；判据：129-GWT1 与 131-GWT4 的 controlHeight 前置（C-12；第 18 步 checksNeverApplied 含 controlHeight）：matrix-stories.tsx 给 Actions 与 Inputs 矩阵的控件加 data-h（28/32/40，与各控件尺寸档一致）；只加标记，不改门；SUB-077 据此把 controlHeight 设为两矩阵必测项。；档位：经济（只加标记）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run geometry:measure；分包：P7（W1，包内第 5 项，整包经济档）；来源：R2-27a、C-12、W5-B P8；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-075",
+   "kind": "Subtask",
+   "parentId": "work:12a5dfa99cb91f55647b2a88",
+   "title": "R2 末刷新故事高度宽限表的陈旧记录",
+   "summary": "P12·R2-36：R2 末刷新故事高度宽限表的陈旧记录",
+   "body": "改动文件：scripts/lib/story-budget.mjs；依赖：TCRN-DS-SUB-087；判据：129 与第 30 步 recorded-drift（C-19；R1 为 owner-quality-product-shell、frontend-shell-slice、component-family-index、display-primitives-spec、ai-consumption-contract、color-palette、foundation-visual-standards、icons-motion 八条）：全部渲染改动合入后，把 story-budget.mjs 约 63 行起届时仍漂移的条目 recordedHeightPx 刷成实测值；变高的逐条记前后值与原因写进交回说明（收口列给 Owner，§3.2）；navigation-focused-shells-spec 不进宽限表，仍超预算就记问题。；档位：经济（批末再生，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run internal-alpha:browser-proof（跑完 git -C <包树> checkout -- docs/verification/internal-alpha 还原回执）；分包：P12（W4，包内第 1 项，整包经济档）；来源：R2-36、C-19、W6-B P9、拆分 P24；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-076",
+   "kind": "Subtask",
+   "parentId": "work:0fbb3d17f6c255f37614c300",
+   "title": "R2 末再生映射报告",
+   "summary": "P12·R2-37b：R2 末再生画板到 story 的映射报告",
+   "body": "改动文件：docs/verification/storybook-visual-proof/gplus-map-report.json、docs/verification/storybook-visual-proof/gplus-map-report.md（.md 仅当脚本同写时变）；依赖：TCRN-DS-SUB-069；判据：130-GWT1（入仓报告停在 ab00f44）：storybook-visual-proof.mjs --write-report 更新 gplus-map-report.json；报告里余红逐行列原因，样板 10 行注明 O-1；不改期望值。；档位：经济（报告再生，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ exec node scripts/storybook-visual-proof.mjs --write-report ‖ run storybook:visual-proof；分包：P12（W4，包内第 3 项，整包经济档）；来源：R2-37b；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-077",
+   "kind": "Subtask",
+   "parentId": "work:83b087aa618af6dd002d0254",
+   "title": "几何门必测项按板调整：样板测 rail、矩阵测 controlHeight，映射同步",
+   "summary": "P8·R2-27b：几何门必测项按板调整，样板测 rail、矩阵测 controlHeight，映射同步",
+   "body": "改动文件：scripts/geometry-measure-proof.mjs、tests/geometry-measure-proof.test.mjs、docs/design/gplus-2026-10/storybook-map.json、docs/design/gplus-2026-10/storybook-map.md；依赖：TCRN-DS-SUB-074；判据：131-GWT4（C-12；五个样板 notApplicableRequired 为 contrast，矩阵 controlHeight 从未实测）：geometry-measure-proof.mjs 约 79–91 行样板必测项去 contrast、加 rail，有 TableShell 行的样板加 rowAlign，actions-matrix 与 inputs-matrix 加 controlHeight；storybook-map.json 与 .md 对应行 requiredChecks 同步，DIFF-6 改为「测量库已支持 before-bg（W5-C）」；测试随之改；第 18 步 notApplicableRequired 与 checksNeverApplied 清空；样板 rail 在 O-1 前保持红，属预期，交回说明注明 O-1。；档位：主力（改门的判定配置）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ exec node --test tests/geometry-measure-proof.test.mjs ‖ run geometry:measure ‖ run storybook:visual-proof；分包：P8（W2，包内第 1 项，整包主力档）；来源：R2-27b、C-12、W5-B P8；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-078",
+   "kind": "Subtask",
+   "parentId": "work:83b087aa618af6dd002d0254",
+   "title": "R2 末再生几何测量报告",
+   "summary": "P12·R2-37c：R2 末再生几何测量报告",
+   "body": "改动文件：docs/verification/geometry-measure/report.json；依赖：TCRN-DS-SUB-076；判据：131-GWT4：geometry-measure-proof.mjs --write-report 更新 docs/verification/geometry-measure/；notApplicableRequired 与 checksNeverApplied 为空，probes 含 iconStroke；样板 rail 红注明 O-1。；档位：经济（报告再生，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ exec node scripts/geometry-measure-proof.mjs --write-report ‖ run geometry:measure；分包：P12（W4，包内第 4 项，整包经济档）；来源：R2-37c；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-079",
+   "kind": "Subtask",
+   "parentId": "work:a4e12893d78be775d63b4e91",
+   "title": "C7 对第一批承载元素要求 title 含可见文字，Button 禁用原因并入 title",
+   "summary": "P10·R2-31：C7 对第一批承载元素要求 title 含可见文字，Button 禁用原因并入 title",
+   "body": "改动文件：scripts/contract-static-proof.mjs、tests/contract-static-proof.test.mjs、docs/contract/clauses.md、packages/ui-react/src/components/Button/Button.tsx、packages/ui-react/src/components/Button/Button.test.tsx；依赖：TCRN-DS-SUB-047；判据：132-GWT4 的 C7（C-20；C7 现为「title 非空即满足」，Actions 有 20 处 title 写的是禁用原因）：contract-static-proof.mjs 的 C7.story-title-missing 对第一批承载元素要求 title 含可见文字（空白规范化后比较）；tests/contract-static-proof.test.mjs 加变异（title 与标签无关判红）；docs/contract/clauses.md 的 C7 同步；Button.tsx 带禁用原因时 title 写「标签 — 原因」，或 title 只写标签、原因走 aria-describedby，二选一写明；Button.test.tsx 同步；Actions 的 20 处在新口径下全绿；新口径若命中 Actions 以外的家族（如 Inputs 的禁用原因 title），不在本单改组件，列进 problems/P10.md；门与组件同包落地；§3.4 第 7 项回显。；档位：主力（改门的判定语义）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：--filter @tcrn/ui-react build ‖ --filter @tcrn/ui-react test ‖ run build ‖ run contract:static；分包：P10（W2，包内第 1 项，整包主力档）；来源：R2-31、C-20、W4-B Q9a；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-080",
+   "kind": "Subtask",
+   "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+   "title": "导航壳故事调整版面，搜索结果浮层不再压住正文",
+   "summary": "P6·R2-20：导航壳故事调整版面，搜索结果浮层不再压住正文",
+   "body": "改动文件：apps/storybook/src/contract-stories/story-content.tsx；依赖：TCRN-DS-SUB-068；判据：133-GWT1 的第 10 步 searchOverlay（C-16；结果面板 420×138、top 230 压住 h3「Package-backed AOS shell boundary」与随后段落）：调整 story-content.tsx 约 2281 行一带的版面，让声称可读的正文落在面板之外；searchOverlay 的 baseline 与 restored 均 ok；门不改。；档位：经济（story 版面）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run geometry:proof；分包：P6（W2，包内第 4 项，整包主力档）；来源：R2-20、C-16、W6-B P5；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-081",
+   "kind": "Subtask",
+   "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+   "title": "storybook-smoke 静止值改在交互前快照、读数等过渡结束",
+   "summary": "P6·R2-21a：storybook-smoke 静止值改在交互前快照、读数等过渡结束",
+   "body": "改动文件：scripts/storybook-smoke.mjs；依赖：TCRN-DS-SUB-080；判据：133-GWT1 的第 17 步唯一可见失败（B-8a、C-17；desktop:searchControl:background-color:rgb(255, 255, 255)）：storybook-smoke.mjs 约 2370–2395 行的静止值改在聚焦前快照为值（不再持有 getComputedStyle 活对象）；读数前等 document.getAnimations() 全部结束，或连读两次相同，或只对读数注入 transition: none；不写死时长、不改期望值；该条失败消失。；档位：经济（取样时机，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run storybook:smoke；分包：P6（W2，包内第 5 项，整包主力档）；来源：R2-21a、B-8a、C-17；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-082",
+   "kind": "Subtask",
+   "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+   "title": "storybook-smoke 改用 exitCode 退出，完整输出不再被截断",
+   "summary": "P6·R2-22：storybook-smoke 改用 exitCode 退出，完整输出不再被截断",
+   "body": "改动文件：scripts/storybook-smoke.mjs；依赖：TCRN-DS-SUB-081；判据：133-GWT1（C-18；第 17 步日志在 65,750 B 处断在对象中间）：约 3822–3838 行改用 process.exitCode = 1，或把 JSON 写进报告文件并在首行打印路径；判据不改；经管道输出时完整失败清单可读；本包末次 storybook:smoke 的完整失败清单写进 problems/P6.md（余红只记）。；档位：经济（输出方式，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run storybook:smoke；分包：P6（W2，包内第 6 项，整包主力档）；来源：R2-22、C-18；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-083",
+   "kind": "Subtask",
+   "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+   "title": "internal-alpha 与 MultiSelect 下拉证明读数等过渡结束",
+   "summary": "P9·R2-21b：internal-alpha 与 MultiSelect 下拉证明读数等过渡结束",
+   "body": "改动文件：scripts/internal-alpha-browser-proof.mjs、scripts/lib/multi-select-dropdown-proof.mjs；依赖：无；判据：133-GWT1 的第 28、30 步（B-8b、B-8c、C-17）：multi-select-dropdown-proof.mjs 第 37–40 行切夜间后、internal-alpha-browser-proof.mjs 约 2566–2569 行 hover 后，读数前等 document.getAnimations() 全部结束，或连读两次相同，或只对读数注入 transition: none；不写死时长，不改期望值；public-popup-family-dark 的 layer === reference 不再因过渡起点失败（触发器几何另需 SUB-061）；buttonFeedbackOk 为 true，并在回执里存读数。；档位：经济（取样时机，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run full-surface:proof ‖ run internal-alpha:browser-proof（跑完 git -C <包树> checkout -- docs/verification/internal-alpha 还原回执）；分包：P9（W1，包内第 1 项，整包主力档）；来源：R2-21b、B-8b、B-8c、C-17；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-084",
+   "kind": "Subtask",
+   "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+   "title": "internal-alpha 的 clipped 判定排除带 title 的 C7 单行截断与单行纵向字体度量溢出",
+   "summary": "P9·R2-29：internal-alpha 的 clipped 判定排除带 title 的 C7 单行截断与纵向字体度量溢出",
+   "body": "改动文件：scripts/internal-alpha-browser-proof.mjs；依赖：TCRN-DS-SUB-083；判据：133-GWT1 的第 30 步 clippedButtonText: true（B-9；288 个标题被记，含 Billing、Settings 等短标题）：约 295–311 行的规则对 nowrap、ellipsis 且 title 含可见文字（空白规范化后比较，与 SUB-079 的 C7 同口径，各自实现、不建共享模块）的单行角色不计横向截断；单行 nowrap 元素不计纵向字体度量溢出；无 title 的真实截断照记；交回说明写出判定前后被记元素数；组件侧不改 overflow-x: clip；R2 末次截图或目视若发现上下沿被裁，另开返工。；档位：主力（改门的判定语义）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ run internal-alpha:browser-proof（跑完 git -C <包树> checkout -- docs/verification/internal-alpha 还原回执）；分包：P9（W1，包内第 2 项，整包主力档）；来源：R2-29、B-9、W6-B P7；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-085",
+   "kind": "Subtask",
+   "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+   "title": "internal-alpha 的 axe 对品牌后缀登记字标豁免，与 token-contrast 豁免同源",
+   "summary": "P9·R2-30：internal-alpha 的 axe 对品牌后缀登记字标豁免，与 token-contrast 豁免同源",
+   "body": "改动文件：scripts/internal-alpha-browser-proof.mjs（只读导入 scripts/token-contrast-proof.mjs 的导出（该模块有 main 守卫，导入无副作用），不改它）；依赖：TCRN-DS-SUB-084；判据：133-GWT1 的第 30 步 axe color-contrast 后缀节点（B-15；影响 127）：axe 运行对 .tcrn-brand-wordmark__suffix、.tcrn-product-logo__line-one-suffix 排除 color-contrast；豁免条目取自 token-contrast-proof.mjs 导出的 WORDMARK_EXEMPTIONS（同源），每条带裁定引用（D2 与 V2-B1-Brand 板 F 段）；标语与壳锁定说明（ink-3）不在豁免内（留 O-2）；token-contrast 门结果不变；§3.4 第 5 项回显。；档位：主力（改门判定）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run build ‖ exec node scripts/token-contrast-proof.mjs ‖ run internal-alpha:browser-proof（跑完 git -C <包树> checkout -- docs/verification/internal-alpha 还原回执）；分包：P9（W1，包内第 3 项，整包主力档）；来源：R2-30、B-15、C O-3；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-086",
+   "kind": "Subtask",
+   "parentId": "work:7fe5f75adb667c9e50bd7c5a",
+   "title": "README 五语与 foundation 标准页的门命令改为现行写法",
+   "summary": "P11·R2-32：README 五语与 foundation 标准页的门命令改为现行写法",
+   "body": "改动文件：README.md、README.zh-CN.md、README.ja.md、README.ko.md、README.fr.md、apps/storybook/src/build/foundation-visual-standards.ts；依赖：TCRN-DS-SUB-064；判据：133-GWT1（C-22）：README.md 第 85 行与 zh-CN、ja、ko、fr 四份第 44 行的 pnpm storybook:visual-proof -- --check 改为 pnpm storybook:visual-proof，并指向 docs/contract/README.md 的门清单；foundation-visual-standards.ts 约 546 行写明现行门；版本行不动；readme:proof 绿。；档位：经济（文档文字，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run readme:proof（会写回执时跑完还原） ‖ run build ‖ --filter @tcrn/design-system-storybook test；分包：P11（W3，包内第 1 项，整包经济档）；来源：R2-32、C-22、W6-A P10；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  },
+  {
+   "verb": "work-create",
+   "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+   "externalKey": "TCRN-DS-SUB-087",
+   "kind": "Subtask",
+   "parentId": "work:f5de8fcf90580fcc9b4192f7",
+   "title": "CHANGELOG、迁移说明、ui-tokens README 与目视清单随 R2 回写",
+   "summary": "P11·R2-35：CHANGELOG、迁移说明、ui-tokens README 与目视清单随 R2 回写",
+   "body": "改动文件：CHANGELOG.md、docs/migration-4.0.md、packages/ui-tokens/README.md、docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md；依赖：TCRN-DS-SUB-047、TCRN-DS-SUB-058、TCRN-DS-SUB-057、TCRN-DS-SUB-062、TCRN-DS-SUB-065、TCRN-DS-SUB-082、TCRN-DS-SUB-074、TCRN-DS-SUB-056、TCRN-DS-SUB-085、TCRN-DS-SUB-079；判据：134 文档回写（A-8）：CHANGELOG.md 4.0.0 段写 mono 中文回退、浅色主题块选择器、字体刻度生成方式并改正第 17–19 行，补 R2 的可见变化（链接对表、只读焦点环、Field 错误态、快捷键 ink-2、MultiSelect 末端区、主题钮显隐、Button 禁用原因 title、原型退役）；docs/migration-4.0.md 的 M1、M2、M3 与受影响各节；packages/ui-tokens/README.md 的三块结构（主题无关块、浅色 :root, [data-tcrn-theme=\"light\"] 块、夜间块）；owner-acceptance.md 写 fonts:proof 现状、加一行知悉「第二批以后家族的状态底色改为中性 wash」，并为 §3.4 各项加目视核对行；只写已落地的事实，不写发布或验收结论；版本号不动；scaffold:proof 的 changelog-release-sections 与 version-surface 绿。；档位：经济（文档回写，判定不变）；局部门（前缀 corepack pnpm@10.12.1 -C <包树>）：run scaffold:proof（跑完 git -C <包树> checkout -- docs/verification/scaffold-proof.json docs/verification/scaffold-proof.md 还原回执）；分包：P11（W3，包内第 4 项，整包经济档）；来源：R2-35、A-8；拆分文件 docs/dispatch/2026-10-11-gplus-renewal/runs/r2/。"
+  }
+ ]
+}

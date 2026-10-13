@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: singleLine (red)</title>
+<!-- Violation for the singleLine measurement only: A [data-line] caption is 120px wide and wraps onto several lines. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .sl-box { width: 320px; }
+  .caption { width: 120px; margin: 0; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<div class="sl-box"><p class="caption" data-line>This caption is far too long to stay on one line</p></div>
+</main>
+</body>
+</html>

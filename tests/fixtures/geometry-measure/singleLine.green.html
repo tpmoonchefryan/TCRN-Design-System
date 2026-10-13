@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: singleLine (green)</title>
+<!-- Clean case for the singleLine measurement; no check may fail. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .sl-box { width: 320px; }
+  .caption { margin: 0 0 8px; }
+  .tag { white-space: nowrap; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<div class="sl-box">
+  <p class="caption" data-line>Single line caption</p>
+  <span class="tag">Nowrap label</span>
+  <span class="tag">Second <b>label</b> with inline bold</span>
+</div>
+</main>
+</body>
+</html>

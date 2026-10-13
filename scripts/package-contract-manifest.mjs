@@ -45,6 +45,27 @@ const allowedLicenseGroups = new Set([
   "MIT-0",
   "MPL-2.0"
 ]);
+// OFL-1.1 is admitted for exactly the five vendored font packages, and only while each is a root
+// devDependency. Basis: INIT-015 minutes D4 — Hanken Grotesk, Noto Sans SC, Noto Serif SC,
+// Source Serif 4 and IBM Plex Mono are all SIL OFL 1.1, usable commercially and redistributable
+// with the package. Any other package reporting OFL-1.1 still lands in unknownLicenseGroups.
+const scopedLicenseAllowances = {
+  "OFL-1.1": [
+    "@fontsource-variable/hanken-grotesk",
+    "@fontsource-variable/noto-sans-sc",
+    "@fontsource-variable/noto-serif-sc",
+    "@fontsource-variable/source-serif-4",
+    "@fontsource/ibm-plex-mono"
+  ]
+};
+const rootDevDependencyNames = new Set(Object.keys(JSON.parse(readFileSync("package.json", "utf8")).devDependencies ?? {}));
+function licenseGroupAllowed(entry) {
+  if (allowedLicenseGroups.has(entry.license)) return true;
+  const scoped = scopedLicenseAllowances[entry.license];
+  return Array.isArray(scoped)
+    && entry.packageNames.length > 0
+    && entry.packageNames.every((name) => scoped.includes(name) && rootDevDependencyNames.has(name));
+}
 
 function sha256(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
@@ -131,7 +152,7 @@ const licenseSummary = Object.keys(licenseJson).sort().map((license) => ({
   packageCount: licenseJson[license].length,
   packageNames: licenseJson[license].map((entry) => entry.name).filter(Boolean).sort()
 }));
-const unknownLicenseGroups = licenseSummary.filter((entry) => !allowedLicenseGroups.has(entry.license)).map((entry) => entry.license);
+const unknownLicenseGroups = licenseSummary.filter((entry) => !licenseGroupAllowed(entry)).map((entry) => entry.license);
 
 const uiReactModule = await import(pathToFileURL(join(process.cwd(), "packages/ui-react/dist/index.js")).href);
 const uiReactManifest = readJson("packages/ui-react/package.json");
@@ -239,21 +260,51 @@ const storybookDocShellControlContract = {
     && storybookBodies.some((source) => /data-ai-consumption-contract-story/.test(source.body))
     && !storybookRuntimeBodies.some((source) => /data-ai-consumption-contract-link/.test(source.body))
 };
+// TCRN-DS-SUB-015 — the icons are drawn for this package from the design contract
+// (icons.json, generated into icon-paths.generated.ts), so there is no third-party
+// icon source left to record. What is checked instead: the exported roster is the
+// contract's name set in contract order, no manifest section of @tcrn/ui-react names
+// a third-party icon package, nothing in the package or Storybook sources imports
+// one, and Storybook does not still name one as the icon source.
+const iconContractPath = "docs/design/gplus-2026-10/contract/icons.json";
+const iconPathsModulePath = "packages/ui-react/src/components/Icon/icon-paths.generated.ts";
+const iconContract = readJson(iconContractPath);
+const iconContractNames = Array.isArray(iconContract.icons) ? iconContract.icons.map((icon) => icon.name) : [];
+const exportedIconNames = Array.isArray(uiReactModule.tcrnIconNames) ? [...uiReactModule.tcrnIconNames] : [];
+const thirdPartyIconPackagePattern = /^lucide(?:-|$)/u;
+const thirdPartyIconImportPattern = /from\s+["']lucide(?:-[a-z]+)?["']/g;
 const iconLibraryContract = {
-  sourcePackage: "lucide-react",
-  sourcePackageLicense: "ISC",
+  source: "tcrn-icon-contract",
+  sourceContract: iconContractPath,
+  sourceContractSha256: sha256(iconContractPath),
+  generatedPathsModule: iconPathsModulePath,
+  generatedPathsModulePresent: existsSync(iconPathsModulePath),
+  viewBox: iconContract.viewBox ?? null,
+  strokeWidth: iconContract.strokeWidth ?? null,
   wrapperPackage: "@tcrn/ui-react",
   wrapperExport: "Icon",
-  dependencyVersion: uiReactManifest.dependencies?.["lucide-react"] ?? null,
-  dependencyExact: isExactVersion(uiReactManifest.dependencies?.["lucide-react"] ?? ""),
   iconExported: Object.prototype.hasOwnProperty.call(uiReactModule, "Icon"),
   iconNamesExported: Array.isArray(uiReactModule.tcrnIconNames),
-  iconNameCount: Array.isArray(uiReactModule.tcrnIconNames) ? uiReactModule.tcrnIconNames.length : 0,
-  storybookContractVisible: storybookBodies.some((source) => /data-icon-library-source="lucide-react"/.test(source.body))
-    && storybookBodies.some((source) => /data-icon-library-wrapper="@tcrn\/ui-react\/Icon"/.test(source.body))
-    && storybookBodies.some((source) => /data-icon-library-license="ISC"/.test(source.body))
+  iconNameCount: exportedIconNames.length,
+  contractIconNameCount: iconContractNames.length,
+  iconNamesMatchContract: exportedIconNames.length > 0
+    && exportedIconNames.length === iconContractNames.length
+    && exportedIconNames.every((name, index) => name === iconContractNames[index]),
+  thirdPartyIconDependencies: ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"]
+    .flatMap((section) => Object.keys(uiReactManifest[section] ?? {})
+      .filter((name) => thirdPartyIconPackagePattern.test(name))
+      .map((name) => ({ section, name }))),
+  packageSourceThirdPartyIconImports: walkTextSources("packages/ui-react/src")
+    .flatMap((path) => collectMatches(path, new RegExp(thirdPartyIconImportPattern.source, "g"))),
+  storybookContractVisible: storybookBodies.some((source) => /data-icon-library-wrapper="@tcrn\/ui-react\/Icon"/.test(source.body))
     && storybookBodies.some((source) => /data-icon-brand-boundary="not-brand-identity"/.test(source.body)),
-  storybookDirectLucideImports: storybookSources.flatMap((path) => collectMatches(path, /from\s+["']lucide-react["']/g)),
+  // Runtime sources only: a test that asserts the claim is gone has to be able to
+  // name it without counting as the claim.
+  storybookThirdPartySourceClaims: storybookRuntimeBodies
+    .filter((source) => /data-icon-library-source="lucide[^"]*"/.test(source.body))
+    .map((source) => source.path),
+  storybookDirectThirdPartyIconImports: storybookSources
+    .flatMap((path) => collectMatches(path, new RegExp(thirdPartyIconImportPattern.source, "g"))),
   notBrandIdentity: true,
   noPackagePublicationClaimed: true
 };
@@ -302,12 +353,15 @@ const packageContractManifest = {
     && storybookConsumption.packageBackedNavigationProofVisible
     && storybookConsumption.noReusableInlineSourceClaim
     && Object.values(storybookDocShellControlContract).every(Boolean)
-    && iconLibraryContract.dependencyExact
+    && iconLibraryContract.generatedPathsModulePresent
     && iconLibraryContract.iconExported
     && iconLibraryContract.iconNamesExported
-    && iconLibraryContract.iconNameCount > 0
+    && iconLibraryContract.iconNamesMatchContract
+    && iconLibraryContract.thirdPartyIconDependencies.length === 0
+    && iconLibraryContract.packageSourceThirdPartyIconImports.length === 0
     && iconLibraryContract.storybookContractVisible
-    && iconLibraryContract.storybookDirectLucideImports.length === 0,
+    && iconLibraryContract.storybookThirdPartySourceClaims.length === 0
+    && iconLibraryContract.storybookDirectThirdPartyIconImports.length === 0,
   route: "route_tcrn_design_system_internal_alpha_hardening_proof_implementation",
   componentStorybookParity: {
     route: "route_tcrn_design_system_component_library_storybook_parity_completion__elara",
@@ -353,8 +407,12 @@ console.log(JSON.stringify({
   declaredButNotExported,
   exportedPrototypes,
   iconNameCount: iconLibraryContract.iconNameCount,
+  iconNamesMatchContract: iconLibraryContract.iconNamesMatchContract,
+  thirdPartyIconDependencies: iconLibraryContract.thirdPartyIconDependencies.map((entry) => `${entry.section}:${entry.name}`),
+  packageSourceThirdPartyIconImports: iconLibraryContract.packageSourceThirdPartyIconImports.length,
+  storybookThirdPartyIconSourceClaims: iconLibraryContract.storybookThirdPartySourceClaims,
   storybookDeepImportHits: deepImportHits.length,
-  storybookDirectLucideImports: iconLibraryContract.storybookDirectLucideImports.length,
+  storybookDirectThirdPartyIconImports: iconLibraryContract.storybookDirectThirdPartyIconImports.length,
   licenseGroups: licenseSummary.map((entry) => `${entry.license}:${entry.packageCount}`),
   unknownLicenseGroups
 }, null, 2));

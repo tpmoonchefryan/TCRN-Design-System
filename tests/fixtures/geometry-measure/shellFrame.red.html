@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: shellFrame (red)</title>
+<!-- Violations for the shellFrame measurement only: the first ProductShell's paper is flush with the shell edge (inset 0, deviation 12), the second's top bar is 68px tall (deviation 16), and the third has no paper (and so no top bar). Rail is skipped here. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .frame-shell { position: relative; width: 480px; height: 160px; background: #efeeea; }
+  .frame-rail { width: 200px; height: 100%; }
+  .paper { position: absolute; top: 12px; right: 12px; bottom: 12px; left: 200px; background: #ffffff; }
+  .paper--flush { top: 0; right: 0; bottom: 0; }
+  .paper > .tcrn-top-bar { display: block; box-sizing: border-box; height: 52px; border-bottom: 1px solid #dddddd; }
+  .paper > .tcrn-top-bar.tall { height: 68px; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<section class="part">
+<div class="frame-shell tcrn-product-shell" data-shell="flush" data-measure-skip="rail">
+  <nav class="frame-rail" aria-label="Rail"></nav>
+  <div class="paper paper--flush tcrn-product-shell__workspace"><header class="tcrn-top-bar"></header></div>
+</div>
+</section>
+<section class="part">
+<div class="frame-shell tcrn-product-shell" data-shell="tall-bar" data-measure-skip="rail">
+  <nav class="frame-rail" aria-label="Rail"></nav>
+  <div class="paper tcrn-product-shell__workspace"><header class="tcrn-top-bar tall"></header></div>
+</div>
+</section>
+<section class="part">
+<div class="frame-shell tcrn-product-shell" data-shell="no-paper" data-measure-skip="rail">
+  <nav class="frame-rail" aria-label="Rail"></nav>
+</div>
+</section>
+</main>
+</body>
+</html>

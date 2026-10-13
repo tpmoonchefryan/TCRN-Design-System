@@ -1,0 +1,569 @@
+# Migrating to TCRN Design System 4.0.0
+
+This guide is for the three consumers of `@tcrn/ui-tokens`, `@tcrn/ui-copy-state`
+and `@tcrn/ui-react`: TCRN AOS, TCRN TMS and the Einzbern portal. It covers the move
+from 3.0.0, and from the unreleased `main` that followed it, to 4.0.0 (the G+
+renewal, TCRN-DS-INIT-015).
+
+Status: 4.0.0 is a candidate. It is not tagged, not published and not deployed;
+each of those is a separate Owner decision, and so is the Owner's visual
+acceptance. The release notes are the 4.0.0 section of `CHANGELOG.md`.
+
+How this guide was written: from this repository's commits and the INIT-015
+package handoffs only. It does not read any consumer repository, so it says what
+changed and what to do, not where a consumer uses each item. Each consumer runs
+the checks in its own tree. Every item names its source: a commit on the INIT-015
+integration branch, the Subtask key, and the package handoff in
+`docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/` (first round, handoffs
+named W1-A and so on), `runs/r2/handoff/` (second round, handoffs named P1 and
+so on, marked "r2" below) or `runs/r3/handoff/` (third round, handoffs named P0
+and so on, marked "r3" below).
+
+## By consumer
+
+### TCRN AOS
+
+1. Load the fonts (M1).
+2. Move to the new token names; run the deprecation notice over the AOS sources
+   (M2), then re-baseline visual comparisons for the new scale (M3).
+3. Keep the focus ring intact: no `box-shadow: none` or `outline` overrides on
+   focused package controls, and re-declare `--tcrn-focus-ring` where a container
+   changes `--tcrn-color-surface` (M4).
+4. Replace reads of the removed brand accent tokens (M5). AOS keeps its own
+   registry entry, `--tcrn-brand-accent-aos` and the mother mark.
+5. Replace any `lucide-react` import with `Icon` (M6) and keep icon names inside the
+   37-name roster; the Story's example is an `iconName="users"` value, which is a
+   roster name from 4.0.0 (M7). Remove `strokeWidth` from `Icon` calls (M7).
+6. Change `ProductLogo productId="workflow"` (and any other `workflow` registry
+   read) to `"einzbern"` (M8).
+7. Update tests that assert brand taglines or suffix colours (M8, M9).
+8. Adopt the Text, link, Highlight, Button, ButtonGroup and Inputs changes where
+   AOS styles or wraps those components (M10 to M14); `tcrn-link--quiet` now
+   needs `tcrn-link` on the same element (M10).
+9. If AOS styles the product shell toggles, drop colour, shadow, transition and
+   press overrides on them (M15).
+10. If AOS consumed the unreleased `main` with `@tcrn/ui-domain`, import from
+    `@tcrn/ui-react` instead (M16).
+11. If AOS renders `ProductShell`, re-baseline it for composition one's desktop
+    geometry; a screen that needs another sidebar width sets
+    `--tcrn-product-shell-sidebar-width` on the shell (M18).
+12. If AOS reads `componentLibraryDeferredPrototypeNames`, expect
+    `KnowledgeBaseShellDemo` alone (M19).
+
+### TCRN TMS
+
+`docs/tms-adoption-guide.md` records that TMS has no Design System dependency, so
+TMS adopts 4.0.0 directly. If TMS took a 3.x dependency since, apply the AOS list
+above; in either case:
+
+1. Load the fonts (M1).
+2. Write the new token names from the start; the 3.x names are deprecated aliases
+   (M2), and the scale is G+ (M3).
+3. Use the package-backed TMS mark: `ProductLogo productId="tms"`,
+   `TcrnBrandMark productId="tms"`, or `tcrnProductMarkSvg("tms")` for a standalone
+   SVG file (M8).
+4. The TMS taglines come from the package: zh-CN 艺人管理系统 (was 人才管理系统),
+   en Talent Management System, ko 탤런트 관리 시스템 (M8). The wordmark suffix reads
+   `--tcrn-brand-suffix-tms`: #2c63c8 in the light theme, #7aa0f5 in the dark
+   theme (M9).
+5. Take icons from the roster, not from a third-party set (M6, M7).
+6. Use `Text` props, the link classes (`tcrn-link`, with `tcrn-link--quiet` as its
+   modifier), `Button size="lg"`, `ButtonGroup` and the pair-driven inputs instead
+   of local variants (M10 to M14).
+7. A `ProductShell` takes composition one's desktop geometry from the shell tokens
+   (M18).
+
+### Einzbern portal
+
+1. Change every `workflow` registry use to `einzbern` (M8):
+   `ProductLogo productId="einzbern"`, `ProductLockup productId="einzbern"`,
+   `ShellBrandLockup productId="einzbern"`. The asset id is now
+   `tcrn-einzbern-two-line` (was `tcrn-workflow-two-line`).
+2. The Einzbern wordmark is the whole name "Einzbern" in the serif with the byline
+   "by TCRN"; `lineOneSuffix` and `suffixClassName` are `null`, and the
+   `tcrn-brand-wordmark__suffix--workflow` class is gone. Tagline: zh-CN
+   项目记忆引擎, en Project memory engine (M8).
+3. Replace reads of `--tcrn-brand-accent-workflow`; the deep colour is
+   `--tcrn-brand-suffix-einzbern` (#3b5272, the same in both themes) (M5, M9).
+4. Where the portal shows the Mana Orchestrate assistant, use
+   `productId="mana-orchestrate"` (name Mana Orchestrate, tagline zh-CN
+   项目记忆助手, en Project memory assistant) (M8).
+5. Load the fonts (M1), move to the new token names (M2), keep the focus ring
+   (M4), and take icons from the roster (M6, M7).
+6. The portal follows this system through the Storybook URL. The authority file
+   `tcrn-design-authority.json` takes its version from `@tcrn/ui-tokens`, so it
+   reports `4.0.0`, with a new `tokensDigest`, only after the next docs deployment,
+   which is an Owner decision. Until then the hosted file keeps the version it
+   reports today (M17).
+7. If the portal renders `ProductShell`, re-baseline it for composition one's
+   desktop geometry (M18).
+
+## Breaking changes in detail
+
+### M1 · Fonts ship in the package
+
+Change: five SIL OFL 1.1 families ship in `@tcrn/ui-tokens` as WOFF2 files: Hanken
+Grotesk (UI), Source Serif 4 (headings and figures), IBM Plex Mono, Noto Sans SC and
+Noto Serif SC (Chinese fallbacks, as the upstream slices that cover product text).
+`@tcrn/ui-tokens/fonts.css` declares them, and `tokens.css` starts with
+`@import "../fonts/fonts.css";`. The JS export `tcrnTokenCss` has no `@import`.
+Each family token follows its Latin face with a bundled Chinese face:
+`--tcrn-type-family-ui` and `--tcrn-type-family-mono` with Noto Sans SC,
+`--tcrn-type-family-serif` and `--tcrn-type-family-heading` with Noto Serif SC.
+The mono stack is `"IBM Plex Mono","Noto Sans SC",ui-monospace,Menlo,monospace`,
+so Chinese in mono text draws in Noto Sans SC instead of a system face.
+
+Do:
+
+- If you inject `tcrnTokenCss`, add `import "@tcrn/ui-tokens/fonts.css";` once at
+  the shell. If you import `@tcrn/ui-tokens/tokens.css` through a bundler that
+  follows CSS imports, the fonts come with it.
+- Remove links to a font CDN (`fonts.googleapis.com`, `fonts.gstatic.com`); the
+  files are served from your own build.
+- Let the bundler copy the `.woff2` files unchanged. When you redistribute them,
+  keep `FONT-LICENSES.md` and `licenses/` with them; do not sell the fonts on their
+  own, and rename a font if you modify it (minutes D4).
+- If you override a family token, keep the Noto face after the Latin face, so
+  Chinese text stays on the bundled files. In this repository `fonts:proof` is red
+  when a family token loses that fallback.
+
+Source: 296a0c1 (TCRN-DS-SUB-004), e532b52 (TCRN-DS-SUB-006), 343c2e3 (OFL-1.1 in
+the licence allow-list), e79092f (TCRN-DS-SUB-048), ed98557 (TCRN-DS-SUB-049);
+handoffs W1-C, W2-A and P1 (r2).
+
+### M2 · Token names follow the G+ contract; old names are deprecated aliases
+
+Change: colour, elevation, selection, motion easing and type family tokens take
+the contract names (table below). Each old name stays defined as
+`--old: var(--new)` and resolves to the new value. `--tcrn-motion-press-scale`
+stays at 0.97 with no successor.
+
+The names sit in three blocks of `tokens.css` and `tcrnTokenCss`: the light theme
+block on `:root, [data-tcrn-theme="light"]`, the theme-independent block on
+`:root`, and the dark theme block on `[data-tcrn-theme="dark"]`. Because the light
+block also answers to `data-tcrn-theme="light"`, a container marked light inside
+a dark page takes the light values again; with the former `:root`-only light
+block it inherited the night values. `tcrnGplusThemeSelectors.light` carries the
+same selector list.
+
+Do:
+
+1. List the old names your sources still use. From a TCRN Design System checkout
+   with `@tcrn/ui-tokens` built:
+   `node scripts/token-deprecation-notice.mjs --label <consumer> <absolute path>...`
+   prints one line per old name, `deprecated token <old> (n uses): use <new>`, and
+   exits 0. It skips token blocks marked `tcrn-token-block` and copied alias
+   declarations, and adds a note where an old name is set to a value. In code,
+   `formatDeprecatedTokenNotices(findDeprecatedTokenUsages(source))` gives the same
+   lines but counts every occurrence, declarations included.
+2. Replace each old name with its new name. Where your code sets an old name to a
+   value, set the new name instead; the aliases only read.
+3. Drop uses of `--tcrn-motion-press-scale`: a G+ press changes the fill and does
+   not scale.
+4. To show a light region inside a dark page, set `data-tcrn-theme="light"` on
+   it. If you parse the token stylesheet yourself or look for a literal
+   `:root {`, accept the selector list: `parseTokenCssBlocks` reports it in
+   canonical form and `compareTokenThemeBlocks` matches lists in any order and
+   spacing.
+
+Source: a88b7ad (TCRN-DS-SUB-001), e532b52 (TCRN-DS-SUB-006), 812cf3f
+(TCRN-DS-SUB-003), 4a59144 (TCRN-DS-SUB-047); handoffs W2-A, W3-A and P1 (r2).
+
+### M3 · Token values move to the G+ scale
+
+Change: control heights are 28, 32 and 40px (`--tcrn-control-height-sm|md|lg`),
+control padding 10, 12 and 16px, control text 12, 13 and 14px, icon sizes 14, 16
+and 20px, radii 8, 6, 12, 4 and 3px (`--tcrn-radius-control|small|panel|check|stamp`),
+motion 120, 80, 240 and 900ms with one ease. Body text is 13/20, reading 14/22,
+meta 12/16, caption 11/16, page 36/40, heading-2 26/30, section and heading-3 20/26.
+Line height tokens now carry px units. `--tcrn-type-family-heading` (Source Serif
+4) is new. Colours, shadows and the control outline (`--tcrn-color-line-ctl`)
+change in both themes.
+
+The type scale comes from the contract: the 29 type steps (sizes, line heights,
+weights, tracking, tabular numerals and the heading family) are generated from
+`contract/typography.json` into `gplus-tokens.generated.ts` (the list is not
+re-exported from the package index), and the type rules of `@tcrn/ui-react` refer
+to them through `var(--tcrn-type-*)`. This changed no value: `tokens.css` is byte
+for byte the same as before the change. Four declarations in those rules keep a
+literal because no token exists for them yet: the inline numeral 16px, the large
+numeral 44px on a 48px line, and the mono text 11.5px. Adding tokens for them, or
+moving them to existing steps (which changes their look), is an open Owner
+decision.
+
+Do: re-baseline screenshots and computed-style assertions, and check any
+`calc()` that multiplies a line height token as a unitless number. Assertions on
+the computed size of `Text` numerals and mono text read the four literal values
+until that decision.
+
+Source: a88b7ad (TCRN-DS-SUB-001), e532b52 (TCRN-DS-SUB-006), c48b736
+(TCRN-DS-SUB-052); handoffs W2-A and P2 (r2).
+
+### M4 · The focus ring is a box-shadow
+
+Change: `--tcrn-focus-ring` is `0 0 0 2px var(--tcrn-color-surface), 0 0 0 4px
+var(--tcrn-color-acc)`, computed where it is declared. Package controls draw their
+edge and the ring in `box-shadow` and keep a transparent outline for forced
+colours. Inside `ProductShell`, elements that are not package controls get the G+
+ring in place of the former 3px outline.
+
+Do:
+
+- Do not set `box-shadow` or `outline` on focused package controls; doing so
+  removes the ring or the edge.
+- A container that sets `--tcrn-color-surface` (for example to the panel colour)
+  declares `--tcrn-focus-ring` again so the gap matches.
+- Your own focusable elements can use `box-shadow: var(--tcrn-focus-ring)`; the
+  3.x names `--tcrn-color-focus-ring` and `--tcrn-elevation-focus` are aliases (M2).
+
+A focused read-only text field also shows the ring and keeps its read-only fill
+and ink (M14). A focused `tcrn-link` draws the ring and keeps a transparent outline
+for forced colours (M10).
+
+Source: a88b7ad (TCRN-DS-SUB-001), 385ee0a (TCRN-DS-SUB-018), 7213a27
+(TCRN-DS-SUB-058), 4a6ab92 (TCRN-DS-SUB-055); handoffs W2-A, W2-D and P2 (r2).
+
+### M5 · Retired brand accent tokens are removed (no alias)
+
+Change: `--tcrn-brand-accent-tms`, `--tcrn-brand-accent-workflow`,
+`--tcrn-brand-accent-design-system-1` to `-4` and
+`--tcrn-color-brand-secondary-readable` are no longer defined.
+`--tcrn-brand-accent-aos` stays.
+
+Do: `--tcrn-brand-accent-tms` becomes `--tcrn-brand-suffix-tms`,
+`--tcrn-brand-accent-workflow` becomes `--tcrn-brand-suffix-einzbern`, and the
+Design System suffix is `--tcrn-brand-suffix-design-system`; the four-colour Design
+System mark is drawn by the mark itself. `--tcrn-color-brand-secondary-readable`
+has no successor: pick the G+ colour token for the role.
+
+Source: 94d7cdf (TCRN-DS-SUB-021); handoff W2-F.
+
+### M6 · `lucide-react` is removed
+
+Change: `@tcrn/ui-react` no longer depends on `lucide-react`; all icons are drawn
+from the package's own contract paths.
+
+Do: replace `lucide-react` imports with `<Icon name="…" />` from `@tcrn/ui-react`.
+If an icon you need is not in the roster, ask for it in the design contract;
+adding a name is a contract change, not a local drawing.
+
+Source: 52065c0 (TCRN-DS-SUB-015); handoff W2-C.
+
+### M7 · The icon roster has 37 names, and `strokeWidth` is gone
+
+Change: `tcrnIconNames` and `IconName` cover 37 names, the 28 from 3.x plus `plus`,
+`minus`, `users`, `bell`, `copy`, `trash`, `calendar`, `more-horizontal` and
+`chevron-up`. Icons draw on a 20-unit grid with a 1.25 stroke that does not scale.
+`strokeWidth` is removed from `IconProps`. `size` is `sm`, `md` or `lg` (14, 16,
+20px) or a number. The `.tcrn-icon` base rule now ships in the package.
+
+Do: remove `strokeWidth`; keep `name` inside the roster (a name outside it fails
+type checking); drop local `.tcrn-icon` base rules that restate the package rule.
+
+Source: 863ab1e (TCRN-DS-SUB-014), f94b1be (TCRN-DS-SUB-018); handoff W2-C.
+
+### M8 · The product logo registry: `workflow` becomes `einzbern`, `mana-orchestrate` is added
+
+Change: `TcrnProductLogoId` is `design-system`, `aos`, `tms`, `einzbern` or
+`mana-orchestrate`. The four products with a mark take their name, wordmark face
+and taglines from the contract, and entries gain `markId`, `wordmark` (`sans` or
+`serif`) and `byline`. Einzbern and Mana Orchestrate are serif whole names with the
+byline "by TCRN", and their `lineOneSuffix` and `suffixClassName` are `null`.
+Taglines change: Design System zh-CN 设计系统 and en Design System (were 组件库 and
+Component Library); TMS zh-CN 艺人管理系统 (was 人才管理系统) and ko 탤런트 관리 시스템.
+`TcrnBrandMark` takes `productId` and `variant` (`color`, `mono`, `tile-tint`,
+`tile-deep`) and draws the mark inline; `ProductLogo`, `ProductLockup` and
+`ShellBrandLockup` take `markVariant`. `tcrnProductMarkSvg`, `tcrnProductMarkIds`
+and `tcrnProductMarkVariants` are new. The AOS entry is unchanged.
+
+Do: rename `workflow` to `einzbern` in props and registry reads; treat
+`lineOneSuffix` and `suffixClassName` as nullable; update tagline assertions.
+
+Source: ccb7bea (TCRN-DS-SUB-022), 1def73f (TCRN-DS-SUB-023); handoff W2-F; minutes
+D5.
+
+### M9 · Wordmark suffix colours
+
+Change: the gradient suffix is removed. TCRN and a lockup without `productId` are
+set in ink; the TMS suffix reads `--tcrn-brand-suffix-tms` (#2c63c8) and the Design
+System suffix `--tcrn-brand-suffix-design-system` (#6577f3). In the dark theme the
+TMS suffix is #7aa0f5, the bright colour of the TMS mark (a design-session ruling
+of 2026-10-11 on problem P15, open to Owner correction): `--tcrn-brand-suffix-tms`
+is declared in the light and dark theme blocks of `tokens.css`, no longer in the
+theme-independent block. The Design System suffix keeps #6577f3 in both themes.
+
+Do: remove local gradient or suffix colour overrides; update colour assertions,
+including night assertions on the TMS suffix and any parse of `tokens.css` that
+expects `--tcrn-brand-suffix-tms` in the theme-independent block.
+
+Source: ccb7bea (TCRN-DS-SUB-022), 52faa47 (TCRN-DS-SUB-088); handoffs W2-A,
+W2-F and P1 (r3); minutes D2.
+
+### M10 · `Text` props, `Heading` titles, link states
+
+Change: `Text` gains `size` (`body`, `reading`, `meta`, `caption`), `tone`
+(`default`, `strong`) and `variant` (`numeral`, `caps`). Without props it still
+renders `class="tcrn-text"`: a 13/20 paragraph in the secondary ink. `numeral` and
+`caps` are single-line; a unit goes in a `small` element, a numbering prefix in a
+`b` element. `Heading` levels 1 to 4 are single-line and carry their text as
+`title`. The clamp heading sizes are gone.
+
+Links: `tcrn-link` states go through a pair table (live pair `--tcrn-pair-ink`,
+`--tcrn-pair-underline` and `--tcrn-pair-edge`). The link rests in acc with an
+acc-ul underline; hover switches ink and underline to acc-2; focus draws the focus
+ring over a transparent outline. `tcrn-link--quiet` is now a modifier of
+`.tcrn-link`: on its own it has no styles. A quiet link rests in the current text
+colour with a transparent underline; its hover underline is acc-2 at the 2px link
+offset (it was the accent at a 0.2em offset).
+
+Do: replace local font-size or numeral and caps classes on `Text` with the props;
+update snapshots for the new `title` attributes. Write
+`class="tcrn-link tcrn-link--quiet"` wherever you used `tcrn-link--quiet` alone
+(this repository has no such use), and drop local hover colour or underline offset
+overrides on links.
+
+Source: e7ef431 (TCRN-DS-SUB-012), 4a6ab92 (TCRN-DS-SUB-055); handoffs W2-B and
+P2 (r2).
+
+### M11 · `Highlight` mark class
+
+Change: the mark uses `tcrn-highlight__mark` (was `tcrn-highlight-mark`) and only
+adds the accent wash; weight, letter spacing, size and padding are inherited.
+
+Do: rename selectors and test patterns.
+
+Source: 4e5b798 (TCRN-DS-SUB-013); handoff W2-B.
+
+### M12 · `Button`, `IconButton`, `LinkButton` and `ClipboardCopyButton`
+
+Change: the buttons read a state pair table; `border` is 0 and the edge is a
+box-shadow; the press scale, transforms and the 0.64 disabled opacity are gone.
+`size` adds `lg` (40px). `loading` sets `aria-busy` and shows the loader; the busy
+wording is the caller's children. `ClipboardCopyButton` no longer accepts
+`loading` and shows one icon per settled state. A disabled `Button` with a reason
+puts "label — reason" in its `title`, the visible label first (it was the reason
+alone); a button without visible text keeps the reason alone, and the reason is
+still the `aria-describedby` description.
+
+Do: replace height overrides with `size="lg"`; remove `border-color`, `transform`
+and `box-shadow` overrides on buttons; remove `loading` from `ClipboardCopyButton`;
+update assertions on the `title` of disabled buttons with a reason.
+
+Source: b7eb514 (TCRN-DS-SUB-016), 7f631b2 (TCRN-DS-SUB-017), 385ee0a
+(TCRN-DS-SUB-018), e0baaba (TCRN-DS-SUB-079); handoffs W2-D and P10 (r2).
+
+### M13 · `ButtonGroup`
+
+Change: new component. `ariaLabel` is required and `variant` is `secondary` or
+`quiet`; members share one outline and a separator, and a single choice is marked
+with `aria-pressed` on the member.
+
+Do: replace hand-built rows of joined buttons with `ButtonGroup`.
+
+Source: 7f631b2 (TCRN-DS-SUB-017); handoff W2-D.
+
+### M14 · Inputs
+
+Change: `Input`, `Textarea`, `NumberInput`, `DatePicker`, `SuggestInput` and the
+`Select` and `MultiSelect` triggers read one pair table, with `border: 0` and an
+inset box-shadow edge. `Checkbox`, `Radio` and `Switch` read their own pair tuples;
+`Switch` has no disabled opacity. `SearchInput` takes the ink-wash tool form in the
+top bar and in forms. `Select` now renders inside `span.tcrn-select-wrap` and
+`DatePicker` inside `span.tcrn-date-picker-wrap`, each with its end icon.
+`.tcrn-field:focus-within` no longer washes the field.
+
+A focused read-only text field (`[readonly]` or `[aria-readonly="true"]`) shows
+the focus ring and keeps its read-only fill and ink
+(the `rf` state, ordered after `r`; the Inputs board lets read-only cover focus,
+so this differs from the board on purpose). `.tcrn-field--error` no longer washes
+the whole field or recolours its outline, and `.tcrn-field__error` reads
+`--tcrn-color-bad`; the forced-colours outline of a field in error stays. The
+search shortcut text is ink-2 (was ink-3). The `MultiSelect` trigger has the
+`Select` end, `padding-inline-end: 30px` with the caret placed like the `Select`
+chevron, and `.tcrn-multi-select-dropdown` is now a flex column
+(`flex-direction: column`, `align-items: stretch`): a static expanded list sits
+directly below the trigger at the trigger's width. Dropdown options declare their
+own pair; hover and selection only switch it.
+
+Do: remove `border-color` overrides and mark errors with `aria-invalid="true"`,
+which selects the invalid pair; point direct-child selectors (`> .tcrn-select`) at the wrappers;
+update search box assertions. Do not add a background back to
+`.tcrn-field--error`; update assertions on the error field's background and
+outline, the shortcut colour and the `MultiSelect` trigger's end padding.
+
+Source: 697d4eb (TCRN-DS-SUB-019), 0daff9d (TCRN-DS-SUB-020), 715533d
+(TCRN-DS-SUB-021), 7213a27 (TCRN-DS-SUB-058), 696f516 (TCRN-DS-SUB-059), fe6a4bb
+(TCRN-DS-SUB-060), 5e799a6 (TCRN-DS-SUB-061), 48399ae (TCRN-DS-SUB-062), 1a10b84
+(TCRN-DS-SUB-091); handoffs W2-E, P2 (r2), P4 (r2) and P5 (r3); minutes D2.
+
+### M15 · Product shell toggles
+
+Change: the theme, side-navigation and mobile-navigation toggles follow the
+Actions pairs; the package no longer writes colour, shadow, transition, hover or
+press rules for them. Their sizes (36 and 38px) are unchanged pending design. The
+theme toggle shows its sun or moon by its own `data-current-theme`; the default
+and `html[data-tcrn-theme="dark"]` icon display rules are gone, so a toggle inside
+a block-level theme shows the current icon instead of neither.
+
+Do: remove local overrides that restyle these toggles, including rules that show
+or hide the toggle's icons by a page-level theme.
+
+Source: 385ee0a (TCRN-DS-SUB-018), 6976d2f (TCRN-DS-SUB-057); handoff P3 (r2).
+
+### M16 · Unreleased `main` only: `@tcrn/ui-domain`
+
+Change: the `@tcrn/ui-domain` package that existed on `main` after 3.0.0 was merged
+into `@tcrn/ui-react` under functional names (`AttachmentList`, `MetadataRail`,
+`RecordTable`, `RecordInspector`, `StagePipeline`). Consumers of 3.0.0 are not
+affected.
+
+Do: import those components from `@tcrn/ui-react`.
+
+Source: b29f15f; the "De-productized functional display surface" entry in the
+4.0.0 section of `CHANGELOG.md`.
+
+### M17 · The design authority file
+
+Change: `tcrn-design-authority.json`, served beside the AI consumption contract,
+reads its version from `packages/ui-tokens/package.json` and carries a sha256 of
+the token stylesheet. Both change with 4.0.0 at the next deployment.
+
+Do: nothing until the deployment. After it, the version and digest the portal
+reads will be 4.0.0 and the new digest.
+
+Source: e8d0317; `apps/storybook/src/build/design-authority.ts`.
+
+### M18 · `ProductShell` takes composition one's desktop geometry
+
+Change: four theme-independent tokens are new: `--tcrn-shell-sidebar-width`
+(220px), `--tcrn-shell-sidebar-width-collapsed` (52px), `--tcrn-shell-topbar-height`
+(52px) and `--tcrn-radius-paper` (14px). `ProductShell` reads them (a
+design-session ruling of 2026-10-11, open to Owner correction): the sidebar is
+220px (was 280) and 52px collapsed (was 92); the shell's top bar has a 52px
+minimum height (was 68); the workspace is a sheet 12px from the shell's top, right
+and bottom edges, with the 14px radius, the s1 shadow and the panel fill; the
+sidebar sits on the shell's canvas colour with no right border; navigation items
+and group titles keep a 16px lead column with the text at 48px.
+`--tcrn-product-shell-sidebar-width` stays the shell's local variable, now
+defaulting to `--tcrn-shell-sidebar-width` (collapsed:
+`--tcrn-shell-sidebar-width-collapsed`). The lead column, the collapsed padding
+and the sheet apply under `@media not all and (max-width: 760px)`; the mobile
+block (max-width: 760px) is unchanged, while the canvas-coloured sidebar and the
+52px top bar minimum apply at every width. The standalone `TopBar` keeps its 68px
+minimum height. The NavItem markup, API and state rules are unchanged.
+
+Do: re-baseline screenshots and geometry assertions of product shell screens
+(sidebar and collapsed widths, top bar height, the workspace's inset, radius and
+shadow, the sidebar's background and right border). A screen that needs another
+sidebar width sets `--tcrn-product-shell-sidebar-width` on the shell. The Storybook
+composition-one samples no longer export `gplusSampleSidebarWidth`; it was never
+part of the packages.
+
+Source: 907de34 (TCRN-DS-SUB-090), 772a464; handoff P1 (r3); the storybook map's
+DIFF-1 and DIFF-3.
+
+### M19 · The deferred prototype roster
+
+Change: `componentLibraryDeferredPrototypeNames` lists `KnowledgeBaseShellDemo`
+only; `DenseOperationsShellDemo` and `CompactToolShellDemo` left it, and the
+`ComponentLibraryDeferredPrototypeName` type with it, after their prototypes were
+retired from the navigation shell stories.
+
+Do: remove reads of the two retired names.
+
+Source: 4d0dfde (TCRN-DS-SUB-105), 95f0e09 (TCRN-DS-SUB-066); handoff P3 (r3).
+
+## Deprecated token names
+
+The value of each old name is `var(<new name>)`. "Theme" means the alias is
+declared in both theme blocks with the same text; "theme-independent" means the
+theme-independent `:root` block.
+
+| Old name | New name | Block |
+| --- | --- | --- |
+| `--tcrn-color-text-primary` | `--tcrn-color-ink` | theme |
+| `--tcrn-color-text-secondary` | `--tcrn-color-ink-2` | theme |
+| `--tcrn-color-text-muted` | `--tcrn-color-ink-3` | theme |
+| `--tcrn-color-text-tertiary` | `--tcrn-color-ink-3` | theme |
+| `--tcrn-color-text-inverse` | `--tcrn-color-on-acc` | theme |
+| `--tcrn-color-surface-canvas` | `--tcrn-color-bg` | theme |
+| `--tcrn-color-surface-panel` | `--tcrn-color-panel` | theme |
+| `--tcrn-color-surface-muted` | `--tcrn-color-panel-2` | theme |
+| `--tcrn-color-neutral-calibration-canvas` | `--tcrn-color-bg` | theme |
+| `--tcrn-color-neutral-calibration-panel` | `--tcrn-color-panel` | theme |
+| `--tcrn-color-neutral-calibration-muted` | `--tcrn-color-panel-2` | theme |
+| `--tcrn-color-neutral-calibration-border` | `--tcrn-color-line-ctl` | theme |
+| `--tcrn-color-border-subtle` | `--tcrn-color-line` | theme |
+| `--tcrn-color-border-strong` | `--tcrn-color-line-2` | theme |
+| `--tcrn-color-border-control` | `--tcrn-color-line-ctl` | theme |
+| `--tcrn-color-brand-teal` | `--tcrn-color-acc` | theme |
+| `--tcrn-color-brand-primary` | `--tcrn-color-acc` | theme |
+| `--tcrn-color-brand-primary-bg` | `--tcrn-color-acc-bg` | theme |
+| `--tcrn-color-brand-secondary` | `--tcrn-color-acc-2` | theme |
+| `--tcrn-color-brand-secondary-bg` | `--tcrn-color-acc-bg` | theme |
+| `--tcrn-color-brand-accent` | `--tcrn-color-red` | theme |
+| `--tcrn-color-brand-accent-bg` | `--tcrn-color-red-bg` | theme |
+| `--tcrn-color-brand-neutral` | `--tcrn-color-ink-2` | theme |
+| `--tcrn-color-brand-neutral-bg` | `--tcrn-color-panel-2` | theme |
+| `--tcrn-color-focus-ring` | `--tcrn-color-acc` | theme |
+| `--tcrn-color-focus-ring-calibrated` | `--tcrn-color-acc` | theme |
+| `--tcrn-color-progress-track-calibrated` | `--tcrn-color-wash` | theme |
+| `--tcrn-color-progress-fill-start-calibrated` | `--tcrn-color-acc` | theme |
+| `--tcrn-color-progress-fill-end-calibrated` | `--tcrn-color-acc` | theme |
+| `--tcrn-color-state-ready` | `--tcrn-color-ok` | theme |
+| `--tcrn-color-state-ready-bg` | `--tcrn-color-wash` | theme |
+| `--tcrn-color-state-blocked` | `--tcrn-color-bad` | theme |
+| `--tcrn-color-state-blocked-bg` | `--tcrn-color-bad-bg` | theme |
+| `--tcrn-color-state-warning` | `--tcrn-color-warn` | theme |
+| `--tcrn-color-state-warning-bg` | `--tcrn-color-wash` | theme |
+| `--tcrn-color-state-warning-calibrated` | `--tcrn-color-warn` | theme |
+| `--tcrn-color-state-warning-calibrated-bg` | `--tcrn-color-wash` | theme |
+| `--tcrn-color-state-danger-calibrated` | `--tcrn-color-bad` | theme |
+| `--tcrn-color-state-danger-calibrated-bg` | `--tcrn-color-bad-bg` | theme |
+| `--tcrn-type-family-latin` | `--tcrn-type-family-ui` | theme-independent |
+| `--tcrn-type-family-distributable-latin` | `--tcrn-type-family-ui` | theme-independent |
+| `--tcrn-type-family-distributable-zh-cn` | `--tcrn-type-family-ui` | theme-independent |
+| `--tcrn-type-family-distributable-mono` | `--tcrn-type-family-mono` | theme-independent |
+| `--tcrn-type-family-zh-cn` | `--tcrn-type-family-ui` | theme-independent |
+| `--tcrn-elevation-floating` | `--tcrn-shadow-s3` | theme |
+| `--tcrn-selection-fill` | `--tcrn-color-wash` | theme |
+| `--tcrn-selection-fill-hover` | `--tcrn-color-hover` | theme |
+| `--tcrn-selection-edge` | `--tcrn-color-ink` | theme |
+| `--tcrn-elevation-focus` | `--tcrn-focus-ring` | theme |
+| `--tcrn-motion-ease-out` | `--tcrn-motion-ease` | theme-independent |
+| `--tcrn-motion-press-scale` | none (stays defined) | theme-independent |
+
+The table is the content of `tcrnDeprecatedTokenAliases` (50 entries) plus the one
+entry of `tcrnDeprecatedTokens` without a successor; read those exports for the
+current list. Names kept with new G+ values rather than aliased:
+`--tcrn-type-family-ui`, `--tcrn-type-family-mono`, `--tcrn-radius-control`,
+`--tcrn-radius-panel`, `--tcrn-radius-surface` (equal to panel),
+`--tcrn-type-size-control`, the type size, line height and weight steps, and the
+motion shorthands `--tcrn-motion-fast`, `-instant`, `-standard`, `-emphasis` and
+`--tcrn-selection-glide`.
+
+## Open Owner decisions that can still move values
+
+These are recorded in `docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md`.
+Until they are ruled on, 4.0.0 behaves as described above.
+
+- Composition-one shell geometry (sidebar 220, collapsed 52, top bar 52, paper
+  inset 12, paper radius 14): implemented in `ProductShell` with four new shell
+  tokens under a design-session ruling of 2026-10-11 that the Owner can correct
+  (M18; problem P1, storybook map DIFF-1 to DIFF-3). A correction would withdraw
+  the four tokens and the new geometry.
+- Night values of the suffix colours: under the same ruling the TMS suffix is
+  #7aa0f5 by night and the Design System suffix keeps one value (M9; problem
+  P15). A correction would restore the single TMS value.
+- Sizes of the shell theme and side-navigation toggles (36 and 38px): kept by
+  default (M15); the 52px collapsed rail holds the 38px toggle.
+- The `.tcrn-icon` base rule in the package, a design-session ruling open to Owner
+  correction: M7.
+- The four type declarations that keep a literal (inline numeral 16px, large
+  numeral 44px on 48px, mono text 11.5px): new tokens or existing steps, M3; by
+  default no token is added.
+- Second-round items done as recommended and open to Owner correction: the
+  read-only focus ring against the board's state order, the removed error-field
+  wash and the shortcut in ink-2 against the board's ink-3 (M14); the
+  "label — reason" title of disabled buttons (M12); the theme toggle icon by
+  `data-current-theme` (M15).

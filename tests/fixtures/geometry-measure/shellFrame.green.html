@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>geometry-measure fixture: shellFrame (green)</title>
+<!-- shellFrame only: a ProductShell root (data-shell, package class) whose paper sits 12px from the shell's top, end and bottom edges, flush with the rail, and whose top bar is 52px tall. The data-shell element that is not a ProductShell root is not read. Rail is skipped here; the clean page measures both. -->
+<style>
+  body { margin: 0; background: #ffffff; color: #111111; font: 14px/20px Arial, Helvetica, sans-serif; }
+  [data-measure-root] { width: 640px; padding: 16px; }
+  .part { margin: 0 0 24px; }
+  .frame-shell { position: relative; width: 480px; height: 160px; background: #efeeea; }
+  .frame-rail { width: 200px; height: 100%; }
+  .paper { position: absolute; top: 12px; right: 12px; bottom: 12px; left: 200px; background: #ffffff; }
+  .paper > .tcrn-top-bar { display: block; box-sizing: border-box; height: 52px; border-bottom: 1px solid #dddddd; }
+  .other-shell { width: 200px; height: 40px; background: #fafafa; }
+</style>
+</head>
+<body>
+<main data-measure-root>
+<section class="part">
+<div class="frame-shell tcrn-product-shell" data-shell="frame" data-measure-skip="rail">
+  <nav class="frame-rail" aria-label="Rail"></nav>
+  <div class="paper tcrn-product-shell__workspace"><header class="tcrn-top-bar"></header></div>
+</div>
+</section>
+<section class="part">
+<div class="other-shell" data-shell="not-a-product-shell" data-measure-skip="rail"></div>
+</section>
+</main>
+</body>
+</html>

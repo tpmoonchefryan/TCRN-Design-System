@@ -4,7 +4,8 @@ import { demoStoryCss } from "./story-demo-styles.js";
 export const alphaStoryCss = `${createCssVariables()}${createThemeCssVariables("dark")}
 * { box-sizing: border-box; }
 html {
-  --tcrn-anchor-scroll-offset: 96px;
+  /* The fixed top bar over the content column is the shell top bar, 52px (composition one, O-1). */
+  --tcrn-anchor-scroll-offset: var(--tcrn-shell-topbar-height);
   --tcrn-doc-motion-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --tcrn-doc-motion-smooth: 0.4s ease;
   --tcrn-doc-theme-crossfade-duration: 0.4s;
@@ -63,7 +64,7 @@ body {
     background-color var(--tcrn-doc-motion-smooth),
     color var(--tcrn-doc-motion-smooth);
 }
-.tcrn-static-section--category-index {
+.tcrn-doc-static-section--category-index {
   display: grid;
   gap: var(--tcrn-space-3h);
 }
@@ -100,12 +101,18 @@ body {
   min-width: 0;
 }
 .tcrn-doc-shell {
-  --tcrn-doc-shell-side-width: clamp(280px, 20vw, 360px);
+  /* The rail is 220 wide and 52 collapsed, from the shell tokens (composition one, O-1). */
+  --tcrn-doc-shell-side-width: var(--tcrn-shell-sidebar-width);
   --tcrn-doc-content-inset: calc(var(--tcrn-space-5) + var(--tcrn-space-4));
-  --tcrn-doc-shell-side-expanded-width: clamp(280px, 20vw, 360px);
-  --tcrn-doc-shell-side-collapsed-width: 120px;
+  --tcrn-doc-shell-side-expanded-width: var(--tcrn-shell-sidebar-width);
+  --tcrn-doc-shell-side-collapsed-width: var(--tcrn-shell-sidebar-width-collapsed);
+  /* The rail head above the side navigation holds the brand lockup beside its collapse control,
+     and the mark above the control when collapsed (38 + 4 + 38): 96px, three 32px steps. */
+  --tcrn-doc-rail-head-height: calc(var(--tcrn-space-6) * 3);
   --tcrn-doc-shell-divider: color-mix(in srgb, var(--tcrn-color-border-subtle) 74%, transparent);
-  --tcrn-doc-shell-left-surface: var(--tcrn-color-brand-secondary-bg);
+  /* The rail and the brand cell above it sit on the canvas colour with no edge of their own, as the
+     package ProductShell rail does since composition one (O-1); they were an accent wash. */
+  --tcrn-doc-shell-left-surface: var(--tcrn-color-surface-canvas);
   --tcrn-doc-shell-top-surface: var(--tcrn-color-surface-panel);
   min-height: 100vh;
   max-width: none;
@@ -122,19 +129,7 @@ body {
   --tcrn-doc-shell-side-width: var(--tcrn-doc-shell-side-collapsed-width);
 }
 html[data-tcrn-theme="dark"] .tcrn-doc-shell {
-  --tcrn-doc-shell-left-surface: var(--tcrn-color-surface-panel);
   --tcrn-doc-shell-top-surface: var(--tcrn-color-surface-panel);
-}
-@keyframes tcrn-doc-sidebar-copy-reveal {
-  0%,
-  44% {
-    opacity: 0;
-    transform: translateX(-8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 @keyframes tcrn-doc-nav-label-reveal {
   0% {
@@ -314,21 +309,10 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
   width: 100%;
   min-width: 0;
 }
-.tcrn-doc-header-search .tcrn-search-input {
-  --tcrn-search-input-block-size: calc(var(--tcrn-space-6) + var(--tcrn-space-1h));
-  --tcrn-search-input-icon-size: 16px;
-  --tcrn-search-input-padding-inline: var(--tcrn-space-3);
-  --tcrn-search-input-column-gap: 8px;
-  --tcrn-search-input-control-min-inline-size: 84px;
-  width: 100%;
-  max-width: 100%;
-  background: var(--tcrn-color-surface-panel);
-  transition:
-    background-color var(--tcrn-doc-motion-smooth),
-    border-color var(--tcrn-doc-motion-smooth),
-    box-shadow var(--tcrn-doc-motion-smooth),
-    color var(--tcrn-doc-motion-smooth);
-}
+/* The header search is the package SearchInput in its tool form: the wrapper paints
+   nothing, and the control takes the package's 32px height, wash fill and control radius.
+   The block-level wrapper already fills this slot, so no doc rule sizes or repaints it
+   (TCRN-DS-SUB-064). */
 
 .tcrn-doc-page-head {
   display: grid;
@@ -496,10 +480,10 @@ html[data-tcrn-theme="dark"] .tcrn-doc-shell {
 article[data-story-collapsed="true"] > .story-body {
   display: none;
 }
-.tcrn-story-disclosure__heading {
+.tcrn-doc-story-disclosure__heading {
   margin: 0;
 }
-.tcrn-story-disclosure {
+.tcrn-doc-story-disclosure {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -513,35 +497,35 @@ article[data-story-collapsed="true"] > .story-body {
   padding: var(--tcrn-space-0h) 0;
   cursor: pointer;
 }
-.tcrn-story-disclosure__chevron {
+.tcrn-doc-story-disclosure__chevron {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--tcrn-color-text-secondary);
 }
-.tcrn-story-disclosure__chevron .tcrn-icon {
+.tcrn-doc-story-disclosure__chevron svg[data-icon-name] {
   width: 16px;
   height: 16px;
   transition: transform var(--tcrn-motion-standard);
 }
-.tcrn-story-disclosure__title {
+.tcrn-doc-story-disclosure__title {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.tcrn-story-disclosure__chevron-svg {
+.tcrn-doc-story-disclosure__chevron-svg {
   display: block;
   inline-size: 16px;
   block-size: 16px;
 }
-.tcrn-story-disclosure[aria-expanded="true"] .tcrn-story-disclosure__chevron .tcrn-icon {
+.tcrn-doc-story-disclosure[aria-expanded="true"] .tcrn-doc-story-disclosure__chevron svg[data-icon-name] {
   transform: rotate(90deg);
 }
-.tcrn-story-disclosure:hover {
+.tcrn-doc-story-disclosure:hover {
   color: var(--tcrn-color-brand-primary);
 }
-article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
+article[data-story-collapsed="false"] > .tcrn-doc-story-disclosure__heading {
   box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
   padding-left: var(--tcrn-space-2h);
 }
@@ -623,18 +607,16 @@ article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
   width: 40px;
   transform: none;
 }
+/* Collapsed, the rail keeps the mark and drops the copy at once, as the package ProductShell does:
+   the copy column closes and the brand clips it; nothing fades. */
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-brand {
-  --tcrn-brand-mark-size: 40px;
-  grid-template-columns: 40px minmax(0, 0fr);
+  grid-template-columns: 38px minmax(0, 0fr);
   gap: 0;
+  overflow: hidden;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy,
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-brand .tcrn-product-logo__copy {
   max-width: 0;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-8px);
-  visibility: hidden;
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar-toggle-slot {
   /* TCRN-DS-INC-001: the toggle sits centered directly BELOW the centered mark (mark 40px + 4px
@@ -642,28 +624,6 @@ article[data-story-collapsed="false"] > .tcrn-story-disclosure__heading {
   top: calc((var(--tcrn-anchor-scroll-offset) - 82px) / 2 + 44px);
   left: calc((120px - 38px) / 2);
   transform: none;
-}
-
-.tcrn-doc-global-brand .tcrn-brand-wordmark {
-  align-items: flex-start;
-  flex-direction: column;
-  gap: var(--tcrn-space-0h);
-  font-size: var(--tcrn-type-size-heading-3);
-  line-height: 1.05;
-  max-width: 100%;
-  min-width: 0;
-}
-.tcrn-doc-global-brand .tcrn-brand-wordmark__suffix {
-  flex-basis: auto;
-  line-height: 1.06;
-}
-.tcrn-doc-global-brand .tcrn-brand-wordmark__base,
-.tcrn-doc-global-brand .tcrn-brand-wordmark__suffix {
-  max-width: 100%;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .tcrn-doc-sidebar__label {
@@ -740,7 +700,8 @@ article {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   min-height: 34px;
-  padding: var(--tcrn-space-1h) var(--tcrn-space-2h);
+  margin-inline: calc(var(--tcrn-space-1) * -1);
+  padding: var(--tcrn-space-1h) var(--tcrn-space-2h) var(--tcrn-space-1h) var(--tcrn-space-1);
 }
 .tcrn-doc-nav__section-icon {
   display: none;
@@ -782,7 +743,7 @@ article {
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar {
   overflow: hidden auto;
-  padding: var(--tcrn-space-3h) 0;
+  padding: var(--tcrn-space-3h) var(--tcrn-space-1);
 }
 .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__groups {
   justify-items: stretch;
@@ -805,7 +766,7 @@ article {
   width: 40px;
   height: 40px;
 }
-.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-icon .tcrn-icon {
+.tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-nav__section-icon svg[data-icon-name] {
   width: 20px;
   height: 20px;
 }
@@ -878,10 +839,17 @@ article {
   border-radius: var(--tcrn-radius-control);
   background: transparent;
   color: var(--tcrn-color-text-secondary);
-  padding: 0 var(--tcrn-space-2);
+  /* Group titles sit on the 16px guide column, as the package rail's group labels do. */
+  padding: 0;
   font-size: var(--tcrn-type-size-caption);
   font-weight: var(--tcrn-type-weight-strong);
   text-align: left;
+}
+/* With no inline padding the hover fill reaches 4px past the label through a spread, so the
+   label never touches the fill's edge. */
+.tcrn-doc-nav__category-toggle:hover {
+  border-color: transparent;
+  box-shadow: 0 0 0 var(--tcrn-space-1) var(--tcrn-color-surface-muted);
 }
 .tcrn-doc-nav__category-label {
   grid-column: 1;
@@ -928,7 +896,10 @@ article {
   display: flex;
   border: 1px solid transparent;
   min-height: 30px;
-  padding: var(--tcrn-space-1) var(--tcrn-space-2h) var(--tcrn-space-1) var(--tcrn-space-6);
+  /* As the package rail's items: the box reaches 4px into the rail padding and the start padding
+     gives back 4px less the 1px border, so the label starts on the 16px guide column. */
+  margin-inline: calc(var(--tcrn-space-1) * -1);
+  padding: var(--tcrn-space-1) var(--tcrn-space-2h) var(--tcrn-space-1) calc(var(--tcrn-space-1) - 1px);
   font-size: var(--tcrn-type-size-meta);
   line-height: 1.35;
 }
@@ -948,12 +919,6 @@ article {
   font-weight: var(--tcrn-type-weight-strong);
   background: var(--tcrn-selection-fill);
 }
-.tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
-  max-width: 220px;
-  opacity: 0;
-  transform: translateX(-8px);
-  visibility: visible;
-}
 .tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-nav__groups,
 .tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-nav__group {
   justify-items: stretch;
@@ -969,9 +934,6 @@ article {
 .tcrn-doc-shell[data-sidebar-motion="collapsing"] .tcrn-doc-nav__stories {
   animation: tcrn-doc-nav-stories-fold var(--tcrn-motion-emphasis) both;
   visibility: visible;
-}
-.tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-brand .tcrn-shell-brand-lockup__copy {
-  animation: tcrn-doc-sidebar-copy-reveal var(--tcrn-motion-emphasis) both;
 }
 .tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-nav__groups,
 .tcrn-doc-shell[data-sidebar-motion="expanding"] .tcrn-doc-nav__group {
@@ -1064,16 +1026,10 @@ article {
   inline-size: 18px;
   block-size: 18px;
 }
-.tcrn-component-reference__intro {
+.tcrn-doc-component-reference__intro {
   margin: 0;
   color: var(--tcrn-color-text-secondary);
   line-height: var(--tcrn-type-line-body);
-}
-.tcrn-eyebrow {
-  color: var(--tcrn-color-focus-ring);
-  font-size: var(--tcrn-type-size-meta);
-  font-weight: var(--tcrn-type-weight-strong);
-  letter-spacing: 0;
 }
 .tcrn-doc-category-index {
   display: grid;
@@ -1163,117 +1119,135 @@ select {
   gap: var(--tcrn-space-3);
   min-width: 0;
 }
-.tcrn-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
 ${demoStoryCss}
 
-.tcrn-brand-system {
+.tcrn-doc-brand-system {
   display: grid;
   grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
   gap: var(--tcrn-space-4h);
   align-items: center;
   min-width: 0;
 }
-.tcrn-brand-system__symbol {
+.tcrn-doc-brand-system__symbol {
   display: grid;
   place-items: center;
   border-radius: calc(var(--tcrn-radius-surface) + 4px);
   background: var(--tcrn-color-surface-muted);
   padding: var(--tcrn-space-5);
 }
-.tcrn-brand-system__copy {
+.tcrn-doc-brand-system__copy {
   display: grid;
   gap: var(--tcrn-space-2h);
   min-width: 0;
 }
-.tcrn-brand-system__copy h3,
-.tcrn-brand-system__copy p {
+.tcrn-doc-brand-system__copy h3,
+.tcrn-doc-brand-system__copy p {
   margin: 0;
 }
-.tcrn-brand-system {
+.tcrn-doc-brand-system {
   --tcrn-brand-mark-size: min(100%, 220px);
 }
-.tcrn-brand-lockups {
+.tcrn-doc-brand-lockups {
   display: grid;
   gap: var(--tcrn-space-2h);
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   min-width: 0;
 }
-.tcrn-brand-lockup-card {
-  --tcrn-brand-mark-size: 62px;
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  border: 1px solid var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  padding: var(--tcrn-space-3);
-}
-.tcrn-brand-lockup-card > * {
-  width: 100%;
-}
 
-/* KeyValueList geometry is package-owned, including inside nested inspectors. */
-
-.tcrn-doc-header-search .tcrn-search-input {
-  width: 100%;
-  max-width: 100%;
-}
-.tcrn-checkbox {
-  accent-color: var(--tcrn-color-brand-primary);
-}
-
-.tcrn-skip-link {
-  position: absolute;
-  transform: translateY(-140%);
-  border: 1px solid var(--tcrn-color-focus-ring);
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-panel);
-  color: var(--tcrn-color-text-primary);
-  padding: var(--tcrn-space-1h) var(--tcrn-space-2h);
-  text-decoration: none;
-}
-.tcrn-skip-link:focus {
-  position: static;
-  transform: none;
-  outline: 2px solid var(--tcrn-color-focus-ring);
-  outline-offset: 2px;
-}
-
-.tcrn-shell-brand-lockup .tcrn-brand-wordmark {
-  font-size: var(--tcrn-type-size-section);
-}
-
-/* The ProductShell example intentionally opens search results to demonstrate the
-   result state. Keep that display in the shell's flow so it pushes its card down
-   instead of painting over the card title and body text. */
-.tcrn-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results {
+/* The ProductShell example opens its search results to show the result state. The doc container
+   keeps that list in the shell's flow, so it pushes the page down instead of painting over the
+   heading and first paragraph. The shell-fidelity guard registers its position and inset. */
+.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results {
   position: static;
   inset: auto;
   width: 100%;
   margin-block-start: var(--tcrn-space-2);
 }
 
-html[data-tcrn-theme="dark"] .tcrn-overlay-mode-card,
-html[data-tcrn-theme="dark"] .tcrn-overlay-static-card {
+/* KeyValueList geometry is package-owned, including inside nested inspectors. */
+
+html[data-tcrn-theme="dark"] .tcrn-doc-overlay-mode-card,
+html[data-tcrn-theme="dark"] .tcrn-doc-overlay-static-card {
   border-color: color-mix(in srgb, var(--tcrn-color-border-strong) 62%, transparent);
   background: color-mix(in srgb, var(--tcrn-color-surface-muted) 74%, var(--tcrn-color-surface-panel));
 }
 
-html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
+html[data-tcrn-theme="dark"] .tcrn-doc-dialog-spec-fixture {
   border-color: color-mix(in srgb, var(--tcrn-color-border-strong) 58%, transparent);
   background: var(--tcrn-color-surface-muted);
 }
 
+/* Composition one (O-1) above the mobile breakpoint, the exact complement of the 760px block below:
+   the fixed top bar is the 52px shell top bar; the brand cell in its first column is the rail head,
+   96px from the top of the viewport, and gives back what it overhangs through its block-end margin,
+   so the bar keeps 52px and the side navigation starts under the head. */
+@media not all and (max-width: 760px) {
+  .tcrn-doc-global-bar {
+    min-height: var(--tcrn-shell-topbar-height);
+    padding: var(--tcrn-space-1h) var(--tcrn-space-5);
+  }
+  .tcrn-doc-header__workspace {
+    padding-block: 0;
+  }
+  .tcrn-doc-global-brand {
+    block-size: var(--tcrn-doc-rail-head-height);
+    min-height: 0;
+    margin-block: calc(var(--tcrn-space-1h) * -1) calc(var(--tcrn-shell-topbar-height) - var(--tcrn-doc-rail-head-height) - var(--tcrn-space-1h));
+  }
+  .tcrn-doc-global-brand .tcrn-doc-brand {
+    top: calc((var(--tcrn-doc-rail-head-height) - 52px) / 2);
+    left: var(--tcrn-space-4);
+    width: calc(var(--tcrn-doc-shell-side-expanded-width) - var(--tcrn-space-4) - var(--tcrn-space-2) - 38px - var(--tcrn-space-4));
+  }
+  /* The 142px the 220px rail head leaves the lockup holds every locale's copy on one line except
+     Japanese, whose tagline wraps rather than running under the collapse control. */
+  .tcrn-doc-shell:not([data-sidebar-collapsed="true"]) .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo__copy *,
+  .tcrn-doc-shell:not([data-sidebar-collapsed="true"]) .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-shell-brand-lockup__copy * {
+    white-space: normal;
+  }
+  .tcrn-doc-sidebar-toggle-slot {
+    top: calc((var(--tcrn-doc-rail-head-height) - 38px) / 2);
+    left: calc(var(--tcrn-doc-shell-side-expanded-width) - var(--tcrn-space-4) - 38px);
+  }
+  /* Collapsed, the head stacks the 38px mark over the 38px control with a 4px gap; the brand box is
+     the mark's own square, so the stack is exact. */
+  .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-global-brand .tcrn-doc-brand {
+    top: calc((var(--tcrn-doc-rail-head-height) - 38px - var(--tcrn-space-1) - 38px) / 2);
+    left: calc((var(--tcrn-doc-shell-side-collapsed-width) - 38px) / 2);
+    width: 38px;
+    height: 38px;
+    padding-block: 0;
+  }
+  .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar-toggle-slot {
+    top: calc((var(--tcrn-doc-rail-head-height) - 38px - var(--tcrn-space-1) - 38px) / 2 + 38px + var(--tcrn-space-1));
+    left: calc((var(--tcrn-doc-shell-side-collapsed-width) - 38px) / 2);
+  }
+  /* The side navigation starts under the rail head and keeps the package rail's 16px padding. */
+  .tcrn-doc-sidebar {
+    top: var(--tcrn-doc-rail-head-height);
+    height: calc(100vh - var(--tcrn-doc-rail-head-height));
+    max-height: calc(100vh - var(--tcrn-doc-rail-head-height));
+    margin-block-start: calc(var(--tcrn-doc-rail-head-height) - var(--tcrn-anchor-scroll-offset));
+    gap: var(--tcrn-space-4);
+    padding: var(--tcrn-space-4);
+  }
+  .tcrn-doc-shell[data-sidebar-collapsed="true"] .tcrn-doc-sidebar {
+    padding: var(--tcrn-space-3h) var(--tcrn-space-1);
+  }
+  /* The 220px rail is narrower than the longest story titles: the navigation tracks shrink to the
+     rail and the items clip their titles instead of widening the rail. */
+  .tcrn-doc-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tcrn-doc-nav,
+  .tcrn-doc-nav__groups,
+  .tcrn-doc-nav__group,
+  .tcrn-doc-nav__categories,
+  .tcrn-doc-nav__stories {
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+  }
+}
 @media (max-width: 760px) {
   html {
     --tcrn-anchor-scroll-offset: 412px;
@@ -1378,14 +1352,14 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
   .tcrn-doc-chapter-pager {
     grid-template-columns: 1fr;
   }
-  .tcrn-brand-system {
+  .tcrn-doc-brand-system {
     grid-template-columns: 1fr;
   }
-  .tcrn-knowledge-shell__brand-cell {
+  .tcrn-doc-knowledge-shell__brand-cell {
     grid-column: auto;
     grid-row: auto;
   }
-  .tcrn-knowledge-shell__brand-cell {
+  .tcrn-doc-knowledge-shell__brand-cell {
     padding: var(--tcrn-space-2h) var(--tcrn-space-3h);
   }
 }
@@ -1405,9 +1379,12 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     left: var(--tcrn-space-2);
     width: 40px;
   }
+  .tcrn-doc-global-brand .tcrn-doc-brand {
+    overflow: hidden;
+  }
   .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-shell-brand-lockup__copy,
   .tcrn-doc-global-brand .tcrn-doc-brand .tcrn-product-logo__copy {
-    display: none;
+    max-width: 0;
   }
   .tcrn-doc-sidebar-toggle-slot {
     top: var(--tcrn-space-4);
@@ -1423,6 +1400,5 @@ html[data-tcrn-theme="dark"] .tcrn-dialog-spec-fixture {
     gap: var(--tcrn-space-1);
   }
 }
-
 
 `;

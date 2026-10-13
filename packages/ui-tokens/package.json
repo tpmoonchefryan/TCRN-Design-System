@@ -1,15 +1,19 @@
 {
   "name": "@tcrn/ui-tokens",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "type": "module",
   "private": false,
   "license": "Apache-2.0",
   "sideEffects": [
-    "src/tokens.css"
+    "src/tokens.css",
+    "fonts/fonts.css"
   ],
   "files": [
     "dist",
     "src/tokens.css",
+    "fonts",
+    "licenses",
+    "FONT-LICENSES.md",
     "README.md"
   ],
   "exports": {
@@ -17,7 +21,9 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./tokens.css": "./src/tokens.css"
+    "./tokens.css": "./src/tokens.css",
+    "./fonts.css": "./fonts/fonts.css",
+    "./fonts/*": "./fonts/*"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

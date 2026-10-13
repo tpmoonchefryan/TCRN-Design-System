@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
-import { createTokenMap, tcrnDarkThemeTokens, tcrnTokens } from "@tcrn/ui-tokens";
+import { createResolvedTokenMap, tcrnTokens } from "@tcrn/ui-tokens";
 import alphaMeta from "./alpha.stories.js";
 import {
   i18nText,
@@ -22,6 +22,20 @@ import foundationsMeta from "./foundations.stories.js";
 import patternsMeta from "./patterns.stories.js";
 import proofMeta from "./proof.stories.js";
 import styleGuideMeta from "./style-guide.stories.js";
+import typographyMeta, { Matrix as TypographyMatrix, SampleBilling as TypographySampleBilling } from "./typography.stories.js";
+import iconMeta, { Matrix as IconMatrix, SampleProject as IconSampleProject } from "./icon.stories.js";
+import brandMeta, { Matrix as BrandMatrix, SampleProduct as BrandSampleProduct } from "./brand.stories.js";
+import actionsMeta, { Matrix as ActionsMatrix, SampleProject as ActionsSampleProject } from "./actions.stories.js";
+import inputsMeta, { Matrix as InputsMatrix, SampleMembers as InputsSampleMembers } from "./inputs.stories.js";
+import compositionsMeta, { CompositionThree } from "./compositions.stories.js";
+import { createElement, Fragment } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { tcrnIconNames } from "@tcrn/ui-react";
+import { gplusMatrices, gplusMatrixCellCounts } from "./contract-stories/gplus/generated/matrices.generated.js";
+import { gplusMatrixBoardsInOrder, gplusMatrixComponents, gplusMatrixSourcePath, gplusMatrixStoryIds } from "./contract-stories/gplus/matrix-stories.js";
+import { gplusCompositionThreeStoryId, gplusSampleBoardsInOrder, gplusSampleSourcePath, gplusSampleStoryIds } from "./contract-stories/gplus/sample-stories.js";
+import { gplusSampleShellKeys } from "./contract-stories/gplus/samples/composition-one.js";
+import { gplusCompositionThreeContentWidth } from "./contract-stories/gplus/samples/composition-three.js";
 import { storybookGovernanceChangelogRecords, storyCategoryDefinitions, storyRegistryOrder } from "./contract-stories/governance.js";
 import { referencePages } from "./build/reference-pages.js";
 import {
@@ -123,6 +137,17 @@ const expectedContractStoryIds = [
   "documents-and-collaboration-components-spec",
   "documents-and-collaboration-density-spec",
   "documents-and-collaboration-templates-spec",
+  "typography-matrix",
+  "typography-sample-billing",
+  "icon-matrix",
+  "icon-sample-project",
+  "brand-matrix",
+  "brand-sample-product",
+  "actions-matrix",
+  "actions-sample-project",
+  "inputs-matrix",
+  "inputs-sample-members",
+  "composition-three-sample",
   "forms-patterns",
   "workbench-patterns",
   "records-and-boards-patterns",
@@ -370,7 +395,10 @@ test("static contract story surface is retained and synthetic", () => {
   for (const story of contractStories) {
     assert.ok(story.category.length > 0, `missing category label for ${story.id}`);
     assert.ok(story.categoryId.length > 0, `missing category id for ${story.id}`);
-    assert.equal(story.sourcePath, "apps/storybook/src/contract-stories/story-content.tsx");
+    const expectedSourcePath = story.categoryId === "gplus-matrices"
+      ? gplusMatrixSourcePath
+      : story.categoryId === "gplus-samples" ? gplusSampleSourcePath : "apps/storybook/src/contract-stories/story-content.tsx";
+    assert.equal(story.sourcePath, expectedSourcePath);
     assert.match(story.packageAuthority, /Storybook static|@tcrn\/ui-react|Durable Storybook/);
     assert.equal(story.readiness, "local_storybook_contract_review_required");
     assert.equal(story.proofPosture, "visible_boundary_no_product_adoption_or_publication_claim");
@@ -379,23 +407,43 @@ test("static contract story surface is retained and synthetic", () => {
     [alphaMeta, styleGuideMeta, foundationsMeta, componentsMeta, patternsMeta, proofMeta, changeLogMeta].map((meta) => meta.title),
     expectedRootAdapterTitles
   );
+  // Track A family adapters: title + Matrix export give the Storybook ids typography--matrix etc.
+  assert.deepEqual(
+    [typographyMeta, iconMeta, brandMeta, actionsMeta, inputsMeta].map((meta) => meta.title),
+    ["Typography", "Icon", "Brand", "Actions", "Inputs"]
+  );
+  assert.deepEqual(
+    [TypographyMatrix, IconMatrix, BrandMatrix, ActionsMatrix, InputsMatrix].map((story) => story.name),
+    ["Matrix", "Matrix", "Matrix", "Matrix", "Matrix"]
+  );
+  // Composition samples: SampleBilling, SampleProject, SampleProduct, SampleProject and SampleMembers
+  // give the Storybook ids typography--sample-billing, icon--sample-project and so on.
+  assert.deepEqual(
+    [TypographySampleBilling, IconSampleProject, BrandSampleProduct, ActionsSampleProject, InputsSampleMembers].map((story) => story.name),
+    ["Sample billing", "Sample project", "Sample product", "Sample project", "Sample members"]
+  );
+  // The composition-three sample has its own adapter, title Compositions: Storybook id compositions--composition-three.
+  assert.equal(compositionsMeta.title, "Compositions");
+  assert.equal(CompositionThree.name, "Composition three");
   // Per-story CSF registration gate: every contract story in the registry must have a
   // matching CSF export in its group's *.stories.tsx adapter, in registry order. This closes
   // the gap where only the 7 default-meta titles were gated. internal-dev/overlay-family-lab is
   // intentionally NOT a contract story group, so iterating the registry groups self-excludes it
   // (see the overlay-family-lab exclusions below at data-internal-dev-surface / Internal/Overlay).
+  // The Components group spans components.stories.tsx, the five family adapters (titles
+  // Typography, Icon, Brand, Actions and Inputs) and the compositions adapter, read in that order.
   const csfAdapterFileByGroup: Record<ContractStoryGroup, string> = {
     Welcome: "src/alpha.stories.tsx", // NOTE: alpha.stories.tsx IS the Welcome adapter
     "Style Guide": "src/style-guide.stories.tsx",
     Foundations: "src/foundations.stories.tsx",
-    Components: "src/components.stories.tsx",
+    Components: "src/components.stories.tsx src/typography.stories.tsx src/icon.stories.tsx src/brand.stories.tsx src/actions.stories.tsx src/inputs.stories.tsx src/compositions.stories.tsx",
     Patterns: "src/patterns.stories.tsx",
     Proof: "src/proof.stories.tsx",
     "Change Log": "src/change-log.stories.tsx"
   };
   for (const group of expectedContractStoryGroups) {
     const adapterFile = csfAdapterFileByGroup[group];
-    const adapterSource = readStorybookSource(adapterFile);
+    const adapterSource = adapterFile.split(" ").map((file) => readStorybookSource(file)).join("\n");
     const registeredIds = Array.from(
       adapterSource.matchAll(/renderContractStory\("([^"]+)"\)/g),
       (match) => match[1]
@@ -487,7 +535,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-doc-chapter-pager="true"/);
   assert.match(combinedHtml, /data-contract-surface="tcrn-design-system-storybook"/);
   assert.match(combinedHtml, /data-anchor-scroll-controlled="true"/);
-  assert.match(combinedHtml, /--tcrn-anchor-scroll-offset: 96px/);
+  // The fixed top bar over the content column is the shell top bar (composition one, O-1).
+  assert.match(combinedHtml, /--tcrn-anchor-scroll-offset: var\(--tcrn-shell-topbar-height\)/);
   assert.match(combinedHtml, /tcrnStorybookScrollToHash/);
   assert.match(combinedHtml, /tcrnStorybookScrollSpy/);
   assert.match(combinedHtml, /keepActiveLinkVisible/);
@@ -664,15 +713,16 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(brandIdentityHtml, /ProductLogo \/ tcrnProductLogoRegistry/);
   assert.doesNotMatch(brandIdentityHtml, /data-product-logo-asset-id="tcrn-aos-two-line"/);
   assert.match(readRenderedGroupPage("Style Guide"), /Icon library contract/);
-  assert.match(readGroupPage("Style Guide"), /data-icon-library-source="lucide-react"/);
+  assert.match(readGroupPage("Style Guide"), /data-icon-library-source="tcrn-icon-contract"/);
+  assert.doesNotMatch(readGroupPage("Style Guide"), /lucide/i);
   assert.match(readGroupPage("Style Guide"), /data-icon-library-wrapper="@tcrn\/ui-react\/Icon"/);
-  assert.match(readGroupPage("Style Guide"), /data-icon-library-license="ISC"/);
+  assert.doesNotMatch(readGroupPage("Style Guide"), /data-icon-library-license=/);
   assert.match(readGroupPage("Style Guide"), /data-icon-brand-boundary="not-brand-identity"/);
-  assert.match(readGroupPage("Style Guide"), /class="tcrn-icon-sample-grid"/);
-  assert.match(readGroupPage("Style Guide"), /class="tcrn-icon-sample"/);
-  const iconSampleGridCss = readGroupPage("Style Guide").match(/\.tcrn-icon-sample-grid \{[\s\S]*?\}/)?.[0] ?? "";
+  assert.match(readGroupPage("Style Guide"), /class="tcrn-doc-icon-sample-grid"/);
+  assert.match(readGroupPage("Style Guide"), /class="tcrn-doc-icon-sample"/);
+  const iconSampleGridCss = readGroupPage("Style Guide").match(/\.tcrn-doc-icon-sample-grid \{[\s\S]*?\}/)?.[0] ?? "";
   assert.doesNotMatch(iconSampleGridCss, /--tcrn-space-3/);
-  assert.match(readGroupPage("Style Guide"), /\.tcrn-icon-sample-grid[\s\S]*margin: var\(--tcrn-space-4\) 0 0/);
+  assert.match(readGroupPage("Style Guide"), /\.tcrn-doc-icon-sample-grid[\s\S]*margin: var\(--tcrn-space-4\) 0 0/);
   assert.match(readGroupPage("Style Guide"), /data-icon-name="search"/);
   assert.match(readRenderedGroupPage("Style Guide"), /No red, pink, coral, or orange connector points/);
   assert.match(readRenderedGroupPage("Style Guide"), /Color palette/);
@@ -700,9 +750,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(readGroupPage("Components"), /LogoMark/);
   assert.doesNotMatch(readGroupPage("Components"), /ProductName/);
   assert.doesNotMatch(readGroupPage("Components"), /BrandHeader/);
-  assert.match(readGroupPage("Components"), /data-storybook-only="dense-shell-prototype"/);
   assert.match(readGroupPage("Components"), /data-storybook-only="knowledge-shell-prototype"/);
-  assert.match(readGroupPage("Components"), /data-storybook-only="compact-shell-prototype"/);
   assert.match(readGroupPage("Components"), /data-package-backed-navigation-proof="true"/);
   assert.match(readGroupPage("Components"), /data-package-backed-product-shell-proof="true"/);
   assert.match(readGroupPage("Components"), /data-package-backed-product-shell-boundary="side-nav-shell-v1"/);
@@ -737,20 +785,6 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readRenderedGroupPage("Components"), /Shell selection matrix/);
   assert.match(readRenderedGroupPage("Components"), /Dense operations shell/);
   assert.match(readRenderedGroupPage("Components"), /Knowledge base bookmark shell/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-mega-menu/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-layer/);
-  assert.match(readGroupPage("Components"), /data-shell-layer="mega-menu"/);
-  assert.match(readGroupPage("Components"), /data-dense-menu-density-standard="adaptive"/);
-  assert.match(readGroupPage("Components"), /data-menu-layer="low-secondary"/);
-  assert.match(readGroupPage("Components"), /data-menu-layout="hub"/);
-  assert.match(readGroupPage("Components"), /data-menu-density="hub"/);
-  assert.match(readGroupPage("Components"), /data-density-trigger="3-to-8-secondary-routes"/);
-  assert.match(readGroupPage("Components"), /data-secondary-route-count="6"/);
-  assert.match(readGroupPage("Components"), /data-menu-layer="10-plus-primary"/);
-  assert.match(readGroupPage("Components"), /data-menu-layout="command-center"/);
-  assert.match(readGroupPage("Components"), /data-menu-density="command-center"/);
-  assert.match(readGroupPage("Components"), /data-shell-width="edge-to-edge"/);
-  assert.match(readGroupPage("Components"), /data-shell-topbar="edge-to-edge"/);
   const internalLabSource = readInternalLabSource();
   assert.match(internalLabSource, /title: "Internal\/Overlay family lab"/);
   assert.match(internalLabSource, /data-internal-dev-surface/);
@@ -764,46 +798,20 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(internalLabSource, /from "@tcrn\/ui-react"/);
   assert.doesNotMatch(internalLabSource, /packages\/ui-react\/src/);
   assert.doesNotMatch(internalLabSource, /@tcrn\/ui-react\//);
-  assert.match(readGroupPage("Components"), /data-icon-only-menu="true"/);
-  assert.match(readGroupPage("Components"), /data-primary-nav-capacity="10-plus"/);
-  assert.match(readGroupPage("Components"), /data-primary-nav-count="12"/);
-  assert.match(readGroupPage("Components"), /data-secondary-directory-groups="4"/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-demo__topbar--dense/);
   assert.match(readGroupPage("Components"), /tcrn-shell-brand-lockup/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-hub-menu/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-hub-actions/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-hub-sidecar/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-domain-nav/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-command-board/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-task-lanes/);
-  assert.match(readGroupPage("Components"), /tcrn-shell-quick-rail/);
-  assert.match(readGroupPage("Components"), /tcrn-knowledge-shell-layout/);
+  assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell-layout/);
   assert.match(readGroupPage("Components"), /data-standard-shell="online-docs"/);
-  assert.match(readGroupPage("Components"), /tcrn-knowledge-shell__topbar/);
-  assert.match(readGroupPage("Components"), /tcrn-knowledge-shell__sidebar/);
-  assert.match(readGroupPage("Components"), /tcrn-knowledge-shell__content/);
-  assert.match(readGroupPage("Components"), /tcrn-knowledge-shell__pager/);
+  assert.match(readGroupPage("Components"), /<header aria-label="Knowledge base top bar"[^>]*class="tcrn-top-bar"/);
+  assert.match(readGroupPage("Components"), /<nav id="knowledge-shell-sidebar"[^>]*class="tcrn-side-nav"/);
+  assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell__content/);
+  assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell__pager/);
   assert.match(readRenderedGroupPage("Components"), /Top bar, attached side navigation, content column, and chapter navigation stay one shell/);
-  assert.match(readGroupPage("Components"), /tcrn-bookmark-nav/);
-  assert.match(readGroupPage("Components"), /tcrn-bookmark-nav--tracked/);
-  assert.match(readRenderedGroupPage("Components"), /Search menu/);
-  assert.match(readRenderedGroupPage("Components"), /Open dense navigation menu/);
-  assert.match(readRenderedGroupPage("Components"), /Open compact operations hub/);
+  assert.match(readGroupPage("Components"), /aria-label="Knowledge base bookmarks"/);
+  assert.doesNotMatch(readGroupPage("Components"), /tcrn-bookmark-nav--tracked/);
   assert.match(readRenderedGroupPage("Components"), /Use when the selected primary area has 3-8 secondary routes and no overflow/);
   assert.match(readRenderedGroupPage("Components"), /Do not force sparse secondary routes into the command-center or dense directory layout/);
-  assert.match(readRenderedGroupPage("Components"), /Low secondary density/);
-  assert.match(readRenderedGroupPage("Components"), /Switch density when/);
-  assert.match(readRenderedGroupPage("Components"), /Zoom or available space causes overflow/);
-  assert.match(readRenderedGroupPage("Components"), /Campaigns/);
-  assert.match(readRenderedGroupPage("Components"), /Configuration/);
   assert.match(readRenderedGroupPage("Components"), /Support/);
-  assert.match(readRenderedGroupPage("Components"), /This command-center layer groups 10\+ primary routes by business domain/);
   assert.match(readRenderedGroupPage("Components"), /Operations/);
-  assert.match(readRenderedGroupPage("Components"), /Commercial/);
-  assert.match(readRenderedGroupPage("Components"), /Control tower/);
-  assert.match(readRenderedGroupPage("Components"), /Daily operations/);
-  assert.match(readRenderedGroupPage("Components"), /Review and exceptions/);
-  assert.match(readRenderedGroupPage("Components"), /Quick entries/);
   assert.match(readRenderedGroupPage("Components"), /Search docs/);
   assert.match(readRenderedGroupPage("Components"), /Navigation shell search fixture/);
   assert.match(readRenderedGroupPage("Components"), /Shortcut labels are allowed only for navigation or shell search with a real focus target and visible result list/);
@@ -812,11 +820,16 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readRenderedGroupPage("Components"), /No shortcut label/);
   assert.match(readRenderedGroupPage("Components"), /Navigation or shell search/);
   assert.match(readRenderedGroupPage("Components"), /Shortcut allowed/);
-  assert.match(combinedHtml, /\.tcrn-field:focus-within[\s\S]*background-color/);
-  assert.match(combinedHtml, /\.tcrn-field--error[\s\S]*outline-color: var\(--tcrn-color-state-blocked\)/);
+  // G+ Inputs (TCRN-DS-SUB-020): focus no longer washes the whole field; the control inside
+  // changes its own edge and draws the focus ring from the inputs pair table.
+  assert.doesNotMatch(combinedHtml, /\.tcrn-field:focus-within/);
+  // An error neither washes nor rings the field (TCRN-DS-SUB-060): the message reads
+  // --tcrn-color-bad on the surface the field sits on.
+  assert.doesNotMatch(combinedHtml, /state-blocked-bg\) 62%/);
+  assert.match(combinedHtml, /\.tcrn-field__error \{\s*color: var\(--tcrn-color-bad\);\s*\}/);
   assert.match(combinedHtml, /\.tcrn-field \{[\s\S]*transition:[\s\S]*background-color 150ms ease-out,[\s\S]*outline-color 150ms ease-out/);
   assert.match(combinedHtml, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.tcrn-field[\s\S]*transition: none/);
-  assert.match(combinedHtml, /@media \(forced-colors: active\)[\s\S]*\.tcrn-field:focus-within,[\s\S]*\.tcrn-field--error[\s\S]*outline: 2px solid Highlight/);
+  assert.match(combinedHtml, /@media \(forced-colors: active\)[\s\S]*\.tcrn-field--error[\s\S]*outline: 2px solid Highlight/);
   const fieldAttentionBlocks = Array.from(
     combinedHtml.matchAll(/\.tcrn-field[^{]*\{[^}]*\}/g),
     (match) => match[0]
@@ -871,7 +884,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-icon-name="arrow-right"/);
   assert.match(readGroupPage("Components"), /data-icon-name="chevron-left"/);
   assert.match(readGroupPage("Components"), /data-shortcut-auto="search"/);
-  assert.match(readGroupPage("Components"), /tcrn-input--short/);
+  assert.match(readGroupPage("Components"), /data-field-width="short"/);
   assert.match(readRenderedGroupPage("Components"), /Field width rules/);
   assert.match(readRenderedGroupPage("Components"), /Table shell rules/);
   assert.match(readRenderedGroupPage("Components"), /Accessibility receipt/);
@@ -1071,30 +1084,23 @@ test("style guide color index surfaces every color token and type-scale sizes st
   }
 });
 
-test("canvas color and theme-color first-paint mirror the surface-canvas token", () => {
-  const canvasVar = "--tcrn-color-surface-canvas";
-  const canvasLight = createTokenMap()[canvasVar];
-  const canvasDark = tcrnDarkThemeTokens.find((token) => token.variable === canvasVar)?.value;
-  assert.ok(canvasLight, "light surface-canvas token missing");
-  assert.ok(canvasDark, "dark surface-canvas token missing");
-
-  // Real-Storybook preview background must equal the light canvas token.
+test("canvas color and theme-color first-paint mirror the G+ ground token", () => {
+  // G+ canvas (TCRN-DS-SUB-007): the ground token --tcrn-color-bg, read from the token package
+  // in preview.ts and client-scripts.ts rather than copied as a hex literal.
+  const canvasLight = createResolvedTokenMap("light")["--tcrn-color-bg"];
+  const canvasDark = createResolvedTokenMap("dark")["--tcrn-color-bg"];
+  assert.match(canvasLight, /^#[0-9a-f]{6}$/i);
+  assert.match(canvasDark, /^#[0-9a-f]{6}$/i);
   const preview = readStorybookSource(".storybook/preview.ts");
-  assert.match(preview, new RegExp('"TCRN canvas",\\s*value:\\s*"' + escapeRegExp(canvasLight) + '"'));
-  assert.doesNotMatch(preview, /#f4f7fa/i, "stale preview canvas value #f4f7fa must be gone");
-
-  // Static-docs first-paint theme-color meta must equal the light canvas token.
+  assert.match(preview, /createResolvedTokenMap\("light"\)\["--tcrn-color-bg"\]/);
+  assert.match(preview, /"TCRN canvas",\s*value:\s*tcrnCanvas\b/);
+  assert.doesNotMatch(preview, /#[0-9a-f]{6}\b/i, "preview.ts must not hand-copy a canvas hex");
   const componentsPage = readGroupPage("Components");
-  assert.ok(
-    componentsPage.includes('<meta name="theme-color" content="' + canvasLight + '" data-storybook-theme-color'),
-    "first-paint theme-color meta must equal the light canvas token"
-  );
-  assert.doesNotMatch(componentsPage, /content="#f6f7fb"/i, "stale first-paint theme-color #f6f7fb must be gone");
-
-  // Manual mirror in client-scripts must equal the light/dark canvas tokens.
+  assert.ok(componentsPage.includes('<meta name="theme-color" content="' + canvasLight + '" data-storybook-theme-color'));
+  assert.match(componentsPage, new RegExp('light:\\s*"' + escapeRegExp(canvasLight) + '",\\s*dark:\\s*"' + escapeRegExp(canvasDark) + '"'));
   const clientScripts = readStorybookSource("src/build/client-scripts.ts");
-  assert.match(clientScripts, new RegExp('light:\\s*"' + escapeRegExp(canvasLight) + '"'));
-  assert.match(clientScripts, new RegExp('dark:\\s*"' + escapeRegExp(canvasDark) + '"'));
+  assert.match(clientScripts, /createResolvedTokenMap\(theme\)\["--tcrn-color-bg"\]/);
+  assert.doesNotMatch(clientScripts, /(?:light|dark):\s*"#[0-9a-f]{6}"/i);
 });
 
 test("STORY-283 the design-authority contract reports this build's own version and token bytes", () => {
@@ -1203,10 +1209,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
 	  )),
 	  "Storybook doc shell visual oracle must cite perceptual-signature-backed sidebar evidence"
 	);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 288);
-	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 280);
-	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 360);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 96);
+  // Composition one (O-1): a fixed 220px documentation rail and the 52px shell top bar.
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 220);
+	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 220);
+	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 220);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 52);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx, 260);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 360);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.themeToggleRadiusPx, 999);
@@ -1429,7 +1436,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(aosLogo?.taglineLocaleSelector, "tcrnProductTagline(productId, locale)");
   assert.equal(contract.productLogoRegistry?.find((logo: { productId: string }) => logo.productId === "design-system")?.stackSuffix, true);
   assert.match(contract.brandSurfaceDisposition, /ProductLogo and tcrnProductLogoRegistry are registered @tcrn\/ui-react exports/);
-  assert.match(contract.brandSurfaceDisposition, /TCRN stays regular weight/);
+  assert.match(contract.brandSurfaceDisposition, /TCRN stays in ink at medium weight/);
   assert.match(contract.brandSurfaceDisposition, /long suffixes such as Design System must stack under TCRN/);
   assert.match(contract.brandSurfaceDisposition, /deprecated or unregistered AOS wordmark image assets are forbidden/);
   assert.match(contract.brandSurfaceDisposition, /Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs/);
@@ -1573,7 +1580,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members, composition-three-sample/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, records-and-boards-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
@@ -1698,4 +1705,177 @@ test("TCRN-DS-STORY-056: pages are bounded — index pages hold no bodies, categ
       `reference page ${page.file} must contain exactly its paginated component regions`
     );
   }
+});
+
+// TCRN-DS-STORY-129 GWT1/GWT2 structure: each family matrix renders exactly the contract cells
+// (typography 44, icon 28, brand 10, actions 116, inputs 42) with data-cell, data-kind and
+// data-expect, disabled cells carry data-exempt, the light and night blocks differ only in
+// data-tcrn-theme, and every first-batch component has a labelled section (23 in all).
+test("first-batch family matrices render the contract cells and every component section", () => {
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const machineWords = new Set(
+    Array.from(ledgerSource.slice(ledgerSource.indexOf("matrixMachineWords"), ledgerSource.indexOf("],", ledgerSource.indexOf("matrixMachineWords"))).matchAll(/"((?:[^"\\]|\\.)*)"|'([^']*)'/g), (match) => match[2] ?? match[1])
+  );
+  assert.ok(machineWords.has("hover") && machineWords.has('data-tcrn-theme="dark"'), "ledger registers the matrix machine words");
+  const iconNames = new Set<string>(tcrnIconNames);
+  let componentTotal = 0;
+  for (const board of gplusMatrixBoardsInOrder) {
+    const story = contractStories.find((item) => item.id === gplusMatrixStoryIds[board]);
+    assert.ok(story, `missing matrix story for ${board}`);
+    assert.equal(story.group, "Components");
+    assert.equal(story.categoryId, "gplus-matrices");
+    const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
+    const cells = Array.from(html.matchAll(/<[a-z][^>]*\sdata-cell="([^"]+)"[^>]*>/g));
+    const contractCells = gplusMatrices[board];
+    assert.equal(cells.length, gplusMatrixCellCounts[board], `${board}: cell count equals the board`);
+    assert.deepEqual(cells.map((match) => match[1]).sort(), contractCells.map((cell) => cell.cellId).sort(), `${board}: cells equal the contract`);
+    for (const [tag, cellId] of cells.map((match) => [match[0], match[1]] as const)) {
+      const cell = contractCells.find((item) => item.cellId === cellId);
+      assert.ok(cell);
+      assert.match(tag, new RegExp(`data-kind="${cell.kind}"`), `${cellId}: data-kind`);
+      assert.match(tag, new RegExp(`data-expect="${cell.expect.replace(".", "\\.")}"`), `${cellId}: data-expect`);
+      assert.equal(/\sdata-exempt(=|\s|>)/.test(tag), cell.exempt, `${cellId}: data-exempt only on exempt cells`);
+    }
+    assert.equal(html.match(/data-gplus-matrix-theme="light"/g)?.length, 1, `${board}: one light block`);
+    assert.equal(html.match(/data-gplus-matrix-theme="night"/g)?.length, 1, `${board}: one night block`);
+    assert.match(html, /data-tcrn-theme="light" data-gplus-matrix-theme="light"/);
+    assert.match(html, /data-tcrn-theme="dark" data-gplus-matrix-theme="night"/);
+    for (const component of gplusMatrixComponents[board]) {
+      assert.equal(html.match(new RegExp(`data-gplus-matrix-component="${component}"`, "g"))?.length, 2, `${board}: ${component} has a labelled section in both blocks`);
+      componentTotal += 1;
+    }
+    assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, `${board}: preview states use data-tcrn-preview-state; no internal vocabulary`);
+    for (const match of html.matchAll(/<code>([^<]*)<\/code>/g)) {
+      const word = match[1].replace(/&quot;/g, '"');
+      assert.ok(machineWords.has(word) || iconNames.has(word), `${board}: <code>${word}</code> is a registered machine word or icon name`);
+    }
+  }
+  assert.equal(componentTotal, 23);
+  const iconHtml = renderToStaticMarkup(createElement(Fragment, null, contractStories.find((item) => item.id === "icon-matrix")?.render()));
+  for (const name of tcrnIconNames) {
+    for (const size of [14, 16, 20]) {
+      assert.match(iconHtml, new RegExp(`<svg[^>]*width="${size}"[^>]*data-icon-name="${name}"|<svg[^>]*data-icon-name="${name}"[^>]*width="${size}"`), `icon roster renders ${name} at ${size}px`);
+    }
+  }
+  assert.match(renderToStaticMarkup(createElement(Fragment, null, contractStories.find((item) => item.id === "actions-matrix")?.render())), /data-tcrn-preview-state="hover"/);
+});
+
+test("composition-one sample stories render the package shell in a light block and a night block", () => {
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const listFrom = (key: string) => new Set(
+    Array.from(ledgerSource.slice(ledgerSource.indexOf(key), ledgerSource.indexOf("],", ledgerSource.indexOf(key))).matchAll(/"((?:[^"\\]|\\.)*)"/g), (match) => match[1])
+  );
+  const sampleWords = listFrom("sampleMachineWords:");
+  const properNouns = listFrom("properNouns:");
+  assert.ok(sampleWords.has("PRJ-2026-0412") && properNouns.has("TCRN"), "ledger registers the sample machine words");
+  const decode = (value: string) => value.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').trim();
+  for (const board of gplusSampleBoardsInOrder) {
+    const storyId = gplusSampleStoryIds[board];
+    const story = contractStories.find((item) => item.id === storyId);
+    assert.ok(story, `missing sample story for ${board}`);
+    assert.equal(story.group, "Components");
+    assert.equal(story.categoryId, "gplus-samples");
+    const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
+    assert.match(html, new RegExp(`data-gplus-sample="${board}"`));
+    const blocks = html.split(/(?=<div data-tcrn-theme="(?:light|dark)" data-gplus-sample-theme=)/).slice(1);
+    assert.equal(blocks.length, 2, `${board}: one light block and one night block`);
+    assert.match(blocks[0], /^<div data-tcrn-theme="light" data-gplus-sample-theme="light">/);
+    assert.match(blocks[1], /^<div data-tcrn-theme="dark" data-gplus-sample-theme="night">/);
+    // The night switch is data-tcrn-theme alone: both blocks carry the same classes in the same order,
+    // and no class names a theme.
+    const classes = (block: string) => Array.from(block.matchAll(/\sclass="([^"]*)"/g), (match) => match[1]);
+    assert.deepEqual(classes(blocks[1]), classes(blocks[0]), `${board}: night block classes equal the light block`);
+    assert.doesNotMatch(html, /\sclass="(?:[^"]*\s)?(?:night|dark|gp)(?:\s[^"]*)?"/, `${board}: no theme class`);
+    for (const [index, suffix] of (["l", "n"] as const).entries()) {
+      const block = blocks[index];
+      assert.equal(block.match(/class="tcrn-product-shell"/g)?.length, 1, `${board}: one package ProductShell per block`);
+      assert.match(block, new RegExp(`data-shell="${gplusSampleShellKeys[board]}-${suffix}"`));
+      // The composition rail is the ProductShell default (shell tokens), so no sample sets an inline shell width.
+      const inlineStyles = Array.from(block.matchAll(/\sstyle="([^"]*)"/g), (match) => match[1]);
+      assert.ok(
+        !inlineStyles.some((style) => /--tcrn-(?:product-shell-sidebar-width|shell-sidebar-width|shell-topbar-height)\b/.test(style)),
+        `${board}: the sample block carries no inline shell width override`
+      );
+      const navItems = block.match(/data-navigation-primitive="nav-item"/g)?.length ?? 0;
+      assert.ok(navItems >= 5, `${board}: rail navigation items`);
+      assert.equal(block.match(/data-guide="rail"/g)?.length, navItems + 1, `${board}: brand mark and every rail icon carry data-guide`);
+      assert.equal(block.match(/data-text="rail"/g)?.length, navItems + 1, `${board}: wordmark and every rail label carry data-text`);
+    }
+    // Sample copy: every Latin text node of the rail labels and the page content has five-locale text,
+    // or is a proper noun or a registered sample machine word.
+    // The page content is the last region of each shell, so a block from its main region to its end
+    // holds the page copy and none of the shell's own controls.
+    const main = blocks.map((block) => block.slice(block.indexOf(">", block.indexOf('class="tcrn-product-shell__main"')))).join("");
+    const navLabels = Array.from(html.matchAll(/class="tcrn-nav-item__label"[^>]*>([^<]+)</g), (match) => match[1]);
+    const contentTexts = Array.from(main.replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1]);
+    for (const text of [...navLabels, ...contentTexts].map(decode).filter((value) => /[A-Za-z]/.test(value))) {
+      const residue = text.split(/\s+/).filter((word) => !properNouns.has(word)).join(" ");
+      assert.ok(
+        storybookContentText[text] !== undefined || sampleWords.has(text) || !/[A-Za-z]/.test(residue),
+        `${board}: "${text}" needs five-locale text or a sample machine word`
+      );
+    }
+    assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, `${board}: no internal vocabulary`);
+  }
+});
+
+test("composition-three sample story renders a top bar and centred content with no rail, light and night", () => {
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const listFrom = (key: string) => new Set(
+    Array.from(ledgerSource.slice(ledgerSource.indexOf(key), ledgerSource.indexOf("],", ledgerSource.indexOf(key))).matchAll(/"((?:[^"\\]|\\.)*)"/g), (match) => match[1])
+  );
+  const sampleWords = listFrom("sampleMachineWords:");
+  const properNouns = listFrom("properNouns:");
+  const decode = (value: string) => value.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').trim();
+  const story = contractStories.find((item) => item.id === gplusCompositionThreeStoryId);
+  assert.ok(story, "missing composition-three sample story");
+  assert.equal(story.group, "Components");
+  assert.equal(story.categoryId, "gplus-samples");
+  assert.equal(story.sourcePath, gplusSampleSourcePath);
+  assert.equal(gplusCompositionThreeContentWidth, "1040px");
+  const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
+  assert.match(html, /data-gplus-sample="composition-three"/);
+  const blocks = html.split(/(?=<div class="tcrn-doc-theme-preview" data-tcrn-theme="(?:light|dark)" data-gplus-sample-theme=)/).slice(1);
+  assert.equal(blocks.length, 2, "composition three: one light block and one night block");
+  assert.match(blocks[0], /^<div class="tcrn-doc-theme-preview" data-tcrn-theme="light" data-gplus-sample-theme="light">/);
+  assert.match(blocks[1], /^<div class="tcrn-doc-theme-preview" data-tcrn-theme="dark" data-gplus-sample-theme="night">/);
+  const classes = (block: string) => Array.from(block.matchAll(/\sclass="([^"]*)"/g), (match) => match[1]);
+  assert.deepEqual(classes(blocks[1]), classes(blocks[0]), "composition three: night block classes equal the light block");
+  // No rail and no product shell: one package TopBar with one navigation strip and the shell search,
+  // and no [data-shell] (composition three is not a ProductShell layout).
+  assert.doesNotMatch(html, /tcrn-product-shell"|tcrn-side-nav|data-shell=/, "composition three: no ProductShell, rail or data-shell");
+  for (const block of blocks) {
+    assert.equal(block.match(/class="tcrn-top-bar"/g)?.length, 1, "composition three: one TopBar per block");
+    assert.equal(block.match(/class="tcrn-sub-nav"/g)?.length, 1, "composition three: one top navigation per block");
+    assert.equal(block.match(/class="tcrn-product-shell-search"/g)?.length, 1, "composition three: one shell search per block");
+    assert.match(block, new RegExp(`max-width:${gplusCompositionThreeContentWidth}[^"]*" data-gplus-composition-three-content="true"`), "composition three: content centred at 1040px");
+  }
+  // Sample copy: every Latin text node of the brand, the top navigation and the page content has
+  // five-locale text, or is a proper noun or a registered sample machine word. The shell search keeps
+  // its own built-in strings (the package localizes them), so it is left out, as composition one leaves
+  // out the shell's own controls.
+  const segment = (block: string, start: string, end: string) => {
+    const from = block.indexOf(start);
+    return from < 0 ? "" : block.slice(from, end ? block.indexOf(end, from) + end.length : undefined);
+  };
+  const copy = blocks.map((block) => [
+    segment(block, '<div class="tcrn-top-bar__brand"', '<div class="tcrn-top-bar__module"'),
+    segment(block, '<nav class="tcrn-sub-nav"', "</nav>"),
+    segment(block, '<div class="tcrn-top-bar__actions"', "</header>"),
+    block.slice(block.indexOf(">", block.indexOf('data-gplus-composition-three-content="true"')))
+  ].join("")).join("");
+  const texts = Array.from(copy.replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1]);
+  assert.ok(texts.some((text) => decode(text) === "Quarterly review"), "composition three: the page copy is read");
+  for (const text of texts.map(decode).filter((value) => /[A-Za-z]/.test(value))) {
+    const residue = text.split(/\s+/).filter((word) => !properNouns.has(word)).join(" ");
+    assert.ok(
+      storybookContentText[text] !== undefined || sampleWords.has(text) || !/[A-Za-z]/.test(residue),
+      `composition three: "${text}" needs five-locale text or a sample machine word`
+    );
+  }
+  // The navigation landmark names: one per block, the night one carrying the block name.
+  const navLabels = Array.from(html.matchAll(/<nav class="tcrn-sub-nav" aria-label="([^"]+)"/g), (match) => decode(match[1]));
+  assert.deepEqual(navLabels, ["Composition three sample: projects", "Composition three sample: projects (night)"]);
+  for (const label of navLabels) assert.ok(storybookContentText[label] !== undefined, `composition three: landmark "${label}" needs five-locale text`);
+  assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, "composition three: no internal vocabulary");
 });

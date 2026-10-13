@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "tcrn.ds.contract-exemptions.v1",
+  "description": "契约静态门的豁免登记。每条只豁免一个家族（family）、一组具体类（classes）或一组精确选择器（selectors），列明条款编号（clauses，不收通配），并带裁定引用（ruling）与原因（reason）。第一批家族及其类不能登记；格式不合规的条目使门判红；某次运行中没有命中的条目在报告 scope.unusedExemptions 里列出。条目对包 CSS 静态检查与 story 渲染层检查（TCRN-DS-SUB-037）同样生效：story 层的发现按渲染元素的包类（tcrn-*，不含 tcrn-doc-*）归家族，没有 CSS 选择器，所以 selectors 条目不匹配 story 层发现。",
+  "entries": [
+    {
+      "id": "EX-INIT015-settings",
+      "family": "settings",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Settings 属 V2-Families 板第五批（设置与字段、看板与流程、检视与文档），焕新前的旧写法留到该批次授权时整改",
+      "until": "Settings 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-navigation",
+      "family": "navigation",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Navigation 属 V2-Families 板第二批（导航、壳层、布局），焕新前的旧写法留到该批次授权时整改",
+      "until": "Navigation 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-shell",
+      "family": "shell",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Shell 属 V2-Families 板第二批（导航、壳层、布局），焕新前的旧写法留到该批次授权时整改",
+      "until": "Shell 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-layout",
+      "family": "layout",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Layout 属 V2-Families 板第二批（导航、壳层、布局），焕新前的旧写法留到该批次授权时整改",
+      "until": "Layout 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-feedback",
+      "family": "feedback",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Feedback 属 V2-Families 板第三批（反馈、印章、浮层），焕新前的旧写法留到该批次授权时整改",
+      "until": "Feedback 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-identity",
+      "family": "identity",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Identity moments 属 V2-Families 板第三批（反馈、印章、浮层），焕新前的旧写法留到该批次授权时整改",
+      "until": "Identity moments 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-overlay",
+      "family": "overlay",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Overlay 属 V2-Families 板第三批（反馈、印章、浮层），焕新前的旧写法留到该批次授权时整改",
+      "until": "Overlay 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-display",
+      "family": "display",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Display 属 V2-Families 板第四批（展示件、数据与记录），焕新前的旧写法留到该批次授权时整改",
+      "until": "Display 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-records",
+      "family": "records",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Records 属 V2-Families 板第四批（展示件、数据与记录），焕新前的旧写法留到该批次授权时整改",
+      "until": "Records 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-boards",
+      "family": "boards",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Boards and flows 属 V2-Families 板第五批（设置与字段、看板与流程、检视与文档），焕新前的旧写法留到该批次授权时整改",
+      "until": "Boards and flows 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-inspection",
+      "family": "inspection",
+      "clauses": [
+        "C2",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C11",
+        "C13"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
+      "reason": "Inspection and documents 属 V2-Families 板第五批（设置与字段、看板与流程、检视与文档），焕新前的旧写法留到该批次授权时整改",
+      "until": "Inspection and documents 家族所在批次获得授权并开工时删除本条"
+    },
+    {
+      "id": "EX-INIT015-lock-hint-emoji",
+      "classes": [
+        "tcrn-lock-hint__icon"
+      ],
+      "clauses": [
+        "C11"
+      ],
+      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 点名 LockHint 默认的 🔒 属后续家族，TCRN-DS-SUB-037 判据定为按条目登记豁免、不改该组件",
+      "reason": "LockHint（Settings 家族，V2-Families 板第五批）默认用表情字符 🔒 作锁定图标，story 层 C11.story-emoji 在组件清单页的展示件 story 里读到；改用 Icon 家族的锁形图标属该批次授权后的整改",
+      "until": "Settings 家族所在批次获得授权并开工、LockHint 改用 Icon 家族图标时删除本条"
+    }
+  ]
+}
