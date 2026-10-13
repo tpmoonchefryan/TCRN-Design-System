@@ -1,0 +1,62 @@
+[
+  {
+    "subject": "DS 静态文档页的 .story-body 比对副本会盖掉新的包样式段",
+    "summary": "page-template 把 tcrnComponentCss 截到 settings 段前、加 .story-body 前缀重放；之后新增的包样式段不在副本里，同特异性下被副本盖掉，文档页上的读数不等于包件读数。",
+    "snippet": "量文档页上的包件前，先停用 data-tcrn-component-style-scope=\".story-body\" 那张表再量一次；停用后合板，就是副本问题，不改包件。",
+    "body": "INIT-016 R1 三片验收对同一现象给了三种归因：菜单行 12 对板 12.5、组标题 11/600 对 10/500、下拉搜索包裹 260 对 28。判断用只读探查运行时停用副本，读数全部合板，三条合成一条返工（改 page-template 的副本，不改包件 CSS）。凡是给包加新的样式段，副本都要跟着纳入，或者只复制不会被新段覆盖的规则；shell:parity 以这份副本为比对输入，副本错了，判定人也会报假差。",
+    "tags": ["tcrn-design-system", "storybook", "css-cascade", "measurement", "init-016"],
+    "evidence": [
+      "apps/storybook/src/build/page-template.tsx",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r1/acceptance/A.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r1/judgment.md"
+    ]
+  },
+  {
+    "subject": "门里有「旧字符串必须存在」的断言，删陈旧文字会把绿门打红",
+    "summary": "package-contract-manifest 的 docShellMarkersVisible 要求 apps/storybook/src 里仍出现 tcrn-doc-header 等四个旧文档壳标记；换壳后这些字只剩在过期的 AI 契约文字与旧测试里，一改文案，internal-alpha:contracts 就会翻红。",
+    "snippet": "删旧标记或陈旧文案之前，先在 scripts/ 里 grep 对这个字符串的存在性断言；先改门，再删字。",
+    "body": "R1 批末 30.01 是绿的，但绿只因为 ai-consumption-contract.ts 与 smoke.test.ts 还留着旧文档壳的字（package-contract-manifest.mjs 239–243 行，并在 355 行进 ok）。返工清单里正好有两条要删这些字（C1-8、C1-11），所以必须让改门那条（R2-25）先合入。这与「删受名册管辖的东西要查数量断言」同族：门对源码文本做存在性检查时，清理过期内容会表现成新红。",
+    "tags": ["tcrn-design-system", "gates", "stale-text", "ordering", "init-016"],
+    "evidence": [
+      "scripts/package-contract-manifest.mjs",
+      "apps/storybook/src/build/ai-consumption-contract.ts",
+      "apps/storybook/src/smoke.test.ts"
+    ]
+  },
+  {
+    "subject": "browser-proof 回执超过 1,000,000 字节时 scan 会跳过它并判红",
+    "summary": "no-private-input-scan 对大于 1,000,000 字节的文件记 larger_than_scan_limit，并判 ok:false。R1 的 browser-proof-summary.json 从 466,652 涨到 1,080,003 字节，主因是逐页 readback（sidebarNoIconLabelReadbacks 从 34 KB 涨到 360 KB）。",
+    "snippet": "逐页 readback 只留失败项与计数，给回执加体积自检；不要抬扫描上限。",
+    "body": "R1 批末 30.03 scan 红，主线程起初记为「browser-proof 超时的副作用」。实际上那次 browser-proof 是跑完的，回执本身就超限。换壳后读法改成逐页读整份文档菜单，每页约 4.9 KB，乘以 111 页。即使把其它失败项都修掉，回执仍约 1,026,000 字节，所以不压回执，scan 会一直红。凡是新增逐页读数的门，都要估算 111 页乘以视口之后的回执体积。",
+    "tags": ["tcrn-design-system", "internal-alpha", "receipt-size", "scan", "init-016"],
+    "evidence": [
+      "scripts/no-private-input-scan.mjs",
+      "scripts/internal-alpha-browser-proof.mjs",
+      "docs/verification/internal-alpha/browser-proof-summary.json"
+    ]
+  },
+  {
+    "subject": "带 until 条件的契约豁免不会自己到期",
+    "summary": "exemptions.json 里的 EX-INIT015-navigation、-shell、-layout 写着「该家族所在批次获得授权并开工时删除本条」。INIT-016 就是这一批，但开工后没人删，于是导航与壳层的新代码是在豁免下写成的，contract:static 看不到 C7 等违例。",
+    "snippet": "拆分时 grep docs/contract/exemptions.json 与门脚本例外表的 until；本批满足条件的豁免，作为第一张 Subtask 删除。",
+    "body": "R1 拆分与 18 个包都没有处理这三条到期的豁免；P1b 问题 8 已经写出「shell 与 navigation 家族在 contract:static 豁免里，门不报」，但没人接着做。到判断时，删除豁免成了一条主力返工，暴露的违例数量也无从估计。shell-fidelity 的例外表里同样有带条件的 until（search-static、skip-link），要逐条核对条件是否已满足。",
+    "tags": ["tcrn-design-system", "contract", "exemptions", "decomposition", "init-016"],
+    "evidence": [
+      "docs/contract/exemptions.json",
+      "scripts/shell-fidelity-proof.mjs",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r1/problems/P1b.md"
+    ]
+  },
+  {
+    "subject": "DS 的 pnpm test 在第一个红的包就停",
+    "summary": "verify 05 的 pnpm test 按包顺序跑。R1 里 ui-tokens 有一条测试红，之后 ui-react、storybook 与两个 pilot 的测试都没执行，三片验收因此都拿不到批末单测读数。",
+    "snippet": "批末 test 红时先看是哪个包停的；「只红一条」不等于后面的包都绿。改了跨包共享的文件（如设计数据脚本），要先单跑首包的测试。",
+    "body": "红的那条是 ui-tokens 的同源测试：它按行首字面去读 build-shell2.mjs，而 SUB-133 把 screen() 抽到了 tools/shell-screen.mjs。这一条红把后面所有包的测试都挡住了，ShellBrandButton 的既有红与 storybook smoke.test.ts 的旧断言，只能靠包交回里的自报读数。R2 先修这一条，再整跑一次，后续包新出的红记入问题清单。",
+    "tags": ["tcrn-design-system", "pnpm", "verify", "test-order", "init-016"],
+    "evidence": [
+      "docs/dispatch/2026-10-13-tab-shell/runs/r1/verify/steps.md",
+      "packages/ui-tokens/src/index.test.ts",
+      "docs/design/gplus-2026-10/tools/shell-screen.mjs"
+    ]
+  }
+]

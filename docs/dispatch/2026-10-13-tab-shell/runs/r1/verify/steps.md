@@ -53,6 +53,6 @@
 
 主线程核对过的三处（只记事实，不判归属）：
 
-- 30.03 `scan` 的红是 30.02 的副作用：browser-proof 超时中断时写出的 `docs/verification/internal-alpha/browser-proof-summary.json` 为 1,080,003 字节，超过扫描上限被跳过，扫描因此 `ok: false`；还原后的树上单跑 `no-private-input-scan.mjs` 为 `ok: true`、`hits` 为空、779 个文件。
+- 30.03 `scan` 的红是 30.02 的副作用：browser-proof 写出的 `docs/verification/internal-alpha/browser-proof-summary.json` 为 1,080,003 字节，超过扫描上限 1,000,000 字节被跳过（R1 判断 §0 第 3 条更正：该次 browser-proof 跑完了，不是超时中断），扫描因此 `ok: false`；还原后的树上单跑 `no-private-input-scan.mjs` 为 `ok: true`、`hits` 为空、779 个文件。
 - 05 `test` 在第一个包就停：`@tcrn/ui-tokens` 的「shell tokens share their source with the 07b board CSS (build-shell2.mjs .scr.ts defaults)」断言 build-shell2.mjs 里有 `.scr.ts` 默认值，读到 undefined（P11 把 `screen()` 抽到 `docs/design/gplus-2026-10/tools/shell-screen.mjs` 之后）；ui-react、storybook 等后续包的测试在这一步没有执行。
 - 06.08 `fonts-proof` 覆盖段红：Noto Sans SC 与 Noto Serif SC 各有 1 个产品码点在已发子集之外（U+94DB「铛」），日志建议重跑 `node scripts/fonts-vendor.mjs`。
