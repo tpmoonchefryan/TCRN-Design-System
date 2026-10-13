@@ -88,6 +88,7 @@ export const componentLibraryPublicComponentNames = [
   "ShellBrandButton",
   "ShellPins",
   "ShellMenu",
+  "ShellDropdown",
   "ShellThemeToggle",
   "ShellLocaleMenu",
   "SideNavCollapseButton",

@@ -637,3 +637,62 @@ export const shellCss03 = `
     transition: none;
   }
 }`;
+
+// The drop-down of a pinned group or submenu and its cascades (TCRN-DS-SUB-118; 07a board,
+// section A, the drop-down state; 07b board, section D "固定二级菜单下拉", "三、四级级联"). Its root
+// also carries tcrn-shell-menu, so the rows, the search, the results and the cascade columns are
+// the full menu's rules; this segment only re-places and re-sizes it. It is fixed to the pinned
+// item: ShellDropdown writes the item's start edge and bottom as left and top, and the hand-off gap
+// is the token, as a top margin. The first column is the drop-down width; cascades follow at the
+// cascade gap, as wide, stretched to its height. The panel is paper with the s3 shadow, radius 12,
+// inset space-1h; the search is the drop-down search height with a space-2 inset and the small
+// icon, space-1 above the rows; the rows have no icon column, so their text starts at space-1h +
+// space-2h (16).
+export const shellCss04 = `
+.tcrn-shell-menu.tcrn-shell-dropdown {
+  position: fixed;
+  grid-template-columns: var(--tcrn-shell-drop-w);
+  inline-size: var(--tcrn-shell-drop-w);
+  margin-top: var(--tcrn-shell-menu-gap);
+}
+.tcrn-shell-dropdown__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  max-block-size: calc(100vh - var(--tcrn-shell-strip-h));
+  margin: 0;
+  padding: var(--tcrn-space-1h);
+  overflow: hidden;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-shadow-s3);
+  color: var(--tcrn-color-ink-2);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+.tcrn-shell-dropdown .tcrn-shell-dropdown__search {
+  margin: 0 0 var(--tcrn-space-1);
+}
+.tcrn-shell-dropdown__search .tcrn-search-input {
+  --tcrn-search-input-block-size: var(--tcrn-shell-drop-srch-h);
+  --tcrn-search-input-padding-inline: var(--tcrn-space-2);
+  --tcrn-search-input-icon-size: var(--tcrn-icon-size-sm);
+}
+.tcrn-shell-dropdown__list {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.tcrn-shell-dropdown .tcrn-product-shell-search__result {
+  padding-inline-start: var(--tcrn-space-2h);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-dropdown__panel {
+    animation: none;
+  }
+}`;

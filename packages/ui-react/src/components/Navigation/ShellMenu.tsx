@@ -117,8 +117,8 @@ export function shellMenuSearch(groups: readonly ShellMenuGroup[], query: string
 /** The provider a menu uses when the product passes none: the part of the model being searched. */
 const searchTheModel: ShellMenuSearchProvider = (query, groups) => shellMenuSearch(groups, query);
 
-/** The trigger that names `controlsId` in its aria-controls. */
-function controllerOf(doc: Document, controlsId: string | undefined): HTMLElement | null {
+/** The trigger of a layer: the element that names `controlsId` in its aria-controls. */
+export function shellLayerTriggerOf(doc: Document, controlsId: string | undefined): HTMLElement | null {
   if (!controlsId) return null;
   for (const element of doc.querySelectorAll<HTMLElement>("[aria-controls]")) {
     if ((element.getAttribute("aria-controls") ?? "").split(/\s+/).includes(controlsId)) return element;
@@ -156,7 +156,7 @@ export function useShellTransientLayer({ open, layerRef, triggerRef, controlsId,
     const layer = layerRef.current;
     if (!open || !layer) return undefined;
     const doc = layer.ownerDocument;
-    const trigger = () => triggerRef?.current ?? controllerOf(doc, controlsId);
+    const trigger = () => triggerRef?.current ?? shellLayerTriggerOf(doc, controlsId);
     const close = (reason: ShellLayerCloseReason, restoreFocus: boolean) => {
       if (restoreFocus) trigger()?.focus();
       onCloseRef.current(reason);
