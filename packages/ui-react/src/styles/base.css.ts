@@ -538,8 +538,9 @@ export const baseCss10 = `
  *
  * A link cannot hold a button, so a pinnable item is a row of two siblings, the link and its
  * pin. The row paints the item's fill and ink through its own pair and the link inside it
- * paints none, so pointing at the pin keeps the whole row lit; selected wins over hover, as
- * on the board.
+ * paints none, so pointing at the pin keeps the whole row lit. The pair is the menu row of the
+ * board in the G+ names: ink-2 at rest, ink on the 3.5% hover wash, ink on the 6% wash when
+ * selected; selected wins over hover, as on the board.
  *
  * The pin is ink-3 at rest and on hover (where it gains the 6% wash), acc when pinned; the
  * pinned glyph fills the pin body, the first child of the icon (icons.json, pin variant
@@ -548,11 +549,11 @@ export const baseCss10 = `
  */
 .tcrn-nav-item-row {
   --tcrn-pair-row-fill-d: transparent;
-  --tcrn-pair-row-ink-d: var(--tcrn-color-text-secondary);
-  --tcrn-pair-row-fill-h: var(--tcrn-color-surface-muted);
-  --tcrn-pair-row-ink-h: var(--tcrn-color-text-primary);
-  --tcrn-pair-row-fill-s: var(--tcrn-selection-fill);
-  --tcrn-pair-row-ink-s: var(--tcrn-color-text-primary);
+  --tcrn-pair-row-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-row-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-row-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-row-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-row-ink-s: var(--tcrn-color-ink);
   --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-d);
   --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-d);
   display: grid;
