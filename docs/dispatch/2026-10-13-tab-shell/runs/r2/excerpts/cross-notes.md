@@ -18,6 +18,7 @@
 | 包 | 交回物与行段 | 要点 |
 | --- | --- | --- |
 | K2 | `runs/r2/handoff/K2.md` 第 94–110 行（第 5、6 节） | `.story-body` 比对副本末尾已带壳层段（SUB-170 只改段首定位）；换字跳过与台账都认三个字标类，`[data-locale-invariant]` 只给台账用；内层 Esc 经 `defaultPrevented` 告知外层（SUB-151 保留）；文档层示例类改名 `tcrn-doc-demo-frame`、`tcrn-doc-demo-pager`；不要再加「Change Log」内容键。既有红：`smoke.test.ts:826/831/832` 断言旧类（归 SUB-173）、tokens:proof 的「铛」（归 SUB-177） |
+| K3 | `runs/r2/handoff/K3.md` 第 47–54 行（第 4 节） | smoke 与 browser-proof 改读顶带钩子（`[data-shell-strip]`、`[data-shell-brand]`、`[data-cluster]`、`[data-shell-avatar]`、`[data-paper]`）与新回执字段（`menuRowLabel*`、`currentMenuRowPages`）；parity 去掉 10 个样板角色；契约清单改查顶带文档壳与现 README 的 prop——SUB-176、SUB-173 删旧文档壳标记词不会再打红 30.01；browser-proof 回执 507,403 字节并自检不超 1,000,000。既有红：shell:parity 两个包侧角色（归 R2-18）、smoke 与 browser-proof 余项（归 R2-8/16/17/20/21/24/34/36）；两个「search results」视觉实例渲染为壳收起态（问题 4，下一轮）；smoke 对 AI 契约的断言仍描述旧壳，SUB-176 重写契约后会红（问题 7） |
 
 ## 4. 其他事实
 
