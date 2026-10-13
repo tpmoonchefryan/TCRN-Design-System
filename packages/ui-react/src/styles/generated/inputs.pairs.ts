@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: pairs.json, tokens.json
-// contract-sha256: edb0250b1601e8ad979e1fcec794666a5ee99a8ad83dee51d3b5628523b0168a
+// contract-sha256: 05f1cd82725bf242420e2c87ebf29910f1866ba100c84582ce0d2879c853ab1d
 
 /** Inputs 文本类状态对段（d/h/f/x/r/rf/e/ef；search 部分覆盖） */
 export const inputsTextPairsCss = `

@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: tokens.json, marks.json, typography.json
-// contract-sha256: b34b446212fa93398b1d6750d88da6bfbc026119d0c657493b4a71ac8c7ff1d0
+// contract-sha256: 4b9d65aadb6de65d10da4faf70d1a6458664c242f05568064b17313ddc989b5a
 
 
 export interface TcrnGplusThemedToken {
@@ -472,6 +472,30 @@ export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = [
     "value": "900ms"
   },
   {
+    "key": "intro-fade",
+    "cssVar": "--tcrn-motion-intro-fade",
+    "group": "motion",
+    "value": "120ms"
+  },
+  {
+    "key": "intro-move",
+    "cssVar": "--tcrn-motion-intro-move",
+    "group": "motion",
+    "value": "240ms"
+  },
+  {
+    "key": "intro-rise",
+    "cssVar": "--tcrn-motion-intro-rise",
+    "group": "motion",
+    "value": "100ms"
+  },
+  {
+    "key": "intro-max",
+    "cssVar": "--tcrn-motion-intro-max",
+    "group": "motion",
+    "value": "700ms"
+  },
+  {
     "key": "rail-w",
     "cssVar": "--tcrn-shell-sidebar-width",
     "group": "shell",
@@ -487,7 +511,103 @@ export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = [
     "key": "topbar-h",
     "cssVar": "--tcrn-shell-topbar-height",
     "group": "shell",
+    "value": "var(--tcrn-shell-strip-h)"
+  },
+  {
+    "key": "shell-strip-h",
+    "cssVar": "--tcrn-shell-strip-h",
+    "group": "shell",
     "value": "52px"
+  },
+  {
+    "key": "shell-brand-h",
+    "cssVar": "--tcrn-shell-brand-h",
+    "group": "shell",
+    "value": "40px"
+  },
+  {
+    "key": "shell-brand-w",
+    "cssVar": "--tcrn-shell-brand-w",
+    "group": "shell",
+    "value": "134px"
+  },
+  {
+    "key": "shell-toggle",
+    "cssVar": "--tcrn-shell-toggle",
+    "group": "shell",
+    "value": "20px"
+  },
+  {
+    "key": "shell-pin-h",
+    "cssVar": "--tcrn-shell-pin-h",
+    "group": "shell",
+    "value": "32px"
+  },
+  {
+    "key": "shell-pin-gap",
+    "cssVar": "--tcrn-shell-pin-gap",
+    "group": "shell",
+    "value": "8px"
+  },
+  {
+    "key": "shell-pins-max",
+    "cssVar": "--tcrn-shell-pins-max",
+    "group": "shell",
+    "value": "6"
+  },
+  {
+    "key": "shell-menu-gap",
+    "cssVar": "--tcrn-shell-menu-gap",
+    "group": "shell",
+    "value": "6px"
+  },
+  {
+    "key": "shell-panel-w-expanded",
+    "cssVar": "--tcrn-shell-panel-w-expanded",
+    "group": "shell",
+    "value": "952px"
+  },
+  {
+    "key": "shell-pbar-h",
+    "cssVar": "--tcrn-shell-pbar-h",
+    "group": "shell",
+    "value": "44px"
+  },
+  {
+    "key": "shell-drop-w",
+    "cssVar": "--tcrn-shell-drop-w",
+    "group": "shell",
+    "value": "240px"
+  },
+  {
+    "key": "shell-drop-srch-h",
+    "cssVar": "--tcrn-shell-drop-srch-h",
+    "group": "shell",
+    "value": "28px"
+  },
+  {
+    "key": "shell-cascade-gap",
+    "cssVar": "--tcrn-shell-cascade-gap",
+    "group": "shell",
+    "value": "4px"
+  },
+  {
+    "key": "shell-row-h",
+    "cssVar": "--tcrn-shell-row-h",
+    "group": "shell",
+    "value": "32px"
+  },
+  {
+    "key": "shell-srch-h",
+    "cssVar": "--tcrn-shell-srch-h",
+    "group": "shell",
+    "value": "40px"
+  },
+  {
+    "key": "shell-pinb",
+    "cssVar": "--tcrn-shell-pinb",
+    "group": "shell",
+    "value": "24px"
   }
 ];
 

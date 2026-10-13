@@ -103,8 +103,9 @@ const contractGroups: Readonly<Record<string, TokenGroup>> = {
   "icon-size": "icon",
   motion: "motion",
   brand: "brand",
-  // ProductShell geometry (sidebar widths, shell top bar height): layout sizes, like the other
-  // container tokens (TCRN-DS-SUB-090, O-1).
+  // Shell geometry: the top-band shell's sizes (07b board, section F, TCRN-DS-SUB-113) and the
+  // retired composition-one sidebar and top bar sizes; layout sizes, like the other container
+  // tokens (TCRN-DS-SUB-090, O-1).
   shell: "container"
 };
 
@@ -135,6 +136,14 @@ function tokenName(variable: string): string {
     if (match) return name(match);
   }
   return variable.replace(/^--tcrn-/, "").replace(/-/g, ".");
+}
+
+// The top-band shell's tokens keep the dotted names of the 07b board's section F
+// (shell.strip-h, shell.panel-w-expanded, …): the contract key is "shell-" followed by the part
+// after "shell.", so the name is read from the key, one to one with the board (TCRN-DS-SUB-113).
+// Every other contract token is named from its variable.
+function contractTokenName(key: string, cssVar: string): string {
+  return key.startsWith("shell-") ? `shell.${key.slice("shell-".length)}` : tokenName(cssVar);
 }
 
 // Descriptions are prose only; the values stay in the generated contract file.
@@ -188,7 +197,7 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "r-panel": "Panel and popover corner radius; radius.surface carries the same value.",
   "r-check": "Checkbox corner radius.",
   "r-stamp": "Stamp and badge corner radius.",
-  "r-paper": "Paper corner radius: the ProductShell content sheet (composition one).",
+  "r-paper": "Paper corner radius: the ProductShell content sheet under the top band.",
   "h-sm": "Small control height.",
   "h-md": "Default control height.",
   "h-lg": "Large control height.",
@@ -206,9 +215,40 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "t-press": "Press feedback duration.",
   "t-move": "Movement duration (menus, panels, indicators).",
   "t-loop": "Looping indicator period.",
-  "rail-w": "ProductShell sidebar width, expanded (composition one); the shell's --tcrn-product-shell-sidebar-width defaults to it.",
-  "rail-w-collapsed": "ProductShell sidebar width, collapsed; holds the 38px collapse control.",
-  "topbar-h": "ProductShell top bar height (the shell's own bar; the standalone TopBar keeps its own height)."
+  "intro-fade": "Sign-in intro, first phase: the sign-in card fades; the same duration as the fill change.",
+  "intro-move": "Sign-in intro, second phase: the mark travels to its place in the top band; the same duration as movement.",
+  "intro-rise": "Sign-in intro, third phase: the paper rises while the wordmark, the pinned items and the cluster fade in.",
+  "intro-max": "Ceiling for the whole sign-in intro; the three phases together stay below it.",
+  "rail-w": "Composition one's ProductShell sidebar width, expanded; the top-band shell has no resident sidebar.",
+  "rail-w-collapsed": "Composition one's ProductShell sidebar width, collapsed; the top-band shell has no resident sidebar or collapse control.",
+  "topbar-h": "Composition one's ProductShell top bar height; the top band took its place.",
+  "shell-strip-h": "Top band height: the shell's only bar. The brand button, the pinned items and the cluster share its midline.",
+  "shell-brand-h": "Brand button height; inside the top band it sits half the difference to the band height from the top.",
+  "shell-brand-w": "Brand button width in its second version (the sidebar-scale first lockup line plus the toggle); the first version, the mark alone, sizes to its content.",
+  "shell-toggle": "Toggle cell of the brand button, holding the chevron.",
+  "shell-pin-h": "Height of a pinned item in the top band.",
+  "shell-pin-gap": "Gap from the brand button to the first pinned item and between pinned items: one value, no divider.",
+  "shell-pins-max": "Most pinned items the top band shows (a count, no unit); the rest are marked pinned in the full menu.",
+  "shell-menu-gap": "Gap from the bottom edge of a key to the full menu or drop-down it opens.",
+  "shell-panel-w-expanded": "Full menu width.",
+  "shell-pbar-h": "Full menu bottom bar height, holding the sidebar-scale lockup; the panel's bottom padding completes the band.",
+  "shell-drop-w": "Drop-down and cascade column width.",
+  "shell-drop-srch-h": "Search height inside a drop-down (the small SearchInput).",
+  "shell-cascade-gap": "Gap between cascade columns.",
+  "shell-row-h": "Menu row height; a coarse pointer gets the touch height instead (no separate token).",
+  "shell-srch-h": "Full menu search height; a coarse pointer gets the touch height instead (no separate token).",
+  "shell-pinb": "Pin slot and pin button size."
+};
+
+// Contract tokens the 07b board retires (section F, TCRN-DS-SUB-113). The top-band shell has no
+// resident sidebar and no top bar of its own: the two sidebar widths keep their values with no
+// successor, and the top bar height becomes an alias of the band height (its contract value is
+// var(--shell-strip-h), published as var(--tcrn-shell-strip-h)). They are registered like the
+// pre-G+ names further down: an alias with its replacement, the rest with a null replacement.
+const retiredContractTokens: Readonly<Record<string, DeprecatedTokenInfo>> = {
+  "rail-w": { replacement: null, note: "The top-band shell has no resident sidebar (07b board, section F); the definition stays so consumers still resolve." },
+  "rail-w-collapsed": { replacement: null, note: "The top-band shell has no resident sidebar or collapse control (07b board, section F); the definition stays so consumers still resolve." },
+  "topbar-h": { replacement: "--tcrn-shell-strip-h", note: "Use --tcrn-shell-strip-h." }
 };
 
 function describe(key: string, group: string, night = false): string {
@@ -260,15 +300,25 @@ const gplusThemedEntries: TokenEntry[] = tcrnGplusThemedTokens.map((token) => ({
 // the dark block, so both blocks keep the same property names (C5). The rest stay theme
 // independent (TCRN-DS-SUB-088, O-3).
 const gplusContractFixedTokens: readonly TcrnGplusBrandToken[] = [...tcrnGplusFixedTokens, ...tcrnGplusBrandTokens];
+for (const key of Object.keys(retiredContractTokens)) {
+  if (!tcrnGplusFixedTokens.some((token) => token.key === key)) throw new Error(`@tcrn/ui-tokens: the retired contract token "${key}" is not in the contract`);
+}
+
 const gplusFixedEntries: TokenEntry[] = gplusContractFixedTokens.map((token): TokenEntry => {
   const dark = token.dark;
+  const description = describe(token.key, token.group, dark !== undefined);
+  const retired = retiredContractTokens[token.key];
+  if (retired?.replacement && token.value !== `var(${retired.replacement})`) {
+    throw new Error(`@tcrn/ui-tokens: the retired contract token "${token.key}" is an alias of ${retired.replacement}, but its contract value is ${token.value}`);
+  }
   return {
     token: {
-      name: tokenName(token.cssVar),
+      name: contractTokenName(token.key, token.cssVar),
       variable: asVariable(token.cssVar),
       value: token.value,
       group: contractGroup(token.group),
-      description: describe(token.key, token.group, dark !== undefined)
+      description: retired ? (retired.replacement ? `Deprecated alias of ${retired.replacement}. ${description}` : `Deprecated. ${description}`) : description,
+      ...(retired ? { deprecated: retired } : {})
     },
     ...(dark === undefined ? {} : { dark })
   };

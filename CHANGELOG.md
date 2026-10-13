@@ -2,6 +2,20 @@
 
 ## 4.0.0
 
+### Three shell tokens retired by the top band (TCRN-DS-INIT-016)
+
+Status: candidate on the INIT-016 integration branch, not tagged, published or deployed.
+
+The top-band shell has no resident sidebar and no top bar of its own (07b board, section
+F), so composition one's three ProductShell sizes are retired through the existing
+deprecation registry; each still resolves, and `findDeprecatedTokenUsages` reports it:
+
+- `--tcrn-shell-topbar-height` is a deprecated alias of `--tcrn-shell-strip-h`, the top
+  band height (both 52px), and is listed in `tcrnDeprecatedTokenAliases`.
+- `--tcrn-shell-sidebar-width` (220px) and `--tcrn-shell-sidebar-width-collapsed` (52px)
+  are deprecated with no successor: the definitions keep their values so consumers still
+  resolve, and `tcrnDeprecatedTokens` lists them with a null replacement.
+
 ### The G+ renewal: chassis, bundled fonts, five families, four product marks (TCRN-DS-INIT-015)
 
 Status: candidate on the INIT-015 integration branch. It is not tagged, not
