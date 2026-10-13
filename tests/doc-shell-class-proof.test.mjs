@@ -97,6 +97,27 @@ test("package-written classes come from class contexts of the compiled component
   assert.deepEqual(vocabulary.prefixes, ["tcrn-badge--"]);
 });
 
+test("a package literal handed to a class-named parameter of another package module is package-written (TCRN-DS-SUB-132)", () => {
+  const files = [
+    { path: "dist/Menu.js", text: 'export function cascades(items, context, className) { return items.map((item) => jsx("div", { className, children: item })); }\nexport const caption = (items, label) => label;' },
+    { path: "dist/Dropdown.js", text: 'import { cascades, caption } from "./Menu.js";\nexport const Dropdown = (p) => [cascades(p.items, p.context, "tcrn-menu__cascade tcrn-dropdown__col"), caption(p.items, "tcrn-not-a-class")];' }
+  ];
+  const vocabulary = packageEmittedVocabulary(files);
+  assert.ok(vocabulary.literals.has("tcrn-dropdown__col"));
+  assert.ok(vocabulary.literals.has("tcrn-menu__cascade"));
+  assert.equal(vocabulary.literals.has("tcrn-not-a-class"), false);
+  const result = computeOutOfPackage({
+    packageClasses: new Set(["tcrn-menu__cascade"]),
+    packageEmitted: vocabulary,
+    output: new Map([["tcrn-dropdown__col", { kinds: new Set(["markup"]), pages: new Set(["a.html"]) }]]),
+    sources: new Map()
+  });
+  assert.deepEqual(result.outOfPackage, []);
+  assert.deepEqual(result.packageEmittedWithoutRule, [{ className: "tcrn-dropdown__col", via: "literal" }]);
+  // The documentation sources keep the plain reading: the same call in a doc file is not a class context.
+  assert.deepEqual(tokens(codeClassOccurrences('cascades(items, context, "tcrn-dropdown__col");', "doc.tsx").filter((entry) => entry.kind === "class-context")), []);
+});
+
 test("the difference subtracts package CSS, exempts tcrn-doc-*, and still counts a doc literal that only matches a package template", () => {
   const entry = () => ({ kinds: new Set(["markup"]), pages: new Set(["index.html"]), locations: new Set(["x.tsx:1"]) });
   const output = new Map([["tcrn-button", entry()], ["tcrn-doc-frame", entry()], ["tcrn-badge--neutral", entry()], ["tcrn-shell-demo", entry()]]);

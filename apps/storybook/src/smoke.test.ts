@@ -325,30 +325,47 @@ function assertNoLocalAbsolutePathText(label: string, value: string): void {
   assert.doesNotMatch(value, localAbsolutePathPattern, `${label} must not retain local absolute paths`);
 }
 
+// The documentation shell is the package's top-band ProductShell (TCRN-DS-SUB-131): the sections and
+// their category pages are rows of the full menu (hidden until the brand button opens it), and a page's
+// stories are the links of its contents rail (TocRail) in the paper (TCRN-DS-SUB-132).
 function readDocShellNavHtml(html: string): string {
-  const start = html.indexOf('class="tcrn-doc-nav"');
-  const asideStart = html.lastIndexOf("<aside", start);
-  const end = html.indexOf("</nav>", start);
-  assert.ok(start > -1, "missing doc shell nav start");
-  assert.ok(asideStart > -1, "missing doc shell nav aside start");
-  assert.ok(end > start, "missing doc shell nav end");
-  return html.slice(asideStart, end + "</nav>".length);
+  const start = html.indexOf('<div class="tcrn-shell-menu" data-shell-menu="" hidden="">');
+  const end = html.indexOf('data-shell-pbar=""', start);
+  assert.ok(start > -1, "missing doc shell menu start");
+  assert.ok(end > start, "missing doc shell menu bottom bar");
+  return html.slice(start, end);
+}
+
+function readDocShellRowHrefs(html: string, current = false): string[] {
+  const rows = Array.from(readDocShellNavHtml(html).matchAll(/<a [^>]*data-shell-row=""[^>]*>/g), (match) => match[0]);
+  return [...new Set(rows.filter((row) => !current || /aria-current="page"/.test(row)).map((row) => row.match(/href="([^"]+)"/)?.[1] ?? ""))];
 }
 
 function readDocShellCategoryIds(html: string): string[] {
-  return Array.from(readDocShellNavHtml(html).matchAll(/data-doc-nav-category="([^"]+)"/g), (match) => match[1]);
+  const sectionFiles = new Set(contractStoryGroups.map((group) => groupFileName(group)));
+  return readDocShellRowHrefs(html).filter((href) => href.endsWith(".html") && !sectionFiles.has(href));
+}
+
+function readDocShellSectionIds(html: string): string[] {
+  const sectionFiles = new Set(contractStoryGroups.map((group) => groupFileName(group)));
+  return readDocShellRowHrefs(html).filter((href) => sectionFiles.has(href));
 }
 
 function readDocShellNavItemIds(html: string): string[] {
-  return Array.from(readDocShellNavHtml(html).matchAll(/data-doc-nav-item="([^"]+)"/g), (match) => match[1]);
+  const ids: string[] = [];
+  for (const match of html.matchAll(/<div class="tcrn-doc-page__toc" data-doc-toc="">([\s\S]*?)<\/aside>/g)) {
+    for (const link of match[1].matchAll(/<a href="#([^"]+)"/g)) ids.push(link[1]);
+  }
+  return ids;
 }
 
 function readDocShellActiveStoryIds(html: string): string[] {
-  return Array.from(readDocShellNavHtml(html).matchAll(/data-doc-nav-item="([^"]+)"[^>]*data-doc-nav-item-active="true"/g), (match) => match[1]);
+  return Array.from(html.matchAll(/<a href="#([^"]+)" aria-current="location" data-selected="true"/g), (match) => match[1]);
 }
 
 function readDocShellActiveSectionCount(html: string): number {
-  return readDocShellNavHtml(html).match(/data-story-nav="[^"]+"[^>]*aria-current="page"/g)?.length ?? 0;
+  // A pinned section repeats its row in the Pinned group; the current page is one href.
+  return readDocShellRowHrefs(html, true).length;
 }
 
 function readStoryHtml(html: string, storyId: string): string {
@@ -492,13 +509,16 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, />story\.[^<]+</);
   assert.doesNotMatch(combinedHtml, /data-storybook-contract-truth="not-authoritative"/);
   assert.match(combinedHtml, /data-doc-shell="online-docs"/);
-  assert.match(combinedHtml, /class="[^"]*tcrn-doc-global-bar/);
-  assert.match(combinedHtml, /class="[^"]*tcrn-doc-header(?:\b|__|-search)/);
-  assert.match(combinedHtml, /class="[^"]*tcrn-doc-nav(?:\b|__)/);
-  assert.match(combinedHtml, /class="[^"]*tcrn-doc-sidebar/);
-  assert.match(combinedHtml, /data-doc-nav-item="/);
-  assert.match(combinedHtml, /data-doc-nav-category-toggle="/);
-  assert.match(combinedHtml, /data-doc-nav-item-active="true"/);
+  // The documentation pages render in the package's top-band ProductShell (TCRN-DS-SUB-131): the band,
+  // the full menu with its groups and rows (the current section is the row with aria-current="page"),
+  // and the contents in the paper's TocRail (TCRN-DS-SUB-132).
+  assert.match(combinedHtml, /data-shell="doc" data-doc-shell="online-docs"/);
+  assert.match(combinedHtml, /<header class="tcrn-shell-strip"[^>]*data-shell-strip=""/);
+  assert.match(combinedHtml, /<div class="tcrn-shell-menu" data-shell-menu="" hidden="">/);
+  assert.match(combinedHtml, /data-shell-row=""/);
+  assert.match(combinedHtml, /data-shell-group=""/);
+  assert.match(combinedHtml, /data-shell-row=""[^>]*aria-current="page"/);
+  assert.match(combinedHtml, /<div class="tcrn-doc-page__toc" data-doc-toc="">/);
   assert.doesNotMatch(combinedHtml, /data-storybook-shell-authority="@tcrn\/ui-react\/ProductShell"/);
   assert.doesNotMatch(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
   assert.doesNotMatch(combinedHtml, /Atlassian|Jira|jira-like|issue-style|WorkIssueRow|IssueRow|Kanban|Scrum/i);
@@ -518,22 +538,26 @@ test("static contract story surface is retained and synthetic", () => {
   }
   // ProductShell renders in two designated homes: Components (navigation-shell-spec comparator +
   // component examples) and Proof (the AOS visual-instance oracles, moved there by TCRN-DS-STORY-057).
+  // The page chrome is itself the one ProductShell on every page (TCRN-DS-SUB-131), so outside those two
+  // homes each ProductShell marker occurs once, on the documentation shell, and never on a story.
+  const occurrences = (html: string, pattern: RegExp) => html.match(new RegExp(pattern.source, "g"))?.length ?? 0;
   for (const { group, html } of pages.filter((page) => page.group !== "Components" && page.group !== "Proof")) {
-    assert.doesNotMatch(html, /data-package-backed-product-shell-boundary="top-band-shell-v2"/, `unexpected ProductShell boundary outside component examples: ${group}`);
+    const shellPages = html.match(/data-shell="doc"/g)?.length ?? 0;
+    assert.equal(occurrences(html, /data-package-backed-product-shell-boundary="top-band-shell-v2"/), shellPages, `unexpected ProductShell boundary outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-product-shell-region="side-navigation"/, `unexpected ProductShell side nav outside component examples: ${group}`);
     assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__sidebar/, `unexpected ProductShell sidebar outside component examples: ${group}`);
-    assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__main/, `unexpected ProductShell main outside component examples: ${group}`);
+    assert.equal(occurrences(html, /class="[^"]*tcrn-product-shell__main/), shellPages, `unexpected ProductShell main outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-product-shell-route="/, `unexpected ProductShell route outside component examples: ${group}`);
-    assert.doesNotMatch(html, /data-shell-control="product-shell-search"/, `unexpected ProductShell search outside component examples: ${group}`);
-    assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell-search__results/, `unexpected ProductShell search results outside component examples: ${group}`);
+    assert.equal(occurrences(html, /data-shell-control="product-shell-search"/), shellPages, `unexpected ProductShell search outside component examples: ${group}`);
+    assert.equal(occurrences(html, /class="[^"]*tcrn-product-shell-search__results/), shellPages, `unexpected ProductShell search results outside component examples: ${group}`);
   }
   assert.match(combinedHtml, /data-shell-control="theme-toggle"/);
   assert.match(combinedHtml, /data-shell-control="locale-menu"/);
-  assert.match(combinedHtml, /data-shell-control="side-nav-collapse"/);
-  assert.match(combinedHtml, /--tcrn-doc-shell/);
-  assert.match(combinedHtml, /--tcrn-doc-header/);
-  assert.match(combinedHtml, /data-i18n-aria-label="shell\.topNavLabel"/);
-  assert.match(combinedHtml, /data-doc-on-this-page="true"/);
+  // No side rail and no collapse control in the shell (MIN-20261013-SHELL D1); the old doc-shell variables are gone.
+  assert.doesNotMatch(combinedHtml, /--tcrn-doc-shell-|--tcrn-doc-header-/);
+  assert.match(combinedHtml, /--tcrn-shell-strip-h/);
+  assert.match(combinedHtml, /data-i18n-aria-label="shell\.languageLabel"/);
+  assert.match(combinedHtml, /data-doc-toc=""/);
   assert.match(combinedHtml, /data-mandatory-boundary-block="visible"/);
   assert.match(combinedHtml, /data-no-overclaim-boundary="visible"/);
   assert.match(combinedHtml, /data-governance-boundary-strip="visible"/);
@@ -541,16 +565,15 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-contract-surface="tcrn-design-system-storybook"/);
   assert.match(combinedHtml, /data-anchor-scroll-controlled="true"/);
   // The fixed top bar over the content column is the shell top bar (composition one, O-1).
-  assert.match(combinedHtml, /--tcrn-anchor-scroll-offset: var\(--tcrn-shell-topbar-height\)/);
+  assert.match(combinedHtml, /--tcrn-anchor-scroll-offset: var\(--tcrn-space-3h\)/);
   assert.match(combinedHtml, /tcrnStorybookScrollToHash/);
   assert.match(combinedHtml, /tcrnStorybookScrollSpy/);
-  assert.match(combinedHtml, /keepActiveLinkVisible/);
+  assert.match(combinedHtml, /tcrnStorybookScrollSpy/);
   assert.match(combinedHtml, /addEventListener\("scroll", scheduleScrollSpy/);
   assert.match(combinedHtml, /data-i18n-locale-select/);
   assert.match(combinedHtml, /<link rel="icon" href="tcrn-brand-mark\.svg" type="image\/svg\+xml" \/>/);
   assert.match(combinedHtml, /data-tcrn-doc-shell-component-style="package-backed"/);
   assert.match(combinedHtml, /class="[^"]*tcrn-search-input__control/);
-  assert.match(combinedHtml, /--tcrn-doc-motion-spring: 0\.5s cubic-bezier\(0\.175, 0\.885, 0\.32, 1\.275\)/);
   assert.match(combinedHtml, /--tcrn-doc-motion-smooth: 0\.4s ease/);
   assert.match(combinedHtml, /--tcrn-doc-theme-crossfade-duration: 0\.4s/);
   assert.match(combinedHtml, /::view-transition-old\(root\)/);
@@ -560,7 +583,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /role="combobox"/);
   assert.match(combinedHtml, /aria-keyshortcuts="Control\+K Meta\+K"/);
   assert.match(combinedHtml, /data-doc-search-results/);
-  assert.match(combinedHtml, /class="tcrn-doc-search-results"/);
+  assert.match(combinedHtml, /<input data-doc-search-input=""/);
   assert.match(combinedHtml, /role="listbox"/);
   assert.match(combinedHtml, /data-doc-search-result/);
   assert.match(combinedHtml, /data-storybook-theme="light"/);
@@ -604,14 +627,10 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /input\.focus\(\{ preventScroll: true \}\)/);
   assert.match(combinedHtml, /input\.addEventListener\("pointerdown"/);
   assert.match(combinedHtml, /shell\.searchNoResults/);
-  assert.match(combinedHtml, /data-package-backed-shell-control="side-nav-collapse"/);
-  assert.match(combinedHtml, /data-side-nav-action="toggle"/);
   assert.match(combinedHtml, /data-side-nav-icon="collapse"[\s\S]*data-icon-name="chevron-left"/);
   assert.match(combinedHtml, /data-side-nav-icon="expand"[\s\S]*data-icon-name="chevron-right"/);
   assert.match(combinedHtml, /data-doc-shell-icon="previous-chapter"/);
   assert.match(combinedHtml, /data-doc-shell-icon="next-chapter"/);
-  assert.match(combinedHtml, /data-sidebar-motion/);
-  assert.match(combinedHtml, /setCollapsed\(readStoredState\(\), false, false\)/);
   assert.doesNotMatch(combinedHtml, /font-size var\(--tcrn-motion-emphasis\)/);
   assert.doesNotMatch(combinedHtml, /max-width var\(--tcrn-motion-emphasis\)/);
   assert.match(combinedHtml, /data-side-nav-icon="collapse"[\s\S]*data-icon-name="chevron-left"/);
@@ -619,7 +638,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /data-icon-name="chevron-right"/);
   assert.doesNotMatch(combinedHtml, /viewBox="0 0 20 20" focusable="false" aria-hidden="true"/);
   assert.doesNotMatch(combinedHtml, /tcrn-knowledge-shell__collapse-button span::before/);
-  assert.match(combinedHtml, /<main class="tcrn-doc-content" id="content">/);
+  assert.match(combinedHtml, /<main id="content" class="tcrn-product-shell__main" data-product-shell-region="content"/);
   assert.match(combinedHtml, /tcrn-doc-page-head/);
   assert.doesNotMatch(combinedHtml, /<main class="tcrn-doc-shell"/);
   assert.match(combinedHtml, /data-storybook-locale="en"/);
@@ -666,9 +685,8 @@ test("static contract story surface is retained and synthetic", () => {
   for (const story of contractStories) {
     const owningPage = readGroupPage(story.group);
     assert.match(owningPage, new RegExp(`data-story-id="${story.id}"`));
-    for (const page of pages) {
-      assert.match(page.html, new RegExp(`data-doc-nav-item="${story.id}"`));
-    }
+    // Each story is listed in its own page's contents rail (TocRail in the paper), not in a global side rail.
+    assert.match(owningPage, new RegExp(`data-doc-toc=""[\\s\\S]*?<a href="#${story.id}"`));
     for (const group of contractStoryGroups.filter((item) => item !== story.group)) {
       assert.doesNotMatch(readGroupPage(group), new RegExp(`data-story-id="${story.id}"`));
     }
@@ -679,10 +697,10 @@ test("static contract story surface is retained and synthetic", () => {
     assert.match(html, new RegExp(`data-active-story-section="${escapeRegExp(group)}"`));
     assert.match(html, new RegExp(`data-story-section="${escapeRegExp(group)}"`));
     assert.ok(defaultStory);
-    assert.match(html, new RegExp(`data-doc-nav-item="${escapeRegExp(defaultStory.id)}"[^>]*aria-current="location"`));
+    assert.ok(readDocShellActiveStoryIds(html).includes(defaultStory.id), `${group}: the first story is the contents rail's current location`);
     assert.equal(readDocShellCategoryIds(html).length, expectedStoryCategoryCount);
-    assert.equal(readDocShellNavHtml(html).match(/data-doc-nav-group="/g)?.length, expectedStorybookShellNavGroupCount);
-    assert.equal(readDocShellNavItemIds(html).length, contractStories.length);
+    assert.equal(readDocShellSectionIds(html).length, expectedStorybookShellNavGroupCount);
+    assert.deepEqual([...new Set(readDocShellNavItemIds(html))].sort(), contractStories.filter((story) => story.group === group).map((story) => story.id).sort());
     // TCRN-DS-STORY-056: readGroupPage concatenates a group's index + category pages, so per-page
     // chrome (chapter pager, active-section marker, one active story) multiplies. Assert those
     // invariants on each INDIVIDUAL emitted page instead: every page has exactly one chapter pager
@@ -763,8 +781,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"/);
   assert.match(readGroupPage("Components"), /data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"/);
   assert.match(readGroupPage("Components"), /data-product-shell-semantic-api="menu-pins-theme-locale"/);
-  assert.match(readGroupPage("Components"), /data-side-nav-semantic-api="onCollapsedChange"/);
-  assert.match(readGroupPage("Components"), /data-side-nav-action="toggle"/);
+  // SideNav and its collapse toggle are retired (TCRN-DS-SUB-125); no story renders them.
+  assert.doesNotMatch(readGroupPage("Components"), /data-side-nav-semantic-api="onCollapsedChange"/);
+  assert.doesNotMatch(readGroupPage("Components"), /data-side-nav-action="toggle"/);
   assert.match(readGroupPage("Components"), /data-shell-control="product-shell-search"/);
   assert.match(readGroupPage("Components"), /data-search-dismissal-contract="blur-outside-pointer-tab-escape"/);
   assert.match(readGroupPage("Components"), /data-search-semantic-api="onQueryChange-onExpandedChange-onDismiss-onResultActivate"/);
@@ -775,7 +794,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks/);
   assert.match(readGroupPage("Components"), /useProductShellController prop bundles instead of wrapper event delegation/);
   assert.match(readGroupPage("Components"), /tcrn-side-nav/);
-  assert.match(readGroupPage("Components"), /data-navigation-primitive="side-nav"/);
+  assert.doesNotMatch(readGroupPage("Components"), /data-navigation-primitive="side-nav"/);
   assert.match(readGroupPage("Components"), /data-navigation-primitive="nav-group"/);
   assert.match(readGroupPage("Components"), /data-navigation-primitive="nav-item"/);
   assert.match(readGroupPage("Components"), /tcrn-segmented-nav/);
@@ -805,13 +824,14 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(internalLabSource, /@tcrn\/ui-react\//);
   assert.match(readGroupPage("Components"), /tcrn-shell-brand-lockup/);
   assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell-layout/);
-  assert.match(readGroupPage("Components"), /data-standard-shell="online-docs"/);
-  assert.match(readGroupPage("Components"), /<header aria-label="Knowledge base top bar"[^>]*class="tcrn-top-bar"/);
-  assert.match(readGroupPage("Components"), /<nav id="knowledge-shell-sidebar"[^>]*class="tcrn-side-nav"/);
+  // The knowledge-base sample is a top-band ProductShell now (TCRN-DS-SUB-124, SUB-125): no TopBar, no SideNav.
+  assert.match(readGroupPage("Components"), /data-shell-pattern="knowledge-bookmarks" data-storybook-only="knowledge-shell-prototype"[^>]*><div data-shell="" class="tcrn-product-shell"[^>]*data-package-backed-product-shell-boundary="top-band-shell-v2"/);
+  assert.doesNotMatch(readGroupPage("Components"), /<header aria-label="Knowledge base top bar"[^>]*class="tcrn-top-bar"/);
+  assert.doesNotMatch(readGroupPage("Components"), /<nav id="knowledge-shell-sidebar"[^>]*class="tcrn-side-nav"/);
   assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell__content/);
   assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell__pager/);
-  assert.match(readRenderedGroupPage("Components"), /Top bar, attached side navigation, content column, and chapter navigation stay one shell/);
-  assert.match(readGroupPage("Components"), /aria-label="Knowledge base bookmarks"/);
+  assert.doesNotMatch(readRenderedGroupPage("Components"), /Top bar, attached side navigation, content column, and chapter navigation stay one shell/);
+  assert.match(readGroupPage("Components"), /aria-label="Knowledge base shell chapter navigation"/);
   assert.doesNotMatch(readGroupPage("Components"), /tcrn-bookmark-nav--tracked/);
   assert.match(readRenderedGroupPage("Components"), /Use when the selected primary area has 3-8 secondary routes and no overflow/);
   assert.match(readRenderedGroupPage("Components"), /Do not force sparse secondary routes into the command-center or dense directory layout/);

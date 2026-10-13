@@ -537,6 +537,9 @@ export const storybookDocShellVisualOracle = {
   oracleRecoveryReceipt:
     "internal DS doc-shell restoration plan (owner-held governance record)",
   baselineManifestClassification: "owner_declared_original_storybook_doc_shell_standard",
+  // metricSourceDisposition and metricRevisionDisposition render on the docs in five locales, so their wording stays
+  // the translated one until it is rewritten for the top-band shell together with its translations; the numbers
+  // below (shellMetrics, metricEvidence) are the top-band readings (TCRN-DS-SUB-132).
   metricSourceDisposition:
     "desktop sidebar, header, search rest, and search expanded metrics are retained only after the owner-approved restoration re-expresses the pre-d1d1291 Storybook documentation shell through current Storybook-owned doc-shell selectors and committed proof receipts.",
   sourceHead: "generated_by_internal_alpha_visual_signature_baseline",
@@ -552,27 +555,31 @@ export const storybookDocShellVisualOracle = {
     "@tcrn/ui-react/ShellBrandLockup",
     "@tcrn/ui-react/SearchInput",
     "@tcrn/ui-react/ShellThemeToggle",
-    "@tcrn/ui-react/ShellLocaleMenu",
-    "@tcrn/ui-react/SideNavCollapseButton"
+    "@tcrn/ui-react/ShellLocaleMenu"
   ],
+  // The documentation pages render inside the package ProductShell (TCRN-DS-SUB-131), so its boundary marker and
+  // main region are the page chrome: each occurs once per page, on the documentation shell itself, and never on a
+  // story (docShellOwnProductShellSelectors). The selectors below stay forbidden outside story bodies.
   globalProductShellSelectorsForbidden: [
     "data-storybook-shell-authority",
     "data-storybook-product-shell-skin",
-    "data-package-backed-product-shell-boundary",
     "data-product-shell-region='side-navigation'",
-    "tcrn-product-shell__sidebar",
+    "tcrn-product-shell__sidebar"
+  ],
+  docShellOwnProductShellSelectors: [
+    "data-package-backed-product-shell-boundary",
     "tcrn-product-shell__main"
   ],
   metricEvidence: [
     {
       metric: "desktopSidebarWidthPx",
-      value: 220,
+      value: 0,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
       signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
       signatureKey: "welcome-governance@desktop-1440x900",
       comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
-      extraction: "Sidebar geometry (composition one: a fixed 220px rail from --tcrn-shell-sidebar-width, 52px collapsed from --tcrn-shell-sidebar-width-collapsed, so 220px at the 1440px proof viewport) is asserted by the internal-alpha browser-proof sidebar-width metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
+      extraction: "No resident side rail (top-band shell, 07a D1: resident rails and collapse buttons number 0): the documentation shell's own side-navigation region is absent and reads as width 0 in the internal-alpha browser-proof sidebar-width metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "desktopTopbarHeightPx",
@@ -582,55 +589,57 @@ export const storybookDocShellVisualOracle = {
       signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
       signatureKey: "welcome-governance@desktop-1440x900",
       comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
-      extraction: "Header/control band height=52px (the shell top bar over the content column, --tcrn-shell-topbar-height; composition one) is asserted by the internal-alpha browser-proof topbar-height metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
+      extraction: "Band height=52px (the documentation shell's own [data-shell-strip], --tcrn-shell-strip-h, holding the 134 x 40 brand button at 12 / 6) is asserted by the internal-alpha browser-proof topbar-height metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "searchRestWidthPx",
-      value: 260,
+      value: 936,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
       signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
       signatureKey: "welcome-governance@desktop-1440x900",
       comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
-      extraction: "Compact search shell width=260px (localized placeholder and shortcut fit without clipping) is asserted by the internal-alpha browser-proof search-rest metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
+      extraction: "Full-menu search width=936px at rest (the 952px panel less its inline padding; localized placeholder and shortcut fit without clipping) is asserted by the internal-alpha browser-proof search-rest metric readback with the full menu open; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
       metric: "searchExpandedWidthPx",
-      value: 360,
+      value: 936,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
       signatureBaseline: "docs/verification/internal-alpha/visual-signature-baseline.json",
       signatureKey: "welcome-governance@desktop-1440x900",
       comparisonPolicy: "perceptual_signature_meanAbsolute<=2_maxCell<=8",
-      extraction: "Focused search state width=360px with one root SearchInput border and no nested input border is asserted by the internal-alpha browser-proof search-focused metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
+      extraction: "Focused full-menu search width=936px (focus does not widen it) with one root SearchInput border and no nested input border is asserted by the internal-alpha browser-proof search-focused metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     }
   ],
   shellMetrics: {
-    // Composition one (O-1): the documentation rail is the shell rail, 220px at every desktop
-    // width (min and max are both 220, so the viewport ratio no longer moves it), and the top bar
-    // over the content column is the 52px shell top bar.
-    desktopSidebarWidthPx: 220,
-    desktopSidebarMinWidthPx: 220,
-    desktopSidebarPreferredViewportRatio: 0.2,
-    desktopSidebarMaxWidthPx: 220,
+    // Top-band shell (TCRN-DS-INIT-016, 07a A segment), read back on the built documentation pages at 1440 x 900
+    // (TCRN-DS-SUB-132): no resident side rail at any desktop width (min and max 0, so the viewport ratio does not
+    // move it); the 52px band (--tcrn-shell-strip-h) with the 134 x 40 brand button (--tcrn-shell-brand-w,
+    // --tcrn-shell-brand-h); the avatar cluster 12px from the right edge (the band's inline padding).
+    desktopSidebarWidthPx: 0,
+    desktopSidebarMinWidthPx: 0,
+    desktopSidebarPreferredViewportRatio: 0,
+    desktopSidebarMaxWidthPx: 0,
     desktopSidebarTolerancePx: 2,
     desktopTopbarHeightPx: 52,
     desktopTopbarTolerancePx: 2,
-    searchRestWidthPx: 260,
-    searchExpandedWidthPx: 360,
-    // The header search is the package SearchInput in its G+ tool form (TCRN-DS-SUB-064):
-    // control height --tcrn-control-height-md (32px), wash fill, no border (border-style
-    // none; the edge is the inputs pair box-shadow, transparent at rest, so the resting
-    // edge colour reads back as rgba(0, 0, 0, 0)), radius --tcrn-radius-control (8px).
-    // Values read back in the built doc shell, light and dark; tolerances unchanged.
-    searchHeightPx: 32,
+    brandTabWidthPx: 134,
+    brandTabHeightPx: 40,
+    // The search is the package SearchInput in its G+ tool form inside the full menu: 936px wide in the 952px
+    // panel, 40px high (--tcrn-shell-srch-h), wash fill, no border (the resting edge colour reads back as
+    // rgba(0, 0, 0, 0)), radius --tcrn-radius-control (8px). The theme toggle (36, pill) and the language trigger
+    // (36 high) sit in the avatar menu. Values read back in the built doc shell, light and dark.
+    searchRestWidthPx: 936,
+    searchExpandedWidthPx: 936,
+    searchHeightPx: 40,
     searchBorderColor: "rgba(0, 0, 0, 0)",
     searchBorderRadiusPx: 8,
     themeToggleSizePx: 36,
     themeToggleRadiusPx: 999,
     localeTriggerHeightPx: 36,
-    trailingUtilityGapMinPx: 16,
-    trailingUtilityGapMaxPx: 32
+    trailingUtilityGapMinPx: 12,
+    trailingUtilityGapMaxPx: 12
   },
   requiredProofRoutes: [
     "index.html?theme=light&locale=zh-CN#welcome-governance",
