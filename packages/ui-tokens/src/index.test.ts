@@ -411,6 +411,28 @@ test("rail-w, rail-w-collapsed and topbar-h are retired: two without a successor
   ]);
 });
 
+test("the paper's content width for document and settings pages is one theme-independent layout token, 1040", () => {
+  // MIN-20261013-SHELL D1: document and settings pages centre their content at 1040 in the paper;
+  // section F has no such value, so it is the one layout token besides the shell's (TCRN-DS-SUB-130).
+  const contract = tcrnGplusFixedTokens.filter((token) => token.group === "layout");
+  assert.deepEqual(
+    contract.map((token) => [token.key, token.cssVar, token.value]),
+    [["layout-content-max-w", "--tcrn-layout-content-max-w", "1040px"]]
+  );
+  const token = tcrnTokens.find((candidate) => candidate.variable === "--tcrn-layout-content-max-w");
+  assert.equal(token?.name, "layout.content-max-w");
+  assert.equal(token?.group, "container");
+  assert.equal(token?.scope, "fixed");
+  assert.equal(token?.deprecated, undefined);
+  assert.match(token?.description ?? "", /document and settings pages/);
+  const blocks = parseTokenCssBlocks(tcrnTokenStylesheet);
+  assert.equal(new Map(blocks[1].declarations).get("--tcrn-layout-content-max-w"), "1040px", "in the theme-independent block");
+  const themeNames = new Set([...blocks[0].declarations, ...blocks[2].declarations].map(([property]) => property));
+  assert.equal(themeNames.has("--tcrn-layout-content-max-w"), false, "in no theme block");
+  assert.equal(resolvedLight["--tcrn-layout-content-max-w"], "1040px");
+  assert.equal(resolvedDark["--tcrn-layout-content-max-w"], "1040px");
+});
+
 test("the type scale comes from the generated contract file; no scale value is written by hand", () => {
   // contract/typography.json "tokens" names every step with its variable; the generator writes
   // them into gplus-tokens.generated.ts and checks them against the scale entries that use them.

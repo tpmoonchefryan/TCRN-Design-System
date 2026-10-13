@@ -106,7 +106,9 @@ const contractGroups: Readonly<Record<string, TokenGroup>> = {
   // Shell geometry: the top-band shell's sizes (07b board, section F, TCRN-DS-SUB-113) and the
   // retired composition-one sidebar and top bar sizes; layout sizes, like the other container
   // tokens (TCRN-DS-SUB-090, O-1).
-  shell: "container"
+  shell: "container",
+  // Page layout in the paper: the content width of document and settings pages (TCRN-DS-SUB-130).
+  layout: "container"
 };
 
 function contractGroup(group: string): TokenGroup {
@@ -143,7 +145,11 @@ function tokenName(variable: string): string {
 // after "shell.", so the name is read from the key, one to one with the board (TCRN-DS-SUB-113).
 // Every other contract token is named from its variable.
 function contractTokenName(key: string, cssVar: string): string {
-  return key.startsWith("shell-") ? `shell.${key.slice("shell-".length)}` : tokenName(cssVar);
+  if (key.startsWith("shell-")) return `shell.${key.slice("shell-".length)}`;
+  // The paper's layout tokens are named the same way: layout-content-max-w is layout.content-max-w
+  // (TCRN-DS-SUB-130).
+  if (key.startsWith("layout-")) return `layout.${key.slice("layout-".length)}`;
+  return tokenName(cssVar);
 }
 
 // Descriptions are prose only; the values stay in the generated contract file.
@@ -237,7 +243,8 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "shell-cascade-gap": "Gap between cascade columns.",
   "shell-row-h": "Menu row height; a coarse pointer gets the touch height instead (no separate token).",
   "shell-srch-h": "Full menu search height; a coarse pointer gets the touch height instead (no separate token).",
-  "shell-pinb": "Pin slot and pin button size."
+  "shell-pinb": "Pin slot and pin button size.",
+  "layout-content-max-w": "Content width of document and settings pages, centred in the paper; list and detail pages use the whole paper."
 };
 
 // Contract tokens the 07b board retires (section F, TCRN-DS-SUB-113). The top-band shell has no

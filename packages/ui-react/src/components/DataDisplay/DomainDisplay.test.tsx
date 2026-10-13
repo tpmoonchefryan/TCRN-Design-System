@@ -1,14 +1,19 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
+import { createTokenMap } from "@tcrn/ui-tokens";
+import { ProductShell } from "../Navigation/Navigation.js";
+import { tcrnComponentCss } from "../../styles/index.js";
 import {
   AttachmentList,
   MetadataRail,
+  DetailLayout,
   PageHeader,
   RecordInspector,
   RecordRow,
   RecordTable,
   RelationGraph,
+  SplitView,
   StagePipeline
 } from "./DomainDisplay.js";
 
@@ -114,4 +119,44 @@ test("PageHeader keeps its trail on one line: every crumb carries its label as a
   assert.match(linked, /aria-label="パンくずリスト"/);
   // Without a trail there is no navigation landmark.
   assert.doesNotMatch(renderToStaticMarkup(<PageHeader title="Settings" />), /<nav/);
+});
+
+test("STORY-146 GWT4 SplitView and DetailLayout start at the paper's content edge, with no room kept for a side rail", () => {
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={[]}
+      locales={[{ locale: "en", nativeName: "English" }]}
+      currentLocale="en"
+    >
+      <SplitView list={<p>List</p>} detail={<p>Detail</p>} />
+    </ProductShell>
+  );
+  // The split view is a row of the paper's content, right after the page header: nothing wraps it.
+  assert.match(html, /<\/header><div class="tcrn-split-view-frame">/);
+  assert.equal(html.includes("tcrn-product-shell__sidebar"), false);
+  // Neither layout writes a margin of its own, so its left edge is the content edge.
+  const bodies = (selector: string) => {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return Array.from(tcrnComponentCss.matchAll(new RegExp(`(?:^|\\n|,\\n)${escaped}(?:,\\n[^{]*)? ?\\{([^}]*)\\}`, "g")), (match) => match[1]);
+  };
+  for (const selector of [".tcrn-split-view-frame", ".tcrn-split-view", ".tcrn-detail-layout"]) {
+    const found = bodies(selector);
+    assert.ok(found.length > 0, `${selector} has rules`);
+    for (const body of found) assert.doesNotMatch(body, /(?:^|[;\s])margin(?:-[a-z-]+)?:/, `${selector} keeps no margin`);
+  }
+  // The content edge: the paper sits space-3 from the shell and its content twice space-3h inside it.
+  assert.match(tcrnComponentCss, /\.tcrn-product-shell__paper \{[^}]*margin: 0 var\(--tcrn-space-3\) var\(--tcrn-space-3\);/);
+  assert.match(tcrnComponentCss, /\n\.tcrn-product-shell__main \{[^}]*padding: var\(--tcrn-space-3h\) calc\(2 \* var\(--tcrn-space-3h\)\) var\(--tcrn-space-3\);/);
+  const tokens = createTokenMap();
+  const edge = Number.parseFloat(tokens["--tcrn-space-3"] ?? "") + 2 * Number.parseFloat(tokens["--tcrn-space-3h"] ?? "");
+  assert.equal(edge, 40, "12 from the shell plus the paper's 28");
+  // The detail layout is a full-width card of the paper, not held to the document width.
+  const detail = renderToStaticMarkup(<DetailLayout title="Contract" main={<p>Main</p>} metadata={[]} />);
+  assert.match(detail, /class="tcrn-detail-layout/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-(?:split-view|detail-layout)[^{]*\{[^}]*--tcrn-layout-content-max-w/);
 });

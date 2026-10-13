@@ -1917,6 +1917,19 @@ export const baseCss22 = `
 .tcrn-document-canvas__meta {
   color: var(--tcrn-color-text-secondary);
   font-size: var(--tcrn-type-size-meta);
+}
+/*
+ * A document page's content is at most the layout content width and centred in the paper, like a
+ * settings page (MIN-20261013-SHELL D1, TCRN-DS-SUB-130); list and detail pages (RecordTable,
+ * SplitView, DetailLayout) keep the whole paper. Their edges are the paper's content edge: the
+ * paper's own inset, with no room kept for a side rail. The canvas has a border and an inset, so
+ * the width it is held to includes them.
+ */
+.tcrn-document-canvas {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: var(--tcrn-layout-content-max-w);
+  margin-inline: auto;
 }`;
 
 export const baseCss23 = `
@@ -3072,7 +3085,9 @@ export const baseCss37 = `
 .tcrn-setting-choice__hint{color:var(--tcrn-color-text-secondary)}.tcrn-setting-choice__error{color:var(--tcrn-color-state-blocked)}`;
 
 export const baseCss38 = `
-.tcrn-settings-layout{min-inline-size:0;max-inline-size:100%}
+/* A settings page's content is at most the layout content width and centred in the paper
+   (MIN-20261013-SHELL D1, TCRN-DS-SUB-130); its edges are measured from the paper's content edge. */
+.tcrn-settings-layout{inline-size:100%;min-inline-size:0;max-inline-size:var(--tcrn-layout-content-max-w);margin-inline:auto}
 .tcrn-settings-layout__frame{container:tcrn-settings-layout-frame/inline-size;min-inline-size:0}
 .tcrn-settings-layout__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--tcrn-space-4);min-inline-size:0}
 .tcrn-settings-layout__nav{min-inline-size:0;max-inline-size:100%;overflow-x:auto}
