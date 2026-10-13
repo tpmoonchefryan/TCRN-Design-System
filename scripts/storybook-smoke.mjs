@@ -74,18 +74,16 @@ const pages = Object.fromEntries(expectedContractStoryGroups.map((group) => [
   contractPages.filter((page) => page.group === group).map((page) => pageHtmlByFile[page.file]).join("\n")
 ]));
 const combinedHtml = Object.values(pageHtmlByFile).join("\n");
+// The documentation shell is the package's top-band ProductShell (TCRN-DS-SUB-131): sections and category
+// pages are rows of its full menu, and a page's stories are the links of the paper's contents rail
+// (TocRail) (TCRN-DS-SUB-132). The helpers read the first page's menu and every rail in the given HTML.
 const readDocShellNavHtml = (html) => {
-  const start = html.indexOf('class="tcrn-doc-nav"');
-  if (start === -1) {
-    return "";
-  }
-  const asideStart = html.lastIndexOf("<aside", start);
-  const end = html.indexOf("</nav>", start);
-  if (asideStart === -1 || end === -1) {
-    return "";
-  }
-  return html.slice(asideStart, end + "</nav>".length);
+  const start = html.indexOf('<div class="tcrn-shell-menu" data-shell-menu="" hidden="">');
+  const end = start === -1 ? -1 : html.indexOf('data-shell-pbar=""', start);
+  return start === -1 || end === -1 ? "" : html.slice(start, end);
 };
+const docShellRowHrefs = (navHtml) => [...new Set(Array.from(navHtml.matchAll(/<a [^>]*data-shell-row=""[^>]*>/g), (match) => match[0].match(/href="([^"]+)"/)?.[1] ?? ""))];
+const readDocShellTocRails = (html) => Array.from(html.matchAll(/<div class="tcrn-doc-page__toc" data-doc-toc="">([\s\S]*?)<\/aside>/g), (match) => match[1]);
 const readStoryHtml = (html, storyId) => {
   const storyMarker = `data-contract-story-id="${storyId}"`;
   const markerStart = html.indexOf(storyMarker);
@@ -1215,7 +1213,6 @@ for (const forbiddenGlobalShellMarker of [
 for (const forbiddenGlobalShellPattern of [
   /data-product-shell-region="side-navigation"/,
   /class="[^"]*tcrn-product-shell__sidebar/,
-  /class="[^"]*tcrn-product-shell-search__results/
 ]) {
   if (forbiddenGlobalShellPattern.test(nonComponentHtml)) {
     missing.push(`forbidden-global-shell-pattern:${forbiddenGlobalShellPattern.source}`);
@@ -1225,9 +1222,11 @@ for (const forbiddenGlobalShellPattern of [
 // occurs once per page, on the documentation shell, and never on a story.
 {
   const docShellRoots = nonComponentHtml.match(/data-shell="doc"/g)?.length ?? 0;
-  const productShellMains = nonComponentHtml.match(/class="[^"]*tcrn-product-shell__main/g)?.length ?? 0;
-  if (docShellRoots === 0 || productShellMains !== docShellRoots) {
-    missing.push(`forbidden-global-shell-pattern:tcrn-product-shell__main:${productShellMains}/${docShellRoots}`);
+  for (const pattern of [/class="[^"]*tcrn-product-shell__main/g, /class="[^"]*tcrn-product-shell-search__results/g]) {
+    const occurrences = nonComponentHtml.match(pattern)?.length ?? 0;
+    if (docShellRoots === 0 || occurrences !== docShellRoots) {
+      missing.push(`forbidden-global-shell-pattern:${pattern.source}:${occurrences}/${docShellRoots}`);
+    }
   }
 }
 const brandIdentityStoryHtml = readStoryHtml(pages["Style Guide"], "brand-identity");
@@ -1823,19 +1822,23 @@ for (const [group, html] of Object.entries(pages)) {
   if (!html.includes(`data-story-section="${group}"`)) {
     missing.push(`data-story-section="${group}"`);
   }
-  if (!defaultStory || !new RegExp(`data-doc-nav-item="${defaultStory.id}"[^>]*aria-current="location"`).test(navHtml)) {
+  const tocRails = readDocShellTocRails(html);
+  const defaultRail = defaultStory ? tocRails.find((rail) => rail.includes(`<a href="#${defaultStory.id}"`)) ?? "" : "";
+  if (!defaultStory || !new RegExp(`<a href="#${defaultStory.id}" aria-current="location" data-selected="true"`).test(defaultRail)) {
     missing.push(`current-doc-nav-item:${group}:${defaultStory?.id ?? "missing"}`);
   }
-  const groupNavCount = navHtml.match(/data-doc-nav-group="/g)?.length ?? 0;
+  const sectionFiles = new Set(Object.values(pagesByGroup));
+  const rowHrefs = docShellRowHrefs(navHtml);
+  const groupNavCount = rowHrefs.filter((href) => sectionFiles.has(href)).length;
   if (groupNavCount !== expectedStorybookShellNavGroupCount) {
     missing.push(`doc-shell-nav-group-count:${group}:${groupNavCount}`);
   }
-  const categoryNavCount = navHtml.match(/data-doc-nav-category="/g)?.length ?? 0;
+  const categoryNavCount = rowHrefs.filter((href) => href.endsWith(".html") && !sectionFiles.has(href)).length;
   if (categoryNavCount !== expectedStoryCategoryCount) {
     missing.push(`doc-shell-category-count:${group}:${categoryNavCount}`);
   }
   for (const marker of [
-    "data-doc-on-this-page=\"true\"",
+    "data-doc-toc=\"\"",
     "data-mandatory-boundary-block=\"visible\"",
     "data-no-overclaim-boundary=\"visible\"",
     "data-governance-boundary-strip=\"visible\""
@@ -1844,15 +1847,16 @@ for (const [group, html] of Object.entries(pages)) {
       missing.push(`${group}:${marker}`);
     }
   }
-  const storyNavCount = navHtml.match(/data-doc-nav-item="/g)?.length ?? 0;
-  if (storyNavCount !== requiredStories.length) {
+  // Each story is listed once across its group's contents rails; the rail with the group's first story marks one current link.
+  const storyNavCount = new Set(tocRails.flatMap((rail) => Array.from(rail.matchAll(/<a href="#([^"]+)"/g), (match) => match[1]))).size;
+  if (storyNavCount !== requiredStories.filter((story) => story.group === group).length) {
     missing.push(`doc-shell-story-count:${group}:${storyNavCount}`);
   }
-  const currentStoryNavCount = navHtml.match(/<a [^>]*data-doc-nav-item="[^"]+"[^>]*data-doc-nav-item-active="true"/g)?.length ?? 0;
+  const currentStoryNavCount = defaultRail.match(/<a href="#[^"]+"[^>]*data-selected="true"/g)?.length ?? 0;
   if (currentStoryNavCount !== 1) {
     missing.push(`doc-shell-current-story-count:${group}:${currentStoryNavCount}`);
   }
-  const ariaCurrentStoryCount = navHtml.match(/<a [^>]*data-doc-nav-item="[^"]+"[^>]*aria-current="location"/g)?.length ?? 0;
+  const ariaCurrentStoryCount = defaultRail.match(/<a href="#[^"]+" aria-current="location"/g)?.length ?? 0;
   if (ariaCurrentStoryCount !== 1) {
     missing.push(`doc-shell-current-story-aria-count:${group}:${ariaCurrentStoryCount}`);
   }
