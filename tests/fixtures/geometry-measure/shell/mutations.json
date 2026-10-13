@@ -135,8 +135,8 @@
     },
     {
       "id": "story-label-plus-40", "gate": "singleLine", "source": "标签加长 40 字", "story": "shell-top-band",
-      "about": "the current crumb of the full menu's bottom bar, which must stay on one line",
-      "ops": [{ "op": "appendText", "selector": "[data-shell=\"ts-x-l\"] [data-shell-pbar] nav b", "text": "长", "repeat": 40 }]
+      "about": "the pinned group's heading in the full menu; labels that truncate with an ellipsis and a title pass, and at 1440 the bottom bar has room for 40 more characters, so the label taken is one the gate reads that truncates without a title",
+      "ops": [{ "op": "appendText", "selector": "[data-shell=\"ts-x-l\"] [data-shell-pinned-group] > .tcrn-nav-group__label", "text": "长", "repeat": 40 }]
     },
     {
       "id": "story-panel-shadow-12", "gate": "shadowBlur", "source": "面板阴影改 12px", "story": "shell-top-band",

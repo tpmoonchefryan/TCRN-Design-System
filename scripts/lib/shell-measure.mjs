@@ -29,7 +29,9 @@
 // Cascade columns that a panel adopts with aria-owns (the package renders them next to the dropdown
 // panel, not inside it) are read as the panel's columns. A C-5 hook that the gates need and an open
 // layer lacks is listed in x.hookGaps (rows without the row-text hook: their text widths cannot be
-// read, so x.rowGroups is null rather than an empty, silently passing list).
+// read, so x.rowGroups is null rather than an empty, silently passing list). A shell that sits inside
+// another shell's paper (a story on a documentation page, which renders in the top-band shell) is read
+// against its own paper only.
 //
 // API:
 //   SHELL_MEASURE_SCHEMA_VERSION, SELECTOR_KEYS, BOARD_SELECTORS, PACKAGE_SELECTORS
@@ -227,10 +229,13 @@ export function readShellInPage(options) {
     });
   }
   const shadowBlurs = (value) => shadowLayers(value).map((layer) => layer.blur);
-  // the first-batch "shadow" probe: the colour of the first solid ring (blur 0, spread >= 1)
+  // the "shadow" probe (first-batch vocabulary): the colour of the solid ring (blur 0, spread >= 1); when
+  // a gap ring sits inside the ring (the shell focus pair: paper 2px, then the focus colour 4px), the
+  // visible ring is the outermost one, so the widest solid layer is read
   const ringColor = (value) => {
-    for (const layer of shadowLayers(value)) if (layer.color && layer.blur === 0 && layer.spread >= 1) return parseAny(layer.color);
-    return null;
+    let ring = null;
+    for (const layer of shadowLayers(value)) if (layer.color && layer.blur === 0 && layer.spread >= 1 && (!ring || layer.spread > ring.spread)) ring = layer;
+    return ring ? parseAny(ring.color) : null;
   };
   const FOCUSABLE = "a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex='-1']), [contenteditable='true']";
   const focusable = (el) => el.matches(FOCUSABLE) || Boolean(el.querySelector(FOCUSABLE));
@@ -432,7 +437,10 @@ export function readShellInPage(options) {
       }
     }
     x.collapseButtons = collapse.size;
-    x.sidebars = [...scr.querySelectorAll(sel.sidebar)].filter((el) => !el.closest(sel.paper) && visible(el)).length;
+    // "in the paper" means this shell's own paper: a story shell can sit inside another shell's paper
+    // (the documentation pages render in the top-band shell), whose paper must not swallow it
+    const inOwnPaper = (el) => { const p = el.closest(sel.paper); return Boolean(p && scr.contains(p)); };
+    x.sidebars = [...scr.querySelectorAll(sel.sidebar)].filter((el) => !inOwnPaper(el) && visible(el)).length;
 
     // extra: lockups inside the floating layers (the bottom-right lockup): decoration only
     x.lockups = floating.flatMap((f) => [...f.querySelectorAll(sel.lockup)]).filter((el, i, all) => all.indexOf(el) === i).map((el) => {
@@ -441,7 +449,7 @@ export function readShellInPage(options) {
     });
 
     // extra: single-line text of the shell rows (tab word, pins, menu rows, group heads, search, crumbs, lockups)
-    const lineEls = [...scr.querySelectorAll(sel.singleLineText)].filter((el) => !el.closest(sel.paper)).concat([...scr.querySelectorAll(sel.pageCrumbs)]);
+    const lineEls = [...scr.querySelectorAll(sel.singleLineText)].filter((el) => !inOwnPaper(el)).concat([...scr.querySelectorAll(sel.pageCrumbs)].filter(inOwnPaper));
     x.textLines = lineEls.filter((el, i) => lineEls.indexOf(el) === i && visible(el) && !exempt(el)).map((el) => {
       let box = el;
       while (box !== scr && getComputedStyle(box).display === "inline") box = box.parentElement;
@@ -554,7 +562,7 @@ export function readShellInPage(options) {
     logo: svg.getAttribute("data-logo"),
     mode: svg.getAttribute("data-mode"),
     where: svg.closest(sel.tab) ? "tab" : svg.closest(sel.intro) ? "intro" : svg.closest(sel.lockup) ? "lockup" : "other",
-    shell: svg.closest(sel.shell) ? svg.closest(sel.shell).getAttribute("data-shell") : null,
+    shell: svg.closest(sel.shell) && rootEl.contains(svg.closest(sel.shell)) ? svg.closest(sel.shell).getAttribute("data-shell") : null,
     opacity: Number(getComputedStyle(svg).opacity),
     form: formIndex(canonSvg(svg))
   }));

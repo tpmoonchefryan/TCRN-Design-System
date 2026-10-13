@@ -375,7 +375,7 @@ test("package readings: the rendered brand version, and the first-batch shadow p
     await page.setContent(`<!doctype html><style>body{margin:0;background:#fff}*{box-sizing:border-box}
       [data-shell]{width:390px;height:600px;display:grid;grid-template-rows:52px 1fr}[data-shell-strip]{display:flex;align-items:center;padding:0 12px}
       [data-tab]{height:40px;padding:0 9px;border:0;background:transparent}[data-tab] b{display:none}[data-cluster]{margin-left:auto}
-      .ring{box-shadow:0 0 0 2px rgb(44, 99, 200);color:#16150f;background:#fff;border:0}</style>
+      .ring{box-shadow:0 0 0 2px #fff, 0 0 0 4px rgb(44, 99, 200);color:#16150f;background:#fff;border:0}</style>
       <div data-shell="phone" data-state="closed"><div data-shell-strip>
         <button type="button" data-tab data-shell-brand="v2"><svg data-logo="tms" viewBox="0 0 48 48" width="22" height="22"><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><b>TCRN <em>TMS</em></b></button>
         <div data-cluster><button type="button" class="ring" data-cell="ring-l" data-kind="edge" data-expect="5.5" data-probe="shadow">!</button></div>
@@ -385,6 +385,29 @@ test("package readings: the rendered brand version, and the first-batch shadow p
     const [cell] = reading.contrastCells;
     assert.equal(cell.unknownProbe, undefined);
     assert.ok(cell.ratio > 5 && cell.ratio < 6, `ring ratio ${cell.ratio}`);
+  } finally {
+    await context.close();
+  }
+});
+
+test("package readings: a shell inside another shell's paper is read against its own paper", async () => {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  try {
+    await page.setContent(`<!doctype html><style>body{margin:0}*{box-sizing:border-box}[data-shell="inner"]{width:900px;height:400px;display:grid;grid-template-rows:52px 1fr}
+      [data-shell-strip]{display:flex;align-items:center;padding:0 12px}[data-tab] b{white-space:nowrap}[data-cluster]{margin-left:auto}</style>
+      <div data-shell="doc"><div data-paper><main id="content">
+        <div data-shell="inner" data-state="closed"><div data-shell-strip>
+          <button type="button" data-tab data-shell-brand="v2"><svg data-logo="tms" viewBox="0 0 48 48" width="22" height="22"><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><b title="TCRN TMS">TCRN <em>TMS</em></b></button>
+          <div data-cluster><button type="button" aria-label="Notifications">!</button></div>
+        </div><aside>resident</aside><main data-paper></main></div>
+      </main></div></div>`);
+    const reading = await lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package", root: "#content" });
+    const [shell] = reading.shells;
+    assert.equal(shell.id, "inner");
+    assert.ok(shell.x.textLines.some((line) => line.el === "b"), JSON.stringify(shell.x.textLines));
+    assert.equal(shell.x.sidebars, 1);
+    assert.equal(reading.marks[0].shell, "inner");
   } finally {
     await context.close();
   }
