@@ -76,6 +76,26 @@ export const NavigationProductShellSpec: Story = {
   render: () => renderContractStory("navigation-product-shell-spec")
 };
 
+export const ShellTopBand: Story = {
+  name: "Top-band shell",
+  render: () => renderContractStory("shell-top-band")
+};
+
+export const ShellNarrow: Story = {
+  name: "Top-band shell, narrow",
+  render: () => renderContractStory("shell-narrow")
+};
+
+export const ShellMobile: Story = {
+  name: "Top-band shell on a phone",
+  render: () => renderContractStory("shell-mobile")
+};
+
+export const ShellIntro: Story = {
+  name: "Shell sign-in intro",
+  render: () => renderContractStory("shell-intro")
+};
+
 export const DialogSpecUsage: Story = {
   name: "Dialog spec and usage",
   render: () => renderContractStory("dialog-spec-usage")
