@@ -35,7 +35,7 @@ export function KnowledgeBaseShellDemo() {
   }));
 
   return (
-    <div className="tcrn-doc-shell-demo tcrn-doc-shell-demo--knowledge" data-shell-pattern="knowledge-bookmarks" data-storybook-only="knowledge-shell-prototype" data-component-library-status="deferred">
+    <div className="tcrn-doc-demo-frame tcrn-doc-demo-frame--knowledge" data-shell-pattern="knowledge-bookmarks" data-storybook-only="knowledge-shell-prototype" data-component-library-status="deferred">
       <ProductShell
         productName="TCRN Design System"
         moduleName="Components"
@@ -61,7 +61,7 @@ export function KnowledgeBaseShellDemo() {
             <ReferenceList items={["scroll-aware", "multi-level", "documentation-first"]} />
           </div>
         </div>
-        <nav className="tcrn-doc-knowledge-shell__pager" aria-label="Knowledge base shell chapter navigation">
+        <nav className="tcrn-doc-demo-pager" aria-label="Knowledge base shell chapter navigation">
           <a href="#navigation-shell-spec">
             <Icon name="arrow-left" />
             <span>Previous chapter</span>
