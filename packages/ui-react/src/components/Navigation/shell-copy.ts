@@ -11,6 +11,9 @@
 // TCRN-DS-SUB-117: the full menu's extra group narrower than 1024, where the band shows no pinned
 // items and the menu lists them all ("已固定").
 // TCRN-DS-SUB-118: the drop-down's search placeholder, which names the pinned entry ("搜索合约").
+// TCRN-DS-SUB-119: the top-right cluster of ProductShell (07a board: the bell "通知 · 3 条未读" and the
+// avatar "林晓 · 账户、切换产品、主题与语言") and its avatar menu: the account, the product switcher,
+// and the theme and language, which moved there from the old top bar (decomposition problem 14).
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { resolveDocumentLocale } from "../../utils.js";
 
@@ -31,6 +34,16 @@ export interface TcrnShellCopy {
   pinnedGroup: string;
   /** Placeholder of a drop-down's search, which searches the pinned entry's part of the menu. */
   searchWithin: (name: string) => string;
+  /** Name of the avatar menu, and of the avatar when no account is given. */
+  account: string;
+  /** Avatar name: the reader and what the menu holds. */
+  accountMenuOf: (name: string) => string;
+  /** Name and heading of the avatar menu's product switcher. */
+  switchProduct: string;
+  /** Name of the avatar menu's theme and language controls. */
+  themeAndLanguage: string;
+  /** Bell name, with the unread count when there is one. */
+  notificationsOf: (unread: number) => string;
 }
 
 export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
@@ -42,7 +55,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     searchNavigation: "搜索页面与内容",
     currentPosition: "当前位置",
     pinnedGroup: "已固定",
-    searchWithin: (name) => `搜索${name}`
+    searchWithin: (name) => `搜索${name}`,
+    account: "账户",
+    accountMenuOf: (name) => `${name} · 账户、切换产品、主题与语言`,
+    switchProduct: "切换产品",
+    themeAndLanguage: "主题与语言",
+    notificationsOf: (unread) => (unread > 0 ? `通知 · ${unread} 条未读` : "通知")
   },
   en: {
     openNavigationOf: (productName) => `Open navigation · ${productName}`,
@@ -52,7 +70,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     searchNavigation: "Search pages and content",
     currentPosition: "Current location",
     pinnedGroup: "Pinned",
-    searchWithin: (name) => `Search ${name}`
+    searchWithin: (name) => `Search ${name}`,
+    account: "Account",
+    accountMenuOf: (name) => `${name} · Account, switch product, theme and language`,
+    switchProduct: "Switch product",
+    themeAndLanguage: "Theme and language",
+    notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} unread` : "Notifications")
   },
   ja: {
     openNavigationOf: (productName) => `ナビゲーションを開く · ${productName}`,
@@ -62,7 +85,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     searchNavigation: "ページとコンテンツを検索",
     currentPosition: "現在の位置",
     pinnedGroup: "固定済み",
-    searchWithin: (name) => `${name}を検索`
+    searchWithin: (name) => `${name}を検索`,
+    account: "アカウント",
+    accountMenuOf: (name) => `${name} · アカウント、プロダクトの切り替え、テーマと言語`,
+    switchProduct: "プロダクトを切り替え",
+    themeAndLanguage: "テーマと言語",
+    notificationsOf: (unread) => (unread > 0 ? `通知 · 未読 ${unread} 件` : "通知")
   },
   ko: {
     openNavigationOf: (productName) => `내비게이션 열기 · ${productName}`,
@@ -72,7 +100,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     searchNavigation: "페이지와 콘텐츠 검색",
     currentPosition: "현재 위치",
     pinnedGroup: "고정됨",
-    searchWithin: (name) => `${name} 검색`
+    searchWithin: (name) => `${name} 검색`,
+    account: "계정",
+    accountMenuOf: (name) => `${name} · 계정, 제품 전환, 테마와 언어`,
+    switchProduct: "제품 전환",
+    themeAndLanguage: "테마와 언어",
+    notificationsOf: (unread) => (unread > 0 ? `알림 · 읽지 않음 ${unread}개` : "알림")
   },
   fr: {
     openNavigationOf: (productName) => `Ouvrir la navigation · ${productName}`,
@@ -82,7 +115,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     searchNavigation: "Rechercher des pages et des contenus",
     currentPosition: "Emplacement actuel",
     pinnedGroup: "Épinglés",
-    searchWithin: (name) => `Rechercher dans ${name}`
+    searchWithin: (name) => `Rechercher dans ${name}`,
+    account: "Compte",
+    accountMenuOf: (name) => `${name} · Compte, changer de produit, thème et langue`,
+    switchProduct: "Changer de produit",
+    themeAndLanguage: "Thème et langue",
+    notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} non lues` : "Notifications")
   }
 };
 

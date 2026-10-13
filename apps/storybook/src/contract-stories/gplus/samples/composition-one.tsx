@@ -2,15 +2,9 @@
 // board (typography, icon, brand, actions, inputs) rebuilt from package components.
 //
 // The shell is the package ProductShell; this module adds no styles and sets no shell parameter.
-// Composition one's shell geometry — the 220 rail (52 collapsed), the rail guide column (16 / 48),
-// the sheet 12 from the shell edges with the paper radius and shadow s1, and the 52 top bar — is
-// the package default since O-1 (TCRN-DS-SUB-090), so the samples no longer override the rail
-// width. The rail footer and the item counts remain differences from the composition.
-//
-// Rail elements carry data-guide="rail" (marks and icons) and data-text="rail" (wordmark and labels)
-// so the rail measurement can read them. ProductShell renders its navigation from data, so those two
-// attributes are added to the package markup with the same attribute-edit helper the matrices use;
-// nothing else in the markup is changed.
+// Since TCRN-DS-SUB-119 the shell is the top band and the paper (one shell, no side rail), so the
+// rail marks this module used to add (data-guide="rail", data-text="rail") have no subject and are
+// gone with the rail; the samples are re-rendered on the top-band shell by TCRN-DS-SUB-134.
 import {
   Avatar,
   Badge,
@@ -38,7 +32,8 @@ import {
   Textarea,
   tcrnProductTagline,
   type IconName,
-  type TcrnProductLogoId
+  type TcrnProductLogoId,
+  type TcrnProductMarkId
 } from "@tcrn/ui-react";
 import { tcrnDefaultLocale, tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import type { ReactNode } from "react";
@@ -73,7 +68,7 @@ interface SampleShellSpec {
   routeLabel: string;
   selected: string;
   workspace: readonly RailItem[];
-  brandProductId?: TcrnProductLogoId;
+  brandProductId?: TcrnProductMarkId;
   headerActions?: ReactNode;
   /** Accessible name of the shell's navigation and content region: the sample's own name. */
   landmarkLabel: string;
@@ -91,17 +86,6 @@ const railItem = {
   products: { id: "products", label: "Products", iconName: "package" }
 } satisfies Record<string, RailItem>;
 
-/** data-guide on marks and icons, data-text on the wordmark and labels; a missing marker fails the build. */
-export function railEdits(spec: Pick<SampleShellSpec, "workspace" | "brandProductId">): MarkupEdit[] {
-  const items = [...spec.workspace, ...teamItems];
-  return [
-    { marker: 'class="tcrn-brand-mark"', set: { "data-guide": "rail" } },
-    { marker: spec.brandProductId ? 'class="tcrn-product-logo__line-one"' : 'class="tcrn-brand-wordmark__base"', set: { "data-text": "rail" } },
-    ...items.map((item): MarkupEdit => ({ marker: `data-icon-name="${item.iconName}"`, set: { "data-guide": "rail" } })),
-    ...items.map((item, index): MarkupEdit => ({ marker: 'class="tcrn-nav-item__label"', nth: index, set: { "data-text": "rail" } }))
-  ];
-}
-
 // The five samples share one page, each with a light and a night shell, so every shell names its
 // navigation and content region after its sample and the night shell adds the block name. Shared
 // names ("Main navigation", the route label) would give the page sets of identical landmarks.
@@ -118,13 +102,8 @@ function SampleShell({ storyId, board, theme, spec, children }: { storyId: strin
     <ProductShell
       productName="Design team"
       moduleName={spec.moduleName}
-      brandProductId={spec.brandProductId}
-      brandHref={`#${storyId}`}
-      brandSuffix={spec.brandProductId ? undefined : "Design team"}
-      brandCaption={spec.brandProductId ? undefined : "Team · 12 people"}
-      currentLocationLabel={spec.locationLabel}
+      brandProductId={spec.brandProductId ?? "design-system"}
       currentRouteLabel={spec.routeLabel}
-      navLabel={landmarkLabel}
       navGroups={[
         { id: "workspace", label: "Workspace", items: withSelection(spec.workspace) },
         { id: "team", label: "Team", items: withSelection(teamItems) }
@@ -132,11 +111,10 @@ function SampleShell({ storyId, board, theme, spec, children }: { storyId: strin
       locales={tcrnLocaleMetadata}
       currentLocale={tcrnDefaultLocale}
       currentTheme={themeAttribute[theme]}
-      search={{ label: "Search", placeholder: "Search", shortcut: "auto" }}
+      searchPlaceholder="Search"
       headerActions={spec.headerActions}
       contentId={`${prefix}-content`}
       contentLabel={landmarkLabel}
-      navId={`${prefix}-nav`}
       data-shell={`${gplusSampleShellKeys[board]}-${themeSuffix[theme]}`}
       data-gplus-sample-shell={board}
     >
@@ -145,7 +123,7 @@ function SampleShell({ storyId, board, theme, spec, children }: { storyId: strin
   );
   return (
     <div data-tcrn-theme={themeAttribute[theme]} data-gplus-sample-theme={theme}>
-      <StaticMarkup id={prefix} block element={shell} edits={railEdits(spec)} />
+      <StaticMarkup id={prefix} block element={shell} edits={[]} />
     </div>
   );
 }

@@ -578,33 +578,17 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
     <ProductShell
       productName={copy.productName}
       moduleName={copy.moduleName}
-      brandProductId="aos"
-      brandMarkSrc="tcrn-brand-mark.svg"
-      brandMarkAlt="TCRN registered brand mark"
+      brandProductId="design-system"
       currentRouteLabel={currentRouteLabel}
-      currentLocationLabel={copy.currentLocation}
-      navLabel={`${copy.navLabel}: ${variant.id}`}
       navGroups={navGroups(variant)}
-      collapsed={variant.collapsed}
-      collapsedStorageKey={`tcrn-aos-owner-quality-collapsed-${variant.id}`}
       currentTheme={variant.theme}
       locales={tcrnLocaleMetadata}
       currentLocale={variant.locale}
       contentId={`${variant.id}-owner-quality-content`}
       contentRole="region"
       contentLabel={`${copy.contentLabel}: ${variant.id}`}
-      navId={`${variant.id}-owner-quality-side-nav`}
       skipLinkLabel={copy.skipLink}
-      search={{
-        label: copy.searchLabel,
-        placeholder: copy.searchPlaceholder,
-        shortcut: "auto",
-        query,
-        expanded: searchExpanded,
-        results: searchResults(variant),
-        resultsLabel: copy.searchResultsLabel,
-        emptyLabel: copy.emptyLabel
-      }}
+      searchPlaceholder={copy.searchPlaceholder}
       data-storybook-visual-instance="owner-quality-product-shell"
       data-visual-instance-name="OwnerQualityShellOracle"
       data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"

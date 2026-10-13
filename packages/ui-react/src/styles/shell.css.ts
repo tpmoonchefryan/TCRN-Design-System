@@ -696,3 +696,232 @@ export const shellCss04 = `
     animation: none;
   }
 }`;
+
+// ProductShell in its one state, the top band (TCRN-DS-SUB-119; 07a board, section A; 07b board,
+// section D rows "顶带高" and "纸"). The shell is a two-row grid as tall as the viewport: the band,
+// --tcrn-shell-strip-h high with no fill and no rule, then the paper. It is the containing block of
+// the full menu, so the menu's start edge is the paper's. The band holds the brand button, the
+// pinned items and the top-right cluster in one flex row centred on the band's midline (26), with
+// space-3 at both ends, so the brand button's start edge, the paper's and the full menu's are one
+// line and the cluster's end edge is the paper's. The cluster: the product's own controls, the
+// bell (control-height-md, the 3.5% wash on hover, the unread dot in the danger red on a band
+// ring) and the avatar (control-height-sm, a circle in the avatar pair with a hairline edge,
+// caption size at weight 500), space-1h apart. The avatar menu hangs from the avatar at the menu
+// hand-off gap, end edges aligned, the drop-down width wide: paper with the s3 shadow, radius 12,
+// inset space-1h. The paper is space-3 from the shell's sides and bottom with the paper radius and
+// shadow s1; the page scrolls inside it, so the band and the paper's edges never move.
+export const shellCss05 = `
+.tcrn-product-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--tcrn-shell-strip-h) minmax(0, 1fr);
+  block-size: 100dvh;
+  min-inline-size: 0;
+  overflow: clip;
+  background: var(--tcrn-color-bg);
+  color: var(--tcrn-color-ink);
+  font-family: var(--tcrn-type-family-ui);
+  font-size: var(--tcrn-type-size-ui);
+  line-height: var(--tcrn-type-line-ui);
+  letter-spacing: 0;
+}
+.tcrn-shell-strip {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-strip-h);
+  margin: 0;
+  padding: 0 var(--tcrn-space-3);
+  border: 0;
+  background: none;
+}
+.tcrn-shell-cluster {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+  block-size: var(--tcrn-control-height-lg);
+  min-inline-size: 0;
+  margin-inline-start: auto;
+}
+.tcrn-shell-cluster > .tcrn-product-shell__header-actions {
+  flex-wrap: nowrap;
+}
+.tcrn-shell-bell {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-edge-h: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tcrn-control-height-md);
+  block-size: var(--tcrn-control-height-md);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-shell-bell__dot {
+  position: absolute;
+  inset-block-start: calc((var(--tcrn-control-height-md) - var(--tcrn-icon-size-lg)) / 2 + 1px);
+  inset-inline-end: calc((var(--tcrn-control-height-md) - var(--tcrn-icon-size-lg)) / 2 + 1px);
+  inline-size: var(--tcrn-space-1h);
+  block-size: var(--tcrn-space-1h);
+  border-radius: var(--tcrn-radius-pill);
+  background: var(--tcrn-color-red);
+  box-shadow: 0 0 0 var(--tcrn-space-0h) var(--tcrn-color-bg);
+}
+.tcrn-shell-avatar {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  --tcrn-pair-fill-d: var(--tcrn-color-av-bg);
+  --tcrn-pair-ink-d: var(--tcrn-color-av-ink);
+  --tcrn-pair-edge-d: inset 0 0 0 1px var(--tcrn-color-line);
+  --tcrn-pair-edge-f: inset 0 0 0 1px var(--tcrn-color-line), var(--tcrn-focus-ring);
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tcrn-control-height-sm);
+  block-size: var(--tcrn-control-height-sm);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--tcrn-radius-pill);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-family: var(--tcrn-type-family-ui);
+  font-size: var(--tcrn-type-size-caption);
+  font-weight: var(--tcrn-type-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.tcrn-shell-bell:where(:hover, [data-tcrn-preview-state="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-h);
+}
+.tcrn-shell-bell:where(:focus-visible, [data-tcrn-preview-state="focus"]),
+.tcrn-shell-avatar:where(:focus-visible, [data-tcrn-preview-state="focus"]) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-shell-bell:focus-visible,
+.tcrn-shell-avatar:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-shell-account {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+.tcrn-shell-account__panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--tcrn-shell-menu-gap));
+  inset-inline-end: 0;
+  z-index: var(--tcrn-z-popover);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-1);
+  inline-size: var(--tcrn-shell-drop-w);
+  max-block-size: calc(100vh - var(--tcrn-shell-strip-h));
+  margin: 0;
+  padding: var(--tcrn-space-1h);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-shadow-s3);
+  color: var(--tcrn-color-ink-2);
+}
+.tcrn-shell-account__who {
+  display: grid;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  margin: 0;
+  padding: var(--tcrn-space-1) var(--tcrn-space-2h);
+}
+.tcrn-shell-account__who b,
+.tcrn-shell-account__who span,
+.tcrn-shell-account__heading {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-account__who b {
+  color: var(--tcrn-color-ink);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-shell-account__who span,
+.tcrn-shell-account__heading {
+  color: var(--tcrn-color-ink-3);
+  font-size: var(--tcrn-type-size-meta);
+}
+.tcrn-shell-account__products {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  padding-block-start: var(--tcrn-space-1);
+  border-block-start: 1px solid var(--tcrn-color-line);
+}
+.tcrn-shell-account__heading {
+  padding: var(--tcrn-space-1) var(--tcrn-space-2h);
+}
+.tcrn-shell-account__products .tcrn-nav-item {
+  min-block-size: var(--tcrn-shell-row-h);
+}
+.tcrn-shell-account__prefs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tcrn-space-2);
+  min-inline-size: 0;
+  padding: var(--tcrn-space-1) var(--tcrn-space-1) 0;
+  border-block-start: 1px solid var(--tcrn-color-line);
+}
+.tcrn-product-shell__paper {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0 var(--tcrn-space-3) var(--tcrn-space-3);
+  overflow: hidden;
+  border-radius: var(--tcrn-radius-paper);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-shadow-s1);
+}
+.tcrn-product-shell__paper > .tcrn-product-shell__main {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-bell {
+    transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
+  }
+}`;
