@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { ShellThemeToggle, SideNavCollapseButton, useProductShellController } from "../index.js";
+import { ShellThemeToggle, useProductShellController } from "../index.js";
 import { createDomInteractionHarness } from "./dom-harness.js";
 
 /**
@@ -17,18 +17,24 @@ import { createDomInteractionHarness } from "./dom-harness.js";
  * assertion is therefore on the cookie specifically, not on "the preference was
  * saved somewhere": the store that made the old behaviour wrong is still written,
  * and a test that accepted either would pass on the broken version.
+ *
+ * The pins are the other way round (TCRN-DS-SUB-120): the product's backend keeps
+ * them, so the shell writes only its local fallback, under the product's own key,
+ * and never a cookie.
  */
 function PreferenceFixture() {
   const controller = useProductShellController({
-    collapsedStorageKey: "tcrn-spec-collapsed",
+    productId: "spec",
     themeStorageKey: "tcrn-spec-theme",
     localeStorageKey: "tcrn-spec-locale"
   });
   return (
     <section>
-      <SideNavCollapseButton {...controller.sideNavCollapseButtonProps} />
       <ShellThemeToggle {...controller.shellThemeToggleProps} />
-      <output data-spec-state={`${controller.theme}/${controller.collapsed}`} />
+      <button type="button" data-spec-pin="" onClick={() => controller.setPinned("roster", true)}>
+        Pin
+      </button>
+      <output data-spec-state={`${controller.theme}/${controller.pins.join(",") || "none"}`} />
     </section>
   );
 }
@@ -57,7 +63,7 @@ test("a chosen preference is written where the server can read it", async () => 
 
     assert.equal(
       root.querySelector("output")?.getAttribute("data-spec-state"),
-      "dark/false",
+      "dark/none",
       "the controller holds the new theme"
     );
     // The point of the whole rule: a server rendering the next request can see this.
@@ -66,11 +72,12 @@ test("a chosen preference is written where the server can read it", async () => 
     // privacy setting that keeps site storage. Neither store contains the other.
     assert.equal(harness.window.localStorage.getItem("tcrn-spec-theme"), "dark");
 
-    const collapseButton = root.querySelector('[data-shell-control="side-nav-collapse"]') as HTMLElement | null;
-    assert.ok(collapseButton, "the collapse control is rendered");
-    await harness.dispatchClick(collapseButton);
-    assert.equal(cookieValue(harness, "tcrn-spec-collapsed"), "true");
-    assert.equal(harness.window.localStorage.getItem("tcrn-spec-collapsed"), "true");
+    const pinButton = root.querySelector("[data-spec-pin]") as HTMLElement | null;
+    assert.ok(pinButton, "the pin control is rendered");
+    await harness.dispatchClick(pinButton);
+    assert.equal(root.querySelector("output")?.getAttribute("data-spec-state"), "dark/roster");
+    assert.equal(harness.window.localStorage.getItem("tcrn-shell-pins:spec"), JSON.stringify(["roster"]));
+    assert.equal(harness.document.cookie.includes("pins"), false, "the pins never go into a cookie");
   } finally {
     await harness.cleanup();
   }

@@ -32,7 +32,10 @@ import {
   tcrnProductTagline,
   readPreferenceCookieValues,
   useProductShellController,
+  type ProductShellControllerConfig,
   type ProductShellNavGroup,
+  type ProductShellProps,
+  type ProductShellRequestPreferences,
   type ShellThemeMode
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
@@ -826,7 +829,6 @@ function ProductShellSemanticFixture({ events }: ProductShellSemanticFixtureProp
 function ProductShellControllerFixture({ events }: ProductShellSemanticFixtureProps) {
   const controller = useProductShellController({
     searchRecords: [{ id: "work", title: "Work", meta: "Registered shell entry", href: "/work" }],
-    onCollapsedChange: (collapsed) => events.push(`controller-collapsed:${collapsed}`),
     onThemeChange: (theme) => events.push(`controller-theme:${theme}`),
     onLocaleMenuOpenChange: (open, reason) => events.push(`controller-locale-open:${open}:${reason}`),
     onLocaleChange: (locale) => events.push(`controller-locale:${locale}`),
@@ -841,7 +843,6 @@ function ProductShellControllerFixture({ events }: ProductShellSemanticFixturePr
 
   return (
     <section>
-      <SideNavCollapseButton {...controller.sideNavCollapseButtonProps} />
       <ShellThemeToggle {...controller.shellThemeToggleProps} />
       <ShellLocaleMenu
         locales={[
@@ -956,19 +957,7 @@ test("product shell controller returns ready prop bundles for registered shell c
   try {
     await harness.render(<ProductShellControllerFixture events={events} />);
 
-    const collapseButton = harness.document.querySelector("[data-side-nav-toggle='true']");
-    assert.ok(collapseButton instanceof harness.window.HTMLButtonElement);
-    await harness.dispatchKeydown(collapseButton, "Enter");
-    assert.ok(events.includes("controller-collapsed:true"));
-    assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "true");
-
-    await harness.dispatchKeydown(collapseButton, " ");
-    assert.ok(events.includes("controller-collapsed:false"));
-    assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "false");
-
-    await harness.dispatchClick(collapseButton);
-    assert.ok(events.includes("controller-collapsed:true"));
-    assert.equal(collapseButton.getAttribute("data-side-nav-collapsed"), "true");
+    assert.equal(harness.document.querySelector("[data-side-nav-toggle]"), null, "the controller offers no collapse control");
 
     const themeButton = harness.document.querySelector("[data-theme-toggle='true']");
     assert.ok(themeButton instanceof harness.window.HTMLButtonElement);
@@ -1185,40 +1174,40 @@ test("shell chrome says its own words in the reader's language", () => {
 test("product shell controller reads preferences from the request cookie during server render", () => {
   const readings: Array<Record<string, unknown>> = [];
   const cookieKeys = {
-    collapsedKey: "tcrn-side-nav-collapsed",
     themeKey: "tcrn-theme",
     localeKey: "tcrn-locale"
   };
 
   function ServerControllerFixture({ cookie }: { cookie?: string }) {
     const controller = useProductShellController({
-      collapsedStorageKey: "tcrn-side-nav-collapsed",
+      productId: "tms",
       themeStorageKey: "tcrn-theme",
       localeStorageKey: "tcrn-locale",
-      // The parse happens on the consumer's server; only three narrowed values
+      // The parse happens on the consumer's server; only two narrowed values
       // cross the package boundary. The raw header stays outside on purpose —
       // an earlier shape of this prop took the whole header, which would have
       // handed the shell every cookie the consumer's requests carry.
-      requestPreferences: readPreferenceCookieValues(cookie, cookieKeys)
+      // The pins are the product backend's, passed beside the cookie values.
+      requestPreferences: { ...readPreferenceCookieValues(cookie, cookieKeys), pins: cookie ? ["roster"] : undefined }
     });
     readings.push({
-      collapsed: controller.collapsed,
+      pins: controller.pins,
       theme: controller.theme,
       locale: controller.locale
     });
-    return <span>{`${controller.theme}/${controller.locale}/${controller.collapsed}`}</span>;
+    return <span>{`${controller.theme}/${controller.locale}/${controller.pins.join(",") || "none"}`}</span>;
   }
 
   const withCookie = renderToStaticMarkup(
     <ServerControllerFixture cookie="tcrn-theme=dark; tcrn-locale=zh-CN; tcrn-side-nav-collapsed=true" />
   );
-  assert.match(withCookie, /dark\/zh-CN\/true/);
-  assert.deepEqual(readings[0], { collapsed: true, theme: "dark", locale: "zh-CN" });
+  assert.match(withCookie, /dark\/zh-CN\/roster/);
+  assert.deepEqual(readings[0], { pins: ["roster"], theme: "dark", locale: "zh-CN" });
 
   // No cookie is not a preference: the product's defaults still stand, so a
   // client-only consumer that never passes preferences is unaffected.
   const withoutCookie = renderToStaticMarkup(<ServerControllerFixture />);
-  assert.match(withoutCookie, /light\/en\/false/);
+  assert.match(withoutCookie, /light\/en\/none/);
 
   // A cookie naming a preference the shell does not govern changes nothing, and one
   // whose value cannot be percent-decoded is discarded rather than thrown out of the
@@ -1226,19 +1215,169 @@ test("product shell controller reads preferences from the request cookie during 
   const unrelated = renderToStaticMarkup(
     <ServerControllerFixture cookie="unrelated=dark; tcrn-locale=%E0%A4%A; tcrn-theme=dark" />
   );
-  assert.match(unrelated, /dark\/en\/false/);
+  assert.match(unrelated, /dark\/en\/roster/);
 
   // The parser narrows to undefined, never to a default: garbage must not outrank
   // the product's own fallback, and an off-contract locale is garbage even when it
   // is a real language tag.
   assert.deepEqual(
     readPreferenceCookieValues("tcrn-theme=blue; tcrn-locale=de-DE; tcrn-side-nav-collapsed=yes", cookieKeys),
-    { collapsed: undefined, theme: undefined, locale: undefined }
+    { theme: undefined, locale: undefined }
   );
   assert.deepEqual(
     readPreferenceCookieValues(undefined, cookieKeys),
-    { collapsed: undefined, theme: undefined, locale: undefined }
+    { theme: undefined, locale: undefined }
   );
+});
+
+function PinsControllerFixture({ events, productId, initialPins }: { events: string[]; productId: string; initialPins?: readonly string[] }) {
+  const controller = useProductShellController({
+    productId,
+    initialPins,
+    onPinsChange: (pins) => events.push(`pins:${pins.join(",")}`)
+  });
+  return (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      navGroups={pinGroups}
+      locales={shellLocales}
+      {...controller.productShellControlProps}
+    >
+      <button type="button" data-move-first="" onClick={() => controller.movePin("g7", 0)}>
+        Move
+      </button>
+    </ProductShell>
+  );
+}
+
+// Seven pinnable groups, each a link-free group with one page under it.
+const pinGroups: ProductShellNavGroup[] = ["g1", "g2", "g3", "g4", "g5", "g6", "g7"].map((id) => ({
+  id,
+  label: id.toUpperCase(),
+  items: [{ id: `${id}-page`, label: `${id.toUpperCase()} page`, href: `/${id}` }]
+}));
+
+test("STORY-140 GWT3 pinning a seventh entry keeps it in the preference while the band shows six, and a drag's order persists", async () => {
+  const harness = createDomInteractionHarness();
+  const events: string[] = [];
+  try {
+    harness.window.localStorage.clear();
+    await harness.render(<PinsControllerFixture events={events} productId="tms" initialPins={["g1", "g2", "g3", "g4", "g5", "g6"]} />);
+    assert.equal(harness.document.querySelectorAll("[data-pins] [data-pin]").length, 6);
+
+    // Pin the seventh from the full menu: the preference keeps it, the band still shows six.
+    const brand = harness.document.querySelector("[data-shell-brand]");
+    assert.ok(brand instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchClick(brand);
+    const pin = harness.document.querySelector('[data-panel="expanded"] [data-shell-group] [aria-label$="G7"][data-pin-button]');
+    assert.ok(pin instanceof harness.window.HTMLButtonElement, "the seventh group has a pin in the full menu");
+    await harness.dispatchClick(pin);
+    assert.equal(events[events.length - 1], "pins:g1,g2,g3,g4,g5,g6,g7");
+    assert.equal(harness.window.localStorage.getItem("tcrn-shell-pins:tms"), JSON.stringify(["g1", "g2", "g3", "g4", "g5", "g6", "g7"]));
+    assert.deepEqual(
+      [...harness.document.querySelectorAll("[data-pins] [data-pin]")].map((element) => element.getAttribute("data-pin")),
+      ["g1", "g2", "g3", "g4", "g5", "g6"]
+    );
+    assert.ok(harness.document.querySelector('[data-shell-pinned-group] [data-shell-row]'), "the menu lists the pinned entries");
+
+    // The end of a drag: the order is saved to the local fallback and told to the product.
+    const move = harness.document.querySelector("[data-move-first]");
+    assert.ok(move instanceof harness.window.HTMLButtonElement);
+    await harness.dispatchClick(move);
+    assert.equal(events[events.length - 1], "pins:g7,g1,g2,g3,g4,g5,g6");
+    assert.equal(harness.window.localStorage.getItem("tcrn-shell-pins:tms"), JSON.stringify(["g7", "g1", "g2", "g3", "g4", "g5", "g6"]));
+    assert.deepEqual(
+      [...harness.document.querySelectorAll("[data-pins] [data-pin]")].map((element) => element.getAttribute("data-pin")),
+      ["g7", "g1", "g2", "g3", "g4", "g5"]
+    );
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("pins are read back per product: the server preference first, then that product's local fallback", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    harness.window.localStorage.clear();
+    harness.window.localStorage.setItem("tcrn-shell-pins:tms", JSON.stringify(["g2", "g1"]));
+    harness.window.localStorage.setItem("tcrn-shell-pins:einzbern", "not a list");
+    const readings: Record<string, readonly string[]> = {};
+    function Reader({ productId, pins }: { productId: string; pins?: readonly string[] }) {
+      readings[`${productId}:${pins ? "server" : "local"}`] = useProductShellController({ productId, requestPreferences: { pins } }).pins;
+      return null;
+    }
+    await harness.render(
+      <>
+        <Reader productId="tms" />
+        <Reader productId="tms" pins={["g3"]} />
+        <Reader productId="einzbern" />
+      </>
+    );
+    assert.deepEqual(readings["tms:local"], ["g2", "g1"]);
+    assert.deepEqual(readings["tms:server"], ["g3"], "the product's backend outranks the local copy");
+    assert.deepEqual(readings["einzbern:local"], [], "another product's key, and a garbage value is no preference");
+    assert.equal(harness.document.cookie.includes("pins"), false, "pins never go into a cookie");
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+// Type-level only: each retired prop is an error, so a line here that compiles again fails the build.
+test("STORY-140 GWT5 the side rail, collapse and pinned-open props are rejected by the types", () => {
+  const base: ProductShellProps = {
+    productName: "TCRN TMS",
+    moduleName: "Talent",
+    brandProductId: "tms",
+    currentRouteLabel: "Roster",
+    navGroups: [],
+    locales: shellLocales,
+    currentLocale: "en",
+    children: null
+  };
+  const retired: ProductShellProps[] = [
+    // @ts-expect-error the shell has no side rail
+    { ...base, sidebar: true },
+    // @ts-expect-error the rail's collapsed state is retired
+    { ...base, collapsed: true },
+    // @ts-expect-error the collapsed state is no longer stored
+    { ...base, collapsedStorageKey: "tcrn-side-nav-collapsed" },
+    // @ts-expect-error there is nothing to collapse
+    { ...base, onCollapsedChange: () => undefined },
+    // @ts-expect-error there is no collapse control to disable
+    { ...base, sideNavCollapseDisabledReason: "Pinned open" },
+    // @ts-expect-error the mobile drawer went with the rail
+    { ...base, mobileNavExpanded: true },
+    // @ts-expect-error the mobile drawer went with the rail
+    { ...base, onMobileNavExpandedChange: () => undefined },
+    // @ts-expect-error the rail's navigation id and name went with it
+    { ...base, navId: "tcrn-product-shell-side-nav" },
+    // @ts-expect-error the rail's navigation id and name went with it
+    { ...base, navLabel: "Modules" },
+    // @ts-expect-error the rail's brand link went with it
+    { ...base, brandHref: "/" },
+    // @ts-expect-error products pass their key, not brand copy
+    { ...base, brandSuffix: "Design team" },
+    // @ts-expect-error the top bar's search field is the full menu's search
+    { ...base, search: {} }
+  ];
+  assert.equal(retired.length, 12);
+  const config: ProductShellControllerConfig[] = [
+    // @ts-expect-error the controller keeps no collapsed state
+    { initialCollapsed: true },
+    // @ts-expect-error the controller keeps no collapsed state
+    { collapsedStorageKey: "tcrn-side-nav-collapsed" },
+    // @ts-expect-error the controller keeps no collapsed state
+    { onCollapsedChange: () => undefined }
+  ];
+  assert.equal(config.length, 3);
+  // @ts-expect-error a request carries no collapsed preference
+  const request: ProductShellRequestPreferences = { collapsed: true };
+  assert.ok(request);
+  // @ts-expect-error the cookie reader has no collapsed key
+  assert.deepEqual(readPreferenceCookieValues("tcrn-side-nav-collapsed=true", { collapsedKey: "tcrn-side-nav-collapsed" }), { theme: undefined, locale: undefined });
 });
 
 

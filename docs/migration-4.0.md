@@ -473,6 +473,79 @@ Do: remove reads of the two retired names.
 
 Source: 4d0dfde (TCRN-DS-SUB-105), 95f0e09 (TCRN-DS-SUB-066); handoff P3 (r3).
 
+### M20 · `ProductShell` is the top band; the side rail and its props are removed
+
+Change: `ProductShell` has one layout (the second batch, TCRN-DS-INIT-016): a 52px top
+band with no fill and no rule over the paper. The band holds the brand button, which
+opens the full menu (`ShellMenu`); the pinned items (`ShellPins`, with a `ShellDropdown`
+for a pinned group or submenu); and the top-right cluster: the product's
+`headerActions`, the bell and the avatar. The paper is 12px from the shell's sides and
+bottom, under the band, with the paper radius and the s1 shadow, and the page scrolls
+inside it. The side rail, its collapse control, the mobile drawer toggle, the top bar
+with its current-location caption and search field, and composition one's desktop
+geometry (M18: the 220 and 52 rail, the 16 and 48 lead column, the sheet beside the
+rail) are gone, and so are the rail tokens' last readers in the shell rules. The theme
+toggle and the language menu moved into the avatar menu, beside the product switcher
+(`products`); the full menu and its lockup list no products. The shell's search is the
+full menu's.
+
+Removed props, now type errors: `collapsed`, `collapsedStorageKey`,
+`onCollapsedChange`, `sideNavCollapseDisabledReason`, `mobileNavExpanded`,
+`onMobileNavExpandedChange`, `navId`, `navLabel`, `brandHref`, `brandSuffix`,
+`brandCaption`, `brandMarkSrc`, `brandMarkAlt`, `currentLocationLabel`,
+`currentLocationLabelKey`, `search`, `onSearchExpandedChange`, `onSearchDismiss` and
+`onSearchResultActivate`.
+
+Changed: `brandProductId` is required and is a product mark id (`tms`, `einzbern`,
+`mana-orchestrate`, `design-system`, the logos2 marks); a product passes its key and no
+brand copy. `aos` has no logos2 mark, so an AOS shell has no brand button yet (an open
+item). `ProductShellNavGroup` and `ProductShellNavItem` extend `ShellMenuGroup` and
+`ShellMenuItem`: an item takes `children` (the third level, and theirs the fourth), its
+`href` is optional when it has children, and `disabled`, `disabledReason` and `depth`
+are gone (the nesting is the depth). The selected entry is the one with
+`selected: true`; the shell derives the selected row, the selected pin and the current
+position from it.
+
+New props: `pinnedIds` and `onPinnedChange`, `account`, `products`, `notifications`,
+`menuOpen` and `onMenuOpenChange`, `openPinId` and `onOpenPinChange`,
+`accountMenuOpen` and `onAccountMenuOpenChange`, `searchPlaceholder` and
+`searchProvider`. The root carries `data-shell`, `data-state` (`closed`, `expanded`,
+`drop`), `data-package-backed-product-shell-boundary="top-band-shell-v2"` and
+`data-product-shell-pattern="top-band"`; `data-product-shell-collapsed`,
+`data-side-nav-collapsed`, `data-mobile-nav-expanded` and
+`data-product-shell-responsive` are gone.
+
+Do: remove the retired props; pass a mark id; serve search results through
+`searchProvider`; keep passing the theme and locale props, which now render in the
+avatar menu; re-baseline screenshots and geometry assertions of product shell screens.
+`SideNavCollapseButton` and `MobileNavToggle` stay exported until their own retirement
+entry.
+
+Source: caf6cfa (TCRN-DS-SUB-119); handoff P1c (INIT-016 r1).
+
+### M21 · Shell preferences: `collapsed` leaves, the pins arrive
+
+Change: `ProductShellRequestPreferences` is `{ theme, locale, pins }`. `collapsed` is
+gone; `pins` is new: the ordered ids of the pinned groups, items and submenus.
+`readPreferenceCookieValues(header, { themeKey, localeKey })` reads the theme and the
+locale only; `collapsedKey` is gone and no cookie key was added. The pins are a server
+preference per user and per product: the product's backend passes them as
+`requestPreferences.pins` and stores what `onPinsChange` reports. The controller keeps
+a local fallback in `localStorage` under `pinsStorageKey` (by default
+`tcrn-shell-pins:<productId>`) and never in a cookie. The band shows the first six
+(`--tcrn-shell-pins-max`); a seventh pin is kept and the full menu marks it.
+`useProductShellController` no longer takes `initialCollapsed`, `collapsedStorageKey`,
+`onCollapsedChange` or `navId`, and takes `productId`, `initialPins`, `pinsStorageKey`
+and `onPinsChange`. It returns `pins`, `setPins`, `setPinned` and `movePin` (where a
+drag ends) instead of `collapsed`, `setCollapsed`, `toggleCollapsed`,
+`sideNavCollapseButtonProps`, `mobileNavExpanded` and `setMobileNavExpanded`;
+`productShellControlProps` carries `pinnedIds` and `onPinnedChange`.
+
+Do: stop reading and writing the collapsed cookie; pass `productId`; pass the pins from
+your backend and store the list `onPinsChange` reports.
+
+Source: TCRN-DS-SUB-120; handoff P1c (INIT-016 r1).
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is

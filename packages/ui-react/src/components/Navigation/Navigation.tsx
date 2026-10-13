@@ -2167,28 +2167,40 @@ export function ProductShell({
 }
 
 /**
- * The three preferences a request may carry, already parsed and narrowed.
+ * The preferences a request may carry, already parsed and narrowed: the two display
+ * preferences of the preference cookies (theme and locale, which
+ * `readPreferenceCookieValues` reads) and the reader's pinned items in this product.
  *
  * Each field is either a value in its own domain or absent. Absent means "the
  * request did not state this preference", so the controller's `initial*` fallback
  * stands — which is why garbage narrows to `undefined` here rather than to a
  * default: a cookie that cannot be trusted must not outrank the product's own
  * fallback.
+ *
+ * The pins are not a cookie preference. They are a server preference per user and
+ * per product that follows the reader across devices, so the product's backend keeps
+ * them and passes them here; the package defines only how they are read and written,
+ * and keeps a local copy as the fallback. The order is the reader's: groups, items
+ * and submenus can be pinned, the band shows the first --tcrn-shell-pins-max (6) and
+ * the full menu marks the rest as pinned.
  */
 export interface ProductShellRequestPreferences {
-  collapsed?: boolean | undefined;
   theme?: ShellThemeMode | undefined;
   locale?: TcrnLocale | undefined;
+  pins?: readonly string[] | undefined;
 }
 
 export interface ProductShellControllerConfig {
-  initialCollapsed?: boolean;
   initialTheme?: ShellThemeMode;
   initialLocale?: string;
-  navId?: string;
-  collapsedStorageKey?: string;
+  /** Pinned ids when neither the request nor the local fallback has any. */
+  initialPins?: readonly string[];
+  /** The product the pins belong to: the local fallback keeps each product's pins under its own key. */
+  productId?: string;
   themeStorageKey?: string;
   localeStorageKey?: string;
+  /** Key of the pins' local fallback (the browser's own store, never a cookie); `tcrn-shell-pins:<productId>` when omitted. */
+  pinsStorageKey?: string;
   /**
    * The request's stored preferences, for a server-rendered product.
    *
@@ -2201,9 +2213,10 @@ export interface ProductShellControllerConfig {
    * Parsed values, deliberately not the raw `Cookie` header. An earlier shape of
    * this prop took the whole header, which handed the design system every cookie
    * the consumer's requests carry — including any future session credential — when
-   * all it may hold is three display preferences. `readPreferenceCookieValues`
+   * all it may hold is two display preferences. `readPreferenceCookieValues`
    * does the narrowing on the consumer's server, so what crosses the package
-   * boundary is exactly the three values this controller governs.
+   * boundary from the cookie is exactly the two values this controller governs.
+   * The pins never travel in a cookie: the product's backend passes them as `pins`.
    *
    * A query parameter still outranks this. The product resolves that itself and
    * passes the winner as `initialTheme`/`initialLocale`, because only the product
@@ -2216,7 +2229,8 @@ export interface ProductShellControllerConfig {
   requestPreferences?: ProductShellRequestPreferences | undefined;
   searchRecords?: readonly ProductShellSearchResult[];
   searchLimit?: number;
-  onCollapsedChange?: (collapsed: boolean) => void;
+  /** Told the pins after every change, in order, for the product's backend to keep. */
+  onPinsChange?: (pins: readonly string[]) => void;
   onThemeChange?: (theme: ShellThemeMode) => void;
   onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
   onLocaleChange?: (locale: string) => void;
@@ -2227,17 +2241,17 @@ export interface ProductShellControllerConfig {
 }
 
 export function useProductShellController({
-  initialCollapsed = false,
   initialTheme = "light",
   initialLocale = "en",
-  navId = "tcrn-product-shell-side-nav",
-  collapsedStorageKey,
+  initialPins,
+  productId,
   themeStorageKey,
   localeStorageKey,
+  pinsStorageKey,
   requestPreferences,
   searchRecords = [],
   searchLimit = 8,
-  onCollapsedChange,
+  onPinsChange,
   onThemeChange,
   onLocaleMenuOpenChange,
   onLocaleChange,
@@ -2246,26 +2260,48 @@ export function useProductShellController({
   onSearchDismiss,
   onSearchResultActivate
 }: ProductShellControllerConfig = {}) {
-  const [collapsed, setCollapsedState] = useState(
-    () => readStoredBoolean(collapsedStorageKey, initialCollapsed, requestPreferences?.collapsed));
+  // The product's backend is the store of record for the pins; the local copy, kept per product,
+  // answers only when the request carries none.
+  const pinsKey = pinsStorageKey ?? (productId ? `tcrn-shell-pins:${productId}` : undefined);
+  const [pins, setPinsState] = useState<readonly string[]>(
+    () => requestPreferences?.pins ?? readStoredPins(pinsKey) ?? initialPins ?? []);
+  const pinsRef = useRef(pins);
   const [theme, setThemeState] = useState<ShellThemeMode>(
     () => readStoredTheme(themeStorageKey, initialTheme, requestPreferences?.theme));
   const [locale, setLocaleState] = useState(
     () => readStoredLocale(localeStorageKey, initialLocale, requestPreferences?.locale));
   const [localeMenuOpen, setLocaleMenuOpenState] = useState(false);
-  // Transient by construction: no storage key, no initial* input, no cookie.
-  // Every mobile page load starts with the navigation put away, which is what
-  // lets the closed state be the CSS default and the server render be correct
-  // before any script runs.
-  const [mobileNavExpanded, setMobileNavExpandedState] = useState(false);
   const [searchQuery, setSearchQueryState] = useState("");
   const [searchExpanded, setSearchExpandedState] = useState(false);
 
-  const setCollapsed = useCallback((nextCollapsed: boolean) => {
-    setCollapsedState(nextCollapsed);
-    writeStoredBoolean(collapsedStorageKey, nextCollapsed);
-    onCollapsedChange?.(nextCollapsed);
-  }, [collapsedStorageKey, onCollapsedChange]);
+  // Every change goes to the local fallback and to the product, which keeps the server
+  // preference. Ids are unique and the order is the reader's; nothing is dropped past the
+  // sixth, which the band does not show and the full menu marks as pinned.
+  const setPins = useCallback((nextPins: readonly string[]) => {
+    const unique = [...new Set(nextPins)];
+    pinsRef.current = unique;
+    setPinsState(unique);
+    writeStoredPins(pinsKey, unique);
+    onPinsChange?.(unique);
+  }, [onPinsChange, pinsKey]);
+
+  /** Pins an entry (a group, an item or a submenu) at the end of the order, or unpins it. */
+  const setPinned = useCallback((id: string, pinned: boolean) => {
+    const current = pinsRef.current;
+    if (pinned === current.includes(id)) return;
+    setPins(pinned ? [...current, id] : current.filter((entry) => entry !== id));
+  }, [setPins]);
+
+  /** Moves a pin to a new place in the order: where a drag in the band or the menu ends. */
+  const movePin = useCallback((id: string, toIndex: number) => {
+    const current = pinsRef.current;
+    const from = current.indexOf(id);
+    if (from < 0) return;
+    const rest = current.filter((entry) => entry !== id);
+    const to = Math.max(0, Math.min(Math.trunc(toIndex), rest.length));
+    if (to === from) return;
+    setPins([...rest.slice(0, to), id, ...rest.slice(to)]);
+  }, [setPins]);
 
   const setTheme = useCallback((nextTheme: ShellThemeMode) => {
     const resolvedTheme = nextTheme === "dark" ? "dark" : "light";
@@ -2327,10 +2363,6 @@ export function useProductShellController({
 
   const searchResults = useMemo(() => searchProvider(searchQuery, []), [searchProvider, searchQuery]);
 
-  const toggleCollapsed = useCallback(() => {
-    setCollapsed(!collapsed);
-  }, [collapsed, setCollapsed]);
-
   const toggleTheme = useCallback(() => {
     setTheme(theme === "dark" ? "light" : "dark");
   }, [setTheme, theme]);
@@ -2369,13 +2401,6 @@ export function useProductShellController({
     onThemeChange: setTheme
   };
 
-  const sideNavCollapseButtonProps = {
-    collapsed,
-    controls: navId,
-    persistedKey: collapsedStorageKey,
-    onCollapsedChange: setCollapsed
-  };
-
   // What ProductShell takes from the controller. The shell's search is the full menu's: it asks the
   // provider for the results of the query typed there.
   const productShellControlProps = {
@@ -2386,13 +2411,16 @@ export function useProductShellController({
     onLocaleMenuOpenChange: setLocaleMenuOpen,
     onLocaleChange: setLocale,
     onSearchQueryChange: setSearchQuery,
-    searchProvider: searchRecords.length > 0 ? searchProvider : undefined
+    searchProvider: searchRecords.length > 0 ? searchProvider : undefined,
+    pinnedIds: pins,
+    onPinnedChange: setPinned
   } satisfies Partial<ProductShellProps>;
 
   return {
-    collapsed,
-    setCollapsed,
-    toggleCollapsed,
+    pins,
+    setPins,
+    setPinned,
+    movePin,
     theme,
     setTheme,
     toggleTheme,
@@ -2402,25 +2430,21 @@ export function useProductShellController({
     setLocaleMenuOpen,
     openLocaleMenu,
     closeLocaleMenu,
-    mobileNavExpanded,
-    setMobileNavExpanded: setMobileNavExpandedState,
     searchQuery,
     setSearchQuery,
     searchExpanded,
     setSearchExpanded,
     collapseSearch,
     searchResults,
-    sideNavCollapseButtonProps,
     shellThemeToggleProps,
     shellLocaleMenuProps,
     productShellSearchProps,
     productShellControlProps,
     productShellStateProps: {
-      collapsed,
       currentTheme: theme,
       currentLocale: locale,
       localeMenuOpen,
-      mobileNavExpanded
+      pinnedIds: pins
     }
   };
 }
@@ -2462,10 +2486,26 @@ function readStoredPreference(key: string | undefined): string | null {
   return readCookiePreference(key, readDocumentCookieHeader());
 }
 
-function readStoredBoolean(key: string | undefined, fallback: boolean, requestValue?: boolean): boolean {
-  const value = readStoredPreference(key);
-  if (value !== null) return value === "true";
-  return requestValue ?? fallback;
+/**
+ * The pins' local fallback: the browser's own store and never a cookie, because the
+ * request carries display preferences only. A stored value that is not a list of ids
+ * is no preference.
+ */
+function readStoredPins(key: string | undefined): readonly string[] | undefined {
+  if (!key || typeof window === "undefined") return undefined;
+  const stored = window.localStorage.getItem(key);
+  if (stored === null) return undefined;
+  try {
+    const parsed: unknown = JSON.parse(stored);
+    return Array.isArray(parsed) && parsed.every((entry) => typeof entry === "string") ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function writeStoredPins(key: string | undefined, pins: readonly string[]) {
+  if (!key || typeof window === "undefined") return;
+  window.localStorage.setItem(key, JSON.stringify(pins));
 }
 
 function readStoredTheme(
@@ -2481,8 +2521,8 @@ function readStoredTheme(
 /**
  * Locale is the one preference whose stored value is attacker-writable and lands
  * somewhere that matters: it becomes `<html lang>` and the dictionary index. The
- * theme and collapsed readers each narrow to their own domain (`dark`/`light`,
- * `true`/`false`); this one narrows through the locale contract, so a consumer
+ * theme reader narrows to its own domain (`dark`/`light`); this one narrows
+ * through the locale contract, so a consumer
  * that does not re-resolve it downstream inherits a supported locale regardless
  * of what the store said.
  */
@@ -2494,7 +2534,9 @@ function readStoredLocale(key: string | undefined, fallback: string, requestValu
 
 /**
  * The server-side half of preference transport: the raw `Cookie` header goes in,
- * three narrowed values come out, and nothing else crosses into the shell.
+ * two narrowed values (theme and locale) come out, and nothing else crosses into
+ * the shell. The pins are not read here: they are the product's server preference
+ * and reach the controller as `requestPreferences.pins`.
  *
  * Narrowing to `undefined` rather than to a default is deliberate: an absent or
  * garbage cookie means "the request stated no preference", and the product's own
@@ -2506,26 +2548,19 @@ function readStoredLocale(key: string | undefined, fallback: string, requestValu
 export function readPreferenceCookieValues(
   cookieHeader: string | undefined,
   keys: {
-    collapsedKey?: string | undefined;
     themeKey?: string | undefined;
     localeKey?: string | undefined;
   }
 ): ProductShellRequestPreferences {
   const header = cookieHeader ?? "";
-  const collapsedValue = keys.collapsedKey ? readCookiePreference(keys.collapsedKey, header) : null;
   const themeValue = keys.themeKey ? readCookiePreference(keys.themeKey, header) : null;
   const localeValue = keys.localeKey ? readCookiePreference(keys.localeKey, header) : null;
   return {
-    collapsed: collapsedValue === "true" ? true : collapsedValue === "false" ? false : undefined,
     theme: themeValue === "dark" || themeValue === "light" ? themeValue : undefined,
     locale: localeValue !== null && (tcrnSupportedLocales as readonly string[]).includes(localeValue)
       ? (localeValue as TcrnLocale)
       : undefined
   };
-}
-
-function writeStoredBoolean(key: string | undefined, value: boolean) {
-  writeStoredString(key, String(value));
 }
 
 /**
