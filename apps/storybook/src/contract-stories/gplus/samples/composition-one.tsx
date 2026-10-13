@@ -1,12 +1,20 @@
-// Composition one ("one sheet") for the five first-batch sample stories: the D section of each B1
-// board (typography, icon, brand, actions, inputs) rebuilt from package components.
+// Composition one ("one sheet") for the five first-batch sample stories: the D section of each board
+// (typography, icon, brand, actions, inputs) rebuilt from package components on the top-band shell
+// (TCRN-DS-SUB-134; MIN-20261013-SHELL D1 and D4).
 //
-// The shell is the package ProductShell; this module adds no styles and sets no shell parameter.
-// Since TCRN-DS-SUB-119 the shell is the top band and the paper (one shell, no side rail), so the
-// rail marks this module used to add (data-guide="rail", data-text="rail") have no subject and are
-// gone with the rail; the samples are re-rendered on the top-band shell by TCRN-DS-SUB-134.
+// The shell is the package ProductShell in its one state, the top band and the paper, set up as the
+// boards' D-section screens are (docs/design/gplus-2026-10/tools/shell-screen.mjs sampleScreens; 07a
+// board, sections A1 and A2): the TMS brand button, the pinned Roster, Contracts, Statements and
+// Schedule, the bell with three unread and the avatar, and the boards' menu model (People, Operations,
+// System). Each sample sets the board's trail (parent › page); the actions sample's page is the Roster
+// entry, so its pin is the current one. The paper's first row is the sample's page header
+// (TCRN-DS-SUB-129), then the page. This module adds no styles and sets no shell parameter.
+// The shell root carries the C-5 hooks the frame measurement reads (data-shell with data-state, the
+// band's data-shell-strip, data-paper); data-shell is the board's screen name (ty-l, ty-n, ...). The
+// side rail and its guide column went with composition one, so every sample shell opts out of the rail
+// measurement with data-measure-skip="rail" (INIT-016 R1 decomposition problem 24); the full menu's guide
+// column is read by the shell gate.
 import {
-  Avatar,
   Badge,
   Button,
   ButtonGroup,
@@ -32,12 +40,15 @@ import {
   tcrnProductTagline,
   type IconName,
   type PageHeaderProps,
-  type TcrnProductLogoId,
-  type TcrnProductMarkId
+  type ProductShellAccount,
+  type ProductShellNavGroup,
+  type ProductShellNavItem,
+  type ProductShellNotifications,
+  type TcrnProductLogoId
 } from "@tcrn/ui-react";
 import { tcrnDefaultLocale, tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import type { ReactNode } from "react";
-import { StaticMarkup, type MarkupEdit } from "../matrix-renderer.js";
+import { StaticMarkup } from "../matrix-renderer.js";
 
 export type GplusSampleBoard = "typography" | "icon" | "brand" | "actions" | "inputs";
 export type GplusSampleTheme = "light" | "night";
@@ -47,7 +58,7 @@ export const gplusSampleThemes: readonly GplusSampleTheme[] = ["light", "night"]
 const themeAttribute: Record<GplusSampleTheme, "light" | "dark"> = { light: "light", night: "dark" };
 const themeSuffix: Record<GplusSampleTheme, "l" | "n"> = { light: "l", night: "n" };
 
-/** data-shell prefix per board, as on the canvas boards (ty-l, ic-n, ...). */
+/** data-shell prefix per board, as on the boards' D-section screens (ty-l, ic-n, ...). */
 export const gplusSampleShellKeys: Readonly<Record<GplusSampleBoard, string>> = {
   typography: "ty",
   icon: "ic",
@@ -56,68 +67,113 @@ export const gplusSampleShellKeys: Readonly<Record<GplusSampleBoard, string>> = 
   inputs: "in"
 };
 
-interface RailItem {
-  id: string;
-  label: string;
-  iconName: IconName;
+// The boards' pinned items (PINS) and menu model (NAV): People, Operations and System, down to the
+// fourth level under Contracts › Templates. Rows with a next level open it and carry no href.
+const samplePinnedIds: readonly string[] = ["roster", "contracts", "statements", "schedule"];
+const sampleAccount: ProductShellAccount = { name: "Lin Xiao", initials: "LX" };
+const sampleNotifications: ProductShellNotifications = { unread: 3 };
+
+function sampleNavGroups(storyId: string, selected: string | null): ProductShellNavGroup[] {
+  const href = `#${storyId}`;
+  const entry = (id: string, label: string, iconName?: IconName, children?: ProductShellNavItem[]): ProductShellNavItem => ({
+    id,
+    label,
+    ...(children ? { children } : { href }),
+    ...(iconName ? { iconName } : {}),
+    ...(id === selected ? { selected: true } : {})
+  });
+  return [
+    {
+      id: "people",
+      label: "People",
+      items: [
+        entry("roster", "Roster", "users"),
+        entry("teams", "Teams", "layers"),
+        entry("contracts", "Contracts", "book-open", [
+          entry("all-contracts", "All contracts"),
+          entry("templates", "Templates", undefined, [
+            entry("signing-contracts", "Signing contracts"),
+            entry("agency-contracts", "Agency contracts"),
+            entry("event-contracts", "Event contracts"),
+            entry("confidentiality-agreements", "Confidentiality agreements")
+          ]),
+          entry("approvals", "Approvals"),
+          entry("expiry-reminders", "Expiry reminders")
+        ]),
+        entry("statements", "Statements", "database")
+      ]
+    },
+    {
+      id: "operations",
+      label: "Operations",
+      items: [
+        entry("schedule", "Schedule", "calendar", [entry("this-week", "This week"), entry("month-view", "Month view"), entry("conflict-check", "Conflict check")]),
+        entry("live-streams", "Live streams", "globe-2"),
+        entry("events", "Events", "package"),
+        entry("reports", "Reports", "layout-grid")
+      ]
+    },
+    {
+      id: "system",
+      label: "System",
+      items: [
+        entry("members", "Members", "users"),
+        entry("permissions", "Permissions", "shield-check"),
+        entry("settings", "Settings", "settings"),
+        entry("audit-log", "Audit log", "history")
+      ]
+    }
+  ];
 }
 
-interface SampleShellSpec {
+/** What a sample (or composition three) gives the shell; the rest is the boards' shell. */
+export interface GplusSampleShellSpec {
   moduleName: string;
-  locationLabel: string;
-  routeLabel: string;
-  selected: string;
-  workspace: readonly RailItem[];
-  brandProductId?: TcrnProductMarkId;
-  headerActions?: ReactNode;
-  /** Accessible name of the shell's navigation and content region: the sample's own name. */
+  /** Accessible name of the shell's content region: the sample's own name. */
   landmarkLabel: string;
+  /** Name of the current page. */
+  routeLabel: string;
+  /** The menu entry that is the current page (its pin is the current one); null when the menu holds no such entry. */
+  selected: string | null;
+  /** The board's trail, parent › page, for a page the menu model does not hold; omitted, the trail is the current position. */
+  trail?: readonly [string, string];
 }
 
-const teamItems: readonly RailItem[] = [{ id: "settings", label: "Settings", iconName: "settings" }];
-
-const railItem = {
-  workbench: { id: "workbench", label: "Workbench", iconName: "home" },
-  projects: { id: "projects", label: "Projects", iconName: "layout-grid" },
-  members: { id: "members", label: "Members", iconName: "users" },
-  library: { id: "library", label: "Library", iconName: "book-open" },
-  billing: { id: "billing", label: "Billing", iconName: "database" },
-  data: { id: "data", label: "Data", iconName: "database" },
-  products: { id: "products", label: "Products", iconName: "package" }
-} satisfies Record<string, RailItem>;
-
-// The five samples share one page, each with a light and a night shell, so every shell names its
-// navigation and content region after its sample and the night shell adds the block name. Shared
-// names ("Main navigation", the route label) would give the page sets of identical landmarks.
+// The samples share one page, each with a light and a night shell, so every shell names its content
+// region after its sample and the night shell adds the block name. Shared names would give the page
+// sets of identical landmarks.
 const landmarkSuffix: Record<GplusSampleTheme, string> = { light: "", night: " (night)" };
 
-function SampleShell({ storyId, board, theme, spec, children }: { storyId: string; board: GplusSampleBoard; theme: GplusSampleTheme; spec: SampleShellSpec; children: ReactNode }) {
+/**
+ * One themed block: the package ProductShell in the boards' set-up with the page in its paper. The night
+ * block differs from the light block only in data-tcrn-theme on its wrapper and in its landmark name;
+ * the shell's own theme control reports the theme it is showing, as the board's night screen does.
+ */
+export function GplusSampleShell({ storyId, shellName, theme, spec, pageHeader, attributes, children }: { storyId: string; shellName: string; theme: GplusSampleTheme; spec: GplusSampleShellSpec; pageHeader: PageHeaderProps; attributes?: Readonly<Record<string, string>>; children: ReactNode }) {
   const prefix = `${storyId}-${theme}`;
-  const landmarkLabel = `${spec.landmarkLabel}${landmarkSuffix[theme]}`;
-  const withSelection = (items: readonly RailItem[]) => items.map((item) => ({ ...item, href: `#${storyId}`, selected: item.id === spec.selected }));
-  // The night block differs from the light block only in data-tcrn-theme on its wrapper and in its
-  // landmark names; the shell's own theme control reports the theme it is showing, as the canvas
-  // night screen does.
+  const header: PageHeaderProps = spec.trail
+    ? { ...pageHeader, breadcrumbs: [{ id: `${prefix}-trail-parent`, label: spec.trail[0], href: `#${storyId}` }, { id: `${prefix}-trail-page`, label: spec.trail[1] }] }
+    : pageHeader;
   const shell = (
     <ProductShell
-      productName="Design team"
+      productName="TCRN TMS"
       moduleName={spec.moduleName}
-      brandProductId={spec.brandProductId ?? "design-system"}
+      brandProductId="tms"
       currentRouteLabel={spec.routeLabel}
-      pageHeader={samplePageHeaders[board]}
-      navGroups={[
-        { id: "workspace", label: "Workspace", items: withSelection(spec.workspace) },
-        { id: "team", label: "Team", items: withSelection(teamItems) }
-      ]}
+      pageHeader={header}
+      navGroups={sampleNavGroups(storyId, spec.selected)}
       locales={tcrnLocaleMetadata}
       currentLocale={tcrnDefaultLocale}
       currentTheme={themeAttribute[theme]}
-      searchPlaceholder="Search"
-      headerActions={spec.headerActions}
+      account={sampleAccount}
+      notifications={sampleNotifications}
+      pinnedIds={samplePinnedIds}
+      onPinnedChange={() => undefined}
       contentId={`${prefix}-content`}
-      contentLabel={landmarkLabel}
-      data-shell={`${gplusSampleShellKeys[board]}-${themeSuffix[theme]}`}
-      data-gplus-sample-shell={board}
+      contentLabel={`${spec.landmarkLabel}${landmarkSuffix[theme]}`}
+      data-shell={`${shellName}-${themeSuffix[theme]}`}
+      data-measure-skip="rail"
+      {...attributes}
     >
       <div className="tcrn-product-shell-content-stack">{children}</div>
     </ProductShell>
@@ -128,8 +184,6 @@ function SampleShell({ storyId, board, theme, spec, children }: { storyId: strin
     </div>
   );
 }
-
-const userAvatar = <Avatar name="Lin Xiao" size="small" />;
 
 function mono(value: string) {
   return <Text className="tcrn-text--mono">{value}</Text>;
@@ -216,8 +270,8 @@ const projectColumns = [
   { key: "actions", label: "Actions" }
 ];
 
-// Icon — project list: six rail icons, three top-bar icons, header and toolbar icons, pagination
-// and row-end arrows.
+// Icon — project list: the shell's band icons (bell, menu toggle), header and toolbar icons,
+// pagination and row-end arrows.
 function IconProjectsPage() {
   return (
     <>
@@ -246,7 +300,8 @@ function IconProjectsPage() {
 
 const registeredProducts: readonly TcrnProductLogoId[] = ["design-system", "tms", "einzbern", "mana-orchestrate"];
 
-// Brand — product page: the rail lockup at 22, product lockups in the table at 28, a footnote.
+// Brand — product page: the brand button's first row (mark 22 and wordmark) in the band, product
+// lockups in the table at 28, a footnote.
 // The board's asset ID column is left out: the design-system asset ID spells the repository name,
 // which the rendered-text vocabulary scan rejects on every page.
 function BrandProductsPage() {
@@ -280,9 +335,18 @@ function copiedClipboard(storyId: string, theme: GplusSampleTheme, text: string)
   );
 }
 
-// Actions — project page: quiet, secondary and primary in the header, two ButtonGroups and a
-// LinkButton in the toolbar, ClipboardCopyButton and IconButton in rows, danger at the bottom.
-function ActionsProjectsPage({ storyId, theme }: { storyId: string; theme: GplusSampleTheme }) {
+// Actions — roster page, as on the board's D section since TCRN-DS-SUB-133: quiet, secondary and
+// primary in the header (History, Export, Invite members), two ButtonGroups and a LinkButton in the
+// toolbar, ClipboardCopyButton (the first row copied) and IconButton in rows, and the selection's danger
+// zone at the bottom. The board's second row (a Latin name) is a roster neighbour with a Hangul name, so
+// the zh-CN page carries no Latin run (see the storybook map, DIFF-11).
+const rosterRows = [
+  { name: "星野ひかり", id: "hoshino", team: "Team A", status: <Badge tone="positive">Signed</Badge> },
+  { name: "김하늘", id: "kim", team: "Team C", status: <Badge tone="warning">Trial</Badge> },
+  { name: "陈嘉怡", id: "chen", team: "Team B", status: <Badge tone="positive">Signed</Badge> }
+];
+
+function ActionsRosterPage({ storyId, theme }: { storyId: string; theme: GplusSampleTheme }) {
   return (
     <>
       <div className="tcrn-doc-action-row">
@@ -290,33 +354,43 @@ function ActionsProjectsPage({ storyId, theme }: { storyId: string; theme: Gplus
           <IconButton ariaLabel="List" iconName="menu" size="sm" aria-pressed="true" />
           <IconButton ariaLabel="Grid" iconName="layout-grid" size="sm" aria-pressed="false" />
         </ButtonGroup>
-        <ButtonGroup ariaLabel="Period">
-          <Button size="sm" aria-pressed="false">Day</Button>
-          <Button size="sm" aria-pressed="true">Week</Button>
-          <Button size="sm" aria-pressed="false">Month</Button>
+        <ButtonGroup ariaLabel="Status">
+          <Button size="sm" aria-pressed="true">All</Button>
+          <Button size="sm" aria-pressed="false">Signed</Button>
+          <Button size="sm" aria-pressed="false">Trial</Button>
         </ButtonGroup>
-        <LinkButton variant="quiet" size="sm" href={`#${storyId}`}>View all 12<Icon name="arrow-right" /></LinkButton>
+        <LinkButton variant="quiet" size="sm" href={`#${storyId}`}>View all 24<Icon name="arrow-right" /></LinkButton>
       </div>
       <TableShell
-        label="Projects"
-        columns={projectColumns}
-        rows={projectRows((id, index) => (
-          <div className="tcrn-doc-action-row">
-            {index === 0
-              ? copiedClipboard(storyId, theme, id)
-              : <ClipboardCopyButton text={id} ariaLabel="Copy ID" idleLabel="Copy ID" variant="quiet" size="sm" />}
-            <IconButton ariaLabel="Open" iconName="arrow-right" variant="quiet" size="sm" />
-          </div>
-        )).slice(0, 3)}
+        label="Roster"
+        columns={[
+          { key: "talent", label: "Talent" },
+          { key: "team", label: "Team" },
+          { key: "status", label: "Status" },
+          { key: "actions", label: "Actions" }
+        ]}
+        rows={rosterRows.map((row, index) => ({
+          talent: projectCell(row.name, row.id),
+          team: <Text>{row.team}</Text>,
+          status: row.status,
+          actions: (
+            <div className="tcrn-doc-action-row">
+              {index === 0
+                ? copiedClipboard(storyId, theme, row.id)
+                : <ClipboardCopyButton text={row.id} ariaLabel="Copy ID" idleLabel="Copy ID" variant="quiet" size="sm" />}
+              <IconButton ariaLabel="Open" iconName="arrow-right" variant="quiet" size="sm" />
+            </div>
+          )
+        }))}
       />
       <div className="tcrn-doc-form-stack" data-gplus-sample-danger-zone="true">
         <div>
-          <Text tone="strong">Delete this project</Text>
-          <Text size="meta">Deleted projects can be restored from the trash for 30 days, then they are removed permanently.</Text>
+          <Text tone="strong">1 selected</Text>
+          <Text size="meta">Removing someone from the roster keeps their contracts and statements; they can be restored within 30 days.</Text>
         </div>
         <div className="tcrn-doc-action-row">
-          <Button variant="secondary">Archive</Button>
-          <Button variant="danger"><Icon name="trash" />Delete project</Button>
+          <Button variant="secondary">Cancel selection</Button>
+          <Button variant="danger"><Icon name="trash" />Remove from roster</Button>
         </div>
       </div>
     </>
@@ -336,7 +410,7 @@ const inviteProjectOptions = [
 ];
 
 // Inputs — invite members: Input, Select, MultiSelect, NumberInput, DatePicker, Textarea,
-// RadioGroup, Switch and Checkbox, with the top-bar SearchInput from the shell.
+// RadioGroup, Switch and Checkbox; the shell's search is in its full menu.
 function InviteMembersPage({ storyId, theme }: { storyId: string; theme: GplusSampleTheme }) {
   return (
     <>
@@ -405,71 +479,29 @@ const samplePageHeaders: Readonly<Record<GplusSampleBoard, PageHeaderProps>> = {
     meta: <Button variant="quiet"><Icon name="external-link" />Brand assets</Button>
   },
   actions: {
-    title: "Projects",
-    description: "12 projects · 3 archived",
+    title: "Roster",
+    description: "24 people · 3 to invite",
     meta: (
       <div className="tcrn-doc-action-row">
         <Button variant="quiet"><Icon name="history" />History</Button>
         <Button variant="secondary">Export<Icon name="external-link" /></Button>
-        <Button variant="primary"><Icon name="plus" />New project</Button>
+        <Button variant="primary"><Icon name="plus" />Invite members</Button>
       </div>
     )
   },
   inputs: { title: "Invite members", description: "Joining Design team · seats 86 / 120" }
 };
 
-const sampleSpecs: Readonly<Record<GplusSampleBoard, SampleShellSpec>> = {
-  typography: {
-    moduleName: "Billing",
-    landmarkLabel: "Typography sample: billing",
-    locationLabel: "Design team",
-    routeLabel: "Billing",
-    selected: "billing",
-    workspace: [railItem.workbench, railItem.projects, railItem.library, railItem.billing],
-    headerActions: userAvatar
-  },
-  icon: {
-    moduleName: "Projects",
-    landmarkLabel: "Icon sample: projects",
-    locationLabel: "Design team",
-    routeLabel: "Projects",
-    selected: "projects",
-    workspace: [railItem.workbench, railItem.projects, railItem.members, railItem.library, railItem.data],
-    headerActions: (
-      <>
-        <IconButton ariaLabel="Notifications" iconName="bell" variant="quiet" />
-        {userAvatar}
-      </>
-    )
-  },
-  brand: {
-    moduleName: "Products",
-    landmarkLabel: "Brand sample: products",
-    locationLabel: "Design team",
-    routeLabel: "Products",
-    selected: "products",
-    workspace: [railItem.workbench, railItem.projects, railItem.products, railItem.library],
-    brandProductId: "design-system",
-    headerActions: userAvatar
-  },
-  actions: {
-    moduleName: "Projects",
-    landmarkLabel: "Actions sample: projects",
-    locationLabel: "Design team",
-    routeLabel: "Projects",
-    selected: "projects",
-    workspace: [railItem.workbench, railItem.projects, railItem.library, railItem.data],
-    headerActions: userAvatar
-  },
-  inputs: {
-    moduleName: "Members",
-    landmarkLabel: "Inputs sample: invite members",
-    locationLabel: "Members",
-    routeLabel: "Invite",
-    selected: "members",
-    workspace: [railItem.workbench, railItem.projects, railItem.members, railItem.data],
-    headerActions: userAvatar
-  }
+// The trails are the boards' D-section crumbs: Settings › Billing, Operations › Projects, People ›
+// Roster (the menu's Roster entry, so the trail is its current position and its pin is current) and
+// Members › Invite. The brand board has no D section (decomposition problem 4); its trail is the brand
+// generator's sample crumbs, Design team › Products.
+const sampleSpecs: Readonly<Record<GplusSampleBoard, GplusSampleShellSpec>> = {
+  typography: { moduleName: "Billing", landmarkLabel: "Typography sample: billing", routeLabel: "Billing", selected: null, trail: ["Settings", "Billing"] },
+  icon: { moduleName: "Projects", landmarkLabel: "Icon sample: projects", routeLabel: "Projects", selected: null, trail: ["Operations", "Projects"] },
+  brand: { moduleName: "Products", landmarkLabel: "Brand sample: products", routeLabel: "Products", selected: null, trail: ["Design team", "Products"] },
+  actions: { moduleName: "Roster", landmarkLabel: "Actions sample: roster", routeLabel: "Roster", selected: "roster" },
+  inputs: { moduleName: "Members", landmarkLabel: "Inputs sample: invite members", routeLabel: "Invite", selected: null, trail: ["Members", "Invite"] }
 };
 
 function SamplePage({ board, storyId, theme }: { board: GplusSampleBoard; storyId: string; theme: GplusSampleTheme }) {
@@ -481,18 +513,18 @@ function SamplePage({ board, storyId, theme }: { board: GplusSampleBoard; storyI
     case "brand":
       return <BrandProductsPage />;
     case "actions":
-      return <ActionsProjectsPage storyId={storyId} theme={theme} />;
+      return <ActionsRosterPage storyId={storyId} theme={theme} />;
     case "inputs":
       return <InviteMembersPage storyId={storyId} theme={theme} />;
   }
 }
 
-/** One themed block: the composition-one shell with the board's page inside. */
+/** One themed block: the top-band shell with the board's page in its paper. */
 export function GplusSampleBlock({ board, storyId, theme }: { board: GplusSampleBoard; storyId: string; theme: GplusSampleTheme }) {
   return (
-    <SampleShell storyId={storyId} board={board} theme={theme} spec={sampleSpecs[board]}>
+    <GplusSampleShell storyId={storyId} shellName={gplusSampleShellKeys[board]} theme={theme} spec={sampleSpecs[board]} pageHeader={samplePageHeaders[board]} attributes={{ "data-gplus-sample-shell": board }}>
       <SamplePage board={board} storyId={storyId} theme={theme} />
-    </SampleShell>
+    </GplusSampleShell>
   );
 }
 
