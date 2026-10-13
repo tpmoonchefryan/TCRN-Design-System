@@ -1,5 +1,6 @@
-import { T, cr, fmt, icon, shell, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
+import { T, cr, fmt, icon, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
 import { typography as TY } from "./data.mjs";
+import { sampleScreens, SAMPLE_CSS } from "./shell-screen.mjs";
 
 // type scale from contract/typography.json
 const H = Object.fromEntries(TY.headings.map((h) => [h.level, h]));
@@ -195,7 +196,7 @@ const motion = kvTable([
   ["字体加载", "font-display swap", "—", "—", "—", "回退字体同度量级（Noto Sans SC / Noto Serif SC），避免换字跳动"]
 ], [200, 260, 90, 220, 220]);
 
-// ---------- composition sample ----------
+// ---------- composition sample: the top-band shell, the same screen() as the Shell boards (shell-screen.mjs) ----------
 function sampleBody() {
   return `<div class="ph"><h2 class="h2" style="font-size:26px;line-height:1.1">账单</h2><span class="sub">2026 年 10 月 · 按席位计费</span><span class="act"><span class="caps" style="color:var(--ink-3)">INV-2026-10-0031</span></span></div>
 <div class="stats">
@@ -216,17 +217,7 @@ function sampleBody() {
 </tbody></table>
 <p class="tx meta">按席位计费，每月 1 日生成；年付在当期账单中一次扣除。查看 <a class="lnk" href="#h">计费说明</a> 或 <a class="lnk" href="#i">下载发票</a>。</p>`;
 }
-const nav = [
-  { id: "home", icon: "home", label: "工作台" },
-  { id: "projects", icon: "layout-grid", label: "项目", count: "12" },
-  { id: "library", icon: "book-open", label: "资料库" },
-  { id: "billing", icon: "database", label: "账单", on: true },
-  { group: "团队" },
-  { id: "settings", icon: "settings", label: "设置" }
-];
-const brandHtml = `<div class="brand"><span class="mk" data-guide="rail" style="border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;color:var(--on-acc);font-family:var(--serif);font-weight:500;font-size:13px">T</span><span><b data-text="rail">TCRN 设计组</b><small>团队 · 12 人</small></span></div>`;
-const topbar = `<div class="cmd" style="position:relative;display:flex;align-items:center;width:220px;height:28px;padding:0 8px 0 28px;border-radius:7px;background:var(--wash);color:var(--ink-3);font-size:12px;white-space:nowrap;overflow:hidden">${icon("search", { size: 13, attrs: 'style="position:absolute;left:9px"' })}搜索<kbd style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:4px;padding:0 4px">⌘K</kbd></div>`;
-const samples = `<div class="two">${shell({ id: "ty-l", night: false, nav, brandHtml, topbar, body: sampleBody(), crumbs: ["设计组", "账单"] })}${shell({ id: "ty-n", night: true, nav, brandHtml, topbar, body: sampleBody(), crumbs: ["设计组", "账单"] })}</div>`;
+const samples = sampleScreens({ id: "ty", crumbs: ["设置", "账单"], body: () => sampleBody() });
 
 // ---------- consumer + diff ----------
 const consumer = `<div class="cols3">
@@ -274,7 +265,7 @@ const body = `
 <div>
 <p class="k">Batch one · 01 / 05 · Typography</p>
 <h1>字体：衬线标题与数字，怪诞体正文，等宽编号<em>，两种新样式</em></h1>
-<p>Heading、Text、Highlight 三件现有组件换到 G+ 字体底盘，并加入「衬线数字」与「小型大写标签」两种样式。上半部分是浅色与夜间两套同一规则的静态样张，中间是逐格算出的对比度矩阵与动效规范，下半部分是放进构图一壳层的账单页样板，最后是消费方契约与 token 差异。</p>
+<p>Heading、Text、Highlight 三件现有组件换到 G+ 字体底盘，并加入「衬线数字」与「小型大写标签」两种样式。上半部分是浅色与夜间两套同一规则的静态样张，中间是逐格算出的对比度矩阵与动效规范，下半部分是放进顶带壳的账单页样板，最后是消费方契约与 token 差异。</p>
 </div>
 <div class="meta"><b>Hanken Grotesk 13/20 · Source Serif 4 300/400 · IBM Plex Mono 11.5</b>中文 Noto Sans SC / Noto Serif SC；五款全部 SIL OFL 1.1，可商用、可打包，产品须自托管<b>文字对比 ≥ 4.5 · 边线与点 ≥ 3</b>矩阵里每格由脚本算出，夜间同一属性集只换值<b>单行元素一律截断加 title</b>标题、标签、表头、编号不折行</div>
 </header>
@@ -286,7 +277,7 @@ const body = `
 
 <div class="sec"><h3><b>C</b>动效规范 <span>字体家族本身几乎不动；只有链接与焦点环有过渡</span></h3>${motion}</div>
 
-<div class="sec"><h3><b>D</b>组合样板 · 构图一 <span>账单页：页头衬线标题、指标衬线数字、区段编号标签、表格等宽编号、搜索命中与链接</span></h3>${samples}</div>
+<div class="sec"><h3><b>D</b>组合样板 · 顶带壳 <span>账单页：纸内首行面包屑，页头衬线标题、指标衬线数字、区段编号标签、表格等宽编号、搜索命中与链接；左浅色、右夜间，壳几何同壳层板顶带态</span></h3>${samples}</div>
 
 <div class="sec"><h3><b>E</b>消费方须提供什么 · 何时用与不用 <span>每件一句话摘要在前</span></h3>${consumer}</div>
 
@@ -295,4 +286,4 @@ const body = `
 <div class="sec"><h3><b>G</b>许可与分发 <span>字体、图标、品牌标各自能不能商用、能不能打进包</span></h3>${license}</div>
 `;
 
-write("V2-B1-Typography.dc.html", page({ title: "字体 Typography · 第一批", css, body, height }));
+write("V2-B1-Typography.dc.html", page({ title: "字体 Typography · 第一批", css: css + SAMPLE_CSS, body, height }));

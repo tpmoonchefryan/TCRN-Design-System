@@ -1,7 +1,9 @@
 // Top-band shell screen shared by the Shell boards (07a, 07b) and the section D samples of the Typography, Icon,
 // Actions and Inputs boards: brand assets from the approved Logos board, the strip, the full menu, the pinned
-// dropdown, the paper and the phone, with the CSS they need. Moved out of build-shell2.mjs unchanged
-// (TCRN-DS-SUB-133): build-shell2 imports it, and the two Shell boards it writes stay byte-identical.
+// dropdown, the paper and the phone, with the CSS they need. Moved out of build-shell2.mjs (TCRN-DS-SUB-133):
+// build-shell2 imports it and the two Shell boards it writes stay byte-identical; strip() and screen() gained
+// optional current / demo / paper parameters whose defaults give the old output. sampleScreens() renders a
+// family board section D sample: the closed top band (light and night) around that board product page.
 // Side effect free: it reads logos2/tms.svg once and writes nothing.
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -169,15 +171,18 @@ export function groupRow(name, { pinned = false, hover = false } = {}, cells = "
   return `<div class="ts-grp${hover ? " is-hover" : ""}"><h6${cells}>${name}</h6><button type="button" class="ts-pinb${pinned ? " on" : ""}" aria-pressed="${pinned ? "true" : "false"}" aria-label="${pinned ? "从顶带取下" : "固定到顶带"}：${name}">${pin(pinned)}</button></div>`;
 }
 export const PINS = [["名册", { on: true }], ["合约", { menu: true }], ["结算单", {}], ["排期", { menu: true }]];
-export function strip(t, th, { open = false, drop = null, v1 = false } = {}) {
+// current：哪个固定项是当前页（不传 = PINS 里的 on；null = 当前页不在固定项里）；demo = false 时不画第 3 项的静态悬停（样板用）
+export function strip(t, th, { open = false, drop = null, v1 = false, current, demo = true } = {}) {
   const P = t.bg; const F = open ? t.hover : P;
   const brand = `<button type="button" class="ts-brand${open ? " open" : ""}${v1 ? " v1" : ""}" aria-label="${open ? "收起导航" : "展开导航"} · TCRN TMS" aria-expanded="${open ? "true" : "false"}" aria-haspopup="dialog" data-h="40" data-tab>${mark(22, "tms", ' data-guide="tab"')}${v1 ? "" : `<b${cell("brand-word", t.ink, F, P, "text", th)}>${wm(cell("brand-suffix", DEEP.tms, F, P, "text", th))}</b>`}<span class="ts-tgl"${cell("tgl", t.ink2, F, P, "icon", th)}>${chev(open ? "up" : "down", 16)}</span></button>`;
   const pins = `<nav class="ts-pins" aria-label="固定项" data-pins>${PINS.map(([l, o], i) => {
     const isOpen = drop === l;
-    const cls = `ts-pin-it${o.on ? " on" : ""}${isOpen ? " open" : ""}${i === 2 && !drop ? " is-hover" : ""}`;
-    const c = o.on ? cell("pin-on", t.ink, t.wash, P, "text", th) : i === 2 && !drop ? cell("pin-hover", t.ink, t.hover, P, "text", th) : i === 2 ? cell("pin-rest", t.ink2, P, P, "text", th) : "";
+    const on = current === undefined ? o.on : l === current;
+    const hov = demo && i === 2 && !drop;
+    const cls = `ts-pin-it${on ? " on" : ""}${isOpen ? " open" : ""}${hov ? " is-hover" : ""}`;
+    const c = on ? cell("pin-on", t.ink, t.wash, P, "text", th) : hov ? cell("pin-hover", t.ink, t.hover, P, "text", th) : i === 2 ? cell("pin-rest", t.ink2, P, P, "text", th) : "";
     if (o.menu) return `<span class="ts-pin" data-pin="${l}"><button type="button" class="${cls}" aria-haspopup="dialog" aria-expanded="${isOpen ? "true" : "false"}" aria-controls="drop-${l}"${c}${isOpen ? cell("pin-open", t.ink, t.wash, P, "text", th) : ""}${isOpen ? " data-open-pin" : ""}>${l}${chev("down", 12, i === 1 && !isOpen ? cell("pin-chev", t.ink3, P, P, "icon", th) : "")}</button></span>`;
-    return `<span class="ts-pin" data-pin="${l}"><a class="${cls}" href="#${l}"${o.on ? ' aria-current="page"' : ""}${c}>${l}</a></span>`;
+    return `<span class="ts-pin" data-pin="${l}"><a class="${cls}" href="#${l}"${on ? ' aria-current="page"' : ""}${c}>${l}</a></span>`;
   }).join("")}</nav>`;
   return `<div class="ts-strip">${brand}${pins}<div class="ts-cluster" data-cluster><button type="button" class="ts-ib" aria-label="通知 · 3 条未读"${cell("bell", t.ink2, P, P, "icon", th)}>${icon("bell", { size: 20 })}<i class="ts-dot" aria-hidden="true"></i></button><button type="button" class="ts-av" aria-label="林晓 · 账户、切换产品、主题与语言"${cell("avatar", t.avInk, t.avBg, P, "text", th)}>林</button></div></div>`;
 }
@@ -194,7 +199,8 @@ export function dropdown(t, th, name) {
   const col2 = sub ? `<div class="ts-drop2" role="group" aria-label="${sub[0]}" data-drop2>${groupRow(sub[0])}${sub[1].children.map(([l], i) => item(l, null, {}, i === 0 ? cell("drop2-rest", t.ink2, P, P, "text", th) : "")).join("")}</div>` : "";
   return `<div class="ts-drop" role="dialog" id="drop-${name}" aria-label="${name}" data-panel="drop"><div class="ts-srch" data-h="28">${icon("search", { size: 14 })}<span class="ph2"${cell("drop-srch", t.ink2, t.wash, P, "text", th)}>搜索${name}</span><kbd>⌘K</kbd></div>${rows}${col2}</div>`;
 }
-export function screen({ id, night, state }) {
+// paper(t, th)：纸内内容（不传 = 名册页）；current、demo 传给 strip
+export function screen({ id, night, state, paper = paperBody, current, demo = true }) {
   const t = night ? T.night : T.light; const th = night ? "n" : "l"; const P = t.panel;
   let panel = "";
   if (state === "expanded") {
@@ -212,8 +218,8 @@ export function screen({ id, night, state }) {
   return `<div class="scr gp ts${night ? " night" : ""}" data-shell="${id}" data-state="${state}">
 ${grain("g-" + id)}
 <div class="lay">
-${strip(t, th, { open: state === "expanded", drop: state === "drop" ? "合约" : null })}
-<div class="ts-paper" data-paper><div class="ts-content">${paperBody(t, th)}</div></div>
+${strip(t, th, { open: state === "expanded", drop: state === "drop" ? "合约" : null, current, demo })}
+<div class="ts-paper" data-paper><div class="ts-content">${paper(t, th)}</div></div>
 ${panel}${state === "drop" ? dropdown(t, th, "合约") : ""}
 </div>
 </div>`;
@@ -236,3 +242,17 @@ ${sh}
 </div>`;
 }
 export const shot = (html, title, note) => `<div class="shot">${html}<div class="cap"><b>${title}</b><span>${note}</span></div></div>`;
+
+// ---------- 四板 D 段样板：同一 screen()，顶带态，纸内是该板的通用产品页（账单、项目、名册、邀请成员）----------
+// 样板不是矩阵来源：去掉 data-cell、data-kind、data-expect（各板的 data-cell 只属 A 段，contract-proof 逐格比对格数与值）
+const plain = (html) => html.replace(/ data-cell="[^"]*" data-kind="[^"]*" data-expect="[^"]*"/g, "");
+export const crumbRow = ([parent, current]) => `<div class="ts-crumbs"><a href="#a">${parent}</a>${chev("right", 11)}<b>${current}</b></div>`;
+export function sampleScreen({ id, night = false, crumbs, body, current = null }) {
+  return plain(screen({ id, night, state: "closed", current, demo: false, paper: () => crumbRow(crumbs) + "\n" + body }));
+}
+/** D 段两屏：左浅色、右夜间，每屏 1240 × 640，几何同壳层板 A1、A2；body(th) 返回纸内内容（th = "l" | "n"） */
+export function sampleScreens({ id, crumbs, body, current = null }) {
+  return `<div class="screens gp">${sampleScreen({ id: id + "-l", night: false, crumbs, body: body("l"), current })}${sampleScreen({ id: id + "-n", night: true, crumbs, body: body("n"), current })}</div>`;
+}
+// 四板接在自己的 css 之后；注释只给生成器读者看，不进板
+export const SAMPLE_CSS = SCREEN_CSS.replace(/\/\*[\s\S]*?\*\/\n?/g, "");

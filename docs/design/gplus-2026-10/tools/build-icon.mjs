@@ -1,5 +1,6 @@
-import { T, cr, fmt, icon, ICON_NAMES, ICON_NEW, shell, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
+import { T, cr, fmt, icon, ICON_NAMES, ICON_NEW, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
 import { matrixCell } from "./data.mjs";
+import { sampleScreens, SAMPLE_CSS } from "./shell-screen.mjs";
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
 
@@ -149,6 +150,7 @@ const motion = kvTable([
   ["禁止", "缩放、弹跳、描边动画、颜色闪烁", "—", "—", "—", "图标是文字的一部分，不是动画对象"]
 ], [300, 240, 110, 220, 230]);
 
+// ---------- composition sample: the top-band shell, the same screen() as the Shell boards (shell-screen.mjs) ----------
 function sampleBody() {
   const rowsHtml = [
     ["季度复盘", "PRJ-2026-0391", "设计组", "ok", "活跃", "2 分钟前", true],
@@ -162,19 +164,7 @@ function sampleBody() {
 <thead><tr><th>项目</th><th>团队</th><th>状态</th><th class="r">最近活跃</th><th></th></tr></thead><tbody>${rowsHtml}</tbody></table>
 <div class="tfoot"><span>1 到 4 · 共 12</span></div>`;
 }
-const nav = [
-  { id: "home", icon: "home", label: "工作台" },
-  { id: "projects", icon: "layout-grid", label: "项目", count: "12", on: true },
-  { id: "members", icon: "users", label: "成员", count: "24" },
-  { id: "library", icon: "book-open", label: "资料库" },
-  { id: "data", icon: "database", label: "数据" },
-  { group: "团队" },
-  { id: "settings", icon: "settings", label: "设置" }
-];
-const brandHtml = `<div class="brand"><span class="mk" data-guide="rail" style="border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;color:var(--on-acc);font-family:var(--serif);font-weight:500;font-size:13px">T</span><span><b data-text="rail">TCRN 设计组</b><small>团队 · 12 人</small></span></div>`;
-const topbar = `<div class="cmd">${icon("search", { size: 13 })}搜索<kbd>⌘K</kbd></div><button class="ib" type="button" aria-label="通知">${icon("bell", { size: 16 })}</button><button class="ib" type="button" aria-label="夜间模式">${icon("moon", { size: 16 })}</button><button class="ib" type="button" aria-label="语言">${icon("globe-2", { size: 16 })}</button>`;
-const topbarN = `<div class="cmd">${icon("search", { size: 13 })}搜索<kbd>⌘K</kbd></div><button class="ib" type="button" aria-label="通知">${icon("bell", { size: 16 })}</button><button class="ib" type="button" aria-label="日间模式">${icon("sun", { size: 16 })}</button><button class="ib" type="button" aria-label="语言">${icon("globe-2", { size: 16 })}</button>`;
-const samples = `<div class="two">${shell({ id: "ic-l", night: false, nav, brandHtml, topbar, body: sampleBody(), crumbs: ["设计组", "项目"] })}${shell({ id: "ic-n", night: true, nav, brandHtml, topbar: topbarN, body: sampleBody(), crumbs: ["设计组", "项目"] })}</div>`;
+const samples = sampleScreens({ id: "ic", crumbs: ["运营", "项目"], body: () => sampleBody() });
 
 const consumer = `<div class="cols3">
 <div class="box"><h4>Icon <small>name · size sm|md|lg|number · decorative · title</small></h4><p class="lead">一句话：按名册名字取一枚 20 格 1.25px 描边的线性图标，颜色继承文字色，默认装饰性（aria-hidden）。</p><ul><li><b>须提供</b>：<code>name</code>（tcrnIconNames 之一）；独立表意时给 <code>title</code> 或 <code>aria-label</code>，组件自动改为 role="img"。</li><li><b>尺寸</b>：sm 14、md 16、lg 20 或数字；描边恒 1.25px，不随尺寸变。<code>strokeWidth</code> 覆盖建议移除（现包允许），否则名册规则失效。</li><li><b>容器</b>：由按钮、导航项、输入框、说明文字提供对齐（inline-flex 居中）。</li><li><b>用</b>：导航、按钮、工具栏、状态提示、空状态标题前。</li><li><b>不用</b>：当状态色块（状态用 6px 点加文字）；当品牌标；当插画。</li></ul></div>
@@ -200,7 +190,7 @@ const body = `
 <div>
 <p class="k">Batch one · 02 / 05 · Icon</p>
 <h1>图标：名册 28 件，20 格 1.25px 描边<em>，颜色永远继承文字</em></h1>
-<p>Icon 组件与 tcrnIconNames 名册按 G+ 的「更细的图标」重绘：20 格、活动区 16、描边 1.25px 且不随尺寸缩放、圆头圆角。名册从 28 件扩到 37 件（plus、minus、users、bell、copy、trash、calendar、more-horizontal、chevron-up，Owner 2026-10-11 定）。图标没有自己的状态，只跟随宿主控件的 fill 与 ink 对；矩阵里列的是图标会落到的每一种底色。样板是构图一壳层里的项目列表页，只用名册里的名字。</p>
+<p>Icon 组件与 tcrnIconNames 名册按 G+ 的「更细的图标」重绘：20 格、活动区 16、描边 1.25px 且不随尺寸缩放、圆头圆角。名册从 28 件扩到 37 件（plus、minus、users、bell、copy、trash、calendar、more-horizontal、chevron-up，Owner 2026-10-11 定）。图标没有自己的状态，只跟随宿主控件的 fill 与 ink 对；矩阵里列的是图标会落到的每一种底色。样板是顶带壳里的项目列表页，只用名册里的名字。</p>
 </div>
 <div class="meta"><b>名册 37 件 · 三档 14 / 16 / 20 · 描边恒 1.25px</b>28 件现有 + 9 件新增，名册仍是封闭集合<b>图标与点 ≥ 3 · 文字 ≥ 4.5</b>每格由脚本算出，夜间只换值<b>加载循环 900ms linear，其余 120 / 240ms</b>不缩放、不弹跳、不描边动画</div>
 </header>
@@ -212,11 +202,11 @@ const body = `
 
 <div class="sec"><h3><b>C</b>动效规范 <span>图标不是动画对象；只有加载环转动与跟随宿主的换色</span></h3>${motion}</div>
 
-<div class="sec"><h3><b>D</b>组合样板 · 构图一 <span>项目列表：侧栏六枚、顶栏三枚、页头两枚、工具栏与分页、行尾箭头</span></h3>${samples}</div>
+<div class="sec"><h3><b>D</b>组合样板 · 顶带壳 <span>项目列表：顶带的展开示意、固定项下拉箭头与通知，页头按钮、工具栏与分页、行尾更多与打开；左浅色、右夜间，壳几何同壳层板顶带态</span></h3>${samples}</div>
 
 <div class="sec"><h3><b>E</b>消费方须提供什么 · 何时用与不用 <span>Icon、名册、名册缺口</span></h3>${consumer}</div>
 
 <div class="sec"><h3><b>F</b>与 G+ 底盘的 token 差异 <span>现值取自 packages/ui-react/src/components/Icon/Icon.tsx 与 tokens.css</span></h3>${diff}</div>
 `;
 
-write("V2-B1-Icon.dc.html", page({ title: "图标 Icon · 第一批", css, body, height }));
+write("V2-B1-Icon.dc.html", page({ title: "图标 Icon · 第一批", css: css + SAMPLE_CSS, body, height }));
