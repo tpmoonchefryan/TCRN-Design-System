@@ -1,7 +1,7 @@
 {
   "schemaVersion": "tcrn.ds.geometry-measure-proof.v1",
   "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
-  "ok": true,
+  "ok": false,
   "reason": null,
   "thresholds": {
     "clip": {
@@ -45,6 +45,7 @@
     "shellFrame": {
       "paperInsetPx": 12,
       "topBarHeightPx": 52,
+      "paperRadiusPx": 14,
       "tolerancePx": 0.5
     }
   },
@@ -96,7 +97,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -189,7 +190,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 1,
@@ -282,7 +283,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -406,7 +407,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -499,7 +500,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -592,7 +593,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -685,7 +686,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -840,7 +841,7 @@
           "contrast": "fail",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -964,7 +965,7 @@
           "contrast": "pass",
           "controlHeight": "fail",
           "overlap": "pass",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -1057,7 +1058,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "fail",
-          "shellFrame": "pass"
+          "shellFrame": "n/a"
         },
         "values": {
           "clip": 0,
@@ -1081,7 +1082,7 @@
         "statuses": {
           "clip": "n/a",
           "singleLine": "n/a",
-          "shadowBlur": "n/a",
+          "shadowBlur": "pass",
           "rail": "n/a",
           "rowAlign": "n/a",
           "mark": "n/a",
@@ -1093,7 +1094,7 @@
         "values": {
           "clip": 0,
           "singleLine": 0,
-          "shadowBlur": 0,
+          "shadowBlur": 2,
           "rail": 0,
           "rowAlign": 0,
           "mark": 0,
@@ -1138,28 +1139,28 @@
       },
       {
         "id": "shell-frame-paper-flush-mutation",
-        "file": "all.green.html",
+        "file": "shellFrame.green.html",
         "mutation": true,
         "statuses": {
-          "clip": "pass",
-          "singleLine": "pass",
+          "clip": "n/a",
+          "singleLine": "n/a",
           "shadowBlur": "pass",
-          "rail": "pass",
-          "rowAlign": "pass",
-          "mark": "pass",
-          "contrast": "pass",
-          "controlHeight": "pass",
-          "overlap": "pass",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
           "shellFrame": "fail"
         },
         "values": {
           "clip": 0,
-          "singleLine": 1,
-          "shadowBlur": 3,
+          "singleLine": 0,
+          "shadowBlur": 2,
           "rail": 0,
           "rowAlign": 0,
           "mark": 0,
-          "contrast": 0,
+          "contrast": null,
           "controlHeight": 0,
           "overlap": 0,
           "shellFrame": 12
@@ -1168,32 +1169,94 @@
         "problems": []
       },
       {
-        "id": "shell-frame-top-bar-68-mutation",
-        "file": "all.green.html",
+        "id": "shell-frame-top-band-rule-mutation",
+        "file": "shellFrame.green.html",
         "mutation": true,
         "statuses": {
-          "clip": "pass",
-          "singleLine": "pass",
+          "clip": "n/a",
+          "singleLine": "n/a",
           "shadowBlur": "pass",
-          "rail": "pass",
-          "rowAlign": "pass",
-          "mark": "pass",
-          "contrast": "pass",
-          "controlHeight": "pass",
-          "overlap": "pass",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
           "shellFrame": "fail"
         },
         "values": {
           "clip": 0,
-          "singleLine": 1,
-          "shadowBlur": 3,
+          "singleLine": 0,
+          "shadowBlur": 2,
           "rail": 0,
           "rowAlign": 0,
           "mark": 0,
-          "contrast": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 1
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-top-band-68-mutation",
+        "file": "shellFrame.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "pass",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 2,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
           "controlHeight": 0,
           "overlap": 0,
           "shellFrame": 16
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-paper-radius-mutation",
+        "file": "shellFrame.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "n/a",
+          "singleLine": "n/a",
+          "shadowBlur": "pass",
+          "rail": "n/a",
+          "rowAlign": "n/a",
+          "mark": "n/a",
+          "contrast": "n/a",
+          "controlHeight": "n/a",
+          "overlap": "n/a",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 0,
+          "shadowBlur": 2,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": null,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 14
         },
         "ok": true,
         "problems": []
@@ -1589,6 +1652,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -1890,6 +1954,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -2083,6 +2148,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -2908,6 +2974,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -3291,6 +3358,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -3303,30 +3371,49 @@
       "storyId": "typography-sample-billing",
       "theme": "light",
       "route": "/components-gplus-samples.html#typography-sample-billing",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "contrast",
           "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -3347,7 +3434,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -3417,6 +3504,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -3429,32 +3517,51 @@
       "storyId": "icon-sample-project",
       "theme": "light",
       "route": "/components-gplus-samples.html#icon-sample-project",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "mark",
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "mark",
           "contrast",
           "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -3475,7 +3582,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -3545,6 +3652,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -3557,32 +3665,51 @@
       "storyId": "brand-sample-product",
       "theme": "light",
       "route": "/components-gplus-samples.html#brand-sample-product",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "mark",
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "mark",
           "contrast",
           "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -3603,7 +3730,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -3673,6 +3800,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -3685,32 +3813,51 @@
       "storyId": "actions-sample-project",
       "theme": "light",
       "route": "/components-gplus-samples.html#actions-sample-project",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "mark",
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "mark",
           "contrast",
           "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -3731,7 +3878,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -3801,6 +3948,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -3813,9 +3961,12 @@
       "storyId": "inputs-sample-members",
       "theme": "light",
       "route": "/components-gplus-samples.html#inputs-sample-members",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "rowAlign",
         "mark",
         "contrast",
@@ -3823,9 +3974,12 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "rowAlign",
           "mark",
           "contrast",
@@ -3833,14 +3987,27 @@
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -3861,7 +4028,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -3931,6 +4098,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -3943,36 +4111,51 @@
       "storyId": "composition-three-sample",
       "theme": "light",
       "route": "/components-gplus-samples.html#composition-three-sample",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
         "rail",
         "mark",
         "contrast",
-        "controlHeight",
-        "shellFrame"
+        "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
           "rail",
           "mark",
           "contrast",
-          "controlHeight",
-          "shellFrame"
+          "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -3985,7 +4168,7 @@
           },
           "shadowBlur": {
             "status": "pass",
-            "value": 3,
+            "value": 1,
             "limit": {
               "maxBlurPx": 3
             },
@@ -4058,11 +4241,12 @@
             "violations": []
           },
           "shellFrame": {
-            "status": "n/a",
+            "status": "pass",
             "value": 0,
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -4458,6 +4642,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -4759,6 +4944,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -4952,6 +5138,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -5777,6 +5964,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -6160,6 +6348,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -6172,30 +6361,49 @@
       "storyId": "typography-sample-billing",
       "theme": "dark",
       "route": "/components-gplus-samples.html#typography-sample-billing",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "contrast",
           "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -6216,7 +6424,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -6286,6 +6494,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -6298,32 +6507,51 @@
       "storyId": "icon-sample-project",
       "theme": "dark",
       "route": "/components-gplus-samples.html#icon-sample-project",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "mark",
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "mark",
           "contrast",
           "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -6344,7 +6572,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -6414,6 +6642,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -6426,32 +6655,51 @@
       "storyId": "brand-sample-product",
       "theme": "dark",
       "route": "/components-gplus-samples.html#brand-sample-product",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "mark",
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "mark",
           "contrast",
           "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -6472,7 +6720,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -6542,6 +6790,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -6554,32 +6803,51 @@
       "storyId": "actions-sample-project",
       "theme": "dark",
       "route": "/components-gplus-samples.html#actions-sample-project",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "mark",
         "contrast",
         "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "mark",
           "contrast",
           "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -6600,7 +6868,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -6670,6 +6938,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -6682,9 +6951,12 @@
       "storyId": "inputs-sample-members",
       "theme": "dark",
       "route": "/components-gplus-samples.html#inputs-sample-members",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
+        "rail",
         "rowAlign",
         "mark",
         "contrast",
@@ -6692,9 +6964,12 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
+          "rail",
           "rowAlign",
           "mark",
           "contrast",
@@ -6702,14 +6977,27 @@
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -6730,7 +7018,7 @@
             "violations": []
           },
           "rail": {
-            "status": "pass",
+            "status": "n/a",
             "value": 0,
             "limit": {
               "guideLeftPx": 16,
@@ -6800,6 +7088,7 @@
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -6812,36 +7101,51 @@
       "storyId": "composition-three-sample",
       "theme": "dark",
       "route": "/components-gplus-samples.html#composition-three-sample",
-      "ok": true,
-      "failed": [],
+      "ok": false,
+      "failed": [
+        "clip"
+      ],
       "notApplicable": [
         "rail",
         "mark",
         "contrast",
-        "controlHeight",
-        "shellFrame"
+        "controlHeight"
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": true,
-        "failed": [],
+        "ok": false,
+        "failed": [
+          "clip"
+        ],
         "notApplicable": [
           "rail",
           "mark",
           "contrast",
-          "controlHeight",
-          "shellFrame"
+          "controlHeight"
         ],
         "checks": {
           "clip": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 2,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 2,
+            "violations": [
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              },
+              {
+                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
+                "ancestor": "b.tcrn-shell-brand__word",
+                "byPx": 1,
+                "text": "TMS"
+              }
+            ]
           },
           "singleLine": {
             "status": "pass",
@@ -6854,7 +7158,7 @@
           },
           "shadowBlur": {
             "status": "pass",
-            "value": 3,
+            "value": 1,
             "limit": {
               "maxBlurPx": 3
             },
@@ -6927,11 +7231,12 @@
             "violations": []
           },
           "shellFrame": {
-            "status": "n/a",
+            "status": "pass",
             "value": 0,
             "limit": {
               "paperInsetPx": 12,
               "topBarHeightPx": 52,
+              "paperRadiusPx": 14,
               "tolerancePx": 0.5
             },
             "violationCount": 0,
@@ -6986,17 +7291,27 @@
       "id": "shell-paper-inset-zero",
       "storyId": "icon-sample-project",
       "check": "shellFrame",
-      "source": "129-GWT3 paper inset",
+      "source": "148 paper inset",
       "theme": "light",
       "status": "fail",
       "value": 12,
       "killed": true
     },
     {
-      "id": "shell-top-bar-68",
+      "id": "shell-top-band-rule",
       "storyId": "icon-sample-project",
       "check": "shellFrame",
-      "source": "131-GWT4 top bar",
+      "source": "148-GWT3 top band rule",
+      "theme": "light",
+      "status": "fail",
+      "value": 1,
+      "killed": true
+    },
+    {
+      "id": "shell-top-band-68",
+      "storyId": "icon-sample-project",
+      "check": "shellFrame",
+      "source": "148 top band height",
       "theme": "light",
       "status": "fail",
       "value": 16,
@@ -7043,8 +7358,8 @@
       "source": "124-GWT1",
       "theme": "light",
       "status": "pass",
-      "checked": 74,
-      "children": 180,
+      "checked": 76,
+      "children": 186,
       "value": 0,
       "strokeWidths": [
         "1.25px"
@@ -7059,8 +7374,8 @@
   "checksNeverApplied": [],
   "summary": {
     "clip": {
-      "status": "pass",
-      "worstValue": 0
+      "status": "fail",
+      "worstValue": 2
     },
     "singleLine": {
       "status": "pass",
@@ -7071,7 +7386,7 @@
       "worstValue": 3
     },
     "rail": {
-      "status": "pass",
+      "status": "n/a",
       "worstValue": 0
     },
     "rowAlign": {

@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 126,
+  "componentCount": 131,
   "coverage": {
-    "registryComponentCount": 126,
+    "registryComponentCount": 131,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -97,8 +97,13 @@
       "SettingRowList",
       "SettingsHostSwitcher",
       "SettingsLayout",
+      "ShellBrandButton",
       "ShellBrandLockup",
+      "ShellDropdown",
+      "ShellIntro",
       "ShellLocaleMenu",
+      "ShellMenu",
+      "ShellPins",
       "ShellThemeToggle",
       "SideNav",
       "SideNavCollapseButton",
@@ -225,8 +230,13 @@
       "SettingRowList",
       "SettingsHostSwitcher",
       "SettingsLayout",
+      "ShellBrandButton",
       "ShellBrandLockup",
+      "ShellDropdown",
+      "ShellIntro",
       "ShellLocaleMenu",
+      "ShellMenu",
+      "ShellPins",
       "ShellThemeToggle",
       "SideNav",
       "SideNavCollapseButton",
@@ -482,7 +492,7 @@
       "props": [
         {
           "name": "items",
-          "type": "BreadcrumbItem[]",
+          "type": "readonly BreadcrumbItem[]",
           "required": true
         },
         {
@@ -1656,7 +1666,8 @@
             "trash",
             "calendar",
             "more-horizontal",
-            "chevron-up"
+            "chevron-up",
+            "pin"
           ]
         },
         {
@@ -1709,7 +1720,8 @@
           "trash",
           "calendar",
           "more-horizontal",
-          "chevron-up"
+          "chevron-up",
+          "pin"
         ]
       },
       "slots": [],
@@ -1776,7 +1788,8 @@
             "trash",
             "calendar",
             "more-horizontal",
-            "chevron-up"
+            "chevron-up",
+            "pin"
           ]
         },
         {
@@ -1844,7 +1857,8 @@
           "trash",
           "calendar",
           "more-horizontal",
-          "chevron-up"
+          "chevron-up",
+          "pin"
         ],
         "size": [
           "sm",
@@ -2588,6 +2602,27 @@
           "required": true
         },
         {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "onPinnedChange",
+          "type": "(pinned: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "pinLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "pinned",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
           "name": "selected",
           "type": "boolean",
           "required": false,
@@ -2668,13 +2703,30 @@
             "trash",
             "calendar",
             "more-horizontal",
-            "chevron-up"
+            "chevron-up",
+            "pin"
           ]
         },
         {
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
+        },
+        {
+          "name": "onPinnedChange",
+          "type": "(pinned: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "pinLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "pinned",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
         },
         {
           "name": "selected",
@@ -2721,7 +2773,8 @@
           "trash",
           "calendar",
           "more-horizontal",
-          "chevron-up"
+          "chevron-up",
+          "pin"
         ]
       },
       "slots": [
@@ -2834,7 +2887,7 @@
         },
         {
           "name": "breadcrumbs",
-          "type": "PageHeaderBreadcrumb[]",
+          "type": "readonly PageHeaderBreadcrumb[]",
           "required": false,
           "default": "[]"
         },
@@ -2854,6 +2907,11 @@
           "type": "ReactNode",
           "required": false,
           "slot": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
         },
         {
           "name": "meta",
@@ -3082,6 +3140,15 @@
           "required": false
         },
         {
+          "name": "firstLine",
+          "type": "ProductLockupFirstLineScale",
+          "required": false,
+          "enumValues": [
+            "rail",
+            "lockup"
+          ]
+        },
+        {
           "name": "locale",
           "type": "string",
           "required": false
@@ -3121,6 +3188,10 @@
         }
       ],
       "variants": {
+        "firstLine": [
+          "rail",
+          "lockup"
+        ],
         "markVariant": [
           "color",
           "mono",
@@ -3205,59 +3276,31 @@
       "kind": "function",
       "props": [
         {
-          "name": "brandCaption",
-          "type": "string",
+          "name": "account",
+          "type": "ProductShellAccount",
           "required": false
         },
         {
-          "name": "brandHref",
-          "type": "string",
-          "required": false,
-          "default": "\"/\""
-        },
-        {
-          "name": "brandMarkAlt",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "brandMarkSrc",
-          "type": "string",
+          "name": "accountMenuOpen",
+          "type": "boolean",
           "required": false
         },
         {
           "name": "brandProductId",
-          "type": "TcrnProductLogoId",
-          "required": false,
+          "type": "TcrnProductMarkId",
+          "required": true,
           "enumValues": [
             "tms",
             "einzbern",
             "mana-orchestrate",
-            "design-system",
-            "aos"
+            "design-system"
           ]
-        },
-        {
-          "name": "brandSuffix",
-          "type": "string",
-          "required": false
         },
         {
           "name": "children",
           "type": "ReactNode",
           "required": true,
           "slot": true
-        },
-        {
-          "name": "collapsed",
-          "type": "boolean",
-          "required": false,
-          "default": "false"
-        },
-        {
-          "name": "collapsedStorageKey",
-          "type": "string",
-          "required": false
         },
         {
           "name": "contentId",
@@ -3284,16 +3327,6 @@
           "name": "currentLocale",
           "type": "string",
           "required": true
-        },
-        {
-          "name": "currentLocationLabel",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "currentLocationLabelKey",
-          "type": "string",
-          "required": false
         },
         {
           "name": "currentRouteLabel",
@@ -3333,10 +3366,9 @@
           "required": true
         },
         {
-          "name": "mobileNavExpanded",
+          "name": "menuOpen",
           "type": "boolean",
-          "required": false,
-          "default": "false"
+          "required": false
         },
         {
           "name": "moduleName",
@@ -3349,19 +3381,13 @@
           "required": true
         },
         {
-          "name": "navId",
-          "type": "string",
-          "required": false,
-          "default": "\"tcrn-product-shell-side-nav\""
+          "name": "notifications",
+          "type": "ProductShellNotifications",
+          "required": false
         },
         {
-          "name": "navLabel",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "onCollapsedChange",
-          "type": "(collapsed: boolean) => void",
+          "name": "onAccountMenuOpenChange",
+          "type": "(open: boolean) => void",
           "required": false
         },
         {
@@ -3375,18 +3401,18 @@
           "required": false
         },
         {
-          "name": "onMobileNavExpandedChange",
-          "type": "(expanded: boolean) => void",
+          "name": "onMenuOpenChange",
+          "type": "(open: boolean, reason: ProductShellMenuChangeReason) => void",
           "required": false
         },
         {
-          "name": "onSearchDismiss",
-          "type": "(reason: ProductShellSearchDismissReason) => void",
+          "name": "onOpenPinChange",
+          "type": "(id: string | null) => void",
           "required": false
         },
         {
-          "name": "onSearchExpandedChange",
-          "type": "(expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void",
+          "name": "onPinnedChange",
+          "type": "(id: string, pinned: boolean) => void",
           "required": false
         },
         {
@@ -3395,14 +3421,25 @@
           "required": false
         },
         {
-          "name": "onSearchResultActivate",
-          "type": "(result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void",
-          "required": false
-        },
-        {
           "name": "onThemeChange",
           "type": "(theme: ShellThemeMode) => void",
           "required": false
+        },
+        {
+          "name": "openPinId",
+          "type": "string | null",
+          "required": false
+        },
+        {
+          "name": "pageHeader",
+          "type": "PageHeaderProps",
+          "required": true
+        },
+        {
+          "name": "pinnedIds",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "[]"
         },
         {
           "name": "productName",
@@ -3410,13 +3447,18 @@
           "required": true
         },
         {
-          "name": "search",
-          "type": "ProductShellSearchProps",
+          "name": "products",
+          "type": "readonly ProductShellProduct[]",
           "required": false
         },
         {
-          "name": "sideNavCollapseDisabledReason",
+          "name": "searchPlaceholder",
           "type": "string",
+          "required": false
+        },
+        {
+          "name": "searchProvider",
+          "type": "ShellMenuSearchProvider",
           "required": false
         },
         {
@@ -3430,8 +3472,7 @@
           "tms",
           "einzbern",
           "mana-orchestrate",
-          "design-system",
-          "aos"
+          "design-system"
         ],
         "contentRole": [
           "main",
@@ -4566,6 +4607,59 @@
       ],
       "propsType": "SettingsLayoutProps"
     },
+    "ShellBrandButton": {
+      "name": "ShellBrandButton",
+      "kind": "forwardRef",
+      "props": [
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "productId",
+          "type": "TcrnProductMarkId",
+          "required": true,
+          "enumValues": [
+            "tms",
+            "einzbern",
+            "mana-orchestrate",
+            "design-system"
+          ]
+        },
+        {
+          "name": "version",
+          "type": "ShellBrandButtonVersion",
+          "required": false,
+          "default": "\"auto\"",
+          "enumValues": [
+            "auto",
+            "v1",
+            "v2"
+          ]
+        }
+      ],
+      "variants": {
+        "productId": [
+          "tms",
+          "einzbern",
+          "mana-orchestrate",
+          "design-system"
+        ],
+        "version": [
+          "auto",
+          "v1",
+          "v2"
+        ]
+      },
+      "slots": []
+    },
     "ShellBrandLockup": {
       "name": "ShellBrandLockup",
       "kind": "function",
@@ -4642,6 +4736,139 @@
       "slots": [],
       "propsType": "ShellBrandLockupProps"
     },
+    "ShellDropdown": {
+      "name": "ShellDropdown",
+      "kind": "function",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "level",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean, reason: ShellLayerCloseReason) => void",
+          "required": false
+        },
+        {
+          "name": "onPinnedChange",
+          "type": "(id: string, pinned: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "pinnedIds",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "previewStates",
+          "type": "Readonly<Record<string, string>>",
+          "required": false
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "searchProvider",
+          "type": "ShellMenuSearchProvider",
+          "required": false,
+          "default": "searchTheSubtree"
+        },
+        {
+          "name": "selectedId",
+          "type": "string | null",
+          "required": false,
+          "default": "null"
+        },
+        {
+          "name": "source",
+          "type": "ShellMenuGroup | ShellMenuItem",
+          "required": true
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ShellDropdownProps"
+    },
+    "ShellIntro": {
+      "name": "ShellIntro",
+      "kind": "function",
+      "props": [
+        {
+          "name": "card",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "onFinish",
+          "type": "(played: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "productId",
+          "type": "TcrnProductMarkId",
+          "required": true,
+          "enumValues": [
+            "tms",
+            "einzbern",
+            "mana-orchestrate",
+            "design-system"
+          ]
+        },
+        {
+          "name": "sessionMarker",
+          "type": "string",
+          "required": false,
+          "default": "shellIntroSessionMarker"
+        },
+        {
+          "name": "shellRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        }
+      ],
+      "variants": {
+        "productId": [
+          "tms",
+          "einzbern",
+          "mana-orchestrate",
+          "design-system"
+        ]
+      },
+      "slots": [
+        "card"
+      ],
+      "propsType": "ShellIntroProps"
+    },
     "ShellLocaleMenu": {
       "name": "ShellLocaleMenu",
       "kind": "function",
@@ -4691,6 +4918,172 @@
       "variants": {},
       "slots": [],
       "propsType": "ShellLocaleMenuProps"
+    },
+    "ShellMenu": {
+      "name": "ShellMenu",
+      "kind": "function",
+      "props": [
+        {
+          "name": "currentPath",
+          "type": "readonly ShellMenuCrumb[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "groups",
+          "type": "readonly ShellMenuGroup[]",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean, reason: ShellMenuOpenChangeReason) => void",
+          "required": false
+        },
+        {
+          "name": "onPinnedChange",
+          "type": "(id: string, pinned: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "onSearchQueryChange",
+          "type": "(query: string) => void",
+          "required": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "pinnedIds",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "pinnedItems",
+          "type": "readonly ShellPinItem[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "presentation",
+          "type": "ShellMenuPresentation",
+          "required": false,
+          "enumValues": [
+            "auto",
+            "panel",
+            "sheet"
+          ]
+        },
+        {
+          "name": "previewStates",
+          "type": "Readonly<Record<string, string>>",
+          "required": false
+        },
+        {
+          "name": "productId",
+          "type": "TcrnProductLogoId",
+          "required": true,
+          "enumValues": [
+            "tms",
+            "einzbern",
+            "mana-orchestrate",
+            "design-system",
+            "aos"
+          ]
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "searchProvider",
+          "type": "ShellMenuSearchProvider",
+          "required": false,
+          "default": "searchTheModel"
+        },
+        {
+          "name": "selectedId",
+          "type": "string | null",
+          "required": false,
+          "default": "null"
+        },
+        {
+          "name": "shortcut",
+          "type": "boolean",
+          "required": false,
+          "default": "true"
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        }
+      ],
+      "variants": {
+        "presentation": [
+          "auto",
+          "panel",
+          "sheet"
+        ],
+        "productId": [
+          "tms",
+          "einzbern",
+          "mana-orchestrate",
+          "design-system",
+          "aos"
+        ]
+      },
+      "slots": [],
+      "propsType": "ShellMenuProps"
+    },
+    "ShellPins": {
+      "name": "ShellPins",
+      "kind": "function",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly ShellPinItem[]",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "menuIdOf",
+          "type": "(id: string) => string",
+          "required": false
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(openId: string | null) => void",
+          "required": false
+        },
+        {
+          "name": "openId",
+          "type": "string | null",
+          "required": false,
+          "default": "null"
+        },
+        {
+          "name": "selectedId",
+          "type": "string | null",
+          "required": false,
+          "default": "null"
+        }
+      ],
+      "variants": {},
+      "slots": [],
+      "propsType": "ShellPinsProps"
     },
     "ShellThemeToggle": {
       "name": "ShellThemeToggle",
