@@ -92,7 +92,7 @@ function changeOneInk(root) {
   return assert.fail("pairs.json has no ink token outside the matrix cells");
 }
 
-test("the tree: every check is green, with the 37 icons, the 8 mark files and the 240 matrix cells", async () => {
+test("the tree: every check is green, with the 38 icons, the 8 mark files and the 240 matrix cells", async () => {
   await realUi();
   const result = await runContractProof();
   assert.equal(result.ok, true, formatResult(result));
@@ -100,7 +100,7 @@ test("the tree: every check is green, with the 37 icons, the 8 mark files and th
   assert.match(checkOf(result, "generated-sources").summary, new RegExp(`^${GENERATED.length} generated files`, "u"));
   const stateRules = /its (\d+) state rules \((\d+) of them on the pairs\.json target bases\)/u.exec(checkOf(result, "package-css").summary);
   assert.ok(stateRules && Number(stateRules[1]) > Number(stateRules[2]), "package-css reads the state rules of the whole sheet, not only those of the pairs.json target bases");
-  assert.match(checkOf(result, "icon-roster").summary, /same 37 names/u);
+  assert.match(checkOf(result, "icon-roster").summary, /same 38 names/u);
   assert.match(checkOf(result, "product-marks").summary, /the 8 SVG files/u);
   const cells = Object.values(EXPECTED_CELLS).reduce((sum, count) => sum + count, 0);
   assert.match(checkOf(result, "matrix-expect").summary, new RegExp(`5 boards, ${cells} cells \\(44/28/10/116/42\\).*largest difference 0\\.00`, "u"));

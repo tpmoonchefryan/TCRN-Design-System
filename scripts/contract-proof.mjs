@@ -24,7 +24,8 @@
 //                          state rules of the pairs.json target bases). Colour literal means css-rules
 //                          colourLiterals; the one allowance is the one contract-static C2 makes: an
 //                          outline whose only colour is transparent (the forced-colours focus ring).
-//   icon-roster            icons.json lists 37 distinct names and they are the set of tcrnIconNames.
+//   icon-roster            icons.json lists 38 distinct names and they are the set of tcrnIconNames (37 of the G+ batch
+//                          plus pin, TCRN-DS-SUB-123; a variant such as the solid pin is not a name).
 //   product-marks          the eight SVG files generated from marks.json (the build-logos2 file form: the
 //                          palette for <id>.svg, monoInk for <id>-mono.svg) equal docs/design/gplus-2026-10/
 //                          logos2 byte for byte and the directory holds no other svg; tcrnProductMarkSvg of
@@ -64,7 +65,7 @@ export const BOARD_FILES = Object.freeze({
   inputs: "V2-B1-Inputs.dc.html"
 });
 export const EXPECTED_CELLS = Object.freeze({ typography: 44, icon: 28, brand: 10, actions: 116, inputs: 42 });
-export const EXPECTED_ICON_COUNT = 37;
+export const EXPECTED_ICON_COUNT = 38;
 export const EXPECTED_MARK_FILES = 8;
 export const MATRIX_DATA = "apps/storybook/src/contract-stories/gplus/generated/matrices.generated.ts";
 export const CONSUMPTION_CONTRACT = "apps/storybook/src/build/ai-consumption-contract.ts";

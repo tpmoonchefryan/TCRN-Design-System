@@ -87,6 +87,13 @@ interface ShellChromeLabels {
    */
   brandHomeOf: (productName: string) => string;
   shellControlsOf: (moduleName: string) => string;
+  /**
+   * The pin control of a NavItem or NavGroup row (TCRN-DS-SUB-123). It is icon-only,
+   * so this is its whole accessible name; it says the action and the row it acts on,
+   * and the action flips with the pinned state.
+   */
+  pinToStrip: (label: string) => string;
+  unpinFromStrip: (label: string) => string;
 }
 
 const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
@@ -115,7 +122,9 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     productSuffix: "产品",
     productShellCaption: "产品外壳",
     brandHomeOf: (productName) => `${productName}首页`,
-    shellControlsOf: (moduleName) => `${moduleName}外壳控件`
+    shellControlsOf: (moduleName) => `${moduleName}外壳控件`,
+    pinToStrip: (label) => `固定到顶带：${label}`,
+    unpinFromStrip: (label) => `从顶带取下：${label}`
   },
   en: {
     switchToLight: "Switch to light mode",
@@ -142,7 +151,9 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     productSuffix: "Product",
     productShellCaption: "Product shell",
     brandHomeOf: (productName) => `${productName} home`,
-    shellControlsOf: (moduleName) => `${moduleName} shell controls`
+    shellControlsOf: (moduleName) => `${moduleName} shell controls`,
+    pinToStrip: (label) => `Pin to top bar: ${label}`,
+    unpinFromStrip: (label) => `Unpin from top bar: ${label}`
   },
   ja: {
     switchToLight: "ライトモードに切り替え",
@@ -169,7 +180,9 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     productSuffix: "製品",
     productShellCaption: "製品シェル",
     brandHomeOf: (productName) => `${productName}のホーム`,
-    shellControlsOf: (moduleName) => `${moduleName}のシェル操作`
+    shellControlsOf: (moduleName) => `${moduleName}のシェル操作`,
+    pinToStrip: (label) => `トップバーに固定：${label}`,
+    unpinFromStrip: (label) => `トップバーから外す：${label}`
   },
   ko: {
     switchToLight: "라이트 모드로 전환",
@@ -196,7 +209,9 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     productSuffix: "제품",
     productShellCaption: "제품 셸",
     brandHomeOf: (productName) => `${productName} 홈`,
-    shellControlsOf: (moduleName) => `${moduleName} 셸 컨트롤`
+    shellControlsOf: (moduleName) => `${moduleName} 셸 컨트롤`,
+    pinToStrip: (label) => `상단 바에 고정: ${label}`,
+    unpinFromStrip: (label) => `상단 바에서 해제: ${label}`
   },
   fr: {
     switchToLight: "Passer en mode clair",
@@ -223,7 +238,9 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     productSuffix: "Produit",
     productShellCaption: "Coque produit",
     brandHomeOf: (productName) => `Accueil : ${productName}`,
-    shellControlsOf: (moduleName) => `Commandes de la coque : ${moduleName}`
+    shellControlsOf: (moduleName) => `Commandes de la coque : ${moduleName}`,
+    pinToStrip: (label) => `Épingler à la barre supérieure : ${label}`,
+    unpinFromStrip: (label) => `Retirer de la barre supérieure : ${label}`
   }
 };
 
@@ -1249,13 +1266,66 @@ export function SideNav({ label, className, children, ...props }: SideNavProps) 
   );
 }
 
-export interface NavGroupProps extends HTMLAttributes<HTMLDivElement> {
+/**
+ * The pin of a NavItem or NavGroup row (TCRN-DS-SUB-123, MIN-20261013-SHELL D6: the pin
+ * replaces draft one's star). Pinning puts the row's destination or group in the top band.
+ *
+ * Both components take the same three props and render the pin only when
+ * `onPinnedChange` is given, so a row that cannot be pinned keeps its markup. A pinnable
+ * row keeps a 24 slot (the shell pin-button token) whether the pin shows or not: the pin
+ * is shown with opacity (row hover, focus inside the row, or pinned), never with display,
+ * so the row's text box is the same width at rest and on hover.
+ */
+export interface NavPinProps {
+  /** Whether the row is pinned to the top band; the pin's aria-pressed. */
+  pinned?: boolean;
+  /** Called with the requested state when the pin is pressed. Without it there is no pin. */
+  onPinnedChange?: (pinned: boolean) => void;
+  /**
+   * The row's name inside the pin's accessible name ("Pin to top bar: {pinLabel}").
+   * Defaults to the group label, or to the item's text when its children are a string;
+   * give it when a NavItem's children are not plain text.
+   */
+  pinLabel?: string;
+}
+
+interface NavPinButtonProps {
+  pinned: boolean;
+  label: string;
+  locale?: TcrnLocale | string;
+  onPinnedChange: (pinned: boolean) => void;
+}
+
+function NavPinButton({ pinned, label, locale, onPinnedChange }: NavPinButtonProps) {
+  const chrome = chromeLabels(locale);
+  return (
+    <button
+      type="button"
+      className="tcrn-nav-pin"
+      aria-pressed={pinned}
+      aria-label={pinned ? chrome.unpinFromStrip(label) : chrome.pinToStrip(label)}
+      data-pin-button=""
+      data-navigation-primitive="nav-pin"
+      onClick={() => onPinnedChange(!pinned)}
+    >
+      <Icon name="pin" />
+    </button>
+  );
+}
+
+function navItemText(children: ReactNode): string | undefined {
+  return typeof children === "string" || typeof children === "number" ? String(children) : undefined;
+}
+
+export interface NavGroupProps extends HTMLAttributes<HTMLDivElement>, NavPinProps {
   label: string;
   selected?: boolean;
+  /** Which language the built-in pin name is said in; defaults to the page's own. */
+  locale?: TcrnLocale | string;
   children: ReactNode;
 }
 
-export function NavGroup({ label, selected = false, className, children, ...props }: NavGroupProps) {
+export function NavGroup({ label, selected = false, pinned = false, onPinnedChange, pinLabel, locale, className, children, ...props }: NavGroupProps) {
   return (
     <div
       {...props}
@@ -1263,17 +1333,26 @@ export function NavGroup({ label, selected = false, className, children, ...prop
       data-selected={selected ? "true" : undefined}
       data-navigation-primitive="nav-group"
     >
-      <div className="tcrn-nav-group__label">{label}</div>
+      {onPinnedChange ? (
+        <div className="tcrn-nav-group__label" data-nav-pinnable="true">
+          <span className="tcrn-nav-group__label-text" title={label}>
+            {label}
+          </span>
+          <NavPinButton pinned={pinned} label={pinLabel ?? label} locale={locale} onPinnedChange={onPinnedChange} />
+        </div>
+      ) : (
+        <div className="tcrn-nav-group__label">{label}</div>
+      )}
       <div className="tcrn-nav-group__items">{children}</div>
     </div>
   );
 }
 
-export interface NavItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> {
+export interface NavItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children">, NavPinProps {
   selected?: boolean;
   disabled?: boolean;
   disabledReason?: string;
-  /** Which language the built-in disabled reason is said in; defaults to the page's own. */
+  /** Which language the built-in disabled reason and pin name are said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
   iconName?: IconName;
   /** Data-owned nesting depth used to derive the item's visual inset. */
@@ -1281,7 +1360,22 @@ export interface NavItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElemen
   children: ReactNode;
 }
 
-export function NavItem({ selected = false, disabled = false, disabledReason, locale, iconName, depth = 0, className, style, children, href = "#", ...props }: NavItemProps) {
+export function NavItem({
+  selected = false,
+  disabled = false,
+  disabledReason,
+  locale,
+  iconName,
+  depth = 0,
+  pinned = false,
+  onPinnedChange,
+  pinLabel,
+  className,
+  style,
+  children,
+  href = "#",
+  ...props
+}: NavItemProps) {
   // Rendered visibly, in the `title`, and as the item's description — so when it
   // falls back it says one English sentence in three places at once.
   const normalizedReason = disabled ? requiredText(disabledReason, chromeLabels(locale).navItemUnavailable) : undefined;
@@ -1289,7 +1383,7 @@ export function NavItem({ selected = false, disabled = false, disabledReason, lo
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   const resolvedDepth = Number.isInteger(depth) && depth >= 0 ? depth : 0;
   const navStyle = { ...style, "--tcrn-nav-item-depth": resolvedDepth } as CSSProperties;
-  return (
+  const link = (
     <a
       {...props}
       href={disabled ? undefined : href}
@@ -1316,6 +1410,21 @@ export function NavItem({ selected = false, disabled = false, disabledReason, lo
         ) : null}
       </span>
     </a>
+  );
+  if (!onPinnedChange) return link;
+  // A link cannot hold a button, so a pinnable item is a row of two siblings: the link and
+  // its pin. The row paints the item's fill and ink, so hovering the pin keeps the row lit.
+  const pinName = pinLabel ?? navItemText(children) ?? props["aria-label"] ?? "";
+  return (
+    <div
+      className="tcrn-nav-item-row"
+      data-navigation-primitive="nav-item-row"
+      data-nav-pinnable="true"
+      data-selected={selected ? "true" : undefined}
+    >
+      {link}
+      <NavPinButton pinned={pinned} label={pinName} locale={locale} onPinnedChange={onPinnedChange} />
+    </div>
   );
 }
 

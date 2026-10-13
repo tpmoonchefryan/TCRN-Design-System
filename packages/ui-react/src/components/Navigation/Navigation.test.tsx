@@ -1420,3 +1420,145 @@ test("STORY-093 a segmented nav renders an activation handler when the consumer 
   // item type and do not select, so onSelect is optional rather than required.
   assert.match(bare, /<button/);
 });
+
+// TCRN-DS-SUB-123 (STORY-142): the pin of a menu row. Grouping, item and sub-menu rows can all
+// be pinned; the pin is a real button beside the link (a link cannot hold one), says its state
+// through aria-pressed and names the row in its label, in the reader's language.
+const pinNames = {
+  "zh-CN": ["固定到顶带：合约", "从顶带取下：合约"],
+  en: ["Pin to top bar: 合约", "Unpin from top bar: 合约"],
+  ja: ["トップバーに固定：合約", "トップバーから外す：合約"],
+  ko: ["상단 바에 고정: 계약", "상단 바에서 해제: 계약"],
+  fr: ["Épingler à la barre supérieure : Contrats", "Retirer de la barre supérieure : Contrats"]
+} as const;
+
+test("STORY-142 GWT2 a pinnable row's pin is a pressed-state button named after the row", () => {
+  const noop = () => {};
+  const html = renderToStaticMarkup(
+    <SideNav label="菜单">
+      <NavGroup label="业务" locale="zh-CN" onPinnedChange={noop}>
+        <NavItem href="#contracts" iconName="layers" locale="zh-CN" selected pinned onPinnedChange={noop}>合约</NavItem>
+        <NavItem href="#week" depth={1} locale="zh-CN" onPinnedChange={noop}>本周</NavItem>
+        <NavItem href="#plain" locale="zh-CN">只读</NavItem>
+      </NavGroup>
+    </SideNav>
+  );
+  const pins = [...html.matchAll(/<button type="button" class="tcrn-nav-pin"([^>]*)>/g)].map((match) => match[1]);
+  assert.equal(pins.length, 3, "the group row, the item row and the sub-menu row each carry one pin");
+  assert.match(pins[0], /aria-pressed="false" aria-label="固定到顶带：业务"/);
+  assert.match(pins[1], /aria-pressed="true" aria-label="从顶带取下：合约"/);
+  assert.match(pins[2], /aria-pressed="false" aria-label="固定到顶带：本周"/);
+  for (const pin of pins) assert.match(pin, /data-pin-button=""/);
+  // The pin is the link's sibling inside the row, never inside the link.
+  assert.match(html, /<div class="tcrn-nav-item-row" data-navigation-primitive="nav-item-row" data-nav-pinnable="true" data-selected="true"><a [^>]*class="tcrn-nav-item"[^>]*>[\s\S]*?<\/a><button type="button" class="tcrn-nav-pin"/);
+  for (const link of html.match(/<a [\s\S]*?<\/a>/g) ?? []) assert.doesNotMatch(link, /<button/);
+  // The glyph is the roster pin at 16; the slot is the pin button itself.
+  assert.equal((html.match(/data-icon-name="pin"/g) ?? []).length, 3);
+  assert.match(html, /<svg[^>]*width="16" height="16"[^>]*data-icon-name="pin"/);
+  // A row without onPinnedChange keeps today's markup: no row, no pin.
+  const plain = renderToStaticMarkup(<NavItem href="#plain">Plain</NavItem>);
+  assert.match(plain, /^<a /);
+  assert.doesNotMatch(plain, /tcrn-nav-pin|tcrn-nav-item-row/);
+  const plainGroup = renderToStaticMarkup(<NavGroup label="Plain"><span /></NavGroup>);
+  assert.match(plainGroup, /<div class="tcrn-nav-group__label">Plain<\/div>/);
+
+  // Five locales from the shell copy table; the default without a locale is English.
+  for (const [locale, [pin, unpin]] of Object.entries(pinNames)) {
+    const name = pin.slice(Math.max(pin.lastIndexOf("："), pin.lastIndexOf(": ")) + 1).trim();
+    const off = renderToStaticMarkup(<NavItem locale={locale} onPinnedChange={noop}>{name}</NavItem>);
+    const on = renderToStaticMarkup(<NavItem locale={locale} pinned onPinnedChange={noop}>{name}</NavItem>);
+    assert.match(off, new RegExp(`aria-pressed="false" aria-label="${pin}"`), `${locale} pin`);
+    assert.match(on, new RegExp(`aria-pressed="true" aria-label="${unpin}"`), `${locale} unpin`);
+  }
+  assert.match(renderToStaticMarkup(<NavItem onPinnedChange={noop}>合约</NavItem>), /aria-label="Pin to top bar: 合约"/);
+  // Children that are not plain text name the row through pinLabel.
+  const labelled = renderToStaticMarkup(
+    <NavItem locale="zh-CN" pinLabel="排期" onPinnedChange={noop}><span>排期</span><span>3</span></NavItem>
+  );
+  assert.match(labelled, /aria-label="固定到顶带：排期"/);
+  const groupLabelled = renderToStaticMarkup(<NavGroup label="Ops" pinLabel="运营" locale="zh-CN" onPinnedChange={noop}><span /></NavGroup>);
+  assert.match(groupLabelled, /aria-label="固定到顶带：运营"/);
+  assert.match(groupLabelled, /<span class="tcrn-nav-group__label-text" title="Ops">Ops<\/span>/);
+});
+
+function cssRules(sheet: string) {
+  return [...sheet.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/(?:^|\n|\})\s*([^{}@]+)\{([^{}]*)\}/g)].map(([, selector, body]) => ({
+    selector: selector.trim(),
+    body
+  }));
+}
+
+test("STORY-142 GWT1 GWT4 the pin slot stays 24 and the pin shows by opacity on hover, focus and when pinned", () => {
+  const rules = cssRules(tcrnComponentCss);
+  const rule = (selector: string) => rules.find((candidate) => candidate.selector === selector)?.body ?? "";
+  // The slot: a fixed column at the row's end, the same at rest and on hover.
+  assert.match(rule(".tcrn-nav-item-row"), /grid-template-columns: minmax\(0, 1fr\) var\(--tcrn-shell-pinb\);/);
+  assert.match(rule('.tcrn-nav-group__label[data-nav-pinnable="true"]'), /grid-template-columns: minmax\(0, 1fr\) var\(--tcrn-shell-pinb\);/);
+  const pin = rule(".tcrn-nav-pin");
+  assert.match(pin, /inline-size: var\(--tcrn-shell-pinb\);/);
+  assert.match(pin, /block-size: var\(--tcrn-shell-pinb\);/);
+  assert.match(pin, /opacity: 0;/);
+  // No rule that reaches the pin or the row shows or hides it with display or visibility, and
+  // the hover rules change no box: only the pair, so the text box keeps its width.
+  for (const { selector, body } of rules) {
+    if (!/tcrn-nav-pin|tcrn-nav-item-row/.test(selector)) continue;
+    assert.doesNotMatch(body, /(?:^|;|\s)(?:display:\s*none|visibility:\s*hidden)/, selector);
+    if (/:hover/.test(selector)) assert.doesNotMatch(body, /(?:width|inline-size|padding|margin|grid-template|display)\s*:/, selector);
+  }
+  // Shown on row hover, focus inside the row (keyboard on the link or on the pin), the pin's own
+  // focus and when pinned.
+  const shown = rules.find(({ selector, body }) => selector.includes("> .tcrn-nav-pin") && /opacity: 1;/.test(body));
+  assert.ok(shown, "one rule shows the pin");
+  for (const part of [".tcrn-nav-item-row:hover", ".tcrn-nav-item-row:focus-within", ".tcrn-nav-group__label:hover", ".tcrn-nav-group__label:focus-within", '[aria-pressed="true"]', ":focus-visible"]) {
+    assert.ok(shown.selector.includes(part), `the pin shows on ${part}`);
+  }
+  // State rules of the pin and the row only switch their pair, with no colour of their own.
+  for (const { selector, body } of rules) {
+    if (!/^\.tcrn-nav-(?:pin|item-row):where\(/.test(selector)) continue;
+    for (const declaration of body.split(";").map((part) => part.trim()).filter(Boolean)) {
+      const [property, value] = declaration.split(/:\s*/, 2);
+      if (property === "outline" || property === "outline-offset") continue;
+      assert.match(property, /^--tcrn-pair-(?:pin|row)-/, `${selector}: ${declaration}`);
+      assert.match(value, /^var\(--tcrn-pair-(?:pin|row)-[a-z-]+\)$/, `${selector}: ${declaration}`);
+    }
+  }
+  // The pinned glyph fills the pin body, the first child of the roster icon.
+  assert.match(rule(".tcrn-nav-pin .tcrn-icon > :first-child"), /fill: var\(--tcrn-pair-pin-glyph\);/);
+  assert.match(pin, /--tcrn-pair-pin-glyph-s: currentColor;/);
+  assert.match(pin, /--tcrn-pair-pin-ink-s: var\(--tcrn-color-acc\);/);
+  // Touch: the 24 pin answers a 44 square.
+  assert.match(tcrnComponentCss, /@media \(pointer: coarse\) \{\s*\.tcrn-nav-pin::after \{\s*content: "";\s*position: absolute;\s*inset: calc\(-1 \* var\(--tcrn-space-2h\)\);\s*\}\s*\}/);
+});
+
+function PinFixture({ initial, onNavigate }: { initial: boolean; onNavigate: () => void }) {
+  const [pinned, setPinned] = useState(initial);
+  return (
+    <NavItem href="#contracts" locale="en" pinned={pinned} onPinnedChange={setPinned} onClick={(event) => { event.preventDefault(); onNavigate(); }}>
+      Contracts
+    </NavItem>
+  );
+}
+
+test("STORY-142 pressing the pin asks for the other state and does not follow the link", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    let navigations = 0;
+    await harness.render(<PinFixture initial={false} onNavigate={() => { navigations += 1; }} />);
+    const pin = harness.document.querySelector("[data-pin-button]");
+    assert.ok(pin instanceof harness.window.HTMLButtonElement);
+    assert.equal(pin.getAttribute("aria-pressed"), "false");
+    await harness.dispatchClick(pin);
+    assert.equal(pin.getAttribute("aria-pressed"), "true");
+    assert.equal(pin.getAttribute("aria-label"), "Unpin from top bar: Contracts");
+    await harness.dispatchClick(pin);
+    assert.equal(pin.getAttribute("aria-pressed"), "false");
+    assert.equal(navigations, 0, "the pin is not part of the link");
+    const link = harness.document.querySelector("a.tcrn-nav-item");
+    assert.ok(link);
+    await harness.dispatchClick(link);
+    assert.equal(navigations, 1);
+    assert.equal(link.contains(pin), false);
+  } finally {
+    await harness.cleanup();
+  }
+});
