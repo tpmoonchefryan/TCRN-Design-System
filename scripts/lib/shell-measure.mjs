@@ -19,8 +19,19 @@
 //                      data-drop-col, data-shell-search, data-shell-row, data-shell-group,
 //                      data-pin-button, data-shell-pbar, data-lockup, data-shell-intro)
 // A key maps the same meaning in both sets. Package keys that C-5 does not name (crumbs inside the
-// bottom bar, the retired close button) use the narrowest selector that the package can render; the
-// next owner of this file (TCRN-DS-SUB-137) adjusts them against the real parts.
+// bottom bar, the retired close button) use the narrowest selector that the package can render.
+// TCRN-DS-SUB-137 checked them against the real parts on the static docs page: the bottom-bar crumbs
+// are the bar's nav, the page crumbs are the Breadcrumb part (nav.tcrn-breadcrumb) in the paper, no
+// close button and no sidebar render; [data-shell-group] sits on the whole NavGroup column, so the
+// single-line reading takes the group's heading text (.tcrn-nav-group__label-text, or the heading row
+// when it has no text span: the board's .ts-grp h6), and a pinned item's label element (the one that
+// carries the title and truncates), not the item's wrapper.
+// Cascade columns that a panel adopts with aria-owns (the package renders them next to the dropdown
+// panel, not inside it) are read as the panel's columns. A C-5 hook that the gates need and an open
+// layer lacks is listed in x.hookGaps (rows without the row-text hook: their text widths cannot be
+// read, so x.rowGroups is null rather than an empty, silently passing list). A shell that sits inside
+// another shell's paper (a story on a documentation page, which renders in the top-band shell) is read
+// against its own paper only.
 //
 // API:
 //   SHELL_MEASURE_SCHEMA_VERSION, SELECTOR_KEYS, BOARD_SELECTORS, PACKAGE_SELECTORS
@@ -138,8 +149,8 @@ export const PACKAGE_SELECTORS = Object.freeze({
   opticalAny: "[data-lockup], [data-tab]",
   dropPanelAny: "[data-panel='drop']",
   stateRuleScope: "\\.tcrn-shell-|\\.tcrn-product-shell",
-  singleLineText: '[data-tab] b, [data-pin], [data-shell-row] [data-text="prail"], [data-shell-group], [data-shell-pbar] nav, [data-lockup] b, [data-lockup] small',
-  pageCrumbs: "[data-paper] .tcrn-page-header__breadcrumbs, [data-paper] .tcrn-breadcrumb",
+  singleLineText: '[data-tab] b, [data-pin] .tcrn-shell-pins__label, [data-shell-row] [data-text="prail"], [data-shell-group] .tcrn-nav-group__label-text, [data-shell-group] > .tcrn-nav-group__label:not(:has(.tcrn-nav-group__label-text)), [data-shell-pbar] nav, [data-lockup] b, [data-lockup] small',
+  pageCrumbs: "[data-paper] .tcrn-breadcrumb",
   clipExempt: ".tcrn-sr-only",
   intro: "[data-shell-intro]"
 });
@@ -200,8 +211,8 @@ export function readShellInPage(options) {
     return r.width > 0 && r.height > 0;
   };
   const exempt = (el) => Boolean(sel.clipExempt && el.closest(sel.clipExempt));
-  // box-shadow (computed) -> blur radii
-  function shadowBlurs(value) {
+  // box-shadow (computed) -> layers { color, blur, spread }, and their blur radii
+  function shadowLayers(value) {
     if (!value || value === "none") return [];
     const layers = [];
     let depth = 0, cur = "";
@@ -213,9 +224,19 @@ export function readShellInPage(options) {
     if (cur.trim()) layers.push(cur);
     return layers.map((layer) => {
       const lengths = layer.replace(/[a-z-]+\([^)]*\)/gi, " ").replace(/\binset\b/gi, " ").trim().split(/\s+/).filter((t) => /^-?[\d.]+(px)?$/.test(t)).map(parseFloat);
-      return lengths.length >= 3 ? lengths[2] : 0;
+      const color = layer.match(/[a-z-]+\([^)]*\)/i);
+      return { color: color ? color[0] : null, blur: lengths.length >= 3 ? lengths[2] : 0, spread: lengths.length >= 4 ? lengths[3] : 0 };
     });
   }
+  const shadowBlurs = (value) => shadowLayers(value).map((layer) => layer.blur);
+  // the "shadow" probe (first-batch vocabulary): the colour of the solid ring (blur 0, spread >= 1); when
+  // a gap ring sits inside the ring (the shell focus pair: paper 2px, then the focus colour 4px), the
+  // visible ring is the outermost one, so the widest solid layer is read
+  const ringColor = (value) => {
+    let ring = null;
+    for (const layer of shadowLayers(value)) if (layer.color && layer.blur === 0 && layer.spread >= 1 && (!ring || layer.spread > ring.spread)) ring = layer;
+    return ring ? parseAny(ring.color) : null;
+  };
   const FOCUSABLE = "a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex='-1']), [contenteditable='true']";
   const focusable = (el) => el.matches(FOCUSABLE) || Boolean(el.querySelector(FOCUSABLE));
   // style rules that change an element on :hover (the rule selector with :hover removed matches it)
@@ -257,7 +278,7 @@ export function readShellInPage(options) {
     const tab = scr.querySelector(sel.tab), paper = scr.querySelector(sel.paper), cluster = scr.querySelector(sel.cluster);
     const panel = scr.querySelector(sel.panelPreferred) || scr.querySelector(sel.panelAny);
     const o = { id: scr.getAttribute("data-shell"), state: scr.getAttribute("data-state"), w: r1(s.width), h: r1(s.height) };
-    const x = { missing: [] };
+    const x = { missing: [], hookGaps: [] };
     for (const [key, el] of [["tab", tab], ["paper", paper], ["cluster", cluster]]) if (!el) x.missing.push(key);
     const stripEl = scr.querySelector(sel.strip);
     if (!stripEl) x.missing.push("strip");
@@ -280,7 +301,9 @@ export function readShellInPage(options) {
 
     // extra: brand version, strip paint, the tab's mark + word group inside the tab, cluster content
     const stripRel = rel(stripEl);
-    x.brand = { version: tab.matches(sel.brandV1) ? "v1" : word ? "v2" : "v1", hasWord: Boolean(word) };
+    // the rendered version: v2 shows the word; a v2 tab whose word is hidden (version auto under 1024)
+    // renders the first version, whose width follows its content. declared: the hook as written.
+    x.brand = { version: tab.matches(sel.brandV1) ? "v1" : word && visible(word) ? "v2" : "v1", declared: tab.getAttribute("data-shell-brand"), hasWord: Boolean(word) };
     const stripBg = parseAny(scs.backgroundColor);
     x.strip = { t: stripRel.t, h: stripRel.h, borderTop: px(scs.borderTopWidth), borderBottom: px(scs.borderBottomWidth), bgAlpha: r2(stripBg[3]), bgImage: scs.backgroundImage !== "none" };
     const tabRect = tab.getBoundingClientRect();
@@ -314,7 +337,10 @@ export function readShellInPage(options) {
         o.drop.rows = [...new Set([...drop.querySelectorAll(sel.row)].map((e) => r1(e.getBoundingClientRect().height)))];
         const srch = drop.querySelector(sel.search); if (srch) o.drop.search = rel(srch).h;
         // extra: the open item and every cascade column, in order (column 1 is the dropdown itself)
-        const cols = [...drop.querySelectorAll(sel.dropCol)].sort((a, b) => {
+        // columns inside the panel, and the columns it adopts with aria-owns (the package renders those
+        // next to the panel)
+        const owned = (drop.getAttribute("aria-owns") || "").split(/\s+/).filter(Boolean).map((id) => document.getElementById(id)).filter((el) => el && el.matches(sel.dropCol));
+        const cols = [...new Set([...drop.querySelectorAll(sel.dropCol), ...owned])].sort((a, b) => {
           const n = (el) => Number(el.getAttribute("data-drop-col")) || (el.hasAttribute("data-drop4") ? 4 : el.hasAttribute("data-drop3") ? 3 : 2);
           return n(a) - n(b);
         });
@@ -383,7 +409,11 @@ export function readShellInPage(options) {
         if (!groups.has(v.parent)) groups.set(v.parent, { rest: [], hover: [], on: [] });
         groups.get(v.parent)[v.hover ? "hover" : v.on ? "on" : "rest"].push(v.w);
       }
-      x.rowGroups = [...groups.values()].map((gr) => ({ rest: [...new Set(gr.rest)], hover: [...new Set(gr.hover)], on: [...new Set(gr.on)] }));
+      // rows whose text cannot be read (no row-text hook): a hook gap, and no row-group reading at all
+      x.rowTextMissing = widths.filter((v) => v.w === null).length;
+      const rowTextReadable = widths.length === 0 || x.rowTextMissing < widths.length;
+      if (!rowTextReadable) x.hookGaps.push("rowText");
+      x.rowGroups = rowTextReadable ? [...groups.values()].map((gr) => ({ rest: [...new Set(gr.rest)], hover: [...new Set(gr.hover)], on: [...new Set(gr.on)] })) : null;
       x.panelKind = panel.matches(sel.sheet) ? "sheet" : panel.matches(sel.panelExpanded) ? "expanded" : panel.matches(sel.panelDrop) ? "drop" : "other";
       x.rowHeights = [...panel.querySelectorAll(sel.row)].map((e) => r1(e.getBoundingClientRect().height));
       const firstRow = panel.querySelector(sel.row);
@@ -407,7 +437,10 @@ export function readShellInPage(options) {
       }
     }
     x.collapseButtons = collapse.size;
-    x.sidebars = [...scr.querySelectorAll(sel.sidebar)].filter((el) => !el.closest(sel.paper) && visible(el)).length;
+    // "in the paper" means this shell's own paper: a story shell can sit inside another shell's paper
+    // (the documentation pages render in the top-band shell), whose paper must not swallow it
+    const inOwnPaper = (el) => { const p = el.closest(sel.paper); return Boolean(p && scr.contains(p)); };
+    x.sidebars = [...scr.querySelectorAll(sel.sidebar)].filter((el) => !inOwnPaper(el) && visible(el)).length;
 
     // extra: lockups inside the floating layers (the bottom-right lockup): decoration only
     x.lockups = floating.flatMap((f) => [...f.querySelectorAll(sel.lockup)]).filter((el, i, all) => all.indexOf(el) === i).map((el) => {
@@ -416,7 +449,7 @@ export function readShellInPage(options) {
     });
 
     // extra: single-line text of the shell rows (tab word, pins, menu rows, group heads, search, crumbs, lockups)
-    const lineEls = [...scr.querySelectorAll(sel.singleLineText)].filter((el) => !el.closest(sel.paper)).concat([...scr.querySelectorAll(sel.pageCrumbs)]);
+    const lineEls = [...scr.querySelectorAll(sel.singleLineText)].filter((el) => !inOwnPaper(el)).concat([...scr.querySelectorAll(sel.pageCrumbs)].filter(inOwnPaper));
     x.textLines = lineEls.filter((el, i) => lineEls.indexOf(el) === i && visible(el) && !exempt(el)).map((el) => {
       let box = el;
       while (box !== scr && getComputedStyle(box).display === "inline") box = box.parentElement;
@@ -505,7 +538,11 @@ export function readShellInPage(options) {
     ph: (el) => parseAny(getComputedStyle(el, "::placeholder").color),
     border: (el, ccs) => parseAny(ccs.borderBottomColor),
     "after-bg": (el) => parseAny(getComputedStyle(el, "::after").backgroundColor),
-    "before-bg": (el) => parseAny(getComputedStyle(el, "::before").backgroundColor)
+    "before-bg": (el) => parseAny(getComputedStyle(el, "::before").backgroundColor),
+    // the first-batch vocabulary (scripts/lib/gplus-measure.mjs): a focus ring drawn as a box-shadow
+    shadow: (el, ccs) => ringColor(ccs.boxShadow) || parseAny(ccs.color),
+    "after-shadow": (el, ccs) => ringColor(getComputedStyle(el, "::after").boxShadow) || parseAny(ccs.color),
+    "after-border": (el) => parseAny(getComputedStyle(el, "::after").borderBottomColor)
   };
   out.contrastCells = [...rootEl.querySelectorAll("[data-cell]")].map((el) => {
     const ccs = getComputedStyle(el);
@@ -525,7 +562,7 @@ export function readShellInPage(options) {
     logo: svg.getAttribute("data-logo"),
     mode: svg.getAttribute("data-mode"),
     where: svg.closest(sel.tab) ? "tab" : svg.closest(sel.intro) ? "intro" : svg.closest(sel.lockup) ? "lockup" : "other",
-    shell: svg.closest(sel.shell) ? svg.closest(sel.shell).getAttribute("data-shell") : null,
+    shell: svg.closest(sel.shell) && rootEl.contains(svg.closest(sel.shell)) ? svg.closest(sel.shell).getAttribute("data-shell") : null,
     opacity: Number(getComputedStyle(svg).opacity),
     form: formIndex(canonSvg(svg))
   }));

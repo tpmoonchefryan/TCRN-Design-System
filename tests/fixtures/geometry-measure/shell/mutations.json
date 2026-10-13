@@ -1,6 +1,6 @@
 {
   "schemaVersion": "tcrn.ds.shell-measure-mutations.v1",
-  "about": "One mutation per gate, from the G-section column of the 07b board (Shell-2). ops are applied to a fresh load of the named board (see applyMutationInPage in scripts/shell-measure-proof.mjs); trace mutations patch the manifest trace named by traceOf. A mutation passes when its gate fails and the failing gates are exactly gate + alsoFails.",
+  "about": "One mutation per gate, from the G-section column of the 07b board (Shell-2). ops are applied to a fresh load of the named board (see applyMutationInPage in scripts/shell-measure-proof.mjs); trace mutations patch the manifest trace named by traceOf. A mutation passes when its gate fails and the failing gates are exactly gate + alsoFails. storyMutations (TCRN-DS-SUB-137) are the same eighteen on the package stories with the package hooks: ops are applied to the named story page (en, light) before the readings; probe mutations change the behaviour probe instead (ops after load, or beforeReload between the intro's load and reload). A story mutation passes when its gate fails and, if the unmutated story already fails that gate, the mutation adds a failure the unmutated run does not have.",
   "mutations": [
     {
       "id": "brand-top-0", "gate": "brandGeometry", "source": "top 改 0", "board": "shell-lower",
@@ -76,6 +76,85 @@
     {
       "id": "sheet-row-32", "gate": "touch", "source": "行高改 32", "board": "shell-upper",
       "ops": [{ "op": "css", "css": "[data-shell=\"ts-m-s\"] .ts-sheet { --row-h: 32px !important; }" }]
+    }
+  ],
+  "storyMutations": [
+    {
+      "id": "story-brand-top-0", "gate": "brandGeometry", "source": "top 改 0", "story": "shell-top-band",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-closed-l\"] [data-tab] { translate: 0 -6px !important; }" }]
+    },
+    {
+      "id": "story-mark-path-coordinate", "gate": "brandDigest", "source": "改一处路径坐标", "story": "shell-top-band",
+      "ops": [{ "op": "replaceInAttr", "selector": "[data-shell=\"ts-closed-l\"] [data-tab] svg[data-logo] path", "name": "d", "from": "M11 23", "to": "M12 23" }]
+    },
+    {
+      "id": "story-strip-bottom-line", "gate": "strip", "source": "顶带加 1px 底线", "story": "shell-top-band",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-closed-l\"] [data-shell-strip] { border-bottom: 1px solid currentColor !important; }" }]
+    },
+    {
+      "id": "story-cluster-padding-8", "gate": "edges", "source": "簇 padding 改 8", "story": "shell-top-band",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-closed-l\"] [data-cluster] { padding: 8px !important; }" }]
+    },
+    {
+      "id": "story-pins-left-line", "gate": "pinSpacing", "source": "加回 1px 左边线", "story": "shell-top-band",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-closed-l\"] [data-pins] { border-left: 1px solid currentColor !important; }" }]
+    },
+    {
+      "id": "story-menu-top-60", "gate": "continuation", "source": "菜单 top 改 60", "story": "shell-top-band",
+      "about": "the full menu 2px lower than the tab bottom + 6 (58), whatever positions it",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] { translate: 0 2px !important; }" }]
+    },
+    {
+      "id": "story-panel-bottom-padding-16", "gate": "barCentering", "source": "面板底内距改 16", "story": "shell-top-band",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] { padding-bottom: 16px !important; }" }]
+    },
+    {
+      "id": "story-word-padding-top-4", "gate": "markText", "source": "字标加 padding-top 4", "story": "shell-top-band",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-closed-l\"] [data-tab] b { display: inline-block !important; padding-top: 4px !important; }" }]
+    },
+    {
+      "id": "story-column-2-height-auto", "gate": "cascade", "source": "列二 height:auto", "story": "shell-top-band",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-drop-l\"] [data-drop-col=\"2\"] { height: auto !important; max-height: none !important; align-self: flex-start !important; }" }]
+    },
+    {
+      "id": "story-x-button-back", "gate": "noCollapse", "source": "加回 x 钮", "story": "shell-top-band",
+      "ops": [{ "op": "insert", "selector": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"]", "position": "afterbegin", "html": "<button type=\"button\" data-shell-close aria-label=\"Close menu\">×</button>" }]
+    },
+    {
+      "id": "story-pin-display-none-inline", "gate": "pinJitter", "source": "图钉 display:none → inline", "story": "shell-top-band",
+      "about": "the pin hidden at rest and shown on hover / on: the text track of a rest row widens by the pin slot",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] [data-pin-button] { display: none !important; } [data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] .tcrn-nav-item-row:has(> [data-tcrn-preview-state~=\"hover\"]) [data-pin-button], [data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] .tcrn-nav-item-row:has(> [aria-current=\"page\"]) [data-pin-button] { display: inline !important; }" }]
+    },
+    {
+      "id": "story-lockup-as-button", "gate": "lockupDecor", "source": "改成 button", "story": "shell-top-band",
+      "ops": [{ "op": "retag", "selector": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] [data-lockup]", "tag": "button" }]
+    },
+    {
+      "id": "story-placeholder-ink-3", "gate": "contrast", "source": "占位改 ink-3", "story": "shell-matrix",
+      "ops": [{ "op": "css", "css": "[data-cell=\"srch-ph-l\"]::placeholder { color: var(--tcrn-color-ink-3) !important; }" }]
+    },
+    {
+      "id": "story-label-plus-40", "gate": "singleLine", "source": "标签加长 40 字", "story": "shell-top-band",
+      "about": "the pinned group's heading in the full menu; labels that truncate with an ellipsis and a title pass, and at 1440 the bottom bar has room for 40 more characters, so the label taken is one the gate reads that truncates without a title",
+      "ops": [{ "op": "appendText", "selector": "[data-shell=\"ts-x-l\"] [data-shell-pinned-group] > .tcrn-nav-group__label", "text": "长", "repeat": 40 }]
+    },
+    {
+      "id": "story-panel-shadow-12", "gate": "shadowBlur", "source": "面板阴影改 12px", "story": "shell-top-band",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] { box-shadow: 0 6px 12px rgba(22, 21, 15, 0.12) !important; }" }]
+    },
+    {
+      "id": "story-intro-no-session-marker", "gate": "intro", "source": "去掉会话标记", "story": "shell-intro", "probe": "intro",
+      "about": "the session is forgotten between the first load and the reload, as if the intro kept no marker",
+      "beforeReload": [{ "op": "clearSessionStorage" }]
+    },
+    {
+      "id": "story-focus-not-returned", "gate": "focusLoop", "source": "关闭时不还焦点", "story": "shell-top-band", "probe": "focusLoop",
+      "about": "focus() on the tab does nothing, so a closing layer cannot hand the focus back",
+      "ops": [{ "op": "noFocus", "selector": "[data-tab]" }]
+    },
+    {
+      "id": "story-sheet-row-32", "gate": "touch", "source": "行高改 32", "story": "shell-mobile",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-m-s\"] [data-panel=\"sheet\"] [data-shell-row] { height: 32px !important; min-height: 0 !important; }" }]
     }
   ]
 }
