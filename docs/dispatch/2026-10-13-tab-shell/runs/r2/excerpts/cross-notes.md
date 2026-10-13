@@ -19,6 +19,7 @@
 | --- | --- | --- |
 | K2 | `runs/r2/handoff/K2.md` 第 94–110 行（第 5、6 节） | `.story-body` 比对副本末尾已带壳层段（SUB-170 只改段首定位）；换字跳过与台账都认三个字标类，`[data-locale-invariant]` 只给台账用；内层 Esc 经 `defaultPrevented` 告知外层（SUB-151 保留）；文档层示例类改名 `tcrn-doc-demo-frame`、`tcrn-doc-demo-pager`；不要再加「Change Log」内容键。既有红：`smoke.test.ts:826/831/832` 断言旧类（归 SUB-173）、tokens:proof 的「铛」（归 SUB-177） |
 | K3 | `runs/r2/handoff/K3.md` 第 47–54 行（第 4 节） | smoke 与 browser-proof 改读顶带钩子（`[data-shell-strip]`、`[data-shell-brand]`、`[data-cluster]`、`[data-shell-avatar]`、`[data-paper]`）与新回执字段（`menuRowLabel*`、`currentMenuRowPages`）；parity 去掉 10 个样板角色；契约清单改查顶带文档壳与现 README 的 prop——SUB-176、SUB-173 删旧文档壳标记词不会再打红 30.01；browser-proof 回执 507,403 字节并自检不超 1,000,000。既有红：shell:parity 两个包侧角色（归 R2-18）、smoke 与 browser-proof 余项（归 R2-8/16/17/20/21/24/34/36）；两个「search results」视觉实例渲染为壳收起态（问题 4，下一轮）；smoke 对 AI 契约的断言仍描述旧壳，SUB-176 重写契约后会红（问题 7） |
+| K1 | `runs/r2/handoff/K1.md` 第 75–96 行（第 4 节） | `/* tcrn:shell-layer-start */` 在标按钮规则前标出壳层段起点（只一次）；Sheet 打开时壳根 `data-state="sheet"`；ProductLogo 渲染 `b > em` 加 `small`（类名不变），只在带 `data-lockup` 的锁定块上给彩色标 `data-logo`；`brandCss03` 已删（含 `styles/index.ts` 的 import 与登记行）；旧 260/420 搜索尺寸规则已删；纸内滚动区可聚焦、铃铛悬停 6% 墨洗。既有红：storybook test 8/12（`smoke.test.ts:1973` 收到菜单内置「已固定」组标题，归 SUB-173）；`scripts/storybook-smoke.mjs:1066-1067` 仍要求旧 260/420 尺寸（该文件在 K3，已合入，主线程另行安排）；shell:fidelity（归 R2-21） |
 
 ## 4. 其他事实
 

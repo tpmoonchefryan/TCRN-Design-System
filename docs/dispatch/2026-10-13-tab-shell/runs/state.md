@@ -62,7 +62,9 @@
 
 | 包 | 状态 | 包内提交 | 合入 | 备注 |
 | --- | --- | --- | --- | --- |
-| K1 | 在跑 | | | |
+| K1 | 已合入，包树已退役（273 MB） | 0e39700、9d081aa、5987d66、c1e4a0a、52780e6、2d1535e、61cf706、f709e9a、0a05831、18ae767 | 72d208d | 八张完成；ui-tokens 14/14、ui-react 233/233、test:dom 47/47、两个 pilot 过；新红两处在别包文件：`smoke.test.ts:1973`（归 SUB-173）、`scripts/storybook-smoke.mjs:1066-1067` 仍要旧 260/420（K3 已合入，无 R2 持有者，待安排）；问题 9 条（页头标题行高 1.1 无 token、纸内可聚焦区焦点环被纸裁切） |
+| K4 | 在跑（自 72d208d 后的集成 HEAD） | | | |
+| K5 | 在跑（同上） | | | |
 | K2 | 已合入，包树已退役（298 MB） | a9b208b、54c48f1、ccbcfa0、b2ae68c | 6be4775 | 三张完成：文档页壳层 story 合板（菜单搜索 936×40、下拉搜索 228×28 等）、字标不译、AI 契约恢复翻译、Change Log 单一来源、语言列表 Esc 回焦；full-surface:proof 0、shell:fidelity 0；余红有主（smoke.test.ts 归 SUB-173、「铛」归 SUB-177）；28 个颜色与阴影弃用别名提示留 R3（问题 3）；问题 6 条 |
 | K7 | 在跑（自 6be4775 后的集成 HEAD） | | | |
 | K3 | 已合入，包树已退役（297 MB） | 5594ac9、50ccc1f、1ab33c3、4af6f04、b6b4738 | b759809 | 两张完成：parity 去样板角色、smoke 比较器改读顶带（失败 29/145/318 → 0/1/2）、42 个索引与参考页标当前项、railReachability、契约清单与 README；settings 23 例过；axe 颜色对比违规清零（夜间 TMS 仍 pending）；browser-proof 回执 507,403 字节；scan 0；余红有主；问题 11 条（两个「search results」视觉实例壳收起、smoke 对 AI 契约的旧断言、zh-CN「工作项」文案无主） |
