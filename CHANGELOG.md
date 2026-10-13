@@ -16,6 +16,23 @@ deprecation registry; each still resolves, and `findDeprecatedTokenUsages` repor
   are deprecated with no successor: the definitions keep their values so consumers still
   resolve, and `tcrnDeprecatedTokens` lists them with a null replacement.
 
+### The navigation family takes its place; six old shell parts are deprecated (TCRN-DS-INIT-016)
+
+Status: candidate on the INIT-016 integration branch, not tagged, published or deployed.
+
+- One Tabs family: `Tabs`, `ModuleTabs`, `SectionTabs`, `SegmentedNav` and `ViewTabs`
+  render `tcrn-tabs` in three variants (panel, nav, segmented) with one selected
+  structure, the 6% ink wash and the strong weight. The selection gate refuses a second
+  structure for the family (TCRN-DS-SUB-124).
+- `PageHeader` renders `Breadcrumb` as its first row: one line, truncating crumbs with
+  titles, the board's 11 chevron. `TreeNav` takes the menu row's grammar
+  (TCRN-DS-SUB-124).
+- Deprecated through 4.0.x and removed in 4.1: `SideNav`, `SideNavCollapseButton`,
+  `MobileNavToggle`, `TopBar`, `ProductLauncher` and `ProductSwitcher`. Their rules moved
+  from `tcrnComponentCss` to the new `tcrnRetiredComponentCss`; the new roster
+  `componentLibraryDeprecatedComponentNames` names them, and `docs/migration-4.0.md` M23
+  gives each a step (TCRN-DS-SUB-125).
+
 ### The G+ renewal: chassis, bundled fonts, five families, four product marks (TCRN-DS-INIT-015)
 
 Status: candidate on the INIT-015 integration branch. It is not tagged, not

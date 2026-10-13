@@ -9,6 +9,10 @@ import { ClipboardCopyButton } from "../Clipboard/index.js";
 import { Heading, Text } from "../Typography/index.js";
 import { Surface } from "../Layout/index.js";
 import { cx } from "../../utils.js";
+// PageHeader's trail is the Navigation family's Breadcrumb (TCRN-DS-SUB-124). Navigation.tsx imports
+// PageHeader from here in turn; each side uses the other only inside a function body, never while the
+// module is being evaluated, so the cycle is safe (C-4).
+import { Breadcrumb } from "../Navigation/Navigation.js";
 import { resolveDocumentLocale } from "../../utils.js";
 import { DetailInspector, FilterBar, TableShell, type AttachmentTableLabels, type Density, type KeyValueItem } from "./DataDisplay.js";
 
@@ -250,21 +254,18 @@ export function PageHeader({ title, description, breadcrumbs = [], meta, actions
   return (
     <header className={cx("tcrn-page-header", `tcrn-page-header--${density}`)} data-pattern="page-header" data-density={density}>
       {breadcrumbs.length ? (
-        <nav className="tcrn-page-header__breadcrumbs" aria-label={patternLabels(locale).breadcrumbs}>
-          {breadcrumbs.map((breadcrumb, index) => (
-            <span key={breadcrumb.id} className="tcrn-page-header__breadcrumb">
-              {index > 0 ? <span className="tcrn-page-header__crumb-separator" aria-hidden="true">/</span> : null}
-              {breadcrumb.href ? (
-                <a className="tcrn-page-header__crumb" href={breadcrumb.href} title={breadcrumb.label}>{breadcrumb.label}</a>
-              ) : index === breadcrumbs.length - 1 ? (
-                // The page itself, set in the ink and weight of the board's current crumb.
-                <b className="tcrn-page-header__crumb" title={breadcrumb.label} aria-current="page">{breadcrumb.label}</b>
-              ) : (
-                <span className="tcrn-page-header__crumb" title={breadcrumb.label}>{breadcrumb.label}</span>
-              )}
-            </span>
-          ))}
-        </nav>
+        // The trail is the Breadcrumb component (TCRN-DS-SUB-124): one line, truncating crumbs with
+        // titles, the board's chevron between them. The last crumb without an href is the page itself.
+        <Breadcrumb
+          label={patternLabels(locale).breadcrumbs}
+          locale={locale}
+          items={breadcrumbs.map((breadcrumb, index) => ({
+            id: breadcrumb.id,
+            label: breadcrumb.label,
+            href: breadcrumb.href,
+            selected: !breadcrumb.href && index === breadcrumbs.length - 1
+          }))}
+        />
       ) : null}
       <div className="tcrn-page-header__body">
         <div className="tcrn-page-header__title">
@@ -304,26 +305,31 @@ export interface ViewTabsProps {
  * the render cannot know the viewport, and a redundant stop on a labelled
  * group costs a keyboard user one press while its absence costs them the
  * content (TCRN-AOS-INC-029). Same treatment TableShell already carries.
+ *
+ * ViewTabs is the Tabs family's nav variant (TCRN-DS-SUB-124): the root is
+ * `tcrn-tabs tcrn-tabs--nav` (with `tcrn-view-tabs` kept as a hook through 4.0.x), every view
+ * is a `tcrn-tabs__tab` with its label as a title, and the current view takes the family's one
+ * selected structure, the 6% wash and the strong weight.
  */
 export function ViewTabs({ label, tabs, locale }: ViewTabsProps) {
   return (
-    <nav className="tcrn-view-tabs" aria-label={label ?? patternLabels(locale).viewTabs} data-pattern="view-tabs" tabIndex={0}>
+    <nav className="tcrn-tabs tcrn-tabs--nav tcrn-view-tabs" aria-label={label ?? patternLabels(locale).viewTabs} data-pattern="view-tabs" tabIndex={0}>
       {tabs.map((tab) => {
         const content = (
           <>
-            <span>{tab.label}</span>
+            <span className="tcrn-tabs__label">{tab.label}</span>
             {typeof tab.count === "number" ? <Badge>{tab.count}</Badge> : null}
           </>
         );
         if (tab.href && !tab.disabled) {
           return (
-            <a key={tab.id} href={tab.href} aria-current={tab.current ? "page" : undefined} data-selected={tab.current || undefined}>
+            <a key={tab.id} className="tcrn-tabs__tab" href={tab.href} title={tab.label} aria-current={tab.current ? "page" : undefined} data-selected={tab.current || undefined}>
               {content}
             </a>
           );
         }
         return (
-          <span key={tab.id} aria-disabled={tab.disabled || undefined} data-selected={tab.current || undefined}>
+          <span key={tab.id} className="tcrn-tabs__tab" title={tab.label} aria-disabled={tab.disabled || undefined} data-selected={tab.current || undefined}>
             {content}
           </span>
         );
@@ -1069,11 +1075,11 @@ function TreeNavItems({ items, locale }: { items: TreeNavItem[]; locale?: TcrnLo
         return (
           <li key={item.id} className="tcrn-tree-nav__item" data-tree-level={level}>
             {item.href ? (
-              <a href={item.href} aria-current={item.current ? "page" : undefined} data-selected={item.current || undefined}>
+              <a href={item.href} title={item.title} aria-current={item.current ? "page" : undefined} data-selected={item.current || undefined}>
                 {content}
               </a>
             ) : (
-              <span data-selected={item.current || undefined}>{content}</span>
+              <span title={item.title} data-selected={item.current || undefined}>{content}</span>
             )}
             {item.children?.length ? <TreeNavItems items={item.children.map((child) => ({ ...child, level: (child.level ?? level + 1) }))} locale={locale} /> : null}
           </li>

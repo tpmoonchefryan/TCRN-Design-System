@@ -26,6 +26,7 @@ import {
   ProductLockup,
   TcrnBrandMark,
   tcrnComponentCss,
+  tcrnRetiredComponentCss,
   tcrnProductLogoRegistry,
   tcrnProductMarkIds,
   tcrnProductMarkSvg,
@@ -39,6 +40,7 @@ import {
   type ShellThemeMode
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
+import { PageHeader, TocRail, ViewTabs } from "../DataDisplay/DomainDisplay.js";
 import { createResolvedTokenMap, createTokenMap } from "@tcrn/ui-tokens";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
 import * as brandSegments from "../../styles/brand.css.js";
@@ -104,13 +106,13 @@ test("breadcrumb ancestors are links and the current page is not", () => {
       ]}
     />
   );
-  assert.match(html, /<a href="\/work-items\?project=ds">Design System<\/a>/);
-  assert.match(html, /<a href="\/work-items\/TCRN-AOS-EPIC-030">EPIC-030<\/a>/);
+  assert.match(html, /<a class="tcrn-breadcrumb__crumb" href="\/work-items\?project=ds" title="Design System">Design System<\/a>/);
+  assert.match(html, /<a class="tcrn-breadcrumb__crumb" href="\/work-items\/TCRN-AOS-EPIC-030" title="EPIC-030">EPIC-030<\/a>/);
   // The crumb the reader is standing on stays inert with aria-current, which is what
   // tells a screen-reader user which end of the trail they are at. A link here would
   // be a link to the page they are already on.
-  assert.match(html, /<span aria-current="page">STORY-104<\/span>/);
-  assert.equal((html.match(/<a href=/g) ?? []).length, 2);
+  assert.match(html, /<b class="tcrn-breadcrumb__crumb" title="STORY-104" aria-current="page">STORY-104<\/b>/);
+  assert.equal((html.match(/<a /g) ?? []).length, 2);
 
   // `selected` outranks `href`, so a consumer that supplies both — the natural
   // mistake when the trail is built by mapping over ancestors — still gets an inert
@@ -118,7 +120,7 @@ test("breadcrumb ancestors are links and the current page is not", () => {
   const bothHtml = renderToStaticMarkup(
     <Breadcrumb items={[{ id: "here", label: "Here", href: "/here", selected: true }]} />
   );
-  assert.doesNotMatch(bothHtml, /<a href=/);
+  assert.doesNotMatch(bothHtml, /<a /);
   assert.match(bothHtml, /aria-current="page">Here</);
 
   // A trail with no hrefs at all is still legal markup — the component cannot know
@@ -127,7 +129,7 @@ test("breadcrumb ancestors are links and the current page is not", () => {
   const inertHtml = renderToStaticMarkup(
     <Breadcrumb items={[{ id: "a", label: "A" }, { id: "b", label: "B", selected: true }]} />
   );
-  assert.doesNotMatch(inertHtml, /<a href=/);
+  assert.doesNotMatch(inertHtml, /<a /);
 });
 
 test("side navigation primitives render package-backed hierarchy and disabled reasons", () => {
@@ -230,8 +232,9 @@ test("STORY-140 GWT1 product shell is the top band and the paper, through the sh
   ]) {
     assert.doesNotMatch(shellRules, retired);
   }
-  // The standalone TopBar keeps its own height.
-  assert.match(tcrnComponentCss, /\.tcrn-top-bar \{\n  display: grid;\n  grid-template-columns: max-content max-content minmax\(0, 1fr\);\n  align-items: center;\n  gap: var\(--tcrn-space-4\);\n  min-height: 68px;/);
+  // The deprecated TopBar (TCRN-DS-SUB-125) keeps its own height, in the retired sheet only.
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-top-bar\b/);
+  assert.match(tcrnRetiredComponentCss, /\.tcrn-top-bar \{\n  display: grid;\n  grid-template-columns: max-content max-content minmax\(0, 1fr\);\n  align-items: center;\n  gap: var\(--tcrn-space-4\);\n  min-height: 68px;/);
 });
 
 // The five-locale taglines of STORY-127, as the story states them. The registry
@@ -503,7 +506,7 @@ test("STORY-146 GWT1 the page header is required and is the paper's first row", 
   // An omitted trail is the current position in the menu model: the group, then the page, which is no link.
   assert.match(
     html,
-    /<nav class="tcrn-page-header__breadcrumbs" aria-label="Breadcrumbs"><span class="tcrn-page-header__breadcrumb"><span class="tcrn-page-header__crumb" title="Talent">Talent<\/span><\/span><span class="tcrn-page-header__breadcrumb"><span class="tcrn-page-header__crumb-separator" aria-hidden="true">\/<\/span><b class="tcrn-page-header__crumb" title="Roster" aria-current="page">Roster<\/b><\/span><\/nav>/
+    /<nav class="tcrn-breadcrumb" aria-label="Breadcrumbs"><span class="tcrn-breadcrumb__item"><span class="tcrn-breadcrumb__crumb" title="Talent">Talent<\/span><\/span><span class="tcrn-breadcrumb__item"><svg [^>]*data-icon-name="chevron-right" class="tcrn-icon tcrn-breadcrumb__separator"[^>]*>[\s\S]*?<\/svg><b class="tcrn-breadcrumb__crumb" title="Roster" aria-current="page">Roster<\/b><\/span><\/nav>/
   );
   // The consumer's own trail and language win over the shell's.
   const own = renderToStaticMarkup(
@@ -520,8 +523,8 @@ test("STORY-146 GWT1 the page header is required and is the paper's first row", 
       <section>Fixture-safe contract content</section>
     </ProductShell>
   );
-  assert.match(own, /aria-label="Fil d’Ariane"><span class="tcrn-page-header__breadcrumb"><a class="tcrn-page-header__crumb" href="\/contracts" title="Contracts">Contracts<\/a>/);
-  assert.match(own, /<b class="tcrn-page-header__crumb" title="Active" aria-current="page">Active<\/b>/);
+  assert.match(own, /aria-label="Fil d’Ariane"><span class="tcrn-breadcrumb__item"><a class="tcrn-breadcrumb__crumb" href="\/contracts" title="Contracts">Contracts<\/a>/);
+  assert.match(own, /<b class="tcrn-breadcrumb__crumb" title="Active" aria-current="page">Active<\/b>/);
   assert.equal(own.includes('title="Talent"'), false, "the derived trail is not added to the consumer's");
 
   // Type level: a shell page without a page header, or with one without a title, does not compile.
@@ -546,16 +549,20 @@ test("STORY-146 GWT2 the trail stays on one line: crumbs give way with an ellips
     assert.ok(found, `${selector} has a rule`);
     return found[1];
   };
-  const trail = rule(".tcrn-page-header__breadcrumbs,\n.tcrn-page-header__breadcrumb");
+  // The trail is the Breadcrumb component since TCRN-DS-SUB-124, so its rules are the Breadcrumb's.
+  const trail = rule(".tcrn-breadcrumb");
   assert.match(trail, /flex-wrap: nowrap;/);
   assert.match(trail, /white-space: nowrap;/);
   assert.match(trail, /min-width: 0;/);
   assert.match(trail, /gap: var\(--tcrn-space-1h\);/, "the board's crumb gap 6");
-  const nav = rule(".tcrn-page-header__breadcrumbs");
-  assert.match(nav, /overflow: hidden;/);
-  assert.match(nav, /font-size: var\(--tcrn-type-size-meta\);/, "the board's crumb size 12");
-  assert.match(rule(".tcrn-page-header__crumb-separator"), /flex: none;/);
-  const crumb = rule(".tcrn-page-header__crumb");
+  assert.match(trail, /overflow: hidden;/);
+  assert.match(trail, /font-size: var\(--tcrn-type-size-meta\);/, "the board's crumb size 12");
+  const item = rule(".tcrn-breadcrumb__item");
+  for (const declaration of [/flex-wrap: nowrap;/, /white-space: nowrap;/, /min-width: 0;/, /overflow: hidden;/, /text-overflow: ellipsis;/, /gap: var\(--tcrn-space-1h\);/]) {
+    assert.match(item, declaration);
+  }
+  assert.match(rule(".tcrn-breadcrumb__separator"), /flex: none;/);
+  const crumb = rule(".tcrn-breadcrumb__crumb");
   assert.match(crumb, /overflow: hidden;/);
   assert.match(crumb, /text-overflow: ellipsis;/);
   assert.match(crumb, /min-width: 0;/);
@@ -580,7 +587,7 @@ test("STORY-146 GWT2 the trail stays on one line: crumbs give way with an ellips
       <section>Fixture-safe content</section>
     </ProductShell>
   );
-  for (const label of labels) assert.match(html, new RegExp(`class="tcrn-page-header__crumb"[^>]* title="${label}"|title="${label}"[^>]*aria-current="page"`));
+  for (const label of labels) assert.match(html, new RegExp(`class="tcrn-breadcrumb__crumb"[^>]* title="${label}"|title="${label}"[^>]*aria-current="page"`));
 });
 
 test("product shell component css keeps motion shorthands valid", () => {
@@ -607,7 +614,8 @@ test("product shell component css carries the relocated component families (TCRN
   assert.match(tcrnComponentCss, /\.tcrn-surface\b/);
   assert.match(tcrnComponentCss, /\.tcrn-state-surface\b/);
   assert.match(tcrnComponentCss, /\.tcrn-collapsible-region\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-segmented-nav\b/);
+  // The segmented nav renders the Tabs family since TCRN-DS-SUB-124, so the family's tab stands for it.
+  assert.match(tcrnComponentCss, /\.tcrn-tabs__tab\b/);
   assert.match(tcrnComponentCss, /\.tcrn-highlight__mark\b/);
   assert.match(tcrnComponentCss, /@keyframes tcrn-skeleton-shimmer\b/);
   // The storybook-only static tooltip hook must NOT be shipped in the package; it stays
@@ -805,12 +813,16 @@ test("brand lockup css follows the G+ brand rules", () => {
 
 test("product shell component css keeps package controls contrast-safe", () => {
   assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle__icon \{[\s\S]*inline-size: 20px;[\s\S]*place-items: center;/);
+  // SideNavCollapseButton is deprecated (TCRN-DS-SUB-125): its rules left tcrnComponentCss for the retired sheet.
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle\b/);
+  assert.match(tcrnRetiredComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);
+  assert.match(tcrnRetiredComponentCss, /\.tcrn-shell-side-nav-toggle__icon \{[\s\S]*inline-size: 20px;[\s\S]*place-items: center;/);
   // The three shell toggles are IconButtons: the shell rules size and shape them and leave
   // fill, ink, edge, focus ring and transition to the Actions pair table. No shell rule
   // colours them, shadows them, restyles their hover or focus, or scales them on press.
-  const sheetWithoutComments = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  // The side-nav and mobile-nav toggles are deprecated (TCRN-DS-SUB-125) and ship in the retired
+  // sheet, which a consumer adds after the component sheet; the rule holds for both sheets.
+  const sheetWithoutComments = (tcrnComponentCss + tcrnRetiredComponentCss).replace(/\/\*[\s\S]*?\*\//g, "");
   const shellToggleRules = [...sheetWithoutComments.matchAll(/(?:^|\n)([^{}\n@][^{}]*)\{([^}]*)\}/g)].filter(([, selector]) =>
     selector.split(",").some((part) => /^\s*(?:\.tcrn-button)?\.tcrn-shell-(?:theme|side-nav|mobile-nav)-toggle\s*$/.test(part))
   );
@@ -1253,7 +1265,7 @@ test("shell chrome says its own words in the reader's language", () => {
   assert.match(zhShell, /aria-label="语言"/);
   assert.match(zhShell, /placeholder="搜索页面与内容"/);
   // The page header's trail is named in the shell's language and walks the current position.
-  assert.match(zhShell, /<nav class="tcrn-page-header__breadcrumbs" aria-label="面包屑导航">/);
+  assert.match(zhShell, /<nav class="tcrn-breadcrumb" aria-label="面包屑导航">/);
   assert.match(zhShell, /title="已登记入口">已登记入口<\/span>/);
   for (const englishDefault of [
     "Skip to shell content", "Product shell workspace", ">Current location<", " shell controls\"",
@@ -1549,6 +1561,93 @@ test("STORY-093 a segmented nav renders an activation handler when the consumer 
   // Omitting the handler stays legal: ProductLauncher and ProductSwitcher share the
   // item type and do not select, so onSelect is optional rather than required.
   assert.match(bare, /<button/);
+});
+
+// TCRN-DS-SUB-124 (STORY-143 GWT2). Five tab-shaped forms grew up apart and said "selected" three
+// ways. They now render one block in three variants, and the family has one selected structure:
+// the 6% ink wash and the strong weight, with nothing added on top.
+test("STORY-143 GWT2 the five tab forms render one family with one selected structure", () => {
+  const two = [{ id: "a", label: "Alpha" }, { id: "b", label: "Beta", selected: true }];
+  const forms = {
+    Tabs: renderToStaticMarkup(<Tabs label="Sections" selectedId="b" onSelect={() => {}} items={[{ id: "a", label: "Alpha" }, { id: "b", label: "Beta" }]} />),
+    ModuleTabs: renderToStaticMarkup(<ModuleTabs items={two} />),
+    SectionTabs: renderToStaticMarkup(<SectionTabs items={two} />),
+    SegmentedNav: renderToStaticMarkup(<SegmentedNav items={two} />),
+    ViewTabs: renderToStaticMarkup(<ViewTabs tabs={[{ id: "a", label: "Alpha", href: "#a" }, { id: "b", label: "Beta", href: "#b", current: true }]} />)
+  };
+  const variants: Record<keyof typeof forms, string> = { Tabs: "panel", ModuleTabs: "nav", SectionTabs: "nav", SegmentedNav: "segmented", ViewTabs: "nav" };
+  for (const [name, html] of Object.entries(forms) as [keyof typeof forms, string][]) {
+    assert.match(html, new RegExp(`^<(?:div|nav) class="tcrn-tabs tcrn-tabs--${variants[name]}\\b`), `${name} is the Tabs family`);
+    const tabs = html.match(/<(?:button|a|span) [^>]*class="tcrn-tabs__tab"[^>]*>/g) ?? [];
+    assert.equal(tabs.length, 2, `${name} renders its two tabs as the family's tab`);
+    const selected = tabs.filter((tab) => tab.includes('data-selected="true"'));
+    assert.equal(selected.length, 1, `${name} marks the chosen tab one way`);
+    assert.match(selected[0] ?? "", /title="Beta"/, `${name}: the chosen tab carries its label as a title`);
+    assert.match(html, /<span class="tcrn-tabs__label">Beta<\/span>/);
+  }
+  // One selected rule for the whole family: the wash and the weight, and nothing on top of them.
+  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  const selectedRules = [...sheet.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
+    .filter(([, selector]) => /\.tcrn-tabs__tab/.test(selector ?? "") && /data-selected|aria-selected|aria-current|--selected/.test(selector ?? ""));
+  assert.equal(selectedRules.length, 1);
+  const body = selectedRules[0]?.[2] ?? "";
+  assert.match(body, /--tcrn-pair-tab-fill: var\(--tcrn-pair-tab-fill-s\);/);
+  assert.match(body, /font-weight: var\(--tcrn-type-weight-strong\);/);
+  assert.doesNotMatch(body, /border|outline|box-shadow|text-decoration|transform|brand/);
+  assert.match(sheet, /--tcrn-pair-tab-fill-s: var\(--tcrn-color-wash\);/, "the selected fill is the 6% wash");
+  // The old roots are hooks without rules: no package rule styles them any more.
+  assert.doesNotMatch(sheet, /\.tcrn-(?:module-tabs|section-tabs|segmented-nav|view-tabs)\b/);
+});
+
+// TCRN-DS-SUB-125 (STORY-143 GWT3). The table of contents is the page's own: it sits in the paper,
+// after the page header, and the shell around it has no resident side rail of any kind.
+test("STORY-143 GWT3 the TocRail sits in the paper and the shell has no resident side rail", () => {
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN Design System"
+      moduleName="Components"
+      brandProductId="design-system"
+      currentRouteLabel="Navigation shell"
+      pageHeader={{ title: "Navigation shell" }}
+      navGroups={[]}
+      locales={shellLocales}
+      currentLocale="en"
+    >
+      <TocRail label="On this page" items={[{ id: "a", label: "Bands", href: "#a", current: true }, { id: "b", label: "Pins", href: "#b" }]} />
+    </ProductShell>
+  );
+  const paper = html.indexOf("data-paper=");
+  const toc = html.indexOf('class="tcrn-toc-rail');
+  assert.ok(paper > 0 && toc > paper, "the TocRail is inside the paper");
+  assert.ok(toc > html.indexOf('data-pattern="page-header"'), "after the page header, as page content");
+  assert.ok(html.indexOf("data-shell-strip") < paper, "the band comes before the paper and holds no TocRail");
+  assert.equal(html.match(/<aside /g)?.length, 1, "the only aside is the page's TocRail");
+  for (const rail of ["tcrn-side-nav", "tcrn-product-shell__sidebar", "data-side-nav-toggle", "tcrn-shell-mobile-nav-toggle", "tcrn-top-bar"]) {
+    assert.equal(html.includes(rail), false, `${rail} is not in the shell`);
+  }
+});
+
+// TCRN-DS-SUB-124 (STORY-143 GWT4). The breadcrumb is the page header's first row, and it keeps to
+// one line at every width, 390 included: crumbs give way with an ellipsis and carry a title.
+test("STORY-143 GWT4 the breadcrumb is the page header's first row, on one line, truncating, with titles", () => {
+  const header = renderToStaticMarkup(
+    <PageHeader title="Roster" breadcrumbs={[{ id: "talent", label: "Talent", href: "/talent" }, { id: "roster", label: "Roster" }]} />
+  );
+  assert.match(header, /^<header class="tcrn-page-header[^"]*"[^>]*><nav class="tcrn-breadcrumb" aria-label="Breadcrumbs">/);
+  const standalone = renderToStaticMarkup(
+    <Breadcrumb label="Breadcrumbs" items={[{ id: "talent", label: "Talent", href: "/talent" }, { id: "roster", label: "Roster", selected: true }]} />
+  );
+  assert.equal(header.match(/<nav class="tcrn-breadcrumb"[\s\S]*?<\/nav>/)?.[0], standalone, "the header's trail is the Breadcrumb component's DOM");
+  assert.match(standalone, /<svg [^>]*width="11" height="11"[^>]*aria-hidden="true" data-icon-name="chevron-right" class="tcrn-icon tcrn-breadcrumb__separator"/, "the board's 11 chevron, not read out");
+  for (const label of ["Talent", "Roster"]) assert.match(standalone, new RegExp(`class="tcrn-breadcrumb__crumb"[^>]* title="${label}"`));
+  // No rule, at any width, lets the trail wrap or stop clipping.
+  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  const trailRules = [...sheet.matchAll(/([^{}]*)\{([^{}]*)\}/g)].filter(([, selector]) => /\.tcrn-breadcrumb/.test(selector ?? ""));
+  assert.ok(trailRules.length >= 5);
+  for (const [, selector, body] of trailRules) {
+    assert.doesNotMatch(body ?? "", /flex-wrap:\s*wrap|white-space:\s*(?:normal|pre-wrap|pre-line|break-spaces)|text-overflow:\s*clip|overflow:\s*visible/, `${(selector ?? "").trim()} lets the trail wrap`);
+  }
+  assert.doesNotMatch(sheet, /\.tcrn-page-header__(?:breadcrumbs?|crumb)/, "one trail: the page header keeps no copy of its own");
 });
 
 // TCRN-DS-SUB-123 (STORY-142): the pin of a menu row. Grouping, item and sub-menu rows can all

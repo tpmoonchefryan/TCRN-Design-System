@@ -106,13 +106,15 @@ test("PageHeader keeps its trail on one line: every crumb carries its label as a
       ]}
     />
   );
-  assert.match(html, /<nav class="tcrn-page-header__breadcrumbs" aria-label="Breadcrumbs">/);
-  assert.match(html, /<a class="tcrn-page-header__crumb" href="\/talent" title="Talent">Talent<\/a>/);
-  assert.match(html, /<span class="tcrn-page-header__crumb" title="People">People<\/span>/);
-  assert.match(html, /<b class="tcrn-page-header__crumb" title="Roster" aria-current="page">Roster<\/b>/);
-  // One separator between two crumbs, none before the first; separators are not read out.
-  assert.equal(html.match(/class="tcrn-page-header__crumb-separator" aria-hidden="true"/g)?.length, 2);
-  assert.ok(html.indexOf("tcrn-page-header__crumb-separator") > html.indexOf("Talent</a>"));
+  // The trail is the Breadcrumb component, the header's first row (TCRN-DS-SUB-124, STORY-143 GWT4).
+  assert.match(html, /^<header class="tcrn-page-header[^"]*"[^>]*><nav class="tcrn-breadcrumb" aria-label="Breadcrumbs">/);
+  assert.match(html, /<a class="tcrn-breadcrumb__crumb" href="\/talent" title="Talent">Talent<\/a>/);
+  assert.match(html, /<span class="tcrn-breadcrumb__crumb" title="People">People<\/span>/);
+  assert.match(html, /<b class="tcrn-breadcrumb__crumb" title="Roster" aria-current="page">Roster<\/b>/);
+  // One separator between two crumbs, none before the first; separators are the board's 11 chevron and are not read out.
+  assert.equal(html.match(/aria-hidden="true" data-icon-name="chevron-right" class="tcrn-icon tcrn-breadcrumb__separator"/g)?.length, 2);
+  assert.equal(html.match(/<svg [^>]*width="11" height="11"/g)?.length, 2);
+  assert.ok(html.indexOf("tcrn-breadcrumb__separator") > html.indexOf("Talent</a>"));
   // A trail whose last crumb is a link names no current page; the trail's name follows the locale.
   const linked = renderToStaticMarkup(<PageHeader title="Contracts" locale="ja" breadcrumbs={[{ id: "contracts", label: "Contracts", href: "/contracts" }]} />);
   assert.doesNotMatch(linked, /aria-current/);
