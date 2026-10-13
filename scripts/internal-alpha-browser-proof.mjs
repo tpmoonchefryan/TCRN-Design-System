@@ -2140,8 +2140,8 @@ for (const viewport of railReachabilityViewports) {
       const clipRect = (scroller ?? menu).getBoundingClientRect();
       const inside = (outer) => rowRect.top >= outer.top - 1 && rowRect.bottom <= outer.bottom + 1;
       const windowBox = { top: 0, bottom: window.innerHeight };
-      layers.setMenu(false);
-      return {
+      // Read everything before the menu closes: a closed menu has no scroll height.
+      const readback = {
         rowCount: rows.length,
         menuScrollable: Boolean(scroller),
         menuContentHeight: Math.round((scroller ?? menu).scrollHeight + (clipRect.top - menuRect.top)),
@@ -2150,6 +2150,8 @@ for (const viewport of railReachabilityViewports) {
         lowestRowBottom: Math.round(rowRect.bottom),
         reachable: inside(clipRect) && inside(menuRect) && inside(windowBox)
       };
+      layers.setMenu(false);
+      return readback;
     });
     // On the landscape phone the menu has to be taller than the window, or the hard case is not exercised.
     const exercised = !viewport.menuTallerThanWindow || readback.menuScrollable === true;
