@@ -1,15 +1,15 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales } from "@tcrn/ui-copy-state";
+import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 import {
   Icon,
-  SearchInput,
-  ShellBrandLockup,
-  ShellLocaleMenu,
-  ShellThemeToggle,
-  SideNavCollapseButton,
-  SkipLink,
+  ProductShell,
+  TocRail,
   tcrnComponentCss,
-  type IconName
+  tcrnRetiredComponentCss,
+  type IconName,
+  type PageHeaderBreadcrumb,
+  type ProductShellNavGroup,
+  type TocItem
 } from "@tcrn/ui-react";
 import { DialogSpecFixture, contractStoriesByGroup, contractStoryGroups } from "../stories.js";
 import type { ContractStory, ContractStoryGroup } from "../stories.js";
@@ -18,17 +18,18 @@ import {
   activeStoryNavScript,
   anchorScrollScript,
   dialogFixtureScript,
+  docShellLayerScript,
   hashRouteScript,
-  sidebarToggleScript,
   storyDisclosureScript,
   tableToolbarScript,
   storybookI18nScript,
   storybookThemeScript,
+  storybookSearchIndexJson,
   storybookSearchScript,
   storybookCanvasColors
 } from "./client-scripts.js";
 import { escapeHtml, i18nText, localeText, storybookContentText } from "./i18n.js";
-import { categoryDomId, categoryFileForStory, categoryFileName, groupFileName, groupSlug, navAbbreviations, storyCategoriesForGroup } from "./navigation.js";
+import { categoryFileForStory, categoryFileName, categorySlug, groupFileName, groupSlug, storyCategoriesForGroup } from "./navigation.js";
 import type { ContractPage } from "./navigation.js";
 import { referenceComponentAnchor } from "./reference-pages.js";
 import type { ComponentApiEntry, ReferencePage } from "./reference-pages.js";
@@ -289,7 +290,25 @@ const globalComponentCssWithoutFullSurface = fullSurfaceContractCssStart === -1
   ? prePageHierarchyComponentCss
   : `${prePageHierarchyComponentCss.slice(0, fullSurfaceContractCssStart)}${prePageHierarchyComponentCss.slice(fullSurfaceContractCssEnd)}`;
 const globalComponentCss = globalComponentCssWithoutFullSurface;
-const pageHierarchyComponentCss = pageHierarchyContractCssStart === -1 ? "" : tcrnComponentCss.slice(pageHierarchyContractCssStart);
+// TCRN-DS-SUB-131: the documentation pages render inside the package ProductShell, so the shell's
+// own rules (shell.css.ts, shell-intro.css.ts and shell-sheet.css.ts, the last segments of the
+// package sheet, after the page hierarchy contract) travel on every page; only the page hierarchy
+// contract itself stays with the pages that render a page hierarchy. The package writes no marker
+// in front of its first shell segment, so the brand button's first rule is the boundary; a package
+// reorder that moves it fails the build here instead of dropping the shell's rules silently.
+const shellComponentCssStart = tcrnComponentCss.indexOf("\n.tcrn-shell-brand {");
+if (pageHierarchyContractCssStart === -1 || shellComponentCssStart < pageHierarchyContractCssStart) {
+  throw new Error("doc_shell_package_css_segments_moved");
+}
+const pageHierarchyComponentCss = tcrnComponentCss.slice(pageHierarchyContractCssStart, shellComponentCssStart);
+const shellComponentCss = tcrnComponentCss.slice(shellComponentCssStart);
+// The retired navigation parts (TopBar, SideNav, the launchers and the old toggles) are still
+// exported but their rules left tcrnComponentCss for tcrnRetiredComponentCss (TCRN-DS-SUB-125). A
+// page whose stories still render one takes the retired sheet, as a consumer would; others do not.
+const retiredComponentClasses = [...new Set(tcrnRetiredComponentCss.match(/(?<=\.)tcrn-[A-Za-z0-9_-]+/g) ?? [])];
+function usesRetiredComponent(mainBody: string): boolean {
+  return retiredComponentClasses.some((className) => new RegExp(`class="(?:[^"]* )?${className}(?:[ "])`).test(mainBody));
+}
 // The older scoped copy has a `.story-body .tcrn-setting-row` rule. Re-apply
 // only the settings-specific container overrides after that copy. Wide rows must
 // inherit the complete form/list tracks, including the empty tools slots.
@@ -304,10 +323,11 @@ const staticStoryComponentCss = compactCss(`${scopeComponentCss(scopedComponentC
 
 function globalComponentCssForBody(mainBody: string): string {
   const pageCss = mainBody.includes("data-page-hierarchy")
-    ? globalComponentCss + pageHierarchyComponentCss
-    : globalComponentCss;
+    ? globalComponentCss + pageHierarchyComponentCss + shellComponentCss
+    : globalComponentCss + shellComponentCss;
   const needsFullSurfaceCss = /data-tooltip-scope|data-overlay-scope|data-dictionary-category|data-choice-cardinality|data-choice-value-mode/u.test(mainBody);
-  return needsFullSurfaceCss ? `${pageCss}${fullSurfaceContractCss}` : pageCss;
+  const surfaceCss = needsFullSurfaceCss ? `${pageCss}${fullSurfaceContractCss}` : pageCss;
+  return usesRetiredComponent(mainBody) ? `${surfaceCss}${tcrnRetiredComponentCss}` : surfaceCss;
 }
 
 function alphaStoryCssForBody(mainBody: string): string {
@@ -315,182 +335,209 @@ function alphaStoryCssForBody(mainBody: string): string {
   return alphaStoryCss.replace(/  --tcrn-container-page-third-level-(?:split|nav): [^;]+;\n/g, "");
 }
 
-function skipLinkHtml(): string {
+// TCRN-DS-SUB-131 (STORY-147): the documentation pages wear the one shell there is, the package
+// ProductShell in its top-band state (07a board, section A; Shell-2 board, section E: the
+// documentation site uses the same top band, with its contents and bookmarks in the page). There
+// is no documentation header, rail or rail toggle any more: the brand button opens the full menu,
+// whose first column is the documentation sections and whose other columns hold each section's
+// categories; the band pins every section but Welcome (six, --tcrn-shell-pins-max); the avatar menu
+// holds the theme and the language; the paper holds the page header, the page and, in the page,
+// the TocRail with this page's contents. tcrn-doc-* is left to the documentation's own layout and
+// typography inside the paper.
+type DocPageKind = "index" | "category" | "reference";
+
+interface DocShellPage {
+  kind: DocPageKind;
+  group: ContractStoryGroup;
+  activeCategoryId: string;
+  /** The page's title in a locale: its section, its category or its reference page. */
+  title: (locale: TcrnLocale) => string;
+  /** The page's own contents for the TocRail, in a locale. */
+  toc: (locale: TcrnLocale) => TocItem[];
+}
+
+const docShellBodyMarker = "<!--tcrn-doc-page-body-->";
+
+function docSectionItemId(group: ContractStoryGroup): string {
+  return `section-${groupSlug(group)}`;
+}
+
+function docCategoryItemId(group: ContractStoryGroup, categoryId: string): string {
+  return `category-${groupSlug(group)}-${categorySlug(categoryId)}`;
+}
+
+// The menu model (C-7): the sections, then one column per section with its categories. Every row
+// is a link: a static page has no client React to open a cascade, so the stories stay in the
+// category page's own TocRail rather than a third menu level.
+function docMenuModel(page: DocShellPage, locale: TcrnLocale): ProductShellNavGroup[] {
+  const sections: ProductShellNavGroup = {
+    id: "sections",
+    label: localeText("shell.topNavLabel", locale),
+    items: contractStoryGroups.map((group) => ({
+      id: docSectionItemId(group),
+      label: localeText(`group.${group}`, locale),
+      href: groupFileName(group),
+      iconName: navGroupIcons[group],
+      selected: page.kind === "index" && group === page.group
+    }))
+  };
+  const columns = contractStoryGroups.map((group): ProductShellNavGroup => ({
+    id: `group-${groupSlug(group)}`,
+    label: localeText(`group.${group}`, locale),
+    iconName: navGroupIcons[group],
+    items: storyCategoriesForGroup(group, contractStoriesByGroup(group)).map((category) => ({
+      id: docCategoryItemId(group, category.id),
+      label: localeText(category.label, locale),
+      href: categoryFileName(group, category.id),
+      selected: page.kind !== "index" && group === page.group && category.id === page.activeCategoryId
+    }))
+  }));
+  return [sections, ...columns];
+}
+
+function docBreadcrumbs(page: DocShellPage, locale: TcrnLocale): PageHeaderBreadcrumb[] {
+  const sectionLabel = localeText(`group.${page.group}`, locale);
+  if (page.kind === "index") return [{ id: "doc-crumb-section", label: sectionLabel }];
+  return [
+    { id: "doc-crumb-section", label: sectionLabel, href: groupFileName(page.group) },
+    { id: "doc-crumb-page", label: page.title(locale) }
+  ];
+}
+
+// One render of the shell around a marker for the page body. `open` renders the two layers a
+// static page opens without React, the full menu and the avatar menu, so their markup can be
+// carried hidden and opened by docShellLayerScript.
+function docShellMarkup(page: DocShellPage, locale: TcrnLocale, open: boolean): string {
   return renderToStaticMarkup(
-    <SkipLink className="tcrn-doc-skip" href="#content" aria-label={localeText("shell.skip")}>
-      {localeText("shell.skip")}
-    </SkipLink>
+    <ProductShell
+      productName={localeText("shell.brand", locale)}
+      moduleName={localeText("shell.brand", locale)}
+      brandProductId="design-system"
+      currentRouteLabel={page.title(locale)}
+      navGroups={docMenuModel(page, locale)}
+      locales={tcrnLocaleMetadata}
+      currentLocale={locale}
+      pageHeader={{ title: page.title(locale), breadcrumbs: docBreadcrumbs(page, locale) }}
+      pinnedIds={contractStoryGroups.filter((group) => group !== "Welcome").map(docSectionItemId)}
+      menuOpen={open}
+      accountMenuOpen={open}
+      searchPlaceholder={localeText("shell.searchLabel", locale)}
+      onSearchQueryChange={() => undefined}
+      contentId="content"
+      contentRole="main"
+      contentLabel={page.title(locale)}
+      skipLinkLabel={localeText("shell.skip", locale)}
+      data-shell="doc"
+      data-doc-shell="online-docs"
+      data-contract-surface="tcrn-design-system-storybook"
+      data-anchor-scroll-controlled="true"
+      data-active-story-section={page.group}
+      data-storybook-locale={tcrnDefaultLocale}
+      data-storybook-supported-locales={tcrnSupportedLocales.join(",")}
+      data-storybook-theme="light"
+      data-storybook-supported-themes="light,dark"
+      data-tcrn-theme="light"
+    >
+      <div className="tcrn-doc-page" data-doc-page={page.kind}>
+        <div className="tcrn-doc-page__body" dangerouslySetInnerHTML={{ __html: docShellBodyMarker }} />
+        <div className="tcrn-doc-page__toc" data-doc-toc="">
+          <TocRail label={localeText("shell.onThisPageLabel", locale)} items={page.toc(locale)} />
+        </div>
+      </div>
+    </ProductShell>,
+    { identifierPrefix: "tcrn-doc-shell-" }
   );
 }
 
-function docBrandHtml(): string {
-  return renderToStaticMarkup(
-    <a className="tcrn-doc-brand" href="index.html" data-doc-brand-link="true">
-      {/* No `locale` here on purpose: these pages are built once at the default
-          locale and translated in the browser by exact-string match, so the
-          tagline travels through the content dictionary like the rest of the doc
-          shell's copy. A build-time locale prop would be a no-op on four of five
-          routes. Product shells that render per locale pass it instead. */}
-      <ShellBrandLockup
-        productId="design-system"
-        brandMarkSrc="tcrn-brand-mark.svg"
-        brandMarkAlt={localeText("shell.brand")}
-      />
-    </a>
-  );
+// The element that opens at `start` (a tag name and the index of its `<`) ends after the index
+// this returns: the matching close tag, counted through nested tags of the same name.
+function closingTagEnd(html: string, start: number, tag: string): number {
+  const tags = new RegExp(`<${tag}\\b|</${tag}>`, "g");
+  tags.lastIndex = start;
+  let depth = 0;
+  for (let match = tags.exec(html); match; match = tags.exec(html)) {
+    depth += match[0] === `</${tag}>` ? -1 : 1;
+    if (depth === 0) return match.index + match[0].length;
+  }
+  throw new Error(`doc_shell_unclosed_${tag}`);
 }
 
-function sidebarToggleHtml(): string {
-  return `<span class="tcrn-doc-sidebar-toggle-slot">${renderToStaticMarkup(
-    <SideNavCollapseButton
-      collapsed={false}
-      controls="tcrn-doc-sidebar"
-      expandedLabel={localeText("shell.collapseNavigationLabel")}
-      collapsedLabel={localeText("shell.expandNavigationLabel")}
-      data-doc-sidebar-toggle
-      data-expanded-label={localeText("shell.collapseNavigationLabel")}
-      data-collapsed-label={localeText("shell.expandNavigationLabel")}
-      data-i18n-aria-label="shell.collapseNavigationLabel"
-      data-i18n-title="shell.collapseNavigationLabel"
-    />
-  )}</span>`;
+function sliceElement(html: string, marker: string, tag: string): string {
+  const at = html.indexOf(marker);
+  if (at === -1) throw new Error(`doc_shell_markup_missing:${marker}`);
+  const start = html.lastIndexOf(`<${tag}`, at);
+  return html.slice(start, closingTagEnd(html, start, tag));
 }
 
-function navHtml(activeGroup: ContractStoryGroup, activeCategoryId: string, activeStoryId: string): string {
-  return `<nav class="tcrn-doc-nav" aria-label="${escapeHtml(localeText("shell.topNavLabel"))}" data-i18n-aria-label="shell.topNavLabel" data-doc-nav="sections">
-  <ol class="tcrn-doc-nav__groups">
-${contractStoryGroups.map((group) => {
-  const current = group === activeGroup ? " aria-current=\"page\"" : "";
-  const stories = contractStoriesByGroup(group);
-  const categories = storyCategoriesForGroup(group, stories);
-  const groupLabel = i18nText(`group.${group}`);
-  const groupAbbr = escapeHtml(navAbbreviations[group]);
-  return `    <li class="tcrn-doc-nav__group" data-doc-nav-group="${group}">
-      <a class="tcrn-doc-nav__section" href="${groupFileName(group)}" data-story-nav="${group}"${current} data-nav-abbr="${groupAbbr}">
-        <span class="tcrn-doc-nav__section-label">${groupLabel}</span>
-        <span class="tcrn-doc-nav__section-icon" aria-hidden="true">${iconHtml(navGroupIcons[group], "tcrn-doc-nav__section-icon-svg", "nav-group")}</span>
-        <span class="tcrn-doc-nav__section-abbr" aria-hidden="true">${groupAbbr}</span>
-      </a>
-      <ol class="tcrn-doc-nav__categories" aria-label="${escapeHtml(`${localeText(`group.${group}`)} ${localeText("shell.categoriesLabel")}`)}">
-${categories.map((category) => {
-  const open = group === activeGroup && category.id === activeCategoryId;
-  const listId = categoryDomId(group, category.id);
-  const categoryLabel = localeText(category.label);
-  const categoryDescriptionId = `${listId}-description`;
-  return `        <li class="tcrn-doc-nav__category" data-doc-nav-category="${escapeHtml(category.id)}" data-doc-nav-category-open="${open ? "true" : "false"}">
-          <button class="tcrn-doc-nav__category-toggle" type="button" aria-expanded="${open ? "true" : "false"}" aria-controls="${listId}" aria-describedby="${categoryDescriptionId}" data-doc-nav-category-toggle="${escapeHtml(category.id)}">
-            <span class="tcrn-doc-nav__category-label" data-i18n="${escapeHtml(category.label)}">${escapeHtml(categoryLabel)}</span>
-            <span class="tcrn-doc-nav__category-count" aria-label="${category.stories.length} ${escapeHtml(localeText("shell.storiesCountLabel"))}">${category.stories.length}</span>
-          </button>
-          <span class="tcrn-sr-only" id="${categoryDescriptionId}" data-i18n="${escapeHtml(category.description)}">${escapeHtml(localeText(category.description))}</span>
-          <ol class="tcrn-doc-nav__stories" id="${listId}" aria-label="${escapeHtml(categoryLabel)}" data-i18n-aria-label="${escapeHtml(category.label)}"${open ? "" : " hidden"}>
-${category.stories.map((story) => {
-  // TCRN-DS-STORY-056: every nav story link points at the story's CATEGORY page. On the
-  // page that owns the story the anchor-scroll script recognises the same pathname and
-  // scrolls in place; from any other page it is a normal cross-page navigation.
-  const href = `${categoryFileForStory(story)}#${story.id}`;
-  const currentStory = story.id === activeStoryId ? " aria-current=\"location\" data-doc-nav-item-active=\"true\"" : "";
-  return `            <li><a href="${href}" data-doc-nav-item="${story.id}" data-doc-nav-category-item="${escapeHtml(story.categoryId)}"${currentStory}>${i18nText(`story.${story.id}.title`)}</a></li>`;
-}).join("\n")}
-          </ol>
-        </li>`;
-}).join("\n")}
-      </ol>
-    </li>`;
-}).join("\n")}
-  </ol>
-</nav>`;
+function setAttributes(html: string, marker: string, attributes: string): string {
+  const at = html.indexOf(marker);
+  if (at === -1) throw new Error(`doc_shell_markup_missing:${marker}`);
+  const tagEnd = html.indexOf(">", at);
+  return `${html.slice(0, tagEnd)} ${attributes}${html.slice(tagEnd)}`;
 }
 
-function chapterPagerHtml(group: ContractStoryGroup): string {
-  const groupIndex = contractStoryGroups.indexOf(group);
-  const previousGroup = groupIndex > 0 ? contractStoryGroups[groupIndex - 1] : null;
-  const nextGroup = groupIndex >= 0 && groupIndex < contractStoryGroups.length - 1 ? contractStoryGroups[groupIndex + 1] : null;
-  const previous = previousGroup
-    ? `<a class="tcrn-doc-chapter-pager__link tcrn-doc-chapter-pager__link--previous" href="${groupFileName(previousGroup)}">
-      ${iconHtml("arrow-left", "tcrn-doc-chapter-pager__icon", "previous-chapter")}
-      <span class="tcrn-doc-chapter-pager__eyebrow">${i18nText("shell.previousChapterLabel")}</span>
-      <span class="tcrn-doc-chapter-pager__title">${i18nText(`group.${previousGroup}`)}</span>
-    </a>`
-    : `<span class="tcrn-doc-chapter-pager__placeholder" aria-hidden="true"></span>`;
-  const next = nextGroup
-    ? `<a class="tcrn-doc-chapter-pager__link tcrn-doc-chapter-pager__link--next" href="${groupFileName(nextGroup)}">
-      ${iconHtml("arrow-right", "tcrn-doc-chapter-pager__icon", "next-chapter")}
-      <span class="tcrn-doc-chapter-pager__eyebrow">${i18nText("shell.nextChapterLabel")}</span>
-      <span class="tcrn-doc-chapter-pager__title">${i18nText(`group.${nextGroup}`)}</span>
-    </a>`
-    : `<span class="tcrn-doc-chapter-pager__placeholder" aria-hidden="true"></span>`;
-  return `<nav class="tcrn-doc-chapter-pager" aria-label="${escapeHtml(localeText("shell.chapterNavLabel"))}" data-doc-chapter-pager="true">
-  ${previous}
-  ${next}
-</nav>`;
+function attributeValue(html: string, marker: string, name: string): string {
+  const at = html.indexOf(marker);
+  const tagStart = html.lastIndexOf("<", at);
+  const tag = html.slice(tagStart, html.indexOf(">", at));
+  const value = new RegExp(`\\s${name}="([^"]*)"`).exec(tag)?.[1];
+  if (value === undefined) throw new Error(`doc_shell_attribute_missing:${marker}:${name}`);
+  return value;
 }
 
-function docHeaderWorkspaceHtml(group: ContractStoryGroup, activeStory: ContractStory): string {
-  return `<div class="tcrn-doc-header__workspace" aria-label="${escapeHtml(localeText("shell.currentLocationLabel"))}" data-i18n-aria-label="shell.currentLocationLabel">
-          <div class="tcrn-doc-current-location">
-            <span class="tcrn-doc-current-location__label">${i18nText("shell.currentLocationLabel")}</span>
-            <span class="tcrn-doc-current-location__path">
-              <span class="tcrn-doc-current-location__group" data-i18n="${escapeHtml(`group.${group}`)}">${i18nText(`group.${group}`)}</span>
-              <span class="tcrn-doc-current-location__separator" aria-hidden="true">${iconHtml("chevron-right", "tcrn-doc-current-location__separator-icon", "current-location-separator")}</span>
-              <span class="tcrn-doc-current-location__story" data-doc-current-story data-i18n="${escapeHtml(`story.${activeStory.id}.title`)}">${i18nText(`story.${activeStory.id}.title`)}</span>
-            </span>
-          </div>
-          <div class="tcrn-doc-header-search" aria-label="${escapeHtml(localeText("shell.searchLabel"))}">
-            <span class="tcrn-sr-only">${i18nText("shell.searchLabel")}</span>
-            ${renderToStaticMarkup(
-              <SearchInput
-                placeholder={localeText("shell.searchLabel")}
-                aria-label={localeText("shell.searchLabel")}
-                data-i18n-placeholder="shell.searchLabel"
-                data-i18n-aria-label="shell.searchLabel"
-                role="combobox"
-                aria-autocomplete="list"
-                aria-expanded="false"
-                aria-controls="tcrn-doc-search-results"
-                shortcut="auto"
-                data-doc-search-input
-              />
-            )}
-            <div id="tcrn-doc-search-results" class="tcrn-doc-search-results" role="listbox" aria-label="${escapeHtml(localeText("shell.searchResultsLabel"))}" data-doc-search-results hidden></div>
-          </div>
-        </div>`;
+// The page's shell: the closed render, with the open render's full menu and avatar menu carried
+// hidden in the places React would mount them, and the hooks the documentation scripts use.
+function docShellHtml(page: DocShellPage, locale: TcrnLocale = tcrnDefaultLocale): string {
+  const closed = docShellMarkup(page, locale, false);
+  const open = docShellMarkup(page, locale, true);
+  const menu = sliceElement(open, 'data-shell-menu=""', "div")
+    .replace('data-shell-menu=""', 'data-shell-menu="" hidden=""')
+    .replace("<input role=\"combobox\"", "<input data-doc-search-input=\"\" role=\"combobox\"")
+    .replace('data-product-shell-search-results="true"', 'data-product-shell-search-results="true" data-doc-search-results=""');
+  const account = sliceElement(open, 'data-panel="account"', "section")
+    .replace('data-panel="account"', 'data-panel="account" hidden=""')
+    .replace('data-shell-control="theme-toggle"', 'data-shell-control="theme-toggle" data-storybook-theme-toggle="" data-storybook-theme-option="dark" data-theme-label-key="shell.themeDarkLabel" aria-pressed="false"')
+    .replace('data-shell-control="locale-menu"', 'data-shell-control="locale-menu" data-locale-menu-root=""');
+  const localeSelect = `<select id="tcrn-doc-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel", locale))}" tabindex="-1" aria-hidden="true" hidden>${tcrnLocaleMetadata.map((metadata) => `<option value="${metadata.locale}">${metadata.nativeName}</option>`).join("")}</select>`;
+  const expandedLabel = attributeValue(open, 'data-shell-brand="', "aria-label");
+  const collapsedLabel = attributeValue(closed, 'data-shell-brand="', "aria-label");
+  let html = setAttributes(closed, 'data-shell-brand="', `data-expanded-label="${expandedLabel}" data-collapsed-label="${collapsedLabel}"`);
+  // The wordmark is the brand asset's own words (Logos board, section E) and reads the same in every
+  // language; the page's string swap must not translate its suffix.
+  html = setAttributes(html, 'class="tcrn-shell-brand__word"', 'data-locale-invariant=""');
+  const avatarEnd = html.indexOf("</button>", html.indexOf('data-shell-avatar=""')) + "</button>".length;
+  html = `${html.slice(0, avatarEnd)}${account}${localeSelect}${html.slice(avatarEnd)}`;
+  const stripEnd = html.indexOf("</header>") + "</header>".length;
+  return `${html.slice(0, stripEnd)}${menu}${html.slice(stripEnd)}`;
 }
 
-function docHeaderControlsHtml(): string {
-  return `<div class="tcrn-doc-header-controls">
-          <div class="tcrn-doc-header-controls__row">
-            <div class="tcrn-doc-theme-control-slot" data-storybook-theme-control>
-              ${renderToStaticMarkup(
-                <ShellThemeToggle
-                  currentTheme="light"
-                  lightLabel={localeText("shell.themeLightLabel")}
-                  darkLabel={localeText("shell.themeDarkLabel")}
-                  data-storybook-theme-toggle
-                  data-storybook-theme-option="dark"
-                  data-theme-label-key="shell.themeDarkLabel"
-                  aria-pressed="false"
-                />
-              )}
-            </div>
-            <div class="tcrn-doc-locale-control-slot">
-              ${renderToStaticMarkup(
-                <ShellLocaleMenu
-                  locales={tcrnLocaleMetadata}
-                  currentLocale={tcrnDefaultLocale}
-                  label={localeText("shell.languageLabel")}
-                  menuId="tcrn-doc-locale-menu"
-                  triggerId="tcrn-doc-locale-trigger"
-                  data-locale-menu-root
-                  data-i18n-aria-label="shell.languageLabel"
-                />
-              )}
-              <select id="tcrn-doc-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel"))}" tabindex="-1" aria-hidden="true" hidden>
-${tcrnLocaleMetadata.map((metadata) => `                <option value="${metadata.locale}">${metadata.nativeName}</option>`).join("\n")}
-              </select>
-            </div>
-          </div>
-        </div>`;
+// The shell's own words are the package's, in five languages. The page is built in English and
+// the browser swaps strings through the content dictionary, so the dictionary takes the shell's
+// strings from the same render in every locale: the markup is the same element for element, and
+// the n-th text or translatable attribute of one render is the n-th of the others.
+const docShellTextPattern = /\s(title|aria-label|placeholder|data-label|data-expanded-label|data-collapsed-label)="([^"]*)"|>([^<]+)</g;
+
+function docShellTexts(html: string): string[] {
+  const texts: string[] = [];
+  for (const match of html.matchAll(docShellTextPattern)) {
+    const text = decodeEntities(match[2] ?? match[3] ?? "").trim();
+    if (text) texts.push(text);
+  }
+  return texts;
+}
+
+function docShellTranslations(page: DocShellPage): Record<string, Record<TcrnLocale, string>> {
+  const source = docShellTexts(docShellHtml(page, tcrnDefaultLocale));
+  const translated = tcrnSupportedLocales.map((locale) => [locale, docShellTexts(docShellHtml(page, locale))] as const);
+  const entries: Record<string, Record<TcrnLocale, string>> = {};
+  for (const [locale, texts] of translated) {
+    if (texts.length !== source.length) throw new Error(`doc_shell_locale_markup_differs:${locale}`);
+  }
+  source.forEach((text, index) => {
+    if (entries[text] || translated.every(([, texts]) => texts[index] === text)) return;
+    entries[text] = Object.fromEntries(translated.map(([locale, texts]) => [locale, texts[index]])) as Record<TcrnLocale, string>;
+  });
+  return entries;
 }
 
 // TCRN-DS-STORY-056: a category page renders ONLY its category's story bodies (still inside
@@ -555,20 +602,36 @@ ${category.stories.map((story) => `        <li><a class="tcrn-link tcrn-doc-cate
 </section>`;
 }
 
-function pageHeadHtml(group: ContractStoryGroup): string {
-  const stories = contractStoriesByGroup(group);
-  const categories = storyCategoriesForGroup(group, stories);
-  return `<section class="tcrn-doc-page-head" aria-labelledby="tcrn-doc-visible-page-title" data-doc-page-head="governed-section" data-mandatory-boundary-block="visible" data-no-overclaim-boundary="visible">
-  <div class="tcrn-doc-page-head__intro">
-    <span class="tcrn-doc-page-head__eyebrow">${i18nText("shell.governedSectionLabel")}</span>
-    <h2 id="tcrn-doc-visible-page-title">${i18nText(`group.${group}`)}</h2>
-  </div>
-  <nav class="tcrn-doc-on-this-page" aria-label="${escapeHtml(localeText("shell.onThisPageLabel"))}" data-doc-on-this-page="true">
-    <strong>${i18nText("shell.onThisPageLabel")}</strong>
-    <ol>
-${categories.map((category) => `      <li><a href="${categoryFileName(group, category.id)}#${category.stories[0]?.id ?? groupSlug(group)}">${i18nText(category.label)}</a><span>${category.stories.length}</span></li>`).join("\n")}
-    </ol>
-  </nav>
+function chapterPagerHtml(group: ContractStoryGroup): string {
+  const groupIndex = contractStoryGroups.indexOf(group);
+  const previousGroup = groupIndex > 0 ? contractStoryGroups[groupIndex - 1] : null;
+  const nextGroup = groupIndex >= 0 && groupIndex < contractStoryGroups.length - 1 ? contractStoryGroups[groupIndex + 1] : null;
+  const previous = previousGroup
+    ? `<a class="tcrn-doc-chapter-pager__link tcrn-doc-chapter-pager__link--previous" href="${groupFileName(previousGroup)}">
+      ${iconHtml("arrow-left", "tcrn-doc-chapter-pager__icon", "previous-chapter")}
+      <span class="tcrn-doc-chapter-pager__eyebrow">${i18nText("shell.previousChapterLabel")}</span>
+      <span class="tcrn-doc-chapter-pager__title">${i18nText(`group.${previousGroup}`)}</span>
+    </a>`
+    : `<span class="tcrn-doc-chapter-pager__placeholder" aria-hidden="true"></span>`;
+  const next = nextGroup
+    ? `<a class="tcrn-doc-chapter-pager__link tcrn-doc-chapter-pager__link--next" href="${groupFileName(nextGroup)}">
+      ${iconHtml("arrow-right", "tcrn-doc-chapter-pager__icon", "next-chapter")}
+      <span class="tcrn-doc-chapter-pager__eyebrow">${i18nText("shell.nextChapterLabel")}</span>
+      <span class="tcrn-doc-chapter-pager__title">${i18nText(`group.${nextGroup}`)}</span>
+    </a>`
+    : `<span class="tcrn-doc-chapter-pager__placeholder" aria-hidden="true"></span>`;
+  return `<nav class="tcrn-doc-chapter-pager" aria-label="${escapeHtml(localeText("shell.chapterNavLabel"))}" data-i18n-aria-label="shell.chapterNavLabel" data-doc-chapter-pager="true">
+  ${previous}
+  ${next}
+</nav>`;
+}
+
+// The governed-section boundary leads every page body under the page header: the three
+// no-overclaim claims stay visible. The page's title is the page header's and its contents are the
+// TocRail's (TCRN-DS-SUB-131), so this block keeps only the boundary.
+function pageHeadHtml(): string {
+  return `<section class="tcrn-doc-page-head" aria-label="${escapeHtml(localeText("shell.governedSectionLabel"))}" data-i18n-aria-label="shell.governedSectionLabel" data-doc-page-head="governed-section" data-mandatory-boundary-block="visible" data-no-overclaim-boundary="visible">
+  <span class="tcrn-doc-page-head__eyebrow">${i18nText("shell.governedSectionLabel")}</span>
   <div class="tcrn-doc-boundary-strip" data-governance-boundary-strip="visible">
     <span>${i18nText("shell.noPackagePublicationClaim")}</span>
     <span>${i18nText("shell.noProductAdoptionClaim")}</span>
@@ -577,55 +640,29 @@ ${categories.map((category) => `      <li><a href="${categoryFileName(group, cat
 </section>`;
 }
 
-// TCRN-DS-STORY-056: the shared shell used by BOTH the section index page and every category
-// page. Everything except `mainBody` (index-of-categories vs the category's story bodies), the
-// active nav state, the current-location story, and the <title> is identical between the two.
-function renderContractDocument(options: {
-  group: ContractStoryGroup;
-  activeCategoryId: string;
-  activeStory: ContractStory;
-  pageTitleText: string;
-  mainBody: string;
-}): string {
-  const { group, activeCategoryId, activeStory, pageTitleText, mainBody } = options;
-  // Render every translatable body region exactly once (each of these makes renderToStaticMarkup
-  // passes) so they can be both measured for the content-dict prune and reused in the template
-  // below without a second render.
-  const skipLink = skipLinkHtml();
-  const docBrand = docBrandHtml();
-  const sidebarToggle = sidebarToggleHtml();
-  const headerWorkspace = docHeaderWorkspaceHtml(group, activeStory);
-  const headerControls = docHeaderControlsHtml();
-  const nav = navHtml(group, activeCategoryId, activeStory.id);
-  const pageHead = pageHeadHtml(group);
-  const chapterPager = chapterPagerHtml(group);
-  const sidebarLabel = i18nText("shell.sidebarLabel");
-  const pageTitleHeading = i18nText("shell.title");
+// TCRN-DS-STORY-056: the shared document used by the section index page, every category page and
+// the reference pages. Everything except the page body, the menu's current row, the page header and
+// the TocRail is identical between them.
+function renderContractDocument(options: { page: DocShellPage; pageTitleText: string; mainBody: string }): string {
+  const { page, pageTitleText, mainBody } = options;
+  const shell = docShellHtml(page);
+  const body = `${pageHeadHtml()}
+${mainBody}
+${chapterPagerHtml(page.group)}`;
   // TCRN-DS-STORY-054: prune the embedded content-translation dictionary to only the entries
   // whose English source actually renders inside this page's [data-contract-surface]. The runtime
   // swap (translateContentTree in client-scripts.ts) skips SCRIPT/STYLE, so the <style> blocks and
   // scripts are excluded from the match here too — this covers every text node and translatable
   // attribute the swap can touch. Match on the entity-decoded body so build-time escaping equals
   // the runtime text value. This is a deliberate SUPERSET: over-inclusion only costs bytes, whereas
-  // under-inclusion would leak English after a locale switch, so err toward including.
-  const translatableSurface = decodeEntities(
-    [
-      skipLink,
-      docBrand,
-      sidebarToggle,
-      headerWorkspace,
-      headerControls,
-      sidebarLabel,
-      pageTitleHeading,
-      nav,
-      pageHead,
-      mainBody,
-      chapterPager
-    ].join("\n")
-  );
-  const usedContentTranslations = Object.fromEntries(
-    Object.entries(storybookContentText).filter(([source]) => translatableSurface.includes(source))
-  );
+  // under-inclusion would leak English after a locale switch, so err toward including. The shell's
+  // own strings come from its renders in every locale; a dictionary entry for the same English
+  // source wins.
+  const translatableSurface = decodeEntities(`${shell}\n${body}`);
+  const usedContentTranslations = {
+    ...docShellTranslations(page),
+    ...Object.fromEntries(Object.entries(storybookContentText).filter(([source]) => translatableSurface.includes(source)))
+  };
   return `<!doctype html>
 <html lang="${tcrnDefaultLocale}" data-tcrn-theme="light">
 <head>
@@ -651,36 +688,13 @@ ${staticStoryComponentCss}
   </style>
 </head>
 <body>
-  ${skipLink}
-  <div class="tcrn-doc-shell" data-doc-shell="online-docs" data-contract-surface="tcrn-design-system-storybook" data-anchor-scroll-controlled="true" data-active-story-section="${group}" data-storybook-locale="${tcrnDefaultLocale}" data-storybook-supported-locales="${tcrnSupportedLocales.join(",")}" data-storybook-theme="light" data-storybook-supported-themes="light,dark" data-tcrn-theme="light">
-    <header class="tcrn-doc-header">
-      <div class="tcrn-doc-global-bar">
-        <div class="tcrn-doc-global-brand">
-          ${docBrand}
-          ${sidebarToggle}
-        </div>
-        ${headerWorkspace}
-        ${headerControls}
-      </div>
-    </header>
-    <div class="tcrn-doc-layout">
-      <aside class="tcrn-doc-sidebar" id="tcrn-doc-sidebar" aria-labelledby="tcrn-doc-sidebar-label">
-        <p class="tcrn-sr-only" id="tcrn-doc-sidebar-label">${sidebarLabel}</p>
-${nav}
-      </aside>
-      <main class="tcrn-doc-content" id="content">
-        <h1 class="tcrn-sr-only" id="tcrn-doc-page-title">${pageTitleHeading}</h1>
-${pageHead}
-${mainBody}
-${chapterPager}
-      </main>
-    </div>
-  </div>
+${shell.replace(docShellBodyMarker, () => body)}
 ${hashRouteScript}
 ${activeStoryNavScript}
 ${storybookThemeScript}
 ${storybookI18nScript(usedContentTranslations)}
-${sidebarToggleScript}
+${docShellLayerScript}
+${storybookSearchIndexJson()}
 ${storybookSearchScript}
 ${dialogFixtureScript}
 ${storyDisclosureScript}
@@ -692,26 +706,30 @@ ${anchorScrollScript}
 `;
 }
 
-// Section INDEX page: full shell + nav + page-head strip + a bounded category-index body.
-// Active nav state falls on the group's first category / first story (mirrors the old default).
+// Section INDEX page: the shell, the boundary and a bounded category-index body; the TocRail lists
+// the section's categories. The menu's current row is the section's.
 export function sectionIndexHtml(group: ContractStoryGroup): string {
   const stories = contractStoriesByGroup(group);
   const activeStory = stories[0];
   if (!activeStory) {
     throw new Error(`missing_story_for_group:${group}`);
   }
+  const categories = storyCategoriesForGroup(group, stories);
   return renderContractDocument({
-    group,
-    activeCategoryId: activeStory.categoryId,
-    activeStory,
+    page: {
+      kind: "index",
+      group,
+      activeCategoryId: activeStory.categoryId,
+      title: (locale) => localeText(`group.${group}`, locale),
+      toc: (locale) => categories.map((category) => ({ id: category.id, label: localeText(category.label, locale), href: categoryFileName(group, category.id) }))
+    },
     pageTitleText: localeText(`group.${group}`),
     mainBody: sectionIndexBodyHtml(group)
   });
 }
 
-// Category page: full shell + nav + page-head strip + ONLY this category's story bodies.
-// Active nav state falls on this category and its first story so per-page aria-current
-// assertions resolve.
+// Category page: the shell, the boundary and ONLY this category's story bodies; the TocRail lists
+// them, the first one current until the reader scrolls. The menu's current row is the category's.
 export function categoryPageHtml(group: ContractStoryGroup, categoryId: string, categoryLabel: string): string {
   const stories = contractStoriesByGroup(group).filter((story) => story.categoryId === categoryId);
   const activeStory = stories[0];
@@ -719,9 +737,13 @@ export function categoryPageHtml(group: ContractStoryGroup, categoryId: string, 
     throw new Error(`missing_story_for_category:${group}:${categoryId}`);
   }
   return renderContractDocument({
-    group,
-    activeCategoryId: categoryId,
-    activeStory,
+    page: {
+      kind: "category",
+      group,
+      activeCategoryId: categoryId,
+      title: (locale) => localeText(categoryLabel, locale),
+      toc: (locale) => stories.map((story, index) => ({ id: story.id, label: localeText(`story.${story.id}.title`, locale), href: `#${story.id}`, current: index === 0 }))
+    },
     pageTitleText: localeText(categoryLabel),
     mainBody: storyHtml(group, stories)
   });
@@ -788,9 +810,13 @@ export function referencePageHtml(page: ReferencePage): string {
     throw new Error("missing_component_index_story_for_reference_page");
   }
   return renderContractDocument({
-    group: "Components",
-    activeCategoryId: indexStory.categoryId,
-    activeStory: indexStory,
+    page: {
+      kind: "reference",
+      group: "Components",
+      activeCategoryId: indexStory.categoryId,
+      title: (locale) => `${localeText("reference.pageTitle", locale)} ${page.pageIndex}`,
+      toc: () => page.components.map((component) => ({ id: referenceComponentAnchor(component.name), label: component.name, href: `#${referenceComponentAnchor(component.name)}` }))
+    },
     pageTitleText: `${localeText("reference.pageTitle")} ${page.pageIndex}`,
     mainBody: referenceBodyHtml(page)
   });

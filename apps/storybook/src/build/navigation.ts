@@ -27,24 +27,9 @@ export function categoryFileForStory(story: Pick<ContractStory, "group" | "categ
   return categoryFileName(story.group, story.categoryId);
 }
 
-export const navAbbreviations: Record<ContractStoryGroup, string> = {
-  Welcome: "W",
-  "Style Guide": "SG",
-  Foundations: "F",
-  Components: "C",
-  Patterns: "P",
-  Proof: "PF",
-  "Change Log": "CL"
-};
-
-export function navDomId(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
-
-export function categoryDomId(group: ContractStoryGroup, categoryId: string): string {
-  return `tcrn-storybook-category-${navDomId(group)}-${navDomId(categoryId)}`;
-}
-
+// TCRN-DS-SUB-131: the abbreviations of the collapsed rail and the ids of its category lists left
+// with the rail; the sections and categories are the documentation shell's menu model now
+// (page-template.tsx) and every row there is a link.
 export function storyCategoriesForGroup(group: ContractStoryGroup, stories: ContractStory[]): Array<{ id: string; label: string; description: string; stories: ContractStory[] }> {
   const storyBucket = new Map<string, ContractStory[]>();
   for (const story of stories) {
