@@ -73,6 +73,9 @@
 | --- | --- | --- | --- | --- |
 | P0 | 经济 | 已合入 510c972 | ee01f8f | 6 张达成；视觉签名重收 3 条写入 ok；N-1 浏览器实测夜间 4.45 |
 
+- R4 验收与判断（一个主力档代理）：六张达成、返工 0、不开 R5（`runs/r4/acceptance.md`、`judgment.md`、`lessons.json` 4 条）。R4 链写：一次 work-batch 25 成员，WORKSPACE_COMMAND_COMPLETED，version 1834 → 1859，head eb8e8b6b…；读回 Subtask 112 张全部 done，Story 15 张 active，INIT-015 active（summary 写 R4 结论）。知识卡 KB-022…025 已建并读回（023 以 --coexist 建）。
+- 收口：`closeout.md` 已写；随后重跑 `pnpm scan` 提交刷新回执（R3 判断 J-3）。剩余工作全部阻塞于 Owner（closeout 第 3 节）；回路停止。
+
 - R4 批末：真实 verify 在 510c972 退出 0（2026-10-12T23:56:26Z–2026-10-13T00:05:47Z），storybook:build 退出 0；日志 scratch `r4-final/`；回执照例存档并还原。验收与判断由一个主力档代理一次做（摘录 `runs/r4/excerpts/acceptance-judgment.md`）。
 
 ## 已收到的 B 类裁定（随批末链写注解）
