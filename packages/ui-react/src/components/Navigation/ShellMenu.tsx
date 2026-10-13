@@ -243,8 +243,7 @@ export function shellMenuRow(item: ShellMenuItem, level: number, context: ShellM
       }
     : { href: item.href };
   return (
-    <NavItem
-      key={item.id}
+    <NavItem key={item.id}
       selected={item.id === context.selectedId}
       iconName={extra.iconName}
       locale={context.locale}
@@ -278,8 +277,7 @@ export function shellMenuCascades(first: readonly ShellMenuItem[], context: Shel
     if (!parent || level >= shellMenuMaxDepth || children.length === 0) break;
     const childLevel = level + 1;
     columns.push(
-      <NavGroup
-        key={parent.id}
+      <NavGroup key={parent.id}
         id={columnIdOf(parent.id)}
         label={parent.label}
         locale={context.locale}
@@ -568,8 +566,7 @@ export function ShellMenu({
         {searching ? null : (
           <div className="tcrn-shell-menu__cols" data-shell-cols="">
             {groups.map((group) => (
-              <NavGroup
-                key={group.id}
+              <NavGroup key={group.id}
                 label={group.label}
                 locale={locale}
                 className="tcrn-shell-menu__col"
