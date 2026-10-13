@@ -48,7 +48,8 @@
 
 - 全部 18 个包已合入，集成 HEAD ad91a64；包树全部退役，磁盘余量 60 GiB（df）。
 - 批末 verify（scratch `tools/batch-end-verify.sh 1`）跑在 63e1ee2，2026-10-13T20:51:46Z–21:00:03Z：30 步红 9，44 段红 12（test、fonts-proof、shell-fidelity、geometry:proof、shell:parity、storybook:smoke、geometry:measure、storybook:visual-proof、full-surface、internal-alpha:browser-proof、scan、hardening）；`storybook:build` 退出 0。scan 的红是 browser-proof 超时写出超限回执的副作用，还原后单跑 `ok: true`。结果表与主线程核对三处在 `runs/r1/verify/steps.md`（5a82dc5）；逐段日志、回执存档在 scratch `r1-verify/`，树已还原。
-- 批末验收：三片并行（einzbern-main），A = STORY-135…141，B = 142…146，C = 147…150；摘录 `runs/r1/excerpts/acceptance-{A,B,C}.md`（8a0fd04），产出 `runs/r1/acceptance/{A,B,C}.md`。之后：判断（einzbern-main，单独）→ 一次链写与知识采集 → R2 拆分（einzbern-economy，单独）。
+- 批末验收：三片并行（einzbern-main），A = STORY-135…141，B = 142…146，C = 147…150；摘录 `runs/r1/excerpts/acceptance-{A,B,C}.md`（8a0fd04），产出 `runs/r1/acceptance/{A,B,C}.md` 已提交（1a13d1b）。结论：A 七张全部分（返工 10：主力 4、经济 6）；B 五张全部分（返工 12：主力 2、经济 10）；C 147、148、150 部分、149 不满足（返工 18：主力 6、经济 12）；三片有跨片重复（标按钮与首行字标后缀超出裁切 1px、底栏锁定块缺 `svg[data-logo]`、ShellBrandButton 夜间断言、静态页无客户端挂载等）。新增 Owner 事项：A 1 条、B 3 条、C 5 条。
+- 判断：einzbern-main 单独一次，摘录 `runs/r1/excerpts/judgment.md`（e0fd8b5），产出 `runs/r1/judgment.md` 与 `runs/r1/lessons.json`。之后：一次链写与知识采集 → R2 拆分（einzbern-economy，单独）。
 | P14 | 已合入，包树已退役（272 MB） | 4879d45、ad4972d、c4fa1c7（合入集成分支）、5ee8f88 | da61a76 | SUB-134 部分：样板换壳、映射、shellFrame、夹具与测试已交；geometry:measure 单测 70/70、shellFrame 12 run 过、三变异全红，但 12 个样板 run 红在 clip（包内标按钮字标后缀上下超出裁切祖先 1px，问题 1）；visual-proof 23 行中 12 绿；smoke.test.ts 3 红（归 P13 文件）；问题 6 条；两处可更正的选择（样板不要求 rail、Actions 名册人名换 김하늘 记 DIFF-11） |
 | P11 | 已合入，包树已退役（237 MB） | 0f4e670、deaf18b、897317e | 12daf0a | 四块成品板 D 段换顶带壳（Typography、Icon、Actions、Inputs 与对应 V2-B1 草稿板），heights 5836/4271/5216/6530；Shell 两板字面守护 diff 退出 1 是既有 token 块漂移（同 P2 问题 3）；问题 4 条（canvas.json 板高与 y 未跟、Brand 与 Shell 板 D4 关键词残留、Icon 板仍写 37 件） |
 | P14 | 在跑（自 12daf0a 后的集成 HEAD） | | | |
