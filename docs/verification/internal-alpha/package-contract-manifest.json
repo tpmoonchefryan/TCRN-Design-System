@@ -351,6 +351,26 @@
         "exported": true
       },
       {
+        "name": "ShellBrandButton",
+        "exported": true
+      },
+      {
+        "name": "ShellPins",
+        "exported": true
+      },
+      {
+        "name": "ShellMenu",
+        "exported": true
+      },
+      {
+        "name": "ShellDropdown",
+        "exported": true
+      },
+      {
+        "name": "ShellIntro",
+        "exported": true
+      },
+      {
         "name": "ShellThemeToggle",
         "exported": true
       },
@@ -518,6 +538,10 @@
       },
       {
         "name": "tcrnComponentCss",
+        "exported": true
+      },
+      {
+        "name": "tcrnRetiredComponentCss",
         "exported": true
       },
       {
@@ -1357,6 +1381,51 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "ShellBrandButton",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ShellPins",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ShellMenu",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ShellDropdown",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
+        "storybookItem": "ShellIntro",
+        "classification": "reusable_component",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "ShellThemeToggle",
         "classification": "reusable_component",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -1735,6 +1804,15 @@
         "requiredRepair": "none"
       },
       {
+        "storybookItem": "tcrnRetiredComponentCss",
+        "classification": "public_utility_readback",
+        "packageSourcePath": "packages/ui-react/src/index.tsx",
+        "publicExportPath": "@tcrn/ui-react",
+        "storybookPath": "apps/storybook/src/stories.tsx",
+        "status": "package_backed_storybook_consumed",
+        "requiredRepair": "none"
+      },
+      {
         "storybookItem": "tcrnProductLogoRegistry",
         "classification": "public_utility_readback",
         "packageSourcePath": "packages/ui-react/src/index.tsx",
@@ -1876,7 +1954,7 @@
         },
         {
           "file": "apps/storybook/src/smoke.test.ts",
-          "markerCount": 2
+          "markerCount": 3
         }
       ],
       "packageBackedComponentParityMarkers": true,
@@ -1899,7 +1977,7 @@
   "iconLibraryContract": {
     "source": "tcrn-icon-contract",
     "sourceContract": "docs/design/gplus-2026-10/contract/icons.json",
-    "sourceContractSha256": "e07177332187054f9ed8f00b09a0d1460ff6c41dc06a168513c7e983a2cc0e11",
+    "sourceContractSha256": "b1e13ee35644af4b133ba5609e3c1145fd277ec7f0f90c2b289571011ee11b9e",
     "generatedPathsModule": "packages/ui-react/src/components/Icon/icon-paths.generated.ts",
     "generatedPathsModulePresent": true,
     "viewBox": "0 0 20 20",
@@ -1908,8 +1986,8 @@
     "wrapperExport": "Icon",
     "iconExported": true,
     "iconNamesExported": true,
-    "iconNameCount": 37,
-    "contractIconNameCount": 37,
+    "iconNameCount": 38,
+    "contractIconNameCount": 38,
     "iconNamesMatchContract": true,
     "thirdPartyIconDependencies": [],
     "packageSourceThirdPartyIconImports": [],

@@ -2,22 +2,31 @@
 
 This guide is for the three consumers of `@tcrn/ui-tokens`, `@tcrn/ui-copy-state`
 and `@tcrn/ui-react`: TCRN AOS, TCRN TMS and the Einzbern portal. It covers the move
-from 3.0.0, and from the unreleased `main` that followed it, to 4.0.0 (the G+
-renewal, TCRN-DS-INIT-015).
+from 3.0.0, and from the unreleased `main` that followed it, to 4.0.0. 4.0.0 is one
+release made of two batches: the G+ renewal (TCRN-DS-INIT-015, the first batch, M1
+to M19) and the top-band shell (TCRN-DS-INIT-016, the second batch, M20 to M29). The
+major version did not move again for the second batch. Where the second batch
+replaced something the first batch had introduced, the first batch's item keeps its
+wording, and "Items the second batch overtook" below names what 4.0.0 ships instead.
 
-Status: 4.0.0 is a candidate. It is not tagged, not published and not deployed;
-each of those is a separate Owner decision, and so is the Owner's visual
-acceptance. The release notes are the 4.0.0 section of `CHANGELOG.md`.
+Status: 4.0.0 is a candidate on the INIT-016 integration branch. It is not tagged,
+not published and not deployed; each of those is a separate Owner decision, and so
+is the Owner's visual acceptance, whose list for both batches is
+`docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md`. The release notes are the
+4.0.0 section of `CHANGELOG.md`.
 
-How this guide was written: from this repository's commits and the INIT-015
-package handoffs only. It does not read any consumer repository, so it says what
-changed and what to do, not where a consumer uses each item. Each consumer runs
-the checks in its own tree. Every item names its source: a commit on the INIT-015
-integration branch, the Subtask key, and the package handoff in
+How this guide was written: from this repository's commits and the package
+handoffs of both batches only. It does not read any consumer repository, so it says
+what changed and what to do, not where a consumer uses each item. Each consumer
+runs the checks in its own tree. Every first-batch item names its source: a commit
+on the INIT-015 integration branch, the Subtask key, and the package handoff in
 `docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/` (first round, handoffs
 named W1-A and so on), `runs/r2/handoff/` (second round, handoffs named P1 and
 so on, marked "r2" below) or `runs/r3/handoff/` (third round, handoffs named P0
-and so on, marked "r3" below).
+and so on, marked "r3" below). The second batch's items (M20 to M29) name a commit
+on the INIT-016 integration branch, the Subtask key and the package handoff in
+`docs/dispatch/2026-10-13-tab-shell/runs/r1/handoff/` (handoffs named P1a and so
+on, marked "INIT-016 r1" below).
 
 ## By consumer
 
@@ -44,11 +53,25 @@ and so on, marked "r3" below).
    press overrides on them (M15).
 10. If AOS consumed the unreleased `main` with `@tcrn/ui-domain`, import from
     `@tcrn/ui-react` instead (M16).
-11. If AOS renders `ProductShell`, re-baseline it for composition one's desktop
-    geometry; a screen that needs another sidebar width sets
-    `--tcrn-product-shell-sidebar-width` on the shell (M18).
+11. If AOS renders `ProductShell`, move it to the top band: remove the side rail,
+    collapse, mobile drawer, brand copy and top bar search props, pass
+    `brandProductId`, a `pageHeader` and the navigation as the menu model, serve
+    search through `searchProvider`, and re-baseline the shell's screens (M20,
+    M27). Composition one's geometry (M18) never reaches a consumer: the top band
+    replaced it within 4.0.0. AOS has no product mark in the approved set yet, so
+    an AOS shell has no brand button until it has one (an open Owner item, M20).
 12. If AOS reads `componentLibraryDeferredPrototypeNames`, expect
     `KnowledgeBaseShellDemo` alone (M19).
+13. Stop reading and writing the collapsed preference; pass the pins from the AOS
+    backend and store the list `onPinsChange` reports (M21).
+14. Replace `SideNav`, `SideNavCollapseButton`, `MobileNavToggle`, `TopBar`,
+    `ProductLauncher` and `ProductSwitcher` as M23's table says, adding
+    `tcrnRetiredComponentCss` after `tcrnComponentCss` until the last one is gone;
+    restyle overrides of the old tab roots and of the page header's trail (M22).
+15. Replace reads of `--tcrn-shell-topbar-height`, `--tcrn-shell-sidebar-width`
+    and `--tcrn-shell-sidebar-width-collapsed` (M24); allow `pin` wherever icon
+    names are checked (M25); re-baseline pages built on `SettingsLayout` or
+    `DocumentCanvas`, which are now held to 1040px and centred (M27).
 
 ### TCRN TMS
 
@@ -64,14 +87,21 @@ above; in either case:
    SVG file (M8).
 4. The TMS taglines come from the package: zh-CN 艺人管理系统 (was 人才管理系统),
    en Talent Management System, ko 탤런트 관리 시스템 (M8). The wordmark suffix reads
-   `--tcrn-brand-suffix-tms`: #2c63c8 in the light theme, #7aa0f5 in the dark
-   theme (M9).
+   `--tcrn-brand-suffix-tms`: #2c63c8 in both themes (M28; the night value #7aa0f5
+   that M9 describes was withdrawn within 4.0.0).
 5. Take icons from the roster, not from a third-party set (M6, M7).
 6. Use `Text` props, the link classes (`tcrn-link`, with `tcrn-link--quiet` as its
    modifier), `Button size="lg"`, `ButtonGroup` and the pair-driven inputs instead
    of local variants (M10 to M14).
-7. A `ProductShell` takes composition one's desktop geometry from the shell tokens
-   (M18).
+7. A `ProductShell` is the top band: pass `brandProductId="tms"`, a `pageHeader`,
+   the navigation as `navGroups` (the menu model, up to four levels; the groups a
+   3.x sidebar held become its groups), the pins from the TMS backend and
+   `products` (M20, M21, M27). Navigation that a 3.x tree drew with `SideNav` moves
+   into that menu, and a `TopBar` goes, since the band replaces it (M23); use the
+   navigation family as it is in 4.0.0 (M22). Composition one's geometry (M18) was
+   replaced within 4.0.0 and never ships.
+8. Take the 38-name roster, `pin` included (M25); where a page shows the brand on
+   one line, use `ProductLockup productId="tms" firstLine="rail"` (M26).
 
 ### Einzbern portal
 
@@ -95,8 +125,27 @@ above; in either case:
    reports `4.0.0`, with a new `tokensDigest`, only after the next docs deployment,
    which is an Owner decision. Until then the hosted file keeps the version it
    reports today (M17).
-7. If the portal renders `ProductShell`, re-baseline it for composition one's
-   desktop geometry (M18).
+7. If the portal renders `ProductShell`, move it to the top band with
+   `brandProductId="einzbern"` (or `"mana-orchestrate"`), a `pageHeader` and the
+   pins (M20, M21, M27), and replace the deprecated shell parts (M23). Composition
+   one's geometry (M18) was replaced within 4.0.0 and never ships.
+8. Restyle overrides of the old tab roots and of the page header's trail (M22),
+   replace reads of the three deprecated shell tokens (M24), and allow `pin`
+   wherever icon names are checked (M25).
+
+## Items the second batch overtook
+
+The first batch was a candidate, never published, when the second batch replaced
+part of it, so no consumer receives the first-batch statements below. The items keep
+the wording they were written with; follow the right-hand column.
+
+| First-batch statement | What 4.0.0 ships instead |
+| --- | --- |
+| M7: the icon roster has 37 names | 38 names: `pin` was added (M25). |
+| M9: the TMS suffix is #7aa0f5 by night, declared in both theme blocks | #2c63c8 in both themes, declared once in the theme-independent block (M28). |
+| M15: the product shell's side-navigation and mobile-navigation toggles | The shell renders neither; the theme toggle sits in the avatar menu, and the two toggle parts are deprecated (M20, M23). |
+| M18: composition one's desktop geometry, its four tokens and the `--tcrn-product-shell-sidebar-width` override | The top band and the paper (M20); three of the four tokens are deprecated and `--tcrn-radius-paper` stays (M24); no package rule reads the override any more. |
+| "Open Owner decisions" below: the composition-one geometry, the night suffix values and the toggle sizes | The second-batch paragraph at the end of that section. |
 
 ## Breaking changes in detail
 
@@ -599,6 +648,150 @@ renders. Put a `TocRail` in the page's own content (for a document, at its side)
 
 Source: TCRN-DS-SUB-125; handoff P8 (INIT-016 r1).
 
+### M24 · Three shell tokens are deprecated; the top band's tokens are new
+
+Change: three of the four tokens M18 added are deprecated through the existing
+registry. They still resolve, and `ProductShell` reads none of them.
+`--tcrn-shell-topbar-height` is a deprecated alias of `--tcrn-shell-strip-h`, the
+band's height (both 52px), and is listed in `tcrnDeprecatedTokenAliases`.
+`--tcrn-shell-sidebar-width` (220px) and `--tcrn-shell-sidebar-width-collapsed`
+(52px) are deprecated with no successor: they keep their values, and
+`tcrnDeprecatedTokens` lists them with a `null` replacement. `findDeprecatedTokenUsages`
+reports all three. `--tcrn-radius-paper` (14px) is not deprecated: it is the paper's
+radius. Twenty tokens are new, all in the theme-independent `:root` block: the band
+(`--tcrn-shell-strip-h` 52px, `--tcrn-shell-brand-h` 40px, `--tcrn-shell-brand-w`
+134px, `--tcrn-shell-toggle` 20px, `--tcrn-shell-pin-h` 32px, `--tcrn-shell-pin-gap`
+8px, `--tcrn-shell-pins-max` 6, `--tcrn-shell-menu-gap` 6px), the full menu and the
+drop-downs (`--tcrn-shell-panel-w-expanded` 952px, `--tcrn-shell-pbar-h` 44px,
+`--tcrn-shell-drop-w` 240px, `--tcrn-shell-drop-srch-h` 28px,
+`--tcrn-shell-cascade-gap` 4px, `--tcrn-shell-row-h` 32px, `--tcrn-shell-srch-h`
+40px, `--tcrn-shell-pinb` 24px) and the sign-in intro (`--tcrn-motion-intro-fade`
+120ms, `--tcrn-motion-intro-move` 240ms, `--tcrn-motion-intro-rise` 100ms,
+`--tcrn-motion-intro-max` 700ms).
+
+Do: replace `--tcrn-shell-topbar-height` with `--tcrn-shell-strip-h`; remove reads
+of the two sidebar widths, since there is no rail to size; run the deprecation
+notice over your sources. The new shell tokens need no action: `ProductShell`
+applies them itself.
+
+Source: a7a1b0b (TCRN-DS-SUB-113); handoff P1a (INIT-016 r1).
+
+### M25 · The icon roster has 38 names: `pin`; navigation rows can carry a pin
+
+Change: `pin` joins `tcrnIconNames` and `IconName`, so the roster has 38 names
+(M7's 37 and `pin`). It is one name in two forms: `<Icon name="pin" />` draws the
+outline, and where a pin is pressed the package's CSS fills its first shape with
+`currentColor` for the solid form. The `Icon` API is unchanged. `NavItem` and
+`NavGroup` take three optional props, `pinned`, `onPinnedChange(pinned)` and
+`pinLabel`, and `NavGroup` takes `locale`. Given `onPinnedChange`, they render a
+24px pin button, `button.tcrn-nav-pin[data-pin-button]`, with `aria-pressed` equal
+to `pinned` and a five-locale name built from `pinLabel` (in English "Pin to top
+bar: {name}" and "Unpin from top bar: {name}"); a click on it does not follow the
+link. A link cannot hold a button, so a pinnable `NavItem` becomes a row of two
+siblings, `div.tcrn-nav-item-row` around the link and the pin; the props given to
+`NavItem` stay on the link, and the row carries the fill and the ink. A pinnable
+`NavGroup` wraps its title in `span.tcrn-nav-group__label-text`. Without
+`onPinnedChange` both render as before.
+
+Do: allow `pin` wherever icon names are checked against the roster. Pass
+`onPinnedChange` only where a pin is wanted; `ProductShell` wires the pins of its own
+menu (M21). A test or a style that goes from a pinnable item's link to its parent
+now reaches `.tcrn-nav-item-row`.
+
+Source: 3f87bb3, 04484e0 (TCRN-DS-SUB-123); handoff P2 (INIT-016 r1); minutes
+TCRN-DS-MIN-20261013-SHELL D6.
+
+### M26 · `ProductLockup` takes a first-line rendition
+
+Change: `ProductLockup` takes `firstLine?: "rail" | "lockup"` (type
+`ProductLockupFirstLineScale`). Given it, the lockup renders the brand board's first
+line instead of the whole lockup: the colour mark beside the wordmark, its suffix in
+the suffix colour, on one line, as
+`div.tcrn-brand-lockup.tcrn-brand-lockup--line[role="img"]` with the product name as
+its `aria-label` and `data-lockup="lkr-line"` (`"rail"`) or `"lk-line"`
+(`"lockup"`). `"rail"` is the menu's scale (a 22px mark, the word at 12.5px and
+600) and `"lockup"` the lockup's (a 44px mark, 16px and 600); Einzbern and Mana
+Orchestrate set the whole name in the serif. The first line always takes the colour
+mark, so `markVariant` does not apply to it. Without `firstLine` the lockup renders
+as before. `ShellBrandLockupProps` is `Omit<ProductLockupProps, "firstLine">`.
+
+Do: use `firstLine="rail"` where a page shows the brand on one line at the menu's
+scale (the shell's brand button draws its own); do not pass `markVariant` with it;
+code that spreads `ProductLockupProps` into `ShellBrandLockup` drops `firstLine`.
+
+Source: 8c96e48 (TCRN-DS-SUB-127); handoff P2 (INIT-016 r1); minutes
+TCRN-DS-MIN-20261013-SHELL D2.
+
+### M27 · `ProductShell` requires `pageHeader`; the paper's content column
+
+Change: `ProductShell` takes a required `pageHeader: PageHeaderProps` and renders it
+as the paper's first row, `header.tcrn-page-header[data-pattern="page-header"]`,
+before `children`. Without `pageHeader.breadcrumbs` the trail is the menu's current
+position (the selected entry's path from its group to the page, or
+`currentRouteLabel` alone when nothing is selected); without `pageHeader.locale` the
+header speaks the shell's `currentLocale`. A trail or a locale the consumer gives
+wins. `PageHeader` takes `locale`, and its `breadcrumbs` type is
+`readonly PageHeaderBreadcrumb[]`. In the paper, the shell's main element is a
+one-column grid with 14px 28px 12px padding (12px 16px at 760px and narrower). The
+new theme-independent token `--tcrn-layout-content-max-w` (1040px) is the width
+`SettingsLayout` and `DocumentCanvas` are held to, centred in the space they get;
+`SplitView`, `DetailLayout` and `RecordTable` are not affected.
+
+Do: pass `pageHeader` to every `ProductShell`; a page that rendered its own
+`PageHeader` as the first child moves it into the prop and out of the children.
+Re-baseline settings and document pages wider than 1040px.
+
+Source: f635938 (TCRN-DS-SUB-129), 6d11e0a (TCRN-DS-SUB-130); handoff P6 (INIT-016
+r1).
+
+### M28 · The TMS suffix is one colour in both themes again
+
+Change: `--tcrn-brand-suffix-tms` is #2c63c8 in both themes, declared once in the
+theme-independent `:root` block, as the approved product-mark artwork has it
+(TCRN-DS-MIN-20261013-SHELL D2). The dark theme block no longer declares it, and the
+TMS entry of `tcrnGplusBrandTokens` has no dark value. M9's night value #7aa0f5 was
+withdrawn before 4.0.0 was cut. By night the suffix is below 4.5:1 (the shell board
+reads 3.13:1 on the paper and 3.33:1 on the canvas): the contrast proof and the axe
+check carry two night TMS wordmark exemptions marked pending, and whether night
+takes #7aa0f5 is an open Owner decision (D7, with the first batch's S-6).
+
+Do: assert #2c63c8 for the TMS suffix in both themes; read a night value through
+`createResolvedTokenMap("dark")`, since `tcrnDarkThemeTokens` no longer has it; a
+parse of `tokens.css` finds the variable in the theme-independent block.
+
+Source: 1f67057 (TCRN-DS-SUB-128); handoff P4 (INIT-016 r1).
+
+### M29 · The shell's new parts
+
+Change: the top band is built from five new exported parts, which `ProductShell`
+composes, so most consumers only meet them through it. `ShellBrandButton` is the
+134 by 40 brand button with the product's first line and a 20px disclosure slot
+(`productId`, `expanded`, `version`, `locale`). `ShellPins` lays out up to six
+pinned items and hides them below 1024px, where the full menu carries them;
+`shellPinsOverflowIds` names the seventh pin onward. `ShellMenu` is the full menu,
+952px wide, with search and up to four levels, shown as a panel wider than 760px and
+as a Sheet at 760px and narrower (`presentation`, `shellMenuPresentationContext`,
+`useShellMenuPresentation`, `shellMenuSheetMediaQuery`). `ShellDropdown` is a pinned
+group's or submenu's drop-down, 240px wide, with cascades that open on click.
+`ShellIntro` is the sign-in intro: once a session, on transform and opacity only,
+and not at all under `prefers-reduced-motion`; `ProductShell` does not mount it.
+The menu model types `ShellMenuGroup` and `ShellMenuItem` and the hook
+`useShellTransientLayer` (Esc, a pointer outside and a selection close the layer and
+return focus to its trigger) are exported, and the five parts are in
+`componentLibraryPublicComponentNames`.
+
+Do: nothing while you use `ProductShell`. To play the sign-in intro, mount
+`ShellIntro` right after a successful sign-in, in the same render as the shell, so
+the brand button is already in the document; it marks the session in
+`sessionStorage` and does not play again in that session. Tests that read the shell
+use the `data-shell`, `data-state`, `data-shell-strip`, `data-pins`, `data-cluster`,
+`data-paper` and `data-panel` hooks.
+
+Source: b44c4d7 (TCRN-DS-SUB-114), 5fe6158 (TCRN-DS-SUB-115), f2d2921
+(TCRN-DS-SUB-116), 8391672 (TCRN-DS-SUB-117), 35c43d6 (TCRN-DS-SUB-118), 7eefd5b
+(TCRN-DS-SUB-122), 5cb5b72 (TCRN-DS-SUB-126); handoffs P1a, P1b, P5 and P7
+(INIT-016 r1).
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is
@@ -658,10 +851,13 @@ theme-independent `:root` block.
 | `--tcrn-elevation-focus` | `--tcrn-focus-ring` | theme |
 | `--tcrn-motion-ease-out` | `--tcrn-motion-ease` | theme-independent |
 | `--tcrn-motion-press-scale` | none (stays defined) | theme-independent |
+| `--tcrn-shell-topbar-height` | `--tcrn-shell-strip-h` | theme-independent |
+| `--tcrn-shell-sidebar-width` | none (stays defined, 220px) | theme-independent |
+| `--tcrn-shell-sidebar-width-collapsed` | none (stays defined, 52px) | theme-independent |
 
-The table is the content of `tcrnDeprecatedTokenAliases` (50 entries) plus the one
-entry of `tcrnDeprecatedTokens` without a successor; read those exports for the
-current list. Names kept with new G+ values rather than aliased:
+The table is the content of `tcrnDeprecatedTokenAliases` (51 entries) plus the three
+entries of `tcrnDeprecatedTokens` without a successor; the last three rows came with
+the second batch (M24). Read those exports for the current list. Names kept with new G+ values rather than aliased:
 `--tcrn-type-family-ui`, `--tcrn-type-family-mono`, `--tcrn-radius-control`,
 `--tcrn-radius-panel`, `--tcrn-radius-surface` (equal to panel),
 `--tcrn-type-size-control`, the type size, line height and weight steps, and the
@@ -693,3 +889,14 @@ Until they are ruled on, 4.0.0 behaves as described above.
   wash and the shortcut in ink-2 against the board's ink-3 (M14); the
   "label — reason" title of disabled buttons (M12); the theme toggle icon by
   `data-current-theme` (M15).
+
+Since the second batch (TCRN-DS-INIT-016), whose open items are listed in
+`docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md`:
+
+- The composition-one geometry and the toggle sizes above no longer apply: the top
+  band replaced composition one (TCRN-DS-MIN-20261013-SHELL D1; M20, M24).
+- The night TMS suffix: 4.0.0 ships the approved single colour, #2c63c8 in both
+  themes, which is below 4.5:1 by night; the design session suggests #7aa0f5 by
+  night, for the Owner to rule on with the first batch's S-6 (D7; M28). A ruling for
+  #7aa0f5 would move the variable back into the two theme blocks.
+- An AOS shell has no brand button until AOS has a mark in the approved set (M20).
