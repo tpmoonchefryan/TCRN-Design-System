@@ -1,0 +1,375 @@
+{
+  "schemaVersion": "tcrn.work-batch.v1",
+  "members": [
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-141",
+      "kind": "Subtask",
+      "parentId": "work:1ad3c63c6fe6468a9d553758",
+      "title": "ui-tokens 同源测试改读 shell-screen.mjs 的板 CSS 默认值，pnpm test 不再停在首包",
+      "summary": "K1：ui-tokens 同源测试改读 shell-screen.mjs 导出的板 CSS 默认值，断言不变，pnpm test 不再停在首包",
+      "body": "承接：R2-1；改动文件：packages/ui-tokens/src/index.test.ts；依赖：无；判据：135 符合性（同源）、148：index.test.ts 第 357–362 行不再在 build-shell2.mjs 里按行首字面找 `.scr.ts{`，改读 `docs/design/gplus-2026-10/tools/shell-screen.mjs`（第 32 行一带）导出的值或 CSS；断言语义不变——--strip-h、--tab、--panel-wx、--menu-gap、--pin-gap、--drop-w、--cascade-gap、--row-h、--pinb、--srch-h 与 tokens.json 对应条目逐个相等；`--filter @tcrn/ui-tokens test` 退出 0；随后整跑一次 `run test`，verify 05 不再停在首包（05 log:16、36）。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-tokens build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-tokens test；corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run test；分包：K1 / W1（经济；包内按序 TCRN-DS-SUB-141 → TCRN-DS-SUB-143 → TCRN-DS-SUB-144 → TCRN-DS-SUB-154 → TCRN-DS-SUB-159 → TCRN-DS-SUB-145 → TCRN-DS-SUB-146 → TCRN-DS-SUB-162）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-142",
+      "kind": "Subtask",
+      "parentId": "work:1ad3c63c6fe6468a9d553758",
+      "title": "壳层几何字面值进 token：标 22、触摸 44、面包屑图标 11，粗指针切换移到 token 层，C10 扫描扩到 shell*.css.ts",
+      "summary": "K4：标 22、触摸 44、面包屑图标 11 进主题无关 token，coarse 切换移到 token 层，C10 扫描扩到 shell*.css.ts",
+      "body": "承接：R2-11；改动文件：docs/design/gplus-2026-10/contract/tokens.json、packages/ui-tokens/src/gplus-tokens.generated.ts、packages/ui-react/src/styles/generated/actions.pairs.ts、packages/ui-react/src/styles/generated/inputs.pairs.ts、packages/ui-react/src/styles/generated/typography.scale.ts、apps/storybook/src/contract-stories/gplus/generated/matrices.generated.ts、packages/ui-tokens/src/index.ts、packages/ui-tokens/src/index.test.ts、packages/ui-tokens/src/tokens.css、apps/storybook/src/storybook.css、scripts/tokens-sync.mjs、packages/ui-react/src/styles/shell.css.ts、packages/ui-react/src/styles/shell-sheet.css.ts、scripts/shell-fidelity-proof.mjs、packages/ui-react/src/styles/index.ts；依赖：TCRN-DS-SUB-162（SUB-162 是 K1 的末张，即 G1 全部合入）；判据：135-GWT1、135-GWT2、135-GWT4，硬线「几何逐值来自 token」（C10）：tokens.json 按 C-2 加 shell-mark 22px、shell-touch 44px、shell-crumb-icon 11px 三条主题无关 token，ui-tokens index.ts 同名、index.test.ts 逐条断言；tokens.css 与 storybook.css 的 token 块在主题无关基础块之后有 `@media (pointer: coarse)` 块，把 --tcrn-shell-row-h、--tcrn-shell-srch-h 指向 var(--tcrn-shell-touch)，shell.css.ts 第 137–138 行组件层的 coarse `:root` 删除；shell.css.ts 第 67、612 行的 22px 与 shell-sheet.css.ts 的 44px 换成 var()；C10 字面量扫描覆盖 shell*.css.ts，写入一条 196px 几何字面值的自检判红；tokens-sync --check、tokens:proof、contract:static（含 C5 主题属性集同构）、contract:proof 退出 0；五个生成物头的 contract-sha256 同变，只由本单提交（C-9）。；局部门：corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-generate.mjs；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-tokens build；corepack pnpm@10.12.1 -C <包树> exec node scripts/tokens-sync.mjs；corepack pnpm@10.12.1 -C <包树> exec node scripts/tokens-sync.mjs --check；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-tokens test；corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> run tokens:proof；corepack pnpm@10.12.1 -C <包树> run shell:fidelity；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run contract:proof；corepack pnpm@10.12.1 -C <包树> exec node scripts/token-extension-proof.mjs；分包：K4 / W2（主力；包内按序 TCRN-DS-SUB-142 → TCRN-DS-SUB-155）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-143",
+      "kind": "Subtask",
+      "parentId": "work:73563c973ba4945683fbb15f",
+      "title": "标按钮与首行：夜间后缀断言按 D7，字标列取内容宽不截 TMS，后缀 em 不越出 b",
+      "summary": "K1：标按钮夜间后缀断言按 D7 同色加 pending；首行字标列取内容宽不截 TMS，后缀 em 不越出 b，两处同写法",
+      "body": "承接：R2-2、R2-3；改动文件：packages/ui-react/src/components/Navigation/ShellBrandButton.test.tsx、packages/ui-react/src/components/Navigation/ShellBrandButton.tsx、packages/ui-react/src/styles/shell.css.ts、packages/ui-react/src/styles/brand.css.ts、packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx；依赖：TCRN-DS-SUB-141；判据：136-GWT3、145-GWT3（R2-2）：ShellBrandButton.test.tsx 第 168–177 行浅色仍断言后缀对比度 ≥ 4.5，夜间改为断言与浅色同色，记下读数（3.07）并加 D7 pending 注，口径同 token-contrast 的 WORDMARK_EXEMPTIONS；`--filter @tcrn/ui-react test` 不再有这条既有红（M3）。136 符合性（D2）、145 符合性、148-GWT2、149-GWT1 与第一批硬线「不超出裁切祖先」（R2-3）：标按钮与 ProductLockup 首行（Navigation.tsx 第 718 行起）两处同一写法、不抽共用（§3.4 第 3 条）——字标列按板 `.ts-brand` 的 `22 auto 20` 取内容宽，外框仍 134×40、中线 26；只有超出 > 1px 才显示省略号并带 title；TMS（实宽 60.234）不截断；`b` 不再纵向裁切或给足纵向余量，`em` 行盒不越出 `b`，不移字形、不丢省略号；两份测试各补「scrollWidth ≤ clientWidth」与「em 不越出 b」两条断言。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run component-modifiers:proof；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run brand-asset:proof；分包：K1 / W1（经济；包内按序 TCRN-DS-SUB-141 → TCRN-DS-SUB-143 → TCRN-DS-SUB-144 → TCRN-DS-SUB-154 → TCRN-DS-SUB-159 → TCRN-DS-SUB-145 → TCRN-DS-SUB-146 → TCRN-DS-SUB-162）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-144",
+      "kind": "Subtask",
+      "parentId": "work:3d8ec5e9bbaaa3623c3315c8",
+      "title": "底栏锁定块按 C-6 出 DOM：svg[data-logo]、b > em 与 small，侧栏尺度只留 brand.css.ts 一处",
+      "summary": "K1：底栏锁定块按 C-6 出 svg[data-logo]、b > em 与 small，删 .tcrn-shell-menu__lockup 的侧栏尺度副本",
+      "body": "承接：R2-4；改动文件：packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/components/Navigation/ShellMenu.tsx、packages/ui-react/src/components/Navigation/ShellMenu.test.tsx、packages/ui-react/src/styles/brand.css.ts、packages/ui-react/src/styles/shell.css.ts；依赖：TCRN-DS-SUB-143；判据：138 符合性、145、149-GWT1，壳层硬线「锁定块只装饰」「品牌资产 digest」：ProductLogo（Navigation.tsx 第 585 行起）给彩色标加 `data-logo={productId}`，与第 699 行的首行一致；底栏锁定块结构改为 `b > em` 加 `small`（C-6），仍不是 button、不在 Tab 序列（138-GWT2）；`.tcrn-shell-menu__lockup` 抄的侧栏尺度副本删除，改用 brand.css.ts 的侧栏档（C13 一处真相）；组件测试断言 `[data-lockup] svg[data-logo]`、`b > em`、`small` 存在；brand-asset:proof 退出 0。门侧 lockupDecor（16 处）、brandDigest（24 处，shell-measure.mjs 第 446–448、576–578 行）在 K11、K12 的真件运行里复核。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run component-modifiers:proof；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run brand-asset:proof；分包：K1 / W1（经济；包内按序 TCRN-DS-SUB-141 → TCRN-DS-SUB-143 → TCRN-DS-SUB-144 → TCRN-DS-SUB-154 → TCRN-DS-SUB-159 → TCRN-DS-SUB-145 → TCRN-DS-SUB-146 → TCRN-DS-SUB-162）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-145",
+      "kind": "Subtask",
+      "parentId": "work:e14a7f089a9cac4c7da39d52",
+      "title": "撤 O-1 残留与旧顶栏搜索尺寸，包样式表壳层段首加稳定标记",
+      "summary": "K1：撤 O-1 死选择器与旧顶栏搜索 260，shellCss01 首条规则前加段首标记供页模板切段",
+      "body": "承接：R2-7；改动文件：packages/ui-react/src/styles/brand.css.ts、packages/ui-react/src/styles/base.css.ts、packages/ui-react/src/styles/shell.css.ts、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/styles/index.ts；依赖：TCRN-DS-SUB-159；判据：140 符合性（O-1 撤出）、147：删 brand.css.ts 第 198、215、216 行三条死选择器，Navigation.test.tsx 的 GWT1 不再排除 brand 段；删 base.css.ts 第 163–176 行 `.tcrn-product-shell-search` 的旧顶栏尺寸（260、margin-left auto）；`shellCss01` 的第一条规则（shell.css.ts 第 25 行 `.tcrn-shell-brand {`）之前加 C-8 定死的段首标记注释，tcrnComponentCss 里恰好出现一次、位于第一个壳层选择器之前，组件测试断言这两点；shell:fidelity 读数不回退。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run shell:fidelity；分包：K1 / W1（经济；包内按序 TCRN-DS-SUB-141 → TCRN-DS-SUB-143 → TCRN-DS-SUB-144 → TCRN-DS-SUB-154 → TCRN-DS-SUB-159 → TCRN-DS-SUB-145 → TCRN-DS-SUB-146 → TCRN-DS-SUB-162）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-146",
+      "kind": "Subtask",
+      "parentId": "work:e14a7f089a9cac4c7da39d52",
+      "title": "纸内滚动区可聚焦；铃铛悬停按 07a B 段改 6% 墨洗",
+      "summary": "K1：ProductShell 纸内滚动区加 tabIndex 0；铃铛悬停改 6% 墨洗，G-6 读数交 K12 改清单",
+      "body": "承接：R2-8、R2-10；改动文件：packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/styles/shell.css.ts；依赖：TCRN-DS-SUB-145；判据：140、147（R2-8，axe scrollable-region-focusable 归 0）：ProductShell 的 `section.tcrn-product-shell__main` 加 `tabIndex={0}`（已有 aria-label），焦点环沿用现有规则，单测断言。140 符合性、149 contrast（R2-10）：铃铛悬停底由 3.5% 改为 6% 墨洗（板读 13.97 / 13.17，现读 14.70 / 14.14），只切换状态对变量、不写颜色字面；若 Story 正文写的是 3.5%，停下记问题。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run component-modifiers:proof；corepack pnpm@10.12.1 -C <包树> run contract:static；分包：K1 / W1（经济；包内按序 TCRN-DS-SUB-141 → TCRN-DS-SUB-143 → TCRN-DS-SUB-144 → TCRN-DS-SUB-154 → TCRN-DS-SUB-159 → TCRN-DS-SUB-145 → TCRN-DS-SUB-146 → TCRN-DS-SUB-162）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-147",
+      "kind": "Subtask",
+      "parentId": "work:e14a7f089a9cac4c7da39d52",
+      "title": "ShellMenu 受控搜索词与菜单分类说明，ProductShell 透传",
+      "summary": "K6：ShellMenu 加受控 query 与 defaultQuery，菜单分类加可选 description 出 aria-describedby，ProductShell 透传",
+      "body": "承接：R2-15、R2-20；改动文件：packages/ui-react/src/components/Navigation/ShellMenu.tsx、packages/ui-react/src/components/Navigation/ShellMenu.test.tsx、packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/test/shell-menu.dom.spec.tsx、packages/ui-react/src/components/Navigation/index.ts、packages/ui-react/src/index.tsx、packages/ui-react/src/index.test.tsx；依赖：TCRN-DS-SUB-152；判据：140、144-GWT3（R2-15）：ShellMenu 加受控 `query` 与 `defaultQuery`，回调 `onQueryChange`（C-12 默认名），不传时行为不变；ProductShell 透传（默认名 `menuQuery`、`defaultMenuQuery`、`onMenuQueryChange`）；单测覆盖受控、非受控两条路径，现有的 Esc 与选中即收行为不变。147（R2-20 包侧）：C-7 菜单模型 `ShellMenuGroup` 加可选 `description`，有值时分类行带 `aria-describedby` 指向 `.tcrn-sr-only` 说明，无值时 DOM 不变；单测断言。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> run test:dom；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run exports:check；分包：K6 / W3（主力；包内按序 TCRN-DS-SUB-152 → TCRN-DS-SUB-147 → TCRN-DS-SUB-163 → TCRN-DS-SUB-148 → TCRN-DS-SUB-149）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-148",
+      "kind": "Subtask",
+      "parentId": "work:e14a7f089a9cac4c7da39d52",
+      "title": "ProductShell 地标名按实例区分：landmarkLabel 作两个 nav 可及名前缀",
+      "summary": "K6：ProductShell 开放实例级 landmarkLabel，作固定项与面包屑两个 nav 可及名前缀，五语由 shell-copy 组装",
+      "body": "承接：R2-17；改动文件：packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/components/Navigation/ShellPins.tsx、packages/ui-react/src/components/Navigation/ShellPins.test.tsx、packages/ui-react/src/components/Navigation/shell-copy.ts；依赖：TCRN-DS-SUB-163；判据：147、140（axe landmark-unique 归 0）：ProductShell 开放实例级地标名 `landmarkLabel`（C-12 默认名），作为固定项 nav 与面包屑 nav 可及名的前缀，五语由 shell-copy.ts 组装；不传时可及名与现在相同；同一壳内两个 nav 的可及名互不相同；单测断言。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run exports:check；分包：K6 / W3（主力；包内按序 TCRN-DS-SUB-152 → TCRN-DS-SUB-147 → TCRN-DS-SUB-163 → TCRN-DS-SUB-148 → TCRN-DS-SUB-149）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-149",
+      "kind": "Subtask",
+      "parentId": "work:e14a7f089a9cac4c7da39d52",
+      "title": "固定项拖排：指针就地移位，键盘 Alt+← / Alt+→，onPinsReorder 接 movePin",
+      "summary": "K6：ShellPins 指针拖排与 Alt+←/→ 键盘替代，onPinsReorder 接 movePin 持久化，不加板外视觉",
+      "body": "承接：R2-14；改动文件：packages/ui-react/src/components/Navigation/ShellPins.tsx、packages/ui-react/src/components/Navigation/ShellPins.test.tsx、packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/styles/shell.css.ts、packages/ui-react/src/test/product-shell-preferences.dom.spec.tsx、packages/ui-react/src/test/shell-pins.dom.spec.tsx、packages/ui-react/src/styles/index.ts；依赖：TCRN-DS-SUB-148；判据：140-GWT3（137）：ShellPins 加指针拖排，项就地移位，不加板上没有的插入线、拖影、把手；键盘替代 Alt+← / Alt+→ 移动获焦项；拖排结束回调 `onPinsReorder(orderedIds)`，ProductShell 加同名 prop 并接到控制器 `movePin`，顺序写回固定项偏好（服务端偏好，不进 cookie）；shell.css.ts 只加行为属性（如 touch-action、cursor），不加视觉；DOM 测试覆盖指针拖排、键盘移动与偏好持久化（新测试文件 `shell-pins.dom.spec.tsx`）。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> run test:dom；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run component-modifiers:proof；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run exports:check；分包：K6 / W3（主力；包内按序 TCRN-DS-SUB-152 → TCRN-DS-SUB-147 → TCRN-DS-SUB-163 → TCRN-DS-SUB-148 → TCRN-DS-SUB-149）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-150",
+      "kind": "Subtask",
+      "parentId": "work:e14a7f089a9cac4c7da39d52",
+      "title": "消费新 prop：已输入结果屏、searchOverlay 宿主与 open-menus 取 DOM、两类壳分传地标名、页内壳传层级 2、页模板传分类说明",
+      "summary": "K11：shell-top-band 加已输入结果屏，searchOverlay 改宿主、open-menus 取 DOM；两类壳分传地标名，页内壳传层级 2",
+      "body": "承接：R2-24、R2-23、R2-20；改动文件：apps/storybook/src/contract-stories/story-content.tsx、apps/storybook/src/build/page-template.tsx、scripts/geometry-proof.mjs、scripts/shell-fidelity-proof.mjs、apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx、apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx、apps/storybook/src/contract-stories/gplus/samples/composition-one.tsx、apps/storybook/src/contract-stories/gplus/samples/composition-three.tsx、apps/storybook/src/contract-stories/gplus/sample-stories.tsx、tests/fixtures/geometry-measure/shell/manifest.json；依赖：TCRN-DS-SUB-147、TCRN-DS-SUB-148、TCRN-DS-SUB-163、TCRN-DS-SUB-160、TCRN-DS-SUB-171、TCRN-DS-SUB-155；判据：140、144-GWT3、147（R2-24）：shell-top-band 加一屏「已输入、结果展开」（屏名 `ts-search-l`，用 SUB-147 的受控搜索词）；geometry-proof 的 searchOverlay 宿主改到该屏，open-menus 从 DOM 派生、不写常数（searchOverlay 检查不撤，§3.3），geometry:proof 退出 0（10 log:5 的 overlayCount 0 与 openMenus 12 对 13 消失）；文档壳与页内 story 壳各传不同 `landmarkLabel`，axe landmark-unique 0；静态结果屏出现后删 shell-fidelity 的 EX-INIT015-doc-product-shell-search-static（until 已满足），shell:fidelity 退出 0。147（R2-23 后半）：页内另有 h1 的 story 壳传 `headingLevel` 2（SUB-163），文档页 page-has-heading-one 0。147（R2-20 消费侧）：页模板把五语 category.description 作为菜单分类说明传给包件（SUB-147 的字段），门里的计数不撤（§3.4 第 8 条），smoke 的 categoryDescriptionCount 与 internal-alpha 的 categoryAriaFailures 转绿。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run geometry:proof；corepack pnpm@10.12.1 -C <包树> run shell:fidelity；corepack pnpm@10.12.1 -C <包树> run shell:parity；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs；corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；分包：K11 / W4（主力；包内按序 TCRN-DS-SUB-150 → TCRN-DS-SUB-161）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-151",
+      "kind": "Subtask",
+      "parentId": "work:e2def1cb6cee96bcde0ea937",
+      "title": "静态页加客户端挂载：壳 story 与文档壳浮层水合真件，ProductShell 透传 previewStates，下拉静态桥退场",
+      "summary": "K5：静态页加小挂载入口水合壳 story 与文档壳浮层，ProductShell 透传 previewStates，下拉静态桥退场",
+      "body": "承接：R2-22；改动文件：apps/storybook/src/build/page-template.tsx、apps/storybook/src/build/client-scripts.ts、apps/storybook/src/build/shell-hydrate.tsx、apps/storybook/src/build/write-static.ts、apps/storybook/src/build.tsx、apps/storybook/src/contract-stories/story-content.tsx、packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/components/Navigation/ShellMenu.tsx、packages/ui-react/src/components/Navigation/ShellMenu.test.tsx、packages/ui-react/src/components/Navigation/ShellDropdown.tsx、packages/ui-react/src/components/Navigation/ShellDropdown.test.tsx、packages/ui-react/src/components/Navigation/index.ts、packages/ui-react/src/index.tsx、packages/ui-react/src/index.test.tsx；依赖：TCRN-DS-SUB-170、TCRN-DS-SUB-146；判据：141-GWT1、141-GWT2（静态页上登入动画可观察）、136-GWT4、138-GWT4、139-GWT4（Esc 回焦、⌘K、点外部即收在静态页可观察）、144-GWT2（≤ 760 出 Sheet）、147、149-GWT1（intro、focusLoop、noCollapse 半边、touch 不再因无挂载而红，4 条变异可区分）：定挂载归属后一次接入——壳 story（shell-top-band、shell-narrow、shell-mobile、shell-intro）与文档壳浮层由一个小挂载入口（C-12：`apps/storybook/src/build/shell-hydrate.tsx`）水合真件；ProductShell 把 previewStates 传给 ShellMenu、ShellDropdown，story-content.tsx 里的下拉静态桥（含 `tcrn-shell-dropdown__col`）退场；挂载后 `data-shell-brand` 随视口改写；SUB-166 的语言列表 Esc 行为在水合后仍成立；「tab click: Timeout 3000ms」的原因写进交回，门的判定不改。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run test:dom；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> run exports:check；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs；corepack pnpm@10.12.1 -C <包树> run shell:parity；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> run doc-shell:proof；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；分包：K5 / W2（主力；包内按序 TCRN-DS-SUB-170 → TCRN-DS-SUB-151 → TCRN-DS-SUB-160）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-152",
+      "kind": "Subtask",
+      "parentId": "work:27344937d9f099034b0c773e",
+      "title": "NavItem、NavGroup 出 C-5 行钩子：data-text、data-guide 与 data-shell-group",
+      "summary": "K6：NavItem 标签发 data-text=prail、图标发 data-guide=prail，NavGroup 标题行接 data-shell-group，测试断言",
+      "body": "承接：R2-13；改动文件：packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx；依赖：TCRN-DS-SUB-160、TCRN-DS-SUB-155（K5、K4 的末张，即两包全部合入）；判据：142-GWT1、149-GWT1：`.tcrn-nav-item__label` 发 `data-text=\"prail\"`，行内图标发 `data-guide=\"prail\"`，NavGroup 标题行接收 `data-shell-group`（C-5）；可钉行仍以 `.tcrn-nav-item-row` 为行包裹（P2 接口）；组件测试断言钩子存在。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> run contract:static；分包：K6 / W3（主力；包内按序 TCRN-DS-SUB-152 → TCRN-DS-SUB-147 → TCRN-DS-SUB-163 → TCRN-DS-SUB-148 → TCRN-DS-SUB-149）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-153",
+      "kind": "Subtask",
+      "parentId": "work:27344937d9f099034b0c773e",
+      "title": "Icon、Typography 板与五语描述的件数改为 38：生成器用 ICON_NAMES.length 出数",
+      "summary": "K8：build-icon 与 build-typography 用 ICON_NAMES.length 出数，板、五语描述、README 与 story 的件数改 38",
+      "body": "承接：R2-31；改动文件：docs/design/gplus-2026-10/tools/build-icon.mjs、docs/design/gplus-2026-10/tools/build-typography.mjs、docs/design/gplus-2026-10/boards/V2-B1-Icon.dc.html、docs/design/gplus-2026-10/boards/V2-B1-Typography.dc.html、docs/design/visual-standard/boards/Icon.dc.html、docs/design/visual-standard/boards/Typography.dc.html、docs/design/visual-standard/heights.json、apps/storybook/src/build/locales/storybook-locale-text.ts、apps/storybook/src/build/locales/storybook-content-text.ts、apps/storybook/src/contract-stories/story-content.tsx、docs/design/gplus-2026-10/README.md；依赖：TCRN-DS-SUB-166、TCRN-DS-SUB-160；判据：142 符合性、148（D4）：build-icon.mjs（第 77、171、177、193 行一带的「37 件」）与 build-typography.mjs 第 259 行改为用 ICON_NAMES.length 出数，只重生受影响的行（重生前后 diff 只落在件数文字，Actions、Inputs 两板与 Shell 两板字节不变）；Storybook 五语描述（storybook-locale-text.ts 第 148、340、532、724、916 行）、storybook-content-text.ts 第 528 行、story-content.tsx 第 1321 行、docs/design/gplus-2026-10/README.md 第 14 行的件数一并改成 38；名册仍是 38（142-GWT3），contract:proof 退出 0。；局部门：corepack pnpm@10.12.1 -C <包树> exec node docs/design/gplus-2026-10/tools/build-icon.mjs <docs/design/gplus-2026-10/boards/canvas.json 中 Icon 板的 h>；corepack pnpm@10.12.1 -C <包树> exec node docs/design/gplus-2026-10/tools/build-typography.mjs <docs/design/gplus-2026-10/boards/canvas.json 中 Typography 板的 h>；corepack pnpm@10.12.1 -C <包树> exec node docs/design/visual-standard/tools/make-standard.mjs docs/design/visual-standard/heights.json；corepack pnpm@10.12.1 -C <包树> run contract:proof；corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；corepack pnpm@10.12.1 -C <包树> run public:naming:proof；分包：K8 / W3（经济；包内按序 TCRN-DS-SUB-153 → TCRN-DS-SUB-172 → TCRN-DS-SUB-157 → TCRN-DS-SUB-175 → TCRN-DS-SUB-171）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-154",
+      "kind": "Subtask",
+      "parentId": "work:1b03f6ae2b1a9e080fde1432",
+      "title": "菜单内 C7 缺口与搜索空态：分组标题与结果链接带 title，空态常显，可钉行单行截断",
+      "summary": "K1：非可钉 NavGroup 标题与搜索结果链接带 title，空态文案常显，可钉行标签单行截断加 title",
+      "body": "承接：R2-5；改动文件：packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/styles/shell.css.ts；依赖：TCRN-DS-SUB-144；判据：143 符合性、138、142，第一批 C7（单行截断必带 title）：非可钉 NavGroup 标题（Navigation.tsx 第 1513 行一带）包一层 `span.tcrn-nav-group__label-text[title]`；ProductShellSearch（第 1643 行起）的结果链接加 title；无匹配时空态文案常显；可钉行的 `.tcrn-nav-item__label` 改单行截断并加 title；单测覆盖四处，变异 truncatedWithoutTitle 不再报。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run contract:static；分包：K1 / W1（经济；包内按序 TCRN-DS-SUB-141 → TCRN-DS-SUB-143 → TCRN-DS-SUB-144 → TCRN-DS-SUB-154 → TCRN-DS-SUB-159 → TCRN-DS-SUB-145 → TCRN-DS-SUB-146 → TCRN-DS-SUB-162）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-155",
+      "kind": "Subtask",
+      "parentId": "work:1b03f6ae2b1a9e080fde1432",
+      "title": "第二批三族豁免到期删除，按 C1–C17 整改 navigation、shell、layout 旧规则",
+      "summary": "K4：删 navigation、shell、layout 三族到期豁免，按 C1–C17 整改三族旧规则，roles 退役控件与 families 暂留块同删",
+      "body": "承接：R2-12；改动文件：docs/contract/exemptions.json、docs/contract/roles.json、docs/contract/families.json、packages/ui-react/src/styles/base.css.ts、packages/ui-react/src/styles/shell.css.ts、scripts/shell-fidelity-proof.mjs；依赖：TCRN-DS-SUB-142；判据：143、140、146 符合性，START 质量硬线 C1–C17：删 exemptions.json 的 EX-INIT015-navigation、EX-INIT015-shell、EX-INIT015-layout 三条（until「该家族所在批次开工时删除本条」已到，§3.4 第 2 条）；跑 contract:static 与 shell:fidelity，把读出的红按条款逐条改 base.css.ts 三族段与 shell.css.ts，已知：SubNav 选中改 6% 墨洗加字重（C6），TocRail、NavItem 悬停旧写法，Surface、Divider 等布局件；roles.json 删 3 个退役壳控件后移除 families.json 的暂留块；shell-fidelity 两条导航族条件例外各按 until：search-static 留给 SUB-150 删，skip-link 不满足条件就保留；contract:static、shell:fidelity、selection:proof 退出 0，或在交回列出余项。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run shell:fidelity；corepack pnpm@10.12.1 -C <包树> run selection:proof；corepack pnpm@10.12.1 -C <包树> run tokens:proof；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run component-modifiers:proof；分包：K4 / W2（主力；包内按序 TCRN-DS-SUB-142 → TCRN-DS-SUB-155）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-156",
+      "kind": "Subtask",
+      "parentId": "work:1b03f6ae2b1a9e080fde1432",
+      "title": "豁免到期后的组件余项与面包屑分隔图标 token",
+      "summary": "K6b：面包屑分隔图标 size 改取 shell-crumb-icon token；按 K4 交回的组件余项逐条整改，余项进 R3",
+      "body": "承接：R2-11、R2-12；改动文件：packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/styles/base.css.ts、packages/ui-react/src/styles/shell.css.ts、packages/ui-react/src/components/Layout/Layout.tsx、packages/ui-react/src/components/Layout/Layout.test.tsx、packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx、packages/ui-react/src/components/DataDisplay/DomainDisplay.test.tsx、packages/ui-react/src/styles/index.ts；依赖：TCRN-DS-SUB-149、TCRN-DS-SUB-155（SUB-149 是 K6 的末张）；判据：硬线「几何逐值来自 token」（R2-11 组件部分）：Navigation.tsx 面包屑分隔符 Icon 的 `size={11}` 改由 C-2 的 shell-crumb-icon 供值，不改 Icon API。143、140、146 符合性（R2-12 组件部分）：按 SUB-155 交回「组件余项」逐条改组件文件，contract:static、shell:fidelity、selection:proof 的读数不回退；做不完的列清单进 R3。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run component-modifiers:proof；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run shell:fidelity；corepack pnpm@10.12.1 -C <包树> run selection:proof；分包：K6b / W4（主力；包内按序 TCRN-DS-SUB-156）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-157",
+      "kind": "Subtask",
+      "parentId": "work:1b03f6ae2b1a9e080fde1432",
+      "title": "TreeNav 文档 story 演示挪进完整菜单或下拉的上下文",
+      "summary": "K8：两个 spec 段的 TreeNav 演示挪进完整菜单或下拉上下文，页内文档树按内容模式写明，五语同改",
+      "body": "承接：R2-33；改动文件：apps/storybook/src/contract-stories/story-content.tsx、apps/storybook/src/build/locales/storybook-content-text.ts；依赖：TCRN-DS-SUB-172；判据：143 符合性：story-content.tsx 里 documents-and-collaboration-components-spec 与 -density-spec 两段的 TreeNav 演示挪进完整菜单或下拉的上下文；页内需要文档树时按页面内容模式写明，不拿 TreeNav 充当页内导航列；五语一起改（C-10）。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> run public:naming:proof；corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan；分包：K8 / W3（经济；包内按序 TCRN-DS-SUB-153 → TCRN-DS-SUB-172 → TCRN-DS-SUB-157 → TCRN-DS-SUB-175 → TCRN-DS-SUB-171）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-158",
+      "kind": "Subtask",
+      "parentId": "work:1b03f6ae2b1a9e080fde1432",
+      "title": "迁移说明逐件处置表与新 prop 条目，两个 README 改六板，tcrnIconNewNames 注释改口径",
+      "summary": "K9：迁移说明加 navigation 13 与 shell 9 逐件处置表并追加新 prop 条目，两 README 改六板，图标新名注释改口径",
+      "body": "承接：R2-30；改动文件：docs/migration-4.0.md、docs/design/gplus-2026-10/README.md、docs/contract/README.md、scripts/contract-generate.mjs、packages/ui-react/src/components/Icon/icon-paths.generated.ts；依赖：TCRN-DS-SUB-176、TCRN-DS-SUB-149、TCRN-DS-SUB-155；判据：143 符合性、140、141、150-GWT2：迁移说明加家族逐件处置表——navigation 13 件、shell 9 件，每行写保留、并入 Tabs、弃用或新增，以及 families.json 的现值；MobileNavToggle 记弃用、仍计入 10 件（§3.4 第 4 条）；追加 R2-11、R2-14 至 R2-17 与菜单分类说明的条目（照录 K4、K5、K6 交回的「迁移条目」）；写明 ShellIntro「只在应用内登入成功时挂载」、壳根一屏高、纸内滚动、长页嵌壳要加画框；只追加，不改已有条目（C-11）；docs/design/gplus-2026-10/README.md 第 13 行与 docs/contract/README.md 第 51 行改为六板（shell 66 格，共 306）；tcrnIconNewNames 的注释改口径：改 contract-generate.mjs 的注释模板后重生，只有 icon-paths.generated.ts 变。；局部门：corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-generate.mjs；corepack pnpm@10.12.1 -C <包树> run contract:proof；corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run scaffold:proof；corepack pnpm@10.12.1 -C <包树> run readme:proof；corepack pnpm@10.12.1 -C <包树> run public:naming:proof；corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan；分包：K9 / W4（经济；包内按序 TCRN-DS-SUB-176 → TCRN-DS-SUB-158）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-159",
+      "kind": "Subtask",
+      "parentId": "work:14b2761d4ff9e55b90cd110e",
+      "title": "Sheet 打开时壳根报 data-state=\"sheet\"",
+      "summary": "K1：ProductShell 读 useShellMenuPresentation，菜单以 Sheet 呈现时壳根报 data-state=sheet，不改 prop 面",
+      "body": "承接：R2-6；改动文件：packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/test/shell-menu.dom.spec.tsx；依赖：TCRN-DS-SUB-154；判据：144（C-5）、149 touch：ProductShell 调 `useShellMenuPresentation()`，菜单打开且呈现为 sheet 时壳根 `data-state=\"sheet\"`；只加状态值，不改 prop 面；DOM 测试断言。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> run test:dom；分包：K1 / W1（经济；包内按序 TCRN-DS-SUB-141 → TCRN-DS-SUB-143 → TCRN-DS-SUB-144 → TCRN-DS-SUB-154 → TCRN-DS-SUB-159 → TCRN-DS-SUB-145 → TCRN-DS-SUB-146 → TCRN-DS-SUB-162）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-160",
+      "kind": "Subtask",
+      "parentId": "work:14b2761d4ff9e55b90cd110e",
+      "title": "静态 story 修补：ts-m-s 包 sheet 呈现上下文，AOS 证明、视觉实例与构图一加定高画框，AOS 读回标明占位",
+      "summary": "K5：ts-m-s 包 sheet 呈现上下文，AOS 证明、视觉实例与构图一加定高画框，AOS 读回标明占位",
+      "body": "承接：R2-23；改动文件：apps/storybook/src/contract-stories/story-content.tsx、apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx、apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx、apps/storybook/src/contract-stories/gplus/samples/composition-one.tsx；依赖：TCRN-DS-SUB-151；判据：144-GWT2、140、147：ts-m-s 包进 `shellMenuPresentationContext.Provider value=\"sheet\"`；AOS 壳证明、两个视觉实例、构图一浅夜两块给壳加定高画框（壳本身不改）；AOS story 读回标明 design-system 是占位（O-9 默认）；proof-visual-instances 三视口各 8 处 AOS 壳标题裁切不再出现（判断 §0 第 2 条）。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs；corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof；分包：K5 / W2（主力；包内按序 TCRN-DS-SUB-170 → TCRN-DS-SUB-151 → TCRN-DS-SUB-160）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-161",
+      "kind": "Subtask",
+      "parentId": "work:f19ca0b68e52842e947dcafc",
+      "title": "145、146 补门的 story 侧：品牌首行 story，设置页与名册页两屏（390、1440，长面包屑）",
+      "summary": "K11：加品牌首行 story 供 markText 读，壳 story 加设置页与名册页 390、1440 两屏，长面包屑",
+      "body": "承接：R2-28；改动文件：apps/storybook/src/contract-stories/shell-brand-first-line.tsx、apps/storybook/src/contract-stories/story-content.tsx、apps/storybook/src/contract-stories/governance.ts、apps/storybook/src/contract-stories/groups/components.ts、apps/storybook/src/components.stories.tsx、scripts/lib/story-budget.mjs、apps/storybook/src/build/locales/storybook-locale-text.ts、tests/fixtures/geometry-measure/shell/manifest.json、tests/fixtures/geometry-measure/shell/mutations.json；依赖：TCRN-DS-SUB-150、TCRN-DS-SUB-164；判据：145-GWT2、146 符合性（几何门）：按 SUB-164 定死的 id 与屏名（C-12）——加品牌首行 story `shell-brand-first-line`（四枚产品，每枚侧栏与锁定块两种尺度首行，C-6 DOM）供 markText 读；壳 story 加设置页与名册页两屏（`ts-settings-l`、`ts-roster-l` 在 shell-top-band，`ts-settings-m`、`ts-roster-m` 在 shell-mobile，长面包屑）；壳层门对真件跑：markText、pageCrumbs、SettingsLayout（≤ 1040 且左右等距）、SplitView（左缘 = 纸左缘 + 内距）读数出值，各自的变异判红。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> exec node --test tests/shell-measure-proof.test.mjs；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs；corepack pnpm@10.12.1 -C <包树> run geometry:measure；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；corepack pnpm@10.12.1 -C <包树> run public:naming:proof；分包：K11 / W4（主力；包内按序 TCRN-DS-SUB-150 → TCRN-DS-SUB-161）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-162",
+      "kind": "Subtask",
+      "parentId": "work:792b63bc73100197f6f41e96",
+      "title": "纸内 PageHeader 主体对齐板 .ph：gap 14、底线 line-2、标题字形对齐板上 h2",
+      "summary": "K1：纸内 PageHeader 标题行 gap 改 space-3h、底线改 line-2 对应 token，标题字形对齐板上 h2",
+      "body": "承接：R2-9；改动文件：packages/ui-react/src/styles/base.css.ts、packages/ui-react/src/components/DataDisplay/DomainDisplay.test.tsx；依赖：TCRN-DS-SUB-146；判据：146 符合性（D1 纸内首行）：PageHeader 标题行 gap 由 space-3（12）改 space-3h（14），底线由 border-subtle 改 line-2 对应的 token，标题字形对齐板上 h2（衬线 26）；只用已有 token，没有等值的就停下记问题（不新增 type scale token，§3.3）；测试断言。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run shell:fidelity；分包：K1 / W1（经济；包内按序 TCRN-DS-SUB-141 → TCRN-DS-SUB-143 → TCRN-DS-SUB-144 → TCRN-DS-SUB-154 → TCRN-DS-SUB-159 → TCRN-DS-SUB-145 → TCRN-DS-SUB-146 → TCRN-DS-SUB-162）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-163",
+      "kind": "Subtask",
+      "parentId": "work:792b63bc73100197f6f41e96",
+      "title": "PageHeader 加可选标题层级，ProductShell 纸内默认 h1",
+      "summary": "K6：PageHeader 加可选 headingLevel 默认 2，ProductShell 纸内默认 1，h1 与 h2 样式读数相同",
+      "body": "承接：R2-16；改动文件：packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx、packages/ui-react/src/components/DataDisplay/DomainDisplay.test.tsx、packages/ui-react/src/components/Navigation/Navigation.tsx、packages/ui-react/src/components/Navigation/Navigation.test.tsx、packages/ui-react/src/styles/base.css.ts；依赖：TCRN-DS-SUB-147；判据：146、147（axe page-has-heading-one 108 处归 0）：PageHeader（DomainDisplay.tsx 第 253 行起，标题现恒为 h2，第 272 行）加可选 `headingLevel`（1 | 2，C-12 默认名），默认 2；ProductShell 纸内默认用 1，显式给了就按给的；h1 与 h2 两种渲染的样式读数相同（按类名）；单测断言。；局部门：corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test；corepack pnpm@10.12.1 -C <包树> run typecheck；corepack pnpm@10.12.1 -C <包树> run contract:static；corepack pnpm@10.12.1 -C <包树> run exports:check；分包：K6 / W3（主力；包内按序 TCRN-DS-SUB-152 → TCRN-DS-SUB-147 → TCRN-DS-SUB-163 → TCRN-DS-SUB-148 → TCRN-DS-SUB-149）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-164",
+      "kind": "Subtask",
+      "parentId": "work:792b63bc73100197f6f41e96",
+      "title": "145、146 补门的门侧：markText 读品牌 story，pageCrumbs、SettingsLayout、SplitView 三项读数与变异，all.green.html 换顶带壳",
+      "summary": "K10：markText 读品牌 story，门新读 pageCrumbs、SettingsLayout、SplitView 并各配判红变异，all.green 换顶带壳",
+      "body": "承接：R2-28；改动文件：scripts/lib/shell-measure.mjs、scripts/shell-measure-proof.mjs、tests/shell-measure-proof.test.mjs、tests/fixtures/geometry-measure/shell/**、tests/fixtures/geometry-measure/all.green.html、tests/fixtures/geometry-measure/manifest.json、tests/geometry-measure-proof.test.mjs；依赖：TCRN-DS-SUB-174；判据：145-GWT2、146 符合性（几何门）：markText 改读品牌首行 story（id 与各屏名按 C-12 写进壳层夹具 manifest 并在交回定死），配 padding-top 4 的变异判红；门新读 pageCrumbs（单行、省略号、title）、SettingsLayout（≤ 1040 且左右等距）、SplitView（左缘 = 纸左缘 + 内距）三项，各配一条会判红的变异，夹具自检证明会判红；all.green.html 换成顶带壳；`--fixtures`、两份单测退出 0。真件 story 由 SUB-161 出，本单对真件的运行只记读数。；局部门：corepack pnpm@10.12.1 -C <包树> exec node --test tests/shell-measure-proof.test.mjs；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs --fixtures；corepack pnpm@10.12.1 -C <包树> exec node --test tests/geometry-measure-proof.test.mjs；corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> exec node scripts/geometry-measure-proof.mjs；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs；分包：K10 / W3（主力；包内按序 TCRN-DS-SUB-164）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-165",
+      "kind": "Subtask",
+      "parentId": "work:6fd15b4e5366871194d862ab",
+      "title": ".story-body 比对副本不再压过壳层段：纳入三类壳层段并排其后",
+      "summary": "K2：页模板 .story-body 比对副本纳入壳层三类段并排其后，文档页菜单与下拉读数回到板值",
+      "body": "承接：R2-18；改动文件：apps/storybook/src/build/page-template.tsx；依赖：无；判据：138-GWT1、139-GWT1、140、142、147、149：页模板的 `.story-body` 比对副本纳入 shellCss*、shellIntroCss*、shellSheetCss* 并排在其后，或只复制不被壳层段覆盖的规则；本单仍按现有方式（page-template.tsx 第 299 行）定位壳层段，标记切换在 SUB-170；文档页读数合板：菜单搜索 936×40、下拉搜索 228×28、菜单行 12.5、组标题 10 / 500 ink-3、chevron ink-3、≥ 1024 不显示「已固定」、静态悬停生效（判断 §0 第 1 条）；另开只含包样式的空白页对照一次（A 盲区 10）；shell:parity 包侧两处值差、continuation 8 处与 contrast 同根格归零。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run shell:parity；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> run doc-shell:proof；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；分包：K2 / W1（主力；包内按序 TCRN-DS-SUB-165 → TCRN-DS-SUB-166 → TCRN-DS-SUB-167）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-166",
+      "kind": "Subtask",
+      "parentId": "work:6fd15b4e5366871194d862ab",
+      "title": "运行时换字只跳过品牌字标；zh-CN 变更日志单一来源；语言列表 Esc 不连带关头像菜单",
+      "summary": "K2：运行时换字只跳过品牌字标；zh-CN 变更日志单一来源；语言列表 Esc 不连带关头像菜单、焦点回触发键",
+      "body": "承接：R2-19、R2-20；改动文件：apps/storybook/src/build/client-scripts.ts、apps/storybook/src/build/page-template.tsx、apps/storybook/src/build/locales/storybook-content-text.ts、scripts/lib/locale-invariant-ledger.mjs；依赖：TCRN-DS-SUB-165；判据：147，壳层硬线「品牌资产原样」（R2-19）：跳过范围只认品牌字标（标按钮 `b`、锁定块首行的 `b` 与 `em`，或文档层专用钩子），`[data-locale-invariant]` 只给台账用，锁定块描述行照常换字；AI 契约故事整块换字恢复（28 log:30），品牌字标不再被换成「TCRN 设计系统」，full-surface:proof 退出 0。147（R2-20 页面侧）：zh-CN 的 Change Log 只留一个词典来源「变更日志」；client-scripts 的 docShellLayerScript 在内层语言列表已处理 Esc 时不再关头像菜单，焦点回语言触发键（smoke 的 focus-after-escape 与 internal-alpha 的 localeMenuFocusReturnOk 转绿）。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run full-surface:proof；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof；corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；分包：K2 / W1（主力；包内按序 TCRN-DS-SUB-165 → TCRN-DS-SUB-166 → TCRN-DS-SUB-167）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-167",
+      "kind": "Subtask",
+      "parentId": "work:6fd15b4e5366871194d862ab",
+      "title": "shell-fidelity 漂移与文档层弃用 token：删知识库壳块与重复选择器，演示框改类名",
+      "summary": "K2：删 story-demo-styles 的知识库壳块与 storybook.css 重复选择器，演示框改类名，构建不再报弃用 token",
+      "body": "承接：R2-21；改动文件：apps/storybook/src/story-demo-styles.ts、apps/storybook/src/storybook.css、apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx；依赖：TCRN-DS-SUB-166；判据：147、135-GWT4（06.10 转绿）：删 story-demo-styles.ts 的 `.tcrn-doc-knowledge-shell*` 块与 storybook.css 两条重复选择器，按 build → demo-styles:sync → build 同步；demos 演示框类名按 P10 问题 6③ 改；构建不再出弃用 token 提示；shell:fidelity、tokens:proof 退出 0。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run demo-styles:sync；corepack pnpm@10.12.1 -C <包树> exec node scripts/demo-styles-sync.mjs --check；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run shell:fidelity；corepack pnpm@10.12.1 -C <包树> run tokens:proof；corepack pnpm@10.12.1 -C <包树> run doc-shell:proof；分包：K2 / W1（主力；包内按序 TCRN-DS-SUB-165 → TCRN-DS-SUB-166 → TCRN-DS-SUB-167）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-168",
+      "kind": "Subtask",
+      "parentId": "work:6fd15b4e5366871194d862ab",
+      "title": "文档与 Storybook 门按新家族改期望：parity、smoke、索引当前项、railReachability、文档壳契约、selection-grammar",
+      "summary": "K3：parity 退役样板角色，smoke 比较器、索引当前项与 railReachability 改量新壳，文档壳契约按顶带壳重写",
+      "body": "承接：R2-25；改动文件：scripts/shell-parity-proof.mjs、scripts/storybook-smoke.mjs、scripts/internal-alpha-browser-proof.mjs、scripts/package-contract-manifest.mjs、scripts/selection-grammar-proof.mjs、packages/ui-react/README.md；依赖：无；判据：147、149、150（口径 §3.4 第 1 条）：parity 退役 10 个样板角色、文档侧改读新壳（11 log:5）；smoke 三个 ProductShell 比较器与静态段缺的 8 项按新家族改期望（AOS 两项按占位读，检查不删；17 log:40–48）；internal-alpha 索引页的「当前」认菜单当前分区行（42 页）；railReachability 改量完整菜单（菜单高于视口时目的地仍可达，812×375、1440×900）；package-contract-manifest.mjs 的 storybookDocShellControlContract 按顶带文档壳重写，不再要求 tcrn-doc-header 等四个旧标记（第 239–243、355 行），README 检查跟着现行 prop 面（packages/ui-react/README.md 的 Storybook Shell Control Boundary 一节同步改）；selection-grammar 死分支清掉；判定只在上列范围内改。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run shell:parity；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> run internal-alpha:contracts；corepack pnpm@10.12.1 -C <包树> run selection:proof；corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof；分包：K3 / W1（主力；包内按序 TCRN-DS-SUB-168 → TCRN-DS-SUB-169）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-169",
+      "kind": "Subtask",
+      "parentId": "work:6fd15b4e5366871194d862ab",
+      "title": "browser-proof 三处：放行未截断的 C7 载体，axe 豁免加字标后缀，回执逐页只留失败项并自检体积",
+      "summary": "K3：noHiddenOverflow 放行未截断 C7 载体，axe 豁免加字标后缀，回执逐页只留失败项并自检 < 1,000,000 字节",
+      "body": "承接：R2-26；改动文件：scripts/internal-alpha-browser-proof.mjs；依赖：TCRN-DS-SUB-168；判据：147、146、150（30.02、30.03、30.04 随之转绿）：noHiddenOverflow 对 nowrap + ellipsis 的 C7 载体，未截断（scrollWidth ≤ clientWidth + 1）时放行，截断了仍判红；axe 字标豁免加入 `.tcrn-shell-brand__suffix`（2026-10-11 D2），夜间 TMS 仍标 pending；sidebarNoIconLabelReadbacks 改名为顶带读法，逐页只留失败项与计数，并加回执体积自检（< 1,000,000 字节）；不抬扫描上限（§3.3）。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof；corepack pnpm@10.12.1 -C <包树> run scan；corepack pnpm@10.12.1 -C <包树> exec node scripts/internal-alpha-hardening-proof.mjs；分包：K3 / W1（主力；包内按序 TCRN-DS-SUB-168 → TCRN-DS-SUB-169）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-170",
+      "kind": "Subtask",
+      "parentId": "work:6fd15b4e5366871194d862ab",
+      "title": "页模板改按段首标记切壳层段",
+      "summary": "K5：页模板改按段首标记切壳层段，标记缺失或重复即构建报错，比对副本读数不回退",
+      "body": "承接：R2-18；改动文件：apps/storybook/src/build/page-template.tsx；依赖：TCRN-DS-SUB-165、TCRN-DS-SUB-145；判据：147、149（R2-18 后半）：page-template.tsx 不再按 `\\n.tcrn-shell-brand {` 找段，改按 SUB-145 的段首标记（C-8 定死的字面）切段；标记缺失或出现多次时构建报错（同现有 doc_shell_package_css_segments_moved 写法）；SUB-165 的读数不回退。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run shell:parity；corepack pnpm@10.12.1 -C <包树> run doc-shell:proof；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；分包：K5 / W2（主力；包内按序 TCRN-DS-SUB-170 → TCRN-DS-SUB-151 → TCRN-DS-SUB-160）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-171",
+      "kind": "Subtask",
+      "parentId": "work:6fd15b4e5366871194d862ab",
+      "title": "story-content.tsx 的读回文字改顶带壳与两主题同色说法",
+      "summary": "K8：story-content 的 ProductShell spec、AOS 读回与侧栏治理行改顶带壳与两主题同色说法，五语补齐",
+      "body": "承接：R2-29；改动文件：apps/storybook/src/contract-stories/story-content.tsx、apps/storybook/src/build/locales/storybook-content-text.ts；依赖：TCRN-DS-SUB-175、TCRN-DS-SUB-168；判据：147、150、145-GWT3（R2-29 的 story-content 部分）：story-content.tsx 里的读回文字（ProductShell spec、AOS 壳读回、第 1674 行起的 Product SideNav collapse 治理行；以 grep 核实）改成顶带壳与「两主题同色、D7 待裁」的说法，五语补齐；保留 SUB-160 加的 AOS 占位说明；这些读回里不再出现 #7aa0f5、侧栏、260 / 360 搜索的旧说法。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan；corepack pnpm@10.12.1 -C <包树> run public:naming:proof；分包：K8 / W3（经济；包内按序 TCRN-DS-SUB-153 → TCRN-DS-SUB-172 → TCRN-DS-SUB-157 → TCRN-DS-SUB-175 → TCRN-DS-SUB-171）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-172",
+      "kind": "Subtask",
+      "parentId": "work:bad748579e7b1b7f0773bd53",
+      "title": "visual-standard/canvas.json 的板高与后续各板 y",
+      "summary": "K8：按 P11 问题 2 建议值改 visual-standard/canvas.json 的板高与后续各板 y，列入待发布清单",
+      "body": "承接：R2-32；改动文件：docs/design/visual-standard/canvas.json；依赖：TCRN-DS-SUB-153；判据：148 符合性：按 P11 问题 2 给的建议值改 `docs/design/visual-standard/canvas.json` 的 h 与后续各板 y，与 heights.json（含 SUB-153 之后的值）一致；放进待发布清单。；局部门：corepack pnpm@10.12.1 -C <包树> exec node --test tests/storybook-visual-proof.test.mjs；分包：K8 / W3（经济；包内按序 TCRN-DS-SUB-153 → TCRN-DS-SUB-172 → TCRN-DS-SUB-157 → TCRN-DS-SUB-175 → TCRN-DS-SUB-171）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-173",
+      "kind": "Subtask",
+      "parentId": "work:bad748579e7b1b7f0773bd53",
+      "title": "apps/storybook 单测与样板五语文案改顶带壳",
+      "summary": "K12：smoke.test 的 rail、TopBar、oracle 与旧文档头断言改新壳，六样板五语标题与描述改顶带壳，测试全绿",
+      "body": "承接：R2-35；改动文件：apps/storybook/src/smoke.test.ts、apps/storybook/src/build/locales/storybook-locale-text.ts、apps/storybook/src/contract-stories/gplus/sample-stories.tsx、apps/storybook/src/build/locales/storybook-content-text.ts、scripts/lib/locale-invariant-ledger.mjs；依赖：TCRN-DS-SUB-168、TCRN-DS-SUB-160、TCRN-DS-SUB-150、TCRN-DS-SUB-176、TCRN-DS-SUB-161；判据：148、147、150（05 test 转绿）：smoke.test.ts 里构图一的 rail 与构图三的 TopBar 断言按 P14 问题 2 改；oracle 断言改为 0、0、0、52、936、936、999；旧文档头、旧 SideNav 与知识库原型的断言改成新壳；ts-m-s 的期望跟 SUB-160；六个样板的五语标题与描述改为顶带壳，gplusSampleStoryText 一起改；补 K11 交回里的「待补五语键」（C-10）；先 build 再跑 storybook 包测试，全绿。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；corepack pnpm@10.12.1 -C <包树> run test；corepack pnpm@10.12.1 -C <包树> run public:naming:proof；corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan；分包：K12 / W5（经济；包内按序 TCRN-DS-SUB-173 → TCRN-DS-SUB-177）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-174",
+      "kind": "Subtask",
+      "parentId": "work:854cd021e8bb869b2b585fe0",
+      "title": "壳层门读法与判定补齐：contrast 豁免格只列不比并补三类读法，pinJitter、prail 与 css-template 正则",
+      "summary": "K7：contrast 豁免格只列不比并补三类读法，pinJitter 认 nav-item-row，新增 prail 判定与变异，css-template 正则放宽",
+      "body": "承接：R2-27；改动文件：scripts/lib/shell-measure.mjs、scripts/shell-measure-proof.mjs、tests/shell-measure-proof.test.mjs、tests/fixtures/geometry-measure/shell/**、scripts/css-template-integrity-proof.mjs；依赖：无；判据：142-GWT1、149-GWT1、148（rail）、137-GWT5（口径 §3.4 第 1、10 条）：contrast 对 07a B 段标「按设计不读 / 不进门」的格只列不比，补彩色标、面板对画布、遮罩下的纸三类读法；pinJitter 用 `.tcrn-nav-item-row` 找图钉，变异同时撤掉保留轨道，夹具自检证明它会判红；新增 prail 判定（菜单引导列图标在 16、文字在 48，口径同 measure-shell.js 的 o.prail），配一条会判红的变异，第一批 rail 从此改量菜单引导列（映射说明 I16-P24 与清单第 202 行由此成立）；css-template-integrity 两条正则放宽为 `[a-z]+(?:-[a-z]+)*\\.css\\.ts` 与 `[a-z]+(?:[A-Z][a-z]*)*Css\\d+`（P5 问题 4），shellIntroCss01、shellSheetCss01 纳入登记检查；`--fixtures` 与单测退出 0。；局部门：corepack pnpm@10.12.1 -C <包树> exec node --test tests/shell-measure-proof.test.mjs；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs --fixtures；corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs；corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs；分包：K7 / W2（主力；包内按序 TCRN-DS-SUB-174）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-175",
+      "kind": "Subtask",
+      "parentId": "work:854cd021e8bb869b2b585fe0",
+      "title": "shell-matrix 的高度、台账与所属页治理元数据",
+      "summary": "K8：shell-matrix 两块并排桌面高 ≤ 2000，否则进 grace 带 owedTo；台账 9 条改现测值，补所属页治理元数据",
+      "body": "承接：R2-34；改动文件：scripts/lib/story-budget.mjs、apps/storybook/src/contract-stories/gplus/matrix-renderer.tsx、apps/storybook/src/contract-stories/governance.ts；依赖：TCRN-DS-SUB-157；判据：149：shell-matrix 两块并排（id 不变），桌面高 ≤ 2000，做不到就进 grace allowlist 并带 owedTo；9 条 recordedHeightPx 改为现测值；补上所属页的治理元数据（smoke 静态段缺 `owning-page-story-governance-metadata:Components:shell-matrix`，17 log:48；落点以 grep 核实），storybook:smoke 该项转绿。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run storybook:smoke；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；分包：K8 / W3（经济；包内按序 TCRN-DS-SUB-153 → TCRN-DS-SUB-172 → TCRN-DS-SUB-157 → TCRN-DS-SUB-175 → TCRN-DS-SUB-171）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-176",
+      "kind": "Subtask",
+      "parentId": "work:b140305693da159bfdc615c8",
+      "title": "契约文字、oracle、content rows、台账与 #7aa0f5 残留改顶带壳与两主题同色说法",
+      "summary": "K9：契约文字、oracle 两段、content rows、CHANGELOG 与 README 改顶带壳与两主题同色说法，五语补齐，台账按新值登记",
+      "body": "承接：R2-29；改动文件：apps/storybook/src/build/ai-consumption-contract.ts、apps/storybook/src/build/foundation-visual-standards.ts、apps/storybook/src/contract-stories/content/component-rows.ts、apps/storybook/src/contract-stories/content/navigation-rows.ts、apps/storybook/src/build/locales/storybook-content-text.ts、scripts/lib/locale-invariant-ledger.mjs、CHANGELOG.md、packages/ui-tokens/README.md、docs/migration-4.0.md；依赖：TCRN-DS-SUB-168、TCRN-DS-SUB-171；判据：147、150、145-GWT3（R2-29 其余）：改成顶带壳与「两主题同色、D7 待裁」的说法并补齐五语——ai-consumption-contract.ts 第 1039、1046 行，visualFitControlContract.search 的 260 / 360，brandSurfaceDisposition 的 #7aa0f5；oracle（foundation-visual-standards.ts）的 metricSourceDisposition、metricRevisionDisposition 两段；content rows（component-rows.ts、navigation-rows.ts）里的 SideNav、TopBar、ProductSwitcher、SegmentedNav 行；CHANGELOG.md 第 164 行、迁移说明里的 #7aa0f5 残留、ui-tokens README；oracle 数值渲染时不带英文单位，或在泄漏台账按新值登记（30.02 log:42）；ai-consumption-contract.ts 里的旧文档壳标记字样随之删除，internal-alpha:contracts 仍退出 0（SUB-168 已重写检查）。；局部门：corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run internal-alpha:contracts；corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof；corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test；corepack pnpm@10.12.1 -C <包树> run scaffold:proof；corepack pnpm@10.12.1 -C <包树> run readme:proof；corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan；corepack pnpm@10.12.1 -C <包树> run public:naming:proof；分包：K9 / W4（经济；包内按序 TCRN-DS-SUB-176 → TCRN-DS-SUB-158）"
+    },
+    {
+      "verb": "work-create",
+      "projectId": "project:ba2f70f9503ac43c3ec6aa36",
+      "externalKey": "TCRN-DS-SUB-177",
+      "kind": "Subtask",
+      "parentId": "work:b140305693da159bfdc615c8",
+      "title": "批末生成物一次再生，验收清单同步",
+      "summary": "K12：字体子集补码点，视觉签名按选择重收，几何与回执等生成物同批再生，验收清单补长字标、3.07 与待目视项",
+      "body": "承接：R2-36；改动文件：packages/ui-tokens/fonts/**、packages/ui-tokens/licenses/**、docs/verification/**、docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md、docs/migration-4.0.md；依赖：TCRN-DS-SUB-173、TCRN-DS-SUB-161、TCRN-DS-SUB-158、TCRN-DS-SUB-156（SUB-173 是本包上一张，其余三张是 W4 三个包的末张，即其余各单全部合入）；判据：150（SUB-139、SUB-140 的收尾）、135-GWT4：其余各单合入后，在同一构建上依次做——① 跑 fonts:vendor，补上 U+94DB 与新文案用到的码点，fonts:proof、fonts:render 退出 0（连不上 npm registry 就记问题，改用子集里已有的字）；② nonVisualProofOk 为真后，按 P15 问题 2 写选择文件，重收视觉签名（回归 199 条、新增 15 条），逐条列变化，只收换壳带来的变化；③ 其余生成物同批再生：几何、壳层门报告、映射、契约与 API 清单、internal-alpha 回执；④ owner-acceptance.md 改第 178、202 两行，补上差距（长字标、夜间后缀 3.07、铃铛 6% 待目视、拖排待目视），G-6 改记「已按板改，待目视」。做完交主线程跑批末 verify。；局部门：corepack pnpm@10.12.1 -C <包树> run fonts:vendor；corepack pnpm@10.12.1 -C <包树> run fonts:proof；corepack pnpm@10.12.1 -C <包树> run fonts:render；corepack pnpm@10.12.1 -C <包树> run build；corepack pnpm@10.12.1 -C <包树> run storybook:build；corepack pnpm@10.12.1 -C <包树> run tokens:proof；corepack pnpm@10.12.1 -C <包树> run pack:smoke；corepack pnpm@10.12.1 -C <包树> run geometry:proof；corepack pnpm@10.12.1 -C <包树> run geometry:measure；corepack pnpm@10.12.1 -C <包树> run storybook:visual-proof；corepack pnpm@10.12.1 -C <包树> run doc-shell:proof；corepack pnpm@10.12.1 -C <包树> run internal-alpha:contracts；corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof；corepack pnpm@10.12.1 -C <包树> run scan；分包：K12 / W5（经济；包内按序 TCRN-DS-SUB-173 → TCRN-DS-SUB-177）"
+    }
+  ]
+}
