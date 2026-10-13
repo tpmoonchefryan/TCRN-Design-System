@@ -42,7 +42,6 @@
   --tcrn-color-chrome: rgba(239,238,234,.82);
   --tcrn-color-surface: var(--tcrn-color-bg);
   --tcrn-focus-ring: 0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-acc);
-  --tcrn-brand-suffix-tms: #2c63c8;
   --tcrn-color-text-primary: var(--tcrn-color-ink);
   --tcrn-color-text-secondary: var(--tcrn-color-ink-2);
   --tcrn-color-text-muted: var(--tcrn-color-ink-3);
@@ -139,6 +138,7 @@
   --tcrn-shell-row-h: 32px;
   --tcrn-shell-srch-h: 40px;
   --tcrn-shell-pinb: 24px;
+  --tcrn-brand-suffix-tms: #2c63c8;
   --tcrn-brand-suffix-einzbern: #3b5272;
   --tcrn-brand-suffix-mana-orchestrate: #3a9a63;
   --tcrn-brand-suffix-design-system: #6577f3;
@@ -275,7 +275,6 @@
   --tcrn-color-chrome: rgba(18,18,16,.82);
   --tcrn-color-surface: var(--tcrn-color-bg);
   --tcrn-focus-ring: 0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-acc);
-  --tcrn-brand-suffix-tms: #7aa0f5;
   --tcrn-color-text-primary: var(--tcrn-color-ink);
   --tcrn-color-text-secondary: var(--tcrn-color-ink-2);
   --tcrn-color-text-muted: var(--tcrn-color-ink-3);

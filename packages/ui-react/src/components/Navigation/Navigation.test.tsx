@@ -35,7 +35,7 @@ import {
   type ShellThemeMode
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
-import { createTokenMap } from "@tcrn/ui-tokens";
+import { createResolvedTokenMap, createTokenMap } from "@tcrn/ui-tokens";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
 
 test("tabs use honest segmented navigation semantics", () => {
@@ -705,9 +705,10 @@ test("brand lockup css follows the G+ brand rules", () => {
   };
 
   // STORY-127 GWT3: TCRN is ink; the TMS and design-system suffixes are the products'
-  // deep colours from the brand-suffix tokens (by night the TMS token takes its mark's
-  // bright colour, O-3; the light values are read below). Gradient text is retired, and
-  // so is the workflow suffix.
+  // deep colours from the brand-suffix tokens, the same in both themes (STORY-145 GWT3,
+  // MIN-20261013-SHELL D2: the O-3 night value of the TMS suffix is withdrawn; its night
+  // contrast is a known red that D7 leaves to the Owner). Gradient text is retired, and so
+  // is the workflow suffix.
   assert.match(rule(".tcrn-brand-wordmark"), /color: var\(--tcrn-color-ink\);/);
   assert.match(rule(".tcrn-brand-wordmark__suffix"), /color: var\(--tcrn-color-ink\);/);
   assert.match(rule(".tcrn-product-logo__line-one"), /color: var\(--tcrn-color-ink\);/);
@@ -721,6 +722,9 @@ test("brand lockup css follows the G+ brand rules", () => {
   const tokens = createTokenMap();
   assert.equal(tokens["--tcrn-brand-suffix-tms"], "#2c63c8");
   assert.equal(tokens["--tcrn-brand-suffix-design-system"], "#6577f3");
+  const night = createResolvedTokenMap("dark");
+  assert.equal(night["--tcrn-brand-suffix-tms"], "#2c63c8", "by night the TMS suffix reads the same approved colour");
+  assert.equal(night["--tcrn-brand-suffix-design-system"], "#6577f3");
   assert.equal(tcrnProductMarks.find((mark) => mark.productId === "tms")?.palette.deep, "#2c63c8");
   assert.equal(tcrnProductMarks.find((mark) => mark.productId === "design-system")?.palette.deep, "#6577f3");
 

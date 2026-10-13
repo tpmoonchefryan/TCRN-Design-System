@@ -64,14 +64,23 @@ export const CONTRAST_PAIRS = Object.freeze([
 
 const RULING = "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour)";
 const SOURCE = "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype)";
+const NIGHT_RULING = `${RULING}; TCRN-DS-MIN-20261013-SHELL D2 (the TMS suffix keeps the approved colour, its mark's deep step, in both themes)`;
+const NIGHT_SOURCE = `${SOURCE}; docs/design/visual-standard/boards/Shell.dc.html section B (the TMS suffix row: by night below 4.5 on the paper and the canvas)`;
+const NIGHT_PENDING =
+  "known red, pending the Owner: TCRN-DS-MIN-20261013-SHELL D7 keeps the approved colour by night and rules the night value together with INIT-015 closure S-6 (suggested: the mark's bright step)";
 /**
  * Wordmark pairs below 4.5 that the rulings exempt, one entry per theme and surface. The two
- * night TMS entries are gone: O-3 gives the TMS suffix its mark's bright colour by night, which
- * passes on bg and panel (TCRN-DS-SUB-088).
+ * night TMS entries are back (TCRN-DS-SUB-128): MIN-20261013-SHELL D2 keeps the TMS suffix at its
+ * mark's deep colour in both themes and withdraws the O-3 night value (TCRN-DS-SUB-088), so by
+ * night the suffix is below 4.5 on the paper and on the canvas. D7 records that as a known red
+ * until the Owner rules the night colour with INIT-015 closure S-6; the `pending` note carries it
+ * into the report and into the axe run that reads this register.
  */
 export const WORDMARK_EXEMPTIONS = Object.freeze([
   Object.freeze({ theme: "light", fg: "--tcrn-brand-suffix-design-system", on: color("panel"), ruling: RULING, source: SOURCE }),
-  Object.freeze({ theme: "light", fg: "--tcrn-brand-suffix-design-system", on: color("bg"), ruling: RULING, source: SOURCE })
+  Object.freeze({ theme: "light", fg: "--tcrn-brand-suffix-design-system", on: color("bg"), ruling: RULING, source: SOURCE }),
+  Object.freeze({ theme: "dark", fg: "--tcrn-brand-suffix-tms", on: color("panel"), ruling: NIGHT_RULING, source: NIGHT_SOURCE, pending: NIGHT_PENDING }),
+  Object.freeze({ theme: "dark", fg: "--tcrn-brand-suffix-tms", on: color("bg"), ruling: NIGHT_RULING, source: NIGHT_SOURCE, pending: NIGHT_PENDING })
 ]);
 
 const short = (variable) => variable.replace(/^--tcrn-color-/, "").replace(/^--tcrn-/, "");
