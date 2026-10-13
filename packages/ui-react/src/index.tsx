@@ -85,6 +85,7 @@ export const componentLibraryPublicComponentNames = [
   "ProductLogo",
   "ProductLockup",
   "ShellBrandLockup",
+  "ShellBrandButton",
   "ShellThemeToggle",
   "ShellLocaleMenu",
   "SideNavCollapseButton",
