@@ -479,7 +479,7 @@ test("STORY-140 GWT2 product shell renders one shell: the band, the cluster and 
   assert.match(html, /class="tcrn-shell-bell__dot" aria-hidden="true"/);
   assert.match(html, /aria-label="Lin Xiao · Account, switch product, theme and language" aria-haspopup="dialog" aria-expanded="false"/);
   assert.match(html, /<span aria-hidden="true">L<\/span>/);
-  assert.match(html, /<div class="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper"><section id="product-shell-content" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Product shell workspace">/);
+  assert.match(html, /<div class="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper"><section id="product-shell-content" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Product shell workspace" tabindex="0">/);
   assert.match(html, /Fixture-safe roster content/);
   // One shell: no side rail, no collapse control, no drawer toggle, no top bar; closed layers render nothing.
   for (const retired of [
@@ -514,7 +514,7 @@ test("STORY-146 GWT1 the page header is required and is the paper's first row", 
   // The paper holds the content region, and the page header opens it, before the page.
   assert.match(
     html,
-    /<div class="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper"><section id="product-shell-content" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Product shell workspace"><header class="tcrn-page-header tcrn-page-header--compact" data-pattern="page-header"/
+    /<div class="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper"><section id="product-shell-content" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Product shell workspace" tabindex="0"><header class="tcrn-page-header tcrn-page-header--compact" data-pattern="page-header"/
   );
   assert.equal(html.match(/data-pattern="page-header"/g)?.length, 1, "one page header");
   assert.ok(html.indexOf('data-pattern="page-header"') < html.indexOf("Fixture-safe roster content"), "the header comes before the page");
@@ -2077,4 +2077,62 @@ test("the shell layer of the package sheet starts at one stable marker, before i
     assert.ok(where + segment.length > at && (where >= at || segment.includes(marker)), "the segment starts at or after the marker");
   }
   assert.ok(String(shellSegments.shellCss01).startsWith(`\n${marker}\n.tcrn-shell-brand {`), "the marker opens the first shell segment");
+});
+
+test("STORY-140 the paper's scrolling region takes focus, and the bell's hover is the 6% wash of the 07a board (TCRN-DS-SUB-146)", () => {
+  // R2-8: the paper scrolls inside the content region, so it is focusable to be scrolled by
+  // keyboard (axe scrollable-region-focusable); it keeps its name, and the shell's focus-visible
+  // rule draws its ring (no rule of its own).
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      contentLabel="Roster workspace"
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  assert.match(html, /<section id="[^"]+" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Roster workspace" tabindex="0">/);
+  const focusRule = /\n\.tcrn-product-shell :focus-visible:not\(([^)]*)\) \{([^}]*)\}/.exec(tcrnComponentCss);
+  assert.ok(focusRule, "the shell's focus-visible rule");
+  assert.doesNotMatch(focusRule[1], /tcrn-product-shell__main/, "the region is not left out of it");
+  assert.match(focusRule[2], /box-shadow: var\(--tcrn-focus-ring\);/);
+
+  // R2-10: hover switches the bell to its hover pair, whose fill is the 6% ink wash; the state rule
+  // writes no colour. On the canvas the ink reads 13.97 by day and 13.17 at night, the board's figures.
+  const bell = /\n\.tcrn-shell-bell \{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
+  assert.match(bell, /--tcrn-pair-fill-h: var\(--tcrn-color-wash\);/);
+  const hover = /\n\.tcrn-shell-bell:where\(:hover, \[data-tcrn-preview-state="hover"\]\) \{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
+  assert.deepEqual(hover.trim().split("\n").map((line) => line.trim()), [
+    "--tcrn-pair-fill: var(--tcrn-pair-fill-h);",
+    "--tcrn-pair-ink: var(--tcrn-pair-ink-h);",
+    "--tcrn-pair-edge: var(--tcrn-pair-edge-h);"
+  ]);
+  const channels = (text: string) => {
+    const hex = /^#([0-9a-f]{6})$/i.exec(text);
+    if (hex) return [0, 2, 4].map((i) => Number.parseInt(hex[1].slice(i, i + 2), 16)).concat(1);
+    const rgba = /^rgba\((\d+),(\d+),(\d+),([\d.]+)\)$/.exec(text.replace(/\s+/g, ""));
+    assert.ok(rgba, `colour ${text}`);
+    return [Number(rgba[1]), Number(rgba[2]), Number(rgba[3]), Number(rgba[4])];
+  };
+  const luminance = ([r, g, b]: number[]) => {
+    const linear = (value: number) => (value / 255 <= 0.03928 ? value / 255 / 12.92 : ((value / 255 + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
+  };
+  const inkOnWash = (theme: "light" | "dark") => {
+    const tokens = createResolvedTokenMap(theme);
+    const [br, bg, bb] = channels(tokens["--tcrn-color-bg"]);
+    const [wr, wg, wb, wa] = channels(tokens["--tcrn-color-wash"]);
+    const fill = [wr * wa + br * (1 - wa), wg * wa + bg * (1 - wa), wb * wa + bb * (1 - wa)];
+    const [high, low] = [luminance(fill), luminance(channels(tokens["--tcrn-color-ink"]))].sort((a, b) => b - a);
+    return ((high + 0.05) / (low + 0.05)).toFixed(2);
+  };
+  assert.equal(inkOnWash("light"), "13.97");
+  assert.equal(inkOnWash("dark"), "13.17");
 });

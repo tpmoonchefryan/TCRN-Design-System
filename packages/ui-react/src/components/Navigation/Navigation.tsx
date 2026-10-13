@@ -2278,7 +2278,10 @@ export function ProductShell({
         ) : null
       )}
       <div className="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper">
-        <ContentElement id={contentId} className="tcrn-product-shell__main" data-product-shell-region="content" aria-label={resolvedContentLabel}>
+        {/* The paper scrolls inside this region, so it takes keyboard focus to be scrolled
+            (axe scrollable-region-focusable; TCRN-DS-SUB-146); its name is the aria-label and
+            its focus ring the shell's focus-visible rule. */}
+        <ContentElement id={contentId} className="tcrn-product-shell__main" data-product-shell-region="content" aria-label={resolvedContentLabel} tabIndex={0}>
           <PageHeader {...pageHeader} breadcrumbs={pageHeader.breadcrumbs ?? currentTrail} locale={pageHeader.locale ?? currentLocale} />
           {children}
         </ContentElement>

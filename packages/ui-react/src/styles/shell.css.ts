@@ -713,8 +713,9 @@ export const shellCss04 = `
 // pinned items and the top-right cluster in one flex row centred on the band's midline (26), with
 // space-3 at both ends, so the brand button's start edge, the paper's and the full menu's are one
 // line and the cluster's end edge is the paper's. The cluster: the product's own controls, the
-// bell (control-height-md, the 3.5% wash on hover, the unread dot in the danger red on a band
-// ring) and the avatar (control-height-sm, a circle in the avatar pair with a hairline edge,
+// bell (control-height-md, the 6% wash on hover as the 07a board's section B draws it, the
+// unread dot in the danger red on a band ring) and the avatar (control-height-sm, a circle in
+// the avatar pair with a hairline edge,
 // caption size at weight 500), space-1h apart. The avatar menu hangs from the avatar at the menu
 // hand-off gap, end edges aligned, the drop-down width wide: paper with the s3 shadow, radius 12,
 // inset space-1h. The paper is space-3 from the shell's sides and bottom with the paper radius and
@@ -764,7 +765,7 @@ export const shellCss05 = `
   --tcrn-pair-fill-d: transparent;
   --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
   --tcrn-pair-edge-d: 0 0 #0000;
-  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-fill-h: var(--tcrn-color-wash);
   --tcrn-pair-ink-h: var(--tcrn-color-ink);
   --tcrn-pair-edge-h: 0 0 #0000;
   --tcrn-pair-edge-f: var(--tcrn-focus-ring);
