@@ -88,7 +88,10 @@ if (!mobileHeaderLayerSelfCheck.ok) {
 // colour. The pairs themselves stay with the token gate. A suffix drawn in any other colour is not
 // exempt, and the tagline and the shell lockup caption (ink-3) stay outside the exemption (R1 judgment
 // §3 O-2), so they still count.
-const AXE_WORDMARK_SUFFIX_SELECTORS = Object.freeze([".tcrn-brand-wordmark__suffix", ".tcrn-product-logo__line-one-suffix"]);
+// TCRN-DS-SUB-169 (2026-10-11 D2, judgment §3.4 item 1): the top band's brand button draws the same
+// wordmark suffix in its own element, .tcrn-shell-brand__suffix, so that selector joins the two. The
+// register is unchanged: the dark TMS suffix stays registered as pending (O-8), not ruled.
+const AXE_WORDMARK_SUFFIX_SELECTORS = Object.freeze([".tcrn-brand-wordmark__suffix", ".tcrn-product-logo__line-one-suffix", ".tcrn-shell-brand__suffix"]);
 const axeWordmarkContrastExemption = Object.freeze({
   rule: "color-contrast",
   selectors: AXE_WORDMARK_SUFFIX_SELECTORS,
@@ -558,7 +561,11 @@ async function collectPageHealth(page) {
       window.tcrnDocShellLayers?.setMenu(true);
       await new Promise((resolve) => setTimeout(resolve, 120));
     }
-    const sidebarNoIconLabelReadbacks = window.innerWidth >= 900
+    // TCRN-DS-SUB-169: the top band's reading of the label rule the former side rail held (a label
+    // without an icon stays readable) is the open full menu's rows. Each page keeps only the rows
+    // that fail and the count it read, which keeps browser-proof-summary.json under the scan's
+    // 1,000,000-byte limit (it carried every row of every page before, 360 KB of 1,080,003).
+    const menuRowLabelReadbacks = window.innerWidth >= 900
       ? Array.from(navRoot.querySelectorAll("a[data-shell-row]"))
 	        .map((item) => {
 	          const label = item;
@@ -598,7 +605,7 @@ async function collectPageHealth(page) {
     if (window.innerWidth >= 900 && menuWasHidden) {
       window.tcrnDocShellLayers?.setMenu(false);
     }
-    const sidebarNoIconLabelReadabilityFailures = sidebarNoIconLabelReadbacks.filter((item) => !item.ok);
+    const menuRowLabelReadabilityFailures = menuRowLabelReadbacks.filter((item) => !item.ok);
     // Each category row is expected to carry its description (aria-describedby), as the former category toggles did.
     const categoryAriaFailures = categoryGroups
       .filter((node) => {
@@ -645,8 +652,8 @@ async function collectPageHealth(page) {
       currentMenuRowPages,
       activeStoryHiddenByCategory: false,
       categoryAriaFailures,
-      sidebarNoIconLabelReadbacks,
-      sidebarNoIconLabelReadabilityFailures,
+      menuRowLabelCount: menuRowLabelReadbacks.length,
+      menuRowLabelReadabilityFailures,
       // The page's stories listed in its contents rail (links to a story on this page).
       docNavItemCount: Array.from(docToc?.querySelectorAll("a[href^='#']") ?? [])
         .filter((link) => document.querySelector(`[data-contract-story-id='${CSS.escape((link.getAttribute("href") ?? "").slice(1))}']`))
@@ -1064,11 +1071,11 @@ const browserProofEnvironmentNormalizationContract = {
     "summaries[].storyRegions[].height",
     "summaries[].referenceRegions[].width",
     "summaries[].referenceRegions[].height",
-    "summaries[].sidebarNoIconLabelReadbacks[].itemWidth",
-    "summaries[].sidebarNoIconLabelReadbacks[].labelWidth",
-    "summaries[].sidebarNoIconLabelReadbacks[].labelHeight",
-    "summaries[].sidebarNoIconLabelReadbacks[].lineHeight",
-    "summaries[].sidebarNoIconLabelReadbacks[].lineCount"
+    "summaries[].menuRowLabelReadabilityFailures[].itemWidth",
+    "summaries[].menuRowLabelReadabilityFailures[].labelWidth",
+    "summaries[].menuRowLabelReadabilityFailures[].labelHeight",
+    "summaries[].menuRowLabelReadabilityFailures[].lineHeight",
+    "summaries[].menuRowLabelReadabilityFailures[].lineCount"
   ],
   retainedMeasurementPolicy: "configured viewport names remain; absolute layout measurements stay in the live story-budget evaluator and are not used as committed browser-summary baselines",
   tolerancePolicy: "no undeclared pixel tolerance; renderer-dependent absolute pixels are omitted rather than rounded"
@@ -1090,14 +1097,14 @@ function normalizeBrowserProofSummaryForCommit(summary) {
         viewportWidth,
         storyRegions,
         referenceRegions,
-        sidebarNoIconLabelReadbacks,
+        menuRowLabelReadabilityFailures,
         ...stableEntry
       } = entry;
       return {
         ...stableEntry,
         storyRegions: (storyRegions ?? []).map(({ id, visible }) => ({ id, visible })),
         referenceRegions: (referenceRegions ?? []).map(({ id, visible }) => ({ id, visible })),
-        sidebarNoIconLabelReadbacks: (sidebarNoIconLabelReadbacks ?? []).map((readback) => {
+        menuRowLabelReadabilityFailures: (menuRowLabelReadabilityFailures ?? []).map((readback) => {
           const {
             itemWidth,
             labelWidth,
@@ -1129,9 +1136,9 @@ function findBrowserProofEnvironmentFieldLeaks(summary) {
         if (Object.prototype.hasOwnProperty.call(region, field)) hits.push(`summaries[${summaryIndex}].referenceRegions[${regionIndex}].${field}`);
       }
     }
-    for (const [readbackIndex, readback] of (entry.sidebarNoIconLabelReadbacks ?? []).entries()) {
+    for (const [readbackIndex, readback] of (entry.menuRowLabelReadabilityFailures ?? []).entries()) {
       for (const field of ["itemWidth", "labelWidth", "labelHeight", "lineHeight", "lineCount"]) {
-        if (Object.prototype.hasOwnProperty.call(readback, field)) hits.push(`summaries[${summaryIndex}].sidebarNoIconLabelReadbacks[${readbackIndex}].${field}`);
+        if (Object.prototype.hasOwnProperty.call(readback, field)) hits.push(`summaries[${summaryIndex}].menuRowLabelReadabilityFailures[${readbackIndex}].${field}`);
       }
     }
   });
@@ -1656,8 +1663,9 @@ for (const route of firstStoryHashShellParityRoutes) {
       searchFitFailures.push("search-track-missing");
     }
     if (searchInputGridStyles?.display !== "grid") searchFitFailures.push(`display:${searchInputGridStyles?.display ?? "missing"}`);
-    // The rows of the open full menu stand in for the former side rail's labels.
-    const sidebarNoIconLabelReadbacks = window.innerWidth >= 900
+    // The rows of the open full menu are the top band's reading of the former side rail's labels
+    // (TCRN-DS-SUB-169); the route readback keeps the failing rows and the count, as the pages do.
+    const menuRowLabelReadbacks = window.innerWidth >= 900
       ? Array.from(storybookNav?.querySelectorAll("a[data-shell-row]") ?? [])
         .map((item) => {
           const label = item;
@@ -1704,8 +1712,8 @@ for (const route of firstStoryHashShellParityRoutes) {
       searchShortcut,
       searchInputGridStyles,
       searchFitFailures,
-      sidebarNoIconLabelReadbacks,
-      sidebarNoIconLabelReadabilityFailures: sidebarNoIconLabelReadbacks.filter((item) => !item.ok)
+      menuRowLabelCount: menuRowLabelReadbacks.length,
+      menuRowLabelReadabilityFailures: menuRowLabelReadbacks.filter((item) => !item.ok)
     };
   });
   const accountMetrics = await readOpenLayer("setAccount", () => {
@@ -3410,13 +3418,27 @@ for (const proofCase of settingsLayoutProofCases) {
       const nestedContent = nestedLayout?.querySelector("[data-settings-content='true']");
       const nestedRows = Array.from(nestedLayout?.querySelectorAll("[data-setting-row='true']") ?? []);
       const descendants = Array.from(layout?.querySelectorAll("*") ?? []);
+      // TCRN-DS-SUB-169 (judgment §3.4 item 1): a C7 single-line carrier (nowrap with an ellipsis,
+      // the tab labels of the settings layout among them) clips on purpose so it can draw its
+      // ellipsis. While its text fits it conceals nothing, so it passes untruncated (scrollWidth
+      // within clientWidth + 1) and stays red the moment it truncates. Any other hidden overflow
+      // is red as before.
+      const c7Carriers = { untruncated: 0, truncated: [] };
       const noHiddenOverflow = descendants.every((node) => {
         // G+ Inputs draw the Select chevron and the DatePicker calendar as Icon SVGs
         // (TCRN-DS-SUB-021, icons.json). An SVG's user-agent overflow: hidden clips only its
         // own graphic to its viewport; it conceals no label, control box or tool.
         if (node instanceof SVGElement) return true;
         const style = getComputedStyle(node);
-        return style.overflowX !== "hidden" && style.overflowY !== "hidden";
+        if (style.overflowX !== "hidden" && style.overflowY !== "hidden") return true;
+        const singleLine = style.whiteSpace === "nowrap" || style.textWrapMode === "nowrap";
+        if (!singleLine || style.textOverflow !== "ellipsis") return false;
+        if (node.scrollWidth <= node.clientWidth + 1) {
+          c7Carriers.untruncated += 1;
+          return true;
+        }
+        c7Carriers.truncated.push(`${node.tagName.toLowerCase()}.${String(node.className).split(/\s+/u)[0]}:${node.scrollWidth}>${node.clientWidth}`);
+        return false;
       });
       const rowsFit = rows.length === 3 && rows.every((row) => row.scrollWidth <= row.clientWidth + 1);
       const nestedRowsFit = nestedRows.length === 3 && nestedRows.every((row) => row.scrollWidth <= row.clientWidth + 1);
@@ -3440,6 +3462,7 @@ for (const proofCase of settingsLayoutProofCases) {
         rowsFit,
         longValueComplete,
         noHiddenOverflow,
+        c7Carriers,
         nested: {
           frameMode: nestedSplitGrid ? "split" : "single",
           frameThresholdMatch: (nestedFrameWidth >= 960) === nestedSplitGrid,
@@ -3566,6 +3589,7 @@ for (const proofCase of settingsLayoutProofCases) {
       rowsFit: readback.rowsFit,
       longValueComplete: readback.longValueComplete,
       noHiddenOverflow: readback.noHiddenOverflow,
+      c7Carriers: readback.c7Carriers,
       siblingTracks: stableSettingsTrackResult(tracks),
       nested: {
         ...readback.nested,
@@ -3702,7 +3726,7 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     && summary.docNavOpenCategoryCount >= 1
     && !summary.activeStoryHiddenByCategory
     && summary.categoryAriaFailures.length === 0
-    && summary.sidebarNoIconLabelReadabilityFailures.length === 0
+    && summary.menuRowLabelReadabilityFailures.length === 0
     && summary.docNavItemCount === summary.expectedStoryIds.length
     && summary.docCurrentStoryCount === (isIndex ? 0 : 1)
     && summary.docChapterPagerCount === 1
@@ -3742,7 +3766,8 @@ const staticSectionChecks = browserSummaries.map((summary) => {
     docNavOpenCategoryCount: summary.docNavOpenCategoryCount,
 	    activeStoryHiddenByCategory: summary.activeStoryHiddenByCategory,
 	    categoryAriaFailures: summary.categoryAriaFailures,
-    sidebarNoIconLabelReadabilityFailures: summary.sidebarNoIconLabelReadabilityFailures,
+    menuRowLabelCount: summary.menuRowLabelCount,
+    menuRowLabelReadabilityFailures: summary.menuRowLabelReadabilityFailures,
     docNavItemCount: summary.docNavItemCount,
     docCurrentStoryCount: summary.docCurrentStoryCount,
     docChapterPagerCount: summary.docChapterPagerCount,
@@ -3975,6 +4000,24 @@ Route: \`route_tcrn_design_system_internal_alpha_hardening_proof_implementation\
 ${keyboardChecklist.checks.map((check) => `- ${check.status === "passed" ? "[x]" : "[ ]"} ${check.item}: ${check.status}. Evidence: ${check.evidence}`).join("\n")}
 `);
 writeFileSync(join(outputRoot, "visual-baseline-manifest.json"), `${JSON.stringify(visualBaselineManifest, null, 2)}\n`);
+// TCRN-DS-SUB-169: every receipt written above has to stay under the private-input scan's file limit
+// (no-private-input-scan.mjs maxScanBytes): a receipt the scan skips for size is a red scan, and
+// browser-proof-summary.json reached 1,080,003 bytes once the menu rows were recorded per page. The
+// limit is the scan's; it is checked here, where the bytes are written, and is not raised.
+const receiptSizeLimitBytes = 1_000_000;
+const receiptSizeCheck = (() => {
+  const receipts = ["story-coverage-manifest.json", "browser-proof-summary.json", "story-budget-proof.json", "a11y-axe-summary.json", "manual-keyboard-checklist.md", "visual-baseline-manifest.json"]
+    .map((name) => {
+      const bytes = statSync(join(outputRoot, name)).size;
+      return { receipt: name, bytes, ok: bytes < receiptSizeLimitBytes };
+    });
+  return { ok: receipts.every((entry) => entry.ok), limitBytes: receiptSizeLimitBytes, receipts };
+})();
+if (!receiptSizeCheck.ok) {
+  for (const entry of receiptSizeCheck.receipts.filter((receipt) => !receipt.ok)) {
+    console.error(`RECEIPT TOO LARGE: ${entry.receipt} = ${entry.bytes} bytes >= ${receiptSizeLimitBytes} (the scan skips it and goes red)`);
+  }
+}
 const signatureNew = signatureResults.filter((entry) => entry.status === "new");
 if (signatureRegressions.length > 0) {
   console.error(`VISUAL REGRESSION: ${signatureRegressions.length} capture(s) moved beyond tolerance ` +
@@ -4053,7 +4096,8 @@ const nonVisualProofOk = recordContainmentResults.length > 0 && recordContainmen
   && storyHeightBudget.ok
   && panelSearchReadback.ok
   && buttonFeedbackReadback.ok
-  && pageHierarchyBrowserProof.ok;
+  && pageHierarchyBrowserProof.ok
+  && receiptSizeCheck.ok;
 
 const ok = nonVisualProofOk && signatureRegressions.length === 0 && signatureNew.length === 0;
 writeFileSync(join(outputRoot, "intentional-diff-manifest.json"), `${JSON.stringify({
@@ -4091,6 +4135,8 @@ console.log(JSON.stringify({
   settingsLayoutCaseCount: settingsLayoutBrowserProof.readbacks.length,
   pageHierarchyBrowserProofOk: pageHierarchyBrowserProof.ok,
   pageHierarchyCaseCount: pageHierarchyBrowserProof.readbacks.length,
+  receiptSizeOk: receiptSizeCheck.ok,
+  browserProofSummaryBytes: receiptSizeCheck.receipts.find((entry) => entry.receipt === "browser-proof-summary.json")?.bytes ?? null,
   panelSearchOk: panelSearchReadback.ok,
   buttonFeedbackOk: buttonFeedbackReadback.ok,
   storyCoverageManifestOk: storyCoverageManifest.ok,
