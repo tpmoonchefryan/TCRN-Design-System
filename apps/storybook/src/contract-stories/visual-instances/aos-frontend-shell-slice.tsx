@@ -14,6 +14,13 @@ import {
   type ProductShellSearchResult
 } from "@tcrn/ui-react";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
+import type { CSSProperties } from "react";
+
+// TCRN-DS-SUB-160 (STORY-140, 147): the shell's root is a viewport high (block-size 100dvh) and the
+// page scrolls in its paper, so a shell set in the middle of a long story is framed: the frame has a
+// fixed height and the shell fills it through its own style. The shell itself is not changed.
+const shellFrameStyle: CSSProperties = { blockSize: "640px" };
+const shellFillStyle: CSSProperties = { blockSize: "100%" };
 
 function ReferenceList({ items }: { items: string[] }) {
   return <div className="tcrn-doc-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
@@ -166,7 +173,9 @@ export const frontendShellSliceVisualInstanceReadback = {
   props: {
     productName: "AOS Rebuild Workspace",
     moduleName: "Frontend shell slice",
-    brandProductId: "aos",
+    // O-9: the shell wears the design-system brand as a placeholder until the Owner decides the AOS mark.
+    brandProductId: "design-system",
+    brandPlaceholderFor: "aos",
     productLogoAssetId: "tcrn-aos-two-line",
     navLabel: "AOS visual instance modules",
     primaryIa: ["Cockpit", "Work"],
@@ -455,47 +464,50 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
   const query = variant.searchMode === "results" ? (variant.route === "work" ? labels.work : labels.cockpit) : "";
   const currentRouteLabel = variant.route === "work" ? labels.work : labels.cockpit;
   return (
-    <ProductShell
-      productName={labels.productName}
-      moduleName={labels.moduleName}
-      brandProductId="design-system"
-      currentRouteLabel={currentRouteLabel}
-      // The paper's first row: the current route, under its trail in the menu model (TCRN-DS-SUB-129).
-      pageHeader={{ title: currentRouteLabel }}
-      navGroups={buildNavGroups(variant)}
-      currentTheme={variant.theme}
-      locales={tcrnLocaleMetadata}
-      currentLocale={variant.locale}
-      contentId={`${variant.id}-content`}
-      contentRole="region"
-      contentLabel={`${labels.contentLabel}: ${variant.id}`}
-      skipLinkLabel={labels.skipLink}
-      searchPlaceholder={labels.searchPlaceholder}
-      data-storybook-visual-instance="frontend-shell-slice"
-      data-visual-instance-name="FrontendShellSliceVisualInstance"
-      data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
-      data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
-      data-visual-instance-slots="brand side-nav topbar search content secondary-disclosure"
-      data-visual-instance-primary-ia="cockpit-work-only"
-      data-visual-instance-negative-criteria="no-local-visible-css no-storybook-only-prototype no-raw-primary no-owner-readiness"
-      data-visual-instance-variant={variant.id}
-      data-visual-instance-theme={variant.theme}
-      data-tcrn-theme={variant.theme}
-      data-visual-instance-locale={variant.locale}
-      data-visual-instance-collapsed={variant.collapsed ? "true" : "false"}
-      data-visual-instance-route={variant.route}
-      data-visual-instance-search={variant.searchMode}
-      data-visual-instance-viewport={variant.viewport}
-      data-visual-instance-reduced-motion={variant.reducedMotion ? "true" : "false"}
-      data-visual-instance-content={variant.contentMode}
-      data-product-acceptance="not-claimed"
-      data-release-readiness="not-claimed"
-      data-live-dispatch="not-enabled"
-      data-aos-visual-instance-oracle="true"
-    >
-      {variant.contentMode === "cockpit" ? <CockpitContent variant={variant} /> : <WorkContent variant={variant} />}
-      <BoundaryContent variant={variant} />
-    </ProductShell>
+    <div data-shell-frame="" style={shellFrameStyle}>
+      <ProductShell
+        style={shellFillStyle}
+        productName={labels.productName}
+        moduleName={labels.moduleName}
+        brandProductId="design-system"
+        currentRouteLabel={currentRouteLabel}
+        // The paper's first row: the current route, under its trail in the menu model (TCRN-DS-SUB-129).
+        pageHeader={{ title: currentRouteLabel }}
+        navGroups={buildNavGroups(variant)}
+        currentTheme={variant.theme}
+        locales={tcrnLocaleMetadata}
+        currentLocale={variant.locale}
+        contentId={`${variant.id}-content`}
+        contentRole="region"
+        contentLabel={`${labels.contentLabel}: ${variant.id}`}
+        skipLinkLabel={labels.skipLink}
+        searchPlaceholder={labels.searchPlaceholder}
+        data-storybook-visual-instance="frontend-shell-slice"
+        data-visual-instance-name="FrontendShellSliceVisualInstance"
+        data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
+        data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
+        data-visual-instance-slots="brand side-nav topbar search content secondary-disclosure"
+        data-visual-instance-primary-ia="cockpit-work-only"
+        data-visual-instance-negative-criteria="no-local-visible-css no-storybook-only-prototype no-raw-primary no-owner-readiness"
+        data-visual-instance-variant={variant.id}
+        data-visual-instance-theme={variant.theme}
+        data-tcrn-theme={variant.theme}
+        data-visual-instance-locale={variant.locale}
+        data-visual-instance-collapsed={variant.collapsed ? "true" : "false"}
+        data-visual-instance-route={variant.route}
+        data-visual-instance-search={variant.searchMode}
+        data-visual-instance-viewport={variant.viewport}
+        data-visual-instance-reduced-motion={variant.reducedMotion ? "true" : "false"}
+        data-visual-instance-content={variant.contentMode}
+        data-product-acceptance="not-claimed"
+        data-release-readiness="not-claimed"
+        data-live-dispatch="not-enabled"
+        data-aos-visual-instance-oracle="true"
+      >
+        {variant.contentMode === "cockpit" ? <CockpitContent variant={variant} /> : <WorkContent variant={variant} />}
+        <BoundaryContent variant={variant} />
+      </ProductShell>
+    </div>
   );
 }
 

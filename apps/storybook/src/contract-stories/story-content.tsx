@@ -638,6 +638,12 @@ function ShellStoryBlocks({ storyId, screens, width }: { storyId: string; screen
 
 export const shellStoryFrameWidths = { narrow: 1023, mobile: 390 } as const;
 
+// TCRN-DS-SUB-160 (STORY-140, 147): the shell's root is a viewport high (block-size 100dvh) and the
+// page scrolls in its paper, so a shell set in the middle of a long story is framed: the frame has a
+// fixed height and the shell fills it through its own style. The shell itself is not changed.
+const shellProofFrameStyle: CSSProperties = { blockSize: "640px" };
+const shellProofFillStyle: CSSProperties = { blockSize: "100%" };
+
 function ShellIntroStory() {
   const timeline = shellIntroTimeline();
   return (
@@ -2308,8 +2314,13 @@ const legacyContractStories: LegacyContractStory[] = [
           className="tcrn-doc-product-shell-contract-proof"
           data-package-backed-product-shell-proof="true"
           data-aos-shell-effect-boundary="package-backed"
+          // O-9: until the Owner decides the AOS mark, the AOS shells wear the design-system brand as a placeholder.
+          data-brand-placeholder="design-system"
+          data-brand-placeholder-for="aos"
+          style={shellProofFrameStyle}
         >
           <ProductShell
+            style={shellProofFillStyle}
             productName="AOS Rebuild Workspace"
             moduleName="Frontend shell slice"
             brandProductId="design-system"

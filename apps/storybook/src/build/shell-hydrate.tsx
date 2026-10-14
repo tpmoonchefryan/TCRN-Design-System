@@ -84,10 +84,11 @@ export const shellNarrowScreens: readonly ShellStoryScreen[] = [
   { screen: "ts-narrow-l", state: "closed", theme: "light", label: "Narrow band" },
   { screen: "ts-narrow-x-l", state: "expanded", theme: "light", label: "Narrow band with the full menu", presentation: "panel" }
 ];
-// ts-m-s is the board's phone screen with the menu open.
+// ts-m-s is the board's phone screen with the menu open: the Sheet, at any viewport, as on the
+// server, so its shell root reads data-state="sheet" (TCRN-DS-SUB-160).
 export const shellMobileScreens: readonly ShellStoryScreen[] = [
   { screen: "ts-m-l", state: "closed", theme: "light", label: "Phone band" },
-  { screen: "ts-m-s", state: "expanded", theme: "light", label: "Phone band with the menu" }
+  { screen: "ts-m-s", state: "expanded", theme: "light", label: "Phone band with the menu", presentation: "sheet" }
 ];
 export const shellIntroScreen: ShellStoryScreen = { screen: "ts-intro-l", state: "closed", theme: "light", label: "Band after sign-in", intro: true };
 
