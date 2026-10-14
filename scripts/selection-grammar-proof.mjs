@@ -1,8 +1,8 @@
 // Selection grammar proof — TCRN-DS-STORY-087 / TCRN-DS-INC-003.
 //
 // The system says selection exactly one way: the control's own surface takes ink
-// (--tcrn-selection-fill), or its existing border is promoted to ink
-// (--tcrn-selection-edge). Nothing is added on top.
+// (--tcrn-color-wash), or its existing border is promoted to ink (--tcrn-color-ink).
+// Nothing is added on top.
 //
 // This gate exists because that rule was broken four separate times before anyone
 // noticed, and each break was invisible to every other gate:
@@ -61,29 +61,55 @@ const SELECTION_SELECTOR =
 // Bodies that paint selection the old way. `inset` covers both the 3px left axis
 // and the 2px bottom axis; brand colour is banned in selection because colour now
 // means actionability and focus, not state.
+//
+// TCRN-DS-SUB-220: G+ renamed the tokens these forms name, and the old names live on only as
+// aliases, so a selected rule written with the G+ names was invisible here. Each form now
+// matches both: brand colour is the retired --tcrn-color-brand-* family or its G+ successors
+// --tcrn-color-acc and --tcrn-color-acc-2 (whole names, so --tcrn-color-acc-bg is not one of
+// them), and the lift is --tcrn-elevation-floating or its successor --tcrn-shadow-s3.
 const FORBIDDEN_BODY = [
   { name: "inset-axis", pattern: /box-shadow:[^;]*inset/ },
-  { name: "brand-colour", pattern: /--tcrn-color-brand-/ },
-  { name: "elevation-lift", pattern: /box-shadow:\s*var\(--tcrn-elevation-floating\)/ }
+  { name: "brand-colour", pattern: /--tcrn-color-brand-|--tcrn-color-acc(?:-2)?(?![\w-])/ },
+  { name: "elevation-lift", pattern: /box-shadow:\s*var\(--tcrn-(?:elevation-floating|shadow-s3)\)/ }
 ];
 
-const findings = [];
-let ruleCount = 0;
-
-for (const { source, text } of SOURCES) {
-  for (const match of text.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
-    const [, selector, body] = match;
-    if (!SELECTION_SELECTOR.test(selector)) continue;
-    ruleCount += 1;
-    for (const rule of FORBIDDEN_BODY) {
-      if (!rule.pattern.test(body)) continue;
-      findings.push({
-        source,
-        rule: rule.name,
-        selector: selector.split("\n").map((line) => line.trim()).filter(Boolean).join(" ").slice(0, 120),
-        body: body.replace(/\s+/gu, " ").trim().slice(0, 160)
-      });
+export function grammarFindings(sources) {
+  const found = [];
+  let rules = 0;
+  for (const { source, text } of sources) {
+    for (const match of text.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
+      const [, selector, body] = match;
+      if (!SELECTION_SELECTOR.test(selector)) continue;
+      rules += 1;
+      for (const rule of FORBIDDEN_BODY) {
+        if (!rule.pattern.test(body)) continue;
+        found.push({
+          source,
+          rule: rule.name,
+          selector: selector.split("\n").map((line) => line.trim()).filter(Boolean).join(" ").slice(0, 120),
+          body: body.replace(/\s+/gu, " ").trim().slice(0, 160)
+        });
+      }
     }
+  }
+  return { ruleCount: rules, findings: found };
+}
+
+const grammar = grammarFindings(SOURCES);
+const findings = [...grammar.findings];
+const ruleCount = grammar.ruleCount;
+
+// The grammar check has to be able to refuse a selected state written with the G+ names: each
+// G+ form below is red (TCRN-DS-SUB-220).
+const grammarMutants = [
+  { rule: "brand-colour", css: '.tcrn-mutant[data-selected="true"] { color: var(--tcrn-color-acc); }' },
+  { rule: "brand-colour", css: '.tcrn-mutant[aria-current="page"] { background: var(--tcrn-color-acc-2); }' },
+  { rule: "elevation-lift", css: '.tcrn-mutant--selected { box-shadow: var(--tcrn-shadow-s3); }' }
+];
+for (const { rule, css } of grammarMutants) {
+  const refused = grammarFindings([{ source: "mutant", text: css }]).findings.some((finding) => finding.rule === rule);
+  if (!refused) {
+    findings.push({ source: "selection-grammar-proof", rule: "grammar-check-cannot-fail", selector: css.slice(0, css.indexOf("{")).trim(), body: `a G+ ${rule} on a selected state was not refused` });
   }
 }
 
@@ -148,7 +174,7 @@ if (!mutant.findings.some((finding) => finding.rule === "tabs-selected-adds-on-t
 
 const result = {
   ok: findings.length === 0,
-  grammar: "selection is ink: surface-bearing controls take --tcrn-selection-fill, framed controls promote their border to --tcrn-selection-edge",
+  grammar: "selection is ink: surface-bearing controls take --tcrn-color-wash, framed controls promote their border to --tcrn-color-ink",
   sourcesScanned: SOURCES.length,
   selectionRulesScanned: ruleCount,
   tabsFamily: { block: TAB.block, selectedRules: tabsFamily.selectedRules, structure: "the 6% ink wash and the strong weight" },

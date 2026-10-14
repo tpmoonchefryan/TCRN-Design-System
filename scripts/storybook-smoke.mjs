@@ -255,11 +255,6 @@ const storybookDocShellVisualOracleContract = contract.storybookDocShellVisualOr
 const expectedStorybookVisualSkin = {
   id: storybookDocShellVisualOracleContract.id ?? "missing",
   // The oracle's top-band names (TCRN-DS-SUB-208); the old desktopSidebar* / desktopTopbar* names hold the same values.
-  sidebarWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.residentNavWidthPx ?? null,
-  sidebarMinWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.residentNavMinWidthPx ?? null,
-  sidebarPreferredViewportRatio: storybookDocShellVisualOracleContract.shellMetrics?.residentNavPreferredViewportRatio ?? null,
-  sidebarMaxWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.residentNavMaxWidthPx ?? null,
-  sidebarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.residentNavTolerancePx ?? 0,
   topbarHeightPx: storybookDocShellVisualOracleContract.shellMetrics?.bandHeightPx ?? null,
   topbarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.bandHeightTolerancePx ?? 0,
   searchRestWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.searchRestWidthPx ?? null,
@@ -269,17 +264,6 @@ const expectedStorybookVisualSkin = {
   themeToggleRadiusPx: storybookDocShellVisualOracleContract.shellMetrics?.themeToggleRadiusPx ?? null,
   trailingUtilityGapMinPx: storybookDocShellVisualOracleContract.shellMetrics?.trailingUtilityGapMinPx ?? null,
   trailingUtilityGapMaxPx: storybookDocShellVisualOracleContract.shellMetrics?.trailingUtilityGapMaxPx ?? null
-};
-const expectedStorybookSidebarWidthForViewport = (viewportWidth) => {
-  const { sidebarMinWidthPx, sidebarPreferredViewportRatio, sidebarMaxWidthPx, sidebarWidthPx } = expectedStorybookVisualSkin;
-  if (
-    typeof sidebarMinWidthPx === "number"
-    && typeof sidebarPreferredViewportRatio === "number"
-    && typeof sidebarMaxWidthPx === "number"
-  ) {
-    return Math.min(sidebarMaxWidthPx, Math.max(sidebarMinWidthPx, viewportWidth * sidebarPreferredViewportRatio));
-  }
-  return sidebarWidthPx;
 };
 const storybookAlphaStylesSource = readFileSync("apps/storybook/src/alpha-styles.ts", "utf8");
 const storybookStaticCssSource = readFileSync("apps/storybook/src/storybook.css", "utf8");
@@ -2072,9 +2056,6 @@ function validateMetric({ failures, name, metric, expected }) {
   if (expected.gridColumnCount !== undefined && gridColumnCount !== expected.gridColumnCount) {
     failures.push(`${name}:grid-column-count:${metric.gridTemplateColumns}`);
   }
-  if (expected.iconCenterDeltaMax !== undefined && typeof metric.iconCenterDelta === "number" && metric.iconCenterDelta > expected.iconCenterDeltaMax) {
-    failures.push(`${name}:icon-center-delta:${metric.iconCenterDelta}`);
-  }
   if (expected.fontFamilyIncludes !== undefined && !String(metric.fontFamily).includes(expected.fontFamilyIncludes)) {
     failures.push(`${name}:font-family:${metric.fontFamily}`);
   }
@@ -2389,19 +2370,6 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
           previousActive.focus({ preventScroll: true });
         }
       }
-      const visibleIcon = Array.from(element.querySelectorAll(".tcrn-shell-side-nav-toggle__icon, [data-side-nav-icon]"))
-        .find((icon) => {
-          const iconStyle = getComputedStyle(icon);
-          const iconRect = icon.getBoundingClientRect();
-          return iconStyle.display !== "none" && iconRect.width > 0 && iconRect.height > 0;
-        });
-      const iconRect = visibleIcon?.getBoundingClientRect();
-      const iconCenterDelta = iconRect
-        ? Math.max(
-            Math.abs((iconRect.left + iconRect.width / 2) - (rect.left + rect.width / 2)),
-            Math.abs((iconRect.top + iconRect.height / 2) - (rect.top + rect.height / 2))
-          )
-        : null;
       measured[name] = {
         width: rect.width,
         height: rect.height,
@@ -2409,10 +2377,6 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
         title: element.getAttribute("title"),
         ariaDisabled: element.getAttribute("aria-disabled"),
         ariaExpanded: element.getAttribute("aria-expanded"),
-        sideNavAction: element.getAttribute("data-side-nav-action"),
-        sideNavKeyboardActivation: element.getAttribute("data-side-nav-keyboard-activation"),
-        sideNavDisabledReason: element.getAttribute("data-side-nav-disabled-reason"),
-        iconCenterDelta,
         left: rect.left,
         right: rect.right,
         top: rect.top,
@@ -2467,6 +2431,10 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
     for (const [name, selector] of Object.entries(requiredContentSelectors)) {
       requiredContent[name] = shell.matches(selector) || Boolean(shell.querySelector(selector));
     }
+    // TCRN-DS-SUB-220: the side rail and its collapse control retired with the top-band shell (TCRN-DS-SUB-208); the
+    // shell under test carries none of the control's parts (the count replaces a per-control icon read that could only
+    // ever come back empty).
+    const retiredSideNavToggleCount = shell.querySelectorAll("[data-side-nav-toggle], .tcrn-shell-side-nav-toggle, .tcrn-shell-side-nav-toggle__icon, [data-side-nav-icon]").length;
     const strip = shell.querySelector("[data-shell-strip]");
     const controlOrder = strip
       ? Array.from(strip.children).map((child) => {
@@ -2529,6 +2497,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
 	        sourceMarker: document.querySelector("style[data-tcrn-product-shell-comparator-style=\"package-backed\"]")?.getAttribute("data-tcrn-product-shell-comparator-style") ?? null
 	      },
 	      measured,
+	      retiredSideNavToggleCount,
 	      requiredContent,
       controlOrder,
       bandReadback,
@@ -2563,6 +2532,9 @@ function validateProductShellReadback({
   for (const message of proof.consoleMessages ?? []) failures.push(`${label}:console:${message}`);
   if (proof.shell.sourceMarker !== "package-backed") {
     failures.push(`${label}:missing-package-backed-style-marker`);
+  }
+  if (proof.retiredSideNavToggleCount !== 0) {
+    failures.push(`${label}:retired-side-nav-toggle-present:${proof.retiredSideNavToggleCount ?? "missing"}`);
   }
   const reduced = proof.reducedMotion === "reduce";
   if (validateMetrics) {
@@ -3299,7 +3271,6 @@ async function runCrossSectionShellParityProof() {
             brandTab: brandTabRect,
             pins: pinsRect,
             cluster: clusterRect,
-            sideNavRegion: rectOf(docShellOwn("[data-product-shell-region='side-navigation']")),
             headerStyles: styleOf(strip, ["display", "grid-template-columns", "min-height"]),
             workspaceStyles: styleOf(cluster, ["display", "grid-template-columns", "gap", "padding-left", "padding-right"]),
             pageHeadStyles: styleOf(document.querySelector("[data-doc-page-head='governed-section']"), ["display", "grid-template-columns", "gap", "border-bottom-style"]),
@@ -3473,11 +3444,8 @@ async function runCrossSectionShellParityProof() {
         if (metrics.pageOverflow) routeFailures.push("page-overflow");
         if (isDesktopViewport) {
           const widthWithin = (actual, expected, tolerance) => typeof actual === "number" && typeof expected === "number" && Math.abs(actual - expected) <= tolerance;
-          const expectedSidebarWidth = expectedStorybookSidebarWidthForViewport(viewport.width);
-          // No resident side rail on the top-band shell: the expected width is 0 and an absent rail reads as 0.
-          if (!widthWithin(metrics.sideNavRegion?.width ?? 0, expectedSidebarWidth, expectedStorybookVisualSkin.sidebarTolerancePx)) {
-            routeFailures.push(`storybook-skin-sidebar-width:${metrics.sideNavRegion?.width ?? "missing"}:expected:${expectedSidebarWidth}`);
-          }
+          // The retired side-navigation region is held absent by the legacy-product-shell-global-nav count above; its
+          // width read here could only ever come back empty and went in TCRN-DS-SUB-220.
           if (!widthWithin(metrics.header?.height, expectedStorybookVisualSkin.topbarHeightPx, expectedStorybookVisualSkin.topbarTolerancePx)) {
             routeFailures.push(`storybook-skin-topbar-height:${metrics.header?.height ?? "missing"}:expected:${expectedStorybookVisualSkin.topbarHeightPx}`);
           }

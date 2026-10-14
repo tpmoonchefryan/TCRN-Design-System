@@ -163,12 +163,6 @@ body {
   line-height: 1.2;
   padding: var(--tcrn-space-0h) var(--tcrn-space-1h);
 }
-.tcrn-doc-eyebrow {
-  color: var(--tcrn-color-acc);
-  font-size: var(--tcrn-type-size-meta);
-  font-weight: 700;
-  letter-spacing: 0;
-}
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(root),
   ::view-transition-old(root),
@@ -178,9 +172,6 @@ body {
   .tcrn-doc-theme-transition-wash {
     transition: none;
   }
-}
-.tcrn-doc-claim {
-  color: var(--tcrn-color-ink-2);
 }
 /* Progressive disclosure: a page opens as a compact index — story title, one-line
    locator, ledger +/- notation — and each story reveals on demand. Hash navigation
@@ -233,10 +224,6 @@ article[data-story-collapsed="true"] > .story-body {
 }
 .tcrn-doc-story-disclosure:hover {
   color: var(--tcrn-color-acc);
-}
-article[data-story-collapsed="false"] > .tcrn-doc-story-disclosure__heading {
-  box-shadow: inset 3px 0 0 var(--tcrn-color-acc);
-  padding-left: var(--tcrn-space-2h);
 }
 article {
   border: 1px solid var(--tcrn-color-line);
