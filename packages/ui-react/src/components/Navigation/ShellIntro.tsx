@@ -14,7 +14,9 @@
 //
 // Only transform and opacity move, through the Web Animations API. The flying mark is the
 // registered colour mark (TcrnBrandMark, from product-marks.generated: the bytes of logos2),
-// opaque from start to end; it travels by translate and scale alone. Its end is read from the
+// opaque from start to end; it travels by translate and scale alone. Like the brand button's mark it
+// writes the mark's own id in data-logo (productMarkIdOf: tms, ds, mana, einzbern; TCRN-DS-SUB-214)
+// and is drawn from the product key. Its end is read from the
 // brand button's own mark (getBoundingClientRect), so it lands on that mark's geometry and nothing
 // jumps when the layer goes; its start is the mark of the card's lockup, read the same way. Until
 // it lands, the brand button's lockup line is held at opacity 0 (the mark itself is never made
@@ -53,6 +55,7 @@ import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 import { cx, resolveDocumentLocale } from "../../utils.js";
 import { TcrnBrandMark, type TcrnProductMarkId } from "./Navigation.js";
+import { productMarkIdOf } from "./product-mark-id.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
 
 /** The phases of the intro, in order; the layer carries the current one in data-intro-phase. */
@@ -333,7 +336,7 @@ export function ShellIntro({
             variant="color"
             className="tcrn-shell-intro__mark"
             aria-hidden="true"
-            data-logo={productId}
+            data-logo={productMarkIdOf(productId)}
             style={{ left: state.from.left, top: state.from.top, width: state.from.width, height: state.from.height }}
           />
         ) : null}
