@@ -75,12 +75,16 @@ export const storybookThemeScript = `<script>
     }
   };
   const themedLinks = () => document.querySelectorAll("[data-shell-menu] a[href], [data-pins] a[href], [data-doc-toc] a[href]:not([href^='#']), .tcrn-page-header nav a[href], .tcrn-doc-chapter-pager__link");
+  // A link inside a block React renders (the documentation shell, the shell story screens) carries
+  // the page's preferences in the href React gives it (build/shell-hydrate.tsx); only the static page
+  // body's links are rewritten here. The documentation shell's page body is static markup.
+  const inMountedShell = (node) => Boolean(node.closest?.("[data-shell-hydrate], [data-doc-page-body]")?.matches("[data-shell-hydrate]"));
   const updateThemeLinks = (theme) => {
     const shell = document.querySelector("[data-contract-surface]");
     const currentLocale = shell?.getAttribute("data-storybook-locale");
     for (const link of themedLinks()) {
       const href = link.getAttribute("href");
-      if (!href) {
+      if (!href || inMountedShell(link)) {
         continue;
       }
       const next = new URL(href, window.location.href);
@@ -102,25 +106,6 @@ export const storybookThemeScript = `<script>
     shell?.setAttribute("data-storybook-theme", resolvedTheme);
     shell?.setAttribute("data-tcrn-theme", resolvedTheme);
     shell?.setAttribute("data-product-shell-theme", resolvedTheme);
-    for (const option of document.querySelectorAll("[data-storybook-theme-option]")) {
-      option.setAttribute("aria-pressed", option.getAttribute("data-storybook-theme-option") === resolvedTheme ? "true" : "false");
-    }
-    const toggle = document.querySelector("[data-storybook-theme-toggle]");
-    if (toggle) {
-      const labelKey = nextTheme === "dark" ? "shell.themeDarkLabel" : "shell.themeLightLabel";
-      toggle.setAttribute("data-current-theme", resolvedTheme);
-      toggle.setAttribute("data-storybook-theme-option", nextTheme);
-      toggle.setAttribute("data-theme-label-key", labelKey);
-      toggle.setAttribute("aria-pressed", resolvedTheme === "dark" ? "true" : "false");
-      for (const icon of toggle.querySelectorAll("[data-theme-icon]")) {
-        icon.hidden = false;
-      }
-      if (typeof window.tcrnStorybookTextFor === "function" && window.tcrnStorybookResolvedLocale) {
-        const label = window.tcrnStorybookTextFor(window.tcrnStorybookResolvedLocale, labelKey);
-        toggle.setAttribute("aria-label", label);
-        toggle.setAttribute("title", label);
-      }
-    }
     const themeColor = document.querySelector("[data-storybook-theme-color]");
     themeColor?.setAttribute("content", themeColors[resolvedTheme] ?? themeColors.light);
     updateThemeLinks(resolvedTheme);
@@ -174,9 +159,9 @@ export const storybookThemeScript = `<script>
   const urlTheme = new URL(window.location.href).searchParams.get("theme");
   const storedTheme = readStoredTheme();
   const initialTheme = isSupported(urlTheme) ? urlTheme : isSupported(storedTheme) ? storedTheme : defaultTheme;
-  for (const option of document.querySelectorAll("[data-storybook-theme-option]")) {
-    option.addEventListener("click", () => applyTheme(option.getAttribute("data-storybook-theme-option"), true));
-  }
+  // The documentation shell's theme toggle is the package's (ShellThemeToggle in the avatar menu): its
+  // onThemeChange calls this (build/shell-hydrate.tsx, TCRN-DS-SUB-201), and the shell follows
+  // tcrn-storybook-theme-applied.
   window.tcrnStorybookApplyTheme = applyTheme;
   window.tcrnStorybookUpdateThemeLinks = () => updateThemeLinks(window.tcrnStorybookResolvedTheme ?? defaultTheme);
   window.addEventListener("tcrn-storybook-locale-applied", window.tcrnStorybookUpdateThemeLinks);
@@ -271,11 +256,14 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || "";
     return /mac|iphone|ipad|ipod/i.test(platform) ? "⌘ K" : "Ctrl K";
   };
-  // The shell story blocks are mounted by React (build/shell-hydrate.tsx, TCRN-DS-SUB-151), which
-  // renders them in the page's language itself: the swaps below leave them alone, so the markup React
-  // hydrates is the markup it rendered.
+  // The shell story blocks and the documentation shell are mounted by React (build/shell-hydrate.tsx,
+  // TCRN-DS-SUB-151, SUB-201), which renders them in the page's language itself: the swaps below leave
+  // them alone, so the markup React hydrates is the markup it rendered. The documentation shell's page
+  // body ([data-doc-page-body]) is the page's static markup inside it and is swapped as before; a shell
+  // story block inside the body is React's again.
   const mountedShellBlock = "[data-shell-hydrate]";
-  const inMountedShell = (node) => Boolean(node.closest?.(mountedShellBlock));
+  const staticPageBody = "[data-doc-page-body]";
+  const inMountedShell = (node) => Boolean(node.closest?.(mountedShellBlock + ", " + staticPageBody)?.matches(mountedShellBlock));
   const applyClientShortcuts = () => {
     for (const node of document.querySelectorAll("[data-shortcut-auto='search']")) {
       if (inMountedShell(node)) {
@@ -296,10 +284,12 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     }
   };
   const translateContentTree = (locale) => {
-    const root = document.querySelector("[data-contract-surface]");
-    if (!root) {
+    const surface = document.querySelector("[data-contract-surface]");
+    if (!surface) {
       return;
     }
+    // Inside the documentation shell only its static page body is the swap's.
+    const roots = inMountedShell(surface) ? Array.from(surface.querySelectorAll(staticPageBody)) : [surface];
     const skipTags = new Set(["SCRIPT", "STYLE"]);
     // Visual-instance oracles keep their words in every language, and so does the brand wordmark,
     // the brand asset's own words (Logos board, section E; TCRN-DS-SUB-166): the brand button's
@@ -341,7 +331,7 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
         visit(child);
       }
     };
-    visit(root);
+    roots.forEach(visit);
   };
   const updateLocalizedLinks = (locale) => {
     const shell = document.querySelector("[data-contract-surface]");
@@ -358,54 +348,6 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       }
       const file = next.pathname.split("/").pop() || "index.html";
       link.setAttribute("href", file + next.search + next.hash);
-    }
-  };
-  const focusLocaleMenuTrigger = () => {
-    const toggle = document.querySelector("[data-locale-menu-toggle]");
-    if (toggle instanceof HTMLElement) {
-      toggle.focus({ preventScroll: true });
-    }
-  };
-  const closeLocaleMenu = (options = {}) => {
-    const toggle = document.querySelector("[data-locale-menu-toggle]");
-    const menu = document.querySelector("[data-locale-menu]");
-    toggle?.setAttribute("aria-expanded", "false");
-    if (menu) {
-      menu.hidden = true;
-    }
-    if (options.restoreFocus) {
-      focusLocaleMenuTrigger();
-    }
-  };
-  const openLocaleMenu = () => {
-    const toggle = document.querySelector("[data-locale-menu-toggle]");
-    const menu = document.querySelector("[data-locale-menu]");
-    toggle?.setAttribute("aria-expanded", "true");
-    if (menu) {
-      menu.hidden = false;
-      menu.querySelector("[aria-selected='true'], [aria-current='true']")?.focus();
-    }
-  };
-  const updateLocaleMenuState = (locale) => {
-    for (const menu of document.querySelectorAll(".tcrn-shell-locale-menu")) {
-      if (inMountedShell(menu)) {
-        continue;
-      }
-      const selected = menu.querySelector("[data-locale-menu-option][data-locale='" + CSS.escape(locale) + "']");
-      const nameNode = menu.querySelector("[data-locale-current-name], [data-locale-current]");
-      if (selected && nameNode) {
-        nameNode.textContent = selected.getAttribute("data-locale-name") ?? locale;
-      }
-      for (const option of menu.querySelectorAll("[data-locale-menu-option]")) {
-        const nativeName = option.getAttribute("data-locale-name") ?? option.getAttribute("data-locale") ?? "";
-        const visibleName = option.querySelector(".tcrn-shell-locale-menu__name, [data-locale-option-name]");
-        if (visibleName) {
-          visibleName.textContent = nativeName;
-        }
-        const isSelected = option.getAttribute("data-locale") === locale;
-        option.setAttribute("aria-selected", isSelected ? "true" : "false");
-        option.setAttribute("aria-current", isSelected ? "true" : "false");
-      }
     }
   };
   const updateProductLogoAccessibleNames = () => {
@@ -442,13 +384,6 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       }
     }
   };
-  const updateThemeButtonLabels = (locale) => {
-    for (const option of document.querySelectorAll("[data-storybook-theme-option][data-theme-label-key]")) {
-      const label = textFor(locale, option.getAttribute("data-theme-label-key"));
-      option.setAttribute("aria-label", label);
-      option.setAttribute("title", label);
-    }
-  };
   const applyLocale = (locale, updateUrl) => {
     const resolvedLocale = isSupported(locale) ? locale : defaultLocale;
     window.tcrnStorybookResolvedLocale = resolvedLocale;
@@ -473,12 +408,6 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     // Must follow translateContentTree: it reads the tagline the swap just wrote.
     updateProductLogoAccessibleNames();
     applyClientShortcuts();
-    updateThemeButtonLabels(resolvedLocale);
-    const selector = document.querySelector("[data-i18n-locale-select]");
-    if (selector) {
-      selector.value = resolvedLocale;
-    }
-    updateLocaleMenuState(resolvedLocale);
     document.title = textFor(resolvedLocale, "group." + activeSection) + " - " + textFor(resolvedLocale, "shell.title");
     updateLocalizedLinks(resolvedLocale);
     window.tcrnStorybookUpdateThemeLinks?.();
@@ -494,149 +423,11 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
   const urlLocale = new URL(window.location.href).searchParams.get("locale");
   const storedLocale = readStoredLocale();
   const initialLocale = isSupported(urlLocale) ? urlLocale : isSupported(storedLocale) ? storedLocale : defaultLocale;
-  const selector = document.querySelector("[data-i18n-locale-select]");
-  selector?.addEventListener("change", (event) => applyLocale(event.target.value, true));
-  document.querySelector("[data-locale-menu-toggle]")?.addEventListener("click", () => {
-    const menu = document.querySelector("[data-locale-menu]");
-    if (menu?.hidden) {
-      openLocaleMenu();
-    } else {
-      closeLocaleMenu();
-    }
-  });
-  for (const option of document.querySelectorAll("[data-locale-menu-option]")) {
-    option.addEventListener("click", () => {
-      applyLocale(option.getAttribute("data-locale"), true);
-      closeLocaleMenu({ restoreFocus: true });
-    });
-  }
-  document.addEventListener("mousedown", (event) => {
-    if (!event.target.closest?.("[data-locale-menu-root]")) {
-      closeLocaleMenu();
-    }
-  });
-  // Esc closes an open language list and returns focus to its trigger. The event is marked handled
-  // so the documentation shell's layer script leaves the avatar menu around the list open
-  // (TCRN-DS-SUB-166); with the list closed, Esc is the layer script's.
-  document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") {
-      return;
-    }
-    const menu = document.querySelector("[data-locale-menu]");
-    if (!menu || menu.hidden) {
-      return;
-    }
-    event.preventDefault();
-    closeLocaleMenu({ restoreFocus: true });
-  });
+  // The documentation shell's language menu is the package's (ShellLocaleMenu in the avatar menu): its
+  // onLocaleChange calls this (build/shell-hydrate.tsx, TCRN-DS-SUB-201), and the shell follows
+  // tcrn-storybook-locale-applied.
+  window.tcrnStorybookApplyLocale = applyLocale;
   applyLocale(initialLocale, false);
-})();
-</script>`;
-
-// TCRN-DS-SUB-131: the documentation shell is the package ProductShell rendered without client
-// React, so the two layers it opens arrive as markup, hidden (page-template.tsx carries the full
-// menu after the band and the avatar menu after the avatar). This script is the static page's
-// stand-in for ProductShell's own state: the brand button opens the full menu and says so
-// (aria-expanded, its name, the shell's data-state), the avatar opens its menu, one layer is open
-// at a time, ⌘K / Ctrl+K opens the full menu at its search, and Esc or a press outside closes the
-// open layer — Esc returns focus to the button that opened it. Choosing a row closes the menu.
-export const docShellLayerScript = `<script>
-(() => {
-  const shell = document.querySelector("[data-doc-shell]");
-  const brand = shell?.querySelector("[data-shell-brand]");
-  const menu = shell?.querySelector("[data-shell-menu]");
-  const avatar = shell?.querySelector("[data-shell-avatar]");
-  const account = shell?.querySelector("[data-panel='account']");
-  if (!shell || !brand || !menu || !avatar || !account) {
-    return;
-  }
-  const search = menu.querySelector("[data-doc-search-input]");
-  const setMenu = (open, options = {}) => {
-    if (open && !account.hidden) {
-      setAccount(false);
-    }
-    menu.hidden = !open;
-    brand.setAttribute("aria-expanded", open ? "true" : "false");
-    const label = brand.getAttribute(open ? "data-expanded-label" : "data-collapsed-label");
-    if (label) {
-      brand.setAttribute("aria-label", label);
-    }
-    shell.setAttribute("data-state", open ? "expanded" : "closed");
-    if (open && options.focusSearch) {
-      search?.focus();
-    }
-    if (!open && options.restoreFocus) {
-      brand.focus();
-    }
-  };
-  const setAccount = (open, options = {}) => {
-    if (open && !menu.hidden) {
-      setMenu(false);
-    }
-    account.hidden = !open;
-    avatar.setAttribute("aria-expanded", open ? "true" : "false");
-    if (!open && options.restoreFocus) {
-      avatar.focus();
-    }
-  };
-  // The brand button reports the version it shows, as the package's does once mounted: narrower
-  // than 1024 the wordmark is hidden and the button is the first version (TCRN-DS-SUB-151).
-  if (brand.hasAttribute("data-shell-brand-auto") && typeof window.matchMedia === "function") {
-    const narrow = window.matchMedia("(max-width: 1023px)");
-    const showVersion = () => brand.setAttribute("data-shell-brand", narrow.matches ? "v1" : "v2");
-    showVersion();
-    narrow.addEventListener("change", showVersion);
-  }
-  brand.addEventListener("click", () => setMenu(menu.hidden));
-  avatar.addEventListener("click", () => setAccount(account.hidden));
-  menu.addEventListener("click", (event) => {
-    if (event.target instanceof Element && event.target.closest("a[href]")) {
-      setMenu(false);
-    }
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.isComposing) {
-      return;
-    }
-    if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey) && !event.altKey) {
-      const target = event.target;
-      const editable = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
-      if (editable && target !== search) {
-        return;
-      }
-      setMenu(true, { focusSearch: true });
-      return;
-    }
-    if (event.key !== "Escape") {
-      return;
-    }
-    // An inner list that handled this Esc (the language list in the avatar menu closes itself and
-    // returns focus to its trigger) leaves the layer around it open (TCRN-DS-SUB-166). Only a list of
-    // this shell's own: the shell stories mounted on the page (TCRN-DS-SUB-151) handle Esc in their
-    // own layers, and their handling must not keep this shell's menu open.
-    const handledInside = event.defaultPrevented && event.target instanceof Node && account.contains(event.target);
-    if (handledInside || account.querySelector("[data-locale-menu]:not([hidden])")) {
-      return;
-    }
-    if (!menu.hidden) {
-      setMenu(false, { restoreFocus: true });
-    } else if (!account.hidden) {
-      setAccount(false, { restoreFocus: true });
-    }
-  });
-  document.addEventListener("pointerdown", (event) => {
-    const target = event.target instanceof Node ? event.target : null;
-    if (!target) {
-      return;
-    }
-    if (!menu.hidden && !menu.contains(target) && !brand.contains(target)) {
-      setMenu(false);
-    }
-    if (!account.hidden && !account.contains(target) && !avatar.contains(target)) {
-      setAccount(false);
-    }
-  });
-  window.tcrnDocShellLayers = { setMenu, setAccount };
 })();
 </script>`;
 
@@ -761,278 +552,6 @@ export const tableToolbarScript = `<script>
     }
     apply();
   }
-})();
-</script>`;
-
-export const storybookSearchScript = `<script>
-(() => {
-  const input = document.querySelector("[data-doc-search-input]");
-  const resultsBox = document.querySelector("[data-doc-search-results]");
-  if (!(input instanceof HTMLInputElement)) {
-    return;
-  }
-  const searchRoot = input.closest("[data-shell-search]");
-  const searchWorkspace = searchRoot;
-  const maxResults = 8;
-  let results = [];
-  let activeIndex = -1;
-  const setSearchExpanded = (expanded) => {
-    if (!(searchWorkspace instanceof HTMLElement)) {
-      return;
-    }
-    if (expanded) {
-      searchWorkspace.setAttribute("data-search-expanded", "true");
-      return;
-    }
-    searchWorkspace.removeAttribute("data-search-expanded");
-  };
-  const normalize = (value) => String(value ?? "").trim().toLocaleLowerCase();
-  const restoreWindowScroll = (scrollX, scrollY) => {
-    if (document.activeElement !== input) {
-      return;
-    }
-    window.scrollTo({ top: scrollY, left: scrollX, behavior: "auto" });
-  };
-  const preserveWindowScroll = (callback) => {
-    const scrollX = window.scrollX;
-    const scrollY = window.scrollY;
-    callback();
-    restoreWindowScroll(scrollX, scrollY);
-    window.requestAnimationFrame(() => restoreWindowScroll(scrollX, scrollY));
-  };
-  const focusSearchInput = () => {
-    const scrollX = window.scrollX;
-    const scrollY = window.scrollY;
-    input.focus({ preventScroll: true });
-    restoreWindowScroll(scrollX, scrollY);
-  };
-  const textFor = (key) => {
-    const locale = window.tcrnStorybookResolvedLocale;
-    if (locale && typeof window.tcrnStorybookTextFor === "function") {
-      return window.tcrnStorybookTextFor(locale, key);
-    }
-    return key;
-  };
-  const searchIndex = (() => {
-    try {
-      return JSON.parse(document.querySelector("[data-doc-search-index]")?.textContent ?? "[]");
-    } catch {
-      return [];
-    }
-  })();
-  const readItems = () => searchIndex.map((entry) => {
-    const label = textFor(entry.label);
-    const groupLabel = entry.group ? textFor(entry.group) : "";
-    const searchable = [label, groupLabel].filter(Boolean).join(" ");
-    return { href: entry.href, label, groupLabel, searchable };
-  });
-  // TCRN-DS-STORY-060: also surface the current page's ReadbackPanels (by their static anchor id)
-  // and, on a reference page, its component API regions — so search jumps to a panel/component,
-  // not only to a story. Labels read the RENDERED (localized) heading text so matching follows the
-  // active locale. New attributes only; the nav readers above are untouched.
-  const readPanelItems = () => {
-    return Array.from(document.querySelectorAll(".tcrn-readback-panel[id]")).map((panel) => {
-      const heading = panel.querySelector(":scope > h2.tcrn-heading, :scope > h3.tcrn-heading, :scope > h4.tcrn-heading");
-      const label = heading?.textContent?.trim() ?? "";
-      const story = panel.closest("[data-contract-story-id]");
-      const groupLabel = story?.querySelector(".tcrn-doc-story-disclosure__title")?.textContent?.trim() ?? "";
-      const href = "#" + panel.id;
-      const searchable = [label, groupLabel].filter(Boolean).join(" ");
-      return { href, label, groupLabel, searchable };
-    }).filter((item) => item.label);
-  };
-  const readComponentItems = () => {
-    return Array.from(document.querySelectorAll("[data-component-reference-id][id]")).map((region) => {
-      const label = region.getAttribute("data-component-reference-id") ?? "";
-      const groupLabel = textFor("group.Components");
-      const href = "#" + region.id;
-      const searchable = [label, groupLabel].filter(Boolean).join(" ");
-      return { href, label, groupLabel, searchable };
-    }).filter((item) => item.label);
-  };
-  const setResultsVisible = (visible) => {
-    if (!(resultsBox instanceof HTMLElement)) {
-      return;
-    }
-    resultsBox.hidden = !visible;
-    input.setAttribute("aria-expanded", visible ? "true" : "false");
-  };
-  const setActiveIndex = (nextIndex) => {
-    if (!results.length) {
-      activeIndex = -1;
-      input.removeAttribute("aria-activedescendant");
-      return;
-    }
-    activeIndex = (nextIndex + results.length) % results.length;
-    for (const node of Array.from(document.querySelectorAll("[data-doc-search-result]"))) {
-      const selected = Number(node.getAttribute("data-doc-search-result")) === activeIndex;
-      node.setAttribute("aria-selected", selected ? "true" : "false");
-      if (selected) {
-        input.setAttribute("aria-activedescendant", node.id);
-      }
-    }
-  };
-  const renderResults = () => {
-    if (!(resultsBox instanceof HTMLElement)) {
-      return;
-    }
-    resultsBox.innerHTML = "";
-    if (!input.value.trim()) {
-      setResultsVisible(false);
-      return;
-    }
-    if (!results.length) {
-      const empty = document.createElement("span");
-      empty.className = "tcrn-product-shell-search__empty";
-      empty.textContent = textFor("shell.searchNoResults");
-      resultsBox.append(empty);
-      setResultsVisible(true);
-      input.removeAttribute("aria-activedescendant");
-      return;
-    }
-    results.forEach((result, index) => {
-      const option = document.createElement("a");
-      option.className = "tcrn-product-shell-search__result";
-      option.setAttribute("data-search-result", "");
-      option.id = "tcrn-doc-search-result-" + index;
-      option.href = result.href;
-      option.setAttribute("role", "option");
-      option.setAttribute("aria-selected", index === activeIndex ? "true" : "false");
-      option.setAttribute("data-doc-search-result", String(index));
-      option.innerHTML = "<strong></strong><span></span>";
-      option.querySelector("strong").textContent = result.label;
-      const meta = option.querySelector("span");
-      const metaLabel = result.groupLabel && result.groupLabel !== result.label ? result.groupLabel : "";
-      meta.textContent = metaLabel;
-      meta.hidden = !metaLabel;
-      option.addEventListener("click", (event) => {
-        event.preventDefault();
-        openResult(index);
-      });
-      resultsBox.append(option);
-    });
-    setResultsVisible(true);
-    setActiveIndex(activeIndex < 0 ? 0 : activeIndex);
-  };
-  const updateResults = () => {
-    const normalizedQuery = normalize(input.value);
-    results = normalizedQuery
-      ? [...readItems(), ...readPanelItems(), ...readComponentItems()]
-          .filter((item) => normalize(item.searchable).includes(normalizedQuery))
-          .slice(0, maxResults)
-      : [];
-    activeIndex = results.length ? 0 : -1;
-    renderResults();
-  };
-  const openResult = (index = activeIndex) => {
-    const result = results[index];
-    if (!result?.href) {
-      return false;
-    }
-    const targetUrl = new URL(result.href, window.location.href);
-    const shell = document.querySelector("[data-contract-surface]");
-    const currentLocale = shell?.getAttribute("data-storybook-locale");
-    const currentTheme = shell?.getAttribute("data-storybook-theme");
-    if (currentLocale) {
-      targetUrl.searchParams.set("locale", currentLocale);
-    }
-    if (currentTheme) {
-      targetUrl.searchParams.set("theme", currentTheme);
-    }
-    setResultsVisible(false);
-    if (targetUrl.origin === window.location.origin && targetUrl.pathname === window.location.pathname) {
-      if (window.location.hash === targetUrl.hash) {
-        window.tcrnStorybookScrollToHash?.();
-      } else {
-        window.location.hash = targetUrl.hash.replace(/^#/, "");
-      }
-      return true;
-    }
-    window.location.href = targetUrl.href;
-    return true;
-  };
-  if (resultsBox instanceof HTMLElement) {
-    resultsBox.addEventListener("mousedown", (event) => {
-      event.preventDefault();
-    });
-  }
-  input.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey) {
-      return;
-    }
-    event.preventDefault();
-    focusSearchInput();
-  });
-  input.addEventListener("input", () => preserveWindowScroll(updateResults));
-  input.addEventListener("focus", () => {
-    setSearchExpanded(true);
-    preserveWindowScroll(updateResults);
-  });
-  input.addEventListener("blur", () => {
-    window.setTimeout(() => {
-      if (document.activeElement !== input) {
-        setSearchExpanded(false);
-      }
-      setResultsVisible(false);
-    }, 120);
-  });
-  document.addEventListener("pointerdown", (event) => {
-    const target = event.target;
-    if (target instanceof Element && searchRoot?.contains(target)) {
-      return;
-    }
-    if (document.activeElement === input) {
-      input.blur();
-    }
-    setSearchExpanded(false);
-    setResultsVisible(false);
-  });
-  input.addEventListener("keydown", (event) => {
-    if (event.isComposing) {
-      return;
-    }
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      setActiveIndex(activeIndex + 1);
-      return;
-    }
-    if (event.key === "ArrowUp") {
-      event.preventDefault();
-      setActiveIndex(activeIndex - 1);
-      return;
-    }
-    if (event.key === "Escape") {
-      setResultsVisible(false);
-      input.removeAttribute("aria-activedescendant");
-      return;
-    }
-    if (event.key === "Enter") {
-      if (openResult()) {
-        event.preventDefault();
-      }
-    }
-  });
-  document.addEventListener("keydown", (event) => {
-    const target = event.target;
-    const editable = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
-    if (editable && target !== input) {
-      return;
-    }
-    if (event.key.toLowerCase() !== "k" || (!event.metaKey && !event.ctrlKey) || event.altKey) {
-      return;
-    }
-    event.preventDefault();
-    focusSearchInput();
-    input.select();
-    preserveWindowScroll(updateResults);
-  });
-  window.addEventListener("tcrn-storybook-locale-applied", () => {
-    if (resultsBox instanceof HTMLElement) {
-      resultsBox.setAttribute("aria-label", textFor("shell.searchResultsLabel"));
-    }
-    input.setAttribute("aria-label", textFor("shell.searchLabel"));
-    preserveWindowScroll(updateResults);
-  });
 })();
 </script>`;
 

@@ -555,7 +555,13 @@ async function collectPageHealth(page) {
     // avatar) replaces the former header and side rail.
     const docShellOwn = (layer) => document.querySelector(`[data-shell="doc"] ${layer}:not([data-paper] *)`);
     const shell = document.querySelector("[data-contract-surface]");
+    // The full menu is the hydrated ProductShell's and is in the page only while open (TCRN-DS-SUB-201): it is opened
+    // through the page's layer interface for the readings below and closed again before the summary returns.
+    const docMenuOpenedHere = !docShellOwn("[data-shell-menu]") && Boolean(window.tcrnDocShellLayers);
+    // As the panel at any width: the menu model's rows are read as the hidden copy of the panel was read at every width.
+    if (docMenuOpenedHere) window.tcrnDocShellLayers.setMenu(true, { presentation: "panel" });
     const storybookNav = docShellOwn("[data-shell-menu]");
+    const docMenuSearchInput = storybookNav?.querySelector("[data-shell-search] input") ?? null;
     const navRoot = storybookNav ?? document;
     const currentNav = shell?.getAttribute("data-active-story-section") ?? null;
     const docToc = document.querySelector(".tcrn-doc-page__toc[data-doc-toc]");
@@ -653,10 +659,18 @@ async function collectPageHealth(page) {
     const sidebarRect = docBrandTab?.getBoundingClientRect();
     const headerRect = docStrip?.getBoundingClientRect();
     const layoutRect = docPaper?.getBoundingClientRect();
+    // The language list is the shell's own (ShellLocaleMenu in the avatar menu; TCRN-DS-SUB-201): read with the avatar
+    // menu open, after the full menu read above is closed again.
+    if (docMenuOpenedHere) window.tcrnDocShellLayers?.setMenu(false);
+    window.tcrnDocShellLayers?.setAccount(true);
+    const docAccountOwn = (layer) => document.querySelector(`[data-shell="doc"] [data-panel="account"]:not([data-paper] *) ${layer}`);
+    const docLocaleOptionCount = document.querySelectorAll("[data-shell='doc'] [data-panel='account']:not([data-paper] *) [data-locale-menu-option]").length;
+    const docLocaleTriggerPresent = Boolean(docAccountOwn("[data-locale-menu-toggle]"));
+    window.tcrnDocShellLayers?.setAccount(false);
     return {
       title: document.title,
       shellAuthority: shell?.getAttribute("data-doc-shell") ?? null,
-      docShellSelectorCount: [shell?.matches("[data-shell='doc'][data-doc-shell]") ? shell : null, docStrip, docBrandTab, storybookNav, storybookNav?.querySelector("[data-doc-search-input]"), docPaper].filter(Boolean).length,
+      docShellSelectorCount: [shell?.matches("[data-shell='doc'][data-doc-shell]") ? shell : null, docStrip, docBrandTab, storybookNav, docMenuSearchInput, docPaper].filter(Boolean).length,
       // The documentation shell's own root and main region are the page chrome (once per page); any other global
       // ProductShell marker outside a story body still counts.
       globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
@@ -685,8 +699,8 @@ async function collectPageHealth(page) {
       shellHeaderLayoutGap: headerRect && layoutRect ? Math.round(layoutRect.top - headerRect.bottom) : null,
       sidebarLeft: headerRect ? Math.round(headerRect.left) : null,
 	      storybookLocale: shell?.getAttribute("data-storybook-locale") ?? null,
-      localeOptionCount: document.querySelectorAll("[data-i18n-locale-select] option").length,
-      localeSelectVisible: Boolean(document.querySelector("[data-i18n-locale-select]")),
+      localeOptionCount: docLocaleOptionCount,
+      localeSelectVisible: docLocaleTriggerPresent,
       componentStorybookParityNodes,
       packageBackedDisabledNavItems,
       storybookOnlyPrototypeNodes,
@@ -1426,14 +1440,70 @@ const browserProofReproducibility = {
 browserProofReproducibility.ok = browserProofReproducibility.normalizedBytesEqual
   && reproducibilityProbes.every((probe) => probe.projection.openMenus === probe.projection.expectedOpenMenus);
 
+// The hydrated documentation shell (TCRN-DS-SUB-201): a page's shell is read once it has mounted and speaks the
+// page's language (its block says data-shell-hydrated="<locale>", as the shell story blocks do).
+const waitForDocShell = (page, locale) => page.waitForFunction(
+  (expected) => document.querySelector("[data-doc-shell-root]")?.getAttribute("data-shell-hydrated") === expected,
+  locale,
+  { timeout: 20000 }
+);
+// The full menu's model readings (its rows, the categories' descriptions, the bottom bar's current location and lockup,
+// the search's names) are read with the menu open through the page's layer interface and closed again; at 760 and
+// narrower, where the menu is the Sheet (no bottom bar, the categories behind their sections' rows), they are read on
+// the panel at the desktop width and the page's viewport is restored.
+const readDocMenuModelInPage = () => {
+  const own = (layer) => document.querySelector(`[data-shell="doc"] ${layer}:not([data-paper] *)`);
+  const nav = own("[data-shell-menu]");
+  const rows = [];
+  const seen = new Set();
+  for (const link of Array.from(nav?.querySelectorAll("a[data-shell-row]") ?? [])) {
+    const page = (link.getAttribute("href") ?? "").split(/[?#]/)[0];
+    if (!page || seen.has(page)) continue;
+    seen.add(page);
+    rows.push({ page, text: link.textContent?.trim() ?? "" });
+  }
+  const pbar = own("[data-shell-pbar]");
+  const brand = pbar?.querySelector("[data-lockup]") ?? null;
+  const caption = brand?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
+  const search = nav?.querySelector("[data-shell-search] input") ?? null;
+  return {
+    menuPresent: Boolean(nav),
+    searchInputPresent: Boolean(search),
+    rows,
+    currentLocationText: pbar ? pbar.textContent ?? "" : null,
+    brandText: brand ? brand.textContent ?? "" : null,
+    brandCaptionText: caption ? caption.textContent ?? "" : null,
+    menuText: nav?.innerText ?? "",
+    searchAriaLabel: search?.getAttribute("aria-label") ?? "",
+    searchPlaceholder: search?.getAttribute("placeholder") ?? ""
+  };
+};
+const readDocMenuModel = async (page) => {
+  const viewport = page.viewportSize();
+  const narrow = Boolean(viewport && viewport.width <= 760);
+  if (narrow) await page.setViewportSize({ width: 1440, height: viewport.height });
+  await page.evaluate(() => window.tcrnDocShellLayers?.setMenu(true));
+  try {
+    await page.waitForSelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-panel='expanded'] a[data-shell-row]");
+    return await page.evaluate(readDocMenuModelInPage);
+  } finally {
+    await page.evaluate(() => window.tcrnDocShellLayers?.setMenu(false));
+    if (narrow) {
+      await page.setViewportSize(viewport);
+      await page.waitForTimeout(120);
+    }
+  }
+};
 const storybookPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 // Top-band documentation shell (TCRN-DS-SUB-131/132): the bounded section index page marks its section row current
-// in the shell's own full menu (carried hidden); its contents rail lists the category pages, not stories.
+// in the shell's own full menu (read open; TCRN-DS-SUB-201); its contents rail lists the category pages, not stories.
 const docMenuCurrentRow = (page) => `[data-shell='doc'] [data-shell-menu]:not([data-paper] *) a[data-shell-row][aria-current='page'][href^='${page}']`;
 const docTocCurrent = (storyId) => `.tcrn-doc-page__toc a[href='#${storyId}'][aria-current='location']`;
-await storybookPage.waitForSelector(docMenuCurrentRow("components.html"), { state: "attached" });
+await waitForDocShell(storybookPage, "en");
+await storybookPage.evaluate(() => window.tcrnDocShellLayers?.setMenu(true));
+await storybookPage.waitForSelector(docMenuCurrentRow("components.html"));
 await storybookPage.waitForTimeout(150);
 // TCRN-DS-STORY-056: a SECTION-slug hash (#components) still resolves to the section INDEX page,
 // which is now a BOUNDED nav-only shell — no story section and no story bodies. The menu marks the
@@ -1447,6 +1517,7 @@ const hashRouteCheck = {
   source: `${staticSurfacePath}#components`,
   url: storybookPage.url()
 };
+await storybookPage.evaluate(() => window.tcrnDocShellLayers?.setMenu(false));
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#button-spec-usage`);
 await storybookPage.waitForSelector("[data-active-story-section='Components']");
 await storybookPage.waitForSelector(docTocCurrent("button-spec-usage"));
@@ -1514,7 +1585,9 @@ for (const route of firstStoryHashShellParityRoutes) {
     await storybookPage.evaluate((name) => window.tcrnDocShellLayers?.[name]?.(false), layer);
     return value;
   };
-  const closedMetrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount, expectedShellNavGroupCount, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText, sectionFiles }) => {
+  await waitForDocShell(storybookPage, "zh-CN");
+  const menuModel = await readDocMenuModel(storybookPage);
+  const closedMetrics = await storybookPage.evaluate(({ group, storyId, expectedCategoryCount, expectedGroupCount, expectedShellNavGroupCount, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText, sectionFiles, menuModel }) => {
     const rectOf = (node) => {
       if (!node) {
         return null;
@@ -1544,8 +1617,6 @@ for (const route of firstStoryHashShellParityRoutes) {
     const brandTab = docShellOwn("[data-tab][data-shell-brand]");
     const pins = docShellOwn("[data-pins]");
     const cluster = docShellOwn("[data-cluster]");
-    const storybookNav = docShellOwn("[data-shell-menu]");
-    const currentLocationNode = docShellOwn("[data-shell-pbar]");
     const paper = document.querySelector("[data-shell='doc'] [data-paper]:not([data-paper] *)");
     const docMain = document.querySelector("[data-shell='doc'] main#content");
     const header = rectOf(strip);
@@ -1555,28 +1626,20 @@ for (const route of firstStoryHashShellParityRoutes) {
     const pageHead = rectOf(document.querySelector("[data-doc-page-head='governed-section']"));
     const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
     const activeStory = document.querySelector(".tcrn-doc-page__toc[data-doc-toc] a[aria-current='location']");
-    const rowsByPage = new Map();
-    for (const link of Array.from(storybookNav?.querySelectorAll("a[data-shell-row]") ?? [])) {
-      const page = (link.getAttribute("href") ?? "").split(/[?#]/)[0];
-      if (page && !rowsByPage.has(page)) rowsByPage.set(page, link);
-    }
+    // The full menu's rows, its bottom bar and its search are read open (readDocMenuModel; TCRN-DS-SUB-201).
+    const rowsByPage = new Map(menuModel.rows.map((row) => [row.page, row]));
     const sectionRowCount = Array.from(rowsByPage.keys()).filter((page) => sectionFiles.includes(page)).length;
     const categoryLabels = Array.from(rowsByPage.entries())
       .filter(([page]) => page.endsWith(".html") && !sectionFiles.includes(page))
-      .map(([, link]) => link.textContent?.trim() ?? "")
+      .map(([, row]) => row.text)
       .filter(Boolean);
-    // The visible brand is the band's brand button; the doc brand lockup with its caption is the one in the
-    // full menu's bottom bar.
-    const brandNode = currentLocationNode?.querySelector("[data-lockup]") ?? null;
-    const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
-    const searchInput = storybookNav?.querySelector("[data-doc-search-input]") ?? null;
     const docShellTextSurface = [
       brandTab?.textContent ?? "",
-      brandNode?.textContent ?? "",
-      storybookNav?.innerText ?? "",
-      currentLocationNode?.textContent ?? "",
-      searchInput?.getAttribute("aria-label") ?? "",
-      searchInput?.getAttribute("placeholder") ?? ""
+      menuModel.brandText ?? "",
+      menuModel.menuText,
+      menuModel.currentLocationText ?? "",
+      menuModel.searchAriaLabel,
+      menuModel.searchPlaceholder
     ].join("\\n");
     const ownerVisibleCaptionSurface = [
       docShellTextSurface,
@@ -1607,7 +1670,7 @@ for (const route of firstStoryHashShellParityRoutes) {
       scrollY: Number(((docMain?.scrollTop ?? 0) + window.scrollY).toFixed(2)),
       pageOverflow,
       shellAuthority: shell?.getAttribute("data-doc-shell") ?? null,
-      docShellSelectorCount: [shell?.matches("[data-shell='doc'][data-doc-shell]") ? shell : null, strip, brandTab, storybookNav, searchInput, paper].filter(Boolean).length,
+      docShellSelectorCount: [shell?.matches("[data-shell='doc'][data-doc-shell]") ? shell : null, strip, brandTab, menuModel.menuPresent, menuModel.searchInputPresent, paper].filter(Boolean).length,
       // The page chrome is itself the package ProductShell: its root and main region are the documentation
       // shell's own; any other global ProductShell marker outside a story body still counts.
       globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
@@ -1623,9 +1686,9 @@ for (const route of firstStoryHashShellParityRoutes) {
       navGroupCount: sectionRowCount,
       categoryLabelCount: categoryLabels.length,
       categoryLabels,
-      docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-      docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-      docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("设计系统") && !(brandNode?.textContent ?? "").includes("Component Library"),
+      docBrandText: menuModel.brandText?.replace(/\s+/g, " ").trim() ?? null,
+      docBrandCaptionText: menuModel.brandCaptionText?.replace(/\s+/g, " ").trim() ?? null,
+      docBrandCaptionLocalized: (menuModel.brandCaptionText ?? "").includes("设计系统") && !(menuModel.brandText ?? "").includes("Component Library"),
       docShellEnglishLeaks,
       ownerVisibleCaptionHits,
       brandIdentityLogoSectionReadback,
@@ -1651,6 +1714,7 @@ for (const route of firstStoryHashShellParityRoutes) {
     };
   }, {
     group: route.group,
+    menuModel,
     storyId: route.storyId,
     expectedCategoryCount,
     expectedShellNavGroupCount: expectedStorybookShellNavGroupCount,
@@ -2032,8 +2096,8 @@ const collectMobileHashAnchorMetrics = async (label) => {
       titleClearancePx: title ? Number((title.top - topbarBottom).toFixed(2)) : null,
       articleReadableBelowTopbar: Boolean(article && article.top >= topbarBottom + minimumClearancePx),
       titleReadableBelowTopbar: Boolean(title && title.top >= topbarBottom + minimumClearancePx),
-      docShellSelectorCount: ["[data-shell='doc'][data-doc-shell]", "[data-shell='doc'] [data-shell-strip]:not([data-paper] *)", "[data-shell='doc'] [data-tab][data-shell-brand]:not([data-paper] *)", "[data-shell='doc'] [data-shell-menu]:not([data-paper] *)", "[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-doc-search-input]", "[data-shell='doc'] [data-paper]:not([data-paper] *)"]
-        .filter((selector) => document.querySelector(selector)).length,
+      docShellSelectorCount: ["[data-shell='doc'][data-doc-shell]", "[data-shell='doc'] [data-shell-strip]:not([data-paper] *)", "[data-shell='doc'] [data-tab][data-shell-brand]:not([data-paper] *)", "[data-shell='doc'] [data-shell-menu]:not([data-paper] *)", "[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-shell-search] input", "[data-shell='doc'] [data-paper]:not([data-paper] *)"]
+        .filter((selector) => (() => { const layers = window.tcrnDocShellLayers; const closed = !document.querySelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *)"); if (closed) layers?.setMenu(true); try { return Boolean(document.querySelector(selector)); } finally { if (closed) layers?.setMenu(false); } })()).length,
       // The documentation shell's own root and main region are the page chrome; other global markers still count.
       globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
         .filter((node) => !node.closest(".story-body") && !node.matches("[data-shell='doc']") && !node.matches("[data-shell='doc'] main#content"))
@@ -2168,7 +2232,7 @@ for (const viewport of railReachabilityViewports) {
   const railPage = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height } });
   try {
     await railPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/proof-proof-visual-instances.html?theme=light&locale=en`);
-    await railPage.waitForSelector('[data-shell="doc"] [data-shell-menu]', { state: "attached" });
+    await waitForDocShell(railPage, "en");
     const readback = await railPage.evaluate(async () => {
       const layers = window.tcrnDocShellLayers;
       if (!layers) return { rowCount: 0, reachable: false, reason: "menu-layer-hook-missing" };
@@ -2374,8 +2438,8 @@ const collectMobileKnowledgeDocShellLayeringMetrics = async (label) => {
       titleClearancePx: title ? Number((title.top - topbarBottom).toFixed(2)) : null,
       articleReadableBelowTopbar: Boolean(article && article.top >= topbarBottom + minimumClearancePx),
       titleReadableBelowTopbar: Boolean(title && title.top >= topbarBottom + minimumClearancePx),
-      docShellSelectorCount: ["[data-shell='doc'][data-doc-shell]", "[data-shell='doc'] [data-shell-strip]:not([data-paper] *)", "[data-shell='doc'] [data-tab][data-shell-brand]:not([data-paper] *)", "[data-shell='doc'] [data-shell-menu]:not([data-paper] *)", "[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-doc-search-input]", "[data-shell='doc'] [data-paper]:not([data-paper] *)"]
-        .filter((selector) => document.querySelector(selector)).length,
+      docShellSelectorCount: ["[data-shell='doc'][data-doc-shell]", "[data-shell='doc'] [data-shell-strip]:not([data-paper] *)", "[data-shell='doc'] [data-tab][data-shell-brand]:not([data-paper] *)", "[data-shell='doc'] [data-shell-menu]:not([data-paper] *)", "[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-shell-search] input", "[data-shell='doc'] [data-paper]:not([data-paper] *)"]
+        .filter((selector) => (() => { const layers = window.tcrnDocShellLayers; const closed = !document.querySelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *)"); if (closed) layers?.setMenu(true); try { return Boolean(document.querySelector(selector)); } finally { if (closed) layers?.setMenu(false); } })()).length,
       // The documentation shell's own root and main region are the page chrome; other global markers still count.
       globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
         .filter((node) => !node.closest(".story-body") && !node.matches("[data-shell='doc']") && !node.matches("[data-shell='doc'] main#content"))
@@ -2565,7 +2629,7 @@ async function collectLocalizedShellChromeCheck(page, check) {
   await page.waitForSelector(`[data-storybook-locale='${check.locale}']`);
   await page.waitForSelector(`[data-active-story-section='${check.section}']`);
   await page.waitForSelector(docTocCurrent(check.storyId));
-  await page.waitForSelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *) a[data-shell-row]", { state: "attached" });
+  await waitForDocShell(page, check.locale);
   await page.waitForTimeout(150);
   await expandAllStoriesForContentRead(page);
   const metrics = await page.evaluate(({ requiredText, forbiddenText, expectedCategoryCount, expectedShellNavGroupCount, sectionFiles }) => {
@@ -2587,7 +2651,9 @@ async function collectLocalizedShellChromeCheck(page, check) {
             value: item.value
           }))));
     // Top-band documentation shell (TCRN-DS-SUB-131/132): sections and categories are rows of the shell's own full
-    // menu (one row per page), the current location is the menu's bottom bar and "on this page" is the contents rail.
+    // menu (one row per page), the current location is the menu's bottom bar and "on this page" is the contents rail. The hydrated
+    // shell's menu is read open through the page's layer interface (TCRN-DS-SUB-201).
+    window.tcrnDocShellLayers?.setMenu(true);
     const storybookNav = document.querySelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *)");
     const rowsByPage = new Map();
     for (const link of Array.from(storybookNav?.querySelectorAll("a[data-shell-row]") ?? [])) {
@@ -2614,6 +2680,7 @@ async function collectLocalizedShellChromeCheck(page, check) {
         .join(" "))
       .filter(Boolean);
     const currentLocation = document.querySelector("[data-shell='doc'] [data-shell-pbar]:not([data-paper] *)");
+    window.tcrnDocShellLayers?.setMenu(false);
 	    const onThisPage = document.querySelector(".tcrn-doc-page__toc[data-doc-toc] .tcrn-toc-rail");
 	    const localizedTextSurface = [
 	      bodyText,
@@ -2915,8 +2982,8 @@ async function collectBrandMarkLocaleCheck(page, locale) {
       hasRegisteredProductLogosLabel: storyText.includes("Registered product logos"),
       hasRegistryExportText: storyText.includes("ProductLogo / tcrnProductLogoRegistry"),
       // The documentation shell's Design System lockup: its first line is the wordmark and its second the
-      // description, read as the page shows them (the lockup sits in the shell's full menu, folded away).
-      designSystemDescriptionLines: Array.from(document.querySelectorAll("[data-shell='doc'] [data-registered-product-logo][data-product-id='design-system']"))
+      // description, read as the page shows them (the lockup sits in the shell's full menu, read open).
+      designSystemDescriptionLines: (() => { const layers = window.tcrnDocShellLayers; const closed = !document.querySelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *)"); if (closed) layers?.setMenu(true); try { return Array.from(document.querySelectorAll("[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-registered-product-logo][data-product-id='design-system']")); } finally { if (closed) layers?.setMenu(false); } })()
         .map((node) => ({
           lineOne: node.querySelector(".tcrn-product-logo__line-one")?.textContent?.trim() ?? null,
           lineTwo: node.querySelector(".tcrn-product-logo__line-two")?.textContent?.trim() ?? null
@@ -2933,7 +3000,9 @@ async function collectBrandMarkLocaleCheck(page, locale) {
     ["zh-CN", "en", "ja", "ko", "fr"].map((entry) => [entry, designSystemMarkContract.suffix])
   );
   const expectedProductLockups = ["AOS", "TMS", expectedDesignSystemSuffixByLocale[locale] ?? designSystemMarkContract.suffix];
-  const expectedDesignSystemDescription = storybookContentText[designSystemMarkContract.taglines.en]?.[locale] ?? designSystemMarkContract.taglines.en;
+  // The shell is the hydrated ProductShell (TCRN-DS-SUB-201): its lockup's description is the package's, the contract's
+  // tagline in the shell's language (marks.json ds.taglines), no longer the page swap's dictionary entry.
+  const expectedDesignSystemDescription = designSystemMarkContract.taglines?.[locale] ?? designSystemMarkContract.taglines.en;
   const designSystemDescriptionCheck = {
     expectedLineOne: designSystemMarkContract.name,
     expectedLineTwo: expectedDesignSystemDescription,
@@ -2977,7 +3046,7 @@ const localeRouteCheck = {
   ok: storybookPage.url().endsWith("/components-controls-data.html?locale=ja#button-spec-usage")
     && await storybookPage.locator("[data-story-section='Components']").isVisible()
     && await storybookPage.locator("[data-story-id='button-spec-usage']").isVisible()
-    && await storybookPage.locator("[data-i18n-locale-select]").evaluate((node) => node.value) === "ja"
+    && await storybookPage.evaluate(() => document.querySelector("[data-doc-shell]")?.getAttribute("data-storybook-locale")) === "ja"
     && await storybookPage.evaluate(() => Array.from(document.querySelectorAll("[data-i18n='story.button-spec-usage.title']"))
       .some((node) => node.textContent?.trim() === "ボタン仕様と使用法"))
     && await storybookPage.evaluate(() => Array.from(document.querySelectorAll("[data-i18n='group.Components']"))
@@ -3021,18 +3090,23 @@ for (const story of requiredStories) {
 // confirm a result carries that panel's #anchor and that getElementById finds it.
 await storybookPage.goto(`${staticServer.origin}/apps/storybook/storybook-static/components-component-inventory.html?locale=en`);
 await storybookPage.waitForSelector("[data-readback-panel-anchor]", { state: "attached" });
-const panelSearchReadback = await storybookPage.evaluate(() => {
+const panelSearchReadback = await storybookPage.evaluate(async () => {
   const panel = document.querySelector(".tcrn-readback-panel[id]");
   const heading = panel && panel.querySelector(":scope > h2.tcrn-heading, :scope > h3.tcrn-heading, :scope > h4.tcrn-heading");
   const panelId = panel ? panel.id : "";
   const query = heading && heading.textContent ? heading.textContent.trim() : "";
-  const input = document.querySelector("[data-doc-search-input]");
+  // The full menu's search is the hydrated shell's (TCRN-DS-SUB-201): opened through the page's layer interface, typed
+  // as a reader types (the input's own value setter and an input event, which React hears), read once it has rendered.
+  window.tcrnDocShellLayers?.setMenu(true);
+  const input = document.querySelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-shell-search] input");
   if (!(input instanceof HTMLInputElement) || !panelId || !query) {
     return { ok: false, reason: "missing-panel-or-input", panelId, query };
   }
-  input.value = query;
+  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(input, query);
   input.dispatchEvent(new Event("input", { bubbles: true }));
-  const hrefs = Array.from(document.querySelectorAll("[data-doc-search-result]")).map((node) => node.getAttribute("href"));
+  await new Promise((resolve) => setTimeout(resolve, 120));
+  const hrefs = Array.from(document.querySelectorAll("[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-search-result]")).map((node) => node.getAttribute("href"));
+  window.tcrnDocShellLayers?.setMenu(false);
   const matchHref = "#" + panelId;
   const found = hrefs.includes(matchHref);
   const anchorResolves = Boolean(document.getElementById(panelId));

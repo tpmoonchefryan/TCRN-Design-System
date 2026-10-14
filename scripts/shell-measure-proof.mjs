@@ -49,7 +49,9 @@
 //   intro          登入动画         behaviour trace: 1 play per session, 0 on reload, 0 under reduced motion;
 //                                  transform and opacity only; <= 700ms     (mutation: session marker removed)
 //   focusLoop      焦点回路         behaviour trace: after Esc focus is on the tab, after Cmd/Ctrl+K on the
-//                                  search; arrows move between cascade columns; one Cmd/Ctrl+K per shell
+//                                  probed screen's own search (the page is opened with shell-shortcut=<screen>,
+//                                  按页面参数只开被测屏; another shell's search fails); arrows move between
+//                                  cascade columns; one Cmd/Ctrl+K per shell
 //                                                                       (mutation: focus not returned)
 //   touch          触摸端           390 wide: the tab is hit at its centre and >= 40 tall, no pinned item in
 //                                  the strip, an open layer is the Sheet, sheet rows 44  (mutation: row height 32)
@@ -190,6 +192,9 @@ export const GATES = deepFreeze([
 ]);
 export const GATE_IDS = deepFreeze(GATES.map((gate) => gate.id));
 export const BEHAVIOUR_GATE_IDS = deepFreeze(["intro", "focusLoop"]);
+// The page parameter that gives ⌘K / Ctrl+K to one shell story screen (build/shell-hydrate.tsx; TCRN-DS-SUB-179):
+// every other screen and the documentation shell leave the key alone while it is on the page.
+export const SHELL_SHORTCUT_PARAMETER = "shell-shortcut";
 export const READING_GATE_IDS = deepFreeze(GATE_IDS.filter((id) => !BEHAVIOUR_GATE_IDS.includes(id)));
 // Checks beyond the G section (header): reading checks, reported under `checks`.
 export const CHECKS = deepFreeze([
@@ -1007,7 +1012,10 @@ export async function probeShellBehaviour(page, { scope = "body", screen, cascad
   await page.keyboard.press("Control+k");
   await settle();
   const afterK = await state();
-  const afterCommandK = !afterK.open ? "unopened" : afterK.focus === "search:other-shell" ? "search" : afterK.focus;
+  // The focus must be in the probed screen's own search (TCRN-DS-SUB-179, R3-16): another shell's search ("search:other-shell")
+  // is a second shell that took the key too, and fails. The page opens with shell-shortcut=<screen> so that only the
+  // probed screen registers ⌘K (openStory below); the documentation shell then leaves the key to it.
+  const afterCommandK = !afterK.open ? "unopened" : afterK.focus;
   await closeIfOpen();
 
   // arrows: from a column-1 row with a cascade, ArrowRight -> column 2, ArrowLeft -> column 1
@@ -1197,11 +1205,15 @@ export async function runStories({ root = process.cwd(), browser, launchOptions,
         const brandLockups = await readBrandLockups(brandPage);
         await brandPage.close();
         const viewportOf = (id) => STORY_RUN.viewports[STORY_RUN.storyViewport[id] || "desktop"];
-        const openStory = async (route, { locale, theme, ops = null }) => {
+        // shortcut: the screen that alone registers ⌘K on the page (shell-shortcut=<screen>, TCRN-DS-SUB-179): the
+        // shell story screens leave the key alone by default and the documentation shell leaves it to that screen.
+        const openStory = async (route, { locale, theme, ops = null, shortcut = null }) => {
           const page = await context.newPage();
           try {
             await page.setViewportSize(viewportOf(route.id));
-            await page.goto(storyUrl(server.origin, route, { theme, locale }), { waitUntil: "load" });
+            const url = new URL(storyUrl(server.origin, route, { theme, locale }));
+            if (shortcut) url.searchParams.set(SHELL_SHORTCUT_PARAMETER, shortcut);
+            await page.goto(url.href, { waitUntil: "load" });
             await expandStory(page, route.id);
             await page.addStyleTag({ content: NO_MOTION_CSS });
             await settlePage(page);
@@ -1242,7 +1254,7 @@ export async function runStories({ root = process.cwd(), browser, launchOptions,
         const probeLoop = async (locale, ops) => {
           const route = probes.focusLoop && routeOf.get(probes.focusLoop.story);
           if (!route) return { trace: null, notes: ["focus-loop story not in this run"] };
-          const page = await openStory(route, { locale, theme: "light", ops });
+          const page = await openStory(route, { locale, theme: "light", ops, shortcut: probes.focusLoop.screen });
           try {
             return await probeShellBehaviour(page, { scope: route.bodySelector, screen: probes.focusLoop.screen, cascadeScreen: probes.focusLoop.cascadeScreen, waitMs: probes.waitMs });
           } finally {
