@@ -2845,21 +2845,21 @@ const legacyContractStories: LegacyContractStory[] = [
             }))}
           />
         </ReadbackPanel>
-        <ReadbackPanel title="Tree, canvas, and local rail">
-          <SplitView
-            label="Document component split view"
+        <ReadbackPanel title="Document tree in a drop-down">
+          <Text>A tree of destinations lives in the full menu and the drop-downs, so TreeNav sits in a drop-down and carries no frame of its own; a page does not take it as a navigation column.</Text>
+          <Popover title="Documents" open placement="bottom-start">
+            <TreeNav label="Document tree" items={documentTreeItems} density="dense" />
+          </Popover>
+        </ReadbackPanel>
+        <ReadbackPanel title="Canvas and contents in the page">
+          <Text>A page that needs its own contents shows them as page content: the document canvas and its TocRail sit in the paper.</Text>
+          <DocumentCanvas
             density="dense"
-            list={<TreeNav items={documentTreeItems} density="dense" />}
-            detail={
-              <DocumentCanvas
-                density="dense"
-                title="Owner inspection guide"
-                summary="Static document canvas using TCRN-owned component primitives and sanitized references."
-                labels={["owner-review", "static", "no-live"]}
-                meta={<MachineTokenCell token="KB-STATIC-01" kind="generic" density="dense" />}
-                sections={knowledgeDocumentSections}
-              />
-            }
+            title="Owner inspection guide"
+            summary="Static document canvas using TCRN-owned component primitives and sanitized references."
+            labels={["owner-review", "static", "no-live"]}
+            meta={<MachineTokenCell token="KB-STATIC-01" kind="generic" density="dense" />}
+            sections={knowledgeDocumentSections}
           />
           <TocRail
             density="dense"
@@ -2880,10 +2880,18 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="Density variants">
-          <Text>Document surfaces accept the same comfortable, compact, or dense density. The same TreeNav is shown at all three. Only the dense modifier carries distinct package styling today; comfortable and compact record the density on data-density but share the default styling.</Text>
-          <TreeNav label="Document page tree (comfortable)" items={documentTreeItems} density="comfortable" />
-          <TreeNav label="Document page tree (compact)" items={documentTreeItems} density="compact" />
-          <TreeNav label="Document page tree (dense)" items={documentTreeItems} density="dense" />
+          <Text>Document surfaces accept the same comfortable, compact, or dense density. The same TreeNav is shown at all three, each in its drop-down. Only the dense modifier carries distinct package styling today; comfortable and compact record the density on data-density but share the default styling.</Text>
+          <div className="tcrn-doc-display-primitive-grid">
+            <Popover title="Comfortable" open placement="bottom-start">
+              <TreeNav label="Document page tree (comfortable)" items={documentTreeItems} density="comfortable" />
+            </Popover>
+            <Popover title="Compact" open placement="bottom-start">
+              <TreeNav label="Document page tree (compact)" items={documentTreeItems} density="compact" />
+            </Popover>
+            <Popover title="Dense" open placement="bottom-start">
+              <TreeNav label="Document page tree (dense)" items={documentTreeItems} density="dense" />
+            </Popover>
+          </div>
         </ReadbackPanel>
         <ReadbackPanel title="Metadata, comments, evidence, and history">
           <MetadataRail
