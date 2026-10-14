@@ -182,11 +182,11 @@ test("STORY-146 the page header's title row is the board's .ph: gap 14, a line-2
   assert.match(header, /padding-block-end: var\(--tcrn-space-3\);/);
   assert.equal(px("--tcrn-space-3"), 12);
 
-  // The title is a class, not an element: .tcrn-page-header__title holds the heading of level 2
-  // in the scale's writing, which is the board's h2 glyph (serif, 26, regular, tracking -.005em,
-  // one line with an ellipsis).
+  // The title is the heading itself (TCRN-DS-SUB-156): .tcrn-page-header__title sits on the heading
+  // of level 2 in the scale's writing, which is the board's h2 glyph (serif, 26, regular, tracking
+  // -.005em, one line with an ellipsis).
   const html = renderToStaticMarkup(<PageHeader title="Roster" />);
-  assert.match(html, /<div class="tcrn-page-header__title"><h2 title="Roster" class="tcrn-heading tcrn-heading--2">Roster<\/h2>/);
+  assert.match(html, /<div class="tcrn-page-header__lead"><h2 title="Roster" class="tcrn-heading tcrn-heading--2 tcrn-page-header__title">Roster<\/h2><\/div>/);
   const heading = /\.tcrn-heading--2\{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
   assert.match(heading, /font-family:var\(--tcrn-type-family-serif\)/);
   assert.match(heading, /font-size:var\(--tcrn-type-size-heading-2\)/);
@@ -196,11 +196,39 @@ test("STORY-146 the page header's title row is the board's .ph: gap 14, a line-2
   assert.match(heading, /white-space:nowrap;overflow:hidden;text-overflow:ellipsis/);
 });
 
+test("STORY-143 STORY-146 the page header's title role is the heading itself: one line, its text as the title, the description its own element (TCRN-DS-SUB-156)", () => {
+  // roles.json registers .tcrn-page-header__title as the page header's single-line title (C7). The
+  // class used to sit on a block holding the heading and the description, so the rendered role held
+  // block elements and its rule could not truncate; it is now on the heading.
+  const html = renderToStaticMarkup(<PageHeader title="Quarterly roster of every signed talent" description="Everyone signed" meta={<span>12</span>} />);
+  const lead = /<div class="tcrn-page-header__lead">([\s\S]*?)<\/div>/.exec(html)?.[1] ?? "";
+  assert.equal(
+    lead,
+    '<h2 title="Quarterly roster of every signed talent" class="tcrn-heading tcrn-heading--2 tcrn-page-header__title">Quarterly roster of every signed talent</h2>' +
+      '<p class="tcrn-text tcrn-page-header__description">Everyone signed</p>'
+  );
+  assert.equal((html.match(/tcrn-page-header__title/g) ?? []).length, 1, "one element carries the title role");
+  assert.match(html, /<\/div><div class="tcrn-page-header__meta"><span>12<\/span><\/div>/, "the meta still sits beside the title column");
+  const rule = (selector: string) => {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const found = new RegExp(`\\n${escaped} \\{([^}]*)\\}`).exec(tcrnComponentCss);
+    assert.ok(found, `${selector} has a rule`);
+    return found[1];
+  };
+  const title = rule(".tcrn-page-header__title");
+  for (const declaration of ["min-width: 0;", "overflow: hidden;", "text-overflow: ellipsis;", "white-space: nowrap;"]) {
+    assert.ok(title.includes(declaration), `the title rule has ${declaration}`);
+  }
+  assert.match(rule(".tcrn-page-header__lead"), /\n {2}min-width: 0;/);
+  // The description sits directly under the title, as it did inside the old title block.
+  assert.match(rule(".tcrn-page-header__description"), /\n {2}margin: 0;/);
+});
+
 test("STORY-146 STORY-147 PageHeader's title is an h2 by default and an h1 when asked, in the same type either way (TCRN-DS-SUB-163)", () => {
   const h2 = renderToStaticMarkup(<PageHeader title="Roster" description="Everyone signed" />);
   const h1 = renderToStaticMarkup(<PageHeader title="Roster" description="Everyone signed" headingLevel={1} />);
-  assert.match(h2, /<h2 [^>]*class="tcrn-heading tcrn-heading--2"[^>]*>Roster<\/h2>/);
-  assert.match(h1, /<h1 [^>]*class="tcrn-heading tcrn-heading--2"[^>]*>Roster<\/h1>/);
+  assert.match(h2, /<h2 [^>]*class="tcrn-heading tcrn-heading--2 tcrn-page-header__title"[^>]*>Roster<\/h2>/);
+  assert.match(h1, /<h1 [^>]*class="tcrn-heading tcrn-heading--2 tcrn-page-header__title"[^>]*>Roster<\/h1>/);
   assert.equal(h1.replace(/<(\/?)h1\b/g, "<$1h2"), h2, "only the element changes; the classes, so the styles, are the same");
   assert.equal(renderToStaticMarkup(<PageHeader title="Roster" description="Everyone signed" headingLevel={2} />), h2);
   // No rule of the package picks the title out by its element, so h1 and h2 read the same styles.

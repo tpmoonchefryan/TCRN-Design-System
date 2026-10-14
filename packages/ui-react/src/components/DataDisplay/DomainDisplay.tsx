@@ -283,9 +283,13 @@ export function PageHeader({ title, description, breadcrumbs = [], meta, actions
         />
       ) : null}
       <div className="tcrn-page-header__body">
-        <div className="tcrn-page-header__title">
-          <Heading level={headingLevel === 1 ? 1 : 2} visualLevel={2}>{title}</Heading>
-          {description ? <Text>{description}</Text> : null}
+        {/* The title is the heading itself, one line with its text as the title (C7,
+            TCRN-DS-SUB-156); the description is its own element under it. */}
+        <div className="tcrn-page-header__lead">
+          <Heading level={headingLevel === 1 ? 1 : 2} visualLevel={2} className="tcrn-page-header__title" title={title}>
+            {title}
+          </Heading>
+          {description ? <Text className="tcrn-page-header__description">{description}</Text> : null}
         </div>
         {meta ? <div className="tcrn-page-header__meta">{meta}</div> : null}
         {actions.length ? (
