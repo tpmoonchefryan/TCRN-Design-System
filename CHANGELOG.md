@@ -31,6 +31,12 @@ change a step, by consumer and item by item:
   `pin` (M25); `ProductLockup` takes a first-line rendition (M26); `ProductShell`
   requires `pageHeader` (M27); the TMS suffix is one colour in both themes (M28);
   five shell parts are new (M29).
+- Second batch, second round: the navigation and shell families part by part (M30);
+  the shell-size tokens and the coarse-pointer token block (M31); reordering the
+  pins (M32); the full menu's query and its category descriptions (M33); the paper's
+  h1 and the page header's markup (M34); landmark names per shell (M35); smaller
+  changes to the shell, its rows and the lockups (M36); when the sign-in intro is
+  mounted, the one-screen shell and framing an embedded shell (M37).
 
 Overtaken within this release. The entries below keep the wording they were written
 with. The first batch was never published before the second replaced part of it, so
