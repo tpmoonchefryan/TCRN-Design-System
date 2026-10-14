@@ -55,10 +55,8 @@ import {
   SettingRowList,
   SettingsHostSwitcher,
   SettingsLayout,
-  ShellIntro,
   shellIntroSessionMarker,
   shellIntroTimeline,
-  shellMenuCascades,
   ShellThemeToggle,
   Progress,
   Skeleton,
@@ -164,13 +162,20 @@ import type {
   BoardLane,
   GraphEdge,
   GraphNode,
-  ProductShellNavGroup,
-  RecordRowProps,
-  ShellMenuItem,
-  ShellMenuRowContext
+  RecordRowProps
 } from "@tcrn/ui-react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { applyMarkupEdits, type MarkupEdit } from "./gplus/matrix-renderer.js";
+import { renderToString } from "react-dom/server";
+import { applyMarkupEdits } from "./gplus/matrix-renderer.js";
+import {
+  ShellStoryRoot,
+  shellIntroScreen,
+  shellMobileScreens,
+  shellNarrowScreens,
+  shellStoryIdentifierPrefix,
+  shellStoryThemeAttribute,
+  shellTopBandScreens,
+  type ShellStoryScreen
+} from "../build/shell-hydrate.js";
 import {
   DialogSpecFixture,
   OverlayFocusFixture,
@@ -583,229 +588,61 @@ const documentSearchResults = [
 // section A: the package ProductShell closed, with the full menu open, and with a pinned item's
 // drop-down and its third-level cascade, as a light and a night block. shell-narrow shows the shell
 // 1023 wide and shell-mobile 390 wide, closed and with the menu open; shell-intro carries the sign-in
-// intro. The menu model is the board's sample navigation (NAV and PINS of
-// docs/design/gplus-2026-10/tools/build-shell2.mjs) as generic product content, the brand is the
-// board's own, and every block's data-shell is the board's name for that screen.
+// intro. The menu model is the board's sample navigation as generic product content, the brand is
+// the board's own, and every block's data-shell is the board's name for that screen.
 //
-// The static pages are rendered on the server and run no client React, so a state the package keeps
-// inside a component is switched in its markup, as the family matrices switch theirs
-// (applyMarkupEdits): the hover preview of the third pinned item and of a menu row, and the open
-// drop-down. On the server a drop-down stays hidden until the page reports where its pinned item
-// is; here it is anchored to that item with CSS anchor positioning (left at the item's start edge,
-// top at its bottom, the hand-off gap the package's own margin), and its open cascade is the
-// package's own shellMenuCascades output for the Templates row. Each block is a layout-containment
-// box, so the fixed drop-down is placed in its own block as a full-window shell places it in the
-// window. The narrow and phone presentations follow the viewport (media queries of the package):
-// shell-narrow and shell-mobile show them at a viewport of that width (the shell gate opens
-// shell-mobile at 390); at the documentation's desktop width their frames are 1023 and 390 wide.
-type ShellStoryState = "closed" | "expanded" | "drop";
-type ShellStoryTheme = "light" | "night";
-
-interface ShellStoryScreen {
-  /** The board's name for the screen, written to data-shell. */
-  screen: string;
-  state: ShellStoryState;
-  theme: ShellStoryTheme;
-  /** Accessible name of the screen's content region, unique on the page. */
-  label: string;
-}
-
-const shellStoryThemeAttribute: Readonly<Record<ShellStoryTheme, "light" | "dark">> = { light: "light", night: "dark" };
-// PINS of the board: the current page, a pinned item with a menu, a link and a second menu.
-const shellStoryPinnedIds: readonly string[] = ["roster", "contracts", "statements", "schedule"];
-const shellStoryDropPinId = "contracts";
-const shellStoryCascadeRowId = "templates";
-
-function shellStoryNavGroups(storyId: string): ProductShellNavGroup[] {
-  const href = `#${storyId}`;
-  return [
-    {
-      id: "people",
-      label: "People",
-      items: [
-        { id: "roster", label: "Roster", href, iconName: "users", selected: true },
-        { id: "teams", label: "Teams", href, iconName: "layers" },
-        {
-          id: "contracts",
-          label: "Contracts",
-          iconName: "book-open",
-          children: [
-            { id: "all-contracts", label: "All contracts", href },
-            {
-              id: "templates",
-              label: "Templates",
-              children: [
-                { id: "signing-contracts", label: "Signing contracts", href },
-                { id: "agency-contracts", label: "Agency contracts", href },
-                { id: "event-contracts", label: "Event contracts", href },
-                { id: "confidentiality-agreements", label: "Confidentiality agreements", href }
-              ]
-            },
-            { id: "approvals", label: "Approvals", href },
-            { id: "expiry-reminders", label: "Expiry reminders", href }
-          ]
-        },
-        { id: "statements", label: "Statements", href, iconName: "database" }
-      ]
-    },
-    {
-      id: "operations",
-      label: "Operations",
-      items: [
-        {
-          id: "schedule",
-          label: "Schedule",
-          iconName: "calendar",
-          children: [
-            { id: "this-week", label: "This week", href },
-            { id: "month-view", label: "Month view", href },
-            { id: "conflict-check", label: "Conflict check", href }
-          ]
-        },
-        { id: "live-streams", label: "Live streams", href, iconName: "globe-2" },
-        { id: "events", label: "Events", href, iconName: "package" },
-        { id: "reports", label: "Reports", href, iconName: "layout-grid" }
-      ]
-    },
-    {
-      id: "system",
-      label: "System",
-      items: [
-        { id: "members", label: "Members", href, iconName: "users" },
-        { id: "permissions", label: "Permissions", href, iconName: "shield-check" },
-        { id: "settings", label: "Settings", href, iconName: "settings" },
-        { id: "audit-log", label: "Audit log", href, iconName: "history" }
-      ]
-    }
-  ];
-}
-
-function ShellStoryShell({ storyId, screen }: { storyId: string; screen: ShellStoryScreen }) {
-  return (
-    <ProductShell
-      productName="TCRN TMS"
-      moduleName="People"
-      brandProductId="tms"
-      currentRouteLabel="Roster"
-      // The paper's first row (TCRN-DS-SUB-129): its trail is the current position, People › Roster.
-      pageHeader={{ title: "Roster" }}
-      navGroups={shellStoryNavGroups(storyId)}
-      locales={tcrnLocaleMetadata}
-      currentLocale={tcrnDefaultLocale}
-      currentTheme={shellStoryThemeAttribute[screen.theme]}
-      account={{ name: "Lin Xia", initials: "LX" }}
-      notifications={{ unread: 3 }}
-      pinnedIds={shellStoryPinnedIds}
-      onPinnedChange={() => undefined}
-      menuOpen={screen.state === "expanded"}
-      openPinId={screen.state === "drop" ? shellStoryDropPinId : null}
-      contentId={`${storyId}-${screen.screen}-content`}
-      contentLabel={screen.label}
-      data-shell={screen.screen}
-    >
-      <div className="tcrn-product-shell-content-stack">
-        <Text>Twelve people across four teams, updated today.</Text>
-      </div>
-    </ProductShell>
-  );
-}
-
-// Index of the </div> that closes the <div> opening at `start`.
-function shellStoryClosingDiv(html: string, start: number): number {
-  const tags = /<div\b|<\/div>/g;
-  tags.lastIndex = start;
-  let depth = 0;
-  for (let match = tags.exec(html); match; match = tags.exec(html)) {
-    depth += match[0] === "</div>" ? -1 : 1;
-    if (depth === 0) return match.index;
-  }
-  throw new Error("shell_story_unclosed_div");
-}
-
-// The open drop-down of the pinned Contracts item with the cascade of its Templates row.
-function shellStoryOpenDropDown(html: string, storyId: string, prefix: string): string {
-  const dropId = /<section id="([^"]+)" class="tcrn-shell-dropdown__panel"/.exec(html)?.[1];
-  const source = shellStoryNavGroups(storyId).flatMap((group) => group.items).find((item) => item.id === shellStoryDropPinId);
-  if (!dropId || !source?.children) throw new Error(`shell_story_drop_down_missing:${prefix}`);
-  const entries: readonly ShellMenuItem[] = source.children;
-  const columnIdOf = (entryId: string) => `${dropId}-col-${entryId}`;
-  const context: ShellMenuRowContext = {
-    selectedId: "roster",
-    pinnedIds: new Set(shellStoryPinnedIds),
-    onPinnedChange: () => undefined,
-    locale: tcrnDefaultLocale,
-    openPath: [shellStoryCascadeRowId],
-    firstLevel: 3,
-    columnIdOf,
-    onToggle: () => undefined
-  };
-  const cascade = renderToStaticMarkup(<>{shellMenuCascades(entries, context, "tcrn-shell-menu__cascade tcrn-shell-dropdown__col")}</>, { identifierPrefix: `${prefix}-cascade-` });
-  const anchor = `--${prefix}-open-pin`;
-  const edits: MarkupEdit[] = [
-    { marker: `aria-controls="${dropId}"`, set: { style: `anchor-name:${anchor}` } },
-    { marker: 'data-shell-dropdown=""', set: { style: `position-anchor:${anchor};left:anchor(left);top:anchor(bottom)` } },
-    { marker: `<section id="${dropId}"`, set: { "aria-owns": columnIdOf(shellStoryCascadeRowId) } },
-    { marker: `aria-controls="${columnIdOf(shellStoryCascadeRowId)}"`, set: { "aria-expanded": "true" } }
-  ];
-  const edited = applyMarkupEdits(html, edits);
-  const root = edited.lastIndexOf("<div", edited.indexOf('data-shell-dropdown=""'));
-  const close = shellStoryClosingDiv(edited, root);
-  return `${edited.slice(0, close)}${cascade}${edited.slice(close)}`;
-}
-
+// TCRN-DS-SUB-151: the screens are the page's client mount's (../build/shell-hydrate.tsx). Each
+// block is rendered here to a string with the element the page hydrates in it, so the shell on the
+// page is the live package part: its states are its own props (the open menu, the open drop-down
+// with its cascade, the rows under the pointer as previewStates), and the brand button, Esc, ⌘K, a
+// press outside, the Sheet and the intro work as in a product. Only the closed screens' third
+// pinned item under the pointer is still switched in the markup (applyMarkupEdits): ShellPins takes
+// no preview states. Each block is a layout-containment box, so a fixed drop-down is placed in its
+// own block as a full-window shell places it in the window (ShellDropdown measures from that box);
+// the intro's block is not, so its layer covers the window as at sign-in. The narrow and phone
+// presentations follow the viewport (media queries of the package): shell-narrow and shell-mobile
+// show them at a viewport of that width (the shell gate opens shell-mobile at 390); at the
+// documentation's desktop width their frames are 1023 and 390 wide.
 function shellStoryMarkup(storyId: string, screen: ShellStoryScreen): string {
-  const prefix = `${storyId}-${screen.screen}`;
-  const html = renderToStaticMarkup(<ShellStoryShell storyId={storyId} screen={screen} />, { identifierPrefix: `${prefix}-` });
-  // The board's closed screens show the third pinned item under the pointer, and its full-menu
-  // screens the Teams row; the drop-down screens show neither.
+  const html = renderToString(<ShellStoryRoot storyId={storyId} screen={screen} />, { identifierPrefix: shellStoryIdentifierPrefix(storyId, screen.screen) });
   if (screen.state === "closed") return applyMarkupEdits(html, [{ marker: 'class="tcrn-shell-pins__item"', nth: 2, set: { "data-tcrn-preview-state": "hover" } }]);
-  if (screen.state === "expanded") return applyMarkupEdits(html, [{ marker: 'title="Teams" data-shell-row=""', set: { "data-tcrn-preview-state": "hover" } }]);
-  return shellStoryOpenDropDown(html, storyId, prefix);
+  return html;
 }
 
-function shellStoryBlockStyle(width?: number): CSSProperties {
-  return width ? { contain: "layout", inlineSize: `min(100%, ${width}px)` } : { contain: "layout" };
+function shellStoryBlockStyle(width?: number, contained = true): CSSProperties {
+  const style: CSSProperties = contained ? { contain: "layout" } : {};
+  return width ? { ...style, inlineSize: `min(100%, ${width}px)` } : style;
+}
+
+function ShellStoryBlock({ storyId, screen, width, contained = true }: { storyId: string; screen: ShellStoryScreen; width?: number; contained?: boolean }) {
+  return (
+    <div
+      data-tcrn-theme={shellStoryThemeAttribute[screen.theme]}
+      data-shell-story-block={screen.screen}
+      style={shellStoryBlockStyle(width, contained)}
+      data-shell-hydrate=""
+      dangerouslySetInnerHTML={{ __html: shellStoryMarkup(storyId, screen) }}
+    />
+  );
 }
 
 function ShellStoryBlocks({ storyId, screens, width }: { storyId: string; screens: readonly ShellStoryScreen[]; width?: number }) {
   return (
     <section className="alpha-story-stack" data-shell-story={storyId}>
       {screens.map((screen) => (
-        <div key={screen.screen} data-tcrn-theme={shellStoryThemeAttribute[screen.theme]} data-shell-story-block={screen.screen} style={shellStoryBlockStyle(width)} dangerouslySetInnerHTML={{ __html: shellStoryMarkup(storyId, screen) }} />
+        <ShellStoryBlock key={screen.screen} storyId={storyId} screen={screen} width={width} />
       ))}
     </section>
   );
 }
 
-const shellTopBandScreens: readonly ShellStoryScreen[] = [
-  { screen: "ts-closed-l", state: "closed", theme: "light", label: "Closed band" },
-  { screen: "ts-closed-n", state: "closed", theme: "night", label: "Closed band (night)" },
-  { screen: "ts-x-l", state: "expanded", theme: "light", label: "Full menu open" },
-  { screen: "ts-x-n", state: "expanded", theme: "night", label: "Full menu open (night)" },
-  { screen: "ts-drop-l", state: "drop", theme: "light", label: "Drop-down open" },
-  { screen: "ts-drop-n", state: "drop", theme: "night", label: "Drop-down open (night)" }
-];
-const shellNarrowScreens: readonly ShellStoryScreen[] = [
-  { screen: "ts-narrow-l", state: "closed", theme: "light", label: "Narrow band" },
-  { screen: "ts-narrow-x-l", state: "expanded", theme: "light", label: "Narrow band with the full menu" }
-];
-// ts-m-s is the board's phone screen with the menu open; it shows the sheet once ShellMenu has it.
-const shellMobileScreens: readonly ShellStoryScreen[] = [
-  { screen: "ts-m-l", state: "closed", theme: "light", label: "Phone band" },
-  { screen: "ts-m-s", state: "expanded", theme: "light", label: "Phone band with the menu" }
-];
-const shellIntroScreen: ShellStoryScreen = { screen: "ts-intro-l", state: "closed", theme: "light", label: "Band after sign-in" };
 export const shellStoryFrameWidths = { narrow: 1023, mobile: 390 } as const;
 
 function ShellIntroStory() {
   const timeline = shellIntroTimeline();
   return (
     <section className="alpha-story-stack" data-shell-story="shell-intro">
-      {/* The shell is live here, not markup: in a client mount ShellIntro finds its brand button. */}
-      <div data-tcrn-theme={shellStoryThemeAttribute[shellIntroScreen.theme]} data-shell-story-block={shellIntroScreen.screen} style={shellStoryBlockStyle()}>
-        <ShellStoryShell storyId="shell-intro" screen={shellIntroScreen} />
-        <ShellIntro productId="tms" card={<ProductLockup productId="tms" />} locale={tcrnDefaultLocale} />
-      </div>
+      <ShellStoryBlock storyId="shell-intro" screen={shellIntroScreen} contained={false} />
       <ReadbackPanel title="Sign-in intro">
         <Text>When sign-in succeeds, the card fades, the product mark travels into the brand button and the paper rises: once per session, and never under reduced motion.</Text>
         <TableShell
@@ -820,7 +657,6 @@ function ShellIntroStory() {
             { phase: "Ceiling", duration: `${timeline.max} ms` }
           ]}
         />
-        <Text>These pages are rendered on the server, where the shell is already in its final state, so the intro does not play here; clear the session marker from sessionStorage to play it again in a client mount.</Text>
         <Text>
           <code>{`sessionStorage.removeItem("${shellIntroSessionMarker}")`}</code>
         </Text>

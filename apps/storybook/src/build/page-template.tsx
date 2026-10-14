@@ -722,10 +722,19 @@ ${dialogFixtureScript}
 ${storyDisclosureScript}
 ${tableToolbarScript}
 <script type="module">import { mountStaticMultiSelect, mountStaticClipboardCopyButton } from "./ds-static-bridges.js"; for (const root of document.querySelectorAll("[data-choice-presentation=dropdown]")) mountStaticMultiSelect({ root }); for (const root of document.querySelectorAll("button[data-clipboard-text]")) mountStaticClipboardCopyButton({ root });</script>
+${shellHydrateScript(body)}
 ${anchorScrollScript}
 </body>
 </html>
 `;
+}
+
+// TCRN-DS-SUB-151: a page that carries shell story blocks mounts them (build/shell-hydrate.tsx,
+// bundled as ds-shell-hydrate.js by build.tsx). A module script runs after the page's own scripts,
+// so the language script has left window.tcrnStorybookTextFor and the resolved locale for it.
+function shellHydrateScript(body: string): string {
+  if (!body.includes("data-shell-hydrate=")) return "";
+  return '<script type="module">import { mountShellStories } from "./ds-shell-hydrate.js"; mountShellStories(document);</script>';
 }
 
 // Section INDEX page: the shell, the boundary and a bounded category-index body; the TocRail lists

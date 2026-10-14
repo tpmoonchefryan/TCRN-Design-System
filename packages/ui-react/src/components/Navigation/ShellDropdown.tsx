@@ -67,12 +67,61 @@ export interface ShellDropdownProps extends Omit<HTMLAttributes<HTMLDivElement>,
   searchProvider?: ShellMenuSearchProvider;
   /** Language of the copy; the page's own when omitted. */
   locale?: TcrnLocale | string;
-  /** Static states for documentation, by row id: data-tcrn-preview-state. */
+  /**
+   * Static states for documentation, by row id: data-tcrn-preview-state. A row with a next level
+   * marked "open" starts with that level open (from the drop-down's own rows down), as a page
+   * rendered on the server shows a drop-down with its cascade.
+   */
   previewStates?: Readonly<Record<string, string>>;
 }
 
 function entriesOf(source: ShellMenuGroup | ShellMenuItem): readonly ShellMenuItem[] {
   return "items" in source ? source.items : (source.children ?? []);
+}
+
+/** The open path previewStates asks for: level by level, the row marked "open" that has a next level. */
+function previewOpenPath(entries: readonly ShellMenuItem[], previewStates: Readonly<Record<string, string>> | undefined, firstLevel: number): string[] {
+  const path: string[] = [];
+  if (!previewStates) return path;
+  let rows = entries;
+  for (let level = firstLevel; level < shellMenuMaxDepth; level += 1) {
+    const row = rows.find((entry) => (previewStates[entry.id] ?? "").split(/\s+/).includes("open") && (entry.children?.length ?? 0) > 0);
+    if (!row) break;
+    path.push(row.id);
+    rows = row.children ?? [];
+  }
+  return path;
+}
+
+/**
+ * Where a fixed layer's left and top are measured from: the viewport, or the padding box of the
+ * nearest ancestor that contains fixed descendants (a transform, a perspective, a filter, layout
+ * or paint containment, a size container), as a documentation page's framed screen does.
+ */
+function fixedLayerOrigin(layer: HTMLElement | null): { left: number; top: number } {
+  const view = layer?.ownerDocument.defaultView;
+  for (let node = layer?.parentElement ?? null; node && view; node = node.parentElement) {
+    const style = view.getComputedStyle(node);
+    const set = (property: string) => {
+      const value = style.getPropertyValue(property).trim();
+      return value !== "" && value !== "none" && value !== "normal" && value !== "auto";
+    };
+    const containment = style.getPropertyValue("contain");
+    const willChange = style.getPropertyValue("will-change");
+    if (
+      set("transform") ||
+      set("perspective") ||
+      set("filter") ||
+      set("backdrop-filter") ||
+      set("container-type") ||
+      /\b(layout|paint|strict|content)\b/.test(containment) ||
+      /\b(transform|perspective|filter)\b/.test(willChange)
+    ) {
+      const box = node.getBoundingClientRect();
+      return { left: box.left + node.clientLeft, top: box.top + node.clientTop };
+    }
+  }
+  return { left: 0, top: 0 };
 }
 
 export function ShellDropdown({
@@ -98,7 +147,7 @@ export function ShellDropdown({
   const rootRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [anchor, setAnchor] = useState<{ left: number; top: number } | null>(null);
-  const cascade = useShellMenuCascade(rootRef, firstLevel);
+  const cascade = useShellMenuCascade(rootRef, firstLevel, previewOpenPath(entriesOf(source), previewStates, firstLevel));
   const { setOpenPath } = cascade;
   const onOpenChangeRef = useRef(onOpenChange);
   useEffect(() => {
@@ -113,22 +162,40 @@ export function ShellDropdown({
     onClose: (reason) => onOpenChangeRef.current?.(false, reason)
   });
 
-  // The start edge and the bottom of the pinned item, read again when the page moves.
+  // The start edge and the bottom of the pinned item, read again when the page moves or the band
+  // changes size, from the origin the fixed drop-down is placed against (the viewport, unless an
+  // ancestor contains it).
+  const placeRef = useRef<() => void>(() => undefined);
   useClientLayoutEffect(() => {
     if (!open) return undefined;
+    const trigger = () => triggerRef?.current ?? shellLayerTriggerOf(document, id);
     const place = () => {
-      const trigger = triggerRef?.current ?? shellLayerTriggerOf(document, id);
-      const box = trigger?.getBoundingClientRect();
-      if (box) setAnchor((previous) => (previous && previous.left === box.left && previous.top === box.bottom ? previous : { left: box.left, top: box.bottom }));
+      const box = trigger()?.getBoundingClientRect();
+      if (!box) return;
+      const origin = fixedLayerOrigin(rootRef.current);
+      const left = box.left - origin.left;
+      const top = box.bottom - origin.top;
+      setAnchor((previous) => (previous && previous.left === left && previous.top === top ? previous : { left, top }));
     };
+    placeRef.current = place;
     place();
     window.addEventListener("resize", place);
     window.addEventListener("scroll", place, true);
+    const band = trigger()?.parentElement;
+    const resized = band && typeof ResizeObserver === "function" ? new ResizeObserver(place) : null;
+    if (band) resized?.observe(band);
     return () => {
+      placeRef.current = () => undefined;
       window.removeEventListener("resize", place);
       window.removeEventListener("scroll", place, true);
+      resized?.disconnect();
     };
   }, [open, id, triggerRef]);
+  // The pinned item moves when the band's words change (another language, a renamed item): read
+  // again after every render; an unchanged place renders nothing new.
+  useClientLayoutEffect(() => {
+    placeRef.current();
+  });
 
   // Opening puts focus in the search; closing forgets the query and the open cascades.
   useEffect(() => {

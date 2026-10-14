@@ -271,8 +271,16 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || "";
     return /mac|iphone|ipad|ipod/i.test(platform) ? "⌘ K" : "Ctrl K";
   };
+  // The shell story blocks are mounted by React (build/shell-hydrate.tsx, TCRN-DS-SUB-151), which
+  // renders them in the page's language itself: the swaps below leave them alone, so the markup React
+  // hydrates is the markup it rendered.
+  const mountedShellBlock = "[data-shell-hydrate]";
+  const inMountedShell = (node) => Boolean(node.closest?.(mountedShellBlock));
   const applyClientShortcuts = () => {
     for (const node of document.querySelectorAll("[data-shortcut-auto='search']")) {
+      if (inMountedShell(node)) {
+        continue;
+      }
       node.textContent = searchShortcutLabel();
     }
   };
@@ -311,7 +319,7 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
       if (!(node instanceof Element) || skipTags.has(node.tagName)) {
         return;
       }
-      if (node.matches(visualInstanceSelector)) {
+      if (node.matches(visualInstanceSelector) || node.matches(mountedShellBlock)) {
         return;
       }
       for (const attributeName of ["title", "aria-label", "data-label", "data-disabled-reason", "data-expanded-label", "data-collapsed-label", "placeholder"]) {
@@ -338,7 +346,7 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     const currentTheme = shell?.getAttribute("data-storybook-theme");
     for (const link of document.querySelectorAll("[data-shell-menu] a[href], [data-pins] a[href], [data-doc-toc] a[href]:not([href^='#']), .tcrn-page-header nav a[href], .tcrn-doc-chapter-pager__link")) {
       const href = link.getAttribute("href");
-      if (!href) {
+      if (!href || inMountedShell(link)) {
         continue;
       }
       const next = new URL(href, window.location.href);
@@ -378,6 +386,9 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
   };
   const updateLocaleMenuState = (locale) => {
     for (const menu of document.querySelectorAll(".tcrn-shell-locale-menu")) {
+      if (inMountedShell(menu)) {
+        continue;
+      }
       const selected = menu.querySelector("[data-locale-menu-option][data-locale='" + CSS.escape(locale) + "']");
       const nameNode = menu.querySelector("[data-locale-current-name], [data-locale-current]");
       if (selected && nameNode) {
@@ -404,6 +415,9 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     // language, and a visual-instance subtree it deliberately skipped is still
     // consistent with itself.
     for (const logo of document.querySelectorAll("[data-registered-product-logo][data-product-id]")) {
+      if (inMountedShell(logo)) {
+        continue;
+      }
       const wordmark = logo.querySelector(".tcrn-product-logo__line-one");
       const tagline = logo.querySelector(".tcrn-product-logo__line-two");
       const wordmarkText = (wordmark?.getAttribute("aria-label") ?? wordmark?.textContent ?? "").trim();
@@ -551,6 +565,14 @@ export const docShellLayerScript = `<script>
       avatar.focus();
     }
   };
+  // The brand button reports the version it shows, as the package's does once mounted: narrower
+  // than 1024 the wordmark is hidden and the button is the first version (TCRN-DS-SUB-151).
+  if (brand.hasAttribute("data-shell-brand-auto") && typeof window.matchMedia === "function") {
+    const narrow = window.matchMedia("(max-width: 1023px)");
+    const showVersion = () => brand.setAttribute("data-shell-brand", narrow.matches ? "v1" : "v2");
+    showVersion();
+    narrow.addEventListener("change", showVersion);
+  }
   brand.addEventListener("click", () => setMenu(menu.hidden));
   avatar.addEventListener("click", () => setAccount(account.hidden));
   menu.addEventListener("click", (event) => {
@@ -575,8 +597,11 @@ export const docShellLayerScript = `<script>
       return;
     }
     // An inner list that handled this Esc (the language list in the avatar menu closes itself and
-    // returns focus to its trigger) leaves the layer around it open (TCRN-DS-SUB-166).
-    if (event.defaultPrevented || account.querySelector("[data-locale-menu]:not([hidden])")) {
+    // returns focus to its trigger) leaves the layer around it open (TCRN-DS-SUB-166). Only a list of
+    // this shell's own: the shell stories mounted on the page (TCRN-DS-SUB-151) handle Esc in their
+    // own layers, and their handling must not keep this shell's menu open.
+    const handledInside = event.defaultPrevented && event.target instanceof Node && account.contains(event.target);
+    if (handledInside || account.querySelector("[data-locale-menu]:not([hidden])")) {
       return;
     }
     if (!menu.hidden) {
