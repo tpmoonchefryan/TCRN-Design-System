@@ -82,7 +82,7 @@
     {
       "path": "CHANGELOG.md",
       "exists": true,
-      "sha256": "83f284c1836a37db3daa038fcf817c5dc15058efb2d37dc1513ec9075f6afd01"
+      "sha256": "aba346a187eb1d9f63e82e270086ceb621d3e641fd5ce1a064228d9bbfcb640c"
     },
     {
       "path": "LICENSE",
@@ -107,7 +107,7 @@
     {
       "path": "packages/ui-tokens/src/index.ts",
       "exists": true,
-      "sha256": "dfc085523bd51c59d65ac433f45388ece57403fc723feb448ac7a577d6256e27"
+      "sha256": "a805b06825de512fac1ddcaa6edf0232f43cfe1607d85d12d6d627999e367d24"
     },
     {
       "path": "packages/ui-copy-state/src/index.ts",

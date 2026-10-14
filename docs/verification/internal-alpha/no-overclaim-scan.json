@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "scannedFiles": 669,
+  "scannedFiles": 962,
   "skippedFiles": [],
   "binaryVisualReceiptExclusions": [
     {
@@ -385,6 +385,30 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-selection-list-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-shell-brand-first-line.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-shell-intro.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-shell-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-shell-mobile.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-shell-narrow.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/desktop-1440x900-shell-top-band.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
@@ -800,6 +824,30 @@
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-shell-brand-first-line.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-shell-intro.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-shell-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-shell-mobile.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-shell-narrow.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-shell-top-band.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
       "file": "docs/verification/internal-alpha/screenshots/mobile-390x844-stamp-spec-usage.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
@@ -1209,6 +1257,30 @@
     },
     {
       "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-selection-list-patterns.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-shell-brand-first-line.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-shell-intro.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-shell-matrix.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-shell-mobile.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-shell-narrow.png",
+      "reason": "binary_visual_receipt_not_text_scanned"
+    },
+    {
+      "file": "docs/verification/internal-alpha/screenshots/tablet-1024x768-shell-top-band.png",
       "reason": "binary_visual_receipt_not_text_scanned"
     },
     {
