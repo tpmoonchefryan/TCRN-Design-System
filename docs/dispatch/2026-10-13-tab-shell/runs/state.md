@@ -166,7 +166,12 @@
 | Q1 | 已合入，包树已退役（328M） | 14f2849、5d9676a | a7d4ac8 | SUB-225 完成：内层裁切余量改 space-1，焦点环四边完整（三视口、夜间、forced-colors 仿真）；变异判红 257/258；ui-react 258、test:dom 60；contract-static 只剩 C8 15（O-19）、geometry:measure 只剩 markText（O-4）；browser-proof 签名 0 回退；C-9 无提交；问题 5 条 |
 | Q2 | 已合入，包树已退役（278M） | f6200d9、e036e53、1d1e609、c5959ad | 73bac9f | 三张完成：注释换在用类（grep 0）、M53 与开头区间、清单、CHANGELOG 同步、owner-acceptance 跟上第四、五轮（432 行）；局部门 8 个全 0；问题 4 条（scaffold-proof.json 输入摘要自 R3 过期，交收口） |
 
+- 验收与判断合一（880f673）：R5 四张与承接的 SUB-216、219 全部满足；机判满足 9、只等 Owner 7、部分 0；R6 无返工，建议收口；Owner 待裁 21（新增 O-21 本机登记缺 projectId）。
+- 引擎 2026-10-14T13:20:31Z 由 2.0.3 切到 2.1.0；13:43:31Z 在 2.1.0 下重试一次 INIT-015 的门运行，同样 `GATES_PROJECT_UNKNOWN`（`gatesProjectRoot` 逻辑未变）。
+- R5 链写：32 成员（SUB-225…228 三步转 done、SUB-216 与 219 一步转 done、16 张 Story 与 INIT-016、INIT-015 注解），WORKSPACE_COMMAND_COMPLETED，version 2439 → 2471；读回 SUB-113…228 done 107、active 9（只等 Owner）。
+- 知识卡 TCRN-DS-KB-046…049 全部建成（048 与 KB-012 标签重叠，以 `--coexist` 建）。
+- 收口文件 `docs/dispatch/2026-10-13-tab-shell/closeout.md` 已写出。
+
 ## 下一步
 
-- 批末 verify（7456dcb 提交结果表）：跑在 60ff2ef，30 步红 2（13 C8 15 条待 O-19、18 markText 待 O-4），与 R4 相同；storybook:build 退出 0；跑后改写 no-overclaim-scan.json 与 scaffold-proof.json、新生成 visual-selection-result.json，已存档并还原。
-- 验收与判断合一：einzbern-main 一个代理，摘录 `runs/r5/excerpts/judgment.md`（7456dcb），产出 `runs/r5/acceptance/R5.md`、`runs/r5/judgment.md`、`runs/r5/lessons.json`（R6 有返工时另写 `runs/r6/` 拆分）→ R5 链写与知识卡 → 收口或 R6。
+- 收口：提交收口文件 → 集成树重跑 `scaffold:proof` 与 `scan`，两份回执一笔 `chore(receipts)` 提交 → INIT-016 收口注解（一笔 work-annotate）并读回 → 本文件记最终 HEAD 与链头 → 停在推送之前，等 Owner（O-21、O-19、O-4、O-8、O-2、150 判定、目视、推送与发版、画布发布）。
