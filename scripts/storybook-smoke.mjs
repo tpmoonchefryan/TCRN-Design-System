@@ -4,7 +4,7 @@ import { extname, join } from "node:path";
 import { chromium } from "@playwright/test";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
-import { gplusMatrixSourcePath, gplusMatrixStoryIds } from "../apps/storybook/dist/contract-stories/gplus/matrix-stories.js";
+import { gplusMatrixSourcePath, gplusMatrixStoryIds, shellMatrixStory } from "../apps/storybook/dist/contract-stories/gplus/matrix-stories.js";
 import { gplusCompositionThreeStoryId, gplusSampleSourcePath, gplusSampleStoryIds } from "../apps/storybook/dist/contract-stories/gplus/sample-stories.js";
 import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
 import {
@@ -1874,8 +1874,9 @@ for (const story of requiredStories) {
   // The G+ matrix and sample stories are rendered from their own modules and declare that
   // module as their source path (TCRN-DS-SUB-030, TCRN-DS-SUB-031); the composition three sample
   // (TCRN-DS-SUB-092) is rendered from the sample module too, outside the five sample ids
-  // (R3 integration item I-P2b-1); every other story is rendered from story-content.tsx.
-  const owningSourcePath = Object.values(gplusMatrixStoryIds).includes(story.id)
+  // (R3 integration item I-P2b-1); the shell matrix is rendered from the matrix module beside the
+  // five family boards (TCRN-DS-SUB-176); every other story is rendered from story-content.tsx.
+  const owningSourcePath = Object.values(gplusMatrixStoryIds).includes(story.id) || story.id === shellMatrixStory.id
     ? gplusMatrixSourcePath
     : Object.values(gplusSampleStoryIds).includes(story.id) || story.id === gplusCompositionThreeStoryId
       ? gplusSampleSourcePath
