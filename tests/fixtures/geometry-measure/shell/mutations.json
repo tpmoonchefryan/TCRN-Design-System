@@ -147,8 +147,11 @@
     },
     {
       "id": "story-label-plus-40", "gate": "singleLine", "source": "标签加长 40 字", "story": "shell-top-band",
-      "about": "the pinned group's heading in the full menu; labels that truncate with an ellipsis and a title pass, and at 1440 the bottom bar has room for 40 more characters, so the label taken is one the gate reads that truncates without a title",
-      "ops": [{ "op": "appendText", "selector": "[data-shell=\"ts-x-l\"] [data-shell-pinned-group] > .tcrn-nav-group__label", "text": "长", "repeat": 40 }]
+      "about": "TCRN-DS-SUB-206 (R3-1): a label drawn at 1440 that does not truncate, lengthened by 40 characters. The pinned column the R2 mutation took is hidden at >= 1024 (the gate cannot read it); every label the gate reads at 1440 either truncates under its title (a 40-character tail is then an equivalent mutation) or has room for 40 more characters (the bottom bar's crumbs and lockup), so the label taken is the first drawn group heading of the full menu with its truncation taken away (white-space normal): the 40 characters must break its single line",
+      "ops": [
+        { "op": "css", "css": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] [data-shell-group]:not([data-shell-pinned-group]) .tcrn-nav-group__label-text { white-space: normal !important; }" },
+        { "op": "appendText", "selector": "[data-shell=\"ts-x-l\"] [data-panel=\"expanded\"] [data-shell-group]:not([data-shell-pinned-group]) .tcrn-nav-group__label-text", "text": "长", "repeat": 40 }
+      ]
     },
     {
       "id": "story-panel-shadow-12", "gate": "shadowBlur", "source": "面板阴影改 12px", "story": "shell-top-band",

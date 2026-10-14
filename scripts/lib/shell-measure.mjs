@@ -44,6 +44,13 @@
 // pageCrumb), x.settingsLayouts (width, distances from the paper's two edges) and x.splitViews (left edge
 // from the paper's); the lockup and optical rows name their product and their shell (null outside
 // every shell), so the first lines of the brand story can be told apart.
+// TCRN-DS-SUB-206 (R3-1): o.pinButtons and the text-width groups (o.textColWidths, o.pinVisibleOn,
+// x.rowGroups) read only drawn elements (getClientRects().length > 0): the full menu's pinned column,
+// which the package hides at >= 1024, no longer reads as four 0 x 0 pins.
+// TCRN-DS-SUB-207 (R3-2): a [data-cell] fill (all but the own-bg probe) is the paint stack under the
+// cell's centre composited down to the first opaque layer, not the cell's ancestors only.
+// TCRN-DS-SUB-196 (R3-3): x.textLines takes the page breadcrumb in the paper crumb by crumb (pageCrumb),
+// not the trail as one line, on both selector sets (the boards' .ts-crumbs and the package's Breadcrumb).
 //
 // API:
 //   SHELL_MEASURE_SCHEMA_VERSION, SELECTOR_KEYS, BOARD_SELECTORS, PACKAGE_SELECTORS
@@ -401,9 +408,14 @@ export function readShellInPage(options) {
       const tx = [...panel.querySelectorAll('[data-text="prail"]')].map((e) => r1(e.getBoundingClientRect().left - pl));
       o.prail = { icons: [...new Set(g)], texts: [...new Set(tx)] };
       o.rows = [...new Set([...panel.querySelectorAll(sel.row)].map((e) => r1(e.getBoundingClientRect().height)))];
-      const pinbs = [...panel.querySelectorAll(sel.pinButton)];
+      // TCRN-DS-SUB-206 (R3-1): the pin sizes and the text-width groups take only what is drawn, an
+      // element with a client rect; one with none (display:none, or inside a column the layout hides: the
+      // full menu's pinned column at >= 1024) has no size to read. A pin at rest with opacity 0 is drawn
+      // (its slot stays) and is read.
+      const drawn = (el) => el.getClientRects().length > 0;
+      const pinbs = [...panel.querySelectorAll(sel.pinButton)].filter(drawn);
       o.pinButtons = [...new Set(pinbs.map((e) => { const r = e.getBoundingClientRect(); return r1(r.width) + "x" + r1(r.height); }))];
-      const items = [...panel.querySelectorAll(sel.row)];
+      const items = [...panel.querySelectorAll(sel.row)].filter(drawn);
       // a row's pin sits in the row's own wrapper (the board's row holds its pin; the package renders a
       // pinnable item as a link and its pin side by side in a wrapper), and the row's column is the
       // wrapper's parent, so rows of one column are compared with each other
@@ -500,7 +512,12 @@ export function readShellInPage(options) {
     });
 
     // extra: single-line text of the shell rows (tab word, pins, menu rows, group heads, search, crumbs, lockups)
-    const lineEls = [...scr.querySelectorAll(sel.singleLineText)].filter((el) => !inOwnPaper(el)).concat([...scr.querySelectorAll(sel.pageCrumbs)].filter(inOwnPaper));
+    // TCRN-DS-SUB-196 (R3-3): the page breadcrumb in the shell's own paper is read crumb by crumb (pageCrumb):
+    // every crumb on one line, a crumb wider than its box cut only as an ellipsis under a title; the trail
+    // gives way one crumb at a time, so it is not one text line (the trail as a whole: x.pageCrumbs). A
+    // selector set without a crumb key reads the trail as one line, as before.
+    const crumbsOf = (nav) => (sel.pageCrumb ? [...nav.querySelectorAll(sel.pageCrumb)] : [nav]);
+    const lineEls = [...scr.querySelectorAll(sel.singleLineText)].filter((el) => !inOwnPaper(el)).concat([...scr.querySelectorAll(sel.pageCrumbs)].filter(inOwnPaper).flatMap(crumbsOf));
     x.textLines = lineEls.filter((el, i) => lineEls.indexOf(el) === i && visible(el) && !exempt(el)).map((el) => {
       let box = el;
       while (box !== scr && getComputedStyle(box).display === "inline") box = box.parentElement;
@@ -646,6 +663,37 @@ export function readShellInPage(options) {
   };
   // 07a B 面板对画布 ("own-bg"): a surface's own fill is the ink, the effective background behind it the fill
   const fills = { "own-bg": (el) => (el.parentElement ? effBg(el.parentElement) : [255, 255, 255, 1]) };
+  // TCRN-DS-SUB-207 (R3-2): every other cell's fill is read where the cell is drawn: the paint stack at the
+  // cell's centre (document.elementsFromPoint, with the cell made a hit target for the read and put back),
+  // from the cell down, composited to the first opaque layer. A cell laid over a sibling (the search
+  // shortcut over its 6% washed input) stands on that sibling, which the ancestor walk (effBg) never
+  // meets. As effBg: rgb()/rgba() backgrounds, the walk stops below the root element and lies on white.
+  // A cell that is not hit at its centre keeps the ancestor walk and says so (backdrop: "ancestors").
+  const stackBg = (el) => {
+    el.scrollIntoView({ block: "center", inline: "center" });
+    const r = el.getBoundingClientRect();
+    // through the attribute, not the CSSOM: the CSSOM writes back a style="" after its own removal
+    const priorStyle = el.getAttribute("style");
+    el.setAttribute("style", (priorStyle ? priorStyle + "; " : "") + "pointer-events: auto !important");
+    let stack;
+    try {
+      stack = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    } finally {
+      if (priorStyle === null) el.removeAttribute("style"); else el.setAttribute("style", priorStyle);
+    }
+    const at = stack.indexOf(el);
+    if (at < 0) return null;
+    const layers = [];
+    for (const n of stack.slice(at)) {
+      if (n === document.documentElement) break;
+      const c = parse(getComputedStyle(n).backgroundColor);
+      if (c[3] > 0) layers.unshift(c);
+      if (c[3] >= 1) break;
+    }
+    let acc = [255, 255, 255, 1];
+    for (const c of layers) acc = over(c, acc);
+    return acc;
+  };
   const probes = {
     "": (el, ccs) => parseAny(ccs.color),
     color: (el, ccs) => parseAny(ccs.color),
@@ -677,7 +725,8 @@ export function readShellInPage(options) {
       const ink = reader(el, ccs);
       if (!ink) row.unreadable = true;
       else {
-        const fill = fills[probe] ? fills[probe](el) : effBg(el);
+        let fill = fills[probe] ? fills[probe](el) : stackBg(el);
+        if (!fill) { fill = effBg(el); row.backdrop = "ancestors"; }
         row.ratio = r2(contrast(over(ink, fill), fill));
         // a second reading under the scrims painted over the cell; ratio stays the cell's own (the board
         // screens keep their state cells under the Sheet's scrim and read them as measure-shell.js does)
@@ -691,7 +740,7 @@ export function readShellInPage(options) {
     }
     return row;
   });
-  if (scrimEls.length) window.scrollTo(0, 0);
+  if (scrimEls.length || out.contrastCells.length) window.scrollTo(0, 0);
 
   // extra: brand marks — every svg[data-logo] by canonical drawing form, and the logos2 sources in the same form
   const forms = [];

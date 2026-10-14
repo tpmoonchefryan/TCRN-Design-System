@@ -558,8 +558,10 @@ test("package readings: a pinnable row's pin is found in its .tcrn-nav-item-row,
     assert.deepEqual(shell.x.rowGroups[0], { rest: [223.3], hover: [223.3], on: [223.3] });
     assert.deepEqual(shell.pinVisibleOn, { on: 1, hover: 1 });
     assert.deepEqual(shell.pinButtons, ["24x24"]);
-    // o.prail (measure-shell.js) stays panel-relative; x.prail reads each column as the first
-    assert.deepEqual(shell.prail.icons, [16, 333.3, 650.7]);
+    // o.prail (measure-shell.js) stays panel-relative and takes every hook, so the pinned column hidden
+    // at >= 1024 (TCRN-DS-SUB-206) adds its undrawn icons at -12 (left 0 against the panel's 12); no gate
+    // reads o.prail. x.prail, which the prail check judges, reads each drawn column as the first
+    assert.deepEqual(shell.prail.icons, [16, 333.3, 650.7, -12]);
     assert.deepEqual(shell.x.prail, { columns: 3, icons: [16], texts: [48] });
     const verdict = judgeShellReadings(reading);
     assert.equal(verdict.gates.pinJitter.status, "pass");
@@ -586,11 +588,62 @@ test("pinJitter story mutation: the pin display alone on the reserved 24 track i
     try {
       await page.evaluate(applyMutationInPage, ops);
       const verdict = judgeShellReadings(await readPackage(page));
-      // display alone leaves every text box as wide (the hidden pins read 0 x 0, which the pin-size half
-      // of the gate reports either way); without the track the rest rows widen by the pin slot
+      // display alone leaves every text box as wide (a display:none pin draws nothing and is not read,
+      // TCRN-DS-SUB-206); without the track the rest rows widen by the pin slot
       const jitter = verdict.gates.pinJitter.failures.filter((f) => /textWidths$/.test(f.what));
       assert.deepEqual(jitter.map((f) => f.what), want === "fail" ? ["column1.textWidths"] : [], JSON.stringify(verdict.gates.pinJitter.failures));
       if (want === "fail") assert.equal(verdict.gates.pinJitter.status, "fail");
+    } finally {
+      await close();
+    }
+  }
+});
+
+// TCRN-DS-SUB-206 (R3-1): the package hides the full menu's pinned column at >= 1024; its pins are in the
+// DOM with no client rect. The gate reads only drawn pins and rows: green on the real part's DOM, where
+// the R2 reading (every element, drawn or not) read the hidden pins as 0 x 0 and turned pinJitter red.
+test("pinJitter reads only drawn pins and rows: the pinned column hidden at >= 1024 is not four 0 x 0 pins (TCRN-DS-SUB-206)", async () => {
+  const { page, close } = await openPackageFixture();
+  try {
+    const hidden = await page.evaluate(() => [...document.querySelectorAll('[data-panel="expanded"] [data-shell-pinned-group] [data-pin-button]')].map((el) => el.getClientRects().length));
+    assert.deepEqual(hidden, [0, 0, 0, 0]);
+    const reading = await readPackage(page);
+    const [shell] = reading.shells;
+    assert.deepEqual(shell.pinButtons, ["24x24"]);
+    assert.equal(shell.x.rowGroups.length, 3);
+    assert.equal(judgeShellReadings(reading).gates.pinJitter.status, "pass");
+    // the R2 reading: count every element as drawn, and the hidden column's pins read 0 x 0 again
+    await page.evaluate(() => {
+      const own = Element.prototype.getClientRects;
+      Element.prototype.getClientRects = function everyElementDrawn() { const list = own.call(this); return list.length ? list : [this.getBoundingClientRect()]; };
+    });
+    const r2 = await readPackage(page);
+    assert.deepEqual(r2.shells[0].pinButtons, ["24x24", "0x0"]);
+    const r2Gate = judgeShellReadings(r2).gates.pinJitter;
+    assert.equal(r2Gate.status, "fail");
+    assert.deepEqual(r2Gate.failures.map((f) => [f.at, f.what, f.value]), [["ts-x-l", "pinButton", "0x0"]]);
+  } finally {
+    await close();
+  }
+});
+
+// TCRN-DS-SUB-206 (R3-1): the singleLine story mutation lengthens a label the gate reads at 1440. A drawn
+// group heading truncates under its title, so a 40-character tail alone is an equivalent mutation; with
+// its truncation taken away (white-space normal) the 40 characters break its single line.
+test("singleLine story mutation: a drawn group heading lengthened by 40 characters; under its title alone it is equivalent, without its truncation it breaks the line (TCRN-DS-SUB-206)", async () => {
+  const story = storyMutations.find((m) => m.gate === "singleLine");
+  assert.equal(story.id, "story-label-plus-40");
+  const append = story.ops.filter((op) => op.op === "appendText");
+  assert.deepEqual(append.map((op) => [op.text, op.repeat]), [["长", 40]]);
+  assert.doesNotMatch(append[0].selector, /\[data-shell-pinned-group\] >/);
+  for (const [ops, want] of [[append, "pass"], [story.ops, "fail"]]) {
+    const { page, close } = await openPackageFixture();
+    try {
+      assert.equal(await page.evaluate((s) => document.querySelector(s).getClientRects().length > 0, append[0].selector), true);
+      await page.evaluate(applyMutationInPage, ops);
+      const gate = judgeShellReadings(await readPackage(page)).gates.singleLine;
+      assert.equal(gate.status, want, JSON.stringify(gate.failures));
+      if (want === "fail") assert.ok(gate.failures.some((f) => f.what === "lines:span.tcrn-nav-group__label-text" && f.value >= 2), JSON.stringify(gate.failures));
     } finally {
       await close();
     }
@@ -623,6 +676,37 @@ test("package readings: the three 07a B reading cases (彩色标, 面板对画�
   }
 });
 
+// TCRN-DS-SUB-207 (R3-2): a cell's fill is the paint stack under its centre. The search shortcut is a
+// sibling laid over the input's 6% wash (no pointer events, no fill of its own): it reads the board's
+// 7.59 and 6.11, where the R2 ancestor walk met only the panel and read 8.58 and 7.23.
+test("contrast reads a cell's fill from the paint stack at its centre: the shortcut over the washed input reads 7.59 and 6.11, the R2 ancestor walk 8.58 and 7.23 (TCRN-DS-SUB-207)", async () => {
+  const { page, close } = await openPackageFixture();
+  try {
+    const shape = await page.evaluate(() => [...document.querySelectorAll('[data-cell^="srch-kbd-"]')].map((k) => [k.previousElementSibling.matches("input.tcrn-search-input__control"), getComputedStyle(k).position, getComputedStyle(k).pointerEvents, getComputedStyle(k).backgroundColor]));
+    assert.deepEqual(shape, [[true, "absolute", "none", "rgba(0, 0, 0, 0)"], [true, "absolute", "none", "rgba(0, 0, 0, 0)"]]);
+    const near = (c, want) => assert.ok(Math.abs(c.ratio - want) <= THRESHOLDS.contrast.maxDiff, `${c.cell} ${c.ratio} vs ${want}`);
+    const byCell = (reading) => Object.fromEntries(reading.contrastCells.map((c) => [c.cell, c]));
+    const reading = await readPackage(page);
+    const now = byCell(reading);
+    near(now["srch-kbd-l"], 7.59);
+    near(now["srch-kbd-n"], 6.11);
+    assert.deepEqual(reading.contrastCells.filter((c) => c.backdrop).map((c) => c.cell), []);
+    // the read leaves no inline style behind on the cells
+    assert.deepEqual(await page.evaluate(() => [...document.querySelectorAll("[data-cell]")].filter((el) => el.hasAttribute("style")).length), 0);
+    assert.equal(judgeShellReadings(reading).gates.contrast.status, "pass");
+    // the R2 reading: no paint stack, the fill walked up the ancestors to the panel
+    await page.evaluate(() => { document.elementsFromPoint = () => []; });
+    const r2Reading = await readPackage(page);
+    const r2 = byCell(r2Reading);
+    near(r2["srch-kbd-l"], 8.58);
+    near(r2["srch-kbd-n"], 7.23);
+    assert.equal(r2["srch-kbd-l"].backdrop, "ancestors");
+    assert.deepEqual(judgeShellReadings(r2Reading).gates.contrast.failures.map((f) => [f.at, f.what]), [["srch-kbd-l", "ratio-expect"], ["srch-kbd-n", "ratio-expect"]]);
+  } finally {
+    await close();
+  }
+});
+
 test("page readings (TCRN-DS-SUB-164): the breadcrumb per crumb, SettingsLayout against the paper's edges, SplitView's left edge, the first lines by product", async () => {
   const { page, close } = await openBoard(manifest.pageFixture.file);
   try {
@@ -648,6 +732,41 @@ test("page readings (TCRN-DS-SUB-164): the breadcrumb per crumb, SettingsLayout 
     assert.ok(reading.optical.filter((o) => o.shell).every((o) => o.product === "tms" && byId[o.shell]));
     const verdict = judgeShellReadings(reading);
     for (const id of manifest.pageFixture.green) assert.equal({ ...verdict.gates, ...verdict.checks }[id].status, "pass", id);
+  } finally {
+    await close();
+  }
+});
+
+// TCRN-DS-SUB-196 (R3-3): singleLine reads the page breadcrumb crumb by crumb. The fixture's trails give way
+// one crumb at a time, each cut as an ellipsis under its title: green, where the R2 reading of the whole
+// trail as one text line (no crumb key) failed the two phone screens. A crumb that gives way without an
+// ellipsis (the fixture's template) fails, alone.
+test("singleLine reads the page breadcrumb crumb by crumb: crumbs cut under their titles pass, a crumb cut without an ellipsis fails (TCRN-DS-SUB-196)", async () => {
+  const { page, close } = await openBoard(manifest.pageFixture.file);
+  try {
+    const crumbLines = (reading, id) => reading.shells.find((s) => s.id === id).x.textLines.filter((l) => /breadcrumb/.test(l.el));
+    const reading = await readPackage(page);
+    for (const s of reading.shells) {
+      const lines = crumbLines(reading, s.id);
+      assert.deepEqual(lines.map((l) => l.text), s.x.pageCrumbs[0].crumbs.map((c) => c.text), s.id);
+      assert.ok(lines.every((l) => l.lines === 1 && /^(a|b)\.tcrn-breadcrumb__crumb/.test(l.el)), s.id);
+      // at 1240 the long trail fits; on the 390 phone every crumb gives way, cut as an ellipsis under its title
+      assert.ok(lines.every((l) => (s.w > 390 ? l.excess === 0 : l.excess > 0 && l.clip && l.ellipsis && l.title)), s.id);
+    }
+    assert.equal(judgeShellReadings(reading).gates.singleLine.status, "pass");
+    // the R2 reading (no crumb key: the trail as one line) cut the two phone trails
+    const r2 = await lib.measureShellPage(page, { selectors: { ...lib.PACKAGE_SELECTORS, pageCrumb: null }, selectorSet: "package" });
+    assert.deepEqual(judgeShellReadings(r2).gates.singleLine.failures.map((f) => [f.at, f.what]), [["ts-settings-m", "cut:nav.tcrn-breadcrumb"], ["ts-roster-m", "cut:nav.tcrn-breadcrumb"]]);
+    // a crumb that gives way without an ellipsis fails, and only it
+    await page.evaluate(() => {
+      const item = document.getElementById("crumb-cut-without-ellipsis").content.firstElementChild.cloneNode(true);
+      document.querySelector('[data-shell="ts-settings-m"] [data-paper] .tcrn-breadcrumb').appendChild(item);
+    });
+    const cut = await readPackage(page);
+    const gate = judgeShellReadings(cut).gates.singleLine;
+    assert.equal(gate.status, "fail");
+    assert.deepEqual(gate.failures.map((f) => [f.at, f.what]), [["ts-settings-m", "cut:a.tcrn-breadcrumb__crumb.tcrn-breadcrumb__crumb--clip"]]);
+    assert.ok(gate.failures[0].value > 0);
   } finally {
     await close();
   }
