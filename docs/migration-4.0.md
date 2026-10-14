@@ -1017,6 +1017,162 @@ use a 640px frame).
 Source: 2c09e64 (TCRN-DS-SUB-160), f709e9a (TCRN-DS-SUB-146); handoffs K5 and K1
 (INIT-016 r2).
 
+### M38 · Two dead names are removed: a search motion variable and two page-title rules
+
+Change: `tcrnComponentCss` no longer declares `--tcrn-motion-product-shell-search` on
+`:root`. It was the old top bar search's transition (`240ms
+var(--tcrn-motion-ease-drawer)`), and no package rule reads it now that the search is
+the full menu's (M20, M36). The rules `.tcrn-page-header__title .tcrn-heading`
+and `.tcrn-page-header__title .tcrn-text` (margin 0, the style segment
+`typographyCss03`) are deleted: since M34 the class sits on the title element itself,
+so they matched nothing. Neither name has an alias.
+
+Do: replace a read of `--tcrn-motion-product-shell-search` with
+`--tcrn-motion-product-shell` (`var(--tcrn-motion-emphasis)`, 240ms on the standard
+ease) or with a value of your own if you want the drawer ease; delete overrides
+written against the two descendant selectors.
+
+Source: 9b99bcd and 5187169 (TCRN-DS-SUB-183); handoff M3 (INIT-016 r3).
+
+### M39 · `landmarkLabel` names every landmark of a shell; `TocRail` is named by its title
+
+Change: `ProductShell`'s `landmarkLabel` (M35; none by default) now prefixes the name
+of every named landmark the shell renders, as "{landmarkLabel} · {name}": the band's
+header, the pinned items' nav, the full menu (panel or Sheet) and its bottom bar's
+current position, each drop-down, the avatar menu and its product switcher, the
+content region (only without `contentLabel`, which is used as given) and the page
+header's breadcrumb nav. Without `landmarkLabel` every name is unchanged. `ShellMenu`
+and `ShellDropdown` take the same optional prop for use on their own. `TocRail`'s nav
+takes the rail's title as its accessible name.
+
+Do: give each shell on a page its own `landmarkLabel`, as M35 says; a test that finds
+a shell's header, menu, bottom bar, drop-down or avatar menu by name expects the
+prefix on a shell that has one; give a standalone `ShellMenu` or `ShellDropdown` a
+`landmarkLabel` when two share a page.
+
+Source: 97c9206 (TCRN-DS-SUB-184); handoff M4 (INIT-016 r3).
+
+### M40 · `TocRail`'s title can be an h2
+
+Change: `TocRail` takes `headingLevel?: 2 | 3` (3 by default). Only the title's
+element changes; its type and the nav's name stay the same.
+
+Do: pass `headingLevel={2}` where the rail's title sits directly under the page's h1,
+as the documentation pages do (M46); without it nothing changes.
+
+Source: 706e689 (TCRN-DS-SUB-193); handoff M4 (INIT-016 r3).
+
+### M41 · One shell per page takes ⌘K: `menuShortcut`
+
+Change: `ProductShell` takes `menuShortcut?: boolean` (true by default) and passes it
+as is to `ShellMenu`'s `shortcut`; a shell with it false registers no ⌘K or Ctrl+K
+listener. Before, every shell's full menu registered the shortcut, so on a page with
+several shells one press opened every shell that did not control its menu, and focus
+landed in the last one registered.
+
+Do: on a page that holds more than one shell (examples, comparisons), keep
+`menuShortcut` on for the page's own shell only and pass `menuShortcut={false}` to the
+others; a page with one shell changes nothing.
+
+Source: e430a8a (TCRN-DS-SUB-185), d7b5643 (TCRN-DS-SUB-179); handoffs M4 and M7
+(INIT-016 r3).
+
+### M42 · A measured lockup's `data-logo` is the mark's id
+
+Change: the colour mark of `ProductLockup`'s first line (M26) and of a `ProductLogo`
+the shell measures (one given a `data-lockup` hook, such as the full menu's bottom
+bar lockup) carries the mark's own id in `data-logo`, the name of its file in the
+approved mark set: `ds`, `mana`, `tms` or `einzbern`. It was the product key
+(`design-system`, `mana-orchestrate` and so on; M36), which stays in
+`data-product-id`. The brand button's mark and the sign-in intro's mark still carry
+the product key in `data-logo`.
+
+Do: a test or measurement that finds a measured lockup's mark by `data-logo` uses the
+mark id; to select by product, read `data-product-id`.
+
+Source: d46d6d5 (TCRN-DS-SUB-194); handoff M4 (INIT-016 r3).
+
+### M43 · Three more shell tokens; the shell's icons take `Icon`'s sizes
+
+Change: three theme-independent tokens join the shell group (M24, M31):
+`--tcrn-shell-chevron` (12px: the menu row's next-level arrow, the bottom bar's
+position separator and the pinned item's drop-down arrow),
+`--tcrn-shell-locale-chevron` (11px: the arrow of the avatar menu's language entry;
+the same value as `--tcrn-shell-crumb-icon`, with another meaning) and
+`--tcrn-shell-mark-lg` (44px: the mark of the first line's lockup tier,
+`firstLine="lockup"`; the rail tier's mark is `--tcrn-shell-mark`, 22px). The shell
+parts read them instead of literals. The bell, the no-account avatar icon and the
+brand button's disclosure take `Icon`'s `lg`, `sm` and `md` sizes (20, 14 and 16px,
+as before). Nothing renders at a different size.
+
+Do: nothing is required; an override of one of these sizes can set the token instead
+of a length.
+
+Source: 28d13ad (TCRN-DS-SUB-178); handoff M4 (INIT-016 r3).
+
+### M44 · `previewStates` is for documentation and tests only
+
+Change: nothing in the package; this states what M36's `previewStates` is for.
+`ProductShell` writes it as `data-tcrn-preview-state` on menu rows and groups and
+passes it to the full menu and each drop-down, and `ShellDropdown` reads `"open"` as
+a next level open from the start. It exists so that documentation pages and tests can
+show a state (hover, focus, an open level) without a pointer.
+
+Do: leave `previewStates` unset in a product; pass it only in documentation and in
+tests.
+
+Source: fd14855 (TCRN-DS-SUB-151); handoff K5 (INIT-016 r2), as the second round's
+acceptance and judgment asked (item R3-29).
+
+### M45 · Third-round details: row labels, the paper's focus ring, the menu's icon boxes
+
+Change:
+
+- `NavItem`: the label (`.tcrn-nav-item__label`) is one line wherever the row is
+  (block, `white-space: nowrap`, ellipsis, `overflow: hidden`, `min-width: 0`) and
+  carries a `title` whenever it has text: the label's own words or the text in its
+  markup, or, with no text, the row's `title`. A disabled item's reason therefore
+  shows on its own line under the label.
+- `ProductShell`: the focus ring of the paper's scrolling region is drawn inward, as
+  inset shadows from the paper's edge: a `--tcrn-space-0h` gap in the surface colour,
+  then the accent ring out to `--tcrn-space-1`; in forced colours a transparent
+  outline at an offset of −2px. The shell's fallback focus rule (M36) no longer
+  overrides the focus pairs of the brand button, the pinned items, the menu rows, the
+  search results, the bell and the avatar; the avatar keeps a 1px inner line under
+  its ring.
+- The icon box of the full menu's and the Sheet's rows is 22 × 22 with a 3px padding
+  and `box-sizing: border-box`; the glyph is still 16px, in the same place.
+
+Do: re-baseline screenshots of disabled navigation items and of a focused paper; a
+test that measures a menu row's icon by its box reads 22, not 16; style the focus of
+those six shell parts through their own rules, since the fallback rule no longer
+reaches them.
+
+Source: 842c764 (TCRN-DS-SUB-192), 5c6695f (TCRN-DS-SUB-182), 47f3e77
+(TCRN-DS-SUB-188); handoff M3 (INIT-016 r3).
+
+### M46 · Third-round changes outside the packages
+
+Change: nothing that a consumer imports.
+
+- The documentation site's shell is the package's `ProductShell`, hydrated on every
+  page: at 760px and narrower its menu opens as a Sheet, and its search, theme and
+  language are the package's own. Only the documentation shell registers ⌘K (M41);
+  a gate hands ⌘K to one example shell with the page parameter
+  `shell-shortcut=<screen id>`. The documentation pages title their contents rail as
+  an h2 under the page's h1 (M40). The pages no longer carry the old documentation
+  shell's static markup and scripts (its hidden language select, its static search
+  and their hooks).
+- `docs/contract/families.json`: `scope.batch` is replaced by `scope.checkedBatches`,
+  the batches the contract static gate checks in full, now `[1, 2]`.
+
+Do: nothing in a consumer. A script of your own that drove the documentation site's
+old shell through its static hooks, or read `scope.batch`, moves to the hydrated
+shell or to `scope.checkedBatches`.
+
+Source: 50d0a7c (TCRN-DS-SUB-201), d7b5643 (TCRN-DS-SUB-179), 39cb579
+(TCRN-DS-SUB-202), eb41539 (TCRN-DS-SUB-189); handoffs M7 and M2 (INIT-016 r3).
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is
@@ -1128,6 +1284,15 @@ Since the second batch (TCRN-DS-INIT-016), whose open items are listed in
 - An AOS shell has no brand button until AOS has a mark in the approved set (M20).
 - M30 to M37 come from the second batch's second round (INIT-016 r2); they add to
   M20 to M29 and change none of them.
+- M38 to M46 come from the second batch's third round (INIT-016 r3, handoffs in
+  `docs/dispatch/2026-10-13-tab-shell/runs/r3/handoff/`): M38 the two dead names, M39
+  the landmark names, M40 `TocRail`'s title level, M41 `menuShortcut`, M42 the
+  lockups' `data-logo`, M43 the three shell tokens and the `Icon` sizes, M44
+  `previewStates`, M45 the row labels, the paper's focus ring and the menu's icon
+  boxes, and M46 the changes outside the packages. They add to M20 to M37. Two of
+  them change what an earlier item states, and the earlier item keeps its wording:
+  M39 extends the two names M35 prefixes to every landmark of the shell, and M42
+  replaces M36's `data-logo={productId}` with the mark's id.
 - One correction in place: M9's change and do lines and the night-suffix item of the
   first batch's list above stated the withdrawn night value #7aa0f5 as current, so
   the second round brought them to the single colour (M28). This is the one

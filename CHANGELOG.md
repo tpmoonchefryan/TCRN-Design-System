@@ -37,6 +37,15 @@ change a step, by consumer and item by item:
   h1 and the page header's markup (M34); landmark names per shell (M35); smaller
   changes to the shell, its rows and the lockups (M36); when the sign-in intro is
   mounted, the one-screen shell and framing an embedded shell (M37).
+- Second batch, third round: the search motion variable and two page-title rules
+  that nothing read are removed (M38); `landmarkLabel` names every landmark of a
+  shell, and `TocRail` is named by its title (M39); `TocRail`'s title can be an h2
+  (M40); `menuShortcut` lets one shell per page take ⌘K (M41); a measured lockup's
+  `data-logo` is the mark's id (M42); three more shell tokens, and the shell's icons
+  take `Icon`'s sizes (M43); `previewStates` is for documentation and tests only
+  (M44); the row labels, the paper's focus ring and the menu's icon boxes (M45);
+  changes outside the packages: the documentation site's shell and the contract's
+  checked batches (M46).
 
 Overtaken within this release. The entries below keep the wording they were written
 with. The first batch was never published before the second replaced part of it, so

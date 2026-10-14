@@ -42,15 +42,17 @@ with a marker comment:
   (`/* tcrn-token-block: theme */`, 85 declarations): colour, shadow, grain,
   focus ring, and the deprecated colour, selection and elevation aliases;
 - the theme-independent block on `:root`
-  (`/* tcrn-token-block: theme-independent */`, 146 declarations): type, space,
+  (`/* tcrn-token-block: theme-independent */`, 149 declarations): type, space,
   radius (with `--tcrn-radius-paper`, 14px), control height and padding, icon
   size, motion, z-index, container widths, the top-band shell geometry (the
   `--tcrn-shell-*` tokens: band height 52px, brand button 134 × 40px, mark 22px,
-  pins, full menu and drop-down widths, row and search heights, touch 44px,
-  breadcrumb icon 11px; the old shell's `--tcrn-shell-sidebar-width`,
-  `--tcrn-shell-sidebar-width-collapsed` and `--tcrn-shell-topbar-height` stay as
-  deprecated names), the four brand suffix colours, and the deprecated type family
-  and motion aliases;
+  the first-line lockup's large mark 44px (`--tcrn-shell-mark-lg`), pins, full
+  menu and drop-down widths, row and search heights, touch 44px, breadcrumb icon
+  11px, the small chevron 12px (`--tcrn-shell-chevron`) and the language menu's
+  chevron 11px (`--tcrn-shell-locale-chevron`); the old shell's
+  `--tcrn-shell-sidebar-width`, `--tcrn-shell-sidebar-width-collapsed` and
+  `--tcrn-shell-topbar-height` stay as deprecated names), the four brand suffix
+  colours, and the deprecated type family and motion aliases;
 - the coarse-pointer block, `:root` inside `@media (pointer: coarse)`
   (`/* tcrn-token-block: pointer-coarse */`, 2 declarations): `--tcrn-shell-row-h`
   and `--tcrn-shell-srch-h` point at `--tcrn-shell-touch`, so rows and the menu
@@ -60,11 +62,12 @@ with a marker comment:
   (`/* tcrn-token-block: theme */`, 85 declarations): the same property names as
   the light theme block, with the night values.
 
-The four brand suffix colours have one value for both themes:
-`--tcrn-brand-suffix-tms` is #2c63c8 by day and by night. Whether the night TMS
-suffix takes #7aa0f5, the bright colour of the TMS mark, is an open Owner
-decision (D7); a ruling for it would move the variable into the two theme
-blocks.
+The four brand suffix colours have one value for both themes, declared once in
+the theme-independent block: `--tcrn-brand-suffix-tms` is #2c63c8 by day and by
+night, the approved colour (TCRN-DS-MIN-20261013-SHELL D2). By night it is below
+4.5:1 on the paper and on the canvas; the night value is an open Owner decision
+(D7), and a ruling for a separate night value would move the variable into the two
+theme blocks.
 
 The two theme selectors are exported as `tcrnGplusThemeSelectors` (`light` is the
 selector list above). `compareTokenThemeBlocks(css)` checks that the two theme
@@ -80,11 +83,14 @@ The focus ring is computed where it is declared. A container that changes
 ## Deprecated names
 
 Version 4.0.0 renames the colour, elevation, selection, motion easing and type
-family tokens. Every old name stays defined as `--old: var(--new)`, so an existing
-stylesheet keeps resolving to the new value; move to the new names before the
-aliases are removed. `tcrnDeprecatedTokenAliases` maps each old name to its new
-name, and `tcrnDeprecatedTokens` also lists `--tcrn-motion-press-scale`, which has
-no successor. The full table is in `docs/migration-4.0.md` in the TCRN Design System
+family tokens, and the old shell's top bar height `--tcrn-shell-topbar-height`
+(now the top band's `--tcrn-shell-strip-h`). Every old name stays defined as
+`--old: var(--new)`, so an existing stylesheet keeps resolving to the new value;
+move to the new names before the aliases are removed. `tcrnDeprecatedTokenAliases`
+maps each old name to its new name, and `tcrnDeprecatedTokens` also lists the three
+names with no successor, which keep their values: `--tcrn-motion-press-scale` and
+the old side rail's `--tcrn-shell-sidebar-width` (220px) and
+`--tcrn-shell-sidebar-width-collapsed` (52px). The full table is in `docs/migration-4.0.md` in the TCRN Design System
 repository.
 
 There are two ways to list the old names a codebase still uses:
