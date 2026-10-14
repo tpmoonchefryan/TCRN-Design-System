@@ -1,11 +1,12 @@
 {
-  "ok": true,
-  "violationCount": 0,
+  "ok": false,
+  "violationCount": 14,
   "wordmarkContrastExemption": {
     "rule": "color-contrast",
     "selectors": [
       ".tcrn-brand-wordmark__suffix",
-      ".tcrn-product-logo__line-one-suffix"
+      ".tcrn-product-logo__line-one-suffix",
+      ".tcrn-shell-brand__suffix"
     ],
     "register": "scripts/token-contrast-proof.mjs WORDMARK_EXEMPTIONS",
     "entries": [
@@ -24,9 +25,27 @@
         "fgColor": "#6577f3",
         "ruling": "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour)",
         "source": "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype)"
+      },
+      {
+        "theme": "dark",
+        "fg": "--tcrn-brand-suffix-tms",
+        "on": "--tcrn-color-panel",
+        "fgColor": "#2c63c8",
+        "ruling": "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour); TCRN-DS-MIN-20261013-SHELL D2 (the TMS suffix keeps the approved colour, its mark's deep step, in both themes)",
+        "source": "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype); docs/design/visual-standard/boards/Shell.dc.html section B (the TMS suffix row: by night below 4.5 on the paper and the canvas)",
+        "pending": "known red, pending the Owner: TCRN-DS-MIN-20261013-SHELL D7 keeps the approved colour by night and rules the night value together with INIT-015 closure S-6 (suggested: the mark's bright step)"
+      },
+      {
+        "theme": "dark",
+        "fg": "--tcrn-brand-suffix-tms",
+        "on": "--tcrn-color-bg",
+        "fgColor": "#2c63c8",
+        "ruling": "TCRN-DS-MIN-20261011-GPLUS-RENEWAL D2 (each product's wordmark suffix takes its mark's deep colour); TCRN-DS-MIN-20261013-SHELL D2 (the TMS suffix keeps the approved colour, its mark's deep step, in both themes)",
+        "source": "docs/design/gplus-2026-10/boards/V2-B1-Brand.dc.html section F (the wordmark is exempt from 4.5 as logotype); docs/design/visual-standard/boards/Shell.dc.html section B (the TMS suffix row: by night below 4.5 on the paper and the canvas)",
+        "pending": "known red, pending the Owner: TCRN-DS-MIN-20261013-SHELL D7 keeps the approved colour by night and rules the night value together with INIT-015 closure S-6 (suggested: the mark's bright step)"
       }
     ],
-    "exemptedNodeCount": 80
+    "exemptedNodeCount": 32
   },
   "sections": [
     {
@@ -39,9 +58,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -67,9 +86,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -95,32 +114,33 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
-        },
+        }
+      ]
+    },
+    {
+      "section": "Style Guide",
+      "page": "style-guide-identity-brand.html",
+      "viewport": "desktop-1440x900",
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": [],
+      "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-brand-wordmark__suffix--design-system.tcrn-brand-wordmark__suffix"
+            ".tcrn-brand-wordmark__suffix--tms"
           ],
           "selector": ".tcrn-brand-wordmark__suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
+          "fgColor": "#2c63c8",
+          "bgColor": "#191916",
+          "contrastRatio": 3.12
         }
       ]
-    },
-    {
-      "section": "Style Guide",
-      "page": "style-guide-identity-brand.html",
-      "viewport": "desktop-1440x900",
-      "theme": "dark",
-      "violationCount": 0,
-      "violations": [],
-      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -132,9 +152,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -160,9 +180,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -188,9 +208,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -216,9 +236,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -244,9 +264,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -272,9 +292,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -295,23 +315,109 @@
       "page": "components-navigation-shells.html",
       "viewport": "desktop-1440x900",
       "theme": "light",
-      "violationCount": 0,
-      "violations": [],
+      "violationCount": 3,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": [
+            {
+              "target": [
+                ".tcrn-brand-lockup--line-rail.tcrn-brand-lockup[data-product-id=\"design-system\"] > .tcrn-brand-lockup__line[aria-hidden=\"true\"] > .tcrn-brand-lockup__word[title=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-brand-lockup__suffix"
+              ],
+              "html": "<em class=\"tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--design-system\">Design System</em>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.82 (foreground color: #6577f3, background color: #ffffff, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".tcrn-brand-lockup[data-product-id=\"design-system\"][data-lockup=\"lk-line\"] > .tcrn-brand-lockup__line[aria-hidden=\"true\"] > .tcrn-brand-lockup__word[title=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-brand-lockup__suffix"
+              ],
+              "html": "<em class=\"tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--design-system\">Design System</em>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.82 (foreground color: #6577f3, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "help": "Heading levels should only increase by one",
+          "nodes": [
+            {
+              "target": [
+                "h3[title=\"Current page bookmarks\"]"
+              ],
+              "html": "<h3 title=\"Current page bookmarks\" class=\"tcrn-heading tcrn-heading--3\">Current page bookmarks</h3>",
+              "failureSummary": "Fix any of the following:\n  Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 7,
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "nodes": [
+            {
+              "target": [
+                "aside[aria-label=\"Current page bookmarks\"] > nav"
+              ],
+              "html": "<nav>",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                ".tcrn-doc-package-nav-proof > .tcrn-tabs--segmented.tcrn-segmented-nav[aria-label=\"Section navigation\"]"
+              ],
+              "html": "<nav class=\"tcrn-tabs tcrn-tabs--segmented tcrn-segmented-nav\" aria-label=\"Section navigation\" data-tab-semantics=\"segmented-navigation\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-x-l-R1»-menu"
+              ],
+              "html": "<section id=\"«shell-top-band-ts-x-l-R1»-menu\" class=\"tcrn-shell-menu__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"Navigation\" data-panel=\"expanded\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-x-l-R1»-menu > .tcrn-shell-menu__pbar[data-shell-pbar=\"\"] > .tcrn-shell-menu__crumbs[aria-label=\"Current location\"]"
+              ],
+              "html": "<nav class=\"tcrn-shell-menu__crumbs\" aria-label=\"Current location\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-drop-l-R1»-drop-contracts"
+              ],
+              "html": "<section id=\"«shell-top-band-ts-drop-l-R1»-drop-contracts\" class=\"tcrn-shell-dropdown__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"Contracts\" aria-owns=\"«shell-top-band-ts-drop-l-R1»-drop-contracts-col-templates\" data-panel=\"drop\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "span[data-gplus-static-markup=\"shell-matrix-light-pins\"] > .tcrn-shell-pins[aria-label=\"Pinned items\"][data-pins=\"\"]"
+              ],
+              "html": "<nav class=\"tcrn-shell-pins\" aria-label=\"Pinned items\" data-pins=\"\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#shell-matrix-light-menu-schedule"
+              ],
+              "html": "<section id=\"shell-matrix-light-menu-schedule\" class=\"tcrn-shell-dropdown__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"Schedule\" data-panel=\"drop\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
+        }
+      ],
       "wordmarkContrastExempted": [
         {
           "target": [
-            "a[data-doc-brand-link=\"true\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+            "button[aria-controls=\"«tcrn-doc-shell-R0»-menu\"] > .tcrn-shell-brand__line[data-lockup=\"lkr-line\"] > .tcrn-shell-brand__word[title=\"TCRN Design System\"] > .tcrn-shell-brand__suffix--design-system.tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#efeeea",
-          "contrastRatio": 3.29
-        },
-        {
-          "target": [
-            ".tcrn-doc-knowledge-shell__brand > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -323,8 +429,81 @@
       "page": "components-navigation-shells.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
-      "violationCount": 0,
-      "violations": [],
+      "violationCount": 2,
+      "violations": [
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "help": "Heading levels should only increase by one",
+          "nodes": [
+            {
+              "target": [
+                "h3[title=\"当前页书签\"]"
+              ],
+              "html": "<h3 title=\"当前页书签\" class=\"tcrn-heading tcrn-heading--3\">当前页书签</h3>",
+              "failureSummary": "Fix any of the following:\n  Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 7,
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "nodes": [
+            {
+              "target": [
+                "aside[aria-label=\"当前页书签\"] > nav"
+              ],
+              "html": "<nav>",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                ".tcrn-doc-package-nav-proof > .tcrn-tabs--segmented.tcrn-segmented-nav[aria-label=\"分区导航\"]"
+              ],
+              "html": "<nav class=\"tcrn-tabs tcrn-tabs--segmented tcrn-segmented-nav\" aria-label=\"分区导航\" data-tab-semantics=\"segmented-navigation\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-x-l-R1»-menu"
+              ],
+              "html": "<section id=\"«shell-top-band-ts-x-l-R1»-menu\" class=\"tcrn-shell-menu__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"导航\" data-panel=\"expanded\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-x-l-R1»-menu > .tcrn-shell-menu__pbar[data-shell-pbar=\"\"] > .tcrn-shell-menu__crumbs[aria-label=\"当前位置\"]"
+              ],
+              "html": "<nav class=\"tcrn-shell-menu__crumbs\" aria-label=\"当前位置\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-drop-l-R1»-drop-contracts"
+              ],
+              "html": "<section id=\"«shell-top-band-ts-drop-l-R1»-drop-contracts\" class=\"tcrn-shell-dropdown__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"合同\" aria-owns=\"«shell-top-band-ts-drop-l-R1»-drop-contracts-col-templates\" data-panel=\"drop\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "span[data-gplus-static-markup=\"shell-matrix-light-pins\"] > .tcrn-shell-pins[aria-label=\"Pinned items\"][data-pins=\"\"]"
+              ],
+              "html": "<nav class=\"tcrn-shell-pins\" aria-label=\"Pinned items\" data-pins=\"\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#shell-matrix-light-menu-schedule"
+              ],
+              "html": "<section id=\"shell-matrix-light-menu-schedule\" class=\"tcrn-shell-dropdown__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"排期\" data-panel=\"drop\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
+        }
+      ],
       "wordmarkContrastExempted": []
     },
     {
@@ -337,9 +516,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -365,9 +544,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -393,9 +572,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -421,9 +600,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -444,14 +623,30 @@
       "page": "components-documents-and-collaboration.html",
       "viewport": "desktop-1440x900",
       "theme": "light",
-      "violationCount": 0,
-      "violations": [],
+      "violationCount": 1,
+      "violations": [
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "nodes": [
+            {
+              "target": [
+                ".tcrn-toc-rail--dense > nav"
+              ],
+              "html": "<nav><a href=\"#kb-scope\" aria-current=\"location\" data-selected=\"true\">Scope</a><a href=\"#kb-proof\">Proof</a></nav>",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
+        }
+      ],
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -463,8 +658,24 @@
       "page": "components-documents-and-collaboration.html",
       "viewport": "desktop-1440x900",
       "theme": "dark",
-      "violationCount": 0,
-      "violations": [],
+      "violationCount": 1,
+      "violations": [
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "nodes": [
+            {
+              "target": [
+                ".tcrn-toc-rail--dense > nav"
+              ],
+              "html": "<nav><a href=\"#kb-scope\" aria-current=\"location\" data-selected=\"true\">范围</a><a href=\"#kb-proof\">证明</a></nav>",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
+        }
+      ],
       "wordmarkContrastExempted": []
     },
     {
@@ -477,30 +688,12 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-shell-brand-lockup > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
-        },
-        {
-          "target": [
-            "span[data-gplus-static-markup=\"brand-logo-ds-light\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-doc-theme-preview[data-gplus-matrix-theme=\"light\"][data-tcrn-theme=\"light\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLockup\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"suffix\"] > .tcrn-brand-lockup.tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
         }
       ]
     },
@@ -511,26 +704,7 @@
       "theme": "dark",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            "span[data-gplus-static-markup=\"brand-logo-ds-light\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-doc-theme-preview[data-tcrn-theme=\"light\"][data-gplus-matrix-theme=\"light\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLockup\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"suffix\"] > .tcrn-brand-lockup.tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -542,30 +716,21 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-doc-brand > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix--design-system"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
         },
         {
           "target": [
-            "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
+            "div[data-shell=\"c3-n\"] > .tcrn-shell-strip[aria-label=\"Projects shell controls\"][data-shell-strip=\"\"] > .tcrn-shell-brand[aria-label=\"Open navigation · TCRN TMS\"][data-tab=\"\"] > .tcrn-shell-brand__line[data-lockup=\"lkr-line\"] > .tcrn-shell-brand__word[title=\"TCRN TMS\"] > .tcrn-shell-brand__suffix--tms.tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#efeeea",
-          "contrastRatio": 3.29
-        },
-        {
-          "target": [
-            "#brand-sample-product-light-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"Products\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(2) > .tcrn-table-shell__cell[data-label=\"Product\"][role=\"cell\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
+          "selector": ".tcrn-shell-brand__suffix",
+          "fgColor": "#2c63c8",
+          "bgColor": "#121210",
+          "contrastRatio": 3.32
         }
       ]
     },
@@ -576,26 +741,7 @@
       "theme": "dark",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#efeeea",
-          "contrastRatio": 3.29
-        },
-        {
-          "target": [
-            "#brand-sample-product-light-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"产品\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(2) > .tcrn-table-shell__cell[data-label=\"产品\"][role=\"cell\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -607,9 +753,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -635,9 +781,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -663,9 +809,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -691,9 +837,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -719,9 +865,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-brand-wordmark__suffix--design-system"
+            "button[aria-controls=\"«tcrn-doc-shell-R0»-menu\"] > .tcrn-shell-brand__line[data-lockup=\"lkr-line\"] > .tcrn-shell-brand__word[title=\"TCRN Design System\"] > .tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--design-system"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -747,9 +893,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -775,9 +921,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -803,9 +949,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -831,9 +977,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -859,9 +1005,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -887,9 +1033,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -915,9 +1061,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -943,9 +1089,9 @@
       "wordmarkContrastExempted": [
         {
           "target": [
-            ".tcrn-product-logo__line-one-suffix"
+            ".tcrn-shell-brand__suffix"
           ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
+          "selector": ".tcrn-shell-brand__suffix",
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
@@ -968,17 +1114,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Welcome",
@@ -996,17 +1132,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Welcome",
@@ -1024,26 +1150,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-brand-wordmark__suffix--design-system.tcrn-brand-wordmark__suffix"
-          ],
-          "selector": ".tcrn-brand-wordmark__suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -1061,17 +1168,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -1089,17 +1186,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Style Guide",
@@ -1117,17 +1204,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Foundations",
@@ -1145,17 +1222,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Foundations",
@@ -1173,17 +1240,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1201,17 +1258,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1227,36 +1274,171 @@
       "page": "components-navigation-shells.html",
       "viewport": "mobile-390x844",
       "theme": "light",
-      "violationCount": 0,
-      "violations": [],
-      "wordmarkContrastExempted": [
+      "violationCount": 3,
+      "violations": [
         {
-          "target": [
-            "a[data-doc-brand-link=\"true\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": [
+            {
+              "target": [
+                ".tcrn-brand-lockup--line-rail.tcrn-brand-lockup[data-product-id=\"design-system\"] > .tcrn-brand-lockup__line[aria-hidden=\"true\"] > .tcrn-brand-lockup__word[title=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-brand-lockup__suffix"
+              ],
+              "html": "<em class=\"tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--design-system\">Design System</em>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.82 (foreground color: #6577f3, background color: #ffffff, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".tcrn-brand-lockup[data-product-id=\"design-system\"][data-lockup=\"lk-line\"] > .tcrn-brand-lockup__line[aria-hidden=\"true\"] > .tcrn-brand-lockup__word[title=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-brand-lockup__suffix"
+              ],
+              "html": "<em class=\"tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--design-system\">Design System</em>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.82 (foreground color: #6577f3, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
         },
         {
-          "target": [
-            ".tcrn-doc-knowledge-shell__brand > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#efeeea",
-          "contrastRatio": 3.29
+          "id": "heading-order",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "help": "Heading levels should only increase by one",
+          "nodes": [
+            {
+              "target": [
+                "h3[title=\"Current page bookmarks\"]"
+              ],
+              "html": "<h3 title=\"Current page bookmarks\" class=\"tcrn-heading tcrn-heading--3\">Current page bookmarks</h3>",
+              "failureSummary": "Fix any of the following:\n  Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 6,
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "nodes": [
+            {
+              "target": [
+                "aside[aria-label=\"Current page bookmarks\"] > nav"
+              ],
+              "html": "<nav>",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                ".tcrn-doc-package-nav-proof > .tcrn-tabs--segmented.tcrn-segmented-nav[aria-label=\"Section navigation\"]"
+              ],
+              "html": "<nav class=\"tcrn-tabs tcrn-tabs--segmented tcrn-segmented-nav\" aria-label=\"Section navigation\" data-tab-semantics=\"segmented-navigation\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-x-l-R1»-menu"
+              ],
+              "html": "<section id=\"«shell-top-band-ts-x-l-R1»-menu\" class=\"tcrn-shell-menu__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"Navigation\" data-panel=\"expanded\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-x-l-R1»-menu > .tcrn-shell-menu__pbar[data-shell-pbar=\"\"] > .tcrn-shell-menu__crumbs[aria-label=\"Current location\"]"
+              ],
+              "html": "<nav class=\"tcrn-shell-menu__crumbs\" aria-label=\"Current location\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-drop-l-R1»-drop-contracts"
+              ],
+              "html": "<section id=\"«shell-top-band-ts-drop-l-R1»-drop-contracts\" class=\"tcrn-shell-dropdown__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"Contracts\" aria-owns=\"«shell-top-band-ts-drop-l-R1»-drop-contracts-col-templates\" data-panel=\"drop\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#shell-matrix-light-menu-schedule"
+              ],
+              "html": "<section id=\"shell-matrix-light-menu-schedule\" class=\"tcrn-shell-dropdown__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"Schedule\" data-panel=\"drop\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
         }
-      ]
+      ],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
       "page": "components-navigation-shells.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
-      "violationCount": 0,
-      "violations": [],
+      "violationCount": 2,
+      "violations": [
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "help": "Heading levels should only increase by one",
+          "nodes": [
+            {
+              "target": [
+                "h3[title=\"当前页书签\"]"
+              ],
+              "html": "<h3 title=\"当前页书签\" class=\"tcrn-heading tcrn-heading--3\">当前页书签</h3>",
+              "failureSummary": "Fix any of the following:\n  Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 6,
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "nodes": [
+            {
+              "target": [
+                "aside[aria-label=\"当前页书签\"] > nav"
+              ],
+              "html": "<nav>",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                ".tcrn-doc-package-nav-proof > .tcrn-tabs--segmented.tcrn-segmented-nav[aria-label=\"分区导航\"]"
+              ],
+              "html": "<nav class=\"tcrn-tabs tcrn-tabs--segmented tcrn-segmented-nav\" aria-label=\"分区导航\" data-tab-semantics=\"segmented-navigation\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-x-l-R1»-menu"
+              ],
+              "html": "<section id=\"«shell-top-band-ts-x-l-R1»-menu\" class=\"tcrn-shell-menu__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"导航\" data-panel=\"expanded\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-x-l-R1»-menu > .tcrn-shell-menu__pbar[data-shell-pbar=\"\"] > .tcrn-shell-menu__crumbs[aria-label=\"当前位置\"]"
+              ],
+              "html": "<nav class=\"tcrn-shell-menu__crumbs\" aria-label=\"当前位置\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#«shell-top-band-ts-drop-l-R1»-drop-contracts"
+              ],
+              "html": "<section id=\"«shell-top-band-ts-drop-l-R1»-drop-contracts\" class=\"tcrn-shell-dropdown__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"合同\" aria-owns=\"«shell-top-band-ts-drop-l-R1»-drop-contracts-col-templates\" data-panel=\"drop\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            },
+            {
+              "target": [
+                "#shell-matrix-light-menu-schedule"
+              ],
+              "html": "<section id=\"shell-matrix-light-menu-schedule\" class=\"tcrn-shell-dropdown__panel\" role=\"dialog\" aria-modal=\"false\" aria-label=\"排期\" data-panel=\"drop\">",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
+        }
+      ],
       "wordmarkContrastExempted": []
     },
     {
@@ -1266,17 +1448,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1294,17 +1466,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1322,17 +1484,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1350,17 +1502,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1376,27 +1518,49 @@
       "page": "components-documents-and-collaboration.html",
       "viewport": "mobile-390x844",
       "theme": "light",
-      "violationCount": 0,
-      "violations": [],
-      "wordmarkContrastExempted": [
+      "violationCount": 1,
+      "violations": [
         {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "nodes": [
+            {
+              "target": [
+                ".tcrn-toc-rail--dense > nav"
+              ],
+              "html": "<nav><a href=\"#kb-scope\" aria-current=\"location\" data-selected=\"true\">Scope</a><a href=\"#kb-proof\">Proof</a></nav>",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
         }
-      ]
+      ],
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
       "page": "components-documents-and-collaboration.html",
       "viewport": "mobile-390x844",
       "theme": "dark",
-      "violationCount": 0,
-      "violations": [],
+      "violationCount": 1,
+      "violations": [
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "nodes": [
+            {
+              "target": [
+                ".tcrn-toc-rail--dense > nav"
+              ],
+              "html": "<nav><a href=\"#kb-scope\" aria-current=\"location\" data-selected=\"true\">范围</a><a href=\"#kb-proof\">证明</a></nav>",
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
+        }
+      ],
       "wordmarkContrastExempted": []
     },
     {
@@ -1406,35 +1570,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-shell-brand-lockup > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            "span[data-gplus-static-markup=\"brand-logo-ds-light\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-doc-theme-preview[data-gplus-matrix-theme=\"light\"][data-tcrn-theme=\"light\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLockup\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"suffix\"] > .tcrn-brand-lockup.tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1443,26 +1579,7 @@
       "theme": "dark",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            "span[data-gplus-static-markup=\"brand-logo-ds-light\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            ".tcrn-doc-theme-preview[data-tcrn-theme=\"light\"][data-gplus-matrix-theme=\"light\"] > .tcrn-surface[data-gplus-matrix-component=\"ProductLockup\"] > .tcrn-doc-action-row[data-gplus-matrix-row=\"suffix\"] > .tcrn-brand-lockup.tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1471,35 +1588,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-doc-brand > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#efeeea",
-          "contrastRatio": 3.29
-        },
-        {
-          "target": [
-            "#brand-sample-product-light-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"Products\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(2) > .tcrn-table-shell__cell[data-label=\"Product\"][role=\"cell\"] > .tcrn-product-logo--stacked-suffix[data-product-id=\"design-system\"][data-product-logo-asset-id=\"tcrn-design-system-two-line\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1508,26 +1597,7 @@
       "theme": "dark",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            "div[data-shell=\"br-l\"] > .tcrn-product-shell__sidebar[data-product-shell-region=\"side-navigation\"] > .tcrn-product-shell__sidebar-header > .tcrn-product-shell__brand[aria-label=\"Design team home\"][href$=\"#brand-sample-product\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"][data-text=\"rail\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#efeeea",
-          "contrastRatio": 3.29
-        },
-        {
-          "target": [
-            "#brand-sample-product-light-content > .tcrn-product-shell-content-stack > .tcrn-table-shell[aria-label=\"产品\"][role=\"table\"] > .tcrn-table-shell__row[role=\"row\"]:nth-child(2) > .tcrn-table-shell__cell[data-label=\"产品\"][role=\"cell\"] > .tcrn-product-logo--stacked-suffix[aria-label=\"TCRN 设计系统 设计系统\"][data-product-id=\"design-system\"] > .tcrn-product-logo__copy[aria-hidden=\"true\"] > .tcrn-product-logo__line-one[aria-label=\"TCRN 设计系统\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -1536,17 +1606,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -1564,17 +1624,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -1592,17 +1642,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Patterns",
@@ -1620,17 +1660,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Proof",
@@ -1648,17 +1678,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-brand-wordmark__suffix--design-system"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Proof",
@@ -1676,17 +1696,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Change Log",
@@ -1704,17 +1714,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1732,17 +1732,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1760,17 +1750,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1788,17 +1768,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1816,17 +1786,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1844,17 +1804,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",
@@ -1872,17 +1822,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-product-logo__line-one-suffix"
-          ],
-          "selector": ".tcrn-product-logo__line-one-suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",

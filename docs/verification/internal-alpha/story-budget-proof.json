@@ -11,64 +11,78 @@
     "toleratedDebt": [
       {
         "id": "color-palette",
-        "measure": 5779,
-        "recordedHeightPx": 5779,
+        "measure": 6039,
+        "recordedHeightPx": 6039,
         "owedTo": "beyond-INIT-008",
         "note": "73-token color specimen gallery; a catalogue split is future work — gated debt"
       },
       {
         "id": "text-styles",
-        "measure": 2359,
-        "recordedHeightPx": 2359,
+        "measure": 2519,
+        "recordedHeightPx": 2519,
         "owedTo": "beyond-INIT-008",
         "note": "type-scale specimen catalogue; gated debt"
       },
       {
         "id": "icons-motion",
-        "measure": 2102,
-        "recordedHeightPx": 2102,
+        "measure": 2393,
+        "recordedHeightPx": 2393,
         "owedTo": "beyond-INIT-008",
         "note": "icon + motion specimen catalogue (incl. the S067 motion-slowdown note); gated debt"
       },
       {
         "id": "foundation-visual-standards",
-        "measure": 4096,
-        "recordedHeightPx": 4096,
+        "measure": 4380,
+        "recordedHeightPx": 4380,
         "owedTo": "beyond-INIT-008",
         "note": "foundation visual-standards catalogue; gated debt"
       },
       {
         "id": "component-family-index",
-        "measure": 3206,
-        "recordedHeightPx": 3206,
+        "measure": 3341,
+        "recordedHeightPx": 3361,
         "owedTo": "beyond-INIT-008",
         "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
       },
       {
         "id": "display-primitives-spec",
-        "measure": 3097,
-        "recordedHeightPx": 3117,
+        "measure": 3153,
+        "recordedHeightPx": 3153,
         "owedTo": "INIT-029/S254",
         "note": "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
       },
       {
+        "id": "shell-top-band",
+        "measure": 8312,
+        "recordedHeightPx": 8312,
+        "owedTo": "beyond-INIT-016",
+        "note": "Nine full-window shell screens are the measured surface of the shell gate (C-11, C-12): the board's six, the typed search and the two pages in the paper; splitting them across stories would split the board's section A and move ids the gate resolves — gated debt"
+      },
+      {
+        "id": "shell-mobile",
+        "measure": 3732,
+        "recordedHeightPx": 3732,
+        "owedTo": "beyond-INIT-016",
+        "note": "Four full-window phone screens are the 390 surface of the shell gate (C-11, C-12); the gate opens this story at 390 and reads the page screens there, so they cannot move to another story — gated debt"
+      },
+      {
         "id": "ai-consumption-contract",
-        "measure": 13173,
-        "recordedHeightPx": 13173,
+        "measure": 14289,
+        "recordedHeightPx": 14269,
         "owedTo": "beyond-INIT-008",
         "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
       },
       {
         "id": "frontend-shell-slice",
-        "measure": 10035,
-        "recordedHeightPx": 10070,
+        "measure": 7595,
+        "recordedHeightPx": 7595,
         "owedTo": "beyond-INIT-008",
         "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
       },
       {
         "id": "owner-quality-product-shell",
-        "measure": 16565,
-        "recordedHeightPx": 16565,
+        "measure": 11098,
+        "recordedHeightPx": 11098,
         "owedTo": "beyond-INIT-008",
         "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
       }
@@ -77,55 +91,67 @@
   "splitWorklist": [
     {
       "id": "color-palette",
-      "heightPx": 5779,
+      "heightPx": 6039,
       "owedTo": "beyond-INIT-008",
       "note": "73-token color specimen gallery; a catalogue split is future work — gated debt"
     },
     {
       "id": "text-styles",
-      "heightPx": 2359,
+      "heightPx": 2519,
       "owedTo": "beyond-INIT-008",
       "note": "type-scale specimen catalogue; gated debt"
     },
     {
       "id": "icons-motion",
-      "heightPx": 2102,
+      "heightPx": 2393,
       "owedTo": "beyond-INIT-008",
       "note": "icon + motion specimen catalogue (incl. the S067 motion-slowdown note); gated debt"
     },
     {
       "id": "foundation-visual-standards",
-      "heightPx": 4096,
+      "heightPx": 4380,
       "owedTo": "beyond-INIT-008",
       "note": "foundation visual-standards catalogue; gated debt"
     },
     {
       "id": "component-family-index",
-      "heightPx": 3206,
+      "heightPx": 3341,
       "owedTo": "beyond-INIT-008",
       "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
     },
     {
       "id": "display-primitives-spec",
-      "heightPx": 3097,
+      "heightPx": 3153,
       "owedTo": "INIT-029/S254",
       "note": "Nine returned component constructs and the four-phase OperationFeedback readback are kept together for one package contract and state readback; the owner may require a later story split, so this is tracked acceptance debt rather than a visual approval."
     },
     {
+      "id": "shell-top-band",
+      "heightPx": 8312,
+      "owedTo": "beyond-INIT-016",
+      "note": "Nine full-window shell screens are the measured surface of the shell gate (C-11, C-12): the board's six, the typed search and the two pages in the paper; splitting them across stories would split the board's section A and move ids the gate resolves — gated debt"
+    },
+    {
+      "id": "shell-mobile",
+      "heightPx": 3732,
+      "owedTo": "beyond-INIT-016",
+      "note": "Four full-window phone screens are the 390 surface of the shell gate (C-11, C-12); the gate opens this story at 390 and reads the page screens there, so they cannot move to another story — gated debt"
+    },
+    {
       "id": "ai-consumption-contract",
-      "heightPx": 13173,
+      "heightPx": 14289,
       "owedTo": "beyond-INIT-008",
       "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
     },
     {
       "id": "frontend-shell-slice",
-      "heightPx": 10035,
+      "heightPx": 7595,
       "owedTo": "beyond-INIT-008",
       "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
     },
     {
       "id": "owner-quality-product-shell",
-      "heightPx": 16565,
+      "heightPx": 11098,
       "owedTo": "beyond-INIT-008",
       "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
     }

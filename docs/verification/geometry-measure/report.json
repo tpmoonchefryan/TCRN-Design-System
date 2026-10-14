@@ -97,7 +97,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -190,7 +190,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 1,
@@ -283,7 +283,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -407,7 +407,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -500,7 +500,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -593,7 +593,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -686,7 +686,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -841,7 +841,7 @@
           "contrast": "fail",
           "controlHeight": "pass",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -965,7 +965,7 @@
           "contrast": "pass",
           "controlHeight": "fail",
           "overlap": "pass",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -1058,7 +1058,7 @@
           "contrast": "pass",
           "controlHeight": "pass",
           "overlap": "fail",
-          "shellFrame": "n/a"
+          "shellFrame": "pass"
         },
         "values": {
           "clip": 0,
@@ -1257,6 +1257,37 @@
           "controlHeight": 0,
           "overlap": 0,
           "shellFrame": 14
+        },
+        "ok": true,
+        "problems": []
+      },
+      {
+        "id": "shell-frame-mutation",
+        "file": "all.green.html",
+        "mutation": true,
+        "statuses": {
+          "clip": "pass",
+          "singleLine": "pass",
+          "shadowBlur": "pass",
+          "rail": "pass",
+          "rowAlign": "pass",
+          "mark": "pass",
+          "contrast": "pass",
+          "controlHeight": "pass",
+          "overlap": "pass",
+          "shellFrame": "fail"
+        },
+        "values": {
+          "clip": 0,
+          "singleLine": 1,
+          "shadowBlur": 3,
+          "rail": 0,
+          "rowAlign": 0,
+          "mark": 0,
+          "contrast": 0,
+          "controlHeight": 0,
+          "overlap": 0,
+          "shellFrame": 1
         },
         "ok": true,
         "problems": []
@@ -3373,7 +3404,7 @@
       "route": "/components-gplus-samples.html#typography-sample-billing",
       "ok": false,
       "failed": [
-        "clip"
+        "overlap"
       ],
       "notApplicable": [
         "rail",
@@ -3384,7 +3415,7 @@
       "verdict": {
         "ok": false,
         "failed": [
-          "clip"
+          "overlap"
         ],
         "notApplicable": [
           "rail",
@@ -3393,27 +3424,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -3489,14 +3507,22 @@
             "violations": []
           },
           "overlap": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 1,
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 1,
+            "violations": [
+              {
+                "container": "div.alpha-story-stack",
+                "a": "div",
+                "b": "div",
+                "ox": 1006,
+                "oy": 9
+              }
+            ]
           },
           "shellFrame": {
             "status": "pass",
@@ -3517,10 +3543,8 @@
       "storyId": "icon-sample-project",
       "theme": "light",
       "route": "/components-gplus-samples.html#icon-sample-project",
-      "ok": false,
-      "failed": [
-        "clip"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "mark",
@@ -3529,10 +3553,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "clip"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "mark",
@@ -3541,27 +3563,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -3665,10 +3674,8 @@
       "storyId": "brand-sample-product",
       "theme": "light",
       "route": "/components-gplus-samples.html#brand-sample-product",
-      "ok": false,
-      "failed": [
-        "clip"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "mark",
@@ -3677,10 +3684,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "clip"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "mark",
@@ -3689,27 +3694,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -3813,10 +3805,8 @@
       "storyId": "actions-sample-project",
       "theme": "light",
       "route": "/components-gplus-samples.html#actions-sample-project",
-      "ok": false,
-      "failed": [
-        "clip"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "mark",
@@ -3825,10 +3815,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "clip"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "mark",
@@ -3837,27 +3825,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -3963,7 +3938,7 @@
       "route": "/components-gplus-samples.html#inputs-sample-members",
       "ok": false,
       "failed": [
-        "clip"
+        "overlap"
       ],
       "notApplicable": [
         "rail",
@@ -3976,7 +3951,7 @@
       "verdict": {
         "ok": false,
         "failed": [
-          "clip"
+          "overlap"
         ],
         "notApplicable": [
           "rail",
@@ -3987,27 +3962,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -4083,14 +4045,22 @@
             "violations": []
           },
           "overlap": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 1,
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 1,
+            "violations": [
+              {
+                "container": "div.alpha-story-stack",
+                "a": "div",
+                "b": "div",
+                "ox": 1006,
+                "oy": 29
+              }
+            ]
           },
           "shellFrame": {
             "status": "pass",
@@ -4111,10 +4081,8 @@
       "storyId": "composition-three-sample",
       "theme": "light",
       "route": "/components-gplus-samples.html#composition-three-sample",
-      "ok": false,
-      "failed": [
-        "clip"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "mark",
@@ -4123,10 +4091,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "clip"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "mark",
@@ -4135,27 +4101,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -6363,7 +6316,7 @@
       "route": "/components-gplus-samples.html#typography-sample-billing",
       "ok": false,
       "failed": [
-        "clip"
+        "overlap"
       ],
       "notApplicable": [
         "rail",
@@ -6374,7 +6327,7 @@
       "verdict": {
         "ok": false,
         "failed": [
-          "clip"
+          "overlap"
         ],
         "notApplicable": [
           "rail",
@@ -6383,27 +6336,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -6479,14 +6419,22 @@
             "violations": []
           },
           "overlap": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 1,
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 1,
+            "violations": [
+              {
+                "container": "div.alpha-story-stack",
+                "a": "div",
+                "b": "div",
+                "ox": 1006,
+                "oy": 9
+              }
+            ]
           },
           "shellFrame": {
             "status": "pass",
@@ -6507,10 +6455,8 @@
       "storyId": "icon-sample-project",
       "theme": "dark",
       "route": "/components-gplus-samples.html#icon-sample-project",
-      "ok": false,
-      "failed": [
-        "clip"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "mark",
@@ -6519,10 +6465,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "clip"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "mark",
@@ -6531,27 +6475,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -6655,10 +6586,8 @@
       "storyId": "brand-sample-product",
       "theme": "dark",
       "route": "/components-gplus-samples.html#brand-sample-product",
-      "ok": false,
-      "failed": [
-        "clip"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "mark",
@@ -6667,10 +6596,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "clip"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "mark",
@@ -6679,27 +6606,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -6803,10 +6717,8 @@
       "storyId": "actions-sample-project",
       "theme": "dark",
       "route": "/components-gplus-samples.html#actions-sample-project",
-      "ok": false,
-      "failed": [
-        "clip"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "mark",
@@ -6815,10 +6727,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "clip"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "mark",
@@ -6827,27 +6737,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -6953,7 +6850,7 @@
       "route": "/components-gplus-samples.html#inputs-sample-members",
       "ok": false,
       "failed": [
-        "clip"
+        "overlap"
       ],
       "notApplicable": [
         "rail",
@@ -6966,7 +6863,7 @@
       "verdict": {
         "ok": false,
         "failed": [
-          "clip"
+          "overlap"
         ],
         "notApplicable": [
           "rail",
@@ -6977,27 +6874,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -7073,14 +6957,22 @@
             "violations": []
           },
           "overlap": {
-            "status": "pass",
-            "value": 0,
+            "status": "fail",
+            "value": 1,
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
             },
-            "violationCount": 0,
-            "violations": []
+            "violationCount": 1,
+            "violations": [
+              {
+                "container": "div.alpha-story-stack",
+                "a": "div",
+                "b": "div",
+                "ox": 1006,
+                "oy": 29
+              }
+            ]
           },
           "shellFrame": {
             "status": "pass",
@@ -7101,10 +6993,8 @@
       "storyId": "composition-three-sample",
       "theme": "dark",
       "route": "/components-gplus-samples.html#composition-three-sample",
-      "ok": false,
-      "failed": [
-        "clip"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "mark",
@@ -7113,10 +7003,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "clip"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "mark",
@@ -7125,27 +7013,14 @@
         ],
         "checks": {
           "clip": {
-            "status": "fail",
-            "value": 2,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxLeaks": 0,
               "tolerancePx": 0.5
             },
-            "violationCount": 2,
-            "violations": [
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              },
-              {
-                "element": "em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms",
-                "ancestor": "b.tcrn-shell-brand__word",
-                "byPx": 1,
-                "text": "TMS"
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "singleLine": {
             "status": "pass",
@@ -7374,8 +7249,8 @@
   "checksNeverApplied": [],
   "summary": {
     "clip": {
-      "status": "fail",
-      "worstValue": 2
+      "status": "pass",
+      "worstValue": 0
     },
     "singleLine": {
       "status": "pass",
@@ -7406,8 +7281,8 @@
       "worstValue": 0
     },
     "overlap": {
-      "status": "pass",
-      "worstValue": 0
+      "status": "fail",
+      "worstValue": 1
     },
     "shellFrame": {
       "status": "pass",

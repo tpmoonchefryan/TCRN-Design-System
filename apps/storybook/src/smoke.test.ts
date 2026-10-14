@@ -130,6 +130,7 @@ const expectedContractStoryIds = [
   "shell-mobile",
   "shell-intro",
   "shell-matrix",
+  "shell-brand-first-line",
   "dialog-spec-usage",
   "table-record-index-spec",
   "records-and-boards-components-spec",
@@ -804,7 +805,10 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Style Guide"), /data-brand-asset-registration="design-system"/);
   assert.match(readRenderedGroupPage("Components"), /Navigation and shell spec/);
   assert.match(readRenderedGroupPage("Components"), /Navigation shell components are first-class component contracts/);
-  assert.match(readRenderedGroupPage("Components"), /Current location may scroll into view and highlight, but must not reorder sections/);
+  // The SideNav row reads as the top-band shell now (TCRN-DS-SUB-176): navigation sits in the full menu and the drop-downs.
+  assert.match(readRenderedGroupPage("Components"), /Deprecated: ProductShell takes the navigation as navGroups, and NavGroup and NavItem rows render in the full menu under the brand button and in the pinned drop-downs/);
+  assert.match(readRenderedGroupPage("Components"), /No resident side rail and no collapse button; the page(?:'|&#x27;)s own contents and bookmarks stay in the page, not in the navigation/);
+  assert.doesNotMatch(readRenderedGroupPage("Components"), /Current location may scroll into view and highlight, but must not reorder sections/);
   assert.match(readRenderedGroupPage("Components"), /Control\/Command\+K shortcut labels belong only to navigation or shell search with a real focus target and result behavior/);
   assert.match(readRenderedGroupPage("Components"), /Shell selection matrix/);
   assert.match(readRenderedGroupPage("Components"), /Dense operations shell/);
@@ -823,13 +827,15 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(internalLabSource, /packages\/ui-react\/src/);
   assert.doesNotMatch(internalLabSource, /@tcrn\/ui-react\//);
   assert.match(readGroupPage("Components"), /tcrn-shell-brand-lockup/);
-  assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell-layout/);
+  // The knowledge-base demo's frame and pager are tcrn-doc-demo-frame and tcrn-doc-demo-pager (TCRN-DS-SUB-167);
+  // the retired tcrn-doc-knowledge-shell layout, content and pager classes are gone from the page and its styles.
+  assert.match(readGroupPage("Components"), /class="tcrn-doc-demo-frame tcrn-doc-demo-frame--knowledge" data-shell-pattern="knowledge-bookmarks"/);
+  assert.doesNotMatch(readGroupPage("Components"), /tcrn-doc-knowledge-shell/);
   // The knowledge-base sample is a top-band ProductShell now (TCRN-DS-SUB-124, SUB-125): no TopBar, no SideNav.
   assert.match(readGroupPage("Components"), /data-shell-pattern="knowledge-bookmarks" data-storybook-only="knowledge-shell-prototype"[^>]*><div data-shell="" class="tcrn-product-shell"[^>]*data-package-backed-product-shell-boundary="top-band-shell-v2"/);
   assert.doesNotMatch(readGroupPage("Components"), /<header aria-label="Knowledge base top bar"[^>]*class="tcrn-top-bar"/);
   assert.doesNotMatch(readGroupPage("Components"), /<nav id="knowledge-shell-sidebar"[^>]*class="tcrn-side-nav"/);
-  assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell__content/);
-  assert.match(readGroupPage("Components"), /tcrn-doc-knowledge-shell__pager/);
+  assert.match(readGroupPage("Components"), /<nav class="tcrn-doc-demo-pager" aria-label="Knowledge base shell chapter navigation"/);
   assert.doesNotMatch(readRenderedGroupPage("Components"), /Top bar, attached side navigation, content column, and chapter navigation stay one shell/);
   assert.match(readGroupPage("Components"), /aria-label="Knowledge base shell chapter navigation"/);
   assert.doesNotMatch(readGroupPage("Components"), /tcrn-bookmark-nav--tracked/);
@@ -999,7 +1005,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Foundations"), /current locale name in that locale/);
   assert.match(readGroupPage("Foundations"), /outside pointer down or click, and Escape/);
   assert.match(readGroupPage("Foundations"), /return focus to the trigger/);
-  assert.match(readGroupPage("Foundations"), /keyboard-accessible collapse and expand control/);
+  // The shell-control governance row is "Top-band shell navigation" now (TCRN-DS-SUB-171): no collapse control.
+  assert.match(readGroupPage("Foundations"), /Top-band shell navigation/);
+  assert.match(readGroupPage("Foundations"), /Navigation lives only in the band, the full menu, and the drop-downs, so there is no collapse control/);
   assert.match(readGroupPage("Foundations"), /planned modules presented as registered product IA/);
   assert.match(readGroupPage("Foundations"), /Keep search compact at rest, expand smoothly on focus, and collapse on blur/);
   assert.match(readGroupPage("Foundations"), /not as a top-bar human navigation item/);
@@ -1234,20 +1242,25 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
 	  )),
 	  "Storybook doc shell visual oracle must cite perceptual-signature-backed sidebar evidence"
 	);
-  // Composition one (O-1): a fixed 220px documentation rail and the 52px shell top bar.
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 220);
-	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 220);
-	assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 220);
+  // The top-band documentation shell (TCRN-DS-SUB-176): no resident rail (0), the 52px band, and the full
+  // menu's search at 936px both at rest and on focus.
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 0);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 0);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 0);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 52);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx, 260);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 360);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx, 936);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 936);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.themeToggleRadiusPx, 999);
   assert.deepEqual(contract.storybookDocShellVisualOracle?.globalProductShellSelectorsForbidden, storybookDocShellVisualOracle.globalProductShellSelectorsForbidden);
   assert.equal(contract.designSystemAuthorityDisposition, "package_primitives_and_storybook_doc_shell_split");
   assert.equal(contract.componentStorybookParityDisposition, "package_primitives_consumed_without_internal_clones");
   assert.equal(contract.ownerVisualAdmissionDisposition, "owner_review_required");
-  assert.equal(contract.visualFitControlContract?.search?.storybookRestWidthPx, 260);
-  assert.equal(contract.visualFitControlContract?.search?.storybookExpandedWidthPx, 360);
+  // The full menu's field (936 x 40) and a pinned drop-down's (228 x 28), from the shell tokens (TCRN-DS-SUB-176).
+  assert.equal(contract.visualFitControlContract?.search?.storybookRestWidthPx, 936);
+  assert.equal(contract.visualFitControlContract?.search?.storybookExpandedWidthPx, 936);
+  assert.equal(contract.visualFitControlContract?.search?.storybookHeightPx, 40);
+  assert.equal(contract.visualFitControlContract?.search?.dropDownWidthPx, 228);
+  assert.equal(contract.visualFitControlContract?.search?.dropDownHeightPx, 28);
   assert.equal(contract.visualFitControlContract?.search?.packageDefaultControlMinInlineSize, "9ch");
   assert.match(contract.visualFitControlContract?.productLockups?.rule ?? "", /suffix accents are package-owned/);
   assert.match(contract.visualFitControlContract?.sidebar?.rule ?? "", /orphan visual lane/);
@@ -1518,16 +1531,18 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.doesNotMatch(contract.componentConsumptionDisposition, /requestCookieHeader/);
   assert.ok(contract.requiredProof.includes("storybook_doc_shell_package_boundary_receipt"));
   assert.ok(contract.requiredProof.includes("functional_display_static_pattern_receipt"));
-  assert.match(contract.storybookDocShellAuthorityDisposition, /original Storybook-owned doc shell composition/);
+  // The documentation shell is the package ProductShell in its top-band form (TCRN-DS-SUB-176).
+  assert.match(contract.storybookDocShellAuthorityDisposition, /The Storybook documentation frontend renders the top-band shell: every documentation page is the package-backed ProductShell/);
+  assert.match(contract.storybookDocShellAuthorityDisposition, /There is no resident side rail and no collapse button/);
   assert.match(contract.storybookDocShellAuthorityDisposition, /data-doc-shell='online-docs'/);
-  assert.match(contract.storybookDocShellAuthorityDisposition, /ProductShell remains documented and package-backed for component examples/);
+  assert.match(contract.storybookDocShellAuthorityDisposition, /ProductShell instances in story bodies, the shell stories and the AOS visual instances are component examples and product consumer rules; they never replace the documentation shell/);
   assert.doesNotMatch(JSON.stringify(contract), /must render the merged shell through @tcrn\/ui-react ProductShell/);
   assert.doesNotMatch(JSON.stringify(contract), /Shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior remains ProductShell-owned/);
   assert.match(contract.tokenConsumptionDisposition, /Design System tokens/);
   assert.match(contract.themeModeDisposition, /light and dark Storybook shell modes/);
-  assert.match(contract.storybookDocShellControlContract.implementationBoundary, /global Storybook shell is a Storybook-owned doc shell/);
+  assert.match(contract.storybookDocShellControlContract.implementationBoundary, /The global Storybook shell is the package ProductShell in its top-band form/);
   assert.match(contract.storybookDocShellControlContract.implementationBoundary, /data-doc-shell='online-docs'/);
-  assert.match(contract.storybookDocShellControlContract.implementationBoundary, /ProductShell selectors must not replace the global page shell/);
+  assert.match(contract.storybookDocShellControlContract.implementationBoundary, /a ProductShell inside a story body is a component or product example and must not replace the global page shell/);
   assert.match(contract.storybookDocShellControlContract.themeToggle, /compact circular icon-only theme toggle/);
   assert.match(contract.storybookDocShellControlContract.visualSkin, /internal-alpha\/visual-signature-baseline\.json/);
   assert.match(contract.storybookDocShellControlContract.visualSkin, /doc-shell selector authority/);
@@ -1605,7 +1620,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(llms, /Welcome \(index\.html\): welcome-governance, governance-boundaries, maintainers-routing, contribution-model, release-bug-policy/);
   assert.match(llms, /Style Guide \(style-guide\.html\): brand-identity, color-palette, text-styles, grid-system, icons-motion, global-states, copy-creation-rules/);
   assert.match(llms, /Foundations \(foundations\.html\): tokens-copy-state, i18n-theme-contract, foundation-visual-standards, copy-guidelines/);
-  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, shell-top-band, shell-narrow, shell-mobile, shell-intro, shell-matrix, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members, composition-three-sample/);
+  assert.match(llms, /Components \(components\.html\): component-family-index, display-primitives-spec, interaction-disclosure-spec, stamp-spec-usage, button-spec-usage, field-spec-usage, navigation-shell-spec, navigation-dense-operations-shell-spec, navigation-focused-shells-spec, navigation-primitives-spec, navigation-product-shell-spec, shell-top-band, shell-narrow, shell-mobile, shell-intro, shell-matrix, shell-brand-first-line, dialog-spec-usage, table-record-index-spec, records-and-boards-components-spec, hierarchy-and-relations-spec, detail-and-inspection-density-spec, detail-and-inspection-route-spec, records-and-boards-backlog-spec, hierarchy-and-relations-stages-spec, detail-and-inspection-inspector-spec, documents-and-collaboration-components-spec, documents-and-collaboration-density-spec, documents-and-collaboration-templates-spec, typography-matrix, typography-sample-billing, icon-matrix, icon-sample-project, brand-matrix, brand-sample-product, actions-matrix, actions-sample-project, inputs-matrix, inputs-sample-members, composition-three-sample/);
   assert.match(llms, /Patterns \(patterns\.html\): forms-patterns, workbench-patterns, records-and-boards-patterns, readiness-notification-patterns/);
   assert.match(llms, /Visual equivalence levels: same_package_version -> same_exported_component -> same_variant_props_slots -> same_storybook_visual_instance/);
   assert.match(llms, /Package publication, Storybook\/docs publication, product adoption, release readiness, acceptance-state movement, and Owner Intent live dispatch are not claimed here\./);
@@ -1815,19 +1830,22 @@ test("composition-one sample stories render the package shell in a light block a
       const block = blocks[index];
       assert.equal(block.match(/class="tcrn-product-shell"/g)?.length, 1, `${board}: one package ProductShell per block`);
       assert.match(block, new RegExp(`data-shell="${gplusSampleShellKeys[board]}-${suffix}"`));
-      // The composition rail is the ProductShell default (shell tokens), so no sample sets an inline shell width.
+      // The shell's geometry is the ProductShell default (shell tokens), so no sample sets an inline shell width.
       const inlineStyles = Array.from(block.matchAll(/\sstyle="([^"]*)"/g), (match) => match[1]);
       assert.ok(
         !inlineStyles.some((style) => /--tcrn-(?:product-shell-sidebar-width|shell-sidebar-width|shell-topbar-height)\b/.test(style)),
         `${board}: the sample block carries no inline shell width override`
       );
-      const navItems = block.match(/data-navigation-primitive="nav-item"/g)?.length ?? 0;
-      assert.ok(navItems >= 5, `${board}: rail navigation items`);
-      assert.equal(block.match(/data-guide="rail"/g)?.length, navItems + 1, `${board}: brand mark and every rail icon carry data-guide`);
-      assert.equal(block.match(/data-text="rail"/g)?.length, navItems + 1, `${board}: wordmark and every rail label carry data-text`);
+      // The top-band shell (TCRN-DS-SUB-134): the sample's shell is closed, so its rows live in the full
+      // menu and do not render; the root opts out of the rail measurement and no rail hook remains.
+      const shellRoot = block.match(/<div [^>]*class="tcrn-product-shell"[^>]*>/)?.[0] ?? "";
+      assert.match(shellRoot, /data-state="closed"/, `${board}: the shell is closed`);
+      assert.match(shellRoot, /data-measure-skip="rail"/, `${board}: the shell root opts out of the rail measurement`);
+      assert.match(shellRoot, /data-package-backed-product-shell-boundary="top-band-shell-v2"/, `${board}: the package's top-band shell`);
+      assert.doesNotMatch(block, /data-(?:guide|text)="rail"|class="tcrn-side-nav"/, `${board}: no rail and no rail hooks`);
     }
-    // Sample copy: every Latin text node of the rail labels and the page content has five-locale text,
-    // or is a proper noun or a registered sample machine word.
+    // Sample copy: every Latin text node of the page content (and of any menu row a block renders) has
+    // five-locale text, or is a proper noun or a registered sample machine word.
     // The page content is the last region of each shell, so a block from its main region to its end
     // holds the page copy and none of the shell's own controls.
     const main = blocks.map((block) => block.slice(block.indexOf(">", block.indexOf('class="tcrn-product-shell__main"')))).join("");
@@ -1844,7 +1862,7 @@ test("composition-one sample stories render the package shell in a light block a
   }
 });
 
-test("composition-three sample story renders a top bar and centred content with no rail, light and night", () => {
+test("composition-three sample story renders the top-band shell with the page centred at the content width, light and night", () => {
   const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
   const listFrom = (key: string) => new Set(
     Array.from(ledgerSource.slice(ledgerSource.indexOf(key), ledgerSource.indexOf("],", ledgerSource.indexOf(key))).matchAll(/"((?:[^"\\]|\\.)*)"/g), (match) => match[1])
@@ -1857,40 +1875,37 @@ test("composition-three sample story renders a top bar and centred content with 
   assert.equal(story.group, "Components");
   assert.equal(story.categoryId, "gplus-samples");
   assert.equal(story.sourcePath, gplusSampleSourcePath);
-  assert.equal(gplusCompositionThreeContentWidth, "1040px");
+  // Composition three is the top-band shell with the page centred at the layout token's content width
+  // (TCRN-DS-SUB-134, SUB-130); the deprecated TopBar, SubNav and stand-alone shell search are gone.
+  assert.equal(gplusCompositionThreeContentWidth, "var(--tcrn-layout-content-max-w)");
   const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
   assert.match(html, /data-gplus-sample="composition-three"/);
-  const blocks = html.split(/(?=<div class="tcrn-doc-theme-preview" data-tcrn-theme="(?:light|dark)" data-gplus-sample-theme=)/).slice(1);
+  const blocks = html.split(/(?=<div data-tcrn-theme="(?:light|dark)" data-gplus-sample-theme=)/).slice(1);
   assert.equal(blocks.length, 2, "composition three: one light block and one night block");
-  assert.match(blocks[0], /^<div class="tcrn-doc-theme-preview" data-tcrn-theme="light" data-gplus-sample-theme="light">/);
-  assert.match(blocks[1], /^<div class="tcrn-doc-theme-preview" data-tcrn-theme="dark" data-gplus-sample-theme="night">/);
+  assert.match(blocks[0], /^<div data-tcrn-theme="light" data-gplus-sample-theme="light">/);
+  assert.match(blocks[1], /^<div data-tcrn-theme="dark" data-gplus-sample-theme="night">/);
   const classes = (block: string) => Array.from(block.matchAll(/\sclass="([^"]*)"/g), (match) => match[1]);
   assert.deepEqual(classes(blocks[1]), classes(blocks[0]), "composition three: night block classes equal the light block");
-  // No rail and no product shell: one package TopBar with one navigation strip and the shell search,
-  // and no [data-shell] (composition three is not a ProductShell layout).
-  assert.doesNotMatch(html, /tcrn-product-shell"|tcrn-side-nav|data-shell=/, "composition three: no ProductShell, rail or data-shell");
-  for (const block of blocks) {
-    assert.equal(block.match(/class="tcrn-top-bar"/g)?.length, 1, "composition three: one TopBar per block");
-    assert.equal(block.match(/class="tcrn-sub-nav"/g)?.length, 1, "composition three: one top navigation per block");
-    assert.equal(block.match(/class="tcrn-product-shell-search"/g)?.length, 1, "composition three: one shell search per block");
-    assert.match(block, new RegExp(`max-width:${gplusCompositionThreeContentWidth}[^"]*" data-gplus-composition-three-content="true"`), "composition three: content centred at 1040px");
+  assert.doesNotMatch(html, /class="(?:tcrn-top-bar|tcrn-sub-nav|tcrn-side-nav)"|data-(?:guide|text)="rail"/, "composition three: no TopBar, SubNav, rail or rail hooks");
+  for (const [index, suffix] of (["l", "n"] as const).entries()) {
+    const block = blocks[index];
+    assert.equal(block.match(/class="tcrn-product-shell"/g)?.length, 1, "composition three: one package ProductShell per block");
+    const shellRoot = block.match(/<div [^>]*class="tcrn-product-shell"[^>]*>/)?.[0] ?? "";
+    assert.match(shellRoot, new RegExp(`data-shell="c3-${suffix}"`), `composition three: the shell of the block is c3-${suffix}`);
+    assert.match(shellRoot, /data-state="closed"/, "composition three: the shell is closed");
+    assert.match(shellRoot, /data-measure-skip="rail"/, "composition three: the shell root opts out of the rail measurement");
+    assert.match(
+      block,
+      new RegExp(`style="width:100%;max-width:${escapeRegExp(gplusCompositionThreeContentWidth)};margin-inline:auto" data-gplus-composition-three-content="true"`),
+      "composition three: the page is centred at the content width"
+    );
   }
-  // Sample copy: every Latin text node of the brand, the top navigation and the page content has
-  // five-locale text, or is a proper noun or a registered sample machine word. The shell search keeps
-  // its own built-in strings (the package localizes them), so it is left out, as composition one leaves
-  // out the shell's own controls.
-  const segment = (block: string, start: string, end: string) => {
-    const from = block.indexOf(start);
-    return from < 0 ? "" : block.slice(from, end ? block.indexOf(end, from) + end.length : undefined);
-  };
-  const copy = blocks.map((block) => [
-    segment(block, '<div class="tcrn-top-bar__brand"', '<div class="tcrn-top-bar__module"'),
-    segment(block, '<nav class="tcrn-sub-nav"', "</nav>"),
-    segment(block, '<div class="tcrn-top-bar__actions"', "</header>"),
-    block.slice(block.indexOf(">", block.indexOf('data-gplus-composition-three-content="true"')))
-  ].join("")).join("");
-  const texts = Array.from(copy.replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1]);
-  assert.ok(texts.some((text) => decode(text) === "Quarterly review"), "composition three: the page copy is read");
+  // Sample copy: every Latin text node of the page content has five-locale text, or is a proper noun or
+  // a registered sample machine word. The page content is the last region of each shell, so a block from
+  // its main region to its end holds the page copy and none of the shell's own controls.
+  const main = blocks.map((block) => block.slice(block.indexOf(">", block.indexOf('class="tcrn-product-shell__main"')))).join("");
+  const texts = Array.from(main.replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1]);
+  assert.ok(texts.some((text) => decode(text) === "October launch"), "composition three: the page copy is read");
   for (const text of texts.map(decode).filter((value) => /[A-Za-z]/.test(value))) {
     const residue = text.split(/\s+/).filter((word) => !properNouns.has(word)).join(" ");
     assert.ok(
@@ -1898,10 +1913,10 @@ test("composition-three sample story renders a top bar and centred content with 
       `composition three: "${text}" needs five-locale text or a sample machine word`
     );
   }
-  // The navigation landmark names: one per block, the night one carrying the block name.
-  const navLabels = Array.from(html.matchAll(/<nav class="tcrn-sub-nav" aria-label="([^"]+)"/g), (match) => decode(match[1]));
-  assert.deepEqual(navLabels, ["Composition three sample: projects", "Composition three sample: projects (night)"]);
-  for (const label of navLabels) assert.ok(storybookContentText[label] !== undefined, `composition three: landmark "${label}" needs five-locale text`);
+  // The content landmark names: one per block, the night one carrying the block name.
+  const regionLabels = Array.from(html.matchAll(/class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="([^"]+)"/g), (match) => decode(match[1]));
+  assert.deepEqual(regionLabels, ["Composition three sample: projects", "Composition three sample: projects (night)"]);
+  for (const label of regionLabels) assert.ok(storybookContentText[label] !== undefined, `composition three: landmark "${label}" needs five-locale text`);
   assert.doesNotMatch(html, /class="is-(hover|active|focus)"|TCRN-DS-|STORY-|EPIC-|INIT-|Codex/, "composition three: no internal vocabulary");
 });
 
@@ -1913,15 +1928,22 @@ test("top-band shell stories render the package shell with its measurement hooks
   const sampleWords = listFrom("sampleMachineWords:");
   const properNouns = listFrom("properNouns:");
   const decode = (value: string) => value.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').trim();
-  // [data-shell, data-state, data-tcrn-theme of the block]: the 07a board's screen names (C-5, C-9).
+  // [data-shell, data-state, data-tcrn-theme of the block]: the 07a board's screen names (C-5, C-9), with
+  // the search, settings and roster screens the shell gate reads (C-12; TCRN-DS-SUB-150, SUB-161). The
+  // phone's open menu is the Sheet, so ts-m-s reads data-state="sheet" (TCRN-DS-SUB-160).
   const expectedScreens: Record<string, ReadonlyArray<readonly [string, string, string]>> = {
     "shell-top-band": [
       ["ts-closed-l", "closed", "light"], ["ts-closed-n", "closed", "dark"],
       ["ts-x-l", "expanded", "light"], ["ts-x-n", "expanded", "dark"],
-      ["ts-drop-l", "drop", "light"], ["ts-drop-n", "drop", "dark"]
+      ["ts-drop-l", "drop", "light"], ["ts-drop-n", "drop", "dark"],
+      ["ts-search-l", "expanded", "light"],
+      ["ts-settings-l", "closed", "light"], ["ts-roster-l", "closed", "light"]
     ],
     "shell-narrow": [["ts-narrow-l", "closed", "light"], ["ts-narrow-x-l", "expanded", "light"]],
-    "shell-mobile": [["ts-m-l", "closed", "light"], ["ts-m-s", "expanded", "light"]],
+    "shell-mobile": [
+      ["ts-m-l", "closed", "light"], ["ts-m-s", "sheet", "light"],
+      ["ts-settings-m", "closed", "light"], ["ts-roster-m", "closed", "light"]
+    ],
     "shell-intro": [["ts-intro-l", "closed", "light"]]
   };
   for (const [storyId, screens] of Object.entries(expectedScreens)) {
@@ -1931,8 +1953,16 @@ test("top-band shell stories render the package shell with its measurement hooks
     assert.equal(story.categoryId, "navigation-shells");
     assert.doesNotMatch(`${story.id} ${story.title}`, /\b(?:aos|tms|workflow)\b/i, `${storyId}: product names stay out of the id and title`);
     const html = renderToStaticMarkup(createElement(Fragment, null, story.render()));
-    const blocks = Array.from(html.matchAll(/<div data-tcrn-theme="(light|dark)" data-shell-story-block="([^"]+)" style="contain:layout[^"]*"/g), (match) => [match[2], match[1]]);
-    assert.deepEqual(blocks, screens.map(([screen, , theme]) => [screen, theme]), `${storyId}: one layout-contained block per screen, in board order`);
+    // Every screen is a block the page hydrates (TCRN-DS-SUB-151); all but the intro's are layout-contained.
+    const blocks = Array.from(html.matchAll(/<div data-tcrn-theme="(light|dark)" data-shell-story-block="([^"]+)"(?: style="([^"]*)")? data-shell-hydrate=""/g), (match) => [match[2], match[1], match[3] ?? ""] as const);
+    assert.deepEqual(blocks.map(([screen, theme]) => [screen, theme]), screens.map(([screen, , theme]) => [screen, theme]), `${storyId}: one hydrated block per screen, in board order`);
+    for (const [screen, , style] of blocks) {
+      if (storyId === "shell-intro") {
+        assert.doesNotMatch(style, /contain:layout/, `${screen}: the intro's block is not layout-contained`);
+      } else {
+        assert.match(style, /^contain:layout/, `${screen}: the block is layout-contained`);
+      }
+    }
     const shells = html.split(/(?=<div data-shell=")/).slice(1);
     assert.deepEqual(
       shells.map((shell) => /^<div data-shell="([^"]+)" class="tcrn-product-shell" data-state="([^"]+)"/.exec(shell)?.slice(1, 3)),
@@ -1945,10 +1975,32 @@ test("top-band shell stories render the package shell with its measurement hooks
         assert.match(shell, hook, `${screen}: ${hook.source}`);
       }
       assert.equal(shell.match(/data-pin="/g)?.length, 4, `${screen}: the four pinned items of the board`);
-      if (state === "closed" && storyId !== "shell-intro") {
+      const page = /^ts-(settings|roster)-/.exec(screen)?.[1];
+      if (state === "closed" && storyId !== "shell-intro" && !page) {
         assert.match(shell, /<a class="tcrn-shell-pins__item" href="#[^"]+" data-tcrn-preview-state="hover">/, `${screen}: the third pinned item under the pointer`);
       }
-      if (state === "expanded") {
+      // The page screens (TCRN-DS-SUB-161): nothing under the pointer, and the page in the paper.
+      if (page) {
+        assert.doesNotMatch(shell, /data-tcrn-preview-state="hover"/, `${screen}: nothing under the pointer`);
+        assert.match(shell, page === "settings" ? /class="tcrn-settings-layout"/ : /data-pattern="split-view"/, `${screen}: the ${page} page in the paper`);
+      }
+      // The full menu with a query typed (TCRN-DS-SUB-150): its results replace the menu's groups.
+      if (screen === "ts-search-l") {
+        for (const hook of [/data-panel="expanded"/, /data-shell-search=""/, /data-search-results-visible="true"/, /data-shell-pbar=""/, /data-lockup="lkr"/]) {
+          assert.match(shell, hook, `${screen}: ${hook.source}`);
+        }
+        assert.match(shell, /<input [^>]*value="Contra"/, `${screen}: the query typed into the full menu's search`);
+        assert.ok((shell.match(/data-search-result="true"/g)?.length ?? 0) > 0, `${screen}: the menu shows its results`);
+        assert.doesNotMatch(shell, /data-shell-group=""/, `${screen}: the results replace the menu's groups`);
+      }
+      // The phone's menu is the Sheet (TCRN-DS-SUB-160).
+      if (state === "sheet") {
+        for (const hook of [/data-panel="sheet"/, /data-shell-search=""/, /data-shell-group=""/, /data-shell-row=""/, /data-pin-button=""/, /data-shell-pinned-group=""/]) {
+          assert.match(shell, hook, `${screen}: ${hook.source}`);
+        }
+        assert.match(shell, /aria-current="page"/, `${screen}: the row of the current page`);
+      }
+      if (state === "expanded" && screen !== "ts-search-l") {
         for (const hook of [/data-panel="expanded"/, /data-shell-search=""/, /data-shell-group=""/, /data-shell-row=""/, /data-pin-button=""/, /data-shell-pbar=""/, /data-lockup="lkr"/, /data-shell-pinned-group=""/]) {
           assert.match(shell, hook, `${screen}: ${hook.source}`);
         }
@@ -1956,8 +2008,11 @@ test("top-band shell stories render the package shell with its measurement hooks
         assert.match(shell, /aria-current="page"/, `${screen}: the row of the current page`);
       }
       if (state === "drop") {
-        assert.match(shell, /<button [^>]*aria-expanded="true" aria-controls="([^"]+)" data-open-pin="" style="anchor-name:--[a-z0-9-]+"/, `${screen}: the open pinned item is the anchor`);
-        assert.match(shell, /<div class="tcrn-shell-menu tcrn-shell-dropdown" style="position-anchor:--[a-z0-9-]+;left:anchor\(left\);top:anchor\(bottom\)" data-shell-dropdown="">/, `${screen}: the drop-down hangs from the pinned item, not hidden`);
+        // The page mounts the shell (TCRN-DS-SUB-151): on the server the open drop-down waits hidden, and the
+        // client mount places it under its pinned item; the anchor-style markup bridge is gone.
+        assert.match(shell, /<button [^>]*aria-expanded="true" aria-controls="[^"]+-drop-contracts" data-open-pin="">/, `${screen}: the open pinned item controls its drop-down`);
+        assert.match(shell, /<div class="tcrn-shell-menu tcrn-shell-dropdown" style="visibility:hidden" data-shell-dropdown="">/, `${screen}: the server's drop-down waits for the client mount to place it`);
+        assert.doesNotMatch(shell, /anchor-name:|position-anchor:/, `${screen}: no anchor-style bridge`);
         assert.match(shell, /data-panel="drop"[^>]* aria-owns="[^"]+-col-templates"|aria-owns="[^"]+-col-templates"[^>]*data-panel="drop"/, `${screen}: the panel owns the open cascade column`);
         assert.match(shell, /title="Templates"[^>]*role="button" aria-expanded="true"/, `${screen}: the Templates row is open`);
         assert.equal(shell.match(/data-drop-col="2"/g)?.length, 1, `${screen}: one cascade column, the third-level rows' children`);
@@ -1969,9 +2024,17 @@ test("top-band shell stories render the package shell with its measurement hooks
     // Copy: every Latin text of the menu model, the pinned items, the current position, the pages and
     // the intro readback has five-locale text, or is a proper noun or a registered sample machine word;
     // the shell's own control copy is the package's (shell-copy.ts) and is left out.
+    // The pinned group's title is the package's own copy ("Pinned", and "Pinned items · N" in the Sheet;
+    // shell-copy.ts), localized by the package, so it is left out with the shell's controls.
+    const pinnedGroupTitle = /(<div data-shell-group="" data-shell-col="" data-shell-pinned-group=""[^>]*><div class="tcrn-nav-group__label"><span class="tcrn-nav-group__label-text"[^>]*>)([^<]*)</g;
+    for (const match of html.matchAll(pinnedGroupTitle)) {
+      assert.match(decode(match[2]), /^Pinned(?: items · \d+)?$/, `${storyId}: the pinned group's title is the package's copy`);
+    }
+    const copyHtml = html.replace(pinnedGroupTitle, "$1<");
+    const copyShells = copyHtml.split(/(?=<div data-shell=")/).slice(1);
     const texts = [
-      ...Array.from(html.matchAll(/class="(?:tcrn-shell-menu__text|tcrn-shell-pins__label|tcrn-nav-group__label-text|tcrn-shell-menu__crumb[^"]*)"[^>]*>([^<]+)</g), (match) => match[1]),
-      ...shells.flatMap((shell) => Array.from(shell.slice(shell.indexOf('class="tcrn-product-shell__main"')).replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1])),
+      ...Array.from(copyHtml.matchAll(/class="(?:tcrn-shell-menu__text|tcrn-shell-pins__label|tcrn-nav-group__label-text|tcrn-shell-menu__crumb[^"]*)"[^>]*>([^<]+)</g), (match) => match[1]),
+      ...copyShells.flatMap((shell) => Array.from(shell.slice(shell.indexOf('class="tcrn-product-shell__main"')).replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1])),
       ...Array.from((html.includes("tcrn-readback-panel") ? html.slice(html.indexOf("tcrn-readback-panel")) : "").replace(/<(code|kbd|pre|samp)\b[^>]*>[\s\S]*?<\/\1>/g, "").matchAll(/>([^<]+)</g), (match) => match[1])
     ].map(decode).filter((value) => /[A-Za-z]/.test(value));
     assert.ok(texts.includes("Roster"), `${storyId}: the page copy is read`);
