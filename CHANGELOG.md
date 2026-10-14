@@ -59,6 +59,9 @@ change a step, by consumer and item by item:
   (M50); the deprecation notice skips only build output, so it reads a `build`
   directory under `src` (M51); a shell with `menuShortcut={false}` still shows the
   shortcut hint (M52).
+- Second batch, fifth round: the navigation, shell and inputs families list nine
+  more root classes, and `roles.json` registers the top band as a C8 toolbar, so the
+  block counts and the toolbar sentence at the end of M30 no longer hold (M53).
 
 Overtaken within this release. The entries below keep the wording they were written
 with. The first batch was never published before the second replaced part of it, so
