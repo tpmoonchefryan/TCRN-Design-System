@@ -132,3 +132,16 @@ test("the drop-down's search placeholder is written in all five locales", () => 
   }
   assert.equal(tcrnShellCopy.en.searchWithin("Contracts"), "Search Contracts");
 });
+
+test("a row marked open in previewStates starts with its next level open, on the server too (TCRN-DS-SUB-151)", () => {
+  const html = renderToStaticMarkup(<ShellDropdown id="drop" source={contracts} open previewStates={{ templates: "open" }} />);
+  assert.match(html, /data-drop-col="2"/);
+  assert.match(html, /aria-owns="drop-col-templates"/);
+  assert.match(html, /<[a-z]+(?=[^>]*aria-controls="drop-col-templates")(?=[^>]*aria-expanded="true")[^>]*>/);
+  assert.doesNotMatch(renderToStaticMarkup(<ShellDropdown id="drop" source={contracts} open />), /data-drop-col=/);
+  // Only "open" opens, and only a row with a next level.
+  assert.doesNotMatch(renderToStaticMarkup(<ShellDropdown id="drop" source={contracts} open previewStates={{ templates: "hover" }} />), /data-drop-col=/);
+  assert.doesNotMatch(renderToStaticMarkup(<ShellDropdown id="drop" source={contracts} open previewStates={{ "contract-list": "open" }} />), /data-drop-col=/);
+  // A space-separated list of states counts as it does for the CSS (~=).
+  assert.match(renderToStaticMarkup(<ShellDropdown id="drop" source={contracts} open previewStates={{ templates: "hover open" }} />), /data-drop-col="2"/);
+});

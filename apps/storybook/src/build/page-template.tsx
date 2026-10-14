@@ -293,14 +293,26 @@ const globalComponentCss = globalComponentCssWithoutFullSurface;
 // TCRN-DS-SUB-131: the documentation pages render inside the package ProductShell, so the shell's
 // own rules (shell.css.ts, shell-intro.css.ts and shell-sheet.css.ts, the last segments of the
 // package sheet, after the page hierarchy contract) travel on every page; only the page hierarchy
-// contract itself stays with the pages that render a page hierarchy. The package writes no marker
-// in front of its first shell segment, so the brand button's first rule is the boundary; a package
-// reorder that moves it fails the build here instead of dropping the shell's rules silently.
-const shellComponentCssStart = tcrnComponentCss.indexOf("\n.tcrn-shell-brand {");
-if (pageHierarchyContractCssStart === -1 || shellComponentCssStart < pageHierarchyContractCssStart) {
+// contract itself stays with the pages that render a page hierarchy.
+// TCRN-DS-SUB-170 (STORY-147, 149): the shell layer is cut at the package's own segment marker,
+// written once in front of the first shell rule (TCRN-DS-SUB-145), not at the brand button's first
+// rule. A sheet without the marker, with it more than once, or with it ahead of the page hierarchy
+// contract fails the build here instead of dropping or doubling the shell's rules silently.
+const shellLayerMarker = "/* tcrn:shell-layer-start */";
+const shellLayerMarkerCount = tcrnComponentCss.split(shellLayerMarker).length - 1;
+if (shellLayerMarkerCount === 0) {
+  throw new Error("doc_shell_package_css_layer_marker_missing");
+}
+if (shellLayerMarkerCount > 1) {
+  throw new Error("doc_shell_package_css_layer_marker_repeated");
+}
+const shellLayerMarkerAt = tcrnComponentCss.indexOf(shellLayerMarker);
+if (pageHierarchyContractCssStart === -1 || shellLayerMarkerAt < pageHierarchyContractCssStart) {
   throw new Error("doc_shell_package_css_segments_moved");
 }
-const pageHierarchyComponentCss = tcrnComponentCss.slice(pageHierarchyContractCssStart, shellComponentCssStart);
+// The marker comment itself stays out of both slices; the shell layer starts right after it.
+const shellComponentCssStart = shellLayerMarkerAt + shellLayerMarker.length;
+const pageHierarchyComponentCss = tcrnComponentCss.slice(pageHierarchyContractCssStart, shellLayerMarkerAt);
 const shellComponentCss = tcrnComponentCss.slice(shellComponentCssStart);
 // The retired navigation parts (TopBar, SideNav, the launchers and the old toggles) are still
 // exported but their rules left tcrnComponentCss for tcrnRetiredComponentCss (TCRN-DS-SUB-125). A
@@ -325,8 +337,8 @@ const settingsScopedOverrides = `
 // the settings overrides, last as they are in tcrnComponentCss. Without them every scoped family rule
 // (one class more, and a later sheet) out-ranked the shell rule it loses to in the package: the
 // shell stories read the old NavItem and NavGroup type, a 260 search in the full menu and the
-// drop-down, the pinned group still shown at 1024 and up, and no static hover. The segment is still
-// located by the brand button's first rule above; the stable segment marker replaces that later.
+// drop-down, the pinned group still shown at 1024 and up, and no static hover. The segment is the
+// one cut at the shell layer marker above (TCRN-DS-SUB-170).
 const staticStoryComponentCss = compactCss(
   `${scopeComponentCss(scopedComponentCss, ".story-body")}${settingsScopedOverrides}${scopeComponentCss(shellComponentCss, ".story-body")}`
 );
@@ -710,10 +722,19 @@ ${dialogFixtureScript}
 ${storyDisclosureScript}
 ${tableToolbarScript}
 <script type="module">import { mountStaticMultiSelect, mountStaticClipboardCopyButton } from "./ds-static-bridges.js"; for (const root of document.querySelectorAll("[data-choice-presentation=dropdown]")) mountStaticMultiSelect({ root }); for (const root of document.querySelectorAll("button[data-clipboard-text]")) mountStaticClipboardCopyButton({ root });</script>
+${shellHydrateScript(body)}
 ${anchorScrollScript}
 </body>
 </html>
 `;
+}
+
+// TCRN-DS-SUB-151: a page that carries shell story blocks mounts them (build/shell-hydrate.tsx,
+// bundled as ds-shell-hydrate.js by build.tsx). A module script runs after the page's own scripts,
+// so the language script has left window.tcrnStorybookTextFor and the resolved locale for it.
+function shellHydrateScript(body: string): string {
+  if (!body.includes("data-shell-hydrate=")) return "";
+  return '<script type="module">import { mountShellStories } from "./ds-shell-hydrate.js"; mountShellStories(document);</script>';
 }
 
 // Section INDEX page: the shell, the boundary and a bounded category-index body; the TocRail lists

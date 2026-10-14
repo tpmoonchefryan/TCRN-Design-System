@@ -321,8 +321,9 @@ export function shellMenuCascades(first: readonly ShellMenuItem[], context: Shel
  * it, or on a row without one moves to the next non-cascade column, ← returns from a cascade to
  * the row that opened it (closing the cascade) or moves to the previous column.
  */
-export function useShellMenuCascade(rootRef: RefObject<HTMLElement | null>, firstLevel: number) {
-  const [openPath, setOpenPath] = useState<readonly string[]>([]);
+export function useShellMenuCascade(rootRef: RefObject<HTMLElement | null>, firstLevel: number, initialOpenPath: readonly string[] = []) {
+  // The open path starts empty, or where a documentation preview asks (ShellDropdown previewStates "open").
+  const [openPath, setOpenPath] = useState<readonly string[]>(initialOpenPath);
   const pendingFocus = useRef<string | null>(null);
   useEffect(() => {
     const columnId = pendingFocus.current;
@@ -399,9 +400,12 @@ export function useShellMenuCascade(rootRef: RefObject<HTMLElement | null>, firs
       // ArrowLeft
       if (isCascade(column) && column) {
         const left = columns[position - 1];
-        const opener =
-          rowsOf(left).find((row) => row.getAttribute("aria-controls") === column.id) ??
-          root.querySelector<HTMLElement>(`[data-shell-row][aria-controls="${column.id}"]`);
+        // The row that opened the cascade. A pinned entry has a second row in the full menu's pinned
+        // group, which is not shown at 1024 and wider; focus goes to a row that is rendered.
+        const openers = [...rowsOf(left), ...root.querySelectorAll<HTMLElement>("[data-shell-row]")].filter(
+          (row) => row.getAttribute("aria-controls") === column.id
+        );
+        const opener = openers.find((row) => row.getClientRects().length > 0) ?? openers[0];
         const depth = Number(column.getAttribute("data-drop-col")) - 2;
         setOpenPath((path) => path.slice(0, depth));
         opener?.focus();

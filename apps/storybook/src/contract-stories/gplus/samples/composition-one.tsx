@@ -47,7 +47,7 @@ import {
   type TcrnProductLogoId
 } from "@tcrn/ui-react";
 import { tcrnDefaultLocale, tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { StaticMarkup } from "../matrix-renderer.js";
 
 export type GplusSampleBoard = "typography" | "icon" | "brand" | "actions" | "inputs";
@@ -144,6 +144,12 @@ export interface GplusSampleShellSpec {
 // sets of identical landmarks.
 const landmarkSuffix: Record<GplusSampleTheme, string> = { light: "", night: " (night)" };
 
+// TCRN-DS-SUB-160 (STORY-140, 147): the shell's root is a viewport high (block-size 100dvh) and the
+// page scrolls in its paper, so a shell set in the middle of a long story is framed: the frame has a
+// fixed height and the shell fills it through its own style. The shell itself is not changed.
+const sampleShellFrameStyle: CSSProperties = { blockSize: "640px" };
+const sampleShellFillStyle: CSSProperties = { blockSize: "100%" };
+
 /**
  * One themed block: the package ProductShell in the boards' set-up with the page in its paper. The night
  * block differs from the light block only in data-tcrn-theme on its wrapper and in its landmark name;
@@ -156,6 +162,7 @@ export function GplusSampleShell({ storyId, shellName, theme, spec, pageHeader, 
     : pageHeader;
   const shell = (
     <ProductShell
+      style={sampleShellFillStyle}
       productName="TCRN TMS"
       moduleName={spec.moduleName}
       brandProductId="tms"
@@ -180,7 +187,9 @@ export function GplusSampleShell({ storyId, shellName, theme, spec, pageHeader, 
   );
   return (
     <div data-tcrn-theme={themeAttribute[theme]} data-gplus-sample-theme={theme}>
-      <StaticMarkup id={prefix} block element={shell} edits={[]} />
+      <div data-shell-frame="" style={sampleShellFrameStyle}>
+        <StaticMarkup id={prefix} block element={shell} edits={[]} />
+      </div>
     </div>
   );
 }

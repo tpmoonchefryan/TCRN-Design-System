@@ -1,0 +1,323 @@
+// The static pages' client mount for the top-band shell stories (TCRN-DS-SUB-151; STORY-136, 138,
+// 139, 141, 144, 147, 149; C-12 of the INIT-016 R2 decomposition).
+//
+// The documentation pages are rendered on the server. The shell stories (shell-top-band,
+// shell-narrow, shell-mobile, shell-intro) show the package ProductShell as the 07a board's
+// screens, and what the shell does lives in the browser: the brand button opens the full menu,
+// Esc returns the focus to it, ⌘K / Ctrl+K opens the menu at its search, a press outside closes
+// it, 760 wide and narrower the menu is the Sheet, the brand button reports the version it shows
+// (data-shell-brand), and the sign-in intro plays once a session. So each screen is rendered here
+// once for both sides: story-content.tsx renders ShellStoryRoot to a string inside the screen's
+// block (data-shell-hydrate), and mountShellStories, bundled for the page by build.tsx
+// (ds-shell-hydrate.js), hydrates the same element in that block with the same id prefix.
+//
+// After it mounts, a screen speaks the page's language: the package's own words through
+// currentLocale, the sample's through the page's content dictionary (window.tcrnStorybookTextFor),
+// and again on every tcrn-storybook-locale-applied. The page's string swap leaves these blocks to
+// React (client-scripts.ts), so the server markup it hydrates is the markup React rendered.
+//
+// The open screens are open from their first render, and an open full menu puts the focus in its
+// search when it mounts; a documentation page must not move the reader's focus, so focus() into a
+// block is held until that block has mounted. ShellIntro does not play on a server-rendered first
+// screen, which is what hydration is: the intro screen mounts it once the shell has hydrated, the
+// moment the page stands for sign-in succeeding.
+//
+// This module is imported on the server by story-content.tsx; nothing in it runs when it loads.
+import { useEffect, useMemo, useState, type ReactNode, type RefObject } from "react";
+import { hydrateRoot } from "react-dom/client";
+import {
+  ProductLockup,
+  ProductShell,
+  ShellIntro,
+  Text,
+  shellMenuPresentationContext,
+  type ProductShellNavGroup,
+  type ShellMenuPresentation
+} from "@tcrn/ui-react";
+import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
+
+export type ShellStoryState = "closed" | "expanded" | "drop";
+export type ShellStoryTheme = "light" | "night";
+
+export interface ShellStoryScreen {
+  /** The board's name for the screen, written to data-shell. */
+  screen: string;
+  state: ShellStoryState;
+  theme: ShellStoryTheme;
+  /** Accessible name of the screen's content region, unique on the page. */
+  label: string;
+  /**
+   * The full menu's presentation (shellMenuPresentationContext); the viewport's when omitted. The
+   * open screens of the desktop board keep the panel at any viewport: they picture a 1240 screen.
+   */
+  presentation?: ShellMenuPresentation;
+  /** The screen plays the sign-in intro once it has mounted. */
+  intro?: boolean;
+}
+
+/** The marker of a block this module hydrates. */
+export const shellHydrateAttribute = "data-shell-hydrate";
+
+export const shellStoryThemeAttribute: Readonly<Record<ShellStoryTheme, "light" | "dark">> = { light: "light", night: "dark" };
+// PINS of the board: the current page, a pinned item with a menu, a link and a second menu.
+export const shellStoryPinnedIds: readonly string[] = ["roster", "contracts", "statements", "schedule"];
+const shellStoryDropPinId = "contracts";
+// The board's states, by screen state: the full-menu screens show the Teams row under the pointer;
+// the drop-down screens show the Contracts drop-down with its Templates row's cascade open. (The
+// closed screens' third pinned item under the pointer is a markup edit of story-content.tsx:
+// ShellPins takes no preview states.)
+const shellStoryPreviewStates: Readonly<Record<ShellStoryState, Readonly<Record<string, string>> | undefined>> = {
+  closed: undefined,
+  expanded: { teams: "hover" },
+  drop: { templates: "open" }
+};
+
+export const shellTopBandScreens: readonly ShellStoryScreen[] = [
+  { screen: "ts-closed-l", state: "closed", theme: "light", label: "Closed band" },
+  { screen: "ts-closed-n", state: "closed", theme: "night", label: "Closed band (night)" },
+  { screen: "ts-x-l", state: "expanded", theme: "light", label: "Full menu open", presentation: "panel" },
+  { screen: "ts-x-n", state: "expanded", theme: "night", label: "Full menu open (night)", presentation: "panel" },
+  { screen: "ts-drop-l", state: "drop", theme: "light", label: "Drop-down open" },
+  { screen: "ts-drop-n", state: "drop", theme: "night", label: "Drop-down open (night)" }
+];
+export const shellNarrowScreens: readonly ShellStoryScreen[] = [
+  { screen: "ts-narrow-l", state: "closed", theme: "light", label: "Narrow band" },
+  { screen: "ts-narrow-x-l", state: "expanded", theme: "light", label: "Narrow band with the full menu", presentation: "panel" }
+];
+// ts-m-s is the board's phone screen with the menu open: the Sheet, at any viewport, as on the
+// server, so its shell root reads data-state="sheet" (TCRN-DS-SUB-160).
+export const shellMobileScreens: readonly ShellStoryScreen[] = [
+  { screen: "ts-m-l", state: "closed", theme: "light", label: "Phone band" },
+  { screen: "ts-m-s", state: "expanded", theme: "light", label: "Phone band with the menu", presentation: "sheet" }
+];
+export const shellIntroScreen: ShellStoryScreen = { screen: "ts-intro-l", state: "closed", theme: "light", label: "Band after sign-in", intro: true };
+
+const shellStoryScreens: Readonly<Record<string, readonly ShellStoryScreen[]>> = {
+  "shell-top-band": shellTopBandScreens,
+  "shell-narrow": shellNarrowScreens,
+  "shell-mobile": shellMobileScreens,
+  "shell-intro": [shellIntroScreen]
+};
+
+/** The id prefix of a screen's render, the same on the server and in hydration. */
+export function shellStoryIdentifierPrefix(storyId: string, screen: string): string {
+  return `${storyId}-${screen}-`;
+}
+
+type Translate = (text: string) => string;
+const untranslated: Translate = (text) => text;
+const ignore = () => undefined;
+
+// The board's sample navigation (NAV and PINS of docs/design/gplus-2026-10/tools/build-shell2.mjs)
+// as generic product content.
+export function shellStoryNavGroups(storyId: string, t: Translate = untranslated): ProductShellNavGroup[] {
+  const href = `#${storyId}`;
+  return [
+    {
+      id: "people",
+      label: t("People"),
+      items: [
+        { id: "roster", label: t("Roster"), href, iconName: "users", selected: true },
+        { id: "teams", label: t("Teams"), href, iconName: "layers" },
+        {
+          id: "contracts",
+          label: t("Contracts"),
+          iconName: "book-open",
+          children: [
+            { id: "all-contracts", label: t("All contracts"), href },
+            {
+              id: "templates",
+              label: t("Templates"),
+              children: [
+                { id: "signing-contracts", label: t("Signing contracts"), href },
+                { id: "agency-contracts", label: t("Agency contracts"), href },
+                { id: "event-contracts", label: t("Event contracts"), href },
+                { id: "confidentiality-agreements", label: t("Confidentiality agreements"), href }
+              ]
+            },
+            { id: "approvals", label: t("Approvals"), href },
+            { id: "expiry-reminders", label: t("Expiry reminders"), href }
+          ]
+        },
+        { id: "statements", label: t("Statements"), href, iconName: "database" }
+      ]
+    },
+    {
+      id: "operations",
+      label: t("Operations"),
+      items: [
+        {
+          id: "schedule",
+          label: t("Schedule"),
+          iconName: "calendar",
+          children: [
+            { id: "this-week", label: t("This week"), href },
+            { id: "month-view", label: t("Month view"), href },
+            { id: "conflict-check", label: t("Conflict check"), href }
+          ]
+        },
+        { id: "live-streams", label: t("Live streams"), href, iconName: "globe-2" },
+        { id: "events", label: t("Events"), href, iconName: "package" },
+        { id: "reports", label: t("Reports"), href, iconName: "layout-grid" }
+      ]
+    },
+    {
+      id: "system",
+      label: t("System"),
+      items: [
+        { id: "members", label: t("Members"), href, iconName: "users" },
+        { id: "permissions", label: t("Permissions"), href, iconName: "shield-check" },
+        { id: "settings", label: t("Settings"), href, iconName: "settings" },
+        { id: "audit-log", label: t("Audit log"), href, iconName: "history" }
+      ]
+    }
+  ];
+}
+
+interface ShellStoryScreenViewProps {
+  storyId: string;
+  screen: ShellStoryScreen;
+  locale?: TcrnLocale;
+  t?: Translate;
+  /** The shell the intro lands in, once it is mounted; nothing plays without it. */
+  introScope?: RefObject<HTMLElement | null> | null;
+}
+
+/**
+ * One board screen: the package ProductShell with the board's sample, the board's state and its
+ * preview states. Closed screens keep their own state, so their brand button opens the menu; the
+ * open screens are held open.
+ */
+function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t = untranslated, introScope = null }: ShellStoryScreenViewProps) {
+  const shell = (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName={t("People")}
+      brandProductId="tms"
+      currentRouteLabel={t("Roster")}
+      // The paper's first row (TCRN-DS-SUB-129): its trail is the current position, People › Roster.
+      pageHeader={{ title: t("Roster") }}
+      navGroups={shellStoryNavGroups(storyId, t)}
+      locales={tcrnLocaleMetadata}
+      currentLocale={locale}
+      currentTheme={shellStoryThemeAttribute[screen.theme]}
+      account={{ name: "Lin Xia", initials: "LX" }}
+      notifications={{ unread: 3 }}
+      pinnedIds={shellStoryPinnedIds}
+      onPinnedChange={ignore}
+      menuOpen={screen.state === "expanded" ? true : undefined}
+      openPinId={screen.state === "drop" ? shellStoryDropPinId : undefined}
+      previewStates={shellStoryPreviewStates[screen.state]}
+      contentId={`${storyId}-${screen.screen}-content`}
+      contentLabel={t(screen.label)}
+      data-shell={screen.screen}
+    >
+      <div className="tcrn-product-shell-content-stack">
+        <Text>{t("Twelve people across four teams, updated today.")}</Text>
+      </div>
+    </ProductShell>
+  );
+  const framed: ReactNode = screen.presentation ? (
+    <shellMenuPresentationContext.Provider value={screen.presentation}>{shell}</shellMenuPresentationContext.Provider>
+  ) : (
+    shell
+  );
+  return (
+    <>
+      {framed}
+      {screen.intro && introScope ? <ShellIntro productId="tms" card={<ProductLockup productId="tms" />} locale={locale} shellRef={introScope} /> : null}
+    </>
+  );
+}
+
+interface ShellStoryRootProps {
+  storyId: string;
+  screen: ShellStoryScreen;
+  /** The block the screen is mounted in (client only). */
+  block?: HTMLElement | null;
+  /** Told once the screen has mounted (client only). */
+  onMounted?: () => void;
+}
+
+// What the page's language script (client-scripts.ts, storybookI18nScript) leaves on window.
+interface StorybookLocaleWindow {
+  tcrnStorybookResolvedLocale?: string;
+  tcrnStorybookTextFor?: (locale: string, key: string) => string;
+}
+const storybookWindow = (): StorybookLocaleWindow | undefined => (typeof window === "undefined" ? undefined : (window as unknown as StorybookLocaleWindow));
+
+function pageLocale(): TcrnLocale {
+  const locale = storybookWindow()?.tcrnStorybookResolvedLocale;
+  return (tcrnSupportedLocales as readonly string[]).includes(locale ?? "") ? (locale as TcrnLocale) : tcrnDefaultLocale;
+}
+
+function translatorFor(locale: TcrnLocale): Translate {
+  const textFor = storybookWindow()?.tcrnStorybookTextFor;
+  if (locale === tcrnDefaultLocale) return untranslated;
+  return textFor ? (text) => textFor(locale, text) ?? text : untranslated;
+}
+
+/**
+ * A screen as the page renders it: on the server and in the first client render it is the English
+ * screen of the build; once mounted it follows the page's language and, on the intro screen,
+ * mounts ShellIntro.
+ */
+export function ShellStoryRoot({ storyId, screen, block = null, onMounted }: ShellStoryRootProps) {
+  const [locale, setLocale] = useState<TcrnLocale>(tcrnDefaultLocale);
+  const [mounted, setMounted] = useState(false);
+  const introScope = useMemo<RefObject<HTMLElement | null>>(() => ({ current: block }), [block]);
+  useEffect(() => {
+    setMounted(true);
+    onMounted?.();
+    const follow = () => setLocale(pageLocale());
+    follow();
+    window.addEventListener("tcrn-storybook-locale-applied", follow);
+    return () => window.removeEventListener("tcrn-storybook-locale-applied", follow);
+    // Mounted once: the callback that matters is the mount's.
+  }, []);
+  const t = useMemo(() => translatorFor(locale), [locale]);
+  return <ShellStoryScreenView storyId={storyId} screen={screen} locale={locale} t={t} introScope={mounted && block ? introScope : null} />;
+}
+
+/** The screen a block names: its story's data-shell-story and its own data-shell-story-block. */
+export function shellStoryScreenOf(storyId: string | null | undefined, screenId: string | null | undefined): ShellStoryScreen | undefined {
+  if (!storyId || !screenId) return undefined;
+  return shellStoryScreens[storyId]?.find((screen) => screen.screen === screenId);
+}
+
+// focus() into a block that has not mounted yet is held: the open screens' menus would otherwise
+// move the reader's focus (and scroll the page) to the last of them when the page loads.
+function holdFocusUntilMounted(blocks: readonly HTMLElement[]): (block: HTMLElement) => void {
+  const pending = new Set(blocks);
+  const prototype = HTMLElement.prototype;
+  const focus = prototype.focus;
+  if (pending.size === 0) return () => undefined;
+  prototype.focus = function focusOutsideMountingBlocks(this: HTMLElement, options?: FocusOptions) {
+    for (const block of pending) if (block.contains(this)) return;
+    focus.call(this, options);
+  };
+  return (block) => {
+    if (!pending.delete(block) || pending.size > 0) return;
+    if (prototype.focus !== focus) prototype.focus = focus;
+  };
+}
+
+/** Hydrates every shell story block of the page; returns how many it mounted. */
+export function mountShellStories(doc: Document = document): number {
+  const blocks = [...doc.querySelectorAll<HTMLElement>(`[${shellHydrateAttribute}]`)];
+  const mounted = holdFocusUntilMounted(blocks);
+  let count = 0;
+  for (const block of blocks) {
+    const storyId = block.closest("[data-shell-story]")?.getAttribute("data-shell-story");
+    const screen = shellStoryScreenOf(storyId, block.getAttribute("data-shell-story-block"));
+    if (!storyId || !screen) {
+      mounted(block);
+      continue;
+    }
+    hydrateRoot(block, <ShellStoryRoot storyId={storyId} screen={screen} block={block} onMounted={() => mounted(block)} />, {
+      identifierPrefix: shellStoryIdentifierPrefix(storyId, screen.screen)
+    });
+    count += 1;
+  }
+  return count;
+}

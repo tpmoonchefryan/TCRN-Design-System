@@ -1920,6 +1920,11 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   /** The pinned item whose drop-down is open; the shell keeps its own state when omitted. */
   openPinId?: string | null;
   onOpenPinChange?: (id: string | null) => void;
+  /**
+   * Static states for documentation, by menu row or group id (data-tcrn-preview-state), passed to
+   * the full menu and the drop-downs; a drop-down row marked "open" starts with its next level open.
+   */
+  previewStates?: Readonly<Record<string, string>>;
   /** Whether the avatar menu is open; the shell keeps its own state when omitted. */
   accountMenuOpen?: boolean;
   onAccountMenuOpenChange?: (open: boolean) => void;
@@ -2037,6 +2042,7 @@ export function ProductShell({
   onMenuOpenChange,
   openPinId,
   onOpenPinChange,
+  previewStates,
   accountMenuOpen,
   onAccountMenuOpenChange,
   searchPlaceholder,
@@ -2259,6 +2265,7 @@ export function ProductShell({
         searchProvider={searchProvider}
         onSearchQueryChange={onSearchQueryChange}
         locale={currentLocale}
+        previewStates={previewStates}
       />
       {shownTargets.map((target) =>
         target.source ? (
@@ -2274,6 +2281,7 @@ export function ProductShell({
             pinnedIds={pinnedIds}
             onPinnedChange={onPinnedChange}
             locale={currentLocale}
+            previewStates={previewStates}
           />
         ) : null
       )}

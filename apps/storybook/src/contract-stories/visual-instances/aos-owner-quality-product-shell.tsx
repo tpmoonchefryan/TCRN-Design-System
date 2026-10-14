@@ -16,6 +16,13 @@ import {
   ,type RecordRowProps
 } from "@tcrn/ui-react";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
+import type { CSSProperties } from "react";
+
+// TCRN-DS-SUB-160 (STORY-140, 147): the shell's root is a viewport high (block-size 100dvh) and the
+// page scrolls in its paper, so a shell set in the middle of a long story is framed: the frame has a
+// fixed height and the shell fills it through its own style. The shell itself is not changed.
+const shellFrameStyle: CSSProperties = { blockSize: "640px" };
+const shellFillStyle: CSSProperties = { blockSize: "100%" };
 
 function ReferenceList({ items }: { items: string[] }) {
   return <div className="tcrn-doc-reference-strip">{items.map((item) => <Badge key={item}>{item}</Badge>)}</div>;
@@ -185,7 +192,9 @@ export const ownerQualityShellOracleReadback = {
   props: {
     productName: "TCRN AOS",
     moduleName: "Operations Cockpit",
-    brandProductId: "aos",
+    // O-9: the shell wears the design-system brand as a placeholder until the Owner decides the AOS mark.
+    brandProductId: "design-system",
+    brandPlaceholderFor: "aos",
     productLogoAssetId: "tcrn-aos-two-line",
     navLabel: "AOS operations navigation",
     // Eleven destinations in four groups: the consuming product's real IA, not
@@ -575,49 +584,52 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
   const query = searchExpanded ? (variant.locale === "zh-CN" ? "门禁" : "gate") : "";
   const currentRouteLabel = variant.route === "work" ? copy.work : copy.cockpit;
   return (
-    <ProductShell
-      productName={copy.productName}
-      moduleName={copy.moduleName}
-      brandProductId="design-system"
-      currentRouteLabel={currentRouteLabel}
-      // The paper's first row: the current route, under its trail in the menu model (TCRN-DS-SUB-129).
-      pageHeader={{ title: currentRouteLabel }}
-      navGroups={navGroups(variant)}
-      currentTheme={variant.theme}
-      locales={tcrnLocaleMetadata}
-      currentLocale={variant.locale}
-      contentId={`${variant.id}-owner-quality-content`}
-      contentRole="region"
-      contentLabel={`${copy.contentLabel}: ${variant.id}`}
-      skipLinkLabel={copy.skipLink}
-      searchPlaceholder={copy.searchPlaceholder}
-      data-storybook-visual-instance="owner-quality-product-shell"
-      data-visual-instance-name="OwnerQualityShellOracle"
-      data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
-      data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
-      data-visual-instance-owner-quality="product-first"
-      data-visual-instance-slots="brand side-nav topbar search operations-cockpit work-queue gates-evidence owner-actions service-health secondary-disclosure"
-      data-visual-instance-primary-ia="operations-cockpit-work-queue"
-      data-visual-instance-negative-criteria="no-proof-scaffold-hero no-dummy-cockpit no-raw-primary no-owner-readiness"
-      data-visual-instance-product-logo="tcrn-aos-two-line"
-      data-visual-instance-mobile-collapse-policy="hidden-affordance"
-      data-visual-instance-variant={variant.id}
-      data-visual-instance-theme={variant.theme}
-      data-tcrn-theme={variant.theme}
-      data-visual-instance-locale={variant.locale}
-      data-visual-instance-collapsed={variant.collapsed ? "true" : "false"}
-      data-visual-instance-route={variant.route}
-      data-visual-instance-search={variant.searchMode}
-      data-visual-instance-viewport={variant.viewport}
-      data-visual-instance-reduced-motion={variant.reducedMotion ? "true" : "false"}
-      data-visual-instance-content={variant.contentMode}
-      data-product-acceptance="not-claimed"
-      data-release-readiness="not-claimed"
-      data-live-dispatch="not-enabled"
-      data-owner-quality-product-shell-oracle="true"
-    >
-      <OperationsContent variant={variant} />
-    </ProductShell>
+    <div data-shell-frame="" style={shellFrameStyle}>
+      <ProductShell
+        style={shellFillStyle}
+        productName={copy.productName}
+        moduleName={copy.moduleName}
+        brandProductId="design-system"
+        currentRouteLabel={currentRouteLabel}
+        // The paper's first row: the current route, under its trail in the menu model (TCRN-DS-SUB-129).
+        pageHeader={{ title: currentRouteLabel }}
+        navGroups={navGroups(variant)}
+        currentTheme={variant.theme}
+        locales={tcrnLocaleMetadata}
+        currentLocale={variant.locale}
+        contentId={`${variant.id}-owner-quality-content`}
+        contentRole="region"
+        contentLabel={`${copy.contentLabel}: ${variant.id}`}
+        skipLinkLabel={copy.skipLink}
+        searchPlaceholder={copy.searchPlaceholder}
+        data-storybook-visual-instance="owner-quality-product-shell"
+        data-visual-instance-name="OwnerQualityShellOracle"
+        data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
+        data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
+        data-visual-instance-owner-quality="product-first"
+        data-visual-instance-slots="brand side-nav topbar search operations-cockpit work-queue gates-evidence owner-actions service-health secondary-disclosure"
+        data-visual-instance-primary-ia="operations-cockpit-work-queue"
+        data-visual-instance-negative-criteria="no-proof-scaffold-hero no-dummy-cockpit no-raw-primary no-owner-readiness"
+        data-visual-instance-product-logo="tcrn-aos-two-line"
+        data-visual-instance-mobile-collapse-policy="hidden-affordance"
+        data-visual-instance-variant={variant.id}
+        data-visual-instance-theme={variant.theme}
+        data-tcrn-theme={variant.theme}
+        data-visual-instance-locale={variant.locale}
+        data-visual-instance-collapsed={variant.collapsed ? "true" : "false"}
+        data-visual-instance-route={variant.route}
+        data-visual-instance-search={variant.searchMode}
+        data-visual-instance-viewport={variant.viewport}
+        data-visual-instance-reduced-motion={variant.reducedMotion ? "true" : "false"}
+        data-visual-instance-content={variant.contentMode}
+        data-product-acceptance="not-claimed"
+        data-release-readiness="not-claimed"
+        data-live-dispatch="not-enabled"
+        data-owner-quality-product-shell-oracle="true"
+      >
+        <OperationsContent variant={variant} />
+      </ProductShell>
+    </div>
   );
 }
 

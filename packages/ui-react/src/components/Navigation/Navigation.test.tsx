@@ -2136,3 +2136,51 @@ test("STORY-140 the paper's scrolling region takes focus, and the bell's hover i
   assert.equal(inkOnWash("light"), "13.97");
   assert.equal(inkOnWash("dark"), "13.17");
 });
+
+test("ProductShell hands previewStates to the full menu and the drop-downs (TCRN-DS-SUB-151)", () => {
+  const groups: ProductShellNavGroup[] = [
+    {
+      id: "people",
+      label: "People",
+      items: [
+        { id: "roster", label: "Roster", href: "#roster", selected: true },
+        { id: "teams", label: "Teams", href: "#teams" },
+        {
+          id: "contracts",
+          label: "Contracts",
+          children: [
+            { id: "all-contracts", label: "All contracts", href: "#all-contracts" },
+            { id: "templates", label: "Templates", children: [{ id: "signing", label: "Signing contracts", href: "#signing" }] }
+          ]
+        }
+      ]
+    }
+  ];
+  const shell = (options: { menuOpen?: boolean; openPinId?: string; previewStates?: Readonly<Record<string, string>> }) =>
+    renderToStaticMarkup(
+      <ProductShell
+        productName="TCRN TMS"
+        moduleName="People"
+        brandProductId="tms"
+        currentRouteLabel="Roster"
+        pageHeader={{ title: "Roster" }}
+        navGroups={groups}
+        locales={shellLocales}
+        currentLocale="en"
+        pinnedIds={["contracts"]}
+        {...options}
+      >
+        <div>content</div>
+      </ProductShell>
+    );
+  // The full menu: the Teams row under the pointer, as the documentation shows it.
+  const menu = shell({ menuOpen: true, previewStates: { teams: "hover" } });
+  assert.match(menu, /<[a-z]+(?=[^>]*title="Teams")(?=[^>]*data-shell-row="")(?=[^>]*data-tcrn-preview-state="hover")[^>]*>/);
+  assert.doesNotMatch(menu, /previewstates/i, "the prop does not reach the shell root as an attribute");
+  // The drop-down: a row marked "open" starts with its cascade open; without it there is none.
+  const drop = shell({ openPinId: "contracts", previewStates: { templates: "open" } });
+  assert.match(drop, /data-shell-dropdown=""/);
+  assert.match(drop, /<[a-z]+(?=[^>]*title="Templates")(?=[^>]*aria-expanded="true")[^>]*>/);
+  assert.match(drop, /data-drop-col="2"/);
+  assert.doesNotMatch(shell({ openPinId: "contracts" }), /data-drop-col=/);
+});

@@ -10,6 +10,14 @@ await build({
   outfile: join(process.cwd(), "storybook-static", "ds-static-bridges.js"),
   bundle: true, minify: true, format: "esm", platform: "browser", target: "es2022"
 });
+// TCRN-DS-SUB-151: the client mount of the shell stories (build/shell-hydrate.tsx, compiled by tsc
+// into dist/build), bundled with React for the pages that carry a shell story block.
+await build({
+  stdin: { contents: 'export { mountShellStories } from "./dist/build/shell-hydrate.js";', resolveDir: process.cwd(), sourcefile: "ds-shell-hydrate.js" },
+  outfile: join(process.cwd(), "storybook-static", "ds-shell-hydrate.js"),
+  bundle: true, minify: true, format: "esm", platform: "browser", target: "es2022",
+  define: { "process.env.NODE_ENV": JSON.stringify("production") }
+});
 writeStorybookStaticBuild();
 
 // Print the deprecated token names the Storybook sources still use, once per build. The notice
