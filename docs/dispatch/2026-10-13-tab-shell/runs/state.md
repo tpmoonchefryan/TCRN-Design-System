@@ -121,6 +121,14 @@
 - 批末验收交回并提交（b7f83ae）：A——137…141 机判满足，135（C8）与 136（D7）阻于 Owner，返工 2；B——142、144 满足，143、145 部分，146 阻于 O-4，返工 3；C——150 机判满足，147 部分（3px 左边条违反禁用清单、截图盲区），148 阻于 O-2，149 阻于 O-4 与 C8，返工 6。读数更正：批末 C8 实为 15 条；markText 另有底栏 TMS 锁定块 en 1.7。三片对 C8 处置意见不一，交判断明确。
 - 判断：einzbern-main 单独一次，摘录 `runs/r3/excerpts/judgment.md`（b7f83ae），产出 `runs/r3/judgment.md` 与 `runs/r3/lessons.json`。
 
+- 判断（65d6aab）：机判满足 8（137–142、144、150）、部分 4（143、145、146、147）、阻于 Owner 4（135 O-19、136 O-8、148 O-2、149 O-4 与 O-19）；R4 返工 9 条（主力 4、经济 5；含两条硬线：Disclosure 描边被裁、展开故事标题左边条），5 包 3 波约 435 响应；C8 判为门判定语义的放宽、归 A 类（O-19），登记保留、R4 不派；Owner 待裁 20 条（O-1…O-20）；预计 R4 做完只剩 Owner 阻点。
+- R3 链写：一个 work-batch 140 成员（R3 的 32 张三步转 done、SUB-178 与 191 两步到 active 交 O-19；R2 的 11 张、R1 的 12 张承接项已满足转 done；16 张 Story 与 INIT 注解），WORKSPACE_COMMAND_COMPLETED，version 2228 → 2368；读回 R1 done 23 / active 5、R2 done 35 / active 2、R3 done 32 / active 2，余 9 张 active（113、114、125、127、137、142、155、178、191）都只等 Owner。
+- 知识卡 TCRN-DS-KB-036…040 全部 KNOWLEDGE_UNIT_CREATED。
+
+### R4
+
+- 拆分：einzbern-economy 单独一次，输入 `runs/r3/judgment.md` §2（R4-1…R4-9）、§3.1 默认、§3.4、§5；包名用 N1…N5（避免与 R3 的 M 包混淆）；Subtask 键号从 `TCRN-DS-SUB-212` 起；产出写 `runs/r4/`。
+
 ## 下一步
 
-- 判断交回后提交 → 一次链写（R3 Subtask 转态、Story 与 INIT 注解）与知识采集（KB-036 起）→ R4（若判断列了可做返工）或收口。
+- R4 拆分交回 → 一次链写建单 → 按包派 → 批末 verify（`tools/batch-end-verify.sh 4`）→ 验收（判断 §5 定分片）→ 判断 → 链写 → 收口。
