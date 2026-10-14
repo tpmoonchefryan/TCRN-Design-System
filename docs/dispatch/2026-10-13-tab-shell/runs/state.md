@@ -168,4 +168,5 @@
 
 ## 下一步
 
-- 批末 verify（`tools/batch-end-verify.sh 5`）→ 验收与判断合一（einzbern-main 一个代理，摘录 `runs/r5/excerpts/judgment.md`）→ R5 链写与知识卡 → 收口或 R6。
+- 批末 verify（7456dcb 提交结果表）：跑在 60ff2ef，30 步红 2（13 C8 15 条待 O-19、18 markText 待 O-4），与 R4 相同；storybook:build 退出 0；跑后改写 no-overclaim-scan.json 与 scaffold-proof.json、新生成 visual-selection-result.json，已存档并还原。
+- 验收与判断合一：einzbern-main 一个代理，摘录 `runs/r5/excerpts/judgment.md`（7456dcb），产出 `runs/r5/acceptance/R5.md`、`runs/r5/judgment.md`、`runs/r5/lessons.json`（R6 有返工时另写 `runs/r6/` 拆分）→ R5 链写与知识卡 → 收口或 R6。
