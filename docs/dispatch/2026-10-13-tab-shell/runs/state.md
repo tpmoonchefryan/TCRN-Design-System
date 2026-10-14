@@ -79,10 +79,10 @@
 | K9 | 已合入，包树已退役（300 MB） | 6f32f68、de26dc1、ffdb1f0、4520e1c（合入集成分支）、f6a9bbe、04a0fdf、1053eeb、bd84dbf | cd57872 | 两张与附录三处完成：AI 契约与 oracle 改述顶带壳与两处搜索（936×40、228×28）、后缀两主题同色 D7 待裁、迁移说明 M30–M37（收 K1、K4、K5、K6、K6b 条目）、README 六板 306 格与名册 38；smoke missing 4 → 0；余红有主（smoke.test.ts 多行归 SUB-173）；问题 7 条（三条摘录外旧壳文字进下一轮） |
 | K6b | 已合入，包树已退役（275 MB） | 56f1f6c、b2a9158 | c7f36e9 | SUB-156 完成：面包屑分隔符读 token、C2 与 C7 余项清零、页头 DOM 调整、兜底焦点改为随主题声明（Tab 819 停点浅深两根读数改前改后一致）；contract:static 82 → 34（C11 余 34），仍因第 524 行测试退出 1；ui-react test 246/246；问题 5 条；已消息 K9、K11：交回前合入集成分支（K9 收 K6b 迁移条目） |
 | K11 | 已合入，包树已退役（301 MB） | c305bf7、4d79f0c（合入集成分支）、0b7f98b、eee8626、8427cea、3e637f8 | 590274c | SUB-161 完成、SUB-150 部分（geometry:proof 搜索浮层与纸内基线碰撞 2 处要改碰撞判定，未授权；search-static 例外因 alpha-styles.ts 死规则未删）；壳层门真件 18 门 13 过 5 红、故事变异 21/22；smoke 分类说明 0 → 23、h1 计数清零；问题 12 条 |
-| K12 | 在跑（自 590274c 后的集成 HEAD；其余 12 包全部已合入） | | | |
+| K12 | 已合入，包树已退役（301 MB） | d5cb63e、fe8578f、5a5cad2、d22ea99、0dcb4d2 | 0689a1d | SUB-173 完成（storybook 包测试 7/12 → 12/12，屏名五语与登入读回句补齐）；SUB-177 部分：字体补「铛」「簇」两片、报告与回执再生、验收清单更新；视觉签名重收 0 条（browser-proof 非视觉项仍红；217 条变化都可归换壳、换样板或新 story，6 页 maxCell 偏高待目视）；问题 10 条（browser-proof 要求 DS 锁定块后缀按语言翻译与 SUB-166 冲突；复现性检查写死 openMenus === 6，现读 14——两条都改门判定，交判断） |
 
 - K12 的前置在包表里写成「其余全部」，调度工具不认，等其余 12 包全部合入后手动起。
 
 ## 下一步
 
-- R2：K6、K8 交回后合入；K6 合入起 K6b，K6 与 K8 都合入起 K9、K11（W4）；其余 12 包全部合入后起 K12（W5，含 SUB-177 批末再生）。之后批末 verify（`tools/batch-end-verify.sh 2`）→ 验收（三片）→ 判断 → 一次链写与知识采集 → 下一轮或收口。
+- R2 全部 13 包已合入，集成 HEAD 0689a1d；包树全部退役，磁盘余量 58 GiB（df）。批末 verify：scratch `tools/batch-end-verify.sh 2`（逐步、遇红继续，之后 `storybook:build`，回执存档 scratch `r2-verify/` 后还原树）→ 三片验收（`tools/make-acc-excerpt-016.mjs <dispatchDir> 2 <A|B|C> …`，含上一轮验收与判断的指向）→ 判断（摘录草稿在 scratch `r2-judgment-excerpt-draft.md`）→ 一次链写与知识采集 → R3 或收口。
