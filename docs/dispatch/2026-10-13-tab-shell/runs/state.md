@@ -72,12 +72,12 @@
 | K3 | 已合入，包树已退役（297 MB） | 5594ac9、50ccc1f、1ab33c3、4af6f04、b6b4738 | b759809 | 两张完成：parity 去样板角色、smoke 比较器改读顶带（失败 29/145/318 → 0/1/2）、42 个索引与参考页标当前项、railReachability、契约清单与 README；settings 23 例过；axe 颜色对比违规清零（夜间 TMS 仍 pending）；browser-proof 回执 507,403 字节；scan 0；余红有主；问题 11 条（两个「search results」视觉实例壳收起、smoke 对 AI 契约的旧断言、zh-CN「工作项」文案无主） |
 | K4 | 已合入，包树已退役（274 MB） | eb5e0da、3eaad07、a223eb4 | ddbd82e | SUB-142 完成（三条壳几何 token、粗指针块进 token 表、C10 字面量扫描）；SUB-155 部分：三条豁免已删，暴露 106 条、剩 82（C2 3、C7 45、C11 34，各一根因），contract:static 退出 1，`contract-static-proof.test.mjs:524` 仍要求第二批豁免（R2 无持有者）；ui-react test 4 条钉旧写法（问题 1–4，归 K5、K6）；另把 `tcrn-shell-strip` 登记为壳条（摘录外，可改回）；问题 14 条 |
 | K5 | 已合入，包树已退役（299 MB） | 62e0400、fd14855、2c09e64、76b47e8 | 2e2c436 | SUB-170 完成；SUB-151 部分（四个壳 story 静态页水合为真件，intro、focusLoop、点外部、触摸门转绿，三条原不可区分的变异可区分；文档壳自身浮层仍是静态标记，接续点在交回第 9 节）；SUB-160 部分（ts-m-s 呈现 Sheet，AOS 标题裁切仍红）；修了两处包件缺陷（级联 ArrowLeft 焦点落到隐藏行、切 zh-CN 后下拉位置偏 12）；ui-react test 235 过；问题 16 条 |
-| K6 | 在跑（自 2e2c436 后的集成 HEAD） | | | |
+| K6 | 已合入，包树已退役（246 MB） | 212b88f、2d99f72、397b0b0、450dabf、b9afc43、2a689cd | 3b38286 | 五张完成：NavItem 行钩子、受控搜索词与分类说明、PageHeader 层级（壳纸页标题默认 h1）、地标名 `landmarkLabel`、拖排（拖动与 Alt+方向键）；ui-react test 244 过（K4 问题 1–4 的钉旧测试已改）、test:dom 53；contract:static 仍因第 524 行退出 1；问题 6 条（文档菜单分类是二级项，说明要挂在项上） |
 | K7 | 已合入，包树已退役（274 MB） | fb778c7、9db76d0 | 91b2b80 | 夹具 18 门全绿、19 条板变异只红本门；新增 prail 检查与包件钩子夹具 `package-menu.html`；真件 9 绿 8 红 1 n/a（R1 8 绿 9 红），红按根因归 K1、K5、K6；css-template-integrity 家族段名正则放宽并把连进退役样式表的段排除（问题 1，判断确认）；问题 3 条 |
 | K8 | 在跑（自 2e2c436 后的集成 HEAD） | | | |
 | K10 | 已合入，包树已退役（274 MB） | 2480d5a、7a9c709 | 3911607 | SUB-164 门侧完成：两板 18 门全绿、板变异 20/20 只红本门、页夹具四条故事变异全红；真件 18 门 10 绿 7 红 1 n/a；DS 侧栏首行 1.4 照判红（O-4），底栏锁定块 en 1.7 同根因；问题 7 条（brandDigest 产品键与 logos2 文件名不一、singleLine 把面包屑当整行、一条变异等价） |
 | K9 | 待起（前置 K3、K6、K8） | | | |
-| K6b | 待起（前置 K6） | | | |
+| K6b | 在跑（自 3b38286 后的集成 HEAD） | | | |
 | K11 | 待起（前置 K5、K6、K8、K10） | | | |
 | K12 | 待起（其余 12 包全部合入后手动起） | | | |
 
