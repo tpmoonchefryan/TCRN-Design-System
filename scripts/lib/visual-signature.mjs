@@ -73,6 +73,64 @@ export async function computeSignature(page, pngBuffer) {
   return cells;
 }
 
+// The capture self-check (TCRN-DS-SUB-217). A story taller than the documentation paper's visible
+// height, captured while the paper clipped it, came back as one paper-high slice of the story with
+// bare canvas above and below it: 44 desktop captures in the R3 run, desktop i18n-theme-contract
+// 1040x1807 with about 450-490 canvas rows at either end. A story captured whole ends in its own rows
+// (the story block paints its own ground). The self-check reads the capture's lower half from the
+// bottom edge up and counts the full-width rows in the canvas colour; a story taller than the paper
+// passes only when that count is 0. It does not touch the signature or its tolerance.
+export const CANVAS_ROW_CHANNEL_TOLERANCE = 2;
+
+/** Width and height from a PNG's IHDR chunk. */
+export function pngSize(pngBuffer) {
+  return { width: pngBuffer.readUInt32BE(16), height: pngBuffer.readUInt32BE(20) };
+}
+
+/**
+ * Full-width canvas-colour rows at the bottom edge of a capture, counted inside its lower half.
+ * Decoded in the CSP-free signature page a band at a time from the bottom, so a capture that ends in
+ * its own rows costs one band and a tall capture is never decoded whole.
+ */
+export async function trailingCanvasRows(page, pngBuffer, canvasRgb, { tolerance = CANVAS_ROW_CHANNEL_TOLERANCE, bandRows = 256 } = {}) {
+  const { width, height } = pngSize(pngBuffer);
+  const lowerHalfRows = height - Math.floor(height / 2);
+  const rows = await page.evaluate(async ([base64, size, rgb, channelTolerance, band]) => {
+    const bytes = Uint8Array.from(atob(base64), (character) => character.charCodeAt(0));
+    const blob = new Blob([bytes], { type: "image/png" });
+    const canvas = document.createElement("canvas");
+    canvas.width = size.width;
+    let count = 0;
+    for (let bottom = size.height; bottom > size.height - size.lowerHalfRows; bottom -= band) {
+      const top = Math.max(size.height - size.lowerHalfRows, bottom - band);
+      const bitmap = await createImageBitmap(blob, 0, top, size.width, bottom - top);
+      canvas.height = bottom - top;
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      context.drawImage(bitmap, 0, 0);
+      bitmap.close();
+      const { data } = context.getImageData(0, 0, size.width, bottom - top);
+      for (let row = bottom - top - 1; row >= 0; row -= 1) {
+        for (let column = 0; column < size.width; column += 1) {
+          const index = (row * size.width + column) * 4;
+          if (Math.abs(data[index] - rgb[0]) > channelTolerance
+            || Math.abs(data[index + 1] - rgb[1]) > channelTolerance
+            || Math.abs(data[index + 2] - rgb[2]) > channelTolerance) {
+            return count;
+          }
+        }
+        count += 1;
+      }
+    }
+    return count;
+  }, [pngBuffer.toString("base64"), { width, height, lowerHalfRows }, canvasRgb, tolerance, bandRows]);
+  return { width, height, lowerHalfRows, trailingCanvasRows: rows };
+}
+
+/** The self-check's verdict for a story taller than the paper: its capture does not end in canvas. */
+export function capturedWholeStory({ trailingCanvasRows: canvasRows }) {
+  return canvasRows === 0;
+}
+
 /** Signatures are stored as hex so the baseline file stays small and diffable. */
 export function encodeSignature(cells) {
   return cells.map((value) => value.toString(16).padStart(2, "0")).join("");
