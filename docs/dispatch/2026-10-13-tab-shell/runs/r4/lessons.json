@@ -1,0 +1,64 @@
+[
+  {
+    "subject": "为「不超出裁切祖先」派返工，判据要写全元素的外扩绘制，只写看到的那一笔会按它取最小值",
+    "summary": "INIT-016 R3 把 Disclosure 问题写成「按钮底边描边被裁」，R4 拆分按 1px 描边定判据，SUB-216 取 2px 的 overflow-clip-margin。描边画出了，但同一按钮获焦的焦点对外扩 4px（2px 承载面间隙加强调色环，forced-colors 的 outline 也是 4px），底边与起始边外侧 2px 仍被裁，同一条硬线退回一次、升主力再做一轮。",
+    "snippet": "为「任何元素不超出裁切祖先」派返工时，判据写该元素全部外扩绘制（描边、焦点对、forced-colors outline、阴影）的最大值，并点名所有贴边的边，不只写看到的那一笔。",
+    "body": "R3 判断 R4-3 的标题是「Disclosure 展开区按钮的底边描边被裁」，R4 拆分把 SUB-216 判据写成「留出不小于按钮描边（0 0 0 1px 外扩）的空间」，候选 token 给 --tcrn-space-0h。包照判据取 2px，单测断言 margin ≥ 1px，描边四边都画出。可同一按钮获焦时用的是 --tcrn-focus-ring（0 0 0 2px surface, 0 0 0 4px acc），forced-colors 下的 outline 宽 2px、偏移 2px，三视口与夜间都在底边和起始边少外侧 2px 的强调色环。硬线管的是元素的全部绘制，判据只写了被看到的描边，修复就按描边取最小 token；验收再按硬线读，就成了同一目标的第一次退回。",
+    "tags": ["tcrn-design-system", "layout", "focus-ring", "overflow-clip-margin", "judgment", "init-016"],
+    "evidence": [
+      "docs/dispatch/2026-10-13-tab-shell/runs/r3/judgment.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/decomposition.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/problems/N1.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/acceptance/B.md",
+      "packages/ui-tokens/src/tokens.css"
+    ]
+  },
+  {
+    "subject": "引入 overflow-clip-margin 前要核两件事：门的裁切模型认不认它，WebKit 认不认它",
+    "summary": "SUB-216 是包里第一处 overflow-clip-margin。geometry-measure 的 focusRingClipInPage（cutOf）把 overflow 不为 visible 的祖先一律当成在盒边裁剪，全仓没有脚本读 overflowClipMargin，以后量到可折叠区里的控件会报假红；本机 Playwright 只有 Chromium，Safari 是否认这条属性没有读数，装 WebKit 或开 safaridriver 都是停点。",
+    "snippet": "用 overflow-clip-margin 这类新裁切写法时，同提交核门里所有裁切模型是否计入它，并把 Safari 复看写进目视清单；要跨引擎确定的结果，就选不依赖它的写法。",
+    "body": "N1 交回第 4 条：scripts/geometry-measure-proof.mjs 的 cutOf 把 overflow 不是 visible 的祖先都按盒边裁剪计算，全仓脚本没有读 overflowClipMargin 的地方。现在被量的 story 都不在可折叠区里，所以没出假红；以后把控件放进可折叠区再量，margin 以内的外扩会被读成被裁。另一面，N1 第 3 条与 B 片第 6 节：Playwright 只装了 Chromium，Safari 若不认这条属性会照旧在盒边裁剪（不比改前差），取值改大也改变不了这一点，只能请 Owner 在 Safari 与 Chromium 内核浏览器各看一遍（G-18）。",
+    "tags": ["tcrn-design-system", "geometry-measure", "overflow-clip-margin", "webkit", "gates"],
+    "evidence": [
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/problems/N1.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/acceptance/A.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/acceptance/B.md",
+      "scripts/geometry-measure-proof.mjs"
+    ]
+  },
+  {
+    "subject": "视觉基线只换越容差的条目：整批换截法后，容差内的条目仍是旧截法的签名",
+    "summary": "R4 按新截法重收 169 条，应用后 217 条全部 match；另 47 条在容差内没换，仍是第三轮签名（最大 mean 0.672、maxCell 8）。其中 46 条是合入 N1、N3 后标题左移带来的漂移，1 条 navigation-product-shell-spec@tablet 是唯一仍留旧截法签名的高 story。选择机制按设计只收回归与新增，容差内的漂移会留在旧签名上累积。",
+    "snippet": "整批改截法或改渲染后，列出「仍在容差内、但签名不是本轮的」条目；下次越容差时分来源要把累积漂移算进去，要基线与现行截法一致只能显式整批重收。",
+    "body": "N5 交回第 2 条：所收 169 条距离为 0；47 条在容差内未换，46 条在 N2 终版时距离为 0（35 条）或 maxCell 1（11 条），合入 N1、N3 后因 R4-6 标题左移变大；navigation-product-shell-spec@tablet-1024x768 的旧截法签名在 N2 终版时已是 mean 0.652、maxCell 7，现在 0.672、7，仍在容差内所以没换。这些条目离容差上限更近，同一处再有小改动就会越容差，届时分来源时会把这次的漂移和截法差异误记到新改动上。",
+    "tags": ["tcrn-design-system", "visual-baseline", "browser-proof", "tolerance"],
+    "evidence": [
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/problems/N5.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/acceptance/C.md"
+    ]
+  },
+  {
+    "subject": "迁移说明里抄写的登记计数没有门看守，只改登记的单也会让它过期",
+    "summary": "M30 写 navigation 9 块、shell 14 块，还写「roles.json lists no toolbar」。SUB-191（R3）把顶带登记为 C8 工具栏、SUB-215（R4）补登 9 个根类后，两处都过期（navigation 11、shell 19）。两张单都只改登记，交回写「迁移条目：无」；收录包按只追加约定不改正文，也没有门读这些数，过了两轮才被验收发现。",
+    "snippet": "改 families.json、roles.json 这类登记时，同单 grep 文档里引用的计数与「没有 X」类断言，过期就在交回写迁移条目；文档里能写「从文件读」就别抄计数。",
+    "body": "docs/migration-4.0.md 第 936–941 行的 M30 末段写「navigation lists 9 … shell lists 14」与「roles.json lists no toolbar」。SUB-191（f26c633）登记顶带工具栏（容器 tcrn-shell-strip、让步项 tcrn-shell-pins、固定项标按钮与右簇），SUB-215（f29fb30）补登 9 个根类后读数是 navigation 11、shell 19、inputs 16。N2 交回按「只改归属」写迁移条目无，N4 按 C-11 不改 M30 正文、只记问题；门只查条目有没有 Do，不读这些数。B、C 两片验收各自发现一半，R5 要追加 M53 补正。",
+    "tags": ["tcrn-design-system", "migration-guide", "contract-registry", "docs"],
+    "evidence": [
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/problems/N4.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/acceptance/B.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/acceptance/C.md",
+      "docs/migration-4.0.md"
+    ]
+  },
+  {
+    "subject": "axe 回执里的豁免节点数随主区滚动位置变，跨轮比它会误读",
+    "summary": "SUB-217 截完图把主区滚动位置复原，之后 axe 浅色那一遍看到的主区回到截图前的位置；旧截法下 Playwright 把主区滚到最后一张 story 且不复原。a11y-axe-summary.json 的字标对比豁免节点数因此由 35 变为 32，五个页面各增减一处，violationCount 两次都是 0。",
+    "snippet": "滚动容器里按节点计数的 a11y 回执取决于测量时的滚动位置；跨轮比计数前先固定位置，或只比违例数、不比豁免节点数。",
+    "body": "N2 交回第 3 条：有差异的五处是 style-guide-identity-brand 桌面多一个、components-navigation-shells 桌面节点不同、components-gplus-samples 桌面少一个、proof-proof-visual-instances 桌面多一个、components-navigation-shells 手机少一个，回执字节 41,534 变为 39,705。豁免节点数不是判据，B 片判不红；但它说明字标后缀的对比判定会随主区滚动位置变，若有人按节点数比两轮回执，会把滚动位置的变化读成内容变化。给 axe 那一遍固定主区位置属门的确定性改动，留给 browser-proof 的下一个持有者。",
+    "tags": ["tcrn-design-system", "axe", "browser-proof", "scroll", "receipts"],
+    "evidence": [
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/problems/N2.md",
+      "docs/dispatch/2026-10-13-tab-shell/runs/r4/acceptance/B.md"
+    ]
+  }
+]
