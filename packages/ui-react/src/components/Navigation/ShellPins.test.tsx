@@ -179,3 +179,19 @@ test("pressing a drop-down item asks to open it, and pressing it again asks to c
     await harness.cleanup();
   }
 });
+
+test("a shell's name tells its pinned items from another shell's: \"{name} · {pinned items}\" in all five locales, and an aria-label given outright wins (TCRN-DS-SUB-148)", () => {
+  const nameOf = (html: string) => /^<nav [^>]*aria-label="([^"]*)"/.exec(html)?.[1];
+  for (const locale of tcrnSupportedLocales) {
+    const copy = tcrnShellCopy[locale];
+    assert.equal(nameOf(renderToStaticMarkup(<ShellPins items={boardPins} locale={locale} />)), copy.pinnedItems);
+    const named = nameOf(renderToStaticMarkup(<ShellPins items={boardPins} locale={locale} landmarkLabel="TMS" />));
+    assert.equal(named, copy.landmarkOf("TMS", copy.pinnedItems));
+    assert.ok(named?.startsWith("TMS") && named.includes(copy.pinnedItems), `${locale}: ${named}`);
+    assert.notEqual(named, nameOf(renderToStaticMarkup(<ShellPins items={boardPins} locale={locale} landmarkLabel="Docs" />)));
+  }
+  assert.equal(nameOf(renderToStaticMarkup(<ShellPins items={boardPins} locale="en" landmarkLabel="TMS" aria-label="Shortcuts" />)), "Shortcuts");
+  assert.doesNotMatch(renderToStaticMarkup(<ShellPins items={boardPins} locale="en" landmarkLabel="TMS" />), /landmarklabel/i);
+  // An empty name is no name: the markup is the built-in one.
+  assert.equal(renderToStaticMarkup(<ShellPins items={boardPins} locale="en" landmarkLabel="  " />), renderToStaticMarkup(<ShellPins items={boardPins} locale="en" />));
+});

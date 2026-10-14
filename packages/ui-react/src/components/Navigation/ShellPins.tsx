@@ -57,15 +57,22 @@ export interface ShellPinsProps extends Omit<HTMLAttributes<HTMLElement>, "child
   menuIdOf?: (id: string) => string;
   /** Language of the group's name; the page's own when omitted. */
   locale?: TcrnLocale | string;
+  /**
+   * The shell's name, which tells this group from another shell's on the same page: the group is
+   * named "{landmarkLabel} · {pinned items}" in the reader's language (TCRN-DS-SUB-148). An
+   * aria-label given outright wins.
+   */
+  landmarkLabel?: string;
 }
 
-export function ShellPins({ items, selectedId = null, openId = null, onOpenChange, menuIdOf, locale, className, ...props }: ShellPinsProps) {
+export function ShellPins({ items, selectedId = null, openId = null, onOpenChange, menuIdOf, locale, landmarkLabel, className, ...props }: ShellPinsProps) {
   const baseId = useId();
   if (items.length === 0) return null;
   const shown = items.slice(0, shellPinsMax());
   const copy = tcrnShellCopyFor(locale);
+  const prefix = landmarkLabel?.trim();
   return (
-    <nav {...props} className={cx("tcrn-shell-pins", className)} aria-label={props["aria-label"] ?? copy.pinnedItems} data-pins="">
+    <nav {...props} className={cx("tcrn-shell-pins", className)} aria-label={props["aria-label"] ?? (prefix ? copy.landmarkOf(prefix, copy.pinnedItems) : copy.pinnedItems)} data-pins="">
       {shown.map((item, index) => {
         const selected = item.id === selectedId;
         const label = (

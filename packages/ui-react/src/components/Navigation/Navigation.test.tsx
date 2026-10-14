@@ -2278,3 +2278,31 @@ test("ProductShell's paper gives the page header's title as the page's h1 unless
   assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 2 })), ["h2 tcrn-heading tcrn-heading--2"]);
   assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 1 })), ["h1 tcrn-heading tcrn-heading--2"]);
 });
+
+test("STORY-147 STORY-140 landmarkLabel names a shell's two navs apart from another shell's on the same page; without it the names stay (TCRN-DS-SUB-148)", () => {
+  const shell = (extra: Partial<ProductShellProps>) => (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      pinnedIds={["roster", "contracts"]}
+      {...extra}
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  const navNames = (html: string) => [...new JSDOM(html).window.document.querySelectorAll("nav[data-pins], nav.tcrn-breadcrumb")].map((nav) => nav.getAttribute("aria-label"));
+  assert.deepEqual(navNames(renderToStaticMarkup(shell({}))), ["Pinned items", "Breadcrumbs"], "without it the built-in names stay");
+  assert.deepEqual(navNames(renderToStaticMarkup(shell({ landmarkLabel: "Docs" }))), ["Docs · Pinned items", "Docs · Breadcrumbs"]);
+  assert.deepEqual(navNames(renderToStaticMarkup(shell({ landmarkLabel: "Docs", pageHeader: { title: "Roster", landmarkLabel: "Page" } }))), ["Docs · Pinned items", "Page · Breadcrumbs"]);
+  // Two shells on one page: every nav name is its own.
+  const both = navNames(renderToStaticMarkup(<>{shell({ landmarkLabel: "Docs" })}{shell({ landmarkLabel: "Example", currentLocale: "zh-CN" })}</>));
+  assert.equal(both.length, 4);
+  assert.equal(new Set(both).size, 4, both.join(" | "));
+  assert.doesNotMatch(renderToStaticMarkup(shell({ landmarkLabel: "Docs" })), /landmarklabel/i, "the prop does not reach the shell root as an attribute");
+});

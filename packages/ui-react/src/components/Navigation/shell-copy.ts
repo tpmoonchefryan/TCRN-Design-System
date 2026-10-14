@@ -16,6 +16,9 @@
 // and the theme and language, which moved there from the old top bar (decomposition problem 14).
 // TCRN-DS-SUB-126: the Sheet's two lists, 760 wide and narrower (07a board, screen A8: the pinned
 // entries under "固定项 · 4", then every group under "全部").
+// TCRN-DS-SUB-148: an instance's landmark names, so that two shells on one page (the documentation
+// shell and a shell in its paper) say their pinned items and their trails apart: the instance's
+// name, then the landmark's own.
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { resolveDocumentLocale } from "../../utils.js";
 
@@ -50,6 +53,8 @@ export interface TcrnShellCopy {
   pinnedItemsOf: (count: number) => string;
   /** Title of the Sheet's list of every group. */
   allNavigation: string;
+  /** A landmark's name in one shell of several on a page: the shell's name, then the landmark's. */
+  landmarkOf: (prefix: string, name: string) => string;
 }
 
 export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
@@ -68,7 +73,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     themeAndLanguage: "主题与语言",
     notificationsOf: (unread) => (unread > 0 ? `通知 · ${unread} 条未读` : "通知"),
     pinnedItemsOf: (count) => `固定项 · ${count}`,
-    allNavigation: "全部"
+    allNavigation: "全部",
+    landmarkOf: (prefix, name) => `${prefix} · ${name}`
   },
   en: {
     openNavigationOf: (productName) => `Open navigation · ${productName}`,
@@ -85,7 +91,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     themeAndLanguage: "Theme and language",
     notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} unread` : "Notifications"),
     pinnedItemsOf: (count) => `Pinned items · ${count}`,
-    allNavigation: "All"
+    allNavigation: "All",
+    landmarkOf: (prefix, name) => `${prefix} · ${name}`
   },
   ja: {
     openNavigationOf: (productName) => `ナビゲーションを開く · ${productName}`,
@@ -102,7 +109,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     themeAndLanguage: "テーマと言語",
     notificationsOf: (unread) => (unread > 0 ? `通知 · 未読 ${unread} 件` : "通知"),
     pinnedItemsOf: (count) => `固定した項目 · ${count}`,
-    allNavigation: "すべて"
+    allNavigation: "すべて",
+    landmarkOf: (prefix, name) => `${prefix} · ${name}`
   },
   ko: {
     openNavigationOf: (productName) => `내비게이션 열기 · ${productName}`,
@@ -119,7 +127,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     themeAndLanguage: "테마와 언어",
     notificationsOf: (unread) => (unread > 0 ? `알림 · 읽지 않음 ${unread}개` : "알림"),
     pinnedItemsOf: (count) => `고정한 항목 · ${count}`,
-    allNavigation: "전체"
+    allNavigation: "전체",
+    landmarkOf: (prefix, name) => `${prefix} · ${name}`
   },
   fr: {
     openNavigationOf: (productName) => `Ouvrir la navigation · ${productName}`,
@@ -136,7 +145,8 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     themeAndLanguage: "Thème et langue",
     notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} non lues` : "Notifications"),
     pinnedItemsOf: (count) => `Éléments épinglés · ${count}`,
-    allNavigation: "Tout"
+    allNavigation: "Tout",
+    landmarkOf: (prefix, name) => `${prefix} · ${name}`
   }
 };
 

@@ -1969,6 +1969,13 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   /** The full menu's search provider (whole-site targets); the menu model is searched when omitted. */
   searchProvider?: ShellMenuSearchProvider;
   onSearchQueryChange?: (query: string) => void;
+  /**
+   * A name for this shell, which tells its landmarks from another shell's on the same page (axe
+   * landmark-unique): the pinned items' nav and the page header's trail are named
+   * "{landmarkLabel} · {name}" in the reader's language. Omitted, they keep the built-in names
+   * (TCRN-DS-SUB-148).
+   */
+  landmarkLabel?: string;
   /** The full menu's query, for a product that holds it; the menu keeps its own when omitted (ShellMenu's `query`). */
   menuQuery?: string;
   /** The query the full menu's own starts from, such as a page rendered with a query typed (ShellMenu's `defaultQuery`). */
@@ -2093,6 +2100,7 @@ export function ProductShell({
   menuQuery,
   defaultMenuQuery,
   onMenuQueryChange,
+  landmarkLabel,
   onThemeChange,
   onLocaleMenuOpenChange,
   onLocaleChange,
@@ -2218,6 +2226,7 @@ export function ProductShell({
           onOpenChange={changeOpenPin}
           menuIdOf={dropIdOf}
           locale={currentLocale}
+          landmarkLabel={landmarkLabel}
         />
         <div className="tcrn-shell-cluster" data-cluster="">
           {headerActions ? (
@@ -2343,6 +2352,7 @@ export function ProductShell({
             breadcrumbs={pageHeader.breadcrumbs ?? currentTrail}
             locale={pageHeader.locale ?? currentLocale}
             headingLevel={pageHeader.headingLevel ?? 1}
+            landmarkLabel={pageHeader.landmarkLabel ?? landmarkLabel}
           />
           {children}
         </ContentElement>

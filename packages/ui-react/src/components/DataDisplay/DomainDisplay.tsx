@@ -13,6 +13,7 @@ import { cx } from "../../utils.js";
 // PageHeader from here in turn; each side uses the other only inside a function body, never while the
 // module is being evaluated, so the cycle is safe (C-4).
 import { Breadcrumb } from "../Navigation/Navigation.js";
+import { tcrnShellCopyFor } from "../Navigation/shell-copy.js";
 import { resolveDocumentLocale } from "../../utils.js";
 import { DetailInspector, FilterBar, TableShell, type AttachmentTableLabels, type Density, type KeyValueItem } from "./DataDisplay.js";
 
@@ -249,6 +250,12 @@ export interface PageHeaderProps {
    * level changes the outline and not the look (TCRN-DS-SUB-163).
    */
   headingLevel?: 1 | 2;
+  /**
+   * The name of the shell the header sits in, which tells its trail from another page header's on
+   * the same page: the trail is named "{landmarkLabel} · {trail}" in the reader's language
+   * (TCRN-DS-SUB-148). ProductShell passes its own `landmarkLabel`.
+   */
+  landmarkLabel?: string;
 }
 
 /**
@@ -256,14 +263,16 @@ export interface PageHeaderProps {
  * first row and required (07b board, section E, "PageHeader 必有"). The trail stays on one line at
  * every width: a crumb that does not fit ends in an ellipsis and carries its label as a title.
  */
-export function PageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact", locale, headingLevel }: PageHeaderProps) {
+export function PageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact", locale, headingLevel, landmarkLabel }: PageHeaderProps) {
+  const trailName = patternLabels(locale).breadcrumbs;
+  const prefix = landmarkLabel?.trim();
   return (
     <header className={cx("tcrn-page-header", `tcrn-page-header--${density}`)} data-pattern="page-header" data-density={density}>
       {breadcrumbs.length ? (
         // The trail is the Breadcrumb component (TCRN-DS-SUB-124): one line, truncating crumbs with
         // titles, the board's chevron between them. The last crumb without an href is the page itself.
         <Breadcrumb
-          label={patternLabels(locale).breadcrumbs}
+          label={prefix ? tcrnShellCopyFor(locale).landmarkOf(prefix, trailName) : trailName}
           locale={locale}
           items={breadcrumbs.map((breadcrumb, index) => ({
             id: breadcrumb.id,
