@@ -89,6 +89,14 @@
 - 批末验收交回并提交（585aa21）：A——137、138、139、141 机器判据满足，136 只等 D7，135、140 部分（返工 8，主力 6）；B——142…146 五张部分，测得的行为都合 GWT、每张各一个机判仍红（返工 11，主力 7）；C——147、148、150 部分、149 不满足（返工 10，主力 7，C2-10 汇总 A、B 根因）。三片新增 Owner 事项：页头标题行高 28.6 无 token、TreeNav 归宿；O-4 补证据（底栏锁定块 en 1.7、按「大写顶到基线」量 0.6 会过）。
 - 判断：einzbern-main 单独一次，摘录 `runs/r2/excerpts/judgment.md`（585aa21），产出 `runs/r2/judgment.md` 与 `runs/r2/lessons.json`。
 
+- 判断（4cd959e）：机判满足 4（137、138、139、141）、待 Owner 1（136，D7）、部分 10、不满足 1（149）；R3 返工 30 条（主力 25，其中 22 条是 R2 已返工过的同一目标——R3 再退回交 Owner；经济 5），8 组；Owner 待裁 18 条（O-1…O-15 沿用，O-16 页标题行高、O-17 TreeNav 归宿、O-18 批末 verify 加 test:dom 段）；照现有证据 R3 做完只剩 markText（O-4）一处红。prail 改为包件照板的盒画、门不改；门判定语义按 B 类授权、没有放宽阈值；C11 取方案 (a)。
+- R2 链写：一个 work-batch 120 成员（R2 的 24 张三步转 done、13 张 ready→active 写 R3 承接；R1 的 SUB-120、123、124、129、133 active→done；16 张 Story 与 INIT 注解），WORKSPACE_COMMAND_COMPLETED，version 2069 → 2194；读回 R1 Subtask done 11、active 17，R2 done 24、active 13，Story 16 张 active 且注解在。
+- 知识卡 TCRN-DS-KB-031…035 全部建成、lifecycle active（031 报标签重叠，以 `--coexist` 建）。
+
+### R3
+
+- 拆分：einzbern-economy 单独一次，输入 `runs/r2/judgment.md` §2（R3-1…R3-30）、§3.1 默认列、§3.4、§5，R2 拆分第 1 节约定与 R2 主线程问题 M2、M5；Subtask 键号从 `TCRN-DS-SUB-178` 起；产出写 `runs/r3/`。
+
 ## 下一步
 
-- 判断交回后提交 → 一次链写（按判断 §4：R2 Subtask 转态、R1 保持 active 的 22 张按承接是否满足转 done、Story 与 INIT 注解）与知识采集（KB-031 起）→ R3 拆分或收口。
+- R3 拆分交回后：核对产出 → 一次链写（Subtask 建单）并读回 → 跨包通告 `runs/r3/excerpts/cross-notes.md` → 按包派（档位按包表；R3 的包都起主力，除判断列为经济的 5 条所在包）→ 批末 verify → 三片验收 → 判断 → 链写与知识采集 → 收口或 Owner 阻点。
