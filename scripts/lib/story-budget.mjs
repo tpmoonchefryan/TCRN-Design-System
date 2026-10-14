@@ -69,7 +69,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 16387 -> 17029 (TCRN-DS-INIT-015 R2, SUB-075): the full ProductShell instances take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0); not decomposed per instance.
     // 17029 -> 16565 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the full ProductShell instances take composition one's geometry, top bar 52 and sidebar 220 (SUB-090), and the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101).
     // 16565 -> 11098 (TCRN-DS-INIT-016 R2, SUB-175; measured at 1440x900 on the R2 package tree after the K1–K5 and K7 merges, attributed, not decomposed per change): the full ProductShell instances render the top-band shell, without the side rail, inside a frame (TCRN-DS-SUB-160), and the documentation pages moved from the 220px rail into the top-band shell's paper beside its contents rail (TCRN-DS-SUB-131, TCRN-DS-SUB-132), so the story column has a new width.
-    recordedHeightPx: 11098,
+    // 11098 -> 7872 (TCRN-DS-INIT-016 R3, SUB-208; measured at 1440x900 on the R3 M9 package tree after the M1–M8 merges, attributed, not decomposed per change): the three collapsed fixtures retired with the side rail (the top band has no collapsed state), so the oracle renders six ProductShell frames, not nine.
+    recordedHeightPx: 7872,
     owedTo: "beyond-INIT-008",
     note: "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
   },
@@ -77,7 +78,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 8806 -> 9659 (INC-399 R44): KeyValueList fields render the package label-above-value geometry once the docs-only label grid was removed.
     // 9659 -> 10070 (TCRN-DS-INIT-015 R2, SUB-075): the shell slice takes the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0); not decomposed per instance.
     // 10070 -> 7595 (TCRN-DS-INIT-016 R2, SUB-175; measured at 1440x900 on the R2 package tree after the K1–K5 and K7 merges, attributed, not decomposed per change): the full ProductShell instances render the top-band shell, without the side rail, inside a frame (TCRN-DS-SUB-160), and the documentation pages moved from the 220px rail into the top-band shell's paper beside its contents rail (TCRN-DS-SUB-131, TCRN-DS-SUB-132), so the story column has a new width.
-    recordedHeightPx: 7595,
+    // 7595 -> 7575 (TCRN-DS-INIT-016 R3, SUB-199 and SUB-208; measured at 1440x900 on the R3 M9 package tree after the M1–M8 merges, attributed, not decomposed per change): the page sits in the content stack, and the fixtures read their shell state (closed, or the full menu open) instead of a collapsed flag.
+    recordedHeightPx: 7575,
     owedTo: "beyond-INIT-008",
     note: "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
   },
@@ -121,7 +123,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 12973 -> 13817 (TCRN-DS-INIT-015 R2, SUB-075): the covered-section and required-chapter readbacks list the ten G+ family matrix and sample stories (65 stories in 23 categories, was 55 in 21), and the tables take the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0).
     // 13817 -> 13173 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101), so the readback tables wrap less; the covered-story lists gain composition three (SUB-092).
     // 13173 -> 14269 (TCRN-DS-INIT-016 R2, SUB-175; measured at 1440x900 on the R2 package tree after the K1–K5 and K7 merges, attributed, not decomposed per change): the documentation pages moved from the 220px rail into the top-band shell's paper beside its contents rail (TCRN-DS-SUB-131, TCRN-DS-SUB-132), so the story column has a new width.
-    recordedHeightPx: 14269,
+    // 14269 -> 14289 (TCRN-DS-INIT-016 R3, SUB-208; measured at 1440x900 on the R3 M9 package tree after the M1–M8 merges, attributed, not decomposed per change): the contract's shell entries read as the top band (the band's control order and controls, no side-nav collapse policy).
+    recordedHeightPx: 14289,
     owedTo: "beyond-INIT-008",
     note: "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
   },
@@ -129,7 +132,8 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 4659 -> 5979 (TCRN-DS-INIT-015 R2, SUB-075): the color token index renders every registry color token; SUB-001 and SUB-009 added the 34 G+ color tokens, so it now shows 73 swatches instead of 39.
     // 5979 -> 5779 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101); the 73 swatches are unchanged.
     // 5779 -> 6039 (TCRN-DS-INIT-016 R2, SUB-175; measured at 1440x900 on the R2 package tree after the K1–K5 and K7 merges, attributed, not decomposed per change): the documentation pages moved from the 220px rail into the top-band shell's paper beside its contents rail (TCRN-DS-SUB-131, TCRN-DS-SUB-132), so the story column has a new width; the 73 swatches are unchanged.
-    recordedHeightPx: 6039,
+    // 6039 -> 4740 (TCRN-DS-INIT-016 R3, SUB-208; measured at 1440x900 on the R3 M9 package tree after the M1–M8 merges, attributed, not decomposed per change): the swatches take the G+ names, the secondary-brand background (the same G+ token as the primary) and the neutral calibration panel (six aliases of G+ tokens already shown) left the story.
+    recordedHeightPx: 4740,
     owedTo: "beyond-INIT-008",
     note: "73-token color specimen gallery; a catalogue split is future work — gated debt"
   },

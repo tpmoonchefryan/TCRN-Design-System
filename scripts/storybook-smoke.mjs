@@ -177,8 +177,8 @@ const gplusTokens = { light: createResolvedTokenMap("light"), dark: createResolv
 // shell.strip-h token, so the doc shell expectations below read 0 and that token instead of the retired rail
 // (--tcrn-shell-sidebar-width) and top bar (--tcrn-shell-topbar-height) tokens and the older literals.
 const shellStripHeightVar = "--tcrn-shell-strip-h";
-const docShellRailWidthPx = 0;
-const docShellTopbarHeightPx = Number.parseFloat(gplusTokens.light[shellStripHeightVar]);
+const docShellResidentNavWidthPx = 0;
+const docShellBandHeightPx = Number.parseFloat(gplusTokens.light[shellStripHeightVar]);
 // The search is the full menu's field: 936 wide in the 952 panel at the 1440 proof viewport, and focus does not widen it.
 const docShellSearchWidthPx = 936;
 // The top-band shell's two searches (TCRN-DS-SUB-176; the board values of
@@ -205,13 +205,6 @@ function gplusComputedColor(value) {
 const gplusColor = (cssVar, theme = "light") => gplusComputedColor(gplusTokens[theme][cssVar]);
 const gplusColorBothThemes = (cssVar) => gplusThemes.map((theme) => gplusColor(cssVar, theme));
 const gplusPx = (cssVar) => Number.parseFloat(gplusTokens.light[cssVar]);
-// Composition one's shell geometry (O-1, TCRN-DS-SUB-090): the ProductShell top bar and the
-// collapsed sidebar rail are read from the shell tokens, not pinned as literals.
-const gplusShellTopBarHeightPx = gplusPx("--tcrn-shell-topbar-height");
-const gplusShellCollapsedRailWidthPx = gplusPx("--tcrn-shell-sidebar-width-collapsed");
-if (!Number.isFinite(gplusShellTopBarHeightPx) || !Number.isFinite(gplusShellCollapsedRailWidthPx)) {
-  throw new Error("gplus-shell-token-missing:--tcrn-shell-topbar-height|--tcrn-shell-sidebar-width-collapsed");
-}
 const gplusSeconds = (cssVar) => `${Number.parseFloat(gplusTokens.light[cssVar]) / 1000}s`;
 const gplusEase = (cssVar) => String(gplusTokens.light[cssVar])
   .replace(/\s+/g, "")
@@ -261,13 +254,14 @@ const expectedFoundationStandardCategoryIds = [
 const storybookDocShellVisualOracleContract = contract.storybookDocShellVisualOracle ?? {};
 const expectedStorybookVisualSkin = {
   id: storybookDocShellVisualOracleContract.id ?? "missing",
-  sidebarWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarWidthPx ?? null,
-  sidebarMinWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarMinWidthPx ?? null,
-  sidebarPreferredViewportRatio: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarPreferredViewportRatio ?? null,
-  sidebarMaxWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarMaxWidthPx ?? null,
-  sidebarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.desktopSidebarTolerancePx ?? 0,
-  topbarHeightPx: storybookDocShellVisualOracleContract.shellMetrics?.desktopTopbarHeightPx ?? null,
-  topbarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.desktopTopbarTolerancePx ?? 0,
+  // The oracle's top-band names (TCRN-DS-SUB-208); the old desktopSidebar* / desktopTopbar* names hold the same values.
+  sidebarWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.residentNavWidthPx ?? null,
+  sidebarMinWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.residentNavMinWidthPx ?? null,
+  sidebarPreferredViewportRatio: storybookDocShellVisualOracleContract.shellMetrics?.residentNavPreferredViewportRatio ?? null,
+  sidebarMaxWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.residentNavMaxWidthPx ?? null,
+  sidebarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.residentNavTolerancePx ?? 0,
+  topbarHeightPx: storybookDocShellVisualOracleContract.shellMetrics?.bandHeightPx ?? null,
+  topbarTolerancePx: storybookDocShellVisualOracleContract.shellMetrics?.bandHeightTolerancePx ?? 0,
   searchRestWidthPx: storybookDocShellVisualOracleContract.shellMetrics?.searchRestWidthPx ?? null,
   searchHeightPx: storybookDocShellVisualOracleContract.shellMetrics?.searchHeightPx ?? null,
   searchBorderColor: storybookDocShellVisualOracleContract.shellMetrics?.searchBorderColor ?? null,
@@ -414,20 +408,13 @@ const productShellComparatorContract = {
     reducedMotionFallback: "transition-none"
   }
 };
-// The AI consumption contract's search entries and doc-shell lines read as the top-band shell since
-// TCRN-DS-SUB-176 (judgment R2-29; held to shellSearchGeometry above). Its shellControlVisualParityProof
-// control order, motion fields and collapse policy and the owner-quality oracle's side-nav policy still
-// describe the old shell (rail toggle, top-bar search), outside R2-29's lines. The cross-checks below pin
-// what they say today, apart from the comparator above, so the two can move separately.
+// The AI consumption contract reads as the top-band shell (TCRN-DS-SUB-176, SUB-208): its search entries are held to
+// shellSearchGeometry above, its shellControlVisualParityProof names the band's control order, and the search width
+// timeline, the side-nav collapse policy and the owner-quality oracle's side-nav policy left with the side rail.
 const aiContractShellControlReadback = {
-  controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
-  searchTransitionDuration: "0.24s",
-  searchTransitionProperties: ["flex-basis", "width", "max-width"],
-  ownerQualityAdmittedCollapsedVariants: [
-    "desktop-light-operations-cockpit-collapsed",
-    "desktop-dark-operations-cockpit-collapsed",
-    "desktop-light-work-queue-collapsed"
-  ]
+  controlOrder: ["brandButton", "pins", "cluster"],
+  measuredControls: ["productLogo", "brandButton", "pins", "avatar", "themeToggle", "localeTrigger", "searchInput", "searchControl", "searchShortcut", "currentLocation", "selectedNavItem", "band", "paper"],
+  retiredMeasuredControls: ["sideNavToggle", "topBar"]
 };
 // The visual instances show the shell closed with the avatar menu closed: the band and the paper
 // are what they render, so those are what they are held to.
@@ -466,7 +453,7 @@ const aosFrontendShellVisualInstanceContract = {
     "desktop-light-expanded-cockpit-search-results",
     "desktop-light-expanded-cockpit-search-rest",
     "desktop-dark-expanded-cockpit",
-    "desktop-light-collapsed-work",
+    "desktop-light-work",
     "mobile-dark-work-stacked",
     "reduced-motion"
   ],
@@ -479,7 +466,7 @@ const aosFrontendShellVisualInstanceContract = {
       expectedState: {
         theme: "light",
         locale: "en",
-        collapsed: "false",
+        shellState: "expanded",
         route: "cockpit",
         search: "results",
         searchExpanded: "true",
@@ -497,7 +484,7 @@ const aosFrontendShellVisualInstanceContract = {
       expectedState: {
         theme: "light",
         locale: "en",
-        collapsed: "false",
+        shellState: "closed",
         route: "cockpit",
         search: "rest",
         searchExpanded: "false",
@@ -515,7 +502,7 @@ const aosFrontendShellVisualInstanceContract = {
       expectedState: {
         theme: "dark",
         locale: "en",
-        collapsed: "false",
+        shellState: "closed",
         route: "cockpit",
         search: "rest",
         searchExpanded: "false",
@@ -526,14 +513,14 @@ const aosFrontendShellVisualInstanceContract = {
       }
     },
     {
-      id: "desktop-light-collapsed-work",
-      selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-collapsed-work\"]",
+      id: "desktop-light-work",
+      selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-work\"]",
       viewport: { width: 1440, height: 900 },
       reducedMotion: "no-preference",
       expectedState: {
         theme: "light",
         locale: "en",
-        collapsed: "true",
+        shellState: "closed",
         route: "work",
         search: "rest",
         searchExpanded: "false",
@@ -551,7 +538,7 @@ const aosFrontendShellVisualInstanceContract = {
       expectedState: {
         theme: "dark",
         locale: "zh-CN",
-        collapsed: "false",
+        shellState: "closed",
         route: "work",
         search: "rest",
         searchExpanded: "false",
@@ -569,7 +556,7 @@ const aosFrontendShellVisualInstanceContract = {
       expectedState: {
         theme: "light",
         locale: "en",
-        collapsed: "false",
+        shellState: "closed",
         route: "cockpit",
         search: "rest",
         searchExpanded: "false",
@@ -592,13 +579,12 @@ const aosFrontendShellVisualInstanceContract = {
       "/",
       "/cockpit",
       "/cockpit?locale=en&theme=light",
-      "post-search-dismissal:/cockpit?locale=en&theme=light&collapsed=false&search=shell"
+      "post-search-dismissal:/cockpit?locale=en&theme=light&search=shell"
     ],
     routePersistenceBoundary:
       "Owner-review routes must not inherit localStorage into unadmitted visual states; product persistence may remain DS-defined outside reviewed parity routes.",
     notAutomaticallyAdmitted: [
       "zh-CN Cockpit rest",
-      "collapsed Cockpit rest",
       "dark zh-CN Cockpit rest",
       "mobile Cockpit rest"
     ],
@@ -676,11 +662,8 @@ const aosOwnerQualityProductShellContract = {
   ],
   variants: [
     "desktop-light-operations-cockpit",
-    "desktop-light-operations-cockpit-collapsed",
     "desktop-dark-operations-cockpit",
-    "desktop-dark-operations-cockpit-collapsed",
     "desktop-light-work-queue",
-    "desktop-light-work-queue-collapsed",
     "mobile-dark-zh-cn-work-queue",
     "desktop-light-operations-search-results",
     "reduced-motion"
@@ -694,25 +677,7 @@ const aosOwnerQualityProductShellContract = {
       expectedState: {
         theme: "light",
         locale: "en",
-        collapsed: "false",
-        route: "cockpit",
-        search: "rest",
-        searchExpanded: "false",
-        searchResultsVisible: "false",
-        viewport: "desktop",
-        reducedMotion: "false",
-        content: "cockpit"
-      }
-    },
-    {
-      id: "desktop-light-operations-cockpit-collapsed",
-      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"]",
-      viewport: { width: 1440, height: 900 },
-      reducedMotion: "no-preference",
-      expectedState: {
-        theme: "light",
-        locale: "en",
-        collapsed: "true",
+        shellState: "closed",
         route: "cockpit",
         search: "rest",
         searchExpanded: "false",
@@ -730,25 +695,7 @@ const aosOwnerQualityProductShellContract = {
       expectedState: {
         theme: "dark",
         locale: "en",
-        collapsed: "false",
-        route: "cockpit",
-        search: "rest",
-        searchExpanded: "false",
-        searchResultsVisible: "false",
-        viewport: "desktop",
-        reducedMotion: "false",
-        content: "cockpit"
-      }
-    },
-    {
-      id: "desktop-dark-operations-cockpit-collapsed",
-      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"]",
-      viewport: { width: 1440, height: 900 },
-      reducedMotion: "no-preference",
-      expectedState: {
-        theme: "dark",
-        locale: "en",
-        collapsed: "true",
+        shellState: "closed",
         route: "cockpit",
         search: "rest",
         searchExpanded: "false",
@@ -766,25 +713,7 @@ const aosOwnerQualityProductShellContract = {
       expectedState: {
         theme: "light",
         locale: "en",
-        collapsed: "false",
-        route: "work",
-        search: "rest",
-        searchExpanded: "false",
-        searchResultsVisible: "false",
-        viewport: "desktop",
-        reducedMotion: "false",
-        content: "work"
-      }
-    },
-    {
-      id: "desktop-light-work-queue-collapsed",
-      selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"]",
-      viewport: { width: 1440, height: 900 },
-      reducedMotion: "no-preference",
-      expectedState: {
-        theme: "light",
-        locale: "en",
-        collapsed: "true",
+        shellState: "closed",
         route: "work",
         search: "rest",
         searchExpanded: "false",
@@ -802,7 +731,7 @@ const aosOwnerQualityProductShellContract = {
       expectedState: {
         theme: "dark",
         locale: "zh-CN",
-        collapsed: "false",
+        shellState: "closed",
         route: "work",
         search: "rest",
         searchExpanded: "false",
@@ -822,7 +751,7 @@ const aosOwnerQualityProductShellContract = {
       expectedState: {
         theme: "light",
         locale: "en",
-        collapsed: "false",
+        shellState: "expanded",
         route: "cockpit",
         search: "results",
         searchExpanded: "true",
@@ -840,7 +769,7 @@ const aosOwnerQualityProductShellContract = {
       expectedState: {
         theme: "light",
         locale: "en",
-        collapsed: "false",
+        shellState: "closed",
         route: "cockpit",
         search: "rest",
         searchExpanded: "false",
@@ -883,7 +812,7 @@ const aosOwnerQualityProductShellContract = {
     "tcrn-aos-wordmark"
   ],
   delegatedSubOracles: [
-    "ProductShell owns side-nav collapse, responsive posture, theme, locale, focus, and reduced-motion behavior.",
+    "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, the full menu, and the pins and their drop-downs.",
     "ProductShellSearch owns search rest/results/dismissal behavior.",
     "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
   ],
@@ -973,7 +902,7 @@ const required = [
   "data-visual-instance-primary-ia=\"cockpit-work-only\"",
   "data-visual-instance-variant=\"desktop-light-expanded-cockpit-search-results\"",
   "data-visual-instance-variant=\"desktop-dark-expanded-cockpit\"",
-  "data-visual-instance-variant=\"desktop-light-collapsed-work\"",
+  "data-visual-instance-variant=\"desktop-light-work\"",
   "data-visual-instance-variant=\"mobile-dark-work-stacked\"",
   "data-visual-instance-variant=\"reduced-motion\"",
   "data-visual-instance-locale=\"zh-CN\"",
@@ -986,11 +915,8 @@ const required = [
   "data-visual-instance-owner-quality=\"product-first\"",
   "data-owner-quality-product-shell-oracle=\"true\"",
   "data-visual-instance-variant=\"desktop-light-operations-cockpit\"",
-  "data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"",
   "data-visual-instance-variant=\"desktop-dark-operations-cockpit\"",
-  "data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"",
   "data-visual-instance-variant=\"desktop-light-work-queue\"",
-  "data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"",
   "data-visual-instance-variant=\"mobile-dark-zh-cn-work-queue\"",
   "data-visual-instance-variant=\"desktop-light-operations-search-results\"",
   "data-contract-story-id=\"ai-consumption-contract\"",
@@ -1008,10 +934,11 @@ const required = [
   "Use one circular icon-only button",
   "one whole-page transition",
   "current locale name in that locale",
-  "Keep search compact at rest, expand smoothly on focus, and collapse on blur",
-  "not as a top-bar human navigation item",
+  "The search is a field of the full menu: it keeps its width on focus",
+  "not as a band or menu navigation item",
   "Storybook shell controls",
-  "single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition",
+  "a single icon theme toggle and a native-name locale menu in the avatar menu, the search in the full menu, no AI JSON link in the band, and one whole-page theme transition",
+  "Top-band navigation",
   // TCRN-DS-STORY-051: "Theme modes" moved to requiredRendered (script-stripped assertion).
   "aria-label=\"TCRN brand mark\"",
   "src=\"tcrn-brand-mark.svg\"",
@@ -1314,7 +1241,12 @@ const shellControlVisualParityProof = contract.shellControlVisualParityProof;
 if (shellControlVisualParityProof?.disposition !== "executable_required_for_product_shell_consumption") {
   missing.push("contract.shellControlVisualParityProof.disposition");
 }
-for (const field of ["productLogo", "themeToggle", "sideNavToggle", "localeTrigger", "searchInput", "searchControl", "searchShortcut", "currentLocation", "selectedNavItem", "topBar"]) {
+for (const field of aiContractShellControlReadback.retiredMeasuredControls) {
+  if (shellControlVisualParityProof?.measuredControls?.includes(field)) {
+    missing.push(`contract.shellControlVisualParityProof.measuredControls:retired:${field}`);
+  }
+}
+for (const field of aiContractShellControlReadback.measuredControls) {
   if (!shellControlVisualParityProof?.measuredControls?.includes(field)) {
     missing.push(`contract.shellControlVisualParityProof.measuredControls:${field}`);
   }
@@ -1329,7 +1261,10 @@ for (const field of ["outlineWidth", "outlineStyle", "outlineColor", "outlineOff
     missing.push(`contract.shellControlVisualParityProof.focusFields:${field}`);
   }
 }
-for (const field of ["transitionProperty", "transitionDuration", "transitionTimingFunction", "sampledWidthTimeline", "animationDuration", "animationTimingFunction"]) {
+if (shellControlVisualParityProof?.motionFields?.includes("sampledWidthTimeline")) {
+  missing.push("contract.shellControlVisualParityProof.motionFields:retired:sampledWidthTimeline");
+}
+for (const field of ["transitionProperty", "transitionDuration", "transitionTimingFunction", "animationDuration", "animationTimingFunction"]) {
   if (!shellControlVisualParityProof?.motionFields?.includes(field)) {
     missing.push(`contract.shellControlVisualParityProof.motionFields:${field}`);
   }
@@ -1340,14 +1275,11 @@ if (shellControlVisualParityProof?.controlOrder?.join(">") !== aiContractShellCo
 if (Object.keys(shellSearchGeometry).some((key) => shellControlVisualParityProof?.searchRestWidth?.[key] !== shellSearchGeometry[key])) {
   missing.push("contract.shellControlVisualParityProof.searchRestWidth");
 }
-if (shellControlVisualParityProof?.searchMotionTimeline?.transitionDuration !== aiContractShellControlReadback.searchTransitionDuration) {
-  missing.push("contract.shellControlVisualParityProof.searchMotionTimeline.transitionDuration");
-}
-if (shellControlVisualParityProof?.searchMotionTimeline?.transitionProperties?.join(">") !== aiContractShellControlReadback.searchTransitionProperties.join(">")) {
-  missing.push("contract.shellControlVisualParityProof.searchMotionTimeline.transitionProperties");
-}
-if (!String(shellControlVisualParityProof?.ownerQualitySideNavCollapsePolicy ?? "").includes("actionable")) {
-  missing.push("contract.shellControlVisualParityProof.ownerQualitySideNavCollapsePolicy");
+// The search width timeline and the side-nav collapse policy left with the side rail (TCRN-DS-SUB-208).
+for (const retired of ["searchMotionTimeline", "ownerQualitySideNavCollapsePolicy"]) {
+  if (shellControlVisualParityProof?.[retired] !== undefined) {
+    missing.push(`contract.shellControlVisualParityProof.${retired}:retired`);
+  }
 }
 // The published tagline is a five-locale object, not a string. Checking only the
 // English member is what let the contract describe a translated field as one
@@ -1398,7 +1330,7 @@ if (!aosVisualInstanceOracle) {
   if (aosVisualInstanceOracle.persistedCockpitRestPolicy?.defaultCockpitRestVariant !== aosFrontendShellVisualInstanceContract.persistedCockpitRestPolicy.defaultCockpitRestVariant) {
     missing.push("contract.visualInstanceOracles.aos.persistedCockpitRestPolicy.defaultCockpitRestVariant");
   }
-  if (!aosVisualInstanceOracle.persistedCockpitRestPolicy?.coveredOwnerReachableRoutes?.includes("post-search-dismissal:/cockpit?locale=en&theme=light&collapsed=false&search=shell")) {
+  if (!aosVisualInstanceOracle.persistedCockpitRestPolicy?.coveredOwnerReachableRoutes?.includes("post-search-dismissal:/cockpit?locale=en&theme=light&search=shell")) {
     missing.push("contract.visualInstanceOracles.aos.persistedCockpitRestPolicy.searchDismissalRoute");
   }
   if (aosVisualInstanceOracle.persistedCockpitRestPolicy?.outsideMatrixMarkerForbiddenForOwnerReview !== "aos-route-state-outside-accepted-oracle-matrix") {
@@ -1420,7 +1352,6 @@ if (!ownerQualityVisualInstanceOracle) {
     "slots",
     "ownerQualityAcceptanceCriteria",
     "rejectCriteria",
-    "ownerQualitySideNavPolicy",
     "delegatedSubOracles",
     "ownerVisualAdmissionBoundary",
     "negativeCriteria"
@@ -1457,16 +1388,12 @@ if (!ownerQualityVisualInstanceOracle) {
   if (ownerQualityVisualInstanceOracle.ownerVisualAdmissionBoundary !== aosOwnerQualityProductShellContract.ownerVisualAdmissionBoundary) {
     missing.push("contract.visualInstanceOracles.ownerQuality.ownerVisualAdmissionBoundary");
   }
-  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.collapseAffordance !== "actionable_toggle") {
-    missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.collapseAffordance");
+  // The side-nav policy and its collapsed variants retired with the rail (TCRN-DS-SUB-208).
+  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy !== undefined) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy:retired");
   }
-  if (ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.expandedOnly !== false) {
-    missing.push("contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.expandedOnly");
-  }
-  for (const variant of aiContractShellControlReadback.ownerQualityAdmittedCollapsedVariants) {
-    if (!ownerQualityVisualInstanceOracle.ownerQualitySideNavPolicy?.admittedCollapsedVariants?.includes?.(variant)) {
-      missing.push(`contract.visualInstanceOracles.ownerQuality.ownerQualitySideNavPolicy.admittedCollapsedVariants:${variant}`);
-    }
+  if (ownerQualityVisualInstanceOracle.requiredVariants?.some?.((variant) => variant.includes("collapsed"))) {
+    missing.push("contract.visualInstanceOracles.ownerQuality.requiredVariants:collapsed");
   }
 }
 for (const route of ["ai-consumption-contract.json", "llms.txt", "proof.html#ai-consumption-contract"]) {
@@ -1590,22 +1517,35 @@ if (!String(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "
   missing.push("contract.storybookDocShellVisualOracle.metricSourceDisposition");
 }
 if (!(contract.storybookDocShellVisualOracle?.metricEvidence ?? []).some((item) => (
-  item.metric === "desktopSidebarWidthPx"
+  item.metric === "residentNavWidthPx"
   && item.signatureBaseline === "docs/verification/internal-alpha/visual-signature-baseline.json"
 ))) {
-  missing.push("contract.storybookDocShellVisualOracle.metricEvidence.desktopSidebarWidthPx");
+  missing.push("contract.storybookDocShellVisualOracle.metricEvidence.residentNavWidthPx");
 }
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx !== docShellRailWidthPx) {
-  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarWidthPx");
+for (const [metric, expected] of [
+  ["residentNavWidthPx", docShellResidentNavWidthPx],
+  ["residentNavMinWidthPx", docShellResidentNavWidthPx],
+  ["residentNavMaxWidthPx", docShellResidentNavWidthPx],
+  ["bandHeightPx", docShellBandHeightPx]
+]) {
+  if (contract.storybookDocShellVisualOracle?.shellMetrics?.[metric] !== expected) {
+    missing.push(`contract.storybookDocShellVisualOracle.shellMetrics.${metric}`);
+  }
 }
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx !== docShellRailWidthPx) {
-  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarMinWidthPx");
-}
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx !== docShellRailWidthPx) {
-  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopSidebarMaxWidthPx");
-}
-if (contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx !== docShellTopbarHeightPx) {
-  missing.push("contract.storybookDocShellVisualOracle.shellMetrics.desktopTopbarHeightPx");
+// The old shell's names stay for one version with the new names' values (TCRN-DS-SUB-208).
+for (const [oldName, newName] of [
+  ["desktopSidebarWidthPx", "residentNavWidthPx"],
+  ["desktopSidebarMinWidthPx", "residentNavMinWidthPx"],
+  ["desktopSidebarPreferredViewportRatio", "residentNavPreferredViewportRatio"],
+  ["desktopSidebarMaxWidthPx", "residentNavMaxWidthPx"],
+  ["desktopSidebarTolerancePx", "residentNavTolerancePx"],
+  ["desktopTopbarHeightPx", "bandHeightPx"],
+  ["desktopTopbarTolerancePx", "bandHeightTolerancePx"]
+]) {
+  const metrics = contract.storybookDocShellVisualOracle?.shellMetrics ?? {};
+  if (typeof metrics[newName] !== "number" || metrics[oldName] !== metrics[newName]) {
+    missing.push(`contract.storybookDocShellVisualOracle.shellMetrics.${oldName}=${newName}`);
+  }
 }
 if (contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx !== docShellSearchWidthPx) {
   missing.push("contract.storybookDocShellVisualOracle.shellMetrics.searchRestWidthPx");
@@ -1638,8 +1578,8 @@ if (contract.visualFitControlContract?.search?.packageDefaultControlMinInlineSiz
 if (!String(contract.visualFitControlContract?.productLockups?.rule ?? "").includes("suffix accents are package-owned")) {
   missing.push("contract.visualFitControlContract.productLockups.rule");
 }
-if (!String(contract.visualFitControlContract?.sidebar?.rule ?? "").includes("orphan visual lane")) {
-  missing.push("contract.visualFitControlContract.sidebar.rule");
+if (contract.visualFitControlContract?.sidebar !== undefined || !String(contract.visualFitControlContract?.fullMenu?.rule ?? "").includes("no side rail and no orphan visual lane")) {
+  missing.push("contract.visualFitControlContract.fullMenu.rule");
 }
 if (!String(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "").includes("package-emitted column/min-width variables")) {
   missing.push("contract.visualFitControlContract.tablesAndContainers.rule");
@@ -2543,7 +2483,7 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
       productShellTheme: shell.getAttribute("data-product-shell-theme"),
       tcrnTheme: shell.getAttribute("data-tcrn-theme"),
       locale: shell.getAttribute("data-visual-instance-locale"),
-      collapsed: shell.getAttribute("data-visual-instance-collapsed"),
+      shellState: shell.getAttribute("data-visual-instance-shell-state"),
       route: shell.getAttribute("data-visual-instance-route"),
       search: shell.getAttribute("data-visual-instance-search"),
       menuState: shell.getAttribute("data-state"),
@@ -2675,8 +2615,8 @@ function validateProductShellReadback({
       failures.push(`${label}:tcrn-theme:${proof.state?.tcrnTheme ?? "missing"}`);
     }
     // The rail's collapsed state, the selected rail row and the band search's expanded and
-    // results states are retired with those parts; the variant's own route, search and collapsed
-    // attributes are still read through the loop above.
+    // results states are retired with those parts; the variant's own route, search and shell state
+    // (data-visual-instance-shell-state: closed, or expanded with the full menu open) are read through the loop above.
     if (proof.state?.ownerVisualAdmissionBoundary !== "ds_oracle_review_required_before_owner_admission") {
       failures.push(`${label}:owner-admission-boundary:${proof.state?.ownerVisualAdmissionBoundary ?? "missing"}`);
     }

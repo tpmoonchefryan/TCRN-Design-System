@@ -29,5 +29,5 @@ export const componentFamilyRows = [
 ];
 
 export const storybookOnlyPrototypeRows = [
-  { helper: "KnowledgeBaseShellDemo", scope: "Documentation shell IA comparison", status: "Storybook prototype; full shell deferred" }
+  { helper: "KnowledgeBaseShellDemo", scope: "Knowledge-base bookmarks in the top-band shell", status: "Storybook prototype; not a component library export" }
 ];

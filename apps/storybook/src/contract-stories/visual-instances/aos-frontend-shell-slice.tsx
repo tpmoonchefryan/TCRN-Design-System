@@ -34,7 +34,6 @@ type ShellVisualInstanceVariant = {
   label: string;
   theme: "light" | "dark";
   locale: "en" | "zh-CN";
-  collapsed: boolean;
   route: ShellVisualInstanceRoute;
   searchMode: ShellVisualInstanceSearchMode;
   viewport: "desktop" | "mobile";
@@ -47,10 +46,9 @@ const aosDefaultLocale = "en" as const;
 const variants: readonly ShellVisualInstanceVariant[] = [
   {
     id: "desktop-light-expanded-cockpit-search-results",
-    label: "Desktop light, expanded Cockpit with search results",
+    label: "Desktop light, Cockpit with search results",
     theme: "light",
     locale: aosDefaultLocale,
-    collapsed: false,
     route: "cockpit",
     searchMode: "results",
     viewport: "desktop",
@@ -59,10 +57,9 @@ const variants: readonly ShellVisualInstanceVariant[] = [
   },
   {
     id: "desktop-light-expanded-cockpit-search-rest",
-    label: "Desktop light, expanded Cockpit at search rest",
+    label: "Desktop light, Cockpit at search rest",
     theme: "light",
     locale: aosDefaultLocale,
-    collapsed: false,
     route: "cockpit",
     searchMode: "rest",
     viewport: "desktop",
@@ -71,10 +68,9 @@ const variants: readonly ShellVisualInstanceVariant[] = [
   },
   {
     id: "desktop-dark-expanded-cockpit",
-    label: "Desktop dark, expanded Cockpit at search rest",
+    label: "Desktop dark, Cockpit at search rest",
     theme: "dark",
     locale: aosDefaultLocale,
-    collapsed: false,
     route: "cockpit",
     searchMode: "rest",
     viewport: "desktop",
@@ -82,11 +78,10 @@ const variants: readonly ShellVisualInstanceVariant[] = [
     contentMode: "cockpit"
   },
   {
-    id: "desktop-light-collapsed-work",
-    label: "Desktop light, collapsed Work route",
+    id: "desktop-light-work",
+    label: "Desktop light, Work route",
     theme: "light",
     locale: aosDefaultLocale,
-    collapsed: true,
     route: "work",
     searchMode: "rest",
     viewport: "desktop",
@@ -98,7 +93,6 @@ const variants: readonly ShellVisualInstanceVariant[] = [
     label: "Mobile dark, zh-CN Work route",
     theme: "dark",
     locale: "zh-CN",
-    collapsed: false,
     route: "work",
     searchMode: "rest",
     viewport: "mobile",
@@ -110,7 +104,6 @@ const variants: readonly ShellVisualInstanceVariant[] = [
     label: "Reduced-motion fallback, Cockpit rest state",
     theme: "light",
     locale: aosDefaultLocale,
-    collapsed: false,
     route: "cockpit",
     searchMode: "rest",
     viewport: "desktop",
@@ -119,6 +112,13 @@ const variants: readonly ShellVisualInstanceVariant[] = [
   }
 ] as const;
 
+// The top band's state for a fixture (TCRN-DS-SUB-208): the search-results fixture holds the full menu open
+// (data-state="expanded"), every other fixture shows the band closed. The top band has no collapsed state, so
+// the old collapsed fixtures retired or became the closed state they render.
+function variantShellState(variant: ShellVisualInstanceVariant): "closed" | "expanded" {
+  return variant.searchMode === "results" ? "expanded" : "closed";
+}
+
 const persistedCockpitRestPolicy = {
   defaultCockpitRestVariant: "desktop-light-expanded-cockpit-search-rest",
   ownerReviewRoutesMustBeDeterministic: true,
@@ -126,13 +126,12 @@ const persistedCockpitRestPolicy = {
     "/",
     "/cockpit",
     "/cockpit?locale=en&theme=light",
-    "post-search-dismissal:/cockpit?locale=en&theme=light&collapsed=false&search=shell"
+    "post-search-dismissal:/cockpit?locale=en&theme=light&search=shell"
   ],
   routePersistenceBoundary:
     "Owner-review routes must not inherit localStorage into unadmitted visual states; product persistence may remain DS-defined outside reviewed parity routes.",
   notAutomaticallyAdmitted: [
     "zh-CN Cockpit rest",
-    "collapsed Cockpit rest",
     "dark zh-CN Cockpit rest",
     "mobile Cockpit rest"
   ],
@@ -163,10 +162,10 @@ export const frontendShellSliceVisualInstanceReadback = {
     ]
   },
   slots: [
-    "brand lockup",
-    "attached side navigation",
-    "topbar current-location and utility controls",
-    "search rest/focus/results surface",
+    "brand button",
+    "full menu from the brand button",
+    "band pins and avatar cluster",
+    "full-menu search rest/results surface",
     "primary shell content",
     "secondary raw technical disclosure"
   ],
@@ -177,7 +176,6 @@ export const frontendShellSliceVisualInstanceReadback = {
     brandProductId: "design-system",
     brandPlaceholderFor: "aos",
     productLogoAssetId: "tcrn-aos-two-line",
-    navLabel: "AOS visual instance modules",
     primaryIa: ["Cockpit", "Work"],
     contentRole: "region"
   },
@@ -187,7 +185,7 @@ export const frontendShellSliceVisualInstanceReadback = {
     selector: `[data-storybook-visual-instance="frontend-shell-slice"][data-visual-instance-variant="${variant.id}"]`,
     theme: variant.theme,
     locale: variant.locale,
-    collapsed: variant.collapsed,
+    shellState: variantShellState(variant),
     route: variant.route,
     searchMode: variant.searchMode,
     viewport: variant.viewport,
@@ -200,8 +198,8 @@ export const frontendShellSliceVisualInstanceReadback = {
     "zh-CN selected locale visual state",
     "desktop viewport",
     "mobile viewport",
-    "expanded side navigation visual state",
-    "collapsed side navigation visual state",
+    "closed band visual state",
+    "full menu open visual state",
     "Cockpit selected route",
     "Work selected route",
     "search rest/dismissed visual state",
@@ -229,7 +227,6 @@ function routeLabels(locale: "en" | "zh-CN") {
     return {
       productName: "AOS 重建工作区",
       moduleName: "前端壳切片",
-      navLabel: "AOS 视觉实例模块",
       cockpit: "驾驶舱",
       work: "工作",
       currentLocation: "当前位置",
@@ -244,7 +241,6 @@ function routeLabels(locale: "en" | "zh-CN") {
   return {
     productName: "AOS Rebuild Workspace",
     moduleName: "Frontend shell slice",
-    navLabel: "AOS visual instance modules",
     cockpit: "Cockpit",
     work: "Work",
     currentLocation: "Current location",
@@ -504,14 +500,14 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
         data-visual-instance-name="FrontendShellSliceVisualInstance"
         data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
         data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
-        data-visual-instance-slots="brand side-nav topbar search content secondary-disclosure"
+        data-visual-instance-slots="brand pins cluster full-menu search content secondary-disclosure"
         data-visual-instance-primary-ia="cockpit-work-only"
         data-visual-instance-negative-criteria="no-local-visible-css no-storybook-only-prototype no-raw-primary no-owner-readiness"
         data-visual-instance-variant={variant.id}
         data-visual-instance-theme={variant.theme}
         data-tcrn-theme={variant.theme}
         data-visual-instance-locale={variant.locale}
-        data-visual-instance-collapsed={variant.collapsed ? "true" : "false"}
+        data-visual-instance-shell-state={variantShellState(variant)}
         data-visual-instance-route={variant.route}
         data-visual-instance-search={variant.searchMode}
         data-visual-instance-viewport={variant.viewport}
@@ -548,7 +544,7 @@ export function FrontendShellSliceVisualInstance() {
               items={[
                 { key: "theme", label: "Theme", value: variant.theme },
                 { key: "locale", label: "Locale", value: variant.locale },
-                { key: "collapsed", label: "Collapsed", value: variant.collapsed ? "true" : "false" },
+                { key: "shell-state", label: "Shell state", value: variantShellState(variant) },
                 { key: "route", label: "Route", value: variant.route },
                 { key: "search", label: "Search", value: variant.searchMode },
                 { key: "viewport", label: "Viewport proof", value: variant.viewport },

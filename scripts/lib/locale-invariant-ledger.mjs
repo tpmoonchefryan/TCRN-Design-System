@@ -130,9 +130,6 @@ export const localeInvariantLedger = {
     "button-spec-usage": [
       "trace ID",
     ],
-    "color-palette": [
-      "Owner review",
-    ],
     "component-family-index": [
       "Work Item",
       "Work Management",
