@@ -51,8 +51,14 @@
     "green": ["pinJitter", "contrast", "prail"],
     "storyMutations": ["story-pin-display-none-inline", "story-guide-icons-right-4"]
   },
+  "pageFixture": {
+    "about": "Page fixture (TCRN-DS-SUB-164, R2-28), read with the package hooks in the same 1240 x 900 viewport: the page in the paper of four closed shells, the settings and roster screens of the stories at 1240 and at the 390 phone width (ts-settings-l, ts-roster-l, ts-settings-m, ts-roster-m), each with a long page breadcrumb in the package's markup and rules (every crumb gives way and ends in an ellipsis under its title), a SettingsLayout (1040, centred) or a SplitView (from the paper's content edge: 28, on the phone 16), and the brand story's first lines (ProductLockup firstLine, TMS at the rail and lockup scales, outside any shell). green: the gates and checks that must pass on it, the two checks the boards cannot show (settingsLayout, splitView) among them; storyMutations: the story mutations that must turn their gate red on it, before the real stories carry these screens (SUB-161).",
+    "file": "tests/fixtures/geometry-measure/shell/package-pages.html",
+    "green": ["markText", "pageCrumbs", "settingsLayout", "splitView"],
+    "storyMutations": ["story-word-padding-top-4", "story-crumbs-spill", "story-settings-max-width-none", "story-split-rail-240"]
+  },
   "stories": {
-    "about": "Package-story side (TCRN-DS-SUB-137). screens: the screens each C-9 story must show, in order, with the C-5 data-state of the shell root (the board screen names of the TCRN-DS-SUB-121 stories; ts-m-s is the board's Sheet screen, so its root reads sheet). behaviour: where the probes run, the focus loop and outside click on a closed screen and the arrows on a screen that shows the full menu; the intro on the intro story in a fresh session.",
+    "about": "Package-story side (TCRN-DS-SUB-137). screens: the screens each C-9 story must show, in order, with the C-5 data-state of the shell root (the board screen names of the TCRN-DS-SUB-121 stories; ts-m-s is the board's Sheet screen, so its root reads sheet). TCRN-DS-SUB-164 (R2-28, C-12) fixes the new screens and the brand story: ts-search-l is the full menu with a typed query and its results open (R2-24); ts-settings-l and ts-settings-m are the settings page (PageHeader whose breadcrumb is long, then SettingsLayout), ts-roster-l and ts-roster-m the roster page (PageHeader whose breadcrumb is long, then SplitView), closed, at 1440 and at 390. shell-brand-first-line (navigation-shells) has no shell: its screens are the first lines of the four products at the rail scale (data-lockup lkr-line, mark 22) and the lockup scale (lk-line, mark 44), ProductLockup firstLine, outside any shell, in the order listed; product is the lockup's data-product-id. behaviour: where the probes run, the focus loop and outside click on a closed screen and the arrows on a screen that shows the full menu; the intro on the intro story in a fresh session.",
     "screens": {
       "shell-top-band": [
         { "id": "ts-closed-l", "state": "closed" },
@@ -60,7 +66,10 @@
         { "id": "ts-x-l", "state": "expanded" },
         { "id": "ts-x-n", "state": "expanded" },
         { "id": "ts-drop-l", "state": "drop" },
-        { "id": "ts-drop-n", "state": "drop" }
+        { "id": "ts-drop-n", "state": "drop" },
+        { "id": "ts-search-l", "state": "expanded" },
+        { "id": "ts-settings-l", "state": "closed" },
+        { "id": "ts-roster-l", "state": "closed" }
       ],
       "shell-narrow": [
         { "id": "ts-narrow-l", "state": "closed" },
@@ -68,12 +77,24 @@
       ],
       "shell-mobile": [
         { "id": "ts-m-l", "state": "closed" },
-        { "id": "ts-m-s", "state": "sheet" }
+        { "id": "ts-m-s", "state": "sheet" },
+        { "id": "ts-settings-m", "state": "closed" },
+        { "id": "ts-roster-m", "state": "closed" }
       ],
       "shell-intro": [
         { "id": "ts-intro-l", "state": "closed" }
       ],
-      "shell-matrix": []
+      "shell-matrix": [],
+      "shell-brand-first-line": [
+        { "id": "fl-tms-rail", "lockup": "lkr-line", "product": "tms" },
+        { "id": "fl-tms-lockup", "lockup": "lk-line", "product": "tms" },
+        { "id": "fl-einzbern-rail", "lockup": "lkr-line", "product": "einzbern" },
+        { "id": "fl-einzbern-lockup", "lockup": "lk-line", "product": "einzbern" },
+        { "id": "fl-mana-rail", "lockup": "lkr-line", "product": "mana-orchestrate" },
+        { "id": "fl-mana-lockup", "lockup": "lk-line", "product": "mana-orchestrate" },
+        { "id": "fl-ds-rail", "lockup": "lkr-line", "product": "design-system" },
+        { "id": "fl-ds-lockup", "lockup": "lk-line", "product": "design-system" }
+      ]
     },
     "behaviour": {
       "waitMs": 300,

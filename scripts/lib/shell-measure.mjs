@@ -39,6 +39,11 @@
 // coloured mark (probe "mark", taken by any svg[data-logo] cell), a surface against what is behind it
 // (probe "own-bg", taken by an edge cell with a fill of its own) and the paper under a scrim (a cell
 // that a scrim is painted over gets a second reading, underScrim, with the scrim over its fill).
+// TCRN-DS-SUB-164 (R2-28): the page in a shell's own paper gains three readings, x.pageCrumbs (the page
+// breadcrumb: line count, reach past its box, and every crumb's overflow and how its box cuts it; key
+// pageCrumb), x.settingsLayouts (width, distances from the paper's two edges) and x.splitViews (left edge
+// from the paper's); the lockup and optical rows name their product and their shell (null outside
+// every shell), so the first lines of the brand story can be told apart.
 //
 // API:
 //   SHELL_MEASURE_SCHEMA_VERSION, SELECTOR_KEYS, BOARD_SELECTORS, PACKAGE_SELECTORS
@@ -65,7 +70,7 @@ export const SELECTOR_KEYS = Object.freeze([
   "row", "rowText", "rowHover", "rowOn", "group", "search", "pinButton", "pbar", "barLockup", "lockupText",
   "crumbs", "lock", "panelClose", "close", "closeName", "sidebar", "lockup", "lockupAny", "opticalAny",
   "dropPanelAny", "stateRuleScope", "singleLineText", "pageCrumbs", "clipExempt", "intro", "rowScope", "col",
-  "scrim"
+  "scrim", "pageCrumb", "settingsLayout", "splitView"
 ]);
 
 // Board hooks: the selectors of measure-shell.js, key by key.
@@ -115,7 +120,12 @@ export const BOARD_SELECTORS = Object.freeze({
   intro: "[data-shell-intro]",
   rowScope: ".ts-it",
   col: ".ts-col",
-  scrim: ".ts-scrim"
+  scrim: ".ts-scrim",
+  // a crumb of the page breadcrumb (.ts-crumbs: links, the current page in b); the boards draw no
+  // settings page and no split view, so their two keys name the package hooks and read nothing there
+  pageCrumb: ".ts-crumbs > a, .ts-crumbs > b, .ts-crumbs > span",
+  settingsLayout: "[data-settings-layout]",
+  splitView: '[data-pattern="split-view"]'
 });
 
 // Package hooks (C-5). dropRow is filtered to rows outside the cascade columns, which matches the
@@ -166,7 +176,10 @@ export const PACKAGE_SELECTORS = Object.freeze({
   intro: "[data-shell-intro]",
   rowScope: ".tcrn-nav-item-row",
   col: "[data-shell-col]",
-  scrim: "[data-shell-scrim]"
+  scrim: "[data-shell-scrim]",
+  pageCrumb: ".tcrn-breadcrumb__crumb",
+  settingsLayout: "[data-settings-layout]",
+  splitView: '[data-pattern="split-view"]'
 });
 
 // Browser-side. Self-contained (page.evaluate serialises it): nothing from module scope is used.
@@ -500,6 +513,32 @@ export function readShellInPage(options) {
       return { el: hint(el), text: (text(el) || "").slice(0, 40), lines, excess: r1(excess), clip: bcs.overflowX !== "visible", ellipsis: bcs.textOverflow === "ellipsis", title: Boolean(el.closest("[title]") && scr.contains(el.closest("[title]"))) };
     });
 
+    // extra (TCRN-DS-SUB-164, R2-28): the page in this shell's own paper. The page breadcrumb (07b D
+    // 面包屑; C7): the trail's line count, how far its crumbs reach past the trail's box, and every crumb:
+    // how much wider its text is than its box (scrollWidth over clientWidth of the crumb's box) and how
+    // that box cuts it (clip, ellipsis, title). SettingsLayout: its width and its distances from the
+    // paper's left and right edges. SplitView: its left edge from the paper's left edge.
+    const paperRect = paper.getBoundingClientRect();
+    const ownPage = (selector) => (selector ? [...scr.querySelectorAll(selector)].filter((el) => inOwnPaper(el) && visible(el)) : []);
+    x.pageCrumbs = ownPage(sel.pageCrumbs).map((nav) => {
+      const nb = nav.getBoundingClientRect();
+      const range = document.createRange(); range.selectNodeContents(nav);
+      const rects = [...range.getClientRects()].filter((r) => r.width > 0 && r.height > 0).sort((a, b) => a.top - b.top);
+      let lines = 0, bottom = -Infinity;
+      for (const r of rects) { if (r.top >= bottom - 1) { lines++; bottom = r.bottom; } else bottom = Math.max(bottom, r.bottom); }
+      const labels = sel.pageCrumb ? [...nav.querySelectorAll(sel.pageCrumb)].filter(visible) : [];
+      const reach = union(labels.map((el) => el.getBoundingClientRect()));
+      const crumbs = labels.map((el) => {
+        let box = el;
+        while (box !== nav && getComputedStyle(box).display === "inline") box = box.parentElement;
+        const bcs = getComputedStyle(box);
+        return { text: (text(el) || "").slice(0, 40), over: Math.max(0, box.scrollWidth - box.clientWidth), clip: bcs.overflowX !== "visible", ellipsis: bcs.textOverflow === "ellipsis", title: Boolean(el.closest("[title]") && nav.contains(el.closest("[title]"))) };
+      });
+      return { el: hint(nav), lines, excess: reach ? r1(Math.max(0, reach.right - nb.right, nb.left - reach.left)) : 0, clip: getComputedStyle(nav).overflowX !== "visible", crumbs };
+    });
+    x.settingsLayouts = ownPage(sel.settingsLayout).map((el) => { const r = el.getBoundingClientRect(); return { el: hint(el), w: r1(r.width), left: r1(r.left - paperRect.left), right: r1(paperRect.right - r.right) }; });
+    x.splitViews = ownPage(sel.splitView).map((el) => ({ el: hint(el), left: r1(el.getBoundingClientRect().left - paperRect.left) }));
+
     // extra: elements beyond their nearest clipping ancestor (absolute and fixed boxes skip the
     // non-positioned ancestors below their containing block)
     const leaks = [];
@@ -555,13 +594,17 @@ export function readShellInPage(options) {
   }
   window.scrollTo(0, 0);
 
-  // lockups: mark centre must equal text block centre (vertical)
-  out.lockups = [...rootEl.querySelectorAll(sel.lockupAny)].map((lk) => { const svg = lk.querySelector("svg[data-logo]"); const txt = lk.querySelector("b"); if (!svg || !txt) return null; const a = svg.getBoundingClientRect(), b = (txt.parentElement.matches("span,.w") ? txt.parentElement : txt).getBoundingClientRect(); return { kind: lk.getAttribute("data-lockup") || (typeof lk.className === "string" ? lk.className : "").split(" ")[0], markMid: r1(a.top + a.height / 2), textMid: r1(b.top + b.height / 2), off: r1((a.top + a.height / 2) - (b.top + b.height / 2)) }; }).filter(Boolean);
+  // lockups: mark centre must equal text block centre (vertical). extra (TCRN-DS-SUB-164): each row of
+  // this and of the optical reading names its product (the lockup's data-product-id, else the mark's
+  // data-logo) and the shell it sits in (null outside every shell: the brand story's first lines)
+  const productOf = (lk, svg) => lk.getAttribute("data-product-id") || (svg ? svg.getAttribute("data-logo") : null) || null;
+  const shellOf = (el) => { const sh = el.closest(sel.shell); return sh && rootEl.contains(sh) ? sh.getAttribute("data-shell") : null; };
+  out.lockups = [...rootEl.querySelectorAll(sel.lockupAny)].map((lk) => { const svg = lk.querySelector("svg[data-logo]"); const txt = lk.querySelector("b"); if (!svg || !txt) return null; const a = svg.getBoundingClientRect(), b = (txt.parentElement.matches("span,.w") ? txt.parentElement : txt).getBoundingClientRect(); return { kind: lk.getAttribute("data-lockup") || (typeof lk.className === "string" ? lk.className : "").split(" ")[0], product: productOf(lk, svg), shell: shellOf(lk), markMid: r1(a.top + a.height / 2), textMid: r1(b.top + b.height / 2), off: r1((a.top + a.height / 2) - (b.top + b.height / 2)) }; }).filter(Boolean);
   out.lockupMaxOffset = out.lockups.reduce((m, l) => Math.max(m, Math.abs(l.off)), 0);
   // optical: ink centre of the text (cap top of line 1 to ink bottom of the last line) minus the mark centre
   const cv = document.createElement("canvas").getContext("2d");
   const inkOf = (el) => { const ics = getComputedStyle(el); cv.font = ics.fontWeight + " " + ics.fontSize + " " + ics.fontFamily; const m = cv.measureText(el.textContent.trim()); const rng = document.createRange(); rng.selectNodeContents(el); const box = [...rng.getClientRects()].filter((r) => r.width > 0)[0]; if (!box) return null; const base = box.top + m.fontBoundingBoxAscent; return { capTop: base - m.actualBoundingBoxAscent, inkBottom: base + m.actualBoundingBoxDescent }; };
-  out.optical = [...rootEl.querySelectorAll(sel.opticalAny)].map((lk) => { const svg = lk.querySelector("svg[data-logo]"); const b = lk.querySelector("b"); const sm = lk.querySelector("small"); if (!svg || !b) return null; const sr = svg.getBoundingClientRect(); const ib = inkOf(b); if (!ib) return null; const is = sm ? inkOf(sm) : null; const mid = ((ib.capTop) + (is ? is.inkBottom : ib.inkBottom)) / 2; const markMid = sr.top + sr.height / 2; const size = Math.round(sr.height); return { kind: lk.getAttribute("data-lockup") || "brand", mark: size, inkMinusMark: r1(mid - markMid), expect: 0 }; }).filter(Boolean);
+  out.optical = [...rootEl.querySelectorAll(sel.opticalAny)].map((lk) => { const svg = lk.querySelector("svg[data-logo]"); const b = lk.querySelector("b"); const sm = lk.querySelector("small"); if (!svg || !b) return null; const sr = svg.getBoundingClientRect(); const ib = inkOf(b); if (!ib) return null; const is = sm ? inkOf(sm) : null; const mid = ((ib.capTop) + (is ? is.inkBottom : ib.inkBottom)) / 2; const markMid = sr.top + sr.height / 2; const size = Math.round(sr.height); return { kind: lk.getAttribute("data-lockup") || "brand", product: productOf(lk, svg), shell: shellOf(lk), mark: size, inkMinusMark: r1(mid - markMid), expect: 0 }; }).filter(Boolean);
   out.opticalViolations = out.optical.filter((v) => Math.abs(v.inkMinusMark - v.expect) > 1).length;
   out.dropPanels = rootEl.querySelectorAll(sel.dropPanelAny).length;
   const bad = [];
