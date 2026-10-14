@@ -1,0 +1,97 @@
+[
+  {
+    "key": "TCRN-DS-SUB-225",
+    "parentKey": "TCRN-DS-STORY-146",
+    "parentId": "work:792b63bc73100197f6f41e96",
+    "title": "可折叠区内层裁切余量改为 space-1：Disclosure 区内控件的获焦焦点环四边不被裁，单测按焦点对与 forced-colors outline 的最大外扩断言",
+    "files": [
+      "packages/ui-react/src/styles/base.css.ts",
+      "packages/ui-react/src/components/Layout/Layout.test.tsx",
+      "docs/verification/**"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+      "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+      "corepack pnpm@10.12.1 -C <包树> run test:dom",
+      "corepack pnpm@10.12.1 -C <包树> run typecheck",
+      "corepack pnpm@10.12.1 -C <包树> run tokens:proof",
+      "corepack pnpm@10.12.1 -C <包树> run contract:proof",
+      "corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-static-proof.mjs",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> run geometry:proof",
+      "corepack pnpm@10.12.1 -C <包树> run geometry:measure",
+      "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof",
+      "corepack pnpm@10.12.1 -C <包树> exec node scripts/internal-alpha-browser-proof.mjs --update-visual-baseline <选择文件>（只在越容差时）"
+    ],
+    "package": "Q1",
+    "wave": "W1",
+    "sources": [
+      "R5-1"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-226",
+    "parentKey": "TCRN-DS-STORY-147",
+    "parentId": "work:6fd15b4e5366871194d862ab",
+    "title": "doc-shell-class-proof 的 selectorTokens 注释示例换成在用的类：已删的 .tcrn-doc-brand 改为 .tcrn-doc-page，判定与导出不动",
+    "files": [
+      "scripts/doc-shell-class-proof.mjs"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof"
+    ],
+    "package": "Q2",
+    "wave": "W2",
+    "sources": [
+      "R5-4"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-227",
+    "parentKey": "TCRN-DS-STORY-150",
+    "parentId": "work:b140305693da159bfdc615c8",
+    "title": "迁移说明追加 M53：三族块数、补登的 9 个根类与顶带 C8 工具栏登记，M30 末段不再成立；开头区间、分消费方清单与 CHANGELOG 摘要同步",
+    "files": [
+      "docs/migration-4.0.md",
+      "CHANGELOG.md"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run scaffold:proof",
+      "corepack pnpm@10.12.1 -C <包树> run readme:proof",
+      "corepack pnpm@10.12.1 -C <包树> run public-output:scan",
+      "corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan"
+    ],
+    "package": "Q2",
+    "wave": "W2",
+    "sources": [
+      "R5-2"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-228",
+    "parentKey": "TCRN-DS-STORY-150",
+    "parentId": "work:b140305693da159bfdc615c8",
+    "title": "目视清单跟上第四、五轮：纸内焦点环、O-18 名单、E 段落点与第三轮离群表的过期处，G-18、G-21 与新增的第五轮目视节",
+    "files": [
+      "docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md"
+    ],
+    "dependsOn": [
+      "TCRN-DS-SUB-225",
+      "TCRN-DS-SUB-227"
+    ],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run scan"
+    ],
+    "package": "Q2",
+    "wave": "W2",
+    "sources": [
+      "R5-3"
+    ]
+  }
+]

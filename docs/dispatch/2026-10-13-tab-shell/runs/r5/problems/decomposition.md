@@ -1,0 +1,14 @@
+# TCRN-DS-INIT-016 · R5 拆分问题清单
+
+拆分时发现的矛盾、缺口与冲突。拆分不改 Story、不改判据；每条附建议，「默认」是本拆分已按建议排进 Subtask 的做法（不阻塞工作的事项按建议先做，判断或 Owner 可事后更正）。同一根因算一条。行号是集成分支 HEAD e061961（代码同 682fc94）的位置。
+
+| # | 类别 | 现象与证据 | 建议（默认） | 涉及 |
+| --- | --- | --- | --- | --- |
+| 1 | 判据可达性 | 判断 R5-4 说 `doc-shell-class-proof.mjs:147` 是 SUB-219 判据④ grep（排除 `docs/verification`、`docs/dispatch`）唯一的残余。拆分照同一范围实跑（6 个类名按整词匹配，`.tcrn-doc-brand-system*` 与 `.tcrn-doc-brand-lockups` 不算），还命中 `docs/migration-4.0.md` 第 1366–1368 行：那是 R4 W2 的 SUB-223 在 N3 删类之后写的 M50，按名记录这 6 个类已删除，不是读取方也不是写入处。C-11 不许改 M1–M52 正文，所以「同一 grep 为 0」照字面做不到。 | 默认：SUB-226 的 grep 另排除 `docs/migration-4.0.md`，以「排除迁移说明后为 0」作判据④的读数，不排除时的读数（只剩 M50 的 3 行）一并交回；SUB-219 转 done 按前者读。 | SUB-226（SUB-219） |
+| 2 | 行号漂移 | 判断点名的行实测都对得上（`base.css.ts:2395–2403`、`tokens.css:44、197–198、291`、`Layout.test.tsx:66`、`doc-shell-class-proof.mjs:147`、`alpha-styles.ts:98`、`migration-4.0.md:936–941`、`owner-acceptance.md` 第 201、208、218、233、268、352、355、390 行），只有 `shell.css.ts:937–946` 实为第 941–947 行（「the accent ring to space-1」在第 944 行）。 | 默认：Subtask 里写实测行号；各包仍先 grep 再改，Q2 在清单里插行后按内容定位（KB-024）。 | SUB-225、SUB-228 |
+| 3 | 规则定位 | 判断 R5-1 改法第 2 项要拆分 grep「forced-colors 下焦点 outline」的规则位置。包样式里没有按钮的 `@media (forced-colors: active)` 块（唯一一处在 `inputs.css.ts:407`，属输入框）；forced colours 下按钮的环是 `actions.css.ts` 第 114–118 行 `.tcrn-button:focus-visible, .tcrn-link-button:focus-visible` 的透明 outline（宽 2px、偏移 2px，注释写明由系统重着色）。全部包样式模块里外扩的焦点 outline（宽加偏移）最大 4px（另有 inputs 一处 1px 加 2px、几处向内的负偏移），`--tcrn-focus-ring` 的最大 spread 也是 4px，`--tcrn-space-1` 两者都够。 | 默认：SUB-225 的用例读 `actions.css.ts` 那条规则（`.tcrn-link-button:focus-visible {` 在第 115 行独占一行，现有 `topLevelRule` 能读），不扫全部模块；改成全模块取最大值属门的结构调整，超出 R5-1，留给下一次改这份测试的单。 | SUB-225 |
+| 4 | 范围 | 判断 R5-2 放开的段是开头区间与三份「By consumer」清单，没提迁移说明末尾按轮次的来源说明（第 1534–1553 行一带）。R4 的 SUB-223 判据④同步过这一段，M49 的那条也写明它让 M42 末句不再成立；M53 同样让 M30 末段不再成立，不加一条，末尾的轮次说明会停在 M52。 | 默认：SUB-227 照 R4 SUB-223 的做法在末尾追加一条，不改其余各条；「Open Owner decisions」节不另加条目（O-19 已在 M53 里写明）。 | SUB-227 |
+| 5 | 条件同步 | `owner-acceptance.md` 第 19 行写「下列回执与报告由第四轮批末的 SUB-224 在同一构建上重生成」；判断 R5-3 没列这一行，它只在 Q1 按 C-9 提交了再生回执时才过期。 | 默认：SUB-228 ⑧ 只在 Q1 交回写明提交了再生回执时补一句由 SUB-225 再生了哪些，否则不动。 | SUB-228 |
+| 6 | 挂单 | R5-3 的第 1 项（文档壳纸内焦点环被 story 卡片盖住）属 140 的目视项，第 2 项（O-18 名单补 SUB-214）属 141 的证据范围；判断把 R5-3 整条挂 150（清单属 150-GWT3）。 | 默认：照判断挂 150，140、141 不另挂单；验收读 140、141 时引 SUB-228 的改动行。 | SUB-228 |
+| 7 | 承接与链写 | R4 的 SUB-216、SUB-219 仍是 active，由本轮 SUB-225、SUB-226 承接（判断 §4.1、§3.4 第 6 条）；本批载荷只建 4 张新单。 | 默认：两张旧单的转态由 R5 合并判断定，主线程在 R5 链写里一并写，不进本载荷。 | SUB-225、SUB-226 |
+| 8 | 口径 | 判断 R5-1 改法第 4 项「回执若有实质变化，本包一并提交再生结果」没有定义「实质」。各门每次运行都会改写时间、时长与运行标识；绑定源码的摘要也会随 `base.css.ts` 变（如 `internal-alpha-browser-proof.mjs` 第 882–897 行的截图输入摘要含包样式模块，应用基线时写进 `visual-selection-application.json`）。若把这类字段的变化算作实质变化，Q1 就总要提交回执，判断写的「否则跑完按 C-9 还原」一支永远走不到。 | 默认（C-9 (b)）：读数或判定变了（签名距离越出噪声、计数、违规数、退出判定）才算；只差时间、时长、运行标识或随源码变的输入摘要不算。提交时连同同一次运行写出的相关回执一起提交，交回逐个文件写变化的字段。批末 verify 的 `internal-alpha:proof` 会在集成树上整组重生成这些回执。 | SUB-225 |
