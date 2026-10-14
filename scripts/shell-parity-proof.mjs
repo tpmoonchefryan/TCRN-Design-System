@@ -43,8 +43,18 @@ export const parityRoles = [
   { id: "search", document: `${docOwn("[data-shell-menu]")} [data-shell-search] .tcrn-search-input`, documentLayer: "menu", package: '[data-shell="ts-x-l"] [data-shell-search] .tcrn-search-input', authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "locale", document: `${docOwn('[data-panel="account"]')} .tcrn-shell-locale-menu__trigger`, documentLayer: "account", package: '[data-panel="account"] .tcrn-shell-locale-menu__trigger', packageStory: "navigation-product-shell-spec", authority: "package", properties: ["borderTopWidth", "borderTopStyle", "borderRadius", "minHeight", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] },
   { id: "paper", document: docOwn("[data-paper]"), package: '[data-shell="ts-closed-l"] [data-paper]', authority: "document", properties: ["backgroundColor"] },
-  { id: "package-nav-item", document: `${docOwn("[data-shell-menu]")} [data-shell-row]`, documentLayer: "menu", package: '[data-shell="ts-x-l"] [data-shell-row]', authority: "document", properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] }
+  { id: "package-nav-item", document: `${docOwn("[data-shell-menu]")} [data-shell-row]`, documentLayer: "menu", package: '[data-shell="ts-x-l"] [data-shell-row]', authority: "document", rowBox: true, properties: ["minHeight", "fontSize", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] }
 ];
+// The row box (TCRN-DS-SUB-197, R3-5). The board draws a menu row as one box, .ts-it, padded 0 4 0 8
+// with its 12.5px text; the documentation menu's rows are plain rows, the link .tcrn-nav-item drawn the
+// same way, while the full-menu screen's rows can be pinned, so the link sits in a .tcrn-nav-item-row
+// wrapper that holds the pin and the row's right inset (link 0, wrapper 4). A rowBox role therefore
+// reads each side's row by its own kind, then pairs the two: a plain row is its own box; a pinnable
+// row's box is the wrapper, and each padding is the wrapper's plus the link's on a side where the link
+// lies against the wrapper's content edge (left, top and bottom; on the right the pin sits between).
+// fontSize and minHeight stay the link's, where the row's text is; the wrapper's font size is the
+// menu's, inherited, and sizes no text. Fields and the exact-match comparison are unchanged.
+export const pinnableRowWrapper = "tcrn-nav-item-row";
 
 // The production exception table is explicit and, since the sample roles retired (their one entry
 // kept the sample NavItem's radius), empty; empty-table behavior is exercised by emptyExceptionProbe
@@ -136,7 +146,7 @@ async function removeMutation(page) {
 }
 
 export async function measureParity(page, roles = parityRoles, exceptions = parityExceptions) {
-  return page.evaluate(({ roles: roleTable, exceptionTable, storySelector, enforceRoleCount, expectedRoleCount }) => {
+  return page.evaluate(({ roles: roleTable, exceptionTable, storySelector, enforceRoleCount, expectedRoleCount, wrapperClass }) => {
     const layoutState = (node) => {
       if (!node) return { ok: false, reason: "missing" };
       const hiddenAncestor = node.closest("[hidden]");
@@ -168,6 +178,33 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const style = getComputedStyle(node);
       return Object.fromEntries(properties.map((property) => [property, style[property]]));
     };
+    // A row read as its row box (see pinnableRowWrapper): plain rows are their own box; a pinnable
+    // row's paddings are the wrapper's plus the link's on each side where the link meets the wrapper's
+    // content edge (within 0.5px), its other fields the link's.
+    const sides = ["Top", "Right", "Bottom", "Left"];
+    const readRow = (node, properties) => {
+      const wrapper = node.parentElement?.classList.contains(wrapperClass) ? node.parentElement : null;
+      if (!wrapper) return { kind: "plain", values: read(node, properties) };
+      const item = getComputedStyle(node);
+      const box = getComputedStyle(wrapper);
+      const itemRect = node.getBoundingClientRect();
+      const boxRect = wrapper.getBoundingClientRect();
+      const inset = (side) => Number.parseFloat(box[`border${side}Width`]) + Number.parseFloat(box[`padding${side}`]);
+      const flush = {
+        Top: Math.abs(itemRect.top - (boxRect.top + inset("Top"))) <= 0.5,
+        Right: Math.abs(itemRect.right - (boxRect.right - inset("Right"))) <= 0.5,
+        Bottom: Math.abs(itemRect.bottom - (boxRect.bottom - inset("Bottom"))) <= 0.5,
+        Left: Math.abs(itemRect.left - (boxRect.left + inset("Left"))) <= 0.5
+      };
+      const values = Object.fromEntries(properties.map((property) => {
+        const side = sides.find((candidate) => property === `padding${candidate}`);
+        if (!side) return [property, item[property]];
+        const own = Number.parseFloat(box[property]);
+        const inner = flush[side] ? Number.parseFloat(item[property]) : 0;
+        return [property, `${Number((own + inner).toFixed(3))}px`];
+      }));
+      return { kind: "pinnable", values, flush };
+    };
     const documentLayers = window.tcrnDocShellLayers;
     const setDocumentLayer = (layer, open) => {
       if (!layer || !documentLayers) return;
@@ -187,14 +224,18 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
       const packageNode = packageRoot?.querySelector(role.package);
       const differences = [];
       const accepted = [];
+      let rowBoxes = null;
       if (!documentNode || !packageNode) {
         differences.push({ property: "selector", document: Boolean(documentNode), package: Boolean(packageNode) });
       } else if (!layoutState(documentNode).ok || !layoutState(packageNode).ok) {
         addSampleValidity(differences, documentNode, "sample", role.document);
         addSampleValidity(differences, packageNode, "truth", role.package);
       } else {
-        const documentValues = read(documentNode, role.properties);
-        const packageValues = read(packageNode, role.properties);
+        const documentRow = role.rowBox ? readRow(documentNode, role.properties) : null;
+        const packageRow = role.rowBox ? readRow(packageNode, role.properties) : null;
+        if (role.rowBox) rowBoxes = { document: documentRow, package: packageRow };
+        const documentValues = documentRow ? documentRow.values : read(documentNode, role.properties);
+        const packageValues = packageRow ? packageRow.values : read(packageNode, role.properties);
         for (const property of role.properties) {
           if (documentValues[property] === packageValues[property]) continue;
           const exception = exceptionTable.find((candidate) => candidate.role === role.id && candidate.property === property);
@@ -210,7 +251,7 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
           });
         }
       }
-      return { id: role.id, document: role.document, package: role.package, differences, accepted, ok: differences.length === 0 };
+      return { id: role.id, document: role.document, package: role.package, ...(rowBoxes ? { rowBoxes } : {}), differences, accepted, ok: differences.length === 0 };
     }
     return {
       roleCount: results.length,
@@ -220,7 +261,7 @@ export async function measureParity(page, roles = parityRoles, exceptions = pari
         && (!enforceRoleCount || roleTable.length === expectedRoleCount)
         && results.every((result) => result.ok)
     };
-  }, { roles, exceptionTable: exceptions, storySelector: packageStorySelector, enforceRoleCount: roles === parityRoles, expectedRoleCount: expectedParityRoleCount });
+  }, { roles, exceptionTable: exceptions, storySelector: packageStorySelector, enforceRoleCount: roles === parityRoles, expectedRoleCount: expectedParityRoleCount, wrapperClass: pinnableRowWrapper });
 }
 
 // Compare actual content edges, not padding strings. On the top-band documentation shell
@@ -323,6 +364,13 @@ async function main() {
     await addMutation(page);
     const mutated = await measureParity(page);
     await removeMutation(page);
+    // The row box self-check (TCRN-DS-SUB-197): with the pinnable rows' wrapper stripped of its right
+    // inset, the package row box reads paddingRight 0 against the plain row's 4, and the role reds.
+    const rowBoxRole = parityRoles.find((role) => role.id === "package-nav-item");
+    await addCssMutation(page, `${packageStorySelector} [data-shell="ts-x-l"] .${pinnableRowWrapper} { padding-inline-end: 0 !important; }`);
+    const rowBoxBroken = await measureParity(page, [rowBoxRole]);
+    await removeMutation(page);
+    const rowBoxRestored = await measureParity(page, [rowBoxRole]);
     // One difference read twice: an accepted exception makes it pass, and the empty table (the
     // production table since the sample roles retired) leaves it red.
     const localeRole = parityRoles.find((role) => role.id === "locale");
@@ -358,6 +406,13 @@ async function main() {
           && samplingValidityProbe.roles.some((role) => role.differences.some((difference) => difference.property === "sample-validity"))
           && samplingValidityRestored.ok
       },
+      rowBoxProbe: {
+        ok: !rowBoxBroken.ok
+          && rowBoxBroken.roles.some((role) => role.differences.some((difference) => difference.property === "paddingRight" && difference.package === "0px"))
+          && rowBoxRestored.ok,
+        broken: rowBoxBroken.roles.flatMap((role) => role.differences),
+        restored: rowBoxRestored.roles.map((role) => ({ id: role.id, rowBoxes: role.rowBoxes, ok: role.ok }))
+      },
       emptyExceptionProbe: {
         ok: !emptyExceptionProbe.ok
           && emptyExceptionProbe.roles.some((role) => role.differences.some((difference) => difference.property === "borderRadius")),
@@ -375,6 +430,7 @@ async function main() {
       && restored.ok
       && result.exceptionProbe.ok
       && result.samplingValidity.ok
+      && result.rowBoxProbe.ok
       && result.emptyExceptionProbe.ok;
   } finally {
     await page.close();
