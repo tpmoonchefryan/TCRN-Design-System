@@ -26,17 +26,28 @@
 import { useEffect, useMemo, useState, type ReactNode, type RefObject } from "react";
 import { hydrateRoot } from "react-dom/client";
 import {
+  Badge,
   ProductLockup,
   ProductShell,
+  SectionTabs,
+  Select,
+  SettingRow,
+  SettingRowList,
+  SettingsLayout,
   ShellIntro,
+  SplitView,
+  Switch,
   Text,
   shellMenuPresentationContext,
+  type PageHeaderProps,
   type ProductShellNavGroup,
   type ShellMenuPresentation
 } from "@tcrn/ui-react";
 import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 
 export type ShellStoryState = "closed" | "expanded" | "drop";
+/** The page a screen's paper shows when it is not the board's roster sample (TCRN-DS-SUB-161). */
+export type ShellStoryPage = "settings" | "roster";
 export type ShellStoryTheme = "light" | "night";
 
 export interface ShellStoryScreen {
@@ -53,6 +64,17 @@ export interface ShellStoryScreen {
   presentation?: ShellMenuPresentation;
   /** The screen plays the sign-in intro once it has mounted. */
   intro?: boolean;
+  /**
+   * A query typed into the full menu's search, so the menu shows its results (TCRN-DS-SUB-150, R2-24):
+   * the start of this menu entry's label, in the page's language (shellStoryTypedQuery), so every
+   * language finds the same entries.
+   */
+  typed?: string;
+  /**
+   * The page in the paper (TCRN-DS-SUB-161, R2-28): a settings page (SettingsLayout) or a roster page
+   * (SplitView), each under a long trail; omitted, the paper shows the board's sample sentence.
+   */
+  page?: ShellStoryPage;
 }
 
 /** The marker of a block this module hydrates. */
@@ -78,7 +100,14 @@ export const shellTopBandScreens: readonly ShellStoryScreen[] = [
   { screen: "ts-x-l", state: "expanded", theme: "light", label: "Full menu open", presentation: "panel" },
   { screen: "ts-x-n", state: "expanded", theme: "night", label: "Full menu open (night)", presentation: "panel" },
   { screen: "ts-drop-l", state: "drop", theme: "light", label: "Drop-down open" },
-  { screen: "ts-drop-n", state: "drop", theme: "night", label: "Drop-down open (night)" }
+  { screen: "ts-drop-n", state: "drop", theme: "night", label: "Drop-down open (night)" },
+  // The full menu with a query typed and its results open (TCRN-DS-SUB-150, R2-24): the host of
+  // geometry-proof's searchOverlay.
+  { screen: "ts-search-l", state: "expanded", theme: "light", label: "Full menu with search results", presentation: "panel", typed: "Contracts" },
+  // The page in the paper at 1440 (TCRN-DS-SUB-161, R2-28): the shell gate reads the page's trail, the
+  // settings page's width and centring and the roster page's left edge on these screens.
+  { screen: "ts-settings-l", state: "closed", theme: "light", label: "Settings page", page: "settings" },
+  { screen: "ts-roster-l", state: "closed", theme: "light", label: "Roster page", page: "roster" }
 ];
 export const shellNarrowScreens: readonly ShellStoryScreen[] = [
   { screen: "ts-narrow-l", state: "closed", theme: "light", label: "Narrow band" },
@@ -88,7 +117,10 @@ export const shellNarrowScreens: readonly ShellStoryScreen[] = [
 // server, so its shell root reads data-state="sheet" (TCRN-DS-SUB-160).
 export const shellMobileScreens: readonly ShellStoryScreen[] = [
   { screen: "ts-m-l", state: "closed", theme: "light", label: "Phone band" },
-  { screen: "ts-m-s", state: "expanded", theme: "light", label: "Phone band with the menu", presentation: "sheet" }
+  { screen: "ts-m-s", state: "expanded", theme: "light", label: "Phone band with the menu", presentation: "sheet" },
+  // The same two pages at the phone width (TCRN-DS-SUB-161, R2-28).
+  { screen: "ts-settings-m", state: "closed", theme: "light", label: "Settings page on the phone", page: "settings" },
+  { screen: "ts-roster-m", state: "closed", theme: "light", label: "Roster page on the phone", page: "roster" }
 ];
 export const shellIntroScreen: ShellStoryScreen = { screen: "ts-intro-l", state: "closed", theme: "light", label: "Band after sign-in", intro: true };
 
@@ -98,6 +130,15 @@ const shellStoryScreens: Readonly<Record<string, readonly ShellStoryScreen[]>> =
   "shell-mobile": shellMobileScreens,
   "shell-intro": [shellIntroScreen]
 };
+
+/**
+ * The part of a label a reader has typed: its first three fifths, at least two characters, as one
+ * stops typing once the results hold the page ("Contracts" types "Contra", 合同 types 合同).
+ */
+export function shellStoryTypedQuery(label: string): string {
+  const characters = Array.from(label);
+  return characters.slice(0, Math.max(2, Math.ceil(characters.length * 0.6))).join("");
+}
 
 /** The id prefix of a screen's render, the same on the server and in hydration. */
 export function shellStoryIdentifierPrefix(storyId: string, screen: string): string {
@@ -110,14 +151,15 @@ const ignore = () => undefined;
 
 // The board's sample navigation (NAV and PINS of docs/design/gplus-2026-10/tools/build-shell2.mjs)
 // as generic product content.
-export function shellStoryNavGroups(storyId: string, t: Translate = untranslated): ProductShellNavGroup[] {
+export function shellStoryNavGroups(storyId: string, t: Translate = untranslated, current = "roster"): ProductShellNavGroup[] {
   const href = `#${storyId}`;
+  const selected = (id: string) => (id === current ? { selected: true } : {});
   return [
     {
       id: "people",
       label: t("People"),
       items: [
-        { id: "roster", label: t("Roster"), href, iconName: "users", selected: true },
+        { id: "roster", label: t("Roster"), href, iconName: "users", ...selected("roster") },
         { id: "teams", label: t("Teams"), href, iconName: "layers" },
         {
           id: "contracts",
@@ -167,11 +209,138 @@ export function shellStoryNavGroups(storyId: string, t: Translate = untranslated
       items: [
         { id: "members", label: t("Members"), href, iconName: "users" },
         { id: "permissions", label: t("Permissions"), href, iconName: "shield-check" },
-        { id: "settings", label: t("Settings"), href, iconName: "settings" },
+        { id: "settings", label: t("Settings"), href, iconName: "settings", ...selected("settings") },
         { id: "audit-log", label: t("Audit log"), href, iconName: "history" }
       ]
     }
   ];
+}
+
+/** What a screen's paper shows and where the shell stands for it. */
+interface ShellStoryPageView {
+  moduleName: string;
+  routeLabel: string;
+  /** The menu entry that is the current page. */
+  current: string;
+  header: PageHeaderProps;
+  content: ReactNode;
+}
+
+// The board's people for the roster page: names that stay in their own script in every language, as
+// on the actions sample's roster (composition-one.tsx), so no page carries a Latin run of them.
+const shellStoryRosterPeople = [
+  { name: "星野ひかり", team: "Team A", status: "Signed", tone: "positive" },
+  { name: "김하늘", team: "Team C", status: "Trial", tone: "warning" },
+  { name: "陈嘉怡", team: "Team B", status: "Signed", tone: "positive" }
+] as const;
+
+/**
+ * The page in a screen's paper. The board's screens show the roster sample's sentence; the settings
+ * and roster screens (TCRN-DS-SUB-161, R2-28) show a page deeper than the menu model, so its trail
+ * runs from the product through the page's section to the page and is long: on one line, every crumb
+ * gives way under its title (07b D 面包屑). The settings page is SettingsLayout, at most 1040 and
+ * centred in the paper (D1); the roster page is SplitView from the paper's content edge. Every word is
+ * a sample word in five languages; the regions inside the page are named after the screen, so the
+ * page's landmarks stay unique beside the other screens'.
+ */
+function shellStoryPage(storyId: string, screen: ShellStoryScreen, t: Translate): ShellStoryPageView {
+  const href = `#${storyId}`;
+  const named = (name: string) => `${t(screen.label)} · ${t(name)}`;
+  const trail = (section: string, page: string): PageHeaderProps["breadcrumbs"] => [
+    { id: `${screen.screen}-crumb-product`, label: t("Talent Management System"), href },
+    { id: `${screen.screen}-crumb-section`, label: t(section), href },
+    { id: `${screen.screen}-crumb-page`, label: t(page) }
+  ];
+  if (screen.page === "settings") {
+    return {
+      moduleName: t("System"),
+      routeLabel: t("Notification preferences"),
+      current: "settings",
+      header: { title: t("Notification preferences"), headingLevel: 2, breadcrumbs: trail("Settings", "Notification preferences") },
+      content: (
+        <SettingsLayout
+          navigation={
+            <SectionTabs
+              label={named("Settings local navigation")}
+              // Two sections, so the tabs fit the 390 phone's paper as they are.
+              items={[
+                { id: "general", label: t("General") },
+                { id: "notifications", label: t("Notifications"), selected: true }
+              ]}
+            />
+          }
+          navigationLabel={named("Settings sections")}
+          contentLabel={named("Notification preferences")}
+        >
+          <SettingRowList>
+            <SettingRow
+              label={t("Role")}
+              control={
+                <Select
+                  defaultValue="member"
+                  options={[
+                    { value: "member", label: t("Member") },
+                    { value: "admin", label: t("Admin") },
+                    { value: "read-only", label: t("Read-only") }
+                  ]}
+                />
+              }
+            />
+          </SettingRowList>
+          <Switch label={t("Email notifications")} description={t("Invitations and expiry reminders")} defaultChecked />
+        </SettingsLayout>
+      )
+    };
+  }
+  if (screen.page === "roster") {
+    const [first] = shellStoryRosterPeople;
+    return {
+      moduleName: t("People"),
+      routeLabel: t("Roster"),
+      current: "roster",
+      header: { title: t("Roster"), description: t("24 people · 3 to invite"), headingLevel: 2, breadcrumbs: trail("Members and permissions", "Roster") },
+      content: (
+        <SplitView
+          label={named("Roster")}
+          detailPopulated
+          // One row a person, wrapping at the phone width (a table's columns keep 160 each and would
+          // run past the phone's paper).
+          list={
+            <div className="tcrn-product-shell-content-stack">
+              {shellStoryRosterPeople.map((person) => (
+                <div key={person.name} className="tcrn-doc-action-row">
+                  <Text tone="strong">{person.name}</Text>
+                  <Text>{t(person.team)}</Text>
+                  <Badge tone={person.tone}>{t(person.status)}</Badge>
+                </div>
+              ))}
+            </div>
+          }
+          detail={
+            <div className="tcrn-product-shell-content-stack">
+              <Text tone="strong">{first.name}</Text>
+              <Text>{t(first.team)}</Text>
+              <Badge tone={first.tone}>{t(first.status)}</Badge>
+            </div>
+          }
+        />
+      )
+    };
+  }
+  return {
+    moduleName: t("People"),
+    routeLabel: t("Roster"),
+    current: "roster",
+    // The paper's first row (TCRN-DS-SUB-129): its trail is the current position, People › Roster.
+    // The documentation page has its own h1 (the documentation shell's title), so the screen's title
+    // is a level-2 heading (TCRN-DS-SUB-150, SUB-163).
+    header: { title: t("Roster"), headingLevel: 2 },
+    content: (
+      <div className="tcrn-product-shell-content-stack">
+        <Text>{t("Twelve people across four teams, updated today.")}</Text>
+      </div>
+    )
+  };
 }
 
 interface ShellStoryScreenViewProps {
@@ -189,15 +358,15 @@ interface ShellStoryScreenViewProps {
  * open screens are held open.
  */
 function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t = untranslated, introScope = null }: ShellStoryScreenViewProps) {
+  const page = shellStoryPage(storyId, screen, t);
   const shell = (
     <ProductShell
       productName="TCRN TMS"
-      moduleName={t("People")}
+      moduleName={page.moduleName}
       brandProductId="tms"
-      currentRouteLabel={t("Roster")}
-      // The paper's first row (TCRN-DS-SUB-129): its trail is the current position, People › Roster.
-      pageHeader={{ title: t("Roster") }}
-      navGroups={shellStoryNavGroups(storyId, t)}
+      currentRouteLabel={page.routeLabel}
+      pageHeader={page.header}
+      navGroups={shellStoryNavGroups(storyId, t, page.current)}
       locales={tcrnLocaleMetadata}
       currentLocale={locale}
       currentTheme={shellStoryThemeAttribute[screen.theme]}
@@ -208,13 +377,15 @@ function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t =
       menuOpen={screen.state === "expanded" ? true : undefined}
       openPinId={screen.state === "drop" ? shellStoryDropPinId : undefined}
       previewStates={shellStoryPreviewStates[screen.state]}
+      menuQuery={screen.typed ? shellStoryTypedQuery(t(screen.typed)) : undefined}
+      // Every screen is a shell of its own on the documentation page, beside the page's shell: its
+      // landmarks are named after the screen (TCRN-DS-SUB-150, SUB-148; axe landmark-unique).
+      landmarkLabel={t(screen.label)}
       contentId={`${storyId}-${screen.screen}-content`}
       contentLabel={t(screen.label)}
       data-shell={screen.screen}
     >
-      <div className="tcrn-product-shell-content-stack">
-        <Text>{t("Twelve people across four teams, updated today.")}</Text>
-      </div>
+      {page.content}
     </ProductShell>
   );
   const framed: ReactNode = screen.presentation ? (

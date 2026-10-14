@@ -390,7 +390,9 @@ function docCategoryItemId(group: ContractStoryGroup, categoryId: string): strin
 
 // The menu model (C-7): the sections, then one column per section with its categories. Every row
 // is a link: a static page has no client React to open a cascade, so the stories stay in the
-// category page's own TocRail rather than a third menu level.
+// category page's own TocRail rather than a third menu level. A category row says what its category
+// holds to a screen reader: the category's description, in the page's language, on the row's item
+// (TCRN-DS-SUB-150, R2-20; ShellMenuItem.description, the category rows being the column's items).
 function docMenuModel(page: DocShellPage, locale: TcrnLocale): ProductShellNavGroup[] {
   const sections: ProductShellNavGroup = {
     id: "sections",
@@ -410,6 +412,7 @@ function docMenuModel(page: DocShellPage, locale: TcrnLocale): ProductShellNavGr
     items: storyCategoriesForGroup(group, contractStoriesByGroup(group)).map((category) => ({
       id: docCategoryItemId(group, category.id),
       label: localeText(category.label, locale),
+      description: localeText(category.description, locale),
       href: categoryFileName(group, category.id),
       selected: page.kind !== "index" && group === page.group && category.id === page.activeCategoryId
     }))
@@ -440,6 +443,9 @@ function docShellMarkup(page: DocShellPage, locale: TcrnLocale, open: boolean): 
       locales={tcrnLocaleMetadata}
       currentLocale={locale}
       pageHeader={{ title: page.title(locale), breadcrumbs: docBreadcrumbs(page, locale) }}
+      // The page's own shell: its title is the page's h1 (the paper's default), and its landmarks are
+      // named after the site, apart from the story shells' on the same page (TCRN-DS-SUB-150, SUB-148).
+      landmarkLabel={localeText("shell.brand", locale)}
       pinnedIds={contractStoryGroups.filter((group) => group !== "Welcome").map(docSectionItemId)}
       menuOpen={open}
       accountMenuOpen={open}

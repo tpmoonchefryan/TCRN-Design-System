@@ -19,8 +19,10 @@ export const componentsStories: ContractStory[] = [
   selectStory("shell-narrow"),
   selectStory("shell-mobile"),
   selectStory("shell-intro"),
-  // The shell board matrix (07a section B) closes the top-band shell stories (C-9).
+  // The shell board matrix (07a section B) closes the top-band shell stories (C-9); the products'
+  // first lines, which the shell gate's markText reads, follow it (TCRN-DS-SUB-161, C-12).
   shellMatrixStory,
+  selectStory("shell-brand-first-line"),
   selectStory("dialog-spec-usage"),
   selectStory("table-record-index-spec"),
   selectStory("records-and-boards-components-spec"),

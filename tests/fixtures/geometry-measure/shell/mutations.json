@@ -180,8 +180,8 @@
     },
     {
       "id": "story-settings-max-width-none", "gate": "settingsLayout", "source": "设置页内容不限宽", "story": "shell-top-band",
-      "about": "SettingsLayout without its 1040 cap fills the paper's content box (1360 at 1440)",
-      "ops": [{ "op": "css", "css": "[data-shell=\"ts-settings-l\"] [data-settings-layout] { max-inline-size: none !important; }" }]
+      "about": "SettingsLayout without its 1040 cap, as laid out in a paper wider than the cap (1160, the paper content of a 1240 shell): the documentation column holds a story at most 1040 wide, so a story screen's paper never offers more than the cap and taking the cap away alone changes nothing there (TCRN-DS-SUB-161)",
+      "ops": [{ "op": "css", "css": "[data-shell=\"ts-settings-l\"] [data-settings-layout] { max-inline-size: none !important; inline-size: calc(var(--tcrn-layout-content-max-w, 1040px) + 120px) !important; }" }]
     },
     {
       "id": "story-split-rail-240", "gate": "splitView", "source": "分栏留侧栏位 240", "story": "shell-top-band",

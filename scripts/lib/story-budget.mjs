@@ -162,9 +162,20 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // screens (closed, full menu, drop-down; light and night). The shell's block size is the window
     // (100dvh), so each screen is 900 tall at 1440x900. Measured with the shell segments of the
     // package stylesheet in the page; while the static pages leave them out the story renders 4023.
-    recordedHeightPx: 5556,
+    // 5556 -> 8312 (TCRN-DS-INIT-016 R2): three more full-window screens the shell gate names, the
+    // full menu with a query typed (ts-search-l, SUB-150) and the settings and roster pages in the
+    // paper (ts-settings-l, ts-roster-l, SUB-161); measured at 1440x900 with every story open.
+    recordedHeightPx: 8312,
     owedTo: "beyond-INIT-016",
-    note: "Six full-window shell screens are the measured surface of the shell gate (C-11), one per board screen; splitting them across stories would split the board's section A — gated debt"
+    note: "Nine full-window shell screens are the measured surface of the shell gate (C-11, C-12): the board's six, the typed search and the two pages in the paper; splitting them across stories would split the board's section A and move ids the gate resolves — gated debt"
+  },
+  "shell-mobile": {
+    // 3732 (TCRN-DS-INIT-016 R2, SUB-161): the phone screens ts-m-l and ts-m-s with the settings and
+    // roster pages at the phone width (ts-settings-m, ts-roster-m), each a full-window shell 900 tall
+    // at 1440x900 in its 390 frame; two screens measured under the budget before.
+    recordedHeightPx: 3732,
+    owedTo: "beyond-INIT-016",
+    note: "Four full-window phone screens are the 390 surface of the shell gate (C-11, C-12); the gate opens this story at 390 and reads the page screens there, so they cannot move to another story — gated debt"
   }
 };
 
@@ -177,7 +188,9 @@ export const CATEGORY_STORY_COUNT_GRACE_ALLOWLIST = {
   "Components/navigation-shells": {
     // 5 -> 9 (TCRN-DS-INIT-016 R1, SUB-121): the four top-band shell stories.
     // 9 -> 10 (TCRN-DS-INIT-016 R1, SUB-136): shell-matrix, the shell board matrix (07a section B).
-    recordedStoryCount: 10,
+    // 10 -> 11 (TCRN-DS-INIT-016 R2, SUB-161): shell-brand-first-line, the products' first lines the
+    // shell gate's markText reads (its id and category fixed with the gate, C-12).
+    recordedStoryCount: 11,
     owedTo: "beyond-INIT-016",
     note: "The shell stories' ids and category are fixed (C-9) and the shell gate resolves them there; the earlier navigation stories retire or move with the navigation family's consolidation"
   }

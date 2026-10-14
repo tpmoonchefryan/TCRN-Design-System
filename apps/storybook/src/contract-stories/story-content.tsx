@@ -176,6 +176,7 @@ import {
   shellTopBandScreens,
   type ShellStoryScreen
 } from "../build/shell-hydrate.js";
+import { ShellBrandFirstLines } from "./shell-brand-first-line.js";
 import {
   DialogSpecFixture,
   OverlayFocusFixture,
@@ -605,7 +606,9 @@ const documentSearchResults = [
 // documentation's desktop width their frames are 1023 and 390 wide.
 function shellStoryMarkup(storyId: string, screen: ShellStoryScreen): string {
   const html = renderToString(<ShellStoryRoot storyId={storyId} screen={screen} />, { identifierPrefix: shellStoryIdentifierPrefix(storyId, screen.screen) });
-  if (screen.state === "closed") return applyMarkupEdits(html, [{ marker: 'class="tcrn-shell-pins__item"', nth: 2, set: { "data-tcrn-preview-state": "hover" } }]);
+  // The board's closed screens only: the settings and roster pages (TCRN-DS-SUB-161) are pages, not
+  // the board's pointer state.
+  if (screen.state === "closed" && !screen.page) return applyMarkupEdits(html, [{ marker: 'class="tcrn-shell-pins__item"', nth: 2, set: { "data-tcrn-preview-state": "hover" } }]);
   return html;
 }
 
@@ -2325,7 +2328,13 @@ const legacyContractStories: LegacyContractStory[] = [
             moduleName="Frontend shell slice"
             brandProductId="design-system"
             currentRouteLabel="Cockpit"
-            pageHeader={{ title: "Cockpit" }}
+            // The documentation page has its own h1: this shell's title is a level-2 heading and its
+            // landmarks are named after the proof, apart from the page's shell (TCRN-DS-SUB-150).
+            pageHeader={{ title: "Cockpit", headingLevel: 2 }}
+            landmarkLabel="Package-backed AOS shell boundary"
+            // Its content region is named after the proof too: the built-in name is the knowledge-base
+            // demo shell's on the same page (axe landmark-unique).
+            contentLabel="Package-backed AOS shell boundary"
             currentTheme="light"
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}
@@ -2361,7 +2370,7 @@ const legacyContractStories: LegacyContractStory[] = [
     id: "shell-top-band",
     title: "Top-band shell",
     group: "Components",
-    description: "The package ProductShell as the top band and the paper: closed, with the full menu open, and with a pinned item's drop-down and its third-level cascade, light and night.",
+    description: "The package ProductShell as the top band and the paper: closed, with the full menu open, and with a pinned item's drop-down and its third-level cascade, light and night; then the full menu with a query typed and its results, and a settings page and a roster page in the paper under long trails.",
     render: () => <ShellStoryBlocks storyId="shell-top-band" screens={shellTopBandScreens} />
   },
   {
@@ -2375,7 +2384,7 @@ const legacyContractStories: LegacyContractStory[] = [
     id: "shell-mobile",
     title: "Top-band shell on a phone",
     group: "Components",
-    description: "The top-band shell 390 wide, closed and with the menu open.",
+    description: "The top-band shell 390 wide, closed and with the menu open, then a settings page and a roster page in the paper under long trails.",
     render: () => <ShellStoryBlocks storyId="shell-mobile" screens={shellMobileScreens} width={shellStoryFrameWidths.mobile} />
   },
   {
@@ -2384,6 +2393,15 @@ const legacyContractStories: LegacyContractStory[] = [
     group: "Components",
     description: "The intro that brings the product mark from the sign-in card into the brand button once per session: its three phases, reduced motion and the session marker.",
     render: () => <ShellIntroStory />
+  },
+  {
+    // The products' first lines the shell gate's markText reads (TCRN-DS-SUB-161, R2-28; id and
+    // category fixed with the gate, C-12). The components group lists it after the shell matrix.
+    id: "shell-brand-first-line",
+    title: "Brand first lines",
+    group: "Components",
+    description: "The four products' first lines, the lockup's first line alone, at the side-rail scale of the brand button (mark 22) and at the lockup scale of the full menu (mark 44): the word is centred on the mark, and nothing is redrawn.",
+    render: () => <ShellBrandFirstLines />
   },
   {
     id: "frontend-shell-slice",

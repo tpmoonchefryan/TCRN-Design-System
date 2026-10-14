@@ -101,6 +101,11 @@ export const ShellMatrix: Story = {
   render: () => renderContractStory("shell-matrix")
 };
 
+export const ShellBrandFirstLine: Story = {
+  name: "Brand first lines",
+  render: () => renderContractStory("shell-brand-first-line")
+};
+
 export const DialogSpecUsage: Story = {
   name: "Dialog spec and usage",
   render: () => renderContractStory("dialog-spec-usage")
