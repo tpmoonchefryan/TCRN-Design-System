@@ -30,16 +30,16 @@ export const demoStoryCss = `.alpha-frame {
 .alpha-story-card {
   display: grid;
   gap: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
   padding: var(--tcrn-space-4);
   max-width: 100%;
   min-width: 0;
 }
 
 .tcrn-doc-story-kicker {
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-acc);
   font-size: var(--tcrn-type-size-meta);
   font-weight: 700;
   letter-spacing: 0;
@@ -82,9 +82,9 @@ label {
   display: grid;
   gap: var(--tcrn-space-3);
   min-width: 0;
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
   padding: var(--tcrn-space-3);
 }
 
@@ -136,7 +136,7 @@ label {
   display: inline-block;
   max-width: 100%;
   overflow: hidden;
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   text-overflow: ellipsis;
   vertical-align: bottom;
   white-space: nowrap;
@@ -218,7 +218,7 @@ label {
   grid-template-columns: 38px minmax(0, 1fr);
   gap: var(--tcrn-space-1) var(--tcrn-space-2h);
   align-items: center;
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
   padding: var(--tcrn-space-2h);
   min-width: 0;
@@ -228,7 +228,7 @@ label {
   grid-row: span 3;
   width: 34px;
   height: 34px;
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-line-2);
   border-radius: var(--tcrn-radius-control);
 }
 
@@ -239,7 +239,7 @@ label {
 }
 
 .tcrn-doc-token-swatch code {
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   overflow-wrap: anywhere;
 }
 
@@ -250,10 +250,10 @@ label {
 .tcrn-doc-type-scale-demo {
   display: grid;
   gap: var(--tcrn-space-2h);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
   padding: var(--tcrn-space-3);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
   min-width: 0;
 }
 
@@ -274,10 +274,10 @@ label {
   gap: var(--tcrn-space-2);
   min-width: 0;
   min-height: 40px;
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-muted);
-  color: var(--tcrn-color-text-secondary);
+  background: var(--tcrn-color-panel-2);
+  color: var(--tcrn-color-ink-2);
   padding: var(--tcrn-space-2) var(--tcrn-space-2h);
 }
 
@@ -294,7 +294,7 @@ label {
   overflow: hidden;
   text-overflow: ellipsis;
   overflow-wrap: anywhere;
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-ink);
   font-family: var(--tcrn-type-family-mono);
   font-size: var(--tcrn-type-size-meta);
   line-height: 1.3;
@@ -310,11 +310,11 @@ label {
 .tcrn-doc-motion-demo {
   display: grid;
   gap: var(--tcrn-space-2h);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
   padding: var(--tcrn-space-3);
   min-width: 0;
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
 }
 
 .tcrn-doc-motion-demo h3,
@@ -326,7 +326,7 @@ label {
   position: relative;
   min-height: 28px;
   border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-muted);
+  background: var(--tcrn-color-panel-2);
   overflow: hidden;
 }
 
@@ -337,7 +337,7 @@ label {
   width: 16px;
   height: 16px;
   border-radius: var(--tcrn-radius-pill);
-  background: var(--tcrn-color-brand-primary);
+  background: var(--tcrn-color-acc);
   animation: tcrn-motion-travel var(--tcrn-motion-standard) infinite alternate;
 }
 
@@ -347,20 +347,20 @@ label {
 }
 
 .tcrn-doc-motion-demo--standard .tcrn-doc-motion-demo__dot {
-  background: var(--tcrn-color-brand-secondary);
+  background: var(--tcrn-color-acc-2);
   animation-duration: 1100ms;
   animation-timing-function: ease;
 }
 
 .tcrn-doc-motion-demo--emphasis .tcrn-doc-motion-demo__dot {
-  background: var(--tcrn-color-brand-accent);
+  background: var(--tcrn-color-red);
   animation-duration: 1400ms;
   animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 .tcrn-doc-motion-demo--reduced .tcrn-doc-motion-demo__dot {
   left: 50%;
-  background: var(--tcrn-color-brand-neutral);
+  background: var(--tcrn-color-ink-2);
   animation: none;
 }
 
@@ -397,14 +397,14 @@ label {
 .tcrn-doc-theme-preview {
   display: grid;
   gap: var(--tcrn-space-2h);
-  color: var(--tcrn-color-text-primary);
-  background: var(--tcrn-color-surface-canvas);
+  color: var(--tcrn-color-ink);
+  background: var(--tcrn-color-bg);
   /* Token-driven so the preview shows the language it documents. It used to paint a
      hardcoded v1 navy wash with a blue-grey edge, which meant the component whose whole
      job is demonstrating the dark theme was demonstrating a theme that no longer exists. */
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  box-shadow: var(--tcrn-elevation-floating);
+  box-shadow: var(--tcrn-shadow-s3);
   padding: var(--tcrn-space-3);
 }
 
@@ -485,9 +485,9 @@ label {
   display: grid;
   gap: var(--tcrn-space-3);
   min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tcrn-color-line) 78%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 48%, var(--tcrn-color-surface-panel));
+  background: color-mix(in srgb, var(--tcrn-color-panel-2) 48%, var(--tcrn-color-panel));
   padding: var(--tcrn-space-3);
 }
 
@@ -553,11 +553,11 @@ label {
   display: grid;
   gap: var(--tcrn-space-3h);
   min-width: 0;
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
   padding: var(--tcrn-space-3h);
-  box-shadow: var(--tcrn-elevation-floating);
+  box-shadow: var(--tcrn-shadow-s3);
 }
 
 .tcrn-doc-brand {
@@ -573,7 +573,7 @@ label {
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-ink);
   padding: var(--tcrn-space-1) 0;
   text-decoration: none;
   /* Only opacity and transform animate; the layout properties (grid-template-columns,
@@ -612,10 +612,10 @@ label {
   gap: var(--tcrn-space-1);
   width: min(420px, calc(100vw - 32px));
   padding: var(--tcrn-space-2);
-  border: 1px solid var(--tcrn-color-border-strong);
+  border: 1px solid var(--tcrn-color-line-2);
   border-radius: var(--tcrn-radius-panel);
-  background: var(--tcrn-color-surface-panel);
-  box-shadow: var(--tcrn-elevation-floating);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-shadow-s3);
 }
 
 .tcrn-doc-search-results[hidden] {
@@ -628,18 +628,18 @@ label {
   gap: var(--tcrn-space-0h);
   padding: var(--tcrn-space-2);
   border-radius: var(--tcrn-radius-control);
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-ink);
   text-decoration: none;
 }
 
 .tcrn-doc-search-result:hover,
 .tcrn-doc-search-result[data-selected="true"] {
-  background: var(--tcrn-selection-fill);
+  background: var(--tcrn-color-wash);
 }
 
 .tcrn-doc-search-result span,
 .tcrn-doc-search-empty {
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   font-size: var(--tcrn-type-size-meta);
 }
 
@@ -663,16 +663,16 @@ label {
 
 .tcrn-doc-knowledge-preview {
   align-content: start;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-border-subtle) 84%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tcrn-color-line) 84%, transparent);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
   padding: var(--tcrn-space-3h);
 }
 
 .tcrn-doc-knowledge-preview__panel {
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 90%, transparent);
+  background: color-mix(in srgb, var(--tcrn-color-panel) 90%, transparent);
   padding: var(--tcrn-space-3);
 }
 
@@ -685,10 +685,10 @@ label {
   display: grid;
   gap: var(--tcrn-space-1);
   min-width: 0;
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-surface-panel) 92%, transparent);
-  color: var(--tcrn-color-text-primary);
+  background: color-mix(in srgb, var(--tcrn-color-panel) 92%, transparent);
+  color: var(--tcrn-color-ink);
   padding: var(--tcrn-space-3);
   text-decoration: none;
   transition: background-color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast);
@@ -696,11 +696,11 @@ label {
 /* TCRN-DS-STORY-065: the demo's chapter pager answers hover and keyboard focus, as the
    documentation chapter pager does. */
 .tcrn-doc-demo-pager a:hover {
-  border-color: var(--tcrn-color-border-control);
-  background: var(--tcrn-color-surface-muted);
+  border-color: var(--tcrn-color-line-ctl);
+  background: var(--tcrn-color-panel-2);
 }
 .tcrn-doc-demo-pager a:focus-visible {
-  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline: 2px solid var(--tcrn-color-acc);
   outline-offset: 2px;
 }
 
@@ -709,7 +709,7 @@ label {
 }
 
 .tcrn-doc-demo-pager span {
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   font-size: var(--tcrn-type-size-caption);
   font-weight: 700;
 }
@@ -723,9 +723,9 @@ label {
 .tcrn-doc-overlay-static-modes {
   display: grid;
   gap: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
   padding: var(--tcrn-space-3);
 }
 
@@ -745,9 +745,9 @@ label {
   display: grid;
   gap: var(--tcrn-space-2h);
   min-width: 0;
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-muted);
+  background: var(--tcrn-color-panel-2);
   padding: var(--tcrn-space-3);
 }
 
@@ -769,9 +769,9 @@ label {
 .tcrn-doc-dialog-spec-fixture {
   display: grid;
   gap: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-muted);
+  background: var(--tcrn-color-panel-2);
   padding: var(--tcrn-space-3);
 }
 
@@ -892,21 +892,21 @@ label {
    anchors that carry a class are excluded entirely. */
 .story-body :where(a:not([class])),
 .alpha-story-card :where(a:not([class])) {
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-acc);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
-  text-decoration-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 35%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--tcrn-color-acc) 35%, transparent);
   transition: text-decoration-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast);
 }
 .story-body :where(a:not([class])):hover,
 .alpha-story-card :where(a:not([class])):hover {
-  text-decoration-color: var(--tcrn-color-brand-primary);
+  text-decoration-color: var(--tcrn-color-acc);
 }
 .story-body :where(a:not([class])):focus-visible,
 .alpha-story-card :where(a:not([class])):focus-visible {
   outline: none;
-  box-shadow: var(--tcrn-elevation-focus);
+  box-shadow: var(--tcrn-focus-ring);
 }
 
 /* TCRN-DS-STORY-058: component API reference pages + the index links grid. */
@@ -930,33 +930,33 @@ label {
   padding: var(--tcrn-space-0h) var(--tcrn-space-1);
   border-radius: var(--tcrn-radius-control);
   border: 1px solid transparent;
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-ink);
   text-decoration: none;
   transition: background-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast);
 }
 .tcrn-doc-reference-index__item a:hover {
-  background: var(--tcrn-color-brand-primary-bg);
-  color: var(--tcrn-color-brand-primary);
-  border-color: color-mix(in srgb, var(--tcrn-color-brand-primary) 25%, transparent);
+  background: var(--tcrn-color-acc-bg);
+  color: var(--tcrn-color-acc);
+  border-color: color-mix(in srgb, var(--tcrn-color-acc) 25%, transparent);
 }
 .tcrn-doc-reference-index__item a:focus-visible {
   outline: none;
-  box-shadow: var(--tcrn-elevation-focus);
+  box-shadow: var(--tcrn-focus-ring);
 }
 .tcrn-doc-component-reference {
   display: flex;
   flex-direction: column;
   gap: var(--tcrn-space-1h);
   padding: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
   scroll-margin-top: var(--tcrn-anchor-scroll-offset);
 }
 .tcrn-doc-component-reference__meta,
 .tcrn-doc-component-reference__facet,
 .tcrn-doc-component-reference__empty {
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   margin: 0;
 }
 .tcrn-doc-reference-table-scroll {
@@ -970,11 +970,11 @@ label {
 .tcrn-doc-reference-table td {
   text-align: left;
   padding: var(--tcrn-space-1) var(--tcrn-space-1h);
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  border-bottom: 1px solid var(--tcrn-color-line);
   vertical-align: top;
 }
 .tcrn-doc-reference-table th {
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
 }
 .tcrn-doc-reference-table td code {
   overflow-wrap: anywhere;
