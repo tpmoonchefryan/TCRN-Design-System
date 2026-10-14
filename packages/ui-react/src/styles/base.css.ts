@@ -2393,13 +2393,18 @@ export const baseCss29 = `
 }
 
 /* The inner clips the content of a region that is opening or closing, but its clip edge sits
-   --tcrn-space-0h outside its box, so a control's outward stroke (box-shadow 0 0 0 1px) at the
-   block end is not cut (TCRN-DS-SUB-216). Not a padding-block-end: in the 0fr row a padding still
-   takes height, and the collapsed region would no longer be 0 high. */
+   --tcrn-space-1 outside its box, out to a control's focus pair and stroke, so neither is cut at
+   any edge of the inner (TCRN-DS-SUB-225; TCRN-DS-SUB-216 left room for the stroke alone). That is
+   the G+ focus ring read outward, as the paper's focus pair reads it inward: a surface gap of
+   space-0h, then the accent ring to space-1. It is also the reach of the transparent focus outline
+   that forced colours recolour (2px wide at a 2px offset), and the 1px outward stroke
+   (box-shadow 0 0 0 1px) lies inside it. While the region animates open, content up to space-1
+   past its block end shows (a closing region is hidden at once). Not a padding-block-end: in the
+   0fr row a padding still takes height, and the collapsed region would no longer be 0 high. */
 .tcrn-collapsible-region__inner {
   min-height: 0;
   overflow: clip;
-  overflow-clip-margin: var(--tcrn-space-0h);
+  overflow-clip-margin: var(--tcrn-space-1);
 }
 
 .tcrn-disclosure-panel {
