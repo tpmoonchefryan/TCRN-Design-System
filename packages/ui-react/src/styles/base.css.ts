@@ -15,6 +15,15 @@ export const baseCss01 = `
 }
 [data-tcrn-theme="dark"] {
   --tcrn-brand-accent-aos: #69d6d0;
+}
+/* The shell's focus edge pair: the ring its focus fallback paints (shell.css.ts, TCRN-DS-SUB-156).
+   A custom property that reads a theme token takes the value of the element that declares it, so
+   the pair is declared wherever a theme is, as the token blocks are: an element that turns the
+   other theme on inside the shell draws its own theme's ring. */
+:root,
+[data-tcrn-theme="light"],
+[data-tcrn-theme="dark"] {
+  --tcrn-pair-shell-edge-f: var(--tcrn-focus-ring);
 }`;
 
 export const baseCss02 = `
@@ -70,9 +79,6 @@ export const baseCss05 = `
   --tcrn-pair-locale-ink: var(--tcrn-pair-locale-ink-h);
   --tcrn-pair-locale-line: var(--tcrn-pair-locale-line-h);
   --tcrn-pair-locale-edge: var(--tcrn-pair-locale-edge-h);
-}
-.tcrn-product-shell .tcrn-shell-locale-menu__trigger:focus-visible {
-  box-shadow: none;
 }`;
 
 export const baseCss06 = `
@@ -142,19 +148,13 @@ export const baseCss08 = `
   to { opacity: 0; }
 }`;
 
-export const baseCss09 = `
-/* Inside the product shell an element with no focus treatment of its own takes the G+
-   focus ring (--tcrn-focus-ring: a surface gap, then the accent ring), with a transparent
-   outline behind it for forced colours, which paint no box-shadow. The pair-driven
-   controls are left out: buttons and link buttons, links, text controls (the search
-   control is one), selects and the multi-select trigger, checkboxes, radios and switches
-   draw the same ring from their own pair tables together with their edge, and a shell
-   rule must not wipe either. */
-.tcrn-product-shell :focus-visible:not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control) {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  box-shadow: var(--tcrn-focus-ring);
-}`;
+// The shell's focus fallback (the G+ ring for an element in the product shell with no focus
+// treatment of its own) was this segment's one rule. Since the navigation and shell exemptions
+// ended it is a state rule at the variant's specificity that writes no colour (C2), so it moved to
+// the end of shell.css.ts (shellCss05), where it still comes after every rule of the same weight
+// it used to win over (TCRN-DS-SUB-156). The segment stays joined in styles/index.ts as an empty
+// landing place, so the cascade list does not change.
+export const baseCss09 = ``;
 
 export const baseCss10 = `
 .tcrn-product-shell__header-actions {
@@ -1129,8 +1129,21 @@ a.tcrn-relationship-chip:focus-visible {
   gap: var(--tcrn-space-3h);
   min-width: 0;
 }
+/* The title column holds the title and, under it, the description. The title is the heading
+   element itself, the single-line role of roles.json (C7, TCRN-DS-SUB-156): one line that ends in
+   an ellipsis, its text repeated as the element's title, and no block element inside it. The
+   description sits directly under it, as it did when both were inside the title block. */
+.tcrn-page-header__lead {
+  min-width: 0;
+}
 .tcrn-page-header__title {
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-page-header__description {
+  margin: 0;
 }`;
 
 export const baseCss15 = `

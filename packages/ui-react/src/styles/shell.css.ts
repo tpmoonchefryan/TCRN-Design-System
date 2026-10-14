@@ -937,6 +937,21 @@ export const shellCss05 = `
   overflow: auto;
   overscroll-behavior: contain;
 }
+/* Inside the product shell an element with no focus treatment of its own takes the G+ focus
+   ring (--tcrn-focus-ring: a surface gap, then the accent ring) through the shell's focus edge
+   pair, which base.css.ts declares with the theme, with a transparent outline behind it for
+   forced colours, which paint no box-shadow. The pair-driven controls are left out: buttons
+   and link buttons, links, text controls (the search control is one), selects and the
+   multi-select trigger, checkboxes, radios and switches draw the same ring from their own pair
+   tables together with their edge, and a shell rule must not wipe either. It is a state rule at
+   the variant's specificity that reads the pair and writes no colour (C2, TCRN-DS-SUB-156), and
+   it comes after the shell parts' rules, so it still follows every rule of the same weight it
+   wins over: the families' own focus outlines and the shell parts' edges. */
+.tcrn-product-shell :where(:focus-visible):not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: var(--tcrn-pair-shell-edge-f);
+}
 @media (prefers-reduced-motion: reduce) {
   .tcrn-shell-bell {
     transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
