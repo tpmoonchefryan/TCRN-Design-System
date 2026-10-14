@@ -34,6 +34,25 @@ if (!productShellCollapsedRailToken) {
 }
 const productShellCollapsedRailWidthPx = Number.parseFloat(productShellCollapsedRailToken.value);
 
+// The top-band shell's two searches (07a board, the full menu and the drop-down; TCRN-DS-SUB-145 removed
+// the old top bar's 260 / 420 search), read from the shell tokens so the contract cannot drift from the
+// package geometry: the full menu's field fills the expanded panel less its space-2 inset at
+// shell.srch-h, and a pinned drop-down's field fills the drop-down column less its space-1h inset at
+// shell.drop-srch-h (TCRN-DS-SUB-176). Focus does not widen either.
+function shellTokenPx(variable: string): number {
+  const token = tcrnTokens.find((candidate) => candidate.variable === variable);
+  if (!token) {
+    throw new Error(`ai-consumption-contract: ${variable} is missing from @tcrn/ui-tokens`);
+  }
+  return Number.parseFloat(token.value);
+}
+const shellSearchGeometry = {
+  fullMenuWidthPx: shellTokenPx("--tcrn-shell-panel-w-expanded") - 2 * shellTokenPx("--tcrn-space-2"),
+  fullMenuHeightPx: shellTokenPx("--tcrn-shell-srch-h"),
+  dropDownWidthPx: shellTokenPx("--tcrn-shell-drop-w") - 2 * shellTokenPx("--tcrn-space-1h"),
+  dropDownHeightPx: shellTokenPx("--tcrn-shell-drop-srch-h")
+};
+
 // --- Section -> category -> story trees derived from the single registry source ---
 // (governance.storyRegistryOrder). Structural fields (section, route, requiredStories,
 // categories, sourcePaths) are derived; the hand-authored prose below (consumerChecks,
@@ -187,11 +206,16 @@ export const aiConsumptionContract = {
   visualFitControlContract: {
     storybookGlobalShellAuthority: "original_storybook_doc_shell",
     packagePrimitiveAuthority: ["SearchInput", "ProductLockup", "TableShell", "Records and boards layout/density exports", "Documents and collaboration static exports"],
+    // The documentation shell's search is the full menu's field (the oracle's shellMetrics read the same
+    // 936 at rest and focused); a pinned drop-down carries the smaller field (TCRN-DS-SUB-176).
     search: {
-      storybookRestWidthPx: 260,
-      storybookExpandedWidthPx: 360,
+      storybookRestWidthPx: shellSearchGeometry.fullMenuWidthPx,
+      storybookExpandedWidthPx: shellSearchGeometry.fullMenuWidthPx,
+      storybookHeightPx: shellSearchGeometry.fullMenuHeightPx,
+      dropDownWidthPx: shellSearchGeometry.dropDownWidthPx,
+      dropDownHeightPx: shellSearchGeometry.dropDownHeightPx,
       packageDefaultControlMinInlineSize: "9ch",
-      rule: "Storybook may set SearchInput root width variables, but must not absolute-position package icon, input, or shortcut internals."
+      rule: `The search is the package SearchInput inside the top-band shell's layers: the full menu's field is ${shellSearchGeometry.fullMenuWidthPx} x ${shellSearchGeometry.fullMenuHeightPx} at a 1440px viewport and a pinned drop-down's field is ${shellSearchGeometry.dropDownWidthPx} x ${shellSearchGeometry.dropDownHeightPx}; focus does not widen either. Storybook may set SearchInput root size variables, but must not absolute-position package icon, input, or shortcut internals.`
     },
     productLockups: {
       primarySurface: "style-guide.html#brand-identity",
@@ -399,11 +423,14 @@ export const aiConsumptionContract = {
     controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
     compositionRule:
       "ProductShell topbar slots are consumer-composable. Storybook examples may show current location, ProductShellSearch, theme, and locale together, but a product may omit ProductShellSearch when it has no real global search capability. If a product renders topbar search, it must use package-backed ProductShellSearch and prove the search metrics below; if it omits search, proof must assert no inert or placeholder global-search control is rendered and must compare the remaining current-location/theme/locale controls against the package contract.",
+    // The old top bar's rest, expanded and mobile caps (260 / 420 / 320) left with that top bar
+    // (TCRN-DS-SUB-145): the search is now a field of the shell's layers (TCRN-DS-SUB-176).
     searchRestWidth: {
-      maxPx: 260,
-      expandedMaxPx: 420,
-      mobileMaxPx: 320,
-      rule: "ProductShellSearch stays compact at rest on desktop, may stretch within the mobile shell, and may widen only for focus/results states."
+      fullMenuWidthPx: shellSearchGeometry.fullMenuWidthPx,
+      fullMenuHeightPx: shellSearchGeometry.fullMenuHeightPx,
+      dropDownWidthPx: shellSearchGeometry.dropDownWidthPx,
+      dropDownHeightPx: shellSearchGeometry.dropDownHeightPx,
+      rule: `ProductShellSearch is a field of the shell's layers, not of the band: the full menu's search fills the menu panel less its inset (${shellSearchGeometry.fullMenuWidthPx} x ${shellSearchGeometry.fullMenuHeightPx} at a 1440px viewport) and a pinned drop-down's search fills its column less its inset (${shellSearchGeometry.dropDownWidthPx} x ${shellSearchGeometry.dropDownHeightPx}); neither widens on focus or with results. Under a coarse pointer and in the phone's Sheet, the full menu's search takes the ${shellTokenPx("--tcrn-shell-touch")}px touch height.`
     },
     searchMotionTimeline: {
       transitionProperties: ["flex-basis", "width", "max-width"],
@@ -1026,7 +1053,7 @@ export const aiConsumptionContract = {
     ]
   },
   brandSurfaceDisposition:
-    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. TCRN stays in ink at medium weight as the mother-brand base; a TCRN product suffix carries the strong weight and the product's deep color from the brand-suffix tokens (TMS #2c63c8, by night its bright #7aa0f5; Design System #6577f3 in both themes; never gradient text), and long suffixes such as Design System must stack under TCRN instead of running inline. Einzbern and Mana Orchestrate are whole names in Source Serif 4 in ink with the by TCRN byline. A registered product draws its own product mark inline (TcrnBrandMark productId); the TCRN mother mark image stays for AOS and for lockups without a productId. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
+    "Product implementations may use admitted brand assets and package-backed brand primitives only. ProductLogo and tcrnProductLogoRegistry are registered @tcrn/ui-react exports for product identity and must preserve the product-specific suffix color hierarchy used by package ProductLockup. TCRN stays in ink at medium weight as the mother-brand base; a TCRN product suffix carries the strong weight and the product's deep color from the brand-suffix tokens, one value in both themes (TMS #2c63c8, Design System #6577f3; never gradient text; whether the night TMS suffix takes a brighter value is an open Owner decision, D7, and until it is ruled on the suffix stays #2c63c8 by night), and long suffixes such as Design System must stack under TCRN instead of running inline. Einzbern and Mana Orchestrate are whole names in Source Serif 4 in ink with the by TCRN byline. A registered product draws its own product mark inline (TcrnBrandMark productId); the TCRN mother mark image stays for AOS and for lockups without a productId. ShellBrandLockup/ProductLockup remain package-backed primitives but accepted product surfaces must not compose product identity from free-form suffix/caption text when a registered product logo exists. Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs.",
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
@@ -1036,14 +1063,14 @@ export const aiConsumptionContract = {
   documentsAndCollaborationPatternDisposition:
     "Documents and collaboration package exports cover static page trees, document canvas, table of contents, inline comments, metadata rails, attachment lists, labels, version history, templates, and local result lists. They are local Storybook contract patterns only: backend publishing, live collaboration, external workspace integration, runtime data mutation, product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   storybookDocShellAuthorityDisposition:
-    "The Storybook documentation frontend must render the original Storybook-owned doc shell composition. Global Storybook pages use data-doc-shell='online-docs', tcrn-doc-header, tcrn-doc-global-bar, tcrn-doc-sidebar, tcrn-doc-nav, category navigation, and package-backed control primitives such as SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, and ShellBrandLockup. ProductShell remains documented and package-backed for component examples, AOS visual instances, and product consumer rules, but it is not the global Storybook shell authority.",
+    "The Storybook documentation frontend renders the top-band shell: every documentation page is the package-backed ProductShell, marked data-shell='doc' and data-doc-shell='online-docs' on its root. Its band ([data-shell-strip], no fill and no rule) holds the brand button ([data-shell-brand]), the pinned sections and the avatar cluster ([data-cluster], [data-shell-avatar]); the brand button opens the full menu ([data-shell-menu]) with the search and the section, category and story rows, and the avatar menu holds the theme toggle and the language menu. The page sits on the paper ([data-paper]) under its breadcrumb, and the page's own contents (TocRail) stay in the page, not in the navigation. There is no resident side rail and no collapse button. ProductShell instances in story bodies, the shell stories and the AOS visual instances are component examples and product consumer rules; they never replace the documentation shell.",
   tokenConsumptionDisposition:
     "Product implementations must use Design System tokens, reduced-motion rules, and accessibility states before custom CSS.",
   themeModeDisposition:
     "Product implementations must preserve semantic token behavior across light and dark Storybook shell modes and prove both modes before claiming Design System compliance.",
   storybookDocShellControlContract: {
     implementationBoundary:
-      "The global Storybook shell is a Storybook-owned doc shell using registered DS primitives and selectors: data-doc-shell='online-docs', tcrn-doc-header, tcrn-doc-global-bar, tcrn-doc-sidebar, tcrn-doc-nav, data-doc-nav-item, and data-doc-nav-category-toggle. ProductShell selectors must not replace the global page shell, though ProductShell remains valid inside component/product examples.",
+      "The global Storybook shell is the package ProductShell in its top-band form, marked data-shell='doc' and data-doc-shell='online-docs', with its own hooks: [data-shell-strip], [data-shell-brand], [data-cluster], [data-shell-avatar] and [data-paper], and two layers, the full menu ([data-shell-menu]) and the avatar menu. It occurs once per page, on the documentation shell itself; a ProductShell inside a story body is a component or product example and must not replace the global page shell.",
     themeToggle:
       "The Storybook docs shell uses one compact circular icon-only theme toggle that reflects the current mode and toggles only on explicit activation.",
     visualSkin:
