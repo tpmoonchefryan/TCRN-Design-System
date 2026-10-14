@@ -1993,6 +1993,12 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   onPinsReorder?: (orderedIds: readonly string[]) => void;
   /** Whether the full menu is open; the shell keeps its own state when omitted. */
   menuOpen?: boolean;
+  /**
+   * Whether ⌘K / Ctrl+K opens this shell's full menu: the key is registered on the document, once
+   * per shell, so a page with several shells lets one of them have it and passes false to the
+   * others. On by default (ShellMenu's `shortcut`; TCRN-DS-SUB-185).
+   */
+  menuShortcut?: boolean;
   onMenuOpenChange?: (open: boolean, reason: ProductShellMenuChangeReason) => void;
   /** The pinned item whose drop-down is open; the shell keeps its own state when omitted. */
   openPinId?: string | null;
@@ -2132,6 +2138,7 @@ export function ProductShell({
   onPinnedChange,
   onPinsReorder,
   menuOpen,
+  menuShortcut = true,
   onMenuOpenChange,
   openPinId,
   onOpenPinChange,
@@ -2376,6 +2383,7 @@ export function ProductShell({
         query={menuQuery}
         defaultQuery={defaultMenuQuery}
         onQueryChange={onMenuQueryChange}
+        shortcut={menuShortcut}
         locale={currentLocale}
         previewStates={previewStates}
         landmarkLabel={landmarkLabel}

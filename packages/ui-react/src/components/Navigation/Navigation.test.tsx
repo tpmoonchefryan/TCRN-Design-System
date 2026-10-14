@@ -2626,3 +2626,28 @@ test("STORY-140 STORY-147 STORY-143 landmarkLabel names every landmark of a shel
   assert.ok(namedLandmarks(render(states.menu, { landmarkLabel: "Docs", contentLabel: "Roster page" })).some((entry) => entry.role === "region" && entry.name === "Roster page"));
   assert.doesNotMatch(render(states.drop, { landmarkLabel: "Docs" }), /landmarklabel/i, "the prop reaches no element as an attribute");
 });
+
+test("STORY-138 STORY-140 menuShortcut is ProductShell's switch for the full menu's ⌘K: on by default, it reaches no element as an attribute, and the markup is the same either way (TCRN-DS-SUB-185)", () => {
+  const shell = (extra: Partial<ProductShellProps>) =>
+    renderToStaticMarkup(
+      <ProductShell
+        productName="TCRN TMS"
+        moduleName="Talent"
+        brandProductId="tms"
+        currentRouteLabel="Roster"
+        pageHeader={{ title: "Roster" }}
+        navGroups={shellNavGroups}
+        locales={shellLocales}
+        currentLocale="en"
+        menuOpen
+        {...extra}
+      >
+        <div>content</div>
+      </ProductShell>
+    );
+  // The key is registered on the document after mounting (src/test/shell-menu.dom.spec.tsx); the
+  // markup, and the menu's ⌘K hint in its search, do not depend on it.
+  assert.equal(shell({ menuShortcut: false }), shell({}));
+  assert.equal(shell({ menuShortcut: true }), shell({}));
+  assert.doesNotMatch(shell({ menuShortcut: false }), /menushortcut/i);
+});
