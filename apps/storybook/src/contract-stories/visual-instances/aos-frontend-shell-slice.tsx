@@ -507,8 +507,16 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
         data-live-dispatch="not-enabled"
         data-aos-visual-instance-oracle="true"
       >
-        {variant.contentMode === "cockpit" ? <CockpitContent variant={variant} /> : <WorkContent variant={variant} />}
-        <BoundaryContent variant={variant} />
+        {/* TCRN-DS-SUB-199 (STORY-147, 140, 150): the page sits in the package's content stack, as the
+            owner-quality instance and the samples set it. Set straight into the paper, the first
+            read-back panel (a box that hides its overflow) was a row of the paper's grid, and with the
+            page taller than the 640 frame the grid shrank that row to the panel's padding: its title
+            and heading were 0 high and read as cut off. In the stack every row keeps its content
+            height and the page scrolls in the paper. */}
+        <div className="tcrn-product-shell-content-stack">
+          {variant.contentMode === "cockpit" ? <CockpitContent variant={variant} /> : <WorkContent variant={variant} />}
+          <BoundaryContent variant={variant} />
+        </div>
       </ProductShell>
     </div>
   );
