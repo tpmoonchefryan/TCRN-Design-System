@@ -50,7 +50,7 @@ export const tcrnIconPathNames = [
 
 export type TcrnIconPathName = (typeof tcrnIconPathNames)[number];
 
-/** names added in the G+ batch */
+/** names added in 4.0.0, by the G+ batch and the top-band shell batch (icons.json "new") */
 export const tcrnIconNewNames: readonly TcrnIconPathName[] = ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up", "pin"];
 
 /** SVG children on the 20 grid; stroke and caps come from the svg element */

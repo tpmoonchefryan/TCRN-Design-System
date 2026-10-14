@@ -265,7 +265,7 @@ function iconFile() {
   lines.push(`export const tcrnIconStrokeWidth = ${ic.strokeWidth};`);
   lines.push(`export const tcrnIconPathNames = [\n${ic.icons.map((i) => `  ${q(i.name)}`).join(",\n")}\n] as const;`);
   lines.push(`export type TcrnIconPathName = (typeof tcrnIconPathNames)[number];`);
-  lines.push(`/** names added in the G+ batch */\nexport const tcrnIconNewNames: readonly TcrnIconPathName[] = [${ic.icons.filter((i) => i.new).map((i) => q(i.name)).join(", ")}];`);
+  lines.push(`/** names added in 4.0.0, by the G+ batch and the top-band shell batch (icons.json "new") */\nexport const tcrnIconNewNames: readonly TcrnIconPathName[] = [${ic.icons.filter((i) => i.new).map((i) => q(i.name)).join(", ")}];`);
   lines.push(`/** SVG children on the 20 grid; stroke and caps come from the svg element */\nexport const tcrnIconPaths: Readonly<Record<TcrnIconPathName, string>> = {\n${ic.icons.map((i) => `  ${q(i.name)}: ${q(i.body)}`).join(",\n")}\n};`);
   return lines.join("\n\n") + "\n";
 }
