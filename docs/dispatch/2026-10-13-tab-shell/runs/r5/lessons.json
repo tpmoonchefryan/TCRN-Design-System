@@ -1,0 +1,81 @@
+[
+ {
+  "subject": "2.x 跑库门要求本机登记条目带 projectId，旧登记没有它，门在执行前就被拒",
+  "summary": "INIT-016 R5 按 START 对 INIT-015 的 12 张跑 gates-run：Owner 已在 Atelier 声明 verify，引擎 2.0.3 仍三次在执行 verify 之前回 GATES_PROJECT_UNKNOWN。只读 library-list 显示 DS 条目（2026-10-09 登记）没有 projectId，AOS 条目有；补登记写本机设备配置，只能交 Owner。",
+  "snippet": "gates-run 回 GATES_PROJECT_UNKNOWN 时先只读 library-list：库的登记条目缺 projectId，就要 library-register --project-id 补登；这是本机持久配置，交 Owner。",
+  "body": "不带 --project 时回「no project is registered for library … on this device」，带 --project <主检出> 时回「the gate root is not registered to this library and stable project」，remedy 都指向 library-register --project-id。2.0.3 的门根对项目型库要求登记条目的 projectId 等于门所属项目，2026-10-09 迁移时登记的 DS 条目没有这个字段，所以门已声明、covers 也对，仍一张都跑不了，被拒发生在执行命令之前，主检出不受影响。2.1.0 的 library-register 有 --project、--library、--at（必填）与 --project-id、--git-remote（可选）；补登时把原条目的 gitRemote 一并传入，登后用 library-list 读回。另：2.0.3 的布尔旗标要写值（--release true），只写 --release 回 CLI_ARGUMENT_MALFORMED。",
+  "tags": [
+   "tcrn-design-system",
+   "einzbern",
+   "gates-run",
+   "library-register",
+   "device-registry",
+   "init-016"
+  ],
+  "evidence": [
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/problems/main.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/state.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/acceptance/R5.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/judgment.md"
+  ]
+ },
+ {
+  "subject": "只按读数与判定变化提交回执的规则，会让带输入摘要的回执一直过期，收口要专门再生一次",
+  "summary": "INIT-016 的 C-9 只让包在读数或判定变化时提交回执，随源码变的输入摘要不算。scaffold-proof.json 记 15 个输入文件的 sha256，摘要不符也不判红；它最后提交于第一轮批末，第二轮起 CHANGELOG 与 ui-tokens index.ts 两项就与现文件不符，R2 到 R5 每次批末 verify 都改写它，又被还原，五轮没人刷新。",
+  "snippet": "收口时按 verify 跑后的 git status 找出只差输入摘要的回执（如 scaffold-proof.json），与 no-overclaim 一起再生、同一笔提交；否则之后每次跑库门都多一个要还原的文件。",
+  "body": "C-9 (b) 把「只差时间、时长、运行标识或随源码变的输入摘要」排除在实质变化之外，目的是不让每个包都提交回执；副作用是只含输入摘要的回执永远走不到提交的那一支。scaffold-proof.json 在 f98b298（SUB-140，第一轮批末）之后没再提交，de26dc1 与 eb5e0da（第二轮）起两项摘要不符，682fc94 与 60ff2ef 上都不符，main@69aa195 上 15 项全部相符。批末每次都在 status-after 里看到它与 no-overclaim-scan.json、visual-selection-result.json 三项，按惯例还原。START 的库门收干净步骤只列了 no-overclaim 与 visual-selection-result，候选合入 main 后跑门会多出 scaffold 一项。no-overclaim 的 scannedFiles 随文件系统上的产物变，再生后仍会漂，只能跑后还原；scaffold 只看已跟踪的输入，再生提交后就稳定。",
+  "tags": [
+   "tcrn-design-system",
+   "receipts",
+   "scaffold-proof",
+   "batch-end",
+   "closeout",
+   "verify"
+  ],
+  "evidence": [
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/problems/Q2.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/decomposition.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/verify/steps.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/acceptance/R5.md",
+   "docs/verification/scaffold-proof.json"
+  ]
+ },
+ {
+  "subject": "「删后 grep 为 0」的判据会被之后写的删除记录打破，判据要事先排除按名记录删除的文档",
+  "summary": "SUB-219 判据④要求删掉 6 个文档层类后同一 grep 为 0（排除 docs/verification 与 docs/dispatch）。R4 判断以为唯一残余是 doc-shell-class-proof.mjs:147 的注释，R5 拆分照跑还命中迁移说明 M50：那是删类之后才写的条目，按名记录这 6 个类已删除，迁移说明只追加、不改旧条目，「为 0」照字面永远做不到。",
+  "snippet": "写「删后 grep 为 0」类判据时，写明排除只按名记录删除的文档（迁移说明、CHANGELOG、调度记录），并要交回给出排除与不排除两个读数。",
+  "body": "删除类、令牌或导出之后，同一批里总会有单去写迁移说明或 CHANGELOG，按名列出删了什么；这些记录不是读取方也不是写入处，但会命中按名 grep。判据只排除了 docs/verification 与 docs/dispatch，R4 的 SUB-223 在 N3 删类之后写了 M50，SUB-219 的判据④就从「差一处注释」变成「永远差三行」。R5 按拆分问题 1 的默认改读法：排除迁移说明后为 0，不排除时只剩 M50 三行，两个读数都交回，判断认可后 SUB-219 才能转 done。判据当初就写明排除这类文档，能省掉一次读法裁定。",
+  "tags": [
+   "tcrn-design-system",
+   "decomposition",
+   "criteria",
+   "grep",
+   "migration-guide",
+   "init-016"
+  ],
+  "evidence": [
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/problems/decomposition.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/handoff/Q2.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r4/judgment.md",
+   "docs/migration-4.0.md"
+  ]
+ },
+ {
+  "subject": "status 顶层的 engineVersion 与设备流里的不同，说明上次写库后引擎升过级，先前的引擎读数要按新版本重核",
+  "summary": "R5 开工时 status.engineVersion 读 2.0.3，库门运行在 2.0.3 下被拒；判断时同一动词顶层读到 2.1.0，而 multiDevice 与 streams 里本设备仍记 2.0.3（最后一次写库是 R5 开工链写，version 2439）。引擎在轮中被升级，被拒与旗标写法的结论只对 2.0.3 成立。",
+  "snippet": "引用引擎行为（门被拒、旗标写法、reasonCode）时注明 status 顶层 engineVersion；它与 streams 里本设备的 engineVersion 不同，就先按新版本读 commands 再重试。",
+  "body": "从本轮两次读数看：status 的顶层 engineVersion 随已安装引擎变（开工 2.0.3，判断时 2.1.0），multiDevice.devices 与 streams 里本设备的 engineVersion 停在 2.0.3，与最后一次写库（version 2439）同时。两者不同说明上次写库之后引擎换过版本。本轮 M1、M2 把被拒写成「2.0.3 的门根要求 projectId」，判断时引擎已是 2.1.0，gates-run 是否仍拒没有新读数（它写库，判断不跑）。commands 在 2.1.0 下仍列 library-register 的 --project-id 与 gates-run 的布尔 --release，所以补登记的命令不用改；但被拒本身要在补登后按新版本实跑一次确认，不能沿用旧读数下结论。",
+  "tags": [
+   "tcrn-design-system",
+   "einzbern",
+   "engine-version",
+   "status",
+   "evidence"
+  ],
+  "evidence": [
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/problems/main.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/acceptance/R5.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r5/judgment.md"
+  ]
+ }
+]
