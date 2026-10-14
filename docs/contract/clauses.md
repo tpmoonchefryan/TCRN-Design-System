@@ -148,6 +148,7 @@ node scripts/contract-static-proof.mjs [--details] [--report <path>] [--family <
   - `C11.emoji-icon`：值里的字符串（如 `content`）含表情符号（Emoji_Presentation，或带 U+FE0F 的象形字符；`\1F512` 这类转义同样识别）。
   - `C11.left-bar`：宽度 2px 及以上的 `border-left` / `border-inline-start`，或只在左侧的 inset 条（x ≥ 2、y 为 0、无模糊）。
   - 卡片根是 `tcrn-card`、`tcrn-*-card` 与画法和卡片相同（边框、圆角、面板底）的 `tcrn-surface`；`__` 元素类不算根。
+  - 卡套卡的家族归属（静态层与 story 层相同，TCRN-DS-SUB-190）：两张卡各按自己的包类归家族。一张卡同时带 `tcrn-surface` 与另一个已登记家族的类时，是那个家族画在 Surface 上的组合件，归该家族、不再记布局（ReadbackPanel 的 `section.tcrn-surface.tcrn-readback-panel` 归反馈，RecordInspector 归检视）；只带布局类的卡仍记布局，所以 Surface 套 Surface 判布局。
 - story 层：
   - `C11.story-emoji`：story 区块里渲染出的文字或属性值（SVG 几何属性与 style 除外，style 归下一条）含表情符号；发现归到最近的带包类的元素。LockHint 默认的 🔒 按类登记豁免（`EX-INIT015-lock-hint-emoji`），不改该组件。
   - `C11.story-card-in-card`：渲染出的卡片根元素嵌在另一个卡片根元素里（卡片嵌套深度大于 1，即元素嵌套深度一项）。

@@ -508,6 +508,52 @@ test("--family keeps the findings of the named families; an unknown family id is
 });
 
 // ---------------------------------------------------------------------------------------------
+// C11 card in card by the composite's family (TCRN-DS-SUB-190, R3-7 plan (a)): in this registry layout's
+// Surface is a checked batch-2 family and feedback carries a panel drawn on a Surface, the way
+// ReadbackPanel renders section.tcrn-surface.tcrn-readback-panel.
+
+const COMPOSITE_FAMILIES = {
+  ...FAMILIES,
+  scope: { checkedBatches: [1, 2] },
+  families: [
+    ...FAMILIES.families.map((family) => (family.id === "feedback" ? { ...family, blocks: [...family.blocks, "tcrn-readback-panel"] } : family)),
+    { id: "layout", name: "Layout", batch: 2, blocks: ["tcrn-surface"] }
+  ]
+};
+const FEEDBACK_EXEMPT = { entries: [exemption("EX-feedback", { family: "feedback" })] };
+const cardsPage = (inner) => pagesWith(`<!doctype html><html><body><section data-story-id="cards" class="tcrn-doc-frame">${inner}</section></body></html>`);
+const cardFindings = (report, rule) => [...report.clauses.C11.findings.filter((finding) => finding.rule === rule)];
+
+test("C11 story card in card: Surface in Surface stays with layout and is red (TCRN-DS-SUB-190)", () => {
+  const report = run({ families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT, pages: cardsPage(`<section class="tcrn-surface"><section class="tcrn-surface"><p>Inner</p></section></section>`) });
+  assert.deepEqual(cardFindings(report, "C11.story-card-in-card").map((finding) => finding.families), [["layout"]]);
+  assert.equal(status(report, "C11"), "red");
+});
+
+test("C11 story card in card: a card carrying Surface and a composite's class goes to the composite's family (TCRN-DS-SUB-190)", () => {
+  const composite = `<section class="tcrn-surface tcrn-readback-panel"><section class="tcrn-surface tcrn-readback-panel"><p>Inner</p></section></section>`;
+  const exempted = run({ families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT, pages: cardsPage(composite) });
+  assert.equal(status(exempted, "C11"), "green");
+  assert.deepEqual(exempted.clauses.C11.exemptedByEntry, { "EX-feedback": 1 });
+  // Without the composite's exemption it is still listed, under feedback alone, not layout.
+  const listed = run({ families: COMPOSITE_FAMILIES, exemptions: NO_EXEMPTIONS, pages: cardsPage(composite) });
+  assert.deepEqual(cardFindings(listed, "C11.story-card-in-card").map((finding) => finding.families), [["feedback"]]);
+  // A plain Surface in the composite keeps layout on the finding, so it stays red.
+  const mixed = run({ families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT, pages: cardsPage(`<section class="tcrn-surface tcrn-readback-panel"><section class="tcrn-surface"><p>Inner</p></section></section>`) });
+  assert.deepEqual(cardFindings(mixed, "C11.story-card-in-card").map((finding) => finding.families), [["feedback", "layout"]]);
+  assert.equal(status(mixed, "C11"), "red");
+});
+
+test("C11 static card in card follows the same attribution (TCRN-DS-SUB-190)", () => {
+  const families = (css) => cardFindings(run({ css: `${PACKAGE_CSS}\n${css}`, families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT }), "C11.card-in-card").map((finding) => finding.families);
+  assert.deepEqual(families(".tcrn-surface .tcrn-surface{padding:0}"), [["layout"]]);
+  assert.deepEqual(families(".tcrn-surface.tcrn-readback-panel .tcrn-surface.tcrn-readback-panel{padding:0}"), []);
+  assert.deepEqual(families(".tcrn-surface.tcrn-readback-panel .tcrn-surface{padding:0}"), [["feedback", "layout"]]);
+  const composite = run({ css: `${PACKAGE_CSS}\n.tcrn-surface.tcrn-readback-panel .tcrn-surface.tcrn-readback-panel{padding:0}`, families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT });
+  assert.equal(composite.clauses.C11.exemptedByEntry["EX-feedback"], 1);
+});
+
+// ---------------------------------------------------------------------------------------------
 // The repository's contract files
 
 test("the repository's family registry, exemptions and roles are consistent", () => {

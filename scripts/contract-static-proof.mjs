@@ -148,6 +148,21 @@ const CARD_SURFACES = new Set(["tcrn-surface"]);
 /** A card root class: tcrn-card, tcrn-*-card or a card-drawn surface, not an element (__) class. */
 export const isCardRoot = (className) => !className.includes("__") && (CARD_BLOCK.test(blockOf(className)) || CARD_SURFACES.has(blockOf(className)));
 
+/**
+ * The classes a card in card is attributed to, for one card (TCRN-DS-SUB-190, R3-7 plan (a)). A part
+ * drawn on a card surface (section.tcrn-surface) that also carries a class of another registered family
+ * is that family's composite, so the surface's own family drops out of the card's classes: a
+ * ReadbackPanel is feedback, a RecordInspector is inspection. A card with no other family's class keeps
+ * its surface's family, so Surface in Surface stays with layout.
+ */
+export function compositeCardClasses(classNames, familyOf) {
+  const registered = (family) => family !== "unattributed" && family !== "utility";
+  const surfaceFamilies = new Set(classNames.filter((name) => CARD_SURFACES.has(blockOf(name))).map(familyOf).filter(registered));
+  if (surfaceFamilies.size === 0) return classNames;
+  const composite = classNames.some((name) => name.startsWith("tcrn-") && registered(familyOf(name)) && !surfaceFamilies.has(familyOf(name)));
+  return composite ? classNames.filter((name) => !name.startsWith("tcrn-") || !surfaceFamilies.has(familyOf(name))) : classNames;
+}
+
 const SHORTHAND_LONGHANDS = [
   ["border", /^border-(?:(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?-)?(?:color|width|style)$|^border-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?$/u],
   ["background", /^background-/u],
@@ -692,7 +707,19 @@ export function checkC11(rules, scope) {
       for (const problem of problems) add(classes, { ...problem, selector: label, ...where(rule) });
       if (facts) {
         const cards = facts.parts.filter((part) => part.parsed.classes.some(isCardRoot));
-        if (cards.length >= 2) add(classes, { rule: "C11.card-in-card", selector: facts.selector, ...where(rule), detail: "a card selector nested in a card selector" });
+        if (cards.length >= 2) {
+          // A class leaves the finding only where it sits in a composite card's compound and nowhere
+          // else directly; classes inside :where() or :is() are not in any compound list and stay.
+          const dropped = new Set();
+          const kept = new Set();
+          for (const part of cards) {
+            const attributed = new Set(compositeCardClasses(part.parsed.classes, scope.familyOf));
+            for (const name of part.parsed.classes) (attributed.has(name) ? kept : dropped).add(name);
+          }
+          for (const part of facts.parts) if (!cards.includes(part)) for (const name of part.parsed.classes) kept.add(name);
+          const cardClasses = classes.filter((name) => !dropped.has(name) || kept.has(name));
+          add(cardClasses, { rule: "C11.card-in-card", selector: facts.selector, ...where(rule), detail: "a card selector nested in a card selector" });
+        }
       }
     }
   }
@@ -1003,7 +1030,7 @@ export function checkC11Story(layer, scope, roles) {
         for (const problem of c11DeclarationProblems(declaration)) add(contextClasses(node, story.node), { rule: "C11.story-inline-style", ...storyWhere(story, node), detail: `inline ${problem.rule}: ${problem.detail}` });
       }
       const isCard = classes.some((name) => name.startsWith("tcrn-") && !name.startsWith(DOC_CLASS_PREFIX) && isCardRoot(name));
-      if (isCard && cardAncestor) add([...own, ...packageClassesOf(cardAncestor)], { rule: "C11.story-card-in-card", ...storyWhere(story, node), detail: `card ${describe(node)} nested in card ${describe(cardAncestor)}` });
+      if (isCard && cardAncestor) add([...compositeCardClasses(own, scope.familyOf), ...compositeCardClasses(packageClassesOf(cardAncestor), scope.familyOf)], { rule: "C11.story-card-in-card", ...storyWhere(story, node), detail: `card ${describe(node)} nested in card ${describe(cardAncestor)}` });
       const semantic = own.length > 0 ? semanticOf(node) : null;
       if (semantic) {
         const signature = [...own].sort().join(" ");
