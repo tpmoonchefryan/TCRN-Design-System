@@ -1963,6 +1963,7 @@
     },
     "storybookDocShellControlContract": {
       "uiReactReadmeBoundaryVisible": true,
+      "uiReactReadmeFollowsProductShellProps": true,
       "docShellMarkersVisible": true,
       "globalProductShellReplacementAbsent": true,
       "themeToggleRuleVisible": true,

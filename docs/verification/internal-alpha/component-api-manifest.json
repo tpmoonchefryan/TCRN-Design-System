@@ -2597,6 +2597,11 @@
           "slot": true
         },
         {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "label",
           "type": "string",
           "required": true
@@ -2909,6 +2914,20 @@
           "slot": true
         },
         {
+          "name": "headingLevel",
+          "type": "1 | 2",
+          "required": false,
+          "enumValues": [
+            2,
+            1
+          ]
+        },
+        {
+          "name": "landmarkLabel",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
@@ -2930,6 +2949,10 @@
           "comfortable",
           "compact",
           "dense"
+        ],
+        "headingLevel": [
+          2,
+          1
         ]
       },
       "slots": [
@@ -3349,10 +3372,20 @@
           ]
         },
         {
+          "name": "defaultMenuQuery",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "headerActions",
           "type": "ReactNode",
           "required": false,
           "slot": true
+        },
+        {
+          "name": "landmarkLabel",
+          "type": "string",
+          "required": false
         },
         {
           "name": "localeMenuOpen",
@@ -3368,6 +3401,11 @@
         {
           "name": "menuOpen",
           "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "menuQuery",
+          "type": "string",
           "required": false
         },
         {
@@ -3406,6 +3444,11 @@
           "required": false
         },
         {
+          "name": "onMenuQueryChange",
+          "type": "(query: string) => void",
+          "required": false
+        },
+        {
           "name": "onOpenPinChange",
           "type": "(id: string | null) => void",
           "required": false
@@ -3413,6 +3456,11 @@
         {
           "name": "onPinnedChange",
           "type": "(id: string, pinned: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "onPinsReorder",
+          "type": "(orderedIds: readonly string[]) => void",
           "required": false
         },
         {
@@ -3440,6 +3488,11 @@
           "type": "readonly string[]",
           "required": false,
           "default": "[]"
+        },
+        {
+          "name": "previewStates",
+          "type": "Readonly<Record<string, string>>",
+          "required": false
         },
         {
           "name": "productName",
@@ -4930,6 +4983,12 @@
           "default": "[]"
         },
         {
+          "name": "defaultQuery",
+          "type": "string",
+          "required": false,
+          "default": "\"\""
+        },
+        {
           "name": "groups",
           "type": "readonly ShellMenuGroup[]",
           "required": true
@@ -4947,6 +5006,11 @@
         {
           "name": "onPinnedChange",
           "type": "(id: string, pinned: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "onQueryChange",
+          "type": "(query: string) => void",
           "required": false
         },
         {
@@ -4997,6 +5061,11 @@
             "design-system",
             "aos"
           ]
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "required": false
         },
         {
           "name": "searchPlaceholder",
@@ -5054,6 +5123,11 @@
           "required": true
         },
         {
+          "name": "landmarkLabel",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "locale",
           "type": "TcrnLocale | string",
           "required": false
@@ -5066,6 +5140,11 @@
         {
           "name": "onOpenChange",
           "type": "(openId: string | null) => void",
+          "required": false
+        },
+        {
+          "name": "onPinsReorder",
+          "type": "(orderedIds: readonly string[]) => void",
           "required": false
         },
         {

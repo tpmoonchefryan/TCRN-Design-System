@@ -20,19 +20,25 @@
     "strip": "pass",
     "edges": "pass",
     "pinSpacing": "pass",
-    "continuation": "fail",
+    "continuation": "pass",
     "barCentering": "pass",
-    "markText": "pass",
+    "markText": "fail",
     "cascade": "pass",
-    "noCollapse": "fail",
-    "pinJitter": "n/a",
-    "lockupDecor": "fail",
+    "noCollapse": "pass",
+    "pinJitter": "fail",
+    "lockupDecor": "pass",
     "contrast": "fail",
     "singleLine": "fail",
     "shadowBlur": "pass",
-    "intro": "fail",
-    "focusLoop": "fail",
-    "touch": "fail"
+    "intro": "pass",
+    "focusLoop": "pass",
+    "touch": "pass"
+  },
+  "checks": {
+    "prail": "fail",
+    "pageCrumbs": "pass",
+    "settingsLayout": "pass",
+    "splitView": "pass"
   },
   "runs": [
     {
@@ -49,74 +55,70 @@
         "ts-x-l",
         "ts-x-n",
         "ts-drop-l",
-        "ts-drop-n"
+        "ts-drop-n",
+        "ts-search-l",
+        "ts-settings-l",
+        "ts-roster-l"
       ],
       "gates": {
         "brandGeometry": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 20,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 33,
+          "failures": []
         },
         "strip": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "edges": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "pinSpacing": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "continuation": {
-          "status": "fail",
-          "checked": 4,
-          "failures": [
-            {
-              "at": "ts-drop-l",
-              "what": "drop.search",
-              "value": 260,
-              "expect": 28
-            },
-            {
-              "at": "ts-drop-n",
-              "what": "drop.search",
-              "value": 260,
-              "expect": 28
-            }
-          ]
+          "status": "pass",
+          "checked": 5,
+          "failures": []
         },
         "barCentering": {
           "status": "pass",
-          "checked": 2,
+          "checked": 3,
           "failures": []
         },
         "markText": {
-          "status": "pass",
-          "checked": 30,
-          "failures": []
+          "status": "fail",
+          "checked": 51,
+          "failures": [
+            {
+              "at": "ts-x-l:lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            },
+            {
+              "at": "ts-x-n:lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            },
+            {
+              "at": "ts-search-l:lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            }
+          ]
         },
         "cascade": {
           "status": "pass",
@@ -125,34 +127,34 @@
         },
         "noCollapse": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": [],
           "pending": [
             "outside-click behaviour not traced in this run"
           ]
         },
         "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
           "status": "fail",
-          "checked": 2,
+          "checked": 5,
           "failures": [
             {
               "at": "ts-x-l",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
             },
             {
               "at": "ts-x-n",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
             }
           ]
+        },
+        "lockupDecor": {
+          "status": "pass",
+          "checked": 3,
+          "failures": []
         },
         "contrast": {
           "status": "n/a",
@@ -160,50 +162,13 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
-          "checked": 6,
-          "failures": [
-            {
-              "at": "ts-closed-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-closed-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-x-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-x-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-drop-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-drop-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
+          "status": "pass",
+          "checked": 9,
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "touch": {
@@ -212,38 +177,49 @@
           "failures": []
         }
       },
-      "failed": [
-        "brandDigest",
-        "continuation",
-        "lockupDecor",
-        "singleLine"
-      ],
-      "missingHooks": [
-        {
-          "shell": "ts-x-l",
-          "missing": [
-            "rowText"
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 2,
+          "failures": [
+            {
+              "at": "ts-x-l",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            },
+            {
+              "at": "ts-x-n",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
           ]
         },
-        {
-          "shell": "ts-x-n",
-          "missing": [
-            "rowText"
-          ]
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 9,
+          "failures": []
         },
-        {
-          "shell": "ts-drop-l",
-          "missing": [
-            "rowText"
-          ]
+        "settingsLayout": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         },
-        {
-          "shell": "ts-drop-n",
-          "missing": [
-            "rowText"
-          ]
+        "splitView": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         }
+      },
+      "failed": [
+        "markText",
+        "pinJitter"
       ],
+      "failedChecks": [
+        "prail"
+      ],
+      "missingHooks": [],
       "screenFailures": []
     },
     {
@@ -260,74 +236,70 @@
         "ts-x-l",
         "ts-x-n",
         "ts-drop-l",
-        "ts-drop-n"
+        "ts-drop-n",
+        "ts-search-l",
+        "ts-settings-l",
+        "ts-roster-l"
       ],
       "gates": {
         "brandGeometry": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 20,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 33,
+          "failures": []
         },
         "strip": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "edges": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "pinSpacing": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "continuation": {
-          "status": "fail",
-          "checked": 4,
-          "failures": [
-            {
-              "at": "ts-drop-l",
-              "what": "drop.search",
-              "value": 260,
-              "expect": 28
-            },
-            {
-              "at": "ts-drop-n",
-              "what": "drop.search",
-              "value": 260,
-              "expect": 28
-            }
-          ]
+          "status": "pass",
+          "checked": 5,
+          "failures": []
         },
         "barCentering": {
           "status": "pass",
-          "checked": 2,
+          "checked": 3,
           "failures": []
         },
         "markText": {
-          "status": "pass",
-          "checked": 30,
-          "failures": []
+          "status": "fail",
+          "checked": 51,
+          "failures": [
+            {
+              "at": "ts-x-l:lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            },
+            {
+              "at": "ts-x-n:lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            },
+            {
+              "at": "ts-search-l:lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            }
+          ]
         },
         "cascade": {
           "status": "pass",
@@ -336,34 +308,34 @@
         },
         "noCollapse": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": [],
           "pending": [
             "outside-click behaviour not traced in this run"
           ]
         },
         "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
           "status": "fail",
-          "checked": 2,
+          "checked": 5,
           "failures": [
             {
               "at": "ts-x-l",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
             },
             {
               "at": "ts-x-n",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
             }
           ]
+        },
+        "lockupDecor": {
+          "status": "pass",
+          "checked": 3,
+          "failures": []
         },
         "contrast": {
           "status": "n/a",
@@ -371,50 +343,13 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
-          "checked": 6,
-          "failures": [
-            {
-              "at": "ts-closed-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-closed-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-x-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-x-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-drop-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-drop-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
+          "status": "pass",
+          "checked": 9,
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "touch": {
@@ -423,38 +358,49 @@
           "failures": []
         }
       },
-      "failed": [
-        "brandDigest",
-        "continuation",
-        "lockupDecor",
-        "singleLine"
-      ],
-      "missingHooks": [
-        {
-          "shell": "ts-x-l",
-          "missing": [
-            "rowText"
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 2,
+          "failures": [
+            {
+              "at": "ts-x-l",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            },
+            {
+              "at": "ts-x-n",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
           ]
         },
-        {
-          "shell": "ts-x-n",
-          "missing": [
-            "rowText"
-          ]
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 9,
+          "failures": []
         },
-        {
-          "shell": "ts-drop-l",
-          "missing": [
-            "rowText"
-          ]
+        "settingsLayout": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         },
-        {
-          "shell": "ts-drop-n",
-          "missing": [
-            "rowText"
-          ]
+        "splitView": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         }
+      },
+      "failed": [
+        "markText",
+        "pinJitter"
       ],
+      "failedChecks": [
+        "prail"
+      ],
+      "missingHooks": [],
       "screenFailures": []
     },
     {
@@ -471,73 +417,50 @@
         "ts-x-l",
         "ts-x-n",
         "ts-drop-l",
-        "ts-drop-n"
+        "ts-drop-n",
+        "ts-search-l",
+        "ts-settings-l",
+        "ts-roster-l"
       ],
       "gates": {
         "brandGeometry": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 20,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 33,
+          "failures": []
         },
         "strip": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "edges": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "pinSpacing": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "continuation": {
-          "status": "fail",
-          "checked": 4,
-          "failures": [
-            {
-              "at": "ts-drop-l",
-              "what": "drop.search",
-              "value": 260,
-              "expect": 28
-            },
-            {
-              "at": "ts-drop-n",
-              "what": "drop.search",
-              "value": 260,
-              "expect": 28
-            }
-          ]
+          "status": "pass",
+          "checked": 5,
+          "failures": []
         },
         "barCentering": {
           "status": "pass",
-          "checked": 2,
+          "checked": 3,
           "failures": []
         },
         "markText": {
           "status": "pass",
-          "checked": 30,
+          "checked": 51,
           "failures": []
         },
         "cascade": {
@@ -547,34 +470,34 @@
         },
         "noCollapse": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": [],
           "pending": [
             "outside-click behaviour not traced in this run"
           ]
         },
         "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
           "status": "fail",
-          "checked": 2,
+          "checked": 5,
           "failures": [
             {
               "at": "ts-x-l",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
             },
             {
               "at": "ts-x-n",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
             }
           ]
+        },
+        "lockupDecor": {
+          "status": "pass",
+          "checked": 3,
+          "failures": []
         },
         "contrast": {
           "status": "n/a",
@@ -582,50 +505,13 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
-          "checked": 6,
-          "failures": [
-            {
-              "at": "ts-closed-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-closed-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-x-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-x-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-drop-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-drop-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
+          "status": "pass",
+          "checked": 9,
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "touch": {
@@ -634,38 +520,48 @@
           "failures": []
         }
       },
-      "failed": [
-        "brandDigest",
-        "continuation",
-        "lockupDecor",
-        "singleLine"
-      ],
-      "missingHooks": [
-        {
-          "shell": "ts-x-l",
-          "missing": [
-            "rowText"
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 2,
+          "failures": [
+            {
+              "at": "ts-x-l",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            },
+            {
+              "at": "ts-x-n",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
           ]
         },
-        {
-          "shell": "ts-x-n",
-          "missing": [
-            "rowText"
-          ]
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 9,
+          "failures": []
         },
-        {
-          "shell": "ts-drop-l",
-          "missing": [
-            "rowText"
-          ]
+        "settingsLayout": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         },
-        {
-          "shell": "ts-drop-n",
-          "missing": [
-            "rowText"
-          ]
+        "splitView": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         }
+      },
+      "failed": [
+        "pinJitter"
       ],
+      "failedChecks": [
+        "prail"
+      ],
+      "missingHooks": [],
       "screenFailures": []
     },
     {
@@ -682,942 +578,886 @@
         "ts-x-l",
         "ts-x-n",
         "ts-drop-l",
-        "ts-drop-n"
+        "ts-drop-n",
+        "ts-search-l",
+        "ts-settings-l",
+        "ts-roster-l"
       ],
       "gates": {
         "brandGeometry": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 20,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 33,
+          "failures": []
         },
         "strip": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "edges": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "pinSpacing": {
           "status": "pass",
-          "checked": 6,
+          "checked": 9,
           "failures": []
         },
         "continuation": {
+          "status": "pass",
+          "checked": 5,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "pass",
+          "checked": 3,
+          "failures": []
+        },
+        "markText": {
+          "status": "pass",
+          "checked": 51,
+          "failures": []
+        },
+        "cascade": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "pass",
+          "checked": 9,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "fail",
+          "checked": 5,
+          "failures": [
+            {
+              "at": "ts-x-l",
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
+            },
+            {
+              "at": "ts-x-n",
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
+            }
+          ]
+        },
+        "lockupDecor": {
+          "status": "pass",
+          "checked": 3,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
+          "status": "pass",
+          "checked": 9,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "pass",
+          "checked": 9,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 2,
+          "failures": [
+            {
+              "at": "ts-x-l",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            },
+            {
+              "at": "ts-x-n",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
+          ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 9,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "splitView": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        }
+      },
+      "failed": [
+        "pinJitter"
+      ],
+      "failedChecks": [
+        "prail"
+      ],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-narrow",
+      "locale": "en",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [
+        "ts-narrow-l",
+        "ts-narrow-x-l"
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "pass",
+          "checked": 8,
+          "failures": []
+        },
+        "strip": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "edges": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "continuation": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "markText": {
+          "status": "fail",
+          "checked": 12,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l:lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            }
+          ]
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "pass",
+          "checked": 2,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l",
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
+            }
+          ]
+        },
+        "lockupDecor": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
+          ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [
+        "markText",
+        "pinJitter"
+      ],
+      "failedChecks": [
+        "prail"
+      ],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-narrow",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [
+        "ts-narrow-l",
+        "ts-narrow-x-l"
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "pass",
+          "checked": 8,
+          "failures": []
+        },
+        "strip": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "edges": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "continuation": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "markText": {
+          "status": "fail",
+          "checked": 12,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l:lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            }
+          ]
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "pass",
+          "checked": 2,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l",
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
+            }
+          ]
+        },
+        "lockupDecor": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
+          ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [
+        "markText",
+        "pinJitter"
+      ],
+      "failedChecks": [
+        "prail"
+      ],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-narrow",
+      "locale": "zh-CN",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [
+        "ts-narrow-l",
+        "ts-narrow-x-l"
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "pass",
+          "checked": 8,
+          "failures": []
+        },
+        "strip": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "edges": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "continuation": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "markText": {
+          "status": "pass",
+          "checked": 12,
+          "failures": []
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "pass",
+          "checked": 2,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l",
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
+            }
+          ]
+        },
+        "lockupDecor": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
+          ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [
+        "pinJitter"
+      ],
+      "failedChecks": [
+        "prail"
+      ],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-narrow",
+      "locale": "zh-CN",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [
+        "ts-narrow-l",
+        "ts-narrow-x-l"
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "pass",
+          "checked": 8,
+          "failures": []
+        },
+        "strip": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "edges": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "continuation": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "markText": {
+          "status": "pass",
+          "checked": 12,
+          "failures": []
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "pass",
+          "checked": 2,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l",
+              "what": "pinButton",
+              "value": "0x0",
+              "expect": "24x24"
+            }
+          ]
+        },
+        "lockupDecor": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-narrow-x-l",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
+          ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 2,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [
+        "pinJitter"
+      ],
+      "failedChecks": [
+        "prail"
+      ],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-mobile",
+      "locale": "en",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "shells": [
+        "ts-m-l",
+        "ts-m-s",
+        "ts-settings-m",
+        "ts-roster-m"
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "pass",
+          "checked": 12,
+          "failures": []
+        },
+        "strip": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        },
+        "edges": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "continuation": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "markText": {
+          "status": "pass",
+          "checked": 12,
+          "failures": []
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "pass",
+          "checked": 4,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "lockupDecor": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
           "status": "fail",
           "checked": 4,
           "failures": [
             {
-              "at": "ts-drop-l",
-              "what": "drop.search",
-              "value": 260,
-              "expect": 28
-            },
-            {
-              "at": "ts-drop-n",
-              "what": "drop.search",
-              "value": 260,
-              "expect": 28
-            }
-          ]
-        },
-        "barCentering": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "markText": {
-          "status": "pass",
-          "checked": 30,
-          "failures": []
-        },
-        "cascade": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "noCollapse": {
-          "status": "pass",
-          "checked": 6,
-          "failures": [],
-          "pending": [
-            "outside-click behaviour not traced in this run"
-          ]
-        },
-        "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            },
-            {
-              "at": "ts-x-n",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
-        },
-        "contrast": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "singleLine": {
-          "status": "fail",
-          "checked": 6,
-          "failures": [
-            {
-              "at": "ts-closed-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
+              "at": "ts-settings-m",
+              "what": "cut:nav.tcrn-breadcrumb",
+              "value": 50.6,
               "expect": 0
             },
             {
-              "at": "ts-closed-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-x-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-x-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-drop-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-drop-n",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
+              "at": "ts-roster-m",
+              "what": "cut:nav.tcrn-breadcrumb",
+              "value": 18.3,
               "expect": 0
             }
           ]
         },
         "shadowBlur": {
           "status": "pass",
-          "checked": 6,
+          "checked": 4,
           "failures": []
         },
         "touch": {
-          "status": "n/a",
-          "checked": 0,
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "fail",
+          "checked": 1,
+          "failures": [
+            {
+              "at": "ts-m-s",
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
+            }
+          ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "splitView": {
+          "status": "pass",
+          "checked": 1,
           "failures": []
         }
       },
       "failed": [
-        "brandDigest",
-        "continuation",
-        "lockupDecor",
         "singleLine"
       ],
-      "missingHooks": [
-        {
-          "shell": "ts-x-l",
-          "missing": [
-            "rowText"
-          ]
-        },
-        {
-          "shell": "ts-x-n",
-          "missing": [
-            "rowText"
-          ]
-        },
-        {
-          "shell": "ts-drop-l",
-          "missing": [
-            "rowText"
-          ]
-        },
-        {
-          "shell": "ts-drop-n",
-          "missing": [
-            "rowText"
-          ]
-        }
+      "failedChecks": [
+        "prail"
       ],
+      "missingHooks": [],
       "screenFailures": []
-    },
-    {
-      "story": "shell-narrow",
-      "locale": "en",
-      "theme": "light",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "shells": [
-        "ts-narrow-l",
-        "ts-narrow-x-l"
-      ],
-      "gates": {
-        "brandGeometry": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "brandDigest": {
-          "status": "fail",
-          "checked": 7,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
-        },
-        "strip": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "edges": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "pinSpacing": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "continuation": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "barCentering": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "markText": {
-          "status": "pass",
-          "checked": 10,
-          "failures": []
-        },
-        "cascade": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "noCollapse": {
-          "status": "pass",
-          "checked": 2,
-          "failures": [],
-          "pending": [
-            "outside-click behaviour not traced in this run"
-          ]
-        },
-        "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
-          "status": "fail",
-          "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
-        },
-        "contrast": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "singleLine": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-narrow-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-narrow-x-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
-        },
-        "shadowBlur": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "touch": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        }
-      },
-      "failed": [
-        "brandDigest",
-        "lockupDecor",
-        "singleLine"
-      ],
-      "missingHooks": [
-        {
-          "shell": "ts-narrow-x-l",
-          "missing": [
-            "rowText"
-          ]
-        }
-      ],
-      "screenFailures": []
-    },
-    {
-      "story": "shell-narrow",
-      "locale": "en",
-      "theme": "dark",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "shells": [
-        "ts-narrow-l",
-        "ts-narrow-x-l"
-      ],
-      "gates": {
-        "brandGeometry": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "brandDigest": {
-          "status": "fail",
-          "checked": 7,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
-        },
-        "strip": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "edges": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "pinSpacing": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "continuation": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "barCentering": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "markText": {
-          "status": "pass",
-          "checked": 10,
-          "failures": []
-        },
-        "cascade": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "noCollapse": {
-          "status": "pass",
-          "checked": 2,
-          "failures": [],
-          "pending": [
-            "outside-click behaviour not traced in this run"
-          ]
-        },
-        "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
-          "status": "fail",
-          "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
-        },
-        "contrast": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "singleLine": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-narrow-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-narrow-x-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
-        },
-        "shadowBlur": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "touch": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        }
-      },
-      "failed": [
-        "brandDigest",
-        "lockupDecor",
-        "singleLine"
-      ],
-      "missingHooks": [
-        {
-          "shell": "ts-narrow-x-l",
-          "missing": [
-            "rowText"
-          ]
-        }
-      ],
-      "screenFailures": []
-    },
-    {
-      "story": "shell-narrow",
-      "locale": "zh-CN",
-      "theme": "light",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "shells": [
-        "ts-narrow-l",
-        "ts-narrow-x-l"
-      ],
-      "gates": {
-        "brandGeometry": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "brandDigest": {
-          "status": "fail",
-          "checked": 7,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
-        },
-        "strip": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "edges": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "pinSpacing": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "continuation": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "barCentering": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "markText": {
-          "status": "pass",
-          "checked": 10,
-          "failures": []
-        },
-        "cascade": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "noCollapse": {
-          "status": "pass",
-          "checked": 2,
-          "failures": [],
-          "pending": [
-            "outside-click behaviour not traced in this run"
-          ]
-        },
-        "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
-          "status": "fail",
-          "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
-        },
-        "contrast": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "singleLine": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-narrow-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-narrow-x-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
-        },
-        "shadowBlur": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "touch": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        }
-      },
-      "failed": [
-        "brandDigest",
-        "lockupDecor",
-        "singleLine"
-      ],
-      "missingHooks": [
-        {
-          "shell": "ts-narrow-x-l",
-          "missing": [
-            "rowText"
-          ]
-        }
-      ],
-      "screenFailures": []
-    },
-    {
-      "story": "shell-narrow",
-      "locale": "zh-CN",
-      "theme": "dark",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "shells": [
-        "ts-narrow-l",
-        "ts-narrow-x-l"
-      ],
-      "gates": {
-        "brandGeometry": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "brandDigest": {
-          "status": "fail",
-          "checked": 7,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
-        },
-        "strip": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "edges": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "pinSpacing": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "continuation": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "barCentering": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "markText": {
-          "status": "pass",
-          "checked": 10,
-          "failures": []
-        },
-        "cascade": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "noCollapse": {
-          "status": "pass",
-          "checked": 2,
-          "failures": [],
-          "pending": [
-            "outside-click behaviour not traced in this run"
-          ]
-        },
-        "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
-          "status": "fail",
-          "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
-        },
-        "contrast": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "singleLine": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-narrow-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            },
-            {
-              "at": "ts-narrow-x-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
-        },
-        "shadowBlur": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "touch": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        }
-      },
-      "failed": [
-        "brandDigest",
-        "lockupDecor",
-        "singleLine"
-      ],
-      "missingHooks": [
-        {
-          "shell": "ts-narrow-x-l",
-          "missing": [
-            "rowText"
-          ]
-        }
-      ],
-      "screenFailures": []
-    },
-    {
-      "story": "shell-mobile",
-      "locale": "en",
-      "theme": "light",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "shells": [
-        "ts-m-l",
-        "ts-m-s"
-      ],
-      "gates": {
-        "brandGeometry": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "brandDigest": {
-          "status": "fail",
-          "checked": 7,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
-        },
-        "strip": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "edges": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "pinSpacing": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "continuation": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "barCentering": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "markText": {
-          "status": "pass",
-          "checked": 6,
-          "failures": []
-        },
-        "cascade": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "noCollapse": {
-          "status": "pass",
-          "checked": 2,
-          "failures": [],
-          "pending": [
-            "outside-click behaviour not traced in this run"
-          ]
-        },
-        "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "lockupDecor": {
-          "status": "fail",
-          "checked": 1,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
-        },
-        "contrast": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "singleLine": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "cut:nav.tcrn-shell-menu__crumbs",
-              "value": 14.9,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:div.tcrn-shell-menu in div.tcrn-product-shell[data-shell=ts-m-s]",
-              "value": 78,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:section.tcrn-shell-menu__panel[data-panel=expanded] in div.tcrn-product-shell[data-shell=ts-m-s]",
-              "value": 78,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            }
-          ]
-        },
-        "shadowBlur": {
-          "status": "pass",
-          "checked": 2,
-          "failures": []
-        },
-        "touch": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "layer.notSheet",
-              "value": "expanded",
-              "expect": "sheet"
-            }
-          ]
-        }
-      },
-      "failed": [
-        "brandDigest",
-        "lockupDecor",
-        "singleLine",
-        "touch"
-      ],
-      "missingHooks": [
-        {
-          "shell": "ts-m-s",
-          "missing": [
-            "rowText"
-          ]
-        }
-      ],
-      "screenFailures": [
-        {
-          "what": "data-state",
-          "shell": "ts-m-s",
-          "value": "expanded",
-          "expect": "sheet"
-        }
-      ]
     },
     {
       "story": "shell-mobile",
@@ -1629,34 +1469,29 @@
       },
       "shells": [
         "ts-m-l",
-        "ts-m-s"
+        "ts-m-s",
+        "ts-settings-m",
+        "ts-roster-m"
       ],
       "gates": {
         "brandGeometry": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 7,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 12,
+          "failures": []
         },
         "strip": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "edges": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "pinSpacing": {
@@ -1665,18 +1500,18 @@
           "failures": []
         },
         "continuation": {
-          "status": "pass",
-          "checked": 1,
+          "status": "n/a",
+          "checked": 0,
           "failures": []
         },
         "barCentering": {
-          "status": "pass",
-          "checked": 1,
+          "status": "n/a",
+          "checked": 0,
           "failures": []
         },
         "markText": {
           "status": "pass",
-          "checked": 6,
+          "checked": 12,
           "failures": []
         },
         "cascade": {
@@ -1686,28 +1521,21 @@
         },
         "noCollapse": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": [],
           "pending": [
             "outside-click behaviour not traced in this run"
           ]
         },
         "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
+          "status": "pass",
+          "checked": 1,
           "failures": []
         },
         "lockupDecor": {
-          "status": "fail",
-          "checked": 1,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
         },
         "contrast": {
           "status": "n/a",
@@ -1716,92 +1544,70 @@
         },
         "singleLine": {
           "status": "fail",
-          "checked": 2,
+          "checked": 4,
           "failures": [
             {
-              "at": "ts-m-s",
-              "what": "cut:nav.tcrn-shell-menu__crumbs",
-              "value": 14.9,
+              "at": "ts-settings-m",
+              "what": "cut:nav.tcrn-breadcrumb",
+              "value": 50.6,
               "expect": 0
             },
             {
-              "at": "ts-m-s",
-              "what": "clip:div.tcrn-shell-menu in div.tcrn-product-shell[data-shell=ts-m-s]",
-              "value": 78,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:section.tcrn-shell-menu__panel[data-panel=expanded] in div.tcrn-product-shell[data-shell=ts-m-s]",
-              "value": 78,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
+              "at": "ts-roster-m",
+              "what": "cut:nav.tcrn-breadcrumb",
+              "value": 18.3,
               "expect": 0
             }
           ]
         },
         "shadowBlur": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "touch": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
           "status": "fail",
-          "checked": 2,
+          "checked": 1,
           "failures": [
             {
               "at": "ts-m-s",
-              "what": "layer.notSheet",
-              "value": "expanded",
-              "expect": "sheet"
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
             }
           ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "splitView": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         }
       },
       "failed": [
-        "brandDigest",
-        "lockupDecor",
-        "singleLine",
-        "touch"
+        "singleLine"
       ],
-      "missingHooks": [
-        {
-          "shell": "ts-m-s",
-          "missing": [
-            "rowText"
-          ]
-        }
+      "failedChecks": [
+        "prail"
       ],
-      "screenFailures": [
-        {
-          "what": "data-state",
-          "shell": "ts-m-s",
-          "value": "expanded",
-          "expect": "sheet"
-        }
-      ]
+      "missingHooks": [],
+      "screenFailures": []
     },
     {
       "story": "shell-mobile",
@@ -1813,34 +1619,29 @@
       },
       "shells": [
         "ts-m-l",
-        "ts-m-s"
+        "ts-m-s",
+        "ts-settings-m",
+        "ts-roster-m"
       ],
       "gates": {
         "brandGeometry": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 7,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 12,
+          "failures": []
         },
         "strip": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "edges": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "pinSpacing": {
@@ -1849,18 +1650,18 @@
           "failures": []
         },
         "continuation": {
-          "status": "pass",
-          "checked": 1,
+          "status": "n/a",
+          "checked": 0,
           "failures": []
         },
         "barCentering": {
-          "status": "pass",
-          "checked": 1,
+          "status": "n/a",
+          "checked": 0,
           "failures": []
         },
         "markText": {
           "status": "pass",
-          "checked": 6,
+          "checked": 12,
           "failures": []
         },
         "cascade": {
@@ -1870,28 +1671,21 @@
         },
         "noCollapse": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": [],
           "pending": [
             "outside-click behaviour not traced in this run"
           ]
         },
         "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
+          "status": "pass",
+          "checked": 1,
           "failures": []
         },
         "lockupDecor": {
-          "status": "fail",
-          "checked": 1,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
         },
         "contrast": {
           "status": "n/a",
@@ -1899,87 +1693,56 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "clip:div.tcrn-shell-menu in div.tcrn-product-shell[data-shell=ts-m-s]",
-              "value": 78,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:section.tcrn-shell-menu__panel[data-panel=expanded] in div.tcrn-product-shell[data-shell=ts-m-s]",
-              "value": 78,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            }
-          ]
+          "status": "pass",
+          "checked": 4,
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "touch": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
           "status": "fail",
-          "checked": 2,
+          "checked": 1,
           "failures": [
             {
               "at": "ts-m-s",
-              "what": "layer.notSheet",
-              "value": "expanded",
-              "expect": "sheet"
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
             }
           ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "splitView": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         }
       },
-      "failed": [
-        "brandDigest",
-        "lockupDecor",
-        "singleLine",
-        "touch"
+      "failed": [],
+      "failedChecks": [
+        "prail"
       ],
-      "missingHooks": [
-        {
-          "shell": "ts-m-s",
-          "missing": [
-            "rowText"
-          ]
-        }
-      ],
-      "screenFailures": [
-        {
-          "what": "data-state",
-          "shell": "ts-m-s",
-          "value": "expanded",
-          "expect": "sheet"
-        }
-      ]
+      "missingHooks": [],
+      "screenFailures": []
     },
     {
       "story": "shell-mobile",
@@ -1991,34 +1754,29 @@
       },
       "shells": [
         "ts-m-l",
-        "ts-m-s"
+        "ts-m-s",
+        "ts-settings-m",
+        "ts-roster-m"
       ],
       "gates": {
         "brandGeometry": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 7,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 12,
+          "failures": []
         },
         "strip": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "edges": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "pinSpacing": {
@@ -2027,18 +1785,18 @@
           "failures": []
         },
         "continuation": {
-          "status": "pass",
-          "checked": 1,
+          "status": "n/a",
+          "checked": 0,
           "failures": []
         },
         "barCentering": {
-          "status": "pass",
-          "checked": 1,
+          "status": "n/a",
+          "checked": 0,
           "failures": []
         },
         "markText": {
           "status": "pass",
-          "checked": 6,
+          "checked": 12,
           "failures": []
         },
         "cascade": {
@@ -2048,28 +1806,21 @@
         },
         "noCollapse": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": [],
           "pending": [
             "outside-click behaviour not traced in this run"
           ]
         },
         "pinJitter": {
-          "status": "n/a",
-          "checked": 0,
+          "status": "pass",
+          "checked": 1,
           "failures": []
         },
         "lockupDecor": {
-          "status": "fail",
-          "checked": 1,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "lockup.mark",
-              "value": null,
-              "expect": 22
-            }
-          ]
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
         },
         "contrast": {
           "status": "n/a",
@@ -2077,87 +1828,56 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
-          "checked": 2,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "clip:div.tcrn-shell-menu in div.tcrn-product-shell[data-shell=ts-m-s]",
-              "value": 78,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:section.tcrn-shell-menu__panel[data-panel=expanded] in div.tcrn-product-shell[data-shell=ts-m-s]",
-              "value": 78,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            },
-            {
-              "at": "ts-m-s",
-              "what": "clip:svg in span.tcrn-nav-item__content",
-              "value": 12,
-              "expect": 0
-            }
-          ]
+          "status": "pass",
+          "checked": 4,
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
-          "checked": 2,
+          "checked": 4,
           "failures": []
         },
         "touch": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
           "status": "fail",
-          "checked": 2,
+          "checked": 1,
           "failures": [
             {
               "at": "ts-m-s",
-              "what": "layer.notSheet",
-              "value": "expanded",
-              "expect": "sheet"
+              "what": "prail.icon",
+              "value": 19,
+              "expect": 16
             }
           ]
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 4,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "splitView": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
         }
       },
-      "failed": [
-        "brandDigest",
-        "lockupDecor",
-        "singleLine",
-        "touch"
+      "failed": [],
+      "failedChecks": [
+        "prail"
       ],
-      "missingHooks": [
-        {
-          "shell": "ts-m-s",
-          "missing": [
-            "rowText"
-          ]
-        }
-      ],
-      "screenFailures": [
-        {
-          "what": "data-state",
-          "shell": "ts-m-s",
-          "value": "expanded",
-          "expect": "sheet"
-        }
-      ]
+      "missingHooks": [],
+      "screenFailures": []
     },
     {
       "story": "shell-intro",
@@ -2240,16 +1960,9 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-intro-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
@@ -2262,9 +1975,30 @@
           "failures": []
         }
       },
-      "failed": [
-        "singleLine"
-      ],
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -2349,16 +2083,9 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-intro-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
@@ -2371,9 +2098,30 @@
           "failures": []
         }
       },
-      "failed": [
-        "singleLine"
-      ],
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -2396,7 +2144,7 @@
         },
         "brandDigest": {
           "status": "pass",
-          "checked": 3,
+          "checked": 4,
           "failures": []
         },
         "strip": {
@@ -2458,16 +2206,9 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-intro-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
-              "expect": 0
-            }
-          ]
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
@@ -2480,9 +2221,30 @@
           "failures": []
         }
       },
-      "failed": [
-        "singleLine"
-      ],
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -2505,7 +2267,7 @@
         },
         "brandDigest": {
           "status": "pass",
-          "checked": 3,
+          "checked": 4,
           "failures": []
         },
         "strip": {
@@ -2567,97 +2329,197 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "pass",
+          "checked": 1,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [],
+      "failedChecks": [],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-matrix",
+      "locale": "en",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [],
+      "firstLines": [
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 1.7
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 1.7
+        }
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "pass",
+          "checked": 16,
+          "failures": []
+        },
+        "strip": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "edges": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "continuation": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "markText": {
+          "status": "fail",
+          "checked": 28,
           "failures": [
             {
-              "at": "ts-intro-l",
-              "what": "clip:em.tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--tms in b.tcrn-shell-brand__word",
-              "value": 1,
+              "at": "lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            },
+            {
+              "at": "lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
               "expect": 0
             }
           ]
         },
-        "shadowBlur": {
-          "status": "pass",
-          "checked": 1,
-          "failures": []
-        },
-        "touch": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        }
-      },
-      "failed": [
-        "singleLine"
-      ],
-      "missingHooks": [],
-      "screenFailures": []
-    },
-    {
-      "story": "shell-matrix",
-      "locale": "en",
-      "theme": "light",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "shells": [],
-      "gates": {
-        "brandGeometry": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "brandDigest": {
-          "status": "fail",
-          "checked": 14,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
-        },
-        "strip": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "edges": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "pinSpacing": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "continuation": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "barCentering": {
-          "status": "n/a",
-          "checked": 0,
-          "failures": []
-        },
-        "markText": {
-          "status": "pass",
-          "checked": 24,
-          "failures": []
-        },
         "cascade": {
           "status": "n/a",
           "checked": 0,
@@ -2683,32 +2545,8 @@
         },
         "contrast": {
           "status": "fail",
-          "checked": 66,
+          "checked": 60,
           "failures": [
-            {
-              "at": "brand-mark-l",
-              "what": "ratio-expect",
-              "value": 15.75,
-              "expect": 4.85
-            },
-            {
-              "at": "pin-chev-l",
-              "what": "ratio-expect",
-              "value": 7.39,
-              "expect": 4.86
-            },
-            {
-              "at": "bell-hover-l",
-              "what": "ratio-expect",
-              "value": 14.7,
-              "expect": 13.97
-            },
-            {
-              "at": "panel-edge-l",
-              "what": "ratio-expect",
-              "value": 18.29,
-              "expect": 1.16
-            },
             {
               "at": "srch-kbd-l",
               "what": "ratio-expect",
@@ -2716,94 +2554,10 @@
               "expect": 7.59
             },
             {
-              "at": "grp-hover-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.64
-            },
-            {
-              "at": "it-hover-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 17.04
-            },
-            {
-              "at": "pinb-outline-l",
-              "what": "ratio-expect",
-              "value": 5.64,
-              "expect": 5.26
-            },
-            {
-              "at": "it-chev-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.64
-            },
-            {
-              "at": "scrim-paper-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.57
-            },
-            {
-              "at": "brand-mark-n",
-              "what": "ratio-expect",
-              "value": 15.31,
-              "expect": 3.33
-            },
-            {
-              "at": "pin-chev-n",
-              "what": "ratio-expect",
-              "value": 7.7,
-              "expect": 4.89
-            },
-            {
-              "at": "bell-hover-n",
-              "what": "ratio-expect",
-              "value": 14.14,
-              "expect": 13.17
-            },
-            {
-              "at": "panel-edge-n",
-              "what": "ratio-expect",
-              "value": 14.38,
-              "expect": 1.06
-            },
-            {
               "at": "srch-kbd-n",
               "what": "ratio-expect",
               "value": 7.23,
               "expect": 6.11
-            },
-            {
-              "at": "grp-hover-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 4.59
-            },
-            {
-              "at": "it-hover-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 13.13
-            },
-            {
-              "at": "pinb-outline-n",
-              "what": "ratio-expect",
-              "value": 4.59,
-              "expect": 4.19
-            },
-            {
-              "at": "it-chev-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 4.59
-            },
-            {
-              "at": "scrim-paper-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 7.29
             }
           ],
           "pending": [
@@ -2825,6 +2579,60 @@
               "min": 4.5,
               "ruling": "MIN-20261013-SHELL D7"
             }
+          ],
+          "listed": [
+            {
+              "cell": "brand-mark-l",
+              "kind": "icon",
+              "probe": "mark",
+              "ratio": 4.85,
+              "expect": 4.85,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "panel-edge-l",
+              "kind": "edge",
+              "probe": "own-bg",
+              "ratio": 1.16,
+              "expect": 1.16,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "scrim-paper-l",
+              "kind": "text",
+              "probe": "color",
+              "ratio": 5.56,
+              "expect": 5.57,
+              "scrims": 1,
+              "unscrimmed": 8.58,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "brand-mark-n",
+              "kind": "icon",
+              "probe": "mark",
+              "ratio": 3.33,
+              "expect": 3.33,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "panel-edge-n",
+              "kind": "edge",
+              "probe": "own-bg",
+              "ratio": 1.06,
+              "expect": 1.06,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "scrim-paper-n",
+              "kind": "text",
+              "probe": "color",
+              "ratio": 4.13,
+              "expect": 7.29,
+              "scrims": 1,
+              "unscrimmed": 7.23,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            }
           ]
         },
         "singleLine": {
@@ -2843,10 +2651,33 @@
           "failures": []
         }
       },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
       "failed": [
-        "brandDigest",
+        "markText",
         "contrast"
       ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -2859,6 +2690,92 @@
         "height": 900
       },
       "shells": [],
+      "firstLines": [
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 1.7
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 1.7
+        }
+      ],
       "gates": {
         "brandGeometry": {
           "status": "n/a",
@@ -2866,22 +2783,9 @@
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 14,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 16,
+          "failures": []
         },
         "strip": {
           "status": "n/a",
@@ -2909,9 +2813,22 @@
           "failures": []
         },
         "markText": {
-          "status": "pass",
-          "checked": 24,
-          "failures": []
+          "status": "fail",
+          "checked": 28,
+          "failures": [
+            {
+              "at": "lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            },
+            {
+              "at": "lkr@22:tms",
+              "what": "ink-mark",
+              "value": 1.7,
+              "expect": 0
+            }
+          ]
         },
         "cascade": {
           "status": "n/a",
@@ -2938,32 +2855,8 @@
         },
         "contrast": {
           "status": "fail",
-          "checked": 66,
+          "checked": 60,
           "failures": [
-            {
-              "at": "brand-mark-l",
-              "what": "ratio-expect",
-              "value": 15.75,
-              "expect": 4.85
-            },
-            {
-              "at": "pin-chev-l",
-              "what": "ratio-expect",
-              "value": 7.39,
-              "expect": 4.86
-            },
-            {
-              "at": "bell-hover-l",
-              "what": "ratio-expect",
-              "value": 14.7,
-              "expect": 13.97
-            },
-            {
-              "at": "panel-edge-l",
-              "what": "ratio-expect",
-              "value": 18.29,
-              "expect": 1.16
-            },
             {
               "at": "srch-kbd-l",
               "what": "ratio-expect",
@@ -2971,94 +2864,10 @@
               "expect": 7.59
             },
             {
-              "at": "grp-hover-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.64
-            },
-            {
-              "at": "it-hover-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 17.04
-            },
-            {
-              "at": "pinb-outline-l",
-              "what": "ratio-expect",
-              "value": 5.64,
-              "expect": 5.26
-            },
-            {
-              "at": "it-chev-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.64
-            },
-            {
-              "at": "scrim-paper-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.57
-            },
-            {
-              "at": "brand-mark-n",
-              "what": "ratio-expect",
-              "value": 15.31,
-              "expect": 3.33
-            },
-            {
-              "at": "pin-chev-n",
-              "what": "ratio-expect",
-              "value": 7.7,
-              "expect": 4.89
-            },
-            {
-              "at": "bell-hover-n",
-              "what": "ratio-expect",
-              "value": 14.14,
-              "expect": 13.17
-            },
-            {
-              "at": "panel-edge-n",
-              "what": "ratio-expect",
-              "value": 14.38,
-              "expect": 1.06
-            },
-            {
               "at": "srch-kbd-n",
               "what": "ratio-expect",
               "value": 7.23,
               "expect": 6.11
-            },
-            {
-              "at": "grp-hover-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 4.59
-            },
-            {
-              "at": "it-hover-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 13.13
-            },
-            {
-              "at": "pinb-outline-n",
-              "what": "ratio-expect",
-              "value": 4.59,
-              "expect": 4.19
-            },
-            {
-              "at": "it-chev-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 4.59
-            },
-            {
-              "at": "scrim-paper-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 7.29
             }
           ],
           "pending": [
@@ -3080,6 +2889,60 @@
               "min": 4.5,
               "ruling": "MIN-20261013-SHELL D7"
             }
+          ],
+          "listed": [
+            {
+              "cell": "brand-mark-l",
+              "kind": "icon",
+              "probe": "mark",
+              "ratio": 4.85,
+              "expect": 4.85,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "panel-edge-l",
+              "kind": "edge",
+              "probe": "own-bg",
+              "ratio": 1.16,
+              "expect": 1.16,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "scrim-paper-l",
+              "kind": "text",
+              "probe": "color",
+              "ratio": 5.56,
+              "expect": 5.57,
+              "scrims": 1,
+              "unscrimmed": 8.58,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "brand-mark-n",
+              "kind": "icon",
+              "probe": "mark",
+              "ratio": 3.33,
+              "expect": 3.33,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "panel-edge-n",
+              "kind": "edge",
+              "probe": "own-bg",
+              "ratio": 1.06,
+              "expect": 1.06,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "scrim-paper-n",
+              "kind": "text",
+              "probe": "color",
+              "ratio": 4.13,
+              "expect": 7.29,
+              "scrims": 1,
+              "unscrimmed": 7.23,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            }
           ]
         },
         "singleLine": {
@@ -3098,10 +2961,33 @@
           "failures": []
         }
       },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
       "failed": [
-        "brandDigest",
+        "markText",
         "contrast"
       ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -3114,6 +3000,92 @@
         "height": 900
       },
       "shells": [],
+      "firstLines": [
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 1
+        }
+      ],
       "gates": {
         "brandGeometry": {
           "status": "n/a",
@@ -3121,22 +3093,9 @@
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
-          "checked": 14,
-          "failures": [
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lkr",
-              "what": "lockup.reference",
-              "value": null,
-              "expect": "Brand E rail"
-            }
-          ]
+          "status": "pass",
+          "checked": 16,
+          "failures": []
         },
         "strip": {
           "status": "n/a",
@@ -3165,7 +3124,7 @@
         },
         "markText": {
           "status": "pass",
-          "checked": 24,
+          "checked": 28,
           "failures": []
         },
         "cascade": {
@@ -3193,32 +3152,8 @@
         },
         "contrast": {
           "status": "fail",
-          "checked": 66,
+          "checked": 60,
           "failures": [
-            {
-              "at": "brand-mark-l",
-              "what": "ratio-expect",
-              "value": 15.75,
-              "expect": 4.85
-            },
-            {
-              "at": "pin-chev-l",
-              "what": "ratio-expect",
-              "value": 7.39,
-              "expect": 4.86
-            },
-            {
-              "at": "bell-hover-l",
-              "what": "ratio-expect",
-              "value": 14.7,
-              "expect": 13.97
-            },
-            {
-              "at": "panel-edge-l",
-              "what": "ratio-expect",
-              "value": 18.29,
-              "expect": 1.16
-            },
             {
               "at": "srch-kbd-l",
               "what": "ratio-expect",
@@ -3226,94 +3161,10 @@
               "expect": 7.59
             },
             {
-              "at": "grp-hover-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.64
-            },
-            {
-              "at": "it-hover-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 17.04
-            },
-            {
-              "at": "pinb-outline-l",
-              "what": "ratio-expect",
-              "value": 5.64,
-              "expect": 5.26
-            },
-            {
-              "at": "it-chev-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.64
-            },
-            {
-              "at": "scrim-paper-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.57
-            },
-            {
-              "at": "brand-mark-n",
-              "what": "ratio-expect",
-              "value": 15.31,
-              "expect": 3.33
-            },
-            {
-              "at": "pin-chev-n",
-              "what": "ratio-expect",
-              "value": 7.7,
-              "expect": 4.89
-            },
-            {
-              "at": "bell-hover-n",
-              "what": "ratio-expect",
-              "value": 14.14,
-              "expect": 13.17
-            },
-            {
-              "at": "panel-edge-n",
-              "what": "ratio-expect",
-              "value": 14.38,
-              "expect": 1.06
-            },
-            {
               "at": "srch-kbd-n",
               "what": "ratio-expect",
               "value": 7.23,
               "expect": 6.11
-            },
-            {
-              "at": "grp-hover-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 4.59
-            },
-            {
-              "at": "it-hover-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 13.13
-            },
-            {
-              "at": "pinb-outline-n",
-              "what": "ratio-expect",
-              "value": 4.59,
-              "expect": 4.19
-            },
-            {
-              "at": "it-chev-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 4.59
-            },
-            {
-              "at": "scrim-paper-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 7.29
             }
           ],
           "pending": [
@@ -3335,6 +3186,60 @@
               "min": 4.5,
               "ruling": "MIN-20261013-SHELL D7"
             }
+          ],
+          "listed": [
+            {
+              "cell": "brand-mark-l",
+              "kind": "icon",
+              "probe": "mark",
+              "ratio": 4.85,
+              "expect": 4.85,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "panel-edge-l",
+              "kind": "edge",
+              "probe": "own-bg",
+              "ratio": 1.16,
+              "expect": 1.16,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "scrim-paper-l",
+              "kind": "text",
+              "probe": "color",
+              "ratio": 5.56,
+              "expect": 5.57,
+              "scrims": 1,
+              "unscrimmed": 8.58,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "brand-mark-n",
+              "kind": "icon",
+              "probe": "mark",
+              "ratio": 3.33,
+              "expect": 3.33,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "panel-edge-n",
+              "kind": "edge",
+              "probe": "own-bg",
+              "ratio": 1.06,
+              "expect": 1.06,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "scrim-paper-n",
+              "kind": "text",
+              "probe": "color",
+              "ratio": 4.13,
+              "expect": 7.29,
+              "scrims": 1,
+              "unscrimmed": 7.23,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            }
           ]
         },
         "singleLine": {
@@ -3353,10 +3258,32 @@
           "failures": []
         }
       },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
       "failed": [
-        "brandDigest",
         "contrast"
       ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -3369,6 +3296,352 @@
         "height": 900
       },
       "shells": [],
+      "firstLines": [
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "brand",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lkr",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 1
+        }
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "pass",
+          "checked": 16,
+          "failures": []
+        },
+        "strip": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "edges": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "continuation": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "markText": {
+          "status": "pass",
+          "checked": 28,
+          "failures": []
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "lockupDecor": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "contrast": {
+          "status": "fail",
+          "checked": 60,
+          "failures": [
+            {
+              "at": "srch-kbd-l",
+              "what": "ratio-expect",
+              "value": 8.58,
+              "expect": 7.59
+            },
+            {
+              "at": "srch-kbd-n",
+              "what": "ratio-expect",
+              "value": 7.23,
+              "expect": 6.11
+            }
+          ],
+          "pending": [
+            {
+              "cell": "brand-suffix-n",
+              "ratio": 3.33,
+              "min": 4.5,
+              "ruling": "MIN-20261013-SHELL D7"
+            },
+            {
+              "cell": "brand-suffix-n",
+              "ratio": 3.07,
+              "min": 4.5,
+              "ruling": "MIN-20261013-SHELL D7"
+            },
+            {
+              "cell": "lk-em-n",
+              "ratio": 3.13,
+              "min": 4.5,
+              "ruling": "MIN-20261013-SHELL D7"
+            }
+          ],
+          "listed": [
+            {
+              "cell": "brand-mark-l",
+              "kind": "icon",
+              "probe": "mark",
+              "ratio": 4.85,
+              "expect": 4.85,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "panel-edge-l",
+              "kind": "edge",
+              "probe": "own-bg",
+              "ratio": 1.16,
+              "expect": 1.16,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "scrim-paper-l",
+              "kind": "text",
+              "probe": "color",
+              "ratio": 5.56,
+              "expect": 5.57,
+              "scrims": 1,
+              "unscrimmed": 8.58,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "brand-mark-n",
+              "kind": "icon",
+              "probe": "mark",
+              "ratio": 3.33,
+              "expect": 3.33,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "panel-edge-n",
+              "kind": "edge",
+              "probe": "own-bg",
+              "ratio": 1.06,
+              "expect": 1.06,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            },
+            {
+              "cell": "scrim-paper-n",
+              "kind": "text",
+              "probe": "color",
+              "ratio": 4.13,
+              "expect": 7.29,
+              "scrims": 1,
+              "unscrimmed": 7.23,
+              "ruling": "07a B: 不进门 / 豁免 / 按设计不读"
+            }
+          ]
+        },
+        "singleLine": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [
+        "contrast"
+      ],
+      "failedChecks": [],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-brand-first-line",
+      "locale": "en",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [],
+      "firstLines": [
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lk-line",
+          "product": "tms",
+          "mark": 44,
+          "inkMinusMark": -0.6
+        },
+        {
+          "kind": "lkr-line",
+          "product": "einzbern",
+          "mark": 22,
+          "inkMinusMark": -1
+        },
+        {
+          "kind": "lk-line",
+          "product": "einzbern",
+          "mark": 44,
+          "inkMinusMark": -0.5
+        },
+        {
+          "kind": "lkr-line",
+          "product": "mana-orchestrate",
+          "mark": 22,
+          "inkMinusMark": -0.9
+        },
+        {
+          "kind": "lk-line",
+          "product": "mana-orchestrate",
+          "mark": 44,
+          "inkMinusMark": -0.5
+        },
+        {
+          "kind": "lkr-line",
+          "product": "design-system",
+          "mark": 22,
+          "inkMinusMark": 1.4
+        },
+        {
+          "kind": "lk-line",
+          "product": "design-system",
+          "mark": 44,
+          "inkMinusMark": 1
+        }
+      ],
       "gates": {
         "brandGeometry": {
           "status": "n/a",
@@ -3377,19 +3650,55 @@
         },
         "brandDigest": {
           "status": "fail",
-          "checked": 14,
+          "checked": 16,
           "failures": [
             {
-              "at": "lockup:lkr",
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "mana-orchestrate",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "mana-orchestrate",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "design-system",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "design-system",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "lockup:lkr-line",
               "what": "lockup.reference",
-              "value": null,
+              "value": "mana-orchestrate",
               "expect": "Brand E rail"
             },
             {
-              "at": "lockup:lkr",
+              "at": "lockup:lk-line",
               "what": "lockup.reference",
-              "value": null,
+              "value": "mana-orchestrate",
+              "expect": "Brand E lk"
+            },
+            {
+              "at": "lockup:lkr-line",
+              "what": "lockup.reference",
+              "value": "design-system",
               "expect": "Brand E rail"
+            },
+            {
+              "at": "lockup:lk-line",
+              "what": "lockup.reference",
+              "value": "design-system",
+              "expect": "Brand E lk"
             }
           ]
         },
@@ -3419,9 +3728,16 @@
           "failures": []
         },
         "markText": {
-          "status": "pass",
-          "checked": 24,
-          "failures": []
+          "status": "fail",
+          "checked": 16,
+          "failures": [
+            {
+              "at": "lkr-line@22:design-system",
+              "what": "ink-mark",
+              "value": 1.4,
+              "expect": 0
+            }
+          ]
         },
         "cascade": {
           "status": "n/a",
@@ -3447,150 +3763,9 @@
           "failures": []
         },
         "contrast": {
-          "status": "fail",
-          "checked": 66,
-          "failures": [
-            {
-              "at": "brand-mark-l",
-              "what": "ratio-expect",
-              "value": 15.75,
-              "expect": 4.85
-            },
-            {
-              "at": "pin-chev-l",
-              "what": "ratio-expect",
-              "value": 7.39,
-              "expect": 4.86
-            },
-            {
-              "at": "bell-hover-l",
-              "what": "ratio-expect",
-              "value": 14.7,
-              "expect": 13.97
-            },
-            {
-              "at": "panel-edge-l",
-              "what": "ratio-expect",
-              "value": 18.29,
-              "expect": 1.16
-            },
-            {
-              "at": "srch-kbd-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 7.59
-            },
-            {
-              "at": "grp-hover-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.64
-            },
-            {
-              "at": "it-hover-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 17.04
-            },
-            {
-              "at": "pinb-outline-l",
-              "what": "ratio-expect",
-              "value": 5.64,
-              "expect": 5.26
-            },
-            {
-              "at": "it-chev-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.64
-            },
-            {
-              "at": "scrim-paper-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 5.57
-            },
-            {
-              "at": "brand-mark-n",
-              "what": "ratio-expect",
-              "value": 15.31,
-              "expect": 3.33
-            },
-            {
-              "at": "pin-chev-n",
-              "what": "ratio-expect",
-              "value": 7.7,
-              "expect": 4.89
-            },
-            {
-              "at": "bell-hover-n",
-              "what": "ratio-expect",
-              "value": 14.14,
-              "expect": 13.17
-            },
-            {
-              "at": "panel-edge-n",
-              "what": "ratio-expect",
-              "value": 14.38,
-              "expect": 1.06
-            },
-            {
-              "at": "srch-kbd-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 6.11
-            },
-            {
-              "at": "grp-hover-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 4.59
-            },
-            {
-              "at": "it-hover-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 13.13
-            },
-            {
-              "at": "pinb-outline-n",
-              "what": "ratio-expect",
-              "value": 4.59,
-              "expect": 4.19
-            },
-            {
-              "at": "it-chev-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 4.59
-            },
-            {
-              "at": "scrim-paper-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 7.29
-            }
-          ],
-          "pending": [
-            {
-              "cell": "brand-suffix-n",
-              "ratio": 3.33,
-              "min": 4.5,
-              "ruling": "MIN-20261013-SHELL D7"
-            },
-            {
-              "cell": "brand-suffix-n",
-              "ratio": 3.07,
-              "min": 4.5,
-              "ruling": "MIN-20261013-SHELL D7"
-            },
-            {
-              "cell": "lk-em-n",
-              "ratio": 3.13,
-              "min": 4.5,
-              "ruling": "MIN-20261013-SHELL D7"
-            }
-          ]
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
         },
         "singleLine": {
           "status": "n/a",
@@ -3608,10 +3783,723 @@
           "failures": []
         }
       },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
       "failed": [
         "brandDigest",
-        "contrast"
+        "markText"
       ],
+      "failedChecks": [],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-brand-first-line",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [],
+      "firstLines": [
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lk-line",
+          "product": "tms",
+          "mark": 44,
+          "inkMinusMark": -0.6
+        },
+        {
+          "kind": "lkr-line",
+          "product": "einzbern",
+          "mark": 22,
+          "inkMinusMark": -1
+        },
+        {
+          "kind": "lk-line",
+          "product": "einzbern",
+          "mark": 44,
+          "inkMinusMark": -0.5
+        },
+        {
+          "kind": "lkr-line",
+          "product": "mana-orchestrate",
+          "mark": 22,
+          "inkMinusMark": -0.9
+        },
+        {
+          "kind": "lk-line",
+          "product": "mana-orchestrate",
+          "mark": 44,
+          "inkMinusMark": -0.5
+        },
+        {
+          "kind": "lkr-line",
+          "product": "design-system",
+          "mark": 22,
+          "inkMinusMark": 1.4
+        },
+        {
+          "kind": "lk-line",
+          "product": "design-system",
+          "mark": 44,
+          "inkMinusMark": 1
+        }
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "fail",
+          "checked": 16,
+          "failures": [
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "mana-orchestrate",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "mana-orchestrate",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "design-system",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "design-system",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "lockup:lkr-line",
+              "what": "lockup.reference",
+              "value": "mana-orchestrate",
+              "expect": "Brand E rail"
+            },
+            {
+              "at": "lockup:lk-line",
+              "what": "lockup.reference",
+              "value": "mana-orchestrate",
+              "expect": "Brand E lk"
+            },
+            {
+              "at": "lockup:lkr-line",
+              "what": "lockup.reference",
+              "value": "design-system",
+              "expect": "Brand E rail"
+            },
+            {
+              "at": "lockup:lk-line",
+              "what": "lockup.reference",
+              "value": "design-system",
+              "expect": "Brand E lk"
+            }
+          ]
+        },
+        "strip": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "edges": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "continuation": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "markText": {
+          "status": "fail",
+          "checked": 16,
+          "failures": [
+            {
+              "at": "lkr-line@22:design-system",
+              "what": "ink-mark",
+              "value": 1.4,
+              "expect": 0
+            }
+          ]
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "lockupDecor": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [
+        "brandDigest",
+        "markText"
+      ],
+      "failedChecks": [],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-brand-first-line",
+      "locale": "zh-CN",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [],
+      "firstLines": [
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lk-line",
+          "product": "tms",
+          "mark": 44,
+          "inkMinusMark": -0.6
+        },
+        {
+          "kind": "lkr-line",
+          "product": "einzbern",
+          "mark": 22,
+          "inkMinusMark": -1
+        },
+        {
+          "kind": "lk-line",
+          "product": "einzbern",
+          "mark": 44,
+          "inkMinusMark": -0.5
+        },
+        {
+          "kind": "lkr-line",
+          "product": "mana-orchestrate",
+          "mark": 22,
+          "inkMinusMark": -0.9
+        },
+        {
+          "kind": "lk-line",
+          "product": "mana-orchestrate",
+          "mark": 44,
+          "inkMinusMark": -0.5
+        },
+        {
+          "kind": "lkr-line",
+          "product": "design-system",
+          "mark": 22,
+          "inkMinusMark": -0.3
+        },
+        {
+          "kind": "lk-line",
+          "product": "design-system",
+          "mark": 44,
+          "inkMinusMark": -1.1
+        }
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "fail",
+          "checked": 16,
+          "failures": [
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "mana-orchestrate",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "mana-orchestrate",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "design-system",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "design-system",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "lockup:lkr-line",
+              "what": "lockup.reference",
+              "value": "mana-orchestrate",
+              "expect": "Brand E rail"
+            },
+            {
+              "at": "lockup:lk-line",
+              "what": "lockup.reference",
+              "value": "mana-orchestrate",
+              "expect": "Brand E lk"
+            },
+            {
+              "at": "lockup:lkr-line",
+              "what": "lockup.reference",
+              "value": "design-system",
+              "expect": "Brand E rail"
+            },
+            {
+              "at": "lockup:lk-line",
+              "what": "lockup.reference",
+              "value": "design-system",
+              "expect": "Brand E lk"
+            }
+          ]
+        },
+        "strip": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "edges": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "continuation": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "markText": {
+          "status": "fail",
+          "checked": 16,
+          "failures": [
+            {
+              "at": "lk-line@44:design-system",
+              "what": "ink-mark",
+              "value": -1.1,
+              "expect": 0
+            }
+          ]
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "lockupDecor": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [
+        "brandDigest",
+        "markText"
+      ],
+      "failedChecks": [],
+      "missingHooks": [],
+      "screenFailures": []
+    },
+    {
+      "story": "shell-brand-first-line",
+      "locale": "zh-CN",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "shells": [],
+      "firstLines": [
+        {
+          "kind": "lkr-line",
+          "product": "tms",
+          "mark": 22,
+          "inkMinusMark": 0.1
+        },
+        {
+          "kind": "lk-line",
+          "product": "tms",
+          "mark": 44,
+          "inkMinusMark": -0.6
+        },
+        {
+          "kind": "lkr-line",
+          "product": "einzbern",
+          "mark": 22,
+          "inkMinusMark": -1
+        },
+        {
+          "kind": "lk-line",
+          "product": "einzbern",
+          "mark": 44,
+          "inkMinusMark": -0.5
+        },
+        {
+          "kind": "lkr-line",
+          "product": "mana-orchestrate",
+          "mark": 22,
+          "inkMinusMark": -0.9
+        },
+        {
+          "kind": "lk-line",
+          "product": "mana-orchestrate",
+          "mark": 44,
+          "inkMinusMark": -0.5
+        },
+        {
+          "kind": "lkr-line",
+          "product": "design-system",
+          "mark": 22,
+          "inkMinusMark": -0.3
+        },
+        {
+          "kind": "lk-line",
+          "product": "design-system",
+          "mark": 44,
+          "inkMinusMark": -1.1
+        }
+      ],
+      "gates": {
+        "brandGeometry": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "brandDigest": {
+          "status": "fail",
+          "checked": 16,
+          "failures": [
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "mana-orchestrate",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "mana-orchestrate",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "design-system",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "board:lockup",
+              "what": "mark.source",
+              "value": "design-system",
+              "expect": "logos2/<product>.svg"
+            },
+            {
+              "at": "lockup:lkr-line",
+              "what": "lockup.reference",
+              "value": "mana-orchestrate",
+              "expect": "Brand E rail"
+            },
+            {
+              "at": "lockup:lk-line",
+              "what": "lockup.reference",
+              "value": "mana-orchestrate",
+              "expect": "Brand E lk"
+            },
+            {
+              "at": "lockup:lkr-line",
+              "what": "lockup.reference",
+              "value": "design-system",
+              "expect": "Brand E rail"
+            },
+            {
+              "at": "lockup:lk-line",
+              "what": "lockup.reference",
+              "value": "design-system",
+              "expect": "Brand E lk"
+            }
+          ]
+        },
+        "strip": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "edges": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pinSpacing": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "continuation": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "barCentering": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "markText": {
+          "status": "fail",
+          "checked": 16,
+          "failures": [
+            {
+              "at": "lk-line@44:design-system",
+              "what": "ink-mark",
+              "value": -1.1,
+              "expect": 0
+            }
+          ]
+        },
+        "cascade": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "noCollapse": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": [],
+          "pending": [
+            "outside-click behaviour not traced in this run"
+          ]
+        },
+        "pinJitter": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "lockupDecor": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "contrast": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "singleLine": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "shadowBlur": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "touch": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "checks": {
+        "prail": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "pageCrumbs": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "settingsLayout": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        },
+        "splitView": {
+          "status": "n/a",
+          "checked": 0,
+          "failures": []
+        }
+      },
+      "failed": [
+        "brandDigest",
+        "markText"
+      ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     }
@@ -3621,94 +4509,49 @@
       "locale": "en",
       "traces": {
         "focusLoop": {
-          "afterEscape": "unopened",
-          "afterCommandK": "unopened",
+          "afterEscape": "tab",
+          "afterCommandK": "search",
           "cascadeArrowRight": {
             "from": 1,
-            "to": 1,
+            "to": 2,
             "row": "Contracts"
           },
           "cascadeArrowLeft": {
-            "from": 1,
+            "from": 2,
             "to": 1,
             "row": "Contracts"
           }
         },
         "outsideClick": {
-          "closesOnOutsideClick": "unopened"
+          "closesOnOutsideClick": true
         },
         "intro": {
-          "firstLoadPlays": 0,
+          "firstLoadPlays": 1,
           "reloadPlays": 0,
           "reducedMotionPlays": 0,
-          "properties": []
+          "properties": [
+            "transform",
+            "opacity"
+          ],
+          "durationMs": 475
         }
       },
-      "notes": [
-        "tab click: page.click: Timeout 3000ms exceeded."
-      ],
+      "notes": [],
       "gates": {
         "intro": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "trace",
-              "what": "firstLoadPlays",
-              "value": 0,
-              "expect": 1
-            }
-          ]
+          "failures": []
         },
         "focusLoop": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "trace",
-              "what": "afterEscape",
-              "value": "unopened",
-              "expect": "tab"
-            },
-            {
-              "at": "trace",
-              "what": "afterCommandK",
-              "value": "unopened",
-              "expect": "search"
-            },
-            {
-              "at": "trace",
-              "what": "cascadeArrowRight",
-              "value": {
-                "from": 1,
-                "to": 1,
-                "row": "Contracts"
-              },
-              "expect": "next column"
-            },
-            {
-              "at": "trace",
-              "what": "cascadeArrowLeft",
-              "value": {
-                "from": 1,
-                "to": 1,
-                "row": "Contracts"
-              },
-              "expect": "previous column"
-            }
-          ]
+          "failures": []
         },
         "noCollapse": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "trace",
-              "what": "outsideClick",
-              "value": "unopened",
-              "expect": true
-            }
-          ]
+          "failures": []
         }
       }
     },
@@ -3716,94 +4559,49 @@
       "locale": "zh-CN",
       "traces": {
         "focusLoop": {
-          "afterEscape": "unopened",
-          "afterCommandK": "unopened",
+          "afterEscape": "tab",
+          "afterCommandK": "search",
           "cascadeArrowRight": {
             "from": 1,
-            "to": 1,
+            "to": 2,
             "row": "合同"
           },
           "cascadeArrowLeft": {
-            "from": 1,
+            "from": 2,
             "to": 1,
             "row": "合同"
           }
         },
         "outsideClick": {
-          "closesOnOutsideClick": "unopened"
+          "closesOnOutsideClick": true
         },
         "intro": {
-          "firstLoadPlays": 0,
+          "firstLoadPlays": 1,
           "reloadPlays": 0,
           "reducedMotionPlays": 0,
-          "properties": []
+          "properties": [
+            "transform",
+            "opacity"
+          ],
+          "durationMs": 477
         }
       },
-      "notes": [
-        "tab click: page.click: Timeout 3000ms exceeded."
-      ],
+      "notes": [],
       "gates": {
         "intro": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "trace",
-              "what": "firstLoadPlays",
-              "value": 0,
-              "expect": 1
-            }
-          ]
+          "failures": []
         },
         "focusLoop": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "trace",
-              "what": "afterEscape",
-              "value": "unopened",
-              "expect": "tab"
-            },
-            {
-              "at": "trace",
-              "what": "afterCommandK",
-              "value": "unopened",
-              "expect": "search"
-            },
-            {
-              "at": "trace",
-              "what": "cascadeArrowRight",
-              "value": {
-                "from": 1,
-                "to": 1,
-                "row": "合同"
-              },
-              "expect": "next column"
-            },
-            {
-              "at": "trace",
-              "what": "cascadeArrowLeft",
-              "value": {
-                "from": 1,
-                "to": 1,
-                "row": "合同"
-              },
-              "expect": "previous column"
-            }
-          ]
+          "failures": []
         },
         "noCollapse": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "trace",
-              "what": "outsideClick",
-              "value": "unopened",
-              "expect": true
-            }
-          ]
+          "failures": []
         }
       }
     }
@@ -3829,10 +4627,10 @@
     {
       "id": "story-mark-path-coordinate",
       "gate": "brandDigest",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
       "ok": true,
-      "verdict": "red on a red baseline, with a new failure",
+      "verdict": "turns red",
       "newFailures": [
         "ts-closed-l:tab|mark.digest|\"b75a02799d4d129e\""
       ],
@@ -3894,10 +4692,10 @@
     {
       "id": "story-menu-top-60",
       "gate": "continuation",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
       "ok": true,
-      "verdict": "red on a red baseline, with a new failure",
+      "verdict": "turns red",
       "newFailures": [
         "ts-x-l|menu.top-tab.bottom|8"
       ],
@@ -3928,18 +4726,17 @@
     {
       "id": "story-word-padding-top-4",
       "gate": "markText",
-      "baseline": "pass",
+      "baseline": "fail",
       "status": "fail",
       "ok": true,
-      "verdict": "turns red",
+      "verdict": "red on a red baseline, with a new failure",
       "newFailures": [
-        "brand@22|ink-mark|2.1",
-        "lkr-line@22|ink-mark|2.1"
+        "lkr-line@22:tms|ink-mark|2.1"
       ],
       "changedGates": [
         "markText"
       ],
-      "story": "shell-top-band",
+      "story": "shell-brand-first-line",
       "source": "字标加 padding-top 4"
     },
     {
@@ -3980,22 +4777,26 @@
     {
       "id": "story-pin-display-none-inline",
       "gate": "pinJitter",
-      "baseline": "n/a",
-      "status": "n/a",
-      "ok": false,
-      "verdict": "stays n/a",
-      "newFailures": [],
-      "changedGates": [],
+      "baseline": "fail",
+      "status": "fail",
+      "ok": true,
+      "verdict": "red on a red baseline, with a new failure",
+      "newFailures": [
+        "ts-x-l|column1.textWidths|{\"rest\":[247.3],\"hover\":[223.3],\"on\":[223.3]}"
+      ],
+      "changedGates": [
+        "pinJitter"
+      ],
       "story": "shell-top-band",
       "source": "图钉 display:none → inline"
     },
     {
       "id": "story-lockup-as-button",
       "gate": "lockupDecor",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
       "ok": true,
-      "verdict": "red on a red baseline, with a new failure",
+      "verdict": "turns red",
       "newFailures": [
         "ts-x-l|lockup.tag|\"button\"",
         "ts-x-l|lockup.tabOrder|0"
@@ -4025,16 +4826,12 @@
     {
       "id": "story-label-plus-40",
       "gate": "singleLine",
-      "baseline": "fail",
-      "status": "fail",
-      "ok": true,
-      "verdict": "red on a red baseline, with a new failure",
-      "newFailures": [
-        "ts-x-l|truncatedWithoutTitle:div.tcrn-nav-group__label|184.5"
-      ],
-      "changedGates": [
-        "singleLine"
-      ],
+      "baseline": "pass",
+      "status": "pass",
+      "ok": false,
+      "verdict": "stays pass",
+      "newFailures": [],
+      "changedGates": [],
       "story": "shell-top-band",
       "source": "标签加长 40 字"
     },
@@ -4057,38 +4854,117 @@
     {
       "id": "story-intro-no-session-marker",
       "gate": "intro",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
-      "ok": false,
-      "verdict": "not distinguishable: red baseline, no new failure",
-      "newFailures": [],
-      "changedGates": [],
+      "ok": true,
+      "verdict": "turns red",
+      "newFailures": [
+        "trace|reloadPlays|1"
+      ],
+      "changedGates": [
+        "intro"
+      ],
       "story": "shell-intro",
       "source": "去掉会话标记"
     },
     {
       "id": "story-focus-not-returned",
       "gate": "focusLoop",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
-      "ok": false,
-      "verdict": "not distinguishable: red baseline, no new failure",
-      "newFailures": [],
-      "changedGates": [],
+      "ok": true,
+      "verdict": "turns red",
+      "newFailures": [
+        "trace|afterEscape|\"other\""
+      ],
+      "changedGates": [
+        "focusLoop"
+      ],
       "story": "shell-top-band",
       "source": "关闭时不还焦点"
     },
     {
       "id": "story-sheet-row-32",
       "gate": "touch",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
-      "ok": false,
-      "verdict": "not distinguishable: red baseline, no new failure",
-      "newFailures": [],
-      "changedGates": [],
+      "ok": true,
+      "verdict": "turns red",
+      "newFailures": [
+        "ts-m-s|sheet.row|32"
+      ],
+      "changedGates": [
+        "touch"
+      ],
       "story": "shell-mobile",
       "source": "行高改 32"
+    },
+    {
+      "id": "story-guide-icons-right-4",
+      "gate": "prail",
+      "baseline": "fail",
+      "status": "fail",
+      "ok": true,
+      "verdict": "red on a red baseline, with a new failure",
+      "newFailures": [
+        "ts-x-l|prail.icon|23"
+      ],
+      "changedGates": [
+        "prail"
+      ],
+      "story": "shell-top-band",
+      "source": "引导列图标右移 4"
+    },
+    {
+      "id": "story-crumbs-spill",
+      "gate": "pageCrumbs",
+      "baseline": "pass",
+      "status": "fail",
+      "ok": true,
+      "verdict": "turns red",
+      "newFailures": [
+        "ts-settings-m|crumbs.cut:nav.tcrn-breadcrumb|305.5"
+      ],
+      "changedGates": [
+        "singleLine",
+        "pageCrumbs"
+      ],
+      "story": "shell-mobile",
+      "source": "面包屑越出"
+    },
+    {
+      "id": "story-settings-max-width-none",
+      "gate": "settingsLayout",
+      "baseline": "pass",
+      "status": "fail",
+      "ok": true,
+      "verdict": "turns red",
+      "newFailures": [
+        "ts-settings-l|settings.w|1160",
+        "ts-settings-l|settings.left-right|234"
+      ],
+      "changedGates": [
+        "singleLine",
+        "settingsLayout"
+      ],
+      "story": "shell-top-band",
+      "source": "设置页内容不限宽"
+    },
+    {
+      "id": "story-split-rail-240",
+      "gate": "splitView",
+      "baseline": "pass",
+      "status": "fail",
+      "ok": true,
+      "verdict": "turns red",
+      "newFailures": [
+        "ts-roster-l|split.left|268"
+      ],
+      "changedGates": [
+        "splitView"
+      ],
+      "story": "shell-top-band",
+      "source": "分栏留侧栏位 240"
     }
   ],
   "dSection": [
@@ -4107,7 +4983,7 @@
         "markText",
         "brandGeometry"
       ],
-      "status": "pass"
+      "status": "fail"
     },
     {
       "row": "固定项",
@@ -4131,21 +5007,21 @@
         "barCentering",
         "noCollapse"
       ],
-      "status": "fail"
+      "status": "pass"
     },
     {
       "row": "右下角锁定块",
       "gates": [
         "lockupDecor"
       ],
-      "status": "fail"
+      "status": "pass"
     },
     {
       "row": "固定二级菜单下拉",
       "gates": [
         "continuation"
       ],
-      "status": "fail"
+      "status": "pass"
     },
     {
       "row": "三、四级级联",
@@ -4159,7 +5035,7 @@
       "gates": [
         "pinJitter"
       ],
-      "status": "n/a"
+      "status": "fail"
     },
     {
       "row": "面包屑",
@@ -4173,14 +5049,14 @@
       "gates": [
         "noCollapse"
       ],
-      "status": "fail"
+      "status": "pass"
     },
     {
       "row": "窄于 1024",
       "gates": [
         "touch"
       ],
-      "status": "fail"
+      "status": "pass"
     }
   ]
 }
