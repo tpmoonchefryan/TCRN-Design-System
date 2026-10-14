@@ -109,10 +109,10 @@
 | M4 | 已合入，包树已退役（303 MB） | 97c9206、706e689、e430a8a、d46d6d5、28d13ad、70babd0 | 8f5990c | 四张完成、SUB-194 部分（zh-CN 两次运行读到换字，M5 已合入，批末重量）；地标重名 30 → 4（余归 SUB-179）、TocRail 层级、⌘K 开关、data-logo 改标 id、三条新 token；ui-react 256/256、test:dom 58/58；contract:static 只剩 18 条 C8（待 Owner）；问题 8 条 |
 | M5 | 已合入，包树已退役（278 MB） | 4d1e254、8ceae3e、38b5e40、add6bc5 | 732ae02 | SUB-195、186 完成（DS 首行字标五语不换字、axe 14 → 12、拖排与产品切换在静态页实测保留），SUB-198 部分（复现性与泄漏扫描已稳，禁用项读回无样本，补样本要改 M9 的 story-content.tsx）；storybook 包测试 14/14；问题 8 条 |
 | M6 | 已合入，包树已退役（301 MB） | a971ca9、c149dd4、51be674、9456099 | 8bd05a0 | 三张完成：样板壳高 640 与画框齐、AOS 标题裁切 8 → 0、search-results 变体出结果与「工作项」补回；visual-proof 23 行全绿、smoke 0、storybook 包测试 12/12；axe 新增 4 条地标重名待 M4 的 SUB-184 归 0；问题 5 条 |
-| M7 | 在跑（自 8f5990c 后的集成 HEAD） | | | |
+| M7 | 已合入，包树已退役（301 MB） | 50d0a7c、d7b5643、39cb579、e41e23e | b524d4b | SUB-202、203 完成，SUB-201、179 各剩一项（地标重名 4 条与禁用项样本在 M9 的 story-content.tsx，已交 M9 附录）；文档壳水合真件（390/760 开 Sheet、761/1440 开面板）、⌘K 只开一个壳；壳层门真件 17/18（只剩 markText，待 O-4）；smoke 0、doc-shell:proof 0；问题 8 条 |
 | M8 | 已合入，包树已退役（278 MB） | f41f1d3、32ff6d6、4170031 | a21300e | SUB-204 完成：文档层改写 G+ 名（弃用提示 210 处 → 19 处，余归 SUB-208）、search-static 死规则与例外删除；shell:fidelity、doc-shell:proof、tokens:proof 0；问题 6 条（另有死规则、故事标题 3px 左边条违反禁用清单等，进下一轮） |
-| M9 | 待起 | | | |
-| M10 | 待起 | | | |
+| M9 | 在跑（自 b524d4b 后的集成 HEAD；另加附录 `runs/r3/excerpts/M9-addendum.md`：smoke.test 期望、样本块地标与禁用项、package-contract-manifest 两条源码规则） | | | |
+| M10 | 在跑（同 M9） | | | |
 | M11 | 待起（其余全部） | | | |
 
 ## 下一步
