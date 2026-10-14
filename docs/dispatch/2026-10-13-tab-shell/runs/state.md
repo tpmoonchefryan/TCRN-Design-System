@@ -144,6 +144,9 @@
 - 批末 verify（`tools/batch-end-verify.sh 4`）跑在 682fc94，2026-10-14T10:56:05Z–11:04:50Z：30 步只剩 2 步红，与 R3 相同——`contract:static` 只有 C8 15 条（O-19）、`geometry:measure` 只有 markText（1.4 与 1.7，O-4）；`storybook:build` 退出 0；结果表 `runs/r4/verify/steps.md`（00986b9）。
 - 批末验收：三片并行（einzbern-main），摘录 `runs/r4/excerpts/acceptance-{A,B,C}.md`（00986b9）。
 
+- 批末验收交回并提交（633c8fa）：A——137–141 机判满足，135（O-19）、136（O-8）阻于 Owner，返工 A4-1（`owner-acceptance.md` 两处）；B——142、144 满足，143（O-19）、145（O-4）阻于 Owner，146 部分（B4-1 Disclosure 焦点环被裁 2px），返工 B4-1、B4-2（M30 过期）；C——147、150 机判满足，148（O-2）、149（O-4、O-19）阻于 Owner，返工 C4-1（三处过期文字）、C4-2（门脚本空读回，可推迟）。三片无新 Owner 事项、无不可接受口径、无回退。
+- 判断：einzbern-main 单独一次，摘录 `runs/r4/excerpts/judgment.md`（525ba45），产出 `runs/r4/judgment.md` 与 `runs/r4/lessons.json`。
+
 ## 下一步
 
-- 三片验收交回后提交 → 判断（若 R5 无返工则建议收口）→ 链写与知识采集 → 收口：`closeout.md`、INIT-016 注解、停在推送之前。
+- 判断交回后提交 → 链写与知识采集（KB-041 起）→ R5（小轮：拆分经济档、验收与判断合一主力档）或收口。
