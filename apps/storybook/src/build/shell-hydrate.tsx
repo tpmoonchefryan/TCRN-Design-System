@@ -53,6 +53,12 @@ export interface ShellStoryScreen {
   presentation?: ShellMenuPresentation;
   /** The screen plays the sign-in intro once it has mounted. */
   intro?: boolean;
+  /**
+   * A query typed into the full menu's search, so the menu shows its results (TCRN-DS-SUB-150, R2-24):
+   * the start of this menu entry's label, in the page's language (shellStoryTypedQuery), so every
+   * language finds the same entries.
+   */
+  typed?: string;
 }
 
 /** The marker of a block this module hydrates. */
@@ -78,7 +84,10 @@ export const shellTopBandScreens: readonly ShellStoryScreen[] = [
   { screen: "ts-x-l", state: "expanded", theme: "light", label: "Full menu open", presentation: "panel" },
   { screen: "ts-x-n", state: "expanded", theme: "night", label: "Full menu open (night)", presentation: "panel" },
   { screen: "ts-drop-l", state: "drop", theme: "light", label: "Drop-down open" },
-  { screen: "ts-drop-n", state: "drop", theme: "night", label: "Drop-down open (night)" }
+  { screen: "ts-drop-n", state: "drop", theme: "night", label: "Drop-down open (night)" },
+  // The full menu with a query typed and its results open (TCRN-DS-SUB-150, R2-24): the host of
+  // geometry-proof's searchOverlay.
+  { screen: "ts-search-l", state: "expanded", theme: "light", label: "Full menu with search results", presentation: "panel", typed: "Contracts" }
 ];
 export const shellNarrowScreens: readonly ShellStoryScreen[] = [
   { screen: "ts-narrow-l", state: "closed", theme: "light", label: "Narrow band" },
@@ -98,6 +107,15 @@ const shellStoryScreens: Readonly<Record<string, readonly ShellStoryScreen[]>> =
   "shell-mobile": shellMobileScreens,
   "shell-intro": [shellIntroScreen]
 };
+
+/**
+ * The part of a label a reader has typed: its first three fifths, at least two characters, as one
+ * stops typing once the results hold the page ("Contracts" types "Contra", 合同 types 合同).
+ */
+export function shellStoryTypedQuery(label: string): string {
+  const characters = Array.from(label);
+  return characters.slice(0, Math.max(2, Math.ceil(characters.length * 0.6))).join("");
+}
 
 /** The id prefix of a screen's render, the same on the server and in hydration. */
 export function shellStoryIdentifierPrefix(storyId: string, screen: string): string {
@@ -196,7 +214,9 @@ function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t =
       brandProductId="tms"
       currentRouteLabel={t("Roster")}
       // The paper's first row (TCRN-DS-SUB-129): its trail is the current position, People › Roster.
-      pageHeader={{ title: t("Roster") }}
+      // The documentation page has its own h1 (the documentation shell's title), so the screen's title
+      // is a level-2 heading (TCRN-DS-SUB-150, SUB-163).
+      pageHeader={{ title: t("Roster"), headingLevel: 2 }}
       navGroups={shellStoryNavGroups(storyId, t)}
       locales={tcrnLocaleMetadata}
       currentLocale={locale}
@@ -208,6 +228,10 @@ function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t =
       menuOpen={screen.state === "expanded" ? true : undefined}
       openPinId={screen.state === "drop" ? shellStoryDropPinId : undefined}
       previewStates={shellStoryPreviewStates[screen.state]}
+      menuQuery={screen.typed ? shellStoryTypedQuery(t(screen.typed)) : undefined}
+      // Every screen is a shell of its own on the documentation page, beside the page's shell: its
+      // landmarks are named after the screen (TCRN-DS-SUB-150, SUB-148; axe landmark-unique).
+      landmarkLabel={t(screen.label)}
       contentId={`${storyId}-${screen.screen}-content`}
       contentLabel={t(screen.label)}
       data-shell={screen.screen}

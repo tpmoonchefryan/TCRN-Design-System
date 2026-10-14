@@ -14,21 +14,21 @@ const staticRoot = resolve("apps/storybook/storybook-static");
 const badgeRoute = "/components-navigation-shells.html#navigation-product-shell-spec";
 const brandRoute = "/components-navigation-shells.html#shell-top-band";
 const copyRoute = "/components-navigation-shells.html#navigation-product-shell-spec";
-const searchRoute = "/components-navigation-shells.html?theme=light&locale=en&proof=search#navigation-product-shell-spec";
+// The search host (TCRN-DS-SUB-150, R2-24): the top-band story's screen with a query typed into the
+// full menu and its results open, ts-search-l (the package renders the results on the server too).
+const searchRoute = "/components-navigation-shells.html?theme=light&locale=en#shell-top-band";
 const badgeStory = "navigation-product-shell-spec";
 const brandStory = "shell-top-band";
-const searchStory = "navigation-product-shell-spec";
+const searchStory = "shell-top-band";
+const searchScreen = "ts-search-l";
 // The brand host is the closed top band (07a board, section A): the first screen of shell-top-band.
 const closedScreen = "ts-closed-l";
-// Open menus ([aria-expanded="true"]) on the search route: the docs sidebar toggle, the docs
-// "Navigation and shells" category toggle, the knowledge-base shell sidebar toggle, the
-// ProductShell story disclosure and the ProductShell contract's avatar menu; then the top-band
-// shell stories (TCRN-DS-SUB-121): the brand buttons of the two full-menu screens of
-// shell-top-band, the pinned item and the open Templates row of its two drop-down screens, and the
-// brand buttons of the full-menu screens of shell-narrow and shell-mobile. It was 6 with the side
-// rail shell (its side-nav toggle and its top-bar search combobox), 8 before the dense operations
-// shell prototype and its two menu buttons were retired (TCRN-DS-SUB-066).
-const EXPECTED_OPEN_MENUS = 13;
+// Open menus ([aria-expanded="true"]) on the search route are read from the page itself
+// (TCRN-DS-SUB-150, R2-24): every expanded control must open something, its aria-controls naming
+// elements that are on the page and shown wherever the control is shown (a control in a collapsed
+// story is not shown, nor is what it opens). The count of such controls is the expected count, so an
+// expanded control whose layer is missing or hidden reds the check; the hand count this replaced
+// (13, the stories' open screens and toggles listed one by one) went stale whenever a story changed.
 // The closed top band (TCRN-DS-SUB-121; the composition-one rail of O-1 is gone): the band is
 // --tcrn-shell-strip-h high and the brand button --tcrn-shell-brand-w by --tcrn-shell-brand-h (its
 // second version, at 1440), read from the token registry; the product mark is the Brand board's
@@ -248,8 +248,8 @@ async function measureBrandCopies(page) {
 }
 
 async function measureSearchOverlay(page) {
-  return page.evaluate(({ storyId, expectedOpenMenus }) => {
-    const root = document.querySelector(`article[data-story-id="${storyId}"]`);
+  return page.evaluate(({ storyId, screen }) => {
+    const root = document.querySelector(`article[data-story-id="${storyId}"] [data-shell="${screen}"]`);
     const rect = (node) => {
       if (!node) return null;
       const box = node.getBoundingClientRect();
@@ -270,7 +270,19 @@ async function measureSearchOverlay(page) {
     const intersects = (first, second) => Boolean(first && second
       && Math.min(first.right, second.right) - Math.max(first.left, second.left) > 0.5
       && Math.min(first.bottom, second.bottom) - Math.max(first.top, second.top) > 0.5);
-    const openMenus = document.querySelectorAll('[aria-expanded="true"]').length;
+    const expandedControls = [...document.querySelectorAll('[aria-expanded="true"]')];
+    const opensSomething = (control) => {
+      const ids = (control.getAttribute("aria-controls") ?? "").split(/\s+/).filter(Boolean);
+      return ids.length > 0 && ids.every((id) => {
+        const layer = document.getElementById(id);
+        return Boolean(layer) && (!visible(control) || visible(layer));
+      });
+    };
+    const openMenus = expandedControls.length;
+    const expectedOpenMenus = expandedControls.filter(opensSomething).length;
+    const strayOpenMenus = expandedControls
+      .filter((control) => !opensSomething(control))
+      .map((control) => ({ tag: control.tagName.toLowerCase(), controls: control.getAttribute("aria-controls"), text: control.textContent?.trim().slice(0, 40) ?? "" }));
     const overlays = root
       ? [...root.querySelectorAll("[data-product-shell-search-results]")]
         .filter((node) => !node.hasAttribute("hidden") && visible(node))
@@ -290,13 +302,15 @@ async function measureSearchOverlay(page) {
       .map((target) => ({ overlay: overlay.label, target })));
     return {
       openMenus,
+      expectedOpenMenus,
+      strayOpenMenus,
       overlayCount: overlays.length,
       overlays,
       textTargets,
       collisions,
       ok: openMenus === expectedOpenMenus && overlays.length > 0 && collisions.length === 0
     };
-  }, { storyId: searchStory, expectedOpenMenus: EXPECTED_OPEN_MENUS });
+  }, { storyId: searchStory, screen: searchScreen });
 }
 
 async function addMutation(page, cssText) {
@@ -543,7 +557,7 @@ async function main() {
     await page.goto(`${server.origin}${searchRoute}`);
     await settle(page);
     const searchBaseline = await measureSearchOverlay(page);
-    await addMutation(page, `article[data-story-id="${searchStory}"] .tcrn-product-shell-search__results { position: absolute !important; inset-block-start: calc(100% + var(--tcrn-space-2)) !important; inset-inline-end: 0 !important; margin-block-start: 0 !important; }`);
+    await addMutation(page, `article[data-story-id="${searchStory}"] [data-shell="${searchScreen}"] .tcrn-product-shell-search__results { position: absolute !important; inset-block-start: calc(100% + var(--tcrn-space-2)) !important; inset-inline-end: 0 !important; margin-block-start: 0 !important; }`);
     const searchBroken = await measureSearchOverlay(page);
     await removeMutation(page);
     const searchRestored = await measureSearchOverlay(page);

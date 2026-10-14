@@ -157,9 +157,12 @@ const sampleShellFillStyle: CSSProperties = { blockSize: "100%" };
  */
 export function GplusSampleShell({ storyId, shellName, theme, spec, pageHeader, attributes, children }: { storyId: string; shellName: string; theme: GplusSampleTheme; spec: GplusSampleShellSpec; pageHeader: PageHeaderProps; attributes?: Readonly<Record<string, string>>; children: ReactNode }) {
   const prefix = `${storyId}-${theme}`;
+  const landmarkLabel = `${spec.landmarkLabel}${landmarkSuffix[theme]}`;
+  // The documentation page has its own h1, so the sample page's title is a level-2 heading
+  // (TCRN-DS-SUB-150, SUB-163).
   const header: PageHeaderProps = spec.trail
-    ? { ...pageHeader, breadcrumbs: [{ id: `${prefix}-trail-parent`, label: spec.trail[0], href: `#${storyId}` }, { id: `${prefix}-trail-page`, label: spec.trail[1] }] }
-    : pageHeader;
+    ? { ...pageHeader, headingLevel: 2, breadcrumbs: [{ id: `${prefix}-trail-parent`, label: spec.trail[0], href: `#${storyId}` }, { id: `${prefix}-trail-page`, label: spec.trail[1] }] }
+    : { ...pageHeader, headingLevel: 2 };
   const shell = (
     <ProductShell
       style={sampleShellFillStyle}
@@ -176,8 +179,11 @@ export function GplusSampleShell({ storyId, shellName, theme, spec, pageHeader, 
       notifications={sampleNotifications}
       pinnedIds={samplePinnedIds}
       onPinnedChange={() => undefined}
+      // The sample's name names all of the shell's landmarks, apart from the page's shell and the
+      // other samples' (TCRN-DS-SUB-150, SUB-148).
+      landmarkLabel={landmarkLabel}
       contentId={`${prefix}-content`}
-      contentLabel={`${spec.landmarkLabel}${landmarkSuffix[theme]}`}
+      contentLabel={landmarkLabel}
       data-shell={`${shellName}-${themeSuffix[theme]}`}
       data-measure-skip="rail"
       {...attributes}

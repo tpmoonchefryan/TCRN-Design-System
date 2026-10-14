@@ -592,7 +592,10 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
         brandProductId="design-system"
         currentRouteLabel={currentRouteLabel}
         // The paper's first row: the current route, under its trail in the menu model (TCRN-DS-SUB-129).
-        pageHeader={{ title: currentRouteLabel }}
+        // The documentation page has its own h1, so the instance's title is a level-2 heading, and the
+        // instance's landmarks are named after it, apart from the page's shell (TCRN-DS-SUB-150).
+        pageHeader={{ title: currentRouteLabel, headingLevel: 2 }}
+        landmarkLabel={`${copy.contentLabel}: ${variant.id}`}
         navGroups={navGroups(variant)}
         currentTheme={variant.theme}
         locales={tcrnLocaleMetadata}

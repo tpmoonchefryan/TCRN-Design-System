@@ -2325,7 +2325,10 @@ const legacyContractStories: LegacyContractStory[] = [
             moduleName="Frontend shell slice"
             brandProductId="design-system"
             currentRouteLabel="Cockpit"
-            pageHeader={{ title: "Cockpit" }}
+            // The documentation page has its own h1: this shell's title is a level-2 heading and its
+            // landmarks are named after the proof, apart from the page's shell (TCRN-DS-SUB-150).
+            pageHeader={{ title: "Cockpit", headingLevel: 2 }}
+            landmarkLabel="Package-backed AOS shell boundary"
             currentTheme="light"
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}
