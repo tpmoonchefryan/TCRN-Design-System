@@ -282,6 +282,11 @@ export const shellCss02 = `
 // bottom edge. Columns: three, gap space-4; a group title row is 28 (control-height-sm) with a
 // space-1h margin above, an item row --tcrn-shell-row-h; the row's content starts space-2 inside
 // the panel's space-2, 16 in all, and the bar's lockup ends there too (16 before the right edge).
+// A row's icon is the board's .ic box (shell-screen .ts-it .ic; TCRN-DS-SUB-188): icon-size-md plus
+// space-1h square (22), half a space-1h inset (3), border-box, so the box is as wide as the icon
+// column and starts on its start edge, 16 inside the panel, the 16 glyph at 19 and the text at 48
+// (07b: guide column, icons 16 and texts 48). The Sheet keeps tcrn-shell-menu, so its rows take
+// the same box, as the board's Sheet rows do.
 // Rows paint with the pair grammar: ink-2 at rest, ink on the 3.5% wash on hover, ink on the 6%
 // wash at weight 600 when selected; a group title is ink-3 with no hover fill (only its pin shows).
 //
@@ -453,6 +458,10 @@ export const shellCss03 = `
   grid-column: 2;
 }
 .tcrn-shell-menu .tcrn-nav-item > .tcrn-icon {
+  box-sizing: border-box;
+  inline-size: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h));
+  block-size: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h));
+  padding: calc(var(--tcrn-space-1h) / 2);
   justify-self: center;
   color: var(--tcrn-pair-icon);
 }
