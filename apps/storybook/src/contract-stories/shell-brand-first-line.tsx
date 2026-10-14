@@ -11,17 +11,10 @@
 // at the rail scale and then at the lockup scale. Only ProductLockup and its public props are used:
 // the marks are the colour marks of logos2 and the words the lockups' own, nothing is redrawn,
 // restyled or nudged, and no other lockup with a mark sits in the story.
+//
+// The story entry is story-content.tsx's (shell-brand-first-line, after shell-intro), as for the other
+// shell stories; this module holds what it renders.
 import { ProductLockup, tcrnProductMarkIds, type ProductLockupFirstLineScale } from "@tcrn/ui-react";
-import type { ContractStory } from "./types.js";
-import { storyCategoryFor, storyGovernanceFor } from "./governance.js";
-
-export const shellBrandFirstLineStoryId = "shell-brand-first-line";
-
-export const shellBrandFirstLineStoryText = {
-  title: "Brand first lines",
-  description:
-    "The four products' first lines, the lockup's first line alone, at the side-rail scale of the brand button (mark 22) and at the lockup scale of the full menu (mark 44): the word is centred on the mark, and nothing is redrawn."
-} as const;
 
 /** The scales of each product's first lines, in the order the shell gate reads them. */
 export const shellBrandFirstLineScales: readonly ProductLockupFirstLineScale[] = ["rail", "lockup"];
@@ -40,22 +33,3 @@ export function ShellBrandFirstLines() {
     </section>
   );
 }
-
-function shellBrandFirstLineStoryOf(): ContractStory {
-  const id = shellBrandFirstLineStoryId;
-  const governance = storyGovernanceFor(id, "Components");
-  const category = storyCategoryFor("Components", governance.categoryId);
-  return {
-    id,
-    title: shellBrandFirstLineStoryText.title,
-    group: "Components",
-    description: shellBrandFirstLineStoryText.description,
-    ...governance,
-    sourcePath: "apps/storybook/src/contract-stories/shell-brand-first-line.tsx",
-    category: category.label,
-    render: () => <ShellBrandFirstLines />
-  };
-}
-
-/** The brand story of the navigation-shells category, after the shell board matrix. */
-export const shellBrandFirstLineStory: ContractStory = shellBrandFirstLineStoryOf();

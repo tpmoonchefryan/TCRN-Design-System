@@ -176,6 +176,7 @@ import {
   shellTopBandScreens,
   type ShellStoryScreen
 } from "../build/shell-hydrate.js";
+import { ShellBrandFirstLines } from "./shell-brand-first-line.js";
 import {
   DialogSpecFixture,
   OverlayFocusFixture,
@@ -2389,6 +2390,15 @@ const legacyContractStories: LegacyContractStory[] = [
     group: "Components",
     description: "The intro that brings the product mark from the sign-in card into the brand button once per session: its three phases, reduced motion and the session marker.",
     render: () => <ShellIntroStory />
+  },
+  {
+    // The products' first lines the shell gate's markText reads (TCRN-DS-SUB-161, R2-28; id and
+    // category fixed with the gate, C-12). The components group lists it after the shell matrix.
+    id: "shell-brand-first-line",
+    title: "Brand first lines",
+    group: "Components",
+    description: "The four products' first lines, the lockup's first line alone, at the side-rail scale of the brand button (mark 22) and at the lockup scale of the full menu (mark 44): the word is centred on the mark, and nothing is redrawn.",
+    render: () => <ShellBrandFirstLines />
   },
   {
     id: "frontend-shell-slice",
