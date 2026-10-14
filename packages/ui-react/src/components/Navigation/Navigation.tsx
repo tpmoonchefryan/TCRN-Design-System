@@ -334,6 +334,16 @@ function productMark(productId: TcrnProductMarkId): TcrnProductMark {
   return mark;
 }
 
+/**
+ * The mark's own id, which a measured lockup writes in data-logo: the name of its logos2 file and
+ * of the Brand board's mark (tms, einzbern, mana, ds), not the product key it is registered under
+ * (mana-orchestrate, design-system). The shell gate's brandDigest finds the source by it
+ * (TCRN-DS-SUB-194).
+ */
+function productMarkIdOf(productId: TcrnProductMarkId): string {
+  return productMark(productId).id;
+}
+
 function inkedProductMarkBody(mark: TcrnProductMark, ink: string): string {
   return ink === "currentColor" ? mark.inkBody : mark.inkBody.replaceAll("currentColor", ink);
 }
@@ -619,7 +629,8 @@ export function ProductLogo({
       data-product-wordmark={asset.wordmark}
     >
       {/* A lockup the shell measures (one given a data-lockup hook, such as the full menu's
-          bottom bar) marks its colour mark with data-logo, as the first line does (C-5, C-6). The
+          bottom bar) marks its colour mark with data-logo, the mark's own id, as the first line
+          does (C-5, C-6; TCRN-DS-SUB-194). The
           other renditions do not, since their bytes are not the logos2 file's, and an unmeasured
           lockup (a card, a launcher) adds no hook. */}
       {asset.markId ? (
@@ -627,7 +638,7 @@ export function ProductLogo({
           productId={asset.markId}
           variant={markVariant}
           alt={markAlt}
-          data-logo={measured && (markVariant ?? "color") === "color" ? asset.productId : undefined}
+          data-logo={measured && (markVariant ?? "color") === "color" ? productMarkIdOf(asset.markId) : undefined}
         />
       ) : (
         <TcrnBrandMark src={brandMarkSrc} alt={markAlt} />
@@ -714,7 +725,7 @@ function ProductLockupFirstLine({
       data-product-id={asset?.productId}
     >
       {asset?.markId ? (
-        <TcrnBrandMark productId={asset.markId} variant="color" aria-hidden="true" data-logo={asset.productId} />
+        <TcrnBrandMark productId={asset.markId} variant="color" aria-hidden="true" data-logo={productMarkIdOf(asset.markId)} />
       ) : (
         <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} aria-hidden="true" />
       )}

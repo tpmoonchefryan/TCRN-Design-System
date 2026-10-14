@@ -131,16 +131,17 @@ if (!existsSync(packageEntryPath)) {
 
     // TCRN-DS-SUB-127 (STORY-145): ProductLockup's first line, the second of the three
     // renditions, draws the colour file at both of its scales; its svg[data-logo] names the
-    // product and holds the file's bytes.
+    // mark by its own id, the logos2 file's name (TCRN-DS-SUB-194), and holds the file's bytes.
     if (typeof ui.ProductLockup !== "function") {
       markFailures.push("@tcrn/ui-react does not export ProductLockup");
     } else {
       for (const file of fileResults) {
         if (file.variant !== "color" || typeof file.text !== "string") continue;
+        const markId = (marksContract.marks ?? []).find((mark) => mark.productId === file.productId)?.id;
         for (const scale of ["rail", "lockup"]) {
           const rendered = renderToStaticMarkup(createElement(ui.ProductLockup, { productId: file.productId, firstLine: scale }));
           const svg = /<svg\b[^>]*\bdata-logo="([^"]*)"[^>]*>([\s\S]*?)<\/svg>/u.exec(rendered);
-          const firstLineMatches = svg !== null && svg[1] === file.productId && svg[2] === innerOf(file.text);
+          const firstLineMatches = svg !== null && markId !== undefined && svg[1] === markId && svg[2] === innerOf(file.text);
           if (!firstLineMatches) markFailures.push(`ProductLockup ${file.productId} first line (${scale}) does not draw ${file.path}`);
           packageChecks.push({ productId: file.productId, variant: `first-line-${scale}`, firstLineMatches });
         }

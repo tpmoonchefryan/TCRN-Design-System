@@ -1883,7 +1883,8 @@ test("STORY-145 GWT1 ProductLockup's first line draws the four product marks fro
       assert.match(html, new RegExp(`data-lockup="${kind}"`));
       const svg = /<svg([^>]*)>([\s\S]*?)<\/svg>/.exec(html);
       assert.ok(svg, `${productId} ${scale} draws an inline mark`);
-      assert.match(svg[1], new RegExp(`data-logo="${productId}"`));
+      // data-logo is the mark's own id, the logos2 file's name, not the product key (TCRN-DS-SUB-194).
+      assert.match(svg[1], new RegExp(`data-logo="${mark.id}"`));
       assert.match(svg[1], /aria-hidden="true"/);
       assert.match(svg[1], /data-product-mark-variant="color"/);
       assert.equal(svg[2], logos2Inner(mark.id), `${productId} ${scale}: the mark is logos2/${mark.id}.svg`);
@@ -2650,4 +2651,21 @@ test("STORY-138 STORY-140 menuShortcut is ProductShell's switch for the full men
   assert.equal(shell({ menuShortcut: false }), shell({}));
   assert.equal(shell({ menuShortcut: true }), shell({}));
   assert.doesNotMatch(shell({ menuShortcut: false }), /menushortcut/i);
+});
+
+test("STORY-145 STORY-149 a measured lockup's data-logo is its mark's id, the logos2 file's name: ds and mana, not the product keys (TCRN-DS-SUB-194)", () => {
+  const logoOf = (html: string) => /<svg[^>]*\bdata-logo="([^"]*)"/.exec(html)?.[1] ?? null;
+  const expected = { "design-system": "ds", "mana-orchestrate": "mana", tms: "tms", einzbern: "einzbern" } as const;
+  for (const [productId, markId] of Object.entries(expected) as [keyof typeof expected, string][]) {
+    assert.ok(tcrnProductMarks.some((mark) => mark.id === markId && mark.productId === productId), `${markId} is the mark of ${productId}`);
+    for (const firstLine of ["rail", "lockup"] as const) {
+      assert.equal(logoOf(renderToStaticMarkup(<ProductLockup productId={productId} firstLine={firstLine} />)), markId, `${productId} first line ${firstLine}`);
+    }
+    // The bottom bar's lockup, measured through its data-lockup hook, writes the same id.
+    assert.equal(logoOf(renderToStaticMarkup(<ProductLogo productId={productId} data-lockup="lkr" />)), markId, `${productId} lockup`);
+    // The product key stays where it was: data-product-id on the lockup and data-product-mark on the mark.
+    const line = renderToStaticMarkup(<ProductLockup productId={productId} firstLine="rail" />);
+    assert.match(line, new RegExp(`data-product-id="${productId}"`));
+    assert.match(line, new RegExp(`data-product-mark="${productId}"`));
+  }
 });
