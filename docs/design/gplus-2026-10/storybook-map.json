@@ -30,10 +30,12 @@
     "R2-25": "R1 判断返工 R2-25：品牌样板表的资产 ID 列渲染的设计系统资产 ID 拼出仓库名，是渲染文本内部词汇扫描的唯一命中；按判据第一种做法删去该列，不给扫描器加豁免。",
     "SUB-072": "R2 拆分 SUB-072 判据（R2-25 的落点）：composition-one.tsx 删掉 Asset ID 列，或改显示不含仓库名的标识；不给扫描器加豁免；internal-vocab:scan 零命中。样板按删列执行，本映射不恢复该列。",
     "O-1": "R2 判断 O-1（设计会话 B 类裁定，Owner 可事后更正）：构图一壳层几何已授权，只含引导列 16 / 48、纸离边 12（圆角 14 加 s1）、顶栏 52、侧栏 220 与收起 52、侧栏画布色无右边线，数值取自 token；Navigation 家族其余行为、结构与 API 不动，留第二批。",
-    "O-3": "R2 判断 O-3（设计会话 B 类裁定，Owner 可事后更正）：夜间品牌后缀色 TMS 取 #7aa0f5，Design System 不改；撤去 token-contrast 与 axe 的两条 TMS 夜间豁免，只改 brand 项并重生。",
+    "O-3": "已撤回（SHELL-D2）。原为 R2 判断 O-3（设计会话 B 类裁定）：夜间 TMS 后缀另取 TMS 标的亮色（`marks.json` 的 tms.palette.bright），撤去 token-contrast 与 axe 的两条 TMS 夜间豁免。现行：TMS 后缀两主题同色 #2c63c8，夜间取值待 D7 裁定（SHELL-D7）。",
     "O-4": "R2 判断 O-4（设计会话 B 类裁定，Owner 可事后更正）：映射待裁差异中 DIFF-3 以构图板 220 / 52 为准；DIFF-2 的构图三样板随 O-1 授权，R3 补。",
     "SHELL-D1": "MIN-20261013-SHELL D1（Owner 2026-10-13「没问题」）：壳层采用顶带壳，取代 2026-10-11 纪要 D1 的构图一与构图三；顶带 52 无底无线，纸离壳边 12、圆角 14，壳内没有常驻侧栏。",
+    "SHELL-D2": "MIN-20261013-SHELL D2（品牌资产来源）：品牌资产只取通过稿原样（`logos2/*.svg` 与 Brand 板 E 段）；TMS 后缀取通过稿的标深色 #2c63c8，两主题同色，O-3 的夜间值随之撤回。",
     "SHELL-D4": "MIN-20261013-SHELL D4：Typography、Actions、Icon、Inputs 四板的构图一样板退出标准，随第二批换壳重渲染后补入（INIT-016 SUB-133 补四板 D 段，SUB-134 换 Storybook 侧样板）。",
+    "SHELL-D7": "MIN-20261013-SHELL D7（未裁项暂行处置）：夜间仍用通过稿的 TMS 后缀色，夜间取值与 INIT-015 收口 S-6 一并由 Owner 裁定（设计会话建议取 TMS 标的亮色）。裁定前 TMS 后缀夜间于纸 3.13、于画布 3.33，低于 4.5，是已知待裁项：token-contrast 登记两条夜间豁免并注明待裁。",
     "I16-C9": "INIT-016 R1 跨包约定 C-9：壳层 story 登记在 navigation-shells 类目（shell-top-band、shell-narrow、shell-mobile、shell-intro、shell-matrix），不进 gplus- 类目，本映射维持 23 行；第一批样板 id 不变，内容换顶带壳。",
     "I16-P4": "INIT-016 R1 拆分问题 4：D4 只让四板退出构图一样板，Brand 成品板不加 D 段（壳层板 07a 第 1 段「标三版」已表达品牌在壳里的样子）；brand-sample-product 照常换壳，映射里 brand 样板行改指 07a 第 1 段（草稿画布 V2-B2-Shell-Draft2 第 1 段）。",
     "I16-P5": "INIT-016 R1 拆分问题 5：构图一、构图三 6 行改标题并改指顶带壳样板与四板 D 段，板引用暂留草稿板（画布对应关系由设计会话定）。",
@@ -120,7 +122,7 @@
     { "id": "DIFF-7", "boards": ["V2-B1-Typography.dc.html", "V2-B1-Icon.dc.html", "V2-B1-Brand.dc.html", "V2-B1-Actions.dc.html", "V2-B1-Inputs.dc.html"], "sections": ["A"], "canvas": "每板左浅色、右夜间并排。", "story": "typography 与 inputs 两块并排，icon、brand、actions 两块上下叠放（守 story 高度预算）。", "status": "待 Owner 知悉", "refs": ["P24"] },
     { "id": "DIFF-8", "boards": ["V2-B2-Logos-Draft.dc.html"], "sections": ["A–E"], "canvas": "每枚产品标有大图、128 至 16 六档尺寸阶梯、淡底与深底贴片（64 / 32）、单色版与锁定块。", "story": "brand-matrix 给 TCRN 标 22 / 28 / 38 / 56 四档、四枚产品标 38 一档与单色版、ProductLogo 四个产品与 ProductLockup；没有六档阶梯与贴片。", "status": "待 Owner 知悉：第二批品牌", "refs": ["LOGOS", "SCOPE"] },
     { "id": "DIFF-9", "boards": ["V2-B1-Brand.dc.html"], "sections": ["D"], "canvas": "产品页表格四列：产品、资产 ID、标语 · zh / en、注册（浅色与夜间两块相同）。", "story": "brand-sample-product 的表格删去资产 ID 列，剩产品、标语、注册三列（返工 R2-25）。", "status": "待 Owner 知悉", "refs": ["R2-25", "SUB-072"] },
-    { "id": "DIFF-10", "boards": ["V2-B1-Brand.dc.html"], "sections": ["A", "F"], "canvas": "夜间块 ProductLogo 说明写后缀用各自产品标的深色：TMS #2c63c8（F 段 token 差异表的后缀颜色同写 tms #2c63c8，不分主题）。", "story": "包按 O-3 夜间 TMS 后缀取 #7aa0f5（浅色仍为 #2c63c8，Design System #6577f3 不变），token-contrast 与 axe 的两条 TMS 夜间豁免已撤（SUB-088）。", "status": "已裁定（O-3，设计会话 B 类）", "refs": ["O-3"] },
+    { "id": "DIFF-10", "boards": ["V2-B1-Brand.dc.html"], "sections": ["A", "F"], "canvas": "夜间块 ProductLogo 说明写后缀用各自产品标的深色：TMS #2c63c8（F 段 token 差异表的后缀颜色同写 tms #2c63c8，不分主题）。", "story": "与画布一致：TMS 后缀两主题同色 #2c63c8（Design System #6577f3 不变），只写在主题无关块（SHELL-D2；O-3 的夜间值已撤回）。夜间于纸 3.13、于画布 3.33，低于 4.5：token-contrast 登记两条 TMS 夜间豁免（纸与画布）并注明待裁（SHELL-D7）。", "status": "已对齐画布（SHELL-D2）；夜间取值另待 D7", "refs": ["SHELL-D2", "SHELL-D7", "O-3"] },
     { "id": "DIFF-11", "boards": ["V2-B1-Actions.dc.html"], "sections": ["D"], "canvas": "名册页样板表格三行：星野ひかり（A 组，签约，已复制）、Mika Lindqvist（B 组，试用）、陈嘉怡（B 组，签约）。", "story": "actions-sample-project 的第二行换成名册里的 김하늘（C 组，试用）：拉丁字母人名在 zh-CN 页是两词连写的拉丁串，会被英文泄漏扫描当作未翻译文本；其余行、动作与危险区同板。story id 不变（INIT-016 C-9）。", "status": "待 Owner 知悉", "refs": ["I16-C9"] }
   ]
 }
