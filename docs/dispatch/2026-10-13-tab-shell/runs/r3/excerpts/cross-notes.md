@@ -19,6 +19,7 @@
 
 | 包 | 交回物与行段 | 要点 |
 | --- | --- | --- |
+| M1 | `runs/r3/handoff/M1.md` 第 57–68 行（第 4、5 节） | 壳层门只读渲染出来的钉钮与行；对比度格的底色取格心下方实际绘制的层，读不了时标 `backdrop: "ancestors"`；页内面包屑逐段读；manifest 两套夹具的绿名单加 `singleLine`，`story-label-plus-40` 改在菜单夹具上跑（变异改为取完整菜单首个可见组标题、关截断后加 40 字，交判断确认）；`tests/shell-measure-proof.test.mjs` 35 → 39 条（SUB-179 留意）。真件 18 门 16 过 2 红（brandDigest 归 SUB-194、markText 待 O-4），prail 仍红归 SUB-188 |
 
 ## 4. 其他事实
 
