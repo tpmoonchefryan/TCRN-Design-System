@@ -18,6 +18,7 @@
 
 | 包 | 交回物与行段 | 要点 |
 | --- | --- | --- |
+| N1 | `runs/r4/handoff/N1.md`（接口与迁移条目两节） | 所有写 `data-logo` 的元素都写标的 id（ds、mana、tms、einzbern），取法统一用新模块 `product-mark-id.ts` 的 `productMarkIdOf`（不从入口导出）；几何门报告 `probes[]` 多 `paperFocusRing`（真件 9 处读到、0 违规）；Disclosure 展开区内层 `overflow: clip` 加 `overflow-clip-margin`，描边画出；迁移条目（M42 末句不再成立）交 SUB-223；视觉签名与 `geometry-measure/report.json` 由 SUB-224 重收。已知：可折叠区里按钮的焦点环底边与起始边仍被裁 2px（新发现，只记） |
 
 ## 4. 其他事实
 
