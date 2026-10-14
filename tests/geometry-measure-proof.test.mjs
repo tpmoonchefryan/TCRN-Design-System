@@ -508,7 +508,12 @@ test("STORY-131 GWT1-3 each have a real-story mutation on the check they name", 
   assert.match(shellFrameMutations[2].css, /\[data-shell-strip\] \{ block-size: 68px !important;/);
   for (const mutation of shellFrameMutations) assert.doesNotMatch(mutation.css, /tcrn-product-shell__workspace|tcrn-top-bar/, mutation.id);
   for (const mutation of shellFrameMutations) assert.ok(GPLUS_SAMPLE_STORY_IDS.includes(mutation.storyId), mutation.id);
-  assert.deepEqual(STORY_PROBES.map((probe) => probe.id), ["buttonGroupFocusRing", "datePickerIndicatorHit", "highlightWidth", "iconStroke"]);
+  assert.deepEqual(STORY_PROBES.map((probe) => probe.id), ["buttonGroupFocusRing", "datePickerIndicatorHit", "highlightWidth", "iconStroke", "paperFocusRing"]);
+  // TCRN-DS-SUB-213: the focus ring probe also runs on a story with real product shells, whose paper
+  // regions actions-matrix does not have.
+  const paperFocusRing = STORY_PROBES.find((probe) => probe.id === "paperFocusRing");
+  assert.deepEqual([paperFocusRing.storyId, paperFocusRing.source], ["shell-top-band", "140 SUB-182"]);
+  assert.ok(!GPLUS_STORY_IDS.includes(paperFocusRing.storyId), "a full run resolves the probe's story on its own");
   const iconStroke = STORY_PROBES.find((probe) => probe.id === "iconStroke");
   assert.deepEqual([iconStroke.storyId, iconStroke.source], ["icon-matrix", "124-GWT1"]);
   assert.deepEqual([ICON_STROKE.sizePx, ICON_STROKE.strokeWidthPx, ICON_STROKE.vectorEffect], [16, 1.25, "non-scaling-stroke"]);
@@ -651,7 +656,7 @@ test("the DatePicker probe needs the right 30px to be the native indicator, reac
 });
 
 test("on the built docs the real-story mutations are caught and the probes pass", { skip: !staticDocsBuilt && "static docs not built (pnpm build)" }, async () => {
-  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: ["typography-matrix", "icon-matrix", "actions-matrix", "inputs-matrix", "table-record-index-spec", "icon-sample-project"], themes: ["light"] });
+  const report = await runGeometryMeasureProof({ root: repoRoot, browser, selfCheck: false, storyIds: ["typography-matrix", "icon-matrix", "actions-matrix", "inputs-matrix", "table-record-index-spec", "icon-sample-project", "shell-top-band"], themes: ["light"] });
   assert.equal(report.reason, null);
   assert.deepEqual(report.missingStories, []);
   assert.deepEqual(report.mutations.map((mutation) => [mutation.id, mutation.killed]), STORY_MUTATIONS.map((mutation) => [mutation.id, true]));
@@ -659,6 +664,11 @@ test("on the built docs the real-story mutations are caught and the probes pass"
   const iconStroke = report.probes.find((probe) => probe.id === "iconStroke");
   assert.ok(iconStroke.checked > 0, "the 16px row was found");
   assert.deepEqual([iconStroke.strokeWidths, iconStroke.vectorEffects], [["1.25px"], ["non-scaling-stroke"]]);
+  // TCRN-DS-SUB-213: on the real top-band shell the probe focuses the paper's scrolling region of at
+  // least one ProductShell, and no ring is cut.
+  const paperFocusRing = report.probes.find((probe) => probe.id === "paperFocusRing");
+  assert.equal(paperFocusRing.status, "pass", JSON.stringify(paperFocusRing.violations ?? paperFocusRing.error));
+  assert.ok(paperFocusRing.regions >= 1, `regions ${paperFocusRing.regions}`);
   for (const id of ["typography-matrix", "actions-matrix"]) {
     const run = report.runs.find((item) => item.storyId === id);
     assert.equal(run.ok, true, `${id}: ${JSON.stringify(run.failed)} ${JSON.stringify(run.notApplicableRequired)}`);
