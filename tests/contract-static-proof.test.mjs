@@ -7,17 +7,18 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { colourLiterals, compounds, elementClasses, emojiIn, emojiInText, parseCss, parseHtml, selectorClasses, shadowLayers, specificity, textContent, walkElements, withoutPseudoElements } from "../scripts/lib/css-rules.mjs";
-import { CHECKED_CLAUSES, evaluateContract, familyArguments, outOfPackageClasses, selectedPairKeys, semanticOf, validateExemptions } from "../scripts/contract-static-proof.mjs";
+import { CHECKED_CLAUSES, checkedBatchesOf, evaluateContract, familyArguments, outOfPackageClasses, selectedPairKeys, semanticOf, validateExemptions } from "../scripts/contract-static-proof.mjs";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readRepoJson = (path) => JSON.parse(readFileSync(join(repoRoot, path), "utf8"));
 
 // ---------------------------------------------------------------------------------------------
 // Fixtures: a small package sheet in the contract's pair grammar, a themed token sheet, and a
-// family registry. Shell is batch 1 here only so that the C8 toolbar is in the checked scope.
+// family registry. Shell is batch 1 here only so that the C8 toolbar is in the checked scope; the
+// registry lists batch 1 as its only checked batch (scope.checkedBatches, TCRN-DS-SUB-189).
 
 const FAMILIES = {
-  scope: { batch: 1 },
+  scope: { checkedBatches: [1] },
   utilities: ["tcrn-sr-only"],
   families: [
     { id: "actions", name: "Actions", batch: 1, blocks: ["tcrn-button", "tcrn-link-button"] },
@@ -507,30 +508,126 @@ test("--family keeps the findings of the named families; an unknown family id is
 });
 
 // ---------------------------------------------------------------------------------------------
+// C11 card in card by the composite's family (TCRN-DS-SUB-190, R3-7 plan (a)): in this registry layout's
+// Surface is a checked batch-2 family and feedback carries a panel drawn on a Surface, the way
+// ReadbackPanel renders section.tcrn-surface.tcrn-readback-panel.
+
+const COMPOSITE_FAMILIES = {
+  ...FAMILIES,
+  scope: { checkedBatches: [1, 2] },
+  families: [
+    ...FAMILIES.families.map((family) => (family.id === "feedback" ? { ...family, blocks: [...family.blocks, "tcrn-readback-panel"] } : family)),
+    { id: "layout", name: "Layout", batch: 2, blocks: ["tcrn-surface"] }
+  ]
+};
+const FEEDBACK_EXEMPT = { entries: [exemption("EX-feedback", { family: "feedback" })] };
+const cardsPage = (inner) => pagesWith(`<!doctype html><html><body><section data-story-id="cards" class="tcrn-doc-frame">${inner}</section></body></html>`);
+const cardFindings = (report, rule) => [...report.clauses.C11.findings.filter((finding) => finding.rule === rule)];
+
+test("C11 story card in card: Surface in Surface stays with layout and is red (TCRN-DS-SUB-190)", () => {
+  const report = run({ families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT, pages: cardsPage(`<section class="tcrn-surface"><section class="tcrn-surface"><p>Inner</p></section></section>`) });
+  assert.deepEqual(cardFindings(report, "C11.story-card-in-card").map((finding) => finding.families), [["layout"]]);
+  assert.equal(status(report, "C11"), "red");
+});
+
+test("C11 story card in card: a card carrying Surface and a composite's class goes to the composite's family (TCRN-DS-SUB-190)", () => {
+  const composite = `<section class="tcrn-surface tcrn-readback-panel"><section class="tcrn-surface tcrn-readback-panel"><p>Inner</p></section></section>`;
+  const exempted = run({ families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT, pages: cardsPage(composite) });
+  assert.equal(status(exempted, "C11"), "green");
+  assert.deepEqual(exempted.clauses.C11.exemptedByEntry, { "EX-feedback": 1 });
+  // Without the composite's exemption it is still listed, under feedback alone, not layout.
+  const listed = run({ families: COMPOSITE_FAMILIES, exemptions: NO_EXEMPTIONS, pages: cardsPage(composite) });
+  assert.deepEqual(cardFindings(listed, "C11.story-card-in-card").map((finding) => finding.families), [["feedback"]]);
+  // A plain Surface in the composite keeps layout on the finding, so it stays red.
+  const mixed = run({ families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT, pages: cardsPage(`<section class="tcrn-surface tcrn-readback-panel"><section class="tcrn-surface"><p>Inner</p></section></section>`) });
+  assert.deepEqual(cardFindings(mixed, "C11.story-card-in-card").map((finding) => finding.families), [["feedback", "layout"]]);
+  assert.equal(status(mixed, "C11"), "red");
+});
+
+test("C11 static card in card follows the same attribution (TCRN-DS-SUB-190)", () => {
+  const families = (css) => cardFindings(run({ css: `${PACKAGE_CSS}\n${css}`, families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT }), "C11.card-in-card").map((finding) => finding.families);
+  assert.deepEqual(families(".tcrn-surface .tcrn-surface{padding:0}"), [["layout"]]);
+  assert.deepEqual(families(".tcrn-surface.tcrn-readback-panel .tcrn-surface.tcrn-readback-panel{padding:0}"), []);
+  assert.deepEqual(families(".tcrn-surface.tcrn-readback-panel .tcrn-surface{padding:0}"), [["feedback", "layout"]]);
+  const composite = run({ css: `${PACKAGE_CSS}\n.tcrn-surface.tcrn-readback-panel .tcrn-surface.tcrn-readback-panel{padding:0}`, families: COMPOSITE_FAMILIES, exemptions: FEEDBACK_EXEMPT });
+  assert.equal(composite.clauses.C11.exemptedByEntry["EX-feedback"], 1);
+});
+
+// ---------------------------------------------------------------------------------------------
 // The repository's contract files
 
 test("the repository's family registry, exemptions and roles are consistent", () => {
   const families = readRepoJson("docs/contract/families.json");
   const exemptions = readRepoJson("docs/contract/exemptions.json");
   const roles = readRepoJson("docs/contract/roles.json");
-  const checked = families.families.filter((family) => family.batch === families.scope.batch).map((family) => family.id);
-  assert.deepEqual(checked, ["typography", "icon", "brand", "actions", "inputs"]);
+  // The checked batches are read from scope.checkedBatches, the field validateExemptions reads
+  // (TCRN-DS-SUB-189): the first batch's five families and the second batch's three.
+  const checkedBatches = checkedBatchesOf(families);
+  assert.deepEqual(checkedBatches, [1, 2]);
+  const checked = families.families.filter((family) => checkedBatches.includes(family.batch)).map((family) => family.id);
+  assert.deepEqual(checked, ["typography", "icon", "brand", "actions", "inputs", "navigation", "shell", "layout"]);
   assert.equal(families.families.length, 16);
   const blocks = families.families.flatMap((family) => family.blocks);
   assert.equal(new Set(blocks).size, blocks.length, "a block belongs to one family");
-  const { entries, errors } = validateExemptions(exemptions, families);
+  const { entries, errors, uncovered } = validateExemptions(exemptions, families);
   assert.deepEqual(errors, []);
+  assert.deepEqual(uncovered, []);
   const exemptFamilies = new Set(entries.map((entry) => entry.family));
-  for (const family of families.families) assert.equal(exemptFamilies.has(family.id), family.batch !== families.scope.batch, family.id);
+  for (const family of families.families) assert.equal(exemptFamilies.has(family.id), !checkedBatches.includes(family.batch), family.id);
   const familyOfBlock = new Map(families.families.flatMap((family) => family.blocks.map((block) => [block, family.id])));
   for (const role of roles.singleLine) assert.ok(familyOfBlock.has(role.class.replace(/__.*$/u, "")), role.class);
   for (const toolbar of roles.toolbars) assert.equal(typeof toolbar.yield, "string", toolbar.toolbar);
+  // The shell's top band is the registered C8 toolbar (TCRN-DS-SUB-191): the strip yields at the pins and
+  // holds the brand button and the right cluster fixed; strip and pins are shell-family blocks.
+  assert.deepEqual(roles.toolbars, [{ toolbar: "顶带", container: "tcrn-shell-strip", yield: "tcrn-shell-pins", fixed: ["tcrn-shell-brand", "tcrn-shell-cluster"] }]);
+  for (const toolbar of roles.toolbars) for (const name of [toolbar.container, toolbar.yield]) assert.equal(familyOfBlock.get(name), "shell", name);
   for (const control of roles.shell.controls) assert.ok(["shell", "navigation"].includes(familyOfBlock.get(control.class.replace(/__.*$/u, "").replace(/--.*$/u, ""))), control.class);
   for (const bar of roles.shell.bars) assert.equal(familyOfBlock.get(bar), "shell", bar);
   const lockHint = entries.find((entry) => entry.id === "EX-INIT015-lock-hint-emoji");
   assert.deepEqual(lockHint?.classes, ["tcrn-lock-hint__icon"]);
   assert.deepEqual(lockHint?.clauses, ["C11"]);
   assert.match(lockHint?.ruling ?? "", /TCRN-DS-INIT-015 scope 不授权段/u);
+});
+
+test("scope.checkedBatches drives both exemption rules on the repository's files (TCRN-DS-SUB-189)", () => {
+  const families = readRepoJson("docs/contract/families.json");
+  const exemptions = readRepoJson("docs/contract/exemptions.json");
+  // An exemption for a family of a listed batch is an error: navigation is batch 2.
+  const navigation = exemption("EX-probe-navigation", { family: "navigation" });
+  const listed = validateExemptions({ ...exemptions, entries: [...exemptions.entries, navigation] }, families);
+  assert.equal(listed.errors.length, 1);
+  assert.equal(listed.errors[0].entry, "EX-probe-navigation");
+  assert.match(listed.errors[0].problems.join("; "), /family navigation is in the checked batch 2/u);
+  // A later batch's family left without its exemption is reported: feedback is batch 3.
+  const bare = validateExemptions({ ...exemptions, entries: exemptions.entries.filter((entry) => entry.id !== "EX-INIT015-feedback") }, families);
+  assert.deepEqual(bare.errors, []);
+  assert.deepEqual(bare.uncovered, [{ family: "feedback", batch: 3 }]);
+  // Listing batch 3 instead makes the same deletion consistent, and the remaining batch-3 entries errors.
+  const widened = validateExemptions(
+    { ...exemptions, entries: exemptions.entries.filter((entry) => entry.id !== "EX-INIT015-feedback") },
+    { ...families, scope: { ...families.scope, checkedBatches: [1, 2, 3] } }
+  );
+  assert.deepEqual(widened.uncovered, []);
+  assert.deepEqual(widened.errors.map((error) => error.entry).sort(), ["EX-INIT015-identity", "EX-INIT015-overlay"]);
+  // A registry that lists no checked batch is itself an error.
+  const unlisted = validateExemptions(exemptions, { ...families, scope: { note: "no batches" } });
+  assert.ok(unlisted.errors.some((error) => error.entry === "(families.json scope)"));
+});
+
+test("the repository run reds a later family left bare; fixture evaluation does not ask for it (TCRN-DS-SUB-189)", () => {
+  const evaluate = (exemptions, requireExemptionCoverage) => evaluateContract({
+    packageCss: PACKAGE_CSS, tokensCss: TOKENS_CSS, families: FAMILIES, exemptions, roles: ROLES, pairs: null,
+    outOfPackage: outOfPackageClasses(USED_CLASSES, parseCss(PACKAGE_CSS).rules), outOfPackageSource: "fixture",
+    storyPages: pagesWith(STORY_PAGE), storySource: "fixture", requireExemptionCoverage
+  });
+  const bare = evaluate(NO_EXEMPTIONS, true);
+  assert.deepEqual(bare.scope.uncoveredFamilies, [{ family: "feedback", batch: 3 }, { family: "display", batch: 4 }]);
+  assert.ok(bare.reasonCodes.includes("CONTRACT_STATIC_EXEMPTION_MISSING"));
+  assert.equal(bare.ok, false);
+  assert.ok(!evaluate(NO_EXEMPTIONS, false).reasonCodes.includes("CONTRACT_STATIC_EXEMPTION_MISSING"));
+  const covered = evaluate({ entries: [exemption("EX-feedback", { family: "feedback" }), exemption("EX-display", { family: "display" })] }, true);
+  assert.deepEqual(covered.scope.uncoveredFamilies, []);
+  assert.ok(!covered.reasonCodes.includes("CONTRACT_STATIC_EXEMPTION_MISSING"));
 });
 
 test("clauses.md carries C1 to C17 and names the clauses this gate checks", () => {

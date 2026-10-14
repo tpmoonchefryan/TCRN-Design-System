@@ -247,6 +247,11 @@ async function measureBrandCopies(page) {
   });
 }
 
+// The results sit in the full menu's panel, and the 07a board lays that panel over the paper, so a
+// collision is only the part of results box ∩ paper text that lies outside the panel the box sits in
+// (its nearest [data-panel] ancestor on the screen; with none the whole intersection counts). The
+// panel hides the paper only while it is opaque: its background alpha must be 1, read in the light
+// theme and again in the dark one (TCRN-DS-SUB-181, R3-4). The check itself stays (R1 §3.3).
 async function measureSearchOverlay(page) {
   return page.evaluate(({ storyId, screen }) => {
     const root = document.querySelector(`article[data-story-id="${storyId}"] [data-shell="${screen}"]`);
@@ -267,9 +272,42 @@ async function measureSearchOverlay(page) {
       const style = getComputedStyle(node);
       return box.width > 0 && box.height > 0 && style.display !== "none" && style.visibility !== "hidden";
     };
-    const intersects = (first, second) => Boolean(first && second
-      && Math.min(first.right, second.right) - Math.max(first.left, second.left) > 0.5
-      && Math.min(first.bottom, second.bottom) - Math.max(first.top, second.top) > 0.5);
+    // A box counts when both its sides exceed 0.5px, the tolerance the check has always used.
+    const counted = (box) => box.right - box.left > 0.5 && box.bottom - box.top > 0.5;
+    const overlap = (first, second) => {
+      const box = {
+        left: Math.max(first.left, second.left),
+        right: Math.min(first.right, second.right),
+        top: Math.max(first.top, second.top),
+        bottom: Math.min(first.bottom, second.bottom)
+      };
+      return counted(box) ? box : null;
+    };
+    // What is left of a box once a cover is taken away: the strips left and right of the cover, then
+    // the strips above and below it within the cover's columns. No cover leaves the whole box.
+    const outside = (box, cover) => {
+      if (!cover) return [box];
+      const columnLeft = Math.max(box.left, cover.left);
+      const columnRight = Math.min(box.right, cover.right);
+      return [
+        { left: box.left, right: Math.min(box.right, cover.left), top: box.top, bottom: box.bottom },
+        { left: Math.max(box.left, cover.right), right: box.right, top: box.top, bottom: box.bottom },
+        { left: columnLeft, right: columnRight, top: box.top, bottom: Math.min(box.bottom, cover.top) },
+        { left: columnLeft, right: columnRight, top: Math.max(box.top, cover.bottom), bottom: box.bottom }
+      ].filter(counted).map((strip) => Object.fromEntries(Object.entries(strip).map(([key, value]) => [key, Number(value.toFixed(2))])));
+    };
+    // The alpha of a computed colour: transparent is 0; rgba() carries it fourth, the space-separated
+    // forms after a slash (a percentage reads as a fraction); a colour without one is opaque.
+    const alphaOf = (color) => {
+      const value = String(color ?? "").trim().toLowerCase();
+      if (value === "" || value === "transparent") return 0;
+      const slash = /\/\s*([\d.]+)(%?)\s*\)$/.exec(value);
+      const legacy = /^rgba\(\s*[^,]+,[^,]+,[^,]+,\s*([\d.]+)(%?)\s*\)$/.exec(value);
+      const found = slash ?? legacy;
+      if (!found) return 1;
+      const number = Number.parseFloat(found[1]);
+      return found[2] === "%" ? number / 100 : number;
+    };
     const expandedControls = [...document.querySelectorAll('[aria-expanded="true"]')];
     const opensSomething = (control) => {
       const ids = (control.getAttribute("aria-controls") ?? "").split(/\s+/).filter(Boolean);
@@ -286,7 +324,18 @@ async function measureSearchOverlay(page) {
     const overlays = root
       ? [...root.querySelectorAll("[data-product-shell-search-results]")]
         .filter((node) => !node.hasAttribute("hidden") && visible(node))
-        .map((node) => ({ rect: rect(node), label: node.getAttribute("aria-label") ?? "" }))
+        .map((node) => {
+          const host = node.closest("[data-panel]");
+          const panel = host && root.contains(host) ? host : null;
+          const background = panel ? getComputedStyle(panel).backgroundColor : null;
+          return {
+            rect: rect(node),
+            label: node.getAttribute("aria-label") ?? "",
+            panel: panel
+              ? { name: panel.getAttribute("data-panel"), rect: rect(panel), background, alpha: alphaOf(background), opaque: alphaOf(background) === 1 }
+              : null
+          };
+        })
       : [];
     const textTargets = root
       ? [...root.querySelectorAll(".tcrn-product-shell__main h1, .tcrn-product-shell__main h2, .tcrn-product-shell__main h3, .tcrn-product-shell__main h4, .tcrn-product-shell__main p, .tcrn-product-shell__main li, .tcrn-product-shell__main dt, .tcrn-product-shell__main dd")]
@@ -297,10 +346,15 @@ async function measureSearchOverlay(page) {
           rect: rect(node)
         }))
       : [];
-    const collisions = overlays.flatMap((overlay) => textTargets
-      .filter((target) => intersects(overlay.rect, target.rect))
-      .map((target) => ({ overlay: overlay.label, target })));
+    const collisions = overlays.flatMap((overlay) => textTargets.flatMap((target) => {
+      const shared = overlap(overlay.rect, target.rect);
+      const bare = shared ? outside(shared, overlay.panel?.rect ?? null) : [];
+      return bare.length > 0 ? [{ overlay: overlay.label, target, outsidePanel: bare }] : [];
+    }));
+    const clearPanels = overlays.filter((overlay) => overlay.panel && !overlay.panel.opaque)
+      .map((overlay) => ({ overlay: overlay.label, panel: overlay.panel.name, background: overlay.panel.background }));
     return {
+      theme: root?.closest("[data-tcrn-theme]")?.getAttribute("data-tcrn-theme") ?? null,
       openMenus,
       expectedOpenMenus,
       strayOpenMenus,
@@ -308,9 +362,25 @@ async function measureSearchOverlay(page) {
       overlays,
       textTargets,
       collisions,
-      ok: openMenus === expectedOpenMenus && overlays.length > 0 && collisions.length === 0
+      clearPanels,
+      ok: openMenus === expectedOpenMenus && overlays.length > 0 && collisions.length === 0 && clearPanels.length === 0
     };
   }, { storyId: searchStory, screen: searchScreen });
+}
+
+// A screen's theme is the data-tcrn-theme of its story block, not the page's: ts-search-l is a light
+// screen and the top band has no night search screen, so the night reading switches that block to
+// dark (the token layer's own theme selector) and back. Returns the value it replaced.
+async function setSearchTheme(page, theme) {
+  const previous = await page.evaluate(({ storyId, screen, next }) => {
+    const block = document.querySelector(`article[data-story-id="${storyId}"] [data-shell="${screen}"]`)?.closest("[data-tcrn-theme]");
+    if (!block) return null;
+    const before = block.getAttribute("data-tcrn-theme");
+    block.setAttribute("data-tcrn-theme", next);
+    return before;
+  }, { storyId: searchStory, screen: searchScreen, next: theme });
+  await settle(page);
+  return previous;
 }
 
 async function addMutation(page, cssText) {
@@ -561,6 +631,16 @@ async function main() {
     const searchBroken = await measureSearchOverlay(page);
     await removeMutation(page);
     const searchRestored = await measureSearchOverlay(page);
+    // The panel left see-through: the paper would show through the results, so it reds.
+    await addMutation(page, `article[data-story-id="${searchStory}"] [data-shell="${searchScreen}"] [data-panel]:has([data-product-shell-search-results]) { background: transparent !important; }`);
+    const searchClearPanel = await measureSearchOverlay(page);
+    await removeMutation(page);
+    const searchClearPanelRestored = await measureSearchOverlay(page);
+    // The night reading: the same screen with its story block switched to the dark theme, then back.
+    const searchTheme = await setSearchTheme(page, "dark");
+    const searchDark = await measureSearchOverlay(page);
+    if (searchTheme !== null) await setSearchTheme(page, searchTheme);
+    const searchThemes = searchBaseline.theme === "light" && searchDark.theme === "dark";
 
     const mobileNavigation = [];
     for (const width of [760, 390]) mobileNavigation.push({
@@ -577,21 +657,31 @@ async function main() {
         && brandBaseline.ok && !brandBroken.ok && brandRestored.ok
         && !brandRailBroken.ok && brandRailRestored.ok && !brandMarkBroken.ok && brandMarkRestored.ok
         && copyBaseline.ok && !copyBroken.ok && copyRestored.ok
-        && searchBaseline.ok && !searchBroken.ok && searchRestored.ok,
+        && searchThemes && searchBaseline.ok && searchDark.ok && !searchBroken.ok && searchRestored.ok
+        && !searchClearPanel.ok && searchClearPanelRestored.ok,
       redThenGreen: {
         badge: { red: !badgeBroken.ok, green: badgeRestored.ok },
         brand: { red: !brandBroken.ok, green: brandRestored.ok },
         brandClosedBandWidth: { red: !brandRailBroken.ok, green: brandRailRestored.ok },
         brandClosedMarkScale: { red: !brandMarkBroken.ok, green: brandMarkRestored.ok },
         copy: { red: !copyBroken.ok, green: copyRestored.ok },
-        searchOverlay: { red: !searchBroken.ok, green: searchRestored.ok }
+        searchOverlay: { red: !searchBroken.ok, green: searchRestored.ok },
+        searchClearPanel: { red: !searchClearPanel.ok, green: searchClearPanelRestored.ok }
       },
       badge: { baseline: badgeBaseline, broken: badgeBroken, restored: badgeRestored },
       brand: { baseline: brandBaseline, broken: brandBroken, restored: brandRestored },
       brandClosedBandWidth: { broken: brandRailBroken, restored: brandRailRestored },
       brandClosedMarkScale: { broken: brandMarkBroken, restored: brandMarkRestored },
       copy: { baseline: copyBaseline, broken: copyBroken, restored: copyRestored },
-      searchOverlay: { baseline: searchBaseline, broken: searchBroken, restored: searchRestored }
+      searchOverlay: {
+        themes: searchThemes,
+        baseline: searchBaseline,
+        dark: searchDark,
+        broken: searchBroken,
+        restored: searchRestored,
+        clearPanel: searchClearPanel,
+        clearPanelRestored: searchClearPanelRestored
+      }
     };
   } finally {
     await page.close();

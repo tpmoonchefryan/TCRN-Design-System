@@ -17,15 +17,16 @@
 // on the package source layout. C13 takes the out-of-package class difference of
 // scripts/doc-shell-class-proof.mjs (built static docs plus documentation sources).
 //
-// Scope: the first-batch families of docs/contract/families.json are checked in full; every other
-// family is checked too unless docs/contract/exemptions.json carries an entry for that family (or
-// class) and clause with a ruling reference. Classes that belong to no family are always checked.
+// Scope: the families in the batches docs/contract/families.json lists as scope.checkedBatches are
+// checked in full and cannot be exempted; every other family is checked too unless
+// docs/contract/exemptions.json carries an entry for that family (or class) and clause with a ruling
+// reference, and the repository run is red while such a family has no family entry. Classes that belong to no family are always checked.
 // A selector is exempt only when every tcrn-* class in it is exempt; selectors without a tcrn-*
 // class are always checked. There is no unconditional skip.
 //
 // Story render layer (TCRN-DS-SUB-037): C7, C8 and C11 are also checked on the rendered story sections
 // of the static Storybook build (apps/storybook/storybook-static/*.html, the elements that carry
-// data-story-id): C7 title (on first-batch elements a title that holds the visible text, TCRN-DS-SUB-079)
+// data-story-id): C7 title (on checked-batch elements a title that holds the visible text, TCRN-DS-SUB-079)
 // and forced line breaks on single-line roles, C8 one yielding item per
 // rendered toolbar with every other item fixed, C11 emoji in rendered text, card in card, banned
 // features in inline styles, one shape for four semantics and generic parts standing in for shell
@@ -83,7 +84,7 @@ export const NOT_CHECKED_HERE = Object.freeze({
   C3: "rendered overflow (geometry measure)",
   C4: "rendered fixed-height overflow (geometry measure)",
   C9: "brand asset digests (brand-asset-source-proof)",
-  C10: "shell geometry literals (geometry gates)",
+  C10: "shell geometry literals (geometry gates; shellGeometryLiterals, shell-fidelity-proof's shellGeometryLiteral check)",
   C12: "placement-to-component table (selection-grammar-proof)",
   C14: "met by this gate's own mutation tests (tests/contract-static-proof.test.mjs)",
   C15: "five-locale string sources (existing string-source gate)",
@@ -147,6 +148,21 @@ const CARD_SURFACES = new Set(["tcrn-surface"]);
 /** A card root class: tcrn-card, tcrn-*-card or a card-drawn surface, not an element (__) class. */
 export const isCardRoot = (className) => !className.includes("__") && (CARD_BLOCK.test(blockOf(className)) || CARD_SURFACES.has(blockOf(className)));
 
+/**
+ * The classes a card in card is attributed to, for one card (TCRN-DS-SUB-190, R3-7 plan (a)). A part
+ * drawn on a card surface (section.tcrn-surface) that also carries a class of another registered family
+ * is that family's composite, so the surface's own family drops out of the card's classes: a
+ * ReadbackPanel is feedback, a RecordInspector is inspection. A card with no other family's class keeps
+ * its surface's family, so Surface in Surface stays with layout.
+ */
+export function compositeCardClasses(classNames, familyOf) {
+  const registered = (family) => family !== "unattributed" && family !== "utility";
+  const surfaceFamilies = new Set(classNames.filter((name) => CARD_SURFACES.has(blockOf(name))).map(familyOf).filter(registered));
+  if (surfaceFamilies.size === 0) return classNames;
+  const composite = classNames.some((name) => name.startsWith("tcrn-") && registered(familyOf(name)) && !surfaceFamilies.has(familyOf(name)));
+  return composite ? classNames.filter((name) => !name.startsWith("tcrn-") || !surfaceFamilies.has(familyOf(name))) : classNames;
+}
+
 const SHORTHAND_LONGHANDS = [
   ["border", /^border-(?:(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?-)?(?:color|width|style)$|^border-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?$/u],
   ["background", /^background-/u],
@@ -170,13 +186,32 @@ export function blockOf(className) {
   return className.replace(/__.*$/u, "").replace(/--.*$/u, "");
 }
 
-/** Validate the exemption file against the family registry; returns { entries, errors }. */
+/**
+ * The batches families.json marks as fully checked (TCRN-DS-SUB-189): scope.checkedBatches, the one
+ * source both the exemption rules and the registry test read. A family in a listed batch is checked in
+ * full and cannot be exempted; a family in any other batch must hold a family exemption until its batch
+ * is listed. An empty list or a missing one checks no batch, and validateExemptions reports it.
+ */
+export function checkedBatchesOf(families) {
+  const listed = families?.scope?.checkedBatches;
+  return Array.isArray(listed) ? listed.filter((batch) => Number.isInteger(batch)) : [];
+}
+
+/**
+ * Validate the exemption file against the family registry; returns { entries, errors, uncovered }.
+ * errors are the entries that break the rules (and a registry without checked batches); uncovered lists
+ * the families outside the checked batches that no valid family entry exempts.
+ */
 export function validateExemptions(exemptions, families) {
   const errors = [];
   const entries = [];
   const familyById = new Map((families?.families ?? []).map((family) => [family.id, family]));
-  const scopeBatch = families?.scope?.batch;
-  const scopedBlocks = new Set((families?.families ?? []).filter((family) => family.batch === scopeBatch).flatMap((family) => family.blocks));
+  const checkedBatches = new Set(checkedBatchesOf(families));
+  const listed = families?.scope?.checkedBatches;
+  if (!Array.isArray(listed) || listed.length === 0 || checkedBatches.size !== listed.length) {
+    errors.push({ entry: "(families.json scope)", problems: ["scope.checkedBatches must list the fully checked batches as integers"] });
+  }
+  const scopedBlocks = new Set((families?.families ?? []).filter((family) => checkedBatches.has(family.batch)).flatMap((family) => family.blocks));
   const seen = new Set();
   for (const [index, entry] of (Array.isArray(exemptions?.entries) ? exemptions.entries : []).entries()) {
     const where = entry?.id ?? `entries[${index}]`;
@@ -200,7 +235,7 @@ export function validateExemptions(exemptions, families) {
     if (hasFamily) {
       const family = familyById.get(entry.family);
       if (!family) problems.push(`family ${entry.family} is not in the family registry`);
-      else if (family.batch === scopeBatch) problems.push(`family ${entry.family} is in the checked batch and cannot be exempted`);
+      else if (checkedBatches.has(family.batch)) problems.push(`family ${entry.family} is in the checked batch ${family.batch} and cannot be exempted`);
     }
     if (hasClasses) {
       for (const className of entry.classes) {
@@ -215,16 +250,20 @@ export function validateExemptions(exemptions, families) {
     }
   }
   if (!Array.isArray(exemptions?.entries)) errors.push({ entry: "(file)", problems: ["entries array missing"] });
-  return { entries, errors };
+  const exempted = new Set(entries.map((entry) => entry.family).filter(Boolean));
+  const uncovered = (families?.families ?? [])
+    .filter((family) => !checkedBatches.has(family.batch) && !exempted.has(family.id))
+    .map((family) => ({ family: family.id, batch: family.batch }));
+  return { entries, errors, uncovered };
 }
 
 export function buildScope({ families, exemptions }) {
   const blockFamily = new Map();
   for (const family of families?.families ?? []) for (const block of family.blocks ?? []) blockFamily.set(block, family.id);
   for (const block of families?.utilities ?? []) blockFamily.set(block, "utility");
-  const scopeBatch = families?.scope?.batch;
-  const checkedFamilies = (families?.families ?? []).filter((family) => family.batch === scopeBatch).map((family) => family.id);
-  const { entries, errors } = validateExemptions(exemptions, families);
+  const checkedBatches = checkedBatchesOf(families);
+  const checkedFamilies = (families?.families ?? []).filter((family) => checkedBatches.includes(family.batch)).map((family) => family.id);
+  const { entries, errors, uncovered } = validateExemptions(exemptions, families);
   const byClause = new Map(CHECKED_CLAUSES.map((clause) => [clause, { families: new Map(), classes: new Map(), selectors: new Map() }]));
   for (const entry of entries) {
     for (const clause of entry.clauses) {
@@ -255,7 +294,7 @@ export function buildScope({ families, exemptions }) {
     }
     return { exempt: [...new Set(hits)].sort(), families: familiesHere };
   };
-  return { checkedFamilies, scopeBatch, entries, errors, used, familyOf, resolveClasses };
+  return { checkedFamilies, checkedBatches, entries, errors, uncovered, used, familyOf, resolveClasses };
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -668,7 +707,19 @@ export function checkC11(rules, scope) {
       for (const problem of problems) add(classes, { ...problem, selector: label, ...where(rule) });
       if (facts) {
         const cards = facts.parts.filter((part) => part.parsed.classes.some(isCardRoot));
-        if (cards.length >= 2) add(classes, { rule: "C11.card-in-card", selector: facts.selector, ...where(rule), detail: "a card selector nested in a card selector" });
+        if (cards.length >= 2) {
+          // A class leaves the finding only where it sits in a composite card's compound and nowhere
+          // else directly; classes inside :where() or :is() are not in any compound list and stay.
+          const dropped = new Set();
+          const kept = new Set();
+          for (const part of cards) {
+            const attributed = new Set(compositeCardClasses(part.parsed.classes, scope.familyOf));
+            for (const name of part.parsed.classes) (attributed.has(name) ? kept : dropped).add(name);
+          }
+          for (const part of facts.parts) if (!cards.includes(part)) for (const name of part.parsed.classes) kept.add(name);
+          const cardClasses = classes.filter((name) => !dropped.has(name) || kept.has(name));
+          add(cardClasses, { rule: "C11.card-in-card", selector: facts.selector, ...where(rule), detail: "a card selector nested in a card selector" });
+        }
       }
     }
   }
@@ -801,8 +852,8 @@ function firstBatchTitleProblem(node, storyNode, role, block, text) {
 /**
  * C7 on rendered stories. A single-line role element with visible text must carry a title for its
  * truncated text, and it must not hold a forced line break (<br> or a block element) or an inline style
- * that makes it wrap again. Elements whose package classes include a first-batch family class (the
- * checked batch of families.json) need a title that holds their visible text (firstBatchTitleProblem).
+ * that makes it wrap again. Elements whose package classes include a class of a checked-batch family
+ * (scope.checkedBatches of families.json) need a title that holds their visible text (firstBatchTitleProblem).
  * Elements of later families keep the earlier reading until their family is checked: a non-empty title
  * on the element itself, inside it, or on an ancestor up to its component root that holds no other
  * element of the same role (so a shared container's title does not count).
@@ -979,7 +1030,7 @@ export function checkC11Story(layer, scope, roles) {
         for (const problem of c11DeclarationProblems(declaration)) add(contextClasses(node, story.node), { rule: "C11.story-inline-style", ...storyWhere(story, node), detail: `inline ${problem.rule}: ${problem.detail}` });
       }
       const isCard = classes.some((name) => name.startsWith("tcrn-") && !name.startsWith(DOC_CLASS_PREFIX) && isCardRoot(name));
-      if (isCard && cardAncestor) add([...own, ...packageClassesOf(cardAncestor)], { rule: "C11.story-card-in-card", ...storyWhere(story, node), detail: `card ${describe(node)} nested in card ${describe(cardAncestor)}` });
+      if (isCard && cardAncestor) add([...compositeCardClasses(own, scope.familyOf), ...compositeCardClasses(packageClassesOf(cardAncestor), scope.familyOf)], { rule: "C11.story-card-in-card", ...storyWhere(story, node), detail: `card ${describe(node)} nested in card ${describe(cardAncestor)}` });
       const semantic = own.length > 0 ? semanticOf(node) : null;
       if (semantic) {
         const signature = [...own].sort().join(" ");
@@ -1054,8 +1105,10 @@ export function knownFamilyIds(families) {
  * Storybook build (null or empty when it could not be read, which makes C7, C8 and C11 red).
  * familyFilter (optional) keeps only the findings attributed to those families, plus the findings that
  * belong to no family; an unknown family id is red.
+ * requireExemptionCoverage (the repository run sets it; TCRN-DS-SUB-189) also reds a family outside
+ * scope.checkedBatches that no family entry exempts; fixtures leave such families bare on purpose.
  */
-export function evaluateContract({ packageCss, tokensCss = "", families, exemptions, roles, pairs, outOfPackage, outOfPackageSource, storyPages = null, storySource = DEFAULT_PATHS.storybookStatic, familyFilter = null, details = false }) {
+export function evaluateContract({ packageCss, tokensCss = "", families, exemptions, roles, pairs, outOfPackage, outOfPackageSource, storyPages = null, storySource = DEFAULT_PATHS.storybookStatic, familyFilter = null, details = false, requireExemptionCoverage = false }) {
   const scope = buildScope({ families, exemptions });
   const layer = readStoryLayer(storyPages);
   const storyReadable = Boolean(layer && layer.stories.length > 0);
@@ -1083,6 +1136,7 @@ export function evaluateContract({ packageCss, tokensCss = "", families, exempti
   const reasonCodes = [];
   if (packageParsed.errors.length + tokensParsed.errors.length > 0) reasonCodes.push("CONTRACT_STATIC_CSS_UNREADABLE");
   if (scope.errors.length > 0) reasonCodes.push("CONTRACT_STATIC_EXEMPTION_INVALID");
+  if (requireExemptionCoverage && scope.uncovered.length > 0) reasonCodes.push("CONTRACT_STATIC_EXEMPTION_MISSING");
   if (unknownFamilies.length > 0) reasonCodes.push("CONTRACT_STATIC_FAMILY_UNKNOWN");
   for (const clause of CHECKED_CLAUSES) if (clauses[clause].status === "red") reasonCodes.push(`CONTRACT_STATIC_${clause}_RED`);
   const ok = reasonCodes.length === 0;
@@ -1106,8 +1160,9 @@ export function evaluateContract({ packageCss, tokensCss = "", families, exempti
       selectedPairKeys: selectedPairKeys(pairs)
     },
     scope: {
-      batch: scope.scopeBatch,
+      checkedBatches: scope.checkedBatches,
       checkedFamilies: scope.checkedFamilies,
+      uncoveredFamilies: scope.uncovered,
       familyFilter: filter,
       unknownFamilies,
       exemptionEntries: scope.entries.length,
@@ -1179,7 +1234,7 @@ export async function runContractStaticProof({ root = process.cwd(), paths = DEF
     }
   }
   const storyPages = loadStoryPages(root, paths);
-  return evaluateContract({ packageCss, tokensCss: tokens.css, families, exemptions, roles, pairs, outOfPackage: classes, outOfPackageSource, storyPages, storySource: paths.storybookStatic, familyFilter, details });
+  return evaluateContract({ packageCss, tokensCss: tokens.css, families, exemptions, roles, pairs, outOfPackage: classes, outOfPackageSource, storyPages, storySource: paths.storybookStatic, familyFilter, details, requireExemptionCoverage: true });
 }
 
 /** --family values: repeated flags and comma lists. */
