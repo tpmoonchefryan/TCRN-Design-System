@@ -172,6 +172,10 @@
 - 知识卡 TCRN-DS-KB-046…049 全部建成（048 与 KB-012 标签重叠，以 `--coexist` 建）。
 - 收口文件 `docs/dispatch/2026-10-13-tab-shell/closeout.md` 已写出。
 
+- 收口提交 d17f889（收口文件与本文件）；随后在集成树重跑 `scaffold:proof` 与 `scan`（都退出 0），两份回执 `docs/verification/scaffold-proof.json`（CHANGELOG 与 ui-tokens `index.ts` 两个输入摘要）与 `docs/verification/internal-alpha/no-overclaim-scan.json`（scannedFiles 669 → 962）一笔提交 57625c6。
+- INIT-016 收口注解：WORKSPACE_COMMAND_COMPLETED，version 2471 → 2472，head 082f09285fea…；读回 INIT-016 active，注解在。
+- 最终 HEAD：记录本条的提交（本文件的最后一笔，前一笔 57625c6）；`git status --short` 为空。
+
 ## 下一步
 
-- 收口：提交收口文件 → 集成树重跑 `scaffold:proof` 与 `scan`，两份回执一笔 `chore(receipts)` 提交 → INIT-016 收口注解（一笔 work-annotate）并读回 → 本文件记最终 HEAD 与链头 → 停在推送之前，等 Owner（O-21、O-19、O-4、O-8、O-2、150 判定、目视、推送与发版、画布发布）。
+- 停在推送之前。剩余全部只等 Owner：O-21（本机登记补 projectId，命令在收口文件第 3.1 节）、O-19、O-4、O-8、O-2、150 判定、目视验收、推送与发版、画布发布。Owner 裁定后按收口文件第 3.3 节继续：INIT-015 的 12 张跑门转 done；INIT-016 开下一轮做 O-19、O-4 的返工，30 步全绿后合入主检出跑门转 16 张。
