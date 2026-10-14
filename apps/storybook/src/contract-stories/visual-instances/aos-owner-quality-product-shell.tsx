@@ -37,7 +37,6 @@ type OwnerQualityVariant = {
   label: string;
   theme: "light" | "dark";
   locale: "en" | "zh-CN";
-  collapsed: boolean;
   route: OwnerQualityRoute;
   searchMode: OwnerQualitySearchMode;
   viewport: OwnerQualityViewport;
@@ -51,19 +50,6 @@ const variants: readonly OwnerQualityVariant[] = [
     label: "Desktop light Operations Cockpit",
     theme: "light",
     locale: "en",
-    collapsed: false,
-    route: "cockpit",
-    searchMode: "rest",
-    viewport: "desktop",
-    reducedMotion: false,
-    contentMode: "cockpit"
-  },
-  {
-    id: "desktop-light-operations-cockpit-collapsed",
-    label: "Desktop light Operations Cockpit collapsed",
-    theme: "light",
-    locale: "en",
-    collapsed: true,
     route: "cockpit",
     searchMode: "rest",
     viewport: "desktop",
@@ -75,19 +61,6 @@ const variants: readonly OwnerQualityVariant[] = [
     label: "Desktop dark Operations Cockpit",
     theme: "dark",
     locale: "en",
-    collapsed: false,
-    route: "cockpit",
-    searchMode: "rest",
-    viewport: "desktop",
-    reducedMotion: false,
-    contentMode: "cockpit"
-  },
-  {
-    id: "desktop-dark-operations-cockpit-collapsed",
-    label: "Desktop dark Operations Cockpit collapsed",
-    theme: "dark",
-    locale: "en",
-    collapsed: true,
     route: "cockpit",
     searchMode: "rest",
     viewport: "desktop",
@@ -99,19 +72,6 @@ const variants: readonly OwnerQualityVariant[] = [
     label: "Desktop light Work queue",
     theme: "light",
     locale: "en",
-    collapsed: false,
-    route: "work",
-    searchMode: "rest",
-    viewport: "desktop",
-    reducedMotion: false,
-    contentMode: "work"
-  },
-  {
-    id: "desktop-light-work-queue-collapsed",
-    label: "Desktop light Work queue collapsed",
-    theme: "light",
-    locale: "en",
-    collapsed: true,
     route: "work",
     searchMode: "rest",
     viewport: "desktop",
@@ -123,7 +83,6 @@ const variants: readonly OwnerQualityVariant[] = [
     label: "Mobile dark zh-CN Work queue",
     theme: "dark",
     locale: "zh-CN",
-    collapsed: false,
     route: "work",
     searchMode: "rest",
     viewport: "mobile",
@@ -135,7 +94,6 @@ const variants: readonly OwnerQualityVariant[] = [
     label: "Desktop light Operations Cockpit with search results",
     theme: "light",
     locale: "en",
-    collapsed: false,
     route: "cockpit",
     searchMode: "results",
     viewport: "desktop",
@@ -147,7 +105,6 @@ const variants: readonly OwnerQualityVariant[] = [
     label: "Reduced-motion Operations Cockpit",
     theme: "light",
     locale: "en",
-    collapsed: false,
     route: "cockpit",
     searchMode: "rest",
     viewport: "desktop",
@@ -155,6 +112,13 @@ const variants: readonly OwnerQualityVariant[] = [
     contentMode: "cockpit"
   }
 ] as const;
+
+// The top band's state for a fixture (TCRN-DS-SUB-208): the search-results fixture holds the full menu open
+// (data-state="expanded"), every other fixture shows the band closed. The top band has no collapsed state, so
+// the old collapsed fixtures retired or became the closed state they render.
+function variantShellState(variant: OwnerQualityVariant): "closed" | "expanded" {
+  return variant.searchMode === "results" ? "expanded" : "closed";
+}
 
 export const ownerQualityShellOracleReadback = {
   storyId: "owner-quality-product-shell",
@@ -182,8 +146,8 @@ export const ownerQualityShellOracleReadback = {
   },
   slots: [
     "registered product logo lockup",
-    "attached ProductShell side navigation",
-    "compact topbar controls",
+    "ProductShell full menu from the brand button",
+    "band pins and avatar cluster",
     "ProductShellSearch rest/results surface",
     "product-first route context",
     "record queue and stage references",
@@ -196,7 +160,6 @@ export const ownerQualityShellOracleReadback = {
     brandProductId: "design-system",
     brandPlaceholderFor: "aos",
     productLogoAssetId: "tcrn-aos-two-line",
-    navLabel: "AOS operations navigation",
     // Eleven destinations in four groups: the consuming product's real IA, not
     // a two-item sample. A shell oracle at a scale no consumer uses cannot fail
     // the way a consumer fails, which is how the mobile posture shipped a
@@ -211,7 +174,7 @@ export const ownerQualityShellOracleReadback = {
     selector: `[data-storybook-visual-instance="owner-quality-product-shell"][data-visual-instance-variant="${variant.id}"]`,
     theme: variant.theme,
     locale: variant.locale,
-    collapsed: variant.collapsed,
+    shellState: variantShellState(variant),
     route: variant.route,
     searchMode: variant.searchMode,
     viewport: variant.viewport,
@@ -220,47 +183,31 @@ export const ownerQualityShellOracleReadback = {
   })),
   supportedStates: [
     "desktop light Operations Cockpit",
-    "desktop light Operations Cockpit collapsed",
     "desktop dark Operations Cockpit",
-    "desktop dark Operations Cockpit collapsed",
     "desktop Work queue",
-    "desktop Work queue collapsed",
     "mobile zh-CN Work queue",
     "search rest visual state",
     "search results visual state",
-    "search expand/collapse sampled 320ms motion timeline",
     "reduced-motion shell/search fallback",
-    "desktop owner-quality side navigation collapse and expand visual states",
-    "mobile owner-quality side navigation collapse affordance hidden by DS policy"
+    "desktop closed band and full menu visual states",
+    "mobile full menu as a Sheet from the brand button"
   ],
   /**
-   * What the hidden mobile collapse affordance does and does not mean.
-   *
-   * Recorded here rather than in `supportedStates` because that array renders as
-   * visible readback prose and is untranslated audited debt — adding to it grows
-   * the debt, and the ruling does not need a new rendered sentence to be true.
-   *
-   * The hidden control is the WIDTH collapse: narrowing a rail to 92px in a
-   * full-width stacked layout does nothing, which the responsive standard
-   * forbids, and that premise still holds. What it never meant — and was read as
-   * meaning from 2026-07-01, when this fixture had two destinations, until
-   * 2026-07-28 — is that the navigation cannot be put away at all. Those are two
-   * controls; the second one now exists and starts closed (TCRN-AOS-MIN-006).
+   * The phone's navigation in the top band (TCRN-DS-SUB-208): the brand button opens the full menu as a
+   * Sheet and the shell has no side rail, so neither the width collapse nor the show/hide toggle that this
+   * disposition recorded for the old rail exists any more.
    */
   mobileNavigationDisposition: {
-    hiddenAffordance: "width-collapse",
-    hiddenAffordanceReason: "a width collapse is a no-op in a full-width stacked layout",
-    showHideAffordance: "present",
-    showHideDefault: "closed",
-    rescopedBy: "TCRN-AOS-MIN-006"
+    presentation: "sheet",
+    opensFrom: "brand-button",
+    residentNavigation: "none"
   },
   ownerQualityAcceptanceCriteria: [
-    "first viewport reads as a product shell with registered product identity in the side brand lockup",
+    "first viewport reads as a product shell with registered product identity in the band's brand button",
     "exactly one primary H1 per rendered fixture",
     "product content leads with current records, stages, references, decisions, owner actions, service health, and activity",
     "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
-    "ProductShell topbar controls stay within the fixture root and viewport without horizontal clipping",
-    "ProductShellSearch expand/collapse motion samples intermediate widths over the DS 320ms search timeline",
+    "ProductShell band controls stay within the fixture root and viewport without horizontal clipping",
     "read-only and no-live-dispatch boundaries are visible but low-prominence",
     "developer proof/API/readback details are secondary disclosure",
     "primary modules are meaningful functional destinations rather than placeholder labels"
@@ -270,14 +217,14 @@ export const ownerQualityShellOracleReadback = {
     "implementation/proof/debug terminology dominates the first viewport",
     "no-overclaim copy becomes the primary product story",
     "runtime, audit, or verification metrics lead the hierarchy",
-    "ProductShell topbar, search, locale, or theme controls are cropped or create root/topbar horizontal overflow",
+    "ProductShell band, search, locale, or theme controls are cropped or create root/band horizontal overflow",
     "visible local product CSS/effects or Storybook-only prototype classes appear",
     "owner/product/release/live-dispatch readiness is claimed"
   ],
   delegatedSubOracles: [
-    "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and actionable desktop side-nav collapse/expand behavior for this owner-quality oracle.",
-    "Mobile owner-quality side navigation uses a DS-approved hidden collapse affordance policy; mobile collapsed owner-quality variants remain out of scope until a later DS decision admits them.",
-    "ProductShellSearch owns search rest/results/dismissal behavior and the 320ms sampled expand/collapse width timeline.",
+    "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, the full menu, and the pins and their drop-downs for this owner-quality oracle.",
+    "On a phone the brand button opens the full menu as a Sheet; the shell has no side rail and no collapse affordance.",
+    "The full menu's search owns search rest/results/dismissal behavior; focus does not widen it.",
     "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
   ],
   negativeCriteria: [
@@ -295,7 +242,6 @@ function labels(locale: OwnerQualityVariant["locale"]) {
     return {
       productName: "TCRN AOS",
       moduleName: "运营驾驶舱",
-      navLabel: "AOS 运营导航",
       cockpit: "运营驾驶舱",
       work: "工作队列",
       currentLocation: "当前位置",
@@ -320,7 +266,6 @@ function labels(locale: OwnerQualityVariant["locale"]) {
   return {
     productName: "TCRN AOS",
     moduleName: "Operations Cockpit",
-    navLabel: "AOS operations navigation",
     cockpit: "Operations Cockpit",
     work: "Work queue",
     currentLocation: "Current location",
@@ -634,16 +579,16 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
         data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
         data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
         data-visual-instance-owner-quality="product-first"
-        data-visual-instance-slots="brand side-nav topbar search operations-cockpit work-queue gates-evidence owner-actions service-health secondary-disclosure"
+        data-visual-instance-slots="brand pins cluster full-menu search operations-cockpit work-queue gates-evidence owner-actions service-health secondary-disclosure"
         data-visual-instance-primary-ia="operations-cockpit-work-queue"
         data-visual-instance-negative-criteria="no-proof-scaffold-hero no-dummy-cockpit no-raw-primary no-owner-readiness"
         data-visual-instance-product-logo="tcrn-aos-two-line"
-        data-visual-instance-mobile-collapse-policy="hidden-affordance"
+        data-visual-instance-mobile-menu="sheet"
         data-visual-instance-variant={variant.id}
         data-visual-instance-theme={variant.theme}
         data-tcrn-theme={variant.theme}
         data-visual-instance-locale={variant.locale}
-        data-visual-instance-collapsed={variant.collapsed ? "true" : "false"}
+        data-visual-instance-shell-state={variantShellState(variant)}
         data-visual-instance-route={variant.route}
         data-visual-instance-search={variant.searchMode}
         data-visual-instance-viewport={variant.viewport}
@@ -672,7 +617,7 @@ export function OwnerQualityShellOracle() {
               items={[
                 { key: "theme", label: "Theme", value: variant.theme },
                 { key: "locale", label: "Locale", value: variant.locale },
-                { key: "collapsed", label: "Collapsed", value: variant.collapsed ? "true" : "false" },
+                { key: "shell-state", label: "Shell state", value: variantShellState(variant) },
                 { key: "route", label: "Route", value: variant.route },
                 { key: "search", label: "Search", value: variant.searchMode },
                 { key: "viewport", label: "Viewport proof", value: variant.viewport },

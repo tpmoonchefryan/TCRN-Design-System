@@ -5,17 +5,17 @@ export const navigationComponentRows = [
   { primitive: "SearchInput", rule: "Provides search affordance for fields, filters, documentation shells, and product navigation.", boundary: "Control/Command+K shortcut labels belong only to navigation or shell search with a real focus target and result behavior." },
   { primitive: "Breadcrumb", rule: "Shows location inside a product route or documentation trail.", boundary: "Not a substitute for primary navigation." },
   { primitive: "Tabs and SegmentedNav", rule: "One tab family: Tabs, ModuleTabs, SectionTabs, ViewTabs, and SegmentedNav render tcrn-tabs in the panel, nav, and segmented variants, and the chosen tab takes the 6% ink wash and the strong weight.", boundary: "Do not claim role=tab unless keyboard tab behavior is implemented." },
-  { primitive: "PageHierarchy", rule: "Encodes explicit two-level and three-level page structures before container adaptation.", boundary: "ProductShell topbar is external; width cannot infer page depth or add an internal left navigation." },
+  { primitive: "PageHierarchy", rule: "Encodes explicit two-level and three-level page structures before container adaptation.", boundary: "ProductShell's band is external; width cannot infer page depth or add an internal left navigation." },
   { primitive: "ProductSwitcher", rule: "Deprecated: pass ProductShell its products, and the avatar menu moves between TCRN product surfaces.", boundary: "Storybook examples remain synthetic." },
   { primitive: "Pagination", rule: "Separates long indexed lists without losing current filter or proof context.", boundary: "No remote count claim without product data." },
   { primitive: "SkipLink", rule: "Provides keyboard access past repeated shell navigation.", boundary: "Must remain visible on focus." }
 ];
 
 export const navigationStrategyRows = [
-  { surface: "Dense operations", pattern: "Top bar, menu button, compact search, and expanded mega menu", rule: "Use when a product has 10+ primary navigation items or 30+ secondary directories.", boundary: "The expanded menu must show grouped primary areas and their secondary options together." },
-  { surface: "Design System knowledge base", pattern: "High-contrast collapsible side navigation with multi-level bookmark links", rule: "Use for documentation, standards, governance, and proof receipts.", boundary: "The side navigation follows scroll position, supports collapse, and does not replace page headings." },
-  { surface: "Focused tool surface", pattern: "Top bar with local segmented navigation", rule: "Use for a narrow tool with five or fewer peer views.", boundary: "Segmented navigation must not pretend to be product-wide navigation." },
-  { surface: "Mobile or narrow product shell", pattern: "Top bar, drawer menu, and compact search", rule: "Use when primary navigation cannot fit without wrapping or crowding.", boundary: "The drawer preserves the same grouping, search, focus, and close behavior." }
+  { surface: "Dense operations", pattern: "Top band: the brand button opens the full menu with its search, the grouped primary areas, and their secondary options", rule: "Use when a product has 10+ primary navigation items or 30+ secondary directories.", boundary: "The full menu shows the grouped primary areas and their secondary options together." },
+  { surface: "Design System knowledge base", pattern: "Top-band shell with the page's multi-level bookmarks as a contents rail in the paper", rule: "Use for documentation, standards, governance, and proof receipts.", boundary: "The contents rail follows the scroll position inside the page and does not replace page headings; the shell has no side navigation and no collapse control." },
+  { surface: "Focused tool surface", pattern: "Top band with local segmented navigation in the paper", rule: "Use for a narrow tool with five or fewer peer views.", boundary: "Segmented navigation must not pretend to be product-wide navigation." },
+  { surface: "Mobile or narrow product shell", pattern: "Top band; the brand button opens the full menu as a Sheet", rule: "Use when primary navigation cannot fit without wrapping or crowding.", boundary: "The Sheet keeps the full menu's grouping, search, focus, and close behavior." }
 ];
 
 export const denseShellMenuDensityRows = [

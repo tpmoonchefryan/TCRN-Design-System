@@ -6,6 +6,8 @@ import {
   Button,
   Breadcrumb,
   ModuleTabs,
+  NavGroup,
+  NavItem,
   Tabs,
   Checkbox,
   SearchableList,
@@ -875,12 +877,11 @@ const legacyContractStories: LegacyContractStory[] = [
       <section className="alpha-story-stack">
         <ReadbackPanel title="Brand palette">
           <div className="tcrn-doc-token-swatch-grid">
-            <TokenSwatch label="Primary brand" token="--tcrn-color-brand-primary" note="Use for TCRN identity, selected navigation, and creator-channel emphasis." />
-            <TokenSwatch label="Primary brand background" token="--tcrn-color-brand-primary-bg" note="Use for quiet selected surfaces and brand callouts." />
-            <TokenSwatch label="Secondary brand" token="--tcrn-color-brand-secondary" note="Use for system connection, informational support, charts, and secondary emphasis." />
-            <TokenSwatch label="Secondary brand background" token="--tcrn-color-brand-secondary-bg" note="Use for quiet informational surfaces." />
-            <TokenSwatch label="Accent brand" token="--tcrn-color-brand-accent" note="Use sparingly for highlights; never use as state truth." />
-            <TokenSwatch label="Neutral brand" token="--tcrn-color-brand-neutral" note="Use for dense structure, muted metadata, and low-emphasis support." />
+            <TokenSwatch label="Primary brand" token="--tcrn-color-acc" note="Use for TCRN identity, selected navigation, and creator-channel emphasis." />
+            <TokenSwatch label="Primary brand background" token="--tcrn-color-acc-bg" note="Use for quiet selected surfaces and brand callouts." />
+            <TokenSwatch label="Secondary brand" token="--tcrn-color-acc-2" note="Use for system connection, informational support, charts, and secondary emphasis." />
+            <TokenSwatch label="Accent brand" token="--tcrn-color-red" note="Use sparingly for highlights; never use as state truth." />
+            <TokenSwatch label="Neutral brand" token="--tcrn-color-ink-2" note="Use for dense structure, muted metadata, and low-emphasis support." />
           </div>
           <TableShell
             columns={[
@@ -900,12 +901,12 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Color role matrix">
           <div className="tcrn-doc-token-swatch-grid">
-            <TokenSwatch label="Canvas" token="--tcrn-color-surface-canvas" note="Use for page background and quiet space." />
-            <TokenSwatch label="Panel" token="--tcrn-color-surface-panel" note="Use for cards, drawers, dialogs, and doc surfaces." />
-            <TokenSwatch label="Muted surface" token="--tcrn-color-surface-muted" note="Use for secondary chips, nav states, and low-emphasis fills." />
-            <TokenSwatch label="Focus ring" token="--tcrn-color-focus-ring" note="Use only for visible keyboard focus and selected navigation." />
-            <TokenSwatch label="Ready state" token="--tcrn-color-state-ready-bg" note="Pair state color with a readable status label." />
-            <TokenSwatch label="Blocked state" token="--tcrn-color-state-blocked-bg" note="Use for blocked or destructive states with explanatory copy." />
+            <TokenSwatch label="Canvas" token="--tcrn-color-bg" note="Use for page background and quiet space." />
+            <TokenSwatch label="Panel" token="--tcrn-color-panel" note="Use for cards, drawers, dialogs, and doc surfaces." />
+            <TokenSwatch label="Muted surface" token="--tcrn-color-panel-2" note="Use for secondary chips, nav states, and low-emphasis fills." />
+            <TokenSwatch label="Focus ring" token="--tcrn-color-acc" note="Use only for visible keyboard focus and selected navigation." />
+            <TokenSwatch label="Ready state" token="--tcrn-color-wash" note="Pair state color with a readable status label." />
+            <TokenSwatch label="Blocked state" token="--tcrn-color-bad-bg" note="Use for blocked or destructive states with explanatory copy." />
           </div>
           <TableShell
             columns={[
@@ -919,31 +920,6 @@ const legacyContractStories: LegacyContractStory[] = [
               { role: "Border", usage: "Structure, separation, and neighboring controls", guardrail: "Do not use color alone for state." },
               { role: "Focus", usage: "Keyboard focus and selected navigation", guardrail: "Never suppress visible focus." },
               { role: "State", usage: "Ready, warning, blocked, and unknown status", guardrail: "Always pair color with text." }
-            ]}
-          />
-        </ReadbackPanel>
-        <ReadbackPanel title="Neutral calibration candidates">
-          <Text>Owner review admitted a narrow neutral-gray calibration token set as package-backed evidence only. These tokens do not replace the current canvas, panel, state, progress, or focus defaults without a separate component adoption route.</Text>
-          <div className="tcrn-doc-token-swatch-grid">
-            <TokenSwatch label="Neutral canvas" token="--tcrn-color-neutral-calibration-canvas" note="Measured neutral gray canvas candidate; no blue/purple surface tint." />
-            <TokenSwatch label="Neutral panel" token="--tcrn-color-neutral-calibration-panel" note="Measured neutral panel candidate for future proofed surfaces." />
-            <TokenSwatch label="Neutral muted" token="--tcrn-color-neutral-calibration-muted" note="Muted neutral fill and progress track candidate." />
-            <TokenSwatch label="Calibrated focus" token="--tcrn-color-focus-ring-calibrated" note="Solid focus-ring candidate; records contrast without suppressing focus." />
-            <TokenSwatch label="Warning calibrated" token="--tcrn-color-state-warning-calibrated-bg" note="Measured warning pair; always use with warning text and copy." />
-            <TokenSwatch label="Danger calibrated" token="--tcrn-color-state-danger-calibrated-bg" note="Measured danger pair; always use with danger text and copy." />
-          </div>
-          <TableShell
-            columns={[
-              { key: "role", label: "Role" },
-              { key: "token", label: "Token" },
-              { key: "guardrail", label: "Guardrail" }
-            ]}
-            rows={[
-              { role: "Neutral surfaces", token: "--tcrn-color-neutral-calibration-*", guardrail: "Keeps page/card/sidebar/header backgrounds gray; not an automatic theme replacement." },
-              { role: "Focus", token: "--tcrn-color-focus-ring-calibrated", guardrail: "Solid contrast candidate only; never hide focus or rely on glow alone." },
-              { role: "Progress", token: "--tcrn-color-progress-*-calibrated", guardrail: "Visual evidence token only; pair progress with accessible status copy." },
-              { role: "Warning", token: "--tcrn-color-state-warning-calibrated-*", guardrail: "Use only with warning semantics and readable text." },
-              { role: "Danger", token: "--tcrn-color-state-danger-calibrated-*", guardrail: "Use only with destructive or blocking semantics and readable text." }
             ]}
           />
         </ReadbackPanel>
@@ -1126,7 +1102,7 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "mobile", label: "Mobile rule" }
             ]}
             rows={[
-              { surface: "Documentation page", desktop: "Readable content column with sticky side navigation.", mobile: "Single column; navigation appears before content." },
+              { surface: "Documentation page", desktop: "Readable content column in the paper, beside the page's own contents rail.", mobile: "Single column; navigation appears before content." },
               { surface: "Workbench", desktop: "Dense scanning is allowed when rows remain legible.", mobile: "Stack rows into cards with labels." },
               { surface: "Action row", desktop: "Actions wrap with visible gaps.", mobile: "Primary and secondary actions remain separated." },
               { surface: "Detail panel", desktop: "Drawer or side panel must not compress the table to unreadable width.", mobile: "Use full-width panel or route-level page." }
@@ -1473,7 +1449,7 @@ const legacyContractStories: LegacyContractStory[] = [
         </section>
         <ReadbackPanel title="Storybook doc shell control contract">
           <Text>
-            The Storybook documentation frontend uses the restored Storybook-owned doc shell for shell, header, category navigation, search, theme, locale, and collapse controls.
+            The Storybook documentation frontend is the package ProductShell in its top-band form: the band holds the brand button, the pinned sections and the avatar cluster; the full menu holds the search and the section and category rows; the avatar menu holds the theme and language controls.
           </Text>
           <TableShell
             columns={[
@@ -1484,8 +1460,8 @@ const legacyContractStories: LegacyContractStory[] = [
             rows={[
               {
                 control: "Implementation boundary",
-                rule: "Use the Storybook doc shell as the documentation shell authority; ProductShell remains scoped to component docs, product visual instances, and consumer rules.",
-                blocked: "Global Storybook pages rendered through ProductShell, a flat ProductShell side-nav, or missing doc-shell category navigation."
+                rule: "Render every documentation page in the package ProductShell, once per page; a ProductShell inside a story body is a component example, a product visual instance, or a consumer rule.",
+                blocked: "A second page shell, a resident side rail, a collapse control, or navigation outside the band, the full menu, and the drop-downs."
               },
               {
                 control: "Theme toggle",
@@ -1495,7 +1471,7 @@ const legacyContractStories: LegacyContractStory[] = [
               {
                 control: "Theme transition",
                 rule: "Theme changes use one whole-page transition: root View Transition when available, or one full-page fallback wash.",
-                blocked: "Per-section darkening where sidebar, header, and content animate independently."
+                blocked: "Per-section darkening where the band, the paper, and the page animate independently."
               },
               {
                 control: "Language selector",
@@ -1504,12 +1480,12 @@ const legacyContractStories: LegacyContractStory[] = [
               },
               {
                 control: "Search",
-                rule: "Keep search compact at rest, expand smoothly on focus, and collapse on blur while preserving the shortcut label only for shell search.",
-                blocked: "Fixed long search fields that permanently crowd the theme and language controls."
+                rule: "The search is a field of the full menu: it keeps its width on focus, lists its results in the menu, and shows its shortcut only in the one shell on the page that registers it.",
+                blocked: "A search field in the band, or a second shell on the page answering the same shortcut."
               },
               {
                 control: "AI contract",
-                rule: "Expose the AI contract through the Proof story and static JSON artifact, not as a top-bar human navigation item.",
+                rule: "Expose the AI contract through the Proof story and static JSON artifact, not as a band or menu navigation item.",
                 blocked: "Putting machine-contract JSON links in the primary human toolbar."
               },
               {
@@ -1580,8 +1556,8 @@ const legacyContractStories: LegacyContractStory[] = [
               { key: "classification", label: "Baseline classification", value: storybookDocShellVisualOracle.baselineManifestClassification },
               { key: "metric-source", label: "Metric source", value: storybookDocShellVisualOracle.metricSourceDisposition },
               { key: "source", label: "Source head", value: storybookDocShellVisualOracle.sourceHead },
-              { key: "sidebar", label: "Desktop sidebar width", value: `${storybookDocShellVisualOracle.shellMetrics.desktopSidebarWidthPx}px +/- ${storybookDocShellVisualOracle.shellMetrics.desktopSidebarTolerancePx}px` },
-              { key: "topbar", label: "Desktop topbar height", value: `${storybookDocShellVisualOracle.shellMetrics.desktopTopbarHeightPx}px +/- ${storybookDocShellVisualOracle.shellMetrics.desktopTopbarTolerancePx}px` },
+              { key: "resident-nav", label: "Resident navigation width", value: `${storybookDocShellVisualOracle.shellMetrics.residentNavWidthPx}px +/- ${storybookDocShellVisualOracle.shellMetrics.residentNavTolerancePx}px` },
+              { key: "band", label: "Band height", value: `${storybookDocShellVisualOracle.shellMetrics.bandHeightPx}px +/- ${storybookDocShellVisualOracle.shellMetrics.bandHeightTolerancePx}px` },
               { key: "search", label: "Search control", value: `${storybookDocShellVisualOracle.shellMetrics.searchRestWidthPx}px rest, ${storybookDocShellVisualOracle.shellMetrics.searchExpandedWidthPx}px expanded, ${storybookDocShellVisualOracle.shellMetrics.searchHeightPx}px high` },
               { key: "theme", label: "Theme toggle", value: `${storybookDocShellVisualOracle.shellMetrics.themeToggleSizePx}px, radius ${storybookDocShellVisualOracle.shellMetrics.themeToggleRadiusPx}px` }
             ]}
@@ -2241,7 +2217,7 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="Knowledge base bookmark shell">
-          <Text>Design System and other knowledge-base products need side navigation with multi-level bookmarks because the reader path is nested and scroll-driven.</Text>
+          <Text>Design System and other knowledge-base products keep multi-level bookmarks as page content, a contents rail in the paper, because the reader path is nested and scroll-driven.</Text>
           <KnowledgeBaseShellDemo />
         </ReadbackPanel>
         <ReadbackPanel title="Compact tool shell">
@@ -2274,13 +2250,23 @@ const legacyContractStories: LegacyContractStory[] = [
               <div className="tcrn-doc-package-nav-proof__skip">
                 <SkipLink href="#navigation-shell-spec">Skip to navigation shell content</SkipLink>
               </div>
+              {/* Each segmented nav on this page carries its own name, so its landmark is unique
+                  (axe landmark-unique; TCRN-DS-SUB-208). */}
               <SegmentedNav
+                label="Contract views"
                 items={[
                   { id: "contracts", label: "Contracts", selected: true },
                   { id: "usage", label: "Usage" },
                   { id: "proof", label: "Proof" }
                 ]}
               />
+              {/* Navigation rows with a disabled item (TCRN-DS-SUB-208): its reason is drawn under the label,
+                  said as the item's description and carried as its title; the item takes no focus and no href. */}
+              <NavGroup label="Navigation rows">
+                <NavItem href="#navigation-primitives-spec">Contracts</NavItem>
+                <NavItem href="#navigation-primitives-spec">Usage</NavItem>
+                <NavItem disabled disabledReason="Opens after the release is published.">Release notes</NavItem>
+              </NavGroup>
             </div>
           </div>
           <TableShell
@@ -2298,8 +2284,8 @@ const legacyContractStories: LegacyContractStory[] = [
           <Text>Five forms, one family: the chosen tab takes the 6% ink wash and the strong weight, and nothing else.</Text>
           <Tabs label="Tabs family" selectedId="usage" onSelect={() => {}} items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage" }, { id: "proof", label: "Proof" }]} />
           <ModuleTabs items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage", selected: true }, { id: "proof", label: "Proof" }]} />
-          <SectionTabs items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage", selected: true }, { id: "proof", label: "Proof" }]} />
-          <SegmentedNav items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage", selected: true }, { id: "proof", label: "Proof" }]} />
+          <SectionTabs label="Section tabs" items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage", selected: true }, { id: "proof", label: "Proof" }]} />
+          <SegmentedNav label="Segmented views" items={[{ id: "contracts", label: "Contracts" }, { id: "usage", label: "Usage", selected: true }, { id: "proof", label: "Proof" }]} />
           <ViewTabs tabs={[{ id: "contracts", label: "Contracts", href: "#navigation-primitives-spec" }, { id: "usage", label: "Usage", href: "#navigation-primitives-spec", current: true }, { id: "proof", label: "Proof", href: "#navigation-primitives-spec" }]} />
         </ReadbackPanel>
         <ReadbackPanel title="Pagination and skip-link boundary">
@@ -3323,15 +3309,15 @@ const legacyContractStories: LegacyContractStory[] = [
               { rule: "Locale and copy-state", evidence: "All visible product copy uses approved i18n and copy-state contracts." },
               { rule: "Brand and logo", evidence: "Use admitted brand assets or route brand component admission before product use." },
               { rule: "Component imports", evidence: "Import package-backed Design System primitives from @tcrn/ui-react; do not rebuild local clones." },
-              { rule: "Storybook doc shell boundary", evidence: "Storybook uses the restored doc shell for global shell/header/sidebar/search/theme/locale/collapse behavior; ProductShell remains scoped to component and product examples." },
+              { rule: "Storybook doc shell boundary", evidence: "Storybook renders every documentation page in the package ProductShell, the top-band shell, once per page; a ProductShell inside a story body stays a component or product example." },
               { rule: "Storybook section coverage", evidence: "Read every required Storybook section in the AI contract before implementation; do not treat one component page as the whole Design System." },
               { rule: "Visual equivalence", evidence: "Prove same package, same export, same variant/props/slots, and same Storybook visual instance; package import or boundary markers alone are insufficient." },
               { rule: "Token usage", evidence: "Use Design System tokens, reduced-motion rules, and accessibility states before custom CSS." },
               { rule: "Motion and effects", evidence: "Compare duration, easing, opacity, transform, focus treatment, whole-page theme transition, drawer/menu/search motion, and reduced-motion fallback." },
               { rule: "Light and dark Storybook shell", evidence: "Check both light and dark Storybook shell modes before product frontend work; do not fork behavior, locale copy, readiness copy, or brand assets by theme." },
-              { rule: "Storybook shell controls", evidence: "Preserve compact theme, locale, and search controls: single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition." },
+              { rule: "Storybook shell controls", evidence: "Preserve compact theme, locale, and search controls: a single icon theme toggle and a native-name locale menu in the avatar menu, the search in the full menu, no AI JSON link in the band, and one whole-page theme transition." },
               { rule: "Locale menu behavior", evidence: "Prove close on selection, outside pointer down/click, and Escape; aria-expanded must mirror state and keyboard/selection dismissal must return focus to the trigger." },
-              { rule: "Side navigation collapse", evidence: "Prove keyboard-accessible collapse/expand control, persisted or route-owned collapsed state, active location preservation, and accessible expanded/collapsed states." },
+              { rule: "Top-band navigation", evidence: "Prove the brand button opens the full menu, pinned items open their drop-downs, and the current page is the menu's current row and the paper's breadcrumb, with no side rail and no collapse control." },
               { rule: "Registered product IA", evidence: "Do not surface unregistered or planned modules as primary navigation or registered module cards before a route admits them." },
               { rule: "Browser interaction proof", evidence: "Product adoption proof must click and verify rendered controls; marker-only proof is insufficient." },
               { rule: "Product proof", evidence: "Run product-owned adoption proof before claiming AOS or TMS Design System compliance." }

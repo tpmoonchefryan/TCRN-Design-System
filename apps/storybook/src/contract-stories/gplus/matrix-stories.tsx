@@ -517,7 +517,7 @@ export const gplusMatrixStoryText: Readonly<Record<GplusFamilyMatrixBoard, Matri
   },
   icon: {
     title: "Icon matrix",
-    description: "The 37-icon roster at 14, 16 and 20 px and the icon colours on paper and canvas, light and night."
+    description: "The 38-icon roster at 14, 16 and 20 px and the icon colours on paper and canvas, light and night."
   },
   brand: {
     title: "Brand matrix",

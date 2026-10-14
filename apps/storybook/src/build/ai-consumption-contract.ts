@@ -26,14 +26,6 @@ import {
   consumerVerificationContract
 } from "./foundation-visual-standards.js";
 
-// Composition one's collapsed ProductShell rail (O-1, after TCRN-DS-SUB-090), read from the shell
-// token so the published owner-quality side-nav policy cannot drift from the package geometry.
-const productShellCollapsedRailToken = tcrnTokens.find((token) => token.variable === "--tcrn-shell-sidebar-width-collapsed");
-if (!productShellCollapsedRailToken) {
-  throw new Error("ai-consumption-contract: --tcrn-shell-sidebar-width-collapsed is missing from @tcrn/ui-tokens");
-}
-const productShellCollapsedRailWidthPx = Number.parseFloat(productShellCollapsedRailToken.value);
-
 // The top-band shell's two searches (07a board, the full menu and the drop-down; TCRN-DS-SUB-145 removed
 // the old top bar's 260 / 420 search), read from the shell tokens so the contract cannot drift from the
 // package geometry: the full menu's field fills the expanded panel less its space-2 inset at
@@ -73,7 +65,7 @@ const consumerChecksBySection: Record<ContractStoryGroup, readonly string[]> = {
   ],
   Foundations: [
     "consume semantic tokens, theme variables, locale metadata, and copy-state vocabulary before product copy or CSS",
-    "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, sidebar, focus, motion, or visual-system work",
+    "consume foundation visual standards and consumer visual style contract before shared spacing, typography, shell, search, navigation, focus, motion, or visual-system work",
     "use the setting-control selection contract: Select for more than two values, a measured binary RadioGroup only when it fits, SegmentedNav for navigation, and NumberInput for numeric entry",
     "preserve controlled and uncontrolled SettingChoice values across radio/Select branch changes; treat layout-only swaps as non-events",
     "use MultiSelect presentation=dropdown for ordinary collection choice, with Select-family collapsed values and Menu-family multi-selection; keep native lists and explicit checklists separate and keep SuggestInput open to free-form values",
@@ -221,9 +213,10 @@ export const aiConsumptionContract = {
       primarySurface: "style-guide.html#brand-identity",
       rule: "Product lockups remain the primary Brand identity logo section; suffix accents are package-owned and product-specific."
     },
-    sidebar: {
-      authority: "storybook_doc_shell",
-      rule: "Category disclosure chevrons live inside the category toggle grid; active state uses inset styling and must not create an orphan visual lane."
+    // The top band has no side rail (TCRN-DS-SUB-208): sections and categories are rows of the full menu.
+    fullMenu: {
+      authority: "@tcrn/ui-react/ProductShell",
+      rule: "Sections and categories are rows of the full menu under the brand button; the current page is the menu's current row and the paper's breadcrumb, with no side rail and no orphan visual lane."
     },
     tablesAndContainers: {
       authority: "@tcrn/ui-react/TableShell",
@@ -420,9 +413,9 @@ export const aiConsumptionContract = {
     packageBackedAuthority: "@tcrn/ui-react/tcrnComponentCss",
     storybookStandard: "proof.html#owner-quality-product-shell",
     comparatorStandard: "components.html#navigation-shell-spec",
-    controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
+    controlOrder: ["brandButton", "pins", "cluster"],
     compositionRule:
-      "ProductShell topbar slots are consumer-composable. Storybook examples may show current location, ProductShellSearch, theme, and locale together, but a product may omit ProductShellSearch when it has no real global search capability. If a product renders topbar search, it must use package-backed ProductShellSearch and prove the search metrics below; if it omits search, proof must assert no inert or placeholder global-search control is rendered and must compare the remaining current-location/theme/locale controls against the package contract.",
+      "ProductShell's band is composed by the package: the brand button, the pinned items and the cluster (the product's headerActions, the bell and the avatar). A product supplies the navigation model, the pins, the account and products, and optional search records through searchProvider; the search is a field of the full menu and of a pinned drop-down, never of the band. A product with no real global search capability passes no searchProvider, and proof must assert that no inert or placeholder search control is rendered and compare the band's controls against the package contract.",
     // The old top bar's rest, expanded and mobile caps (260 / 420 / 320) left with that top bar
     // (TCRN-DS-SUB-145): the search is now a field of the shell's layers (TCRN-DS-SUB-176).
     searchRestWidth: {
@@ -432,29 +425,20 @@ export const aiConsumptionContract = {
       dropDownHeightPx: shellSearchGeometry.dropDownHeightPx,
       rule: `ProductShellSearch is a field of the shell's layers, not of the band: the full menu's search fills the menu panel less its inset (${shellSearchGeometry.fullMenuWidthPx} x ${shellSearchGeometry.fullMenuHeightPx} at a 1440px viewport) and a pinned drop-down's search fills its column less its inset (${shellSearchGeometry.dropDownWidthPx} x ${shellSearchGeometry.dropDownHeightPx}); neither widens on focus or with results. Under a coarse pointer and in the phone's Sheet, the full menu's search takes the ${shellTokenPx("--tcrn-shell-touch")}px touch height.`
     },
-    searchMotionTimeline: {
-      transitionProperties: ["flex-basis", "width", "max-width"],
-      transitionDuration: "0.24s",
-      transitionTimingFunction: "cubic-bezier(0.32, 0.72, 0, 1)",
-      sampleTimesMs: [0, 60, 120, 180, 240, 300],
-      minIntermediateSamples: 2,
-      finalFrameEarliestMs: 50,
-      rule:
-        "ProductShellSearch expand/collapse must expose sampled intermediate widths and must not jump directly between rest and expanded endpoints."
-    },
-    ownerQualitySideNavCollapsePolicy:
-      "The owner-quality-product-shell oracle admits desktop expanded and collapsed owner-quality variants. Desktop side-nav collapse must be actionable by click/keyboard and preserve active route/nav state; mobile uses an explicit DS-approved hidden collapse affordance policy until mobile collapsed variants are admitted.",
     measuredControls: [
       "productLogo",
+      "brandButton",
+      "pins",
+      "avatar",
       "themeToggle",
-      "sideNavToggle",
       "localeTrigger",
       "searchInput",
       "searchControl",
       "searchShortcut",
       "currentLocation",
       "selectedNavItem",
-      "topBar"
+      "band",
+      "paper"
     ],
     computedStyleFields: [
       "fontFamily",
@@ -483,7 +467,6 @@ export const aiConsumptionContract = {
       "transitionProperty",
       "transitionDuration",
       "transitionTimingFunction",
-      "sampledWidthTimeline",
       "animationName",
       "animationDuration",
       "animationTimingFunction"
@@ -491,16 +474,16 @@ export const aiConsumptionContract = {
     stateCoverage: [
       "rest",
       "focus",
-      "search-expanded",
+      "band-closed",
+      "menu-expanded",
+      "pin-drop",
       "search-results",
       "locale-closed",
       "locale-open",
       "theme-light",
       "theme-dark",
-      "side-nav-expanded",
-      "side-nav-collapsed",
       "mobile-zh-CN-dark",
-      "mobile-collapse-affordance-hidden",
+      "mobile-sheet",
       "reduced-motion"
     ],
     reducedMotionExpectation:
@@ -508,7 +491,7 @@ export const aiConsumptionContract = {
     rejectCriteria: [
       "docs-shell or Storybook global CSS changes package-backed ProductShell typography, selected nav styling, focus shadow, shortcut badge layout, control order, or motion",
       "AOS proof omits typography, spacing, focus, order, duration, easing, or reduced-motion comparisons against Storybook",
-      "product-local shell/search/sidebar/effect CSS is used to chase Storybook instead of package-backed DS controls"
+      "product-local shell/search/navigation/effect CSS is used to chase Storybook instead of package-backed DS controls"
     ]
   },
   visualInstanceOracles: [
@@ -536,7 +519,7 @@ export const aiConsumptionContract = {
         "desktop-light-expanded-cockpit-search-results",
         "desktop-light-expanded-cockpit-search-rest",
         "desktop-dark-expanded-cockpit",
-        "desktop-light-collapsed-work",
+        "desktop-light-work",
         "mobile-dark-work-stacked",
         "reduced-motion"
       ],
@@ -547,7 +530,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "light",
             locale: "en",
-            collapsed: false,
+            shellState: "expanded",
             selectedRoute: "cockpit",
             search: "results",
             searchExpanded: true,
@@ -563,7 +546,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "light",
             locale: "en",
-            collapsed: false,
+            shellState: "closed",
             selectedRoute: "cockpit",
             search: "rest",
             searchExpanded: false,
@@ -579,7 +562,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "dark",
             locale: "en",
-            collapsed: false,
+            shellState: "closed",
             selectedRoute: "cockpit",
             search: "rest",
             searchExpanded: false,
@@ -590,12 +573,12 @@ export const aiConsumptionContract = {
           }
         },
         {
-          id: "desktop-light-collapsed-work",
-          selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-collapsed-work\"]",
+          id: "desktop-light-work",
+          selector: "[data-storybook-visual-instance=\"frontend-shell-slice\"][data-visual-instance-variant=\"desktop-light-work\"]",
           expectedState: {
             theme: "light",
             locale: "en",
-            collapsed: true,
+            shellState: "closed",
             selectedRoute: "work",
             search: "rest",
             searchExpanded: false,
@@ -611,7 +594,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "dark",
             locale: "zh-CN",
-            collapsed: false,
+            shellState: "closed",
             selectedRoute: "work",
             search: "rest",
             searchExpanded: false,
@@ -627,7 +610,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "light",
             locale: "en",
-            collapsed: false,
+            shellState: "closed",
             selectedRoute: "cockpit",
             search: "rest",
             searchExpanded: false,
@@ -651,13 +634,12 @@ export const aiConsumptionContract = {
           "/",
           "/cockpit",
           "/cockpit?locale=en&theme=light",
-          "post-search-dismissal:/cockpit?locale=en&theme=light&collapsed=false&search=shell"
+          "post-search-dismissal:/cockpit?locale=en&theme=light&search=shell"
         ],
         routePersistenceBoundary:
           "Owner-review routes must not inherit localStorage into unadmitted visual states; product persistence may remain DS-defined outside reviewed parity routes.",
         notAutomaticallyAdmitted: [
           "zh-CN Cockpit rest",
-          "collapsed Cockpit rest",
           "dark zh-CN Cockpit rest",
           "mobile Cockpit rest"
         ],
@@ -699,11 +681,8 @@ export const aiConsumptionContract = {
       primaryIa: ["Operations Cockpit", "Work queue"],
       requiredVariants: [
         "desktop-light-operations-cockpit",
-        "desktop-light-operations-cockpit-collapsed",
         "desktop-dark-operations-cockpit",
-        "desktop-dark-operations-cockpit-collapsed",
         "desktop-light-work-queue",
-        "desktop-light-work-queue-collapsed",
         "mobile-dark-zh-cn-work-queue",
         "desktop-light-operations-search-results",
         "reduced-motion"
@@ -715,23 +694,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "light",
             locale: "en",
-            collapsed: false,
-            selectedRoute: "cockpit",
-            search: "rest",
-            searchExpanded: false,
-            searchResultsVisible: false,
-            viewport: "desktop",
-            reducedMotion: false,
-            content: "cockpit"
-          }
-        },
-        {
-          id: "desktop-light-operations-cockpit-collapsed",
-          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit-collapsed\"]",
-          expectedState: {
-            theme: "light",
-            locale: "en",
-            collapsed: true,
+            shellState: "closed",
             selectedRoute: "cockpit",
             search: "rest",
             searchExpanded: false,
@@ -747,23 +710,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "dark",
             locale: "en",
-            collapsed: false,
-            selectedRoute: "cockpit",
-            search: "rest",
-            searchExpanded: false,
-            searchResultsVisible: false,
-            viewport: "desktop",
-            reducedMotion: false,
-            content: "cockpit"
-          }
-        },
-        {
-          id: "desktop-dark-operations-cockpit-collapsed",
-          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-dark-operations-cockpit-collapsed\"]",
-          expectedState: {
-            theme: "dark",
-            locale: "en",
-            collapsed: true,
+            shellState: "closed",
             selectedRoute: "cockpit",
             search: "rest",
             searchExpanded: false,
@@ -779,23 +726,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "light",
             locale: "en",
-            collapsed: false,
-            selectedRoute: "work",
-            search: "rest",
-            searchExpanded: false,
-            searchResultsVisible: false,
-            viewport: "desktop",
-            reducedMotion: false,
-            content: "work"
-          }
-        },
-        {
-          id: "desktop-light-work-queue-collapsed",
-          selector: "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-work-queue-collapsed\"]",
-          expectedState: {
-            theme: "light",
-            locale: "en",
-            collapsed: true,
+            shellState: "closed",
             selectedRoute: "work",
             search: "rest",
             searchExpanded: false,
@@ -811,7 +742,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "dark",
             locale: "zh-CN",
-            collapsed: false,
+            shellState: "closed",
             selectedRoute: "work",
             search: "rest",
             searchExpanded: false,
@@ -829,7 +760,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "light",
             locale: "en",
-            collapsed: false,
+            shellState: "expanded",
             selectedRoute: "cockpit",
             search: "results",
             searchExpanded: true,
@@ -845,7 +776,7 @@ export const aiConsumptionContract = {
           expectedState: {
             theme: "light",
             locale: "en",
-            collapsed: false,
+            shellState: "closed",
             selectedRoute: "cockpit",
             search: "rest",
             searchExpanded: false,
@@ -858,21 +789,21 @@ export const aiConsumptionContract = {
       ],
       slots: [
         "registered product logo lockup",
-        "attached ProductShell side navigation",
-        "compact topbar controls",
+        "ProductShell full menu from the brand button",
+        "band pins and avatar cluster",
         "ProductShellSearch rest/results surface",
         "product-first route context",
         "record queue and stage references",
         "secondary developer detail disclosure"
       ],
       ownerQualityAcceptanceCriteria: [
-        "first viewport reads as a product shell with registered product identity in the side brand lockup",
+        "first viewport reads as a product shell with registered product identity in the band's brand button",
         "exactly one primary H1 per rendered fixture",
         "product content leads with current records, stages, references, decisions, owner actions, service health, and activity",
         "zh-CN owner-quality fixtures localize critical first-viewport table headers and state labels",
-        "ProductShell topbar controls stay within the fixture root and viewport without horizontal clipping",
-        "desktop owner-quality routes render actionable expanded and collapsed side-navigation states",
-        "mobile owner-quality routes hide the collapse affordance by DS policy instead of exposing a clickable no-op",
+        "ProductShell band controls stay within the fixture root and viewport without horizontal clipping",
+        "desktop owner-quality routes render the band closed, and the search-results route holds the full menu open",
+        "mobile owner-quality routes open the full menu as a Sheet from the brand button",
         "read-only and no-live-dispatch boundaries are visible but low-prominence",
         "developer proof/API/readback details are secondary disclosure",
         "primary modules are meaningful functional destinations rather than placeholder labels"
@@ -882,27 +813,14 @@ export const aiConsumptionContract = {
         "implementation/proof/debug terminology dominates the first viewport",
         "no-overclaim copy becomes the primary product story",
         "runtime, audit, or verification metrics lead the hierarchy",
-        "ProductShell topbar, search, locale, or theme controls are cropped or create root/topbar horizontal overflow",
-        "side-navigation collapse appears enabled but leaves owner-quality routes expanded or outside the admitted variant matrix",
+        "ProductShell band, search, locale, or theme controls are cropped or create root/band horizontal overflow",
+        "a side rail or a collapse control appears in the shell, or a route renders outside the admitted variant matrix",
         "visible local product CSS/effects or Storybook-only prototype classes appear",
         "owner/product/release/live-dispatch readiness is claimed"
       ],
-      ownerQualitySideNavPolicy: {
-        admittedCollapsedVariants: [
-          "desktop-light-operations-cockpit-collapsed",
-          "desktop-dark-operations-cockpit-collapsed",
-          "desktop-light-work-queue-collapsed"
-        ],
-        expandedOnly: false,
-        collapseAffordance: "actionable_toggle",
-        desktopPolicy: "click-and-keyboard-toggle-preserves-active-route-nav-and-collapsed-rail",
-        mobilePolicy: "hidden_affordance_until_mobile_collapsed_owner_quality_variant_admission",
-        iconCenterDeltaMaxPx: 1,
-        railWidthPx: productShellCollapsedRailWidthPx
-      },
       delegatedSubOracles: [
-        "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, and actionable desktop side-nav collapse/expand behavior for this owner-quality oracle.",
-        "Mobile owner-quality side navigation uses a DS-approved hidden collapse affordance policy; mobile collapsed owner-quality variants require a later DS admission before product parity can claim them.",
+        "ProductShell owns responsive posture, theme, locale, focus, reduced-motion behavior, the full menu, and the pins and their drop-downs for this owner-quality oracle.",
+        "On a phone the brand button opens the full menu as a Sheet; the shell has no side rail and no collapse affordance.",
         "ProductShellSearch owns search rest/results/dismissal behavior.",
         "This owner-quality oracle defines first-viewport hierarchy and copy semantics; product adoption remains separate."
       ],
@@ -940,7 +858,7 @@ export const aiConsumptionContract = {
     "prove_product_shell_visual_oracle_skin",
     "use_product_shell_semantic_control_api",
     "prove_locale_popup_dismissal_and_focus_return",
-    "prove_side_navigation_collapse_state",
+    "prove_top_band_full_menu_and_pins",
     "offer_an_in_product_way_back_from_drilled_down_routes",
     "transport_locale_and_theme_in_a_server_readable_store",
     "use_records_and_boards_patterns_for_static_record_surfaces",
@@ -962,7 +880,7 @@ export const aiConsumptionContract = {
     "storybook_shell_control_receipt",
     "storybook_doc_shell_visual_oracle_receipt",
     "locale_popup_dismissal_receipt",
-    "side_navigation_collapse_receipt",
+    "top_band_navigation_receipt",
     "navigation_reversibility_receipt",
     "server_rendered_preference_receipt",
     "functional_display_static_pattern_receipt",
@@ -999,7 +917,7 @@ export const aiConsumptionContract = {
   // client-side correction removes the flash; it only shortens it.
   preferenceTransport: {
     disposition: "server_readable_transport_required_for_server_rendered_products",
-    governedPreferences: ["locale", "theme", "sideNavigationCollapsed"],
+    governedPreferences: ["locale", "theme", "pins"],
     precedence: ["explicit_url_query", "server_readable_store", "product_default"],
     precedenceRule:
       "An explicit query parameter outranks a stored preference so a shared link lands on what the sender saw; the stored preference outranks the product default so a returning reader does not have to re-choose. A product that reads only one of the two cannot serve both cases.",
@@ -1057,7 +975,7 @@ export const aiConsumptionContract = {
   i18nDisposition:
     "All visible product UI copy must use the approved locale and copy-state contract before rendering.",
   componentConsumptionDisposition:
-    "Product implementations must import package-backed Design System primitives for ProductShell, TopBar, SideNav, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo, status, OperationFeedback, ContentScope, readback, table, spacing/rhythm, disclosure, and Records and boards surfaces including RelationshipChip, MachineToken, MachineTokenCell, SubNav, PageHeader, ViewTabs, QuickFilters, RecordRow, RecordTable, SplitView, RowGroup, InlineCreate, LaneBoard, DetailLayout, MetadataRail, DetailInspector, ActivityFeed, RelationGraph, StagePipeline, AttachmentList, RecordInspector, and SavedViewToolbar, plus static Documents and collaboration surfaces including TreeNav, DocumentCanvas, TocRail, InlineCommentList, MetadataRail, AttachmentList, LabelSet, VersionHistory, TemplateGallery, and SearchResultList, instead of rebuilding reusable local clones. ProductShell topbar controls are composable by consumer capability: ProductShellSearch is required only when the product exposes a real topbar/global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, shellThemeToggleProps, and sideNavCollapseButtonProps; product consumers may supply only IA/data, route labels, locale data, optional search records, content slots, and DS-defined callbacks such as onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate. A server-rendered product parses the request's Cookie header with the exported readPreferenceCookieValues and passes the three narrowed values to useProductShellController as requestPreferences, so the shell's stored preferences are readable during the render that produces the first paint; the raw Cookie header must not cross the package boundary, because it carries every cookie the product's requests hold while the shell governs only theme, locale, and side-nav collapse. The controller writes each preference to both a cookie and the client store, so a product must not hand-roll its own preference parsing or persistence to work around a client-only store.",
+    "Product implementations must import package-backed Design System primitives for ProductShell, NavGroup, NavItem, SearchInput, ShellThemeToggle, ShellLocaleMenu, ProductLogo, status, OperationFeedback, ContentScope, readback, table, spacing/rhythm, disclosure, and Records and boards surfaces including RelationshipChip, MachineToken, MachineTokenCell, SubNav, PageHeader, ViewTabs, QuickFilters, RecordRow, RecordTable, SplitView, RowGroup, InlineCreate, LaneBoard, DetailLayout, MetadataRail, DetailInspector, ActivityFeed, RelationGraph, StagePipeline, AttachmentList, RecordInspector, and SavedViewToolbar, plus static Documents and collaboration surfaces including TreeNav, DocumentCanvas, TocRail, InlineCommentList, MetadataRail, AttachmentList, LabelSet, VersionHistory, TemplateGallery, and SearchResultList, instead of rebuilding reusable local clones. TopBar, SideNav, SideNavCollapseButton, MobileNavToggle, ProductLauncher and ProductSwitcher are deprecated, see M23: the band, the full menu and the avatar menu replace them. ProductShell search is composable by consumer capability: ProductShellSearch and the full menu's searchProvider are required only when the product exposes a real global search surface, and must be omitted rather than rendered as an inert placeholder when no global search exists. Product shell state/effect behavior must use ProductShell semantic callbacks or useProductShellController prop bundles including productShellControlProps, optional productShellSearchProps, shellLocaleMenuProps, and shellThemeToggleProps; product consumers may supply only IA/data, route labels, locale data, pins, optional search records, content slots, and DS-defined callbacks such as onPinnedChange, onMenuOpenChange, onThemeChange, onLocaleMenuOpenChange, onLocaleChange, and, when search is present, onSearchQueryChange, searchProvider, and onSearchResultActivate. A server-rendered product parses the request's Cookie header with the exported readPreferenceCookieValues and passes the narrowed theme and locale, with the pins its backend stores, to useProductShellController as requestPreferences, so the shell's stored preferences are readable during the render that produces the first paint; the raw Cookie header must not cross the package boundary, because it carries every cookie the product's requests hold while the shell reads only theme and locale from it. The controller writes theme and locale to both a cookie and the client store, so a product must not hand-roll its own preference parsing or persistence to work around a client-only store.",
   recordsAndBoardsPatternDisposition:
     "Functional display package exports cover static records, stages, relations, documents, and machine-token presentation, compact route context, local view tabs, quick filters, dense rows and lists, split detail, row groups, static create affordances, lane-board density, metadata rails, activity feeds, relation chips, stage pipelines, attachment lists, saved-view controls, record inspection, and machine-token containment. They are local Storybook contract patterns only: API integration, backend persistence, live dispatch, external queues, runtime data mutation, product adoption, owner acceptance, release readiness, and package publication are not claimed.",
   documentsAndCollaborationPatternDisposition:
@@ -1074,19 +992,19 @@ export const aiConsumptionContract = {
     themeToggle:
       "The Storybook docs shell uses one compact circular icon-only theme toggle that reflects the current mode and toggles only on explicit activation.",
     visualSkin:
-      "The Storybook doc-shell skin is measured against the committed internal-alpha perceptual visual-signature baseline docs/verification/internal-alpha/visual-signature-baseline.json (tolerance meanAbsolute<=2 / maxCell<=8) enforced by internal-alpha browser proof. Browser proof must assert doc-shell selector authority, category navigation, sidebar scrollability, desktop sidebar/header/search geometry, trailing theme/locale geometry, no global ProductShell shell replacement, no zh-CN shell leaks, and mobile no-overflow posture.",
+      "The Storybook doc-shell skin is measured against the committed internal-alpha perceptual visual-signature baseline docs/verification/internal-alpha/visual-signature-baseline.json (tolerance meanAbsolute<=2 / maxCell<=8) enforced by internal-alpha browser proof. Browser proof must assert doc-shell selector authority, the full menu's section and category rows, the band's geometry (52 high, no fill and no rule, the 134 x 40 brand button), the paper under the band, the full menu's search geometry, the avatar menu's theme and language controls, no global ProductShell shell replacement, no zh-CN shell leaks, and mobile no-overflow posture.",
     themeTransition:
-      "Theme changes must use one whole-page transition through the root View Transition API when available, with a single full-page fallback wash; sidebar, header, and content must not darken as independent sections.",
+      "Theme changes must use one whole-page transition through the root View Transition API when available, with a single full-page fallback wash; the band, the paper, and the page must not darken as independent sections.",
     localeSelector:
       "The language control uses a globe trigger plus the current locale name in that locale; menu options use native names only and avoid long bilingual labels. Locale popups close on selection, outside pointer down or click, and Escape; aria-expanded reflects state, and focus returns to the trigger when dismissed by keyboard or selection.",
     search:
-      "Shell search stays compact at rest, expands smoothly on focus, collapses on blur, and reserves shortcut labels for shell search with real focus/result behavior.",
+      "The shell's search is a field of the full menu and of a pinned drop-down, never of the band: it stays compact at rest and keeps its width on focus, lists its results in the menu, and only the one shell on a page that registers the Ctrl K / Cmd K shortcut shows it.",
     aiContractAccess:
       "AI consumption contract access remains in the Proof story and static ai-consumption-contract.json artifact, not in the human top toolbar."
   },
   productShellHardeningRules: {
-    sideNavigation:
-      "Product and documentation shells that claim SideNav behavior must expose a keyboard-accessible collapse and expand control, persist or route-own collapsed state, preserve active location/accessibility, center the collapse icon within the package-owned button geometry, and prove both expanded and collapsed states. Mobile may hide the affordance only when a named visual-instance oracle declares that policy.",
+    topBandNavigation:
+      "Product and documentation shells are the top-band shell, with no resident side rail and no collapse control. Navigation is ProductShell's navGroups: NavGroup and NavItem rows in the full menu under the brand button and in the pinned drop-downs, the current page as the menu's current row and the paper's breadcrumb, and on a phone the full menu as a Sheet. SideNav, SideNavCollapseButton and MobileNavToggle are deprecated, see M23; proof must assert the brand button, the pins and their drop-downs, and that no rail and no collapse control render.",
     brandSurface:
       "Product shells must use registered package-backed ProductLogo assets with product-specific suffix color hierarchy or route logo admission before product use; generic icons, free-form suffix/caption identity, text-only substitutes, and deprecated AOS wordmark images are not accepted brand marks.",
     registeredNavigation:
@@ -1094,13 +1012,13 @@ export const aiConsumptionContract = {
     navigationReversibility:
       "A route a reader can only arrive at by drilling down must offer an in-product way back to its parent. The browser's back button does not satisfy this: it is not the product's, it does not survive a deep link or a refresh, and a reader who arrived by a shared URL has no history to go back through. The accepted affordance is a Breadcrumb whose ancestor crumbs carry href and whose current crumb does not — an all-inert trail is a location label, not a way back, and it is what a consumer shipped when the component offered no href at all. A primary navigation entry pointing at the parent list does not count: it discards the scope the reader arrived with, so it starts them over rather than taking them back. Proof must assert the anchor inside the trail on a route addressed by record identity, not the presence of the trail element.",
     primitiveConsumption:
-      "Product frontends must consume registered package-backed primitives from @tcrn/ui-react, including ProductShell/useProductShellController for side-nav shell effects and semantic control callbacks, and ProductShellSearch only when a real product topbar/global search capability is present. Products must not create reusable local clones for shell, navigation, search, theme, locale, status, readback, table, or disclosure behaviors without a DS admission route.",
+      "Product frontends must consume registered package-backed primitives from @tcrn/ui-react, including ProductShell/useProductShellController for the band, the full menu, the pins and the shell's effects and semantic control callbacks, and ProductShellSearch or the full menu's searchProvider only when a real product global search capability is present. Products must not create reusable local clones for shell, navigation, search, theme, locale, status, readback, table, or disclosure behaviors without a DS admission route.",
     shellEffectBoundary:
-      "The package-backed ProductShell boundary owns attached side-nav shell layout, collapsed rail styling, responsive desktop/mobile posture, optional compact/rest/focused search result surfaces when a product exposes real global search, locale menu open-state markers and dismissal/focus-return hooks, theme-toggle transition hooks, one whole-page transition/fallback wash styling, focus treatment, reduced-motion behavior, and light/dark token behavior. Product routes may pass IA/data/content, optional search records, and DS-defined callbacks but must not fork those effects.",
+      "The package-backed ProductShell boundary owns the band's layout (the brand button, the pins and the cluster), the full menu, the pinned drop-downs and the phone's Sheet, the paper, responsive desktop/mobile posture, optional search result surfaces when a product exposes real global search, locale menu open-state markers and dismissal/focus-return hooks, theme-toggle transition hooks, one whole-page transition/fallback wash styling, focus treatment, reduced-motion behavior, and light/dark token behavior. Product routes may pass IA/data/content, pins, optional search records, and DS-defined callbacks but must not fork those effects.",
     semanticControlApi:
-      "AOS-style product shells must consume ProductShell semantic props or useProductShellController prop bundles for onCollapsedChange, onThemeChange, onLocaleMenuOpenChange, and onLocaleChange. When a product exposes real topbar/global search, it must additionally consume ProductShellSearch through package-backed search props and callbacks such as onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate. Products with no real global search capability must omit the topbar search control rather than rendering an inert placeholder. Wrapper-level event delegation around rendered controls is not a valid substitute for the package boundary.",
+      "AOS-style product shells must consume ProductShell semantic props or useProductShellController prop bundles for onPinnedChange, onMenuOpenChange, onThemeChange, onLocaleMenuOpenChange, and onLocaleChange. When a product exposes real global search, it must additionally serve the full menu's search through searchProvider, or consume ProductShellSearch through package-backed search props and callbacks such as onSearchQueryChange, onSearchExpandedChange, onSearchDismiss, and onSearchResultActivate. Products with no real global search capability must omit the search rather than rendering an inert placeholder. Wrapper-level event delegation around rendered controls is not a valid substitute for the package boundary.",
     browserProof:
-      "Product adoption proof must exercise rendered browser interactions, including menu dismissal and side navigation collapse, rather than relying only on static marker checks."
+      "Product adoption proof must exercise rendered browser interactions, including menu dismissal, the full menu, and the pins and their drop-downs, rather than relying only on static marker checks."
   },
   forbiddenClaims: [
     "storybook_docs_publication",

@@ -270,7 +270,7 @@ export const pageHierarchyContract = {
   id: "page-hierarchy-contract-v1",
   storybookRoutes: ["patterns-forms-workbench.html#forms-patterns", "patterns-forms-workbench.html#page-hierarchy-contract"],
   packageExports: ["PageHierarchy", "PageHeader", "SubNav", "SectionTabs", "ProductShell"],
-  shellBoundary: "ProductShell owns the global topbar; PageHeader owns the page header and is not counted as the global shell.",
+  shellBoundary: "ProductShell owns the global band; PageHeader owns the page header and is not counted as the global shell.",
   depthDecisionTable: [
     {
       id: "DS-112-R1-two-level",
@@ -301,12 +301,12 @@ export const pageHierarchyContract = {
     localNavigationPx: 208,
     belowSplit: "third-level local navigation precedes content in one column"
   },
-  excludedDepthInputs: ["outer ProductShell application sidebar", "host switcher", "setting values", "mode/value count"],
+  excludedDepthInputs: ["outer ProductShell navigation menu", "host switcher", "setting values", "mode/value count"],
   rejectCriteria: [
     "A two-level page adds an internal left navigation region.",
     "A three-level page omits the PageHeader or parent-level tabs.",
-    "A consumer uses viewport width, option count, or an outer application sidebar to infer page depth.",
-    "A consumer duplicates the global ProductShell topbar as a page Header.",
+    "A consumer uses viewport width, option count, or the outer application navigation to infer page depth.",
+    "A consumer duplicates the global ProductShell band as a page Header.",
     "A legal hierarchy declaration is accepted when the actual DOM order or rendered regions do not match it."
   ]
 } as const;
@@ -573,7 +573,7 @@ export const storybookDocShellVisualOracle = {
   ],
   metricEvidence: [
     {
-      metric: "desktopSidebarWidthPx",
+      metric: "residentNavWidthPx",
       value: 0,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
@@ -583,7 +583,7 @@ export const storybookDocShellVisualOracle = {
       extraction: "No resident side rail (top-band shell, 07a D1: resident rails and collapse buttons number 0): the documentation shell's own side-navigation region is absent and reads as width 0 in the internal-alpha browser-proof sidebar-width metric readback; visual composition is evidenced by the perceptual visual-signature entry welcome-governance@desktop-1440x900."
     },
     {
-      metric: "desktopTopbarHeightPx",
+      metric: "bandHeightPx",
       value: 52,
       evidencePath:
         "docs/verification/internal-alpha/screenshots/desktop-1440x900-welcome-governance.png",
@@ -618,6 +618,17 @@ export const storybookDocShellVisualOracle = {
     // (TCRN-DS-SUB-132): no resident side rail at any desktop width (min and max 0, so the viewport ratio does not
     // move it); the 52px band (--tcrn-shell-strip-h) with the 134 x 40 brand button (--tcrn-shell-brand-w,
     // --tcrn-shell-brand-h); the avatar cluster 12px from the right edge (the band's inline padding).
+    // The readings take the top band's names (TCRN-DS-SUB-208): residentNav* is the navigation that resides
+    // beside the paper, 0 because the navigation is the full menu's, and band* is the band.
+    residentNavWidthPx: 0,
+    residentNavMinWidthPx: 0,
+    residentNavPreferredViewportRatio: 0,
+    residentNavMaxWidthPx: 0,
+    residentNavTolerancePx: 2,
+    bandHeightPx: 52,
+    bandHeightTolerancePx: 2,
+    // The old shell's names for the same readings, kept for one version with the new names' values for
+    // readers that have not moved (the internal-alpha browser proof reads them); removed in 4.1.
     desktopSidebarWidthPx: 0,
     desktopSidebarMinWidthPx: 0,
     desktopSidebarPreferredViewportRatio: 0,
@@ -679,10 +690,10 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/styles/index.ts"],
     storybookRoutes: ["index.html#welcome-governance", "patterns.html#forms-patterns"],
     authorityLevel: "storybook_visual_oracle",
-    readbackFields: ["sidebarWidth", "topbarHeight", "contentStart", "pageHeadPosition", "crossSectionSignature"],
+    readbackFields: ["residentNavWidth", "bandHeight", "contentStart", "pageHeadPosition", "crossSectionSignature"],
     allowedConsumerInputs: ["route-level content density", "content ordering within admitted layout slots"],
-    forbiddenConsumerOverrides: ["shared shell grid", "topbar utility alignment", "sidebar width", "content rhythm tokens"],
-    proofExpectations: ["cross-section shell parity", "topbar/content rhythm deltas within tolerance", "no page overflow"],
+    forbiddenConsumerOverrides: ["shared shell grid", "band cluster alignment", "paper inset", "content rhythm tokens"],
+    proofExpectations: ["cross-section shell parity", "band/content rhythm deltas within tolerance", "no page overflow"],
     missingStandardEscalation: "Block implementation if no route-specific Storybook visual oracle names the layout rhythm."
   },
   {
@@ -761,10 +772,10 @@ export const foundationVisualStandards: readonly FoundationVisualStandard[] = [
     sourcePaths: ["apps/storybook/src/alpha-styles.ts", "apps/storybook/src/story-demo-styles.ts", "packages/ui-react/src/styles/index.ts", "packages/ui-react/src/components/Layout/Layout.tsx"],
     storybookRoutes: ["foundations.html#foundation-visual-standards", "components.html#field-spec-usage", "patterns.html#forms-patterns", "proof.html#owner-quality-product-shell"],
     authorityLevel: "storybook_visual_oracle",
-    readbackFields: ["viewport", "searchMaxWidth", "collapsePolicy", "pageOverflow", "tableLocalOverflow", "overlayBoundaryContract", "pageHierarchyContract"],
-    allowedConsumerInputs: ["mobile content order", "mobile route content", "approved hidden-affordance policy"],
-    forbiddenConsumerOverrides: ["page-level horizontal overflow", "clickable mobile no-op controls", "full-width search beyond accepted cap"],
-    proofExpectations: ["390px mobile no page overflow", "390/768/980/1024/1180/1280/1440 container matrix", "nested narrow content stacks without clipping", "mobile search cap", "mobile collapse hidden/disabled per oracle"],
+    readbackFields: ["viewport", "searchWidth", "menuPresentation", "pageOverflow", "tableLocalOverflow", "overlayBoundaryContract", "pageHierarchyContract"],
+    allowedConsumerInputs: ["mobile content order", "mobile route content", "the package's Sheet presentation of the full menu"],
+    forbiddenConsumerOverrides: ["page-level horizontal overflow", "clickable mobile no-op controls", "a search field in the band"],
+    proofExpectations: ["390px mobile no page overflow", "390/768/980/1024/1180/1280/1440 container matrix", "nested narrow content stacks without clipping", "the search inside the full menu", "the full menu as a Sheet at 760 and narrower"],
     missingStandardEscalation: "Return a DS/mobile policy blocker if the oracle does not admit the requested mobile behavior."
   },
   {
