@@ -112,7 +112,7 @@
 | M7 | 已合入，包树已退役（301 MB） | 50d0a7c、d7b5643、39cb579、e41e23e | b524d4b | SUB-202、203 完成，SUB-201、179 各剩一项（地标重名 4 条与禁用项样本在 M9 的 story-content.tsx，已交 M9 附录）；文档壳水合真件（390/760 开 Sheet、761/1440 开面板）、⌘K 只开一个壳；壳层门真件 17/18（只剩 markText，待 O-4）；smoke 0、doc-shell:proof 0；问题 8 条 |
 | M8 | 已合入，包树已退役（278 MB） | f41f1d3、32ff6d6、4170031 | a21300e | SUB-204 完成：文档层改写 G+ 名（弃用提示 210 处 → 19 处，余归 SUB-208）、search-static 死规则与例外删除；shell:fidelity、doc-shell:proof、tokens:proof 0；问题 6 条（另有死规则、故事标题 3px 左边条违反禁用清单等，进下一轮） |
 | M9 | 在跑（自 b524d4b 后的集成 HEAD；另加附录 `runs/r3/excerpts/M9-addendum.md`：smoke.test 期望、样本块地标与禁用项、package-contract-manifest 两条源码规则） | | | |
-| M10 | 已合入，包树已退役（2xx MB） | 01afc35、5f71f0b、de3c839 | 4981b69 | 两张完成：四份文档改顶带壳说法（TMS 后缀同色、夜间待 D7）、迁移说明 M38–M46 与 CHANGELOG 摘要；scan 0、scaffold:proof 0、internal-vocab:scan 0（为此跑了一次构建，偏离派工写法，已回显）；问题 4 条 |
+| M10 | 已合入，包树已退役（240 MB） | 01afc35、5f71f0b、de3c839 | 4981b69 | 两张完成：四份文档改顶带壳说法（TMS 后缀同色、夜间待 D7）、迁移说明 M38–M46 与 CHANGELOG 摘要；scan 0、scaffold:proof 0、internal-vocab:scan 0（为此跑了一次构建，偏离派工写法，已回显）；问题 4 条 |
 | M11 | 待起（其余全部） | | | |
 
 ## 下一步
