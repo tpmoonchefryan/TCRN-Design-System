@@ -791,6 +791,232 @@ Source: b44c4d7 (TCRN-DS-SUB-114), 5fe6158 (TCRN-DS-SUB-115), f2d2921
 (TCRN-DS-SUB-122), 5cb5b72 (TCRN-DS-SUB-126); handoffs P1a, P1b, P5 and P7
 (INIT-016 r1).
 
+### M30 · The navigation and shell families, part by part
+
+Change: before the second batch, `docs/contract/families.json` listed 13 navigation
+parts and 9 shell parts; 4.0.0 lists 10 and 11. Each part keeps its place, joins
+`Tabs`, is deprecated (M23: its export stays through 4.0.x and leaves in 4.1) or is
+new. The last column is the part's family in `families.json` today; a dash means the
+part is no longer listed. `MobileNavToggle` is deprecated but still listed, so
+navigation counts 10.
+
+| Part | Family before | 4.0.0 | `families.json` now |
+| --- | --- | --- | --- |
+| `Breadcrumb` | navigation | Kept; `PageHeader` renders it as its first row (M22) | navigation |
+| `Tabs` | navigation | Kept; the root of the one tab family (M22) | navigation |
+| `SubNav` | navigation | Kept; the page's own second-level navigation (M23) | navigation |
+| `SegmentedNav` | navigation | Joins `Tabs` as the `tcrn-tabs--segmented` variant; the export stays (M22) | — |
+| `Pagination` | navigation | Kept | navigation |
+| `NavGroup` | navigation | Kept; its rows render in the full menu and the drop-downs (M23) | navigation |
+| `NavItem` | navigation | Kept; its rows render in the full menu and the drop-downs (M23) | navigation |
+| `SideNav` | navigation | Deprecated (M23) | — |
+| `SideNavCollapseButton` | navigation | Deprecated (M23) | — |
+| `MobileNavToggle` | navigation | Deprecated (M23) | navigation |
+| `SkipLink` | navigation | Kept | navigation |
+| `TocRail` | navigation | Kept; page content in the paper (M23) | navigation |
+| `TreeNav` | navigation | Kept; its rows take the menu row's grammar (M22) | navigation |
+| `ProductShell` | shell | Kept; it is the top band (M20) | shell |
+| `TopBar` | shell | Deprecated (M23) | — |
+| `ProductShellSearch` | shell | Kept; the full menu's search (M20) | shell |
+| `ShellThemeToggle` | shell | Kept; in the avatar menu (M20) | shell |
+| `ShellLocaleMenu` | shell | Kept; in the avatar menu (M20) | shell |
+| `ShellBrandLockup` | shell | Kept | shell |
+| `ProductLauncher` | shell | Deprecated (M23) | — |
+| `ProductSwitcher` | shell | Deprecated (M23) | — |
+| `AppStatusBar` | shell | Kept | shell |
+| `ShellBrandButton` | — | New (M29) | shell |
+| `ShellPins` | — | New (M29) | shell |
+| `ShellMenu` | — | New (M29) | shell |
+| `ShellDropdown` | — | New (M29) | shell |
+| `ShellIntro` | — | New (M29) | shell |
+
+The blocks follow: navigation lists 9 (`tcrn-shell-side-nav-toggle` and
+`tcrn-shell-mobile-nav-toggle` left), and shell lists 14 (`tcrn-top-bar` left and
+`tcrn-shell-strip` arrived). The three first-batch exemptions of the navigation, shell
+and layout families are deleted, so all three families are checked in full by
+`pnpm contract:static`, and `roles.json` lists no toolbar, `tcrn-shell-strip` as the
+shell's bar and three shell controls (theme toggle, language menu, search).
+
+Do: read the family lists from `families.json`, not from 3.0.0's documentation;
+replace the deprecated parts as M23 says.
+
+Source: 601b6c9 (TCRN-DS-SUB-125), 3eaad07 (TCRN-DS-SUB-155); handoffs P8
+(INIT-016 r1) and K4 (INIT-016 r2: the second round's handoffs, named K1 and so on,
+are in `docs/dispatch/2026-10-13-tab-shell/runs/r2/handoff/`).
+
+### M31 · Shell sizes in tokens; a coarse-pointer token block
+
+Change: three theme-independent tokens are new: `--tcrn-shell-mark` (22px, the mark
+in the brand button), `--tcrn-shell-touch` (44px: the menu rows and the full menu's
+search under a coarse pointer, and the Sheet's rows, search and pin hit areas) and
+`--tcrn-shell-crumb-icon` (11px, the breadcrumb separator icon, which `Breadcrumb`
+now reads from the token). `tokens.css` and `tcrnTokenCss` hold four blocks instead
+of three: the third is `:root` inside `@media (pointer: coarse)`, which points
+`--tcrn-shell-row-h` and `--tcrn-shell-srch-h` at `var(--tcrn-shell-touch)`; the
+component sheet no longer declares a coarse-pointer `:root`. New exports:
+`tcrnCoarsePointerMedia` (`"(pointer: coarse)"`), `tcrnCoarsePointerTokens` and
+`tcrnTokenBlockKinds.coarse` (`"pointer-coarse"`); `TokenCssBlock` has a new field,
+`media` (null for the top-level blocks).
+
+Do: a parse of `tokens.css` that expects three blocks expects four, and reads the
+coarse-pointer block through `parseTokenCssBlocks` and its `media`; drop a local
+coarse-pointer override of the shell's row or search height.
+
+Source: eb5e0da (TCRN-DS-SUB-142), 56f1f6c (TCRN-DS-SUB-156); handoffs K4 and K6b
+(INIT-016 r2).
+
+### M32 · The pinned items can be reordered
+
+Change: `ShellPins` takes `onPinsReorder(orderedIds)` (none by default; without it the
+pins do not move), and `ProductShell` takes the same prop and hands back the whole
+pin order. `useProductShellController` returns `reorderPins`, and
+`productShellControlProps` carries `onPinsReorder`, wired to `movePin`, which writes
+the order back to the pin preference (the local fallback and `onPinsChange`, not the
+cookie). When the pins can move, each carries
+`aria-keyshortcuts="Alt+ArrowLeft Alt+ArrowRight"` and `data-pin-movable`, and the
+one being dragged carries `data-pin-dragging`; a pointer drag swaps pins in place, and
+Alt+← and Alt+→ move the focused pin.
+
+Do: pass `onPinsReorder`, or spread `productShellControlProps`, to let people reorder
+their pins.
+
+Source: b9afc43 (TCRN-DS-SUB-149); handoff K6 (INIT-016 r2).
+
+### M33 · The full menu's query and its category descriptions
+
+Change: `ShellMenu` takes `query` (the search text, controlled; by default the menu
+holds it), `defaultQuery` (the starting text when the menu holds it; empty by
+default) and `onQueryChange(query)` (called on input, and with an empty string when
+the menu closes). `ProductShell` takes `menuQuery`, `defaultMenuQuery` and
+`onMenuQueryChange`; `onSearchQueryChange` is unchanged. The menu model's
+`ShellMenuGroup` and `ShellMenuItem` take an optional `description` (none by
+default): with one, the category title row or the item row carries
+`aria-describedby` pointing at a `.tcrn-sr-only` element that holds the
+description, and nothing is drawn. `NavGroup` takes the same prop.
+`ProductShellNavGroup.description`, which was the product's own metadata and was not
+rendered, is now rendered by the shell as that screen-reader description.
+
+Do: pass `menuQuery` and `onMenuQueryChange` when the product keeps the menu's search
+text (to restore it, or to drive its own results); give a category a `description`
+when its name needs one; check that existing `ProductShellNavGroup.description`
+texts read well aloud.
+
+Source: 2d99f72 (TCRN-DS-SUB-147); handoff K6 (INIT-016 r2).
+
+### M34 · The paper's page title is the page's h1; the page header's markup
+
+Change: `PageHeader` takes `headingLevel?: 1 | 2` (2 by default), and both levels use
+the level-2 type with the same class. In the `ProductShell` paper the page header is
+level 1, the page's h1, unless `pageHeader.headingLevel` is 2. The page header's
+markup changes: the class `tcrn-page-header__title` moves from the div that wrapped
+the title and the description to the title element itself (`h2`, or `h1` in the
+paper), which carries a `title`; the description is a `p.tcrn-text` with
+`tcrn-page-header__description`; the two sit in a new `div.tcrn-page-header__lead`,
+and `.tcrn-page-header__title` is a one-line truncation rule. The title row's gap is
+14 (was 12) and its rule is line-2 (was border-subtle). No other prop is new and the
+defaults are unchanged.
+
+Do: a shell placed in another page's paper (an embedded example) passes
+`headingLevel: 2`; select the title as `.tcrn-page-header__title` and the description
+as `.tcrn-page-header__description` instead of `.tcrn-page-header__title h1`, `h2` or
+`.tcrn-text`, and do not style `.tcrn-page-header__title` as a container.
+
+Source: 397b0b0 (TCRN-DS-SUB-163), 0a05831 (TCRN-DS-SUB-162), 56f1f6c
+(TCRN-DS-SUB-156); handoffs K6, K1 and K6b (INIT-016 r2).
+
+### M35 · Landmark names per shell instance
+
+Change: `ProductShell` takes `landmarkLabel?: string` (none by default), the prefix of
+the accessible names of the pinned items' nav and the page header's breadcrumb nav:
+"{landmarkLabel} · {name}", in the five locales through `landmarkOf` of the shell
+copy. Without it the two names are unchanged. `ShellPins` and `PageHeader` take the
+same prop; an explicit `aria-label` on `ShellPins` wins, and `PageHeader`'s own
+`landmarkLabel` wins over the one the shell passes down.
+
+Do: when a page holds more than one shell (examples, comparisons), give each a
+different `landmarkLabel`.
+
+Source: 450dabf (TCRN-DS-SUB-148); handoff K6 (INIT-016 r2).
+
+### M36 · Second-round details of the shell, its rows and the lockups
+
+Change:
+
+- `NavItem`: its text carrier `.tcrn-nav-item__label` carries `data-text="prail"`,
+  and a `NavItem` with `iconName` gives its icon `data-guide="prail"` (measurement
+  hooks); `data-shell-group` and `data-shell-col` given to `NavGroup` sit on the
+  group's root, the column of its title row. A pinnable row's label carries a
+  `title`, and a `NavGroup` title that cannot be pinned is wrapped in
+  `span.tcrn-nav-group__label-text[title]`.
+- `ProductShellSearch`: result links carry a `title` ("title — description", or the
+  title alone); with the search expanded and no results, the list is no longer
+  hidden and the empty text shows; the old top bar's sizes (260 at rest, 420
+  expanded, `margin-left: auto`) are deleted, since the search is the full menu's.
+- `ProductShell`: the root's `data-state` has a new value, `sheet`, while the menu is
+  shown as a Sheet; the paper's content region carries `tabindex="0"`; the new
+  `previewStates?: Readonly<Record<string, string>>` (not passed by default) writes
+  static documentation states as `data-tcrn-preview-state` by menu row or group id
+  and passes them to the full menu and each drop-down.
+- `ShellDropdown`: `previewStates` accepts `"open"`: a row with a next level marked
+  `"open"` starts with that level open, level by level from the drop-down's own rows
+  (space-separated values match as CSS `~=` does); other values only write the
+  attribute. The drop-down is placed from the padding box of an ancestor that holds
+  fixed layers (transform, perspective, filter, backdrop-filter, layout or paint
+  containment, a container), or from the viewport when there is none, and re-reads
+  the pinned item's position after each render and, with ResizeObserver, when the
+  band changes size. `useShellMenuCascade(rootRef, firstLevel, initialOpenPath = [])`
+  takes an optional third argument, the starting open path. In a cascade, ArrowLeft
+  from a column back to the row that opened it prefers the rendered row.
+- `ProductLogo`, the whole `ProductLockup` block and a `ShellBrandLockup` with a
+  `productId`: line one is a `b` (was a span), the suffix an `em` (was a span, now
+  after a space) and the tagline a `small` (was a span). The class names are
+  unchanged and the default styles are reset, so nothing looks different. Rendered
+  with `data-lockup` (a measured lockup), the colour mark carries
+  `data-logo={productId}`. `.tcrn-shell-brand-lockup[data-lockup="lkr"]` takes the
+  side-rail tier (mark 22, 12.5 at 600, 10.5, 10 between the columns, no byline)
+  wherever it is, not only inside `ProductShell`. A `ProductLockup` first line's
+  wordmark `b` carries a `title` (the product's full name), takes its content width,
+  may overhang by 1 at most and is truncated beyond that.
+- Removed rules: `.tcrn-product-shell__sidebar .tcrn-brand-wordmark__suffix--aos`
+  and the two text-hiding rules under `[data-product-shell-collapsed="true"]`.
+- The bell's hover is the 6% ink wash (was 3.5%).
+- The shell's fallback focus rule is `.tcrn-product-shell :where(:focus-visible):not(…)`
+  (was `.tcrn-product-shell :focus-visible:not(…)`), reads the new pair
+  `--tcrn-pair-shell-edge-f` (`var(--tcrn-focus-ring)`, declared with the theme) and
+  moves from the front of the component segment to the end of the shell segment. It
+  looks the same.
+
+Do: update snapshot tests that compare whole markup (the row hooks and titles, the
+`b`, `em` and `small` of the lockups); keep selecting a lockup's parts by class; an
+override of the fallback focus rule written at (0,3,0) can be (0,2,0) or more if it
+comes later in the sheet.
+
+Source: 212b88f (TCRN-DS-SUB-152), 52780e6 (TCRN-DS-SUB-154), 61cf706
+(TCRN-DS-SUB-145), 2d1535e (TCRN-DS-SUB-159), f709e9a (TCRN-DS-SUB-146), fd14855
+(TCRN-DS-SUB-151), 9d081aa (TCRN-DS-SUB-143), c1e4a0a and 5987d66
+(TCRN-DS-SUB-144), 56f1f6c (TCRN-DS-SUB-156); handoffs K1, K5, K6 and K6b
+(INIT-016 r2).
+
+### M37 · When the intro plays, how high the shell is, and embedded shells
+
+Change: nothing new in the package; this states how M20, M27 and M29 are meant to
+be used. `ShellIntro` is mounted only when a sign-in inside the application has just
+succeeded: not on a reload, a route change or a deep link into a signed-in session.
+The shell's root is one screen high (`block-size: 100dvh`): the band stays where it
+is and the page scrolls inside the paper, whose content region is the scrolling,
+focusable region (M36). So a long page that embeds a shell below other content, such
+as a documentation example or a comparison, puts the shell in a frame of fixed
+height; otherwise the shell takes a whole screen in the middle of the page.
+
+Do: mount `ShellIntro` in the render that follows a successful in-app sign-in (M29),
+and nowhere else; let the paper scroll, not the document; to embed a shell, give it
+a frame with a fixed block size and set the shell's own `style` to
+`{ blockSize: "100%" }` so it fills the frame (the documentation's embedded shells
+use a 640px frame).
+
+Source: 2c09e64 (TCRN-DS-SUB-160), f709e9a (TCRN-DS-SUB-146); handoffs K5 and K1
+(INIT-016 r2).
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is
@@ -900,3 +1126,9 @@ Since the second batch (TCRN-DS-INIT-016), whose open items are listed in
   night, for the Owner to rule on with the first batch's S-6 (D7; M28). A ruling for
   #7aa0f5 would move the variable back into the two theme blocks.
 - An AOS shell has no brand button until AOS has a mark in the approved set (M20).
+- M30 to M37 come from the second batch's second round (INIT-016 r2); they add to
+  M20 to M29 and change none of them.
+- One correction in place: M9's change and do lines and the night-suffix item of the
+  first batch's list above stated the withdrawn night value #7aa0f5 as current, so
+  the second round brought them to the single colour (M28). This is the one
+  exception to the introduction's rule that a first-batch item keeps its wording.
