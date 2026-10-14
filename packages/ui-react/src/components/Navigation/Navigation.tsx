@@ -42,7 +42,7 @@ import {
   type ShellMenuSearchProvider
 } from "./ShellMenu.js";
 import { ShellPins, shellPinsMax, type ShellPinItem } from "./ShellPins.js";
-import { tcrnShellCopyFor } from "./shell-copy.js";
+import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
 
 /**
  * The shell's own words about itself, in every supported locale.
@@ -334,6 +334,16 @@ function productMark(productId: TcrnProductMarkId): TcrnProductMark {
   return mark;
 }
 
+/**
+ * The mark's own id, which a measured lockup writes in data-logo: the name of its logos2 file and
+ * of the Brand board's mark (tms, einzbern, mana, ds), not the product key it is registered under
+ * (mana-orchestrate, design-system). The shell gate's brandDigest finds the source by it
+ * (TCRN-DS-SUB-194).
+ */
+function productMarkIdOf(productId: TcrnProductMarkId): string {
+  return productMark(productId).id;
+}
+
 function inkedProductMarkBody(mark: TcrnProductMark, ink: string): string {
   return ink === "currentColor" ? mark.inkBody : mark.inkBody.replaceAll("currentColor", ink);
 }
@@ -619,7 +629,8 @@ export function ProductLogo({
       data-product-wordmark={asset.wordmark}
     >
       {/* A lockup the shell measures (one given a data-lockup hook, such as the full menu's
-          bottom bar) marks its colour mark with data-logo, as the first line does (C-5, C-6). The
+          bottom bar) marks its colour mark with data-logo, the mark's own id, as the first line
+          does (C-5, C-6; TCRN-DS-SUB-194). The
           other renditions do not, since their bytes are not the logos2 file's, and an unmeasured
           lockup (a card, a launcher) adds no hook. */}
       {asset.markId ? (
@@ -627,7 +638,7 @@ export function ProductLogo({
           productId={asset.markId}
           variant={markVariant}
           alt={markAlt}
-          data-logo={measured && (markVariant ?? "color") === "color" ? asset.productId : undefined}
+          data-logo={measured && (markVariant ?? "color") === "color" ? productMarkIdOf(asset.markId) : undefined}
         />
       ) : (
         <TcrnBrandMark src={brandMarkSrc} alt={markAlt} />
@@ -714,7 +725,7 @@ function ProductLockupFirstLine({
       data-product-id={asset?.productId}
     >
       {asset?.markId ? (
-        <TcrnBrandMark productId={asset.markId} variant="color" aria-hidden="true" data-logo={asset.productId} />
+        <TcrnBrandMark productId={asset.markId} variant="color" aria-hidden="true" data-logo={productMarkIdOf(asset.markId)} />
       ) : (
         <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} aria-hidden="true" />
       )}
@@ -1993,6 +2004,12 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   onPinsReorder?: (orderedIds: readonly string[]) => void;
   /** Whether the full menu is open; the shell keeps its own state when omitted. */
   menuOpen?: boolean;
+  /**
+   * Whether ⌘K / Ctrl+K opens this shell's full menu: the key is registered on the document, once
+   * per shell, so a page with several shells lets one of them have it and passes false to the
+   * others. On by default (ShellMenu's `shortcut`; TCRN-DS-SUB-185).
+   */
+  menuShortcut?: boolean;
   onMenuOpenChange?: (open: boolean, reason: ProductShellMenuChangeReason) => void;
   /** The pinned item whose drop-down is open; the shell keeps its own state when omitted. */
   openPinId?: string | null;
@@ -2012,9 +2029,11 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   onSearchQueryChange?: (query: string) => void;
   /**
    * A name for this shell, which tells its landmarks from another shell's on the same page (axe
-   * landmark-unique): the pinned items' nav and the page header's trail are named
-   * "{landmarkLabel} · {name}" in the reader's language. Omitted, they keep the built-in names
-   * (TCRN-DS-SUB-148).
+   * landmark-unique): every named landmark of the shell — the band, the pinned items, the full menu
+   * (panel or Sheet) and its bottom bar's trail, the drop-downs, the avatar menu and its product
+   * switcher, the content region and the page header's trail — is named "{landmarkLabel} · {name}"
+   * in the reader's language. A `contentLabel` or a page header's own `landmarkLabel` is used as it
+   * is given. Omitted, they keep the built-in names (TCRN-DS-SUB-148, TCRN-DS-SUB-184).
    */
   landmarkLabel?: string;
   /** The full menu's query, for a product that holds it; the menu keeps its own when omitted (ShellMenu's `query`). */
@@ -2130,6 +2149,7 @@ export function ProductShell({
   onPinnedChange,
   onPinsReorder,
   menuOpen,
+  menuShortcut = true,
   onMenuOpenChange,
   openPinId,
   onOpenPinChange,
@@ -2158,7 +2178,9 @@ export function ProductShell({
   // shell already knows the reader's language and a second way to say it could only disagree.
   const chrome = chromeLabels(currentLocale);
   const copy = tcrnShellCopyFor(currentLocale);
-  const resolvedContentLabel = contentLabel ?? chrome.shellWorkspace;
+  // Every named landmark goes through one composition: the shell's name, then the landmark's own.
+  const landmarkName = (name: string) => tcrnShellLandmarkName(currentLocale, landmarkLabel, name);
+  const resolvedContentLabel = contentLabel ?? landmarkName(chrome.shellWorkspace);
   const resolvedSkipLinkLabel = skipLinkLabel ?? chrome.skipToContent;
   const baseId = useId();
   const menuId = `${baseId}-menu`;
@@ -2260,7 +2282,7 @@ export function ProductShell({
     >
       <SkipLink href={`#${contentId}`}>{resolvedSkipLinkLabel}</SkipLink>
       {/* Composed per locale: the module name is the consumer's own. */}
-      <header className="tcrn-shell-strip" aria-label={chrome.shellControlsOf(moduleName)} data-shell-strip="" data-product-shell-region="strip">
+      <header className="tcrn-shell-strip" aria-label={landmarkName(chrome.shellControlsOf(moduleName))} data-shell-strip="" data-product-shell-region="strip">
         <ShellBrandButton
           ref={brandRef}
           productId={brandProductId}
@@ -2287,7 +2309,7 @@ export function ProductShell({
           ) : null}
           {notifications ? (
             <button type="button" className="tcrn-shell-bell" aria-label={copy.notificationsOf(unread)} data-shell-bell="" onClick={notifications.onOpen}>
-              <Icon name="bell" size={20} />
+              <Icon name="bell" size="lg" />
               {unread > 0 ? <i className="tcrn-shell-bell__dot" aria-hidden="true" /> : null}
             </button>
           ) : null}
@@ -2303,7 +2325,7 @@ export function ProductShell({
               data-shell-avatar=""
               onClick={() => changeAccount(!shownAccountOpen)}
             >
-              {account ? <span aria-hidden="true">{productShellInitials(account)}</span> : <Icon name="users" size={14} />}
+              {account ? <span aria-hidden="true">{productShellInitials(account)}</span> : <Icon name="users" size="sm" />}
             </button>
             {shownAccountOpen ? (
               <section
@@ -2312,7 +2334,7 @@ export function ProductShell({
                 className="tcrn-shell-account__panel"
                 role="dialog"
                 aria-modal="false"
-                aria-label={copy.account}
+                aria-label={landmarkName(copy.account)}
                 data-panel="account"
               >
                 {account ? (
@@ -2322,7 +2344,7 @@ export function ProductShell({
                   </p>
                 ) : null}
                 {products && products.length > 0 ? (
-                  <nav className="tcrn-shell-account__products" aria-label={copy.switchProduct} data-shell-products="">
+                  <nav className="tcrn-shell-account__products" aria-label={landmarkName(copy.switchProduct)} data-shell-products="">
                     <span className="tcrn-shell-account__heading" aria-hidden="true">
                       {copy.switchProduct}
                     </span>
@@ -2372,8 +2394,10 @@ export function ProductShell({
         query={menuQuery}
         defaultQuery={defaultMenuQuery}
         onQueryChange={onMenuQueryChange}
+        shortcut={menuShortcut}
         locale={currentLocale}
         previewStates={previewStates}
+        landmarkLabel={landmarkLabel}
       />
       {shownTargets.map((target) =>
         target.source ? (
@@ -2390,6 +2414,7 @@ export function ProductShell({
             onPinnedChange={onPinnedChange}
             locale={currentLocale}
             previewStates={previewStates}
+            landmarkLabel={landmarkLabel}
           />
         ) : null
       )}

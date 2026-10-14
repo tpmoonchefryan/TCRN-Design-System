@@ -158,14 +158,14 @@ export const brandCss01 = `
    so the word has space-0h above and below it, the same on both sides, and the clipping word
    holds the suffix without moving a glyph. */
 .tcrn-brand-lockup--line {
-  --tcrn-brand-mark-size: 44px;
+  --tcrn-brand-mark-size: var(--tcrn-shell-mark-lg);
   --tcrn-brand-line-one-size: 16px;
   --tcrn-brand-line-one-height: var(--tcrn-type-line-ui);
   gap: var(--tcrn-space-3h);
   color: var(--tcrn-color-ink);
 }
 .tcrn-brand-lockup--line-rail {
-  --tcrn-brand-mark-size: 22px;
+  --tcrn-brand-mark-size: var(--tcrn-shell-mark);
   --tcrn-brand-line-one-size: 12.5px;
   --tcrn-brand-line-one-height: var(--tcrn-type-line-control);
   gap: var(--tcrn-space-2h);
@@ -211,7 +211,7 @@ export const brandCss02 = `
    data-lockup="lkr" (C-6), such as the full menu's bottom bar wherever the menu is rendered. */
 .tcrn-product-shell .tcrn-shell-brand-lockup,
 .tcrn-shell-brand-lockup[data-lockup="lkr"] {
-  --tcrn-brand-mark-size: 22px;
+  --tcrn-brand-mark-size: var(--tcrn-shell-mark);
   --tcrn-brand-line-one-size: 12.5px;
   --tcrn-brand-line-one-height: 16px;
   --tcrn-brand-line-one-base-weight: var(--tcrn-type-weight-strong);

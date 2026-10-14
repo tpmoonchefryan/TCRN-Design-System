@@ -143,6 +143,9 @@
   --tcrn-shell-mark: 22px;
   --tcrn-shell-touch: 44px;
   --tcrn-shell-crumb-icon: 11px;
+  --tcrn-shell-chevron: 12px;
+  --tcrn-shell-locale-chevron: 11px;
+  --tcrn-shell-mark-lg: 44px;
   --tcrn-layout-content-max-w: 1040px;
   --tcrn-brand-suffix-tms: #2c63c8;
   --tcrn-brand-suffix-einzbern: #3b5272;

@@ -19,6 +19,9 @@
 // TCRN-DS-SUB-148: an instance's landmark names, so that two shells on one page (the documentation
 // shell and a shell in its paper) say their pinned items and their trails apart: the instance's
 // name, then the landmark's own.
+// TCRN-DS-SUB-184: the instance's name reaches every named landmark of the shell (the band, the
+// pinned items, the full menu and its bottom bar, the Sheet, the drop-downs, the avatar menu and its
+// product switcher, the content region and the trail), always through landmarkOf.
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { resolveDocumentLocale } from "../../utils.js";
 
@@ -153,4 +156,14 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
 /** The shell copy for the reader's language (the page's own when no locale is given). */
 export function tcrnShellCopyFor(locale?: TcrnLocale | string): TcrnShellCopy {
   return tcrnShellCopy[resolveDocumentLocale(locale)];
+}
+
+/**
+ * A landmark's name in a shell that may share the page with others (TCRN-DS-SUB-184): with the
+ * shell's name (landmarkLabel) it is "{shell} · {name}" in the reader's language, through
+ * landmarkOf; without one, or with a blank one, it is the landmark's own name, unchanged.
+ */
+export function tcrnShellLandmarkName(locale: TcrnLocale | string | undefined, prefix: string | undefined, name: string): string {
+  const shell = prefix?.trim();
+  return shell ? tcrnShellCopyFor(locale).landmarkOf(shell, name) : name;
 }

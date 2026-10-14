@@ -41,6 +41,7 @@ import {
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
 import { shellMenuPresentationContext } from "./ShellMenu.js";
+import { tcrnShellCopyFor } from "./shell-copy.js";
 import * as shellSegments from "../../styles/shell.css.js";
 import * as shellIntroSegments from "../../styles/shell-intro.css.js";
 import * as shellSheetSegments from "../../styles/shell-sheet.css.js";
@@ -836,10 +837,12 @@ test("brand lockup css follows the G+ brand rules", () => {
   assert.match(rule(".tcrn-brand-lockup"), /--tcrn-brand-mark-size: 28px;/);
   // The side-rail tier is one rule: a lockup in the product shell, or one marked data-lockup="lkr"
   // such as the full menu's bottom bar (TCRN-DS-SUB-144).
+  // Its mark is the shell.mark token, 22 (TCRN-DS-SUB-178).
   assert.match(
     tcrnComponentCss,
-    /\n\.tcrn-product-shell \.tcrn-shell-brand-lockup,\n\.tcrn-shell-brand-lockup\[data-lockup="lkr"\] \{[^}]*--tcrn-brand-mark-size: 22px;/
+    /\n\.tcrn-product-shell \.tcrn-shell-brand-lockup,\n\.tcrn-shell-brand-lockup\[data-lockup="lkr"\] \{[^}]*--tcrn-brand-mark-size: var\(--tcrn-shell-mark\);/
   );
+  assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px");
   const markRule = rule(".tcrn-brand-mark");
   assert.match(markRule, /inline-size: var\(--tcrn-brand-mark-size\);[\s\S]*filter: var\(--tcrn-brand-mark-filter, none\);/);
   // STORY-127 GWT4 (the CSS part): the mark neither scales nor fades. The rail and its collapsed
@@ -1882,7 +1885,8 @@ test("STORY-145 GWT1 ProductLockup's first line draws the four product marks fro
       assert.match(html, new RegExp(`data-lockup="${kind}"`));
       const svg = /<svg([^>]*)>([\s\S]*?)<\/svg>/.exec(html);
       assert.ok(svg, `${productId} ${scale} draws an inline mark`);
-      assert.match(svg[1], new RegExp(`data-logo="${productId}"`));
+      // data-logo is the mark's own id, the logos2 file's name, not the product key (TCRN-DS-SUB-194).
+      assert.match(svg[1], new RegExp(`data-logo="${mark.id}"`));
       assert.match(svg[1], /aria-hidden="true"/);
       assert.match(svg[1], /data-product-mark-variant="color"/);
       assert.equal(svg[2], logos2Inner(mark.id), `${productId} ${scale}: the mark is logos2/${mark.id}.svg`);
@@ -1908,8 +1912,11 @@ test("STORY-145 GWT2 the first line is centred by the flex row, at the section E
   const lockup = rules.filter(({ selector }) => selector.split(",").map((part) => part.trim()).includes(".tcrn-brand-lockup")).map(({ body }) => body).join("\n");
   assert.match(lockup, /display: inline-flex;/);
   assert.match(lockup, /align-items: center;/);
-  assert.match(rule(".tcrn-brand-lockup--line"), /--tcrn-brand-mark-size: 44px;[\s\S]*--tcrn-brand-line-one-size: 16px;[\s\S]*gap: var\(--tcrn-space-3h\);/);
-  assert.match(rule(".tcrn-brand-lockup--line-rail"), /--tcrn-brand-mark-size: 22px;[\s\S]*--tcrn-brand-line-one-size: 12\.5px;[\s\S]*--tcrn-brand-line-one-height: var\(--tcrn-type-line-control\);[\s\S]*gap: var\(--tcrn-space-2h\);/);
+  // The two marks are the shell.mark-lg and shell.mark tokens, 44 and 22 (TCRN-DS-SUB-178).
+  assert.equal(createTokenMap()["--tcrn-shell-mark-lg"], "44px");
+  assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px");
+  assert.match(rule(".tcrn-brand-lockup--line"), /--tcrn-brand-mark-size: var\(--tcrn-shell-mark-lg\);[\s\S]*--tcrn-brand-line-one-size: 16px;[\s\S]*gap: var\(--tcrn-space-3h\);/);
+  assert.match(rule(".tcrn-brand-lockup--line-rail"), /--tcrn-brand-mark-size: var\(--tcrn-shell-mark\);[\s\S]*--tcrn-brand-line-one-size: 12\.5px;[\s\S]*--tcrn-brand-line-one-height: var\(--tcrn-type-line-control\);[\s\S]*gap: var\(--tcrn-space-2h\);/);
   const word = rule(".tcrn-brand-lockup__word");
   assert.match(word, /font-weight: var\(--tcrn-type-weight-strong\);/);
   assert.match(word, /white-space: nowrap;/);
@@ -2499,4 +2506,212 @@ test("STORY-147 STORY-140 landmarkLabel names a shell's two navs apart from anot
   assert.equal(both.length, 4);
   assert.equal(new Set(both).size, 4, both.join(" | "));
   assert.doesNotMatch(renderToStaticMarkup(shell({ landmarkLabel: "Docs" })), /landmarklabel/i, "the prop does not reach the shell root as an attribute");
+});
+
+// The landmarks of a page as a reader's tools list them: the elements with a landmark role (a
+// section only once it has a name, a header or footer only outside sectioning content) and the
+// dialogs, each with its role and its name.
+function namedLandmarks(html: string): { role: string; name: string | null }[] {
+  const landmarkRoles = new Set(["banner", "navigation", "region", "dialog", "complementary", "main", "contentinfo", "search", "form"]);
+  const sectioned = (element: Element) => element.parentElement?.closest("article, aside, main, nav, section") != null;
+  const implicitRole = (element: Element): string | null => {
+    switch (element.tagName.toLowerCase()) {
+      case "header":
+        return sectioned(element) ? null : "banner";
+      case "nav":
+        return "navigation";
+      case "aside":
+        return "complementary";
+      case "main":
+        return "main";
+      case "footer":
+        return sectioned(element) ? null : "contentinfo";
+      case "section":
+      case "form":
+        return element.hasAttribute("aria-label") || element.hasAttribute("aria-labelledby") ? (element.tagName.toLowerCase() === "form" ? "form" : "region") : null;
+      default:
+        return null;
+    }
+  };
+  return [...new JSDOM(html).window.document.querySelectorAll("header, nav, aside, main, footer, section, form, [role]")]
+    .map((element) => ({ role: element.getAttribute("role") ?? implicitRole(element), name: element.getAttribute("aria-label") }))
+    .filter((entry): entry is { role: string; name: string | null } => entry.role !== null && landmarkRoles.has(entry.role));
+}
+
+test("STORY-140 STORY-147 STORY-143 landmarkLabel names every landmark of a shell, so two shells on a page share none, with the menu, the Sheet, a drop-down or the avatar menu open; without it the names stay (TCRN-DS-SUB-184)", () => {
+  const shell = (extra: Partial<ProductShellProps>) => (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      pinnedIds={["roster", "contracts"]}
+      account={{ name: "Lin Xiao" }}
+      products={[
+        { id: "tms", label: "TCRN TMS", href: "#tms", current: true },
+        { id: "aos", label: "TCRN AOS", href: "#aos" }
+      ]}
+      {...extra}
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  const states: Record<string, Partial<ProductShellProps>> = {
+    menu: { menuOpen: true },
+    drop: { openPinId: "contracts" },
+    account: { accountMenuOpen: true }
+  };
+  const render = (state: Partial<ProductShellProps>, extra: Partial<ProductShellProps>, presentation: "panel" | "sheet" = "panel") =>
+    renderToStaticMarkup(<shellMenuPresentationContext.Provider value={presentation}>{shell({ ...state, ...extra })}</shellMenuPresentationContext.Provider>);
+  // Without landmarkLabel every name is the built-in one, word for word as before.
+  const names = (html: string) => namedLandmarks(html).map((entry) => `${entry.role} ${entry.name}`);
+  assert.deepEqual(names(render(states.menu, {})), [
+    "banner Talent shell controls",
+    "navigation Pinned items",
+    "dialog Navigation",
+    "navigation Current location",
+    "region Product shell workspace",
+    "navigation Breadcrumbs"
+  ]);
+  assert.deepEqual(names(render(states.menu, {}, "sheet")), [
+    "banner Talent shell controls",
+    "navigation Pinned items",
+    "dialog Navigation",
+    "region Product shell workspace",
+    "navigation Breadcrumbs"
+  ]);
+  assert.deepEqual(names(render(states.drop, {})), [
+    "banner Talent shell controls",
+    "navigation Pinned items",
+    "dialog Contracts",
+    "region Product shell workspace",
+    "navigation Breadcrumbs"
+  ]);
+  assert.deepEqual(names(render(states.account, {})), [
+    "banner Talent shell controls",
+    "navigation Pinned items",
+    "dialog Account",
+    "navigation Switch product",
+    "region Product shell workspace",
+    "navigation Breadcrumbs"
+  ]);
+  // With it every name is "{landmarkLabel} · {name}", composed through the shell copy's landmarkOf.
+  const copy = tcrnShellCopyFor("en");
+  assert.deepEqual(
+    names(render(states.menu, { landmarkLabel: "Docs" })),
+    ["banner Talent shell controls", "navigation Pinned items", "dialog Navigation", "navigation Current location", "region Product shell workspace", "navigation Breadcrumbs"].map((entry) => {
+      const [role, ...name] = entry.split(" ");
+      return `${role} ${copy.landmarkOf("Docs", name.join(" "))}`;
+    })
+  );
+  // Two shells on one page that differ in nothing but landmarkLabel: every landmark has a name and
+  // no two names are the same, in each state and in the Sheet.
+  for (const [label, state] of Object.entries(states)) {
+    for (const presentation of ["panel", "sheet"] as const) {
+      const both = namedLandmarks(
+        renderToStaticMarkup(
+          <shellMenuPresentationContext.Provider value={presentation}>
+            {shell({ ...state, landmarkLabel: "Docs" })}
+            {shell({ ...state, landmarkLabel: "Example" })}
+          </shellMenuPresentationContext.Provider>
+        )
+      );
+      const named = both.map((entry) => entry.name);
+      assert.ok(named.every((name) => name !== null && name.trim() !== ""), `${label} ${presentation}: every landmark is named`);
+      assert.equal(new Set(named).size, named.length, `${label} ${presentation}: ${named.join(" | ")}`);
+    }
+  }
+  // In another language the composition is that language's; a given contentLabel stays as given.
+  const zh = tcrnShellCopyFor("zh-CN");
+  const zhNames = namedLandmarks(render(states.menu, { landmarkLabel: "文档", currentLocale: "zh-CN" })).map((entry) => entry.name);
+  assert.ok(zhNames.includes(zh.landmarkOf("文档", zh.navigation)) && zhNames.includes(zh.landmarkOf("文档", zh.currentPosition)), zhNames.join(" | "));
+  assert.ok(namedLandmarks(render(states.menu, { landmarkLabel: "Docs", contentLabel: "Roster page" })).some((entry) => entry.role === "region" && entry.name === "Roster page"));
+  assert.doesNotMatch(render(states.drop, { landmarkLabel: "Docs" }), /landmarklabel/i, "the prop reaches no element as an attribute");
+});
+
+test("STORY-138 STORY-140 menuShortcut is ProductShell's switch for the full menu's ⌘K: on by default, it reaches no element as an attribute, and the markup is the same either way (TCRN-DS-SUB-185)", () => {
+  const shell = (extra: Partial<ProductShellProps>) =>
+    renderToStaticMarkup(
+      <ProductShell
+        productName="TCRN TMS"
+        moduleName="Talent"
+        brandProductId="tms"
+        currentRouteLabel="Roster"
+        pageHeader={{ title: "Roster" }}
+        navGroups={shellNavGroups}
+        locales={shellLocales}
+        currentLocale="en"
+        menuOpen
+        {...extra}
+      >
+        <div>content</div>
+      </ProductShell>
+    );
+  // The key is registered on the document after mounting (src/test/shell-menu.dom.spec.tsx); the
+  // markup, and the menu's ⌘K hint in its search, do not depend on it.
+  assert.equal(shell({ menuShortcut: false }), shell({}));
+  assert.equal(shell({ menuShortcut: true }), shell({}));
+  assert.doesNotMatch(shell({ menuShortcut: false }), /menushortcut/i);
+});
+
+test("STORY-145 STORY-149 a measured lockup's data-logo is its mark's id, the logos2 file's name: ds and mana, not the product keys (TCRN-DS-SUB-194)", () => {
+  const logoOf = (html: string) => /<svg[^>]*\bdata-logo="([^"]*)"/.exec(html)?.[1] ?? null;
+  const expected = { "design-system": "ds", "mana-orchestrate": "mana", tms: "tms", einzbern: "einzbern" } as const;
+  for (const [productId, markId] of Object.entries(expected) as [keyof typeof expected, string][]) {
+    assert.ok(tcrnProductMarks.some((mark) => mark.id === markId && mark.productId === productId), `${markId} is the mark of ${productId}`);
+    for (const firstLine of ["rail", "lockup"] as const) {
+      assert.equal(logoOf(renderToStaticMarkup(<ProductLockup productId={productId} firstLine={firstLine} />)), markId, `${productId} first line ${firstLine}`);
+    }
+    // The bottom bar's lockup, measured through its data-lockup hook, writes the same id.
+    assert.equal(logoOf(renderToStaticMarkup(<ProductLogo productId={productId} data-lockup="lkr" />)), markId, `${productId} lockup`);
+    // The product key stays where it was: data-product-id on the lockup and data-product-mark on the mark.
+    const line = renderToStaticMarkup(<ProductLockup productId={productId} firstLine="rail" />);
+    assert.match(line, new RegExp(`data-product-id="${productId}"`));
+    assert.match(line, new RegExp(`data-product-mark="${productId}"`));
+  }
+});
+
+test("STORY-135 STORY-136 STORY-137 STORY-138 STORY-140 the shell's icons take their sizes from tokens: the bell lg 20, the avatar's icon sm 14, the brand button's chevron md 16, the small chevrons shell.chevron 12, the language chevron shell.locale-chevron 11 (TCRN-DS-SUB-178)", () => {
+  const tokens = createTokenMap();
+  const px = (name: string) => Number.parseFloat(tokens[name] ?? "");
+  assert.deepEqual(
+    ["--tcrn-icon-size-lg", "--tcrn-icon-size-sm", "--tcrn-icon-size-md", "--tcrn-shell-chevron", "--tcrn-shell-locale-chevron"].map(px),
+    [20, 14, 16, 12, 11]
+  );
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      pinnedIds={["roster", "contracts"]}
+      notifications={{ unread: 3 }}
+      menuOpen
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  const document = new JSDOM(html).window.document;
+  const sizes = (selector: string) =>
+    [...document.querySelectorAll(selector)].map((svg) => `${svg.getAttribute("width")}x${svg.getAttribute("height")}`);
+  // Each renders at the size it rendered at before, from the token now.
+  assert.deepEqual(sizes(".tcrn-shell-bell svg"), ["20x20"], "the bell is Icon lg");
+  assert.deepEqual(sizes(".tcrn-shell-avatar svg"), ["14x14"], "the avatar's icon without an account is Icon sm");
+  assert.deepEqual(sizes('[data-shell-brand] svg[data-icon-name^="chevron-"]'), ["16x16"], "the brand button's chevron is Icon md");
+  assert.ok(sizes("svg.tcrn-shell-menu__sub").length > 0);
+  assert.ok(sizes("svg.tcrn-shell-menu__sub").every((size) => size === "12x12"), "a row's next level");
+  assert.deepEqual(sizes("svg.tcrn-shell-menu__crumb-sep"), ["12x12"], "the bottom bar's position separator");
+  assert.deepEqual(sizes("svg.tcrn-shell-pins__chevron"), ["12x12"], "a pinned item's drop-down chevron");
+  // The language chevron is drawn by CSS from its token.
+  const chevron = /\n\.tcrn-shell-locale-menu__chevron \{\n([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
+  assert.match(chevron, /\n\s*width: var\(--tcrn-shell-locale-chevron\);/);
+  assert.match(chevron, /\n\s*height: var\(--tcrn-shell-locale-chevron\);/);
 });

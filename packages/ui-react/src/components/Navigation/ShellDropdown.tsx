@@ -34,7 +34,7 @@ import {
   type ShellMenuRowContext,
   type ShellMenuSearchProvider
 } from "./ShellMenu.js";
-import { tcrnShellCopyFor } from "./shell-copy.js";
+import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
 
 // Layout effects place the drop-down before it paints; there is no layout on the server.
 const useClientLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -73,6 +73,12 @@ export interface ShellDropdownProps extends Omit<HTMLAttributes<HTMLDivElement>,
    * rendered on the server shows a drop-down with its cascade.
    */
   previewStates?: Readonly<Record<string, string>>;
+  /**
+   * The name of the shell the drop-down belongs to, which tells it from another shell's on the same
+   * page: the drop-down is named "{landmarkLabel} · {pinned entry}" in the reader's language. Omitted,
+   * it is named by the pinned entry alone (TCRN-DS-SUB-184; ProductShell passes its own).
+   */
+  landmarkLabel?: string;
 }
 
 function entriesOf(source: ShellMenuGroup | ShellMenuItem): readonly ShellMenuItem[] {
@@ -138,6 +144,7 @@ export function ShellDropdown({
   searchProvider = searchTheSubtree,
   locale,
   previewStates,
+  landmarkLabel,
   className,
   style,
   onKeyDown,
@@ -242,7 +249,7 @@ export function ShellDropdown({
         className="tcrn-shell-dropdown__panel"
         role="dialog"
         aria-modal="false"
-        aria-label={source.label}
+        aria-label={tcrnShellLandmarkName(locale, landmarkLabel, source.label)}
         aria-owns={cascades.length > 0 ? cascade.openPath.map(columnIdOf).join(" ") : undefined}
         data-panel="drop"
       >

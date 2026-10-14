@@ -95,7 +95,7 @@ export const ShellBrandButton = forwardRef<HTMLButtonElement, ShellBrandButtonPr
         )}
       </span>
       <span className="tcrn-shell-brand__toggle" data-shell-toggle="">
-        <Icon name={expanded ? "chevron-up" : "chevron-down"} size={16} />
+        <Icon name={expanded ? "chevron-up" : "chevron-down"} size="md" />
       </span>
     </button>
   );

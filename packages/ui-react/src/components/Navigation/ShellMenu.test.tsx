@@ -248,7 +248,8 @@ test("the bottom bar is pbar-h plus the panel's bottom inset, its rule a 1px lin
   assert.doesNotMatch(lockup, /--tcrn-brand-|gap:/);
   assert.doesNotMatch(shellCss03, /tcrn-product-logo__byline/);
   const tier = ruleBody('.tcrn-shell-brand-lockup[data-lockup="lkr"]', brandCss02);
-  assert.equal(declaration(tier, "--tcrn-brand-mark-size"), "22px");
+  assert.equal(declaration(tier, "--tcrn-brand-mark-size"), "var(--tcrn-shell-mark)");
+  assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px", "the mark is shell.mark, 22 (TCRN-DS-SUB-178)");
   assert.equal(declaration(tier, "--tcrn-brand-line-one-size"), "12.5px");
   assert.equal(declaration(tier, "--tcrn-brand-line-two-size"), "10.5px");
   assert.equal(declaration(tier, "gap"), "var(--tcrn-space-2h)");
@@ -636,4 +637,31 @@ test("a group's or an entry's description is said with its row through aria-desc
   const id = groupRow?.getAttribute("aria-describedby") ?? "";
   assert.equal(sheet.getElementById(id)?.textContent, "艺人与团队的资料");
   assert.ok(sheet.getElementById(id)?.matches(".tcrn-sr-only"));
+});
+
+test("with landmarkLabel the panel, its bottom bar's trail and the Sheet are named after the shell, in every locale; without it the names stay (TCRN-DS-SUB-184)", () => {
+  const names = (html: string) => [...new JSDOM(html).window.document.querySelectorAll('[role="dialog"], nav')].map((element) => element.getAttribute("aria-label"));
+  // Without it: the names as before, word for word.
+  assert.deepEqual(names(renderBoardMenu()), ["导航", "当前位置"]);
+  assert.deepEqual(names(renderBoardMenu({ presentation: "sheet" })), ["导航"]);
+  assert.deepEqual(names(renderBoardMenu({ landmarkLabel: "  " })), ["导航", "当前位置"], "a blank name changes nothing");
+  for (const locale of tcrnSupportedLocales) {
+    const copy = tcrnShellCopy[locale];
+    assert.deepEqual(names(renderBoardMenu({ locale, landmarkLabel: "TMS" })), [copy.landmarkOf("TMS", copy.navigation), copy.landmarkOf("TMS", copy.currentPosition)], locale);
+    assert.deepEqual(names(renderBoardMenu({ locale, landmarkLabel: "TMS", presentation: "sheet" })), [copy.landmarkOf("TMS", copy.navigation)], locale);
+  }
+  // The bottom bar's visible label is the menu's own copy; only the names carry the shell's.
+  assert.match(renderBoardMenu({ landmarkLabel: "TMS" }), /<span class="tcrn-shell-menu__crumbs-label" aria-hidden="true">当前位置<\/span>/);
+  // Two menus on one page, told apart by the name alone.
+  const both = names(
+    renderToStaticMarkup(
+      <>
+        <ShellMenu groups={boardMenu} open productId="tms" currentPath={boardPath} locale="zh-CN" landmarkLabel="Light" />
+        <ShellMenu groups={boardMenu} open productId="tms" currentPath={boardPath} locale="zh-CN" landmarkLabel="Night" />
+      </>
+    )
+  );
+  assert.equal(both.length, 4);
+  assert.equal(new Set(both).size, 4, both.join(" | "));
+  assert.doesNotMatch(renderBoardMenu({ landmarkLabel: "TMS" }), /landmarklabel/i, "the prop reaches no element as an attribute");
 });

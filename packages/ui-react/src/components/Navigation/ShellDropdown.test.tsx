@@ -145,3 +145,19 @@ test("a row marked open in previewStates starts with its next level open, on the
   // A space-separated list of states counts as it does for the CSS (~=).
   assert.match(renderToStaticMarkup(<ShellDropdown id="drop" source={contracts} open previewStates={{ templates: "hover open" }} />), /data-drop-col="2"/);
 });
+
+test("with landmarkLabel the drop-down is named after the shell and the pinned entry, in every locale; without it, after the entry alone (TCRN-DS-SUB-184)", () => {
+  const nameOf = (html: string) => /<section[^>]*role="dialog"[^>]*aria-label="([^"]*)"/.exec(html)?.[1] ?? null;
+  assert.equal(nameOf(render()), "合约", "without it the name is the pinned entry's, as before");
+  assert.equal(nameOf(render({ landmarkLabel: " " })), "合约", "a blank name changes nothing");
+  for (const locale of tcrnSupportedLocales) {
+    const copy = tcrnShellCopy[locale];
+    assert.equal(nameOf(render({ locale, landmarkLabel: "TMS" })), copy.landmarkOf("TMS", "合约"), locale);
+    // The search placeholder still names the entry alone.
+    assert.match(render({ locale, landmarkLabel: "TMS" }), new RegExp(`placeholder="${escapeRegExp(copy.searchWithin("合约"))}"`), locale);
+  }
+  const light = nameOf(render({ id: "drop-light", landmarkLabel: "Light" }));
+  const night = nameOf(render({ id: "drop-night", landmarkLabel: "Night" }));
+  assert.notEqual(light, night);
+  assert.doesNotMatch(render({ landmarkLabel: "TMS" }), /landmarklabel/i, "the prop reaches no element as an attribute");
+});

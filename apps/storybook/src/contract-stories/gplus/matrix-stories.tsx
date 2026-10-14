@@ -608,6 +608,14 @@ const shellMatrixGroups: readonly ShellMenuGroup[] = [
 const shellMatrixInFlow = "position:relative;top:0;left:0;margin-top:0";
 const shellMatrixPhoneBlock: CSSProperties = { contain: "layout", position: "relative", inlineSize: "390px", blockSize: "320px" };
 const shellMatrixPinItem = 'class="tcrn-shell-pins__item"';
+/**
+ * The name each shell part of the matrix gives its landmarks (landmarkLabel), so that the light and
+ * the night matrix on one page, and the full menu and the Sheet in one matrix, share none (axe
+ * landmark-unique; TCRN-DS-SUB-184). The Sheet is a second full menu, so it has its own.
+ */
+function shellMatrixLandmarkOf(theme: MatrixTheme, sample?: "sheet"): string {
+  return `${shellMatrixStoryText.title}${theme === "night" ? " (night)" : ""}${sample ? `, ${sample}` : ""}`;
+}
 
 /** One button of ProductShell's markup, found by a marker in its opening tag. */
 function productShellButton(html: string, marker: string): string {
@@ -636,6 +644,7 @@ function ShellMatrix({ theme }: { theme: MatrixTheme }) {
       currentLocale={tcrnDefaultLocale}
       account={{ name: "Lin Xia", initials: "LX" }}
       notifications={{ unread: 3 }}
+      landmarkLabel={shellMatrixLandmarkOf(theme)}
     >
       <Text>Twelve people across four teams, updated today.</Text>
     </ProductShell>,
@@ -679,7 +688,7 @@ function ShellMatrix({ theme }: { theme: MatrixTheme }) {
         <MatrixRow label="pins">
           <StaticMarkup
             id={`${prefix}-pins`}
-            element={<ShellPins items={shellMatrixPins} selectedId="roster" openId="schedule" menuIdOf={menuIdOf} />}
+            element={<ShellPins items={shellMatrixPins} selectedId="roster" openId="schedule" menuIdOf={menuIdOf} landmarkLabel={shellMatrixLandmarkOf(theme)} />}
             edits={[
               cellEdit(shellMatrixPinItem, cell("pin-on"), 0),
               cellEdit(shellMatrixPinItem, cell("pin-rest"), 1),
@@ -711,6 +720,7 @@ function ShellMatrix({ theme }: { theme: MatrixTheme }) {
               previewStates={{ people: "hover", teams: "hover" }}
               presentation="panel"
               shortcut={false}
+              landmarkLabel={shellMatrixLandmarkOf(theme)}
             />
           }
           edits={[
@@ -736,7 +746,7 @@ function ShellMatrix({ theme }: { theme: MatrixTheme }) {
           <StaticMarkup
             id={`${prefix}-drop`}
             block
-            element={<ShellDropdown id={menuIdOf("schedule")} source={shellMatrixSchedule} open />}
+            element={<ShellDropdown id={menuIdOf("schedule")} source={shellMatrixSchedule} open landmarkLabel={shellMatrixLandmarkOf(theme)} />}
             edits={[{ marker: 'data-shell-dropdown=""', set: { style: shellMatrixInFlow } }, cellEdit('class="tcrn-input tcrn-search-input__control"', cell("drop-srch", "ph"))]}
           />
           <code>sheet</code>
@@ -747,7 +757,7 @@ function ShellMatrix({ theme }: { theme: MatrixTheme }) {
             <StaticMarkup
               id={`${prefix}-sheet`}
               block
-              element={<ShellMenu groups={shellMatrixGroups} open productId="tms" presentation="sheet" shortcut={false} />}
+              element={<ShellMenu groups={shellMatrixGroups} open productId="tms" presentation="sheet" shortcut={false} landmarkLabel={shellMatrixLandmarkOf(theme, "sheet")} />}
               edits={[cellEdit('title="People" data-shell-row=""', cell("sheet-row"))]}
             />
           </div>

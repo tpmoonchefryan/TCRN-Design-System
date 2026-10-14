@@ -335,14 +335,20 @@ const shellTokenTable: ReadonlyArray<readonly [name: string, key: string, variab
   ["shell.mark", "shell-mark", "--tcrn-shell-mark", "22px"],
   ["shell.touch", "shell-touch", "--tcrn-shell-touch", "44px"],
   ["shell.crumb-icon", "shell-crumb-icon", "--tcrn-shell-crumb-icon", "11px"],
+  // Added in INIT-016 R3 (TCRN-DS-SUB-178) for the shell's remaining literals: the small chevrons,
+  // the language chevron and the mark of the first line's large lockup. Not on the board yet
+  // either; the design session adds them to section F under these names.
+  ["shell.chevron", "shell-chevron", "--tcrn-shell-chevron", "12px"],
+  ["shell.locale-chevron", "shell-locale-chevron", "--tcrn-shell-locale-chevron", "11px"],
+  ["shell.mark-lg", "shell-mark-lg", "--tcrn-shell-mark-lg", "44px"],
   ["motion.intro.fade", "intro-fade", "--tcrn-motion-intro-fade", "120ms"],
   ["motion.intro.move", "intro-move", "--tcrn-motion-intro-move", "240ms"],
   ["motion.intro.rise", "intro-rise", "--tcrn-motion-intro-rise", "100ms"],
   ["motion.intro.max", "intro-max", "--tcrn-motion-intro-max", "700ms"]
 ];
 
-test("the top-band shell tokens are the 07b board's section F, one to one, plus the three R2 additions, in the theme-independent block", () => {
-  assert.equal(tcrnGplusFixedTokens.filter((token) => token.key.startsWith("shell-")).length, 19, "sixteen section F shell.* tokens and three R2 additions");
+test("the top-band shell tokens are the 07b board's section F, one to one, plus the three R2 and three R3 additions, in the theme-independent block", () => {
+  assert.equal(tcrnGplusFixedTokens.filter((token) => token.key.startsWith("shell-")).length, 22, "sixteen section F shell.* tokens, three R2 additions and three R3 additions");
   assert.equal(tcrnGplusFixedTokens.filter((token) => token.key.startsWith("intro-")).length, 4, "four motion.intro tokens");
   const { fixed: fixedBlock, themeNames } = publishedBlocks();
   for (const [name, key, variable, value] of shellTokenTable) {

@@ -250,6 +250,9 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "shell-mark": "Mark size in the brand button: the brand board's sidebar tier.",
   "shell-touch": "Touch height: menu rows and the full menu search under a coarse pointer, and the Sheet's rows, search and pin press area.",
   "shell-crumb-icon": "Size of the breadcrumb separator icon.",
+  "shell-chevron": "Size of the shell's small chevrons: a menu row's next level, the bottom bar's position separator and a pinned item's drop-down.",
+  "shell-locale-chevron": "Size of the language chevron in the avatar menu (the same value as shell.crumb-icon, another meaning).",
+  "shell-mark-lg": "Mark size in the first line's large lockup tier: the brand board's lockup tier (shell.mark is the sidebar tier).",
   "layout-content-max-w": "Content width of document and settings pages, centred in the paper; list and detail pages use the whole paper."
 };
 

@@ -523,3 +523,96 @@ test("the menu's own query starts from defaultQuery, follows the typing and tell
     await harness.cleanup();
   }
 });
+
+// ⌘K opens one shell (TCRN-DS-SUB-185; 138-GWT4, 140): every ShellMenu registers ⌘K on the document,
+// so a page with two shells lets one have it — the other gets menuShortcut={false} and registers
+// nothing. Without the prop on either, both answer, which is what the prop is for.
+function TwoShells({ firstShortcut, secondShortcut }: { firstShortcut?: boolean; secondShortcut?: boolean }) {
+  const shell = (name: string, shortcut: boolean | undefined) => (
+    <ProductShell
+      data-shell={name}
+      productName="TCRN TMS"
+      moduleName="艺人"
+      brandProductId="tms"
+      currentRouteLabel="名册"
+      navGroups={menu}
+      locales={[{ locale: "zh-CN", nativeName: "简体中文" }]}
+      currentLocale="zh-CN"
+      pageHeader={{ title: "名册", headingLevel: 2 }}
+      landmarkLabel={name}
+      contentId={`${name}-content`}
+      {...(shortcut === undefined ? {} : { menuShortcut: shortcut })}
+    >
+      <p>名册</p>
+    </ProductShell>
+  );
+  return (
+    <div>
+      {shell("docs", firstShortcut)}
+      {shell("example", secondShortcut)}
+    </div>
+  );
+}
+
+test("with two shells on a page, ⌘K and Ctrl+K open only the one that has the key, with focus in its own search; without the prop both answer (TCRN-DS-SUB-185)", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    const shellOf = (name: string) => harness.document.querySelector<HTMLElement>(`[data-shell="${name}"]`);
+    const stateOf = (name: string) => shellOf(name)?.getAttribute("data-state");
+    const searchOf = (name: string) => shellOf(name)?.querySelector<HTMLInputElement>('[data-shell-search] input[type="search"]') ?? null;
+    await harness.render(<TwoShells firstShortcut={false} />);
+    assert.deepEqual([stateOf("docs"), stateOf("example")], ["closed", "closed"]);
+    await press(harness, { key: "k", metaKey: true });
+    assert.deepEqual([stateOf("docs"), stateOf("example")], ["closed", "expanded"], "⌘K opens only the shell that has the key");
+    assert.ok(searchOf("example"));
+    assert.equal(harness.document.activeElement, searchOf("example"), "focus is in that shell's own search");
+    await press(harness, { key: "Escape" }, harness.document.activeElement ?? harness.document);
+    assert.deepEqual([stateOf("docs"), stateOf("example")], ["closed", "closed"]);
+    await press(harness, { key: "K", ctrlKey: true });
+    assert.deepEqual([stateOf("docs"), stateOf("example")], ["closed", "expanded"], "Ctrl+K too");
+    assert.equal(harness.document.activeElement, searchOf("example"));
+    await press(harness, { key: "Escape" }, harness.document.activeElement ?? harness.document);
+    // The other way round: the second shell gives the key away.
+    await harness.render(<TwoShells secondShortcut={false} />);
+    await press(harness, { key: "k", metaKey: true });
+    assert.deepEqual([stateOf("docs"), stateOf("example")], ["expanded", "closed"]);
+    assert.equal(harness.document.activeElement, searchOf("docs"));
+    await press(harness, { key: "Escape" }, harness.document.activeElement ?? harness.document);
+    // Without the prop on either (the default, on), both answer the same key.
+    await harness.render(<div />);
+    await harness.render(<TwoShells />);
+    await press(harness, { key: "k", metaKey: true });
+    assert.deepEqual([stateOf("docs"), stateOf("example")], ["expanded", "expanded"], "both shells answer: the prop is what keeps one");
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("a shell with menuShortcut={false} registers no keydown listener on the document; the default registers one (TCRN-DS-SUB-185)", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    const registered: string[] = [];
+    const removed: string[] = [];
+    const add = harness.document.addEventListener.bind(harness.document);
+    const remove = harness.document.removeEventListener.bind(harness.document);
+    harness.document.addEventListener = ((type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) => {
+      registered.push(type);
+      add(type, listener, options);
+    }) as typeof harness.document.addEventListener;
+    harness.document.removeEventListener = ((type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions) => {
+      removed.push(type);
+      remove(type, listener, options);
+    }) as typeof harness.document.removeEventListener;
+    await harness.render(<TwoShells firstShortcut={false} secondShortcut={false} />);
+    assert.equal(registered.filter((type) => type === "keydown").length, 0, "neither shell registers the key");
+    await press(harness, { key: "k", metaKey: true });
+    assert.equal(harness.document.querySelectorAll('[data-state="expanded"]').length, 0, "and ⌘K opens nothing");
+    await harness.render(<div />);
+    await harness.render(<TwoShells firstShortcut={false} />);
+    assert.equal(registered.filter((type) => type === "keydown").length, 1, "only the shell with the key registers it, once");
+    await harness.render(<div />);
+    assert.equal(removed.filter((type) => type === "keydown").length, 1, "and removes it on unmount");
+  } finally {
+    await harness.cleanup();
+  }
+});

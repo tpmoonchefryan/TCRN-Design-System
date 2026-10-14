@@ -325,6 +325,14 @@ launcher and switcher) are deprecated since 4.0.0; see `docs/migration-4.0.md`.
   A standalone `ProductShellSearch` may be compact at rest and expand on focus,
   then collapse on blur. Shortcut labels belong only to a search with real
   focus/result behavior.
+- ⌘K / Ctrl+K opens the full menu, and every shell registers the key on the
+  document. When one page holds several shells (a documentation page with a
+  shell in its paper, or several example shells), let only one of them
+  register it: pass `menuShortcut={false}` to the others (`menuShortcut` is on
+  by default; a standalone `ShellMenu` takes the same switch as `shortcut`).
+  Give each of those shells its own `landmarkLabel` as well, which names every
+  landmark of the shell after it, so that no two landmarks on the page share a
+  name.
 - The AI consumption contract remains in the Proof story and static JSON
   artifact. It is not a top-band control for human readers.
 
