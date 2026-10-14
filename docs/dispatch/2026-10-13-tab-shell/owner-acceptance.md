@@ -16,14 +16,14 @@
 
 ## 机器证据入口
 
-下列回执与报告由第三轮批末的 SUB-211 在同一构建上重生成（第一轮 SUB-140、第二轮 SUB-177），读数与退出码见 `runs/r3/handoff/M11.md`；以重生成后的版本为准。第三轮 internal-alpha 浏览器门的非视觉项全过（`nonVisualProofOk` 为真），视觉签名已按第二轮 K12 的分类重收：基线先删去已改名的 `table-work-index-spec` 三条（202 → 199 条），再接受 217 条变化（回归 199、新增 18；A 文档页 166、B 样板 18、C 新壳层 story 15、C' 品牌首行 3、D 家族矩阵 15；其中 19 条第三轮另变，逐条对到本轮交回与提交，其余 198 条与第二轮同键读数在容差内），基线现为 217 条。逐条分类与理由在 `docs/verification/internal-alpha/visual-baseline-selection-r3.json`，应用记录在 `visual-selection-application.json`（上一份 INIT-015 R4 的记录改名为 `visual-selection-application-r4.json`）。接受签名不代表目视通过：A 类离群 24 条列在「第三轮新增与变化的目视项」。本清单只写文档，清单里的读数取自这些报告与各包交回。
+下列回执与报告由第四轮批末的 SUB-224 在同一构建上重生成（第一轮 SUB-140、第二轮 SUB-177、第三轮 SUB-211），读数与退出码见 `runs/r4/handoff/N5.md`；以重生成后的版本为准。第四轮 internal-alpha 浏览器门的非视觉项全过（`nonVisualProofOk` 为真；新截法的自检 154 张高 story 全过），视觉签名按新截法（SUB-217：截图时纸与主区高随内容，整张 story 画出，G-17）整批重收：接受 169 条回归（新增 0），按来源分，截法变更 144 条、截法变更加 R4-6（展开标题去左边条，SUB-218）8 条、只有 R4-6 17 条；R4-3（Disclosure 描边，SUB-216）在签名上低于容差，只在该 story 三条注明；R4-1（data-logo）与 R4-7（文档层死类、AOS 实例无人读字段）没有可见变化；分不进来源或预期外的 0 条。来源按与第四轮 N2 终版（只含截法变更）同键读数分开。基线仍为 217 条：应用后 217 条全部在容差内，所收 169 条距离为 0。逐条来源与理由在 `docs/verification/internal-alpha/visual-baseline-selection-r4.json`，应用记录在 `visual-selection-application.json`（第三轮的记录改名为 `visual-selection-application-init016-r3.json`；`visual-selection-application-r3.json` 与 `-r4.json` 是第一批 INIT-015 第三、四轮的记录）。接受签名不代表目视通过：maxCell > 40 的 52 条（A 类 12 条）列在「第四轮新增与变化的目视项」。本清单只写文档，清单里的读数取自这些报告与各包交回。
 
 | 证据 | 路径或命令 |
 | --- | --- |
 | 画板逐行映射报告（23 行；八项测量、shellFrame 与重叠检查） | `docs/verification/storybook-visual-proof/gplus-map-report.md` 与 `.json`；`node scripts/storybook-visual-proof.mjs --write-report` |
 | 几何测量（含 shellFrame：顶带 52、纸离壳边 12、纸圆角 14） | `docs/verification/geometry-measure/report.json`；`node scripts/geometry-measure-proof.mjs --write-report` |
 | 壳层 18 门（两块成品壳层板夹具与真件 story） | `docs/verification/shell-measure/report.json`；`node scripts/shell-measure-proof.mjs --write-report`（夹具：`--fixtures`） |
-| internal-alpha 回执（axe、story 覆盖、高度预算、视觉签名） | `docs/verification/internal-alpha/` 下各 json；视觉签名重收的选择文件 `visual-baseline-selection-r3.json`（逐条分类与理由），应用记录 `visual-selection-application.json` |
+| internal-alpha 回执（axe、story 覆盖、高度预算、视觉签名） | `docs/verification/internal-alpha/` 下各 json；视觉签名重收的选择文件 `visual-baseline-selection-r4.json`（逐条来源与理由；第三轮为 `-r3`），应用记录 `visual-selection-application.json` |
 | 契约静态门、契约生成物门 | `corepack pnpm@10.12.1 run contract:static`（可加 `--family <家族>`）；`corepack pnpm@10.12.1 run contract:proof` |
 | 样板与矩阵样式对照 | `corepack pnpm@10.12.1 run doc:sample-style`，可加 `--story <id>` |
 | 文档层类名 | `corepack pnpm@10.12.1 run doc-shell:proof` |
@@ -175,7 +175,7 @@
 | `shell-intro` | `ts-intro-l` = C 段 | `components-navigation-shells.html#shell-intro` |
 | `brand-sample-product` | 第 1 段第二版在顶带里的样子 | `components-gplus-samples.html#brand-sample-product` |
 
-机器判据（第三轮批末读数，SUB-211 在同一构建上重生成，`docs/verification/shell-measure/report.json`）：壳层 18 门（`shell-measure-proof`；两块成品板夹具在板原宽 1240 量，真件 story 在 1440×900 与 390×844、en 与 zh-CN 量）。夹具全过（`--fixtures` 退出 0）；真件 17 门过、1 门红——markText（O-4 待裁，门照 ±1 判：品牌首行 DS `lkr-line@22` 读 1.4，en 与 zh-CN 相同；完整菜单与矩阵底栏的 TMS 锁定块 `lkr@22` en 读 1.7），第二轮红的 brandDigest、pinJitter、contrast、singleLine 本轮都过；四项检查（prail、页内面包屑、设置页布局、分栏）都过；B 段 66 格见 G-5（60 格按 data-expect 判、全过，6 格只列读数）；行为探针（焦点回路、方向键级联、Esc 与点外部、登入动画轨迹）en 与 zh-CN 都过，触摸门过；story 变异 22 条全部判红。品牌资产 digest（`brand-asset:proof`）不在 SUB-211 的局部门里，由批末 verify 跑。门红的项与门量不到的项都只能靠目视。
+机器判据（第四轮批末读数，SUB-224 在同一构建上重生成，与第三轮相同；`docs/verification/shell-measure/report.json`）：壳层 18 门（`shell-measure-proof`；两块成品板夹具在板原宽 1240 量，真件 story 在 1440×900 与 390×844、en 与 zh-CN 量）。夹具全过（`--fixtures` 退出 0）；真件 17 门过、1 门红——markText（O-4 待裁，门照 ±1 判：品牌首行 DS `lkr-line@22` 读 1.4，en 与 zh-CN 相同；完整菜单与矩阵底栏的 TMS 锁定块 `lkr@22` en 读 1.7），第二轮红的 brandDigest、pinJitter、contrast、singleLine 第三、四轮都过；四项检查（prail、页内面包屑、设置页布局、分栏）都过；B 段 66 格见 G-5（60 格按 data-expect 判、全过，6 格只列读数）；行为探针（焦点回路、方向键级联、Esc 与点外部、登入动画轨迹）en 与 zh-CN 都过，触摸门过；story 变异 22 条全部判红。品牌资产 digest（`brand-asset:proof`）不在 SUB-224 的局部门里，由批末 verify 跑。门红的项与门量不到的项都只能靠目视。
 
 | 核对项（只能目视） | 浅色 | 夜间 |
 | --- | --- | --- |
@@ -200,7 +200,7 @@
 
 看哪些 story：D 段的几何在第 7 节的 `shell-top-band`、`shell-mobile` 上看；E、F、G 三段没有渲染面，落点分别是 `docs/migration-4.0.md` M20 至 M29（消费方要做什么）、`packages/ui-tokens/src/tokens.css` 的壳层与登入动画 token（值见 M24）、`scripts/shell-measure-proof.mjs` 的 18 门与 `tests/fixtures/geometry-measure/shell/mutations.json` 的变异。
 
-机器判据（第三轮批末读数，`docs/verification/shell-measure/report.json`）：D 段 12 行关系断言（引导列、文字起点、右缘、行中线 26、三处间距相等、接续 6、级联同宽同高等）由壳层门逐行量，夹具量成品板、story 量真件；本轮 12 行中 11 行过，标按钮（v2）1 行红，与 markText 同根（O-4）。引导列由 prail 检查量（菜单内图标 16、文字 48；第三轮菜单与 Sheet 行的图标盒照板画成 22 带 3 内距，字形仍 16，SUB-188），本轮真件过。G 段每门一条会红的变异（`--fixtures` 与 storyMutations；本轮 story 变异 22 条全部判红，story-label-plus-40 改在菜单夹具上关截断后加 40 字，M1）。F 段的 20 个新 token 与 3 个弃用 token 由 `@tcrn/ui-tokens` 的测试钉住值与弃用登记；第二、三轮另加的六条壳层 token 不在 F 段（见「待发布的成品板」）。
+机器判据（第四轮批末读数，SUB-224，与第三轮相同；`docs/verification/shell-measure/report.json`）：D 段 12 行关系断言（引导列、文字起点、右缘、行中线 26、三处间距相等、接续 6、级联同宽同高等）由壳层门逐行量，夹具量成品板、story 量真件；本轮 12 行中 11 行过，标按钮（v2）1 行红，与 markText 同根（O-4）。引导列由 prail 检查量（菜单内图标 16、文字 48；第三轮菜单与 Sheet 行的图标盒照板画成 22 带 3 内距，字形仍 16，SUB-188），本轮真件过。G 段每门一条会红的变异（`--fixtures` 与 storyMutations；本轮 story 变异 22 条全部判红，story-label-plus-40 改在菜单夹具上关截断后加 40 字，M1）。F 段的 20 个新 token 与 3 个弃用 token 由 `@tcrn/ui-tokens` 的测试钉住值与弃用登记；第二、三轮另加的六条壳层 token 不在 F 段（见「待发布的成品板」）。
 
 | 核对项（只能目视） | 浅色 | 夜间 |
 | --- | --- | --- |
@@ -259,6 +259,55 @@
 | `frontend-shell-slice@mobile-390x844` | 41.441 / 203 | AOS frontend shell 实例：顶带壳、content stack 块间距、第 4 个夹具「Desktop light, Work route」 | [ ] |
 | `owner-quality-product-shell@mobile-390x844` | 54.629 / 207 | owner-quality 实例：只剩 6 个框，两个 search-results 变体显示打开的完整菜单与 1 条结果，工作队列标题下的计数行 | [ ] |
 
+## 第四轮新增与变化的目视项
+
+各包交回的「目视项」（`runs/r4/handoff/N1.md` 第 7 节、`N3.md` 第 5 节；N2、N4 无），以及视觉签名按新截法重收后的离群项。页面同「怎么看」。
+
+| 核对项（只能目视） | 看哪里 | 浅色 | 夜间 | 来源 |
+| --- | --- | --- | --- | --- |
+| Disclosure 描边：展开面板里次级按钮「Focusable only while expanded」的底边与起始边描边画出，不再贴着区域底边被裁；获焦时焦点环的底边与起始边仍少外侧 2px（新发现，N1 问题 2）；Safari 下请同看一遍（`overflow-clip-margin` 在 WebKit 上是否生效未核实，N1 问题 3） | `interaction-disclosure-spec` 所在页，1440、1024、390 三宽 | [ ] | [ ] | SUB-216（N1），G-18 |
+| 展开故事标题无左边条：文档页展开的故事标题不再画 3px 强调色左边条与 10px 左内距，展开前后标题左缘不动，只有 chevron 旋转；手机宽下部分长标题因此少折一行 | 任一文档页的故事标题，展开与收起各看一次 | [ ] | [ ] | SUB-218（N3） |
+| 截法变更：视觉签名的截图整张画出 story，顶带不压 story；比视口高的 story 不再只有纸内可见的一段 | `docs/verification/internal-alpha/screenshots/` 下高 story 的截图（跑 `internal-alpha:browser-proof` 生成，不入仓） | [ ] | [ ] | SUB-217（N2），G-17 |
+| 登入动画：只改了飞行标的 `data-logo` 取值，画面不变 | `shell-intro` | [ ] | — | SUB-214（N1），G-20 |
+
+视觉签名离群项（maxCell > 40，共 52 条；逐条理由在 `visual-baseline-selection-r4.json` 的 `outlierReason`，截图由 `internal-alpha:browser-proof` 写到 `docs/verification/internal-alpha/screenshots/<视口>-<story>.png`，不入仓）。52 条的大变化都来自截法变更（其中 `inputs-sample-members@mobile-390x844` 另有 R4-6：标题少折一行，story 高 1469 → 1449）：旧截法下这些高 story 只画了纸内可见的一段，其余是画布底色（签名格读 238），新截法画出整张，夜间块的深底与纸外的内容进入签名。签名已按当前渲染接受，是否只来自截法变更只能目视确认。
+
+A 类（文档页）12 条：
+
+| story @ 视口 | 签名距离（mean / maxCell） | 请看 | 目视 |
+| --- | --- | --- | --- |
+| `i18n-theme-contract@desktop-1440x900` | 16.324 / 150 | 夜间预览块与文档壳控制契约表整张画出，没有被顶带遮挡，下段不是画布底 | [ ] |
+| `frontend-shell-slice@desktop-1440x900` | 39.07 / 210 | AOS frontend shell 实例全部画框完整（含夜间夹具）：顶带壳、content stack 块间距、第 4 个夹具「Desktop light, Work route」 | [ ] |
+| `owner-quality-product-shell@desktop-1440x900` | 35.195 / 214 | owner-quality 实例 6 个框整列完整；两个 search-results 变体显示打开的完整菜单与 1 条结果，工作队列标题下的计数行 | [ ] |
+| `i18n-theme-contract@tablet-1024x768` | 28.348 / 198 | 夜间预览块与文档壳控制契约表整张画出，没有被顶带遮挡，下段不是画布底 | [ ] |
+| `frontend-shell-slice@tablet-1024x768` | 36.473 / 210 | AOS frontend shell 实例全部画框完整（含夜间夹具）：顶带壳、content stack 块间距、第 4 个夹具「Desktop light, Work route」 | [ ] |
+| `owner-quality-product-shell@tablet-1024x768` | 33.945 / 213 | owner-quality 实例 6 个框整列完整；两个 search-results 变体显示打开的完整菜单与 1 条结果，工作队列标题下的计数行 | [ ] |
+| `i18n-theme-contract@mobile-390x844` | 30.156 / 213 | 夜间预览块与文档壳控制契约表整张画出，没有被顶带遮挡，下段不是画布底 | [ ] |
+| `interaction-disclosure-spec@mobile-390x844` | 12.234 / 180 | Tooltip 预览压住按钮与表头是预览本意；Disclosure 展开区里「Focusable only while expanded」按钮的底边与起始边描边画出（G-18、R4-3） | [ ] |
+| `button-spec-usage@mobile-390x844` | 9.258 / 75 | 手机宽下按钮各变体完整、成行，没有被截断 | [ ] |
+| `dashboard-page-templates@mobile-390x844` | 2.895 / 41 | 手机宽下仪表板页模板完整，上沿没有被顶带遮挡 | [ ] |
+| `frontend-shell-slice@mobile-390x844` | 29.18 / 206 | AOS frontend shell 实例全部画框完整（含夜间夹具）：顶带壳、content stack 块间距、第 4 个夹具「Desktop light, Work route」 | [ ] |
+| `owner-quality-product-shell@mobile-390x844` | 26.078 / 202 | owner-quality 实例 6 个框整列完整；两个 search-results 变体显示打开的完整菜单与 1 条结果，工作队列标题下的计数行 | [ ] |
+
+B、C、D 类 40 条（不属 A 类，按 story 合并；视口写宽度）：
+
+| story | 视口与签名距离（mean / maxCell） | 请看 | 目视 |
+| --- | --- | --- | --- |
+| `shell-top-band`（C 类） | 1440 75.926 / 214；1024 75.996 / 214；390 73.883 / 212 | 壳层各屏整列画出，浅色与夜间屏都在 | [ ] |
+| `shell-matrix`（C 类） | 1440 51.719 / 220；1024 61.68 / 218；390 62.461 / 212 | 壳层矩阵浅色与夜间两块整张画出 | [ ] |
+| `typography-matrix`（D 类） | 1440 22.949 / 220；1024 37.594 / 220；390 96.867 / 214 | 家族矩阵浅色与夜间两块整张画出 | [ ] |
+| `icon-matrix`（D 类） | 1440 39.789 / 213；1024 52.77 / 213；390 77.152 / 213 | 家族矩阵浅色与夜间两块整张画出 | [ ] |
+| `brand-matrix`（D 类） | 1440 38.496 / 214；1024 50.102 / 214；390 51.324 / 218 | 家族矩阵浅色与夜间两块整张画出 | [ ] |
+| `actions-matrix`（D 类） | 1440 57.84 / 214；1024 66.203 / 214；390 62.785 / 213 | 家族矩阵浅色与夜间两块整张画出 | [ ] |
+| `inputs-matrix`（D 类） | 1440 51.27 / 214；1024 57.891 / 214；390 76.633 / 214 | 家族矩阵浅色与夜间两块整张画出 | [ ] |
+| `typography-sample-billing`（B 类） | 1440 82.402 / 213；1024 97.195 / 213；390 87.172 / 214 | 样板浅色块与夜间块整张画出，样板壳高 640、与画框底差 0 | [ ] |
+| `icon-sample-project`（B 类） | 1440 40.461 / 213；1024 52.957 / 213；390 48.371 / 213 | 样板浅色块与夜间块整张画出，样板壳高 640、与画框底差 0 | [ ] |
+| `brand-sample-product`（B 类） | 1440 40.148 / 213；1024 52.551 / 213；390 48.609 / 213 | 样板浅色块与夜间块整张画出，样板壳高 640、与画框底差 0 | [ ] |
+| `actions-sample-project`（B 类） | 1440 42.652 / 213；1024 52.895 / 213；390 49.09 / 213 | 样板浅色块与夜间块整张画出，样板壳高 640、与画框底差 0 | [ ] |
+| `inputs-sample-members`（B 类） | 1440 42.543 / 213；1024 52.23 / 213；390 49.926 / 211 | 样板浅色块与夜间块整张画出，样板壳高 640、与画框底差 0 | [ ] |
+| `composition-three-sample`（B 类） | 1440 40.531 / 213；1024 53.145 / 213；390 48.969 / 213 | 样板浅色块与夜间块整张画出，样板壳高 640、与画框底差 0 | [ ] |
+| `shell-mobile`（C 类） | 390 11.715 / 41 | 手机壳各屏整列画出 | [ ] |
+
 ## 待发布的成品板（交设计会话）
 
 本批改过的成品板与草稿板如下，画布发布由设计会话做；发布前 Owner 以仓内副本对照。`Shell.dc.html` 与 `Shell-2.dc.html` 没有改（字节真值），`Tokens.dc.html` 与 `Brand.dc.html` 没有改。
@@ -298,12 +347,12 @@
 | G-13 | typography 与 inputs 两个样板的页面内容伸出 640 画框 9 与 29，几何报告与映射报告的 overlap 浅色、夜间都判红；第三轮已改（SUB-205）：样板壳包装层 `block-size: 100%`，十个样板壳高 640、与画框底差 0，几何报告 22 段与映射报告 23 行的 overlap 都不红；待目视 | `runs/r2/problems/K11.md` 第 11 条；`runs/r2/problems/K12.md`；`runs/r3/handoff/M6.md` |
 | G-14 | axe 14 条：文档站的 design-system 锁定块后缀对比度（不在 axe 豁免表）、heading-order、landmark-unique（页内目录与分区导航的 nav 地标各有重名）；internal-alpha 浏览器门因此与其他非视觉项一起判红，视觉签名本轮没有重收；第三轮已改：axe 0 条（`a11y-axe-summary.json`），浏览器门非视觉项全过，视觉签名已重收（见「机器证据入口」） | `runs/r2/problems/K11.md` 第 6–8 条；`runs/r2/problems/K12.md`；`runs/r3/handoff/M4.md`、`M7.md`、`M9.md` |
 | G-15 | 壳层门 markText 仍红（O-4 待裁）：品牌首行 DS `lkr-line@22` 读 1.4（en、zh-CN 相同），完整菜单与矩阵底栏的 TMS 锁定块 `lkr@22` en 读 1.7；D 段「标按钮（v2）」同根；门照 ±1 判，不放宽 | `docs/verification/shell-measure/report.json`；`runs/r3/problems/M1.md` 第 3 条 |
-| G-16 | contract:static 的 C8 发现 18 条：板上 `.ts-pins` 写 `min-width:0`、无固定项的壳 `ShellPins` 返回 null，现有 token 补不了，待 Owner；contract:static 因此退出 1（据 M2、M4 交回，本包没有跑这个门） | `runs/r3/handoff/M2.md` 第 4、5 节；`M4.md` |
-| G-17 | 视觉签名的截图形态：换壳后 story 块在纸内滚动区里截图，比视口高的 story 只绘制纸内可见的一段，顶带压在视口顶部，其余为画布底色；第三轮照此收了基线，门只看得到可见的一段（改截图方式属门判定，下一轮交判断） | `runs/r3/problems/M11.md` 第 1 条 |
-| G-18 | `interaction-disclosure-spec` 平板截图里 Disclosure 展开区的「Focusable only while expanded」按钮下缘贴着区域底边、底框线不可见，疑似被区域裁切；签名与第二轮相同，现有门没有量这一处 | `runs/r3/problems/M11.md` 第 2 条 |
+| G-16 | contract:static 的 C8 发现 15 条（静态 `yield-without-min-width` 1 条、story 层 `story-yield-missing` 14 条，byFamily 全在 shell；第三轮判断更正，此前写的 18 条有误）：板上 `.ts-pins` 写 `min-width:0`、无固定项的壳 `ShellPins` 返回 null，现有 token 补不了。第三轮判断把它列为 O-19（门判定语义的放宽，只能由 Owner 定），第四轮不派任何改动，登记保留；O-19 裁定前 contract:static 退出 1，SUB-113、125、142、155、178、191 保持 active。第四轮 SUB-215 补登 9 个根类后读数仍是这 15 条，没有新发现 | `runs/r3/judgment.md` §3.1.1；`runs/r4/handoff/N2.md` 第 2 节 |
+| G-17 | 视觉签名的截图形态：第三轮换壳后 story 块在纸内滚动区里截图，比视口高的 story 只绘制纸内可见的一段，顶带压在视口顶部，其余为画布底色。第四轮已改（SUB-217，R4-5）：截图时临时让文档壳根、纸与主区高随内容、overflow visible，顶带留在纸上方自己那一行，截完复原并自检；154 张高 story 截图底边画布行全为 0（旧截法 154 张都大于 0），216 张 story 截图版式宽高不变、顶带不压 story。签名已按新截法整批重收（SUB-224），截法变更后的离群项见「第四轮新增与变化的目视项」；待目视 | `runs/r4/handoff/N2.md` 第 2 节；`docs/verification/internal-alpha/visual-baseline-selection-r4.json` |
+| G-18 | `interaction-disclosure-spec` 平板截图里 Disclosure 展开区的「Focusable only while expanded」按钮下缘贴着区域底边、底框线不可见。第四轮已改（SUB-216，R4-3）：展开区内层改为 `overflow: clip` 加 `overflow-clip-margin`（`--tcrn-space-0h`），按钮底边与起始边的描边画出，Layout 单测断言；这处变化小于视觉签名格的分辨率（与只含截法变更的读数同键 maxCell 不超过 3），只能目视。新发现：按钮获焦时焦点环的底边与起始边仍被裁 2px（只记，交判断）；待目视 | `runs/r4/handoff/N1.md` 第 2、7 节；`runs/r4/problems/N1.md` 第 2 条 |
 | G-19 | `ts-closed-l` 第三个钉钮的「指针悬停」画面是服务端写入的静态预览，拖排后跟着原来那个项（Statements）走，不跟位置走 | `runs/r3/problems/M5.md` 第 8 条 |
-| G-20 | 品牌字标的 `data-logo`：量的锁定块已改为标 id（SUB-194），`ShellBrandButton` 与 `ShellIntro` 仍写产品键 | `runs/r3/handoff/M4.md`；`runs/r3/problems/M4.md` 第 4 条 |
-| G-21 | 文档整理：`storybook-map.json` 未与 md 同步（不打红任何门）；迁移说明开头与分消费方清单未跟上第二、三轮（改别人写的段落要授权）；M9 的迁移条目第三轮由 SUB-211 补为 M47、M48 | `runs/r3/handoff/M10.md` |
+| G-20 | 品牌字标的 `data-logo`：第三轮量的锁定块已改为标 id（SUB-194）。第四轮已改（SUB-212、SUB-214，R4-1）：`ShellBrandButton` 与 `ShellIntro` 的飞行标也写标的 id（ds、mana、tms、einzbern），取法统一用 `product-mark-id.ts` 的 `productMarkIdOf`（不从入口导出）；没有样式按 `data-logo` 取值，视觉签名没有因此变化；迁移说明 M49 写明，M42 末句不再成立 | `runs/r4/handoff/N1.md`；`docs/migration-4.0.md` M49 |
+| G-21 | 文档整理：第四轮已改（SUB-221、SUB-223，R4-8）：`storybook-map.json` 与 md 逐格一致；ui-react README 图标件数 38 并列 `pin`；迁移说明开头改为 M20…M52、分消费方清单补齐，追加 M49–M52。余下一处：SUB-215 补登根类后，M30 写的块数过期（navigation 9 实为 11、shell 14 实为 19；N4 交回，交判断） | `runs/r4/handoff/N4.md` |
 
 ## 待 Owner 裁定（两批）
 
@@ -326,7 +375,7 @@
 | 13 | 长字标放不下（O-1）：「TCRN Design System」要 117，标按钮字标格 60（D1 定宽 134） | 截断加 title，134 不改（G-10） | 宽度至少 134、随字标加宽，07b 补长名屏；不同意则改用第一版 |
 | 14 | STORY-148 GWT1 写「五块」，现做法是四板 D 段加 07a 第 1 段（O-2） | 按现做法，GWT1 记部分 | 接受现做法，注解写明读法 |
 | 15 | 级联越过视口右缘（O-3）：第四级在 1024–1330 宽出界，菜单内两列在 1440 宽出界 12 | 现写法 | 越过右缘就向左展开 |
-| 16 | 墨迹中线遇到下行字母（O-4）：DS 首行 1.4、底栏 TMS 锁定块 en 1.7，又不许下移字形；唯一挡住批末 verify 归 0 的项（G-15） | 门照 ±1 判，markText 红，145-GWT2、149 记部分 | ±1 改量「首行大写顶到基线」，两行锁定块只量首行（底栏这样量是 0.6） |
+| 16 | 墨迹中线遇到下行字母（O-4）：DS 首行 1.4、底栏 TMS 锁定块 en 1.7，又不许下移字形；与 O-19（第 29 行，G-16）并列，是挡住批末 verify 归 0 的两项之一（G-15） | 门照 ±1 判，markText 红，145-GWT2、149 记部分 | ±1 改量「首行大写顶到基线」，两行锁定块只量首行（底栏这样量是 0.6） |
 | 17 | Icon 板规则「禁填充」与 pin 实心态冲突（O-5） | 只改件数，不画实心态 | 加例外，补画实心态 |
 | 18 | 触摸端未固定的行，图钉平时看不见（O-6） | 获焦才显 | 粗指针下常显 ink-3 |
 | 19 | 文档站无登录时头像用默认人形；目录宽 144、截断（O-7） | 现状 | 接受现状 |
@@ -339,8 +388,10 @@
 | 26 | 纸内页标题行高（O-16）：板 1.1（28.6）没有 type token，包件 30 | 30 | 接受 30；要 28.6 就新增 type token |
 | 27 | TreeNav 归宿（O-17）：壳菜单与下拉由模型渲染，装不进 TreeNav | 现写法 | 接受；迁移说明 M22、M30 写明 TreeNav 只用于消费方的下拉或浮层 |
 | 28 | 批末 verify 不含 test:dom（O-18）：SUB-180、SUB-184、SUB-185 的 DOM 用例只由局部门看；加段属执行方法变更 | 不加 | 批末 verify 后加跑只读 `test:dom` |
+| 29 | 顶带的 C8 让步项（O-19，G-16）：15 条（静态 `yield-without-min-width` 1 条、story 层 `story-yield-missing` 14 条）；板上 `.ts-pins` 写 `min-width:0`，没有固定项的壳不渲染让步项；让顶带过 C8 只有改判定、给板补数、渲染空让步位三条路 | 门照判，contract:static 红，与 O-4 一起挡批末 verify；登记保留；SUB-113、125、142、155、178、191 保持 active | 甲（建议）：裁定顶带按板，roles.json 顶带一项加两个字段，门的 C8 静态层与 story 层只对带字段的登记跳过这两项，其余 C8 检查照旧，clauses.md 写明，两条自检；乙：设计会话给让步项一个最小宽进 07b 与 token；丙：撤登记，不建议 |
+| 30 | Story 144 标题写「一段即开全屏 Sheet」、Assumptions 写「从顶带下方升起」，板与包件是自底升起、最高 84%（O-20） | 实现照板，Story 文字不准 | 同 O-14：按板改 Story 文字，不改实现 |
 
-第 13 至 28 行是本批判断列出的 O-1 至 O-18 里此前未进表的各条（O-8、O-9 即第 1、2 行）；「现状」是不裁时的默认（`runs/r2/judgment.md` §3.1），裁定后的改法与规模见同节。
+第 13 至 28 行是本批判断列出的 O-1 至 O-18 里此前未进表的各条（O-8、O-9 即第 1、2 行）；第 29、30 行是第三轮判断新增的 O-19、O-20（`runs/r3/judgment.md` §3.1、§3.1.1）；「现状」是不裁时的默认（`runs/r2/judgment.md` §3.1），裁定后的改法与规模见同节。
 
 第一批「待 Owner 裁定」第 1 条（构图一几何与构图三）、第 2 条（夜间后缀 #7aa0f5）、第 3 条（外壳切换钮尺寸）已被第二批取代，见下节。
 
