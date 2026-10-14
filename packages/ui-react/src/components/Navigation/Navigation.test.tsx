@@ -45,6 +45,7 @@ import * as shellSegments from "../../styles/shell.css.js";
 import * as shellIntroSegments from "../../styles/shell-intro.css.js";
 import * as shellSheetSegments from "../../styles/shell-sheet.css.js";
 import { PageHeader, TocRail, ViewTabs } from "../DataDisplay/DomainDisplay.js";
+import { Icon } from "../Icon/index.js";
 import { createResolvedTokenMap, createTokenMap } from "@tcrn/ui-tokens";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
 import { JSDOM } from "jsdom";
@@ -2054,8 +2055,20 @@ test("STORY-143 C7 group titles, search results and pinnable labels carry their 
   const closed = renderToStaticMarkup(<ProductShellSearch query="" expanded={false} results={[]} />);
   assert.match(closed, /data-product-shell-search-results="true" hidden=""/);
 
-  // 4. A pinnable row's label is one line with its title: its text, or the row's title when the
-  // label is markup (the full menu's rows); a row that cannot be pinned keeps its markup.
+  // 4. Every item's label is one line with its title (TCRN-DS-SUB-192): the base rule cuts it, a
+  // block so the cut applies wherever the item is, and NavItem gives it its words, pinnable or not,
+  // in the full menu or out of it: its text, the text inside its markup, or the row's title when it
+  // holds none.
+  const label = rule(".tcrn-nav-item__label");
+  singleLine(label);
+  assert.match(label, /display: block;/);
+  assert.match(label, /min-width: 0;/);
+  // The full menu's rule keeps only what it adds, a flex row for the next-level mark: no second cut.
+  assert.deepEqual(rule(".tcrn-shell-menu .tcrn-nav-item__label").trim().split("\n").map((line) => line.trim()), [
+    "display: flex;",
+    "align-items: center;",
+    "gap: var(--tcrn-space-1h);"
+  ]);
   const pinnable = renderToStaticMarkup(<NavItem href="#contracts" onPinnedChange={noop}>Contracts and templates</NavItem>);
   assert.match(pinnable, /<span class="tcrn-nav-item__label" title="Contracts and templates" data-text="prail">Contracts and templates<\/span>/);
   const marked = renderToStaticMarkup(
@@ -2064,8 +2077,49 @@ test("STORY-143 C7 group titles, search results and pinnable labels carry their 
     </NavItem>
   );
   assert.match(marked, /<span class="tcrn-nav-item__label" title="Roster" data-text="prail"><span class="tcrn-shell-menu__text">Roster<\/span><\/span>/);
-  assert.match(renderToStaticMarkup(<NavItem href="#plain">Plain</NavItem>), /<span class="tcrn-nav-item__label" data-text="prail">Plain<\/span>/);
-  singleLine(rule(".tcrn-shell-menu .tcrn-nav-item__label"));
+  assert.match(renderToStaticMarkup(<NavItem href="#plain">Plain</NavItem>), /<span class="tcrn-nav-item__label" title="Plain" data-text="prail">Plain<\/span>/);
+  assert.match(renderToStaticMarkup(<NavItem href="#teams"><span>Teams</span> <b>2</b></NavItem>), /<span class="tcrn-nav-item__label" title="Teams 2" data-text="prail">/);
+  assert.match(renderToStaticMarkup(<NavItem href="#mark" title="Marked row"><Icon name="users" /></NavItem>), /<span class="tcrn-nav-item__label" title="Marked row" data-text="prail">/);
+  assert.match(renderToStaticMarkup(<NavItem href="#empty"><Icon name="users" /></NavItem>), /<span class="tcrn-nav-item__label" data-text="prail">/);
+  // Rendered in both places, every label carries its words as its title, and every rule that reaches
+  // it (the base rule always among them) leaves the one-line cut in place: out of the menu a
+  // SideNav's items (the deprecated rail), in the menu the full menu's rows.
+  const undoes = /white-space: (?:normal|pre-wrap|pre-line|break-spaces)|text-overflow: clip|overflow(?:-x|-inline)?: visible/;
+  const labelRules = rules.filter(({ selector }) => selector.includes("tcrn-nav-item__label"));
+  const outside = renderToStaticMarkup(
+    <SideNav label="Rail">
+      <NavGroup label="Talent">
+        <NavItem href="#roster" iconName="users" selected>Roster and contracts of the autumn season</NavItem>
+        <NavItem href="#teams" onPinnedChange={noop}>Teams</NavItem>
+      </NavGroup>
+    </SideNav>
+  );
+  const inside = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      menuOpen
+    >
+      <section>content</section>
+    </ProductShell>
+  );
+  for (const [where, html, inMenu] of [["out of the menu", outside, false], ["in the menu", inside, true]] as const) {
+    const labels = [...new JSDOM(html).window.document.querySelectorAll(".tcrn-nav-item__label")];
+    assert.ok(labels.length >= 2, `${where}: labels are rendered`);
+    for (const element of labels) {
+      assert.equal(Boolean(element.closest(".tcrn-shell-menu")), inMenu, where);
+      assert.equal(element.getAttribute("title"), (element.textContent ?? "").replace(/\s+/g, " ").trim(), `${where}: the title is the label's words`);
+      const reaching = labelRules.filter(({ selector }) => selector.split(/,\s*(?![^(]*\))/).some((part) => element.matches(part)));
+      assert.ok(reaching.some(({ selector }) => selector === ".tcrn-nav-item__label"), `${where}: the base rule reaches the label`);
+      for (const { selector, body } of reaching) assert.doesNotMatch(body, undoes, `${where}: ${selector}`);
+    }
+  }
 });
 
 test("STORY-144 the shell root reports an open Sheet as data-state=\"sheet\", also on the server (TCRN-DS-SUB-159)", () => {

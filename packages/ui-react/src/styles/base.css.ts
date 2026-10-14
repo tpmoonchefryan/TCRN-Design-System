@@ -340,9 +340,18 @@ export const baseCss10 = `
   --tcrn-pair-nav-ink: var(--tcrn-pair-nav-ink-s);
   font-weight: var(--tcrn-type-weight-strong);
 }
+/* An item's label is one line wherever the item is (C7, the shell's hard line; TCRN-DS-SUB-192):
+   a block that clips and ends in an ellipsis, min-width 0 so it gives way in its column, and
+   NavItem gives it its text as its title. The full menu makes it a flex row for its next-level
+   mark (shell.css.ts) and keeps this cut. */
 .tcrn-nav-item__label {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
   overflow-wrap: normal;
   word-break: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 /*
  * Pinnable rows (TCRN-DS-SUB-123, STORY-142). NavItem and NavGroup render a pin only when the
