@@ -10,7 +10,6 @@
 export const baseCss01 = `
 :root {
   --tcrn-motion-product-shell: var(--tcrn-motion-emphasis);
-  --tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer);
   --tcrn-brand-accent-aos: #187c7c;
 }
 [data-tcrn-theme="dark"] {

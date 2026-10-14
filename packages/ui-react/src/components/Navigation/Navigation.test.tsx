@@ -612,7 +612,9 @@ test("STORY-146 GWT2 the trail stays on one line: crumbs give way with an ellips
 
 test("product shell component css keeps motion shorthands valid", () => {
   assert.match(tcrnComponentCss, /--tcrn-motion-product-shell: var\(--tcrn-motion-emphasis\)/);
-  assert.match(tcrnComponentCss, /--tcrn-motion-product-shell-search: 240ms var\(--tcrn-motion-ease-drawer\)/);
+  // The old top bar's search transition variable went with the bar's search sizes (TCRN-DS-SUB-183):
+  // the shell's one motion variable is --tcrn-motion-product-shell, and no variant of it is declared.
+  assert.deepEqual([...new Set(tcrnComponentCss.match(/--tcrn-motion-product-shell[a-z0-9-]*/g) ?? [])], ["--tcrn-motion-product-shell"]);
   // Elevation and inverse text are governed by @tcrn/ui-tokens now; a local
   // redefinition here would silently shadow the package and un-govern the look.
   assert.doesNotMatch(tcrnComponentCss, /--tcrn-elevation-floating:/);
@@ -620,7 +622,7 @@ test("product shell component css keeps motion shorthands valid", () => {
   assert.match(tcrnComponentCss, /animation: tcrn-product-shell-theme-wash var\(--tcrn-motion-product-shell\) both;/);
   // The old top bar's search sizes and their transition are gone (TCRN-DS-SUB-145): the search takes
   // the width of the menu, drop-down or page that holds it.
-  assert.doesNotMatch(tcrnComponentCss, /flex-basis: (?:260|420)px|min\(100%, (?:260|420)px\)|var\(--tcrn-motion-product-shell-search\)/);
+  assert.doesNotMatch(tcrnComponentCss, /flex-basis: (?:260|420)px|min\(100%, (?:260|420)px\)|var\(--tcrn-motion-product-shell-[a-z]/);
   const search = /\n\.tcrn-product-shell-search \{([^}]*)\}/.exec(tcrnComponentCss);
   assert.ok(search, "the search keeps its own rule");
   assert.equal(search[1].trim(), "position: relative;", "it only places its results list");
