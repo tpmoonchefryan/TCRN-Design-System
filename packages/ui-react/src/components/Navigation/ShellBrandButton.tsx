@@ -14,7 +14,9 @@
 // (product-marks.generated, the bytes of docs/design/gplus-2026-10/logos2), in colour and opaque:
 // no redrawn, single-colour or translucent mark. The first-line markup — a data-lockup="lkr-line"
 // container holding svg[data-logo] and <b>{word} <em>{suffix}</em></b> — is the one the
-// ProductLockup first-line variant uses too; the two implement it separately.
+// ProductLockup first-line variant uses too; the two implement it separately. Both write the mark's
+// own id in data-logo (tms, ds, mana, einzbern; productMarkIdOf, TCRN-DS-SUB-212), while the SVG is
+// drawn from the product key.
 //
 // This module and Navigation.tsx may import each other; what it takes from Navigation.tsx is
 // used inside the component body only, never evaluated when the module loads (C-4).
@@ -23,6 +25,7 @@ import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { Icon } from "../Icon/index.js";
 import { cx } from "../../utils.js";
 import { TcrnBrandMark, type TcrnProductMarkId } from "./Navigation.js";
+import { productMarkIdOf } from "./product-mark-id.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
 import { tcrnShellCopyFor } from "./shell-copy.js";
 
@@ -81,7 +84,7 @@ export const ShellBrandButton = forwardRef<HTMLButtonElement, ShellBrandButtonPr
       data-shell-brand-auto={version === "auto" ? "" : undefined}
     >
       <span className="tcrn-shell-brand__line" data-lockup="lkr-line">
-        <TcrnBrandMark productId={productId} className="tcrn-shell-brand__mark" aria-hidden="true" data-logo={productId} data-guide="tab" />
+        <TcrnBrandMark productId={productId} className="tcrn-shell-brand__mark" aria-hidden="true" data-logo={productMarkIdOf(productId)} data-guide="tab" />
         {version === "v1" ? null : (
           <b className="tcrn-shell-brand__word" title={mark.name}>
             {mark.word}

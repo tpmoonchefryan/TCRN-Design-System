@@ -14,7 +14,7 @@ import { tcrnComponentCss } from "../../styles/index.js";
 import { shellCss01 } from "../../styles/shell.css.js";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
 import { ShellBrandButton } from "./ShellBrandButton.js";
-import type { TcrnProductMarkId } from "./Navigation.js";
+import { ProductLockup, type TcrnProductLogoId, type TcrnProductMarkId } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
 import { tcrnShellCopy } from "./shell-copy.js";
 
@@ -73,10 +73,20 @@ test("the button's name is written in all five locales, open and closed apart", 
   }
 });
 
-test("the mark is the registered colour mark: its SVG body has the digest of logos2/<product>.svg", () => {
+/** Every data-logo value in `html`, in document order. */
+const dataLogosOf = (html: string) => [...html.matchAll(/data-logo="([^"]*)"/g)].map((match) => match[1]);
+
+/** The mark's own id for each product key: the name of its logos2 file (TCRN-DS-SUB-212). */
+const markIdByProduct: Record<string, string> = { tms: "tms", "design-system": "ds", "mana-orchestrate": "mana", einzbern: "einzbern" };
+
+test("the mark is the registered colour mark: data-logo is the mark's id and the SVG body has the digest of logos2/<mark id>.svg", () => {
+  assert.deepEqual(tcrnProductMarks.map((mark) => mark.productId).sort(), Object.keys(markIdByProduct).sort());
   for (const mark of tcrnProductMarks) {
+    assert.equal(mark.id, markIdByProduct[mark.productId], `${mark.productId}: the mark's id`);
     const html = renderToStaticMarkup(<ShellBrandButton productId={mark.productId as TcrnProductMarkId} />);
-    const drawn = new RegExp(`<svg[^>]*data-logo="${escapeRegExp(mark.productId)}"[^>]*>([\\s\\S]*?)</svg>`).exec(html);
+    // The product key draws the mark; data-logo says the mark's own id, never the product key.
+    assert.deepEqual(dataLogosOf(html), [mark.id], `${mark.productId}: one data-logo, the mark's id`);
+    const drawn = new RegExp(`<svg[^>]*data-logo="${escapeRegExp(mark.id)}"[^>]*>([\\s\\S]*?)</svg>`).exec(html);
     assert.ok(drawn, `${mark.productId} draws its mark`);
     assert.match(drawn[0], /data-product-mark-variant="color"/);
     const file = readFileSync(new URL(`../../../../../docs/design/gplus-2026-10/logos2/${mark.id}.svg`, import.meta.url), "utf8");
@@ -86,6 +96,17 @@ test("the mark is the registered colour mark: its SVG body has the digest of log
   }
   // Colour and opaque: no opacity and no filter on the button, its line or its mark.
   assert.doesNotMatch(shellCss01, /opacity|filter/);
+});
+
+test("the brand button and ProductLockup's first line write the same data-logo for every product (TCRN-DS-SUB-212)", () => {
+  for (const mark of tcrnProductMarks) {
+    const button = dataLogosOf(renderToStaticMarkup(<ShellBrandButton productId={mark.productId as TcrnProductMarkId} />));
+    assert.deepEqual(button, [mark.id], `${mark.productId}: the button writes the mark's id`);
+    for (const scale of ["rail", "lockup"] as const) {
+      const line = dataLogosOf(renderToStaticMarkup(<ProductLockup productId={mark.productId as TcrnProductLogoId} firstLine={scale} />));
+      assert.deepEqual(line, button, `${mark.productId}: the ${scale} first line writes what the button writes`);
+    }
+  }
 });
 
 test("the geometry reads the shell tokens: 134 by 40, a 20 toggle, 6 from the band's top", () => {
