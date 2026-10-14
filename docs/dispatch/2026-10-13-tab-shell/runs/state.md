@@ -164,7 +164,7 @@
 | 包 | 状态 | 包内提交 | 合入 | 备注 |
 | --- | --- | --- | --- | --- |
 | Q1 | 已合入，包树已退役（328M） | 14f2849、5d9676a | a7d4ac8 | SUB-225 完成：内层裁切余量改 space-1，焦点环四边完整（三视口、夜间、forced-colors 仿真）；变异判红 257/258；ui-react 258、test:dom 60；contract-static 只剩 C8 15（O-19）、geometry:measure 只剩 markText（O-4）；browser-proof 签名 0 回退；C-9 无提交；问题 5 条 |
-| Q2 | 待 Q1 合入 | — | — | SUB-226 → 227 → 228 |
+| Q2 | 实施中（einzbern-economy，包树 scratch `pkg/r5-q2`，自 64ccfdb 切出，摘录 `runs/r5/excerpts/Q2.md`） | — | — | SUB-226 → 227 → 228 |
 
 ## 下一步
 
