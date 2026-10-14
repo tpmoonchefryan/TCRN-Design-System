@@ -6,7 +6,7 @@
   "inputSha256": "6356c0d5dae54cf00e148f4d298e5d1034111324c38ade439f10b7d987bb53b7",
   "baselineSha256": "4e544603bd32020ff74a1550bae9ffdd3b0e09f391145037ab6941e000a78d55",
   "attributionMethod": "每条与 N2 交回的终版运行（HEAD 54fc3f5，只含截法变更，结果文件在会话 scratch，不入仓）同键比：在容差内记「截法变更」；N2 终版已越容差而本次又另变记「截法变更」加 R4-6；N2 终版在容差内而本次越容差记 R4-6。另变的 25 条都落在签名标题行，或因标题少折一行整体上移 20（3 条），逐条对到 SUB-218。",
-  "captureNote": "新截法下 154 张高于纸可见高的截图底边画布行都是 0（旧截法 154 张都大于 0）；其中 152 条越容差进本选择，2 条仍在容差内、基线不动。",
+  "captureNote": "新截法下 154 张高于纸可见高的截图底边画布行都是 0（旧截法 154 张都大于 0）。其中 152 条在 N2 终版就已越容差，本选择记截法变更（8 条另有 R4-6）；另 2 条在 N2 终版仍在容差内：navigation-product-shell-spec@mobile-390x844 因 R4-6 越容差进本选择（记 R4-6），navigation-product-shell-spec@tablet-1024x768 仍在容差内（mean 0.672、maxCell 7），基线不动。",
   "openDefects": {
     "O-4": "markText：DS 首行 1.4、底栏 TMS 锁定块 en 1.7（壳层门红，待 Owner）",
     "O-19": "顶带 C8 15 条（contract:static 红，待 Owner）",
@@ -2051,7 +2051,7 @@
         "R4-6"
       ],
       "disposition": "accepted-layout-change",
-      "reason": "A 文档页。R4-6（TCRN-DS-SUB-218，提交 791f40f）：文档页展开的故事标题去掉 3px 强调色内阴影与 10px 左内距，标题文字左移 10px，展开态只由 chevron 旋转表达。与 N2 终版（只含截法变更）同键比，差值超过 8 的 6 格在 r0-0 c8-13（r0c11:251->210 r0c12:253->214 r0c10:248->218 r0c9:244->217）。本条不高于纸可见高，N2 终版与基线同键在容差内（mean 0.27、maxCell 5），截法变更不影响。按当前渲染接受签名，不代表目视通过。",
+      "reason": "A 文档页。R4-6（TCRN-DS-SUB-218，提交 791f40f）：文档页展开的故事标题去掉 3px 强调色内阴影与 10px 左内距，标题文字左移 10px，展开态只由 chevron 旋转表达。与 N2 终版（只含截法变更）同键比，差值超过 8 的 6 格在 r0-0 c8-13（r0c11:251->210 r0c12:253->214 r0c10:248->218 r0c9:244->217）。本条高于纸可见高，但截法变更在本条签名上低于容差（N2 终版与基线同键 mean 0.27、maxCell 5），越容差只因 R4-6。按当前渲染接受签名，不代表目视通过。",
       "evidence": "browser-proof 于 HEAD 1a4e268 的 visual-selection-result（inputSha256 6356c0d5dae5，nonVisualProofOk true，storyCaptureFrame 自检 154/154）：status regression，mean 1.129，maxCell 40，geometryOk true；与 N2 终版同键 mean 0.93、maxCell 41；签名 a69f3e25fcf2 → f60dc78a44e7；截图 screenshots/mobile-390x844-navigation-product-shell-spec.png（被 git 忽略，未入仓）。",
       "beforeSignatureSha256": "a69f3e25fcf2c282f804ee281dc6d34956d1f50e6bc3e2e22f92ed2181d9b061",
       "expectedSignatureSha256": "f60dc78a44e7b998a302e5dc8ed72be570c76ae9cdee7b56ec5bdbcaf95dbb6e"

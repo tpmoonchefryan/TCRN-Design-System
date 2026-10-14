@@ -2269,7 +2269,7 @@
         "R4-6"
       ],
       "disposition": "accepted-layout-change",
-      "reason": "A 文档页。R4-6（TCRN-DS-SUB-218，提交 791f40f）：文档页展开的故事标题去掉 3px 强调色内阴影与 10px 左内距，标题文字左移 10px，展开态只由 chevron 旋转表达。与 N2 终版（只含截法变更）同键比，差值超过 8 的 6 格在 r0-0 c8-13（r0c11:251->210 r0c12:253->214 r0c10:248->218 r0c9:244->217）。本条不高于纸可见高，N2 终版与基线同键在容差内（mean 0.27、maxCell 5），截法变更不影响。按当前渲染接受签名，不代表目视通过。",
+      "reason": "A 文档页。R4-6（TCRN-DS-SUB-218，提交 791f40f）：文档页展开的故事标题去掉 3px 强调色内阴影与 10px 左内距，标题文字左移 10px，展开态只由 chevron 旋转表达。与 N2 终版（只含截法变更）同键比，差值超过 8 的 6 格在 r0-0 c8-13（r0c11:251->210 r0c12:253->214 r0c10:248->218 r0c9:244->217）。本条高于纸可见高，但截法变更在本条签名上低于容差（N2 终版与基线同键 mean 0.27、maxCell 5），越容差只因 R4-6。按当前渲染接受签名，不代表目视通过。",
       "evidence": "browser-proof 于 HEAD 1a4e268 的 visual-selection-result（inputSha256 6356c0d5dae5，nonVisualProofOk true，storyCaptureFrame 自检 154/154）：status regression，mean 1.129，maxCell 40，geometryOk true；与 N2 终版同键 mean 0.93、maxCell 41；签名 a69f3e25fcf2 → f60dc78a44e7；截图 screenshots/mobile-390x844-navigation-product-shell-spec.png（被 git 忽略，未入仓）。",
       "beforeSignatureSha256": "a69f3e25fcf2c282f804ee281dc6d34956d1f50e6bc3e2e22f92ed2181d9b061",
       "expectedSignatureSha256": "f60dc78a44e7b998a302e5dc8ed72be570c76ae9cdee7b56ec5bdbcaf95dbb6e",
