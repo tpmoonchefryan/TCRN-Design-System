@@ -22,6 +22,24 @@ const px = (variable: string) => {
   return value;
 };
 
+// The layers of a box-shadow list: split at the top-level commas, not those inside var() or a
+// colour function.
+function shadowLayers(value: string): string[] {
+  const layers: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    if (value[index] === "(") depth += 1;
+    else if (value[index] === ")") depth -= 1;
+    else if (value[index] === "," && depth === 0) {
+      layers.push(value.slice(start, index).trim());
+      start = index + 1;
+    }
+  }
+  layers.push(value.slice(start).trim());
+  return layers;
+}
+
 test("layout primitives include surfaces and dividers", () => {
   const html = renderToStaticMarkup(
     <>
@@ -63,15 +81,48 @@ test("collapsible region keeps expanded content exposed", () => {
   assert.match(html, /Visible action/);
 });
 
-test("collapsible region's inner leaves a control's 1px stroke room at the block end and the collapsed region 0 high (TCRN-DS-SUB-216)", () => {
+test("collapsible region's inner clip edge reaches as far as a control's focus pair and forced-colours focus outline, and the collapsed region stays 0 high (TCRN-DS-SUB-225)", () => {
   const inner = topLevelRule(".tcrn-collapsible-region__inner");
-  // The inner still clips, but its clip edge sits outside its box by a token at least as wide as the
-  // outward stroke a control draws (box-shadow 0 0 0 1px), so the stroke at the block end is not cut.
+  // The inner still clips, but its clip edge sits outside its box by a token at least as far as a
+  // focused control paints outward, so the focus pair (and the 1px stroke inside it) is not cut at
+  // any edge of the inner.
   assert.match(inner, /\n {2}overflow: clip;/);
   assert.doesNotMatch(inner, /overflow: hidden/);
   const margin = /\n {2}overflow-clip-margin: var\((--tcrn-[a-z0-9-]+)\);/.exec(inner);
   assert.ok(margin, "the inner's clip margin is a token");
-  assert.ok(px(margin[1]) >= 1, `${margin[1]} leaves room for a 1px stroke`);
+  const room = px(margin[1]);
+  // The focus pair, --tcrn-focus-ring, is a list of outward box-shadow layers (x y blur spread
+  // colour): a surface gap, then the accent ring. A layer paints past the control's border box by
+  // its spread, plus its blur and offset (both 0 in the ring), so the widest spread is its reach.
+  const ringLayers = shadowLayers(tokens["--tcrn-focus-ring"] ?? "");
+  const ringLayerReach = ringLayers.map((layer) => {
+    const lengths = layer.split(/\s+/).filter((part) => /^-?(?:\d+|\d*\.\d+)(?:px)?$/.test(part)).map(Number.parseFloat);
+    assert.equal(lengths.length, 4, `the focus ring layer "${layer}" gives x, y, blur and spread`);
+    assert.doesNotMatch(layer, /\binset\b/, `the focus ring layer "${layer}" paints outward`);
+    const [x, y, blur, spread] = lengths;
+    return spread + blur + Math.max(Math.abs(x), Math.abs(y));
+  });
+  const ringReach = Math.max(...ringLayerReach);
+  assert.ok(
+    room >= ringReach,
+    `${margin[1]} (${room}px) reaches the focus ring's widest spread (${ringReach}px, layers ${ringLayerReach.join(" / ")}px)`
+  );
+  // Forced colours paint no box-shadow. There the button's focus ring is its focus outline,
+  // transparent elsewhere and recoloured by the system, which reaches its width plus its offset.
+  assert.match(
+    tcrnComponentCss,
+    /\n\.tcrn-button:focus-visible,\n\.tcrn-link-button:focus-visible \{/,
+    "the button and the link button share one focus outline rule"
+  );
+  const outlineRule = topLevelRule(".tcrn-link-button:focus-visible");
+  const outlineWidth = /\n {2}outline: (\d+(?:\.\d+)?)px solid transparent;/.exec(outlineRule);
+  const outlineOffset = /\n {2}outline-offset: (-?\d+(?:\.\d+)?)px;/.exec(outlineRule);
+  assert.ok(outlineWidth && outlineOffset, "the button's focus outline is transparent, with a width and an offset in px");
+  const outlineReach = Number.parseFloat(outlineWidth[1]) + Number.parseFloat(outlineOffset[1]);
+  assert.ok(
+    room >= outlineReach,
+    `${margin[1]} (${room}px) reaches the forced-colours focus outline (${outlineWidth[1]}px wide at a ${outlineOffset[1]}px offset, ${outlineReach}px)`
+  );
   // The room takes no height: no padding or border on the inner, so in the 0fr row the collapsed
   // region stays 0 high and the 0fr to 1fr transition is the same.
   assert.match(inner, /\n {2}min-height: 0;/);
