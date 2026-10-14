@@ -520,7 +520,8 @@ test("STORY-146 GWT1 the page header is required and is the paper's first row", 
   assert.equal(html.match(/data-pattern="page-header"/g)?.length, 1, "one page header");
   assert.ok(html.indexOf('data-pattern="page-header"') < html.indexOf("Fixture-safe roster content"), "the header comes before the page");
   // The paper's title is the page's h1 in the level-2 type (TCRN-DS-SUB-163).
-  assert.match(html, /<h1 title="Roster" class="tcrn-heading tcrn-heading--2">Roster<\/h1><p class="tcrn-text[^"]*">24 people · 3 to invite<\/p>/);
+  // The title role is the heading itself and the description its own element (TCRN-DS-SUB-156).
+  assert.match(html, /<h1 title="Roster" class="tcrn-heading tcrn-heading--2 tcrn-page-header__title">Roster<\/h1><p class="tcrn-text tcrn-page-header__description">24 people · 3 to invite<\/p>/);
   // An omitted trail is the current position in the menu model: the group, then the page, which is no link.
   assert.match(
     html,
@@ -681,7 +682,22 @@ test("product shell component css isolates topbar from docs chrome", () => {
   // ring token over a transparent forced-colours outline, and the pair-driven controls
   // (buttons, links, text controls including the search control, selects, checkboxes,
   // radios, switches) are left to draw their own ring and edge from their pair tables.
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell :focus-visible:not\(\.tcrn-button, \.tcrn-link-button, \.tcrn-link, \.tcrn-input, \.tcrn-select, \.tcrn-checkbox, \.tcrn-radio-group__control, \.tcrn-switch__control\) \{\s*outline: 2px solid transparent;\s*outline-offset: 2px;\s*box-shadow: var\(--tcrn-focus-ring\);\s*\}/);
+  // Since TCRN-DS-SUB-156 the rule is a state rule at the variant's (0,2,0) that reads the shell's
+  // focus edge pair, the ring token, and writes no colour (C2). The pair is declared where a theme
+  // is, as the token blocks are, so a subtree in the other theme draws its own theme's ring.
+  assert.match(tcrnComponentCss, /\n:root,\n\[data-tcrn-theme="light"\],\n\[data-tcrn-theme="dark"\] \{\n {2}--tcrn-pair-shell-edge-f: var\(--tcrn-focus-ring\);\n\}/);
+  assert.match(tcrnComponentCss, /\n\.tcrn-product-shell :where\(:focus-visible\):not\(\.tcrn-button, \.tcrn-link-button, \.tcrn-link, \.tcrn-input, \.tcrn-select, \.tcrn-checkbox, \.tcrn-radio-group__control, \.tcrn-switch__control\) \{\s*outline: 2px solid transparent;\s*outline-offset: 2px;\s*box-shadow: var\(--tcrn-pair-shell-edge-f\);\s*\}/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell :focus-visible/, "the (0,3,0) form is gone");
+  // At (0,2,0) it wins the ties it won at (0,3,0) by coming after them: the families' own focus
+  // outlines and the shell parts' edges of the same weight.
+  const fallbackAt = tcrnComponentCss.indexOf(".tcrn-product-shell :where(:focus-visible):not(");
+  for (const earlier of [".tcrn-menu__item:focus-visible", ".tcrn-table-toolbar__chip:focus-visible", "\n.tcrn-shell-menu .tcrn-nav-item {", "\n.tcrn-shell-bell:focus-visible,"]) {
+    const at = tcrnComponentCss.indexOf(earlier);
+    assert.ok(at >= 0 && at < fallbackAt, `${earlier.trim()} comes before the fallback`);
+  }
+  // The locale trigger's in-shell focus rule (box-shadow: none at (0,3,0), earlier in the sheet than
+  // the fallback, so it never applied) is gone; the trigger takes the fallback ring as before.
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger:focus-visible/);
   // The search wrapper draws nothing, so the shell has no rule to clear on it; nor does
   // any shell rule clear the control's own edge or ring.
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:focus-within/);
@@ -1655,6 +1671,21 @@ test("STORY-143 GWT3 the TocRail sits in the paper and the shell has no resident
   }
 });
 
+// R2-11 (TCRN-DS-SUB-156): the separator is the shell.crumb-icon token. Icon takes a number, so the
+// component reads the number from the token table and writes no 11 of its own.
+test("STORY-143 the breadcrumb separator is the shell.crumb-icon token, read from the token table (TCRN-DS-SUB-156)", () => {
+  const size = Number.parseFloat(createTokenMap()["--tcrn-shell-crumb-icon"] ?? "");
+  assert.equal(size, 11, "the board's 11 chevron");
+  const html = renderToStaticMarkup(<Breadcrumb items={[{ id: "talent", label: "Talent", href: "/talent" }, { id: "roster", label: "Roster", selected: true }]} />);
+  assert.match(html, new RegExp(`<svg [^>]*width="${size}" height="${size}"[^>]*class="tcrn-icon tcrn-breadcrumb__separator"`));
+  const source = readFileSync(new URL("../../../src/components/Navigation/Navigation.tsx", import.meta.url), "utf8");
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
+  const separator = /<Icon name="chevron-right" size=\{([^}]*)\} className="tcrn-breadcrumb__separator" \/>/.exec(code);
+  assert.ok(separator, "the separator icon");
+  assert.doesNotMatch(separator[1] ?? "", /\d/, "the size is not a number written in the component");
+  assert.match(code, /variable === "--tcrn-shell-crumb-icon"/);
+});
+
 // TCRN-DS-SUB-124 (STORY-143 GWT4). The breadcrumb is the page header's first row, and it keeps to
 // one line at every width, 390 included: crumbs give way with an ellipsis and carry a title.
 test("STORY-143 GWT4 the breadcrumb is the page header's first row, on one line, truncating, with titles", () => {
@@ -2102,10 +2133,12 @@ test("STORY-140 the paper's scrolling region takes focus, and the bell's hover i
     </ProductShell>
   );
   assert.match(html, /<section id="[^"]+" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Roster workspace" tabindex="0">/);
-  const focusRule = /\n\.tcrn-product-shell :focus-visible:not\(([^)]*)\) \{([^}]*)\}/.exec(tcrnComponentCss);
+  const focusRule = /\n\.tcrn-product-shell :where\(:focus-visible\):not\(([^)]*)\) \{([^}]*)\}/.exec(tcrnComponentCss);
   assert.ok(focusRule, "the shell's focus-visible rule");
   assert.doesNotMatch(focusRule[1], /tcrn-product-shell__main/, "the region is not left out of it");
-  assert.match(focusRule[2], /box-shadow: var\(--tcrn-focus-ring\);/);
+  // The ring is the shell's focus edge pair, which is the ring token (TCRN-DS-SUB-156).
+  assert.match(focusRule[2], /box-shadow: var\(--tcrn-pair-shell-edge-f\);/);
+  assert.match(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \{\n {2}--tcrn-pair-shell-edge-f: var\(--tcrn-focus-ring\);/);
 
   // R2-10: hover switches the bell to its hover pair, whose fill is the 6% ink wash; the state rule
   // writes no colour. On the canvas the ink reads 13.97 by day and 13.17 at night, the board's figures.
@@ -2274,9 +2307,10 @@ test("ProductShell's paper gives the page header's title as the page's h1 unless
       </ProductShell>
     );
   const headings = (html: string) => [...new JSDOM(html).window.document.querySelectorAll("[data-paper] h1, [data-paper] h2")].map((element) => `${element.tagName.toLowerCase()} ${element.className}`);
-  assert.deepEqual(headings(shell({ title: "Roster" })), ["h1 tcrn-heading tcrn-heading--2"]);
-  assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 2 })), ["h2 tcrn-heading tcrn-heading--2"]);
-  assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 1 })), ["h1 tcrn-heading tcrn-heading--2"]);
+  // The heading carries the page header's title role (TCRN-DS-SUB-156).
+  assert.deepEqual(headings(shell({ title: "Roster" })), ["h1 tcrn-heading tcrn-heading--2 tcrn-page-header__title"]);
+  assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 2 })), ["h2 tcrn-heading tcrn-heading--2 tcrn-page-header__title"]);
+  assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 1 })), ["h1 tcrn-heading tcrn-heading--2 tcrn-page-header__title"]);
 });
 
 test("STORY-147 STORY-140 landmarkLabel names a shell's two navs apart from another shell's on the same page; without it the names stay (TCRN-DS-SUB-148)", () => {

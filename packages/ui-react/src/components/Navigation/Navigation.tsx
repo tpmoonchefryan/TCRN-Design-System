@@ -18,6 +18,7 @@ import { PageHeader, type PageHeaderBreadcrumb, type PageHeaderProps } from "../
 import { SearchInput, type SearchInputProps } from "../Form/index.js";
 import { Icon, type IconName } from "../Icon/index.js";
 import { resolveTcrnLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
+import { tcrnTokens } from "@tcrn/ui-tokens";
 import { cx, mergeIds, requiredText, resolveDocumentLocale } from "../../utils.js";
 import {
   tcrnProductMarks,
@@ -1237,6 +1238,20 @@ export interface BreadcrumbItem extends NavItem {
   href?: string;
 }
 
+// The separator chevron is the shell.crumb-icon token, 11 on the board (TCRN-DS-SUB-156). Icon
+// takes its size as a number, so the number is read from the token table rather than restated
+// here: a token change moves every trail's separator with it.
+function breadcrumbSeparatorPixels(): number {
+  const token = tcrnTokens.find((entry) => entry.variable === "--tcrn-shell-crumb-icon");
+  const pixels = token && /^\d+(?:\.\d+)?px$/.test(token.value) ? Number.parseFloat(token.value) : Number.NaN;
+  if (!Number.isFinite(pixels)) {
+    throw new Error("Breadcrumb: --tcrn-shell-crumb-icon is missing from @tcrn/ui-tokens or is not a pixel length.");
+  }
+  return pixels;
+}
+
+const breadcrumbSeparatorSize = breadcrumbSeparatorPixels();
+
 export interface BreadcrumbProps {
   items: readonly BreadcrumbItem[];
   /** Accessible name for the trail. Omit it and the reader's language is used. */
@@ -1261,16 +1276,16 @@ export interface BreadcrumbProps {
  * of the trail they are standing on. It is set as a `b` in the ink and weight of the
  * board's current crumb.
  *
- * The trail stays on one line at every width: the separators (the board's 11 chevron)
- * keep their size, a crumb that does not fit gives way and ends in an ellipsis, and
- * every crumb carries its label as a title.
+ * The trail stays on one line at every width: the separators (the board's 11 chevron, the
+ * shell.crumb-icon token) keep their size, a crumb that does not fit gives way and ends in an
+ * ellipsis, and every crumb carries its label as a title.
  */
 export function Breadcrumb({ items, label, locale }: BreadcrumbProps) {
   return (
     <nav className="tcrn-breadcrumb" aria-label={label ?? chromeLabels(locale).breadcrumb}>
       {items.map((item, index) => (
         <span key={item.id} className="tcrn-breadcrumb__item">
-          {index > 0 ? <Icon name="chevron-right" size={11} className="tcrn-breadcrumb__separator" /> : null}
+          {index > 0 ? <Icon name="chevron-right" size={breadcrumbSeparatorSize} className="tcrn-breadcrumb__separator" /> : null}
           {item.selected ? (
             <b className="tcrn-breadcrumb__crumb" title={item.label} aria-current="page">{item.label}</b>
           ) : item.href ? (
