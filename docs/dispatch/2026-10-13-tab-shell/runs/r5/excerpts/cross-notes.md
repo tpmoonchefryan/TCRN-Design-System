@@ -16,7 +16,9 @@
 
 ## 3. R5 已合入包给下游的接口
 
-Q1 交回后，主线程在本节补行。
+| 包 | 交回物与行段 | 要点 |
+| --- | --- | --- |
+| Q1 | `runs/r5/handoff/Q1.md`（第 2 节④读数 L37–84、第 3 节接口与期望 L117–126、第 4 节 C-9 L128–136、第 5 节目视项 L138–147）；`runs/r5/problems/Q1.md` | `.tcrn-collapsible-region__inner` 的 `overflow-clip-margin` 改为 `var(--tcrn-space-1)`，Disclosure 区内控件获焦焦点环四边完整（Chromium 浅色 en 1440、1024、390 与夜间 zh-CN 1440，forced-colors 仿真同）；`Layout.test.tsx` 用例按焦点环最大 spread 4 与 outline 宽加偏移 4 断言；导出面与组件 API 无变化，无迁移条目；C-9：无越容差、无回执变化，`docs/verification` 未提交；`owner-acceptance.md` 第 268 行与 G-18（第 352 行）过期，由 SUB-228 接收；目视项两条（Safari 同看焦点环四边；展开动画中区域底外最多 4px 可见，按样式读出、未逐帧实测）；离群项无；问题 5 条（既有红 2、数据缺口 2、观察 1） |
 
 ## 4. 其他事实
 
