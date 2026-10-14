@@ -231,11 +231,12 @@ components instead.
 - **Changelog demos:** `.tcrn-doc-changelog-records`, `.tcrn-doc-changelog-record*`.
 - **Reference and brand pages:** `.tcrn-doc-component-reference*`, `.tcrn-doc-reference-index*`,
   `.tcrn-doc-reference-table*`, `.tcrn-doc-brand-system*`, `.tcrn-doc-brand-lockups`.
-- **Shell / doc-chrome demos:** `.tcrn-doc-shell-demo` (and `--compact`, `--dense`,
-  `--knowledge`), `.tcrn-doc-nav-component-preview`, `.tcrn-doc-package-nav-proof*`,
-  `.tcrn-doc-knowledge-shell-layout`, `.tcrn-doc-knowledge-shell__*`,
-  `.tcrn-doc-knowledge-preview*`, and the docs-shell chrome in `alpha-styles.ts`
-  (`.tcrn-doc-brand`, `.tcrn-doc-search-*`, `.tcrn-doc-nav*` and the rest of `.tcrn-doc-*`).
+- **Shell demos and the documentation page:** `.tcrn-doc-nav-component-preview`,
+  `.tcrn-doc-package-nav-proof*`, `.tcrn-doc-knowledge-preview*`, and the documentation
+  page's own layout in `alpha-styles.ts` (`.tcrn-doc-page*`, `.tcrn-doc-page-head*`,
+  `.tcrn-doc-chapter-pager*`, `.tcrn-doc-category-index*` and the rest of `.tcrn-doc-*`). The
+  documentation shell itself is the package ProductShell in its top-band state
+  (TCRN-DS-SUB-131), so the docs carry no shell chrome of their own.
 - **Overlay demos / fixtures:** `.tcrn-doc-overlay-mode-matrix*`,
   `.tcrn-doc-overlay-static-modes`, `.tcrn-doc-overlay-mode-grid`, `.tcrn-doc-overlay-mode-card`,
   `.tcrn-doc-overlay-static-card`, `.tcrn-doc-dialog-spec-fixture*`, `.alpha-overlay-demo`,
@@ -243,19 +244,20 @@ components instead.
 - **Package components placed by doc scaffolding:** a rule scoped under a `.tcrn-doc-*`
   container may place a package component (the placement properties above: grid placement,
   order, margins, self alignment, flex item sizing, inline size, wrapping) but does not
-  repaint it, for example `.tcrn-doc-knowledge-shell-layout > .tcrn-top-bar { grid-area: topbar; }`.
-  The key subjects these placements need are the shell-fidelity whitelist: `.tcrn-top-bar`,
+  repaint it, for example
+  `.tcrn-doc-package-nav-proof > .tcrn-segmented-nav { grid-area: tabs; align-self: start; }`.
+  The key subjects such placements may take are the shell-fidelity whitelist: `.tcrn-top-bar`,
   `.tcrn-side-nav`, `.tcrn-search-input`, `.tcrn-product-switcher`, `.tcrn-segmented-nav`,
   `.tcrn-field`, `.tcrn-brand-wordmark__suffix`, `.tcrn-product-logo__copy`,
-  `.tcrn-tooltip__content`, `.tcrn-shell-brand-lockup`, `.tcrn-shell-brand-lockup__copy`,
-  `.tcrn-shell-brand-lockup__caption`, `.tcrn-product-shell-search__results`,
-  `.tcrn-nav-group__label` and `.tcrn-nav-item`, plus the infra primitive `.tcrn-skip-link`
-  that the package-nav proof places; the whitelist's last entry, `.tcrn-filter-bar`, is the
-  demo hook described below. The docs shell's verbatim copies of `.tcrn-sr-only` and
-  `.tcrn-skip-link` were removed (TCRN-DS-SUB-063), and `.tcrn-brand-wordmark__base` and
-  `.tcrn-brand-wordmark` left the whitelist with their last doc rules (TCRN-DS-SUB-063,
-  TCRN-DS-SUB-065). `.tcrn-product-shell-search__results`, `.tcrn-nav-group__label` and
-  `.tcrn-nav-item` leave together with the registered exceptions that need them.
+  `.tcrn-tooltip__content`, `.tcrn-shell-brand-lockup`, `.tcrn-shell-brand-lockup__copy` and
+  `.tcrn-shell-brand-lockup__caption`, plus the infra primitive `.tcrn-skip-link` that the
+  package-nav proof places; the whitelist's last entry, `.tcrn-filter-bar`, is the demo hook
+  described below. The docs shell's verbatim copies of `.tcrn-sr-only` and `.tcrn-skip-link`
+  were removed (TCRN-DS-SUB-063), and `.tcrn-brand-wordmark__base` and `.tcrn-brand-wordmark`
+  left the whitelist with their last doc rules (TCRN-DS-SUB-063, TCRN-DS-SUB-065), as did
+  `.tcrn-nav-group__label` and `.tcrn-nav-item` (TCRN-DS-SUB-132) and
+  `.tcrn-product-shell-search__results` (TCRN-DS-SUB-204), each with the registered exceptions
+  that needed it.
 - **Registered exceptions** (`DOC_PACKAGE_CLASS_EXCEPTIONS` in
   `scripts/shell-fidelity-proof.mjs`; each entry names exact selectors and the non-placement
   properties it admits, with a ruling, a reason and a removal condition):
@@ -268,24 +270,13 @@ components instead.
   - `EX-INIT015-doc-nav-proof-skip-link`: the package-nav proof's skip link, a 1px
     screen-reader box until focused and an inline flex box on focus; goes when the Navigation
     family's batch has the proof render its skip link through the package component.
-  - `EX-INIT015-doc-product-shell-search-static` (TCRN-DS-SUB-100): `position` and `inset` on
-    `.tcrn-product-shell-search__results` under
-    `.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"]`, so the
-    ProductShell story's opened static result list stays in the shell's flow and pushes the
-    body down instead of covering the title and first paragraph; goes when the Navigation
-    family's batch has the package provide a static result display.
-  - `EX-INIT015-doc-knowledge-shell-topbar`, `-side-nav`, `-group-title` and `-nav-item`
-    (TCRN-DS-SUB-101), all under `.tcrn-doc-knowledge-shell-layout[data-standard-shell]`: the
-    knowledge-base sample's standalone TopBar takes the shell top bar's 52px height and 6px
-    block padding (`min-height`, `padding-block`), its SideNav the 16px padding and canvas
-    colour of composition one's rail (`padding`, `background`), its group titles the 16px lead
-    column (`padding-inline`) and its nav items composition one's start padding
-    (`padding-inline-start`; the 4px reach into the rail padding is a margin, which is
-    placement). All four go when the Navigation family's batch has the standalone components
-    provide composition one's geometry.
   - Removed: `EX-INIT015-doc-shell-brand-collapse` and `EX-INIT015-doc-shell-brand-narrow`
-    (TCRN-DS-SUB-101). The docs shell's collapsed and very narrow states now follow the
-    package: the lockup copy takes `max-width: 0` and the docs box clips it, with no fade.
+    (TCRN-DS-SUB-101); the knowledge-base sample's four entries
+    (`EX-INIT015-doc-knowledge-shell-topbar`, `-side-nav`, `-group-title` and `-nav-item`,
+    TCRN-DS-SUB-101), when the sample and the documentation shell became the package's
+    top-band ProductShell (TCRN-DS-SUB-132); and `EX-INIT015-doc-product-shell-search-static`
+    (TCRN-DS-SUB-100), with its doc rule, once no story wrote that doc container any more
+    (TCRN-DS-SUB-204).
 - **Component-scoped demo hooks** (same base class as a package component, but a
   presentation-only hook that the component never emits): `.tcrn-filter-bar` (demo tab
   layout; the package owns it only via the scoped `.tcrn-table-toolbar .tcrn-filter-bar` rule,
@@ -295,7 +286,7 @@ components instead.
 - **Icon base class (promoted):** the `.tcrn-icon` base rule (Icon-emitted) is the
   package's, in `packages/ui-react/src/styles/icon.css.ts` (Icon board section E; design
   session ruling of 2026-10-11 under STORY-128, open to Owner correction). The docs layer
-  keeps only sample layout (`.tcrn-doc-icon-sample`, `.tcrn-icon-sample*`) and placements
+  keeps only sample layout (`.tcrn-doc-icon-sample`, `.tcrn-doc-icon-sample-grid`) and placements
   inside `.tcrn-doc-*` containers, and addresses a package icon there as
   `svg[data-icon-name]`, so no docs rule takes `.tcrn-icon` as its subject and the class is
   not on the shell-fidelity whitelist.

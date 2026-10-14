@@ -52,8 +52,8 @@ html[data-theme-switching="true"] *::after {
 }
 body {
   margin: 0;
-  background: var(--tcrn-color-surface-canvas);
-  color: var(--tcrn-color-text-primary);
+  background: var(--tcrn-color-bg);
+  color: var(--tcrn-color-ink);
   font-family: var(--tcrn-type-family-ui);
   font-size: var(--tcrn-type-size-ui);
   line-height: var(--tcrn-type-line-ui);
@@ -70,20 +70,15 @@ body {
   inset: 0;
   z-index: 2147483647;
   pointer-events: none;
-  background: var(--tcrn-color-surface-canvas);
+  background: var(--tcrn-color-bg);
   opacity: 0;
   transition: opacity var(--tcrn-doc-theme-crossfade-duration) var(--tcrn-doc-theme-crossfade-easing);
 }
 .tcrn-doc-theme-transition-wash[data-active="true"] {
   opacity: 1;
 }
-[data-doc-shell][data-storybook-locale="en"],
-[data-doc-shell][data-storybook-locale="fr"] {
-  --tcrn-type-family-ui: var(--tcrn-type-family-latin);
-}
-[data-doc-shell][data-storybook-locale="zh-CN"] {
-  --tcrn-type-family-ui: var(--tcrn-type-family-zh-cn);
-}
+/* en, fr and zh-CN read the G+ UI stack as it is (Hanken Grotesk, then Noto Sans SC); only ja and ko
+   put their own stack in its place. */
 [data-doc-shell][data-storybook-locale="ja"] {
   --tcrn-type-family-ui: var(--tcrn-type-family-ja);
 }
@@ -144,11 +139,11 @@ body {
   display: grid;
   gap: var(--tcrn-space-1h);
   min-width: 0;
-  border-bottom: 1px solid var(--tcrn-color-border-subtle);
+  border-bottom: 1px solid var(--tcrn-color-line);
   padding: 0 0 var(--tcrn-space-4);
 }
 .tcrn-doc-page-head__eyebrow {
-  color: var(--tcrn-color-focus-ring);
+  color: var(--tcrn-color-acc);
   font-size: var(--tcrn-type-size-meta);
   font-weight: 800;
   letter-spacing: 0;
@@ -161,15 +156,15 @@ body {
 }
 .tcrn-doc-boundary-strip span {
   border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-muted);
-  color: var(--tcrn-color-text-secondary);
+  background: var(--tcrn-color-panel-2);
+  color: var(--tcrn-color-ink-2);
   font-size: var(--tcrn-type-size-caption);
   font-weight: 700;
   line-height: 1.2;
   padding: var(--tcrn-space-0h) var(--tcrn-space-1h);
 }
 .tcrn-doc-eyebrow {
-  color: var(--tcrn-color-focus-ring);
+  color: var(--tcrn-color-acc);
   font-size: var(--tcrn-type-size-meta);
   font-weight: 700;
   letter-spacing: 0;
@@ -185,7 +180,7 @@ body {
   }
 }
 .tcrn-doc-claim {
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
 }
 /* Progressive disclosure: a page opens as a compact index — story title, one-line
    locator, ledger +/- notation — and each story reveals on demand. Hash navigation
@@ -216,7 +211,7 @@ article[data-story-collapsed="true"] > .story-body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
 }
 .tcrn-doc-story-disclosure__chevron svg[data-icon-name] {
   width: 16px;
@@ -237,16 +232,16 @@ article[data-story-collapsed="true"] > .story-body {
   transform: rotate(90deg);
 }
 .tcrn-doc-story-disclosure:hover {
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-acc);
 }
 article[data-story-collapsed="false"] > .tcrn-doc-story-disclosure__heading {
-  box-shadow: inset 3px 0 0 var(--tcrn-color-brand-primary);
+  box-shadow: inset 3px 0 0 var(--tcrn-color-acc);
   padding-left: var(--tcrn-space-2h);
 }
 article {
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
   padding: var(--tcrn-space-4);
   max-width: 100%;
   min-width: 0;
@@ -269,36 +264,36 @@ article {
   display: grid;
   gap: var(--tcrn-space-1);
   min-height: 78px;
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
-  color: var(--tcrn-color-text-primary);
+  background: var(--tcrn-color-panel);
+  color: var(--tcrn-color-ink);
   padding: var(--tcrn-space-3h);
   text-decoration: none;
 }
 .tcrn-doc-chapter-pager__link--previous {
   text-align: left;
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
 }
 .tcrn-doc-chapter-pager__link--previous .tcrn-doc-chapter-pager__icon {
   justify-self: start;
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-acc);
 }
 .tcrn-doc-chapter-pager__icon {
   width: 16px;
   height: 16px;
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-acc);
 }
 .tcrn-doc-chapter-pager__link--next {
   text-align: right;
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
 }
 .tcrn-doc-chapter-pager__link--next .tcrn-doc-chapter-pager__icon {
   justify-self: end;
-  color: var(--tcrn-color-brand-secondary);
+  color: var(--tcrn-color-acc-2);
 }
 .tcrn-doc-chapter-pager__eyebrow {
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   font-size: var(--tcrn-type-size-caption);
   font-weight: 700;
 }
@@ -309,15 +304,15 @@ article {
 .tcrn-doc-chapter-pager__link:focus-visible,
 .tcrn-doc-chapter-pager__link:hover {
   outline: none;
-  border-color: var(--tcrn-color-focus-ring);
-  box-shadow: var(--tcrn-elevation-focus);
+  border-color: var(--tcrn-color-acc);
+  box-shadow: var(--tcrn-focus-ring);
 }
 .tcrn-doc-chapter-pager__placeholder {
   min-height: 78px;
 }
 .tcrn-doc-component-reference__intro {
   margin: 0;
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   line-height: var(--tcrn-type-line-body);
 }
 .tcrn-doc-category-index {
@@ -332,22 +327,22 @@ article {
   gap: var(--tcrn-space-1h);
   min-width: 0;
   padding: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-border-subtle);
+  border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-surface-panel);
+  background: var(--tcrn-color-panel);
 }
 .tcrn-doc-category-index__link {
   display: grid;
   grid-template-columns: minmax(0, 1fr) max-content;
   gap: var(--tcrn-space-2);
   align-items: center;
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-acc);
   font-weight: var(--tcrn-type-weight-strong);
   text-decoration: none;
 }
 .tcrn-doc-category-index__link:hover,
 .tcrn-doc-category-index__link:focus-visible {
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-ink);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: var(--tcrn-space-0h);
@@ -363,8 +358,8 @@ article {
   justify-content: center;
   padding: var(--tcrn-space-0h) var(--tcrn-space-1);
   border-radius: var(--tcrn-radius-pill);
-  background: var(--tcrn-color-surface-muted);
-  color: var(--tcrn-color-text-secondary);
+  background: var(--tcrn-color-panel-2);
+  color: var(--tcrn-color-ink-2);
   font-size: var(--tcrn-type-size-meta);
 }
 .tcrn-doc-category-index__stories {
@@ -372,15 +367,15 @@ article {
   gap: var(--tcrn-space-1);
   margin: 0;
   padding-inline-start: var(--tcrn-space-3);
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
 }
 .tcrn-doc-category-index__story {
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   text-decoration: none;
 }
 .tcrn-doc-category-index__story:hover,
 .tcrn-doc-category-index__story:focus-visible {
-  color: var(--tcrn-color-brand-primary);
+  color: var(--tcrn-color-acc);
   text-decoration: underline;
   text-underline-offset: var(--tcrn-space-0h);
 }
@@ -395,9 +390,9 @@ select {
   font: inherit;
 }
 .tcrn-doc-chapter-pager :focus-visible {
-  outline: 2px solid var(--tcrn-color-focus-ring);
+  outline: 2px solid var(--tcrn-color-acc);
   outline-offset: 2px;
-  box-shadow: var(--tcrn-elevation-focus);
+  box-shadow: var(--tcrn-focus-ring);
 }
 .story-body {
   display: grid;
@@ -417,7 +412,7 @@ ${demoStoryCss}
   display: grid;
   place-items: center;
   border-radius: calc(var(--tcrn-radius-surface) + 4px);
-  background: var(--tcrn-color-surface-muted);
+  background: var(--tcrn-color-panel-2);
   padding: var(--tcrn-space-5);
 }
 .tcrn-doc-brand-system__copy {
@@ -439,27 +434,17 @@ ${demoStoryCss}
   min-width: 0;
 }
 
-/* The ProductShell example opens its search results to show the result state. The doc container
-   keeps that list in the shell's flow, so it pushes the page down instead of painting over the
-   heading and first paragraph. The shell-fidelity guard registers its position and inset. */
-.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results {
-  position: static;
-  inset: auto;
-  width: 100%;
-  margin-block-start: var(--tcrn-space-2);
-}
-
 /* KeyValueList geometry is package-owned, including inside nested inspectors. */
 
 html[data-tcrn-theme="dark"] .tcrn-doc-overlay-mode-card,
 html[data-tcrn-theme="dark"] .tcrn-doc-overlay-static-card {
-  border-color: color-mix(in srgb, var(--tcrn-color-border-strong) 62%, transparent);
-  background: color-mix(in srgb, var(--tcrn-color-surface-muted) 74%, var(--tcrn-color-surface-panel));
+  border-color: color-mix(in srgb, var(--tcrn-color-line-2) 62%, transparent);
+  background: color-mix(in srgb, var(--tcrn-color-panel-2) 74%, var(--tcrn-color-panel));
 }
 
 html[data-tcrn-theme="dark"] .tcrn-doc-dialog-spec-fixture {
-  border-color: color-mix(in srgb, var(--tcrn-color-border-strong) 58%, transparent);
-  background: var(--tcrn-color-surface-muted);
+  border-color: color-mix(in srgb, var(--tcrn-color-line-2) 58%, transparent);
+  background: var(--tcrn-color-panel-2);
 }
 
 @media (max-width: 760px) {

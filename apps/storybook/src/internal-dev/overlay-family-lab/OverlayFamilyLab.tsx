@@ -55,9 +55,9 @@ const overlayStageStyle: CSSProperties = {
   display: "grid",
   gap: "var(--tcrn-space-3)",
   padding: "var(--tcrn-space-3)",
-  border: "1px solid var(--tcrn-color-border-subtle)",
+  border: "1px solid var(--tcrn-color-line)",
   borderRadius: "var(--tcrn-radius-md)",
-  background: "var(--tcrn-color-surface-muted)"
+  background: "var(--tcrn-color-panel-2)"
 };
 
 function CapabilityReadback({ scenario }: { scenario: OverlayFamilyScenario }) {
