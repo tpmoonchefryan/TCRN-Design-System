@@ -8,7 +8,7 @@
 // classes, so a static sample and a live control resolve the same pair. The light and night blocks
 // differ only in data-tcrn-theme. Layout uses existing documentation-layer classes and package
 // surfaces; this module adds no styles.
-import type { ReactElement, ReactNode } from "react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Heading, Surface, Text } from "@tcrn/ui-react";
 import {
@@ -249,10 +249,15 @@ export function StaticHtml({ html, edits, id }: { html: string; edits: readonly 
   return <span data-gplus-static-markup={id} dangerouslySetInnerHTML={{ __html: applyMarkupEdits(html, edits) }} />;
 }
 
-/** Renders a package element and applies attribute edits to its markup. */
-export function StaticMarkup({ element, edits, id, block = false }: { element: ReactElement; edits: readonly MarkupEdit[]; id: string; block?: boolean }) {
+/**
+ * Renders a package element and applies attribute edits to its markup. The wrapper takes the caller's
+ * style, if any: a caller that frames the element sizes the wrapper, so a percentage size on the
+ * element resolves against the frame (composition one's sample shells; TCRN-DS-SUB-205). Without a
+ * style the wrapper's markup is unchanged.
+ */
+export function StaticMarkup({ element, edits, id, block = false, style }: { element: ReactElement; edits: readonly MarkupEdit[]; id: string; block?: boolean; style?: CSSProperties }) {
   const html = applyMarkupEdits(renderToStaticMarkup(element, { identifierPrefix: `gplus-${id}-` }), edits);
   return block
-    ? <div data-gplus-static-markup={id} dangerouslySetInnerHTML={{ __html: html }} />
-    : <span data-gplus-static-markup={id} dangerouslySetInnerHTML={{ __html: html }} />;
+    ? <div data-gplus-static-markup={id} style={style} dangerouslySetInnerHTML={{ __html: html }} />
+    : <span data-gplus-static-markup={id} style={style} dangerouslySetInnerHTML={{ __html: html }} />;
 }
