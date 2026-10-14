@@ -1,0 +1,333 @@
+[
+  {
+    "key": "TCRN-DS-SUB-212",
+    "parentKey": "TCRN-DS-STORY-136",
+    "parentId": "work:73563c973ba4945683fbb15f",
+    "title": "标按钮的 data-logo 写标的 id：productMarkIdOf 抽到 Navigation 目录内的共用模块，ShellBrandButton 改用它，SVG 仍按产品键取源",
+    "files": [
+      "packages/ui-react/src/components/Navigation/product-mark-id.ts",
+      "packages/ui-react/src/components/Navigation/Navigation.tsx",
+      "packages/ui-react/src/components/Navigation/ShellBrandButton.tsx",
+      "packages/ui-react/src/components/Navigation/ShellBrandButton.test.tsx"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+      "corepack pnpm@10.12.1 -C <包树> run typecheck",
+      "corepack pnpm@10.12.1 -C <包树> run exports:check",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build"
+    ],
+    "package": "N1",
+    "wave": "W1",
+    "sources": [
+      "R4-1"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-213",
+    "parentKey": "TCRN-DS-STORY-140",
+    "parentId": "work:e14a7f089a9cac4c7da39d52",
+    "title": "focusRingClipInPage 在真件上读到纸内滚动区：STORY_PROBES 加带 ProductShell 的 shell-top-band，判定与阈值不变",
+    "files": [
+      "scripts/geometry-measure-proof.mjs",
+      "tests/geometry-measure-proof.test.mjs",
+      "tests/fixtures/geometry-measure/manifest.json"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> exec node --test tests/geometry-measure-proof.test.mjs",
+      "corepack pnpm@10.12.1 -C <包树> exec node scripts/geometry-measure-proof.mjs"
+    ],
+    "package": "N1",
+    "wave": "W1",
+    "sources": [
+      "R4-2"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-214",
+    "parentKey": "TCRN-DS-STORY-141",
+    "parentId": "work:e2def1cb6cee96bcde0ea937",
+    "title": "登入动画飞行标的 data-logo 写标的 id：ShellIntro 改用共用模块，单测加 DS、Mana 两例",
+    "files": [
+      "packages/ui-react/src/components/Navigation/ShellIntro.tsx",
+      "packages/ui-react/src/components/Navigation/ShellIntro.test.tsx",
+      "packages/ui-react/src/test/shell-intro.dom.spec.tsx"
+    ],
+    "dependsOn": [
+      "TCRN-DS-SUB-212"
+    ],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+      "corepack pnpm@10.12.1 -C <包树> run test:dom",
+      "corepack pnpm@10.12.1 -C <包树> run typecheck"
+    ],
+    "package": "N1",
+    "wave": "W1",
+    "sources": [
+      "R4-1"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-215",
+    "parentKey": "TCRN-DS-STORY-143",
+    "parentId": "work:1b03f6ae2b1a9e080fde1432",
+    "title": "families.json 补登本 INIT 新增的 9 个根类：导航 2、壳层 5、表单控件 2，测试把顶带的容器、让步项与固定项都钉在 shell 族",
+    "files": [
+      "docs/contract/families.json",
+      "tests/contract-static-proof.test.mjs"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> exec node --test tests/contract-static-proof.test.mjs",
+      "corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-static-proof.mjs",
+      "corepack pnpm@10.12.1 -C <包树> run contract:proof",
+      "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof"
+    ],
+    "package": "N2",
+    "wave": "W1",
+    "sources": [
+      "R4-4"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-216",
+    "parentKey": "TCRN-DS-STORY-146",
+    "parentId": "work:792b63bc73100197f6f41e96",
+    "title": "Disclosure 展开区按钮的底边描边不被裁：collapsible-region 内层在块向末端留出描边宽度，取不改展开动画几何的写法",
+    "files": [
+      "packages/ui-react/src/styles/base.css.ts",
+      "packages/ui-react/src/components/Layout/Layout.test.tsx"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+      "corepack pnpm@10.12.1 -C <包树> run test:dom",
+      "corepack pnpm@10.12.1 -C <包树> run typecheck",
+      "corepack pnpm@10.12.1 -C <包树> run tokens:proof",
+      "corepack pnpm@10.12.1 -C <包树> run contract:proof",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-static-proof.mjs"
+    ],
+    "package": "N1",
+    "wave": "W1",
+    "sources": [
+      "R4-3"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-217",
+    "parentKey": "TCRN-DS-STORY-147",
+    "parentId": "work:6fd15b4e5366871194d862ab",
+    "title": "视觉签名截图不受纸的滚动裁切：截图期间被截 story 不受纸裁、顶带移出截图区，截完复原并断言，门内自检高 story 的下半部不是整片画布底",
+    "files": [
+      "scripts/internal-alpha-browser-proof.mjs",
+      "scripts/lib/visual-signature.mjs"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof"
+    ],
+    "package": "N2",
+    "wave": "W1",
+    "sources": [
+      "R4-5"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-218",
+    "parentKey": "TCRN-DS-STORY-147",
+    "parentId": "work:6fd15b4e5366871194d862ab",
+    "title": "文档页展开故事标题删 3px 强调色左边条：去掉 inset box-shadow 与随它加的 padding-left，展开态只由 chevron 旋转表达",
+    "files": [
+      "apps/storybook/src/alpha-styles.ts"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> run tokens:proof",
+      "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof"
+    ],
+    "package": "N3",
+    "wave": "W1",
+    "sources": [
+      "R4-6"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-219",
+    "parentKey": "TCRN-DS-STORY-147",
+    "parentId": "work:6fd15b4e5366871194d862ab",
+    "title": "删文档层 6 个无写入处的类与随之无用的 fidelity 白名单项：eyebrow、claim、doc-brand 连同两条放置规则、search-results/-result/-empty，style-scale 同步",
+    "files": [
+      "apps/storybook/src/alpha-styles.ts",
+      "apps/storybook/src/story-demo-styles.ts",
+      "apps/storybook/src/storybook.css",
+      "scripts/shell-fidelity-proof.mjs",
+      "docs/style-scale.md",
+      "docs/design/gplus-2026-10/doc-class-map.json"
+    ],
+    "dependsOn": [
+      "TCRN-DS-SUB-218"
+    ],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run demo-styles:sync",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> run shell:fidelity",
+      "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof",
+      "corepack pnpm@10.12.1 -C <包树> run tokens:proof"
+    ],
+    "package": "N3",
+    "wave": "W1",
+    "sources": [
+      "R4-7"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-220",
+    "parentKey": "TCRN-DS-STORY-147",
+    "parentId": "work:6fd15b4e5366871194d862ab",
+    "title": "文档层门的过期口径：smoke 删退役侧栏与切换钮的空读回，AOS 视觉实例删无人读的文案字段，selection-grammar 禁形补 G+ 名并自检",
+    "files": [
+      "scripts/storybook-smoke.mjs",
+      "apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx",
+      "apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx",
+      "scripts/selection-grammar-proof.mjs"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:smoke",
+      "corepack pnpm@10.12.1 -C <包树> exec node scripts/selection-grammar-proof.mjs",
+      "corepack pnpm@10.12.1 -C <包树> run typecheck"
+    ],
+    "package": "N3",
+    "wave": "W1",
+    "sources": [
+      "R4-7"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-221",
+    "parentKey": "TCRN-DS-STORY-148",
+    "parentId": "work:bad748579e7b1b7f0773bd53",
+    "title": "storybook-map.json 与 md 同步：O-3 写已撤回，SHELL-D2 与 SHELL-D7 进 refs，DIFF-10 改现行，机读件写两主题同色",
+    "files": [
+      "docs/design/gplus-2026-10/storybook-map.json"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:visual-proof"
+    ],
+    "package": "N4",
+    "wave": "W2",
+    "sources": [
+      "R4-8"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-222",
+    "parentKey": "TCRN-DS-STORY-150",
+    "parentId": "work:b140305693da159bfdc615c8",
+    "title": "构建弃用提示只跳产物目录：token-deprecation-notice 按相对路径跳过构建产物，源码目录 apps/storybook/src/build 照扫，测试补样本",
+    "files": [
+      "scripts/token-deprecation-notice.mjs",
+      "tests/token-deprecation-notice.test.mjs"
+    ],
+    "dependsOn": [],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> exec node --test tests/token-deprecation-notice.test.mjs",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build"
+    ],
+    "package": "N3",
+    "wave": "W1",
+    "sources": [
+      "R4-7"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-223",
+    "parentKey": "TCRN-DS-STORY-150",
+    "parentId": "work:b140305693da159bfdc615c8",
+    "title": "ui-react README 图标件数改 38，迁移说明开头与三份分消费方清单跟上第二至四轮，从 M49 起追加 R4 各包的迁移条目，CHANGELOG 摘要同步",
+    "files": [
+      "packages/ui-react/README.md",
+      "docs/migration-4.0.md",
+      "CHANGELOG.md"
+    ],
+    "dependsOn": [
+      "TCRN-DS-SUB-212",
+      "TCRN-DS-SUB-213",
+      "TCRN-DS-SUB-214",
+      "TCRN-DS-SUB-216",
+      "TCRN-DS-SUB-215",
+      "TCRN-DS-SUB-217",
+      "TCRN-DS-SUB-218",
+      "TCRN-DS-SUB-219",
+      "TCRN-DS-SUB-220",
+      "TCRN-DS-SUB-222"
+    ],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run scaffold:proof",
+      "corepack pnpm@10.12.1 -C <包树> run readme:proof",
+      "corepack pnpm@10.12.1 -C <包树> run scan",
+      "corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan"
+    ],
+    "package": "N4",
+    "wave": "W2",
+    "sources": [
+      "R4-8"
+    ]
+  },
+  {
+    "key": "TCRN-DS-SUB-224",
+    "parentKey": "TCRN-DS-STORY-150",
+    "parentId": "work:b140305693da159bfdc615c8",
+    "title": "批末生成物再生与清单校正（SUB-211 在本轮的对应）：按新截法整批重收视觉签名基线，生成物一次再生，owner-acceptance 改本轮处置",
+    "files": [
+      "docs/verification/**",
+      "docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md"
+    ],
+    "dependsOn": [
+      "TCRN-DS-SUB-213",
+      "TCRN-DS-SUB-217",
+      "TCRN-DS-SUB-222",
+      "TCRN-DS-SUB-223"
+    ],
+    "localGates": [
+      "corepack pnpm@10.12.1 -C <包树> run build",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+      "corepack pnpm@10.12.1 -C <包树> run tokens:proof",
+      "corepack pnpm@10.12.1 -C <包树> run geometry:proof",
+      "corepack pnpm@10.12.1 -C <包树> run geometry:measure",
+      "corepack pnpm@10.12.1 -C <包树> run storybook:visual-proof",
+      "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof",
+      "corepack pnpm@10.12.1 -C <包树> run internal-alpha:contracts",
+      "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof",
+      "corepack pnpm@10.12.1 -C <包树> exec node scripts/internal-alpha-browser-proof.mjs --update-visual-baseline <选择文件>",
+      "corepack pnpm@10.12.1 -C <包树> exec node scripts/internal-alpha-hardening-proof.mjs",
+      "corepack pnpm@10.12.1 -C <包树> run pack:smoke",
+      "corepack pnpm@10.12.1 -C <包树> run scan"
+    ],
+    "package": "N5",
+    "wave": "W3",
+    "sources": [
+      "R4-9"
+    ]
+  }
+]
