@@ -46,6 +46,11 @@ change a step, by consumer and item by item:
   (M44); the row labels, the paper's focus ring and the menu's icon boxes (M45);
   changes outside the packages: the documentation site's shell and the contract's
   checked batches (M46).
+- Second batch, third round, the AI consumption contract: it describes the top-band
+  shell, with `fullMenu`, `topBandNavigation`, the control order, the governed
+  preferences, the two proof ids and the oracle's new names, the old ones kept until
+  4.1 (M47); three AOS visual-instance variants are retired, one is renamed and the
+  fixtures carry `shellState` (M48).
 
 Overtaken within this release. The entries below keep the wording they were written
 with. The first batch was never published before the second replaced part of it, so

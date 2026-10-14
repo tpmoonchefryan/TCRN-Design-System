@@ -1173,6 +1173,64 @@ shell or to `scope.checkedBatches`.
 Source: 50d0a7c (TCRN-DS-SUB-201), d7b5643 (TCRN-DS-SUB-179), 39cb579
 (TCRN-DS-SUB-202), eb41539 (TCRN-DS-SUB-189); handoffs M7 and M2 (INIT-016 r3).
 
+### M47 · The AI consumption contract describes the top-band shell
+
+Change: the AI consumption contract (`ai-consumption-contract.json`, written by the
+documentation build) describes the top-band shell instead of the side rail.
+
+- The documentation shell's oracle (`shellMetrics`) has new names:
+  `residentNavWidthPx` (0), `residentNavMinWidthPx` (0),
+  `residentNavPreferredViewportRatio` (0), `residentNavMaxWidthPx` (0),
+  `residentNavTolerancePx` (2), `bandHeightPx` (52) and `bandHeightTolerancePx` (2).
+  The old `desktopSidebar*` and `desktopTopbar*` names stay for one version with the
+  same values and are removed in 4.1. The metric evidence reads `residentNavWidthPx`
+  and `bandHeightPx`, and the control table labels those rows "Resident navigation
+  width" and "Band height".
+- `visualFitControlContract.fullMenu` replaces `sidebar`;
+  `productShellHardeningRules.topBandNavigation` replaces `sideNavigation`.
+- `shellControlVisualParityProof.controlOrder` is `["brandButton", "pins",
+  "cluster"]`. Its measured controls drop the side navigation toggle and the top bar
+  and add the brand button, the pins, the avatar, the band and the paper; its motion
+  fields drop the sampled width timeline, and its state coverage lists the top band's
+  states. `searchMotionTimeline` (the width transition) and the two collapse policies,
+  `ownerQualitySideNavCollapsePolicy` and `ownerQualitySideNavPolicy`, are removed,
+  and the contract no longer reads `--tcrn-shell-sidebar-width-collapsed`.
+- `preferenceTransport.governedPreferences` is `["locale", "theme", "pins"]`.
+- The two required proof ids are `prove_top_band_full_menu_and_pins` (was
+  `prove_side_navigation_collapse_state`) and `top_band_navigation_receipt` (was
+  `side_navigation_collapse_receipt`).
+- The deprecated parts are described as "deprecated, see M23"; `visualSkin` and
+  `themeTransition` describe the band and the paper.
+
+Do: a consumer or a script that reads the contract takes `fullMenu`,
+`topBandNavigation`, the new control order, `governedPreferences` with `pins` and the
+two new proof ids, and moves to the oracle's new names before 4.1.
+
+Source: 9e0f3ad, dcd524d (TCRN-DS-SUB-208); handoff M9 (INIT-016 r3).
+
+### M48 · The AOS visual instances: three variants retired, one renamed
+
+Change:
+
+- The owner-quality product shell instance retires its three collapsed variants,
+  which repeated other variants exactly: nine variants become six.
+- The frontend shell slice's `desktop-light-collapsed-work` is renamed
+  `desktop-light-work` (the band closed on the Work route; the desktop Work coverage
+  stays).
+- The fixtures carry `shellState` (`closed`, or `expanded` for the search-results
+  fixtures) instead of `collapsed`. The attribute `data-visual-instance-collapsed`
+  becomes `data-visual-instance-shell-state`, and
+  `data-visual-instance-mobile-collapse-policy` becomes
+  `data-visual-instance-mobile-menu="sheet"`. The persistent routes drop
+  `collapsed=false`. Variant ids that contain "expanded" keep their ids, since
+  consumers select variants by id; only their labels change.
+
+Do: select the frontend shell slice's Work variant as `desktop-light-work`, drop the
+owner-quality collapsed variants, and read `shellState` and the two renamed
+attributes.
+
+Source: 9e0f3ad (TCRN-DS-SUB-208); handoff M9 (INIT-016 r3).
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is
