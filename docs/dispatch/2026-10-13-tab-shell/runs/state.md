@@ -86,6 +86,9 @@
 - 批末 verify（`tools/batch-end-verify.sh 2`）跑在 6f739b2，2026-10-14T02:14:58Z–02:23:36Z：30 步红 7、44 段红 8（geometry:proof、shell:parity、contract:static、storybook:smoke、geometry:measure、storybook:visual-proof、internal-alpha:browser-proof、hardening）；`test`、`tokens:proof`、`full-surface:proof`、`scan` 转绿，`contract:static` 新红；`storybook:build` 退出 0；结果表 `runs/r2/verify/steps.md`（537ab3c），日志与回执存档在 scratch `r2-verify/`，树已还原。
 - 批末验收：三片并行（einzbern-main），摘录 `runs/r2/excerpts/acceptance-{A,B,C}.md`（15d7161，含上一轮验收与判断的指向），产出 `runs/r2/acceptance/{A,B,C}.md`。
 
+- 批末验收交回并提交（585aa21）：A——137、138、139、141 机器判据满足，136 只等 D7，135、140 部分（返工 8，主力 6）；B——142…146 五张部分，测得的行为都合 GWT、每张各一个机判仍红（返工 11，主力 7）；C——147、148、150 部分、149 不满足（返工 10，主力 7，C2-10 汇总 A、B 根因）。三片新增 Owner 事项：页头标题行高 28.6 无 token、TreeNav 归宿；O-4 补证据（底栏锁定块 en 1.7、按「大写顶到基线」量 0.6 会过）。
+- 判断：einzbern-main 单独一次，摘录 `runs/r2/excerpts/judgment.md`（585aa21），产出 `runs/r2/judgment.md` 与 `runs/r2/lessons.json`。
+
 ## 下一步
 
-- 三片验收交回后提交 → 判断（摘录草稿在 scratch `r2-judgment-excerpt-draft.md`，复制到 `runs/r2/excerpts/judgment.md` 后派 einzbern-main）→ 一次链写与知识采集 → R3 或收口。
+- 判断交回后提交 → 一次链写（按判断 §4：R2 Subtask 转态、R1 保持 active 的 22 张按承接是否满足转 done、Story 与 INIT 注解）与知识采集（KB-031 起）→ R3 拆分或收口。
