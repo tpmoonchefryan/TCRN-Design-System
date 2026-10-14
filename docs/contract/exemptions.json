@@ -1,6 +1,6 @@
 {
   "schemaVersion": "tcrn.ds.contract-exemptions.v1",
-  "description": "契约静态门的豁免登记。每条只豁免一个家族（family）、一组具体类（classes）或一组精确选择器（selectors），列明条款编号（clauses，不收通配），并带裁定引用（ruling）与原因（reason）。第一批家族及其类不能登记；格式不合规的条目使门判红；某次运行中没有命中的条目在报告 scope.unusedExemptions 里列出。条目对包 CSS 静态检查与 story 渲染层检查（TCRN-DS-SUB-037）同样生效：story 层的发现按渲染元素的包类（tcrn-*，不含 tcrn-doc-*）归家族，没有 CSS 选择器，所以 selectors 条目不匹配 story 层发现。",
+  "description": "契约静态门的豁免登记。每条只豁免一个家族（family）、一组具体类（classes）或一组精确选择器（selectors），列明条款编号（clauses，不收通配），并带裁定引用（ruling）与原因（reason）。families.json 的 scope.checkedBatches 所列批次的家族及其类不能登记，未列批次的家族必须各有一条家族条目（TCRN-DS-SUB-189）；格式不合规的条目使门判红；某次运行中没有命中的条目在报告 scope.unusedExemptions 里列出。条目对包 CSS 静态检查与 story 渲染层检查（TCRN-DS-SUB-037）同样生效：story 层的发现按渲染元素的包类（tcrn-*，不含 tcrn-doc-*）归家族，没有 CSS 选择器，所以 selectors 条目不匹配 story 层发现。",
   "entries": [
     {
       "id": "EX-INIT015-settings",
