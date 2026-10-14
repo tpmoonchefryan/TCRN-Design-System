@@ -1509,6 +1509,12 @@ export interface NavGroupProps extends HTMLAttributes<HTMLDivElement>, NavPinPro
   selected?: boolean;
   /** Which language the built-in pin name is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
+  /**
+   * What the group holds, said to a screen reader with its title row (aria-describedby to a
+   * .tcrn-sr-only element after the row); nothing is drawn, and without it the markup is unchanged
+   * (TCRN-DS-SUB-147).
+   */
+  description?: string;
   children: ReactNode;
 }
 
@@ -1518,7 +1524,25 @@ export interface NavGroupProps extends HTMLAttributes<HTMLDivElement>, NavPinPro
  * group element, so the group hook sits on the column whose own child is the title row, which is
  * where the shell gates read the group's title (TCRN-DS-SUB-152).
  */
-export function NavGroup({ label, selected = false, pinned = false, onPinnedChange, pinLabel, locale, className, children, ...props }: NavGroupProps) {
+export function NavGroup({ label, selected = false, pinned = false, onPinnedChange, pinLabel, locale, description, className, children, ...props }: NavGroupProps) {
+  const titleRow = (describedBy?: string) =>
+    onPinnedChange ? (
+      <div className="tcrn-nav-group__label" data-nav-pinnable="true" aria-describedby={describedBy}>
+        <span className="tcrn-nav-group__label-text" title={label}>
+          {label}
+        </span>
+        <NavPinButton pinned={pinned} label={pinLabel ?? label} locale={locale} onPinnedChange={onPinnedChange} />
+      </div>
+    ) : (
+      // The title row is one line that ends in an ellipsis when it is too long, so its text
+      // carries the whole label as its title (C7; TCRN-DS-SUB-154).
+      <div className="tcrn-nav-group__label" aria-describedby={describedBy}>
+        <span className="tcrn-nav-group__label-text" title={label}>
+          {label}
+        </span>
+      </div>
+    );
+  const trimmedDescription = description?.trim();
   return (
     <div
       {...props}
@@ -1526,24 +1550,26 @@ export function NavGroup({ label, selected = false, pinned = false, onPinnedChan
       data-selected={selected ? "true" : undefined}
       data-navigation-primitive="nav-group"
     >
-      {onPinnedChange ? (
-        <div className="tcrn-nav-group__label" data-nav-pinnable="true">
-          <span className="tcrn-nav-group__label-text" title={label}>
-            {label}
-          </span>
-          <NavPinButton pinned={pinned} label={pinLabel ?? label} locale={locale} onPinnedChange={onPinnedChange} />
-        </div>
-      ) : (
-        // The title row is one line that ends in an ellipsis when it is too long, so its text
-        // carries the whole label as its title (C7; TCRN-DS-SUB-154).
-        <div className="tcrn-nav-group__label">
-          <span className="tcrn-nav-group__label-text" title={label}>
-            {label}
-          </span>
-        </div>
-      )}
+      {trimmedDescription ? <NavDescribed description={trimmedDescription} render={titleRow} /> : titleRow()}
       <div className="tcrn-nav-group__items">{children}</div>
     </div>
+  );
+}
+
+/**
+ * A row and its description: the row (rendered by `render` with the description's id for its
+ * aria-describedby) and, after it, the description in a .tcrn-sr-only element, which draws nothing.
+ * Only a described row renders this, so an id is made only where one is needed.
+ */
+function NavDescribed({ description, render }: { description: string; render: (descriptionId: string) => ReactNode }) {
+  const descriptionId = useId();
+  return (
+    <>
+      {render(descriptionId)}
+      <span id={descriptionId} className="tcrn-sr-only">
+        {description}
+      </span>
+    </>
   );
 }
 
@@ -1846,12 +1872,12 @@ export interface ProductShellNavItem extends ShellMenuItem {
 
 /**
  * A group of the product's menu model (C-7): a ShellMenuGroup, one column of the full menu. The
- * keys, the description and the section label are the product's own metadata for its
- * dictionary; the shell does not render them.
+ * keys and the section label are the product's own metadata for its dictionary; the shell does
+ * not render them. The description (ShellMenuGroup's) is said with the group's row to a screen
+ * reader and draws nothing (TCRN-DS-SUB-147).
  */
 export interface ProductShellNavGroup extends ShellMenuGroup {
   labelKey?: string;
-  description?: string;
   descriptionKey?: string;
   sectionLabel?: string;
   sectionLabelKey?: string;
@@ -1942,6 +1968,12 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   /** The full menu's search provider (whole-site targets); the menu model is searched when omitted. */
   searchProvider?: ShellMenuSearchProvider;
   onSearchQueryChange?: (query: string) => void;
+  /** The full menu's query, for a product that holds it; the menu keeps its own when omitted (ShellMenu's `query`). */
+  menuQuery?: string;
+  /** The query the full menu's own starts from, such as a page rendered with a query typed (ShellMenu's `defaultQuery`). */
+  defaultMenuQuery?: string;
+  /** Asks to change the full menu's query: as it is typed, and to empty when the menu closes (ShellMenu's `onQueryChange`). */
+  onMenuQueryChange?: (query: string) => void;
   onThemeChange?: (theme: ShellThemeMode) => void;
   onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
   onLocaleChange?: (locale: string) => void;
@@ -2057,6 +2089,9 @@ export function ProductShell({
   searchPlaceholder,
   searchProvider,
   onSearchQueryChange,
+  menuQuery,
+  defaultMenuQuery,
+  onMenuQueryChange,
   onThemeChange,
   onLocaleMenuOpenChange,
   onLocaleChange,
@@ -2273,6 +2308,9 @@ export function ProductShell({
         searchPlaceholder={searchPlaceholder}
         searchProvider={searchProvider}
         onSearchQueryChange={onSearchQueryChange}
+        query={menuQuery}
+        defaultQuery={defaultMenuQuery}
+        onQueryChange={onMenuQueryChange}
         locale={currentLocale}
         previewStates={previewStates}
       />

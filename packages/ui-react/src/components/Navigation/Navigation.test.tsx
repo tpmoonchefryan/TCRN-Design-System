@@ -2217,3 +2217,41 @@ test("STORY-142 GWT1 STORY-149 GWT1 a row carries the guide-column hooks, and da
   assert.ok(wrapper && wrapper.matches(".tcrn-nav-item-row"));
   assert.ok(wrapper.querySelector(":scope > [data-pin-button]"));
 });
+
+test("ProductShell hands the held and the default menu query to the full menu, and the groups' descriptions with them (TCRN-DS-SUB-147)", () => {
+  const shell = (extra: Partial<ProductShellProps>) =>
+    renderToStaticMarkup(
+      <ProductShell
+        productName="TCRN TMS"
+        moduleName="Talent"
+        brandProductId="tms"
+        currentRouteLabel="Roster"
+        pageHeader={{ title: "Roster" }}
+        navGroups={shellNavGroups}
+        locales={shellLocales}
+        currentLocale="en"
+        menuOpen
+        {...extra}
+      >
+        <div>content</div>
+      </ProductShell>
+    );
+  const results = (html: string) => {
+    const { document } = new JSDOM(html).window;
+    return {
+      value: document.querySelector<HTMLInputElement>('[data-panel="expanded"] [data-shell-search] input[type="search"]')?.value,
+      titles: [...document.querySelectorAll('[data-panel="expanded"] [data-search-result] strong')].map((element) => element.textContent),
+      columns: document.querySelectorAll('[data-panel="expanded"] [data-shell-col]').length
+    };
+  };
+  assert.deepEqual(results(shell({})), { value: "", titles: [], columns: 2 });
+  assert.deepEqual(results(shell({ defaultMenuQuery: "Contr" })), { value: "Contr", titles: ["Active", "Drafts"], columns: 0 });
+  assert.deepEqual(results(shell({ menuQuery: "State", defaultMenuQuery: "Contr", onMenuQueryChange: () => undefined })), { value: "State", titles: ["Statements"], columns: 0 });
+  assert.doesNotMatch(shell({ menuQuery: "State", onMenuQueryChange: () => undefined }), /menuquery/i, "the props do not reach the shell root as attributes");
+  // A group's description is said with its title row and draws nothing.
+  const described = new JSDOM(shell({ navGroups: shellNavGroups.map((group, index) => (index === 1 ? { ...group, description: "Pay and statements" } : group)) })).window.document;
+  const title = described.querySelector('[data-panel="expanded"] [data-shell-group]:nth-child(2) > .tcrn-nav-group__label');
+  const said = described.getElementById(title?.getAttribute("aria-describedby") ?? "");
+  assert.equal(said?.textContent, "Pay and statements");
+  assert.ok(said?.matches(".tcrn-sr-only"));
+});
