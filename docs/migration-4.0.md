@@ -4,7 +4,7 @@ This guide is for the three consumers of `@tcrn/ui-tokens`, `@tcrn/ui-copy-state
 and `@tcrn/ui-react`: TCRN AOS, TCRN TMS and the Einzbern portal. It covers the move
 from 3.0.0, and from the unreleased `main` that followed it, to 4.0.0. 4.0.0 is one
 release made of two batches: the G+ renewal (TCRN-DS-INIT-015, the first batch, M1
-to M19) and the top-band shell (TCRN-DS-INIT-016, the second batch, M20 to M29). The
+to M19) and the top-band shell (TCRN-DS-INIT-016, the second batch, M20 to M52). The
 major version did not move again for the second batch. Where the second batch
 replaced something the first batch had introduced, the first batch's item keeps its
 wording, and "Items the second batch overtook" below names what 4.0.0 ships instead.
@@ -23,10 +23,13 @@ on the INIT-015 integration branch, the Subtask key, and the package handoff in
 `docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/` (first round, handoffs
 named W1-A and so on), `runs/r2/handoff/` (second round, handoffs named P1 and
 so on, marked "r2" below) or `runs/r3/handoff/` (third round, handoffs named P0
-and so on, marked "r3" below). The second batch's items (M20 to M29) name a commit
+and so on, marked "r3" below). The second batch's items (M20 to M52) name a commit
 on the INIT-016 integration branch, the Subtask key and the package handoff in
-`docs/dispatch/2026-10-13-tab-shell/runs/r1/handoff/` (handoffs named P1a and so
-on, marked "INIT-016 r1" below).
+`docs/dispatch/2026-10-13-tab-shell/runs/r1/handoff/` (first round, handoffs named
+P1a and so on, marked "INIT-016 r1" below), `runs/r2/handoff/` (second round,
+handoffs named K1 and so on, marked "INIT-016 r2"), `runs/r3/handoff/` (third
+round, handoffs named M1 and so on, marked "INIT-016 r3") or `runs/r4/handoff/`
+(fourth round, handoffs named N1 and so on, marked "INIT-016 r4").
 
 ## By consumer
 
@@ -41,8 +44,8 @@ on, marked "INIT-016 r1" below).
 4. Replace reads of the removed brand accent tokens (M5). AOS keeps its own
    registry entry, `--tcrn-brand-accent-aos` and the mother mark.
 5. Replace any `lucide-react` import with `Icon` (M6) and keep icon names inside the
-   37-name roster; the Story's example is an `iconName="users"` value, which is a
-   roster name from 4.0.0 (M7). Remove `strokeWidth` from `Icon` calls (M7).
+   38-name roster (M25); the Story's example is an `iconName="users"` value, which
+   is a roster name from 4.0.0 (M7). Remove `strokeWidth` from `Icon` calls (M7).
 6. Change `ProductLogo productId="workflow"` (and any other `workflow` registry
    read) to `"einzbern"` (M8).
 7. Update tests that assert brand taglines or suffix colours (M8, M9).
@@ -72,6 +75,46 @@ on, marked "INIT-016 r1" below).
     and `--tcrn-shell-sidebar-width-collapsed` (M24); allow `pin` wherever icon
     names are checked (M25); re-baseline pages built on `SettingsLayout` or
     `DocumentCanvas`, which are now held to 1040px and centred (M27).
+16. If AOS renders `ProductShell`, mount `ShellIntro` only in the render that
+    follows a successful in-app sign-in, let the paper scroll rather than the
+    document, and give a shell embedded in a longer page a frame of fixed height
+    (M29, M37); leave `previewStates` unset outside documentation and tests (M44).
+17. Let people reorder their pins with `onPinsReorder`, or by spreading
+    `productShellControlProps` (M32); pass `menuQuery` and `onMenuQueryChange` if
+    AOS keeps the full menu's search text, and give a category a `description`
+    where its name needs one (M33).
+18. On a page with more than one shell, give each shell its own `landmarkLabel`
+    and pass `menuShortcut={false}` to every shell but the page's own (M35, M39,
+    M41); those shells still show the shortcut hint in their menu's search (M52).
+    A shell placed in another page's paper passes `headingLevel: 2` in its
+    `pageHeader` (M34), and a `TocRail` whose title sits directly under the page's
+    h1 takes `headingLevel={2}` (M40).
+19. Update tests and screenshots: select the page header's title and description
+    by class (M34), update whole-markup snapshots (M36), re-baseline disabled
+    navigation items and a focused paper, and read a menu row's icon box as 22
+    (M45). Where a test finds a product mark by `data-logo`, it uses the mark's id
+    (`ds`, `mana`, `tms`, `einzbern`) on the first line, a measured lockup, the
+    brand button and the sign-in intro alike, and selects by product through
+    `data-product-mark` or `data-product-id` (M42, M49).
+20. Replace a read of `--tcrn-motion-product-shell-search` and delete overrides
+    written against the two removed page-title rules (M38); a parse of
+    `tokens.css` reads four blocks, and a local coarse-pointer override of the
+    shell's row or search height goes (M31); style the focus of the brand button,
+    the pins, the menu rows, the search results, the bell and the avatar through
+    their own rules (M45).
+21. Select the AOS visual instances as M48 says: the frontend shell slice's Work
+    variant is `desktop-light-work`, the owner-quality collapsed variants are gone,
+    and the fixtures carry `shellState` and the two renamed attributes. "expanded"
+    in the frontend shell slice's remaining ids is a historical name, not the
+    band's state, and the four copy fields the instances dropped were never read
+    (M50).
+22. When the deprecation notice runs over the AOS sources (step 2), it now also
+    lists old names in a `build` directory under `src` (M51).
+23. A script that reads the AI consumption contract moves to `fullMenu`,
+    `topBandNavigation`, the new control order, the governed `pins` preference
+    and the two new proof ids, and to the oracle's new names before 4.1 (M47).
+    The part families (M30), the shell's size tokens (M43) and the documentation
+    site's changes (M46, M50) need nothing in AOS code.
 
 ### TCRN TMS
 
@@ -102,6 +145,33 @@ above; in either case:
    replaced within 4.0.0 and never ships.
 8. Take the 38-name roster, `pin` included (M25); where a page shows the brand on
    one line, use `ProductLockup productId="tms" firstLine="rail"` (M26).
+9. Mount `ShellIntro` only in the render that follows a successful in-app sign-in,
+   let the paper scroll rather than the document, and give a shell embedded in a
+   longer page a frame of fixed height (M29, M37); leave `previewStates` unset
+   outside documentation and tests (M44).
+10. Pass `onPinsReorder`, or spread `productShellControlProps`, so the pins can be
+    reordered (M32); pass `menuQuery` and `onMenuQueryChange` if TMS keeps the
+    full menu's search text, and give a category a `description` where its name
+    needs one (M33).
+11. On a page with more than one shell, give each shell its own `landmarkLabel`
+    and pass `menuShortcut={false}` to every shell but the page's own (M35, M39,
+    M41); those shells still show the shortcut hint in their menu's search (M52).
+    A shell placed in another page's paper passes `headingLevel: 2` in its
+    `pageHeader` (M34), and a `TocRail` whose title sits directly under the page's
+    h1 takes `headingLevel={2}` (M40).
+12. Tests find the TMS mark by `data-logo="tms"` wherever it is drawn: the first
+    line, a measured lockup, the brand button and the sign-in intro (M42, M49);
+    they select by product through `data-product-mark` or `data-product-id`, read
+    the page header's title and description by class (M34), and re-baseline after
+    M36 and M45.
+13. A parse of `tokens.css` reads four blocks, and a local coarse-pointer override
+    of the shell's row or search height goes (M31); replace a read of
+    `--tcrn-motion-product-shell-search` (M38).
+14. A script that reads the AI consumption contract takes its new names (M47); the
+    deprecation notice, run over TMS sources, now also lists old names in a
+    `build` directory under `src` (M51). The part families (M30), the shell's size
+    tokens (M43) and the documentation site's changes (M46, M50) need nothing in
+    TMS code.
 
 ### Einzbern portal
 
@@ -132,6 +202,39 @@ above; in either case:
 8. Restyle overrides of the old tab roots and of the page header's trail (M22),
    replace reads of the three deprecated shell tokens (M24), and allow `pin`
    wherever icon names are checked (M25).
+9. If the portal renders `ProductShell`, mount `ShellIntro` only in the render that
+   follows a successful in-app sign-in, let the paper scroll rather than the
+   document, give a shell embedded in a longer page a frame of fixed height (M29,
+   M37) and leave `previewStates` unset outside documentation and tests (M44);
+   pass `onPinsReorder` (or spread `productShellControlProps`), `menuQuery` and
+   category `description`s as M32 and M33 say.
+10. On a page with more than one shell, give each shell its own `landmarkLabel`
+    and pass `menuShortcut={false}` to every shell but the page's own (M35, M39,
+    M41); those shells still show the shortcut hint in their menu's search (M52).
+    A shell placed in another page's paper passes `headingLevel: 2` in its
+    `pageHeader` (M34), and a `TocRail` whose title sits directly under the page's
+    h1 takes `headingLevel={2}` (M40).
+11. Tests find the Einzbern mark by `data-logo="einzbern"` and the Mana Orchestrate
+    mark by `data-logo="mana"` wherever they are drawn: the first line, a measured
+    lockup, the brand button and the sign-in intro (M42, M49); they select by
+    product through `data-product-mark` or `data-product-id`, read the page
+    header's title and description by class (M34), and re-baseline after M36 and
+    M45.
+12. If the portal or a script of its own reads the AI consumption contract, take
+    `fullMenu`, `topBandNavigation`, the new control order, the governed `pins`
+    preference and the two new proof ids, and move to the oracle's new names
+    before 4.1 (M47).
+13. The documentation site the portal follows changed outside the packages: its
+    shell is the hydrated `ProductShell` and `families.json` lists
+    `scope.checkedBatches` (M46), and an expanded story's title has no left bar
+    (M50); a script that drove the old documentation shell or read `scope.batch`
+    moves to the hydrated shell or to `scope.checkedBatches`. Read part families
+    from `families.json` (M30).
+14. A parse of `tokens.css` reads four blocks, and a local coarse-pointer override
+    of the shell's row or search height goes (M31); replace a read of
+    `--tcrn-motion-product-shell-search` (M38); the shell's sizes are tokens and
+    need no change (M43); the deprecation notice now also lists old names in a
+    `build` directory under `src` (M51).
 
 ## Items the second batch overtook
 
@@ -1231,6 +1334,94 @@ attributes.
 
 Source: 9e0f3ad (TCRN-DS-SUB-208); handoff M9 (INIT-016 r3).
 
+### M49 · The brand button's and the sign-in intro's `data-logo` is the mark's id
+
+Change: the mark in `ShellBrandButton` and the flying mark of `ShellIntro` carry the
+mark's own id in `data-logo`, as the first line and a measured lockup have since M42:
+`ds`, `mana`, `tms` or `einzbern`, the name of its file in the approved mark set.
+They carried the product key (`design-system`, `mana-orchestrate` and so on). The
+product key stays in `data-product-mark`, which `TcrnBrandMark` writes on the mark,
+and the SVG is still drawn from it. So `data-logo` holds one value per product
+wherever a colour mark is drawn. M42's last sentence, that the brand button's and
+the intro's marks still carry the product key, no longer holds; M42 keeps its
+wording. No prop is new and no default changes.
+
+Do: a test or measurement that finds the brand button's or the intro's mark by
+`data-logo` uses the mark's id; to select by product, read `data-product-mark` on
+the mark, or `data-product-id` where the element carries one, as a measured lockup
+does (M42).
+
+Source: 855b3a4 (TCRN-DS-SUB-212), 311704d (TCRN-DS-SUB-214); handoff N1
+(INIT-016 r4).
+
+### M50 · Fourth-round changes outside the packages
+
+Change: nothing that a consumer imports; the packages' public API is unchanged.
+
+- On the documentation pages, an expanded story's title no longer draws the 3px
+  accent bar at its left edge (an inset shadow) or the left padding that came with
+  it. The chevron's turn alone shows that the story is expanded, and the title's
+  left edge stays where it is when the story opens.
+- The documentation layer deletes six classes that nothing wrote:
+  `.tcrn-doc-eyebrow`, `.tcrn-doc-claim`, `.tcrn-doc-brand` with its two placement
+  rules, `.tcrn-doc-search-results`, `.tcrn-doc-search-result` and
+  `.tcrn-doc-search-empty`. The shell fidelity gate's whitelist of repeated
+  selectors goes from 14 entries to 7.
+- The two AOS visual instances, the frontend shell slice and the owner-quality
+  product shell, drop four copy fields that nothing read: `currentLocation`,
+  `searchLabel`, `searchResultsLabel` and `emptyLabel`. Their story ids and what
+  they render are unchanged.
+- "expanded" in the frontend shell slice's ids
+  `desktop-light-expanded-cockpit-search-results`,
+  `desktop-light-expanded-cockpit-search-rest` and `desktop-dark-expanded-cockpit`
+  is a historical name: it named the old shell's expanded side rail. The ids stay,
+  since consumers select variants by id (M48). The band's state is the fixture's
+  `shellState`: `expanded` only for the search-results fixture, which holds the full
+  menu open, and `closed` for the other two.
+
+Do: nothing in a consumer. A style or script of your own that targeted the six
+documentation classes, the expanded title's left bar or the four copy fields has
+nothing left to match; select AOS variants by id, and read the band's state from
+`shellState`, not from the id.
+
+Source: 791f40f (TCRN-DS-SUB-218), ac07f65 (TCRN-DS-SUB-219), 59d8479
+(TCRN-DS-SUB-220); handoff N3 (INIT-016 r4); the note on "expanded" as the third
+round's judgment asked (section 3.4, item 7).
+
+### M51 · The deprecation notice reads a `build` directory under `src`
+
+Change: `scripts/token-deprecation-notice.mjs` (M2) skips only build output.
+`node_modules`, `.git`, `dist`, `coverage`, `storybook-static`,
+`storybook-preview-static`, `.next` and `.turbo` are skipped wherever they are, as
+before. A directory named `build` is judged by its path as the notice prints it
+(relative to the parent of the path given, `/`-separated): with no `src` segment
+above it, it is build output and is skipped; under `src`, it is source and is read.
+Before, every `build` directory was skipped, so old names in a source directory such
+as `src/build` went unlisted. The script's export `SKIPPED_DIRECTORIES` no longer
+holds `build`; `BUILD_OUTPUT_DIRECTORY` (`"build"`) and
+`isSkippedDirectory(relativePath)` are new exports.
+
+Do: run the notice over your sources again (M2, step 1); new lines from a `build`
+directory under `src` are old names to replace. A script of your own that imported
+`SKIPPED_DIRECTORIES` to make the same decision calls `isSkippedDirectory` instead.
+
+Source: 3921903 (TCRN-DS-SUB-222); handoff N3 (INIT-016 r4).
+
+### M52 · A shell without ⌘K still shows the shortcut hint
+
+Change: nothing in the package; this states what M41 leaves as it is.
+`menuShortcut={false}` only keeps a shell from registering ⌘K or Ctrl+K. The
+shell's full menu still shows the shortcut hint in its search field, as the board
+draws it, whether or not that shell takes the key. `packages/ui-react/README.md`
+says the same under Storybook Shell Control Boundary.
+
+Do: nothing. On a page with several shells, only the shell that keeps
+`menuShortcut` on answers ⌘K (M41), although each full menu shows the hint; a test
+that expects the hint to go with `menuShortcut={false}` expects it to stay.
+
+Source: e430a8a (TCRN-DS-SUB-185); handoff M4 (INIT-016 r3), as the third round's
+judgment asked (section 3.4, item 4).
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is
@@ -1351,6 +1542,15 @@ Since the second batch (TCRN-DS-INIT-016), whose open items are listed in
   them change what an earlier item states, and the earlier item keeps its wording:
   M39 extends the two names M35 prefixes to every landmark of the shell, and M42
   replaces M36's `data-logo={productId}` with the mark's id.
+- M47 and M48 come from the third round too (handoff M9): M47 the AI consumption
+  contract and M48 the AOS visual instances. M49 to M52 come from the second batch's
+  fourth round (INIT-016 r4, handoffs in
+  `docs/dispatch/2026-10-13-tab-shell/runs/r4/handoff/`): M49 the brand button's
+  and the sign-in intro's `data-logo`, M50 the changes outside the packages, M51 the
+  deprecation notice's skip rule and M52 the shortcut hint of a shell without ⌘K.
+  They add to M20 to M48. One of them changes what an earlier item states, and the
+  earlier item keeps its wording: M49 makes M42's last sentence no longer hold, since
+  the brand button's and the intro's marks now carry the mark's id too.
 - One correction in place: M9's change and do lines and the night-suffix item of the
   first batch's list above stated the withdrawn night value #7aa0f5 as current, so
   the second round brought them to the single colour (M28). This is the one

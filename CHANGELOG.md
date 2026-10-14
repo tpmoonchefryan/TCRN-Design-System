@@ -51,6 +51,14 @@ change a step, by consumer and item by item:
   preferences, the two proof ids and the oracle's new names, the old ones kept until
   4.1 (M47); three AOS visual-instance variants are retired, one is renamed and the
   fixtures carry `shellState` (M48).
+- Second batch, fourth round: the brand button's and the sign-in intro's marks carry
+  the mark's id in `data-logo`, as the lockups have since M42 (M49); changes outside
+  the packages: an expanded story's title loses its left bar, six documentation
+  classes that nothing wrote and four AOS visual-instance copy fields that nothing
+  read are removed, and "expanded" in the AOS variant ids is a historical name
+  (M50); the deprecation notice skips only build output, so it reads a `build`
+  directory under `src` (M51); a shell with `menuShortcut={false}` still shows the
+  shortcut hint (M52).
 
 Overtaken within this release. The entries below keep the wording they were written
 with. The first batch was never published before the second replaced part of it, so

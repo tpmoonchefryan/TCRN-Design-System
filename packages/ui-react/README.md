@@ -264,12 +264,13 @@ Each family has a matrix story and a sample story in the Storybook app (see
 
 ### Icon roster
 
-`Icon` draws the 37 names of `tcrnIconNames` (28 existing and 9 added) at `sm`, `md` or `lg`
-(14, 16 or 20px); the roster and the rules are in Icon Library Boundary below.
+`Icon` draws the 38 names of `tcrnIconNames` (28 existing, 9 added with the G+ renewal and
+`pin` added with the top-band shell; see M25 in `docs/migration-4.0.md`) at `sm`, `md` or
+`lg` (14, 16 or 20px); the roster and the rules are in Icon Library Boundary below.
 
 ## Icon Library Boundary
 
-`Icon` is the package-backed icon primitive. It draws the TCRN icon roster: 37
+`Icon` is the package-backed icon primitive. It draws the TCRN icon roster: 38
 interface icons drawn for this package on a 20-unit grid, read from the design
 contract (`docs/design/gplus-2026-10/contract/icons.json`, generated into
 `icon-paths.generated.ts`). The package has no third-party icon dependency;
@@ -296,6 +297,8 @@ Roster, existing 28: `alert-triangle`, `arrow-left`, `arrow-right`, `book-open`,
 
 Roster, added 9: `plus`, `minus`, `users`, `bell`, `copy`, `trash`, `calendar`,
 `more-horizontal`, `chevron-up`.
+
+Roster, added with the top-band shell: `pin` (M25 in `docs/migration-4.0.md`).
 
 These are interface icons, not TCRN brand marks: product logos, mother-brand
 marks, and product lockups remain brand assets, not icon-library substitutions.
@@ -330,6 +333,8 @@ launcher and switcher) are deprecated since 4.0.0; see `docs/migration-4.0.md`.
   shell in its paper, or several example shells), let only one of them
   register it: pass `menuShortcut={false}` to the others (`menuShortcut` is on
   by default; a standalone `ShellMenu` takes the same switch as `shortcut`).
+  A shell with `menuShortcut={false}` still shows the shortcut hint in its full
+  menu's search field, as the board draws it; the hint does not follow the switch.
   Give each of those shells its own `landmarkLabel` as well, which names every
   landmark of the shell after it, so that no two landmarks on the page share a
   name.
