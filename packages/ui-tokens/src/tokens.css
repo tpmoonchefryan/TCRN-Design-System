@@ -138,6 +138,9 @@
   --tcrn-shell-row-h: 32px;
   --tcrn-shell-srch-h: 40px;
   --tcrn-shell-pinb: 24px;
+  --tcrn-shell-mark: 22px;
+  --tcrn-shell-touch: 44px;
+  --tcrn-shell-crumb-icon: 11px;
   --tcrn-layout-content-max-w: 1040px;
   --tcrn-brand-suffix-tms: #2c63c8;
   --tcrn-brand-suffix-einzbern: #3b5272;
@@ -232,6 +235,13 @@
   --tcrn-container-page-third-level-nav: 208px;
   --tcrn-brand-mark-filter: none;
   --tcrn-search-input-min-inline-size: 0;
+}
+@media (pointer: coarse) {
+  :root {
+    /* tcrn-token-block: pointer-coarse */
+    --tcrn-shell-row-h: var(--tcrn-shell-touch);
+    --tcrn-shell-srch-h: var(--tcrn-shell-touch);
+  }
 }
 [data-tcrn-theme="dark"] {
   /* tcrn-token-block: theme */

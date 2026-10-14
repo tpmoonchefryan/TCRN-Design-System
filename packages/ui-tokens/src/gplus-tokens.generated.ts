@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: tokens.json, marks.json, typography.json
-// contract-sha256: 26badcc176127ea9a0510697d2377424f3188a356c924033bf014093b35ba17b
+// contract-sha256: 248608db26de36cdd9caf2d65ff05b1281f85ad0d73b3028f2634d1a404af171
 
 
 export interface TcrnGplusThemedToken {
@@ -608,6 +608,24 @@ export const tcrnGplusFixedTokens: readonly TcrnGplusFixedToken[] = [
     "cssVar": "--tcrn-shell-pinb",
     "group": "shell",
     "value": "24px"
+  },
+  {
+    "key": "shell-mark",
+    "cssVar": "--tcrn-shell-mark",
+    "group": "shell",
+    "value": "22px"
+  },
+  {
+    "key": "shell-touch",
+    "cssVar": "--tcrn-shell-touch",
+    "group": "shell",
+    "value": "44px"
+  },
+  {
+    "key": "shell-crumb-icon",
+    "cssVar": "--tcrn-shell-crumb-icon",
+    "group": "shell",
+    "value": "11px"
   },
   {
     "key": "layout-content-max-w",

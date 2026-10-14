@@ -253,6 +253,47 @@ export function shadowBlurFindings(css, source) {
   return findings;
 }
 
+// C10, shell geometry from tokens (TCRN-DS-SUB-142; clauses.md C10: the shell's geometry comes
+// value by value from tokens, and a literal is red). The shell modules (styles/shell*.css.ts,
+// read through componentCssModules) write no px length in a geometry declaration: box sizes
+// and their min and max, insets and offsets, gaps, padding, margins, flex bases, grid tracks,
+// radii and translations, and every custom property the modules set, because a token
+// re-declared with a literal is the same drift (the old component-layer coarse-pointer root that
+// set the row and search heights to 44 is one). Kept as the spacing scan above keeps them: a
+// value written through calc(), clamp(), min() or max(), whose bounds are fluid, and a 1px line.
+// Type sizes are not geometry here (12.5, 10 and 11.5 stay; INIT-016 R1 judgment, section 3.3),
+// and neither are outlines and border widths, which draw lines. Findings carry the module path
+// and the line inside its joined segments, like the soft-cloud scan.
+export const SHELL_GEOMETRY_MODULE = /(?:^|\/)shell[^/]*\.css\.ts$/u;
+const SHELL_GEOMETRY_PROPERTY = /^(?:(?:min-|max-)?(?:width|height|inline-size|block-size)|inset(?:-(?:block|inline))?(?:-(?:start|end))?|top|right|bottom|left|(?:row-|column-)?gap|(?:padding|margin)(?:-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?)?|flex|flex-basis|grid-(?:template|auto)-(?:columns|rows)|border(?:-[a-z]+){0,2}-radius|translate|transform)$/u;
+const FLUID_VALUE = /(?:clamp|calc|min|max)\(/u;
+
+export function shellGeometryLiteralFindings(css, source) {
+  const findings = [];
+  for (const rule of parseCss(css, { source }).rules) {
+    for (const { prop, value } of rule.declarations) {
+      if (!prop.startsWith("--") && !SHELL_GEOMETRY_PROPERTY.test(prop)) continue;
+      if (FLUID_VALUE.test(value)) continue;
+      for (const match of value.matchAll(/(?<![\w.#-])(\d*\.?\d+)px\b/gu)) {
+        const length = Number(match[1]);
+        if (length === 0 || length === 1) continue;
+        findings.push({ where: `${source}:${rule.line}`, selector: rule.selectorText, value: `${prop}: ${match[0]}` });
+      }
+    }
+  }
+  return findings;
+}
+
+// The shell modules among the package stylesheet modules. A scan that found no shell.css.ts
+// would pass by reading nothing, so that is an error, not a green.
+function shellGeometryModules() {
+  const modules = componentCssModules(root).filter(({ path }) => SHELL_GEOMETRY_MODULE.test(path));
+  if (!modules.some(({ path }) => path.endsWith("/shell.css.ts"))) {
+    throw new Error("shell-fidelity: no styles/shell.css.ts among the component stylesheet modules; the C10 geometry scan would read nothing");
+  }
+  return modules;
+}
+
 // TCRN-DS-SUB-065 (STORY-128 GWT3): rule-level guard. In the three docs style sources a rule
 // whose subject compound (the rightmost compound of a selector) carries a package class may
 // only place that component. doc:sample-style compares only the samples a matrix shares a
@@ -401,7 +442,7 @@ function owningSelector(lines, index) {
 export function scanShellFidelity() {
   const findings = {
     decorativeGradients: [], radiusLiterals: [], softCloudShadows: [], reducedMotionKillSwitches: [],
-    hexLiterals: [], fontSizeLiterals: [], spacingLiterals: [], pillLiterals: [], duplicateSelectors: [],
+    hexLiterals: [], fontSizeLiterals: [], spacingLiterals: [], pillLiterals: [], shellGeometryLiterals: [], duplicateSelectors: [],
     packageClassAppearance: [], docExceptionsUnused: []
   };
 
@@ -473,6 +514,11 @@ export function scanShellFidelity() {
   }
   findings.softCloudShadows.push(...shadowBlurFindings(readFileSync(resolve(root, TOKEN_TABLE), "utf8"), TOKEN_TABLE));
 
+  // C10 shell geometry literals (TCRN-DS-SUB-142): every shell module, its segments joined.
+  for (const { path, css } of shellGeometryModules()) {
+    findings.shellGeometryLiterals.push(...shellGeometryLiteralFindings(css, `${path} (segments)`));
+  }
+
   // A blanket `* { transition-duration: <n> !important }` inside a reduced-motion block
   // is the v1 kill switch: it collapses the v2 comprehension cue (opacity/colour at a
   // real duration) that reduced motion is meant to keep. Loop/animation clamps are fine.
@@ -542,6 +588,7 @@ export function fidelityRejectChecks() {
     fontSizeLiteralOffScale: findings.fontSizeLiterals.length > 0,
     spacingLiteralOffScale: findings.spacingLiterals.length > 0,
     pillRadiusLiteral: findings.pillLiterals.length > 0,
+    shellGeometryLiteral: findings.shellGeometryLiterals.length > 0,
     // The rule-level guard (TCRN-DS-SUB-065) reports under the same check.
     docsPackageSelectorDuplication: findings.duplicateSelectors.length > 0 || findings.packageClassAppearance.length > 0,
     findings
@@ -618,6 +665,28 @@ export function assertDetectorShapes() {
       process.exit(1);
     }
   }
+  // C10 shell geometry mutations (TCRN-DS-SUB-142) on a copy of the real shell.css.ts segments: a
+  // 196px length in a geometry declaration is one new finding, also as a custom property and as
+  // the old component-layer coarse-pointer root; calc(), a 1px line and a type size add none.
+  const shellCss = shellGeometryModules().find(({ path }) => path.endsWith("/shell.css.ts")).css;
+  const shellBaseline = shellGeometryLiteralFindings(shellCss, "self-test").length;
+  const geometryCases = [
+    [".tcrn-shell-detector-probe{inline-size:196px}", 1],
+    [".tcrn-shell-detector-probe{gap:196px;padding:0 196px}", 2],
+    [".tcrn-shell-detector-probe{--tcrn-shell-drop-w:196px}", 1],
+    ["@media (pointer: coarse){:root{--tcrn-shell-row-h:44px}}", 1],
+    [".tcrn-shell-detector-probe{inset-inline-start:calc(100% - 196px)}", 0],
+    [".tcrn-shell-detector-probe{border-block-start:1px solid var(--tcrn-color-line);inline-size:var(--tcrn-shell-drop-w)}", 0],
+    [".tcrn-shell-detector-probe{font-size:12.5px}", 0]
+  ];
+  for (const [probe, added] of geometryCases) {
+    const found = shellGeometryLiteralFindings(`${shellCss}\n${probe}`, "self-test").length - shellBaseline;
+    if (found !== added) {
+      console.error(`shell-fidelity C10 geometry self-test FAILED: ${probe} (expected ${added} new finding(s), got ${found})`);
+      process.exit(1);
+    }
+  }
+
   // An exception admits only its own selector and properties.
   const probeExceptions = [{ id: "self-test", selectors: [".tcrn-doc-x .tcrn-tooltip__content"], properties: ["opacity"] }];
   const admitted = packageClassAppearanceFindings(".tcrn-doc-x .tcrn-tooltip__content{opacity:1}", "self-test", probeExceptions);

@@ -15,12 +15,16 @@
 //      System compliance means using the same Storybook visual instance.
 //
 // tokens.css is `tcrnTokenStylesheet` (the bundled-font @import, then the token blocks);
-// the storybook block is `tcrnTokenCss`. Both carry three blocks: the light theme block, whose
+// the storybook block is `tcrnTokenCss`. Both carry four blocks: the light theme block, whose
 // selector is the list `:root, [data-tcrn-theme="light"]` (tcrnGplusThemeSelectors.light), the
-// theme-independent `:root` block and the `[data-tcrn-theme="dark"]` block after them. The C5
-// check asserts that the theme block and the dark block declare the same property names
-// (compareTokenThemeBlocks from @tcrn/ui-tokens, the same rule the unit tests use; it accepts
-// selector lists).
+// theme-independent `:root` block, the coarse-pointer block (`@media (pointer: coarse)`, which
+// points the shell's row and full menu search heights at the touch token, TCRN-DS-SUB-142) and
+// the `[data-tcrn-theme="dark"]` block after them. The C5 check asserts that the theme block and
+// the dark block declare the same property names and that the coarse-pointer block re-points
+// theme-independent names only (compareTokenThemeBlocks from @tcrn/ui-tokens, the same rule the
+// unit tests use; it accepts selector lists). The check also asserts that the coarse-pointer
+// block directly follows the theme-independent block, so the switch comes after the values it
+// re-points in every copy of the token sheet.
 //
 // Run with `--check` to prove both artifacts match the source (build gate);
 // run with no flag to regenerate them. `--deprecations` lists every deprecated token
@@ -32,7 +36,10 @@ import {
   compareTokenThemeBlocks,
   findDeprecatedTokenUsages,
   formatDeprecatedTokenNotices,
+  parseTokenCssBlocks,
+  tcrnCoarsePointerMedia,
   tcrnGplusThemeSelectors,
+  tcrnTokenBlockKinds,
   tcrnTokenCss,
   tcrnTokenStylesheet
 } from "../packages/ui-tokens/dist/index.js";
@@ -64,7 +71,20 @@ function storybookParts() {
 
 function themeBlockProblems(label, css) {
   const comparison = compareTokenThemeBlocks(css);
-  return comparison.problems.map((problem) => `${label}: C5 theme blocks differ — ${problem}`);
+  return comparison.problems.map((problem) => `${label}: C5 theme blocks differ — ${problem}`).concat(coarseBlockProblems(label, css));
+}
+
+// The coarse-pointer block (TCRN-DS-SUB-142) sits in @media (pointer: coarse) and directly
+// follows the theme-independent block, so the switch comes after the values it re-points.
+function coarseBlockProblems(label, css) {
+  const blocks = parseTokenCssBlocks(css);
+  const fixedAt = blocks.findIndex((block) => block.media === null && block.kind === tcrnTokenBlockKinds.fixed);
+  const coarseAt = blocks.findIndex((block) => block.kind === tcrnTokenBlockKinds.coarse);
+  if (coarseAt === -1) return [`${label}: no coarse-pointer token block`];
+  const problems = [];
+  if (blocks[coarseAt].media !== tcrnCoarsePointerMedia) problems.push(`${label}: the coarse-pointer block sits in @media ${blocks[coarseAt].media}, not ${tcrnCoarsePointerMedia}`);
+  if (fixedAt === -1 || coarseAt !== fixedAt + 1) problems.push(`${label}: the coarse-pointer block does not directly follow the theme-independent block`);
+  return problems;
 }
 
 const check = process.argv.includes("--check");

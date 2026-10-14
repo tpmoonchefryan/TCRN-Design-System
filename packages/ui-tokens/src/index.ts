@@ -6,13 +6,16 @@
 // contract/typography.json). This file only arranges those values
 // into the published registry; it holds no second copy of a contract value.
 //
-// The generated stylesheet has three blocks, in this order:
+// The generated stylesheet has four blocks, in this order:
 //   1. `:root, [data-tcrn-theme="light"]` theme block — every theme-dependent token, light
 //      values; the selector list also matches a light subtree inside a dark page.
 //   2. `:root` theme-independent   — tokens whose value is the same in both themes.
-//   3. `[data-tcrn-theme="dark"]`  — the theme block again with night values. It comes after
+//   3. `@media (pointer: coarse) { :root }` — the coarse-pointer switch: the shell's row and
+//      full menu search heights point at the touch token (TCRN-DS-SUB-142). It follows block 2,
+//      which it re-points, inside the token sheet itself.
+//   4. `[data-tcrn-theme="dark"]`  — the theme block again with night values. It comes after
 //      block 1, so on an element both match (a dark page root) the night values win.
-// Blocks 1 and 3 declare the same property names (C5). A token whose value references a
+// Blocks 1 and 4 declare the same property names (C5). A token whose value references a
 // themed token (the focus ring, the focus-gap surface, the deprecated aliases) counts as
 // theme-dependent and is declared in both theme blocks with the same text, so it
 // re-resolves inside a nested dark scope, and inside a light subtree of a dark page, instead
@@ -241,9 +244,12 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "shell-drop-w": "Drop-down and cascade column width.",
   "shell-drop-srch-h": "Search height inside a drop-down (the small SearchInput).",
   "shell-cascade-gap": "Gap between cascade columns.",
-  "shell-row-h": "Menu row height; a coarse pointer gets the touch height instead (no separate token).",
-  "shell-srch-h": "Full menu search height; a coarse pointer gets the touch height instead (no separate token).",
+  "shell-row-h": "Menu row height; under a coarse pointer the token sheet points it at shell.touch.",
+  "shell-srch-h": "Full menu search height; under a coarse pointer the token sheet points it at shell.touch.",
   "shell-pinb": "Pin slot and pin button size.",
+  "shell-mark": "Mark size in the brand button: the brand board's sidebar tier.",
+  "shell-touch": "Touch height: menu rows and the full menu search under a coarse pointer, and the Sheet's rows, search and pin press area.",
+  "shell-crumb-icon": "Size of the breadcrumb separator icon.",
   "layout-content-max-w": "Content width of document and settings pages, centred in the paper; list and detail pages use the whole paper."
 };
 
@@ -602,19 +608,48 @@ export function createResolvedTokenMap(theme: ThemeMode = "light", tokens: reado
 const blockMarker = (kind: string): string => `/* tcrn-token-block: ${kind} */`;
 
 /** Marker comment values that open each generated block. */
-export const tcrnTokenBlockKinds = { theme: "theme", fixed: "theme-independent" } as const;
+export const tcrnTokenBlockKinds = { theme: "theme", fixed: "theme-independent", coarse: "pointer-coarse" } as const;
+
+/** The media condition of the coarse-pointer block. */
+export const tcrnCoarsePointerMedia = "(pointer: coarse)";
+
+/**
+ * The coarse-pointer switch (TCRN-DS-SUB-142): under a coarse pointer the menu rows and the full
+ * menu search take the touch height (07b board, section F: shell.row-h and shell.srch-h are 44
+ * under a coarse pointer). It is a token-layer block right after the theme-independent block, so
+ * it travels with the token sheet: wherever a page puts the token sheet against the component
+ * sheet, the switch comes after the base values it re-points. It only points theme-independent
+ * names at other tokens and writes no length of its own.
+ */
+export const tcrnCoarsePointerTokens: readonly { variable: TokenVariable; value: string }[] = [
+  { variable: "--tcrn-shell-row-h", value: "var(--tcrn-shell-touch)" },
+  { variable: "--tcrn-shell-srch-h", value: "var(--tcrn-shell-touch)" }
+];
 
 function declarationBlock(selector: string, kind: string, declarations: readonly { variable: string; value: string }[]): string {
   return `${selector} {\n  ${blockMarker(kind)}\n${declarations.map((entry) => `  ${entry.variable}: ${entry.value};`).join("\n")}\n}\n`;
 }
 
-/** Light stylesheet: the light theme block (`tcrnGplusThemeSelectors.light`, a selector list) followed by the theme-independent `:root` block. */
+function mediaBlock(media: string, inner: string): string {
+  return `@media ${media} {\n${inner.replace(/^(?=.)/gm, "  ")}}\n`;
+}
+
+/**
+ * Light stylesheet: the light theme block (`tcrnGplusThemeSelectors.light`, a selector list), the
+ * theme-independent `:root` block and, after it, the coarse-pointer block, which keeps only the
+ * entries whose name and target the theme-independent block declares.
+ */
 export function createCssVariables(tokens: readonly DesignToken[] = tcrnTokens): string {
   const themed = tokens.filter((token) => token.scope === "theme");
   const fixed = tokens.filter((token) => token.scope !== "theme");
+  const fixedNames = new Set<string>(fixed.map((token) => token.variable));
+  const coarse = tcrnCoarsePointerTokens.filter(
+    (entry) => fixedNames.has(entry.variable) && [...entry.value.matchAll(/var\((--[a-z0-9-]+)\)/g)].every((match) => fixedNames.has(match[1]))
+  );
   return [
     themed.length ? declarationBlock(tcrnGplusThemeSelectors.light, tcrnTokenBlockKinds.theme, themed) : "",
-    fixed.length ? declarationBlock(":root", tcrnTokenBlockKinds.fixed, fixed) : ""
+    fixed.length ? declarationBlock(":root", tcrnTokenBlockKinds.fixed, fixed) : "",
+    coarse.length ? mediaBlock(tcrnCoarsePointerMedia, declarationBlock(":root", tcrnTokenBlockKinds.coarse, coarse)) : ""
   ].join("");
 }
 
@@ -637,6 +672,8 @@ export interface TokenCssBlock {
   selector: string;
   /** Value of the `tcrn-token-block:` marker comment, or null when the block has none. */
   kind: string | null;
+  /** Condition of the `@media` rule the block sits in (the coarse-pointer block), or null for a top-level block. */
+  media: string | null;
   declarations: ReadonlyArray<readonly [string, string]>;
 }
 
@@ -670,25 +707,36 @@ function sameSelectorList(a: string, b: string): boolean {
   return left.size === right.size && [...left].every((selector) => right.has(selector));
 }
 
+function tokenCssBlock(selector: string, body: string, media: string | null): TokenCssBlock {
+  const kind = /\/\*\s*tcrn-token-block:\s*([a-z-]+)\s*\*\//.exec(body)?.[1] ?? null;
+  const declarations = body
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .split(";")
+    .map((part) => part.trim())
+    .filter((part) => part.startsWith("--"))
+    .map((part) => {
+      const colon = part.indexOf(":");
+      return [part.slice(0, colon).trim(), part.slice(colon + 1).trim()] as const;
+    });
+  return { selector: selectorList(selector.replace(/\/\*[\s\S]*?\*\//g, "")).join(", "), kind, media, declarations };
+}
+
 /**
- * Splits a token stylesheet (no nested rules) into its blocks and custom-property declarations.
- * A block's selector may be a list; it is reported in the canonical `a, b` form.
+ * Splits a token stylesheet into its blocks and custom-property declarations, in source order.
+ * A block's selector may be a list; it is reported in the canonical `a, b` form. Rules nest one
+ * level at most: a block inside an `@media` rule (the coarse-pointer block) carries the rule's
+ * condition as `media`, a top-level block null.
  */
 export function parseTokenCssBlocks(css: string): TokenCssBlock[] {
   const blocks: TokenCssBlock[] = [];
   const source = css.replace(/@import[^;]*;/g, "");
-  for (const match of source.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
-    const kind = /\/\*\s*tcrn-token-block:\s*([a-z-]+)\s*\*\//.exec(match[2])?.[1] ?? null;
-    const declarations = match[2]
-      .replace(/\/\*[\s\S]*?\*\//g, "")
-      .split(";")
-      .map((part) => part.trim())
-      .filter((part) => part.startsWith("--"))
-      .map((part) => {
-        const colon = part.indexOf(":");
-        return [part.slice(0, colon).trim(), part.slice(colon + 1).trim()] as const;
-      });
-    blocks.push({ selector: selectorList(match[1].replace(/\/\*[\s\S]*?\*\//g, "")).join(", "), kind, declarations });
+  for (const match of source.matchAll(/@media([^{}]*)\{((?:[^{}]*\{[^{}]*\})*[^{}]*)\}|([^{}]*)\{([^{}]*)\}/g)) {
+    if (match[2] === undefined) {
+      blocks.push(tokenCssBlock(match[3], match[4], null));
+      continue;
+    }
+    const media = match[1].replace(/\s+/g, " ").trim();
+    for (const inner of match[2].matchAll(/([^{}]*)\{([^{}]*)\}/g)) blocks.push(tokenCssBlock(inner[1], inner[2], media));
   }
   return blocks;
 }
@@ -706,9 +754,13 @@ export interface ThemeBlockComparison {
  * C5: the light theme block (`:root, [data-tcrn-theme="light"]`) and the
  * `[data-tcrn-theme="dark"]` block declare the same property names; the theme-independent
  * `:root` block shares no name with them. Selector lists match in any order and spacing.
+ * These three are top-level blocks. A block inside an `@media` rule (the coarse-pointer block,
+ * TCRN-DS-SUB-142) re-points names the theme-independent block declares and no theme name, so
+ * both themes still read one property set under any pointer.
  */
 export function compareTokenThemeBlocks(css: string): ThemeBlockComparison {
-  const blocks = parseTokenCssBlocks(css);
+  const parsed = parseTokenCssBlocks(css);
+  const blocks = parsed.filter((block) => block.media === null);
   const problems: string[] = [];
   const lightBlocks = blocks.filter((block) => sameSelectorList(block.selector, tcrnGplusThemeSelectors.light) && block.kind === tcrnTokenBlockKinds.theme);
   const darkBlocks = blocks.filter((block) => sameSelectorList(block.selector, tcrnGplusThemeSelectors.dark));
@@ -719,6 +771,17 @@ export function compareTokenThemeBlocks(css: string): ThemeBlockComparison {
   const light = names(lightBlocks);
   const dark = names(darkBlocks);
   const fixed = names(fixedBlocks);
+  const fixedSet = new Set(fixed);
+  for (const block of parsed.filter((candidate) => candidate.media !== null)) {
+    const where = `the @media ${block.media} block`;
+    const seen = new Set<string>();
+    for (const [property] of block.declarations) {
+      if (seen.has(property)) problems.push(`${property} is declared twice in ${where}`);
+      seen.add(property);
+      if (light.includes(property) || dark.includes(property)) problems.push(`${where} re-declares the theme name ${property}`);
+      else if (!fixedSet.has(property)) problems.push(`${where} declares ${property}, which the theme-independent block does not`);
+    }
+  }
   for (const [label, list] of [["theme", light], ["dark", dark], ["theme-independent", fixed]] as const) {
     const seen = new Set<string>();
     for (const property of list) {
