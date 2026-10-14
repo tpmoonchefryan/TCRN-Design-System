@@ -1,5 +1,5 @@
 {
-  "ok": false,
+  "ok": true,
   "requiredStories": [
     {
       "id": "welcome-governance",
@@ -477,7 +477,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "7bfee874ddba71ef4a0c791d254417e36e8887353177baa39abf2fb5a80d5b0f",
+    "contractPayloadDigest": "7f6a7f694d574c8c72c0c691272ecd8e683b7b65a0380fbe9c0f7e4de0ff9065",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 23,
@@ -545,10 +545,29 @@
     "publicSourcesVisible": true,
     "storybookOnlyDeferredMarkersVisible": true,
     "packageBackedDisabledNavItemReasonReadback": {
-      "disabledNavItemCount": 0,
+      "disabledNavItemCount": 3,
       "invalidDisabledNavItems": [],
-      "validDisabledNavItemLabels": [],
-      "ok": false
+      "validDisabledNavItemLabels": [
+        {
+          "viewport": "desktop-1440x900",
+          "section": "Components",
+          "label": "Release notes",
+          "reason": "Opens after the release is published."
+        },
+        {
+          "viewport": "tablet-1024x768",
+          "section": "Components",
+          "label": "Release notes",
+          "reason": "Opens after the release is published."
+        },
+        {
+          "viewport": "mobile-390x844",
+          "section": "Components",
+          "label": "Release notes",
+          "reason": "Opens after the release is published."
+        }
+      ],
+      "ok": true
     },
     "noPackagePublicationClaimed": true,
     "noProductAdoptionClaimed": true
@@ -1115,10 +1134,10 @@
         },
         "searchShortcut": {
           "top": 72,
-          "left": 919.97,
+          "left": 902,
           "right": 948,
           "bottom": 88,
-          "width": 28.03,
+          "width": 46,
           "height": 16
         },
         "searchInputGridStyles": {
@@ -1325,10 +1344,10 @@
         },
         "searchShortcut": {
           "top": 72,
-          "left": 919.97,
+          "left": 902,
           "right": 948,
           "bottom": 88,
-          "width": 28.03,
+          "width": 46,
           "height": 16
         },
         "searchInputGridStyles": {
@@ -1529,10 +1548,10 @@
         },
         "searchShortcut": {
           "top": 72,
-          "left": 919.97,
+          "left": 902,
           "right": 948,
           "bottom": 88,
-          "width": 28.03,
+          "width": 46,
           "height": 16
         },
         "searchInputGridStyles": {
@@ -1733,10 +1752,10 @@
         },
         "searchShortcut": {
           "top": 72,
-          "left": 919.97,
+          "left": 902,
           "right": 948,
           "bottom": 88,
-          "width": 28.03,
+          "width": 46,
           "height": 16
         },
         "searchInputGridStyles": {
@@ -1937,10 +1956,10 @@
         },
         "searchShortcut": {
           "top": 72,
-          "left": 919.97,
+          "left": 902,
           "right": 948,
           "bottom": 88,
-          "width": 28.03,
+          "width": 46,
           "height": 16
         },
         "searchInputGridStyles": {
@@ -2141,10 +2160,10 @@
         },
         "searchShortcut": {
           "top": 72,
-          "left": 919.97,
+          "left": 902,
           "right": 948,
           "bottom": 88,
-          "width": 28.03,
+          "width": 46,
           "height": 16
         },
         "searchInputGridStyles": {
@@ -2345,10 +2364,10 @@
         },
         "searchShortcut": {
           "top": 72,
-          "left": 919.97,
+          "left": 902,
           "right": 948,
           "bottom": 88,
-          "width": 28.03,
+          "width": 46,
           "height": 16
         },
         "searchInputGridStyles": {
@@ -2543,7 +2562,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Françai"
+                  "text": "TCRN Design System样式指南基础组件模式证明变更日志"
                 },
                 {
                   "tag": "div",
@@ -2553,7 +2572,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Fra"
+                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志基础令牌与 i18n令牌与 i18n 受治理的 Storybook 栏目 不声明包发"
                 },
                 {
                   "tag": "body",
@@ -2563,7 +2582,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Fra"
+                  "text": "{\"kind\":\"category\",\"section\":\"Foundations\",\"siteName\":\"TCRN Design System\",\"titl"
                 },
                 {
                   "tag": "html",
@@ -2720,7 +2739,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Françai"
+                  "text": "TCRN Design System样式指南基础组件模式证明变更日志"
                 },
                 {
                   "tag": "div",
@@ -2730,7 +2749,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Fra"
+                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志基础令牌与 i18n令牌与 i18n 受治理的 Storybook 栏目 不声明包发"
                 },
                 {
                   "tag": "body",
@@ -2740,7 +2759,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Fra"
+                  "text": "{\"kind\":\"category\",\"section\":\"Foundations\",\"siteName\":\"TCRN Design System\",\"titl"
                 },
                 {
                   "tag": "html",
@@ -2897,7 +2916,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Françai"
+                  "text": "TCRN Design System样式指南基础组件模式证明变更日志"
                 },
                 {
                   "tag": "div",
@@ -2907,7 +2926,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Fra"
+                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志基础令牌与 i18n令牌与 i18n 受治理的 Storybook 栏目 不声明包发"
                 },
                 {
                   "tag": "body",
@@ -2917,7 +2936,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Fra"
+                  "text": "{\"kind\":\"category\",\"section\":\"Foundations\",\"siteName\":\"TCRN Design System\",\"titl"
                 },
                 {
                   "tag": "html",
@@ -3074,7 +3093,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Françai"
+                  "text": "TCRN Design System样式指南基础组件模式证明变更日志"
                 },
                 {
                   "tag": "div",
@@ -3084,7 +3103,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Fra"
+                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志基础令牌与 i18n令牌与 i18n 受治理的 Storybook 栏目 不声明包发"
                 },
                 {
                   "tag": "body",
@@ -3094,7 +3113,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日文韩文Fra"
+                  "text": "{\"kind\":\"category\",\"section\":\"Foundations\",\"siteName\":\"TCRN Design System\",\"titl"
                 },
                 {
                   "tag": "html",
@@ -3330,7 +3349,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어Franç"
+                  "text": "TCRN Design System样式指南基础组件模式证明变更日志"
                 },
                 {
                   "tag": "div",
@@ -3340,7 +3359,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어F"
+                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志组件文档与协作文档与协作 受治理的 Storybook 栏目 不声明包发布 不声明 "
                 },
                 {
                   "tag": "body",
@@ -3350,7 +3369,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어F"
+                  "text": "{\"kind\":\"category\",\"section\":\"Components\",\"siteName\":\"TCRN Design System\",\"title"
                 },
                 {
                   "tag": "html",
@@ -3506,7 +3525,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어Franç"
+                  "text": "TCRN Design System样式指南基础组件模式证明变更日志"
                 },
                 {
                   "tag": "div",
@@ -3516,7 +3535,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어F"
+                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志组件文档与协作文档与协作 受治理的 Storybook 栏目 不声明包发布 不声明 "
                 },
                 {
                   "tag": "body",
@@ -3526,7 +3545,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어F"
+                  "text": "{\"kind\":\"category\",\"section\":\"Components\",\"siteName\":\"TCRN Design System\",\"title"
                 },
                 {
                   "tag": "html",
@@ -3682,7 +3701,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어Franç"
+                  "text": "TCRN Design System样式指南基础组件模式证明变更日志"
                 },
                 {
                   "tag": "div",
@@ -3692,7 +3711,7 @@
                   "docShell": "online-docs",
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어F"
+                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志组件文档与协作文档与协作 受治理的 Storybook 栏目 不声明包发布 不声明 "
                 },
                 {
                   "tag": "body",
@@ -3702,7 +3721,7 @@
                   "docShell": null,
                   "docNavItem": null,
                   "shellControl": null,
-                  "text": "跳到内容TCRN Design System样式指南基础组件模式证明变更日志简体中文简体中文English日本語한국어Français简体中文英语日本語한국어F"
+                  "text": "{\"kind\":\"category\",\"section\":\"Components\",\"siteName\":\"TCRN Design System\",\"title"
                 },
                 {
                   "tag": "html",
@@ -3759,7 +3778,7 @@
     }
   },
   "localeRouteCheck": {
-    "ok": false,
+    "ok": true,
     "source": "apps/storybook/storybook-static/index.html?locale=ja#button-spec-usage",
     "url": "http://127.0.0.1:<ephemeral>/apps/storybook/storybook-static/components-controls-data.html?locale=ja#button-spec-usage",
     "i18nContentChecks": [
@@ -3985,6 +4004,12 @@
         "productLogos": [],
         "hasRegisteredProductLogosLabel": false,
         "hasRegistryExportText": false,
+        "designSystemDescriptionLines": [
+          {
+            "lineOne": "TCRN Design System",
+            "lineTwo": "设计系统"
+          }
+        ],
         "productLockupChecks": [
           {
             "suffix": "AOS",
@@ -4005,11 +4030,27 @@
             "ok": true
           },
           {
-            "suffix": "设计系统",
-            "ok": false
+            "suffix": "Design System",
+            "actual": {
+              "suffix": "Design System",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
+            },
+            "ok": true
           }
         ],
-        "ok": false
+        "designSystemDescriptionCheck": {
+          "expectedLineOne": "TCRN Design System",
+          "expectedLineTwo": "设计系统",
+          "readings": [
+            {
+              "lineOne": "TCRN Design System",
+              "lineTwo": "设计系统"
+            }
+          ],
+          "ok": true
+        },
+        "ok": true
       },
       {
         "locale": "en",
@@ -4045,6 +4086,12 @@
         "productLogos": [],
         "hasRegisteredProductLogosLabel": false,
         "hasRegistryExportText": false,
+        "designSystemDescriptionLines": [
+          {
+            "lineOne": "TCRN Design System",
+            "lineTwo": "Design System"
+          }
+        ],
         "productLockupChecks": [
           {
             "suffix": "AOS",
@@ -4074,6 +4121,17 @@
             "ok": true
           }
         ],
+        "designSystemDescriptionCheck": {
+          "expectedLineOne": "TCRN Design System",
+          "expectedLineTwo": "Design System",
+          "readings": [
+            {
+              "lineOne": "TCRN Design System",
+              "lineTwo": "Design System"
+            }
+          ],
+          "ok": true
+        },
         "ok": true
       },
       {
@@ -4110,6 +4168,12 @@
         "productLogos": [],
         "hasRegisteredProductLogosLabel": false,
         "hasRegistryExportText": false,
+        "designSystemDescriptionLines": [
+          {
+            "lineOne": "TCRN Design System",
+            "lineTwo": "デザインシステム"
+          }
+        ],
         "productLockupChecks": [
           {
             "suffix": "AOS",
@@ -4130,11 +4194,27 @@
             "ok": true
           },
           {
-            "suffix": "デザインシステム",
-            "ok": false
+            "suffix": "Design System",
+            "actual": {
+              "suffix": "Design System",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
+            },
+            "ok": true
           }
         ],
-        "ok": false
+        "designSystemDescriptionCheck": {
+          "expectedLineOne": "TCRN Design System",
+          "expectedLineTwo": "デザインシステム",
+          "readings": [
+            {
+              "lineOne": "TCRN Design System",
+              "lineTwo": "デザインシステム"
+            }
+          ],
+          "ok": true
+        },
+        "ok": true
       },
       {
         "locale": "ko",
@@ -4170,6 +4250,12 @@
         "productLogos": [],
         "hasRegisteredProductLogosLabel": false,
         "hasRegistryExportText": false,
+        "designSystemDescriptionLines": [
+          {
+            "lineOne": "TCRN Design System",
+            "lineTwo": "디자인 시스템"
+          }
+        ],
         "productLockupChecks": [
           {
             "suffix": "AOS",
@@ -4190,11 +4276,27 @@
             "ok": true
           },
           {
-            "suffix": "디자인 시스템",
-            "ok": false
+            "suffix": "Design System",
+            "actual": {
+              "suffix": "Design System",
+              "packageSource": "@tcrn/ui-react",
+              "packageBackedBrandLockup": "product"
+            },
+            "ok": true
           }
         ],
-        "ok": false
+        "designSystemDescriptionCheck": {
+          "expectedLineOne": "TCRN Design System",
+          "expectedLineTwo": "디자인 시스템",
+          "readings": [
+            {
+              "lineOne": "TCRN Design System",
+              "lineTwo": "디자인 시스템"
+            }
+          ],
+          "ok": true
+        },
+        "ok": true
       },
       {
         "locale": "fr",
@@ -4230,6 +4332,12 @@
         "productLogos": [],
         "hasRegisteredProductLogosLabel": false,
         "hasRegistryExportText": false,
+        "designSystemDescriptionLines": [
+          {
+            "lineOne": "TCRN Design System",
+            "lineTwo": "Système de design"
+          }
+        ],
         "productLockupChecks": [
           {
             "suffix": "AOS",
@@ -4259,6 +4367,17 @@
             "ok": true
           }
         ],
+        "designSystemDescriptionCheck": {
+          "expectedLineOne": "TCRN Design System",
+          "expectedLineTwo": "Système de design",
+          "readings": [
+            {
+              "lineOne": "TCRN Design System",
+              "lineTwo": "Système de design"
+            }
+          ],
+          "ok": true
+        },
         "ok": true
       }
     ]
@@ -4270,6 +4389,7 @@
       "[data-storybook-visual-instance]",
       ".tcrn-shell-brand__word",
       ".tcrn-product-logo__line-one",
+      ".tcrn-brand-lockup__word",
       ".tcrn-brand-wordmark",
       "code",
       "pre",
@@ -4281,8 +4401,171 @@
       "locale": "zh-CN",
       "gating": true,
       "ok": true,
+      "shellBlockWaits": [
+        {
+          "page": "welcome-governance-entry.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "welcome-routing-contribution.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "style-guide-identity-brand.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "style-guide-type-layout.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "style-guide-interaction-copy.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "foundations-tokens-i18n.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "foundations-copy-governance.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-component-inventory.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-controls-data.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-navigation-shells.html",
+          "blocks": 17,
+          "settled": 17,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-overlays.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-records-and-boards.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-hierarchy-and-relations.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-detail-and-inspection.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-documents-and-collaboration.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-gplus-matrices.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-gplus-samples.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "patterns-forms-workbench.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "patterns-data-pages.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "patterns-feedback-selection.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "proof-proof-governance.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "proof-proof-visual-instances.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "change-log-governance-records.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        }
+      ],
       "storyCount": 79,
-      "allowlistedLeakCount": 100,
+      "allowlistedLeakCount": 99,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -4318,7 +4601,7 @@
         },
         {
           "storyId": "color-palette",
-          "allowlistedLeakCount": 1,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -4689,8 +4972,171 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
+        "shellBlockWaits": [
+          {
+            "page": "welcome-governance-entry.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "welcome-routing-contribution.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-identity-brand.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-type-layout.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-interaction-copy.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-tokens-i18n.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-copy-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-component-inventory.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-controls-data.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-navigation-shells.html",
+            "blocks": 17,
+            "settled": 17,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-overlays.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-records-and-boards.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-hierarchy-and-relations.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-detail-and-inspection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-documents-and-collaboration.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-matrices.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-samples.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-forms-workbench.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-data-pages.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-feedback-selection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-visual-instances.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "change-log-governance-records.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          }
+        ],
         "storyCount": 79,
-        "leakCount": 104,
+        "leakCount": 103,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -4718,7 +5164,7 @@
           },
           {
             "storyId": "color-palette",
-            "leakCount": 1
+            "leakCount": 0
           },
           {
             "storyId": "text-styles",
@@ -5015,8 +5461,171 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
+        "shellBlockWaits": [
+          {
+            "page": "welcome-governance-entry.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "welcome-routing-contribution.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-identity-brand.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-type-layout.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-interaction-copy.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-tokens-i18n.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-copy-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-component-inventory.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-controls-data.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-navigation-shells.html",
+            "blocks": 17,
+            "settled": 17,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-overlays.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-records-and-boards.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-hierarchy-and-relations.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-detail-and-inspection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-documents-and-collaboration.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-matrices.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-samples.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-forms-workbench.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-data-pages.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-feedback-selection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-visual-instances.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "change-log-governance-records.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          }
+        ],
         "storyCount": 79,
-        "leakCount": 112,
+        "leakCount": 111,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -5044,7 +5653,7 @@
           },
           {
             "storyId": "color-palette",
-            "leakCount": 1
+            "leakCount": 0
           },
           {
             "storyId": "text-styles",
@@ -5341,8 +5950,171 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
+        "shellBlockWaits": [
+          {
+            "page": "welcome-governance-entry.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "welcome-routing-contribution.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-identity-brand.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-type-layout.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-interaction-copy.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-tokens-i18n.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-copy-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-component-inventory.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-controls-data.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-navigation-shells.html",
+            "blocks": 17,
+            "settled": 17,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-overlays.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-records-and-boards.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-hierarchy-and-relations.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-detail-and-inspection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-documents-and-collaboration.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-matrices.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-samples.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-forms-workbench.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-data-pages.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-feedback-selection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-visual-instances.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "change-log-governance-records.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          }
+        ],
         "storyCount": 79,
-        "leakCount": 3191,
+        "leakCount": 3159,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -5370,7 +6142,7 @@
           },
           {
             "storyId": "color-palette",
-            "leakCount": 136
+            "leakCount": 96
           },
           {
             "storyId": "text-styles",
@@ -5378,7 +6150,7 @@
           },
           {
             "storyId": "grid-system",
-            "leakCount": 41
+            "leakCount": 42
           },
           {
             "storyId": "icons-motion",
@@ -5398,7 +6170,7 @@
           },
           {
             "storyId": "i18n-theme-contract",
-            "leakCount": 122
+            "leakCount": 124
           },
           {
             "storyId": "foundation-visual-standards",
@@ -5438,7 +6210,7 @@
           },
           {
             "storyId": "navigation-shell-spec",
-            "leakCount": 41
+            "leakCount": 42
           },
           {
             "storyId": "navigation-dense-operations-shell-spec",
@@ -5446,11 +6218,11 @@
           },
           {
             "storyId": "navigation-focused-shells-spec",
-            "leakCount": 40
+            "leakCount": 39
           },
           {
             "storyId": "navigation-primitives-spec",
-            "leakCount": 79
+            "leakCount": 82
           },
           {
             "storyId": "navigation-product-shell-spec",
@@ -5470,7 +6242,7 @@
           },
           {
             "storyId": "shell-intro",
-            "leakCount": 18
+            "leakCount": 21
           },
           {
             "storyId": "shell-matrix",
@@ -5478,7 +6250,7 @@
           },
           {
             "storyId": "shell-brand-first-line",
-            "leakCount": 12
+            "leakCount": 11
           },
           {
             "storyId": "dialog-spec-usage",

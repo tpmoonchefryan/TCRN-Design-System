@@ -1,5 +1,5 @@
 {
-  "ok": false,
+  "ok": true,
   "syntheticFixturesOnly": true,
   "noProductDataCaptured": true,
   "noLocalAbsolutePathsRetained": true,
@@ -46,8 +46,8 @@
       ],
       "normalizedBytesEqual": true,
       "normalizedProjectionDigests": [
-        "2c0e3c9420ec9094caf3f88d68a60a4e414a509f8850b832213e0a1a068e1add",
-        "2c0e3c9420ec9094caf3f88d68a60a4e414a509f8850b832213e0a1a068e1add"
+        "1cb5702783a6e568db3a6fd2641c85901d06fe83b19829b1171e164d8451be38",
+        "1cb5702783a6e568db3a6fd2641c85901d06fe83b19829b1171e164d8451be38"
       ],
       "projections": [
         {
@@ -56,6 +56,7 @@
           "productSearchResultsPresent": 1,
           "productSearchResultCount": 7,
           "openMenus": 14,
+          "expectedOpenMenus": 14,
           "rootVisible": true
         },
         {
@@ -64,10 +65,15 @@
           "productSearchResultsPresent": 1,
           "productSearchResultCount": 7,
           "openMenus": 14,
+          "expectedOpenMenus": 14,
           "rootVisible": true
         }
       ],
-      "ok": false
+      "strayOpenMenus": [
+        [],
+        []
+      ],
+      "ok": true
     },
     "fieldLeakCheck": {
       "baselineGreen": true,
@@ -3894,7 +3900,7 @@
   "aiContractTraceabilityCheck": {
     "ok": true,
     "contractVersion": "ai_consumption_contract_v1",
-    "contractPayloadDigest": "7bfee874ddba71ef4a0c791d254417e36e8887353177baa39abf2fb5a80d5b0f",
+    "contractPayloadDigest": "7f6a7f694d574c8c72c0c691272ecd8e683b7b65a0380fbe9c0f7e4de0ff9065",
     "digestVerified": true,
     "coveredSectionCount": 7,
     "coveredCategoryCount": 23,
@@ -3962,10 +3968,29 @@
     "publicSourcesVisible": true,
     "storybookOnlyDeferredMarkersVisible": true,
     "packageBackedDisabledNavItemReasonReadback": {
-      "disabledNavItemCount": 0,
+      "disabledNavItemCount": 3,
       "invalidDisabledNavItems": [],
-      "validDisabledNavItemLabels": [],
-      "ok": false
+      "validDisabledNavItemLabels": [
+        {
+          "viewport": "desktop-1440x900",
+          "section": "Components",
+          "label": "Release notes",
+          "reason": "Opens after the release is published."
+        },
+        {
+          "viewport": "tablet-1024x768",
+          "section": "Components",
+          "label": "Release notes",
+          "reason": "Opens after the release is published."
+        },
+        {
+          "viewport": "mobile-390x844",
+          "section": "Components",
+          "label": "Release notes",
+          "reason": "Opens after the release is published."
+        }
+      ],
+      "ok": true
     },
     "noPackagePublicationClaimed": true,
     "noProductAdoptionClaimed": true
@@ -3977,6 +4002,7 @@
       "[data-storybook-visual-instance]",
       ".tcrn-shell-brand__word",
       ".tcrn-product-logo__line-one",
+      ".tcrn-brand-lockup__word",
       ".tcrn-brand-wordmark",
       "code",
       "pre",
@@ -3988,8 +4014,171 @@
       "locale": "zh-CN",
       "gating": true,
       "ok": true,
+      "shellBlockWaits": [
+        {
+          "page": "welcome-governance-entry.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "welcome-routing-contribution.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "style-guide-identity-brand.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "style-guide-type-layout.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "style-guide-interaction-copy.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "foundations-tokens-i18n.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "foundations-copy-governance.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-component-inventory.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-controls-data.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-navigation-shells.html",
+          "blocks": 17,
+          "settled": 17,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-overlays.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-records-and-boards.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-hierarchy-and-relations.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-detail-and-inspection.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-documents-and-collaboration.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-gplus-matrices.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "components-gplus-samples.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "patterns-forms-workbench.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "patterns-data-pages.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "patterns-feedback-selection.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "proof-proof-governance.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "proof-proof-visual-instances.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        },
+        {
+          "page": "change-log-governance-records.html",
+          "blocks": 1,
+          "settled": 1,
+          "unsettled": [],
+          "ok": true
+        }
+      ],
       "storyCount": 79,
-      "allowlistedLeakCount": 100,
+      "allowlistedLeakCount": 99,
       "newLeakCount": 0,
       "newLeaks": [],
       "perStory": [
@@ -4025,7 +4214,7 @@
         },
         {
           "storyId": "color-palette",
-          "allowlistedLeakCount": 1,
+          "allowlistedLeakCount": 0,
           "newLeaks": []
         },
         {
@@ -4396,8 +4585,171 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
+        "shellBlockWaits": [
+          {
+            "page": "welcome-governance-entry.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "welcome-routing-contribution.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-identity-brand.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-type-layout.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-interaction-copy.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-tokens-i18n.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-copy-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-component-inventory.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-controls-data.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-navigation-shells.html",
+            "blocks": 17,
+            "settled": 17,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-overlays.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-records-and-boards.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-hierarchy-and-relations.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-detail-and-inspection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-documents-and-collaboration.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-matrices.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-samples.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-forms-workbench.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-data-pages.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-feedback-selection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-visual-instances.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "change-log-governance-records.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          }
+        ],
         "storyCount": 79,
-        "leakCount": 104,
+        "leakCount": 103,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -4425,7 +4777,7 @@
           },
           {
             "storyId": "color-palette",
-            "leakCount": 1
+            "leakCount": 0
           },
           {
             "storyId": "text-styles",
@@ -4722,8 +5074,171 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
+        "shellBlockWaits": [
+          {
+            "page": "welcome-governance-entry.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "welcome-routing-contribution.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-identity-brand.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-type-layout.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-interaction-copy.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-tokens-i18n.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-copy-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-component-inventory.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-controls-data.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-navigation-shells.html",
+            "blocks": 17,
+            "settled": 17,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-overlays.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-records-and-boards.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-hierarchy-and-relations.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-detail-and-inspection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-documents-and-collaboration.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-matrices.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-samples.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-forms-workbench.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-data-pages.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-feedback-selection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-visual-instances.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "change-log-governance-records.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          }
+        ],
         "storyCount": 79,
-        "leakCount": 112,
+        "leakCount": 111,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -4751,7 +5266,7 @@
           },
           {
             "storyId": "color-palette",
-            "leakCount": 1
+            "leakCount": 0
           },
           {
             "storyId": "text-styles",
@@ -5048,8 +5563,171 @@
         "gating": false,
         "disposition": "recorded_report_only",
         "ok": true,
+        "shellBlockWaits": [
+          {
+            "page": "welcome-governance-entry.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "welcome-routing-contribution.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-identity-brand.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-type-layout.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "style-guide-interaction-copy.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-tokens-i18n.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "foundations-copy-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-component-inventory.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-controls-data.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-navigation-shells.html",
+            "blocks": 17,
+            "settled": 17,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-overlays.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-records-and-boards.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-hierarchy-and-relations.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-detail-and-inspection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-documents-and-collaboration.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-matrices.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "components-gplus-samples.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-forms-workbench.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-data-pages.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "patterns-feedback-selection.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-governance.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "proof-proof-visual-instances.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          },
+          {
+            "page": "change-log-governance-records.html",
+            "blocks": 1,
+            "settled": 1,
+            "unsettled": [],
+            "ok": true
+          }
+        ],
         "storyCount": 79,
-        "leakCount": 3191,
+        "leakCount": 3159,
         "perStory": [
           {
             "storyId": "welcome-governance",
@@ -5077,7 +5755,7 @@
           },
           {
             "storyId": "color-palette",
-            "leakCount": 136
+            "leakCount": 96
           },
           {
             "storyId": "text-styles",
@@ -5085,7 +5763,7 @@
           },
           {
             "storyId": "grid-system",
-            "leakCount": 41
+            "leakCount": 42
           },
           {
             "storyId": "icons-motion",
@@ -5105,7 +5783,7 @@
           },
           {
             "storyId": "i18n-theme-contract",
-            "leakCount": 122
+            "leakCount": 124
           },
           {
             "storyId": "foundation-visual-standards",
@@ -5145,7 +5823,7 @@
           },
           {
             "storyId": "navigation-shell-spec",
-            "leakCount": 41
+            "leakCount": 42
           },
           {
             "storyId": "navigation-dense-operations-shell-spec",
@@ -5153,11 +5831,11 @@
           },
           {
             "storyId": "navigation-focused-shells-spec",
-            "leakCount": 40
+            "leakCount": 39
           },
           {
             "storyId": "navigation-primitives-spec",
-            "leakCount": 79
+            "leakCount": 82
           },
           {
             "storyId": "navigation-product-shell-spec",
@@ -5177,7 +5855,7 @@
           },
           {
             "storyId": "shell-intro",
-            "leakCount": 18
+            "leakCount": 21
           },
           {
             "storyId": "shell-matrix",
@@ -5185,7 +5863,7 @@
           },
           {
             "storyId": "shell-brand-first-line",
-            "leakCount": 12
+            "leakCount": 11
           },
           {
             "storyId": "dialog-spec-usage",
@@ -6462,7 +7140,23 @@
       "localeOptionCount": 5,
       "localeSelectVisible": true,
       "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
+      "packageBackedDisabledNavItems": [
+        {
+          "storyId": "navigation-primitives-spec",
+          "screen": "doc",
+          "label": "Release notes",
+          "href": null,
+          "tabIndex": "-1",
+          "title": "Opens after the release is published.",
+          "dataDisabledReason": "Opens after the release is published.",
+          "ariaDescribedBy": [
+            "«navigation-primitives-spec-Ret9»"
+          ],
+          "visibleReason": "Opens after the release is published.",
+          "visibleReasonRendered": true,
+          "ok": true
+        }
+      ],
       "storybookOnlyPrototypeNodes": [
         {
           "marker": "knowledge-shell-prototype",
@@ -7406,48 +8100,7 @@
       "currentNav": "Proof",
       "currentStoryNav": "frontend-shell-slice",
       "bodyOverflowX": false,
-      "clipped": [
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        }
-      ],
+      "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
       "readbackHeadingGapViolations": [],
@@ -9534,7 +10187,23 @@
       "localeOptionCount": 5,
       "localeSelectVisible": true,
       "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
+      "packageBackedDisabledNavItems": [
+        {
+          "storyId": "navigation-primitives-spec",
+          "screen": "doc",
+          "label": "Release notes",
+          "href": null,
+          "tabIndex": "-1",
+          "title": "Opens after the release is published.",
+          "dataDisabledReason": "Opens after the release is published.",
+          "ariaDescribedBy": [
+            "«navigation-primitives-spec-Ret9»"
+          ],
+          "visibleReason": "Opens after the release is published.",
+          "visibleReasonRendered": true,
+          "ok": true
+        }
+      ],
       "storybookOnlyPrototypeNodes": [
         {
           "marker": "knowledge-shell-prototype",
@@ -10478,48 +11147,7 @@
       "currentNav": "Proof",
       "currentStoryNav": "frontend-shell-slice",
       "bodyOverflowX": false,
-      "clipped": [
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        }
-      ],
+      "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
       "readbackHeadingGapViolations": [],
@@ -12606,7 +13234,23 @@
       "localeOptionCount": 5,
       "localeSelectVisible": true,
       "componentStorybookParityNodes": [],
-      "packageBackedDisabledNavItems": [],
+      "packageBackedDisabledNavItems": [
+        {
+          "storyId": "navigation-primitives-spec",
+          "screen": "doc",
+          "label": "Release notes",
+          "href": null,
+          "tabIndex": "-1",
+          "title": "Opens after the release is published.",
+          "dataDisabledReason": "Opens after the release is published.",
+          "ariaDescribedBy": [
+            "«navigation-primitives-spec-Ret9»"
+          ],
+          "visibleReason": "Opens after the release is published.",
+          "visibleReasonRendered": true,
+          "ok": true
+        }
+      ],
       "storybookOnlyPrototypeNodes": [
         {
           "marker": "knowledge-shell-prototype",
@@ -13550,48 +14194,7 @@
       "currentNav": "Proof",
       "currentStoryNav": "frontend-shell-slice",
       "bodyOverflowX": false,
-      "clipped": [
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        },
-        {
-          "tag": "h3",
-          "text": "AOS frontend shell first viewport",
-          "clipped": true
-        },
-        {
-          "tag": "h4",
-          "text": "AOS frontend shell",
-          "clipped": true
-        }
-      ],
+      "clipped": [],
       "readbackStateViewGapViolations": [],
       "storyTextRhythmViolations": [],
       "readbackHeadingGapViolations": [],

@@ -3409,6 +3409,12 @@
           "required": false
         },
         {
+          "name": "menuShortcut",
+          "type": "boolean",
+          "required": false,
+          "default": "true"
+        },
+        {
           "name": "moduleName",
           "type": "string",
           "required": true
@@ -4799,6 +4805,11 @@
           "required": true
         },
         {
+          "name": "landmarkLabel",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "level",
           "type": "number",
           "required": false
@@ -4992,6 +5003,11 @@
           "name": "groups",
           "type": "readonly ShellMenuGroup[]",
           "required": true
+        },
+        {
+          "name": "landmarkLabel",
+          "type": "string",
+          "required": false
         },
         {
           "name": "locale",
@@ -6213,6 +6229,16 @@
           ]
         },
         {
+          "name": "headingLevel",
+          "type": "2 | 3",
+          "required": false,
+          "default": "3",
+          "enumValues": [
+            2,
+            3
+          ]
+        },
+        {
           "name": "items",
           "type": "TocItem[]",
           "required": true
@@ -6233,6 +6259,10 @@
           "comfortable",
           "compact",
           "dense"
+        ],
+        "headingLevel": [
+          2,
+          3
         ]
       },
       "slots": [],

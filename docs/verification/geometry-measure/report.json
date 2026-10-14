@@ -1,7 +1,7 @@
 {
   "schemaVersion": "tcrn.ds.geometry-measure-proof.v1",
   "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
-  "ok": false,
+  "ok": true,
   "reason": null,
   "thresholds": {
     "clip": {
@@ -3402,10 +3402,8 @@
       "storyId": "typography-sample-billing",
       "theme": "light",
       "route": "/components-gplus-samples.html#typography-sample-billing",
-      "ok": false,
-      "failed": [
-        "overlap"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "contrast",
@@ -3413,10 +3411,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "overlap"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "contrast",
@@ -3507,22 +3503,14 @@
             "violations": []
           },
           "overlap": {
-            "status": "fail",
-            "value": 1,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
             },
-            "violationCount": 1,
-            "violations": [
-              {
-                "container": "div.alpha-story-stack",
-                "a": "div",
-                "b": "div",
-                "ox": 1006,
-                "oy": 9
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "shellFrame": {
             "status": "pass",
@@ -3936,10 +3924,8 @@
       "storyId": "inputs-sample-members",
       "theme": "light",
       "route": "/components-gplus-samples.html#inputs-sample-members",
-      "ok": false,
-      "failed": [
-        "overlap"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "rowAlign",
@@ -3949,10 +3935,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "overlap"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "rowAlign",
@@ -4045,22 +4029,14 @@
             "violations": []
           },
           "overlap": {
-            "status": "fail",
-            "value": 1,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
             },
-            "violationCount": 1,
-            "violations": [
-              {
-                "container": "div.alpha-story-stack",
-                "a": "div",
-                "b": "div",
-                "ox": 1006,
-                "oy": 29
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "shellFrame": {
             "status": "pass",
@@ -6314,10 +6290,8 @@
       "storyId": "typography-sample-billing",
       "theme": "dark",
       "route": "/components-gplus-samples.html#typography-sample-billing",
-      "ok": false,
-      "failed": [
-        "overlap"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "contrast",
@@ -6325,10 +6299,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "overlap"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "contrast",
@@ -6419,22 +6391,14 @@
             "violations": []
           },
           "overlap": {
-            "status": "fail",
-            "value": 1,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
             },
-            "violationCount": 1,
-            "violations": [
-              {
-                "container": "div.alpha-story-stack",
-                "a": "div",
-                "b": "div",
-                "ox": 1006,
-                "oy": 9
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "shellFrame": {
             "status": "pass",
@@ -6848,10 +6812,8 @@
       "storyId": "inputs-sample-members",
       "theme": "dark",
       "route": "/components-gplus-samples.html#inputs-sample-members",
-      "ok": false,
-      "failed": [
-        "overlap"
-      ],
+      "ok": true,
+      "failed": [],
       "notApplicable": [
         "rail",
         "rowAlign",
@@ -6861,10 +6823,8 @@
       ],
       "notApplicableRequired": [],
       "verdict": {
-        "ok": false,
-        "failed": [
-          "overlap"
-        ],
+        "ok": true,
+        "failed": [],
         "notApplicable": [
           "rail",
           "rowAlign",
@@ -6957,22 +6917,14 @@
             "violations": []
           },
           "overlap": {
-            "status": "fail",
-            "value": 1,
+            "status": "pass",
+            "value": 0,
             "limit": {
               "maxOverlaps": 0,
               "minIntersectPx": 1
             },
-            "violationCount": 1,
-            "violations": [
-              {
-                "container": "div.alpha-story-stack",
-                "a": "div",
-                "b": "div",
-                "ox": 1006,
-                "oy": 29
-              }
-            ]
+            "violationCount": 0,
+            "violations": []
           },
           "shellFrame": {
             "status": "pass",
@@ -7201,6 +7153,7 @@
       "theme": "light",
       "status": "pass",
       "checked": 10,
+      "regions": 0,
       "value": 0,
       "violationCount": 0,
       "violations": []
@@ -7281,8 +7234,8 @@
       "worstValue": 0
     },
     "overlap": {
-      "status": "fail",
-      "worstValue": 1
+      "status": "pass",
+      "worstValue": 0
     },
     "shellFrame": {
       "status": "pass",

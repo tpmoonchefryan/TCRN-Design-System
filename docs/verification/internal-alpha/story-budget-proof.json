@@ -11,8 +11,8 @@
     "toleratedDebt": [
       {
         "id": "color-palette",
-        "measure": 6039,
-        "recordedHeightPx": 6039,
+        "measure": 4740,
+        "recordedHeightPx": 4740,
         "owedTo": "beyond-INIT-008",
         "note": "73-token color specimen gallery; a catalogue split is future work — gated debt"
       },
@@ -39,7 +39,7 @@
       },
       {
         "id": "component-family-index",
-        "measure": 3341,
+        "measure": 3361,
         "recordedHeightPx": 3361,
         "owedTo": "beyond-INIT-008",
         "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
@@ -68,21 +68,21 @@
       {
         "id": "ai-consumption-contract",
         "measure": 14289,
-        "recordedHeightPx": 14269,
+        "recordedHeightPx": 14289,
         "owedTo": "beyond-INIT-008",
         "note": "Full AI-consumption contract readback, including operation feedback, content-scope, and consumer-evidence contracts, remains one machine-readable surface; gated debt"
       },
       {
         "id": "frontend-shell-slice",
-        "measure": 7595,
-        "recordedHeightPx": 7595,
+        "measure": 7575,
+        "recordedHeightPx": 7575,
         "owedTo": "beyond-INIT-008",
         "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
       },
       {
         "id": "owner-quality-product-shell",
-        "measure": 11098,
-        "recordedHeightPx": 11098,
+        "measure": 7872,
+        "recordedHeightPx": 7872,
         "owedTo": "beyond-INIT-008",
         "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
       }
@@ -91,7 +91,7 @@
   "splitWorklist": [
     {
       "id": "color-palette",
-      "heightPx": 6039,
+      "heightPx": 4740,
       "owedTo": "beyond-INIT-008",
       "note": "73-token color specimen gallery; a catalogue split is future work — gated debt"
     },
@@ -115,7 +115,7 @@
     },
     {
       "id": "component-family-index",
-      "heightPx": 3341,
+      "heightPx": 3361,
       "owedTo": "beyond-INIT-008",
       "note": "S058 replaced the 100-row public-export table with a compact links grid into the generated reference pages and dropped the redundant coverage/template panels; the residual is the gate-asserted package-backed API / utility-export / Storybook-only proof panels, which cannot be dropped without breaking the parity + prototype-marker assertions"
     },
@@ -145,13 +145,13 @@
     },
     {
       "id": "frontend-shell-slice",
-      "heightPx": 7595,
+      "heightPx": 7575,
       "owedTo": "beyond-INIT-008",
       "note": "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
     },
     {
       "id": "owner-quality-product-shell",
-      "heightPx": 11098,
+      "heightPx": 7872,
       "owedTo": "beyond-INIT-008",
       "note": "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
     }

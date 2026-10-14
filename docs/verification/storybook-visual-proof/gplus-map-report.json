@@ -1,9 +1,9 @@
 {
   "schemaVersion": "tcrn.ds.storybook-visual-proof.gplus-map.v1",
   "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
-  "generatedAtUtc": "2026-10-14T02:02:09.976Z",
-  "head": "fe8578f00d37a648e7263339b32ca91e1e20b4ee",
-  "ok": false,
+  "generatedAtUtc": "2026-10-14T07:13:29.891Z",
+  "head": "2e38e72dccedb7d153f0374b11a0636aaed6d58a",
+  "ok": true,
   "reason": null,
   "scope": {
     "kinds": [
@@ -622,14 +622,11 @@
       "differences": [
         "DIFF-1"
       ],
-      "ok": false,
-      "reasons": [
-        "light:overlap",
-        "dark:overlap"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -645,7 +642,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 24,
+              "checked": 26,
               "value": 1,
               "violationCount": 0
             },
@@ -680,19 +677,10 @@
               "violationCount": 0
             },
             "overlap": {
-              "status": "fail",
+              "status": "pass",
               "checked": 45,
-              "value": 1,
-              "violationCount": 1,
-              "violations": [
-                {
-                  "container": "div.alpha-story-stack",
-                  "a": "div",
-                  "b": "div",
-                  "ox": 1006,
-                  "oy": 9
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "shellFrame": {
               "status": "pass",
@@ -701,13 +689,11 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "overlap"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -723,7 +709,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 24,
+              "checked": 26,
               "value": 1,
               "violationCount": 0
             },
@@ -758,19 +744,10 @@
               "violationCount": 0
             },
             "overlap": {
-              "status": "fail",
+              "status": "pass",
               "checked": 45,
-              "value": 1,
-              "violationCount": 1,
-              "violations": [
-                {
-                  "container": "div.alpha-story-stack",
-                  "a": "div",
-                  "b": "div",
-                  "ox": 1006,
-                  "oy": 9
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "shellFrame": {
               "status": "pass",
@@ -779,9 +756,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "overlap"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -1157,7 +1132,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 48,
+              "checked": 50,
               "value": 1,
               "violationCount": 0
             },
@@ -1224,7 +1199,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 48,
+              "checked": 50,
               "value": 1,
               "violationCount": 0
             },
@@ -1648,7 +1623,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 20,
+              "checked": 22,
               "value": 1,
               "violationCount": 0
             },
@@ -1715,7 +1690,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 20,
+              "checked": 22,
               "value": 1,
               "violationCount": 0
             },
@@ -2143,7 +2118,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 56,
+              "checked": 58,
               "value": 1,
               "violationCount": 0
             },
@@ -2210,7 +2185,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 56,
+              "checked": 58,
               "value": 1,
               "violationCount": 0
             },
@@ -2616,14 +2591,11 @@
       "differences": [
         "DIFF-1"
       ],
-      "ok": false,
-      "reasons": [
-        "light:overlap",
-        "dark:overlap"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -2639,7 +2611,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 48,
+              "checked": 50,
               "value": 1,
               "violationCount": 0
             },
@@ -2674,19 +2646,10 @@
               "violationCount": 0
             },
             "overlap": {
-              "status": "fail",
+              "status": "pass",
               "checked": 55,
-              "value": 1,
-              "violationCount": 1,
-              "violations": [
-                {
-                  "container": "div.alpha-story-stack",
-                  "a": "div",
-                  "b": "div",
-                  "ox": 1006,
-                  "oy": 29
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "shellFrame": {
               "status": "pass",
@@ -2695,13 +2658,11 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "overlap"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -2717,7 +2678,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 48,
+              "checked": 50,
               "value": 1,
               "violationCount": 0
             },
@@ -2752,19 +2713,10 @@
               "violationCount": 0
             },
             "overlap": {
-              "status": "fail",
+              "status": "pass",
               "checked": 55,
-              "value": 1,
-              "violationCount": 1,
-              "violations": [
-                {
-                  "container": "div.alpha-story-stack",
-                  "a": "div",
-                  "b": "div",
-                  "ox": 1006,
-                  "oy": 29
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "shellFrame": {
               "status": "pass",
@@ -2773,9 +2725,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "overlap"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -2796,14 +2746,11 @@
         "DIFF-1",
         "DIFF-3"
       ],
-      "ok": false,
-      "reasons": [
-        "light:overlap",
-        "dark:overlap"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -2819,7 +2766,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 24,
+              "checked": 26,
               "value": 1,
               "violationCount": 0
             },
@@ -2854,19 +2801,10 @@
               "violationCount": 0
             },
             "overlap": {
-              "status": "fail",
+              "status": "pass",
               "checked": 45,
-              "value": 1,
-              "violationCount": 1,
-              "violations": [
-                {
-                  "container": "div.alpha-story-stack",
-                  "a": "div",
-                  "b": "div",
-                  "ox": 1006,
-                  "oy": 9
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "shellFrame": {
               "status": "pass",
@@ -2875,13 +2813,11 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "overlap"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -2897,7 +2833,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 24,
+              "checked": 26,
               "value": 1,
               "violationCount": 0
             },
@@ -2932,19 +2868,10 @@
               "violationCount": 0
             },
             "overlap": {
-              "status": "fail",
+              "status": "pass",
               "checked": 45,
-              "value": 1,
-              "violationCount": 1,
-              "violations": [
-                {
-                  "container": "div.alpha-story-stack",
-                  "a": "div",
-                  "b": "div",
-                  "ox": 1006,
-                  "oy": 9
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "shellFrame": {
               "status": "pass",
@@ -2953,9 +2880,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "overlap"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -2996,7 +2921,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 48,
+              "checked": 50,
               "value": 1,
               "violationCount": 0
             },
@@ -3063,7 +2988,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 48,
+              "checked": 50,
               "value": 1,
               "violationCount": 0
             },
@@ -3151,7 +3076,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 20,
+              "checked": 22,
               "value": 1,
               "violationCount": 0
             },
@@ -3218,7 +3143,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 20,
+              "checked": 22,
               "value": 1,
               "violationCount": 0
             },
@@ -3307,7 +3232,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 56,
+              "checked": 58,
               "value": 1,
               "violationCount": 0
             },
@@ -3374,7 +3299,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 56,
+              "checked": 58,
               "value": 1,
               "violationCount": 0
             },
@@ -3441,14 +3366,11 @@
         "DIFF-1",
         "DIFF-3"
       ],
-      "ok": false,
-      "reasons": [
-        "light:overlap",
-        "dark:overlap"
-      ],
+      "ok": true,
+      "reasons": [],
       "themes": {
         "light": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -3464,7 +3386,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 48,
+              "checked": 50,
               "value": 1,
               "violationCount": 0
             },
@@ -3499,19 +3421,10 @@
               "violationCount": 0
             },
             "overlap": {
-              "status": "fail",
+              "status": "pass",
               "checked": 55,
-              "value": 1,
-              "violationCount": 1,
-              "violations": [
-                {
-                  "container": "div.alpha-story-stack",
-                  "a": "div",
-                  "b": "div",
-                  "ox": 1006,
-                  "oy": 29
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "shellFrame": {
               "status": "pass",
@@ -3520,13 +3433,11 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "overlap"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         },
         "dark": {
-          "ok": false,
+          "ok": true,
           "checks": {
             "clip": {
               "status": "pass",
@@ -3542,7 +3453,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 48,
+              "checked": 50,
               "value": 1,
               "violationCount": 0
             },
@@ -3577,19 +3488,10 @@
               "violationCount": 0
             },
             "overlap": {
-              "status": "fail",
+              "status": "pass",
               "checked": 55,
-              "value": 1,
-              "violationCount": 1,
-              "violations": [
-                {
-                  "container": "div.alpha-story-stack",
-                  "a": "div",
-                  "b": "div",
-                  "ox": 1006,
-                  "oy": 29
-                }
-              ]
+              "value": 0,
+              "violationCount": 0
             },
             "shellFrame": {
               "status": "pass",
@@ -3598,9 +3500,7 @@
               "violationCount": 0
             }
           },
-          "failed": [
-            "overlap"
-          ],
+          "failed": [],
           "requiredNotApplicable": []
         }
       },
@@ -3643,7 +3543,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 24,
+              "checked": 26,
               "value": 1,
               "violationCount": 0
             },
@@ -3710,7 +3610,7 @@
             },
             "shadowBlur": {
               "status": "pass",
-              "checked": 24,
+              "checked": 26,
               "value": 1,
               "violationCount": 0
             },
@@ -4147,41 +4047,8 @@
   ],
   "summary": {
     "rows": 23,
-    "rowsOk": 19,
-    "redRows": [
-      {
-        "row": "typography.D",
-        "storyId": "typography-sample-billing",
-        "reasons": [
-          "light:overlap",
-          "dark:overlap"
-        ]
-      },
-      {
-        "row": "inputs.D",
-        "storyId": "inputs-sample-members",
-        "reasons": [
-          "light:overlap",
-          "dark:overlap"
-        ]
-      },
-      {
-        "row": "compositions.1.typography",
-        "storyId": "typography-sample-billing",
-        "reasons": [
-          "light:overlap",
-          "dark:overlap"
-        ]
-      },
-      {
-        "row": "compositions.1.inputs",
-        "storyId": "inputs-sample-members",
-        "reasons": [
-          "light:overlap",
-          "dark:overlap"
-        ]
-      }
-    ],
+    "rowsOk": 23,
+    "redRows": [],
     "checks": {
       "clip": "pass",
       "singleLine": "pass",
@@ -4191,7 +4058,7 @@
       "mark": "pass",
       "contrast": "pass",
       "controlHeight": "pass",
-      "overlap": "fail",
+      "overlap": "pass",
       "shellFrame": "pass"
     }
   }
