@@ -79,6 +79,13 @@ export interface ShellStoryScreen {
 
 /** The marker of a block this module hydrates. */
 export const shellHydrateAttribute = "data-shell-hydrate";
+/**
+ * What a block says once its screen has committed in a language (TCRN-DS-SUB-198, C-12 of the INIT-016 R3
+ * decomposition): data-shell-hydrated="<locale>", written after the hydration's commit and again after
+ * every change of the page's language has been committed. A reader of the page's words (the English-leak
+ * scan of internal-alpha-browser-proof.mjs) waits for every block to say the page's language.
+ */
+export const shellHydratedAttribute = "data-shell-hydrated";
 
 export const shellStoryThemeAttribute: Readonly<Record<ShellStoryTheme, "light" | "dark">> = { light: "light", night: "dark" };
 // PINS of the board: the current page, a pinned item with a menu, a link and a second menu.
@@ -446,6 +453,12 @@ export function ShellStoryRoot({ storyId, screen, block = null, onMounted }: She
     return () => window.removeEventListener("tcrn-storybook-locale-applied", follow);
     // Mounted once: the callback that matters is the mount's.
   }, []);
+  // The block says the language its screen now shows (shellHydratedAttribute): an effect runs after its
+  // commit, so the block's markup is the language's when the attribute changes. The hydration's own
+  // commit (the build's English, before the page's language is read) is not marked.
+  useEffect(() => {
+    if (mounted && block) block.setAttribute(shellHydratedAttribute, locale);
+  }, [block, locale, mounted]);
   const t = useMemo(() => translatorFor(locale), [locale]);
   return <ShellStoryScreenView storyId={storyId} screen={screen} locale={locale} t={t} introScope={mounted && block ? introScope : null} />;
 }
