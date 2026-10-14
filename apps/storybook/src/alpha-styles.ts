@@ -234,10 +234,6 @@ article[data-story-collapsed="true"] > .story-body {
 .tcrn-doc-story-disclosure:hover {
   color: var(--tcrn-color-acc);
 }
-article[data-story-collapsed="false"] > .tcrn-doc-story-disclosure__heading {
-  box-shadow: inset 3px 0 0 var(--tcrn-color-acc);
-  padding-left: var(--tcrn-space-2h);
-}
 article {
   border: 1px solid var(--tcrn-color-line);
   border-radius: var(--tcrn-radius-surface);
