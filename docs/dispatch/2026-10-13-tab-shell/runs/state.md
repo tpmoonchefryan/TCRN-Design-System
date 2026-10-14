@@ -118,6 +118,9 @@
 - 批末 verify（`tools/batch-end-verify.sh 3`）跑在 c45c529，2026-10-14T07:27:16Z–07:35:45Z：30 步只剩 2 步红——`contract:static`（C8 一族 18 条，顶带登记为工具栏后的让步项缺失，待 Owner）与 `geometry:measure`（只有 markText：DS 侧栏首行 1.4，待 O-4）；其余全绿，`storybook:build` 退出 0；结果表 `runs/r3/verify/steps.md`（df740e6）。
 - 批末验收：三片并行（einzbern-main），摘录 `runs/r3/excerpts/acceptance-{A,B,C}.md`（463ede0），主线程问题 `runs/r3/problems/main.md`（M1–M4）。
 
+- 批末验收交回并提交（b7f83ae）：A——137…141 机判满足，135（C8）与 136（D7）阻于 Owner，返工 2；B——142、144 满足，143、145 部分，146 阻于 O-4，返工 3；C——150 机判满足，147 部分（3px 左边条违反禁用清单、截图盲区），148 阻于 O-2，149 阻于 O-4 与 C8，返工 6。读数更正：批末 C8 实为 15 条；markText 另有底栏 TMS 锁定块 en 1.7。三片对 C8 处置意见不一，交判断明确。
+- 判断：einzbern-main 单独一次，摘录 `runs/r3/excerpts/judgment.md`（b7f83ae），产出 `runs/r3/judgment.md` 与 `runs/r3/lessons.json`。
+
 ## 下一步
 
-- 三片验收交回后提交 → 判断（einzbern-main；若只剩 Owner 阻点则建议收口）→ 一次链写与知识采集 → 收口：写 `closeout.md`（与 `owner-acceptance.md` 合一）、INIT-016 保持 active 并注解、停在推送之前。
+- 判断交回后提交 → 一次链写（R3 Subtask 转态、Story 与 INIT 注解）与知识采集（KB-036 起）→ R4（若判断列了可做返工）或收口。
