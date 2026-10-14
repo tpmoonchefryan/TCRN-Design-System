@@ -195,3 +195,16 @@ test("STORY-146 the page header's title row is the board's .ph: gap 14, a line-2
   assert.match(heading, /letter-spacing:-\.005em/);
   assert.match(heading, /white-space:nowrap;overflow:hidden;text-overflow:ellipsis/);
 });
+
+test("STORY-146 STORY-147 PageHeader's title is an h2 by default and an h1 when asked, in the same type either way (TCRN-DS-SUB-163)", () => {
+  const h2 = renderToStaticMarkup(<PageHeader title="Roster" description="Everyone signed" />);
+  const h1 = renderToStaticMarkup(<PageHeader title="Roster" description="Everyone signed" headingLevel={1} />);
+  assert.match(h2, /<h2 [^>]*class="tcrn-heading tcrn-heading--2"[^>]*>Roster<\/h2>/);
+  assert.match(h1, /<h1 [^>]*class="tcrn-heading tcrn-heading--2"[^>]*>Roster<\/h1>/);
+  assert.equal(h1.replace(/<(\/?)h1\b/g, "<$1h2"), h2, "only the element changes; the classes, so the styles, are the same");
+  assert.equal(renderToStaticMarkup(<PageHeader title="Roster" description="Everyone signed" headingLevel={2} />), h2);
+  // No rule of the package picks the title out by its element, so h1 and h2 read the same styles.
+  const selectors = [...tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{/g)].map((match) => match[1] ?? "");
+  assert.deepEqual(selectors.filter((selector) => /(?:^|[^\w-])h1\b/.test(selector)), []);
+  assert.deepEqual(selectors.filter((selector) => /(?:^|[^\w-])h2\b/.test(selector) && /page-header/.test(selector)), []);
+});

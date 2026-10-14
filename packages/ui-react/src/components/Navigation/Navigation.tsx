@@ -1927,7 +1927,8 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
    * The page's header, the paper's first row: the trail, the title and the page's actions (07b
    * board, section E, "PageHeader 必有"). Required, so a shell page without one does not type-check.
    * An omitted trail is the current position in `navGroups` (group › … › page); an omitted locale is
-   * `currentLocale`.
+   * `currentLocale`; an omitted heading level is 1, the page's own title (TCRN-DS-SUB-163) — a shell
+   * shown inside another page's paper gives 2.
    */
   pageHeader: PageHeaderProps;
   /** The page below its header. */
@@ -2337,7 +2338,12 @@ export function ProductShell({
             (axe scrollable-region-focusable; TCRN-DS-SUB-146); its name is the aria-label and
             its focus ring the shell's focus-visible rule. */}
         <ContentElement id={contentId} className="tcrn-product-shell__main" data-product-shell-region="content" aria-label={resolvedContentLabel} tabIndex={0}>
-          <PageHeader {...pageHeader} breadcrumbs={pageHeader.breadcrumbs ?? currentTrail} locale={pageHeader.locale ?? currentLocale} />
+          <PageHeader
+            {...pageHeader}
+            breadcrumbs={pageHeader.breadcrumbs ?? currentTrail}
+            locale={pageHeader.locale ?? currentLocale}
+            headingLevel={pageHeader.headingLevel ?? 1}
+          />
           {children}
         </ContentElement>
       </div>

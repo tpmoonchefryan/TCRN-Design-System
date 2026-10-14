@@ -243,6 +243,12 @@ export interface PageHeaderProps {
   density?: Density;
   /** Which language the trail's built-in name is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
+  /**
+   * The title's heading level: 2 when omitted; 1 for the page's own title, which ProductShell's
+   * paper gives it unless told otherwise. Both levels set the title in the level-2 type, so the
+   * level changes the outline and not the look (TCRN-DS-SUB-163).
+   */
+  headingLevel?: 1 | 2;
 }
 
 /**
@@ -250,7 +256,7 @@ export interface PageHeaderProps {
  * first row and required (07b board, section E, "PageHeader 必有"). The trail stays on one line at
  * every width: a crumb that does not fit ends in an ellipsis and carries its label as a title.
  */
-export function PageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact", locale }: PageHeaderProps) {
+export function PageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact", locale, headingLevel }: PageHeaderProps) {
   return (
     <header className={cx("tcrn-page-header", `tcrn-page-header--${density}`)} data-pattern="page-header" data-density={density}>
       {breadcrumbs.length ? (
@@ -269,7 +275,7 @@ export function PageHeader({ title, description, breadcrumbs = [], meta, actions
       ) : null}
       <div className="tcrn-page-header__body">
         <div className="tcrn-page-header__title">
-          <Heading level={2}>{title}</Heading>
+          <Heading level={headingLevel === 1 ? 1 : 2} visualLevel={2}>{title}</Heading>
           {description ? <Text>{description}</Text> : null}
         </div>
         {meta ? <div className="tcrn-page-header__meta">{meta}</div> : null}

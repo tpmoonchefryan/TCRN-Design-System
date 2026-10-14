@@ -519,7 +519,8 @@ test("STORY-146 GWT1 the page header is required and is the paper's first row", 
   );
   assert.equal(html.match(/data-pattern="page-header"/g)?.length, 1, "one page header");
   assert.ok(html.indexOf('data-pattern="page-header"') < html.indexOf("Fixture-safe roster content"), "the header comes before the page");
-  assert.match(html, /<h2 title="Roster" class="tcrn-heading tcrn-heading--2">Roster<\/h2><p class="tcrn-text[^"]*">24 people · 3 to invite<\/p>/);
+  // The paper's title is the page's h1 in the level-2 type (TCRN-DS-SUB-163).
+  assert.match(html, /<h1 title="Roster" class="tcrn-heading tcrn-heading--2">Roster<\/h1><p class="tcrn-text[^"]*">24 people · 3 to invite<\/p>/);
   // An omitted trail is the current position in the menu model: the group, then the page, which is no link.
   assert.match(
     html,
@@ -2254,4 +2255,26 @@ test("ProductShell hands the held and the default menu query to the full menu, a
   const said = described.getElementById(title?.getAttribute("aria-describedby") ?? "");
   assert.equal(said?.textContent, "Pay and statements");
   assert.ok(said?.matches(".tcrn-sr-only"));
+});
+
+test("ProductShell's paper gives the page header's title as the page's h1 unless the page says 2 (TCRN-DS-SUB-163)", () => {
+  const shell = (pageHeader: ProductShellProps["pageHeader"]) =>
+    renderToStaticMarkup(
+      <ProductShell
+        productName="TCRN TMS"
+        moduleName="Talent"
+        brandProductId="tms"
+        currentRouteLabel="Roster"
+        pageHeader={pageHeader}
+        navGroups={shellNavGroups}
+        locales={shellLocales}
+        currentLocale="en"
+      >
+        <div>content</div>
+      </ProductShell>
+    );
+  const headings = (html: string) => [...new JSDOM(html).window.document.querySelectorAll("[data-paper] h1, [data-paper] h2")].map((element) => `${element.tagName.toLowerCase()} ${element.className}`);
+  assert.deepEqual(headings(shell({ title: "Roster" })), ["h1 tcrn-heading tcrn-heading--2"]);
+  assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 2 })), ["h2 tcrn-heading tcrn-heading--2"]);
+  assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 1 })), ["h1 tcrn-heading tcrn-heading--2"]);
 });
