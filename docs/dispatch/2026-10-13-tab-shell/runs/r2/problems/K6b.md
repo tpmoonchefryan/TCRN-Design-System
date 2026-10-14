@@ -1,0 +1,11 @@
+# R2 问题 · K6b（SUB-156）
+
+见红只记：下面这些红与缺口，要么不在 SUB-156 的判据里，要么要改别包的文件、动后续批次的家族或改门判定才能消掉，K6b 没有修。同一根因算一条。行号以包树 56f1f6c 为准。
+
+| # | 类别 | 现象 | 建议改法 | 归属 |
+| --- | --- | --- | --- | --- |
+| 1 | C11 余项 34 条（K4 问题 8，原样承接） | 故事层卡套卡。32 条是 ReadbackPanel（`Feedback.tsx`，feedback 家族第 3 批）渲染成 `section.tcrn-surface.tcrn-readback-panel`，story 在里面再放 Card、StatCard、DetailInspector、RecordInspector、RelationGraph 节点、LaneBoard 列、TemplateGallery 卡和嵌套的 ReadbackPanel。另 2 条是 RecordInspector（`DomainDisplay.tsx:1029`，inspection 家族第 5 批）本身是 Surface 卡，又装着两个 DetailInspector 卡（`DataDisplay.tsx:900`）。 | 先定两层里哪一层不当卡，再改 ReadbackPanel 或 story。RecordInspector 那 2 条要连同 DetailInspector 一起改，并要对后续批次家族的授权。 | R3 |
+| 2 | 门契约测试的不变式（K4 问题 5，原样承接） | `tests/contract-static-proof.test.mjs:524` 断言「家族有豁免 ⇔ 批次 ≠ scope.batch」；第二批三族的豁免删掉后这条红，`run contract:static` 在 `node --test` 一步退出 1（69 条中 68 条通过），到不了证明脚本。证明脚本单跑只剩问题 1 的 C11。 | 照 K4 问题 5：让不变式读「已经授权全量检查的批次」。 | R3（packages.md 无持有者） |
+| 3 | 死规则 | `typography.css.ts` 的 `typographyCss03`：`.tcrn-page-header__title .tcrn-heading, .tcrn-page-header__title .tcrn-text { margin: 0; }`。SUB-156 之后标题类就在标题元素上，里面没有 `.tcrn-heading` 和 `.tcrn-text`，这条规则不再命中任何元素。说明的零边距已经由 `base.css.ts` 的 `.tcrn-page-header__description` 承担，排布读数前后相同。 | 删掉这条规则，并删去 `typography.css.ts` 开头注释里对它的依赖说明（如有）。 | `typography.css.ts` 的持有者，或 R3 |
+| 4 | 几何字面值（硬线「几何逐值来自 token」，不在 SUB-156 判据内） | 壳件里还有写死的图标尺寸：`Navigation.tsx` 铃铛 `size={20}`（第 2272 行，等于 `--tcrn-icon-size-lg`）、头像 users 图标 `size={14}`（第 2288 行，等于 `--tcrn-icon-size-sm`）；`ShellBrandButton.tsx:98` `size={16}`（等于默认的 md）；`ShellMenu.tsx:293`、`:807` 与 `ShellPins.tsx:326` `size={12}`，没有对应的 token。另外 `base.css.ts` 的 `.tcrn-shell-locale-menu__chevron` 写的是 `width: 11px; height: 11px`。 | 20、14、16 改用 Icon 的命名档 `"lg"`、`"sm"`、`"md"`（值不变）。12 和语言菜单的 11 要么借用现有 token，要么新设 token；新 token 属 C-2 以外的范围，需要裁定。 | R3 |
+| 5 | 兜底焦点环覆盖了部件自己的焦点画法（改前就是这样，本包保持不变） | 壳内兜底规则没有排除自带焦点画法的元素。头像的 `--tcrn-pair-edge-f` 是细线加环（`shell.css.ts:816`，`inset 0 0 0 1px` 加 focus ring），在壳内获焦时被兜底环换掉，细线看不到。菜单项、表格工具条、行号编辑器、可交互卡片、操作反馈详情钮自己的彩色 outline，在壳内也被兜底的透明 outline 换掉。`.tcrn-record-row[href]:focus-visible` 是 (0,3,0)，它的彩色 outline 能留下来，于是和兜底环叠成两道。浏览器对比表明这些都和改前一致，没有回退。 | 裁定兜底规则是否排除自带焦点画法的部件。排除的话，`:not()` 名单要加壳件和这些家族的类，各家族的彩色 outline 也要先按 C2 改成 pair 语法。 | R3 |
