@@ -5,7 +5,7 @@
   "head": "1a4e268",
   "inputSha256": "6356c0d5dae54cf00e148f4d298e5d1034111324c38ade439f10b7d987bb53b7",
   "baselineSha256": "4e544603bd32020ff74a1550bae9ffdd3b0e09f391145037ab6941e000a78d55",
-  "attributionMethod": "每条与 N2 交回的终版运行（HEAD 54fc3f5，只含截法变更，结果文件在会话 scratch，不入仓）同键比：在容差内记「截法变更」；N2 终版已越容差而本次又另变记「截法变更」加 R4-6；N2 终版在容差内而本次越容差记 R4-6。另变的 25 条都落在签名标题行，或因标题少折一行整体上移 20（3 条），逐条对到 SUB-218。",
+  "attributionMethod": "每条与 N2 交回的终版运行（N2 包树上提交 54fc3f5 的截法改动，不含 N1、N3 的改动；结果文件在会话 scratch，不入仓）同键比：在容差内记「截法变更」；N2 终版已越容差而本次又另变记「截法变更」加 R4-6；N2 终版在容差内而本次越容差记 R4-6。另变的 25 条都落在签名标题行，或因标题少折一行整体上移 20（3 条），逐条对到 SUB-218。",
   "captureNote": "新截法下 154 张高于纸可见高的截图底边画布行都是 0（旧截法 154 张都大于 0）。其中 152 条在 N2 终版就已越容差，本选择记截法变更（8 条另有 R4-6）；另 2 条在 N2 终版仍在容差内：navigation-product-shell-spec@mobile-390x844 因 R4-6 越容差进本选择（记 R4-6），navigation-product-shell-spec@tablet-1024x768 仍在容差内（mean 0.672、maxCell 7），基线不动。",
   "openDefects": {
     "O-4": "markText：DS 首行 1.4、底栏 TMS 锁定块 en 1.7（壳层门红，待 Owner）",
