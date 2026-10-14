@@ -139,8 +139,8 @@
 | N2 | 已合入，包树已退役（277M） | f29fb30、54fc3f5、6a94ce6 | 593332a | 两张完成：9 个根类入家族表（未归属 9 → 0）、故事截图拍全（154 条高故事自检全过）；contract:static 只剩 C8 15（O-19）；browser-proof 152 条高故事签名越容差交 SUB-224 重收；问题 5 条 |
 | N3 | 已合入，包树已退役（277M） | 791f40f、ac07f65、59d8479、3921903、08dd0cb | ce5501d | 三张完成、SUB-219 部分（doc-shell-class-proof.mjs:147 注释串不在本包）；左边条去掉（box-shadow none、左内距 0）、6 个死类删除、四道门过期读法改正、收紧后新发现 0；局部门全 0；问题 7 条 |
 | N4 | 已合入，包树已退役（277M） | ea4eb5b、c091b11、cda0c6a | 1a4e268 | 两张完成：map.json 同步、README 38、迁移说明开头与分消费方清单、M49–M52；局部门全 0；问题 2 条（M30 块数过期交判断） |
-| N5 | 在跑（自 1a4e268 后的集成 HEAD） | | | |
+| N5 | 已合入，包树已退役（327M） | 577e04b、c9f36bb、0d9c6a7、0b727ff、869914e、a68f389、d5d22ee | b01ee53 | SUB-224 完成：视觉签名重收 169 条（拍全 144、拍全加去左边条 8、去左边条 17），无预期外；browser-proof、tokens:proof、geometry:proof、visual-proof、doc-shell、contracts、hardening、pack:smoke、scan 全 0；geometry:measure 只剩 markText（O-4）；12 个 A 类离群与 14 行大变化写进 owner-acceptance.md；问题 4 条 |
 
 ## 下一步
 
-- R4 各包交回 → 合入 → 退役 → 派 N4、N5；全部合入后批末 verify（`tools/batch-end-verify.sh 4`）→ 验收 → 判断 → 链写 → 收口（预计只剩 Owner 阻点）。
+- R4 全部 5 包已合入，集成 HEAD 见 N5 行；批末 verify：`tools/batch-end-verify.sh 4` → 验收 → 判断 → 链写 → 收口。
