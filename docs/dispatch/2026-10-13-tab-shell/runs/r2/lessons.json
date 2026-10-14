@@ -1,0 +1,92 @@
+[
+ {
+  "subject": "壳层门的包件夹具要照包件真实 DOM 写，照板写会夹具绿、真件红",
+  "summary": "INIT-016 R2 的 package-menu.html 照板写：引导图标 22 宽带内距、没有隐藏的已固定列、快捷键提示不叠在输入框上。pinJitter、contrast、prail 在夹具上全绿，到真件上各红一处，三片验收分别报出。",
+  "snippet": "给门写包件夹具前，先在真件 DOM 上记下被测元素的盒模型、display 状态与叠放关系，夹具逐项照抄；新读法先在夹具上复现真件的红再改。",
+  "body": "K7 的包件夹具内容取自板：图标 svg 22 宽带 3 内距（包件是 16 宽居中在 22 轨道），菜单里没有 ≥1024 时按设计隐藏的已固定列，kbd 是搜索框的子元素（包件里是叠在 input 上的兄弟）。门在夹具上 18 门全绿、变异全红，真件却红了 pinJitter（隐藏钉钮 0×0）、contrast（effBg 取到面板白）和 prail（盒左缘 19 对 16）。夹具与真件 DOM 不同时，读法缺陷只会在批末真件上暴露。",
+  "tags": [
+   "tcrn-design-system",
+   "gates",
+   "fixtures",
+   "shell-measure",
+   "init-016"
+  ],
+  "evidence": [
+   "tests/fixtures/geometry-measure/shell/package-menu.html",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r2/acceptance/C.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r2/judgment.md"
+  ]
+ },
+ {
+  "subject": "对比度门只沿祖先链取底色，会漏掉叠在下面的兄弟元素",
+  "summary": "shell-measure 的 effBg 从元素往上找不透明底。搜索框的快捷键提示绝对定位，叠在 6% 墨洗的 input 上，是它的兄弟；门读到面板白，算出 8.58，板是 7.59，而实际视觉与板一致。",
+  "snippet": "对比度的底色按格中心 elementsFromPoint 的绘制栈往下合成；改完对照旧报告，确认只有叠放的格变了。",
+  "body": "INIT-016 R2 的壳层门 contrast 只在 srch-kbd-l、-n 判红（8.58 / 7.23 对 7.59 / 6.11），A、C 两片与 K2 追到同一原因：kbd 与 input 是兄弟，底色画在 input 上，祖先链上只有面板。measure-shell.js 用同一套 effBg，板上的 kbd 在搜索框里面，所以板屏读对、真件读错。凡是绝对定位叠在别的元素上的文字，比如徽标、角标、输入框内提示，按祖先取底都会错。",
+  "tags": [
+   "tcrn-design-system",
+   "contrast",
+   "measurement",
+   "shell-measure",
+   "init-016"
+  ],
+  "evidence": [
+   "scripts/lib/shell-measure.mjs",
+   "docs/design/gplus-2026-10/measure-shell.js",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r2/acceptance/A.md"
+  ]
+ },
+ {
+  "subject": "按盒量的关系断言，两侧盒模型不同会出假差",
+  "summary": "板的引导图标是 22×22、内距 3 的 svg，包件是 16 宽 svg 居中在 22 轨道，两边字形都在 19–35；prail 读盒左缘，于是板 16、包件 19。验收提议的 justify-self:start 能让门变绿，却会把字形左移 3、偏离板。",
+  "snippet": "关系断言红时，先比两侧的字形或内容盒，再比外框。字形同位，就让包件的盒模型照板，或两侧同改读法，不要移动看得见的东西。",
+  "body": "INIT-016 R2 的 prail 在 12 个 run 里红 19 对 16。B 片建议 justify-self:start，C 片建议改门量中心。判断对照 shell-screen.mjs 的 .ts-it .ic{width:22px;padding:3px} 与包件 CSS，确认差在盒而不在字形：照 B 的改法，门会转绿，Owner 目视看到的图标却左移 3。最后定为包件按板的盒画（22 盒、3 内距），门与 measure-shell.js 都不动。",
+  "tags": [
+   "tcrn-design-system",
+   "geometry",
+   "measurement",
+   "prail",
+   "init-016"
+  ],
+  "evidence": [
+   "docs/design/gplus-2026-10/tools/shell-screen.mjs",
+   "packages/ui-react/src/styles/shell.css.ts",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r2/judgment.md"
+  ]
+ },
+ {
+  "subject": "同一类载体在多处按类名列举，新加一个载体会全部漏掉",
+  "summary": "品牌字标的载体在三处按类名列举：文档换字跳过表、locale 台账、axe 字标豁免；browser-proof 还按语言期望后缀。SUB-161 新加的首行锁定块 __word、__suffix 三处都没收，zh-CN 字标被换成「TCRN 设计系统」，axe 也报了后缀。",
+  "snippet": "新增一种已有角色的载体（字标、单行承载、豁免对象）时，grep 出这个角色现有的全部名单一起改，再加一条测试断言各名单的集合相同。",
+  "body": "INIT-016 R2 的 K2 按类名列了三个字标载体，并同步了台账；K3 的 axe 豁免也只列三类。K11 的品牌首行 story 用的是 .tcrn-brand-lockup__word，于是 B、C 两片各报一条（换字、axe），K12 又报 brandMarkLocaleChecks 的期望与字标不译相反。同一个根因被拆成三条红，分散在三个文件、三个包里。列举式名单要么有共享来源，要么有交叉一致的测试。",
+  "tags": [
+   "tcrn-design-system",
+   "brand",
+   "i18n",
+   "enumeration",
+   "init-016"
+  ],
+  "evidence": [
+   "apps/storybook/src/build/client-scripts.ts",
+   "scripts/internal-alpha-browser-proof.mjs",
+   "scripts/lib/locale-invariant-ledger.mjs"
+  ]
+ },
+ {
+  "subject": "读页面文字的门要等水合与语言切换完成，否则结果会随竞态翻转",
+  "summary": "R2 把壳 story 改成客户端水合后，browser-proof 的 zh-CN 泄漏扫描读文字前不等水合。同类代码上四次运行分别读到 45、19、0、13 条新泄漏，几乎全在水合的壳 story 里。",
+  "snippet": "页面引入客户端挂载后，门读文字或 DOM 之前，要等挂载入口写出的完成标记（包括切换语言之后），不要靠固定延时。",
+  "body": "INIT-016 R2 的 SUB-151 用 renderToString 加 hydrateRoot，把静态页上的壳 story 变成真件，壳按 currentLocale 自己说话。internal-alpha-browser-proof 的 collectLocaleLeakScan 直接读文字，不等待。K11 两次整跑、K12 一次、批末一次，读数从 0 到 45 不等，一条时机问题伪装成了文案问题。凡是读水合区域的门，都需要挂载入口提供一个可以等待的完成标记。",
+  "tags": [
+   "tcrn-design-system",
+   "hydration",
+   "i18n",
+   "timing",
+   "init-016"
+  ],
+  "evidence": [
+   "scripts/internal-alpha-browser-proof.mjs",
+   "apps/storybook/src/build/shell-hydrate.tsx",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r2/acceptance/C.md"
+  ]
+ }
+]
