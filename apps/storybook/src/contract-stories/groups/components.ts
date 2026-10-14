@@ -2,6 +2,7 @@ import type { ContractStory } from "../types.js";
 import { selectStory } from "../story-content.js";
 import { gplusMatrixStories, shellMatrixStory } from "../gplus/matrix-stories.js";
 import { gplusCompositionThreeStory, gplusSampleStories } from "../gplus/sample-stories.js";
+import { shellBrandFirstLineStory } from "../shell-brand-first-line.js";
 
 export const componentsStories: ContractStory[] = [
   selectStory("component-family-index"),
@@ -19,8 +20,10 @@ export const componentsStories: ContractStory[] = [
   selectStory("shell-narrow"),
   selectStory("shell-mobile"),
   selectStory("shell-intro"),
-  // The shell board matrix (07a section B) closes the top-band shell stories (C-9).
+  // The shell board matrix (07a section B) closes the top-band shell stories (C-9); the products'
+  // first lines, which the shell gate's markText reads, follow it (TCRN-DS-SUB-161, C-12).
   shellMatrixStory,
+  shellBrandFirstLineStory,
   selectStory("dialog-spec-usage"),
   selectStory("table-record-index-spec"),
   selectStory("records-and-boards-components-spec"),

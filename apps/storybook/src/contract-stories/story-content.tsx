@@ -605,7 +605,9 @@ const documentSearchResults = [
 // documentation's desktop width their frames are 1023 and 390 wide.
 function shellStoryMarkup(storyId: string, screen: ShellStoryScreen): string {
   const html = renderToString(<ShellStoryRoot storyId={storyId} screen={screen} />, { identifierPrefix: shellStoryIdentifierPrefix(storyId, screen.screen) });
-  if (screen.state === "closed") return applyMarkupEdits(html, [{ marker: 'class="tcrn-shell-pins__item"', nth: 2, set: { "data-tcrn-preview-state": "hover" } }]);
+  // The board's closed screens only: the settings and roster pages (TCRN-DS-SUB-161) are pages, not
+  // the board's pointer state.
+  if (screen.state === "closed" && !screen.page) return applyMarkupEdits(html, [{ marker: 'class="tcrn-shell-pins__item"', nth: 2, set: { "data-tcrn-preview-state": "hover" } }]);
   return html;
 }
 
@@ -2364,7 +2366,7 @@ const legacyContractStories: LegacyContractStory[] = [
     id: "shell-top-band",
     title: "Top-band shell",
     group: "Components",
-    description: "The package ProductShell as the top band and the paper: closed, with the full menu open, and with a pinned item's drop-down and its third-level cascade, light and night.",
+    description: "The package ProductShell as the top band and the paper: closed, with the full menu open, and with a pinned item's drop-down and its third-level cascade, light and night; then the full menu with a query typed and its results, and a settings page and a roster page in the paper under long trails.",
     render: () => <ShellStoryBlocks storyId="shell-top-band" screens={shellTopBandScreens} />
   },
   {
@@ -2378,7 +2380,7 @@ const legacyContractStories: LegacyContractStory[] = [
     id: "shell-mobile",
     title: "Top-band shell on a phone",
     group: "Components",
-    description: "The top-band shell 390 wide, closed and with the menu open.",
+    description: "The top-band shell 390 wide, closed and with the menu open, then a settings page and a roster page in the paper under long trails.",
     render: () => <ShellStoryBlocks storyId="shell-mobile" screens={shellMobileScreens} width={shellStoryFrameWidths.mobile} />
   },
   {
