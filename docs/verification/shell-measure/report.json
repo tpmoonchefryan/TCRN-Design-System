@@ -16,7 +16,7 @@
   },
   "gates": {
     "brandGeometry": "pass",
-    "brandDigest": "fail",
+    "brandDigest": "pass",
     "strip": "pass",
     "edges": "pass",
     "pinSpacing": "pass",
@@ -25,17 +25,17 @@
     "markText": "fail",
     "cascade": "pass",
     "noCollapse": "pass",
-    "pinJitter": "fail",
+    "pinJitter": "pass",
     "lockupDecor": "pass",
-    "contrast": "fail",
-    "singleLine": "fail",
+    "contrast": "pass",
+    "singleLine": "pass",
     "shadowBlur": "pass",
     "intro": "pass",
     "focusLoop": "pass",
     "touch": "pass"
   },
   "checks": {
-    "prail": "fail",
+    "prail": "pass",
     "pageCrumbs": "pass",
     "settingsLayout": "pass",
     "splitView": "pass"
@@ -134,22 +134,9 @@
           ]
         },
         "pinJitter": {
-          "status": "fail",
+          "status": "pass",
           "checked": 5,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            },
-            {
-              "at": "ts-x-n",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            }
-          ]
+          "failures": []
         },
         "lockupDecor": {
           "status": "pass",
@@ -179,22 +166,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 2,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            },
-            {
-              "at": "ts-x-n",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -213,12 +187,9 @@
         }
       },
       "failed": [
-        "markText",
-        "pinJitter"
+        "markText"
       ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -315,22 +286,9 @@
           ]
         },
         "pinJitter": {
-          "status": "fail",
+          "status": "pass",
           "checked": 5,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            },
-            {
-              "at": "ts-x-n",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            }
-          ]
+          "failures": []
         },
         "lockupDecor": {
           "status": "pass",
@@ -360,22 +318,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 2,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            },
-            {
-              "at": "ts-x-n",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -394,12 +339,9 @@
         }
       },
       "failed": [
-        "markText",
-        "pinJitter"
+        "markText"
       ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -477,22 +419,9 @@
           ]
         },
         "pinJitter": {
-          "status": "fail",
+          "status": "pass",
           "checked": 5,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            },
-            {
-              "at": "ts-x-n",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            }
-          ]
+          "failures": []
         },
         "lockupDecor": {
           "status": "pass",
@@ -522,22 +451,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 2,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            },
-            {
-              "at": "ts-x-n",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -555,12 +471,8 @@
           "failures": []
         }
       },
-      "failed": [
-        "pinJitter"
-      ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -638,22 +550,9 @@
           ]
         },
         "pinJitter": {
-          "status": "fail",
+          "status": "pass",
           "checked": 5,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            },
-            {
-              "at": "ts-x-n",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            }
-          ]
+          "failures": []
         },
         "lockupDecor": {
           "status": "pass",
@@ -683,22 +582,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 2,
-          "failures": [
-            {
-              "at": "ts-x-l",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            },
-            {
-              "at": "ts-x-n",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -716,12 +602,8 @@
           "failures": []
         }
       },
-      "failed": [
-        "pinJitter"
-      ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -799,16 +681,9 @@
           ]
         },
         "pinJitter": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            }
-          ]
+          "failures": []
         },
         "lockupDecor": {
           "status": "pass",
@@ -838,16 +713,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -866,12 +734,9 @@
         }
       },
       "failed": [
-        "markText",
-        "pinJitter"
+        "markText"
       ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -949,16 +814,9 @@
           ]
         },
         "pinJitter": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            }
-          ]
+          "failures": []
         },
         "lockupDecor": {
           "status": "pass",
@@ -988,16 +846,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -1016,12 +867,9 @@
         }
       },
       "failed": [
-        "markText",
-        "pinJitter"
+        "markText"
       ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -1092,16 +940,9 @@
           ]
         },
         "pinJitter": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            }
-          ]
+          "failures": []
         },
         "lockupDecor": {
           "status": "pass",
@@ -1131,16 +972,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -1158,12 +992,8 @@
           "failures": []
         }
       },
-      "failed": [
-        "pinJitter"
-      ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -1234,16 +1064,9 @@
           ]
         },
         "pinJitter": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "pinButton",
-              "value": "0x0",
-              "expect": "24x24"
-            }
-          ]
+          "failures": []
         },
         "lockupDecor": {
           "status": "pass",
@@ -1273,16 +1096,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-narrow-x-l",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -1300,12 +1116,8 @@
           "failures": []
         }
       },
-      "failed": [
-        "pinJitter"
-      ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -1393,22 +1205,9 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
+          "status": "pass",
           "checked": 4,
-          "failures": [
-            {
-              "at": "ts-settings-m",
-              "what": "cut:nav.tcrn-breadcrumb",
-              "value": 50.6,
-              "expect": 0
-            },
-            {
-              "at": "ts-roster-m",
-              "what": "cut:nav.tcrn-breadcrumb",
-              "value": 18.3,
-              "expect": 0
-            }
-          ]
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
@@ -1423,16 +1222,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -1450,12 +1242,8 @@
           "failures": []
         }
       },
-      "failed": [
-        "singleLine"
-      ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -1543,22 +1331,9 @@
           "failures": []
         },
         "singleLine": {
-          "status": "fail",
+          "status": "pass",
           "checked": 4,
-          "failures": [
-            {
-              "at": "ts-settings-m",
-              "what": "cut:nav.tcrn-breadcrumb",
-              "value": 50.6,
-              "expect": 0
-            },
-            {
-              "at": "ts-roster-m",
-              "what": "cut:nav.tcrn-breadcrumb",
-              "value": 18.3,
-              "expect": 0
-            }
-          ]
+          "failures": []
         },
         "shadowBlur": {
           "status": "pass",
@@ -1573,16 +1348,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -1600,12 +1368,8 @@
           "failures": []
         }
       },
-      "failed": [
-        "singleLine"
-      ],
-      "failedChecks": [
-        "prail"
-      ],
+      "failed": [],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -1710,16 +1474,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -1738,9 +1495,7 @@
         }
       },
       "failed": [],
-      "failedChecks": [
-        "prail"
-      ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -1845,16 +1600,9 @@
       },
       "checks": {
         "prail": {
-          "status": "fail",
+          "status": "pass",
           "checked": 1,
-          "failures": [
-            {
-              "at": "ts-m-s",
-              "what": "prail.icon",
-              "value": 19,
-              "expect": 16
-            }
-          ]
+          "failures": []
         },
         "pageCrumbs": {
           "status": "pass",
@@ -1873,9 +1621,7 @@
         }
       },
       "failed": [],
-      "failedChecks": [
-        "prail"
-      ],
+      "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
     },
@@ -2144,7 +1890,7 @@
         },
         "brandDigest": {
           "status": "pass",
-          "checked": 4,
+          "checked": 3,
           "failures": []
         },
         "strip": {
@@ -2267,7 +2013,7 @@
         },
         "brandDigest": {
           "status": "pass",
-          "checked": 4,
+          "checked": 3,
           "failures": []
         },
         "strip": {
@@ -2544,22 +2290,9 @@
           "failures": []
         },
         "contrast": {
-          "status": "fail",
+          "status": "pass",
           "checked": 60,
-          "failures": [
-            {
-              "at": "srch-kbd-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 7.59
-            },
-            {
-              "at": "srch-kbd-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 6.11
-            }
-          ],
+          "failures": [],
           "pending": [
             {
               "cell": "brand-suffix-n",
@@ -2674,8 +2407,7 @@
         }
       },
       "failed": [
-        "markText",
-        "contrast"
+        "markText"
       ],
       "failedChecks": [],
       "missingHooks": [],
@@ -2854,22 +2586,9 @@
           "failures": []
         },
         "contrast": {
-          "status": "fail",
+          "status": "pass",
           "checked": 60,
-          "failures": [
-            {
-              "at": "srch-kbd-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 7.59
-            },
-            {
-              "at": "srch-kbd-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 6.11
-            }
-          ],
+          "failures": [],
           "pending": [
             {
               "cell": "brand-suffix-n",
@@ -2984,8 +2703,7 @@
         }
       },
       "failed": [
-        "markText",
-        "contrast"
+        "markText"
       ],
       "failedChecks": [],
       "missingHooks": [],
@@ -3151,22 +2869,9 @@
           "failures": []
         },
         "contrast": {
-          "status": "fail",
+          "status": "pass",
           "checked": 60,
-          "failures": [
-            {
-              "at": "srch-kbd-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 7.59
-            },
-            {
-              "at": "srch-kbd-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 6.11
-            }
-          ],
+          "failures": [],
           "pending": [
             {
               "cell": "brand-suffix-n",
@@ -3280,9 +2985,7 @@
           "failures": []
         }
       },
-      "failed": [
-        "contrast"
-      ],
+      "failed": [],
       "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
@@ -3447,22 +3150,9 @@
           "failures": []
         },
         "contrast": {
-          "status": "fail",
+          "status": "pass",
           "checked": 60,
-          "failures": [
-            {
-              "at": "srch-kbd-l",
-              "what": "ratio-expect",
-              "value": 8.58,
-              "expect": 7.59
-            },
-            {
-              "at": "srch-kbd-n",
-              "what": "ratio-expect",
-              "value": 7.23,
-              "expect": 6.11
-            }
-          ],
+          "failures": [],
           "pending": [
             {
               "cell": "brand-suffix-n",
@@ -3576,9 +3266,7 @@
           "failures": []
         }
       },
-      "failed": [
-        "contrast"
-      ],
+      "failed": [],
       "failedChecks": [],
       "missingHooks": [],
       "screenFailures": []
@@ -3649,58 +3337,9 @@
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
+          "status": "pass",
           "checked": 16,
-          "failures": [
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "mana-orchestrate",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "mana-orchestrate",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "design-system",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "design-system",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "lockup:lkr-line",
-              "what": "lockup.reference",
-              "value": "mana-orchestrate",
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lk-line",
-              "what": "lockup.reference",
-              "value": "mana-orchestrate",
-              "expect": "Brand E lk"
-            },
-            {
-              "at": "lockup:lkr-line",
-              "what": "lockup.reference",
-              "value": "design-system",
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lk-line",
-              "what": "lockup.reference",
-              "value": "design-system",
-              "expect": "Brand E lk"
-            }
-          ]
+          "failures": []
         },
         "strip": {
           "status": "n/a",
@@ -3806,7 +3445,6 @@
         }
       },
       "failed": [
-        "brandDigest",
         "markText"
       ],
       "failedChecks": [],
@@ -3879,58 +3517,9 @@
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
+          "status": "pass",
           "checked": 16,
-          "failures": [
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "mana-orchestrate",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "mana-orchestrate",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "design-system",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "design-system",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "lockup:lkr-line",
-              "what": "lockup.reference",
-              "value": "mana-orchestrate",
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lk-line",
-              "what": "lockup.reference",
-              "value": "mana-orchestrate",
-              "expect": "Brand E lk"
-            },
-            {
-              "at": "lockup:lkr-line",
-              "what": "lockup.reference",
-              "value": "design-system",
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lk-line",
-              "what": "lockup.reference",
-              "value": "design-system",
-              "expect": "Brand E lk"
-            }
-          ]
+          "failures": []
         },
         "strip": {
           "status": "n/a",
@@ -4036,7 +3625,6 @@
         }
       },
       "failed": [
-        "brandDigest",
         "markText"
       ],
       "failedChecks": [],
@@ -4093,13 +3681,13 @@
           "kind": "lkr-line",
           "product": "design-system",
           "mark": 22,
-          "inkMinusMark": -0.3
+          "inkMinusMark": 1.4
         },
         {
           "kind": "lk-line",
           "product": "design-system",
           "mark": 44,
-          "inkMinusMark": -1.1
+          "inkMinusMark": 1
         }
       ],
       "gates": {
@@ -4109,58 +3697,9 @@
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
+          "status": "pass",
           "checked": 16,
-          "failures": [
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "mana-orchestrate",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "mana-orchestrate",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "design-system",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "design-system",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "lockup:lkr-line",
-              "what": "lockup.reference",
-              "value": "mana-orchestrate",
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lk-line",
-              "what": "lockup.reference",
-              "value": "mana-orchestrate",
-              "expect": "Brand E lk"
-            },
-            {
-              "at": "lockup:lkr-line",
-              "what": "lockup.reference",
-              "value": "design-system",
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lk-line",
-              "what": "lockup.reference",
-              "value": "design-system",
-              "expect": "Brand E lk"
-            }
-          ]
+          "failures": []
         },
         "strip": {
           "status": "n/a",
@@ -4192,9 +3731,9 @@
           "checked": 16,
           "failures": [
             {
-              "at": "lk-line@44:design-system",
+              "at": "lkr-line@22:design-system",
               "what": "ink-mark",
-              "value": -1.1,
+              "value": 1.4,
               "expect": 0
             }
           ]
@@ -4266,7 +3805,6 @@
         }
       },
       "failed": [
-        "brandDigest",
         "markText"
       ],
       "failedChecks": [],
@@ -4323,13 +3861,13 @@
           "kind": "lkr-line",
           "product": "design-system",
           "mark": 22,
-          "inkMinusMark": -0.3
+          "inkMinusMark": 1.4
         },
         {
           "kind": "lk-line",
           "product": "design-system",
           "mark": 44,
-          "inkMinusMark": -1.1
+          "inkMinusMark": 1
         }
       ],
       "gates": {
@@ -4339,58 +3877,9 @@
           "failures": []
         },
         "brandDigest": {
-          "status": "fail",
+          "status": "pass",
           "checked": 16,
-          "failures": [
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "mana-orchestrate",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "mana-orchestrate",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "design-system",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "board:lockup",
-              "what": "mark.source",
-              "value": "design-system",
-              "expect": "logos2/<product>.svg"
-            },
-            {
-              "at": "lockup:lkr-line",
-              "what": "lockup.reference",
-              "value": "mana-orchestrate",
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lk-line",
-              "what": "lockup.reference",
-              "value": "mana-orchestrate",
-              "expect": "Brand E lk"
-            },
-            {
-              "at": "lockup:lkr-line",
-              "what": "lockup.reference",
-              "value": "design-system",
-              "expect": "Brand E rail"
-            },
-            {
-              "at": "lockup:lk-line",
-              "what": "lockup.reference",
-              "value": "design-system",
-              "expect": "Brand E lk"
-            }
-          ]
+          "failures": []
         },
         "strip": {
           "status": "n/a",
@@ -4422,9 +3911,9 @@
           "checked": 16,
           "failures": [
             {
-              "at": "lk-line@44:design-system",
+              "at": "lkr-line@22:design-system",
               "what": "ink-mark",
-              "value": -1.1,
+              "value": 1.4,
               "expect": 0
             }
           ]
@@ -4496,7 +3985,6 @@
         }
       },
       "failed": [
-        "brandDigest",
         "markText"
       ],
       "failedChecks": [],
@@ -4533,7 +4021,7 @@
             "transform",
             "opacity"
           ],
-          "durationMs": 475
+          "durationMs": 477
         }
       },
       "notes": [],
@@ -4583,7 +4071,7 @@
             "transform",
             "opacity"
           ],
-          "durationMs": 477
+          "durationMs": 493
         }
       },
       "notes": [],
@@ -4777,10 +4265,10 @@
     {
       "id": "story-pin-display-none-inline",
       "gate": "pinJitter",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
       "ok": true,
-      "verdict": "red on a red baseline, with a new failure",
+      "verdict": "turns red",
       "newFailures": [
         "ts-x-l|column1.textWidths|{\"rest\":[247.3],\"hover\":[223.3],\"on\":[223.3]}"
       ],
@@ -4810,10 +4298,10 @@
     {
       "id": "story-placeholder-ink-3",
       "gate": "contrast",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
       "ok": true,
-      "verdict": "red on a red baseline, with a new failure",
+      "verdict": "turns red",
       "newFailures": [
         "srch-ph-l|ratio-expect|4.99"
       ],
@@ -4827,11 +4315,16 @@
       "id": "story-label-plus-40",
       "gate": "singleLine",
       "baseline": "pass",
-      "status": "pass",
-      "ok": false,
-      "verdict": "stays pass",
-      "newFailures": [],
-      "changedGates": [],
+      "status": "fail",
+      "ok": true,
+      "verdict": "turns red",
+      "newFailures": [
+        "ts-x-l|lines:span.tcrn-nav-group__label-text|2",
+        "ts-x-l|clip:span.tcrn-nav-group__label-text in div.tcrn-shell-menu__cols|8"
+      ],
+      "changedGates": [
+        "singleLine"
+      ],
       "story": "shell-top-band",
       "source": "标签加长 40 字"
     },
@@ -4902,12 +4395,12 @@
     {
       "id": "story-guide-icons-right-4",
       "gate": "prail",
-      "baseline": "fail",
+      "baseline": "pass",
       "status": "fail",
       "ok": true,
-      "verdict": "red on a red baseline, with a new failure",
+      "verdict": "turns red",
       "newFailures": [
-        "ts-x-l|prail.icon|23"
+        "ts-x-l|prail.icon|20"
       ],
       "changedGates": [
         "prail"
@@ -5035,14 +4528,14 @@
       "gates": [
         "pinJitter"
       ],
-      "status": "fail"
+      "status": "pass"
     },
     {
       "row": "面包屑",
       "gates": [
         "singleLine"
       ],
-      "status": "fail"
+      "status": "pass"
     },
     {
       "row": "目录与书签",
