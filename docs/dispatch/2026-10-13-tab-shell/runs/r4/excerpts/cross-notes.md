@@ -21,6 +21,7 @@
 | N1 | `runs/r4/handoff/N1.md`（接口与迁移条目两节） | 所有写 `data-logo` 的元素都写标的 id（ds、mana、tms、einzbern），取法统一用新模块 `product-mark-id.ts` 的 `productMarkIdOf`（不从入口导出）；几何门报告 `probes[]` 多 `paperFocusRing`（真件 9 处读到、0 违规）；Disclosure 展开区内层 `overflow: clip` 加 `overflow-clip-margin`，描边画出；迁移条目（M42 末句不再成立）交 SUB-223；视觉签名与 `geometry-measure/report.json` 由 SUB-224 重收。已知：可折叠区里按钮的焦点环底边与起始边仍被裁 2px（新发现，只记） |
 | N3 | `runs/r4/handoff/N3.md`（第 5 节迁移条目与接口节） | 展开的故事标题去掉 3px 强调色左边条（与收起态一致）；文档层 6 个死类删除、白名单 14 → 7；notice 脚本跳过名单去掉 `build`，新增导出 `BUILD_OUTPUT_DIRECTORY` 与 `isSkippedDirectory(relativePath)`；selection-grammar 新增导出 `grammarFindings(sources)`，G+ 名的选中态禁形也能查到；smoke 新失败标识 `retired-side-nav-toggle-present`，去掉 `storybook-skin-sidebar-width` 与 `icon-center-delta`。已知：`scripts/doc-shell-class-proof.mjs:147` JSDoc 示例串仍含已删类名（不读，文件不在 N3）；browser-proof 第 1704、1882–1886 行与 geometry-proof 第 211–213 行有同类空读回（只记） |
 | N2 | `runs/r4/handoff/N2.md`（接口节） | 9 个根类登记进家族表（navigation 2、shell 5、inputs 2），包 CSS 未归属根类 9 → 0；故事截图时临时让文档壳根、纸与主区按内容高、`overflow: visible`，截完复原并自检，216 次截图尺寸不变、顶带不压故事；`browser-proof-summary.json` 新增 `storyCaptureFrame` 节并纳入 nonVisualProofOk；`visual-signature.mjs` 导出 `pngSize`、`trailingCanvasRows`、`capturedWholeStory`，`captureWithSignature` 新增 `frame` 选项。中间红：152 条高故事签名越容差，由 SUB-224 重收；回执都在 1,000,000 字节以下 |
+| N4 | `runs/r4/handoff/N4.md` | `storybook-map.json` 与 md 逐格一致（`7aa0f5` 0 处）；ui-react README 图标 38 并列 `pin`；迁移说明开头改为 M20…M52、分消费方清单补齐，追加 M49–M52——下一个追加者从 M53 起。已知：SUB-215 之后 M30 写的块数过期（navigation 9 实为 11、shell 14 实为 19，交判断） |
 
 ## 4. 其他事实
 
