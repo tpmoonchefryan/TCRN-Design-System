@@ -310,6 +310,15 @@ function buildSearchResults(variant: ShellVisualInstanceVariant): ProductShellSe
   ];
 }
 
+// The instance's whole-site search: the fixture records whose title or meta holds the query
+// (TCRN-DS-SUB-200).
+function fixtureSearch(records: readonly ProductShellSearchResult[]) {
+  return (query: string): ProductShellSearchResult[] => {
+    const needle = query.trim().toLocaleLowerCase();
+    return records.filter((record) => `${record.title} ${record.meta ?? ""}`.toLocaleLowerCase().includes(needle));
+  };
+}
+
 function workRows(locale: "en" | "zh-CN") {
   const isZh = locale === "zh-CN";
   return [
@@ -485,6 +494,12 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
         contentLabel={`${labels.contentLabel}: ${variant.id}`}
         skipLinkLabel={labels.skipLink}
         searchPlaceholder={labels.searchPlaceholder}
+        // TCRN-DS-SUB-200 (STORY-147, 150): the search-results variant is the full menu held open with
+        // its query typed, listing the instance's fixture records that match it; the other variants
+        // keep the shell's own closed menu.
+        menuOpen={isSearchResults ? true : undefined}
+        menuQuery={isSearchResults ? query : undefined}
+        searchProvider={fixtureSearch(buildSearchResults(variant))}
         data-storybook-visual-instance="frontend-shell-slice"
         data-visual-instance-name="FrontendShellSliceVisualInstance"
         data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"

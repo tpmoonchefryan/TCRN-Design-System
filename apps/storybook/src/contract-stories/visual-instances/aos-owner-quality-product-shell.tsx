@@ -419,7 +419,7 @@ function searchResults(variant: OwnerQualityVariant): ProductShellSearchResult[]
     {
       id: "work-queue",
       title: copy.work,
-      meta: variant.locale === "zh-CN" ? "6 个开放工作项" : "6 open work items",
+      meta: openWorkItems(variant.locale, queueRows(variant.locale).length),
       href: "/work",
       selected: variant.route === "work"
     },
@@ -454,6 +454,22 @@ function queueRows(locale: OwnerQualityVariant["locale"]): RecordRowProps[] {
       owner: "QA"
     }
   ];
+}
+
+// The work queue's count line, in the instance's own words (TCRN-DS-SUB-200). The zh-CN work queue's
+// 工作项 was the work index's column header; the work index went with the domain package, the record
+// table that replaced it has no header row, and the band search's result that still said 工作项 went
+// with the band search, so the count line under the queue's heading says it now.
+function openWorkItems(locale: OwnerQualityVariant["locale"], count: number): string {
+  return locale === "zh-CN" ? `${count} 个开放工作项` : `${count} open work items`;
+}
+
+// The instance's whole-site search: the fixture records whose title or meta holds the query.
+function fixtureSearch(records: readonly ProductShellSearchResult[]) {
+  return (query: string): ProductShellSearchResult[] => {
+    const needle = query.trim().toLocaleLowerCase();
+    return records.filter((record) => `${record.title} ${record.meta ?? ""}`.toLocaleLowerCase().includes(needle));
+  };
 }
 
 function gateRows(locale: OwnerQualityVariant["locale"]) {
@@ -512,6 +528,7 @@ function serviceItems(locale: OwnerQualityVariant["locale"]) {
 function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
   const copy = labels(variant.locale);
   const isWorkFirst = variant.contentMode === "work";
+  const queue = queueRows(variant.locale);
   return (
     <div className="tcrn-product-shell-content-stack" data-package-owned-spacing-rhythm="product-shell-content-stack">
       <Surface
@@ -529,7 +546,8 @@ function OperationsContent({ variant }: { variant: OwnerQualityVariant }) {
       <div className="tcrn-product-shell-section-grid" data-package-owned-section-rhythm="work-gates">
         <Surface data-owner-quality-work-queue="true" aria-label={`${copy.workTitle}: ${variant.id}`}>
           <Heading level={2}>{copy.workTitle}</Heading>
-          <RecordTable rows={queueRows(variant.locale)} label={`${copy.workTitle} records: ${variant.id}`} locale={variant.locale} />
+          <Text>{openWorkItems(variant.locale, queue.length)}</Text>
+          <RecordTable rows={queue} label={`${copy.workTitle} records: ${variant.id}`} locale={variant.locale} />
         </Surface>
         <Surface data-owner-quality-gates="true" aria-label={`${copy.gateTitle}: ${variant.id}`}>
           <Heading level={2}>{copy.gateTitle}</Heading>
@@ -605,6 +623,12 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
         contentLabel={`${copy.contentLabel}: ${variant.id}`}
         skipLinkLabel={copy.skipLink}
         searchPlaceholder={copy.searchPlaceholder}
+        // TCRN-DS-SUB-200 (STORY-147, 150): the search-results variant is the full menu held open with
+        // its query typed, listing the instance's fixture records that match it; the other variants
+        // keep the shell's own closed menu.
+        menuOpen={searchExpanded ? true : undefined}
+        menuQuery={searchExpanded ? query : undefined}
+        searchProvider={fixtureSearch(searchResults(variant))}
         data-storybook-visual-instance="owner-quality-product-shell"
         data-visual-instance-name="OwnerQualityShellOracle"
         data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
