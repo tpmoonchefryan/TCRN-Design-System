@@ -155,6 +155,15 @@
 
 - 拆分：einzbern-economy 单独一次，输入 `runs/r4/judgment.md` §2（R5-1…R5-4）与 §5；包名 Q1、Q2；Subtask 键号从 `TCRN-DS-SUB-225` 起；产出写 `runs/r5/`。之后 Q1（主力）→ Q2（经济）→ 批末 verify → 验收与判断合一（einzbern-main 一个代理）→ 链写 → 收口。
 
+- 拆分（2ff4415）：4 张 Subtask（SUB-225…228）、2 包 2 波（Q1 主力 W1：SUB-225；Q2 经济 W2：SUB-226 → 227 → 228，前置 Q1），约 115 响应；问题 8 条（SUB-226 的 grep 另排除迁移说明 M50 的删除记录；SUB-225 的用例只读 actions.css.ts 那条 outline 规则；回执「实质变化」按 C-9 (b) 只认读数或判定变化）。
+- 开工链写：4 个 work-create，WORKSPACE_COMMAND_COMPLETED，version 2435 → 2439；读回零差异（planned）。
+- 跨包通告 `runs/r5/excerpts/cross-notes.md`。W1 已派：Q1（einzbern-main），包树 scratch `pkg/r5-q1`，摘录 `runs/r5/excerpts/Q1.md`。
+
+| 包 | 状态 | 包内提交 | 合入 | 备注 |
+| --- | --- | --- | --- | --- |
+| Q1 | 实施中 | — | — | SUB-225 |
+| Q2 | 待 Q1 合入 | — | — | SUB-226 → 227 → 228 |
+
 ## 下一步
 
-- R5 拆分交回 → 建单 → Q1 → Q2 → 批末 verify → 验收与判断合一 → 收口。
+- Q1 交回 → 合入、退役包树、补跨包通告第 3 节 → Q2 → 批末 verify → 验收与判断合一 → R5 链写与知识卡 → 收口。
