@@ -1950,6 +1950,14 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   pinnedIds?: readonly string[];
   /** Pins or unpins an entry; without it the menu rows have no pin. */
   onPinnedChange?: (id: string, pinned: boolean) => void;
+  /**
+   * Takes the pins' new order, every id of `pinnedIds` in it, when the reader moves a pinned item
+   * in the band: a drag that ends with it in a new place, or Alt+← / Alt+→ on it (TCRN-DS-SUB-149).
+   * useProductShellController's productShellControlProps connect it to movePin, which keeps the
+   * order in the pins preference (the product's backend through onPinsChange; never a cookie).
+   * Without it the pinned items do not move.
+   */
+  onPinsReorder?: (orderedIds: readonly string[]) => void;
   /** Whether the full menu is open; the shell keeps its own state when omitted. */
   menuOpen?: boolean;
   onMenuOpenChange?: (open: boolean, reason: ProductShellMenuChangeReason) => void;
@@ -2087,6 +2095,7 @@ export function ProductShell({
   notifications,
   pinnedIds = [],
   onPinnedChange,
+  onPinsReorder,
   menuOpen,
   onMenuOpenChange,
   openPinId,
@@ -2173,6 +2182,14 @@ export function ProductShell({
     .map((id) => productShellFindEntry(navGroups, id))
     .filter((target): target is ProductShellPinTarget => target !== null);
   const pinItems = pinTargets.map((target) => target.pin);
+  // The band moves the entries the menu model holds; an id it does not hold keeps its place.
+  const reorderPins = onPinsReorder
+    ? (ordered: readonly string[]) => {
+        const moved = new Set(ordered);
+        const queue = [...ordered];
+        onPinsReorder(pinnedIds.map((id) => (moved.has(id) ? (queue.shift() ?? id) : id)));
+      }
+    : undefined;
   const shownTargets = pinTargets.slice(0, shellPinsMax());
   const selection = productShellSelection(navGroups);
   const selectedId = selection?.id ?? null;
@@ -2227,6 +2244,7 @@ export function ProductShell({
           menuIdOf={dropIdOf}
           locale={currentLocale}
           landmarkLabel={landmarkLabel}
+          onPinsReorder={reorderPins}
         />
         <div className="tcrn-shell-cluster" data-cluster="">
           {headerActions ? (
@@ -2498,6 +2516,31 @@ export function useProductShellController({
     setPins([...rest.slice(0, to), id, ...rest.slice(to)]);
   }, [setPins]);
 
+  /**
+   * Takes a new order of the pins (ProductShell's onPinsReorder: a drag in the band, Alt+← or
+   * Alt+→): the one entry that moved goes to its place through movePin. An order that moved more
+   * than one entry is kept as given; ids it leaves out stay after it (TCRN-DS-SUB-149).
+   */
+  const reorderPins = useCallback((orderedIds: readonly string[]) => {
+    const current = pinsRef.current;
+    const next = [...new Set(orderedIds.filter((id) => current.includes(id))), ...current.filter((id) => !orderedIds.includes(id))];
+    const first = next.findIndex((id, index) => id !== current[index]);
+    if (first < 0) return;
+    let last = next.length - 1;
+    while (last > first && next[last] === current[last]) last -= 1;
+    const forward = current[first];
+    const back = current[last];
+    if (forward !== undefined && next[last] === forward && next.slice(first, last).every((id, index) => id === current[first + 1 + index])) {
+      movePin(forward, last);
+      return;
+    }
+    if (back !== undefined && next[first] === back && next.slice(first + 1, last + 1).every((id, index) => id === current[first + index])) {
+      movePin(back, first);
+      return;
+    }
+    setPins(next);
+  }, [movePin, setPins]);
+
   const setTheme = useCallback((nextTheme: ShellThemeMode) => {
     const resolvedTheme = nextTheme === "dark" ? "dark" : "light";
     const update = () => {
@@ -2608,7 +2651,8 @@ export function useProductShellController({
     onSearchQueryChange: setSearchQuery,
     searchProvider: searchRecords.length > 0 ? searchProvider : undefined,
     pinnedIds: pins,
-    onPinnedChange: setPinned
+    onPinnedChange: setPinned,
+    onPinsReorder: reorderPins
   } satisfies Partial<ProductShellProps>;
 
   return {
@@ -2616,6 +2660,7 @@ export function useProductShellController({
     setPins,
     setPinned,
     movePin,
+    reorderPins,
     theme,
     setTheme,
     toggleTheme,
