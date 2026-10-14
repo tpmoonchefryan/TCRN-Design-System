@@ -266,7 +266,12 @@ const storybookDocShellControlContract = {
   docShellMarkersVisible: storybookRuntimeBodies.some((source) => /<ProductShell\b/.test(source.body)
       && /data-shell=["']doc["']/.test(source.body)
       && /data-doc-shell=["']online-docs["']/.test(source.body))
-    && storybookRuntimeBodies.some((source) => /data-shell-menu/.test(source.body) && /data-panel=["']account["']/.test(source.body))
+    // The documentation shell is hydrated on the page (TCRN-DS-SUB-201): a runtime source mounts its block
+    // (data-doc-shell-root with data-shell-hydrate) from the model the page carries (data-doc-shell-config),
+    // and the hydrated shell opens its layers, the full menu and the avatar menu, through tcrnDocShellLayers.
+    && storybookRuntimeBodies.some((source) => /data-doc-shell-root/.test(source.body)
+      && /data-shell-hydrate/.test(source.body)
+      && /data-doc-shell-config/.test(source.body))
     && storybookRuntimeBodies.some((source) => /tcrnDocShellLayers/.test(source.body)),
   globalProductShellReplacementAbsent: storybookBodies.some((source) => /data-doc-shell=["']online-docs["']/.test(source.body))
     && !storybookRuntimeBodies.some((source) => /data-storybook-shell-authority=["']@tcrn\/ui-react\/ProductShell["']/.test(source.body))
@@ -282,8 +287,9 @@ const storybookDocShellControlContract = {
   focusSearchRuleVisible: /The shell's search is the full menu's/.test(uiReactReadme)
     && uiReactReadme.includes("compact at rest and expand on focus")
     && /collapse on\s+blur/.test(uiReactReadme)
-    && storybookBodies.some((source) => /data-doc-search-input/.test(source.body))
-    && storybookBodies.some((source) => /data-search-expanded/.test(source.body)),
+    // The documentation pages' search is the full menu's (TCRN-DS-SUB-201): a runtime source reads the page's
+    // search index (data-doc-search-index) and serves it to the hydrated shell through searchProvider.
+    && storybookRuntimeBodies.some((source) => /data-doc-search-index/.test(source.body) && /searchProvider/.test(source.body)),
   aiContractToolbarBoundaryVisible: /not a top-band control for human\s+readers/.test(uiReactReadme)
     && storybookBodies.some((source) => /data-ai-consumption-contract-story/.test(source.body))
     && !storybookRuntimeBodies.some((source) => /data-ai-consumption-contract-link/.test(source.body))

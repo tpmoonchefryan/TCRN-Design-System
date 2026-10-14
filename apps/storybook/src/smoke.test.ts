@@ -196,7 +196,7 @@ const expectedAiRequiredBeforeProductFrontendImplementation = [
   "prove_product_shell_visual_oracle_skin",
   "use_product_shell_semantic_control_api",
   "prove_locale_popup_dismissal_and_focus_return",
-  "prove_side_navigation_collapse_state",
+  "prove_top_band_full_menu_and_pins",
   "offer_an_in_product_way_back_from_drilled_down_routes",
   "transport_locale_and_theme_in_a_server_readable_store",
   "use_records_and_boards_patterns_for_static_record_surfaces",
@@ -219,7 +219,7 @@ const expectedAiRequiredProof = [
   "storybook_shell_control_receipt",
   "storybook_doc_shell_visual_oracle_receipt",
   "locale_popup_dismissal_receipt",
-  "side_navigation_collapse_receipt",
+  "top_band_navigation_receipt",
   "navigation_reversibility_receipt",
   "server_rendered_preference_receipt",
   "functional_display_static_pattern_receipt",
@@ -327,20 +327,30 @@ function assertNoLocalAbsolutePathText(label: string, value: string): void {
   assert.doesNotMatch(value, localAbsolutePathPattern, `${label} must not retain local absolute paths`);
 }
 
-// The documentation shell is the package's top-band ProductShell (TCRN-DS-SUB-131): the sections and
-// their category pages are rows of the full menu (hidden until the brand button opens it), and a page's
-// stories are the links of its contents rail (TocRail) in the paper (TCRN-DS-SUB-132).
-function readDocShellNavHtml(html: string): string {
-  const start = html.indexOf('<div class="tcrn-shell-menu" data-shell-menu="" hidden="">');
-  const end = html.indexOf('data-shell-pbar=""', start);
-  assert.ok(start > -1, "missing doc shell menu start");
-  assert.ok(end > start, "missing doc shell menu bottom bar");
-  return html.slice(start, end);
+// The documentation shell is the package's top-band ProductShell, hydrated on the page (TCRN-DS-SUB-131,
+// TCRN-DS-SUB-201): the sections and their category pages are rows of its full menu, which is in the page only while
+// it is open, so the static readers take the menu's model, the JSON the page carries for the shell
+// (script[data-doc-shell-config]; the first page's in the given HTML). A page's stories are the links of its
+// contents rail (TocRail) in the paper (TCRN-DS-SUB-132).
+interface DocShellModelItem {
+  href?: string;
+  selected?: boolean;
+  children?: DocShellModelItem[];
+}
+
+function readDocShellModel(html: string): { navGroups: { id: string; items?: DocShellModelItem[] }[] } {
+  const match = html.match(/<script type="application\/json" data-doc-shell-config>([\s\S]*?)<\/script>/);
+  assert.ok(match, "missing doc shell model (script[data-doc-shell-config])");
+  return JSON.parse(match[1]);
+}
+
+function docShellModelEntries(items: readonly DocShellModelItem[] = []): DocShellModelItem[] {
+  return items.flatMap((item) => [item, ...docShellModelEntries(item.children)]);
 }
 
 function readDocShellRowHrefs(html: string, current = false): string[] {
-  const rows = Array.from(readDocShellNavHtml(html).matchAll(/<a [^>]*data-shell-row=""[^>]*>/g), (match) => match[0]);
-  return [...new Set(rows.filter((row) => !current || /aria-current="page"/.test(row)).map((row) => row.match(/href="([^"]+)"/)?.[1] ?? ""))];
+  const rows = readDocShellModel(html).navGroups.flatMap((group) => docShellModelEntries(group.items));
+  return [...new Set(rows.filter((row) => !current || row.selected === true).map((row) => row.href ?? "").filter(Boolean))];
 }
 
 function readDocShellCategoryIds(html: string): string[] {
@@ -516,10 +526,13 @@ test("static contract story surface is retained and synthetic", () => {
   // and the contents in the paper's TocRail (TCRN-DS-SUB-132).
   assert.match(combinedHtml, /data-shell="doc" data-doc-shell="online-docs"/);
   assert.match(combinedHtml, /<header class="tcrn-shell-strip"[^>]*data-shell-strip=""/);
-  assert.match(combinedHtml, /<div class="tcrn-shell-menu" data-shell-menu="" hidden="">/);
-  assert.match(combinedHtml, /data-shell-row=""/);
-  assert.match(combinedHtml, /data-shell-group=""/);
-  assert.match(combinedHtml, /data-shell-row=""[^>]*aria-current="page"/);
+  // The shell is hydrated on the page (TCRN-DS-SUB-201): its block and its model are in the static page; its full
+  // menu, avatar menu and language list exist only while open, so the model carries the menu's rows.
+  assert.match(combinedHtml, /<div data-doc-shell-root="" data-shell-hydrate=""/);
+  assert.match(combinedHtml, /<script type="application\/json" data-doc-shell-config>/);
+  assert.doesNotMatch(combinedHtml, /<div class="tcrn-shell-menu" data-shell-menu="" hidden="">/);
+  assert.ok(readDocShellRowHrefs(combinedHtml).length > 0, "the doc shell model lists the full menu's rows");
+  assert.equal(readDocShellRowHrefs(combinedHtml, true).length, 1, "the doc shell model marks one current row");
   assert.match(combinedHtml, /<div class="tcrn-doc-page__toc" data-doc-toc="">/);
   assert.doesNotMatch(combinedHtml, /data-storybook-shell-authority="@tcrn\/ui-react\/ProductShell"/);
   assert.doesNotMatch(combinedHtml, /data-storybook-product-shell-skin="confirmed-storybook-visual-v1"/);
@@ -550,15 +563,18 @@ test("static contract story surface is retained and synthetic", () => {
     assert.doesNotMatch(html, /class="[^"]*tcrn-product-shell__sidebar/, `unexpected ProductShell sidebar outside component examples: ${group}`);
     assert.equal(occurrences(html, /class="[^"]*tcrn-product-shell__main/), shellPages, `unexpected ProductShell main outside component examples: ${group}`);
     assert.doesNotMatch(html, /data-product-shell-route="/, `unexpected ProductShell route outside component examples: ${group}`);
-    assert.equal(occurrences(html, /data-shell-control="product-shell-search"/), shellPages, `unexpected ProductShell search outside component examples: ${group}`);
-    assert.equal(occurrences(html, /class="[^"]*tcrn-product-shell-search__results/), shellPages, `unexpected ProductShell search results outside component examples: ${group}`);
+    // The doc shell's search is the full menu's and renders only while the menu is open (TCRN-DS-SUB-201): the
+    // static page carries no search control and one search index per page.
+    assert.equal(occurrences(html, /data-shell-control="product-shell-search"/), 0, `unexpected ProductShell search outside component examples: ${group}`);
+    assert.equal(occurrences(html, /class="[^"]*tcrn-product-shell-search__results/), 0, `unexpected ProductShell search results outside component examples: ${group}`);
+    assert.equal(occurrences(html, /<script type="application\/json" data-doc-search-index>/), shellPages, `missing doc search index: ${group}`);
   }
   assert.match(combinedHtml, /data-shell-control="theme-toggle"/);
   assert.match(combinedHtml, /data-shell-control="locale-menu"/);
   // No side rail and no collapse control in the shell (MIN-20261013-SHELL D1); the old doc-shell variables are gone.
   assert.doesNotMatch(combinedHtml, /--tcrn-doc-shell-|--tcrn-doc-header-/);
   assert.match(combinedHtml, /--tcrn-shell-strip-h/);
-  assert.match(combinedHtml, /data-i18n-aria-label="shell\.languageLabel"/);
+  assert.doesNotMatch(combinedHtml, /data-i18n-aria-label="shell\.languageLabel"/);
   assert.match(combinedHtml, /data-doc-toc=""/);
   assert.match(combinedHtml, /data-mandatory-boundary-block="visible"/);
   assert.match(combinedHtml, /data-no-overclaim-boundary="visible"/);
@@ -572,7 +588,10 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /tcrnStorybookScrollSpy/);
   assert.match(combinedHtml, /tcrnStorybookScrollSpy/);
   assert.match(combinedHtml, /addEventListener\("scroll", scheduleScrollSpy/);
-  assert.match(combinedHtml, /data-i18n-locale-select/);
+  // The hidden language drop-down left with the static shell (TCRN-DS-SUB-201); the page applies a language through
+  // window.tcrnStorybookApplyLocale, and the avatar menu's language list is the package's.
+  assert.doesNotMatch(combinedHtml, /data-i18n-locale-select|id="tcrn-doc-locale"/);
+  assert.match(combinedHtml, /window\.tcrnStorybookApplyLocale = applyLocale/);
   assert.match(combinedHtml, /<link rel="icon" href="tcrn-brand-mark\.svg" type="image\/svg\+xml" \/>/);
   assert.match(combinedHtml, /data-tcrn-doc-shell-component-style="package-backed"/);
   assert.match(combinedHtml, /class="[^"]*tcrn-search-input__control/);
@@ -584,18 +603,19 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /tcrn-doc-theme-transition-wash/);
   assert.match(combinedHtml, /role="combobox"/);
   assert.match(combinedHtml, /aria-keyshortcuts="Control\+K Meta\+K"/);
-  assert.match(combinedHtml, /data-doc-search-results/);
-  assert.match(combinedHtml, /<input data-doc-search-input=""/);
+  // The static search and its hooks left with the static shell (TCRN-DS-SUB-201): the full menu's search reads the
+  // page's search index through the shell's searchProvider.
+  assert.doesNotMatch(combinedHtml, /data-doc-search-input|data-doc-search-results?\b/);
+  assert.match(combinedHtml, /<script type="application\/json" data-doc-search-index>/);
   assert.match(combinedHtml, /role="listbox"/);
-  assert.match(combinedHtml, /data-doc-search-result/);
   assert.match(combinedHtml, /data-storybook-theme="light"/);
   assert.match(combinedHtml, /data-storybook-supported-themes="light,dark"/);
   assert.match(combinedHtml, /data-current-theme="light"/);
   assert.match(combinedHtml, /data-package-backed-shell-control="theme-toggle"/);
   assert.match(combinedHtml, /data-theme-icon="light"[\s\S]*data-icon-name="sun"/);
   assert.match(combinedHtml, /data-theme-icon="dark"[\s\S]*data-icon-name="moon"/);
-  assert.match(combinedHtml, /toggle\.setAttribute\("data-theme-label-key", labelKey\)/);
-  assert.match(combinedHtml, /data-i18n-aria-label="shell\.languageLabel"/);
+  assert.doesNotMatch(combinedHtml, /data-storybook-theme-toggle|data-storybook-theme-option/);
+  assert.doesNotMatch(combinedHtml, /data-i18n-aria-label="shell\.languageLabel"/);
   assert.match(combinedHtml, /data-locale-menu-toggle/);
   assert.match(combinedHtml, /data-package-backed-shell-control="locale-menu"/);
   assert.match(combinedHtml, /data-icon-name="globe-2"/);
@@ -610,24 +630,21 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /data-ai-consumption-contract-link="true"/);
   assert.doesNotMatch(combinedHtml, /data-storybook-content-icon="ai-contract"/);
   assert.doesNotMatch(combinedHtml, /tcrn-doc-ai-contract-link/);
-  assert.match(combinedHtml, /event\.key\.toLowerCase\(\) !== "k"/);
-  // TCRN-DS-STORY-060: the search index now merges nav + panel + component-reference readers.
-  assert.match(combinedHtml, /\[\.\.\.readItems\(\), \.\.\.readPanelItems\(\), \.\.\.readComponentItems\(\)\]/);
+  // The full menu's search is the hydrated shell's (TCRN-DS-SUB-201): it merges the page's search index (sections,
+  // categories, stories) with this page's read-back panels and component regions (TCRN-DS-STORY-060) through searchProvider.
+  const docShellHydrateSource = readStorybookSource("src/build/shell-hydrate.tsx");
+  assert.match(docShellHydrateSource, /document\.querySelector\("\[data-doc-search-index\]"\)/);
+  assert.match(docShellHydrateSource, /\[\.\.\.site, \.\.\.panels, \.\.\.components\]/);
+  assert.match(docShellHydrateSource, /searchProvider=\{searchProvider\}/);
   assert.match(combinedHtml, /\.tcrn-readback-panel\[id\]/);
-  assert.match(combinedHtml, /data-component-reference-id\]\[id\]/);
+  assert.match(docShellHydrateSource, /\[data-component-reference-id\]\[id\]/);
   // Platform-correct shortcut label (both branches present; CI is Linux so the rendered text is Ctrl K).
   assert.match(combinedHtml, /\/mac\|iphone\|ipad\|ipod\/i\.test/);
   assert.ok(combinedHtml.includes("⌘ K") && combinedHtml.includes("Ctrl K"));
-  assert.match(combinedHtml, /resultsBox\.addEventListener\("mousedown"/);
-  assert.match(combinedHtml, /new URL\(result\.href, window\.location\.href\)/);
-  assert.match(combinedHtml, /window\.location\.href = targetUrl\.href/);
-  assert.match(combinedHtml, /preserveWindowScroll/);
-  assert.match(combinedHtml, /focusSearchInput/);
-  assert.match(combinedHtml, /setSearchExpanded/);
+  // The static search script's handlers (results mousedown, URL navigation, pointer dismissal, focus without scroll)
+  // left with it; the package's full menu owns them (TCRN-DS-SUB-201).
+  assert.doesNotMatch(combinedHtml, /resultsBox\.addEventListener|focusSearchInput|setSearchExpanded/);
   assert.match(combinedHtml, /data-search-expanded/);
-  assert.match(combinedHtml, /document\.addEventListener\("pointerdown"/);
-  assert.match(combinedHtml, /input\.focus\(\{ preventScroll: true \}\)/);
-  assert.match(combinedHtml, /input\.addEventListener\("pointerdown"/);
   assert.match(combinedHtml, /shell\.searchNoResults/);
   assert.match(combinedHtml, /data-side-nav-icon="collapse"[\s\S]*data-icon-name="chevron-left"/);
   assert.match(combinedHtml, /data-side-nav-icon="expand"[\s\S]*data-icon-name="chevron-right"/);
@@ -658,7 +675,6 @@ test("static contract story surface is retained and synthetic", () => {
   assert.doesNotMatch(combinedHtml, /tcrn-doc-sidebar-toggle__/);
   assert.match(combinedHtml, /data-locale-menu/);
   assert.match(combinedHtml, /data-locale-menu-option[\s\S]*data-locale="ja"[\s\S]*data-locale-name="日本語"/);
-  assert.match(combinedHtml, /querySelector\("\.tcrn-shell-locale-menu__name, \[data-locale-option-name\]"\)/);
   assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-aria-label\]"\)/);
   assert.match(combinedHtml, /querySelectorAll\("\[data-i18n-title\]"\)/);
   assert.match(combinedHtml, /tcrn-design-system-storybook-theme/);
@@ -666,7 +682,7 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(combinedHtml, /next\.searchParams\.set\("theme", theme\)/);
   assert.match(combinedHtml, /next\.searchParams\.set\("theme", currentTheme\)/);
   for (const locale of tcrnSupportedLocales) {
-    assert.match(combinedHtml, new RegExp(`option value="${escapeRegExp(locale)}"`));
+    assert.match(combinedHtml, new RegExp(`const supportedLocales = \\[[^\\]]*"${escapeRegExp(locale)}"`));
     // TCRN-DS-STORY-051: only the two theme labels the shell actually renders (page-template
     // theme toggle + client-scripts label swap) are pinned. shell.themeLabel/themeHint/
     // themeLightShort/themeDarkShort were dormant dictionary keys (defined + translated but
@@ -802,7 +818,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /tcrn-segmented-nav/);
   assert.match(readGroupPage("Components"), /tcrn-product-switcher/);
   assert.match(readGroupPage("Components"), /tcrn-skip-link/);
-  assert.match(readGroupPage("Style Guide"), /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
+  // The doc shell's lockup is the hydrated shell's (TCRN-DS-SUB-201); the static pages carry the registered ProductLogo
+  // in the component stories.
+  assert.match(readGroupPage("Components"), /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
   assert.match(readGroupPage("Style Guide"), /data-brand-asset-registration="design-system"/);
   assert.match(readRenderedGroupPage("Components"), /Navigation and shell spec/);
   assert.match(readRenderedGroupPage("Components"), /Navigation shell components are first-class component contracts/);
@@ -999,9 +1017,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Foundations"), /Missing standard escalation/);
   assert.match(readRenderedGroupPage("Foundations"), /Storybook doc shell control contract/);
   assert.match(readGroupPage("Foundations"), /Use one circular icon-only button/);
-  assert.match(readRenderedGroupPage("Foundations"), /Use the Storybook doc shell as the documentation shell authority/);
-  assert.match(readRenderedGroupPage("Foundations"), /ProductShell remains scoped to component docs, product visual instances, and consumer rules/);
-  assert.match(readRenderedGroupPage("Foundations"), /Global Storybook pages rendered through ProductShell/);
+  assert.match(readRenderedGroupPage("Foundations"), /Render every documentation page in the package ProductShell, once per page/);
+  assert.match(readRenderedGroupPage("Foundations"), /a ProductShell inside a story body is a component example, a product visual instance, or a consumer rule/);
+  assert.match(readRenderedGroupPage("Foundations"), /A second page shell, a resident side rail, a collapse control/);
   assert.match(readGroupPage("Foundations"), /one whole-page transition/);
   assert.match(readGroupPage("Foundations"), /current locale name in that locale/);
   assert.match(readGroupPage("Foundations"), /outside pointer down or click, and Escape/);
@@ -1010,8 +1028,8 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Foundations"), /Top-band shell navigation/);
   assert.match(readGroupPage("Foundations"), /Navigation lives only in the band, the full menu, and the drop-downs, so there is no collapse control/);
   assert.match(readGroupPage("Foundations"), /planned modules presented as registered product IA/);
-  assert.match(readGroupPage("Foundations"), /Keep search compact at rest, expand smoothly on focus, and collapse on blur/);
-  assert.match(readGroupPage("Foundations"), /not as a top-bar human navigation item/);
+  assert.match(readGroupPage("Foundations"), /The search is a field of the full menu: it keeps its width on focus/);
+  assert.match(readGroupPage("Foundations"), /not as a band or menu navigation item/);
   assert.match(readRenderedGroupPage("Proof"), /AI consumption contract/);
   assert.match(readGroupPage("Proof"), /data-ai-consumption-contract-story="true"/);
   assert.match(readGroupPage("Proof"), /Covered section hierarchy/);
@@ -1020,12 +1038,13 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readRenderedGroupPage("Proof"), /Light and dark Storybook shell/);
   assert.match(readRenderedGroupPage("Proof"), /Check both light and dark Storybook shell modes before product frontend work/);
   assert.match(readGroupPage("Proof"), /Storybook shell controls/);
-  assert.match(readGroupPage("Proof"), /single icon theme toggle, native-name locale menu, focus-expanded search, no AI JSON link in the top bar, and one whole-page theme transition/);
+  assert.match(readGroupPage("Proof"), /a single icon theme toggle and a native-name locale menu in the avatar menu, the search in the full menu, no AI JSON link in the band, and one whole-page theme transition/);
   assert.match(readRenderedGroupPage("Proof"), /Storybook doc shell boundary/);
-  assert.match(readRenderedGroupPage("Proof"), /Storybook uses the restored doc shell for global shell\/header\/sidebar\/search\/theme\/locale\/collapse behavior/);
-  assert.match(readRenderedGroupPage("Proof"), /ProductShell remains scoped to component and product examples/);
+  assert.match(readRenderedGroupPage("Proof"), /Storybook renders every documentation page in the package ProductShell, the top-band shell, once per page/);
+  assert.match(readRenderedGroupPage("Proof"), /a ProductShell inside a story body stays a component or product example/);
   assert.match(readGroupPage("Proof"), /Locale menu behavior/);
-  assert.match(readGroupPage("Proof"), /Side navigation collapse/);
+  assert.match(readGroupPage("Proof"), /Top-band navigation/);
+  assert.doesNotMatch(readGroupPage("Proof"), /Side navigation collapse/);
   assert.match(readGroupPage("Proof"), /Registered product IA/);
   assert.match(readGroupPage("Proof"), /Browser interaction proof/);
   assert.match(readGroupPage("Proof"), /marker-only proof is insufficient/);
@@ -1238,17 +1257,31 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookDocShellVisualOracle?.metricSourceDisposition ?? "", /Storybook documentation shell/);
   assert.ok(
 	  contract.storybookDocShellVisualOracle?.metricEvidence?.some((item: { metric: string; signatureBaseline?: string | null }) => (
-	    item.metric === "desktopSidebarWidthPx"
+	    item.metric === "residentNavWidthPx"
 	    && item.signatureBaseline === "docs/verification/internal-alpha/visual-signature-baseline.json"
 	  )),
-	  "Storybook doc shell visual oracle must cite perceptual-signature-backed sidebar evidence"
+	  "Storybook doc shell visual oracle must cite perceptual-signature-backed resident-navigation evidence"
 	);
   // The top-band documentation shell (TCRN-DS-SUB-176): no resident rail (0), the 52px band, and the full
   // menu's search at 936px both at rest and on focus.
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarWidthPx, 0);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMinWidthPx, 0);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopSidebarMaxWidthPx, 0);
-  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.desktopTopbarHeightPx, 52);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.residentNavWidthPx, 0);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.residentNavMinWidthPx, 0);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.residentNavMaxWidthPx, 0);
+  assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.bandHeightPx, 52);
+  // The old shell's names stay for one version with the new names' values (TCRN-DS-SUB-208).
+  for (const [oldName, newName] of [
+    ["desktopSidebarWidthPx", "residentNavWidthPx"],
+    ["desktopSidebarMinWidthPx", "residentNavMinWidthPx"],
+    ["desktopSidebarPreferredViewportRatio", "residentNavPreferredViewportRatio"],
+    ["desktopSidebarMaxWidthPx", "residentNavMaxWidthPx"],
+    ["desktopSidebarTolerancePx", "residentNavTolerancePx"],
+    ["desktopTopbarHeightPx", "bandHeightPx"],
+    ["desktopTopbarTolerancePx", "bandHeightTolerancePx"]
+  ]) {
+    const metrics = contract.storybookDocShellVisualOracle?.shellMetrics ?? {};
+    assert.equal(typeof metrics[newName], "number", `missing oracle metric ${newName}`);
+    assert.equal(metrics[oldName], metrics[newName], `${oldName} must keep ${newName}'s value for one version`);
+  }
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchRestWidthPx, 936);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.searchExpandedWidthPx, 936);
   assert.equal(contract.storybookDocShellVisualOracle?.shellMetrics?.themeToggleRadiusPx, 999);
@@ -1264,7 +1297,8 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.visualFitControlContract?.search?.dropDownHeightPx, 28);
   assert.equal(contract.visualFitControlContract?.search?.packageDefaultControlMinInlineSize, "9ch");
   assert.match(contract.visualFitControlContract?.productLockups?.rule ?? "", /suffix accents are package-owned/);
-  assert.match(contract.visualFitControlContract?.sidebar?.rule ?? "", /orphan visual lane/);
+  assert.equal(contract.visualFitControlContract?.sidebar, undefined);
+  assert.match(contract.visualFitControlContract?.fullMenu?.rule ?? "", /no side rail and no orphan visual lane/);
   assert.match(contract.visualFitControlContract?.tablesAndContainers?.rule ?? "", /package-emitted column\/min-width variables/);
   assert.match(contract.visualFitControlContract?.workLayoutDensity?.authority ?? "", /Functional display exports/);
   assert.ok(contract.visualFitControlContract?.workLayoutDensity?.packageExports?.includes("RecordRow"));
@@ -1344,7 +1378,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookVisualParityProof, /motion duration\/easing\/opacity\/transform/);
   assert.match(contract.storybookVisualParityProof, /mobile reflow, and information hierarchy/);
   assert.equal(contract.shellControlVisualParityProof?.disposition, "executable_required_for_product_shell_consumption");
-  assert.deepEqual(contract.shellControlVisualParityProof?.controlOrder, ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"]);
+  assert.deepEqual(contract.shellControlVisualParityProof?.controlOrder, ["brandButton", "pins", "cluster"]);
   assert.match(contract.shellControlVisualParityProof?.computedStyleFields?.join(" ") ?? "", /fontFamily fontSize fontWeight lineHeight letterSpacing/);
   assert.match(contract.shellControlVisualParityProof?.computedStyleFields?.join(" ") ?? "", /backgroundColor borderRadius borderStyle borderWidth boxShadow/);
   assert.match(contract.shellControlVisualParityProof?.focusFields?.join(" ") ?? "", /outlineWidth outlineStyle outlineColor outlineOffset boxShadow/);
@@ -1358,7 +1392,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
     "desktop-light-expanded-cockpit-search-results",
     "desktop-light-expanded-cockpit-search-rest",
     "desktop-dark-expanded-cockpit",
-    "desktop-light-collapsed-work",
+    "desktop-light-work",
     "mobile-dark-work-stacked",
     "reduced-motion"
   ]);
@@ -1374,7 +1408,12 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.expectedState?.search, "rest");
   assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.expectedState?.searchExpanded, false);
   assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[1]?.expectedState?.searchResultsVisible, false);
-  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[3]?.expectedState?.collapsed, true);
+  // The top band has no collapsed state (TCRN-DS-SUB-208): the Work fixture shows the band closed, and the
+  // search-results fixture holds the full menu open.
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[3]?.id, "desktop-light-work");
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[3]?.expectedState?.shellState, "closed");
+  assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[0]?.expectedState?.shellState, "expanded");
+  assert.ok(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.every((fixture: { expectedState?: Record<string, unknown> }) => !("collapsed" in (fixture.expectedState ?? {}))));
   assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[4]?.expectedState?.locale, "zh-CN");
   assert.equal(contract.visualInstanceOracles?.[0]?.requiredVariantFixtures?.[5]?.expectedState?.reducedMotion, true);
   assert.match(contract.visualInstanceOracles?.[0]?.delegatedInteractionProofs?.join(" ") ?? "", /Locale menu dismissal/);
@@ -1388,7 +1427,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   );
   assert.match(
     contract.visualInstanceOracles?.[0]?.persistedCockpitRestPolicy?.coveredOwnerReachableRoutes?.join(" ") ?? "",
-    /post-search-dismissal:\/cockpit\?locale=en&theme=light&collapsed=false&search=shell/
+    /post-search-dismissal:\/cockpit\?locale=en&theme=light&search=shell/
   );
   assert.equal(
     contract.visualInstanceOracles?.[0]?.persistedCockpitRestPolicy?.outsideMatrixMarkerForbiddenForOwnerReview,
@@ -1404,35 +1443,33 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.deepEqual(ownerQualityOracle?.primaryIa, ["Operations Cockpit", "Work queue"]);
   assert.deepEqual(ownerQualityOracle?.requiredVariants, [
     "desktop-light-operations-cockpit",
-    "desktop-light-operations-cockpit-collapsed",
     "desktop-dark-operations-cockpit",
-    "desktop-dark-operations-cockpit-collapsed",
     "desktop-light-work-queue",
-    "desktop-light-work-queue-collapsed",
     "mobile-dark-zh-cn-work-queue",
     "desktop-light-operations-search-results",
     "reduced-motion"
   ]);
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.length, 9);
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.length, 6);
   assert.equal(
     ownerQualityOracle?.requiredVariantFixtures?.[0]?.selector,
     "[data-storybook-visual-instance=\"owner-quality-product-shell\"][data-visual-instance-variant=\"desktop-light-operations-cockpit\"]"
   );
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[0]?.expectedState?.search, "rest");
   assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[0]?.expectedState?.searchExpanded, false);
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[1]?.expectedState?.collapsed, true);
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[1]?.expectedState?.selectedRoute, "cockpit");
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[3]?.expectedState?.collapsed, true);
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[5]?.expectedState?.collapsed, true);
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[5]?.expectedState?.selectedRoute, "work");
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[7]?.expectedState?.search, "results");
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[7]?.expectedState?.searchExpanded, true);
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[6]?.expectedState?.locale, "zh-CN");
-  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[6]?.requiredText?.join(" ") ?? "", /工作项/);
-  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[6]?.requiredText?.join(" ") ?? "", /需要评审/);
-  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[6]?.forbiddenText?.join(" ") ?? "", /Unknown/);
-  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[6]?.forbiddenText?.join(" ") ?? "", /Local proof only/);
-  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[8]?.expectedState?.reducedMotion, true);
+  // The three collapsed fixtures retired with the side rail (TCRN-DS-SUB-208): the band is closed on every rest
+  // fixture and the full menu is open on the search-results fixture.
+  assert.ok(ownerQualityOracle?.requiredVariants?.every((variant: string) => !variant.includes("collapsed")));
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[0]?.expectedState?.shellState, "closed");
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[2]?.expectedState?.selectedRoute, "work");
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[4]?.expectedState?.search, "results");
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[4]?.expectedState?.searchExpanded, true);
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[4]?.expectedState?.shellState, "expanded");
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[3]?.expectedState?.locale, "zh-CN");
+  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[3]?.requiredText?.join(" ") ?? "", /工作项/);
+  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[3]?.requiredText?.join(" ") ?? "", /需要评审/);
+  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[3]?.forbiddenText?.join(" ") ?? "", /Unknown/);
+  assert.match(ownerQualityOracle?.requiredVariantFixtures?.[3]?.forbiddenText?.join(" ") ?? "", /Local proof only/);
+  assert.equal(ownerQualityOracle?.requiredVariantFixtures?.[5]?.expectedState?.reducedMotion, true);
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /ProductShell ProductShellSearch useProductShellController/);
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /ProductLogo tcrnProductLogoRegistry/);
   assert.match(ownerQualityOracle?.packageMapping?.join(" ") ?? "", /Surface RecordTable TableShell KeyValueList/);
@@ -1441,19 +1478,13 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.doesNotMatch(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /AOS Rebuild Workspace/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /exactly one primary H1/);
   assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /zh-CN owner-quality fixtures localize/);
-  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /topbar controls stay within/);
+  assert.match(ownerQualityOracle?.ownerQualityAcceptanceCriteria?.join(" ") ?? "", /band controls stay within/);
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /placeholder shell/);
   assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /implementation\/proof\/debug terminology/);
-  assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /root\/topbar horizontal overflow/);
-  assert.match(ownerQualityOracle?.delegatedSubOracles?.join(" ") ?? "", /actionable desktop side-nav collapse\/expand behavior/);
-  assert.equal(ownerQualityOracle?.ownerQualitySideNavPolicy?.expandedOnly, false);
-  assert.equal(ownerQualityOracle?.ownerQualitySideNavPolicy?.collapseAffordance, "actionable_toggle");
-  assert.equal(ownerQualityOracle?.ownerQualitySideNavPolicy?.iconCenterDeltaMaxPx, 1);
-  assert.deepEqual(ownerQualityOracle?.ownerQualitySideNavPolicy?.admittedCollapsedVariants, [
-    "desktop-light-operations-cockpit-collapsed",
-    "desktop-dark-operations-cockpit-collapsed",
-    "desktop-light-work-queue-collapsed"
-  ]);
+  assert.match(ownerQualityOracle?.rejectCriteria?.join(" ") ?? "", /root\/band horizontal overflow/);
+  assert.match(ownerQualityOracle?.delegatedSubOracles?.join(" ") ?? "", /the full menu, and the pins and their drop-downs/);
+  // The side-rail collapse policy retired with the rail (TCRN-DS-SUB-208).
+  assert.equal(ownerQualityOracle?.ownerQualitySideNavPolicy, undefined);
   assert.equal(ownerQualityOracle?.ownerVisualAdmissionBoundary, "internal_ds_oracle_review_required_before_owner_visual_admission");
   assert.match(ownerQualityOracle?.negativeCriteria?.join(" ") ?? "", /no proof-scaffold headline as Level 1 content/);
   assert.match(requiredStorybookSectionChecklist.find((section) => section.section === "Style Guide")?.consumerChecks.join(" ") ?? "", /motion\/effect parity/);
@@ -1480,9 +1511,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.brandSurfaceDisposition, /deprecated or unregistered AOS wordmark image assets are forbidden/);
   assert.match(contract.brandSurfaceDisposition, /Generic icons, text-only substitutes, and deprecated or unregistered AOS wordmark image assets are forbidden product shell inputs/);
   assert.match(contract.i18nDisposition, /approved locale and copy-state contract/);
-  assert.match(contract.componentConsumptionDisposition, /ShellThemeToggle, ShellLocaleMenu, SideNavCollapseButton, ProductLogo/);
-  assert.match(contract.componentConsumptionDisposition, /ProductShell, TopBar, SideNav/);
-  assert.match(contract.componentConsumptionDisposition, /ProductShellSearch is required only when the product exposes a real topbar\/global search surface/);
+  assert.match(contract.componentConsumptionDisposition, /ShellThemeToggle, ShellLocaleMenu, ProductLogo/);
+  assert.match(contract.componentConsumptionDisposition, /ProductShell, NavGroup, NavItem/);
+  assert.match(contract.componentConsumptionDisposition, /TopBar, SideNav, SideNavCollapseButton, MobileNavToggle, ProductLauncher and ProductSwitcher are deprecated, see M23/);
+  assert.match(contract.componentConsumptionDisposition, /ProductShellSearch and the full menu's searchProvider are required only when the product exposes a real global search surface/);
+  assert.doesNotMatch(contract.componentConsumptionDisposition, /sideNavCollapseButtonProps|onCollapsedChange|side-nav collapse/);
   assert.match(contract.componentConsumptionDisposition, /must be omitted rather than rendered as an inert placeholder/);
   assert.match(contract.componentConsumptionDisposition, /RelationshipChip, MachineToken, MachineTokenCell, SubNav, PageHeader/);
   assert.match(contract.componentConsumptionDisposition, /RecordRow, RecordTable, SplitView, RowGroup/);
@@ -1505,7 +1538,7 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   // been softened or dropped and every gate would have stayed green. Structure and
   // prose both, because either alone is removable without the other noticing.
   assert.equal(contract.preferenceTransport.disposition, "server_readable_transport_required_for_server_rendered_products");
-  assert.deepEqual(contract.preferenceTransport.governedPreferences, ["locale", "theme", "sideNavigationCollapsed"]);
+  assert.deepEqual(contract.preferenceTransport.governedPreferences, ["locale", "theme", "pins"]);
   assert.deepEqual(contract.preferenceTransport.precedence, ["explicit_url_query", "server_readable_store", "product_default"]);
   assert.deepEqual(contract.preferenceTransport.serverReadableStores, ["cookie", "request_header", "server_side_session"]);
   assert.deepEqual(contract.preferenceTransport.clientOnlyStores, ["localStorage", "sessionStorage", "indexeddb"]);
@@ -1554,9 +1587,11 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.storybookDocShellControlContract.localeSelector, /focus returns to the trigger/);
   assert.match(contract.storybookDocShellControlContract.search, /compact at rest/);
   assert.match(contract.storybookDocShellControlContract.aiContractAccess, /not in the human top toolbar/);
-  assert.match(contract.productShellHardeningRules.sideNavigation, /keyboard-accessible collapse and expand control/);
-  assert.match(contract.productShellHardeningRules.sideNavigation, /center the collapse icon/);
-  assert.match(contract.productShellHardeningRules.sideNavigation, /prove both expanded and collapsed states/);
+  // The side-navigation rule became the top band's (TCRN-DS-SUB-208): no rail, no collapse control.
+  assert.equal(contract.productShellHardeningRules.sideNavigation, undefined);
+  assert.match(contract.productShellHardeningRules.topBandNavigation, /no resident side rail and no collapse control/);
+  assert.match(contract.productShellHardeningRules.topBandNavigation, /NavGroup and NavItem rows in the full menu under the brand button and in the pinned drop-downs/);
+  assert.match(contract.productShellHardeningRules.topBandNavigation, /SideNav, SideNavCollapseButton and MobileNavToggle are deprecated, see M23/);
   assert.match(contract.productShellHardeningRules.brandSurface, /registered package-backed ProductLogo assets/);
   assert.match(contract.productShellHardeningRules.registeredNavigation, /must not surface unregistered or planned modules/);
   // Four clauses because four separate readings of "there is a way back" were the
@@ -1568,12 +1603,12 @@ test("storybook AI consumption contract is machine-readable and no-overclaim", (
   assert.match(contract.productShellHardeningRules.navigationReversibility, /assert the anchor inside the trail/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /registered package-backed primitives from @tcrn\/ui-react/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShell\/useProductShellController/);
-  assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShellSearch only when a real product topbar\/global search capability is present/);
+  assert.match(contract.productShellHardeningRules.primitiveConsumption, /ProductShellSearch or the full menu's searchProvider only when a real product global search capability is present/);
   assert.match(contract.productShellHardeningRules.primitiveConsumption, /semantic control callbacks/);
-  assert.match(contract.productShellHardeningRules.shellEffectBoundary, /attached side-nav shell layout/);
-  assert.match(contract.productShellHardeningRules.shellEffectBoundary, /collapsed rail styling/);
+  assert.match(contract.productShellHardeningRules.shellEffectBoundary, /the band's layout \(the brand button, the pins and the cluster\)/);
+  assert.match(contract.productShellHardeningRules.shellEffectBoundary, /the full menu, the pinned drop-downs and the phone's Sheet/);
   assert.match(contract.productShellHardeningRules.shellEffectBoundary, /must not fork those effects/);
-  assert.match(contract.productShellHardeningRules.semanticControlApi, /onCollapsedChange/);
+  assert.match(contract.productShellHardeningRules.semanticControlApi, /onPinnedChange, onMenuOpenChange, onThemeChange/);
   assert.match(contract.productShellHardeningRules.semanticControlApi, /onSearchDismiss/);
   assert.match(contract.productShellHardeningRules.semanticControlApi, /Wrapper-level event delegation/);
   assert.match(contract.productShellHardeningRules.browserProof, /rather than relying only on static marker checks/);
