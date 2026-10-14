@@ -129,6 +129,18 @@
 
 - 拆分：einzbern-economy 单独一次，输入 `runs/r3/judgment.md` §2（R4-1…R4-9）、§3.1 默认、§3.4、§5；包名用 N1…N5（避免与 R3 的 M 包混淆）；Subtask 键号从 `TCRN-DS-SUB-212` 起；产出写 `runs/r4/`。
 
+- 拆分（ab2cd15）：13 张 Subtask（SUB-212…224）、5 包 3 波（N1 经济、N2 主力、N3 主力 W1；N4 经济 W2；N5 主力 W3），约 435 响应；问题 11 条（R4-2 的焦点探针要在 geometry-measure-proof 里自找 story；R4-7 (e) 收紧可能让 tokens:proof 出新发现，只记）。
+- 开工链写：13 个 work-create，WORKSPACE_COMMAND_COMPLETED，version 2368 → 2381；读回零差异（planned）。
+- 跨包通告 `runs/r4/excerpts/cross-notes.md`。W1 已派：N1（einzbern-economy）、N2、N3（einzbern-main），包树 scratch `pkg/r4-n1…n3`。
+
+| 包 | 状态 | 包内提交 | 合入 | 备注 |
+| --- | --- | --- | --- | --- |
+| N1 | 在跑 | | | |
+| N2 | 在跑 | | | |
+| N3 | 在跑 | | | |
+| N4 | 待起（前置 N1、N2、N3） | | | |
+| N5 | 待起（前置 N1–N4） | | | |
+
 ## 下一步
 
-- R4 拆分交回 → 一次链写建单 → 按包派 → 批末 verify（`tools/batch-end-verify.sh 4`）→ 验收（判断 §5 定分片）→ 判断 → 链写 → 收口。
+- R4 各包交回 → 合入 → 退役 → 派 N4、N5；全部合入后批末 verify（`tools/batch-end-verify.sh 4`）→ 验收 → 判断 → 链写 → 收口（预计只剩 Owner 阻点）。
