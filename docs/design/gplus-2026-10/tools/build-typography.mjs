@@ -1,4 +1,4 @@
-import { T, cr, fmt, icon, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
+import { T, cr, fmt, icon, ICON_NAMES, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
 import { typography as TY } from "./data.mjs";
 import { sampleScreens, SAMPLE_CSS } from "./shell-screen.mjs";
 
@@ -256,7 +256,7 @@ const license = kvTable([
   ["IBM Plex Mono", "IBM，GitHub IBM/plex", "SIL OFL 1.1", "全部允许", "同上"],
   ["Noto Sans SC · Noto Serif SC", "Google（Noto 项目）", "SIL OFL 1.1", "全部允许；体积大，按产品用字子集化", "同上"],
   ["Google Fonts css2 链接", "Google", "服务条款", "画板预览用；产品不依赖", "fonts.googleapis.com 在中国大陆不可靠，产品必须自托管 woff2（OFL 允许），不走 CDN"],
-  ["图标 37 件", "本批自绘（20 格 1.25px）", "随 TCRN-Design-System 仓库许可", "—", "不再依赖 lucide-react（ISC）；无第三方义务"],
+  [`图标 ${ICON_NAMES.length} 件`, "本批自绘（20 格 1.25px）", "随 TCRN-Design-System 仓库许可", "—", "不再依赖 lucide-react（ISC）；无第三方义务"],
   ["品牌标 tcrn-brand-mark.svg", "TCRN 自有资产", "内部", "—", "Owner 另行重设计；重设计前资产只复制不重绘"]
 ], [220, 300, 180, 300]);
 

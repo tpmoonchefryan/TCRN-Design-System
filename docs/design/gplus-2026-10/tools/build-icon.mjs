@@ -74,7 +74,7 @@ function pane(night) {
   return `<section class="pane gp${night ? " night" : ""}" aria-label="${night ? "夜间" : "浅色"}">
 ${grain("ic-" + th)}
 <span class="ptag">${night ? "night · 画布 #121210 · 纸 #191916" : "light · 画布 #efeeea · 纸 #ffffff"}</span>
-<div class="blk"><h6>名册 tcrnIconNames · 37 件 <span>28 件现有加 9 件新增（Owner 2026-10-11 定）；20 格、1.25px 描边、圆头圆角，逐个重绘</span></h6>
+<div class="blk"><h6>名册 tcrnIconNames · ${ICON_NAMES.length} 件 <span>${ICON_NAMES.length - ICON_NEW.length} 件现有加 ${ICON_NEW.length} 件新增（Owner 2026-10-11 定，pin 随顶带壳加入）；20 格、1.25px 描边、圆头圆角，逐个重绘</span></h6>
 <div class="paper"><div class="roster">${roster}</div></div></div>
 
 <div class="blk"><h6>尺寸 sm 14 · md 16 · lg 20 <span>描边不随尺寸缩放（vector-effect: non-scaling-stroke），三档都是 1.25px</span></h6>
@@ -168,13 +168,13 @@ const samples = sampleScreens({ id: "ic", crumbs: ["运营", "项目"], body: ()
 
 const consumer = `<div class="cols3">
 <div class="box"><h4>Icon <small>name · size sm|md|lg|number · decorative · title</small></h4><p class="lead">一句话：按名册名字取一枚 20 格 1.25px 描边的线性图标，颜色继承文字色，默认装饰性（aria-hidden）。</p><ul><li><b>须提供</b>：<code>name</code>（tcrnIconNames 之一）；独立表意时给 <code>title</code> 或 <code>aria-label</code>，组件自动改为 role="img"。</li><li><b>尺寸</b>：sm 14、md 16、lg 20 或数字；描边恒 1.25px，不随尺寸变。<code>strokeWidth</code> 覆盖建议移除（现包允许），否则名册规则失效。</li><li><b>容器</b>：由按钮、导航项、输入框、说明文字提供对齐（inline-flex 居中）。</li><li><b>用</b>：导航、按钮、工具栏、状态提示、空状态标题前。</li><li><b>不用</b>：当状态色块（状态用 6px 点加文字）；当品牌标；当插画。</li></ul></div>
-<div class="box"><h4>tcrnIconNames <small>37 件 · 名册即契约</small></h4><p class="lead">一句话：名册是封闭集合，<code>IconName</code> 类型由它派生；本批把 9 个常用名字加进名册，之后再加仍是包的契约改动。</p><ul><li><b>现有 28</b>：alert-triangle、arrow-left/right、book-open、check、chevron-down/left/right、database、external-link、globe-2、history、home、info、layers、layout-grid、loader-circle、menu、moon、package、palette、panel-left-close/open、search、settings、shield-check、sun、x。</li><li><b>新增 9</b>：plus、minus、users、bell、copy、trash、calendar、more-horizontal、chevron-up。</li><li><b>来源变化</b>：现包从 lucide-react 取 24 格 2px 图标；本批改为自绘 20 格 1.25px，不再依赖 lucide（见 token 差异）。</li></ul></div>
+<div class="box"><h4>tcrnIconNames <small>${ICON_NAMES.length} 件 · 名册即契约</small></h4><p class="lead">一句话：名册是封闭集合，<code>IconName</code> 类型由它派生；本批把 9 个常用名字加进名册，之后再加仍是包的契约改动。</p><ul><li><b>现有 ${ICON_NAMES.length - ICON_NEW.length}</b>：alert-triangle、arrow-left/right、book-open、check、chevron-down/left/right、database、external-link、globe-2、history、home、info、layers、layout-grid、loader-circle、menu、moon、package、palette、panel-left-close/open、search、settings、shield-check、sun、x。</li><li><b>新增 ${ICON_NEW.length}</b>：${ICON_NEW.join("、")}。</li><li><b>来源变化</b>：现包从 lucide-react 取 24 格 2px 图标；本批改为自绘 20 格 1.25px，不再依赖 lucide（见 token 差异）。</li></ul></div>
 <div class="box"><h4>新增 9 件的用处 <small>已定 · 本批各板已按此作画</small></h4><p class="lead">一句话：每个新名字都有一个明确的位置，不为凑数。</p><ul><li><b>plus · minus</b>：新建按钮（Actions 板主按钮）、数字加减、折叠展开。</li><li><b>users · bell</b>：成员导航（Inputs 板侧栏）、顶栏通知按钮。</li><li><b>copy · trash</b>：ClipboardCopyButton 的 idle 态、删除动作。</li><li><b>calendar</b>：DatePicker 右侧指示（Inputs 板）。</li><li><b>more-horizontal · chevron-up</b>：行内更多、折叠。</li></ul></div>
 </div>`;
 
 const diff = kvTable([
   ["Token / 契约", "现值", "G+ 值", "说明"],
-  ["图标来源", "lucide-react（24 格，描边 2）", "自绘名册 20 格，描边 1.25px", "包不再依赖 lucide；37 件逐个绘制"],
+  ["图标来源", "lucide-react（24 格，描边 2）", "自绘名册 20 格，描边 1.25px", `包不再依赖 lucide；${ICON_NAMES.length} 件逐个绘制`],
   ["size sm / md / lg", "14 / 16 / 20", "14 / 16 / 20", "不变"],
   ["描边", "strokeWidth 2（16px 下约 1.33px）", "1.25px 恒定（non-scaling-stroke）", "三档同一粗细；prop 覆盖建议移除"],
   ["线头 / 拐角", "round / round", "round / round", "不变"],
@@ -189,10 +189,10 @@ const body = `
 <header class="bh">
 <div>
 <p class="k">Batch one · 02 / 05 · Icon</p>
-<h1>图标：名册 28 件，20 格 1.25px 描边<em>，颜色永远继承文字</em></h1>
-<p>Icon 组件与 tcrnIconNames 名册按 G+ 的「更细的图标」重绘：20 格、活动区 16、描边 1.25px 且不随尺寸缩放、圆头圆角。名册从 28 件扩到 37 件（plus、minus、users、bell、copy、trash、calendar、more-horizontal、chevron-up，Owner 2026-10-11 定）。图标没有自己的状态，只跟随宿主控件的 fill 与 ink 对；矩阵里列的是图标会落到的每一种底色。样板是顶带壳里的项目列表页，只用名册里的名字。</p>
+<h1>图标：名册 ${ICON_NAMES.length} 件，20 格 1.25px 描边<em>，颜色永远继承文字</em></h1>
+<p>Icon 组件与 tcrnIconNames 名册按 G+ 的「更细的图标」重绘：20 格、活动区 16、描边 1.25px 且不随尺寸缩放、圆头圆角。名册从 ${ICON_NAMES.length - ICON_NEW.length} 件扩到 ${ICON_NAMES.length} 件（plus、minus、users、bell、copy、trash、calendar、more-horizontal、chevron-up，Owner 2026-10-11 定；pin 随顶带壳加入）。图标没有自己的状态，只跟随宿主控件的 fill 与 ink 对；矩阵里列的是图标会落到的每一种底色。样板是顶带壳里的项目列表页，只用名册里的名字。</p>
 </div>
-<div class="meta"><b>名册 37 件 · 三档 14 / 16 / 20 · 描边恒 1.25px</b>28 件现有 + 9 件新增，名册仍是封闭集合<b>图标与点 ≥ 3 · 文字 ≥ 4.5</b>每格由脚本算出，夜间只换值<b>加载循环 900ms linear，其余 120 / 240ms</b>不缩放、不弹跳、不描边动画</div>
+<div class="meta"><b>名册 ${ICON_NAMES.length} 件 · 三档 14 / 16 / 20 · 描边恒 1.25px</b>${ICON_NAMES.length - ICON_NEW.length} 件现有 + ${ICON_NEW.length} 件新增，名册仍是封闭集合<b>图标与点 ≥ 3 · 文字 ≥ 4.5</b>每格由脚本算出，夜间只换值<b>加载循环 900ms linear，其余 120 / 240ms</b>不缩放、不弹跳、不描边动画</div>
 </header>
 
 <div class="sec"><h3><b>A</b>名册与状态 <span>左浅色、右夜间；同一属性集只换值</span></h3>

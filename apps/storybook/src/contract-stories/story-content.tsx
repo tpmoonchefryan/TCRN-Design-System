@@ -1160,7 +1160,7 @@ const legacyContractStories: LegacyContractStory[] = [
               rows={[
                 {
                   aspect: "Source library",
-                  standard: "37 icons drawn for @tcrn/ui-react from the design contract, exposed through Icon.",
+                  standard: "38 icons drawn for @tcrn/ui-react from the design contract, exposed through Icon.",
                   boundary: "Downstream UI imports TCRN icon primitives instead of drawing its own SVGs."
                 },
                 {
