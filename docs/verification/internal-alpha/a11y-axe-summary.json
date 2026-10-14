@@ -46,7 +46,7 @@
         "pending": "known red, pending the Owner: TCRN-DS-MIN-20261013-SHELL D7 keeps the approved colour by night and rules the night value together with INIT-015 closure S-6 (suggested: the mark's bright step)"
       }
     ],
-    "exemptedNodeCount": 35
+    "exemptedNodeCount": 32
   },
   "sections": [
     {
@@ -121,6 +121,15 @@
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
+        },
+        {
+          "target": [
+            ".tcrn-brand-wordmark__suffix--design-system"
+          ],
+          "selector": ".tcrn-brand-wordmark__suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#ffffff",
+          "contrastRatio": 3.82
         }
       ]
     },
@@ -327,24 +336,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
-        },
-        {
-          "target": [
-            ".tcrn-brand-lockup--line-rail[data-product-id=\"design-system\"][aria-label=\"TCRN Design System\"] > .tcrn-brand-lockup__line[aria-hidden=\"true\"] > .tcrn-brand-lockup__word[title=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-brand-lockup__suffix"
-          ],
-          "selector": ".tcrn-brand-lockup__suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            "div[data-product-id=\"design-system\"][data-lockup=\"lk-line\"][aria-label=\"TCRN Design System\"] > .tcrn-brand-lockup__line[aria-hidden=\"true\"] > .tcrn-brand-lockup__word[title=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-brand-lockup__suffix"
-          ],
-          "selector": ".tcrn-brand-lockup__suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
         }
       ]
     },
@@ -541,15 +532,6 @@
           "fgColor": "#6577f3",
           "bgColor": "#efeeea",
           "contrastRatio": 3.29
-        },
-        {
-          "target": [
-            "div[data-shell=\"c3-n\"] > .tcrn-shell-strip[data-shell-strip=\"\"][data-product-shell-region=\"strip\"] > .tcrn-shell-brand[aria-label=\"Open navigation · TCRN TMS\"][data-tab=\"\"] > .tcrn-shell-brand__line[data-lockup=\"lkr-line\"] > .tcrn-shell-brand__word[title=\"TCRN TMS\"] > .tcrn-shell-brand__suffix--tms.tcrn-shell-brand__suffix"
-          ],
-          "selector": ".tcrn-shell-brand__suffix",
-          "fgColor": "#2c63c8",
-          "bgColor": "#121210",
-          "contrastRatio": 3.32
         }
       ]
     },
@@ -681,7 +663,17 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": []
+      "wordmarkContrastExempted": [
+        {
+          "target": [
+            "button[aria-controls=\"«tcrn-doc-shell-R0»-menu\"] > .tcrn-shell-brand__line[data-lockup=\"lkr-line\"] > .tcrn-shell-brand__word[title=\"TCRN Design System\"] > .tcrn-shell-brand__suffix.tcrn-shell-brand__suffix--design-system"
+          ],
+          "selector": ".tcrn-shell-brand__suffix",
+          "fgColor": "#6577f3",
+          "bgColor": "#efeeea",
+          "contrastRatio": 3.29
+        }
+      ]
     },
     {
       "section": "Proof",
@@ -1085,26 +1077,7 @@
       "theme": "light",
       "violationCount": 0,
       "violations": [],
-      "wordmarkContrastExempted": [
-        {
-          "target": [
-            ".tcrn-brand-lockup--line-rail[data-product-id=\"design-system\"][aria-label=\"TCRN Design System\"] > .tcrn-brand-lockup__line[aria-hidden=\"true\"] > .tcrn-brand-lockup__word[title=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-brand-lockup__suffix"
-          ],
-          "selector": ".tcrn-brand-lockup__suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        },
-        {
-          "target": [
-            "div[data-product-id=\"design-system\"][data-lockup=\"lk-line\"][aria-label=\"TCRN Design System\"] > .tcrn-brand-lockup__line[aria-hidden=\"true\"] > .tcrn-brand-lockup__word[title=\"TCRN Design System\"] > .tcrn-brand-wordmark__suffix--design-system.tcrn-brand-lockup__suffix"
-          ],
-          "selector": ".tcrn-brand-lockup__suffix",
-          "fgColor": "#6577f3",
-          "bgColor": "#ffffff",
-          "contrastRatio": 3.82
-        }
-      ]
+      "wordmarkContrastExempted": []
     },
     {
       "section": "Components",

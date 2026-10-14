@@ -2,8 +2,8 @@
 
 由 `node scripts/storybook-visual-proof.mjs --write-report` 生成，勿手改。映射见 `docs/design/gplus-2026-10/storybook-map.md`；同目录其余文件是已退役的旧像素基线，只作历史保留。
 
-- 生成时间（UTC）：2026-10-14T07:13:29.891Z
-- HEAD：2e38e72dccedb7d153f0374b11a0636aaed6d58a
+- 生成时间（UTC）：2026-10-14T10:47:14.197Z
+- HEAD：c9f36bb12516f325fcdeac814a5be55af782fb53
 - 结论：通过
 - 范围：kind matrix / sample；主题 light / dark；语言 en；视口 1440×900
 - 阈值：scripts/geometry-measure-proof.mjs THRESHOLDS（测量项 clip、singleLine、shadowBlur、rail、rowAlign、mark、contrast、controlHeight、shellFrame，另有 overlap）

@@ -7197,6 +7197,18 @@
       ],
       "violationCount": 0,
       "violations": []
+    },
+    {
+      "id": "paperFocusRing",
+      "storyId": "shell-top-band",
+      "source": "140 SUB-182",
+      "theme": "light",
+      "status": "pass",
+      "checked": 9,
+      "regions": 9,
+      "value": 0,
+      "violationCount": 0,
+      "violations": []
     }
   ],
   "checksNeverApplied": [],
