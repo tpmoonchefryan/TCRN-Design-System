@@ -113,8 +113,8 @@
 | M8 | 已合入，包树已退役（278 MB） | f41f1d3、32ff6d6、4170031 | a21300e | SUB-204 完成：文档层改写 G+ 名（弃用提示 210 处 → 19 处，余归 SUB-208）、search-static 死规则与例外删除；shell:fidelity、doc-shell:proof、tokens:proof 0；问题 6 条（另有死规则、故事标题 3px 左边条违反禁用清单等，进下一轮） |
 | M9 | 已合入，包树已退役（301 MB） | e385136、9e0f3ad、dcd524d、2d9ce60、b0def38 | b2a9636 | 两张与附录三处全部完成：登入动画读回句五语、AI 契约与 oracle 改顶带壳、弃用提示 0、storybook 单测 14/14、axe landmark-unique 4 → 0、禁用项样本 0 → 3、contracts 0；browser-proof 只剩视觉签名 199 条（交 SUB-211）；迁移条目交 M11 补录；问题 7 条 |
 | M10 | 已合入，包树已退役（240 MB） | 01afc35、5f71f0b、de3c839 | 4981b69 | 两张完成：四份文档改顶带壳说法（TMS 后缀同色、夜间待 D7）、迁移说明 M38–M46 与 CHANGELOG 摘要；scan 0、scaffold:proof 0、internal-vocab:scan 0（为此跑了一次构建，偏离派工写法，已回显）；问题 4 条 |
-| M11 | 在跑（自 b2a9636 后的集成 HEAD；另加附录 `runs/r3/excerpts/M11-addendum.md`：M9 迁移条目从 M47 补录、视觉签名重收前提已具备） | | | |
+| M11 | 已合入，包树已退役（301 MB） | 2e38e72、f7d5f33、d85f90c、a3f8481、5e9ae6a、8aa2c1e、e9b72b0 | ad97500 | SUB-211 与附录两项完成：视觉签名重收 217 条（改 199、新 18，无预期外；A 类 24 个离群值列为 Owner 目视项）、迁移说明 M47–M48、owner-acceptance.md 更新到 R3 批末读数与待裁 O-1…O-18；包内 browser-proof 0、visual-proof 23/23、geometry:proof 0；仅 geometry:measure 的 markText 红（O-4）；问题 4 条（高 story 截图只到纸内可见部分、interaction-disclosure-spec 按钮底部疑似裁切、基线机制无删除） |
 
 ## 下一步
 
-- R3 各包交回 → 合入 → 退役 → 派下一个可起的包（`tools/eligible-016.mjs runs/r3 …`）；全部合入后批末 verify（`tools/batch-end-verify.sh 3`）→ 三片验收 → 判断 → 链写与知识采集 → 收口或 Owner 阻点。
+- R3 全部 11 包已合入，集成 HEAD ad97500；包树全部退役，磁盘余量 58 GiB。批末 verify：`tools/batch-end-verify.sh 3` → 三片验收（`make-acc-excerpt-016.mjs <dispatchDir> 3 …`）→ 判断 → 链写与知识采集 → 收口（只剩 Owner 阻点时）或 R4。
