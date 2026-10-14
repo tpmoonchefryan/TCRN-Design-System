@@ -291,11 +291,11 @@ engine; Mana Orchestrate: 项目记忆助手, Project memory assistant; Design S
 Einzbern and Mana Orchestrate are whole names in the serif with the byline "by
 TCRN". The gradient suffix is gone: TCRN is set in ink, and the TMS and Design
 System suffixes read `--tcrn-brand-suffix-tms` and
-`--tcrn-brand-suffix-design-system`. By night the TMS suffix is #7aa0f5, the bright
-colour of the TMS mark (#2c63c8 by day; a design-session ruling of 2026-10-11, open
-to Owner correction), so `--tcrn-brand-suffix-tms` moves from the
-theme-independent block into the two theme blocks; the Design System suffix keeps
-#6577f3 in both themes. The definitions of `--tcrn-brand-accent-tms`,
+`--tcrn-brand-suffix-design-system`. Each suffix is one colour in both themes,
+declared in the theme-independent block: TMS #2c63c8 and Design System #6577f3.
+Whether the night TMS suffix takes #7aa0f5, the bright colour of the TMS mark, is an
+open Owner decision (D7); until it is ruled on, the suffix is #2c63c8 by night as
+well (M9, M28). The definitions of `--tcrn-brand-accent-tms`,
 `--tcrn-brand-accent-workflow`, `--tcrn-brand-accent-design-system-1` to `-4` and
 `--tcrn-color-brand-secondary-readable` are removed. AOS keeps its entry, its
 accent and the mother mark.

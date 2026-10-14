@@ -335,15 +335,14 @@ D5.
 
 Change: the gradient suffix is removed. TCRN and a lockup without `productId` are
 set in ink; the TMS suffix reads `--tcrn-brand-suffix-tms` (#2c63c8) and the Design
-System suffix `--tcrn-brand-suffix-design-system` (#6577f3). In the dark theme the
-TMS suffix is #7aa0f5, the bright colour of the TMS mark (a design-session ruling
-of 2026-10-11 on problem P15, open to Owner correction): `--tcrn-brand-suffix-tms`
-is declared in the light and dark theme blocks of `tokens.css`, no longer in the
-theme-independent block. The Design System suffix keeps #6577f3 in both themes.
+System suffix `--tcrn-brand-suffix-design-system` (#6577f3). Each is one colour in
+both themes, declared in the theme-independent block of `tokens.css` (M28): the night
+value #7aa0f5 that the first batch gave the TMS suffix was withdrawn before 4.0.0 was
+cut, and whether night takes it is an open Owner decision (D7).
 
-Do: remove local gradient or suffix colour overrides; update colour assertions,
-including night assertions on the TMS suffix and any parse of `tokens.css` that
-expects `--tcrn-brand-suffix-tms` in the theme-independent block.
+Do: remove local gradient or suffix colour overrides; assert #2c63c8 and #6577f3 in
+both themes, and find both variables in the theme-independent block when parsing
+`tokens.css`.
 
 Source: ccb7bea (TCRN-DS-SUB-022), 52faa47 (TCRN-DS-SUB-088); handoffs W2-A,
 W2-F and P1 (r3); minutes D2.
@@ -874,9 +873,10 @@ Until they are ruled on, 4.0.0 behaves as described above.
   tokens under a design-session ruling of 2026-10-11 that the Owner can correct
   (M18; problem P1, storybook map DIFF-1 to DIFF-3). A correction would withdraw
   the four tokens and the new geometry.
-- Night values of the suffix colours: under the same ruling the TMS suffix is
-  #7aa0f5 by night and the Design System suffix keeps one value (M9; problem
-  P15). A correction would restore the single TMS value.
+- Night values of the suffix colours: the same ruling gave the TMS suffix #7aa0f5
+  by night; 4.0.0 ships one value for both suffixes in both themes instead (TMS
+  #2c63c8, Design System #6577f3; M9, M28), and the night TMS value is the open
+  decision D7 listed below.
 - Sizes of the shell theme and side-navigation toggles (36 and 38px): kept by
   default (M15); the 52px collapsed rail holds the 38px toggle.
 - The `.tcrn-icon` base rule in the package, a design-session ruling open to Owner

@@ -35,29 +35,36 @@ component-specific colors or separate component forks.
 
 ## Token blocks
 
-`tokens.css` and `tcrnTokenCss` hold three blocks, in this order, each opening
+`tokens.css` and `tcrnTokenCss` hold four blocks, in this order, each opening
 with a marker comment:
 
 - the light theme block on `:root, [data-tcrn-theme="light"]`
-  (`/* tcrn-token-block: theme */`, 86 declarations): colour, shadow, grain,
-  focus ring, the TMS brand suffix colour, and the deprecated colour, selection
-  and elevation aliases;
+  (`/* tcrn-token-block: theme */`, 85 declarations): colour, shadow, grain,
+  focus ring, and the deprecated colour, selection and elevation aliases;
 - the theme-independent block on `:root`
-  (`/* tcrn-token-block: theme-independent */`, 121 declarations): type, space,
+  (`/* tcrn-token-block: theme-independent */`, 146 declarations): type, space,
   radius (with `--tcrn-radius-paper`, 14px), control height and padding, icon
-  size, motion, z-index, container widths, the product shell geometry
-  (`--tcrn-shell-sidebar-width` 220px, `--tcrn-shell-sidebar-width-collapsed`
-  52px, `--tcrn-shell-topbar-height` 52px), the Einzbern, Mana Orchestrate and
-  Design System brand suffix colours, and the deprecated type family and motion
-  aliases;
+  size, motion, z-index, container widths, the top-band shell geometry (the
+  `--tcrn-shell-*` tokens: band height 52px, brand button 134 × 40px, mark 22px,
+  pins, full menu and drop-down widths, row and search heights, touch 44px,
+  breadcrumb icon 11px; the old shell's `--tcrn-shell-sidebar-width`,
+  `--tcrn-shell-sidebar-width-collapsed` and `--tcrn-shell-topbar-height` stay as
+  deprecated names), the four brand suffix colours, and the deprecated type family
+  and motion aliases;
+- the coarse-pointer block, `:root` inside `@media (pointer: coarse)`
+  (`/* tcrn-token-block: pointer-coarse */`, 2 declarations): `--tcrn-shell-row-h`
+  and `--tcrn-shell-srch-h` point at `--tcrn-shell-touch`, so rows and the menu
+  search are 44px high under a coarse pointer (`tcrnCoarsePointerMedia`,
+  `tcrnCoarsePointerTokens`);
 - the dark theme block on `[data-tcrn-theme="dark"]`
-  (`/* tcrn-token-block: theme */`, 86 declarations): the same property names as
+  (`/* tcrn-token-block: theme */`, 85 declarations): the same property names as
   the light theme block, with the night values.
 
-The TMS brand suffix is the one brand colour with a night value:
-`--tcrn-brand-suffix-tms` is #2c63c8 in the light block and #7aa0f5, the bright
-colour of the TMS mark, in the dark block. The other three suffix colours have
-one value for both themes.
+The four brand suffix colours have one value for both themes:
+`--tcrn-brand-suffix-tms` is #2c63c8 by day and by night. Whether the night TMS
+suffix takes #7aa0f5, the bright colour of the TMS mark, is an open Owner
+decision (D7); a ruling for it would move the variable into the two theme
+blocks.
 
 The two theme selectors are exported as `tcrnGplusThemeSelectors` (`light` is the
 selector list above). `compareTokenThemeBlocks(css)` checks that the two theme
