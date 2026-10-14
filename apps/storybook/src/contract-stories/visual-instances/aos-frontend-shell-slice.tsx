@@ -229,11 +229,7 @@ function routeLabels(locale: "en" | "zh-CN") {
       moduleName: "前端壳切片",
       cockpit: "驾驶舱",
       work: "工作",
-      currentLocation: "当前位置",
-      searchLabel: "搜索 AOS 壳",
       searchPlaceholder: "搜索模块、工作项或证据",
-      searchResultsLabel: "AOS 壳搜索结果",
-      emptyLabel: "没有本地样例结果",
       skipLink: "跳转到壳内容",
       contentLabel: "AOS 壳内容"
     };
@@ -243,11 +239,7 @@ function routeLabels(locale: "en" | "zh-CN") {
     moduleName: "Frontend shell slice",
     cockpit: "Cockpit",
     work: "Work",
-    currentLocation: "Current location",
-    searchLabel: "Search AOS shell",
     searchPlaceholder: "Search modules, work items, or proof",
-    searchResultsLabel: "AOS shell search results",
-    emptyLabel: "No local fixture results",
     skipLink: "Skip to shell content",
     contentLabel: "AOS shell content"
   };
