@@ -5,7 +5,7 @@ import { extname, normalize, resolve, join, relative } from "node:path";
 import { createRequire } from "node:module";
 import { chromium } from "@playwright/test";
 import { fidelityRejectChecks, UNCHECKED_CLAIMS } from "./shell-fidelity-proof.mjs";
-import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE, validateBaselineSelection, applyBaselineSelection } from "./lib/visual-signature.mjs";
+import { createSignatureContext, computeSignature, encodeSignature, decodeSignature, compareSignatures, withinTolerance, SIGNATURE_TOLERANCE, validateBaselineSelection, applyBaselineSelection, pngSize, trailingCanvasRows, capturedWholeStory } from "./lib/visual-signature.mjs";
 import { measureRecordContainment } from "./geometry-proof.mjs";
 import { storybookId } from "./lib/storybook-id.mjs";
 import { componentCssSourcePaths } from "./lib/component-css-sources.mjs";
@@ -919,17 +919,161 @@ if (selectionPath) {
 }
 const recordContainmentResults = [];
 const signatureResults = [];
+const storyCaptureFrames = [];
+
+// TCRN-DS-SUB-217 (R4-5): story captures are not clipped by the documentation paper. Every page
+// scrolls inside the paper (main#content scrolls, the paper and the shell clip at the viewport's
+// height), so a story taller than the paper's visible height used to come back as one paper-high
+// slice with bare canvas above and below it and the band's row over its top. For the capture only,
+// the shell, the paper and main#content take their content's height with overflow visible: the
+// story is laid out at the same width and painted whole, and the band stays in its own row above
+// the paper, out of the story's box; the story block drops its anchor scroll margin so that Playwright
+// does not scroll a story that fits past the viewport's edge. Afterwards the four elements get their style
+// attributes back, main#content and the window their scroll positions, and every item is asserted; one
+// that does not come back is red. The capture keeps the story's box width (asserted per capture; a story whose
+// width moved would need the paper scrolled in segments and stitched instead), and the signature,
+// its tolerance and the baseline selection are untouched. The self-check in
+// scripts/lib/visual-signature.mjs then reads each capture of a story taller than the paper.
+const STORY_FRAME_SELECTORS = Object.freeze({
+  shell: "[data-shell='doc']",
+  paper: "[data-shell='doc'] [data-paper]:not([data-paper] *)",
+  main: "[data-shell='doc'] main#content",
+  band: "[data-shell='doc'] [data-shell-strip]:not([data-paper] *)"
+});
+const STORY_FRAME_UNCLIPPED = Object.freeze({ "block-size": "auto", "max-block-size": "none", overflow: "visible" });
+
+function unclipStoryFrame([storySelector, selectors, declarations]) {
+  const story = document.querySelector(storySelector);
+  const band = document.querySelector(selectors.band);
+  const nodes = { shell: document.querySelector(selectors.shell), paper: document.querySelector(selectors.paper), main: document.querySelector(selectors.main) };
+  const missing = [...(story ? [] : ["story"]), ...(band ? [] : ["band"]), ...Object.keys(nodes).filter((name) => !nodes[name])];
+  if (missing.length > 0) return { ok: false, missing };
+  // The canvas colour is what shows where nothing paints: the root's background, else the body's
+  // (propagated to the canvas), else white. Read through a 1px canvas so any colour syntax resolves.
+  const rgbOf = (colour) => {
+    const probe = document.createElement("canvas");
+    probe.width = 1;
+    probe.height = 1;
+    const context = probe.getContext("2d", { willReadFrequently: true });
+    context.fillStyle = colour;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+    return alpha === 0 ? null : [red, green, blue];
+  };
+  const canvasRgb = rgbOf(getComputedStyle(document.documentElement).backgroundColor)
+    ?? rgbOf(getComputedStyle(document.body).backgroundColor) ?? [255, 255, 255];
+  const box = () => {
+    const rect = story.getBoundingClientRect();
+    return { width: rect.width, height: rect.height };
+  };
+  const saved = {
+    styles: Object.fromEntries(Object.entries(nodes).map(([name, node]) => [name, node.getAttribute("style")])),
+    storyStyle: story.getAttribute("style"),
+    mainScroll: [nodes.main.scrollLeft, nodes.main.scrollTop],
+    windowScroll: [window.scrollX, window.scrollY],
+    paperVisibleHeight: nodes.main.clientHeight
+  };
+  const before = box();
+  for (const node of Object.values(nodes)) {
+    for (const [property, value] of Object.entries(declarations)) node.style.setProperty(property, value, "important");
+  }
+  // The story block keeps a scroll margin for the page's anchors. Playwright scrolls that margin into view
+  // too, which can push the bottom row of a story that just fits the viewport past the viewport's edge, where
+  // it comes back as canvas; the capture drops the margin and puts it back afterwards.
+  story.style.setProperty("scroll-margin", "0px", "important");
+  const after = box();
+  // The story's top goes to the viewport's top, rounded down to a whole pixel so the top stays inside the
+  // viewport: a story that fits is then captured where it stands, not scrolled again so that its fractional
+  // bottom row falls past the viewport and comes back as canvas. In that position no part of the band may
+  // lie over the story's box.
+  window.scrollTo(window.scrollX, Math.floor(window.scrollY + story.getBoundingClientRect().top));
+  const storyRect = story.getBoundingClientRect();
+  const bandRect = band.getBoundingClientRect();
+  const bandClear = bandRect.bottom <= storyRect.top || bandRect.top >= storyRect.bottom
+    || bandRect.right <= storyRect.left || bandRect.left >= storyRect.right;
+  return { ok: true, saved, before, after, canvasRgb, bandClear };
+}
+
+function restoreStoryFrame([selectors, saved, storySelector]) {
+  const nodes = { shell: document.querySelector(selectors.shell), paper: document.querySelector(selectors.paper), main: document.querySelector(selectors.main) };
+  const styles = { ...saved.styles, story: saved.storyStyle };
+  nodes.story = document.querySelector(storySelector);
+  // Chromium writes CSSOM changes back to the style attribute lazily: removing an attribute that was never
+  // read back after setProperty leaves an empty style attribute behind. Writing the attribute first brings
+  // it up to date, so an element that had none ends with none.
+  for (const [name, node] of Object.entries(nodes)) {
+    if (!node) continue;
+    node.setAttribute("style", styles[name] ?? "");
+    if (styles[name] === null) node.removeAttribute("style");
+  }
+  nodes.main?.scrollTo(saved.mainScroll[0], saved.mainScroll[1]);
+  window.scrollTo(saved.windowScroll[0], saved.windowScroll[1]);
+  const problems = [];
+  for (const [name, node] of Object.entries(nodes)) {
+    if (!node) problems.push(`${name}:missing`);
+    else if (node.getAttribute("style") !== styles[name]) problems.push(`${name}:style ${JSON.stringify([styles[name], node.getAttribute("style")]).slice(0, 240)}`);
+  }
+  if (nodes.main) {
+    if (Math.abs(nodes.main.scrollLeft - saved.mainScroll[0]) > 0.5 || Math.abs(nodes.main.scrollTop - saved.mainScroll[1]) > 0.5) problems.push("main:scroll");
+    if (nodes.main.clientHeight !== saved.paperVisibleHeight) problems.push("main:visible-height");
+  }
+  if (Math.abs(window.scrollX - saved.windowScroll[0]) > 0.5 || Math.abs(window.scrollY - saved.windowScroll[1]) > 0.5) problems.push("window:scroll");
+  return { restored: problems.length === 0, problems };
+}
+
+/** One story capture's frame readings: the structural verdicts and, for the uncommitted result, the pixels. */
+async function recordStoryFrame(key, frame, framing, buffer) {
+  if (!framing.ok) {
+    storyCaptureFrames.push({ key, viewport: frame.viewport, frameFound: false, missing: framing.missing });
+    return;
+  }
+  const { before, after, saved, canvasRgb, bandClear } = framing;
+  const tall = before.height > saved.paperVisibleHeight;
+  const bottom = tall ? await trailingCanvasRows(signatureContext.page, buffer, canvasRgb) : null;
+  const size = pngSize(buffer);
+  storyCaptureFrames.push({
+    key,
+    viewport: frame.viewport,
+    frameFound: true,
+    tall,
+    widthKept: Math.abs(after.width - before.width) <= 0.5,
+    heightKept: Math.abs(after.height - before.height) <= 0.5,
+    bandClear,
+    restored: framing.restore?.restored === true,
+    wholeStory: tall ? capturedWholeStory(bottom) : null,
+    readings: {
+      storyBox: [before.width, before.height],
+      unclippedBox: [after.width, after.height],
+      paperVisibleHeight: saved.paperVisibleHeight,
+      capture: [size.width, size.height],
+      trailingCanvasRows: bottom?.trailingCanvasRows ?? null,
+      lowerHalfRows: bottom?.lowerHalfRows ?? null,
+      canvasRgb,
+      restoreProblems: framing.restore?.problems ?? []
+    }
+  });
+}
 
 /**
  * Capture, then reduce to a perceptual signature and compare against the committed
  * baseline. The signature — not the PNG's sha256 — is the invariant: see
  * scripts/lib/visual-signature.mjs for the measurements the tolerance rests on.
+ * A story capture passes frame ({ page, storySelector, viewport }): the paper is unclipped
+ * for the screenshot only (TCRN-DS-SUB-217).
  */
-async function captureWithSignature(target, key, path, { gated = true, ...options } = {}) {
+async function captureWithSignature(target, key, path, { gated = true, frame = null, ...options } = {}) {
   // The measured content must be readable before any selected signature qualifies.
   const geometry = gated ? await target.evaluate(measureRecordContainment) : null;
   if (geometry?.count) recordContainmentResults.push({ key, ...geometry });
-  const buffer = await target.screenshot({ path, animations: "disabled", ...options });
+  // The geometry above is read in the paper as a reader sees it; only the screenshot is unclipped.
+  const framing = frame ? await frame.page.evaluate(unclipStoryFrame, [frame.storySelector, STORY_FRAME_SELECTORS, STORY_FRAME_UNCLIPPED]) : null;
+  let buffer;
+  try {
+    buffer = await target.screenshot({ path, animations: "disabled", ...options });
+  } finally {
+    if (framing?.ok) framing.restore = await frame.page.evaluate(restoreStoryFrame, [STORY_FRAME_SELECTORS, framing.saved, frame.storySelector]);
+  }
+  if (frame) await recordStoryFrame(key, frame, framing, buffer);
   if (!gated) {
     // The capture is kept on disk for a human to look at, but nothing about it is
     // recorded: its signature is not reproducible, and writing an unreproducible value
@@ -1285,7 +1429,9 @@ for (const viewport of viewports) {
       await locator.waitFor({ state: "visible" });
       const storyPath = relativeScreenshotPath(`${viewport.name}-${story.id}.png`);
       await setTransientScreenshotChromeHidden(page, true);
-      const storySignature = await captureWithSignature(locator, `${story.id}@${viewport.name}`, storyPath);
+      const storySignature = await captureWithSignature(locator, `${story.id}@${viewport.name}`, storyPath, {
+        frame: { page, storySelector: `[data-contract-story-id="${story.id}"]`, viewport: viewport.name }
+      });
       await setTransientScreenshotChromeHidden(page, false);
       visualEntries.push({
         storyId: story.id,
@@ -4022,6 +4168,31 @@ const storyCoverageManifest = {
   staticSectionChecks,
   coverageDisposition: "full_static_contract_docs_navigation_and_i18n_pages"
 };
+// TCRN-DS-SUB-217: the story captures' frame (see unclipStoryFrame). The committed receipt keeps the
+// counts and the keys of failing captures only; the pixel readings stay in visual-selection-result.json,
+// which is never committed.
+const storyCaptureFrameCheck = (() => {
+  const failing = (predicate) => storyCaptureFrames.filter(predicate).map((row) => row.key);
+  const tall = storyCaptureFrames.filter((row) => row.frameFound && row.tall);
+  const check = {
+    schemaVersion: "tcrn.ds.story-capture-frame.v1",
+    method: "paper-unclipped-for-the-capture",
+    selfCheck: "a story taller than the paper's visible height has no full-width canvas-colour row at the bottom edge of its capture's lower half",
+    captures: storyCaptureFrames.length,
+    tallerThanPaper: tall.length,
+    selfCheckPassed: tall.filter((row) => row.wholeStory === true).length,
+    selfCheckFailed: failing((row) => row.frameFound && row.tall && row.wholeStory !== true),
+    frameNotFound: failing((row) => !row.frameFound),
+    layoutWidthChanged: failing((row) => row.frameFound && !row.widthKept),
+    layoutHeightChanged: failing((row) => row.frameFound && !row.heightKept),
+    bandInCaptureArea: failing((row) => row.frameFound && !row.bandClear),
+    notRestored: failing((row) => row.frameFound && !row.restored)
+  };
+  check.ok = check.captures > 0
+    && [check.selfCheckFailed, check.frameNotFound, check.layoutWidthChanged, check.layoutHeightChanged, check.bandInCaptureArea, check.notRestored]
+      .every((list) => list.length === 0);
+  return check;
+})();
 const browserProofSummary = {
   ok: browserSummaries.every((summary) => summary.rootVisible
       && !summary.bodyOverflowX
@@ -4041,7 +4212,8 @@ const browserProofSummary = {
     && componentStorybookParityReadback.storybookOnlyDeferredMarkersVisible
     && componentStorybookParityReadback.packageBackedDisabledNavItemReasonReadback.ok
     && settingsLayoutBrowserProof.ok
-    && pageHierarchyBrowserProof.ok,
+    && pageHierarchyBrowserProof.ok
+    && storyCaptureFrameCheck.ok,
   syntheticFixturesOnly: true,
   noProductDataCaptured: true,
   noLocalAbsolutePathsRetained: true,
@@ -4057,6 +4229,7 @@ const browserProofSummary = {
   viewports,
   settingsLayoutBrowserProof,
   pageHierarchyBrowserProof,
+  storyCaptureFrame: storyCaptureFrameCheck,
   // TCRN-DS-SUB-083: the Button rest and hover readings behind buttonFeedbackOk, kept so the
   // verdict can be read back from the receipt rather than inferred.
   buttonFeedbackReadback,
@@ -4279,7 +4452,7 @@ writeFileSync(join(outputRoot, "intentional-diff-manifest.json"), `${JSON.string
 writeFileSync(join(outputRoot, "visual-selection-result.json"), `${JSON.stringify({
   ok, nonVisualProofOk, inputSha256, baselineBeforeSha256: digest(baselineBytes),
   baselineAfterSha256: digest(readFileSync(signatureBaselinePath, "utf8")),
-  captures: signatureResults, recordContainment: recordContainmentResults
+  captures: signatureResults, recordContainment: recordContainmentResults, storyCaptureFrames
 }, null, 2)}\n`);
 
 console.log(JSON.stringify({
@@ -4308,6 +4481,9 @@ console.log(JSON.stringify({
   settingsLayoutCaseCount: settingsLayoutBrowserProof.readbacks.length,
   pageHierarchyBrowserProofOk: pageHierarchyBrowserProof.ok,
   pageHierarchyCaseCount: pageHierarchyBrowserProof.readbacks.length,
+  storyCaptureFrameOk: storyCaptureFrameCheck.ok,
+  storyCaptureTallerThanPaper: storyCaptureFrameCheck.tallerThanPaper,
+  storyCaptureSelfCheckPassed: storyCaptureFrameCheck.selfCheckPassed,
   receiptSizeOk: receiptSizeCheck.ok,
   browserProofSummaryBytes: receiptSizeCheck.receipts.find((entry) => entry.receipt === "browser-proof-summary.json")?.bytes ?? null,
   panelSearchOk: panelSearchReadback.ok,
