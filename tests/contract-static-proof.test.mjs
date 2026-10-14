@@ -577,6 +577,10 @@ test("the repository's family registry, exemptions and roles are consistent", ()
   const familyOfBlock = new Map(families.families.flatMap((family) => family.blocks.map((block) => [block, family.id])));
   for (const role of roles.singleLine) assert.ok(familyOfBlock.has(role.class.replace(/__.*$/u, "")), role.class);
   for (const toolbar of roles.toolbars) assert.equal(typeof toolbar.yield, "string", toolbar.toolbar);
+  // The shell's top band is the registered C8 toolbar (TCRN-DS-SUB-191): the strip yields at the pins and
+  // holds the brand button and the right cluster fixed; strip and pins are shell-family blocks.
+  assert.deepEqual(roles.toolbars, [{ toolbar: "顶带", container: "tcrn-shell-strip", yield: "tcrn-shell-pins", fixed: ["tcrn-shell-brand", "tcrn-shell-cluster"] }]);
+  for (const toolbar of roles.toolbars) for (const name of [toolbar.container, toolbar.yield]) assert.equal(familyOfBlock.get(name), "shell", name);
   for (const control of roles.shell.controls) assert.ok(["shell", "navigation"].includes(familyOfBlock.get(control.class.replace(/__.*$/u, "").replace(/--.*$/u, ""))), control.class);
   for (const bar of roles.shell.bars) assert.equal(familyOfBlock.get(bar), "shell", bar);
   const lockHint = entries.find((entry) => entry.id === "EX-INIT015-lock-hint-emoji");

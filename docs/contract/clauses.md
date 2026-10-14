@@ -112,7 +112,7 @@ node scripts/contract-static-proof.mjs [--details] [--report <path>] [--family <
   - `C8.yield-does-not-shrink`：让步项声明了 flex-shrink 0。
   - `C8.fixed-item-shrinks`：固定项的基础规则没有 flex-shrink 0（`flex-shrink: 0`、`flex: none` 或 `flex: <g> 0 <basis>`）。
   - `C8.yield-undeclared`、`C8.toolbar-missing`：登记缺让步项，或容器类在包 CSS 里没有规则。
-  - 第一批家族里没有工具栏；现登记的顶栏属壳层家族，按 exemptions.json 豁免。
+  - 第一批家族里没有工具栏。现登记的是壳的顶带（TCRN-DS-SUB-191）：容器 `tcrn-shell-strip`；让步项 `tcrn-shell-pins`（顶带上的固定项条）；C8 意义上的固定项（不收缩）是标按钮 `tcrn-shell-brand` 与右簇 `tcrn-shell-cluster`。壳层家族属第二批，全量检查，不豁免。
 - story 层（每个渲染出的工具栏容器；未声明让步项的工具栏已由 `C8.yield-undeclared` 判红，story 层不重复）：
   - `C8.story-yield-missing`、`C8.story-yield-not-unique`：渲染出的工具栏里让步项不是恰好一个。
   - `C8.story-yield-in-fixed`：让步项落在固定项里面（固定项不收缩，让步项让不出来）。
