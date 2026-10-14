@@ -458,7 +458,7 @@ export const shellCss03 = `
 .tcrn-shell-menu .tcrn-nav-item:where(:focus-visible, [data-tcrn-preview-state~="focus"]) {
   --tcrn-pair-edge: var(--tcrn-pair-edge-f);
 }
-.tcrn-shell-menu .tcrn-nav-item:focus-visible {
+.tcrn-shell-menu .tcrn-nav-item:where(:focus-visible) {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
@@ -559,7 +559,7 @@ export const shellCss03 = `
 .tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible) {
   --tcrn-pair-edge: var(--tcrn-pair-edge-f);
 }
-.tcrn-shell-menu .tcrn-product-shell-search__result:focus-visible {
+.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible) {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }

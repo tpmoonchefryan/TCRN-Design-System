@@ -19,54 +19,6 @@
       "until": "Settings 家族所在批次获得授权并开工时删除本条"
     },
     {
-      "id": "EX-INIT015-navigation",
-      "family": "navigation",
-      "clauses": [
-        "C2",
-        "C5",
-        "C6",
-        "C7",
-        "C8",
-        "C11",
-        "C13"
-      ],
-      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
-      "reason": "Navigation 属 V2-Families 板第二批（导航、壳层、布局），焕新前的旧写法留到该批次授权时整改",
-      "until": "Navigation 家族所在批次获得授权并开工时删除本条"
-    },
-    {
-      "id": "EX-INIT015-shell",
-      "family": "shell",
-      "clauses": [
-        "C2",
-        "C5",
-        "C6",
-        "C7",
-        "C8",
-        "C11",
-        "C13"
-      ],
-      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
-      "reason": "Shell 属 V2-Families 板第二批（导航、壳层、布局），焕新前的旧写法留到该批次授权时整改",
-      "until": "Shell 家族所在批次获得授权并开工时删除本条"
-    },
-    {
-      "id": "EX-INIT015-layout",
-      "family": "layout",
-      "clauses": [
-        "C2",
-        "C5",
-        "C6",
-        "C7",
-        "C8",
-        "C11",
-        "C13"
-      ],
-      "ruling": "TCRN-DS-INIT-015 scope 不授权段：本 INIT 只授权第一批五家族进包（TCRN-DS-EPIC-040），不授权改动后续批次家族；R1 拆分问题清单 P4 定为逐家族登记豁免",
-      "reason": "Layout 属 V2-Families 板第二批（导航、壳层、布局），焕新前的旧写法留到该批次授权时整改",
-      "until": "Layout 家族所在批次获得授权并开工时删除本条"
-    },
-    {
       "id": "EX-INIT015-feedback",
       "family": "feedback",
       "clauses": [

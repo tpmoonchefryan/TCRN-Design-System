@@ -60,12 +60,16 @@ export const baseCss05 = `
   overflow: hidden;
   border-radius: var(--tcrn-radius-pill);
 }
+/* The locale trigger's hover and open state switch its pair, which its base rule in baseCss11
+   declares, and write no colour (C2, TCRN-DS-SUB-155). They keep the pseudo-class and the
+   attribute at (0,2,0), the variant's specificity, so they still win over the base rule, which
+   comes later in the sheet. */
 .tcrn-shell-locale-menu__trigger:hover,
 .tcrn-shell-locale-menu__trigger[aria-expanded="true"] {
-  border-color: var(--tcrn-color-line-ctl);
-  background: var(--tcrn-color-hover);
-  color: var(--tcrn-color-ink);
-  box-shadow: var(--tcrn-shadow-s1);
+  --tcrn-pair-locale-fill: var(--tcrn-pair-locale-fill-h);
+  --tcrn-pair-locale-ink: var(--tcrn-pair-locale-ink-h);
+  --tcrn-pair-locale-line: var(--tcrn-pair-locale-line-h);
+  --tcrn-pair-locale-edge: var(--tcrn-pair-locale-edge-h);
 }
 .tcrn-product-shell .tcrn-shell-locale-menu__trigger:focus-visible {
   box-shadow: none;
@@ -192,9 +196,20 @@ export const baseCss10 = `
   color: var(--tcrn-color-text-primary);
   text-decoration: none;
 }
-.tcrn-product-shell-search__result:hover,
-.tcrn-product-shell-search__result[data-selected="true"] {
-  background: var(--tcrn-selection-fill);
+/* A result paints with its fill pair: the 3.5% wash on hover, the 6% wash when selected
+   (selected comes after hover); the state rules only switch it (C2, TCRN-DS-SUB-155). */
+.tcrn-product-shell-search__result {
+  --tcrn-pair-result-fill-d: transparent;
+  --tcrn-pair-result-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-result-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-result-fill: var(--tcrn-pair-result-fill-d);
+  background: var(--tcrn-pair-result-fill);
+}
+.tcrn-product-shell-search__result:where(:hover) {
+  --tcrn-pair-result-fill: var(--tcrn-pair-result-fill-h);
+}
+.tcrn-product-shell-search__result:where([data-selected="true"]) {
+  --tcrn-pair-result-fill: var(--tcrn-pair-result-fill-s);
 }
 .tcrn-product-shell-search__result span,
 .tcrn-product-shell-search__empty {
@@ -279,6 +294,14 @@ export const baseCss10 = `
 }
 .tcrn-nav-item {
   --tcrn-nav-item-depth: 0;
+  --tcrn-pair-nav-fill-d: transparent;
+  --tcrn-pair-nav-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-nav-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-nav-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-nav-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-nav-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-nav-fill: var(--tcrn-pair-nav-fill-d);
+  --tcrn-pair-nav-ink: var(--tcrn-pair-nav-ink-d);
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
   align-items: center;
@@ -287,7 +310,8 @@ export const baseCss10 = `
   padding: var(--tcrn-space-1) var(--tcrn-space-2h) var(--tcrn-space-1) calc(var(--tcrn-space-6) + (var(--tcrn-nav-item-depth) * var(--tcrn-space-3)));
   border: 1px solid transparent;
   border-radius: var(--tcrn-radius-control);
-  color: var(--tcrn-color-text-secondary);
+  background: var(--tcrn-pair-nav-fill);
+  color: var(--tcrn-pair-nav-ink);
   font-size: var(--tcrn-type-size-meta);
   text-decoration: none;
 }
@@ -304,15 +328,17 @@ export const baseCss10 = `
    The item keeps its own radius rather than squaring off for an axis that no
    longer exists, and weight is safe here because a sidebar item sits in a
    fixed-width column where a bolder label cannot reflow the row. */
-.tcrn-nav-item[data-selected="true"],
-.tcrn-nav-item[aria-current="page"] {
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-strong);
-  background: var(--tcrn-selection-fill);
+/* The states switch the item's pair at the base class's specificity and write no colour: the
+   3.5% wash on hover, the 6% wash and the strong weight when selected, selected after hover so
+   it wins (C2, C6, TCRN-DS-SUB-155). */
+.tcrn-nav-item:where(:hover) {
+  --tcrn-pair-nav-fill: var(--tcrn-pair-nav-fill-h);
+  --tcrn-pair-nav-ink: var(--tcrn-pair-nav-ink-h);
 }
-.tcrn-nav-item:hover {
-  background: var(--tcrn-color-surface-muted);
-  color: var(--tcrn-color-text-primary);
+.tcrn-nav-item:where([data-selected="true"], [aria-current="page"]) {
+  --tcrn-pair-nav-fill: var(--tcrn-pair-nav-fill-s);
+  --tcrn-pair-nav-ink: var(--tcrn-pair-nav-ink-s);
+  font-weight: var(--tcrn-type-weight-strong);
 }
 .tcrn-nav-item__label {
   overflow-wrap: normal;
@@ -459,13 +485,26 @@ export const baseCss11 = `
   display: inline-flex;
   align-items: center;
   gap: var(--tcrn-space-2);
+  --tcrn-pair-locale-fill-d: var(--tcrn-color-surface-panel);
+  --tcrn-pair-locale-ink-d: var(--tcrn-color-text-primary);
+  --tcrn-pair-locale-line-d: var(--tcrn-color-border-control);
+  --tcrn-pair-locale-edge-d: 0 0 #0000;
+  --tcrn-pair-locale-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-locale-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-locale-line-h: var(--tcrn-color-line-ctl);
+  --tcrn-pair-locale-edge-h: var(--tcrn-shadow-s1);
+  --tcrn-pair-locale-fill: var(--tcrn-pair-locale-fill-d);
+  --tcrn-pair-locale-ink: var(--tcrn-pair-locale-ink-d);
+  --tcrn-pair-locale-line: var(--tcrn-pair-locale-line-d);
+  --tcrn-pair-locale-edge: var(--tcrn-pair-locale-edge-d);
   max-width: 132px;
   min-height: 36px;
   padding: 0 var(--tcrn-space-2h);
-  border: 1px solid var(--tcrn-color-border-control);
+  border: 1px solid var(--tcrn-pair-locale-line);
   border-radius: var(--tcrn-radius-pill);
-  background: var(--tcrn-color-surface-panel);
-  color: var(--tcrn-color-text-primary);
+  background: var(--tcrn-pair-locale-fill);
+  color: var(--tcrn-pair-locale-ink);
+  box-shadow: var(--tcrn-pair-locale-edge);
   font-size: var(--tcrn-type-size-ui);
   font-weight: var(--tcrn-type-weight-strong);
   line-height: var(--tcrn-type-line-ui);
@@ -504,23 +543,32 @@ export const baseCss11 = `
   transition: transform var(--tcrn-motion-emphasis);
 }
 .tcrn-shell-locale-menu[data-locale-menu-open="true"] .tcrn-shell-locale-menu__chevron,
-.tcrn-shell-locale-menu__trigger[aria-expanded="true"] .tcrn-shell-locale-menu__chevron {
+.tcrn-shell-locale-menu__trigger:where([aria-expanded="true"]) .tcrn-shell-locale-menu__chevron {
   transform: rotate(180deg);
 }
 .tcrn-shell-locale-menu__panel[hidden] {
   display: none;
 }
 .tcrn-shell-locale-menu__option {
+  --tcrn-pair-locale-option-fill-d: transparent;
+  --tcrn-pair-locale-option-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-locale-option-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-locale-option-fill: var(--tcrn-pair-locale-option-fill-d);
   border: 0;
   border-radius: var(--tcrn-radius-control);
   padding: var(--tcrn-space-2);
   text-align: left;
-  background: transparent;
+  background: var(--tcrn-pair-locale-option-fill);
   color: var(--tcrn-color-text-primary);
 }
-.tcrn-shell-locale-menu__option[aria-current="true"],
-.tcrn-shell-locale-menu__option:hover {
-  background: var(--tcrn-color-surface-muted);
+/* Hover is the 3.5% wash, the current locale the 6% wash and the strong weight; current comes
+   after hover, and the state rules only switch the fill pair (C2, C6, TCRN-DS-SUB-155). */
+.tcrn-shell-locale-menu__option:where(:hover) {
+  --tcrn-pair-locale-option-fill: var(--tcrn-pair-locale-option-fill-h);
+}
+.tcrn-shell-locale-menu__option:where([aria-current="true"]) {
+  --tcrn-pair-locale-option-fill: var(--tcrn-pair-locale-option-fill-s);
+  font-weight: var(--tcrn-type-weight-strong);
 }
 .tcrn-shell-locale-menu__name {
   font: inherit;
@@ -1110,16 +1158,28 @@ export const baseCss15 = `
 }
 .tcrn-sub-nav > a,
 .tcrn-sub-nav > span {
+  --tcrn-pair-subnav-fill-d: transparent;
+  --tcrn-pair-subnav-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-subnav-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-subnav-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-subnav-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-subnav-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-subnav-edge-d: 0 0 #0000;
+  --tcrn-pair-subnav-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-subnav-fill: var(--tcrn-pair-subnav-fill-d);
+  --tcrn-pair-subnav-ink: var(--tcrn-pair-subnav-ink-d);
+  --tcrn-pair-subnav-edge: var(--tcrn-pair-subnav-edge-d);
   display: inline-flex;
   align-items: center;
   gap: var(--tcrn-space-2);
-  min-height: 32px;
+  min-height: var(--tcrn-control-height-md);
   padding: var(--tcrn-space-1) var(--tcrn-space-3);
   border: 1px solid transparent;
   border-radius: var(--tcrn-radius-control);
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-pair-subnav-ink);
   text-decoration: none;
-  background: transparent;
+  background: var(--tcrn-pair-subnav-fill);
+  box-shadow: var(--tcrn-pair-subnav-edge);
   white-space: nowrap;
 }
 .tcrn-saved-view-toolbar {
@@ -1170,7 +1230,6 @@ export const baseCss15 = `
    read as two different products when placed on the same page — DS-INC-003.
    Brand colour leaves selection entirely and stays with actionability and focus,
    so colour means "you can act" and structure means "this is the state". */
-.tcrn-sub-nav [data-selected="true"],
 .tcrn-quick-filters [data-selected="true"] {
   background: var(--tcrn-selection-fill);
   color: var(--tcrn-color-text-primary);
@@ -1750,6 +1809,9 @@ export const baseCss22 = `
   --tcrn-pair-tree-ink-s: var(--tcrn-color-ink);
   --tcrn-pair-tree-fill: var(--tcrn-pair-tree-fill-d);
   --tcrn-pair-tree-ink: var(--tcrn-pair-tree-ink-d);
+  --tcrn-pair-tree-edge-d: 0 0 #0000;
+  --tcrn-pair-tree-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-tree-edge: var(--tcrn-pair-tree-edge-d);
   display: flex;
   align-items: center;
   gap: var(--tcrn-space-2);
@@ -1759,6 +1821,7 @@ export const baseCss22 = `
   border-radius: var(--tcrn-radius-control);
   background: var(--tcrn-pair-tree-fill);
   color: var(--tcrn-pair-tree-ink);
+  box-shadow: var(--tcrn-pair-tree-edge);
   font-size: var(--tcrn-type-size-ui);
   text-decoration: none;
 }
@@ -1772,23 +1835,32 @@ export const baseCss22 = `
   --tcrn-pair-tree-ink: var(--tcrn-pair-tree-ink-s);
   font-weight: var(--tcrn-type-weight-strong);
 }
+/* The table of contents marks the reader's place with the 6% wash and the strong weight. The
+   rows paint with their pair; the state rules after the hover rules switch it (TCRN-DS-SUB-155). */
 .tcrn-toc-rail nav > a,
 .tcrn-toc-rail nav > span {
+  --tcrn-pair-toc-fill-d: transparent;
+  --tcrn-pair-toc-ink-d: var(--tcrn-color-ink);
+  --tcrn-pair-toc-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-toc-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-toc-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-toc-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-toc-edge-d: 0 0 #0000;
+  --tcrn-pair-toc-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-toc-fill: var(--tcrn-pair-toc-fill-d);
+  --tcrn-pair-toc-ink: var(--tcrn-pair-toc-ink-d);
+  --tcrn-pair-toc-edge: var(--tcrn-pair-toc-edge-d);
   display: flex;
   align-items: center;
   gap: var(--tcrn-space-2);
-  min-height: 32px;
+  min-height: var(--tcrn-control-height-md);
   min-width: 0;
   padding: var(--tcrn-space-0h) var(--tcrn-space-2);
   border-radius: var(--tcrn-radius-control);
-  color: var(--tcrn-color-text-primary);
+  background: var(--tcrn-pair-toc-fill);
+  color: var(--tcrn-pair-toc-ink);
+  box-shadow: var(--tcrn-pair-toc-edge);
   text-decoration: none;
-}
-/* The table of contents marks the reader's place with the 6% wash and the strong weight. */
-.tcrn-toc-rail nav > [data-selected="true"] {
-  color: var(--tcrn-color-text-primary);
-  font-weight: var(--tcrn-type-weight-strong);
-  background: var(--tcrn-selection-fill);
 }
 .tcrn-tree-nav__item[data-tree-level="2"] > a,
 .tcrn-tree-nav__item[data-tree-level="2"] > span {
@@ -2348,13 +2420,16 @@ export const baseCss30 = `
   flex: none;
 }
 .tcrn-breadcrumb__crumb {
+  --tcrn-pair-crumb-ink-s: var(--tcrn-color-ink);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.tcrn-breadcrumb [aria-current="page"] {
-  color: var(--tcrn-color-text-primary);
+/* The page itself is ink at the strong weight; the state rule reads the crumb's pair and
+   writes no colour of its own (C2, TCRN-DS-SUB-155). */
+.tcrn-breadcrumb__crumb:where([aria-current="page"]) {
+  color: var(--tcrn-pair-crumb-ink-s);
   font-weight: var(--tcrn-type-weight-strong);
 }
 
@@ -2364,11 +2439,14 @@ export const baseCss30 = `
    link for other chrome positions is the quiet variant of the link pair table
    (tcrn-link tcrn-link--quiet, generated from contract/typography.json). */
 .tcrn-breadcrumb a {
-  color: var(--tcrn-color-text-secondary);
+  --tcrn-pair-crumb-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-crumb-ink-h: var(--tcrn-color-acc);
+  --tcrn-pair-crumb-ink: var(--tcrn-pair-crumb-ink-d);
+  color: var(--tcrn-pair-crumb-ink);
   text-decoration: none;
 }
-.tcrn-breadcrumb a:hover {
-  color: var(--tcrn-color-brand-primary);
+.tcrn-breadcrumb a:where(:hover) {
+  --tcrn-pair-crumb-ink: var(--tcrn-pair-crumb-ink-h);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
@@ -2406,21 +2484,55 @@ export const baseCss30 = `
    outside the product-shell scope. */
 /* Hover is half a step toward selection in the same material, so the two states
    read as one scale rather than as two unrelated effects. */
-.tcrn-sub-nav > a:hover,
-.tcrn-quick-filters > a:hover,
-.tcrn-toc-rail nav > a:hover {
+.tcrn-quick-filters > a:hover {
   background: var(--tcrn-selection-fill-hover);
   color: var(--tcrn-color-text-primary);
+}
+/* SubNav, TocRail and TreeNav (Navigation, TCRN-DS-SUB-155): hover, selection and focus switch
+   the row's pair at its base rule's specificity, after it; selection comes after hover, so it
+   wins (C2; C6: the 6% wash and the strong weight). The focus ring is the edge pair, over a
+   transparent outline that only forced colours paint. */
+.tcrn-sub-nav > a:where(:hover) {
+  --tcrn-pair-subnav-fill: var(--tcrn-pair-subnav-fill-h);
+  --tcrn-pair-subnav-ink: var(--tcrn-pair-subnav-ink-h);
+}
+.tcrn-sub-nav > a:where([data-selected="true"]),
+.tcrn-sub-nav > span:where([data-selected="true"]) {
+  --tcrn-pair-subnav-fill: var(--tcrn-pair-subnav-fill-s);
+  --tcrn-pair-subnav-ink: var(--tcrn-pair-subnav-ink-s);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-sub-nav > a:where(:focus-visible) {
+  --tcrn-pair-subnav-edge: var(--tcrn-pair-subnav-edge-f);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-toc-rail nav > a:where(:hover) {
+  --tcrn-pair-toc-fill: var(--tcrn-pair-toc-fill-h);
+  --tcrn-pair-toc-ink: var(--tcrn-pair-toc-ink-h);
+}
+.tcrn-toc-rail nav > a:where([data-selected="true"]),
+.tcrn-toc-rail nav > span:where([data-selected="true"]) {
+  --tcrn-pair-toc-fill: var(--tcrn-pair-toc-fill-s);
+  --tcrn-pair-toc-ink: var(--tcrn-pair-toc-ink-s);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-toc-rail nav > a:where(:focus-visible) {
+  --tcrn-pair-toc-edge: var(--tcrn-pair-toc-edge-f);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-tree-nav__item > a:where(:focus-visible) {
+  --tcrn-pair-tree-edge: var(--tcrn-pair-tree-edge-f);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 .tcrn-record-row[href]:hover {
   border-color: var(--tcrn-color-border-control);
   color: var(--tcrn-color-text-primary);
 }
-.tcrn-sub-nav > a:focus-visible,
 .tcrn-quick-filters > a:focus-visible,
 .tcrn-record-row[href]:focus-visible,
-.tcrn-tree-nav__item > a:focus-visible,
-.tcrn-toc-rail nav > a:focus-visible,
 .tcrn-search-result-list__head a:focus-visible {
   outline: 2px solid var(--tcrn-color-focus-ring);
   outline-offset: 2px;

@@ -12,18 +12,14 @@
   "unregistered": [
     { "role": "标签", "note": "包 CSS 暂无独立的标签类（LabelSet 只有容器类 tcrn-label-set），随展示件家族开工时登记" }
   ],
-  "toolbars": [
-    { "toolbar": "顶栏", "container": "tcrn-top-bar", "yield": "tcrn-product-shell-search", "fixed": ["tcrn-top-bar__brand", "tcrn-top-bar__actions"], "note": "STORY-132 用例：顶栏里的搜索框是唯一让步项，min-width 140" }
-  ],
+  "toolbars": [],
   "shell": {
     "description": "C11「通用件拼壳」的壳层登记（story 层）。bars 是壳层条的承载类；controls 是壳层控件位（渲染属性 data-shell-control 的取值）与其专用类；searchComponents 是壳层条里允许承载文本输入的搜索组件类。控件位缺专用类、壳层条里出现原生 select、搜索组件之外的文本输入，都按通用件拼壳判红。依据：画板 V2-Rejections 第二节 2026-08-14 INIT-036 门户视觉整改（quiet 按钮当主题切换、原生 select 当语言菜单、单层 input 当搜索）。",
-    "bars": ["tcrn-top-bar"],
+    "bars": ["tcrn-shell-strip"],
     "controls": [
       { "slot": "theme-toggle", "class": "tcrn-shell-theme-toggle" },
       { "slot": "locale-menu", "class": "tcrn-shell-locale-menu" },
-      { "slot": "product-shell-search", "class": "tcrn-product-shell-search" },
-      { "slot": "side-nav-collapse", "class": "tcrn-shell-side-nav-toggle" },
-      { "slot": "mobile-nav-toggle", "class": "tcrn-shell-mobile-nav-toggle" }
+      { "slot": "product-shell-search", "class": "tcrn-product-shell-search" }
     ],
     "searchComponents": ["tcrn-search-input", "tcrn-product-shell-search"]
   }
