@@ -246,18 +246,18 @@ components instead.
   order, margins, self alignment, flex item sizing, inline size, wrapping) but does not
   repaint it, for example
   `.tcrn-doc-package-nav-proof > .tcrn-segmented-nav { grid-area: tabs; align-self: start; }`.
-  The key subjects such placements may take are the shell-fidelity whitelist: `.tcrn-top-bar`,
-  `.tcrn-side-nav`, `.tcrn-search-input`, `.tcrn-product-switcher`, `.tcrn-segmented-nav`,
-  `.tcrn-field`, `.tcrn-brand-wordmark__suffix`, `.tcrn-product-logo__copy`,
-  `.tcrn-tooltip__content`, `.tcrn-shell-brand-lockup`, `.tcrn-shell-brand-lockup__copy` and
-  `.tcrn-shell-brand-lockup__caption`, plus the infra primitive `.tcrn-skip-link` that the
+  The key subjects such placements may take are the shell-fidelity whitelist:
+  `.tcrn-side-nav`, `.tcrn-product-switcher`, `.tcrn-segmented-nav`, `.tcrn-field` and
+  `.tcrn-tooltip__content`, plus the infra primitive `.tcrn-skip-link` that the
   package-nav proof places; the whitelist's last entry, `.tcrn-filter-bar`, is the demo hook
   described below. The docs shell's verbatim copies of `.tcrn-sr-only` and `.tcrn-skip-link`
   were removed (TCRN-DS-SUB-063), and `.tcrn-brand-wordmark__base` and `.tcrn-brand-wordmark`
   left the whitelist with their last doc rules (TCRN-DS-SUB-063, TCRN-DS-SUB-065), as did
   `.tcrn-nav-group__label` and `.tcrn-nav-item` (TCRN-DS-SUB-132) and
   `.tcrn-product-shell-search__results` (TCRN-DS-SUB-204), each with the registered exceptions
-  that needed it.
+  that needed it, and `.tcrn-top-bar`, `.tcrn-search-input`, `.tcrn-brand-wordmark__suffix`,
+  `.tcrn-product-logo__copy`, `.tcrn-shell-brand-lockup`, `.tcrn-shell-brand-lockup__copy` and
+  `.tcrn-shell-brand-lockup__caption` (TCRN-DS-SUB-219).
 - **Registered exceptions** (`DOC_PACKAGE_CLASS_EXCEPTIONS` in
   `scripts/shell-fidelity-proof.mjs`; each entry names exact selectors and the non-placement
   properties it admits, with a ruling, a reason and a removal condition):

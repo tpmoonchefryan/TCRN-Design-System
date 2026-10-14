@@ -98,23 +98,17 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-skip-link",
   // Demo-scoped overrides of package classes (docs/style-scale.md exemption list). The
   // nav-item, top-bar track and module-tabs entries went with the doc rules that needed
-  // them (TCRN-DS-SUB-025):
-  ".tcrn-top-bar",
-  ".tcrn-search-input",
+  // them (TCRN-DS-SUB-025); the top-bar, search-input, brand-wordmark suffix and
+  // product-logo copy entries had no doc rule left and went in TCRN-DS-SUB-219:
   ".tcrn-product-switcher",
   ".tcrn-segmented-nav",
   ".tcrn-field",
-  ".tcrn-brand-wordmark__suffix",
-  ".tcrn-product-logo__copy",
   ".tcrn-tooltip__content",
-  // Doc-shell layout/collapse overrides of the brand lockup and the attached side nav
-  // (scoped under .tcrn-doc-brand / .tcrn-doc-shell[collapsed] / .tcrn-doc-knowledge-shell__brand
-  // / .tcrn-doc-package-nav-proof). The package owns their appearance; docs only position them
-  // and hide the copy on collapse. Their bare re-implementations were removed in INIT-007.
+  // The package-nav proof places the package side nav in its demo grid
+  // (`.tcrn-doc-package-nav-proof > .tcrn-side-nav`); the package owns its appearance and the
+  // docs only position it. The brand lockup entries (.tcrn-shell-brand-lockup and its copy and
+  // caption) went with the last doc rules that placed them (TCRN-DS-SUB-219).
   ".tcrn-side-nav",
-  ".tcrn-shell-brand-lockup",
-  ".tcrn-shell-brand-lockup__copy",
-  ".tcrn-shell-brand-lockup__caption",
   // The entry for the ProductShell story's static search result list (TCRN-DS-SUB-100) went with
   // its doc rule and its registered exception once no story wrote that doc container any more
   // (TCRN-DS-SUB-204).
