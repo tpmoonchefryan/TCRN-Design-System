@@ -150,7 +150,14 @@ export const STORY_PROBES = deepFreeze([
 export const ICON_STROKE = deepFreeze({ iconSelector: 'svg.tcrn-icon[data-gplus-icon-size="16"]', sizePx: 16, strokeWidthPx: 1.25, vectorEffect: "non-scaling-stroke", tolerancePx: 0.01 });
 
 // Browser side: every button of every ButtonGroup under root is put in its focus preview state; the
-// ring (box-shadow extent) must stay inside every clipping ancestor up to root.
+// ring (box-shadow extent) must stay inside every clipping ancestor up to root. TCRN-DS-SUB-182
+// (140, R2-8, WCAG 2.4.7) adds the paper's scrolling region of every product shell under root
+// (.tcrn-product-shell__paper > .tcrn-product-shell__main, which takes keyboard focus to be
+// scrolled while the paper clips its overflow): it is focused for real, and its ring is the larger
+// of its box-shadow extent and its outline (width plus offset; the forced-colours outline counts,
+// because forced colours paint it whatever its colour), so an inset ring or a negative outline offset
+// reads 0 and an outward ring is cut by the paper. A region that does not match :focus-visible once
+// focused is a violation too: its ring was not read.
 export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
   const scope = document.querySelector(root);
   if (!scope) return { error: "root_not_found" };
@@ -164,6 +171,24 @@ export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
     }
     return extent;
   };
+  // The deepest cut of a ring by the clipping ancestors of element up to root, or null.
+  const cutOf = (element, extent) => {
+    const rect = element.getBoundingClientRect();
+    const ring = { left: rect.left - extent, right: rect.right + extent, top: rect.top - extent, bottom: rect.bottom + extent };
+    for (let node = element.parentElement; node; node = node.parentElement) {
+      const cs = getComputedStyle(node);
+      const clipX = cs.overflowX !== "visible";
+      const clipY = cs.overflowY !== "visible";
+      if (clipX || clipY) {
+        const box = node.getBoundingClientRect();
+        const inner = { left: box.left + parseFloat(cs.borderLeftWidth), right: box.right - parseFloat(cs.borderRightWidth), top: box.top + parseFloat(cs.borderTopWidth), bottom: box.bottom - parseFloat(cs.borderBottomWidth) };
+        const cut = Math.max(clipX ? inner.left - ring.left : 0, clipX ? ring.right - inner.right : 0, clipY ? inner.top - ring.top : 0, clipY ? ring.bottom - inner.bottom : 0);
+        if (cut > tolerancePx) return { clippedBy: `${node.tagName.toLowerCase()}.${[...node.classList].slice(0, 2).join(".")}`, cutPx: Math.round(cut * 10) / 10 };
+      }
+      if (node === scope) break;
+    }
+    return null;
+  };
   const violations = [];
   let checked = 0;
   for (const group of scope.querySelectorAll(".tcrn-button-group")) {
@@ -171,29 +196,33 @@ export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
       const previous = button.getAttribute("data-tcrn-preview-state");
       button.setAttribute("data-tcrn-preview-state", "focus");
       const extent = extentOf(getComputedStyle(button).boxShadow);
-      const rect = button.getBoundingClientRect();
-      const ring = { left: rect.left - extent, right: rect.right + extent, top: rect.top - extent, bottom: rect.bottom + extent };
       checked += 1;
-      for (let node = button.parentElement; node; node = node.parentElement) {
-        const cs = getComputedStyle(node);
-        const clipX = cs.overflowX !== "visible";
-        const clipY = cs.overflowY !== "visible";
-        if (clipX || clipY) {
-          const box = node.getBoundingClientRect();
-          const inner = { left: box.left + parseFloat(cs.borderLeftWidth), right: box.right - parseFloat(cs.borderRightWidth), top: box.top + parseFloat(cs.borderTopWidth), bottom: box.bottom - parseFloat(cs.borderBottomWidth) };
-          const cut = Math.max(clipX ? inner.left - ring.left : 0, clipX ? ring.right - inner.right : 0, clipY ? inner.top - ring.top : 0, clipY ? ring.bottom - inner.bottom : 0);
-          if (cut > tolerancePx) {
-            violations.push({ button: (button.getAttribute("aria-label") || button.textContent || "").trim().slice(0, 30), extent, clippedBy: `${node.tagName.toLowerCase()}.${[...node.classList].slice(0, 2).join(".")}`, cutPx: Math.round(cut * 10) / 10 });
-            break;
-          }
-        }
-        if (node === scope) break;
-      }
+      const cut = cutOf(button, extent);
+      if (cut) violations.push({ button: (button.getAttribute("aria-label") || button.textContent || "").trim().slice(0, 30), extent, ...cut });
       if (previous === null) button.removeAttribute("data-tcrn-preview-state");
       else button.setAttribute("data-tcrn-preview-state", previous);
     }
   }
-  return { checked, value: violations.length, violationCount: violations.length, violations };
+  let regions = 0;
+  const before = document.activeElement;
+  for (const region of scope.querySelectorAll(".tcrn-product-shell__paper > .tcrn-product-shell__main")) {
+    const name = (region.getAttribute("aria-label") || region.id || "paper region").trim().slice(0, 30);
+    checked += 1;
+    regions += 1;
+    region.focus({ preventScroll: true, focusVisible: true });
+    if (document.activeElement !== region || !region.matches(":focus-visible")) {
+      violations.push({ region: name, reason: "not_focus_visible" });
+      continue;
+    }
+    const cs = getComputedStyle(region);
+    const outline = cs.outlineStyle === "none" ? 0 : parseFloat(cs.outlineWidth) + parseFloat(cs.outlineOffset);
+    const extent = Math.max(extentOf(cs.boxShadow), outline, 0);
+    const cut = cutOf(region, extent);
+    if (cut) violations.push({ region: name, extent, ...cut });
+    region.blur();
+  }
+  if (regions > 0 && before && typeof before.focus === "function") before.focus({ preventScroll: true });
+  return { checked, regions, value: violations.length, violationCount: violations.length, violations };
 }
 
 // Browser side: each .tcrn-highlight-text under root must be as wide as the same text without marks.
