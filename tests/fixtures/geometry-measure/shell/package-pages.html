@@ -30,6 +30,10 @@
   .tcrn-breadcrumb__separator { flex: none; width: 11px; height: 11px; }
   .tcrn-breadcrumb__crumb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: inherit; text-decoration: none; }
   .tcrn-breadcrumb [aria-current="page"] { color: #16150f; font-weight: 600; }
+  /* a crumb that gives way without an ellipsis (TCRN-DS-SUB-196): kept inert in the template
+     #crumb-cut-without-ellipsis; tests/shell-measure-proof.test.mjs puts it into a trail, where
+     singleLine (crumb by crumb) must fail it */
+  .tcrn-breadcrumb__crumb--clip { text-overflow: clip; }
   /* SettingsLayout (D1: 1040, centred) and SplitView (from the paper's content edge) */
   .settings { inline-size: 100%; min-inline-size: 0; max-inline-size: 1040px; margin-inline: auto; }
   .settings .row { height: 40px; border-bottom: 1px solid #e3e1da; }
@@ -110,6 +114,7 @@
       </main>
     </div>
   </div>
+  <template id="crumb-cut-without-ellipsis"><span class="tcrn-breadcrumb__item"><svg class="tcrn-breadcrumb__separator" viewBox="0 0 20 20" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg><a class="tcrn-breadcrumb__crumb tcrn-breadcrumb__crumb--clip" href="#statements" title="Statements for every creator this quarter">Statements for every creator this quarter</a></span></template>
   <div class="first-lines">
     <div class="lockup-line lockup-line--rail" data-lockup="lkr-line" data-product-id="tms" role="img" aria-label="TCRN TMS"><svg data-logo="tms" viewBox="0 0 48 48" aria-hidden="true"><path d="M11 23L24 39" stroke="#2c63c8" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="#7aa0f5" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><span class="line" aria-hidden="true"><b title="TCRN TMS">TCRN <em>TMS</em></b></span></div>
     <div class="lockup-line" data-lockup="lk-line" data-product-id="tms" role="img" aria-label="TCRN TMS"><svg data-logo="tms" viewBox="0 0 48 48" aria-hidden="true"><path d="M11 23L24 39" stroke="#2c63c8" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="#7aa0f5" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><span class="line" aria-hidden="true"><b title="TCRN TMS">TCRN <em>TMS</em></b></span></div>

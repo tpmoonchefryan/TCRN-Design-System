@@ -49,6 +49,8 @@
 // which the package hides at >= 1024, no longer reads as four 0 x 0 pins.
 // TCRN-DS-SUB-207 (R3-2): a [data-cell] fill (all but the own-bg probe) is the paint stack under the
 // cell's centre composited down to the first opaque layer, not the cell's ancestors only.
+// TCRN-DS-SUB-196 (R3-3): x.textLines takes the page breadcrumb in the paper crumb by crumb (pageCrumb),
+// not the trail as one line, on both selector sets (the boards' .ts-crumbs and the package's Breadcrumb).
 //
 // API:
 //   SHELL_MEASURE_SCHEMA_VERSION, SELECTOR_KEYS, BOARD_SELECTORS, PACKAGE_SELECTORS
@@ -510,7 +512,12 @@ export function readShellInPage(options) {
     });
 
     // extra: single-line text of the shell rows (tab word, pins, menu rows, group heads, search, crumbs, lockups)
-    const lineEls = [...scr.querySelectorAll(sel.singleLineText)].filter((el) => !inOwnPaper(el)).concat([...scr.querySelectorAll(sel.pageCrumbs)].filter(inOwnPaper));
+    // TCRN-DS-SUB-196 (R3-3): the page breadcrumb in the shell's own paper is read crumb by crumb (pageCrumb):
+    // every crumb on one line, a crumb wider than its box cut only as an ellipsis under a title; the trail
+    // gives way one crumb at a time, so it is not one text line (the trail as a whole: x.pageCrumbs). A
+    // selector set without a crumb key reads the trail as one line, as before.
+    const crumbsOf = (nav) => (sel.pageCrumb ? [...nav.querySelectorAll(sel.pageCrumb)] : [nav]);
+    const lineEls = [...scr.querySelectorAll(sel.singleLineText)].filter((el) => !inOwnPaper(el)).concat([...scr.querySelectorAll(sel.pageCrumbs)].filter(inOwnPaper).flatMap(crumbsOf));
     x.textLines = lineEls.filter((el, i) => lineEls.indexOf(el) === i && visible(el) && !exempt(el)).map((el) => {
       let box = el;
       while (box !== scr && getComputedStyle(box).display === "inline") box = box.parentElement;

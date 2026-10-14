@@ -737,6 +737,41 @@ test("page readings (TCRN-DS-SUB-164): the breadcrumb per crumb, SettingsLayout 
   }
 });
 
+// TCRN-DS-SUB-196 (R3-3): singleLine reads the page breadcrumb crumb by crumb. The fixture's trails give way
+// one crumb at a time, each cut as an ellipsis under its title: green, where the R2 reading of the whole
+// trail as one text line (no crumb key) failed the two phone screens. A crumb that gives way without an
+// ellipsis (the fixture's template) fails, alone.
+test("singleLine reads the page breadcrumb crumb by crumb: crumbs cut under their titles pass, a crumb cut without an ellipsis fails (TCRN-DS-SUB-196)", async () => {
+  const { page, close } = await openBoard(manifest.pageFixture.file);
+  try {
+    const crumbLines = (reading, id) => reading.shells.find((s) => s.id === id).x.textLines.filter((l) => /breadcrumb/.test(l.el));
+    const reading = await readPackage(page);
+    for (const s of reading.shells) {
+      const lines = crumbLines(reading, s.id);
+      assert.deepEqual(lines.map((l) => l.text), s.x.pageCrumbs[0].crumbs.map((c) => c.text), s.id);
+      assert.ok(lines.every((l) => l.lines === 1 && /^(a|b)\.tcrn-breadcrumb__crumb/.test(l.el)), s.id);
+      // at 1240 the long trail fits; on the 390 phone every crumb gives way, cut as an ellipsis under its title
+      assert.ok(lines.every((l) => (s.w > 390 ? l.excess === 0 : l.excess > 0 && l.clip && l.ellipsis && l.title)), s.id);
+    }
+    assert.equal(judgeShellReadings(reading).gates.singleLine.status, "pass");
+    // the R2 reading (no crumb key: the trail as one line) cut the two phone trails
+    const r2 = await lib.measureShellPage(page, { selectors: { ...lib.PACKAGE_SELECTORS, pageCrumb: null }, selectorSet: "package" });
+    assert.deepEqual(judgeShellReadings(r2).gates.singleLine.failures.map((f) => [f.at, f.what]), [["ts-settings-m", "cut:nav.tcrn-breadcrumb"], ["ts-roster-m", "cut:nav.tcrn-breadcrumb"]]);
+    // a crumb that gives way without an ellipsis fails, and only it
+    await page.evaluate(() => {
+      const item = document.getElementById("crumb-cut-without-ellipsis").content.firstElementChild.cloneNode(true);
+      document.querySelector('[data-shell="ts-settings-m"] [data-paper] .tcrn-breadcrumb').appendChild(item);
+    });
+    const cut = await readPackage(page);
+    const gate = judgeShellReadings(cut).gates.singleLine;
+    assert.equal(gate.status, "fail");
+    assert.deepEqual(gate.failures.map((f) => [f.at, f.what]), [["ts-settings-m", "cut:a.tcrn-breadcrumb__crumb.tcrn-breadcrumb__crumb--clip"]]);
+    assert.ok(gate.failures[0].value > 0);
+  } finally {
+    await close();
+  }
+});
+
 // A shell that behaves as the G section says (vanilla script), and an intro that plays once a session.
 const PROBE_SHELL = `<!doctype html><meta charset="utf-8"><style>body{margin:0;height:900px}[hidden]{display:none!important}
   [data-shell]{position:relative;width:900px;height:600px}[data-tab]{width:134px;height:40px}
