@@ -54,12 +54,6 @@ export const typographyCss02 = `
   margin-top: 0;
 }`;
 
-export const typographyCss03 = `
-.tcrn-page-header__title .tcrn-heading,
-.tcrn-page-header__title .tcrn-text {
-  margin: 0;
-}`;
-
 export const typographyCss04 = `
 .tcrn-record-row__summary .tcrn-text {
   margin: 0;
