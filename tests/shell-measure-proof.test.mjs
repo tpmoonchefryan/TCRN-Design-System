@@ -676,6 +676,37 @@ test("package readings: the three 07a B reading cases (彩色标, 面板对画�
   }
 });
 
+// TCRN-DS-SUB-207 (R3-2): a cell's fill is the paint stack under its centre. The search shortcut is a
+// sibling laid over the input's 6% wash (no pointer events, no fill of its own): it reads the board's
+// 7.59 and 6.11, where the R2 ancestor walk met only the panel and read 8.58 and 7.23.
+test("contrast reads a cell's fill from the paint stack at its centre: the shortcut over the washed input reads 7.59 and 6.11, the R2 ancestor walk 8.58 and 7.23 (TCRN-DS-SUB-207)", async () => {
+  const { page, close } = await openPackageFixture();
+  try {
+    const shape = await page.evaluate(() => [...document.querySelectorAll('[data-cell^="srch-kbd-"]')].map((k) => [k.previousElementSibling.matches("input.tcrn-search-input__control"), getComputedStyle(k).position, getComputedStyle(k).pointerEvents, getComputedStyle(k).backgroundColor]));
+    assert.deepEqual(shape, [[true, "absolute", "none", "rgba(0, 0, 0, 0)"], [true, "absolute", "none", "rgba(0, 0, 0, 0)"]]);
+    const near = (c, want) => assert.ok(Math.abs(c.ratio - want) <= THRESHOLDS.contrast.maxDiff, `${c.cell} ${c.ratio} vs ${want}`);
+    const byCell = (reading) => Object.fromEntries(reading.contrastCells.map((c) => [c.cell, c]));
+    const reading = await readPackage(page);
+    const now = byCell(reading);
+    near(now["srch-kbd-l"], 7.59);
+    near(now["srch-kbd-n"], 6.11);
+    assert.deepEqual(reading.contrastCells.filter((c) => c.backdrop).map((c) => c.cell), []);
+    // the read leaves no inline style behind on the cells
+    assert.deepEqual(await page.evaluate(() => [...document.querySelectorAll("[data-cell]")].filter((el) => el.hasAttribute("style")).length), 0);
+    assert.equal(judgeShellReadings(reading).gates.contrast.status, "pass");
+    // the R2 reading: no paint stack, the fill walked up the ancestors to the panel
+    await page.evaluate(() => { document.elementsFromPoint = () => []; });
+    const r2Reading = await readPackage(page);
+    const r2 = byCell(r2Reading);
+    near(r2["srch-kbd-l"], 8.58);
+    near(r2["srch-kbd-n"], 7.23);
+    assert.equal(r2["srch-kbd-l"].backdrop, "ancestors");
+    assert.deepEqual(judgeShellReadings(r2Reading).gates.contrast.failures.map((f) => [f.at, f.what]), [["srch-kbd-l", "ratio-expect"], ["srch-kbd-n", "ratio-expect"]]);
+  } finally {
+    await close();
+  }
+});
+
 test("page readings (TCRN-DS-SUB-164): the breadcrumb per crumb, SettingsLayout against the paper's edges, SplitView's left edge, the first lines by product", async () => {
   const { page, close } = await openBoard(manifest.pageFixture.file);
   try {

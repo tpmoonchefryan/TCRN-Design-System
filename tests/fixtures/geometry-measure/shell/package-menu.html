@@ -39,6 +39,16 @@
   @media (min-width: 1024px) {
     .tcrn-shell-menu .tcrn-shell-menu__col--pinned { display: none; }
   }
+  /* the package's search field (inputs.css.ts): the shortcut is a sibling laid over the input (absolute,
+     no pointer events, no fill of its own), so its text stands on the input's 6% wash, not on the panel
+     (TCRN-DS-SUB-207); light in the full menu, night on a night panel below */
+  .tcrn-search-input { position: relative; display: block; margin: 0 0 8px; }
+  .tcrn-search-input__control { display: block; width: 100%; height: 28px; margin: 0; padding: 0 64px 0 10px; border: 0; border-radius: 8px; background: rgba(22, 21, 15, 0.06); color: #16150f; font: inherit; }
+  .tcrn-search-input__shortcut { position: absolute; top: 50%; right: 8px; display: inline-flex; align-items: center; padding: 0 4px; border: 1px solid #d6d3ca; border-radius: 4px; color: #4f4c43; font: 500 10px/14px monospace; transform: translateY(-50%); pointer-events: none; }
+  .night-panel { width: 280px; padding: 12px; border-radius: 12px; background: #191916; }
+  .night-panel .tcrn-search-input { margin: 0; }
+  .night-panel .tcrn-search-input__control { background: rgba(235, 232, 223, 0.07); color: #ebe8df; }
+  .night-panel .tcrn-search-input__shortcut { border-color: #3a3933; color: #a9a69c; }
   /* the 07a B reading cases */
   .cases { display: flex; gap: 24px; align-items: flex-start; padding: 24px 12px; }
   .canvas { padding: 12px; background: #efeeea; }
@@ -59,6 +69,7 @@
     <main data-paper></main>
     <div class="tcrn-shell-menu" data-shell-menu>
     <section class="tcrn-shell-menu__panel" data-panel="expanded" role="dialog" aria-label="Navigation">
+      <div class="tcrn-search-input" data-shell-search data-shortcut-visible="true"><input class="tcrn-input tcrn-search-input__control" type="search" placeholder="Search" aria-label="Search"><kbd class="tcrn-search-input__shortcut" data-cell="srch-kbd-l" data-kind="text" data-expect="7.59">Ctrl K</kbd></div>
       <div data-shell-cols>
         <div class="tcrn-nav-group tcrn-shell-menu__col" data-shell-group data-shell-col>
           <div class="tcrn-nav-group__label" data-nav-pinnable="true"><span class="tcrn-nav-group__label-text" title="People">People</span><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: People">p</button></div>
@@ -90,6 +101,7 @@
     <div class="canvas"><svg data-logo="tms" data-cell="brand-mark-l" data-kind="icon" data-exempt data-expect="4.85" viewBox="0 0 48 48" width="44" height="44" role="img" aria-label="TCRN TMS"><path d="M11 23L24 39" stroke="#2c63c8" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="#7aa0f5" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg></div>
     <div class="canvas"><div class="surface" data-cell="panel-edge-l" data-kind="edge" data-exempt data-expect="1.16"></div></div>
     <div class="canvas"><span class="ink-2" data-cell="body-canvas-l" data-kind="text" data-expect="7.39">Twelve people</span></div>
+    <div class="night-panel"><div class="tcrn-search-input" data-shortcut-visible="true"><input class="tcrn-input tcrn-search-input__control" type="search" placeholder="Search" aria-label="Search"><kbd class="tcrn-search-input__shortcut" data-cell="srch-kbd-n" data-kind="text" data-expect="6.11">Ctrl K</kbd></div></div>
     <div class="phone">
       <div class="paper"><p data-cell="scrim-paper-l" data-kind="text" data-exempt data-expect="5.57">Twelve people across four teams, updated today.</p></div>
       <div data-shell-scrim aria-hidden="true"></div>
