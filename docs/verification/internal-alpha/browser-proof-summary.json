@@ -3880,6 +3880,21 @@
     ],
     "ok": true
   },
+  "storyCaptureFrame": {
+    "schemaVersion": "tcrn.ds.story-capture-frame.v1",
+    "method": "paper-unclipped-for-the-capture",
+    "selfCheck": "a story taller than the paper's visible height has no full-width canvas-colour row at the bottom edge of its capture's lower half",
+    "captures": 216,
+    "tallerThanPaper": 154,
+    "selfCheckPassed": 154,
+    "selfCheckFailed": [],
+    "frameNotFound": [],
+    "layoutWidthChanged": [],
+    "layoutHeightChanged": [],
+    "bandInCaptureArea": [],
+    "notRestored": [],
+    "ok": true
+  },
   "buttonFeedbackReadback": {
     "ok": true,
     "restBackground": "rgb(11, 107, 101)",
