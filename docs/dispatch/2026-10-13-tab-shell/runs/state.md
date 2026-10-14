@@ -147,6 +147,14 @@
 - 批末验收交回并提交（633c8fa）：A——137–141 机判满足，135（O-19）、136（O-8）阻于 Owner，返工 A4-1（`owner-acceptance.md` 两处）；B——142、144 满足，143（O-19）、145（O-4）阻于 Owner，146 部分（B4-1 Disclosure 焦点环被裁 2px），返工 B4-1、B4-2（M30 过期）；C——147、150 机判满足，148（O-2）、149（O-4、O-19）阻于 Owner，返工 C4-1（三处过期文字）、C4-2（门脚本空读回，可推迟）。三片无新 Owner 事项、无不可接受口径、无回退。
 - 判断：einzbern-main 单独一次，摘录 `runs/r4/excerpts/judgment.md`（525ba45），产出 `runs/r4/judgment.md` 与 `runs/r4/lessons.json`。
 
+- 判断（4c86f1d）：机判满足 9（137–142、144、147、150）、部分 1（146：Disclosure 获焦焦点环被裁 2px，硬线可返工）、阻于 Owner 6（135、143 O-19；136 O-8；145 O-4；148 O-2；149 O-4 与 O-19）；R5 返工 4 条两包（Q1 主力：R5-1 裁切余量改 `--tcrn-space-1`；Q2 经济：R5-2 迁移 M53 补正 M30、R5-3 `owner-acceptance.md` 跟上、R5-4 注释），适用小轮合并；C4-2 与同族门读法余项不进 R5，记收口已知差距；Owner 待裁 20 条，无新增。
+- R4 链写：54 成员（R4 的 11 张三步转 done、SUB-216 与 219 两步到 active 由 R5 承接；16 张 Story 与 INIT 注解），WORKSPACE_COMMAND_COMPLETED，version 2381 → 2435；读回 Subtask 113–224 done 101、active 11。
+- 知识卡 TCRN-DS-KB-041…045 全部建成（041、045 标签重叠，以 `--coexist` 建）。
+
+### R5（小轮）
+
+- 拆分：einzbern-economy 单独一次，输入 `runs/r4/judgment.md` §2（R5-1…R5-4）与 §5；包名 Q1、Q2；Subtask 键号从 `TCRN-DS-SUB-225` 起；产出写 `runs/r5/`。之后 Q1（主力）→ Q2（经济）→ 批末 verify → 验收与判断合一（einzbern-main 一个代理）→ 链写 → 收口。
+
 ## 下一步
 
-- 判断交回后提交 → 链写与知识采集（KB-041 起）→ R5（小轮：拆分经济档、验收与判断合一主力档）或收口。
+- R5 拆分交回 → 建单 → Q1 → Q2 → 批末 verify → 验收与判断合一 → 收口。
