@@ -115,6 +115,9 @@
 | M10 | 已合入，包树已退役（240 MB） | 01afc35、5f71f0b、de3c839 | 4981b69 | 两张完成：四份文档改顶带壳说法（TMS 后缀同色、夜间待 D7）、迁移说明 M38–M46 与 CHANGELOG 摘要；scan 0、scaffold:proof 0、internal-vocab:scan 0（为此跑了一次构建，偏离派工写法，已回显）；问题 4 条 |
 | M11 | 已合入，包树已退役（301 MB） | 2e38e72、f7d5f33、d85f90c、a3f8481、5e9ae6a、8aa2c1e、e9b72b0 | ad97500 | SUB-211 与附录两项完成：视觉签名重收 217 条（改 199、新 18，无预期外；A 类 24 个离群值列为 Owner 目视项）、迁移说明 M47–M48、owner-acceptance.md 更新到 R3 批末读数与待裁 O-1…O-18；包内 browser-proof 0、visual-proof 23/23、geometry:proof 0；仅 geometry:measure 的 markText 红（O-4）；问题 4 条（高 story 截图只到纸内可见部分、interaction-disclosure-spec 按钮底部疑似裁切、基线机制无删除） |
 
+- 批末 verify（`tools/batch-end-verify.sh 3`）跑在 c45c529，2026-10-14T07:27:16Z–07:35:45Z：30 步只剩 2 步红——`contract:static`（C8 一族 18 条，顶带登记为工具栏后的让步项缺失，待 Owner）与 `geometry:measure`（只有 markText：DS 侧栏首行 1.4，待 O-4）；其余全绿，`storybook:build` 退出 0；结果表 `runs/r3/verify/steps.md`（df740e6）。
+- 批末验收：三片并行（einzbern-main），摘录 `runs/r3/excerpts/acceptance-{A,B,C}.md`（463ede0），主线程问题 `runs/r3/problems/main.md`（M1–M4）。
+
 ## 下一步
 
-- R3 全部 11 包已合入，集成 HEAD ad97500；包树全部退役，磁盘余量 58 GiB。批末 verify：`tools/batch-end-verify.sh 3` → 三片验收（`make-acc-excerpt-016.mjs <dispatchDir> 3 …`）→ 判断 → 链写与知识采集 → 收口（只剩 Owner 阻点时）或 R4。
+- 三片验收交回后提交 → 判断（einzbern-main；若只剩 Owner 阻点则建议收口）→ 一次链写与知识采集 → 收口：写 `closeout.md`（与 `owner-acceptance.md` 合一）、INIT-016 保持 active 并注解、停在推送之前。
