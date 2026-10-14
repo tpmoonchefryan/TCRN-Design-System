@@ -141,6 +141,9 @@
 | N4 | 已合入，包树已退役（277M） | ea4eb5b、c091b11、cda0c6a | 1a4e268 | 两张完成：map.json 同步、README 38、迁移说明开头与分消费方清单、M49–M52；局部门全 0；问题 2 条（M30 块数过期交判断） |
 | N5 | 已合入，包树已退役（327M） | 577e04b、c9f36bb、0d9c6a7、0b727ff、869914e、a68f389、d5d22ee | b01ee53 | SUB-224 完成：视觉签名重收 169 条（拍全 144、拍全加去左边条 8、去左边条 17），无预期外；browser-proof、tokens:proof、geometry:proof、visual-proof、doc-shell、contracts、hardening、pack:smoke、scan 全 0；geometry:measure 只剩 markText（O-4）；12 个 A 类离群与 14 行大变化写进 owner-acceptance.md；问题 4 条 |
 
+- 批末 verify（`tools/batch-end-verify.sh 4`）跑在 682fc94，2026-10-14T10:56:05Z–11:04:50Z：30 步只剩 2 步红，与 R3 相同——`contract:static` 只有 C8 15 条（O-19）、`geometry:measure` 只有 markText（1.4 与 1.7，O-4）；`storybook:build` 退出 0；结果表 `runs/r4/verify/steps.md`（00986b9）。
+- 批末验收：三片并行（einzbern-main），摘录 `runs/r4/excerpts/acceptance-{A,B,C}.md`（00986b9）。
+
 ## 下一步
 
-- R4 全部 5 包已合入，集成 HEAD 见 N5 行；批末 verify：`tools/batch-end-verify.sh 4` → 验收 → 判断 → 链写 → 收口。
+- 三片验收交回后提交 → 判断（若 R5 无返工则建议收口）→ 链写与知识采集 → 收口：`closeout.md`、INIT-016 注解、停在推送之前。
