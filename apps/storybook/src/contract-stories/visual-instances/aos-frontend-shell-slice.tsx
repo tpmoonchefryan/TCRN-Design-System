@@ -310,6 +310,15 @@ function buildSearchResults(variant: ShellVisualInstanceVariant): ProductShellSe
   ];
 }
 
+// The instance's whole-site search: the fixture records whose title or meta holds the query
+// (TCRN-DS-SUB-200).
+function fixtureSearch(records: readonly ProductShellSearchResult[]) {
+  return (query: string): ProductShellSearchResult[] => {
+    const needle = query.trim().toLocaleLowerCase();
+    return records.filter((record) => `${record.title} ${record.meta ?? ""}`.toLocaleLowerCase().includes(needle));
+  };
+}
+
 function workRows(locale: "en" | "zh-CN") {
   const isZh = locale === "zh-CN";
   return [
@@ -485,6 +494,12 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
         contentLabel={`${labels.contentLabel}: ${variant.id}`}
         skipLinkLabel={labels.skipLink}
         searchPlaceholder={labels.searchPlaceholder}
+        // TCRN-DS-SUB-200 (STORY-147, 150): the search-results variant is the full menu held open with
+        // its query typed, listing the instance's fixture records that match it; the other variants
+        // keep the shell's own closed menu.
+        menuOpen={isSearchResults ? true : undefined}
+        menuQuery={isSearchResults ? query : undefined}
+        searchProvider={fixtureSearch(buildSearchResults(variant))}
         data-storybook-visual-instance="frontend-shell-slice"
         data-visual-instance-name="FrontendShellSliceVisualInstance"
         data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
@@ -507,8 +522,16 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
         data-live-dispatch="not-enabled"
         data-aos-visual-instance-oracle="true"
       >
-        {variant.contentMode === "cockpit" ? <CockpitContent variant={variant} /> : <WorkContent variant={variant} />}
-        <BoundaryContent variant={variant} />
+        {/* TCRN-DS-SUB-199 (STORY-147, 140, 150): the page sits in the package's content stack, as the
+            owner-quality instance and the samples set it. Set straight into the paper, the first
+            read-back panel (a box that hides its overflow) was a row of the paper's grid, and with the
+            page taller than the 640 frame the grid shrank that row to the panel's padding: its title
+            and heading were 0 high and read as cut off. In the stack every row keeps its content
+            height and the page scrolls in the paper. */}
+        <div className="tcrn-product-shell-content-stack">
+          {variant.contentMode === "cockpit" ? <CockpitContent variant={variant} /> : <WorkContent variant={variant} />}
+          <BoundaryContent variant={variant} />
+        </div>
       </ProductShell>
     </div>
   );

@@ -147,6 +147,10 @@ const landmarkSuffix: Record<GplusSampleTheme, string> = { light: "", night: " (
 // TCRN-DS-SUB-160 (STORY-140, 147): the shell's root is a viewport high (block-size 100dvh) and the
 // page scrolls in its paper, so a shell set in the middle of a long story is framed: the frame has a
 // fixed height and the shell fills it through its own style. The shell itself is not changed.
+// TCRN-DS-SUB-205 (STORY-146, 148, 149): the shell sits in the static-markup wrapper, not in the frame,
+// so the wrapper fills the frame as well; without it the shell's 100% resolved against the wrapper's
+// auto height and the shell grew to its content (661, 681) past the 640 frame. With both, the shell is
+// the frame's height and the page scrolls in the paper.
 const sampleShellFrameStyle: CSSProperties = { blockSize: "640px" };
 const sampleShellFillStyle: CSSProperties = { blockSize: "100%" };
 
@@ -194,7 +198,7 @@ export function GplusSampleShell({ storyId, shellName, theme, spec, pageHeader, 
   return (
     <div data-tcrn-theme={themeAttribute[theme]} data-gplus-sample-theme={theme}>
       <div data-shell-frame="" style={sampleShellFrameStyle}>
-        <StaticMarkup id={prefix} block element={shell} edits={[]} />
+        <StaticMarkup id={prefix} block element={shell} edits={[]} style={sampleShellFillStyle} />
       </div>
     </div>
   );
