@@ -164,8 +164,8 @@
 | 包 | 状态 | 包内提交 | 合入 | 备注 |
 | --- | --- | --- | --- | --- |
 | Q1 | 已合入，包树已退役（328M） | 14f2849、5d9676a | a7d4ac8 | SUB-225 完成：内层裁切余量改 space-1，焦点环四边完整（三视口、夜间、forced-colors 仿真）；变异判红 257/258；ui-react 258、test:dom 60；contract-static 只剩 C8 15（O-19）、geometry:measure 只剩 markText（O-4）；browser-proof 签名 0 回退；C-9 无提交；问题 5 条 |
-| Q2 | 实施中（einzbern-economy，包树 scratch `pkg/r5-q2`，自 64ccfdb 切出，摘录 `runs/r5/excerpts/Q2.md`） | — | — | SUB-226 → 227 → 228 |
+| Q2 | 已合入，包树已退役（278M） | f6200d9、e036e53、1d1e609、c5959ad | 73bac9f | 三张完成：注释换在用类（grep 0）、M53 与开头区间、清单、CHANGELOG 同步、owner-acceptance 跟上第四、五轮（432 行）；局部门 8 个全 0；问题 4 条（scaffold-proof.json 输入摘要自 R3 过期，交收口） |
 
 ## 下一步
 
-- Q1 交回 → 合入、退役包树、补跨包通告第 3 节 → Q2 → 批末 verify → 验收与判断合一 → R5 链写与知识卡 → 收口。
+- 批末 verify（`tools/batch-end-verify.sh 5`）→ 验收与判断合一（einzbern-main 一个代理，摘录 `runs/r5/excerpts/judgment.md`）→ R5 链写与知识卡 → 收口或 R6。

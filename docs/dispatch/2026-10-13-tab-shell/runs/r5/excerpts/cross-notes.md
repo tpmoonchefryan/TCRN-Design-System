@@ -19,6 +19,7 @@
 | 包 | 交回物与行段 | 要点 |
 | --- | --- | --- |
 | Q1 | `runs/r5/handoff/Q1.md`（第 2 节④读数 L37–84、第 3 节接口与期望 L117–126、第 4 节 C-9 L128–136、第 5 节目视项 L138–147）；`runs/r5/problems/Q1.md` | `.tcrn-collapsible-region__inner` 的 `overflow-clip-margin` 改为 `var(--tcrn-space-1)`，Disclosure 区内控件获焦焦点环四边完整（Chromium 浅色 en 1440、1024、390 与夜间 zh-CN 1440，forced-colors 仿真同）；`Layout.test.tsx` 用例按焦点环最大 spread 4 与 outline 宽加偏移 4 断言；导出面与组件 API 无变化，无迁移条目；C-9：无越容差、无回执变化，`docs/verification` 未提交；`owner-acceptance.md` 第 268 行与 G-18（第 352 行）过期，由 SUB-228 接收；目视项两条（Safari 同看焦点环四边；展开动画中区域底外最多 4px 可见，按样式读出、未逐帧实测）；离群项无；问题 5 条（既有红 2、数据缺口 2、观察 1） |
+| Q2 | `runs/r5/handoff/Q2.md`（第 2 节 SUB-226 L15–22、第 3 节 SUB-227 L23–63、第 4 节 SUB-228 新行号 L64–83、第 5 节局部门 L84–98、第 6 节接口与 C-9 L99–113、第 7 节给验收 L114–120）；`runs/r5/problems/Q2.md` | 注释示例类换成 `.tcrn-doc-page`，grep 排除迁移说明 0、不排除只剩 M50 三行；迁移说明追加 M53（第 1425–1452 行），开头区间到 M53、三份分消费方清单与末尾来源说明同步，CHANGELOG 第 62–64 行；`owner-acceptance.md` 改后 432 行，第五轮目视节 L311–320、G-18 L363、G-21 L366、O-18 名单 L401；局部门 8 个全 0；问题 4 条（既有红未跑、M50 保留、`scaffold-proof.json` 输入摘要自 R3 过期、M53 抄写数无门看守） |
 
 ## 4. 其他事实
 
