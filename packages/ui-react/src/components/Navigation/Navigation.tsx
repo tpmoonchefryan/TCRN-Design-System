@@ -20,12 +20,11 @@ import { Icon, type IconName } from "../Icon/index.js";
 import { resolveTcrnLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 import { cx, mergeIds, requiredText, resolveDocumentLocale } from "../../utils.js";
-import {
-  tcrnProductMarks,
-  tcrnProductMarkViewBox,
-  tcrnProductMarkWordmark,
-  type TcrnProductMark
-} from "./product-marks.generated.js";
+import { tcrnProductMarkViewBox, tcrnProductMarkWordmark, type TcrnProductMark } from "./product-marks.generated.js";
+// The lookup of a mark by its product key and the mark's own id, shared with the brand button and
+// the intro (TCRN-DS-SUB-212). That module takes only a type from this one, so the calls below that
+// run when this module loads find it loaded.
+import { productMark, productMarkIdOf } from "./product-mark-id.js";
 // The shell parts and Navigation.tsx import each other; what this module takes from them is used
 // inside function bodies only, never evaluated when the module loads (C-4).
 import { ShellBrandButton } from "./ShellBrandButton.js";
@@ -328,21 +327,9 @@ const productMarkTileRadius = 11;
 const productMarkTileInset = "translate(7.2 7.2) scale(0.7)";
 const productMarkTileInk = "#ffffff";
 
-function productMark(productId: TcrnProductMarkId): TcrnProductMark {
-  const mark = tcrnProductMarks.find((candidate) => candidate.productId === productId);
-  if (!mark) throw new Error(`No product mark is generated for "${productId}"`);
-  return mark;
-}
-
-/**
- * The mark's own id, which a measured lockup writes in data-logo: the name of its logos2 file and
- * of the Brand board's mark (tms, einzbern, mana, ds), not the product key it is registered under
- * (mana-orchestrate, design-system). The shell gate's brandDigest finds the source by it
- * (TCRN-DS-SUB-194).
- */
-function productMarkIdOf(productId: TcrnProductMarkId): string {
-  return productMark(productId).id;
-}
+// productMark (the lookup by product key) and productMarkIdOf (the mark's own id, which a measured
+// lockup writes in data-logo: the name of its logos2 file and of the Brand board's mark, not the
+// product key; TCRN-DS-SUB-194) live in product-mark-id.ts since TCRN-DS-SUB-212.
 
 function inkedProductMarkBody(mark: TcrnProductMark, ink: string): string {
   return ink === "currentColor" ? mark.inkBody : mark.inkBody.replaceAll("currentColor", ink);

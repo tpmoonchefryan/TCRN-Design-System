@@ -29,8 +29,10 @@
 // measured). STORY_MUTATIONS injects a mutation on a real story for STORY-131 GWT1-3 and for contrast
 // (each must turn its check red); REQUIRED_CHECKS names the checks each story must exercise (an n/a
 // there fails) and, in a full run, every check must apply somewhere in the set; STORY_PROBES judges the
-// ButtonGroup focus ring, the DatePicker indicator hit and the Highlight width (decomposition P31), and
-// the 1.25px stroke of the 16px icons (124-GWT1).
+// ButtonGroup focus ring, the DatePicker indicator hit and the Highlight width (decomposition P31), the
+// 1.25px stroke of the 16px icons (124-GWT1) and the focus ring of the paper's scrolling region on the
+// real top-band shell (140, TCRN-DS-SUB-213). A probe's story need not be in the measured set: in a full
+// run its route is resolved on its own, and the story is read once its shell blocks have hydrated.
 // The report (--write-report) goes to docs/verification/geometry-measure/report.json.
 //
 // Usage: node scripts/geometry-measure-proof.mjs [--self-check-only] [--story <id>]... [--family <name>] [--write-report]
@@ -134,12 +136,16 @@ export const STORY_MUTATIONS = deepFreeze([
 // focus ring is not clipped (125-GWT4), a click on the right 30px of a DatePicker lands on the native
 // calendar indicator (126-GWT4; headless Chromium opens no system calendar, so the hit test stands in),
 // a Highlight keeps the width of its plain text (123-GWT2), and the 16px icons are stroked 1.25px
-// (124-GWT1, ICON_STROKE).
+// (124-GWT1, ICON_STROKE). paperFocusRing runs the focus ring probe on a story with real product
+// shells (TCRN-DS-SUB-213; 140, SUB-182 criterion 3): actions-matrix has no ProductShell, so there the
+// probe reads no paper region. shell-top-band is the 07a board's band (ts-closed-l and its screens),
+// a hydrated story outside GPLUS_STORY_IDS, so a full run resolves its route for the probe alone.
 export const STORY_PROBES = deepFreeze([
   { id: "buttonGroupFocusRing", storyId: "actions-matrix", source: "125-GWT4" },
   { id: "datePickerIndicatorHit", storyId: "inputs-matrix", source: "126-GWT4" },
   { id: "highlightWidth", storyId: "typography-matrix", source: "123-GWT2" },
-  { id: "iconStroke", storyId: "icon-matrix", source: "124-GWT1" }
+  { id: "iconStroke", storyId: "icon-matrix", source: "124-GWT1" },
+  { id: "paperFocusRing", storyId: "shell-top-band", source: "140 SUB-182" }
 ]);
 
 // 124-GWT1 on the icon-matrix 16px row: the roster renders every icon at 14, 16 and 20 px and marks
@@ -353,7 +359,7 @@ export async function datePickerIndicatorHit(page, root) {
 }
 
 // The page-side probes and the options each one is handed next to its root.
-const PAGE_PROBES = { buttonGroupFocusRing: focusRingClipInPage, highlightWidth: highlightWidthInPage, iconStroke: iconStrokeInPage };
+const PAGE_PROBES = { buttonGroupFocusRing: focusRingClipInPage, paperFocusRing: focusRingClipInPage, highlightWidth: highlightWidthInPage, iconStroke: iconStrokeInPage };
 const PROBE_OPTIONS = { iconStroke: ICON_STROKE };
 
 async function runStoryProbe(probe, page) {
@@ -361,6 +367,25 @@ async function runStoryProbe(probe, page) {
   const fn = PAGE_PROBES[probe.id];
   if (!fn) return { error: `unknown_probe:${probe.id}` };
   return page.evaluate(fn, { ...(PROBE_OPTIONS[probe.id] ?? {}), root: probe.root });
+}
+
+// A story whose shell blocks hydrate on the page (data-shell-hydrate, the shell stories) is read once
+// every block under root says data-shell-hydrated: before that the markup is the server's and the
+// shell's handlers are not attached. A story without such blocks is ready at once. False on a timeout.
+async function waitForHydratedBlocks(page, root, timeout = 15000) {
+  try {
+    await page.waitForFunction(
+      (selector) => {
+        const scope = document.querySelector(selector);
+        return !scope || Array.from(scope.querySelectorAll("[data-shell-hydrate]")).every((block) => block.hasAttribute("data-shell-hydrated"));
+      },
+      root,
+      { timeout }
+    );
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 const STATUS_RANK = { "n/a": 0, pass: 1, fail: 2 };
@@ -546,6 +571,10 @@ export async function runGeometryMeasureProof({
       report.missingStories = missing;
       const activeMutations = mutations.filter((mutation) => fullSet || ids.includes(mutation.storyId));
       const mutationRoutes = resolveStoryRoutes([...new Set(activeMutations.map((mutation) => mutation.storyId))], registry).routes;
+      // A probe runs in a full run or when its story is measured; its route is resolved on its own, as a
+      // mutation's is, so a probe on a story outside the measured set (shell-top-band) finds it.
+      const activeProbes = probes.filter((probe) => fullSet || ids.includes(probe.storyId));
+      const probeRoutes = resolveStoryRoutes([...new Set(activeProbes.map((probe) => probe.storyId))], registry).routes;
       const server = await startStaticServer(staticRoot);
       try {
         const targets = [];
@@ -589,16 +618,20 @@ export async function runGeometryMeasureProof({
 
         const context = await active.newContext({ viewport, deviceScaleFactor: 1 });
         try {
-          for (const probe of probes) {
-            const route = routes.find((item) => item.id === probe.storyId);
+          for (const probe of activeProbes) {
+            const route = probeRoutes.find((item) => item.id === probe.storyId);
             if (!route) {
-              if (fullSet || ids.includes(probe.storyId)) report.probes.push({ id: probe.id, storyId: probe.storyId, source: probe.source, status: "missing" });
+              report.probes.push({ id: probe.id, storyId: probe.storyId, source: probe.source, status: "missing" });
               continue;
             }
             const page = await context.newPage();
             try {
               await page.goto(storyUrl(server.origin, route, { theme: themes[0], locale }), { waitUntil: "load" });
               await expandStory(page, route.id);
+              if (!(await waitForHydratedBlocks(page, route.bodySelector))) {
+                report.probes.push({ id: probe.id, storyId: probe.storyId, source: probe.source, theme: themes[0], status: "error", error: "shell_blocks_not_hydrated" });
+                continue;
+              }
               await page.addStyleTag({ content: "*,*::before,*::after{transition:none!important;animation:none!important}" });
               const result = await runStoryProbe({ ...probe, root: route.bodySelector }, page);
               const status = result.error ? "error" : result.checked === 0 ? "n/a" : result.violationCount > 0 ? "fail" : "pass";

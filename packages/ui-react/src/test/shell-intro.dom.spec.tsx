@@ -11,7 +11,7 @@ import { readFileSync } from "node:fs";
 import { act } from "react";
 import { hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { ProductLockup, ShellBrandButton, ShellIntro, shellIntroSessionMarker } from "../index.js";
+import { ProductLockup, ShellBrandButton, ShellIntro, shellIntroSessionMarker, type TcrnProductMarkId } from "../index.js";
 import { tcrnProductMarks } from "../components/Navigation/product-marks.generated.js";
 import { createDomInteractionHarness, type DomInteractionHarness } from "./dom-harness.js";
 
@@ -52,10 +52,10 @@ function instrument(harness: DomInteractionHarness, reducedMotion = false): Anim
   return calls;
 }
 
-function SignInCard() {
+function SignInCard({ productId = "tms" }: { productId?: TcrnProductMarkId }) {
   return (
     <form aria-label="Sign in">
-      <ProductLockup productId="tms" />
+      <ProductLockup productId={productId} />
       <input aria-label="Account" />
       <button type="submit">Sign in</button>
     </form>
@@ -65,14 +65,16 @@ function SignInCard() {
 interface ShellProps {
   locale?: string;
   onFinish?: (played: boolean) => void;
+  /** The product signed in to; TMS when omitted. */
+  productId?: TcrnProductMarkId;
 }
 
 /** The band as the top-band shell lays it out (C-5 hooks), with the intro mounted at sign-in. */
-function Shell({ locale = "en", onFinish }: ShellProps) {
+function Shell({ locale = "en", onFinish, productId = "tms" }: ShellProps) {
   return (
     <div data-shell="closed">
       <div data-shell-strip="">
-        <ShellBrandButton productId="tms" version="v2" locale={locale} />
+        <ShellBrandButton productId={productId} version="v2" locale={locale} />
         <nav data-pins="" aria-label="Pinned">
           <a href="#roster" data-pin="roster">
             Roster
@@ -83,7 +85,7 @@ function Shell({ locale = "en", onFinish }: ShellProps) {
         </div>
       </div>
       <main data-paper="">Roster</main>
-      <ShellIntro productId="tms" card={<SignInCard />} locale={locale} onFinish={onFinish} />
+      <ShellIntro productId={productId} card={<SignInCard productId={productId} />} locale={locale} onFinish={onFinish} />
     </div>
   );
 }
@@ -266,6 +268,44 @@ test("the mark on the layer is the logos2 colour mark, opaque, placed on the car
     await harness.cleanup();
   }
 });
+
+// The design system and Mana Orchestrate are the two products whose key is not their mark's id: the
+// flying mark writes the mark's id in data-logo (ds, mana), the brand button's landing mark does too
+// (TCRN-DS-SUB-212), and the SVG is still drawn from the product key (TCRN-DS-SUB-214).
+for (const [productId, markId] of [
+  ["design-system", "ds"],
+  ["mana-orchestrate", "mana"]
+] as const) {
+  test(`the flying mark of ${productId} writes its mark's id, ${markId}, in data-logo and draws logos2/${markId}.svg (TCRN-DS-SUB-214)`, async () => {
+    const harness = createDomInteractionHarness();
+    instrument(harness);
+    mock.timers.enable({ apis: ["setTimeout"] });
+    try {
+      await harness.render(<Shell productId={productId} />);
+      const flying = harness.document.querySelector("[data-shell-intro] svg.tcrn-shell-intro__mark");
+      assert.ok(flying, "the layer draws the product's mark");
+      assert.equal(flying.getAttribute("data-logo"), markId, "data-logo is the mark's id, not the product key");
+      assert.equal(flying.getAttribute("data-product-mark"), productId, "the SVG is drawn from the product key");
+      assert.equal(flying.getAttribute("data-product-mark-variant"), "color");
+
+      const mark = tcrnProductMarks.find((candidate) => candidate.productId === productId);
+      assert.ok(mark);
+      assert.equal(mark.id, markId);
+      const file = readFileSync(new URL(`../../../../docs/design/gplus-2026-10/logos2/${markId}.svg`, import.meta.url), "utf8");
+      const body = /^<svg[^>]*>([\s\S]*)<\/svg>\n?$/.exec(file);
+      assert.ok(body, `logos2/${markId}.svg is one svg element`);
+      const probe = harness.document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      probe.innerHTML = body[1];
+      assert.equal(sha256(flying.innerHTML), sha256(probe.innerHTML), "the flying mark is the file's");
+      const landing = harness.document.querySelector(`[data-shell-brand] svg[data-logo='${markId}']`);
+      assert.ok(landing, "the brand button's mark writes the same id");
+      assert.equal(flying.innerHTML, landing.innerHTML, "one mark, 128 to 22");
+    } finally {
+      mock.timers.reset();
+      await harness.cleanup();
+    }
+  });
+}
 
 test("input is not held up: the card is inert, the layer hidden, the brand button reachable; the status speaks five languages", async () => {
   const expected: Record<string, string> = {
