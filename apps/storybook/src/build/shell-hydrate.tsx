@@ -23,7 +23,8 @@
 // moment the page stands for sign-in succeeding.
 //
 // This module is imported on the server by story-content.tsx; nothing in it runs when it loads.
-import { useEffect, useMemo, useState, type ReactNode, type RefObject } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
+import { flushSync } from "react-dom";
 import { hydrateRoot } from "react-dom/client";
 import {
   Badge,
@@ -38,15 +39,18 @@ import {
   SplitView,
   Switch,
   Text,
+  TocRail,
   shellMenuPresentationContext,
   tcrnProductLogoRegistry,
   useProductShellController,
+  type PageHeaderBreadcrumb,
   type PageHeaderProps,
   type ProductShellNavGroup,
   type ProductShellProduct,
   type ProductShellProps,
   type ShellMenuPresentation,
-  type TcrnProductLogoId
+  type TcrnProductLogoId,
+  type TocItem
 } from "@tcrn/ui-react";
 import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 
@@ -488,10 +492,15 @@ interface ShellStoryRootProps {
   onMounted?: () => void;
 }
 
-// What the page's language script (client-scripts.ts, storybookI18nScript) leaves on window.
+// What the page's language and theme scripts (client-scripts.ts, storybookI18nScript and
+// storybookThemeScript) leave on window, and what the documentation shell leaves there for the gates.
 interface StorybookLocaleWindow {
   tcrnStorybookResolvedLocale?: string;
   tcrnStorybookTextFor?: (locale: string, key: string) => string;
+  tcrnStorybookResolvedTheme?: string;
+  tcrnStorybookApplyTheme?: (theme: string, updateUrl: boolean) => void;
+  tcrnStorybookApplyLocale?: (locale: string, updateUrl: boolean) => void;
+  tcrnDocShellLayers?: DocShellLayers;
 }
 const storybookWindow = (): StorybookLocaleWindow | undefined => (typeof window === "undefined" ? undefined : (window as unknown as StorybookLocaleWindow));
 
@@ -535,6 +544,387 @@ export function ShellStoryRoot({ storyId, screen, block = null, onMounted }: She
   return <View storyId={storyId} screen={screen} locale={locale} t={t} introScope={mounted && block ? introScope : null} />;
 }
 
+// ---------------------------------------------------------------------------------------------
+// The documentation shell (TCRN-DS-SUB-201; STORY-147 D1, STORY-144, STORY-141). Every page wears the
+// one shell there is, the package ProductShell, and it is the live part, hydrated here as the screens
+// are: the page carries its model as JSON (data-doc-shell-config, written by page-template.tsx in the
+// build's English) and the server render of DocShellRoot in a block (data-doc-shell-root). Once mounted
+// the shell holds its layers itself (the full menu, the avatar menu, its language list), 760 wide and
+// narrower its full menu is the Sheet (data-state="sheet"), its search is the page's index
+// (data-doc-search-index) through searchProvider, and its theme toggle and language menu call the
+// page's own theme and language scripts, whose events it follows. The page body inside the paper is
+// the page's static markup (data-doc-page-body): React renders it once, as the server did, and leaves
+// it to the page's scripts and to the shell story blocks in it.
+
+/** The block of the documentation shell. */
+export const docShellRootAttribute = "data-doc-shell-root";
+/** The script element that holds the documentation shell's model as JSON. */
+export const docShellConfigAttribute = "data-doc-shell-config";
+/** The documentation shell's page body: static markup, the page scripts'. */
+export const docPageBodyAttribute = "data-doc-page-body";
+/** The id prefix of the documentation shell's render, the same on the server and in hydration. */
+export const docShellIdentifierPrefix = "tcrn-doc-shell-";
+
+/** The documentation shell's model for a page, in one language (page-template.tsx builds it). */
+export interface DocShellConfig {
+  /** The page's kind: a section index, a category page or a reference page (data-doc-page). */
+  kind: string;
+  /** The page's section (data-active-story-section). */
+  section: string;
+  /** The site's name: the shell's product, its module and the name of its landmarks. */
+  siteName: string;
+  /** The page's title: the paper's h1, the current position's last step and the main region's name. */
+  title: string;
+  breadcrumbs: PageHeaderBreadcrumb[];
+  /** The full menu: the sections, then one column per section with its categories. */
+  navGroups: ProductShellNavGroup[];
+  pinnedIds: string[];
+  searchPlaceholder: string;
+  skipLinkLabel: string;
+  /** The page's contents in the paper (TocRail). */
+  toc: { label: string; headingLevel?: 2 | 3; items: TocItem[] };
+}
+
+export type DocShellTheme = "light" | "dark";
+
+/**
+ * What the documentation shell leaves on window for the gates: its two layers, opened or closed at once, leaving the
+ * reader's focus where it is. `presentation: "panel"` opens the full menu as the panel at any width, for a gate that
+ * reads the menu model's rows and bottom bar where the viewport would show the Sheet; a reader's menu follows the viewport.
+ */
+export interface DocShellLayers {
+  setMenu: (open: boolean, options?: { presentation?: "panel" }) => void;
+  setAccount: (open: boolean) => void;
+}
+
+type DocMenuEntry = ProductShellNavGroup["items"][number];
+
+/** The strings of a model in a fixed order: the same order in every language, so they pair up. */
+export function docShellConfigStrings(config: DocShellConfig): string[] {
+  const entries = (items: readonly DocMenuEntry[]): string[] =>
+    items.flatMap((item) => [item.label, ...(item.description ? [item.description] : []), ...(item.children ? entries(item.children as readonly DocMenuEntry[]) : [])]);
+  return [
+    config.siteName,
+    config.title,
+    config.searchPlaceholder,
+    config.skipLinkLabel,
+    config.toc.label,
+    ...config.breadcrumbs.map((crumb) => crumb.label),
+    ...config.toc.items.map((item) => item.label),
+    ...config.navGroups.flatMap((group) => [group.label, ...entries(group.items)])
+  ];
+}
+
+// The page body: React renders the markup it is given once and leaves it (memo: the same string is
+// the same body), so the page's scripts and the shell story blocks in it keep their nodes.
+const DocPageBody = memo(function DocPageBody({ html }: { html: string }) {
+  return <div className="tcrn-doc-page__body" data-doc-page-body="" dangerouslySetInnerHTML={{ __html: html }} />;
+});
+
+export interface DocShellViewProps {
+  config: DocShellConfig;
+  locale: TcrnLocale;
+  theme: DocShellTheme;
+  /** The page body's markup (the server's marker, or the page's body when hydrating). */
+  body: string;
+  t?: Translate;
+  /** The href a destination of the shell links to (the page's preferences in its query). */
+  link?: (href: string) => string;
+  menuOpen?: boolean;
+  onMenuOpenChange?: (open: boolean) => void;
+  accountMenuOpen?: boolean;
+  onAccountMenuOpenChange?: (open: boolean) => void;
+  localeMenuOpen?: boolean;
+  onLocaleMenuOpenChange?: (open: boolean) => void;
+  /** Whether ⌘K / Ctrl+K is this shell's (TCRN-DS-SUB-185, SUB-179). */
+  menuShortcut?: boolean;
+  searchProvider?: ProductShellProps["searchProvider"];
+  onThemeChange?: ProductShellProps["onThemeChange"];
+  onLocaleChange?: (locale: string) => void;
+  /** The full menu's presentation; the viewport's ("auto") unless a gate asks for the panel (DocShellLayers). */
+  presentation?: ShellMenuPresentation;
+}
+
+const sameHref = (href: string) => href;
+
+/** The documentation shell as a page shows it: the package ProductShell with the page's model. */
+export function DocShellView({ config, locale, theme, body, t = untranslated, link = sameHref, presentation = "auto", ...layers }: DocShellViewProps) {
+  const entry = (item: DocMenuEntry): DocMenuEntry => ({
+    ...item,
+    label: t(item.label),
+    ...(item.description ? { description: t(item.description) } : {}),
+    ...(item.href ? { href: link(item.href) } : {}),
+    ...(item.children ? { children: (item.children as readonly DocMenuEntry[]).map(entry) } : {})
+  });
+  // The provider is always there (its default is "auto"), so the tree keeps its shape when a gate asks for the panel.
+  return (
+    <shellMenuPresentationContext.Provider value={presentation}>
+    <ProductShell
+      productName={t(config.siteName)}
+      moduleName={t(config.siteName)}
+      brandProductId="design-system"
+      currentRouteLabel={t(config.title)}
+      navGroups={config.navGroups.map((group) => ({ ...group, label: t(group.label), items: group.items.map(entry) }))}
+      locales={tcrnLocaleMetadata}
+      currentLocale={locale}
+      currentTheme={theme}
+      // The page's own shell: its title is the page's h1 (the paper's default), and its landmarks are
+      // named after the site, apart from the story shells' on the same page (TCRN-DS-SUB-150, SUB-184).
+      pageHeader={{ title: t(config.title), breadcrumbs: config.breadcrumbs.map((crumb) => ({ ...crumb, label: t(crumb.label), ...(crumb.href ? { href: link(crumb.href) } : {}) })) }}
+      landmarkLabel={t(config.siteName)}
+      pinnedIds={config.pinnedIds}
+      menuOpen={layers.menuOpen ?? false}
+      onMenuOpenChange={layers.onMenuOpenChange ? (open) => layers.onMenuOpenChange?.(open) : undefined}
+      menuShortcut={layers.menuShortcut}
+      accountMenuOpen={layers.accountMenuOpen ?? false}
+      onAccountMenuOpenChange={layers.onAccountMenuOpenChange}
+      localeMenuOpen={layers.localeMenuOpen ?? false}
+      onLocaleMenuOpenChange={layers.onLocaleMenuOpenChange ? (open) => layers.onLocaleMenuOpenChange?.(open) : undefined}
+      searchPlaceholder={t(config.searchPlaceholder)}
+      searchProvider={layers.searchProvider}
+      onThemeChange={layers.onThemeChange}
+      onLocaleChange={layers.onLocaleChange}
+      contentId="content"
+      contentRole="main"
+      contentLabel={t(config.title)}
+      skipLinkLabel={t(config.skipLinkLabel)}
+      data-shell="doc"
+      data-doc-shell="online-docs"
+      data-contract-surface="tcrn-design-system-storybook"
+      data-anchor-scroll-controlled="true"
+      data-active-story-section={config.section}
+      data-storybook-locale={locale}
+      data-storybook-supported-locales={tcrnSupportedLocales.join(",")}
+      data-storybook-theme={theme}
+      data-storybook-supported-themes="light,dark"
+      data-tcrn-theme={theme}
+    >
+      <div className="tcrn-doc-page" data-doc-page={config.kind}>
+        <DocPageBody html={body} />
+        <div className="tcrn-doc-page__toc" data-doc-toc="">
+          <TocRail
+            label={t(config.toc.label)}
+            items={config.toc.items.map((item) => ({ ...item, label: t(item.label), ...(item.href ? { href: link(item.href) } : {}) }))}
+            headingLevel={config.toc.headingLevel}
+          />
+        </div>
+      </div>
+    </ProductShell>
+    </shellMenuPresentationContext.Provider>
+  );
+}
+
+function pageTheme(): DocShellTheme {
+  return storybookWindow()?.tcrnStorybookResolvedTheme === "dark" ? "dark" : "light";
+}
+
+/**
+ * A destination with the page's language and theme in its query, as the page's scripts write the
+ * static links: another page keeps the reader's preferences; a fragment of this page stays a fragment.
+ */
+function docPreferenceLink(href: string, locale: string, theme: string): string {
+  if (!href || href.startsWith("#")) return href;
+  const next = new URL(href, window.location.href);
+  if (next.pathname === window.location.pathname && next.hash) return next.hash;
+  next.searchParams.set("locale", locale);
+  next.searchParams.set("theme", theme);
+  return `${next.pathname.split("/").pop() || "index.html"}${next.search}${next.hash}`;
+}
+
+interface DocSearchIndexEntry {
+  label: string;
+  group?: string;
+  href: string;
+}
+
+let docSearchIndexCache: readonly DocSearchIndexEntry[] | undefined;
+function docSearchIndex(): readonly DocSearchIndexEntry[] {
+  if (docSearchIndexCache) return docSearchIndexCache;
+  try {
+    const parsed: unknown = JSON.parse(document.querySelector("[data-doc-search-index]")?.textContent ?? "[]");
+    docSearchIndexCache = Array.isArray(parsed) ? (parsed as DocSearchIndexEntry[]) : [];
+  } catch {
+    docSearchIndexCache = [];
+  }
+  return docSearchIndexCache;
+}
+
+const docSearchMaxResults = 8;
+const docSearchNormal = (value: string) => value.trim().toLocaleLowerCase();
+
+/**
+ * The documentation search (the full menu's): the site's sections, categories and stories from the
+ * page's index (their labels are dictionary keys, said in the reader's language), then this page's
+ * ReadbackPanels and, on a reference page, its component regions, as the page reads them now.
+ */
+function docSearchProvider(locale: TcrnLocale, link: (href: string) => string): NonNullable<ProductShellProps["searchProvider"]> {
+  return (query) => {
+    const needle = docSearchNormal(query);
+    if (!needle) return [];
+    const textFor = storybookWindow()?.tcrnStorybookTextFor;
+    const say = (key: string) => (textFor ? textFor(locale, key) ?? key : key);
+    const site = docSearchIndex().map((entry) => ({ title: say(entry.label), meta: entry.group ? say(entry.group) : "", href: entry.href }));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>(".tcrn-readback-panel[id]")).map((panel) => ({
+      title: panel.querySelector(":scope > h2.tcrn-heading, :scope > h3.tcrn-heading, :scope > h4.tcrn-heading")?.textContent?.trim() ?? "",
+      meta: panel.closest("[data-contract-story-id]")?.querySelector(".tcrn-doc-story-disclosure__title")?.textContent?.trim() ?? "",
+      href: `#${panel.id}`
+    }));
+    const components = Array.from(document.querySelectorAll<HTMLElement>("[data-component-reference-id][id]")).map((region) => ({
+      title: region.getAttribute("data-component-reference-id") ?? "",
+      meta: say("group.Components"),
+      href: `#${region.id}`
+    }));
+    return [...site, ...panels, ...components]
+      .filter((item) => item.title && docSearchNormal([item.title, item.meta].filter(Boolean).join(" ")).includes(needle))
+      .slice(0, docSearchMaxResults)
+      .map((item, index) => ({
+        id: `doc-search-${index}`,
+        title: item.title,
+        ...(item.meta && item.meta !== item.title ? { meta: item.meta } : {}),
+        href: link(item.href)
+      }));
+  };
+}
+
+interface DocShellRootProps {
+  config: DocShellConfig;
+  body: string;
+  /** The block the shell is mounted in (client only). */
+  block?: HTMLElement | null;
+}
+
+/**
+ * The documentation shell as the page renders it: on the server and in the first client render it is
+ * the build's English shell with its layers closed; once mounted it speaks the page's language, wears
+ * its theme, links with both, and holds its layers.
+ */
+export function DocShellRoot({ config, body, block = null }: DocShellRootProps) {
+  const [locale, setLocale] = useState<TcrnLocale>(tcrnDefaultLocale);
+  const [theme, setTheme] = useState<DocShellTheme>("light");
+  const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
+  const [presentation, setPresentation] = useState<ShellMenuPresentation>("auto");
+  const localeMenuOpenRef = useRef(false);
+  const listEscapeRef = useRef(false);
+  useEffect(() => {
+    setMounted(true);
+    const followLocale = () => setLocale(pageLocale());
+    const followTheme = () => setTheme(pageTheme());
+    followLocale();
+    followTheme();
+    window.addEventListener("tcrn-storybook-locale-applied", followLocale);
+    window.addEventListener("tcrn-storybook-theme-applied", followTheme);
+    // Esc in the open language list closes the list and returns the focus to its trigger, and leaves the
+    // avatar menu around it open (TCRN-DS-SUB-166): the avatar menu's own Esc, heard first, is not taken
+    // while the list is open. The press is noted on the way down and forgotten once it has been handled.
+    const noteListEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || !localeMenuOpenRef.current) return;
+      listEscapeRef.current = true;
+      window.setTimeout(() => {
+        listEscapeRef.current = false;
+      }, 0);
+    };
+    document.addEventListener("keydown", noteListEscape, true);
+    const page = storybookWindow();
+    // The gates open and close the layers through this and read the result at once (flushSync); like the
+    // page's former layer interface it leaves the reader's focus where it is.
+    const keepingFocus = (change: () => void) => {
+      const before = document.activeElement;
+      const focused = before instanceof HTMLElement && before !== document.body ? before : null;
+      flushSync(change);
+      const now = document.activeElement;
+      if (now === focused) return;
+      if (focused && focused.isConnected) focused.focus({ preventScroll: true });
+      else if (now instanceof HTMLElement && now !== document.body) now.blur();
+    };
+    if (page) {
+      page.tcrnDocShellLayers = {
+        setMenu: (open, options) => keepingFocus(() => {
+          setPresentation(open && options?.presentation ? options.presentation : "auto");
+          setMenuOpen(open);
+          if (open) setAccountMenuOpen(false);
+        }),
+        setAccount: (open) => keepingFocus(() => {
+          setAccountMenuOpen(open);
+          if (open) setMenuOpen(false);
+          else setLocaleMenuOpen(false);
+        })
+      };
+    }
+    return () => {
+      window.removeEventListener("tcrn-storybook-locale-applied", followLocale);
+      window.removeEventListener("tcrn-storybook-theme-applied", followTheme);
+      document.removeEventListener("keydown", noteListEscape, true);
+      if (page) delete page.tcrnDocShellLayers;
+    };
+  }, []);
+  useEffect(() => {
+    localeMenuOpenRef.current = localeMenuOpen;
+  }, [localeMenuOpen]);
+  // The block says the language its shell now shows, as the screens' blocks do (shellHydratedAttribute).
+  useEffect(() => {
+    if (mounted && block) block.setAttribute(shellHydratedAttribute, locale);
+  }, [block, locale, mounted]);
+  const t = useMemo(() => translatorFor(locale), [locale]);
+  // The server's links are the model's; once mounted they carry the page's preferences.
+  const link = useMemo(() => (mounted ? (href: string) => docPreferenceLink(href, locale, theme) : sameHref), [mounted, locale, theme]);
+  const searchProvider = useMemo(() => docSearchProvider(locale, link), [locale, link]);
+  return (
+    <DocShellView
+      config={config}
+      locale={locale}
+      theme={theme}
+      body={body}
+      t={t}
+      link={link}
+      presentation={presentation}
+      menuOpen={menuOpen}
+      onMenuOpenChange={(open) => {
+        setMenuOpen(open);
+        if (!open) setPresentation("auto");
+      }}
+      accountMenuOpen={accountMenuOpen}
+      onAccountMenuOpenChange={(open) => {
+        if (!open && listEscapeRef.current) return;
+        setAccountMenuOpen(open);
+        if (!open) setLocaleMenuOpen(false);
+      }}
+      localeMenuOpen={localeMenuOpen}
+      onLocaleMenuOpenChange={setLocaleMenuOpen}
+      searchProvider={searchProvider}
+      onThemeChange={(next) => storybookWindow()?.tcrnStorybookApplyTheme?.(next, true)}
+      onLocaleChange={(next) => {
+        setLocaleMenuOpen(false);
+        storybookWindow()?.tcrnStorybookApplyLocale?.(next, true);
+      }}
+    />
+  );
+}
+
+/** Reports an error the way an uncaught one is reported, without stopping the page's other mounts. */
+function reportMountError(error: unknown): void {
+  if (typeof window !== "undefined" && typeof window.reportError === "function") window.reportError(error);
+  else console.error(error);
+}
+
+/** Hydrates the page's documentation shell; returns whether it mounted it. */
+function mountDocShell(doc: Document): boolean {
+  const block = doc.querySelector<HTMLElement>(`[${docShellRootAttribute}]`);
+  const source = doc.querySelector(`script[${docShellConfigAttribute}]`);
+  if (!block || !source) return false;
+  try {
+    const config = JSON.parse(source.textContent ?? "") as DocShellConfig;
+    const body = block.querySelector(`[${docPageBodyAttribute}]`)?.innerHTML ?? "";
+    hydrateRoot(block, <DocShellRoot config={config} body={body} block={block} />, { identifierPrefix: docShellIdentifierPrefix });
+    return true;
+  } catch (error) {
+    reportMountError(error);
+    return false;
+  }
+}
+
 /** The screen a block names: its story's data-shell-story and its own data-shell-story-block. */
 export function shellStoryScreenOf(storyId: string | null | undefined, screenId: string | null | undefined): ShellStoryScreen | undefined {
   if (!storyId || !screenId) return undefined;
@@ -542,7 +932,10 @@ export function shellStoryScreenOf(storyId: string | null | undefined, screenId:
 }
 
 // focus() into a block that has not mounted yet is held: the open screens' menus would otherwise
-// move the reader's focus (and scroll the page) to the last of them when the page loads.
+// move the reader's focus (and scroll the page) to the last of them when the page loads. Each block is
+// let go once it has mounted, or at once when its mount fails (TCRN-DS-SUB-201): a block that never
+// mounts does not hold the others' focus, and focus() is the browser's own again once every block is
+// let go. The documentation shell is not held: it mounts closed and moves no focus.
 function holdFocusUntilMounted(blocks: readonly HTMLElement[]): (block: HTMLElement) => void {
   const pending = new Set(blocks);
   const prototype = HTMLElement.prototype;
@@ -558,22 +951,37 @@ function holdFocusUntilMounted(blocks: readonly HTMLElement[]): (block: HTMLElem
   };
 }
 
-/** Hydrates every shell story block of the page; returns how many it mounted. */
+/**
+ * Hydrates the page's documentation shell and every shell story block of the page; returns how many
+ * story screens it mounted. Each block is mounted in its own try / finally: a block that throws, or
+ * whose screen fails to render, is let go and reported, and the other blocks still mount.
+ */
 export function mountShellStories(doc: Document = document): number {
-  const blocks = [...doc.querySelectorAll<HTMLElement>(`[${shellHydrateAttribute}]`)];
-  const mounted = holdFocusUntilMounted(blocks);
+  mountDocShell(doc);
+  const blocks = [...doc.querySelectorAll<HTMLElement>(`[${shellHydrateAttribute}]`)].filter((block) => !block.hasAttribute(docShellRootAttribute));
+  const release = holdFocusUntilMounted(blocks);
   let count = 0;
   for (const block of blocks) {
-    const storyId = block.closest("[data-shell-story]")?.getAttribute("data-shell-story");
-    const screen = shellStoryScreenOf(storyId, block.getAttribute("data-shell-story-block"));
-    if (!storyId || !screen) {
-      mounted(block);
-      continue;
+    let mounting = false;
+    try {
+      const storyId = block.closest("[data-shell-story]")?.getAttribute("data-shell-story");
+      const screen = shellStoryScreenOf(storyId, block.getAttribute("data-shell-story-block"));
+      if (storyId && screen) {
+        hydrateRoot(block, <ShellStoryRoot storyId={storyId} screen={screen} block={block} onMounted={() => release(block)} />, {
+          identifierPrefix: shellStoryIdentifierPrefix(storyId, screen.screen),
+          onUncaughtError: (error) => {
+            release(block);
+            reportMountError(error);
+          }
+        });
+        mounting = true;
+        count += 1;
+      }
+    } catch (error) {
+      reportMountError(error);
+    } finally {
+      if (!mounting) release(block);
     }
-    hydrateRoot(block, <ShellStoryRoot storyId={storyId} screen={screen} block={block} onMounted={() => mounted(block)} />, {
-      identifierPrefix: shellStoryIdentifierPrefix(storyId, screen.screen)
-    });
-    count += 1;
   }
   return count;
 }

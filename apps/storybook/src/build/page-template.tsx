@@ -1,9 +1,7 @@
-import { renderToStaticMarkup } from "react-dom/server";
-import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
+import { renderToStaticMarkup, renderToString } from "react-dom/server";
+import { tcrnDefaultLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 import {
   Icon,
-  ProductShell,
-  TocRail,
   tcrnComponentCss,
   tcrnRetiredComponentCss,
   type IconName,
@@ -18,17 +16,23 @@ import {
   activeStoryNavScript,
   anchorScrollScript,
   dialogFixtureScript,
-  docShellLayerScript,
   hashRouteScript,
   storyDisclosureScript,
   tableToolbarScript,
   storybookI18nScript,
   storybookThemeScript,
   storybookSearchIndexJson,
-  storybookSearchScript,
   storybookCanvasColors
 } from "./client-scripts.js";
 import { escapeHtml, i18nText, localeText, storybookContentText } from "./i18n.js";
+import {
+  DocShellRoot,
+  docShellConfigAttribute,
+  docShellConfigStrings,
+  docShellIdentifierPrefix,
+  docShellRootAttribute,
+  type DocShellConfig
+} from "./shell-hydrate.js";
 import { categoryFileForStory, categoryFileName, categorySlug, groupFileName, groupSlug, storyCategoriesForGroup } from "./navigation.js";
 import type { ContractPage } from "./navigation.js";
 import { referenceComponentAnchor } from "./reference-pages.js";
@@ -429,140 +433,49 @@ function docBreadcrumbs(page: DocShellPage, locale: TcrnLocale): PageHeaderBread
   ];
 }
 
-// One render of the shell around a marker for the page body. `open` renders the two layers a
-// static page opens without React, the full menu and the avatar menu, so their markup can be
-// carried hidden and opened by docShellLayerScript.
-function docShellMarkup(page: DocShellPage, locale: TcrnLocale, open: boolean): string {
-  return renderToStaticMarkup(
-    <ProductShell
-      productName={localeText("shell.brand", locale)}
-      moduleName={localeText("shell.brand", locale)}
-      brandProductId="design-system"
-      currentRouteLabel={page.title(locale)}
-      navGroups={docMenuModel(page, locale)}
-      locales={tcrnLocaleMetadata}
-      currentLocale={locale}
-      pageHeader={{ title: page.title(locale), breadcrumbs: docBreadcrumbs(page, locale) }}
-      // The page's own shell: its title is the page's h1 (the paper's default), and its landmarks are
-      // named after the site, apart from the story shells' on the same page (TCRN-DS-SUB-150, SUB-148).
-      landmarkLabel={localeText("shell.brand", locale)}
-      pinnedIds={contractStoryGroups.filter((group) => group !== "Welcome").map(docSectionItemId)}
-      menuOpen={open}
-      accountMenuOpen={open}
-      searchPlaceholder={localeText("shell.searchLabel", locale)}
-      onSearchQueryChange={() => undefined}
-      contentId="content"
-      contentRole="main"
-      contentLabel={page.title(locale)}
-      skipLinkLabel={localeText("shell.skip", locale)}
-      data-shell="doc"
-      data-doc-shell="online-docs"
-      data-contract-surface="tcrn-design-system-storybook"
-      data-anchor-scroll-controlled="true"
-      data-active-story-section={page.group}
-      data-storybook-locale={tcrnDefaultLocale}
-      data-storybook-supported-locales={tcrnSupportedLocales.join(",")}
-      data-storybook-theme="light"
-      data-storybook-supported-themes="light,dark"
-      data-tcrn-theme="light"
-    >
-      <div className="tcrn-doc-page" data-doc-page={page.kind}>
-        <div className="tcrn-doc-page__body" dangerouslySetInnerHTML={{ __html: docShellBodyMarker }} />
-        <div className="tcrn-doc-page__toc" data-doc-toc="">
-          <TocRail label={localeText("shell.onThisPageLabel", locale)} items={page.toc(locale)} />
-        </div>
-      </div>
-    </ProductShell>,
-    { identifierPrefix: "tcrn-doc-shell-" }
-  );
+// The page's shell model in a locale (TCRN-DS-SUB-201): what DocShellView (build/shell-hydrate.tsx)
+// renders, as JSON the page carries for the shell's hydration.
+function docShellConfig(page: DocShellPage, locale: TcrnLocale): DocShellConfig {
+  return {
+    kind: page.kind,
+    section: page.group,
+    siteName: localeText("shell.brand", locale),
+    title: page.title(locale),
+    breadcrumbs: docBreadcrumbs(page, locale),
+    navGroups: docMenuModel(page, locale),
+    pinnedIds: contractStoryGroups.filter((group) => group !== "Welcome").map(docSectionItemId),
+    searchPlaceholder: localeText("shell.searchLabel", locale),
+    skipLinkLabel: localeText("shell.skip", locale),
+    toc: { label: localeText("shell.onThisPageLabel", locale), items: page.toc(locale) }
+  };
 }
 
-// The element that opens at `start` (a tag name and the index of its `<`) ends after the index
-// this returns: the matching close tag, counted through nested tags of the same name.
-function closingTagEnd(html: string, start: number, tag: string): number {
-  const tags = new RegExp(`<${tag}\\b|</${tag}>`, "g");
-  tags.lastIndex = start;
-  let depth = 0;
-  for (let match = tags.exec(html); match; match = tags.exec(html)) {
-    depth += match[0] === `</${tag}>` ? -1 : 1;
-    if (depth === 0) return match.index + match[0].length;
-  }
-  throw new Error(`doc_shell_unclosed_${tag}`);
+// The page's shell (TCRN-DS-SUB-201; STORY-147 D1): the server render of the shell the page hydrates
+// (DocShellRoot, closed, in English) around a marker for the page body, in its block, after the JSON
+// of its model. There is no hidden copy of its layers and no static stand-in for its state: the full
+// menu (the Sheet at 760 and narrower), the avatar menu, the search, the theme and the language are
+// the package ProductShell's once ds-shell-hydrate.js has mounted it.
+function docShellHtml(page: DocShellPage): string {
+  const config = docShellConfig(page, tcrnDefaultLocale);
+  const shell = renderToString(<DocShellRoot config={config} body={docShellBodyMarker} />, { identifierPrefix: docShellIdentifierPrefix });
+  const model = JSON.stringify(config).replace(/</g, "\\u003c");
+  return `<script type="application/json" ${docShellConfigAttribute}>${model}</script>
+<div ${docShellRootAttribute}="" data-shell-hydrate="" style="display:contents">${shell}</div>`;
 }
 
-function sliceElement(html: string, marker: string, tag: string): string {
-  const at = html.indexOf(marker);
-  if (at === -1) throw new Error(`doc_shell_markup_missing:${marker}`);
-  const start = html.lastIndexOf(`<${tag}`, at);
-  return html.slice(start, closingTagEnd(html, start, tag));
-}
-
-function setAttributes(html: string, marker: string, attributes: string): string {
-  const at = html.indexOf(marker);
-  if (at === -1) throw new Error(`doc_shell_markup_missing:${marker}`);
-  const tagEnd = html.indexOf(">", at);
-  return `${html.slice(0, tagEnd)} ${attributes}${html.slice(tagEnd)}`;
-}
-
-function attributeValue(html: string, marker: string, name: string): string {
-  const at = html.indexOf(marker);
-  const tagStart = html.lastIndexOf("<", at);
-  const tag = html.slice(tagStart, html.indexOf(">", at));
-  const value = new RegExp(`\\s${name}="([^"]*)"`).exec(tag)?.[1];
-  if (value === undefined) throw new Error(`doc_shell_attribute_missing:${marker}:${name}`);
-  return value;
-}
-
-// The page's shell: the closed render, with the open render's full menu and avatar menu carried
-// hidden in the places React would mount them, and the hooks the documentation scripts use.
-function docShellHtml(page: DocShellPage, locale: TcrnLocale = tcrnDefaultLocale): string {
-  const closed = docShellMarkup(page, locale, false);
-  const open = docShellMarkup(page, locale, true);
-  const menu = sliceElement(open, 'data-shell-menu=""', "div")
-    .replace('data-shell-menu=""', 'data-shell-menu="" hidden=""')
-    .replace("<input role=\"combobox\"", "<input data-doc-search-input=\"\" role=\"combobox\"")
-    .replace('data-product-shell-search-results="true"', 'data-product-shell-search-results="true" data-doc-search-results=""');
-  const account = sliceElement(open, 'data-panel="account"', "section")
-    .replace('data-panel="account"', 'data-panel="account" hidden=""')
-    .replace('data-shell-control="theme-toggle"', 'data-shell-control="theme-toggle" data-storybook-theme-toggle="" data-storybook-theme-option="dark" data-theme-label-key="shell.themeDarkLabel" aria-pressed="false"')
-    .replace('data-shell-control="locale-menu"', 'data-shell-control="locale-menu" data-locale-menu-root=""');
-  const localeSelect = `<select id="tcrn-doc-locale" data-i18n-locale-select data-i18n-aria-label="shell.languageLabel" aria-label="${escapeHtml(localeText("shell.languageLabel", locale))}" tabindex="-1" aria-hidden="true" hidden>${tcrnLocaleMetadata.map((metadata) => `<option value="${metadata.locale}">${metadata.nativeName}</option>`).join("")}</select>`;
-  const expandedLabel = attributeValue(open, 'data-shell-brand="', "aria-label");
-  const collapsedLabel = attributeValue(closed, 'data-shell-brand="', "aria-label");
-  let html = setAttributes(closed, 'data-shell-brand="', `data-expanded-label="${expandedLabel}" data-collapsed-label="${collapsedLabel}"`);
-  // The wordmark is the brand asset's own words (Logos board, section E) and reads the same in every
-  // language: the page's string swap leaves every brand wordmark alone by its class (client-scripts.ts,
-  // TCRN-DS-SUB-166), so the shell needs no data-locale-invariant, which is the English-leak ledger's.
-  const avatarEnd = html.indexOf("</button>", html.indexOf('data-shell-avatar=""')) + "</button>".length;
-  html = `${html.slice(0, avatarEnd)}${account}${localeSelect}${html.slice(avatarEnd)}`;
-  const stripEnd = html.indexOf("</header>") + "</header>".length;
-  return `${html.slice(0, stripEnd)}${menu}${html.slice(stripEnd)}`;
-}
-
-// The shell's own words are the package's, in five languages. The page is built in English and
-// the browser swaps strings through the content dictionary, so the dictionary takes the shell's
-// strings from the same render in every locale: the markup is the same element for element, and
-// the n-th text or translatable attribute of one render is the n-th of the others.
-const docShellTextPattern = /\s(title|aria-label|placeholder|data-label|data-expanded-label|data-collapsed-label)="([^"]*)"|>([^<]+)</g;
-
-function docShellTexts(html: string): string[] {
-  const texts: string[] = [];
-  for (const match of html.matchAll(docShellTextPattern)) {
-    const text = decodeEntities(match[2] ?? match[3] ?? "").trim();
-    if (text) texts.push(text);
-  }
-  return texts;
-}
-
+// The shell's words for the page's language: the shell says the package's own words in every language
+// itself, and the page's words (the sections, categories, titles and contents) are the model's, built in
+// English; the dictionary takes them from the model in every locale, string for string (the models
+// have one shape in every locale, so the n-th string of one is the n-th of the others).
 function docShellTranslations(page: DocShellPage): Record<string, Record<TcrnLocale, string>> {
-  const source = docShellTexts(docShellHtml(page, tcrnDefaultLocale));
-  const translated = tcrnSupportedLocales.map((locale) => [locale, docShellTexts(docShellHtml(page, locale))] as const);
+  const source = docShellConfigStrings(docShellConfig(page, tcrnDefaultLocale));
+  const translated = tcrnSupportedLocales.map((locale) => [locale, docShellConfigStrings(docShellConfig(page, locale))] as const);
   const entries: Record<string, Record<TcrnLocale, string>> = {};
   for (const [locale, texts] of translated) {
-    if (texts.length !== source.length) throw new Error(`doc_shell_locale_markup_differs:${locale}`);
+    if (texts.length !== source.length) throw new Error(`doc_shell_locale_model_differs:${locale}`);
   }
   source.forEach((text, index) => {
-    if (entries[text] || translated.every(([, texts]) => texts[index] === text)) return;
+    if (!text || entries[text] || translated.every(([, texts]) => texts[index] === text)) return;
     entries[text] = Object.fromEntries(translated.map(([locale, texts]) => [locale, texts[index]])) as Record<TcrnLocale, string>;
   });
   return entries;
@@ -686,7 +599,7 @@ ${chapterPagerHtml(page.group)}`;
   // under-inclusion would leak English after a locale switch, so err toward including. The shell's
   // own strings come from its renders in every locale; a dictionary entry for the same English
   // source wins.
-  const translatableSurface = decodeEntities(`${shell}\n${body}`);
+  const translatableSurface = `${docShellConfigStrings(docShellConfig(page, tcrnDefaultLocale)).join("\n")}\n${decodeEntities(body)}`;
   const usedContentTranslations = {
     ...docShellTranslations(page),
     ...Object.fromEntries(Object.entries(storybookContentText).filter(([source]) => translatableSurface.includes(source)))
@@ -721,25 +634,23 @@ ${hashRouteScript}
 ${activeStoryNavScript}
 ${storybookThemeScript}
 ${storybookI18nScript(usedContentTranslations)}
-${docShellLayerScript}
 ${storybookSearchIndexJson()}
-${storybookSearchScript}
 ${dialogFixtureScript}
 ${storyDisclosureScript}
 ${tableToolbarScript}
 <script type="module">import { mountStaticMultiSelect, mountStaticClipboardCopyButton } from "./ds-static-bridges.js"; for (const root of document.querySelectorAll("[data-choice-presentation=dropdown]")) mountStaticMultiSelect({ root }); for (const root of document.querySelectorAll("button[data-clipboard-text]")) mountStaticClipboardCopyButton({ root });</script>
-${shellHydrateScript(body)}
+${shellHydrateScript()}
 ${anchorScrollScript}
 </body>
 </html>
 `;
 }
 
-// TCRN-DS-SUB-151: a page that carries shell story blocks mounts them (build/shell-hydrate.tsx,
-// bundled as ds-shell-hydrate.js by build.tsx). A module script runs after the page's own scripts,
-// so the language script has left window.tcrnStorybookTextFor and the resolved locale for it.
-function shellHydrateScript(body: string): string {
-  if (!body.includes("data-shell-hydrate=")) return "";
+// TCRN-DS-SUB-151, SUB-201: every page mounts its documentation shell and any shell story blocks it
+// carries (build/shell-hydrate.tsx, bundled as ds-shell-hydrate.js by build.tsx). A module script runs
+// after the page's own scripts, so the language and theme scripts have left window.tcrnStorybookTextFor,
+// the resolved locale and theme, and their apply functions for it.
+function shellHydrateScript(): string {
   return '<script type="module">import { mountShellStories } from "./ds-shell-hydrate.js"; mountShellStories(document);</script>';
 }
 

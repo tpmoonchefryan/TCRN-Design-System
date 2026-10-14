@@ -74,15 +74,82 @@ const pages = Object.fromEntries(expectedContractStoryGroups.map((group) => [
   contractPages.filter((page) => page.group === group).map((page) => pageHtmlByFile[page.file]).join("\n")
 ]));
 const combinedHtml = Object.values(pageHtmlByFile).join("\n");
-// The documentation shell is the package's top-band ProductShell (TCRN-DS-SUB-131): sections and category
-// pages are rows of its full menu, and a page's stories are the links of the paper's contents rail
-// (TocRail) (TCRN-DS-SUB-132). The helpers read the first page's menu and every rail in the given HTML.
-const readDocShellNavHtml = (html) => {
-  const start = html.indexOf('<div class="tcrn-shell-menu" data-shell-menu="" hidden="">');
-  const end = start === -1 ? -1 : html.indexOf('data-shell-pbar=""', start);
-  return start === -1 || end === -1 ? "" : html.slice(start, end);
+// The documentation pages render in the package's top-band ProductShell, hydrated on the page (TCRN-DS-SUB-131,
+// SUB-201): sections and category pages are rows of its full menu, and a page's stories are the links of the paper's
+// contents rail (TocRail) (TCRN-DS-SUB-132). The full menu is in the page only while it is open, so the static helpers
+// read the menu's model, the JSON the page carries for the shell (data-doc-shell-config; the first page's in the given
+// HTML), and every rail in the given HTML.
+const readDocShellModel = (html) => {
+  const match = html.match(/<script type="application\/json" data-doc-shell-config>([\s\S]*?)<\/script>/);
+  if (!match) return null;
+  try {
+    return JSON.parse(match[1]);
+  } catch {
+    return null;
+  }
 };
-const docShellRowHrefs = (navHtml) => [...new Set(Array.from(navHtml.matchAll(/<a [^>]*data-shell-row=""[^>]*>/g), (match) => match[0].match(/href="([^"]+)"/)?.[1] ?? ""))];
+const docShellModelEntries = (items) => (items ?? []).flatMap((item) => [item, ...docShellModelEntries(item.children)]);
+const docShellRowHrefs = (model) => [...new Set((model?.navGroups ?? []).flatMap((group) => docShellModelEntries(group.items)).map((item) => item.href).filter(Boolean))];
+// The hydrated documentation shell (TCRN-DS-SUB-201): a page's shell is read once it has mounted and speaks the
+// page's language (its block says data-shell-hydrated="<locale>", as the shell story blocks do).
+const waitForDocShell = (page, locale) => page.waitForFunction(
+  (expected) => document.querySelector("[data-doc-shell-root]")?.getAttribute("data-shell-hydrated") === expected,
+  locale,
+  { timeout: 20000 }
+);
+// The full menu's model readings (its rows, the categories' descriptions, the bottom bar's current location and lockup,
+// the search's names) are read with the menu open through the page's layer interface and closed again. At 760 and
+// narrower the menu is the Sheet, which lists the sections as rows that open their categories and has no bottom bar;
+// those readings are taken on the panel at the desktop width and the route's viewport is restored, as the hidden copy
+// of the panel was read at every width before (the page's own readings stay at the route's viewport).
+const readDocMenuModelInPage = ({ sectionFiles }) => {
+  const own = (layer) => document.querySelector(`[data-shell="doc"] ${layer}:not([data-paper] *)`);
+  const nav = own("[data-shell-menu]");
+  const rows = [];
+  const seen = new Set();
+  for (const link of Array.from(nav?.querySelectorAll("a[data-shell-row]") ?? [])) {
+    const page = (link.getAttribute("href") ?? "").split(/[?#]/)[0];
+    if (!page || seen.has(page)) continue;
+    seen.add(page);
+    rows.push({
+      page,
+      text: link.textContent?.trim() ?? "",
+      description: document.getElementById(link.getAttribute("aria-describedby") ?? "")?.textContent?.trim() ?? ""
+    });
+  }
+  const pbar = own("[data-shell-pbar]");
+  const brand = pbar?.querySelector("[data-lockup]") ?? null;
+  const caption = brand?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
+  const search = nav?.querySelector("[data-shell-search] input") ?? null;
+  return {
+    menuPresent: Boolean(nav),
+    searchInputPresent: Boolean(search),
+    sectionFileCount: sectionFiles.length,
+    rows,
+    currentLocationText: pbar ? pbar.textContent ?? "" : null,
+    brandText: brand ? brand.textContent ?? "" : null,
+    brandCaptionText: caption ? caption.textContent ?? "" : null,
+    menuText: nav?.innerText ?? "",
+    searchAriaLabel: search?.getAttribute("aria-label") ?? "",
+    searchPlaceholder: search?.getAttribute("placeholder") ?? ""
+  };
+};
+const readDocMenuModel = async (page, sectionFiles) => {
+  const viewport = page.viewportSize();
+  const narrow = Boolean(viewport && viewport.width <= 760);
+  if (narrow) await page.setViewportSize({ width: 1440, height: viewport.height });
+  await page.evaluate(() => window.tcrnDocShellLayers?.setMenu(true));
+  try {
+    await page.waitForSelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *) [data-panel='expanded'] a[data-shell-row]");
+    return await page.evaluate(readDocMenuModelInPage, { sectionFiles });
+  } finally {
+    await page.evaluate(() => window.tcrnDocShellLayers?.setMenu(false));
+    if (narrow) {
+      await page.setViewportSize(viewport);
+      await page.waitForTimeout(120);
+    }
+  }
+};
 const readDocShellTocRails = (html) => Array.from(html.matchAll(/<div class="tcrn-doc-page__toc" data-doc-toc="">([\s\S]*?)<\/aside>/g), (match) => match[1]);
 const readStoryHtml = (html, storyId) => {
   const storyMarker = `data-contract-story-id="${storyId}"`;
@@ -836,7 +903,7 @@ const required = [
   "data-doc-shell=\"online-docs\"",
   "data-shell=\"doc\" data-doc-shell=\"online-docs\"",
   "<header class=\"tcrn-shell-strip\"",
-  "<div class=\"tcrn-shell-menu\" data-shell-menu=\"\" hidden=\"\">",
+  "<script type=\"application/json\" data-doc-shell-config>",
   "data-shell-group=\"\"",
   "data-shell-row=\"\"",
   "<div class=\"tcrn-doc-page__toc\" data-doc-toc=\"\">",
@@ -850,7 +917,7 @@ const required = [
   "--tcrn-anchor-scroll-offset: var(--tcrn-space-3h)",
   "tcrnStorybookScrollToHash",
   "tcrnStorybookScrollSpy",
-  "data-i18n-locale-select",
+  "window.tcrnStorybookApplyLocale = applyLocale",
   "data-storybook-locale=\"en\"",
   "data-storybook-supported-locales=\"zh-CN,en,ja,ko,fr\"",
   "data-storybook-theme=\"light\"",
@@ -870,9 +937,9 @@ const required = [
   "tcrn-doc-theme-transition-wash",
   "document.startViewTransition",
   "runFallbackThemeTransition",
-  "<input data-doc-search-input=\"\"",
-  "data-doc-search-results",
-  "data-doc-search-result",
+  "<div data-doc-shell-root=\"\" data-shell-hydrate=\"\"",
+  "<script type=\"application/json\" data-doc-search-index>",
+  "import { mountShellStories } from \"./ds-shell-hydrate.js\"",
   "data-locale-menu-toggle",
   "data-package-backed-shell-control=\"locale-menu\"",
   "data-icon-name=\"globe-2\"",
@@ -880,11 +947,7 @@ const required = [
   "data-locale-menu-option",
   "tcrn-shell-locale-menu__name",
   "data-locale-name=\"简体中文\"",
-  "option value=\"zh-CN\"",
-  "option value=\"en\"",
-  "option value=\"ja\"",
-  "option value=\"ko\"",
-  "option value=\"fr\"",
+  "const supportedLocales = [\"zh-CN\",\"en\",\"ja\",\"ko\",\"fr\"]",
   "data-i18n=\"story.welcome-governance.title\"",
   // TCRN-DS-STORY-051: ja/ko shell titles moved to payloadTranslationCoverage (below) — they
   // ship in the embedded i18n payload for runtime switching but never render on the static en
@@ -1176,10 +1239,11 @@ for (const forbiddenGlobalShellPattern of [
   }
 }
 // The page chrome is itself a ProductShell (TCRN-DS-SUB-131): outside Components and Proof its main region
-// occurs once per page, on the documentation shell, and never on a story.
+// occurs once per page, on the documentation shell, and never on a story. The full menu's search is the hydrated
+// shell's and is in the page only while open (TCRN-DS-SUB-201): its one source per page is the search index.
 {
   const docShellRoots = nonComponentHtml.match(/data-shell="doc"/g)?.length ?? 0;
-  for (const pattern of [/class="[^"]*tcrn-product-shell__main/g, /class="[^"]*tcrn-product-shell-search__results/g]) {
+  for (const pattern of [/class="[^"]*tcrn-product-shell__main/g, /<script type="application\/json" data-doc-search-index>/g]) {
     const occurrences = nonComponentHtml.match(pattern)?.length ?? 0;
     if (docShellRoots === 0 || occurrences !== docShellRoots) {
       missing.push(`forbidden-global-shell-pattern:${pattern.source}:${occurrences}/${docShellRoots}`);
@@ -1773,8 +1837,8 @@ if (forbidden.length > 0) {
 }
 for (const [group, html] of Object.entries(pages)) {
   const defaultStory = requiredStories.find((story) => story.group === group);
-  const navHtml = readDocShellNavHtml(html);
-  if (!navHtml) {
+  const navModel = readDocShellModel(html);
+  if (!navModel) {
     missing.push(`doc-shell-side-navigation:${group}`);
   }
   if (!html.includes(`data-active-story-section="${group}"`)) {
@@ -1789,7 +1853,7 @@ for (const [group, html] of Object.entries(pages)) {
     missing.push(`current-doc-nav-item:${group}:${defaultStory?.id ?? "missing"}`);
   }
   const sectionFiles = new Set(Object.values(pagesByGroup));
-  const rowHrefs = docShellRowHrefs(navHtml);
+  const rowHrefs = docShellRowHrefs(navModel);
   const groupNavCount = rowHrefs.filter((href) => sectionFiles.has(href)).length;
   if (groupNavCount !== expectedStorybookShellNavGroupCount) {
     missing.push(`doc-shell-nav-group-count:${group}:${groupNavCount}`);
@@ -3004,11 +3068,13 @@ async function runGlobalStorybookZhCnIaProof() {
       await page.waitForSelector("[data-storybook-locale='zh-CN']");
       await page.waitForSelector("[data-contract-story-id='welcome-governance']");
       // Top-band documentation shell (TCRN-DS-SUB-131/132): the current story is the contents rail's current link,
-      // and the sections and categories are rows of the shell's own full menu (outside the paper), carried hidden.
+      // and the sections and categories are rows of the shell's own full menu (outside the paper), read open once the
+      // hydrated shell speaks the page's language (TCRN-DS-SUB-201).
       await page.waitForSelector(".tcrn-doc-page__toc a[href='#welcome-governance'][aria-current='location']");
-      await page.waitForSelector("[data-shell='doc'] [data-shell-menu]:not([data-paper] *) a[data-shell-row]", { state: "attached" });
+      await waitForDocShell(page, "zh-CN");
+      const menuModel = await readDocMenuModel(page, Object.values(pagesByGroup));
       await page.waitForTimeout(150);
-      const metrics = await page.evaluate(({ requiredText, forbiddenText, sectionFiles }) => {
+      const metrics = await page.evaluate(({ requiredText, forbiddenText, sectionFiles, menuModel }) => {
         const bodyText = document.body.innerText;
         const html = document.documentElement;
         const body = document.body;
@@ -3028,37 +3094,27 @@ async function runGlobalStorybookZhCnIaProof() {
               }))));
         // The category labels and their descriptions are read on the category rows of the documentation shell's own
         // full menu (one row per category page, deduplicated by page); the current location is the menu's bottom bar,
-        // "on this page" is the paper's contents rail, and the doc brand lockup is the one in the bottom bar.
-        const docShellOwn = (layer) => document.querySelector(`[data-shell="doc"] ${layer}:not([data-paper] *)`);
-        const storybookNav = docShellOwn("[data-shell-menu]");
-        const rowsByPage = new Map();
-        for (const link of Array.from(storybookNav?.querySelectorAll("a[data-shell-row]") ?? [])) {
-          const page = (link.getAttribute("href") ?? "").split(/[?#]/)[0];
-          if (page && !rowsByPage.has(page)) rowsByPage.set(page, link);
-        }
+        // "on this page" is the paper's contents rail, and the doc brand lockup is the one in the bottom bar. The menu
+        // is the hydrated ProductShell's and is read open (readDocMenuModel; TCRN-DS-SUB-201).
+        const rowsByPage = new Map(menuModel.rows.map((row) => [row.page, row]));
         const categoryRows = Array.from(rowsByPage.entries())
           .filter(([page]) => page.endsWith(".html") && !sectionFiles.includes(page))
-          .map(([, link]) => link);
-        const categoryLabels = categoryRows
-          .map((node) => node.textContent?.trim() ?? "")
-          .filter(Boolean);
-        const categoryDescriptions = categoryRows
-          .map((node) => document.getElementById(node.getAttribute("aria-describedby") ?? "")?.textContent?.trim() ?? "")
-          .filter(Boolean);
-        // The section labels the former rail showed as group headings are the menu's section rows (the band pins
-        // them only at desktop widths).
+          .map(([, row]) => row);
+        const categoryLabels = categoryRows.map((row) => row.text).filter(Boolean);
+        const categoryDescriptions = categoryRows.map((row) => row.description).filter(Boolean);
+        // The section labels the former rail showed as group headings are the menu's section rows.
         const sectionLabels = Array.from(rowsByPage.entries())
           .filter(([page]) => sectionFiles.includes(page))
-          .map(([, link]) => link.textContent?.trim() ?? "")
+          .map(([, row]) => row.text)
           .filter(Boolean);
-        const currentLocation = docShellOwn("[data-shell-pbar]");
-	        const onThisPage = document.querySelector(".tcrn-doc-page__toc[data-doc-toc] .tcrn-toc-rail");
-	        const brandNode = currentLocation?.querySelector("[data-lockup]") ?? null;
-	        const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
+        const currentLocationText = menuModel.currentLocationText;
+        const brandText = menuModel.brandText;
+        const brandCaptionText = menuModel.brandCaptionText;
+        const onThisPage = document.querySelector(".tcrn-doc-page__toc[data-doc-toc] .tcrn-toc-rail");
 	        const pageOverflow = Math.max(html.scrollWidth, body.scrollWidth) > Math.max(html.clientWidth, body.clientWidth) + 1;
 	        const localizedTextSurface = [
 	          bodyText,
-	          currentLocation?.textContent ?? "",
+	          currentLocationText ?? "",
 	          sectionLabels.join("\\n"),
 	          categoryLabels.join("\\n"),
 	          categoryDescriptions.join("\\n")
@@ -3078,13 +3134,13 @@ async function runGlobalStorybookZhCnIaProof() {
           categoryDescriptions,
           categoryDescriptionCount: categoryDescriptions.length,
           categoryDescriptionEnglishLeaks: categoryDescriptions.filter((text) => forbiddenText.some((term) => text.includes(term))),
-          docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-          docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-          docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("设计系统") && !(brandNode?.textContent ?? "").includes("Component Library"),
-          currentLocationText: currentLocation?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+          docBrandText: brandText?.replace(/\s+/g, " ").trim() ?? null,
+          docBrandCaptionText: brandCaptionText?.replace(/\s+/g, " ").trim() ?? null,
+          docBrandCaptionLocalized: (brandCaptionText ?? "").includes("设计系统") && !(brandText ?? "").includes("Component Library"),
+          currentLocationText: currentLocationText?.replace(/\s+/g, " ").trim() ?? null,
           onThisPageAriaLabel: onThisPage?.getAttribute("aria-label") ?? null
         };
-      }, { requiredText, forbiddenText, sectionFiles: Object.values(pagesByGroup) });
+      }, { requiredText, forbiddenText, sectionFiles: Object.values(pagesByGroup), menuModel });
       await context.close();
       return {
         viewport,
@@ -3182,6 +3238,8 @@ async function runCrossSectionShellParityProof() {
         // contents rail; the band holds the brand button, the pinned sections and the avatar cluster.
         await page.waitForSelector(`.tcrn-doc-page__toc a[href='#${route.storyId}'][aria-current='location']`);
         await page.waitForTimeout(180);
+        await waitForDocShell(page, "zh-CN");
+        const menuModel = await readDocMenuModel(page, Object.values(pagesByGroup));
         // The search sits in the full menu and the theme and language controls in the avatar menu; each layer is read
         // open through the page's layer interface and closed again before the next readback.
         const readOpenLayer = async (layer, read) => {
@@ -3191,7 +3249,7 @@ async function runCrossSectionShellParityProof() {
           await page.evaluate((name) => window.tcrnDocShellLayers?.[name]?.(false), layer);
           return value;
         };
-        const closedMetrics = await page.evaluate(({ group, storyId, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText, sectionFiles }) => {
+        const closedMetrics = await page.evaluate(({ group, storyId, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText, sectionFiles, menuModel }) => {
           const rectOf = (node) => {
             if (!node) {
               return null;
@@ -3221,8 +3279,6 @@ async function runCrossSectionShellParityProof() {
           const brandTab = docShellOwn("[data-tab][data-shell-brand]");
           const pins = docShellOwn("[data-pins]");
           const cluster = docShellOwn("[data-cluster]");
-          const storybookNav = docShellOwn("[data-shell-menu]");
-          const currentLocationNode = docShellOwn("[data-shell-pbar]");
           const paper = document.querySelector("[data-shell='doc'] [data-paper]:not([data-paper] *)");
           const docMain = document.querySelector("[data-shell='doc'] main#content");
           const header = rectOf(strip);
@@ -3232,28 +3288,20 @@ async function runCrossSectionShellParityProof() {
           const pageHead = rectOf(document.querySelector("[data-doc-page-head='governed-section']"));
           const firstStory = document.querySelector(`[data-contract-story-id='${storyId}']`);
           const activeStory = document.querySelector(".tcrn-doc-page__toc[data-doc-toc] a[aria-current='location']");
-          const rowsByPage = new Map();
-          for (const link of Array.from(storybookNav?.querySelectorAll("a[data-shell-row]") ?? [])) {
-            const page = (link.getAttribute("href") ?? "").split(/[?#]/)[0];
-            if (page && !rowsByPage.has(page)) rowsByPage.set(page, link);
-          }
+          // The full menu's rows, its bottom bar and its search are read open (readDocMenuModel; TCRN-DS-SUB-201).
+          const rowsByPage = new Map(menuModel.rows.map((row) => [row.page, row]));
           const sectionRowCount = Array.from(rowsByPage.keys()).filter((page) => sectionFiles.includes(page)).length;
           const categoryLabels = Array.from(rowsByPage.entries())
             .filter(([page]) => page.endsWith(".html") && !sectionFiles.includes(page))
-            .map(([, link]) => link.textContent?.trim() ?? "")
+            .map(([, row]) => row.text)
             .filter(Boolean);
-          // The visible brand is the band's brand button; the doc brand lockup with its caption is the one in the
-          // full menu's bottom bar.
-          const brandNode = currentLocationNode?.querySelector("[data-lockup]") ?? null;
-          const brandCaptionNode = brandNode?.querySelector(".tcrn-product-logo__line-two, .tcrn-shell-brand-lockup__caption") ?? null;
-          const searchInput = storybookNav?.querySelector("[data-doc-search-input]") ?? null;
           const docShellTextSurface = [
             brandTab?.textContent ?? "",
-            brandNode?.textContent ?? "",
-            storybookNav?.innerText ?? "",
-            currentLocationNode?.textContent ?? "",
-            searchInput?.getAttribute("aria-label") ?? "",
-            searchInput?.getAttribute("placeholder") ?? ""
+            menuModel.brandText ?? "",
+            menuModel.menuText,
+            menuModel.currentLocationText ?? "",
+            menuModel.searchAriaLabel,
+            menuModel.searchPlaceholder
           ].join("\\n");
           const ownerVisibleCaptionSurface = [
             docShellTextSurface,
@@ -3283,7 +3331,7 @@ async function runCrossSectionShellParityProof() {
             scrollY: Number(((docMain?.scrollTop ?? 0) + window.scrollY).toFixed(2)),
             pageOverflow,
             shellAuthority: shell?.getAttribute("data-doc-shell") ?? null,
-            docShellSelectorCount: [shell?.matches("[data-shell='doc'][data-doc-shell]") ? shell : null, strip, brandTab, storybookNav, searchInput, paper].filter(Boolean).length,
+            docShellSelectorCount: [shell?.matches("[data-shell='doc'][data-doc-shell]") ? shell : null, strip, brandTab, menuModel.menuPresent, menuModel.searchInputPresent, paper].filter(Boolean).length,
             // The page chrome is itself the package ProductShell: its root and main region are the documentation
             // shell's own; any other global ProductShell marker outside a story body still counts.
             globalProductShellShellSelectorCount: Array.from(document.querySelectorAll("[data-storybook-shell-authority], [data-storybook-product-shell-skin], [data-package-backed-product-shell-boundary], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar, .tcrn-product-shell__main"))
@@ -3299,9 +3347,9 @@ async function runCrossSectionShellParityProof() {
             navGroupCount: sectionRowCount,
             categoryLabelCount: categoryLabels.length,
             categoryLabels,
-            docBrandText: brandNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-            docBrandCaptionText: brandCaptionNode?.textContent?.replace(/\s+/g, " ").trim() ?? null,
-            docBrandCaptionLocalized: (brandCaptionNode?.textContent ?? "").includes("设计系统") && !(brandNode?.textContent ?? "").includes("Component Library"),
+            docBrandText: menuModel.brandText?.replace(/\s+/g, " ").trim() ?? null,
+            docBrandCaptionText: menuModel.brandCaptionText?.replace(/\s+/g, " ").trim() ?? null,
+            docBrandCaptionLocalized: (menuModel.brandCaptionText ?? "").includes("设计系统") && !(menuModel.brandText ?? "").includes("Component Library"),
             docShellEnglishLeaks,
             ownerVisibleCaptionHits,
             brandIdentityLogoSectionReadback,
@@ -3322,7 +3370,7 @@ async function runCrossSectionShellParityProof() {
             pageHeadStartsBelowHeader: Boolean(pageHead && pageHead.top >= headerBottom - 1),
             storyStartsAfterPageHead: Boolean(pageHead && firstStory && firstStory.getBoundingClientRect().top >= pageHead.bottom - 1)
           };
-        }, { group: route.group, storyId: route.storyId, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText, sectionFiles: Object.values(pagesByGroup) });
+        }, { group: route.group, storyId: route.storyId, forbiddenZhCnProductShellText, forbiddenOwnerVisibleCaptionText, sectionFiles: Object.values(pagesByGroup), menuModel });
         const menuMetrics = await readOpenLayer("setMenu", () => {
           const rectOf = (node) => {
             if (!node) {
