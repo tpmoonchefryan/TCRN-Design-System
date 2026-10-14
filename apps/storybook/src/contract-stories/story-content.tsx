@@ -1507,14 +1507,14 @@ const legacyContractStories: LegacyContractStory[] = [
                 blocked: "Putting machine-contract JSON links in the primary human toolbar."
               },
               {
-                control: "Product SideNav collapse",
-                rule: "Any product or documentation shell that claims SideNav behavior exposes a keyboard-accessible collapse and expand control, persists or route-owns the collapsed state, and proves active location in both states.",
-                blocked: "Static left rails without collapse proof or inaccessible collapsed navigation."
+                control: "Top-band shell navigation",
+                rule: "Product and documentation shells are the top-band shell: the brand button opens the full menu, pinned items open their drop-downs, and the current page shows as the menu's current row and the paper's breadcrumb. Navigation lives only in the band, the full menu, and the drop-downs, so there is no collapse control.",
+                blocked: "Navigation outside the band, the full menu, and the drop-downs, or a collapse control."
               },
               {
                 control: "Product IA and brand",
-                rule: "Product shells use admitted brand assets and show only route-admitted modules as primary navigation or registered module cards.",
-                blocked: "Generic icon/text-only brand substitutes or planned modules presented as registered product IA."
+                rule: "Product shells use the approved product marks unchanged and show only route-admitted modules in the full menu. A product suffix keeps its approved color in both themes; its night value awaits the Owner's D7 ruling.",
+                blocked: "Generic icon/text-only brand substitutes, a separate night suffix color, or planned modules presented as registered product IA."
               }
             ]}
           />
@@ -2346,9 +2346,9 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           >
             <ReadbackPanel title="Package-backed AOS shell boundary">
-              <Text>Search results are open as a static display state; the card text remains readable.</Text>
+              <Text>The avatar menu is open as a static display state, so its theme and language controls render; the card text remains readable.</Text>
               <Text>
-                Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Collapse, theme, locale popup, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.
+                Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Menu, drop-down, pin, theme, language, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.
               </Text>
               <ReferenceList items={["package-backed shell boundary", "semantic control APIs", "controller prop bundles", "product adoption separate"]} />
             </ReadbackPanel>
