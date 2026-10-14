@@ -83,6 +83,9 @@
 
 - K12 的前置在包表里写成「其余全部」，调度工具不认，等其余 12 包全部合入后手动起。
 
+- 批末 verify（`tools/batch-end-verify.sh 2`）跑在 6f739b2，2026-10-14T02:14:58Z–02:23:36Z：30 步红 7、44 段红 8（geometry:proof、shell:parity、contract:static、storybook:smoke、geometry:measure、storybook:visual-proof、internal-alpha:browser-proof、hardening）；`test`、`tokens:proof`、`full-surface:proof`、`scan` 转绿，`contract:static` 新红；`storybook:build` 退出 0；结果表 `runs/r2/verify/steps.md`（537ab3c），日志与回执存档在 scratch `r2-verify/`，树已还原。
+- 批末验收：三片并行（einzbern-main），摘录 `runs/r2/excerpts/acceptance-{A,B,C}.md`（15d7161，含上一轮验收与判断的指向），产出 `runs/r2/acceptance/{A,B,C}.md`。
+
 ## 下一步
 
-- R2 全部 13 包已合入，集成 HEAD 0689a1d；包树全部退役，磁盘余量 58 GiB（df）。批末 verify：scratch `tools/batch-end-verify.sh 2`（逐步、遇红继续，之后 `storybook:build`，回执存档 scratch `r2-verify/` 后还原树）→ 三片验收（`tools/make-acc-excerpt-016.mjs <dispatchDir> 2 <A|B|C> …`，含上一轮验收与判断的指向）→ 判断（摘录草稿在 scratch `r2-judgment-excerpt-draft.md`）→ 一次链写与知识采集 → R3 或收口。
+- 三片验收交回后提交 → 判断（摘录草稿在 scratch `r2-judgment-excerpt-draft.md`，复制到 `runs/r2/excerpts/judgment.md` 后派 einzbern-main）→ 一次链写与知识采集 → R3 或收口。
