@@ -1185,9 +1185,15 @@ export interface TocRailProps {
   density?: Density;
   /** Which language the built-in label is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
+  /**
+   * The level of the rail's title: an h3 by default, an h2 where the rail sits right under the
+   * page's h1, as a documentation page's contents do. Only the element changes; the type, the
+   * names and the rest of the rail stay (TCRN-DS-SUB-193).
+   */
+  headingLevel?: 2 | 3;
 }
 
-export function TocRail({ label, items, density = "compact", locale }: TocRailProps) {
+export function TocRail({ label, items, density = "compact", locale, headingLevel = 3 }: TocRailProps) {
   // Both the visible heading and the accessible name, so one resolution serves
   // both and they cannot drift into different languages. The rail's nav is named by
   // the same title, so two rails on a page, or a rail and another nav, are told
@@ -1195,7 +1201,7 @@ export function TocRail({ label, items, density = "compact", locale }: TocRailPr
   const resolvedLabel = label ?? patternLabels(locale).tocRail;
   return (
     <aside className={cx("tcrn-toc-rail", `tcrn-toc-rail--${density}`)} aria-label={resolvedLabel} data-pattern="toc-rail" data-density={density}>
-      <Heading level={3}>{resolvedLabel}</Heading>
+      <Heading level={headingLevel} visualLevel={3}>{resolvedLabel}</Heading>
       <nav aria-label={resolvedLabel}>
         {items.map((item) =>
           item.href ? (

@@ -262,3 +262,25 @@ test("STORY-143 STORY-147 TocRail's nav is named by the rail's title, given or b
   assert.ok(navs.every((name) => name !== null));
   assert.equal(new Set(navs).size, 2, navs.join(" | "));
 });
+
+test("STORY-143 STORY-146 STORY-147 TocRail's title is an h3 by default and an h2 when asked; the type, the nav's name and the rest of the rail stay (TCRN-DS-SUB-193)", () => {
+  const items = [
+    { id: "scope", label: "Scope", href: "#scope", current: true },
+    { id: "proof", label: "Proof", href: "#proof" }
+  ];
+  const rail = (headingLevel?: 2 | 3) => renderToStaticMarkup(<TocRail label="On this page" items={items} headingLevel={headingLevel} />);
+  const title = (html: string) => {
+    const match = /<(h[1-6])\b([^>]*)>On this page<\/h[1-6]>/.exec(html);
+    return match ? [match[1], /\bclass="([^"]*)"/.exec(match[2])?.[1] ?? null] : null;
+  };
+  const navName = (html: string) => /<nav aria-label="([^"]*)">/.exec(html)?.[1] ?? null;
+  assert.deepEqual(title(rail()), ["h3", "tcrn-heading tcrn-heading--3"], "an h3 by default");
+  assert.deepEqual(title(rail(3)), ["h3", "tcrn-heading tcrn-heading--3"]);
+  assert.deepEqual(title(rail(2)), ["h2", "tcrn-heading tcrn-heading--3"], "an h2 when asked, in the h3's type");
+  assert.equal(rail(), rail(3));
+  assert.equal(rail(2).replace(/<(\/?)h2\b/g, "<$1h3"), rail(), "only the element changes");
+  assert.equal(navName(rail(2)), "On this page", "the nav is still named by the title");
+  assert.equal(navName(rail(2)), navName(rail()));
+  // The built-in title, in the dense rail, follows the same level.
+  assert.match(renderToStaticMarkup(<TocRail items={items} density="dense" locale="en" headingLevel={2} />), /<h2\b[^>]*class="tcrn-heading tcrn-heading--3"/);
+});
