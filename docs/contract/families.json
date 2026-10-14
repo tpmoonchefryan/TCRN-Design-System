@@ -1,9 +1,9 @@
 {
   "schemaVersion": "tcrn.ds.contract-families.v1",
-  "description": "组件家族与包 CSS 根类（BEM block）的对应。家族、批次与组件名出自画板 docs/design/gplus-2026-10/boards/V2-Families.dc.html；blocks 是 tcrnComponentCss 里属于该家族的根类（类名去掉 __ 与 -- 之后的部分）。契约静态门（scripts/contract-static-proof.mjs）据此把规则归到家族：scope.batch 指定的批次全量检查，其它家族只有 exemptions.json 里有登记时才豁免，不属于任何家族的类一律检查。",
+  "description": "组件家族与包 CSS 根类（BEM block）的对应。家族、批次与组件名出自画板 docs/design/gplus-2026-10/boards/V2-Families.dc.html；blocks 是 tcrnComponentCss 里属于该家族的根类（类名去掉 __ 与 -- 之后的部分）。契约静态门（scripts/contract-static-proof.mjs）据此把规则归到家族：scope.checkedBatches 列出的批次全量检查、不得登记豁免；其它批次的家族必须在 exemptions.json 里有家族条目，直到该批次列入 checkedBatches；不属于任何家族的类一律检查。",
   "scope": {
-    "batch": 1,
-    "note": "第一批五家族（字体、图标、品牌、动作、表单控件）是 TCRN-DS-INIT-015 授权进包的范围。第二批（导航、壳层、布局）的家族豁免已于 TCRN-DS-INIT-016 到期删除（TCRN-DS-SUB-155），没有豁免的家族与第一批一样全量检查；其余后续批次的家族按 exemptions.json 逐条登记。"
+    "checkedBatches": [1, 2],
+    "note": "checkedBatches 是已全量检查的批次，豁免校验与登记测试都只读这一字段（TCRN-DS-SUB-189）；原 scope.batch（只写第一批）已删除。第一批五家族（字体、图标、品牌、动作、表单控件）是 TCRN-DS-INIT-015 授权进包的范围。第二批（导航、壳层、布局）的家族豁免已于 TCRN-DS-INIT-016 到期删除（TCRN-DS-SUB-155），第二批随之列入 checkedBatches。其余后续批次的家族按 exemptions.json 逐条登记，该批次授权开工、豁免到期删除时，同一提交把批次号加进 checkedBatches。"
   },
   "utilities": ["tcrn-sr-only"],
   "families": [
