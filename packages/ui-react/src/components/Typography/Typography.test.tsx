@@ -298,9 +298,10 @@ test("the quiet link is the quiet variant of the link pair table, not a breadcru
   const quietRules = cssRules().filter((cssRule) => cssRule.selectors.some((selector) => selector.includes("tcrn-link--quiet")));
   assert.deepEqual(quietRules.map((cssRule) => cssRule.selectors), [[".tcrn-link.tcrn-link--quiet"]]);
   assert.doesNotMatch(tcrnComponentCss, /tcrn-link--quiet[^{]*\{[^}]*--tcrn-color-brand-primary/);
-  // The breadcrumb keeps its Navigation-family rules (EX-INIT015-navigation).
+  // The breadcrumb keeps its Navigation-family rules; its hover is a state rule of the pair
+  // grammar since the navigation exemption ended (TCRN-DS-SUB-155).
   assert.match(tcrnComponentCss, /(?:^|\n)\.tcrn-breadcrumb a \{/);
-  assert.match(tcrnComponentCss, /(?:^|\n)\.tcrn-breadcrumb a:hover \{/);
+  assert.match(tcrnComponentCss, /(?:^|\n)\.tcrn-breadcrumb a:where\(:hover\) \{/);
 });
 
 test("the contract link rules are in the stylesheet", () => {

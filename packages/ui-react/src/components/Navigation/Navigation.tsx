@@ -1512,6 +1512,12 @@ export interface NavGroupProps extends HTMLAttributes<HTMLDivElement>, NavPinPro
   children: ReactNode;
 }
 
+/**
+ * A titled group of nav items whose first child is the title row (.tcrn-nav-group__label). Props
+ * it does not name — the C-5 hooks data-shell-group and data-shell-col among them — land on the
+ * group element, so the group hook sits on the column whose own child is the title row, which is
+ * where the shell gates read the group's title (TCRN-DS-SUB-152).
+ */
 export function NavGroup({ label, selected = false, pinned = false, onPinnedChange, pinLabel, locale, className, children, ...props }: NavGroupProps) {
   return (
     <div
@@ -1580,6 +1586,9 @@ export function NavItem({
   // title: the label itself, or the title the row was given when the label is markup (C7;
   // TCRN-DS-SUB-154).
   const labelTitle = onPinnedChange ? (navItemText(children) ?? (typeof props.title === "string" ? props.title : undefined)) : undefined;
+  // The row's guide-column hooks (C-5; TCRN-DS-SUB-152): the icon says where the guide column's
+  // icon starts (data-guide="prail") and the label where its text starts (data-text="prail"), so
+  // the shell gates read the 16 / 48 guide column and the row text off the part itself.
   const link = (
     <a
       {...props}
@@ -1597,9 +1606,9 @@ export function NavItem({
       data-nav-item-has-icon={iconName ? "true" : "false"}
       data-nav-depth={resolvedDepth}
     >
-      {iconName ? <Icon name={iconName} /> : null}
+      {iconName ? <Icon name={iconName} data-guide="prail" /> : null}
       <span className="tcrn-nav-item__content">
-        <span className="tcrn-nav-item__label" title={labelTitle}>
+        <span className="tcrn-nav-item__label" title={labelTitle} data-text="prail">
           {children}
         </span>
         {normalizedReason ? (
