@@ -18,12 +18,16 @@ import {
 } from "./lib/story-budget.mjs";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
+import { storybookContentText } from "../apps/storybook/dist/build/locales/storybook-content-text.js";
 import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
 import { WORDMARK_EXEMPTIONS } from "./token-contrast-proof.mjs";
 // G+ expectations (TCRN-DS-SUB-041): values below come from the G+ design contract
 // (docs/design/gplus-2026-10/contract) and the resolved @tcrn/ui-tokens map, serialized the way
 // getComputedStyle reports them, never copied from a rendering.
 const gplusPairsContract = JSON.parse(readFileSync("docs/design/gplus-2026-10/contract/pairs.json", "utf8"));
+// The Design System mark of the design contract (marks.json): its wordmark suffix and its five-language
+// description, read by the brand-mark locale checks (TCRN-DS-SUB-195).
+const designSystemMarkContract = JSON.parse(readFileSync("docs/design/gplus-2026-10/contract/marks.json", "utf8")).marks.find((mark) => mark.id === "ds");
 const gplusLightTokens = createResolvedTokenMap("light");
 const gplusDarkTokens = createResolvedTokenMap("dark");
 const gplusComputedColor = (raw) => {
@@ -91,7 +95,11 @@ if (!mobileHeaderLayerSelfCheck.ok) {
 // TCRN-DS-SUB-169 (2026-10-11 D2, judgment §3.4 item 1): the top band's brand button draws the same
 // wordmark suffix in its own element, .tcrn-shell-brand__suffix, so that selector joins the two. The
 // register is unchanged: the dark TMS suffix stays registered as pending (O-8), not ruled.
-const AXE_WORDMARK_SUFFIX_SELECTORS = Object.freeze([".tcrn-brand-wordmark__suffix", ".tcrn-product-logo__line-one-suffix", ".tcrn-shell-brand__suffix"]);
+// TCRN-DS-SUB-195 (R3-20; the same 2026-10-11 D2 reading, INIT-016 R2 judgment §3.4 item 1): the
+// first-line lockup (ProductLockup firstLine) draws the suffix in .tcrn-brand-lockup__suffix, so it joins
+// too, and no other selector does. The list names the same carriers as the page's string swap and the
+// English-leak ledger (apps/storybook/src/smoke.test.ts holds the three lists to one set).
+const AXE_WORDMARK_SUFFIX_SELECTORS = Object.freeze([".tcrn-brand-wordmark__suffix", ".tcrn-product-logo__line-one-suffix", ".tcrn-shell-brand__suffix", ".tcrn-brand-lockup__suffix"]);
 const axeWordmarkContrastExemption = Object.freeze({
   rule: "color-contrast",
   selectors: AXE_WORDMARK_SUFFIX_SELECTORS,
@@ -501,7 +509,13 @@ async function collectPageHealth(page) {
       copyStateSource: node.getAttribute("data-copy-state-source"),
       visible: node.getBoundingClientRect().width > 0 && node.getBoundingClientRect().height > 0
     }));
-    const packageBackedDisabledNavItems = Array.from(document.querySelectorAll(".tcrn-doc-package-nav-proof [data-navigation-primitive='nav-item'][aria-disabled='true']")).map((node) => {
+    // TCRN-DS-SUB-198 (R3-19 c): the disabled navigation items of the page's samples. The former sample (a
+    // SideNav in .tcrn-doc-package-nav-proof) retired with the old shell (TCRN-DS-SUB-125) and the top band's
+    // own menu is folded away, so the read takes every story body: the shell screens held open (their full
+    // menu, drop-down and cascade rows) and any page sample that sets a disabled NavItem. A row's
+    // aria-describedby may name several ids (its description and its disabled reason): split on white space
+    // and take each, as the category descriptions below do.
+    const packageBackedDisabledNavItems = Array.from(document.querySelectorAll("[data-contract-story-id] [data-navigation-primitive='nav-item'][aria-disabled='true']")).map((node) => {
       const describedByIds = (node.getAttribute("aria-describedby") ?? "").split(/\s+/).filter(Boolean);
       const describedReason = describedByIds
         .map((id) => document.getElementById(id))
@@ -511,6 +525,8 @@ async function collectPageHealth(page) {
       const visibleReasonRendered = Boolean(rect && rect.width > 0 && rect.height > 0);
       const reason = node.getAttribute("data-disabled-reason")?.trim() ?? "";
       return {
+        storyId: node.closest("[data-contract-story-id]")?.getAttribute("data-contract-story-id") ?? null,
+        screen: node.closest("[data-shell]")?.getAttribute("data-shell") ?? null,
         label: node.querySelector(".tcrn-nav-item__label")?.textContent?.trim() ?? node.textContent?.trim() ?? "",
         href: node.getAttribute("href"),
         tabIndex: node.getAttribute("tabindex"),
@@ -607,10 +623,11 @@ async function collectPageHealth(page) {
     }
     const menuRowLabelReadabilityFailures = menuRowLabelReadbacks.filter((item) => !item.ok);
     // Each category row is expected to carry its description (aria-describedby), as the former category toggles did.
+    // TCRN-DS-SUB-198 (R3-19 e): aria-describedby may name several ids; every one must resolve.
     const categoryAriaFailures = categoryGroups
       .filter((node) => {
-        const describedBy = node.getAttribute("aria-describedby");
-        return !describedBy || !document.getElementById(describedBy);
+        const describedByIds = (node.getAttribute("aria-describedby") ?? "").split(/\s+/).filter(Boolean);
+        return describedByIds.length === 0 || describedByIds.some((id) => !document.getElementById(id));
       })
       .map((node) => node.textContent?.replace(/\s+/g, " ").trim() ?? "");
     const isVisibleElement = (node) => {
@@ -1353,15 +1370,40 @@ for (const group of reproducibilityParameterGroups) {
       if (document.fonts?.ready) await document.fonts.ready;
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     });
-    const projection = await page.evaluate(() => ({
-      shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-doc-shell") ?? null,
-      requiredStoryPresent: document.querySelectorAll("[data-contract-story-id='navigation-product-shell-spec']").length,
-      productSearchResultsPresent: document.querySelectorAll("[data-product-shell-search-results]:not([hidden])").length,
-      productSearchResultCount: document.querySelectorAll("[data-product-shell-search-results]:not([hidden]) [data-search-result]").length,
-      openMenus: document.querySelectorAll('[aria-expanded="true"]').length,
-      rootVisible: Boolean(document.querySelector("[data-contract-surface='tcrn-design-system-storybook']"))
-    }));
-    reproducibilityProbes.push({ group, projection, bytes: JSON.stringify(projection) });
+    const { projection, strayOpenMenus } = await page.evaluate(() => {
+      // TCRN-DS-SUB-198 (R3-19 b): the expected number of expanded controls is derived from the DOM, as
+      // geometry-proof's searchOverlay derives it, not pinned to a count of the page's stories: an
+      // expanded control ([aria-expanded="true"]) counts when every layer it names (aria-controls)
+      // exists and, while the control itself is drawn, is drawn too.
+      const visible = (node) => {
+        const box = node.getBoundingClientRect();
+        const style = getComputedStyle(node);
+        return box.width > 0 && box.height > 0 && style.display !== "none" && style.visibility !== "hidden";
+      };
+      const expandedControls = [...document.querySelectorAll('[aria-expanded="true"]')];
+      const opensSomething = (control) => {
+        const ids = (control.getAttribute("aria-controls") ?? "").split(/\s+/).filter(Boolean);
+        return ids.length > 0 && ids.every((id) => {
+          const layer = document.getElementById(id);
+          return Boolean(layer) && (!visible(control) || visible(layer));
+        });
+      };
+      return {
+        projection: {
+          shellAuthority: document.querySelector("[data-contract-surface]")?.getAttribute("data-doc-shell") ?? null,
+          requiredStoryPresent: document.querySelectorAll("[data-contract-story-id='navigation-product-shell-spec']").length,
+          productSearchResultsPresent: document.querySelectorAll("[data-product-shell-search-results]:not([hidden])").length,
+          productSearchResultCount: document.querySelectorAll("[data-product-shell-search-results]:not([hidden]) [data-search-result]").length,
+          openMenus: expandedControls.length,
+          expectedOpenMenus: expandedControls.filter(opensSomething).length,
+          rootVisible: Boolean(document.querySelector("[data-contract-surface='tcrn-design-system-storybook']"))
+        },
+        strayOpenMenus: expandedControls
+          .filter((control) => !opensSomething(control))
+          .map((control) => ({ tag: control.tagName.toLowerCase(), controls: control.getAttribute("aria-controls"), text: control.textContent?.trim().slice(0, 40) ?? "" }))
+      };
+    });
+    reproducibilityProbes.push({ group, projection, strayOpenMenus, bytes: JSON.stringify(projection) });
   } finally {
     await context.close();
   }
@@ -1373,16 +1415,16 @@ const browserProofReproducibility = {
   parameterGroups: reproducibilityParameterGroups,
   normalizedBytesEqual: reproducibilityBytes.length === 2 && reproducibilityBytes[0] === reproducibilityBytes[1],
   normalizedProjectionDigests: reproducibilityBytes.map((bytes) => hashText(bytes)),
-  projections: reproducibilityProbes.map((probe) => probe.projection)
+  projections: reproducibilityProbes.map((probe) => probe.projection),
+  strayOpenMenus: reproducibilityProbes.map((probe) => probe.strayOpenMenus)
 };
-// The page holds six expanded controls ([aria-expanded="true"], counted over the whole document as
-// before): the doc sidebar toggle, the navigation-shells category toggle, the knowledge-shell sidebar
-// toggle, the ProductShell story disclosure, the ProductShell side-nav toggle and the open ProductShell
-// search. The other two of the former eight were the prototype menu buttons ("Open compact operations
-// hub", "Open dense navigation menu") that left with the dense shell prototype (TCRN-DS-SUB-066,
-// delete-demo), so 8 -> 6 (R2 judgment §3.3 B ruling; R3 integration item I-P2b-3).
+// TCRN-DS-SUB-198 (R3-19 b; INIT-016 R2 judgment §3.4 item 1): the two probes' projections are equal, and
+// in each the expanded controls counted over the whole document (openMenus) are the ones the DOM says are
+// open (expectedOpenMenus): no expanded control without the layer it opens. The former constant (6, then
+// 8) counted the page's stories and went stale with every shell story added to the page; the projection
+// still carries both readings, so a change in either between the probes reds normalizedBytesEqual.
 browserProofReproducibility.ok = browserProofReproducibility.normalizedBytesEqual
-  && reproducibilityProbes.every((probe) => probe.projection.openMenus === 6);
+  && reproducibilityProbes.every((probe) => probe.projection.openMenus === probe.projection.expectedOpenMenus);
 
 const storybookPage = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
 await storybookPage.goto(`${staticServer.origin}/${staticSurfacePath}#components`);
@@ -2562,8 +2604,14 @@ async function collectLocalizedShellChromeCheck(page, check) {
     const categoryLabels = categoryRows
       .map((node) => node.textContent?.trim() ?? "")
       .filter(Boolean);
+    // TCRN-DS-SUB-198 (R3-19 e): a row's aria-describedby may name several ids (its description beside
+    // another the row carries); split on white space and take each id's text, as the disabled-item read in
+    // collectPageHealth does, so a row with two ids still says its description.
     const categoryDescriptions = categoryRows
-      .map((node) => document.getElementById(node.getAttribute("aria-describedby") ?? "")?.textContent?.trim() ?? "")
+      .map((node) => (node.getAttribute("aria-describedby") ?? "").split(/\s+/).filter(Boolean)
+        .map((id) => document.getElementById(id)?.textContent?.trim() ?? "")
+        .filter(Boolean)
+        .join(" "))
       .filter(Boolean);
     const currentLocation = document.querySelector("[data-shell='doc'] [data-shell-pbar]:not([data-paper] *)");
 	    const onThisPage = document.querySelector(".tcrn-doc-page__toc[data-doc-toc] .tcrn-toc-rail");
@@ -2612,6 +2660,32 @@ async function collectLocalizedShellChromeCheck(page, check) {
   };
 }
 
+// TCRN-DS-SUB-198 (R3-19 d): the shell story blocks ([data-shell-hydrate]) are React's
+// (apps/storybook/src/build/shell-hydrate.tsx). The page's string swap leaves them alone, so until a block
+// has hydrated and re-rendered in the page's language it still shows the build's English, and a read
+// taken before that counts English that the reader never sees (13 leaks on one run, 0 on the next with
+// the same code). After every commit that settles its language the block says it on itself,
+// data-shell-hydrated="<locale>"; this waits for every block of the page to say the scan's locale. A
+// block that never says it is reported, and reds the gating scan: its text was read unsettled.
+async function waitForShellBlocksInLocale(page, locale) {
+  try {
+    await page.waitForFunction(
+      (target) => Array.from(document.querySelectorAll("[data-shell-hydrate]")).every((block) => block.getAttribute("data-shell-hydrated") === target),
+      locale,
+      { timeout: 15000 }
+    );
+  } catch {
+    // Timed out: the reading below names the blocks that did not settle.
+  }
+  return page.evaluate((target) => {
+    const blocks = Array.from(document.querySelectorAll("[data-shell-hydrate]"));
+    const unsettled = blocks
+      .filter((block) => block.getAttribute("data-shell-hydrated") !== target)
+      .map((block) => ({ screen: block.getAttribute("data-shell-story-block"), hydrated: block.getAttribute("data-shell-hydrated") }));
+    return { blocks: blocks.length, settled: blocks.length - unsettled.length, unsettled, ok: unsettled.length === 0 };
+  }, locale);
+}
+
 // Systematic English-leak gate (TCRN-DS-STORY-048). The four hand-authored i18n checks
 // above catch only the strings a human pre-listed on four routes; this scan renders every
 // one of the 43 stories on a localized route and flags any run of >=2 Latin words that is
@@ -2623,12 +2697,16 @@ async function collectLocalizedShellChromeCheck(page, check) {
 async function collectLocaleLeakScan(page, locale, { gating }) {
   const exemptSelector = localeInvariantLedger.exemptSubtreeSelectors.join(", ");
   const regionResults = [];
+  // The pages whose shell story blocks were waited for (TCRN-DS-SUB-198): every block settled in the locale.
+  const shellBlockWaits = [];
   // TCRN-DS-STORY-056: story bodies live on the category pages now — walk those (each story body
   // appears on exactly one category page, so coverage is still every story once).
   for (const section of categoryPages) {
     await page.goto(`${staticServer.origin}/apps/storybook/storybook-static/${section.file}?locale=${locale}`);
     await page.waitForSelector(`[data-storybook-locale='${locale}']`);
     await page.waitForSelector("[data-contract-story-id]", { state: "attached" });
+    const shellBlockWait = await waitForShellBlocksInLocale(page, locale);
+    if (shellBlockWait.blocks > 0) shellBlockWaits.push({ page: section.file, ...shellBlockWait });
     await expandAllStoriesForContentRead(page);
     const regionTexts = await page.evaluate((selector) => {
       const results = [];
@@ -2688,7 +2766,8 @@ async function collectLocaleLeakScan(page, locale, { gating }) {
     return {
       locale,
       gating: true,
-      ok: newLeaks.length === 0,
+      ok: newLeaks.length === 0 && shellBlockWaits.every((wait) => wait.ok),
+      shellBlockWaits,
       storyCount: perStory.length,
       allowlistedLeakCount: perStory.reduce((total, story) => total + story.allowlistedLeakCount, 0),
       newLeakCount: newLeaks.reduce((total, story) => total + story.leaks.length, 0),
@@ -2709,6 +2788,7 @@ async function collectLocaleLeakScan(page, locale, { gating }) {
     gating: false,
     disposition: "recorded_report_only",
     ok: true,
+    shellBlockWaits,
     storyCount: perStory.length,
     leakCount: perStory.reduce((total, story) => total + story.leakCount, 0),
     perStory
@@ -2833,17 +2913,34 @@ async function collectBrandMarkLocaleCheck(page, locale) {
         lineTwo: node.querySelector(".tcrn-product-logo__line-two")?.textContent?.trim() ?? null
       })),
       hasRegisteredProductLogosLabel: storyText.includes("Registered product logos"),
-      hasRegistryExportText: storyText.includes("ProductLogo / tcrnProductLogoRegistry")
+      hasRegistryExportText: storyText.includes("ProductLogo / tcrnProductLogoRegistry"),
+      // The documentation shell's Design System lockup: its first line is the wordmark and its second the
+      // description, read as the page shows them (the lockup sits in the shell's full menu, folded away).
+      designSystemDescriptionLines: Array.from(document.querySelectorAll("[data-shell='doc'] [data-registered-product-logo][data-product-id='design-system']"))
+        .map((node) => ({
+          lineOne: node.querySelector(".tcrn-product-logo__line-one")?.textContent?.trim() ?? null,
+          lineTwo: node.querySelector(".tcrn-product-logo__line-two")?.textContent?.trim() ?? null
+        }))
     };
   });
-  const expectedDesignSystemSuffixByLocale = {
-    "zh-CN": "设计系统",
-    en: "Design System",
-    ja: "デザインシステム",
-    ko: "디자인 시스템",
-    fr: "Design System"
+  // TCRN-DS-SUB-195 (R3-20; INIT-016 R2 judgment §3.4 item 1): the wordmark is the brand asset's own words
+  // (Logos board, section E) and keeps them in every language (TCRN-DS-SUB-166; START hard line "brand
+  // assets as they are"), so the Design System lockup's suffix is expected as drawn, the contract's suffix,
+  // on every locale. What the page's string swap does change is a lockup's description line, checked
+  // separately below: the Design System lockup of the documentation shell says its description in the
+  // page's language, the swap's own dictionary entry for the contract's English description.
+  const expectedDesignSystemSuffixByLocale = Object.fromEntries(
+    ["zh-CN", "en", "ja", "ko", "fr"].map((entry) => [entry, designSystemMarkContract.suffix])
+  );
+  const expectedProductLockups = ["AOS", "TMS", expectedDesignSystemSuffixByLocale[locale] ?? designSystemMarkContract.suffix];
+  const expectedDesignSystemDescription = storybookContentText[designSystemMarkContract.taglines.en]?.[locale] ?? designSystemMarkContract.taglines.en;
+  const designSystemDescriptionCheck = {
+    expectedLineOne: designSystemMarkContract.name,
+    expectedLineTwo: expectedDesignSystemDescription,
+    readings: details.designSystemDescriptionLines,
+    ok: details.designSystemDescriptionLines.length > 0
+      && details.designSystemDescriptionLines.every((line) => line.lineOne === designSystemMarkContract.name && line.lineTwo === expectedDesignSystemDescription)
   };
-  const expectedProductLockups = ["AOS", "TMS", expectedDesignSystemSuffixByLocale[locale] ?? "Design System"];
   const productLockupChecks = expectedProductLockups.map((expected) => {
     const actual = details.productLockups.find((lockup) => lockup.suffix === expected);
     return {
@@ -2857,11 +2954,13 @@ async function collectBrandMarkLocaleCheck(page, locale) {
     locale,
     ...details,
     productLockupChecks,
+    designSystemDescriptionCheck,
     ok: details.labels.length === 4
       && details.labels.some((label) => label === "TCRN brand mark")
       && details.sources.every((source) => source?.endsWith("tcrn-brand-mark.svg"))
       && details.productLogos.length === 0
       && productLockupChecks.every((check) => check.ok)
+      && designSystemDescriptionCheck.ok
       && !details.hasRegisteredProductLogosLabel
       && !details.hasRegistryExportText
   };

@@ -30,7 +30,8 @@ import inputsMeta, { Matrix as InputsMatrix, SampleMembers as InputsSampleMember
 import compositionsMeta, { CompositionThree } from "./compositions.stories.js";
 import { createElement, Fragment } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { tcrnIconNames } from "@tcrn/ui-react";
+import { ProductLockup, tcrnIconNames, tcrnProductLogoRegistry } from "@tcrn/ui-react";
+import { shellStoryProducts } from "./build/shell-hydrate.js";
 import { gplusMatrices, gplusMatrixCellCounts } from "./contract-stories/gplus/generated/matrices.generated.js";
 import { gplusMatrixBoardsInOrder, gplusMatrixComponents, gplusMatrixSourcePath, gplusMatrixStoryIds } from "./contract-stories/gplus/matrix-stories.js";
 import { gplusCompositionThreeStoryId, gplusSampleBoardsInOrder, gplusSampleSourcePath, gplusSampleStoryIds } from "./contract-stories/gplus/sample-stories.js";
@@ -1975,9 +1976,19 @@ test("top-band shell stories render the package shell with its measurement hooks
         assert.match(shell, hook, `${screen}: ${hook.source}`);
       }
       assert.equal(shell.match(/data-pin="/g)?.length, 4, `${screen}: the four pinned items of the board`);
+      // The closed light screen works as a product's shell (TCRN-DS-SUB-186; STORY-140 GWT3, GWT4): its pinned
+      // items move (useProductShellController's reordering: the shortcut said, no mark drawn) and its avatar
+      // menu switches products; the menu is folded away on the server, so the products are not in its markup.
+      // Every other screen is the board's picture and holds its pins still.
+      const movable = screen === "ts-closed-l";
+      assert.equal(shell.match(/data-pin-movable=""/g)?.length ?? 0, movable ? 4 : 0, `${screen}: ${movable ? "every pinned item moves" : "the pinned items hold still"}`);
+      if (movable) {
+        assert.equal(shell.match(/aria-keyshortcuts="Alt\+ArrowLeft Alt\+ArrowRight"/g)?.length, 4, `${screen}: every pinned item says its move shortcut`);
+        assert.doesNotMatch(shell, /data-shell-products=""/, `${screen}: the avatar menu is folded away`);
+      }
       const page = /^ts-(settings|roster)-/.exec(screen)?.[1];
       if (state === "closed" && storyId !== "shell-intro" && !page) {
-        assert.match(shell, /<a class="tcrn-shell-pins__item" href="#[^"]+" data-tcrn-preview-state="hover">/, `${screen}: the third pinned item under the pointer`);
+        assert.match(shell, /<a class="tcrn-shell-pins__item" href="#[^"]+"(?: aria-keyshortcuts="Alt\+ArrowLeft Alt\+ArrowRight" data-pin-movable="")? data-tcrn-preview-state="hover">/, `${screen}: the third pinned item under the pointer`);
       }
       // The page screens (TCRN-DS-SUB-161): nothing under the pointer, and the page in the paper.
       if (page) {
@@ -2123,5 +2134,51 @@ test("shell-matrix renders the shell board's 66 cells under the 07a names, light
   assert.ok(texts.includes("Roster") && texts.includes("Twelve people across four teams, updated today."), "the menu and page copy is read");
   for (const text of texts) {
     assert.ok(storybookContentText[text] !== undefined, `"${text}" needs five-locale text`);
+  }
+});
+
+// The brand wordmark keeps its words in every language (TCRN-DS-SUB-166, SUB-195), and three lists name the
+// elements that carry it: the page's string swap skips a carrier's word (client-scripts.ts,
+// visualInstanceSelector), the English-leak ledger removes it before the scan (locale-invariant-ledger.mjs,
+// exemptSubtreeSelectors) and the browser proof's axe run exempts its suffix drawn in a registered suffix
+// colour (internal-alpha-browser-proof.mjs, AXE_WORDMARK_SUFFIX_SELECTORS). A carrier is a selector's block,
+// or its line-one element, without the part it names (__word, __suffix, -suffix): .tcrn-brand-lockup__word
+// and .tcrn-brand-lockup__suffix are both the first-line lockup. A carrier added to one list and not the
+// others is how the first-line lockup's word was swapped while the brand button's was not.
+test("the swap skip, the leak ledger and the axe suffix exemption name the same wordmark carriers", () => {
+  const clientScripts = readStorybookSource("src/build/client-scripts.ts");
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const proofSource = readFileSync(join(process.cwd(), "../../scripts/internal-alpha-browser-proof.mjs"), "utf8");
+  const swapSkip = (/const visualInstanceSelector = "([^"]+)";/.exec(clientScripts)?.[1] ?? "").split(",").map((selector) => selector.trim()).filter(Boolean);
+  const ledgerStart = ledgerSource.indexOf("exemptSubtreeSelectors:");
+  const ledgerExempt = Array.from(ledgerSource.slice(ledgerStart, ledgerSource.indexOf("],", ledgerStart)).matchAll(/^\s*"((?:[^"\\]|\\.)*)",?\s*$/gm), (match) => match[1]);
+  const axeSuffix = Array.from((/const AXE_WORDMARK_SUFFIX_SELECTORS = Object\.freeze\(\[([^\]]*)\]\)/.exec(proofSource)?.[1] ?? "").matchAll(/"([^"]+)"/g), (match) => match[1]);
+  const lists: Record<string, readonly string[]> = { swapSkip, ledgerExempt, axeSuffix };
+  for (const [name, list] of Object.entries(lists)) assert.ok(list.length > 0, `${name}: the list is read from its source`);
+  const carrierOf = (selector: string) => /^\.(tcrn-[a-z]+(?:-[a-z]+)*(?:__line-one)?)(?:__word|__suffix|-suffix)?$/.exec(selector)?.[1];
+  const carriers = Object.fromEntries(Object.entries(lists).map(([name, list]) => {
+    const wordmarkSelectors = list.filter((selector) => selector.startsWith(".tcrn-"));
+    for (const selector of wordmarkSelectors) assert.ok(carrierOf(selector), `${name}: ${selector} names a wordmark carrier`);
+    return [name, [...new Set(wordmarkSelectors.map((selector) => carrierOf(selector) ?? selector))].sort()];
+  }));
+  assert.deepEqual(carriers.ledgerExempt, carriers.swapSkip, "the leak ledger exempts the carriers the swap skips");
+  assert.deepEqual(carriers.axeSuffix, carriers.swapSkip, "the axe exemption reads the suffix of the carriers the swap skips");
+  assert.deepEqual(carriers.swapSkip, ["tcrn-brand-lockup", "tcrn-brand-wordmark", "tcrn-product-logo__line-one", "tcrn-shell-brand"], "the four wordmark carriers, the first-line lockup among them");
+  // The first-line lockup draws its suffix inside its word: skipping the word keeps the suffix, and the
+  // suffix element is the one the axe exemption names.
+  const firstLine = renderToStaticMarkup(createElement(ProductLockup, { productId: "design-system", firstLine: "lockup" }));
+  assert.match(firstLine, /<b class="tcrn-brand-lockup__word" title="TCRN Design System">TCRN <em class="tcrn-brand-lockup__suffix[^"]*">Design System<\/em><\/b>/, "the first-line lockup's suffix is inside its word");
+});
+
+// The closed light screen of shell-top-band switches products from its avatar menu (TCRN-DS-SUB-186;
+// STORY-140 GWT4): the products of the package's logo registry, in its order, each named by its wordmark (the
+// product's own name in every language, so no dictionary entry), with TMS, the screen's product, current.
+test("the controlled closed screen's avatar menu lists the registry's products with TMS current", () => {
+  const products = shellStoryProducts("shell-top-band");
+  assert.deepEqual(products.map((product) => product.id), Object.keys(tcrnProductLogoRegistry), "the registry's products in its order");
+  assert.deepEqual(products.filter((product) => product.current).map((product) => product.id), ["tms"], "TMS is the current product");
+  for (const product of products) {
+    assert.equal(product.label, tcrnProductLogoRegistry[product.id as keyof typeof tcrnProductLogoRegistry].lineOne, `${product.id}: named by its wordmark`);
+    assert.equal(product.href, "#shell-top-band", `${product.id}: links back to the story, as the sample's rows do`);
   }
 });

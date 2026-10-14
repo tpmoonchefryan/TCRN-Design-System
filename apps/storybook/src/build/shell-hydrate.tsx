@@ -39,9 +39,14 @@ import {
   Switch,
   Text,
   shellMenuPresentationContext,
+  tcrnProductLogoRegistry,
+  useProductShellController,
   type PageHeaderProps,
   type ProductShellNavGroup,
-  type ShellMenuPresentation
+  type ProductShellProduct,
+  type ProductShellProps,
+  type ShellMenuPresentation,
+  type TcrnProductLogoId
 } from "@tcrn/ui-react";
 import { tcrnDefaultLocale, tcrnLocaleMetadata, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 
@@ -75,10 +80,24 @@ export interface ShellStoryScreen {
    * (SplitView), each under a long trail; omitted, the paper shows the board's sample sentence.
    */
   page?: ShellStoryPage;
+  /**
+   * The screen works as a product's shell does (TCRN-DS-SUB-186; STORY-140 GWT3, GWT4): its pins are the
+   * reader's local preference through useProductShellController, so a pinned item moves under the pointer
+   * or with Alt+← / Alt+→ and keeps its place after a reload, and its avatar menu switches products. The
+   * other screens are the board's pictures and hold the board's pins still.
+   */
+  controlled?: boolean;
 }
 
 /** The marker of a block this module hydrates. */
 export const shellHydrateAttribute = "data-shell-hydrate";
+/**
+ * What a block says once its screen has committed in a language (TCRN-DS-SUB-198, C-12 of the INIT-016 R3
+ * decomposition): data-shell-hydrated="<locale>", written after the hydration's commit and again after
+ * every change of the page's language has been committed. A reader of the page's words (the English-leak
+ * scan of internal-alpha-browser-proof.mjs) waits for every block to say the page's language.
+ */
+export const shellHydratedAttribute = "data-shell-hydrated";
 
 export const shellStoryThemeAttribute: Readonly<Record<ShellStoryTheme, "light" | "dark">> = { light: "light", night: "dark" };
 // PINS of the board: the current page, a pinned item with a menu, a link and a second menu.
@@ -95,7 +114,7 @@ const shellStoryPreviewStates: Readonly<Record<ShellStoryState, Readonly<Record<
 };
 
 export const shellTopBandScreens: readonly ShellStoryScreen[] = [
-  { screen: "ts-closed-l", state: "closed", theme: "light", label: "Closed band" },
+  { screen: "ts-closed-l", state: "closed", theme: "light", label: "Closed band", controlled: true },
   { screen: "ts-closed-n", state: "closed", theme: "night", label: "Closed band (night)" },
   { screen: "ts-x-l", state: "expanded", theme: "light", label: "Full menu open", presentation: "panel" },
   { screen: "ts-x-n", state: "expanded", theme: "night", label: "Full menu open (night)", presentation: "panel" },
@@ -214,6 +233,36 @@ export function shellStoryNavGroups(storyId: string, t: Translate = untranslated
       ]
     }
   ];
+}
+
+// The controlled screen's product (TCRN-DS-SUB-186): its pins are kept under the controller's local key for
+// the product, `tcrn-shell-pins:<productId>` (the browser's own store, never a cookie).
+const shellStoryProductId = "tms";
+const shellStoryPinsStorageKey = `tcrn-shell-pins:${shellStoryProductId}`;
+
+/**
+ * The avatar menu's products on the controlled screen (TCRN-DS-SUB-186; STORY-140 GWT4): the products of
+ * the package's logo registry in its order, each named by its wordmark, the product's own name in every
+ * language, with this shell's product current. The menu links back to the story, as the sample's rows do.
+ */
+export function shellStoryProducts(storyId: string): ProductShellProduct[] {
+  const href = `#${storyId}`;
+  return (Object.keys(tcrnProductLogoRegistry) as TcrnProductLogoId[]).map((id) => ({
+    id,
+    label: tcrnProductLogoRegistry[id].lineOne,
+    href,
+    ...(id === shellStoryProductId ? { current: true } : {})
+  }));
+}
+
+/** The pins the controller kept for the product, read as it writes them: a JSON list of ids. */
+function storedShellStoryPins(): readonly string[] | undefined {
+  try {
+    const parsed: unknown = JSON.parse(window.localStorage.getItem(shellStoryPinsStorageKey) ?? "null");
+    return Array.isArray(parsed) && parsed.every((entry) => typeof entry === "string") ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 /** What a screen's paper shows and where the shell stands for it. */
@@ -352,12 +401,15 @@ interface ShellStoryScreenViewProps {
   introScope?: RefObject<HTMLElement | null> | null;
 }
 
+/** The pins and products a controlled screen takes from its controller (TCRN-DS-SUB-186). */
+type ShellStoryControl = Pick<ProductShellProps, "pinnedIds" | "onPinnedChange" | "onPinsReorder" | "products">;
+
 /**
  * One board screen: the package ProductShell with the board's sample, the board's state and its
  * preview states. Closed screens keep their own state, so their brand button opens the menu; the
  * open screens are held open.
  */
-function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t = untranslated, introScope = null }: ShellStoryScreenViewProps) {
+function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t = untranslated, introScope = null, control }: ShellStoryScreenViewProps & { control?: ShellStoryControl }) {
   const page = shellStoryPage(storyId, screen, t);
   const shell = (
     <ProductShell
@@ -372,8 +424,10 @@ function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t =
       currentTheme={shellStoryThemeAttribute[screen.theme]}
       account={{ name: "Lin Xia", initials: "LX" }}
       notifications={{ unread: 3 }}
-      pinnedIds={shellStoryPinnedIds}
-      onPinnedChange={ignore}
+      pinnedIds={control?.pinnedIds ?? shellStoryPinnedIds}
+      onPinnedChange={control?.onPinnedChange ?? ignore}
+      onPinsReorder={control?.onPinsReorder}
+      products={control?.products}
       menuOpen={screen.state === "expanded" ? true : undefined}
       openPinId={screen.state === "drop" ? shellStoryDropPinId : undefined}
       previewStates={shellStoryPreviewStates[screen.state]}
@@ -399,6 +453,30 @@ function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t =
       {screen.intro && introScope ? <ShellIntro productId="tms" card={<ProductLockup productId="tms" />} locale={locale} shellRef={introScope} /> : null}
     </>
   );
+}
+
+/**
+ * A controlled screen (TCRN-DS-SUB-186): the board's screen with its pins taken from
+ * useProductShellController's productShellControlProps (the pins, pinning and reordering; the screen's
+ * theme and the page's language stay the screen's) and the products of the avatar menu. The server and the
+ * hydration render the board's pins, so the markup React hydrates is the markup it rendered; once mounted,
+ * the pins the reader left in the browser's store take their place.
+ */
+function ShellStoryControlledScreenView({ storyId, ...props }: ShellStoryScreenViewProps) {
+  const controller = useProductShellController({
+    productId: shellStoryProductId,
+    pinsStorageKey: shellStoryPinsStorageKey,
+    initialPins: shellStoryPinnedIds,
+    requestPreferences: { pins: shellStoryPinnedIds }
+  });
+  const { pinnedIds, onPinnedChange, onPinsReorder } = controller.productShellControlProps;
+  const { setPins } = controller;
+  useEffect(() => {
+    const stored = storedShellStoryPins();
+    if (stored) setPins(stored);
+  }, [setPins]);
+  const products = useMemo(() => shellStoryProducts(storyId), [storyId]);
+  return <ShellStoryScreenView storyId={storyId} {...props} control={{ pinnedIds, onPinnedChange, onPinsReorder, products }} />;
 }
 
 interface ShellStoryRootProps {
@@ -446,8 +524,15 @@ export function ShellStoryRoot({ storyId, screen, block = null, onMounted }: She
     return () => window.removeEventListener("tcrn-storybook-locale-applied", follow);
     // Mounted once: the callback that matters is the mount's.
   }, []);
+  // The block says the language its screen now shows (shellHydratedAttribute): an effect runs after its
+  // commit, so the block's markup is the language's when the attribute changes. The hydration's own
+  // commit (the build's English, before the page's language is read) is not marked.
+  useEffect(() => {
+    if (mounted && block) block.setAttribute(shellHydratedAttribute, locale);
+  }, [block, locale, mounted]);
   const t = useMemo(() => translatorFor(locale), [locale]);
-  return <ShellStoryScreenView storyId={storyId} screen={screen} locale={locale} t={t} introScope={mounted && block ? introScope : null} />;
+  const View = screen.controlled ? ShellStoryControlledScreenView : ShellStoryScreenView;
+  return <View storyId={storyId} screen={screen} locale={locale} t={t} introScope={mounted && block ? introScope : null} />;
 }
 
 /** The screen a block names: its story's data-shell-story and its own data-shell-story-block. */
