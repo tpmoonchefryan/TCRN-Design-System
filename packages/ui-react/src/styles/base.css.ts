@@ -2392,9 +2392,14 @@ export const baseCss29 = `
   visibility: hidden;
 }
 
+/* The inner clips the content of a region that is opening or closing, but its clip edge sits
+   --tcrn-space-0h outside its box, so a control's outward stroke (box-shadow 0 0 0 1px) at the
+   block end is not cut (TCRN-DS-SUB-216). Not a padding-block-end: in the 0fr row a padding still
+   takes height, and the collapsed region would no longer be 0 high. */
 .tcrn-collapsible-region__inner {
   min-height: 0;
-  overflow: hidden;
+  overflow: clip;
+  overflow-clip-margin: var(--tcrn-space-0h);
 }
 
 .tcrn-disclosure-panel {

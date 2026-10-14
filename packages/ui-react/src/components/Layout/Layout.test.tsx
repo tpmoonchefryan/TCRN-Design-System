@@ -63,6 +63,23 @@ test("collapsible region keeps expanded content exposed", () => {
   assert.match(html, /Visible action/);
 });
 
+test("collapsible region's inner leaves a control's 1px stroke room at the block end and the collapsed region 0 high (TCRN-DS-SUB-216)", () => {
+  const inner = topLevelRule(".tcrn-collapsible-region__inner");
+  // The inner still clips, but its clip edge sits outside its box by a token at least as wide as the
+  // outward stroke a control draws (box-shadow 0 0 0 1px), so the stroke at the block end is not cut.
+  assert.match(inner, /\n {2}overflow: clip;/);
+  assert.doesNotMatch(inner, /overflow: hidden/);
+  const margin = /\n {2}overflow-clip-margin: var\((--tcrn-[a-z0-9-]+)\);/.exec(inner);
+  assert.ok(margin, "the inner's clip margin is a token");
+  assert.ok(px(margin[1]) >= 1, `${margin[1]} leaves room for a 1px stroke`);
+  // The room takes no height: no padding or border on the inner, so in the 0fr row the collapsed
+  // region stays 0 high and the 0fr to 1fr transition is the same.
+  assert.match(inner, /\n {2}min-height: 0;/);
+  assert.doesNotMatch(inner, /padding|border/);
+  assert.match(topLevelRule(".tcrn-collapsible-region"), /\n {2}grid-template-rows: 0fr;/);
+  assert.match(topLevelRule('.tcrn-collapsible-region[data-expanded="true"]'), /\n {2}grid-template-rows: 1fr;/);
+});
+
 test("disclosure panel is a controlled region and not an accordion claim", () => {
   const html = renderToStaticMarkup(
     <DisclosurePanel expanded title="Route details">
