@@ -20,6 +20,7 @@
 | 包 | 交回物与行段 | 要点 |
 | --- | --- | --- |
 | M1 | `runs/r3/handoff/M1.md` 第 57–68 行（第 4、5 节） | 壳层门只读渲染出来的钉钮与行；对比度格的底色取格心下方实际绘制的层，读不了时标 `backdrop: "ancestors"`；页内面包屑逐段读；manifest 两套夹具的绿名单加 `singleLine`，`story-label-plus-40` 改在菜单夹具上跑（变异改为取完整菜单首个可见组标题、关截断后加 40 字，交判断确认）；`tests/shell-measure-proof.test.mjs` 35 → 39 条（SUB-179 留意）。真件 18 门 16 过 2 红（brandDigest 归 SUB-194、markText 待 O-4），prail 仍红归 SUB-188 |
+| M2 | `runs/r3/handoff/M2.md` 第 43–58 行（第 4、5 节） | geometry:proof 与 shell:parity 都已退出 0（parity 的可钉行改用复合行盒读法：内距读包装、字号与最小高读行链接，B 类回显）；contract:static 的 C11 归组合件家族、34 条列豁免；`families.json` 删 `scope.batch`、改为 `scope.checkedBatches: [1, 2]`；`roles.json` 的 `toolbars` 加顶带一项（容器 strip、让步项 pins、固定项 brand 与 cluster）。登记后 C8 出 18 条（板 `.ts-pins` 写 `min-width:0`、无固定项的壳 ShellPins 返回 null），现有 token 补不了，待 Owner——contract:static 因此仍退出 1；SUB-178 在 C8 上没有可补的样式 |
 
 ## 4. 其他事实
 
