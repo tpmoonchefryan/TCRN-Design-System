@@ -30,7 +30,7 @@ import inputsMeta, { Matrix as InputsMatrix, SampleMembers as InputsSampleMember
 import compositionsMeta, { CompositionThree } from "./compositions.stories.js";
 import { createElement, Fragment } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { tcrnIconNames } from "@tcrn/ui-react";
+import { ProductLockup, tcrnIconNames } from "@tcrn/ui-react";
 import { gplusMatrices, gplusMatrixCellCounts } from "./contract-stories/gplus/generated/matrices.generated.js";
 import { gplusMatrixBoardsInOrder, gplusMatrixComponents, gplusMatrixSourcePath, gplusMatrixStoryIds } from "./contract-stories/gplus/matrix-stories.js";
 import { gplusCompositionThreeStoryId, gplusSampleBoardsInOrder, gplusSampleSourcePath, gplusSampleStoryIds } from "./contract-stories/gplus/sample-stories.js";
@@ -2124,4 +2124,37 @@ test("shell-matrix renders the shell board's 66 cells under the 07a names, light
   for (const text of texts) {
     assert.ok(storybookContentText[text] !== undefined, `"${text}" needs five-locale text`);
   }
+});
+
+// The brand wordmark keeps its words in every language (TCRN-DS-SUB-166, SUB-195), and three lists name the
+// elements that carry it: the page's string swap skips a carrier's word (client-scripts.ts,
+// visualInstanceSelector), the English-leak ledger removes it before the scan (locale-invariant-ledger.mjs,
+// exemptSubtreeSelectors) and the browser proof's axe run exempts its suffix drawn in a registered suffix
+// colour (internal-alpha-browser-proof.mjs, AXE_WORDMARK_SUFFIX_SELECTORS). A carrier is a selector's block,
+// or its line-one element, without the part it names (__word, __suffix, -suffix): .tcrn-brand-lockup__word
+// and .tcrn-brand-lockup__suffix are both the first-line lockup. A carrier added to one list and not the
+// others is how the first-line lockup's word was swapped while the brand button's was not.
+test("the swap skip, the leak ledger and the axe suffix exemption name the same wordmark carriers", () => {
+  const clientScripts = readStorybookSource("src/build/client-scripts.ts");
+  const ledgerSource = readFileSync(join(process.cwd(), "../../scripts/lib/locale-invariant-ledger.mjs"), "utf8");
+  const proofSource = readFileSync(join(process.cwd(), "../../scripts/internal-alpha-browser-proof.mjs"), "utf8");
+  const swapSkip = (/const visualInstanceSelector = "([^"]+)";/.exec(clientScripts)?.[1] ?? "").split(",").map((selector) => selector.trim()).filter(Boolean);
+  const ledgerStart = ledgerSource.indexOf("exemptSubtreeSelectors:");
+  const ledgerExempt = Array.from(ledgerSource.slice(ledgerStart, ledgerSource.indexOf("],", ledgerStart)).matchAll(/^\s*"((?:[^"\\]|\\.)*)",?\s*$/gm), (match) => match[1]);
+  const axeSuffix = Array.from((/const AXE_WORDMARK_SUFFIX_SELECTORS = Object\.freeze\(\[([^\]]*)\]\)/.exec(proofSource)?.[1] ?? "").matchAll(/"([^"]+)"/g), (match) => match[1]);
+  const lists: Record<string, readonly string[]> = { swapSkip, ledgerExempt, axeSuffix };
+  for (const [name, list] of Object.entries(lists)) assert.ok(list.length > 0, `${name}: the list is read from its source`);
+  const carrierOf = (selector: string) => /^\.(tcrn-[a-z]+(?:-[a-z]+)*(?:__line-one)?)(?:__word|__suffix|-suffix)?$/.exec(selector)?.[1];
+  const carriers = Object.fromEntries(Object.entries(lists).map(([name, list]) => {
+    const wordmarkSelectors = list.filter((selector) => selector.startsWith(".tcrn-"));
+    for (const selector of wordmarkSelectors) assert.ok(carrierOf(selector), `${name}: ${selector} names a wordmark carrier`);
+    return [name, [...new Set(wordmarkSelectors.map((selector) => carrierOf(selector) ?? selector))].sort()];
+  }));
+  assert.deepEqual(carriers.ledgerExempt, carriers.swapSkip, "the leak ledger exempts the carriers the swap skips");
+  assert.deepEqual(carriers.axeSuffix, carriers.swapSkip, "the axe exemption reads the suffix of the carriers the swap skips");
+  assert.deepEqual(carriers.swapSkip, ["tcrn-brand-lockup", "tcrn-brand-wordmark", "tcrn-product-logo__line-one", "tcrn-shell-brand"], "the four wordmark carriers, the first-line lockup among them");
+  // The first-line lockup draws its suffix inside its word: skipping the word keeps the suffix, and the
+  // suffix element is the one the axe exemption names.
+  const firstLine = renderToStaticMarkup(createElement(ProductLockup, { productId: "design-system", firstLine: "lockup" }));
+  assert.match(firstLine, /<b class="tcrn-brand-lockup__word" title="TCRN Design System">TCRN <em class="tcrn-brand-lockup__suffix[^"]*">Design System<\/em><\/b>/, "the first-line lockup's suffix is inside its word");
 });

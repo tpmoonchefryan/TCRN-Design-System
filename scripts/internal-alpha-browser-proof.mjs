@@ -18,12 +18,16 @@ import {
 } from "./lib/story-budget.mjs";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
+import { storybookContentText } from "../apps/storybook/dist/build/locales/storybook-content-text.js";
 import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
 import { WORDMARK_EXEMPTIONS } from "./token-contrast-proof.mjs";
 // G+ expectations (TCRN-DS-SUB-041): values below come from the G+ design contract
 // (docs/design/gplus-2026-10/contract) and the resolved @tcrn/ui-tokens map, serialized the way
 // getComputedStyle reports them, never copied from a rendering.
 const gplusPairsContract = JSON.parse(readFileSync("docs/design/gplus-2026-10/contract/pairs.json", "utf8"));
+// The Design System mark of the design contract (marks.json): its wordmark suffix and its five-language
+// description, read by the brand-mark locale checks (TCRN-DS-SUB-195).
+const designSystemMarkContract = JSON.parse(readFileSync("docs/design/gplus-2026-10/contract/marks.json", "utf8")).marks.find((mark) => mark.id === "ds");
 const gplusLightTokens = createResolvedTokenMap("light");
 const gplusDarkTokens = createResolvedTokenMap("dark");
 const gplusComputedColor = (raw) => {
@@ -91,7 +95,11 @@ if (!mobileHeaderLayerSelfCheck.ok) {
 // TCRN-DS-SUB-169 (2026-10-11 D2, judgment §3.4 item 1): the top band's brand button draws the same
 // wordmark suffix in its own element, .tcrn-shell-brand__suffix, so that selector joins the two. The
 // register is unchanged: the dark TMS suffix stays registered as pending (O-8), not ruled.
-const AXE_WORDMARK_SUFFIX_SELECTORS = Object.freeze([".tcrn-brand-wordmark__suffix", ".tcrn-product-logo__line-one-suffix", ".tcrn-shell-brand__suffix"]);
+// TCRN-DS-SUB-195 (R3-20; the same 2026-10-11 D2 reading, INIT-016 R2 judgment §3.4 item 1): the
+// first-line lockup (ProductLockup firstLine) draws the suffix in .tcrn-brand-lockup__suffix, so it joins
+// too, and no other selector does. The list names the same carriers as the page's string swap and the
+// English-leak ledger (apps/storybook/src/smoke.test.ts holds the three lists to one set).
+const AXE_WORDMARK_SUFFIX_SELECTORS = Object.freeze([".tcrn-brand-wordmark__suffix", ".tcrn-product-logo__line-one-suffix", ".tcrn-shell-brand__suffix", ".tcrn-brand-lockup__suffix"]);
 const axeWordmarkContrastExemption = Object.freeze({
   rule: "color-contrast",
   selectors: AXE_WORDMARK_SUFFIX_SELECTORS,
@@ -2905,17 +2913,34 @@ async function collectBrandMarkLocaleCheck(page, locale) {
         lineTwo: node.querySelector(".tcrn-product-logo__line-two")?.textContent?.trim() ?? null
       })),
       hasRegisteredProductLogosLabel: storyText.includes("Registered product logos"),
-      hasRegistryExportText: storyText.includes("ProductLogo / tcrnProductLogoRegistry")
+      hasRegistryExportText: storyText.includes("ProductLogo / tcrnProductLogoRegistry"),
+      // The documentation shell's Design System lockup: its first line is the wordmark and its second the
+      // description, read as the page shows them (the lockup sits in the shell's full menu, folded away).
+      designSystemDescriptionLines: Array.from(document.querySelectorAll("[data-shell='doc'] [data-registered-product-logo][data-product-id='design-system']"))
+        .map((node) => ({
+          lineOne: node.querySelector(".tcrn-product-logo__line-one")?.textContent?.trim() ?? null,
+          lineTwo: node.querySelector(".tcrn-product-logo__line-two")?.textContent?.trim() ?? null
+        }))
     };
   });
-  const expectedDesignSystemSuffixByLocale = {
-    "zh-CN": "设计系统",
-    en: "Design System",
-    ja: "デザインシステム",
-    ko: "디자인 시스템",
-    fr: "Design System"
+  // TCRN-DS-SUB-195 (R3-20; INIT-016 R2 judgment §3.4 item 1): the wordmark is the brand asset's own words
+  // (Logos board, section E) and keeps them in every language (TCRN-DS-SUB-166; START hard line "brand
+  // assets as they are"), so the Design System lockup's suffix is expected as drawn, the contract's suffix,
+  // on every locale. What the page's string swap does change is a lockup's description line, checked
+  // separately below: the Design System lockup of the documentation shell says its description in the
+  // page's language, the swap's own dictionary entry for the contract's English description.
+  const expectedDesignSystemSuffixByLocale = Object.fromEntries(
+    ["zh-CN", "en", "ja", "ko", "fr"].map((entry) => [entry, designSystemMarkContract.suffix])
+  );
+  const expectedProductLockups = ["AOS", "TMS", expectedDesignSystemSuffixByLocale[locale] ?? designSystemMarkContract.suffix];
+  const expectedDesignSystemDescription = storybookContentText[designSystemMarkContract.taglines.en]?.[locale] ?? designSystemMarkContract.taglines.en;
+  const designSystemDescriptionCheck = {
+    expectedLineOne: designSystemMarkContract.name,
+    expectedLineTwo: expectedDesignSystemDescription,
+    readings: details.designSystemDescriptionLines,
+    ok: details.designSystemDescriptionLines.length > 0
+      && details.designSystemDescriptionLines.every((line) => line.lineOne === designSystemMarkContract.name && line.lineTwo === expectedDesignSystemDescription)
   };
-  const expectedProductLockups = ["AOS", "TMS", expectedDesignSystemSuffixByLocale[locale] ?? "Design System"];
   const productLockupChecks = expectedProductLockups.map((expected) => {
     const actual = details.productLockups.find((lockup) => lockup.suffix === expected);
     return {
@@ -2929,11 +2954,13 @@ async function collectBrandMarkLocaleCheck(page, locale) {
     locale,
     ...details,
     productLockupChecks,
+    designSystemDescriptionCheck,
     ok: details.labels.length === 4
       && details.labels.some((label) => label === "TCRN brand mark")
       && details.sources.every((source) => source?.endsWith("tcrn-brand-mark.svg"))
       && details.productLogos.length === 0
       && productLockupChecks.every((check) => check.ok)
+      && designSystemDescriptionCheck.ok
       && !details.hasRegisteredProductLogosLabel
       && !details.hasRegistryExportText
   };

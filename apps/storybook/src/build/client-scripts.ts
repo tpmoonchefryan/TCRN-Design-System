@@ -303,11 +303,13 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
     const skipTags = new Set(["SCRIPT", "STYLE"]);
     // Visual-instance oracles keep their words in every language, and so does the brand wordmark,
     // the brand asset's own words (Logos board, section E; TCRN-DS-SUB-166): the brand button's
-    // word (its b and em), a lockup's first line (base and suffix) and the BrandWordmark. A lockup's
-    // description line is copy and is swapped. data-locale-invariant belongs to the English-leak
-    // ledger (scripts/lib/locale-invariant-ledger.mjs), not to this swap: a story that carries it
-    // (the AI contract story) is translated like any other.
-    const visualInstanceSelector = "[data-storybook-visual-instance], .tcrn-shell-brand__word, .tcrn-product-logo__line-one, .tcrn-brand-wordmark";
+    // word (its b and em), a lockup's first line (base and suffix), the first-line lockup's word (its
+    // b and em; TCRN-DS-SUB-195) and the BrandWordmark. A lockup's description line is copy and is
+    // swapped. The wordmark carriers here are the ones the English-leak ledger exempts and the axe
+    // suffix exemption reads (apps/storybook/src/smoke.test.ts holds the three lists to one set).
+    // data-locale-invariant belongs to the English-leak ledger (scripts/lib/locale-invariant-ledger.mjs),
+    // not to this swap: a story that carries it (the AI contract story) is translated like any other.
+    const visualInstanceSelector = "[data-storybook-visual-instance], .tcrn-shell-brand__word, .tcrn-product-logo__line-one, .tcrn-brand-lockup__word, .tcrn-brand-wordmark";
     const visit = (node) => {
       if (node.nodeType === Node.TEXT_NODE) {
         if (node.parentElement?.closest(visualInstanceSelector)) {
@@ -426,6 +428,18 @@ export const storybookI18nScript = (pageContentTranslations: Record<string, Reco
         continue;
       }
       logo.setAttribute("aria-label", wordmarkText + " " + taglineText);
+    }
+    // A first-line lockup (data-brand-lockup="line"; TCRN-DS-SUB-195) is named by its wordmark alone, and
+    // the swap leaves its word alone: its name stays the word's own title (the whole name), as drawn, in
+    // every language, where the exact-string swap would otherwise translate the name it holds whole.
+    for (const lockup of document.querySelectorAll("[data-brand-lockup='line']")) {
+      if (inMountedShell(lockup)) {
+        continue;
+      }
+      const name = lockup.querySelector(".tcrn-brand-lockup__word")?.getAttribute("title")?.trim();
+      if (name) {
+        lockup.setAttribute("aria-label", name);
+      }
     }
   };
   const updateThemeButtonLabels = (locale) => {

@@ -34,11 +34,14 @@ export const localeInvariantLedger = {
     // exemption is attribute-keyed, so it survives S057 relocating the oracles to Proof.
     "[data-storybook-visual-instance]",
     // The brand wordmark, the brand asset's own words (Logos board, section E), stays Latin on every
-    // locale: the brand button's word (b and em), a lockup's first line and the BrandWordmark. MUST
-    // mirror the wordmark half of the same runtime-swap skip (TCRN-DS-SUB-166); a lockup's
-    // description line is copy, is swapped and stays scanned.
+    // locale: the brand button's word (b and em), a lockup's first line, the first-line lockup's word
+    // (b and em; TCRN-DS-SUB-195) and the BrandWordmark. MUST mirror the wordmark half of the same
+    // runtime-swap skip (TCRN-DS-SUB-166) and name the carriers whose suffix the browser proof's axe
+    // exemption reads (AXE_WORDMARK_SUFFIX_SELECTORS); apps/storybook/src/smoke.test.ts holds the three
+    // lists to one set. A lockup's description line is copy, is swapped and stays scanned.
     ".tcrn-shell-brand__word",
     ".tcrn-product-logo__line-one",
+    ".tcrn-brand-lockup__word",
     ".tcrn-brand-wordmark",
     // Machine tokens: the 39-token colour index and every <code> identifier/value, plus the
     // pre/kbd/samp siblings. These are API identifiers and token values, not prose; they are
