@@ -4,7 +4,7 @@ import { extname, join } from "node:path";
 import { chromium } from "@playwright/test";
 import { storyRegistryOrder } from "../apps/storybook/dist/contract-stories/governance.js";
 import { referencePages } from "../apps/storybook/dist/build/reference-pages.js";
-import { gplusMatrixSourcePath, gplusMatrixStoryIds } from "../apps/storybook/dist/contract-stories/gplus/matrix-stories.js";
+import { gplusMatrixSourcePath, gplusMatrixStoryIds, shellMatrixStory } from "../apps/storybook/dist/contract-stories/gplus/matrix-stories.js";
 import { gplusCompositionThreeStoryId, gplusSampleSourcePath, gplusSampleStoryIds } from "../apps/storybook/dist/contract-stories/gplus/sample-stories.js";
 import { createResolvedTokenMap } from "../packages/ui-tokens/dist/index.js";
 import {
@@ -114,6 +114,11 @@ const docShellRailWidthPx = 0;
 const docShellTopbarHeightPx = Number.parseFloat(gplusTokens.light[shellStripHeightVar]);
 // The search is the full menu's field: 936 wide in the 952 panel at the 1440 proof viewport, and focus does not widen it.
 const docShellSearchWidthPx = 936;
+// The top-band shell's two searches (TCRN-DS-SUB-176; the board values of
+// docs/design/gplus-2026-10/tools/build-shell2.mjs, built on the tokens): the full menu's field, 936 x 40 at
+// the proof viewport, and a pinned drop-down's field, 228 x 28. The AI contract's search entries
+// (visualFitControlContract.search, shellControlVisualParityProof.searchRestWidth) are held to them.
+const shellSearchGeometry = { fullMenuWidthPx: docShellSearchWidthPx, fullMenuHeightPx: 40, dropDownWidthPx: 228, dropDownHeightPx: 28 };
 const gplusThemes = ["light", "dark"];
 function gplusComputedColor(value) {
   const text = String(value).trim();
@@ -342,10 +347,11 @@ const productShellComparatorContract = {
     reducedMotionFallback: "transition-none"
   }
 };
-// The AI consumption contract's shellControlVisualParityProof and owner-quality oracle still
-// describe the old shell (its rail toggle, top-bar search and collapse policy) until its text is
-// rewritten (judgment R2-29). The cross-checks below pin what it says today, apart from the
-// comparator above, so the two can move separately.
+// The AI consumption contract's search entries and doc-shell lines read as the top-band shell since
+// TCRN-DS-SUB-176 (judgment R2-29; held to shellSearchGeometry above). Its shellControlVisualParityProof
+// control order, motion fields and collapse policy and the owner-quality oracle's side-nav policy still
+// describe the old shell (rail toggle, top-bar search), outside R2-29's lines. The cross-checks below pin
+// what they say today, apart from the comparator above, so the two can move separately.
 const aiContractShellControlReadback = {
   controlOrder: ["currentLocation", "searchWrapper", "themeToggle", "localeTrigger"],
   searchTransitionDuration: "0.24s",
@@ -986,8 +992,11 @@ for (const text of [
   ".tcrn-shell-brand",
   "data-shell-brand=\"v2\"",
   "--tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer)",
-  "flex-basis: 260px",
-  "flex-basis: 420px",
+  // TCRN-DS-SUB-176: the old top bar's 260 / 420 search left with it (TCRN-DS-SUB-145). The search is a
+  // field of the shell's layers: the full menu's at shell.srch-h in the expanded panel (936 x 40 at the
+  // proof viewport) and a pinned drop-down's at shell.drop-srch-h in the drop-down column (228 x 28).
+  "--tcrn-search-input-block-size: var(--tcrn-shell-srch-h)",
+  "--tcrn-search-input-block-size: var(--tcrn-shell-drop-srch-h)",
   // TCRN-DS-STORY-063: the feedback-family rules must stay in the package stylesheet. These are
   // CSS-selector markers (never present in the i18n payload), so they can only be satisfied by the
   // actual component-style block. Runtime hover is proven separately in internal-alpha:proof.
@@ -1000,7 +1009,10 @@ for (const text of [
   // press rules.
   ".tcrn-tabs__tab:where(:focus-visible",
   ".tcrn-tabs__tab:where([data-selected=\"true\"])",
-  ".tcrn-product-shell-search[data-search-expanded=\"true\"]",
+  // TCRN-DS-SUB-176: the expanded-search width rule left with the old top bar; the two searches' widths
+  // are their layers' widths (the expanded panel and the drop-down column), and focus does not widen them.
+  "inline-size: min(var(--tcrn-shell-panel-w-expanded), calc(100vw - 2 * var(--tcrn-space-3)))",
+  "inline-size: var(--tcrn-shell-drop-w)",
   ".tcrn-product-shell[data-theme-switching=\"true\"]::after",
   "tcrn-product-shell-theme-wash",
   "@media (prefers-reduced-motion: reduce)"
@@ -1262,7 +1274,7 @@ for (const field of ["transitionProperty", "transitionDuration", "transitionTimi
 if (shellControlVisualParityProof?.controlOrder?.join(">") !== aiContractShellControlReadback.controlOrder.join(">")) {
   missing.push("contract.shellControlVisualParityProof.controlOrder");
 }
-if (shellControlVisualParityProof?.searchRestWidth?.maxPx !== 260 || shellControlVisualParityProof?.searchRestWidth?.expandedMaxPx !== 420) {
+if (Object.keys(shellSearchGeometry).some((key) => shellControlVisualParityProof?.searchRestWidth?.[key] !== shellSearchGeometry[key])) {
   missing.push("contract.shellControlVisualParityProof.searchRestWidth");
 }
 if (shellControlVisualParityProof?.searchMotionTimeline?.transitionDuration !== aiContractShellControlReadback.searchTransitionDuration) {
@@ -1550,7 +1562,11 @@ if (contract.componentStorybookParityDisposition !== "package_primitives_consume
 if (contract.ownerVisualAdmissionDisposition !== "owner_review_required") {
   missing.push("contract.ownerVisualAdmissionDisposition");
 }
-if (contract.visualFitControlContract?.search?.storybookRestWidthPx !== 260 || contract.visualFitControlContract?.search?.storybookExpandedWidthPx !== 360) {
+if (contract.visualFitControlContract?.search?.storybookRestWidthPx !== shellSearchGeometry.fullMenuWidthPx
+  || contract.visualFitControlContract?.search?.storybookExpandedWidthPx !== shellSearchGeometry.fullMenuWidthPx
+  || contract.visualFitControlContract?.search?.storybookHeightPx !== shellSearchGeometry.fullMenuHeightPx
+  || contract.visualFitControlContract?.search?.dropDownWidthPx !== shellSearchGeometry.dropDownWidthPx
+  || contract.visualFitControlContract?.search?.dropDownHeightPx !== shellSearchGeometry.dropDownHeightPx) {
   missing.push("contract.visualFitControlContract.search.storybookWidth");
 }
 if (contract.visualFitControlContract?.search?.packageDefaultControlMinInlineSize !== "9ch") {
@@ -1858,8 +1874,9 @@ for (const story of requiredStories) {
   // The G+ matrix and sample stories are rendered from their own modules and declare that
   // module as their source path (TCRN-DS-SUB-030, TCRN-DS-SUB-031); the composition three sample
   // (TCRN-DS-SUB-092) is rendered from the sample module too, outside the five sample ids
-  // (R3 integration item I-P2b-1); every other story is rendered from story-content.tsx.
-  const owningSourcePath = Object.values(gplusMatrixStoryIds).includes(story.id)
+  // (R3 integration item I-P2b-1); the shell matrix is rendered from the matrix module beside the
+  // five family boards (TCRN-DS-SUB-176); every other story is rendered from story-content.tsx.
+  const owningSourcePath = Object.values(gplusMatrixStoryIds).includes(story.id) || story.id === shellMatrixStory.id
     ? gplusMatrixSourcePath
     : Object.values(gplusSampleStoryIds).includes(story.id) || story.id === gplusCompositionThreeStoryId
       ? gplusSampleSourcePath

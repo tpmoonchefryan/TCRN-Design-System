@@ -47,8 +47,8 @@
   - package-css：dist 的 `tcrnComponentCss` 逐字包含全部生成段；整张表的状态规则（clauses.md C2 定义的状态条件，或 pairs.json 的状态条件）里没有颜色字面量。唯一放行与 C2 相同：只有 transparent 的 outline。
   - icon-roster：icons.json 的名字与 dist 的 `tcrnIconNames` 是同一集合。
   - product-marks：由 marks.json 生成的 8 个 SVG 与 `logos2/`、dist 的 `tcrnProductMarkSvg`、AI 契约登记的字节数和 sha256 逐字节一致。
-  - matrix-expect：五块板的契约格、生成的矩阵数据与画板 `data-cell` 是同一批格，每格的期望值（两位小数）与画板 `data-expect` 相差为 0，kind 与豁免标记一致。
-- **阈值。** 数量是门里的常量：37 个图标、8 个标文件、五板分别 44/28/10/116/42 格、生成的状态规则 25 条，期望值的差为 0。契约有意改数量时，同批改这些常量。
+  - matrix-expect：六块板（第一批五板与壳层板，壳层板读 07a `Shell.dc.html` 的 B 段）的契约格、生成的矩阵数据与画板 `data-cell` 是同一批格，每格的期望值（两位小数）与画板 `data-expect` 相差为 0，kind 与豁免标记一致。
+- **阈值。** 数量是门里的常量：38 个图标、8 个标文件、六板分别 44/28/10/116/42/66 格（共 306；壳层板另有 52 格带 07a A 段的名字），期望值的差为 0；生成的 pair 状态规则条数不是常量，须等于 pairs.json 各 ruleOrder 的条目数（现为 26 条）。契约有意改数量时，同批改这些常量。
 - **变异。** 测试 8 条，全部在临时副本或内存副本里做。分别是：改 pairs.json 的一个 ink 但不重生成，判红；包 CSS 状态规则注入颜色、weight 写成颜色、手改生成文件，各判红；图标改名或 dist 少一个名字，判红；改一枚标的 body 或给文件多加一个字节，判红；改一格 data-expect 或删一格，判红。
 - **豁免。** 没有登记入口。矩阵格的对比度豁免只来自契约：`matrices.json` 的 `exempt: true`（现有 22 格，都是禁用态）必须与画板格的 `data-exempt` 一致，本门的 matrix-expect 核对两边。要增减豁免格，先改画板与 `matrices.json`，再重生成。依据是 TCRN-DS-MIN-20261011-GPLUS-RENEWAL D6：画布是确认面，仓内契约文件是实现、story 与门的数据来源。
 - **单跑。** `pnpm contract:proof`，或用 `pnpm exec node scripts/contract-proof.mjs --json` 输出结构化结果。改契约后的顺序是 `node scripts/contract-generate.mjs`，然后 `pnpm build`，最后跑本门；只重生成、不重建时 package-css 判红。

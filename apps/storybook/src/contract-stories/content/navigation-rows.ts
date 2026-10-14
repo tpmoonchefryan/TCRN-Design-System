@@ -1,12 +1,12 @@
 export const navigationComponentRows = [
-  { primitive: "TopBar", rule: "Names the product surface and active module without replacing page headings.", boundary: "No tenant, RBAC, or readiness truth." },
-  { primitive: "SideNav", rule: "Owns primary product navigation, grouped sections, stable source order, scroll-aware document navigation, keyboard-accessible collapse and expand control, and persisted or route-owned collapsed navigation state.", boundary: "Current location may scroll into view and highlight, but must not reorder sections, hide active location from assistive tech, or ship without expanded and collapsed proof." },
+  { primitive: "TopBar", rule: "Deprecated: the ProductShell band holds the brand button, the pinned items, and the avatar cluster, with no fill and no rule.", boundary: "Kept through 4.0.x with its rules in tcrnRetiredComponentCss; removed in 4.1." },
+  { primitive: "SideNav", rule: "Deprecated: ProductShell takes the navigation as navGroups, and NavGroup and NavItem rows render in the full menu under the brand button and in the pinned drop-downs.", boundary: "No resident side rail and no collapse button; the page's own contents and bookmarks stay in the page, not in the navigation." },
   { primitive: "NavGroup and NavItem", rule: "Support section hierarchy with selected, focus, hover, disabled, and child item states.", boundary: "Selected styling must scale beyond two levels." },
   { primitive: "SearchInput", rule: "Provides search affordance for fields, filters, documentation shells, and product navigation.", boundary: "Control/Command+K shortcut labels belong only to navigation or shell search with a real focus target and result behavior." },
   { primitive: "Breadcrumb", rule: "Shows location inside a product route or documentation trail.", boundary: "Not a substitute for primary navigation." },
-  { primitive: "Tabs and SegmentedNav", rule: "Switch related local views with honest segmented navigation semantics.", boundary: "Do not claim role=tab unless keyboard tab behavior is implemented." },
+  { primitive: "Tabs and SegmentedNav", rule: "One tab family: Tabs, ModuleTabs, SectionTabs, ViewTabs, and SegmentedNav render tcrn-tabs in the panel, nav, and segmented variants, and the chosen tab takes the 6% ink wash and the strong weight.", boundary: "Do not claim role=tab unless keyboard tab behavior is implemented." },
   { primitive: "PageHierarchy", rule: "Encodes explicit two-level and three-level page structures before container adaptation.", boundary: "ProductShell topbar is external; width cannot infer page depth or add an internal left navigation." },
-  { primitive: "ProductSwitcher", rule: "Moves between TCRN product surfaces when a consumer route owns that capability.", boundary: "Storybook examples remain synthetic." },
+  { primitive: "ProductSwitcher", rule: "Deprecated: pass ProductShell its products, and the avatar menu moves between TCRN product surfaces.", boundary: "Storybook examples remain synthetic." },
   { primitive: "Pagination", rule: "Separates long indexed lists without losing current filter or proof context.", boundary: "No remote count claim without product data." },
   { primitive: "SkipLink", rule: "Provides keyboard access past repeated shell navigation.", boundary: "Must remain visible on focus." }
 ];
