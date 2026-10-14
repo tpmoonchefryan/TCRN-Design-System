@@ -4,7 +4,7 @@ This guide is for the three consumers of `@tcrn/ui-tokens`, `@tcrn/ui-copy-state
 and `@tcrn/ui-react`: TCRN AOS, TCRN TMS and the Einzbern portal. It covers the move
 from 3.0.0, and from the unreleased `main` that followed it, to 4.0.0. 4.0.0 is one
 release made of two batches: the G+ renewal (TCRN-DS-INIT-015, the first batch, M1
-to M19) and the top-band shell (TCRN-DS-INIT-016, the second batch, M20 to M52). The
+to M19) and the top-band shell (TCRN-DS-INIT-016, the second batch, M20 to M53). The
 major version did not move again for the second batch. Where the second batch
 replaced something the first batch had introduced, the first batch's item keeps its
 wording, and "Items the second batch overtook" below names what 4.0.0 ships instead.
@@ -23,7 +23,7 @@ on the INIT-015 integration branch, the Subtask key, and the package handoff in
 `docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/` (first round, handoffs
 named W1-A and so on), `runs/r2/handoff/` (second round, handoffs named P1 and
 so on, marked "r2" below) or `runs/r3/handoff/` (third round, handoffs named P0
-and so on, marked "r3" below). The second batch's items (M20 to M52) name a commit
+and so on, marked "r3" below). The second batch's items (M20 to M53) name a commit
 on the INIT-016 integration branch, the Subtask key and the package handoff in
 `docs/dispatch/2026-10-13-tab-shell/runs/r1/handoff/` (first round, handoffs named
 P1a and so on, marked "INIT-016 r1" below), `runs/r2/handoff/` (second round,
@@ -113,8 +113,8 @@ round, handoffs named M1 and so on, marked "INIT-016 r3") or `runs/r4/handoff/`
 23. A script that reads the AI consumption contract moves to `fullMenu`,
     `topBandNavigation`, the new control order, the governed `pins` preference
     and the two new proof ids, and to the oracle's new names before 4.1 (M47).
-    The part families (M30), the shell's size tokens (M43) and the documentation
-    site's changes (M46, M50) need nothing in AOS code.
+    The part families (M30, M53), the shell's size tokens (M43) and the
+    documentation site's changes (M46, M50) need nothing in AOS code.
 
 ### TCRN TMS
 
@@ -169,9 +169,9 @@ above; in either case:
     `--tcrn-motion-product-shell-search` (M38).
 14. A script that reads the AI consumption contract takes its new names (M47); the
     deprecation notice, run over TMS sources, now also lists old names in a
-    `build` directory under `src` (M51). The part families (M30), the shell's size
-    tokens (M43) and the documentation site's changes (M46, M50) need nothing in
-    TMS code.
+    `build` directory under `src` (M51). The part families (M30, M53), the shell's
+    size tokens (M43) and the documentation site's changes (M46, M50) need nothing
+    in TMS code.
 
 ### Einzbern portal
 
@@ -229,7 +229,7 @@ above; in either case:
     `scope.checkedBatches` (M46), and an expanded story's title has no left bar
     (M50); a script that drove the old documentation shell or read `scope.batch`
     moves to the hydrated shell or to `scope.checkedBatches`. Read part families
-    from `families.json` (M30).
+    from `families.json` and the toolbar registration from `roles.json` (M30, M53).
 14. A parse of `tokens.css` reads four blocks, and a local coarse-pointer override
     of the shell's row or search height goes (M31); replace a read of
     `--tcrn-motion-product-shell-search` (M38); the shell's sizes are tokens and
@@ -1422,6 +1422,35 @@ that expects the hint to go with `menuShortcut={false}` expects it to stay.
 Source: e430a8a (TCRN-DS-SUB-185); handoff M4 (INIT-016 r3), as the third round's
 judgment asked (section 3.4, item 4).
 
+### M53 · Nine more root classes in the families, and the top band as a toolbar
+
+Change: nothing that a consumer imports; the contract's two registries moved on
+after M30 was written. Read in the fifth round, `docs/contract/families.json` lists
+11 blocks for navigation, 19 for shell and 16 for inputs. Nine of them are root
+classes this batch added, which f29fb30 (TCRN-DS-SUB-215) registered in their
+families: navigation 2 (`tcrn-nav-item-row`, `tcrn-nav-pin`), shell 5
+(`tcrn-shell-cluster`, `tcrn-shell-account`, `tcrn-shell-avatar`, `tcrn-shell-bell`,
+`tcrn-shell-sheet`) and inputs 2 (`tcrn-select-wrap`, `tcrn-date-picker-wrap`). The
+families' `components` lists did not change. Since f26c633 (TCRN-DS-SUB-191), the
+`toolbars` list of `docs/contract/roles.json` registers the top band as a C8
+toolbar: container `tcrn-shell-strip`, yielding item `tcrn-shell-pins`, fixed items
+`tcrn-shell-brand` and `tcrn-shell-cluster`. The C8 judgment of the top band is
+open for the Owner to rule on (O-19 in
+`docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md`); until it is ruled on,
+the registration stays and `pnpm contract:static` reports 15 C8 findings on the
+top band (the reading at the close of the fourth round). So three statements in
+M30's last paragraph no longer hold: "navigation lists 9", "shell lists 14" and
+"`roles.json` lists no toolbar". M30 keeps its wording, and its part-by-part table
+still holds.
+
+Do: as M30 says, read the family lists from `families.json`, and the toolbar
+registration from `roles.json`, not from M30 or from the numbers above. Nothing
+changes in a consumer's code.
+
+Source: f29fb30 (TCRN-DS-SUB-215), f26c633 (TCRN-DS-SUB-191); handoffs N2
+(INIT-016 r4) and M2 (INIT-016 r3), as the fourth round's judgment asked
+(section 2, item R5-2).
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is
@@ -1551,6 +1580,12 @@ Since the second batch (TCRN-DS-INIT-016), whose open items are listed in
   They add to M20 to M48. One of them changes what an earlier item states, and the
   earlier item keeps its wording: M49 makes M42's last sentence no longer hold, since
   the brand button's and the intro's marks now carry the mark's id too.
+- M53 comes from the second batch's fifth round (INIT-016 r5), as the fourth round's
+  judgment asked: the families' blocks and the top band's toolbar entry. It adds to
+  M20 to M52. It changes what an earlier item states, and the earlier item keeps its
+  wording: M53 makes the block counts and the toolbar sentence of M30's last
+  paragraph no longer hold, since the families list the nine root classes the batch
+  added and `roles.json` registers the top band as a toolbar.
 - One correction in place: M9's change and do lines and the night-suffix item of the
   first batch's list above stated the withdrawn night value #7aa0f5 as current, so
   the second round brought them to the single colour (M28). This is the one

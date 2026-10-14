@@ -144,7 +144,7 @@ export function markupClassTokens(text) {
   return found;
 }
 
-/** Class names in a selector string such as ".tcrn-doc-brand, [data-x]". */
+/** Class names in a selector string such as ".tcrn-doc-page, [data-x]". */
 export function selectorTokens(value) {
   const found = [];
   for (const match of value.matchAll(/\.(tcrn-[A-Za-z0-9_-]*)/gu)) {
