@@ -64,7 +64,9 @@
 | --- | --- | --- | --- | --- |
 | K1 | 已合入，包树已退役（273 MB） | 0e39700、9d081aa、5987d66、c1e4a0a、52780e6、2d1535e、61cf706、f709e9a、0a05831、18ae767 | 72d208d | 八张完成；ui-tokens 14/14、ui-react 233/233、test:dom 47/47、两个 pilot 过；新红两处在别包文件：`smoke.test.ts:1973`（归 SUB-173）、`scripts/storybook-smoke.mjs:1066-1067` 仍要旧 260/420（K3 已合入，无 R2 持有者，待安排）；问题 9 条（页头标题行高 1.1 无 token、纸内可聚焦区焦点环被纸裁切） |
 | K4 | 已合入，包树已退役（274 MB） | eb5e0da、3eaad07、a223eb4 | ddbd82e | SUB-142 完成（三条壳几何 token、粗指针块进 token 表、C10 字面量扫描）；SUB-155 部分：三条豁免已删，暴露 106 条、剩 82（C2 3、C7 45、C11 34，各一根因），contract:static 退出 1，`contract-static-proof.test.mjs:524` 仍要求第二批豁免（R2 无持有者）；ui-react test 4 条钉旧写法（问题 1–4，归 K5、K6）；另把 `tcrn-shell-strip` 登记为壳条（摘录外，可改回）；问题 14 条 |
-| K5 | 在跑（同上） | | | |
+| K5 | 已合入，包树已退役（299 MB） | 62e0400、fd14855、2c09e64、76b47e8 | 2e2c436 | SUB-170 完成；SUB-151 部分（四个壳 story 静态页水合为真件，intro、focusLoop、点外部、触摸门转绿，三条原不可区分的变异可区分；文档壳自身浮层仍是静态标记，接续点在交回第 9 节）；SUB-160 部分（ts-m-s 呈现 Sheet，AOS 标题裁切仍红）；修了两处包件缺陷（级联 ArrowLeft 焦点落到隐藏行、切 zh-CN 后下拉位置偏 12）；ui-react test 235 过；问题 16 条 |
+| K6 | 在跑（自 2e2c436 后的集成 HEAD） | | | |
+| K8 | 在跑（同上） | | | |
 | K2 | 已合入，包树已退役（298 MB） | a9b208b、54c48f1、ccbcfa0、b2ae68c | 6be4775 | 三张完成：文档页壳层 story 合板（菜单搜索 936×40、下拉搜索 228×28 等）、字标不译、AI 契约恢复翻译、Change Log 单一来源、语言列表 Esc 回焦；full-surface:proof 0、shell:fidelity 0；余红有主（smoke.test.ts 归 SUB-173、「铛」归 SUB-177）；28 个颜色与阴影弃用别名提示留 R3（问题 3）；问题 6 条 |
 | K7 | 已合入，包树已退役（274 MB） | fb778c7、9db76d0 | 91b2b80 | 夹具 18 门全绿、19 条板变异只红本门；新增 prail 检查与包件钩子夹具 `package-menu.html`；真件 9 绿 8 红 1 n/a（R1 8 绿 9 红），红按根因归 K1、K5、K6；css-template-integrity 家族段名正则放宽并把连进退役样式表的段排除（问题 1，判断确认）；问题 3 条 |
 | K10 | 在跑（自 91b2b80 后的集成 HEAD） | | | |
