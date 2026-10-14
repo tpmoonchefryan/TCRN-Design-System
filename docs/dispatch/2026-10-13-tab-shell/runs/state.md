@@ -74,11 +74,11 @@
 | K5 | 已合入，包树已退役（299 MB） | 62e0400、fd14855、2c09e64、76b47e8 | 2e2c436 | SUB-170 完成；SUB-151 部分（四个壳 story 静态页水合为真件，intro、focusLoop、点外部、触摸门转绿，三条原不可区分的变异可区分；文档壳自身浮层仍是静态标记，接续点在交回第 9 节）；SUB-160 部分（ts-m-s 呈现 Sheet，AOS 标题裁切仍红）；修了两处包件缺陷（级联 ArrowLeft 焦点落到隐藏行、切 zh-CN 后下拉位置偏 12）；ui-react test 235 过；问题 16 条 |
 | K6 | 已合入，包树已退役（246 MB） | 212b88f、2d99f72、397b0b0、450dabf、b9afc43、2a689cd | 3b38286 | 五张完成：NavItem 行钩子、受控搜索词与分类说明、PageHeader 层级（壳纸页标题默认 h1）、地标名 `landmarkLabel`、拖排（拖动与 Alt+方向键）；ui-react test 244 过（K4 问题 1–4 的钉旧测试已改）、test:dom 53；contract:static 仍因第 524 行退出 1；问题 6 条（文档菜单分类是二级项，说明要挂在项上） |
 | K7 | 已合入，包树已退役（274 MB） | fb778c7、9db76d0 | 91b2b80 | 夹具 18 门全绿、19 条板变异只红本门；新增 prail 检查与包件钩子夹具 `package-menu.html`；真件 9 绿 8 红 1 n/a（R1 8 绿 9 红），红按根因归 K1、K5、K6；css-template-integrity 家族段名正则放宽并把连进退役样式表的段排除（问题 1，判断确认）；问题 3 条 |
-| K8 | 在跑（自 2e2c436 后的集成 HEAD） | | | |
+| K8 | 已合入，包树已退役（275 MB） | 4c18e4c、6baccc0、9a6ff55、b4d0e74、020d8fc、049f72d | 9d4fabe | 四张完成、SUB-175 部分（shell-matrix 治理元数据项要改 `storybook-smoke.mjs`，K3 文件，已交 K9 附录）；名册 38 写进板与五语、canvas.json 板高与 y、TreeNav 改在 Popover 下拉里、台账九条现测；改过的板：V2-B1-Icon、V2-B1-Typography、成品 Icon、Typography、canvas.json；问题 8 条 |
 | K10 | 已合入，包树已退役（274 MB） | 2480d5a、7a9c709 | 3911607 | SUB-164 门侧完成：两板 18 门全绿、板变异 20/20 只红本门、页夹具四条故事变异全红；真件 18 门 10 绿 7 红 1 n/a；DS 侧栏首行 1.4 照判红（O-4），底栏锁定块 en 1.7 同根因；问题 7 条（brandDigest 产品键与 logos2 文件名不一、singleLine 把面包屑当整行、一条变异等价） |
-| K9 | 待起（前置 K3、K6、K8） | | | |
+| K9 | 在跑（自 9d4fabe 后的集成 HEAD；另加附录 `runs/r2/excerpts/K9-addendum.md`：storybook-smoke.mjs 三处过期期望归 K9） | | | |
 | K6b | 在跑（自 3b38286 后的集成 HEAD） | | | |
-| K11 | 待起（前置 K5、K6、K8、K10） | | | |
+| K11 | 在跑（自 9d4fabe 后的集成 HEAD） | | | |
 | K12 | 待起（其余 12 包全部合入后手动起） | | | |
 
 - K12 的前置在包表里写成「其余全部」，调度工具不认，等其余 12 包全部合入后手动起。
