@@ -8,11 +8,13 @@
 | --- | --- |
 | `README.md` | 本文：门清单、判据、阈值、变异、豁免登记方式、运行方式 |
 | `clauses.md` | 条款 C1–C17 原文、契约静态门的口径与各条落点 |
-| `families.json` | 16 个家族与包 CSS 根类的对应；`scope.batch` 指定全量检查的批次（第一批五家族） |
+| `families.json` | 16 个家族与包 CSS 根类的对应；`scope.checkedBatches` 列出已全量检查的批次，现为 `[1, 2]`：第一批五家族（字体、图标、品牌、动作、表单控件）与第二批三家族（导航、壳层、布局）。契约静态门的豁免校验（`validateExemptions`）与它的测试只读这一字段；原来只写第一批的 `scope.batch` 已删除（TCRN-DS-SUB-189） |
 | `exemptions.json` | 契约静态门的豁免登记：每条只豁免一个家族、一组类或一组选择器，写明条款并带裁定引用 |
-| `roles.json` | C7 单行角色的承载类、C8 工具栏登记、C11「通用件拼壳」的壳层登记 |
+| `roles.json` | C7 单行角色的承载类、C8 工具栏登记、C11「通用件拼壳」的壳层登记。C8 的 `toolbars` 现登记一项「顶带」：容器 `tcrn-shell-strip`，让步项 `tcrn-shell-pins`，固定项 `tcrn-shell-brand` 与 `tcrn-shell-cluster`（TCRN-DS-SUB-191） |
 
 契约数据本身在 `docs/design/gplus-2026-10/contract/`：`tokens.json`、`typography.json`、`pairs.json`、`icons.json`、`marks.json`、`matrices.json`。生成物只由 `node scripts/contract-generate.mjs` 写入，文件头注明「由 contract 生成，勿手改」。
+
+粗指针映射以 `@tcrn/ui-tokens` 的 `tcrnCoarsePointerTokens`（媒体条件 `tcrnCoarsePointerMedia`，即 `(pointer: coarse)`）为唯一来源：`--tcrn-shell-row-h` 与 `--tcrn-shell-srch-h` 改指 `--tcrn-shell-touch`（44px），写在 `tokens.css` 主题无关块之后的粗指针块里。`tokens.json` 只在这两条 token 的 note 里说明这组映射，不另存映射数据，生成物也不写它；要改映射只改 `tcrnCoarsePointerTokens`。
 
 ## 运行方式
 
@@ -61,7 +63,7 @@
   - C5 浅色与夜间每个选择器的属性集相同，主题 token 块的键集相同；
   - C6 不用左边条或 inset x 偏移作选中标记；
   - C7 单行角色带 nowrap、ellipsis 与裁切；
-  - C8 工具栏恰有一个让步项；
+  - C8 工具栏恰有一个让步项（工具栏登记在 `roles.json` 的 `toolbars`，现只有顶带一项，见上表）；
   - C11 禁用清单：渐变、模糊超过 3px、卡套卡、表情图标、左边条；
   - C13 文档层不渲染包里没有的 tcrn-* 类，取 doc-shell-class-proof 的差集。
   C7、C8、C11 另在静态 Storybook 的 story 区块上检查。读不到 story 区块或差集算不出时判红（`Cx.story-input-missing`、`C13.input-missing`），不跳过。
@@ -74,8 +76,8 @@
   - `ruling`：裁定引用；
   - `reason`；
   - `family`、`classes`、`selectors` 三者恰好有一个。
-  第一批家族、其类，以及选中其类的选择器都不能登记。格式不合规时门判红（`CONTRACT_STATIC_EXEMPTION_INVALID`），本次没有命中的条目列在报告的 `scope.unusedExemptions`。现有 12 条：
-  - 11 条是第二至五批家族，依据 TCRN-DS-INIT-015 scope 不授权段（本 INIT 只授权第一批五家族进包）与 R1 拆分问题清单 P4；
+  `families.json` 的 `scope.checkedBatches` 所列批次（现为第一、二批）的家族、其类，以及选中其类的选择器都不能登记；`scope.checkedBatches` 缺失或为空也算登记错误。格式不合规时门判红（`CONTRACT_STATIC_EXEMPTION_INVALID`）。不在已检查批次、又没有家族级豁免的家族，仓库运行时判红（`CONTRACT_STATIC_EXEMPTION_MISSING`，报告的 `scope.uncoveredFamilies`）。本次没有命中的条目列在报告的 `scope.unusedExemptions`。现有 9 条：
+  - 8 条是第三至五批家族（settings、feedback、identity、overlay、display、records、boards、inspection），依据 TCRN-DS-INIT-015 scope 不授权段（该 INIT 只授权第一批五家族进包）与 R1 拆分问题清单 P4；第二批三家族的豁免已于 TCRN-DS-INIT-016 到期删除（TCRN-DS-SUB-155），第二批随之列入 `scope.checkedBatches`；
   - 1 条按类登记 LockHint 默认的表情字符锁形图标（C11），依据同上，并引用 TCRN-DS-SUB-037 判据。
   每条都写明删除条件 `until`。
 - **家族子集。** `--family <id>[,<id>…]` 只让归属这些家族的发现决定结果，id 取 `families.json` 的家族 id，或 `utility`、`unattributed`。不属于任何家族的发现照样计入，未知 id 判红。子集只缩小判定范围，不是豁免。
@@ -86,7 +88,7 @@
 - **建立。** TCRN-DS-SUB-034（STORY-131）建立，TCRN-DS-SUB-035 补全接入。门 `scripts/geometry-measure-proof.mjs`，测量库 `scripts/lib/gplus-measure.mjs`，路由 `scripts/lib/storybook-routes.mjs`，测试 `tests/geometry-measure-proof.test.mjs`。
 - **判据。** 在静态文档里，按浅色与夜间两种主题，打开每个 G+ 矩阵与样板 story，只在 story 渲染区域内测量。测量集合是 GPLUS_STORY_IDS 加上注册表 `gplus-*` 类目下的 story。每次运行先做夹具自检（`tests/fixtures/geometry-measure/manifest.json`），随后检查：
   - REQUIRED_CHECKS：每个 story 必须适用的项不得为 n/a；
-  - 全量运行时，十项检查（测量库的 CHECK_IDS：clip、singleLine、shadowBlur、rail、rowAlign、mark、contrast、controlHeight、overlap、shellFrame）都要在某个 story 上适用；
+  - 全量运行时，测量库的 CHECK_IDS 十项（clip、singleLine、shadowBlur、rail、rowAlign、mark、contrast、controlHeight、overlap、shellFrame）中除 rail 以外的九项（SET_REQUIRED_CHECKS）都要在某个 story 上适用；侧栏引导列 rail 随构图一退役，样板壳带 `data-measure-skip="rail"`，rail 只在夹具自检里保留红绿两例，完整菜单内的引导列 16 / 48 由壳层门 `scripts/shell-measure-proof.mjs` 的 prail 读数负责；
   - STORY_PROBES 四个：ButtonGroup 焦点环不被裁切；DatePicker 指示器的点击能到达输入框；Highlight 与纯文本同宽；iconStroke：16px 图标渲染为 16px 见方，每个子元素计算描边 1.25px 并带 non-scaling-stroke（ICON_STROKE）。
 - **阈值。** 门里的 THRESHOLDS，storybook-visual-proof 复用同一份：
 
@@ -95,15 +97,15 @@
   | clip | 0 个元素超出裁切祖先（容差 0.5px） |
   | singleLine | 声明单行的元素只有 1 个行框 |
   | shadowBlur | box-shadow 模糊不超过 3px |
-  | rail | 引导列在距壳层边 16px 处，引导文字在 48px 处（容差 0.5px，C17） |
+  | rail | 引导列在距壳层边 16px 处，引导文字在 48px 处（容差 0.5px，C17）；侧栏已退役，只在夹具上量 |
   | rowAlign | 表格与列表每行首格文字起点相同（差不超过 0.5px） |
   | mark | 0 个改变排版的高亮标记 |
   | contrast | 每格与 data-expect 相差不超过 0.05；文字 4.5，其它 kind 3，豁免格除外 |
   | controlHeight | 声明的控件高度相符（0.5px），且只能是 28、32 或 40 |
   | overlap | 网格或弹性布局的兄弟元素在两个方向上的相交都不超过 1px |
-  | shellFrame | 每个 ProductShell 根（`[data-shell]`）内的纸面离壳的上、尾、下三边 12px，壳顶栏高 52px（容差 0.5px）；起始边贴侧栏，不量 |
+  | shellFrame | 每个顶带壳根（`[data-shell][data-state]`）：顶带（`[data-shell-strip]`）高 52px，无底线、无阴影、无填充；纸面（`[data-paper]`）离壳顶 52px，离壳的起、尾、下三边各 12px，四角圆角 14px（容差 0.5px）。构图一的壳框（纸面贴侧栏、顶栏在纸内）已随侧栏退役 |
 
-- **变异。** 夹具自检要求每项在注入的违例上转红、在干净页上保持绿。STORY_MUTATIONS 在真实 story 上注入六条变异，都必须判红：rowAlign（STORY-131 GWT1）、mark（GWT2）、shadowBlur 模糊 4px（GWT3）、contrast，以及 shellFrame 的两条——纸面贴到壳边（`shell-paper-inset-zero`，129-GWT3）与壳顶栏回到 68px（`shell-top-bar-68`，131-GWT4）。测试在 `tests/geometry-measure-proof.test.mjs`，含页面模板作用域改写的单测与测量探针单测；条数以现跑为准，这里不写死。
+- **变异。** 夹具自检要求每项在注入的违例上转红、在干净页上保持绿。STORY_MUTATIONS 在真实 story 上注入七条变异，都必须判红：rowAlign（STORY-131 GWT1）、mark（GWT2）、shadowBlur 模糊 4px（GWT3）、contrast，以及 shellFrame 在顶带壳样板上的三条——纸面贴到壳边（`shell-paper-inset-zero`）、顶带下加 1px 线（`shell-top-band-rule`，148-GWT3）与顶带回到旧顶栏的 68px（`shell-top-band-68`）。测试在 `tests/geometry-measure-proof.test.mjs`，含页面模板作用域改写的单测与测量探针单测；条数以现跑为准，这里不写死。
 - **豁免。** 没有登记表。对比度格的豁免只来自契约（`matrices.json` 的 `exempt`，与画板 `data-exempt` 一致，见 contract-proof）。
 - **单跑。** `pnpm geometry:measure`；用 `pnpm geometry:measure --family actions` 只跑该家族的矩阵与样板（变异也只跑落在这些 story 上的），用 `--story <id>` 指定 story。`pnpm exec node scripts/geometry-measure-proof.mjs --self-check-only` 只做夹具自检，不需要构建。`--write-report` 把报告写到 `docs/verification/geometry-measure/report.json`，由批末重生成。
 
@@ -117,7 +119,7 @@
   - rows：任一行任一主题的十项检查（测量库的 CHECK_IDS，与几何门同一组）有 fail，requiredChecks 有 n/a，或格数、格 id 与契约或画板不符；
   - mutations：在范围内的变异没有判红。
 - **阈值。** 取 geometry-measure-proof 的 THRESHOLDS，映射文件与测量库都不带阈值。不做像素比对，也不截图。
-- **变异。** ROW_MUTATIONS 十条，每项检查一条（rail 与 shellFrame 落在样板 story 上，其余在矩阵上），都必须判红。测试在 `tests/storybook-visual-proof.test.mjs`；条数以现跑为准，这里不写死。
+- **变异。** ROW_MUTATIONS 九条，rail 以外每项检查一条（shellFrame 落在样板 story 上，其余在矩阵上），都必须判红；rail 随侧栏退役，没有落在 story 上的变异，只留几何门的夹具自检。测试在 `tests/storybook-visual-proof.test.mjs`；条数以现跑为准，这里不写死。
 - **登记。** 豁免与差异都登记在 `docs/design/gplus-2026-10/storybook-map.json`，人读版 `storybook-map.md` 与它同源。
   - 没有 story 的板与分段写进 `unmapped`，必填 `reason`、`realizedBy`、`refs`。
   - 画布与 story 的差异写进 `differences`，编号 DIFF-n，带 `refs` 与 `status`；待 Owner 裁定的，在 status 里写明。
