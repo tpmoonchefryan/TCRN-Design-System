@@ -1,0 +1,95 @@
+[
+ {
+  "subject": "判断定收紧（登记新被测物）之前，先把板值与条款要求逐项对一遍",
+  "summary": "INIT-016 R2 判断让顶带登记为 C8 工具栏，属收紧；但板 .ts-pins 写 min-width:0，没有固定项的壳也不渲染让步项，登记后出了 15 条现有 token 修不了的红。该判据（135-GWT4 contract:static 退出 0）又已是同一目标第三轮，只能整条交 Owner，verify 因此多一步红。",
+  "snippet": "派「把 X 登记到某条款」之前，逐项核对条款要求与板上的值和画法：板值为 0 或板上没有该结构时，先列待裁，不派收紧。",
+  "body": "R3-8 的改法写了「需要板上没有的数值时停下交 Owner」，但派单前没有读板：C8 要求让步项有非零 min-width、每个渲染出的工具栏恰有一个让步项；板 shell-screen.mjs:59 的 .ts-pins 是 min-width:0、flex:0 1 auto，板上也没有无固定项的壳。登记一落地，contract:static 就出 C8 15 条（静态 1、story 层 14），三条出路（改判定、补板值、改组件）全归 Owner。派单前对一遍板值，就能直接列为待裁，省掉一轮实施与验收，R2 预估的「R3 后只剩 markText」也不会落空。",
+  "tags": [
+   "tcrn-design-system",
+   "contract-static",
+   "judgment",
+   "board-values",
+   "init-016"
+  ],
+  "evidence": [
+   "docs/dispatch/2026-10-13-tab-shell/runs/r2/judgment.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r3/problems/M2.md",
+   "docs/contract/clauses.md",
+   "docs/design/gplus-2026-10/tools/shell-screen.mjs",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r3/judgment.md"
+  ]
+ },
+ {
+  "subject": "已全量检查批次的家族不能用豁免放行任何条款发现",
+  "summary": "contract-static 的豁免校验对 scope.checkedBatches 里的家族一律拒绝（contract-static-proof.mjs:238）。第二批进了 [1, 2] 之后，壳层、导航、布局三族的条款差异只剩改实现或改判定两条路，exemptions.json 不是出口；R3 分片 A 建议的「带板依据的 C8 豁免」因此落不了地。",
+  "snippet": "给某家族的发现找出口之前，先查它的 batch 是否在 families.json 的 scope.checkedBatches 里；在里面就不能豁免。",
+  "body": "SUB-189 把判定来源改为 checkedBatches，validateExemptions 与测试读同一字段：在列批次不得有豁免，不在列的必须有。clauses.md 第 115 行同写「壳层家族属第二批，全量检查，不豁免」。在 roles.json 加字段让门对某个登记跳过检查，效果与豁免相同，属门判定语义的放宽，要 Owner 裁定。",
+  "tags": [
+   "tcrn-design-system",
+   "contract-static",
+   "exemptions",
+   "families",
+   "init-016"
+  ],
+  "evidence": [
+   "scripts/contract-static-proof.mjs",
+   "docs/contract/families.json",
+   "docs/contract/clauses.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r3/acceptance/A.md"
+  ]
+ },
+ {
+  "subject": "内容进了滚动容器，元素截图只画得出可见的一段",
+  "summary": "文档壳把 story 放进纸内滚动区后，browser-proof 的 locator.screenshot 对比视口高的 story 只绘出纸内可见的约一屏，其余是画布底，顶带压在上缘；44 张桌面截图高于 900。R3 的 217 条视觉签名基线按这个形态收下，纸外内容改了门看不到。",
+  "snippet": "改版式把内容放进滚动容器时，同步检查截图类门：截图期间取消祖先的滚动裁切，或分段截取再拼，截完还原；改截法后整批重收基线。",
+  "body": "截图尺寸照常是元素外框（例：i18n-theme-contract 为 1040×1807），签名比对与回执都不报错，盲区只能靠看截图发现：上约 450、下约 490 像素是空的。这类盲区由换壳本身造成，门的阈值与算法都没变；验收只看「回归 0」会把它当作全绿。",
+  "tags": [
+   "tcrn-design-system",
+   "visual-signature",
+   "browser-proof",
+   "screenshots",
+   "init-016"
+  ],
+  "evidence": [
+   "docs/dispatch/2026-10-13-tab-shell/runs/r3/problems/M11.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r3/acceptance/C.md",
+   "docs/verification/internal-alpha/screenshots/desktop-1440x900-i18n-theme-contract.png",
+   "scripts/internal-alpha-browser-proof.mjs"
+  ]
+ },
+ {
+  "subject": "按目录名跳过构建产物，会把同名的源码目录一起跳过",
+  "summary": "token-deprecation-notice 的 SKIPPED_DIRECTORIES 含 build，本意是跳过产物，结果把 apps/storybook/src/build（14 个源码文件）也跳过了；M8 直接扫这个目录时查出一个旧壳 token 名 2 处。构建提示归 0 不能证明文档源码里没有弃用名。",
+  "snippet": "扫描脚本的跳过表按相对路径匹配产物目录，不按目录名；测试里放一个 src/build 下的样本，证明它被扫到。",
+  "body": "dist、build、coverage 这类名字同时可能是源码目录名，别的扫描脚本也可能有同样的写法。判据写「某扫描归 0」时，验收要问一句扫描覆盖了哪些目录，必要时对漏扫的目录直接跑一次。",
+  "tags": [
+   "tcrn-design-system",
+   "scans",
+   "deprecation",
+   "init-016"
+  ],
+  "evidence": [
+   "scripts/token-deprecation-notice.mjs",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r3/problems/M8.md"
+  ]
+ },
+ {
+  "subject": "按选中标记查禁用画法的门，看不到别的状态属性下的同一种画法",
+  "summary": "selection-grammar 只查选中类标记：文档页展开故事标题用 [data-story-collapsed=\"false\"] 画 3px 强调色内阴影左边条，门一直是绿的。它的两条禁形还只按弃用 token 名匹配，用 G+ 名写的同类选中态也查不出。两处都是验收探针与包问题文件发现的。",
+  "snippet": "复核「禁用清单」硬线按画法 grep（inset Npx 0 0、border-left 等），不只按状态标记；token 改名后，同步把门的禁形扩到新名。",
+  "body": "M8 只把旧名 --tcrn-color-brand-primary 换成同值的 --tcrn-color-acc，画法没变；门不看 data-story-collapsed，所以左边条一直没被报出。selection-grammar-proof.mjs 第 66–67 行的禁形匹配 --tcrn-color-brand- 与 var(--tcrn-elevation-floating)，第 151 行的语法文字也是弃用名；全仓改用 G+ 名之后，这两条禁形对新写法失效。",
+  "tags": [
+   "tcrn-design-system",
+   "hard-lines",
+   "selection-grammar",
+   "gates",
+   "init-016"
+  ],
+  "evidence": [
+   "apps/storybook/src/alpha-styles.ts",
+   "scripts/selection-grammar-proof.mjs",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r3/problems/M8.md",
+   "docs/dispatch/2026-10-13-tab-shell/runs/r3/acceptance/C.md"
+  ]
+ }
+]
