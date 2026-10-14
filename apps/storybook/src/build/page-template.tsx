@@ -446,7 +446,9 @@ function docShellConfig(page: DocShellPage, locale: TcrnLocale): DocShellConfig 
     pinnedIds: contractStoryGroups.filter((group) => group !== "Welcome").map(docSectionItemId),
     searchPlaceholder: localeText("shell.searchLabel", locale),
     skipLinkLabel: localeText("shell.skip", locale),
-    toc: { label: localeText("shell.onThisPageLabel", locale), items: page.toc(locale) }
+    // The contents rail sits right under the page's h1, so its title is an h2 (TocRail headingLevel, TCRN-DS-SUB-193;
+    // TCRN-DS-SUB-202: axe heading-order).
+    toc: { label: localeText("shell.onThisPageLabel", locale), headingLevel: 2, items: page.toc(locale) }
   };
 }
 
