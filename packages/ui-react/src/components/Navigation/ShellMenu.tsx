@@ -65,11 +65,24 @@ import {
   type RefObject
 } from "react";
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
+import { tcrnTokens } from "@tcrn/ui-tokens";
 import { Icon, type IconName } from "../Icon/index.js";
 import { cx } from "../../utils.js";
 import { NavGroup, NavItem, ProductShellSearch, ShellBrandLockup, type ProductShellSearchResult, type TcrnProductLogoId } from "./Navigation.js";
 import type { ShellPinItem } from "./ShellPins.js";
 import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
+
+// A row's next-level chevron and the bottom bar's position separator are the shell.chevron token,
+// 12 on the board (TCRN-DS-SUB-178). Icon takes its size as a number, so the number is read from
+// the token table, as the breadcrumb separator reads shell.crumb-icon: a token change moves both.
+function shellChevronPixels(): number {
+  const token = tcrnTokens.find((candidate) => candidate.variable === "--tcrn-shell-chevron");
+  const pixels = token && /^\d+(?:\.\d+)?px$/.test(token.value) ? Number.parseFloat(token.value) : Number.NaN;
+  if (!Number.isFinite(pixels)) throw new Error("ShellMenu: --tcrn-shell-chevron is missing from @tcrn/ui-tokens or is not a pixel length.");
+  return pixels;
+}
+
+const shellChevronSize = shellChevronPixels();
 
 /** An entry of the menu model below the groups: an item (second level) or a child (third, fourth). */
 export interface ShellMenuItem {
@@ -290,7 +303,7 @@ export function shellMenuRow(item: ShellMenuItem, level: number, context: ShellM
       {...shellMenuPinProps(item.id, item.label, context)}
     >
       <span className="tcrn-shell-menu__text">{item.label}</span>
-      {hasNext ? <Icon name="chevron-right" size={12} className="tcrn-shell-menu__sub" /> : null}
+      {hasNext ? <Icon name="chevron-right" size={shellChevronSize} className="tcrn-shell-menu__sub" /> : null}
     </NavItem>
   );
   const description = item.description?.trim();
@@ -813,7 +826,7 @@ export function ShellMenu({
             </span>
             {currentPath.map((crumb, index) => (
               <Fragment key={`${index}-${crumb.label}`}>
-                {index > 0 ? <Icon name="chevron-right" size={12} className="tcrn-shell-menu__crumb-sep" /> : null}
+                {index > 0 ? <Icon name="chevron-right" size={shellChevronSize} className="tcrn-shell-menu__crumb-sep" /> : null}
                 {index === last ? (
                   <b className="tcrn-shell-menu__crumb tcrn-shell-menu__crumb--current" aria-current="page" title={crumb.label}>
                     {crumb.label}

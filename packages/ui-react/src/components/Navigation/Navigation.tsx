@@ -2309,7 +2309,7 @@ export function ProductShell({
           ) : null}
           {notifications ? (
             <button type="button" className="tcrn-shell-bell" aria-label={copy.notificationsOf(unread)} data-shell-bell="" onClick={notifications.onOpen}>
-              <Icon name="bell" size={20} />
+              <Icon name="bell" size="lg" />
               {unread > 0 ? <i className="tcrn-shell-bell__dot" aria-hidden="true" /> : null}
             </button>
           ) : null}
@@ -2325,7 +2325,7 @@ export function ProductShell({
               data-shell-avatar=""
               onClick={() => changeAccount(!shownAccountOpen)}
             >
-              {account ? <span aria-hidden="true">{productShellInitials(account)}</span> : <Icon name="users" size={14} />}
+              {account ? <span aria-hidden="true">{productShellInitials(account)}</span> : <Icon name="users" size="sm" />}
             </button>
             {shownAccountOpen ? (
               <section

@@ -248,7 +248,8 @@ test("the bottom bar is pbar-h plus the panel's bottom inset, its rule a 1px lin
   assert.doesNotMatch(lockup, /--tcrn-brand-|gap:/);
   assert.doesNotMatch(shellCss03, /tcrn-product-logo__byline/);
   const tier = ruleBody('.tcrn-shell-brand-lockup[data-lockup="lkr"]', brandCss02);
-  assert.equal(declaration(tier, "--tcrn-brand-mark-size"), "22px");
+  assert.equal(declaration(tier, "--tcrn-brand-mark-size"), "var(--tcrn-shell-mark)");
+  assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px", "the mark is shell.mark, 22 (TCRN-DS-SUB-178)");
   assert.equal(declaration(tier, "--tcrn-brand-line-one-size"), "12.5px");
   assert.equal(declaration(tier, "--tcrn-brand-line-two-size"), "10.5px");
   assert.equal(declaration(tier, "gap"), "var(--tcrn-space-2h)");

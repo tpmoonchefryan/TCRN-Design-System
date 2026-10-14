@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: typography.json, tokens.json
-// contract-sha256: 78a378075aed86e4ed081e4b11060cde3dbea2dd8ab4969cdd10d166a2f1e39f
+// contract-sha256: 9e711b2ea36c20f4ff12e14551a61455acbfd6c13efd45312873f471937391f5
 
 /** 字体刻度段：Heading 1–4、Text size / tone / variant、numeral、caps、mono、链接、mark */
 export const typographyScaleCss = `

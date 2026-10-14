@@ -55,6 +55,18 @@ export function shellPinsMax(): number {
   return max;
 }
 
+// A pinned item's drop-down chevron is the shell.chevron token, 12 on the board (TCRN-DS-SUB-178).
+// Icon takes its size as a number, so the number is read from the token table, as the breadcrumb
+// separator reads shell.crumb-icon: a token change moves the chevron with it.
+function shellChevronPixels(): number {
+  const token = tcrnTokens.find((candidate) => candidate.variable === "--tcrn-shell-chevron");
+  const pixels = token && /^\d+(?:\.\d+)?px$/.test(token.value) ? Number.parseFloat(token.value) : Number.NaN;
+  if (!Number.isFinite(pixels)) throw new Error("ShellPins: --tcrn-shell-chevron is missing from @tcrn/ui-tokens or is not a pixel length.");
+  return pixels;
+}
+
+const shellChevronSize = shellChevronPixels();
+
 /** Ids of the pinned items the band does not show (the ones after shellPinsMax()), in order. */
 export function shellPinsOverflowIds(items: readonly Pick<ShellPinItem, "id">[]): string[] {
   return items.slice(shellPinsMax()).map((item) => item.id);
@@ -323,7 +335,7 @@ export function ShellPins({
               onClick={() => onOpenChange?.(open ? null : item.id)}
             >
               {label}
-              <Icon name="chevron-down" size={12} className="tcrn-shell-pins__chevron" />
+              <Icon name="chevron-down" size={shellChevronSize} className="tcrn-shell-pins__chevron" />
             </button>
           </span>
         );

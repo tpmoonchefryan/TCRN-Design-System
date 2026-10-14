@@ -544,8 +544,8 @@ export const baseCss11 = `
 }
 .tcrn-shell-locale-menu__chevron {
   flex: 0 0 auto;
-  width: 11px;
-  height: 11px;
+  width: var(--tcrn-shell-locale-chevron);
+  height: var(--tcrn-shell-locale-chevron);
   color: var(--tcrn-color-text-tertiary);
   pointer-events: none;
   transition: transform var(--tcrn-motion-emphasis);

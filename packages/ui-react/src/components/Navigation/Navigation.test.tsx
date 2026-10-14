@@ -837,10 +837,12 @@ test("brand lockup css follows the G+ brand rules", () => {
   assert.match(rule(".tcrn-brand-lockup"), /--tcrn-brand-mark-size: 28px;/);
   // The side-rail tier is one rule: a lockup in the product shell, or one marked data-lockup="lkr"
   // such as the full menu's bottom bar (TCRN-DS-SUB-144).
+  // Its mark is the shell.mark token, 22 (TCRN-DS-SUB-178).
   assert.match(
     tcrnComponentCss,
-    /\n\.tcrn-product-shell \.tcrn-shell-brand-lockup,\n\.tcrn-shell-brand-lockup\[data-lockup="lkr"\] \{[^}]*--tcrn-brand-mark-size: 22px;/
+    /\n\.tcrn-product-shell \.tcrn-shell-brand-lockup,\n\.tcrn-shell-brand-lockup\[data-lockup="lkr"\] \{[^}]*--tcrn-brand-mark-size: var\(--tcrn-shell-mark\);/
   );
+  assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px");
   const markRule = rule(".tcrn-brand-mark");
   assert.match(markRule, /inline-size: var\(--tcrn-brand-mark-size\);[\s\S]*filter: var\(--tcrn-brand-mark-filter, none\);/);
   // STORY-127 GWT4 (the CSS part): the mark neither scales nor fades. The rail and its collapsed
@@ -1910,8 +1912,11 @@ test("STORY-145 GWT2 the first line is centred by the flex row, at the section E
   const lockup = rules.filter(({ selector }) => selector.split(",").map((part) => part.trim()).includes(".tcrn-brand-lockup")).map(({ body }) => body).join("\n");
   assert.match(lockup, /display: inline-flex;/);
   assert.match(lockup, /align-items: center;/);
-  assert.match(rule(".tcrn-brand-lockup--line"), /--tcrn-brand-mark-size: 44px;[\s\S]*--tcrn-brand-line-one-size: 16px;[\s\S]*gap: var\(--tcrn-space-3h\);/);
-  assert.match(rule(".tcrn-brand-lockup--line-rail"), /--tcrn-brand-mark-size: 22px;[\s\S]*--tcrn-brand-line-one-size: 12\.5px;[\s\S]*--tcrn-brand-line-one-height: var\(--tcrn-type-line-control\);[\s\S]*gap: var\(--tcrn-space-2h\);/);
+  // The two marks are the shell.mark-lg and shell.mark tokens, 44 and 22 (TCRN-DS-SUB-178).
+  assert.equal(createTokenMap()["--tcrn-shell-mark-lg"], "44px");
+  assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px");
+  assert.match(rule(".tcrn-brand-lockup--line"), /--tcrn-brand-mark-size: var\(--tcrn-shell-mark-lg\);[\s\S]*--tcrn-brand-line-one-size: 16px;[\s\S]*gap: var\(--tcrn-space-3h\);/);
+  assert.match(rule(".tcrn-brand-lockup--line-rail"), /--tcrn-brand-mark-size: var\(--tcrn-shell-mark\);[\s\S]*--tcrn-brand-line-one-size: 12\.5px;[\s\S]*--tcrn-brand-line-one-height: var\(--tcrn-type-line-control\);[\s\S]*gap: var\(--tcrn-space-2h\);/);
   const word = rule(".tcrn-brand-lockup__word");
   assert.match(word, /font-weight: var\(--tcrn-type-weight-strong\);/);
   assert.match(word, /white-space: nowrap;/);
@@ -2668,4 +2673,45 @@ test("STORY-145 STORY-149 a measured lockup's data-logo is its mark's id, the lo
     assert.match(line, new RegExp(`data-product-id="${productId}"`));
     assert.match(line, new RegExp(`data-product-mark="${productId}"`));
   }
+});
+
+test("STORY-135 STORY-136 STORY-137 STORY-138 STORY-140 the shell's icons take their sizes from tokens: the bell lg 20, the avatar's icon sm 14, the brand button's chevron md 16, the small chevrons shell.chevron 12, the language chevron shell.locale-chevron 11 (TCRN-DS-SUB-178)", () => {
+  const tokens = createTokenMap();
+  const px = (name: string) => Number.parseFloat(tokens[name] ?? "");
+  assert.deepEqual(
+    ["--tcrn-icon-size-lg", "--tcrn-icon-size-sm", "--tcrn-icon-size-md", "--tcrn-shell-chevron", "--tcrn-shell-locale-chevron"].map(px),
+    [20, 14, 16, 12, 11]
+  );
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      pinnedIds={["roster", "contracts"]}
+      notifications={{ unread: 3 }}
+      menuOpen
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  const document = new JSDOM(html).window.document;
+  const sizes = (selector: string) =>
+    [...document.querySelectorAll(selector)].map((svg) => `${svg.getAttribute("width")}x${svg.getAttribute("height")}`);
+  // Each renders at the size it rendered at before, from the token now.
+  assert.deepEqual(sizes(".tcrn-shell-bell svg"), ["20x20"], "the bell is Icon lg");
+  assert.deepEqual(sizes(".tcrn-shell-avatar svg"), ["14x14"], "the avatar's icon without an account is Icon sm");
+  assert.deepEqual(sizes('[data-shell-brand] svg[data-icon-name^="chevron-"]'), ["16x16"], "the brand button's chevron is Icon md");
+  assert.ok(sizes("svg.tcrn-shell-menu__sub").length > 0);
+  assert.ok(sizes("svg.tcrn-shell-menu__sub").every((size) => size === "12x12"), "a row's next level");
+  assert.deepEqual(sizes("svg.tcrn-shell-menu__crumb-sep"), ["12x12"], "the bottom bar's position separator");
+  assert.deepEqual(sizes("svg.tcrn-shell-pins__chevron"), ["12x12"], "a pinned item's drop-down chevron");
+  // The language chevron is drawn by CSS from its token.
+  const chevron = /\n\.tcrn-shell-locale-menu__chevron \{\n([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
+  assert.match(chevron, /\n\s*width: var\(--tcrn-shell-locale-chevron\);/);
+  assert.match(chevron, /\n\s*height: var\(--tcrn-shell-locale-chevron\);/);
 });
