@@ -97,6 +97,24 @@
 
 - 拆分：einzbern-economy 单独一次，输入 `runs/r2/judgment.md` §2（R3-1…R3-30）、§3.1 默认列、§3.4、§5，R2 拆分第 1 节约定与 R2 主线程问题 M2、M5；Subtask 键号从 `TCRN-DS-SUB-178` 起；产出写 `runs/r3/`。
 
+- 拆分（afab6fc）：34 张 Subtask（SUB-178…211）、11 包 5 波全主力（M1–M3 W1；M4–M6 W2；M7、M8 W3；M9、M10 W4；M11 W5），约 1,270 响应；偏离判断 §5 四处（理由在拆分）；B 类先做：R3-17 改 data-logo 为标 id 后，SUB-194 同包把 `brand-asset-source-proof.mjs` 的比对键改成标 id（检查不放宽）；问题 16 条。
+- 开工链写：34 个 work-create，WORKSPACE_COMMAND_COMPLETED，version 2194 → 2228；读回零差异（planned）。
+- 跨包通告 `runs/r3/excerpts/cross-notes.md`。W1 已派：M1、M2、M3（einzbern-main），包树 scratch `pkg/r3-m1…m3`。M5、M6 无前置、文件集与 W1 不相交，有空位即起。
+
+| 包 | 状态 | 包内提交 | 合入 | 备注 |
+| --- | --- | --- | --- | --- |
+| M1 | 在跑 | | | |
+| M2 | 在跑 | | | |
+| M3 | 在跑 | | | |
+| M4 | 待起（前置 M2、M3） | | | |
+| M5 | 待起（无前置） | | | |
+| M6 | 待起（无前置） | | | |
+| M7 | 待起 | | | |
+| M8 | 待起 | | | |
+| M9 | 待起 | | | |
+| M10 | 待起 | | | |
+| M11 | 待起（其余全部） | | | |
+
 ## 下一步
 
-- R3 拆分交回后：核对产出 → 一次链写（Subtask 建单）并读回 → 跨包通告 `runs/r3/excerpts/cross-notes.md` → 按包派（档位按包表；R3 的包都起主力，除判断列为经济的 5 条所在包）→ 批末 verify → 三片验收 → 判断 → 链写与知识采集 → 收口或 Owner 阻点。
+- R3 各包交回 → 合入 → 退役 → 派下一个可起的包（`tools/eligible-016.mjs runs/r3 …`）；全部合入后批末 verify（`tools/batch-end-verify.sh 3`）→ 三片验收 → 判断 → 链写与知识采集 → 收口或 Owner 阻点。
