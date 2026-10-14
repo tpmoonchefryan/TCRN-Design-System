@@ -28,6 +28,7 @@
 | M8 | `runs/r3/handoff/M8.md` 第 54–60 行（第 4 节） | 文档层 4 个文件改写 G+ token 名，构建时弃用提示 28 名 210 处 → 18 名 19 处（只剩 `story-content.tsx`，归 SUB-208；`src/build/ai-consumption-contract.ts` 另有 2 处不进提示）；search-static 死规则连同例外与白名单项删掉；style-scale.md 清单与脚本一致；shell:fidelity、doc-shell:proof、tokens:proof 退出 0；无代码接口变化 |
 | M7 | `runs/r3/handoff/M7.md` 第 48–74 行（第 5–9 节） | 文档壳是水合真件：块为 `[data-doc-shell-root][data-shell-hydrate]`，模型在 `script[data-doc-shell-config]`；菜单、头像菜单与语言列表只在打开时存在，读之前调 `tcrnDocShellLayers.setMenu(true)`，门专用 `{ presentation: "panel" }` 可在任何宽度开面板；壳 story 屏默认不注册 ⌘K，门用 `shell-shortcut=<屏 id>` 指定；文档页目录标题为 h2。壳层门真件 18 门 17 过（只剩 markText，待 O-4）。期望过期三处交 M9（附录 `runs/r3/excerpts/M9-addendum.md`）；shell:parity 本包未跑，批末复核；窄屏菜单读数改在 1440 面板上读（问题 5，交判断确认） |
 | M10 | `runs/r3/handoff/M10.md`（第 1 节与问题文件） | 设计、映射、契约与 token 四份 README 改为顶带壳说法（TMS 后缀两主题同色 #2c63c8、夜间待 D7，O-3 标已撤回；`tcrnCoarsePointerTokens` 是唯一来源）；迁移说明追加 M38–M46 并列进 CHANGELOG 摘要——下一个追加者从 M47 起。已知：`storybook-map.json` 未与 md 同步（不打红任何门）；`matrix-stories.tsx:520` 仍写 37（归 M9）；迁移说明开头与分消费方清单未跟上第二、三轮（改别人写的段落要授权，下一轮） |
+| M9 | `runs/r3/handoff/M9.md` 第 58–81 行（第 6–10 节） | AI 契约与文档壳 oracle 改顶带壳（`fullMenu` 取代 `sidebar`、`topBandNavigation` 取代 `sideNavigation`、控件顺序 brandButton/pins/cluster、`governedPreferences` 为 locale/theme/pins；oracle 新字段 `residentNav*`、`bandHeight*`，旧名同值保留一版）；AOS 两份视觉实例退役折叠变体、改名；构建时弃用提示 0；storybook 单测 14/14、smoke 0、contracts 0、scan 0；axe landmark-unique 0、禁用项读回 3 个样本；browser-proof 只剩视觉签名 199 条越容差（交 SUB-211 重收）；迁移条目（第 7 节）未进 M10 的 M38–M46，交 M11 附录从 M47 补录 |
 
 ## 4. 其他事实
 
