@@ -19,7 +19,9 @@ function ReferenceList({ items }: { items: string[] }) {
 // The knowledge-base shell is the top-band shell (TCRN-DS-SUB-125, STORY-143 GWT3): the navigation
 // is ProductShell's menu model, opened from the brand button, and the bookmarks are the page's own
 // table of contents, a TocRail in the paper. There is no resident side rail, no collapse toggle and
-// no separate top bar.
+// no separate top bar. On the documentation page it shares, the demo names its landmarks after
+// itself (landmarkLabel) and its page header's title is an h2, under the page's own h1
+// (TCRN-DS-SUB-184).
 export function KnowledgeBaseShellDemo() {
   const selectedGroup = knowledgeNavigationGroups.find((group) => group.selected) ?? knowledgeNavigationGroups[0];
   const navGroups: ProductShellNavGroup[] = knowledgeNavigationGroups.map((group) => ({
@@ -44,7 +46,8 @@ export function KnowledgeBaseShellDemo() {
         navGroups={navGroups}
         locales={tcrnLocaleMetadata}
         currentLocale={tcrnDefaultLocale}
-        pageHeader={{ title: "Navigation and shell spec" }}
+        pageHeader={{ title: "Navigation and shell spec", headingLevel: 2 }}
+        landmarkLabel="Knowledge base bookmark shell"
         contentId="knowledge-shell-content"
       >
         <TocRail

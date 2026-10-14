@@ -41,6 +41,7 @@ import {
 } from "./Navigation.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
 import { shellMenuPresentationContext } from "./ShellMenu.js";
+import { tcrnShellCopyFor } from "./shell-copy.js";
 import * as shellSegments from "../../styles/shell.css.js";
 import * as shellIntroSegments from "../../styles/shell-intro.css.js";
 import * as shellSheetSegments from "../../styles/shell-sheet.css.js";
@@ -2499,4 +2500,129 @@ test("STORY-147 STORY-140 landmarkLabel names a shell's two navs apart from anot
   assert.equal(both.length, 4);
   assert.equal(new Set(both).size, 4, both.join(" | "));
   assert.doesNotMatch(renderToStaticMarkup(shell({ landmarkLabel: "Docs" })), /landmarklabel/i, "the prop does not reach the shell root as an attribute");
+});
+
+// The landmarks of a page as a reader's tools list them: the elements with a landmark role (a
+// section only once it has a name, a header or footer only outside sectioning content) and the
+// dialogs, each with its role and its name.
+function namedLandmarks(html: string): { role: string; name: string | null }[] {
+  const landmarkRoles = new Set(["banner", "navigation", "region", "dialog", "complementary", "main", "contentinfo", "search", "form"]);
+  const sectioned = (element: Element) => element.parentElement?.closest("article, aside, main, nav, section") != null;
+  const implicitRole = (element: Element): string | null => {
+    switch (element.tagName.toLowerCase()) {
+      case "header":
+        return sectioned(element) ? null : "banner";
+      case "nav":
+        return "navigation";
+      case "aside":
+        return "complementary";
+      case "main":
+        return "main";
+      case "footer":
+        return sectioned(element) ? null : "contentinfo";
+      case "section":
+      case "form":
+        return element.hasAttribute("aria-label") || element.hasAttribute("aria-labelledby") ? (element.tagName.toLowerCase() === "form" ? "form" : "region") : null;
+      default:
+        return null;
+    }
+  };
+  return [...new JSDOM(html).window.document.querySelectorAll("header, nav, aside, main, footer, section, form, [role]")]
+    .map((element) => ({ role: element.getAttribute("role") ?? implicitRole(element), name: element.getAttribute("aria-label") }))
+    .filter((entry): entry is { role: string; name: string | null } => entry.role !== null && landmarkRoles.has(entry.role));
+}
+
+test("STORY-140 STORY-147 STORY-143 landmarkLabel names every landmark of a shell, so two shells on a page share none, with the menu, the Sheet, a drop-down or the avatar menu open; without it the names stay (TCRN-DS-SUB-184)", () => {
+  const shell = (extra: Partial<ProductShellProps>) => (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      pinnedIds={["roster", "contracts"]}
+      account={{ name: "Lin Xiao" }}
+      products={[
+        { id: "tms", label: "TCRN TMS", href: "#tms", current: true },
+        { id: "aos", label: "TCRN AOS", href: "#aos" }
+      ]}
+      {...extra}
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  const states: Record<string, Partial<ProductShellProps>> = {
+    menu: { menuOpen: true },
+    drop: { openPinId: "contracts" },
+    account: { accountMenuOpen: true }
+  };
+  const render = (state: Partial<ProductShellProps>, extra: Partial<ProductShellProps>, presentation: "panel" | "sheet" = "panel") =>
+    renderToStaticMarkup(<shellMenuPresentationContext.Provider value={presentation}>{shell({ ...state, ...extra })}</shellMenuPresentationContext.Provider>);
+  // Without landmarkLabel every name is the built-in one, word for word as before.
+  const names = (html: string) => namedLandmarks(html).map((entry) => `${entry.role} ${entry.name}`);
+  assert.deepEqual(names(render(states.menu, {})), [
+    "banner Talent shell controls",
+    "navigation Pinned items",
+    "dialog Navigation",
+    "navigation Current location",
+    "region Product shell workspace",
+    "navigation Breadcrumbs"
+  ]);
+  assert.deepEqual(names(render(states.menu, {}, "sheet")), [
+    "banner Talent shell controls",
+    "navigation Pinned items",
+    "dialog Navigation",
+    "region Product shell workspace",
+    "navigation Breadcrumbs"
+  ]);
+  assert.deepEqual(names(render(states.drop, {})), [
+    "banner Talent shell controls",
+    "navigation Pinned items",
+    "dialog Contracts",
+    "region Product shell workspace",
+    "navigation Breadcrumbs"
+  ]);
+  assert.deepEqual(names(render(states.account, {})), [
+    "banner Talent shell controls",
+    "navigation Pinned items",
+    "dialog Account",
+    "navigation Switch product",
+    "region Product shell workspace",
+    "navigation Breadcrumbs"
+  ]);
+  // With it every name is "{landmarkLabel} · {name}", composed through the shell copy's landmarkOf.
+  const copy = tcrnShellCopyFor("en");
+  assert.deepEqual(
+    names(render(states.menu, { landmarkLabel: "Docs" })),
+    ["banner Talent shell controls", "navigation Pinned items", "dialog Navigation", "navigation Current location", "region Product shell workspace", "navigation Breadcrumbs"].map((entry) => {
+      const [role, ...name] = entry.split(" ");
+      return `${role} ${copy.landmarkOf("Docs", name.join(" "))}`;
+    })
+  );
+  // Two shells on one page that differ in nothing but landmarkLabel: every landmark has a name and
+  // no two names are the same, in each state and in the Sheet.
+  for (const [label, state] of Object.entries(states)) {
+    for (const presentation of ["panel", "sheet"] as const) {
+      const both = namedLandmarks(
+        renderToStaticMarkup(
+          <shellMenuPresentationContext.Provider value={presentation}>
+            {shell({ ...state, landmarkLabel: "Docs" })}
+            {shell({ ...state, landmarkLabel: "Example" })}
+          </shellMenuPresentationContext.Provider>
+        )
+      );
+      const named = both.map((entry) => entry.name);
+      assert.ok(named.every((name) => name !== null && name.trim() !== ""), `${label} ${presentation}: every landmark is named`);
+      assert.equal(new Set(named).size, named.length, `${label} ${presentation}: ${named.join(" | ")}`);
+    }
+  }
+  // In another language the composition is that language's; a given contentLabel stays as given.
+  const zh = tcrnShellCopyFor("zh-CN");
+  const zhNames = namedLandmarks(render(states.menu, { landmarkLabel: "文档", currentLocale: "zh-CN" })).map((entry) => entry.name);
+  assert.ok(zhNames.includes(zh.landmarkOf("文档", zh.navigation)) && zhNames.includes(zh.landmarkOf("文档", zh.currentPosition)), zhNames.join(" | "));
+  assert.ok(namedLandmarks(render(states.menu, { landmarkLabel: "Docs", contentLabel: "Roster page" })).some((entry) => entry.role === "region" && entry.name === "Roster page"));
+  assert.doesNotMatch(render(states.drop, { landmarkLabel: "Docs" }), /landmarklabel/i, "the prop reaches no element as an attribute");
 });

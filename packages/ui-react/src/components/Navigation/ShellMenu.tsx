@@ -69,7 +69,7 @@ import { Icon, type IconName } from "../Icon/index.js";
 import { cx } from "../../utils.js";
 import { NavGroup, NavItem, ProductShellSearch, ShellBrandLockup, type ProductShellSearchResult, type TcrnProductLogoId } from "./Navigation.js";
 import type { ShellPinItem } from "./ShellPins.js";
-import { tcrnShellCopyFor } from "./shell-copy.js";
+import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
 
 /** An entry of the menu model below the groups: an item (second level) or a child (third, fourth). */
 export interface ShellMenuItem {
@@ -536,6 +536,13 @@ export interface ShellMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
   previewStates?: Readonly<Record<string, string>>;
   /** The panel or the Sheet; shellMenuPresentationContext's (by default "auto", the viewport's) when omitted. */
   presentation?: ShellMenuPresentation;
+  /**
+   * The name of the shell the menu belongs to, which tells its landmarks from another shell's on the
+   * same page: the panel or the Sheet and the bottom bar's trail are named "{landmarkLabel} · {name}"
+   * in the reader's language. Omitted, they keep the built-in names (TCRN-DS-SUB-184; ProductShell
+   * passes its own, as it does to ShellPins).
+   */
+  landmarkLabel?: string;
 }
 
 export function ShellMenu({
@@ -559,6 +566,7 @@ export function ShellMenu({
   locale,
   previewStates,
   presentation,
+  landmarkLabel,
   id,
   className,
   onKeyDown,
@@ -661,6 +669,7 @@ export function ShellMenu({
 
   if (!open) return null;
   const copy = tcrnShellCopyFor(locale);
+  const landmarkName = (name: string) => tcrnShellLandmarkName(locale, landmarkLabel, name);
   const columnIdOf = (entryId: string) => `${generatedId}-col-${entryId}`;
   const context: ShellMenuRowContext = {
     selectedId,
@@ -711,7 +720,7 @@ export function ShellMenu({
       <>
         <div className="tcrn-shell-sheet__scrim" data-shell-scrim="" aria-hidden="true" />
         <div {...props} ref={rootRef} className={cx("tcrn-shell-menu", "tcrn-shell-sheet", className)} data-shell-menu="" onKeyDown={onRootKeyDown}>
-          <section ref={sheetRef} id={dialogId} className="tcrn-shell-sheet__panel" role="dialog" aria-modal="false" aria-label={copy.navigation} tabIndex={-1} data-panel="sheet">
+          <section ref={sheetRef} id={dialogId} className="tcrn-shell-sheet__panel" role="dialog" aria-modal="false" aria-label={landmarkName(copy.navigation)} tabIndex={-1} data-panel="sheet">
             <span className="tcrn-shell-sheet__grab" aria-hidden="true" />
             {searchField}
             {searching ? null : (
@@ -762,7 +771,7 @@ export function ShellMenu({
         className="tcrn-shell-menu__panel"
         role="dialog"
         aria-modal="false"
-        aria-label={copy.navigation}
+        aria-label={landmarkName(copy.navigation)}
         aria-owns={cascades.length > 0 ? ownedColumns : undefined}
         data-panel="expanded"
       >
@@ -798,7 +807,7 @@ export function ShellMenu({
           </div>
         )}
         <div className="tcrn-shell-menu__pbar" data-shell-pbar="">
-          <nav className="tcrn-shell-menu__crumbs" aria-label={copy.currentPosition}>
+          <nav className="tcrn-shell-menu__crumbs" aria-label={landmarkName(copy.currentPosition)}>
             <span className="tcrn-shell-menu__crumbs-label" aria-hidden="true">
               {copy.currentPosition}
             </span>

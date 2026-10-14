@@ -1189,12 +1189,14 @@ export interface TocRailProps {
 
 export function TocRail({ label, items, density = "compact", locale }: TocRailProps) {
   // Both the visible heading and the accessible name, so one resolution serves
-  // both and they cannot drift into different languages.
+  // both and they cannot drift into different languages. The rail's nav is named by
+  // the same title, so two rails on a page, or a rail and another nav, are told
+  // apart (axe landmark-unique; TCRN-DS-SUB-184).
   const resolvedLabel = label ?? patternLabels(locale).tocRail;
   return (
     <aside className={cx("tcrn-toc-rail", `tcrn-toc-rail--${density}`)} aria-label={resolvedLabel} data-pattern="toc-rail" data-density={density}>
       <Heading level={3}>{resolvedLabel}</Heading>
-      <nav>
+      <nav aria-label={resolvedLabel}>
         {items.map((item) =>
           item.href ? (
             <a key={item.id} href={item.href} aria-current={item.current ? "location" : undefined} data-selected={item.current || undefined}>{item.label}</a>

@@ -42,7 +42,7 @@ import {
   type ShellMenuSearchProvider
 } from "./ShellMenu.js";
 import { ShellPins, shellPinsMax, type ShellPinItem } from "./ShellPins.js";
-import { tcrnShellCopyFor } from "./shell-copy.js";
+import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
 
 /**
  * The shell's own words about itself, in every supported locale.
@@ -2012,9 +2012,11 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   onSearchQueryChange?: (query: string) => void;
   /**
    * A name for this shell, which tells its landmarks from another shell's on the same page (axe
-   * landmark-unique): the pinned items' nav and the page header's trail are named
-   * "{landmarkLabel} · {name}" in the reader's language. Omitted, they keep the built-in names
-   * (TCRN-DS-SUB-148).
+   * landmark-unique): every named landmark of the shell — the band, the pinned items, the full menu
+   * (panel or Sheet) and its bottom bar's trail, the drop-downs, the avatar menu and its product
+   * switcher, the content region and the page header's trail — is named "{landmarkLabel} · {name}"
+   * in the reader's language. A `contentLabel` or a page header's own `landmarkLabel` is used as it
+   * is given. Omitted, they keep the built-in names (TCRN-DS-SUB-148, TCRN-DS-SUB-184).
    */
   landmarkLabel?: string;
   /** The full menu's query, for a product that holds it; the menu keeps its own when omitted (ShellMenu's `query`). */
@@ -2158,7 +2160,9 @@ export function ProductShell({
   // shell already knows the reader's language and a second way to say it could only disagree.
   const chrome = chromeLabels(currentLocale);
   const copy = tcrnShellCopyFor(currentLocale);
-  const resolvedContentLabel = contentLabel ?? chrome.shellWorkspace;
+  // Every named landmark goes through one composition: the shell's name, then the landmark's own.
+  const landmarkName = (name: string) => tcrnShellLandmarkName(currentLocale, landmarkLabel, name);
+  const resolvedContentLabel = contentLabel ?? landmarkName(chrome.shellWorkspace);
   const resolvedSkipLinkLabel = skipLinkLabel ?? chrome.skipToContent;
   const baseId = useId();
   const menuId = `${baseId}-menu`;
@@ -2260,7 +2264,7 @@ export function ProductShell({
     >
       <SkipLink href={`#${contentId}`}>{resolvedSkipLinkLabel}</SkipLink>
       {/* Composed per locale: the module name is the consumer's own. */}
-      <header className="tcrn-shell-strip" aria-label={chrome.shellControlsOf(moduleName)} data-shell-strip="" data-product-shell-region="strip">
+      <header className="tcrn-shell-strip" aria-label={landmarkName(chrome.shellControlsOf(moduleName))} data-shell-strip="" data-product-shell-region="strip">
         <ShellBrandButton
           ref={brandRef}
           productId={brandProductId}
@@ -2312,7 +2316,7 @@ export function ProductShell({
                 className="tcrn-shell-account__panel"
                 role="dialog"
                 aria-modal="false"
-                aria-label={copy.account}
+                aria-label={landmarkName(copy.account)}
                 data-panel="account"
               >
                 {account ? (
@@ -2322,7 +2326,7 @@ export function ProductShell({
                   </p>
                 ) : null}
                 {products && products.length > 0 ? (
-                  <nav className="tcrn-shell-account__products" aria-label={copy.switchProduct} data-shell-products="">
+                  <nav className="tcrn-shell-account__products" aria-label={landmarkName(copy.switchProduct)} data-shell-products="">
                     <span className="tcrn-shell-account__heading" aria-hidden="true">
                       {copy.switchProduct}
                     </span>
@@ -2374,6 +2378,7 @@ export function ProductShell({
         onQueryChange={onMenuQueryChange}
         locale={currentLocale}
         previewStates={previewStates}
+        landmarkLabel={landmarkLabel}
       />
       {shownTargets.map((target) =>
         target.source ? (
@@ -2390,6 +2395,7 @@ export function ProductShell({
             onPinnedChange={onPinnedChange}
             locale={currentLocale}
             previewStates={previewStates}
+            landmarkLabel={landmarkLabel}
           />
         ) : null
       )}

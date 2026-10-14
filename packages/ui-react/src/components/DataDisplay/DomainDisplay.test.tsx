@@ -14,7 +14,8 @@ import {
   RecordTable,
   RelationGraph,
   SplitView,
-  StagePipeline
+  StagePipeline,
+  TocRail
 } from "./DomainDisplay.js";
 
 const state = { state: "review_required" } as const;
@@ -235,4 +236,29 @@ test("STORY-146 STORY-147 PageHeader's title is an h2 by default and an h1 when 
   const selectors = [...tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{/g)].map((match) => match[1] ?? "");
   assert.deepEqual(selectors.filter((selector) => /(?:^|[^\w-])h1\b/.test(selector)), []);
   assert.deepEqual(selectors.filter((selector) => /(?:^|[^\w-])h2\b/.test(selector) && /page-header/.test(selector)), []);
+});
+
+test("STORY-143 STORY-147 TocRail's nav is named by the rail's title, given or built in, so two rails or a rail and another nav are told apart (TCRN-DS-SUB-184)", () => {
+  const items = [
+    { id: "scope", label: "Scope", href: "#scope", current: true },
+    { id: "proof", label: "Proof", href: "#proof" }
+  ];
+  const navName = (html: string) => /<nav aria-label="([^"]*)">/.exec(html)?.[1] ?? null;
+  const asideName = (html: string) => /<aside[^>]*aria-label="([^"]*)"/.exec(html)?.[1] ?? null;
+  const heading = (html: string) => /<h3[^>]*>([^<]*)<\/h3>/.exec(html)?.[1] ?? null;
+  const given = renderToStaticMarkup(<TocRail label="Current page bookmarks" items={items} />);
+  assert.equal(navName(given), "Current page bookmarks");
+  assert.equal(navName(given), heading(given), "the nav says the title the rail shows");
+  assert.equal(asideName(given), "Current page bookmarks", "the rail's own name is unchanged");
+  for (const locale of ["en", "zh-CN"] as const) {
+    const built = renderToStaticMarkup(<TocRail items={items} locale={locale} density="dense" />);
+    assert.ok(navName(built), locale);
+    assert.equal(navName(built), heading(built), `${locale}: the built-in title names the nav too`);
+  }
+  // Two rails with their own titles: no nav without a name, no two the same.
+  const both = renderToStaticMarkup(<><TocRail label="On this page" items={items} /><TocRail items={items} density="dense" /></>);
+  const navs = [...both.matchAll(/<nav([^>]*)>/g)].map((match) => /aria-label="([^"]*)"/.exec(match[1])?.[1] ?? null);
+  assert.equal(navs.length, 2);
+  assert.ok(navs.every((name) => name !== null));
+  assert.equal(new Set(navs).size, 2, navs.join(" | "));
 });
