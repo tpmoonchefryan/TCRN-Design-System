@@ -1,4 +1,4 @@
-// The Icon roster: every name of the package roster (tcrnIconNames, 37 icons) at the three
+// The Icon roster: every name of the package roster (tcrnIconNames, 38 icons) at the three
 // package sizes, sm 14, md 16 and lg 20. Each entry is a package Text holding three package Icon
 // renditions and the machine name, so the roster inherits the secondary ink of its host the way an
 // icon inherits the text colour around it. The first entry carries the roster contrast cell.

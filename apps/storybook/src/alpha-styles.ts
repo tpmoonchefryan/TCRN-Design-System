@@ -434,16 +434,6 @@ ${demoStoryCss}
   min-width: 0;
 }
 
-/* The ProductShell example opens its search results to show the result state. The doc container
-   keeps that list in the shell's flow, so it pushes the page down instead of painting over the
-   heading and first paragraph. The shell-fidelity guard registers its position and inset. */
-.tcrn-doc-product-shell-search--static-display[data-search-expanded="true"] .tcrn-product-shell-search__results {
-  position: static;
-  inset: auto;
-  width: 100%;
-  margin-block-start: var(--tcrn-space-2);
-}
-
 /* KeyValueList geometry is package-owned, including inside nested inspectors. */
 
 html[data-tcrn-theme="dark"] .tcrn-doc-overlay-mode-card,
