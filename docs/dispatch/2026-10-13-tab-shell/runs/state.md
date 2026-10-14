@@ -76,7 +76,7 @@
 | K7 | 已合入，包树已退役（274 MB） | fb778c7、9db76d0 | 91b2b80 | 夹具 18 门全绿、19 条板变异只红本门；新增 prail 检查与包件钩子夹具 `package-menu.html`；真件 9 绿 8 红 1 n/a（R1 8 绿 9 红），红按根因归 K1、K5、K6；css-template-integrity 家族段名正则放宽并把连进退役样式表的段排除（问题 1，判断确认）；问题 3 条 |
 | K8 | 已合入，包树已退役（275 MB） | 4c18e4c、6baccc0、9a6ff55、b4d0e74、020d8fc、049f72d | 9d4fabe | 四张完成、SUB-175 部分（shell-matrix 治理元数据项要改 `storybook-smoke.mjs`，K3 文件，已交 K9 附录）；名册 38 写进板与五语、canvas.json 板高与 y、TreeNav 改在 Popover 下拉里、台账九条现测；改过的板：V2-B1-Icon、V2-B1-Typography、成品 Icon、Typography、canvas.json；问题 8 条 |
 | K10 | 已合入，包树已退役（274 MB） | 2480d5a、7a9c709 | 3911607 | SUB-164 门侧完成：两板 18 门全绿、板变异 20/20 只红本门、页夹具四条故事变异全红；真件 18 门 10 绿 7 红 1 n/a；DS 侧栏首行 1.4 照判红（O-4），底栏锁定块 en 1.7 同根因；问题 7 条（brandDigest 产品键与 logos2 文件名不一、singleLine 把面包屑当整行、一条变异等价） |
-| K9 | 在跑（自 9d4fabe 后的集成 HEAD；另加附录 `runs/r2/excerpts/K9-addendum.md`：storybook-smoke.mjs 三处过期期望归 K9） | | | |
+| K9 | 已合入，包树已退役（300 MB） | 6f32f68、de26dc1、ffdb1f0、4520e1c（合入集成分支）、f6a9bbe、04a0fdf、1053eeb、bd84dbf | cd57872 | 两张与附录三处完成：AI 契约与 oracle 改述顶带壳与两处搜索（936×40、228×28）、后缀两主题同色 D7 待裁、迁移说明 M30–M37（收 K1、K4、K5、K6、K6b 条目）、README 六板 306 格与名册 38；smoke missing 4 → 0；余红有主（smoke.test.ts 多行归 SUB-173）；问题 7 条（三条摘录外旧壳文字进下一轮） |
 | K6b | 已合入，包树已退役（275 MB） | 56f1f6c、b2a9158 | c7f36e9 | SUB-156 完成：面包屑分隔符读 token、C2 与 C7 余项清零、页头 DOM 调整、兜底焦点改为随主题声明（Tab 819 停点浅深两根读数改前改后一致）；contract:static 82 → 34（C11 余 34），仍因第 524 行测试退出 1；ui-react test 246/246；问题 5 条；已消息 K9、K11：交回前合入集成分支（K9 收 K6b 迁移条目） |
 | K11 | 在跑（自 9d4fabe 后的集成 HEAD） | | | |
 | K12 | 待起（其余 12 包全部合入后手动起） | | | |
