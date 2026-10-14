@@ -105,8 +105,8 @@
 | --- | --- | --- | --- | --- |
 | M1 | 已合入，包树已退役（277 MB） | 42f1397、9099a4c、31f4ed2、66eb996 | b4edf13 | 三张满足：pinJitter 8 次全过、故事变异 22/22；对比度改按格心绘制层取底，仅 srch-kbd 两格变值；面包屑逐段读，390 设置页与名册页 singleLine 转绿；真件 18 门 16 过 2 红（brandDigest 归 SUB-194、markText 待 O-4）；`story-label-plus-40` 变异改法交判断确认；问题 6 条 |
 | M2 | 已合入，包树已退役（277 MB） | d28b5e4、9c6b3b4、eb41539、46b8781、f26c633、3a0495e、0cae4af、c084238 | a163fac | 四张完成、SUB-191 部分：geometry:proof 0、shell:parity 0、C11 归属与 34 条豁免；顶带登记为 C8 工具栏后出 18 条 C8 发现（板 `.ts-pins` min-width:0、无固定项壳返回 null），待 Owner，contract:static 退出 1；parity 复合行盒读法（B 类回显）；问题 5 条 |
-| M3 | 在跑 | | | |
-| M4 | 待起（前置 M2、M3） | | | |
+| M3 | 已合入，包树已退役（277 MB） | 47f3e77、5c6695f、842c764、9b99bcd、5187169、6041d40、4a666c4 | e161e89 | 五张完成：菜单图标照板 22 盒（真件 prail 16/48）、纸内焦点环向内、导航项单行截断进基础规则、两个死名清零、三条下拉 DOM 用例；ui-react 248/248、test:dom 56/56；余红有主；问题 9 条（zh-CN markText −1.1 无主等） |
+| M4 | 在跑（自 e161e89 后的集成 HEAD） | | | |
 | M5 | 在跑（自 b4edf13 后的集成 HEAD） | | | |
 | M6 | 在跑（自 a163fac 后的集成 HEAD） | | | |
 | M7 | 待起 | | | |
