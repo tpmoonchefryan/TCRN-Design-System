@@ -30,6 +30,15 @@
   [data-pin-button] { display: inline-flex; width: 24px; height: 24px; padding: 0; border: 0; background: transparent; opacity: 0; }
   .tcrn-nav-item-row:has(> [data-tcrn-preview-state~="hover"]) > [data-pin-button],
   .tcrn-nav-item-row:has(> [aria-current="page"]) > [data-pin-button] { opacity: 1; }
+  /* the group heading (NavGroup): its text truncates under its title, a pinnable group keeps its pin
+     beside it (TCRN-DS-SUB-206) */
+  .tcrn-nav-group__label { display: flex; align-items: center; gap: 10px; min-height: 32px; min-width: 0; padding: 0 4px 0 8px; white-space: nowrap; }
+  .tcrn-nav-group__label-text { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* the package's full menu hides its pinned column at >= 1024 (shell.css.ts: the pinned items are in the
+     strip there); the column, its rows and its four pins are in the DOM and draw nothing */
+  @media (min-width: 1024px) {
+    .tcrn-shell-menu .tcrn-shell-menu__col--pinned { display: none; }
+  }
   /* the 07a B reading cases */
   .cases { display: flex; gap: 24px; align-items: flex-start; padding: 24px 12px; }
   .canvas { padding: 12px; background: #efeeea; }
@@ -48,22 +57,34 @@
       <div data-cluster><button type="button" aria-label="Notifications">!</button></div>
     </div>
     <main data-paper></main>
-    <section data-panel="expanded" role="dialog" aria-label="Navigation">
+    <div class="tcrn-shell-menu" data-shell-menu>
+    <section class="tcrn-shell-menu__panel" data-panel="expanded" role="dialog" aria-label="Navigation">
       <div data-shell-cols>
-        <div data-shell-group data-shell-col>
+        <div class="tcrn-nav-group tcrn-shell-menu__col" data-shell-group data-shell-col>
+          <div class="tcrn-nav-group__label" data-nav-pinnable="true"><span class="tcrn-nav-group__label-text" title="People">People</span><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: People">p</button></div>
           <div class="tcrn-nav-item-row"><a href="#roster" data-shell-row aria-current="page"><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Roster</span></a><button type="button" data-pin-button aria-pressed="true" aria-label="Unpin from top bar: Roster">p</button></div>
           <div class="tcrn-nav-item-row"><a href="#teams" data-shell-row data-tcrn-preview-state="hover"><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Teams</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Teams">p</button></div>
           <div class="tcrn-nav-item-row"><a href="#contracts" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Contracts</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Contracts">p</button></div>
         </div>
-        <div data-shell-group data-shell-col>
+        <div class="tcrn-nav-group tcrn-shell-menu__col" data-shell-group data-shell-col>
+          <div class="tcrn-nav-group__label" data-nav-pinnable="true"><span class="tcrn-nav-group__label-text" title="Finance">Finance</span><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Finance">p</button></div>
           <div class="tcrn-nav-item-row"><a href="#statements" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Statements</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Statements">p</button></div>
           <div class="tcrn-nav-item-row"><a href="#payouts" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Payouts</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Payouts">p</button></div>
         </div>
-        <div data-shell-group data-shell-col>
+        <div class="tcrn-nav-group tcrn-shell-menu__col" data-shell-group data-shell-col>
+          <div class="tcrn-nav-group__label" data-nav-pinnable="true"><span class="tcrn-nav-group__label-text" title="Operations">Operations</span><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Operations">p</button></div>
           <div class="tcrn-nav-item-row"><a href="#schedule" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail">Schedule</span></a><button type="button" data-pin-button aria-pressed="false" aria-label="Pin to top bar: Schedule">p</button></div>
+        </div>
+        <div class="tcrn-nav-group tcrn-shell-menu__col tcrn-shell-menu__col--pinned" data-shell-group data-shell-col data-shell-pinned-group>
+          <div class="tcrn-nav-group__label"><span class="tcrn-nav-group__label-text" title="Pinned">Pinned</span></div>
+          <div class="tcrn-nav-item-row"><a href="#roster" title="Roster" data-shell-row aria-current="page"><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail" title="Roster">Roster</span></a><button type="button" data-pin-button aria-pressed="true" aria-label="Unpin from top bar: Roster">p</button></div>
+          <div class="tcrn-nav-item-row"><a href="#contracts" title="Contracts" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail" title="Contracts">Contracts</span></a><button type="button" data-pin-button aria-pressed="true" aria-label="Unpin from top bar: Contracts">p</button></div>
+          <div class="tcrn-nav-item-row"><a href="#statements" title="Statements" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail" title="Statements">Statements</span></a><button type="button" data-pin-button aria-pressed="true" aria-label="Unpin from top bar: Statements">p</button></div>
+          <div class="tcrn-nav-item-row"><a href="#schedule" title="Schedule" data-shell-row><svg data-guide="prail" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg><span data-text="prail" title="Schedule">Schedule</span></a><button type="button" data-pin-button aria-pressed="true" aria-label="Unpin from top bar: Schedule">p</button></div>
         </div>
       </div>
     </section>
+    </div>
   </div>
   <div class="cases">
     <div class="canvas"><svg data-logo="tms" data-cell="brand-mark-l" data-kind="icon" data-exempt data-expect="4.85" viewBox="0 0 48 48" width="44" height="44" role="img" aria-label="TCRN TMS"><path d="M11 23L24 39" stroke="#2c63c8" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="#7aa0f5" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg></div>

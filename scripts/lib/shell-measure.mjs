@@ -44,6 +44,9 @@
 // pageCrumb), x.settingsLayouts (width, distances from the paper's two edges) and x.splitViews (left edge
 // from the paper's); the lockup and optical rows name their product and their shell (null outside
 // every shell), so the first lines of the brand story can be told apart.
+// TCRN-DS-SUB-206 (R3-1): o.pinButtons and the text-width groups (o.textColWidths, o.pinVisibleOn,
+// x.rowGroups) read only drawn elements (getClientRects().length > 0): the full menu's pinned column,
+// which the package hides at >= 1024, no longer reads as four 0 x 0 pins.
 //
 // API:
 //   SHELL_MEASURE_SCHEMA_VERSION, SELECTOR_KEYS, BOARD_SELECTORS, PACKAGE_SELECTORS
@@ -401,9 +404,14 @@ export function readShellInPage(options) {
       const tx = [...panel.querySelectorAll('[data-text="prail"]')].map((e) => r1(e.getBoundingClientRect().left - pl));
       o.prail = { icons: [...new Set(g)], texts: [...new Set(tx)] };
       o.rows = [...new Set([...panel.querySelectorAll(sel.row)].map((e) => r1(e.getBoundingClientRect().height)))];
-      const pinbs = [...panel.querySelectorAll(sel.pinButton)];
+      // TCRN-DS-SUB-206 (R3-1): the pin sizes and the text-width groups take only what is drawn, an
+      // element with a client rect; one with none (display:none, or inside a column the layout hides: the
+      // full menu's pinned column at >= 1024) has no size to read. A pin at rest with opacity 0 is drawn
+      // (its slot stays) and is read.
+      const drawn = (el) => el.getClientRects().length > 0;
+      const pinbs = [...panel.querySelectorAll(sel.pinButton)].filter(drawn);
       o.pinButtons = [...new Set(pinbs.map((e) => { const r = e.getBoundingClientRect(); return r1(r.width) + "x" + r1(r.height); }))];
-      const items = [...panel.querySelectorAll(sel.row)];
+      const items = [...panel.querySelectorAll(sel.row)].filter(drawn);
       // a row's pin sits in the row's own wrapper (the board's row holds its pin; the package renders a
       // pinnable item as a link and its pin side by side in a wrapper), and the row's column is the
       // wrapper's parent, so rows of one column are compared with each other

@@ -558,8 +558,10 @@ test("package readings: a pinnable row's pin is found in its .tcrn-nav-item-row,
     assert.deepEqual(shell.x.rowGroups[0], { rest: [223.3], hover: [223.3], on: [223.3] });
     assert.deepEqual(shell.pinVisibleOn, { on: 1, hover: 1 });
     assert.deepEqual(shell.pinButtons, ["24x24"]);
-    // o.prail (measure-shell.js) stays panel-relative; x.prail reads each column as the first
-    assert.deepEqual(shell.prail.icons, [16, 333.3, 650.7]);
+    // o.prail (measure-shell.js) stays panel-relative and takes every hook, so the pinned column hidden
+    // at >= 1024 (TCRN-DS-SUB-206) adds its undrawn icons at -12 (left 0 against the panel's 12); no gate
+    // reads o.prail. x.prail, which the prail check judges, reads each drawn column as the first
+    assert.deepEqual(shell.prail.icons, [16, 333.3, 650.7, -12]);
     assert.deepEqual(shell.x.prail, { columns: 3, icons: [16], texts: [48] });
     const verdict = judgeShellReadings(reading);
     assert.equal(verdict.gates.pinJitter.status, "pass");
@@ -586,11 +588,62 @@ test("pinJitter story mutation: the pin display alone on the reserved 24 track i
     try {
       await page.evaluate(applyMutationInPage, ops);
       const verdict = judgeShellReadings(await readPackage(page));
-      // display alone leaves every text box as wide (the hidden pins read 0 x 0, which the pin-size half
-      // of the gate reports either way); without the track the rest rows widen by the pin slot
+      // display alone leaves every text box as wide (a display:none pin draws nothing and is not read,
+      // TCRN-DS-SUB-206); without the track the rest rows widen by the pin slot
       const jitter = verdict.gates.pinJitter.failures.filter((f) => /textWidths$/.test(f.what));
       assert.deepEqual(jitter.map((f) => f.what), want === "fail" ? ["column1.textWidths"] : [], JSON.stringify(verdict.gates.pinJitter.failures));
       if (want === "fail") assert.equal(verdict.gates.pinJitter.status, "fail");
+    } finally {
+      await close();
+    }
+  }
+});
+
+// TCRN-DS-SUB-206 (R3-1): the package hides the full menu's pinned column at >= 1024; its pins are in the
+// DOM with no client rect. The gate reads only drawn pins and rows: green on the real part's DOM, where
+// the R2 reading (every element, drawn or not) read the hidden pins as 0 x 0 and turned pinJitter red.
+test("pinJitter reads only drawn pins and rows: the pinned column hidden at >= 1024 is not four 0 x 0 pins (TCRN-DS-SUB-206)", async () => {
+  const { page, close } = await openPackageFixture();
+  try {
+    const hidden = await page.evaluate(() => [...document.querySelectorAll('[data-panel="expanded"] [data-shell-pinned-group] [data-pin-button]')].map((el) => el.getClientRects().length));
+    assert.deepEqual(hidden, [0, 0, 0, 0]);
+    const reading = await readPackage(page);
+    const [shell] = reading.shells;
+    assert.deepEqual(shell.pinButtons, ["24x24"]);
+    assert.equal(shell.x.rowGroups.length, 3);
+    assert.equal(judgeShellReadings(reading).gates.pinJitter.status, "pass");
+    // the R2 reading: count every element as drawn, and the hidden column's pins read 0 x 0 again
+    await page.evaluate(() => {
+      const own = Element.prototype.getClientRects;
+      Element.prototype.getClientRects = function everyElementDrawn() { const list = own.call(this); return list.length ? list : [this.getBoundingClientRect()]; };
+    });
+    const r2 = await readPackage(page);
+    assert.deepEqual(r2.shells[0].pinButtons, ["24x24", "0x0"]);
+    const r2Gate = judgeShellReadings(r2).gates.pinJitter;
+    assert.equal(r2Gate.status, "fail");
+    assert.deepEqual(r2Gate.failures.map((f) => [f.at, f.what, f.value]), [["ts-x-l", "pinButton", "0x0"]]);
+  } finally {
+    await close();
+  }
+});
+
+// TCRN-DS-SUB-206 (R3-1): the singleLine story mutation lengthens a label the gate reads at 1440. A drawn
+// group heading truncates under its title, so a 40-character tail alone is an equivalent mutation; with
+// its truncation taken away (white-space normal) the 40 characters break its single line.
+test("singleLine story mutation: a drawn group heading lengthened by 40 characters; under its title alone it is equivalent, without its truncation it breaks the line (TCRN-DS-SUB-206)", async () => {
+  const story = storyMutations.find((m) => m.gate === "singleLine");
+  assert.equal(story.id, "story-label-plus-40");
+  const append = story.ops.filter((op) => op.op === "appendText");
+  assert.deepEqual(append.map((op) => [op.text, op.repeat]), [["长", 40]]);
+  assert.doesNotMatch(append[0].selector, /\[data-shell-pinned-group\] >/);
+  for (const [ops, want] of [[append, "pass"], [story.ops, "fail"]]) {
+    const { page, close } = await openPackageFixture();
+    try {
+      assert.equal(await page.evaluate((s) => document.querySelector(s).getClientRects().length > 0, append[0].selector), true);
+      await page.evaluate(applyMutationInPage, ops);
+      const gate = judgeShellReadings(await readPackage(page)).gates.singleLine;
+      assert.equal(gate.status, want, JSON.stringify(gate.failures));
+      if (want === "fail") assert.ok(gate.failures.some((f) => f.what === "lines:span.tcrn-nav-group__label-text" && f.value >= 2), JSON.stringify(gate.failures));
     } finally {
       await close();
     }
