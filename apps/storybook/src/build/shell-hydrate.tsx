@@ -4,7 +4,8 @@
 // The documentation pages are rendered on the server. The shell stories (shell-top-band,
 // shell-narrow, shell-mobile, shell-intro) show the package ProductShell as the 07a board's
 // screens, and what the shell does lives in the browser: the brand button opens the full menu,
-// Esc returns the focus to it, ⌘K / Ctrl+K opens the menu at its search, a press outside closes
+// Esc returns the focus to it, ⌘K / Ctrl+K opens the menu at its search (on the one screen the
+// page's address names with shell-shortcut=<screen>; TCRN-DS-SUB-179), a press outside closes
 // it, 760 wide and narrower the menu is the Sheet, the brand button reports the version it shows
 // (data-shell-brand), and the sign-in intro plays once a session. So each screen is rendered here
 // once for both sides: story-content.tsx renders ShellStoryRoot to a string inside the screen's
@@ -102,6 +103,19 @@ export const shellHydrateAttribute = "data-shell-hydrate";
  * scan of internal-alpha-browser-proof.mjs) waits for every block to say the page's language.
  */
 export const shellHydratedAttribute = "data-shell-hydrated";
+/**
+ * The page parameter that gives ⌘K / Ctrl+K to one screen (TCRN-DS-SUB-179, C-12 of the INIT-016 R3 decomposition):
+ * shell-shortcut=<screen>. The key is registered on the document once per shell, so a page of many shells lets one
+ * have it: the documentation shell has it, the screens leave it alone (menuShortcut false), and a page opened with
+ * the parameter gives it to the named screen alone, the documentation shell included (the shell gate's focusLoop).
+ */
+export const shellShortcutParameter = "shell-shortcut";
+
+/** The screen the page's address gives ⌘K to, or null (client only). */
+export function shellShortcutScreen(): string | null {
+  if (typeof window === "undefined") return null;
+  return new URL(window.location.href).searchParams.get(shellShortcutParameter);
+}
 
 export const shellStoryThemeAttribute: Readonly<Record<ShellStoryTheme, "light" | "dark">> = { light: "light", night: "dark" };
 // PINS of the board: the current page, a pinned item with a menu, a link and a second menu.
@@ -403,6 +417,8 @@ interface ShellStoryScreenViewProps {
   t?: Translate;
   /** The shell the intro lands in, once it is mounted; nothing plays without it. */
   introScope?: RefObject<HTMLElement | null> | null;
+  /** Whether this screen takes ⌘K / Ctrl+K: only the one the page's address names (shellShortcutParameter). */
+  shortcut?: boolean;
 }
 
 /** The pins and products a controlled screen takes from its controller (TCRN-DS-SUB-186). */
@@ -413,7 +429,7 @@ type ShellStoryControl = Pick<ProductShellProps, "pinnedIds" | "onPinnedChange" 
  * preview states. Closed screens keep their own state, so their brand button opens the menu; the
  * open screens are held open.
  */
-function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t = untranslated, introScope = null, control }: ShellStoryScreenViewProps & { control?: ShellStoryControl }) {
+function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t = untranslated, introScope = null, shortcut = false, control }: ShellStoryScreenViewProps & { control?: ShellStoryControl }) {
   const page = shellStoryPage(storyId, screen, t);
   const shell = (
     <ProductShell
@@ -433,6 +449,8 @@ function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t =
       onPinsReorder={control?.onPinsReorder}
       products={control?.products}
       menuOpen={screen.state === "expanded" ? true : undefined}
+      // A screen leaves ⌘K to the page's own shell unless the page names it (TCRN-DS-SUB-179).
+      menuShortcut={shortcut}
       openPinId={screen.state === "drop" ? shellStoryDropPinId : undefined}
       previewStates={shellStoryPreviewStates[screen.state]}
       menuQuery={screen.typed ? shellStoryTypedQuery(t(screen.typed)) : undefined}
@@ -523,9 +541,11 @@ function translatorFor(locale: TcrnLocale): Translate {
 export function ShellStoryRoot({ storyId, screen, block = null, onMounted }: ShellStoryRootProps) {
   const [locale, setLocale] = useState<TcrnLocale>(tcrnDefaultLocale);
   const [mounted, setMounted] = useState(false);
+  const [shortcutScreen, setShortcutScreen] = useState<string | null>(null);
   const introScope = useMemo<RefObject<HTMLElement | null>>(() => ({ current: block }), [block]);
   useEffect(() => {
     setMounted(true);
+    setShortcutScreen(shellShortcutScreen());
     onMounted?.();
     const follow = () => setLocale(pageLocale());
     follow();
@@ -541,7 +561,7 @@ export function ShellStoryRoot({ storyId, screen, block = null, onMounted }: She
   }, [block, locale, mounted]);
   const t = useMemo(() => translatorFor(locale), [locale]);
   const View = screen.controlled ? ShellStoryControlledScreenView : ShellStoryScreenView;
-  return <View storyId={storyId} screen={screen} locale={locale} t={t} introScope={mounted && block ? introScope : null} />;
+  return <View storyId={storyId} screen={screen} locale={locale} t={t} introScope={mounted && block ? introScope : null} shortcut={mounted && shortcutScreen === screen.screen} />;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -806,10 +826,13 @@ export function DocShellRoot({ config, body, block = null }: DocShellRootProps) 
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
   const [presentation, setPresentation] = useState<ShellMenuPresentation>("auto");
+  // ⌘K is the documentation shell's unless the page's address gives it to a screen (TCRN-DS-SUB-179).
+  const [ownsShortcut, setOwnsShortcut] = useState(true);
   const localeMenuOpenRef = useRef(false);
   const listEscapeRef = useRef(false);
   useEffect(() => {
     setMounted(true);
+    setOwnsShortcut(shellShortcutScreen() === null);
     const followLocale = () => setLocale(pageLocale());
     const followTheme = () => setTheme(pageTheme());
     followLocale();
@@ -880,6 +903,7 @@ export function DocShellRoot({ config, body, block = null }: DocShellRootProps) 
       t={t}
       link={link}
       presentation={presentation}
+      menuShortcut={ownsShortcut}
       menuOpen={menuOpen}
       onMenuOpenChange={(open) => {
         setMenuOpen(open);

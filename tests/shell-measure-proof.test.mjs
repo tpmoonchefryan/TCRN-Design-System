@@ -808,10 +808,28 @@ const PROBE_INTRO = `<!doctype html><meta charset="utf-8"><div data-shell="probe
     }
   </script>`;
 
+// TCRN-DS-SUB-179 (R3-16): a second shell on the probe page. When it registers ⌘K too, its handler (the later one) puts
+// the focus in its own search; when it does not, the probed shell keeps the key.
+const OTHER_SHELL = (registersCommandK) => `<div data-shell="other" data-state="closed"><div data-shell-strip><button type="button" data-tab aria-controls="other-menu">Other</button></div>
+  <section id="other-menu" hidden data-panel="expanded" role="dialog"><div data-shell-search><input type="search" aria-label="Search the other shell"></div></section></div>
+  <script>
+    ${registersCommandK ? `document.addEventListener("keydown", (event) => {
+      if (event.key.toLowerCase() !== "k" || !(event.metaKey || event.ctrlKey)) return;
+      event.preventDefault();
+      const menu = document.getElementById("other-menu");
+      menu.hidden = false;
+      menu.closest("[data-shell]").dataset.state = "expanded";
+      menu.querySelector("input").focus();
+    });` : ""}
+  </script>`;
+
 async function withProbePages(run) {
   const server = createServer((request, response) => {
     response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
-    response.end(request.url.startsWith("/intro") ? PROBE_INTRO : PROBE_SHELL);
+    if (request.url.startsWith("/intro")) response.end(PROBE_INTRO);
+    else if (request.url.startsWith("/two-shells-one-key")) response.end(PROBE_SHELL + OTHER_SHELL(false));
+    else if (request.url.startsWith("/two-shells")) response.end(PROBE_SHELL + OTHER_SHELL(true));
+    else response.end(PROBE_SHELL);
   });
   await new Promise((done) => server.listen(0, "127.0.0.1", done));
   try {
@@ -820,6 +838,33 @@ async function withProbePages(run) {
     await new Promise((done) => server.close(done));
   }
 }
+
+async function probeCommandK(path) {
+  return await withProbePages(async (origin) => {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 1400 } });
+    try {
+      const page = await context.newPage();
+      await page.goto(`${origin}${path}`, { waitUntil: "load" });
+      return await probeShellBehaviour(page, { screen: "probe", waitMs: 50 });
+    } finally {
+      await context.close();
+    }
+  });
+}
+
+test("focusLoop (TCRN-DS-SUB-179): two shells on the page both registering ⌘K fail — the focus lands in the other shell's search", async () => {
+  const both = await probeCommandK("/two-shells");
+  assert.equal(both.trace.focusLoop.afterCommandK, "search:other-shell");
+  const verdict = judgeBehaviourTraces(both.trace).focusLoop;
+  assert.equal(verdict.status, "fail");
+  assert.ok(verdict.failures.some((failure) => failure.what === "afterCommandK" && failure.value === "search:other-shell"));
+});
+
+test("focusLoop (TCRN-DS-SUB-179): only the probed screen registering ⌘K passes — the focus is in its own search", async () => {
+  const one = await probeCommandK("/two-shells-one-key");
+  assert.equal(one.trace.focusLoop.afterCommandK, "search");
+  assert.equal(judgeBehaviourTraces(one.trace).focusLoop.status, "pass");
+});
 
 test("behaviour probes: a shell that keeps the focus loop passes; focus not handed back fails (focusLoop mutation)", async () => {
   await withProbePages(async (origin) => {
