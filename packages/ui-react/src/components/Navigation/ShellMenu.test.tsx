@@ -469,6 +469,102 @@ test("in the Sheet rows and the search are 44 high and a pin takes presses 44 ac
   assert.equal(declaration(row, "padding-inline-start"), "var(--tcrn-space-2)");
 });
 
+test("a row's icon is the board's .ic box: 22 square, inset 3, border-box, on the icon column's start 16 inside the panel; glyph 19, text 48, in the full menu and the Sheet (TCRN-DS-SUB-188)", () => {
+  const tokens = createTokenMap();
+  // A length written with tokens, in px: 0, var(), and calc() over var() with + - * / and numbers.
+  const lengthPx = (value: string) => {
+    const arithmetic = value.trim().replace(/var\((--[a-z0-9-]+)\)/g, (_, name: string) => {
+      const pixels = Number.parseFloat(tokens[name]);
+      assert.ok(Number.isFinite(pixels), `${name} is a pixel token`);
+      return String(pixels);
+    }).replace(/^calc\((.*)\)$/, "$1").replace(/px\b/g, "");
+    assert.match(arithmetic, /^[\d\s.+\-*/()]+$/, `${value} is token arithmetic`);
+    const parts = arithmetic.match(/\d+(?:\.\d+)?|[-+*/()]/g) ?? [];
+    let at = 0;
+    const factor = (): number => {
+      const part = parts[at++];
+      if (part === "(") {
+        const inner = sum();
+        at++;
+        return inner;
+      }
+      return part === "-" ? -factor() : Number(part);
+    };
+    const product = (): number => {
+      let result = factor();
+      while (parts[at] === "*" || parts[at] === "/") result = parts[at++] === "*" ? result * factor() : result / factor();
+      return result;
+    };
+    const sum = (): number => {
+      let result = product();
+      while (parts[at] === "+" || parts[at] === "-") result = parts[at++] === "+" ? result + product() : result - product();
+      return result;
+    };
+    const result = sum();
+    assert.equal(at, parts.length, `${value} is read to its end`);
+    return result;
+  };
+  // The box: board .ic (shell-screen .ts-it .ic, 22 x 22, padding 3, border-box under the board's reset).
+  const side = "calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h))";
+  const box = ruleBody(".tcrn-shell-menu .tcrn-nav-item > .tcrn-icon");
+  assert.equal(declaration(box, "box-sizing"), "border-box");
+  assert.equal(declaration(box, "inline-size"), side);
+  assert.equal(declaration(box, "block-size"), side);
+  assert.equal(declaration(box, "padding"), "calc(var(--tcrn-space-1h) / 2)");
+  assert.equal(lengthPx(side), 22, "the box is 22 x 22");
+  assert.equal(lengthPx(declaration(box, "padding")), 3, "its inset is 3");
+  assert.equal(lengthPx(side) - 2 * lengthPx(declaration(box, "padding")), lengthPx("var(--tcrn-icon-size-md)"), "the glyph keeps the md 16");
+  // The box is exactly the icon column, so it sits on the column's start edge: the full menu's and
+  // the Sheet's first track is the same length, and no justify-self moves the glyph (B2-2 withdrawn).
+  assert.doesNotMatch(box, /justify-self: start/);
+  const fullRow = ruleBody(".tcrn-shell-menu__cols .tcrn-nav-item");
+  const sheetRow = ruleBody(".tcrn-shell-sheet .tcrn-nav-item", shellSheetCss01);
+  for (const row of [fullRow, sheetRow]) assert.equal(declaration(row, "grid-template-columns"), `${side} minmax(0, 1fr)`);
+  // Measured on the rendered full menu and Sheet: every guide icon is its row link's first child and
+  // the box rule reaches it; its left edge from the panel's is the sum of the inline-start insets the
+  // rules give the elements between them, each element named here (a new wrapper fails the walk).
+  const secondOf = (shorthand: string) => {
+    const parts = shorthand.split(/\s+(?![^(]*\))/);
+    return parts[1] ?? parts[0];
+  };
+  const insetOf: Readonly<Record<string, (inSheet: boolean) => number>> = {
+    "tcrn-shell-menu__panel": () => lengthPx(secondOf(declaration(ruleBody(".tcrn-shell-menu__panel"), "padding"))),
+    "tcrn-shell-sheet__panel": () => lengthPx(secondOf(declaration(ruleBody(".tcrn-shell-sheet__panel", shellSheetCss01), "padding"))),
+    "tcrn-shell-menu__cols": () => lengthPx(secondOf(declaration(ruleBody(".tcrn-shell-menu__cols"), "padding"))),
+    "tcrn-shell-sheet__list": () => {
+      const list = ruleBody(".tcrn-shell-sheet__list", shellSheetCss01);
+      return lengthPx(declaration(list, "margin-inline")) + lengthPx(declaration(list, "padding-inline"));
+    },
+    "tcrn-shell-menu__col": () => 0,
+    "tcrn-shell-sheet__group": () => 0,
+    "tcrn-nav-group__items": () => 0,
+    "tcrn-nav-item-row": () => 0,
+    "tcrn-nav-item": (inSheet) => lengthPx(declaration(inSheet ? sheetRow : fullRow, "padding-inline-start"))
+  };
+  const columnGap = lengthPx(declaration(ruleBody(".tcrn-shell-menu .tcrn-nav-item"), "column-gap"));
+  for (const [inSheet, html] of [[false, renderBoardMenu()], [true, renderBoardSheet()]] as const) {
+    const { document } = new JSDOM(html).window;
+    const panel = document.querySelector(inSheet ? '[data-panel="sheet"]' : '[data-panel="expanded"]');
+    assert.ok(panel);
+    const icons = [...panel.querySelectorAll('[data-guide="prail"]')];
+    assert.ok(icons.length >= (inSheet ? 3 : 10), "the guide icons are there");
+    for (const icon of icons) {
+      assert.ok(icon.matches(".tcrn-shell-menu .tcrn-nav-item > .tcrn-icon"), "the box rule reaches the guide icon");
+      assert.equal(icon.parentElement?.firstElementChild, icon, "the icon is in the first track");
+      let left = 0;
+      for (let element: Element | null = icon.parentElement; element; element = element.parentElement) {
+        const known: string[] = [...element.classList].filter((name) => name in insetOf);
+        assert.equal(known.length, 1, `${element.className} is a named step between the panel and the icon`);
+        left += insetOf[known[0]](inSheet);
+        if (element === panel) break;
+      }
+      assert.equal(left, 16, "the box's left edge is 16 inside the panel");
+      assert.equal(left + lengthPx(declaration(box, "padding")), 19, "the glyph's left edge is 19");
+      assert.equal(left + lengthPx(side) + columnGap, 48, "the text starts at 48");
+    }
+  }
+});
+
 test("the light and the night Sheet share their rules; it fades, opacity only, and comes last in the stylesheet", () => {
   assert.doesNotMatch(shellSheetCss01, /data-tcrn-theme/, "no rule names a theme");
   assert.doesNotMatch(shellSheetCss01, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i, "colours only through tokens");

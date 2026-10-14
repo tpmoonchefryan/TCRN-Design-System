@@ -282,6 +282,11 @@ export const shellCss02 = `
 // bottom edge. Columns: three, gap space-4; a group title row is 28 (control-height-sm) with a
 // space-1h margin above, an item row --tcrn-shell-row-h; the row's content starts space-2 inside
 // the panel's space-2, 16 in all, and the bar's lockup ends there too (16 before the right edge).
+// A row's icon is the board's .ic box (shell-screen .ts-it .ic; TCRN-DS-SUB-188): icon-size-md plus
+// space-1h square (22), half a space-1h inset (3), border-box, so the box is as wide as the icon
+// column and starts on its start edge, 16 inside the panel, the 16 glyph at 19 and the text at 48
+// (07b: guide column, icons 16 and texts 48). The Sheet keeps tcrn-shell-menu, so its rows take
+// the same box, as the board's Sheet rows do.
 // Rows paint with the pair grammar: ink-2 at rest, ink on the 3.5% wash on hover, ink on the 6%
 // wash at weight 600 when selected; a group title is ink-3 with no hover fill (only its pin shows).
 //
@@ -453,6 +458,10 @@ export const shellCss03 = `
   grid-column: 2;
 }
 .tcrn-shell-menu .tcrn-nav-item > .tcrn-icon {
+  box-sizing: border-box;
+  inline-size: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h));
+  block-size: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h));
+  padding: calc(var(--tcrn-space-1h) / 2);
   justify-self: center;
   color: var(--tcrn-pair-icon);
 }
@@ -500,16 +509,14 @@ export const shellCss03 = `
   min-inline-size: 0;
   overflow: hidden;
 }
-/* A row's label is one line (C7; TCRN-DS-SUB-154): it clips and ends in an ellipsis, and a
-   pinnable row's label carries its text as its title. The text span inside truncates itself. */
+/* A row's label is one line (C7; TCRN-DS-SUB-154): the cut (nowrap, ellipsis, overflow hidden,
+   min-width 0) and the title are the base rule's and NavItem's, as for every item (TCRN-DS-SUB-192).
+   Here the label is a flex row, so the next-level mark sits after the text, and the text span
+   inside truncates itself. */
 .tcrn-shell-menu .tcrn-nav-item__label {
   display: flex;
   align-items: center;
   gap: var(--tcrn-space-1h);
-  min-inline-size: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .tcrn-shell-menu__text {
   min-inline-size: 0;
@@ -931,11 +938,30 @@ export const shellCss05 = `
   background: var(--tcrn-color-panel);
   box-shadow: var(--tcrn-shadow-s1);
 }
+/* The paper's scrolling region takes keyboard focus to be scrolled (TCRN-DS-SUB-146), and the paper
+   clips its overflow, so an outward ring there is cut whole (TCRN-DS-SUB-182, WCAG 2.4.7). Its focus
+   edge pair is the G+ focus ring read inward: the ring's own tokens, a surface gap of space-0h at
+   the paper's edge, then the accent ring to space-1, as inset shadows, with a transparent outline
+   at a negative offset for forced colours, so the whole ring lies inside the region's border box
+   and so inside the paper. The region takes the paper's corners, so the ring follows the paper's
+   curve. The focus state switches the pair only and writes no colour (C2). */
 .tcrn-product-shell__paper > .tcrn-product-shell__main {
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-f: inset 0 0 0 var(--tcrn-space-0h) var(--tcrn-color-surface), inset 0 0 0 var(--tcrn-space-1) var(--tcrn-color-acc);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
   flex: 1 1 auto;
   min-block-size: 0;
   overflow: auto;
   overscroll-behavior: contain;
+  border-radius: inherit;
+  box-shadow: var(--tcrn-pair-edge);
+}
+.tcrn-product-shell__paper > .tcrn-product-shell__main:where(:focus-visible) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-product-shell__paper > .tcrn-product-shell__main:where(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 }
 /* Inside the product shell an element with no focus treatment of its own takes the G+ focus
    ring (--tcrn-focus-ring: a surface gap, then the accent ring) through the shell's focus edge
@@ -943,11 +969,15 @@ export const shellCss05 = `
    forced colours, which paint no box-shadow. The pair-driven controls are left out: buttons
    and link buttons, links, text controls (the search control is one), selects and the
    multi-select trigger, checkboxes, radios and switches draw the same ring from their own pair
-   tables together with their edge, and a shell rule must not wipe either. It is a state rule at
-   the variant's specificity that reads the pair and writes no colour (C2, TCRN-DS-SUB-156), and
-   it comes after the shell parts' rules, so it still follows every rule of the same weight it
-   wins over: the families' own focus outlines and the shell parts' edges. */
-.tcrn-product-shell :where(:focus-visible):not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control) {
+   tables together with their edge, and a shell rule must not wipe either. The shell parts that
+   switch their own focus edge pair are left out too (TCRN-DS-SUB-182): the brand button, the
+   pinned items, the full menu's rows and search results, the bell, the avatar (whose edge keeps
+   its inset 1px line under the ring) and the paper's scrolling region (its ring is inset). They
+   are listed inside :where(), so leaving them out adds no weight. It is a state rule at the
+   variant's specificity that reads the pair and writes no colour (C2, TCRN-DS-SUB-156), and it
+   comes after the shell parts' rules, so it still follows every rule of the same weight it wins
+   over: the families' own focus outlines. */
+.tcrn-product-shell :where(:focus-visible):not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control):not(:where(.tcrn-shell-brand, .tcrn-shell-pins__item, .tcrn-shell-menu .tcrn-nav-item, .tcrn-shell-menu .tcrn-product-shell-search__result, .tcrn-shell-bell, .tcrn-shell-avatar, .tcrn-product-shell__paper > .tcrn-product-shell__main)) {
   outline: 2px solid transparent;
   outline-offset: 2px;
   box-shadow: var(--tcrn-pair-shell-edge-f);

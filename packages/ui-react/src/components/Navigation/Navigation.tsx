@@ -10,7 +10,7 @@ import type {
   ReactNode,
   SVGAttributes
 } from "react";
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { isValidElement, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { IconButton, type IconButtonProps } from "../Button/index.js";
 // PageHeader is the paper's first row (TCRN-DS-SUB-129). DomainDisplay imports Breadcrumb from here for
 // that header's trail (TCRN-DS-SUB-124); both sides use the other only inside function bodies.
@@ -1519,6 +1519,23 @@ function navItemText(children: ReactNode): string | undefined {
   return typeof children === "string" || typeof children === "number" ? String(children) : undefined;
 }
 
+/**
+ * The words of a label's content: its text, or the text inside its markup (elements' children, in
+ * order, white space collapsed), so a label written as markup still has a title; undefined when
+ * the content holds no text.
+ */
+function navItemLabelText(children: ReactNode): string | undefined {
+  const parts: string[] = [];
+  const collect = (node: ReactNode): void => {
+    if (typeof node === "string" || typeof node === "number") parts.push(String(node));
+    else if (Array.isArray(node)) for (const child of node) collect(child);
+    else if (isValidElement<{ children?: ReactNode }>(node)) collect(node.props.children);
+  };
+  collect(children);
+  const text = parts.join("").replace(/\s+/g, " ").trim();
+  return text || undefined;
+}
+
 export interface NavGroupProps extends HTMLAttributes<HTMLDivElement>, NavPinProps {
   label: string;
   selected?: boolean;
@@ -1623,10 +1640,11 @@ export function NavItem({
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   const resolvedDepth = Number.isInteger(depth) && depth >= 0 ? depth : 0;
   const navStyle = { ...style, "--tcrn-nav-item-depth": resolvedDepth } as CSSProperties;
-  // A pinnable row's label is one line that ends in an ellipsis, so it carries its text as its
-  // title: the label itself, or the title the row was given when the label is markup (C7;
-  // TCRN-DS-SUB-154).
-  const labelTitle = onPinnedChange ? (navItemText(children) ?? (typeof props.title === "string" ? props.title : undefined)) : undefined;
+  // Every item's label is one line that ends in an ellipsis (base.css.ts), so whenever it holds
+  // text it carries that text as its title, pinnable or not, in the full menu or out of it: the
+  // label's own words, or the title the row was given when the label holds none (C7;
+  // TCRN-DS-SUB-154, TCRN-DS-SUB-192).
+  const labelTitle = navItemLabelText(children) ?? (typeof props.title === "string" && props.title.trim() ? props.title : undefined);
   // The row's guide-column hooks (C-5; TCRN-DS-SUB-152): the icon says where the guide column's
   // icon starts (data-guide="prail") and the label where its text starts (data-text="prail"), so
   // the shell gates read the 16 / 48 guide column and the row text off the part itself.

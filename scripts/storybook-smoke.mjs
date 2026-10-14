@@ -991,7 +991,6 @@ for (const text of [
   // TCRN-DS-SUB-168: the band's brand button replaced the rail toggle (its rule and its desktop markup).
   ".tcrn-shell-brand",
   "data-shell-brand=\"v2\"",
-  "--tcrn-motion-product-shell-search: 240ms var(--tcrn-motion-ease-drawer)",
   // TCRN-DS-SUB-176: the old top bar's 260 / 420 search left with it (TCRN-DS-SUB-145). The search is a
   // field of the shell's layers: the full menu's at shell.srch-h in the expanded panel (936 x 40 at the
   // proof viewport) and a pinned drop-down's at shell.drop-srch-h in the drop-down column (228 x 28).

@@ -21,7 +21,7 @@ import {
   retiredNavigationCss01
 } from "./base.css.js";
 import {
-  typographyCss01, typographyCss02, typographyCss03, typographyCss04, typographyCss05,
+  typographyCss01, typographyCss02, typographyCss04, typographyCss05,
   typographyCss06, typographyCss07, typographyCss08, typographyCss09, typographyCss10,
   typographyCss11, typographyCss12
 } from "./typography.css.js";
@@ -70,7 +70,6 @@ export const tcrnComponentCss: string = [
   baseCss13,
   typographyCss02,
   baseCss14,
-  typographyCss03,
   baseCss15,
   typographyCss04,
   baseCss16,

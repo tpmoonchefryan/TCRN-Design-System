@@ -554,6 +554,42 @@ test("the ButtonGroup focus ring probe turns red when a clipping group cuts the 
   assert.equal(red.violations[0].cutPx, 4);
 });
 
+// TCRN-DS-SUB-182 (140, R2-8): the product shell's paper clips its overflow and its scrolling region
+// takes keyboard focus, so the probe focuses the region and reads its ring inside the paper. The page
+// mirrors the package paper (margin space-3, radius 14, overflow hidden) and region (the content inset).
+const paperHtml = (focusCss) => `<!doctype html><html><head><style>
+.tcrn-product-shell__paper { display: flex; flex-direction: column; inline-size: 560px; block-size: 240px; margin: 0 12px 12px; overflow: hidden; border-radius: 14px; background: #ffffff; }
+.tcrn-product-shell__paper > .tcrn-product-shell__main { flex: 1 1 auto; min-block-size: 0; overflow: auto; padding: 14px 28px 12px; border-radius: inherit; }
+.tcrn-product-shell__paper > .tcrn-product-shell__main:focus-visible { ${focusCss} }
+p { block-size: 600px; margin: 0; }
+</style></head><body><main id="root" style="padding: 24px"><div class="tcrn-product-shell__paper" data-paper><section class="tcrn-product-shell__main" tabindex="0" aria-label="Roster workspace"><p>Roster</p></section></div></main></body></html>`;
+
+test("the focus ring probe reads the paper's scrolling region: an outward ring the paper cuts whole is red, an inset ring is green (TCRN-DS-SUB-182)", async () => {
+  const probe = (focusCss) => onPage(paperHtml(focusCss), (tab) => tab.evaluate(focusRingClipInPage, { root: "#root" }));
+  // The A-slice probe3-mainfocus case: the shell's fallback ring (2px surface gap, 4px accent, outward)
+  // with its forced-colours outline, cut on every side by the paper.
+  const red = await probe("outline: 2px solid transparent; outline-offset: 2px; box-shadow: 0 0 0 2px #efeeea, 0 0 0 4px #0b6b65;");
+  assert.equal(red.checked, 1);
+  assert.equal(red.regions, 1);
+  assert.equal(red.violationCount, 1);
+  assert.equal(red.violations[0].region, "Roster workspace");
+  assert.equal(red.violations[0].extent, 4);
+  assert.equal(red.violations[0].cutPx, 4);
+  assert.match(red.violations[0].clippedBy, /tcrn-product-shell__paper/);
+  // The package's ring: the same tokens read inward, the forced-colours outline at a negative offset.
+  const green = await probe("outline: 2px solid transparent; outline-offset: -2px; box-shadow: inset 0 0 0 2px #efeeea, inset 0 0 0 4px #0b6b65;");
+  assert.equal(green.checked, 1);
+  assert.equal(green.violationCount, 0);
+  // The forced-colours outline counts on its own: an inset shadow with an outward outline is cut.
+  const outline = await probe("outline: 2px solid transparent; outline-offset: 2px; box-shadow: inset 0 0 0 4px #0b6b65;");
+  assert.equal(outline.violationCount, 1);
+  assert.equal(outline.violations[0].cutPx, 4);
+  // A page without a product shell reads no region, and the ButtonGroup count is unchanged.
+  const none = await onPage(groupHtml(""), (tab) => tab.evaluate(focusRingClipInPage, { root: "#root" }));
+  assert.equal(none.regions, 0);
+  assert.equal(none.checked, 2);
+});
+
 test("the Highlight width probe turns red when a mark changes the text width", async () => {
   const html = (markCss) => `<!doctype html><html><head><style>mark { background: #fde68a; ${markCss} }</style></head><body><main id="root"><span class="tcrn-highlight-text">PRJ-<mark class="tcrn-highlight__mark">2026</mark>-0412</span></main></body></html>`;
   const green = await onPage(html(""), (tab) => tab.evaluate(highlightWidthInPage, { root: "#root" }));

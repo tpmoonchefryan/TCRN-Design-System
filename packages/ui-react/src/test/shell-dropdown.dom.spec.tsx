@@ -1,11 +1,14 @@
 // ShellDropdown behaviour (TCRN-DS-SUB-118; STORY-139 GWT1–GWT5): the pinned item opens it at its
 // start edge and bottom; a row's next level opens on a click and not on hover; ← returns from the
 // cascade to the same row; Esc closes every column and returns focus to the pinned item; the search
-// matches only the drop-down's part of the menu; a press outside and a choice close it.
+// matches only the drop-down's part of the menu; a press outside and a choice close it. TCRN-DS-SUB-180
+// (139-GWT1, GWT4) adds the placing from a framing ancestor, the placing again when the band changes,
+// and ← from a third column.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { act, useState } from "react";
-import { ShellDropdown, ShellPins, type ShellLayerCloseReason, type ShellMenuItem } from "../index.js";
+import { createTokenMap } from "@tcrn/ui-tokens";
+import { ShellDropdown, ShellPins, tcrnComponentCss, type ShellLayerCloseReason, type ShellMenuGroup, type ShellMenuItem } from "../index.js";
 import { createDomInteractionHarness, type DomInteractionHarness } from "./dom-harness.js";
 
 const contracts: ShellMenuItem = {
@@ -185,6 +188,194 @@ test("a press outside and a choice close it; pressing the pinned item again clos
     assert.equal(drop(harness), null);
     assert.deepEqual(closes, ["outside-pointer", "selection"]);
   } finally {
+    await harness.cleanup();
+  }
+});
+
+// TCRN-DS-SUB-180. A band whose first pinned item can be renamed, around the drop-down of one pinned
+// entry (an item, or a group whose rows reach a third column), optionally inside a frame that contains
+// fixed descendants (a transform), as a documentation page's framed screen does.
+const talent: ShellMenuGroup = { id: "talent", label: "艺人", items: [{ id: "roster", label: "名册", href: "#roster" }, contracts] };
+
+function FramedBand({ pin = contracts, firstLabel = "名册", framed = false }: { pin?: ShellMenuItem | ShellMenuGroup; firstLabel?: string; framed?: boolean }) {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const band = (
+    <div>
+      <ShellPins
+        items={[
+          { id: "first", label: firstLabel, href: "#first" },
+          { id: pin.id, label: pin.label, hasMenu: true }
+        ]}
+        openId={openId}
+        onOpenChange={setOpenId}
+        menuIdOf={(id) => `drop-${id}`}
+        locale="zh-CN"
+      />
+      <ShellDropdown
+        id={`drop-${pin.id}`}
+        source={pin}
+        open={openId === pin.id}
+        onOpenChange={(next) => {
+          if (!next) setOpenId(null);
+        }}
+        locale="zh-CN"
+      />
+    </div>
+  );
+  return framed ? (
+    <div data-frame="" style={{ transform: "translate(40px, 30px)" }}>
+      {band}
+    </div>
+  ) : (
+    band
+  );
+}
+
+const rectAt = (left: number, top: number, width: number, height: number) =>
+  ({ left, top, right: left + width, bottom: top + height, width, height, x: left, y: top, toJSON: () => ({}) }) as DOMRect;
+const pinOf = (harness: DomInteractionHarness, id: string) => harness.document.querySelector<HTMLButtonElement>(`[data-pin="${id}"] button`);
+
+test("the drop-down is placed from the nearest ancestor that contains fixed layers, not from the viewport, and stays on the item when that ancestor moves (TCRN-DS-SUB-180)", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    await harness.render(<FramedBand framed />);
+    const frame = harness.document.querySelector<HTMLElement>("[data-frame]");
+    const button = pinOf(harness, "contracts");
+    assert.ok(frame && button);
+    // The frame's transform makes it the fixed drop-down's containing block, 40, 30 into the viewport;
+    // the pinned item 合约 sits 207 in and 10 down inside it, 32 tall (07a board).
+    let frameAt = { left: 40, top: 30 };
+    frame.getBoundingClientRect = () => rectAt(frameAt.left, frameAt.top, 1240, 900);
+    button.getBoundingClientRect = () => rectAt(frameAt.left + 207, frameAt.top + 10, 63, 32);
+    await harness.dispatchClick(button);
+    const root = drop(harness)?.parentElement;
+    assert.ok(root, "the drop-down is open");
+    // From the frame, not the viewport (which would read 247 and 72): start edge = the item's, top =
+    // the item's bottom, the gap below it being the root's margin (next test).
+    assert.equal(root.style.left, "207px");
+    assert.equal(root.style.top, "42px");
+    assert.equal(root.style.visibility, "");
+    // The frame moves (the page scrolls it, a story re-frames it); the item moves with it. A scroll
+    // reads the place again, and the drop-down stays on the item.
+    frameAt = { left: 120, top: 64 };
+    await act(async () => {
+      harness.window.dispatchEvent(new harness.window.Event("scroll"));
+    });
+    assert.equal(root.style.left, "207px");
+    assert.equal(root.style.top, "42px");
+    assert.equal(button.getBoundingClientRect().left - frame.getBoundingClientRect().left, 207, "left = the item's left, in the frame");
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("an open drop-down is placed again when the band changes size or its words move the item; the gap below the item is --tcrn-shell-menu-gap (TCRN-DS-SUB-180)", async () => {
+  type Watcher = { callback: () => void; targets: Element[] };
+  const watchers: Watcher[] = [];
+  const globals = globalThis as unknown as { ResizeObserver?: unknown };
+  const previous = globals.ResizeObserver;
+  globals.ResizeObserver = class {
+    readonly watcher: Watcher;
+    constructor(callback: () => void) {
+      this.watcher = { callback, targets: [] };
+      watchers.push(this.watcher);
+    }
+    observe(target: Element) {
+      this.watcher.targets.push(target);
+    }
+    unobserve() {}
+    disconnect() {
+      this.watcher.targets = [];
+    }
+  };
+  const harness = createDomInteractionHarness();
+  try {
+    await harness.render(<FramedBand />);
+    const button = pinOf(harness, "contracts");
+    assert.ok(button);
+    let itemLeft = 207;
+    button.getBoundingClientRect = () => rectAt(itemLeft, 10, 63, 32);
+    await harness.dispatchClick(button);
+    const root = drop(harness)?.parentElement;
+    assert.ok(root, "the drop-down is open");
+    assert.equal(root.style.left, "207px");
+    assert.equal(root.style.top, "42px");
+    // The band, the pinned item's row, is watched for its size.
+    const watcher = watchers.find((candidate) => candidate.targets.includes(button.parentElement as Element));
+    assert.ok(watcher, "the band is observed");
+    // The band changes size (the window widens, the cluster's words grow) and the item moves 44 on:
+    // the open drop-down follows it.
+    itemLeft = 251;
+    await act(async () => {
+      watcher.callback();
+    });
+    assert.equal(root.style.left, "251px");
+    assert.equal(root.style.top, "42px");
+    // A pinned item before it is renamed (another language, a renamed entry): the band renders again,
+    // the item moves, and the place is read again after that render.
+    itemLeft = 299;
+    await harness.render(<FramedBand firstLabel="名册与分组" />);
+    assert.ok(drop(harness), "still open");
+    assert.equal(root.style.left, "299px");
+    assert.equal(root.style.top, "42px");
+    // The gap is not written into the place: top is the item's bottom, and the hand-off below it is the
+    // root's margin, the menu gap token, so the panel's top is the item's bottom plus the token's value.
+    assert.equal(root.style.marginTop, "");
+    assert.ok(root.matches(".tcrn-shell-menu.tcrn-shell-dropdown"));
+    const rule = /\n\.tcrn-shell-menu\.tcrn-shell-dropdown \{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
+    assert.match(rule, /margin-top: var\(--tcrn-shell-menu-gap\);/);
+    const gap = Number.parseFloat(createTokenMap()["--tcrn-shell-menu-gap"]);
+    assert.ok(Number.isFinite(gap) && gap > 0, "the gap is a token length");
+    assert.equal(Number.parseFloat(root.style.top) + gap, button.getBoundingClientRect().bottom + gap);
+  } finally {
+    await harness.cleanup();
+    if (previous === undefined) delete globals.ResizeObserver;
+    else globals.ResizeObserver = previous;
+  }
+});
+
+test("opened to a third column, ← returns focus to the previous column's open row, the rendered one that says aria-expanded=\"true\" (TCRN-DS-SUB-180)", async () => {
+  const harness = createDomInteractionHarness();
+  // JSDOM lays nothing out: a row counts as rendered when it is connected and not under [hidden], as
+  // the drop-down's ← reads it (getClientRects), so the row it returns to is a rendered one.
+  const prototype = harness.window.HTMLElement.prototype as HTMLElement & { getClientRects: () => DOMRectList };
+  prototype.getClientRects = function (this: HTMLElement) {
+    return (this.isConnected && !this.closest("[hidden]") ? [this.getBoundingClientRect()] : []) as unknown as DOMRectList;
+  };
+  try {
+    await harness.render(<FramedBand pin={talent} />);
+    const button = pinOf(harness, "talent");
+    assert.ok(button);
+    button.getBoundingClientRect = () => rectAt(207, 10, 63, 32);
+    await harness.dispatchClick(button);
+    assert.ok(drop(harness), "the group's drop-down is open");
+    // Level 2 in the drop-down, level 3 in the second column, level 4 in the third.
+    await harness.dispatchClick(row(harness, "合约") as Element);
+    await harness.dispatchClick(row(harness, "模板") as Element);
+    const second = harness.document.querySelector<HTMLElement>('[data-drop-col="2"]');
+    const third = harness.document.querySelector<HTMLElement>('[data-drop-col="3"]');
+    assert.ok(second && third, "the second and the third column are open");
+    // The row ← must return to: in the previous (second) column, rendered, and the open one, the row
+    // that says aria-expanded="true" and controls the third column.
+    const open = [...second.querySelectorAll<HTMLElement>("[data-shell-row]")].filter((candidate) => candidate.getAttribute("aria-expanded") === "true" && candidate.getClientRects().length > 0);
+    assert.deepEqual(open, [row(harness, "模板")], "one rendered open row in the second column");
+    assert.equal(open[0].getAttribute("aria-controls"), third.id);
+    row(harness, "签约合同")?.focus();
+    await press(harness, row(harness, "签约合同") as Element, "ArrowLeft");
+    assert.equal(harness.document.activeElement, open[0], "focus is back on that row");
+    assert.ok(open[0].getClientRects().length > 0, "a rendered row");
+    // ← closes the column it leaves, so that row now says aria-expanded="false"; the second column and
+    // the row that opened it stay open.
+    assert.equal(harness.document.querySelector('[data-drop-col="3"]'), null, "the third column closed");
+    assert.equal(open[0].getAttribute("aria-expanded"), "false");
+    assert.ok(harness.document.querySelector('[data-drop-col="2"]'), "the second column stays");
+    assert.equal(row(harness, "合约")?.getAttribute("aria-expanded"), "true");
+    // ← again: back to the drop-down's own row, the open one that opened the second column.
+    await press(harness, open[0], "ArrowLeft");
+    assert.equal(harness.document.activeElement, row(harness, "合约"));
+    assert.equal(harness.document.querySelector("[data-drop-col]"), null);
+  } finally {
+    delete (prototype as { getClientRects?: unknown }).getClientRects;
     await harness.cleanup();
   }
 });

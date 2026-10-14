@@ -30,7 +30,6 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 // only within tcrnComponentCss. Adding a new one here is a deliberate, reviewable act.
 const EXTENSION_TOKENS = [
   "--tcrn-motion-product-shell",
-  "--tcrn-motion-product-shell-search",
   // AOS is not in the G+ renewal (STORY-127): its suffix keeps this accent.
   "--tcrn-brand-accent-aos"
 ];
