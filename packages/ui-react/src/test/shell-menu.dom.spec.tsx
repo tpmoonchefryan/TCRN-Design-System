@@ -441,3 +441,85 @@ test("ProductShell's root says data-state=\"sheet\" while the Sheet is open and 
     await harness.cleanup();
   }
 });
+
+// The query may be the product's (TCRN-DS-SUB-147; 140, 144-GWT3): given `query`, the menu shows
+// what the product holds and asks for each change through onQueryChange; without it the menu keeps
+// its own, starting from `defaultQuery`. Closing forgets the query either way: it asks for "".
+function QueryShell({ changes, held, initialQuery }: { changes: string[]; held?: "follow" | "fixed"; initialQuery?: string }) {
+  const [open, setOpen] = useState(true);
+  const [query, setQuery] = useState(initialQuery ?? "");
+  const brandRef = useRef<HTMLButtonElement>(null);
+  return (
+    <div>
+      <ShellBrandButton ref={brandRef} productId="tms" version="v2" expanded={open} aria-controls="query-menu" onClick={() => setOpen((value) => !value)} locale="zh-CN" />
+      <ShellMenu
+        id="query-menu"
+        groups={menu}
+        open={open}
+        onOpenChange={(next) => setOpen(next)}
+        triggerRef={brandRef}
+        productId="tms"
+        locale="zh-CN"
+        {...(held ? { query } : { defaultQuery: initialQuery })}
+        onQueryChange={(next) => {
+          changes.push(next);
+          if (held === "follow") setQuery(next);
+        }}
+      />
+    </div>
+  );
+}
+
+const resultTitles = (harness: DomInteractionHarness) => [...harness.document.querySelectorAll("[data-search-result] strong")].map((element) => element.textContent);
+
+test("a held query: typing asks onQueryChange and the search shows what the product holds; closing asks for an empty query (TCRN-DS-SUB-147)", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    const changes: string[] = [];
+    await harness.render(<QueryShell changes={changes} held="follow" />);
+    await type(harness, search(harness) as HTMLInputElement, "合约");
+    assert.deepEqual(changes, ["合约"]);
+    assert.equal(search(harness)?.value, "合约");
+    assert.deepEqual(resultTitles(harness), ["合约列表", "签约合同", "经纪合同", "审批"]);
+    await press(harness, { key: "Escape" }, search(harness) as Element);
+    assert.equal(panel(harness), null, "Esc still closes the menu");
+    assert.deepEqual(changes, ["合约", ""], "closing forgets the query");
+    await harness.dispatchClick(brand(harness) as Element);
+    assert.equal(search(harness)?.value, "");
+    assert.ok(harness.document.querySelector("[data-shell-cols]"), "reopened, the columns show");
+
+    // A product that keeps its query: the search shows the held one, whatever is typed.
+    const fixed: string[] = [];
+    await harness.render(<div />);
+    await harness.render(<QueryShell changes={fixed} held="fixed" initialQuery="名册" />);
+    assert.equal(search(harness)?.value, "名册");
+    await type(harness, search(harness) as HTMLInputElement, "合约");
+    assert.deepEqual(fixed, ["合约"]);
+    assert.equal(search(harness)?.value, "名册");
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("the menu's own query starts from defaultQuery, follows the typing and tells onQueryChange; a choice still closes the menu and forgets it (TCRN-DS-SUB-147)", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    const changes: string[] = [];
+    await harness.render(<QueryShell changes={changes} initialQuery="合约" />);
+    assert.equal(search(harness)?.value, "合约");
+    assert.deepEqual(resultTitles(harness), ["合约列表", "签约合同", "经纪合同", "审批"]);
+    assert.equal(harness.document.querySelector("[data-shell-cols]"), null);
+    await type(harness, search(harness) as HTMLInputElement, "签约");
+    assert.deepEqual(changes, ["签约"]);
+    assert.deepEqual(resultTitles(harness), ["签约合同"]);
+    await press(harness, { key: "ArrowDown" }, search(harness) as Element);
+    await harness.dispatchClick(harness.document.activeElement as Element);
+    assert.equal(panel(harness), null, "choosing a result closes the menu");
+    assert.deepEqual(changes, ["签约", ""]);
+    await harness.dispatchClick(brand(harness) as Element);
+    assert.equal(search(harness)?.value, "");
+    assert.ok(harness.document.querySelector("[data-shell-cols]"));
+  } finally {
+    await harness.cleanup();
+  }
+});

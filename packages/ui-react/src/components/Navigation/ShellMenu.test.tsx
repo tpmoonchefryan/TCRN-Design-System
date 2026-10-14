@@ -282,6 +282,9 @@ test("rows paint with the pair grammar, group titles are ink-3 without a hover f
   for (const match of shellCss03.matchAll(/\n([^\n{}]*:where\([^{]*)\{\n([^}]*)\}/g)) {
     const [, selector, body] = match;
     if (/opacity/.test(body)) continue;
+    // The forced-colours outline of a focused row or result paints nothing elsewhere: transparent,
+    // as contract-static C2 and the contract proof let it through (TCRN-DS-SUB-155).
+    if (/:where\(:focus-visible\)/.test(selector) && body.trim().split("\n").every((line) => /^(?:outline: 2px solid transparent|outline-offset: 2px);$/.test(line.trim()))) continue;
     for (const line of body.trim().split("\n")) assert.match(line.trim(), /^--tcrn-pair-[a-z-]+: var\(--tcrn-pair-[a-z-]+\);$/, selector);
   }
   // One property set by day and at night.
@@ -440,8 +443,9 @@ test("the Sheet sits on the bottom edge below the top band, at most 84% high, ov
 
 test("in the Sheet rows and the search are 44 high and a pin takes presses 44 across", () => {
   const panel = ruleBody(".tcrn-shell-sheet__panel", shellSheetCss01);
-  assert.equal(declaration(panel, "--tcrn-shell-row-h"), "44px");
-  assert.equal(declaration(panel, "--tcrn-shell-srch-h"), "44px");
+  // The 44 is the touch token (TCRN-DS-SUB-142).
+  assert.equal(declaration(panel, "--tcrn-shell-row-h"), "var(--tcrn-shell-touch)");
+  assert.equal(declaration(panel, "--tcrn-shell-srch-h"), "var(--tcrn-shell-touch)");
   // The rows and the search read these tokens (shellCss03), so the Sheet's are 44 whatever the pointer.
   assert.equal(declaration(ruleBody(".tcrn-shell-menu .tcrn-nav-item"), "block-size"), "var(--tcrn-shell-row-h)");
   assert.equal(declaration(ruleBody(".tcrn-shell-menu .tcrn-nav-item-row"), "block-size"), "var(--tcrn-shell-row-h)");
@@ -451,6 +455,7 @@ test("in the Sheet rows and the search are 44 high and a pin takes presses 44 ac
   assert.equal(declaration(hotZone, "inset"), "calc(-1 * var(--tcrn-space-2h))");
   const tokens = createTokenMap();
   const px = (variable: string) => Number.parseFloat(tokens[variable]);
+  assert.equal(px("--tcrn-shell-touch"), 44);
   assert.equal(px("--tcrn-shell-pinb") + 2 * px("--tcrn-space-2h"), 44);
   // The pin ends space-1 before the row's end, so its 44 passes the row by 6: the list's scrollport
   // reaches the Sheet's edge (space-2 further), its rows stay where they were.
@@ -487,4 +492,52 @@ test("the Sheet's copy is written in all five locales", () => {
     assert.ok(html.includes(`>${copy.allNavigation}<`), `${locale} all title`);
     assert.match(html, new RegExp(`aria-label="${escapeRegExp(copy.navigation)}" tabindex="-1" data-panel="sheet"`));
   }
+});
+
+test("the query may be the product's: query or defaultQuery shows its results, and without them the columns show as before (TCRN-DS-SUB-147)", () => {
+  const plain = renderBoardMenu();
+  assert.match(plain, /data-shell-cols=""/);
+  assert.equal(new JSDOM(plain).window.document.querySelectorAll("[data-search-result]").length, 0);
+  for (const extra of [{ defaultQuery: "合约" }, { query: "合约" }, { query: "合约", defaultQuery: "名册" }]) {
+    const { document } = new JSDOM(renderBoardMenu(extra)).window;
+    assert.equal(document.querySelector("[data-shell-cols]"), null, JSON.stringify(extra));
+    assert.equal(document.querySelector<HTMLInputElement>('[data-shell-search] input[type="search"]')?.value, "合约");
+    assert.deepEqual([...document.querySelectorAll("[data-search-result] strong")].map((element) => element.textContent), ["合约列表", "签约合同", "经纪合同", "活动合同", "保密协议", "审批", "到期提醒"]);
+  }
+  // A held empty query outranks the default one.
+  assert.match(renderBoardMenu({ query: "", defaultQuery: "合约" }), /data-shell-cols=""/);
+});
+
+const describedMenu: readonly ShellMenuGroup[] = boardMenu.map((group, index) =>
+  index === 0
+    ? { ...group, description: "艺人与团队的资料", items: group.items.map((item, at) => (at === 0 ? { ...item, description: "全部艺人" } : item)) }
+    : group
+);
+const stripDescriptions = (html: string) => html.replace(/ aria-describedby="[^"]*"/g, "").replace(/<span id="[^"]*" class="tcrn-sr-only">[^<]*<\/span>/g, "");
+
+test("a group's or an entry's description is said with its row through aria-describedby to a .tcrn-sr-only element; without one the markup is unchanged (TCRN-DS-SUB-147)", () => {
+  const plain = renderBoardMenu();
+  assert.doesNotMatch(plain, /tcrn-sr-only|aria-describedby/);
+  const described = renderBoardMenu({ groups: describedMenu });
+  assert.equal(stripDescriptions(described), plain, "the descriptions add the reference and the hidden text, nothing else");
+  const { document } = new JSDOM(described).window;
+  const said = (element: Element | null) => {
+    const id = element?.getAttribute("aria-describedby") ?? "";
+    const target = id ? document.getElementById(id) : null;
+    return target?.matches(".tcrn-sr-only") ? target.textContent : null;
+  };
+  const titles = [...document.querySelectorAll("[data-shell-group] > .tcrn-nav-group__label")];
+  assert.equal(said(titles[0] ?? null), "艺人与团队的资料");
+  assert.deepEqual(titles.slice(1).map((title) => title.hasAttribute("aria-describedby")), titles.slice(1).map(() => false));
+  const firstRow = document.querySelector(`[data-shell-row][title="${boardMenu[0]?.items[0]?.label}"]`);
+  assert.equal(said(firstRow), "全部艺人");
+  assert.equal(document.querySelectorAll("[aria-describedby]").length, 2);
+  // In the Sheet a group is a row of the list, and its row carries the description.
+  const sheet = new JSDOM(renderToStaticMarkup(
+    <ShellMenu groups={describedMenu} open presentation="sheet" productId="tms" selectedId="roster" locale="zh-CN" id="menu" />
+  )).window.document;
+  const groupRow = sheet.querySelector(`[data-shell-row][title="${boardMenu[0]?.label}"]`);
+  const id = groupRow?.getAttribute("aria-describedby") ?? "";
+  assert.equal(sheet.getElementById(id)?.textContent, "艺人与团队的资料");
+  assert.ok(sheet.getElementById(id)?.matches(".tcrn-sr-only"));
 });

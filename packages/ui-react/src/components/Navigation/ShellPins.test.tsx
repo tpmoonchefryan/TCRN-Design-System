@@ -179,3 +179,32 @@ test("pressing a drop-down item asks to open it, and pressing it again asks to c
     await harness.cleanup();
   }
 });
+
+test("a shell's name tells its pinned items from another shell's: \"{name} · {pinned items}\" in all five locales, and an aria-label given outright wins (TCRN-DS-SUB-148)", () => {
+  const nameOf = (html: string) => /^<nav [^>]*aria-label="([^"]*)"/.exec(html)?.[1];
+  for (const locale of tcrnSupportedLocales) {
+    const copy = tcrnShellCopy[locale];
+    assert.equal(nameOf(renderToStaticMarkup(<ShellPins items={boardPins} locale={locale} />)), copy.pinnedItems);
+    const named = nameOf(renderToStaticMarkup(<ShellPins items={boardPins} locale={locale} landmarkLabel="TMS" />));
+    assert.equal(named, copy.landmarkOf("TMS", copy.pinnedItems));
+    assert.ok(named?.startsWith("TMS") && named.includes(copy.pinnedItems), `${locale}: ${named}`);
+    assert.notEqual(named, nameOf(renderToStaticMarkup(<ShellPins items={boardPins} locale={locale} landmarkLabel="Docs" />)));
+  }
+  assert.equal(nameOf(renderToStaticMarkup(<ShellPins items={boardPins} locale="en" landmarkLabel="TMS" aria-label="Shortcuts" />)), "Shortcuts");
+  assert.doesNotMatch(renderToStaticMarkup(<ShellPins items={boardPins} locale="en" landmarkLabel="TMS" />), /landmarklabel/i);
+  // An empty name is no name: the markup is the built-in one.
+  assert.equal(renderToStaticMarkup(<ShellPins items={boardPins} locale="en" landmarkLabel="  " />), renderToStaticMarkup(<ShellPins items={boardPins} locale="en" />));
+});
+
+test("STORY-140 GWT3 a movable band adds no mark of its own: the items say their shortcut, and the rules add only the pointer's behaviour (TCRN-DS-SUB-149)", () => {
+  const still = renderToStaticMarkup(<ShellPins items={boardPins} locale="zh-CN" />);
+  const movable = renderToStaticMarkup(<ShellPins items={boardPins} locale="zh-CN" onPinsReorder={() => undefined} />);
+  assert.doesNotMatch(still, /aria-keyshortcuts|data-pin-movable/, "without onPinsReorder the markup is the band's as before");
+  assert.equal((movable.match(/aria-keyshortcuts="Alt\+ArrowLeft Alt\+ArrowRight"/g) ?? []).length, boardPins.length);
+  assert.equal((movable.match(/data-pin-movable=""/g) ?? []).length, boardPins.length);
+  assert.doesNotMatch(movable, /data-pin-dragging|onpinsreorder/i);
+  // Taking the two attributes away leaves the same markup: no insertion line, ghost or handle.
+  assert.equal(movable.replace(/ aria-keyshortcuts="[^"]*" data-pin-movable=""/g, ""), still);
+  assert.deepEqual(ruleBody(".tcrn-shell-pins__item:where([data-pin-movable])").trim().split("\n").map((line) => line.trim()), ["touch-action: pan-y;", "user-select: none;"]);
+  assert.deepEqual(ruleBody(".tcrn-shell-pins__item:where([data-pin-dragging])").trim().split("\n").map((line) => line.trim()), ["cursor: grabbing;"]);
+});

@@ -1509,10 +1509,40 @@ export interface NavGroupProps extends HTMLAttributes<HTMLDivElement>, NavPinPro
   selected?: boolean;
   /** Which language the built-in pin name is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
+  /**
+   * What the group holds, said to a screen reader with its title row (aria-describedby to a
+   * .tcrn-sr-only element after the row); nothing is drawn, and without it the markup is unchanged
+   * (TCRN-DS-SUB-147).
+   */
+  description?: string;
   children: ReactNode;
 }
 
-export function NavGroup({ label, selected = false, pinned = false, onPinnedChange, pinLabel, locale, className, children, ...props }: NavGroupProps) {
+/**
+ * A titled group of nav items whose first child is the title row (.tcrn-nav-group__label). Props
+ * it does not name — the C-5 hooks data-shell-group and data-shell-col among them — land on the
+ * group element, so the group hook sits on the column whose own child is the title row, which is
+ * where the shell gates read the group's title (TCRN-DS-SUB-152).
+ */
+export function NavGroup({ label, selected = false, pinned = false, onPinnedChange, pinLabel, locale, description, className, children, ...props }: NavGroupProps) {
+  const titleRow = (describedBy?: string) =>
+    onPinnedChange ? (
+      <div className="tcrn-nav-group__label" data-nav-pinnable="true" aria-describedby={describedBy}>
+        <span className="tcrn-nav-group__label-text" title={label}>
+          {label}
+        </span>
+        <NavPinButton pinned={pinned} label={pinLabel ?? label} locale={locale} onPinnedChange={onPinnedChange} />
+      </div>
+    ) : (
+      // The title row is one line that ends in an ellipsis when it is too long, so its text
+      // carries the whole label as its title (C7; TCRN-DS-SUB-154).
+      <div className="tcrn-nav-group__label" aria-describedby={describedBy}>
+        <span className="tcrn-nav-group__label-text" title={label}>
+          {label}
+        </span>
+      </div>
+    );
+  const trimmedDescription = description?.trim();
   return (
     <div
       {...props}
@@ -1520,24 +1550,26 @@ export function NavGroup({ label, selected = false, pinned = false, onPinnedChan
       data-selected={selected ? "true" : undefined}
       data-navigation-primitive="nav-group"
     >
-      {onPinnedChange ? (
-        <div className="tcrn-nav-group__label" data-nav-pinnable="true">
-          <span className="tcrn-nav-group__label-text" title={label}>
-            {label}
-          </span>
-          <NavPinButton pinned={pinned} label={pinLabel ?? label} locale={locale} onPinnedChange={onPinnedChange} />
-        </div>
-      ) : (
-        // The title row is one line that ends in an ellipsis when it is too long, so its text
-        // carries the whole label as its title (C7; TCRN-DS-SUB-154).
-        <div className="tcrn-nav-group__label">
-          <span className="tcrn-nav-group__label-text" title={label}>
-            {label}
-          </span>
-        </div>
-      )}
+      {trimmedDescription ? <NavDescribed description={trimmedDescription} render={titleRow} /> : titleRow()}
       <div className="tcrn-nav-group__items">{children}</div>
     </div>
+  );
+}
+
+/**
+ * A row and its description: the row (rendered by `render` with the description's id for its
+ * aria-describedby) and, after it, the description in a .tcrn-sr-only element, which draws nothing.
+ * Only a described row renders this, so an id is made only where one is needed.
+ */
+function NavDescribed({ description, render }: { description: string; render: (descriptionId: string) => ReactNode }) {
+  const descriptionId = useId();
+  return (
+    <>
+      {render(descriptionId)}
+      <span id={descriptionId} className="tcrn-sr-only">
+        {description}
+      </span>
+    </>
   );
 }
 
@@ -1580,6 +1612,9 @@ export function NavItem({
   // title: the label itself, or the title the row was given when the label is markup (C7;
   // TCRN-DS-SUB-154).
   const labelTitle = onPinnedChange ? (navItemText(children) ?? (typeof props.title === "string" ? props.title : undefined)) : undefined;
+  // The row's guide-column hooks (C-5; TCRN-DS-SUB-152): the icon says where the guide column's
+  // icon starts (data-guide="prail") and the label where its text starts (data-text="prail"), so
+  // the shell gates read the 16 / 48 guide column and the row text off the part itself.
   const link = (
     <a
       {...props}
@@ -1597,9 +1632,9 @@ export function NavItem({
       data-nav-item-has-icon={iconName ? "true" : "false"}
       data-nav-depth={resolvedDepth}
     >
-      {iconName ? <Icon name={iconName} /> : null}
+      {iconName ? <Icon name={iconName} data-guide="prail" /> : null}
       <span className="tcrn-nav-item__content">
-        <span className="tcrn-nav-item__label" title={labelTitle}>
+        <span className="tcrn-nav-item__label" title={labelTitle} data-text="prail">
           {children}
         </span>
         {normalizedReason ? (
@@ -1837,12 +1872,12 @@ export interface ProductShellNavItem extends ShellMenuItem {
 
 /**
  * A group of the product's menu model (C-7): a ShellMenuGroup, one column of the full menu. The
- * keys, the description and the section label are the product's own metadata for its
- * dictionary; the shell does not render them.
+ * keys and the section label are the product's own metadata for its dictionary; the shell does
+ * not render them. The description (ShellMenuGroup's) is said with the group's row to a screen
+ * reader and draws nothing (TCRN-DS-SUB-147).
  */
 export interface ProductShellNavGroup extends ShellMenuGroup {
   labelKey?: string;
-  description?: string;
   descriptionKey?: string;
   sectionLabel?: string;
   sectionLabelKey?: string;
@@ -1892,7 +1927,8 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
    * The page's header, the paper's first row: the trail, the title and the page's actions (07b
    * board, section E, "PageHeader 必有"). Required, so a shell page without one does not type-check.
    * An omitted trail is the current position in `navGroups` (group › … › page); an omitted locale is
-   * `currentLocale`.
+   * `currentLocale`; an omitted heading level is 1, the page's own title (TCRN-DS-SUB-163) — a shell
+   * shown inside another page's paper gives 2.
    */
   pageHeader: PageHeaderProps;
   /** The page below its header. */
@@ -1914,6 +1950,14 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   pinnedIds?: readonly string[];
   /** Pins or unpins an entry; without it the menu rows have no pin. */
   onPinnedChange?: (id: string, pinned: boolean) => void;
+  /**
+   * Takes the pins' new order, every id of `pinnedIds` in it, when the reader moves a pinned item
+   * in the band: a drag that ends with it in a new place, or Alt+← / Alt+→ on it (TCRN-DS-SUB-149).
+   * useProductShellController's productShellControlProps connect it to movePin, which keeps the
+   * order in the pins preference (the product's backend through onPinsChange; never a cookie).
+   * Without it the pinned items do not move.
+   */
+  onPinsReorder?: (orderedIds: readonly string[]) => void;
   /** Whether the full menu is open; the shell keeps its own state when omitted. */
   menuOpen?: boolean;
   onMenuOpenChange?: (open: boolean, reason: ProductShellMenuChangeReason) => void;
@@ -1933,6 +1977,19 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   /** The full menu's search provider (whole-site targets); the menu model is searched when omitted. */
   searchProvider?: ShellMenuSearchProvider;
   onSearchQueryChange?: (query: string) => void;
+  /**
+   * A name for this shell, which tells its landmarks from another shell's on the same page (axe
+   * landmark-unique): the pinned items' nav and the page header's trail are named
+   * "{landmarkLabel} · {name}" in the reader's language. Omitted, they keep the built-in names
+   * (TCRN-DS-SUB-148).
+   */
+  landmarkLabel?: string;
+  /** The full menu's query, for a product that holds it; the menu keeps its own when omitted (ShellMenu's `query`). */
+  menuQuery?: string;
+  /** The query the full menu's own starts from, such as a page rendered with a query typed (ShellMenu's `defaultQuery`). */
+  defaultMenuQuery?: string;
+  /** Asks to change the full menu's query: as it is typed, and to empty when the menu closes (ShellMenu's `onQueryChange`). */
+  onMenuQueryChange?: (query: string) => void;
   onThemeChange?: (theme: ShellThemeMode) => void;
   onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
   onLocaleChange?: (locale: string) => void;
@@ -2038,6 +2095,7 @@ export function ProductShell({
   notifications,
   pinnedIds = [],
   onPinnedChange,
+  onPinsReorder,
   menuOpen,
   onMenuOpenChange,
   openPinId,
@@ -2048,6 +2106,10 @@ export function ProductShell({
   searchPlaceholder,
   searchProvider,
   onSearchQueryChange,
+  menuQuery,
+  defaultMenuQuery,
+  onMenuQueryChange,
+  landmarkLabel,
   onThemeChange,
   onLocaleMenuOpenChange,
   onLocaleChange,
@@ -2120,6 +2182,14 @@ export function ProductShell({
     .map((id) => productShellFindEntry(navGroups, id))
     .filter((target): target is ProductShellPinTarget => target !== null);
   const pinItems = pinTargets.map((target) => target.pin);
+  // The band moves the entries the menu model holds; an id it does not hold keeps its place.
+  const reorderPins = onPinsReorder
+    ? (ordered: readonly string[]) => {
+        const moved = new Set(ordered);
+        const queue = [...ordered];
+        onPinsReorder(pinnedIds.map((id) => (moved.has(id) ? (queue.shift() ?? id) : id)));
+      }
+    : undefined;
   const shownTargets = pinTargets.slice(0, shellPinsMax());
   const selection = productShellSelection(navGroups);
   const selectedId = selection?.id ?? null;
@@ -2173,6 +2243,8 @@ export function ProductShell({
           onOpenChange={changeOpenPin}
           menuIdOf={dropIdOf}
           locale={currentLocale}
+          landmarkLabel={landmarkLabel}
+          onPinsReorder={reorderPins}
         />
         <div className="tcrn-shell-cluster" data-cluster="">
           {headerActions ? (
@@ -2264,6 +2336,9 @@ export function ProductShell({
         searchPlaceholder={searchPlaceholder}
         searchProvider={searchProvider}
         onSearchQueryChange={onSearchQueryChange}
+        query={menuQuery}
+        defaultQuery={defaultMenuQuery}
+        onQueryChange={onMenuQueryChange}
         locale={currentLocale}
         previewStates={previewStates}
       />
@@ -2290,7 +2365,13 @@ export function ProductShell({
             (axe scrollable-region-focusable; TCRN-DS-SUB-146); its name is the aria-label and
             its focus ring the shell's focus-visible rule. */}
         <ContentElement id={contentId} className="tcrn-product-shell__main" data-product-shell-region="content" aria-label={resolvedContentLabel} tabIndex={0}>
-          <PageHeader {...pageHeader} breadcrumbs={pageHeader.breadcrumbs ?? currentTrail} locale={pageHeader.locale ?? currentLocale} />
+          <PageHeader
+            {...pageHeader}
+            breadcrumbs={pageHeader.breadcrumbs ?? currentTrail}
+            locale={pageHeader.locale ?? currentLocale}
+            headingLevel={pageHeader.headingLevel ?? 1}
+            landmarkLabel={pageHeader.landmarkLabel ?? landmarkLabel}
+          />
           {children}
         </ContentElement>
       </div>
@@ -2435,6 +2516,31 @@ export function useProductShellController({
     setPins([...rest.slice(0, to), id, ...rest.slice(to)]);
   }, [setPins]);
 
+  /**
+   * Takes a new order of the pins (ProductShell's onPinsReorder: a drag in the band, Alt+← or
+   * Alt+→): the one entry that moved goes to its place through movePin. An order that moved more
+   * than one entry is kept as given; ids it leaves out stay after it (TCRN-DS-SUB-149).
+   */
+  const reorderPins = useCallback((orderedIds: readonly string[]) => {
+    const current = pinsRef.current;
+    const next = [...new Set(orderedIds.filter((id) => current.includes(id))), ...current.filter((id) => !orderedIds.includes(id))];
+    const first = next.findIndex((id, index) => id !== current[index]);
+    if (first < 0) return;
+    let last = next.length - 1;
+    while (last > first && next[last] === current[last]) last -= 1;
+    const forward = current[first];
+    const back = current[last];
+    if (forward !== undefined && next[last] === forward && next.slice(first, last).every((id, index) => id === current[first + 1 + index])) {
+      movePin(forward, last);
+      return;
+    }
+    if (back !== undefined && next[first] === back && next.slice(first + 1, last + 1).every((id, index) => id === current[first + index])) {
+      movePin(back, first);
+      return;
+    }
+    setPins(next);
+  }, [movePin, setPins]);
+
   const setTheme = useCallback((nextTheme: ShellThemeMode) => {
     const resolvedTheme = nextTheme === "dark" ? "dark" : "light";
     const update = () => {
@@ -2545,7 +2651,8 @@ export function useProductShellController({
     onSearchQueryChange: setSearchQuery,
     searchProvider: searchRecords.length > 0 ? searchProvider : undefined,
     pinnedIds: pins,
-    onPinnedChange: setPinned
+    onPinnedChange: setPinned,
+    onPinsReorder: reorderPins
   } satisfies Partial<ProductShellProps>;
 
   return {
@@ -2553,6 +2660,7 @@ export function useProductShellController({
     setPins,
     setPinned,
     movePin,
+    reorderPins,
     theme,
     setTheme,
     toggleTheme,

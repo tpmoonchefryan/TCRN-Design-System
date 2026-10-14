@@ -29,6 +29,11 @@
 // The menu model is the product's: groups, their items, the items' children (third level) and
 // theirs (fourth level, the last); deeper entries are not shown.
 //
+// TCRN-DS-SUB-147 (R2-15, R2-20): the query may be the product's (query, defaultQuery,
+// onQueryChange; without them the menu keeps its own, as before), and a group or an entry may
+// carry a description, which its row says to a screen reader (aria-describedby to a .tcrn-sr-only
+// element) and which draws nothing; without one the row's markup is unchanged.
+//
 // The Sheet (TCRN-DS-SUB-126; 07a board, section A, screens A7 and A8; 07b board, section D row
 // "窄于 1024"): on a viewport 760 wide or narrower the menu is not the panel but a Sheet that rises
 // from the bottom edge and stays below the top band (at most 84% of the viewport high), over a
@@ -78,12 +83,23 @@ export interface ShellMenuItem {
   iconName?: IconName;
   /** The next level. An item's children are the third level, theirs the fourth and last. */
   children?: readonly ShellMenuItem[];
+  /**
+   * What the entry holds, said with its row to a screen reader (aria-describedby to a
+   * .tcrn-sr-only element); nothing is drawn, and without it the row's markup is unchanged.
+   */
+  description?: string;
 }
 
 /** The first level of the menu model: a titled group of items, one column of the full menu. */
 export interface ShellMenuGroup {
   id: string;
   label: string;
+  /**
+   * What the group (a category of the menu) holds, said to a screen reader with its title row in
+   * the panel and with its row in the Sheet (aria-describedby to a .tcrn-sr-only element); nothing
+   * is drawn, and without it the markup is unchanged.
+   */
+  description?: string;
   iconName?: IconName;
   items: readonly ShellMenuItem[];
 }
@@ -260,12 +276,13 @@ export function shellMenuRow(item: ShellMenuItem, level: number, context: ShellM
         }
       }
     : { href: item.href };
-  return (
+  const row = (describedBy?: string) => (
     <NavItem key={item.id}
       selected={item.id === context.selectedId}
       iconName={extra.iconName}
       locale={context.locale}
       title={item.label}
+      aria-describedby={describedBy}
       data-shell-row=""
       data-shell-level={level}
       data-tcrn-preview-state={context.previewStates?.[item.id]}
@@ -275,6 +292,24 @@ export function shellMenuRow(item: ShellMenuItem, level: number, context: ShellM
       <span className="tcrn-shell-menu__text">{item.label}</span>
       {hasNext ? <Icon name="chevron-right" size={12} className="tcrn-shell-menu__sub" /> : null}
     </NavItem>
+  );
+  const description = item.description?.trim();
+  return description ? <ShellMenuDescribed key={item.id} description={description} render={row} /> : row();
+}
+
+/**
+ * A row and its description: the row (rendered by `render` with the description's id for its
+ * aria-describedby) and, after it, the description in a .tcrn-sr-only element, which draws nothing.
+ */
+function ShellMenuDescribed({ description, render }: { description: string; render: (descriptionId: string) => ReactNode }) {
+  const descriptionId = useId();
+  return (
+    <>
+      {render(descriptionId)}
+      <span id={descriptionId} className="tcrn-sr-only">
+        {description}
+      </span>
+    </>
   );
 }
 
@@ -484,6 +519,15 @@ export interface ShellMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
   searchProvider?: ShellMenuSearchProvider;
   /** Told the query as it is typed, for a provider that fetches. */
   onSearchQueryChange?: (query: string) => void;
+  /** The query in the search, for a product that holds it; the menu keeps its own when omitted. */
+  query?: string;
+  /** The query the menu's own starts from (a page rendered with a query typed); empty when omitted. */
+  defaultQuery?: string;
+  /**
+   * Asks to change the query: with each change typed, and with an empty one when the menu closes,
+   * which forgets the query. A product that passes `query` sets it from here.
+   */
+  onQueryChange?: (query: string) => void;
   /** Whether the menu registers ⌘K / Ctrl+K on the document (one per shell); on by default. */
   shortcut?: boolean;
   /** Language of the menu's copy; the page's own when omitted. */
@@ -508,6 +552,9 @@ export function ShellMenu({
   searchPlaceholder,
   searchProvider = searchTheModel,
   onSearchQueryChange,
+  query: controlledQuery,
+  defaultQuery = "",
+  onQueryChange,
   shortcut = true,
   locale,
   previewStates,
@@ -521,7 +568,8 @@ export function ShellMenu({
   const dialogId = id ?? `${generatedId}-menu`;
   const rootRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<HTMLElement>(null);
-  const [query, setQuery] = useState("");
+  const [ownQuery, setOwnQuery] = useState(defaultQuery);
+  const query = controlledQuery ?? ownQuery;
   const shown = useShellMenuPresentation(presentation);
   const sheet = shown === "sheet";
   // The Sheet's first list holds the groups themselves (level 1); the panel's columns are groups,
@@ -533,11 +581,23 @@ export function ShellMenu({
   const onOpenChangeRef = useRef(onOpenChange);
   const sheetShownRef = useRef(sheet);
   const openedByShortcut = useRef(false);
+  const queryRef = useRef(query);
+  const onQueryChangeRef = useRef(onQueryChange);
+  const queryControlledRef = useRef(controlledQuery !== undefined);
+  // Whether the menu has been open since it mounted: mounting closed keeps the default query.
+  const wasOpenRef = useRef(open);
   useEffect(() => {
     openRef.current = open;
     onOpenChangeRef.current = onOpenChange;
     sheetShownRef.current = sheet;
+    queryRef.current = query;
+    onQueryChangeRef.current = onQueryChange;
+    queryControlledRef.current = controlledQuery !== undefined;
   });
+  const changeQuery = (next: string) => {
+    if (controlledQuery === undefined) setOwnQuery(next);
+    onQueryChange?.(next);
+  };
 
   useShellTransientLayer({
     open,
@@ -568,13 +628,17 @@ export function ShellMenu({
   // that no on-screen keyboard rises over it; closing forgets the query and the open cascades.
   useEffect(() => {
     if (open) {
+      wasOpenRef.current = true;
       const search = rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]');
       (sheetShownRef.current && !openedByShortcut.current ? sheetRef.current : search)?.focus();
       openedByShortcut.current = false;
       return;
     }
-    setQuery("");
     setOpenPath([]);
+    if (!wasOpenRef.current) return;
+    wasOpenRef.current = false;
+    if (!queryControlledRef.current) setOwnQuery("");
+    if (queryRef.current !== "") onQueryChangeRef.current?.("");
   }, [open, setOpenPath]);
 
   // The open path's levels mean different rows in the two presentations: switching forgets it.
@@ -620,7 +684,7 @@ export function ShellMenu({
       expanded={searching}
       results={results}
       onQueryChange={(next) => {
-        setQuery(next);
+        changeQuery(next);
         setOpenPath([]);
         onSearchQueryChange?.(next);
       }}
@@ -638,7 +702,7 @@ export function ShellMenu({
   if (sheet) {
     // The Sheet's lists: the pinned entries, then every group as a row that opens its items. The
     // levels of the open path follow the lists, one titled column each.
-    const groupRows: ShellMenuItem[] = groups.map((group) => ({ id: group.id, label: group.label, iconName: group.iconName, children: group.items }));
+    const groupRows: ShellMenuItem[] = groups.map((group) => ({ id: group.id, label: group.label, iconName: group.iconName, children: group.items, description: group.description }));
     const pinnedSheetRows: ShellMenuItem[] = pinnedItems.map(
       (pin) => groupRows.find((row) => row.id === pin.id) ?? levelTwo.find((entry) => entry.id === pin.id) ?? { id: pin.id, label: pin.label, href: pin.href }
     );
@@ -708,6 +772,7 @@ export function ShellMenu({
             {groups.map((group) => (
               <NavGroup key={group.id}
                 label={group.label}
+                description={group.description}
                 locale={locale}
                 className="tcrn-shell-menu__col"
                 data-shell-group=""

@@ -249,6 +249,17 @@ export const shellCss02 = `
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+/* Reordering (TCRN-DS-SUB-149): the items move in place and the band draws nothing for it, no
+   insertion line, no ghost, no handle. A movable item takes only the pointer's behaviour (a
+   sideways drag is the band's while an upward one still scrolls the page, and a drag selects no
+   text), and the dragged item shows the grabbing cursor. */
+.tcrn-shell-pins__item:where([data-pin-movable]) {
+  touch-action: pan-y;
+  user-select: none;
+}
+.tcrn-shell-pins__item:where([data-pin-dragging]) {
+  cursor: grabbing;
+}
 @media (max-width: 1023px) {
   .tcrn-shell-pins {
     display: none;

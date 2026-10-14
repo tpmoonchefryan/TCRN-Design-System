@@ -47,6 +47,7 @@ import * as shellSheetSegments from "../../styles/shell-sheet.css.js";
 import { PageHeader, TocRail, ViewTabs } from "../DataDisplay/DomainDisplay.js";
 import { createResolvedTokenMap, createTokenMap } from "@tcrn/ui-tokens";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
+import { JSDOM } from "jsdom";
 
 test("tabs use honest segmented navigation semantics", () => {
   const html = renderToStaticMarkup(<ModuleTabs items={[{ id: "overview", label: "Overview", selected: true }, { id: "proof", label: "Proof" }]} />);
@@ -518,7 +519,8 @@ test("STORY-146 GWT1 the page header is required and is the paper's first row", 
   );
   assert.equal(html.match(/data-pattern="page-header"/g)?.length, 1, "one page header");
   assert.ok(html.indexOf('data-pattern="page-header"') < html.indexOf("Fixture-safe roster content"), "the header comes before the page");
-  assert.match(html, /<h2 title="Roster" class="tcrn-heading tcrn-heading--2">Roster<\/h2><p class="tcrn-text[^"]*">24 people · 3 to invite<\/p>/);
+  // The paper's title is the page's h1 in the level-2 type (TCRN-DS-SUB-163).
+  assert.match(html, /<h1 title="Roster" class="tcrn-heading tcrn-heading--2">Roster<\/h1><p class="tcrn-text[^"]*">24 people · 3 to invite<\/p>/);
   // An omitted trail is the current position in the menu model: the group, then the page, which is no link.
   assert.match(
     html,
@@ -692,7 +694,8 @@ test("product shell component css isolates topbar from docs chrome", () => {
   // The selected nav item carries no shadow bar. (The earlier form of this check reached
   // past the rule with [\s\S]* to a later shell focus rule's box-shadow: none, so it held
   // only while that rule existed; it now reads the selected rule's own body.)
-  const selectedNavItem = /\.tcrn-nav-item\[data-selected="true"\],\s*\.tcrn-nav-item\[aria-current="page"\] \{([^}]*)\}/.exec(tcrnComponentCss);
+  // The selected states are one pair rule since the navigation exemption ended (TCRN-DS-SUB-155).
+  const selectedNavItem = /\.tcrn-nav-item:where\(\[data-selected="true"\], \[aria-current="page"\]\) \{([^}]*)\}/.exec(tcrnComponentCss);
   assert.ok(selectedNavItem, "the selected nav item rule exists");
   assert.doesNotMatch(selectedNavItem[1], /box-shadow:\s*(?!none\b)/);
 });
@@ -2021,14 +2024,14 @@ test("STORY-143 C7 group titles, search results and pinnable labels carry their 
   // 4. A pinnable row's label is one line with its title: its text, or the row's title when the
   // label is markup (the full menu's rows); a row that cannot be pinned keeps its markup.
   const pinnable = renderToStaticMarkup(<NavItem href="#contracts" onPinnedChange={noop}>Contracts and templates</NavItem>);
-  assert.match(pinnable, /<span class="tcrn-nav-item__label" title="Contracts and templates">Contracts and templates<\/span>/);
+  assert.match(pinnable, /<span class="tcrn-nav-item__label" title="Contracts and templates" data-text="prail">Contracts and templates<\/span>/);
   const marked = renderToStaticMarkup(
     <NavItem href="#roster" title="Roster" onPinnedChange={noop}>
       <span className="tcrn-shell-menu__text">Roster</span>
     </NavItem>
   );
-  assert.match(marked, /<span class="tcrn-nav-item__label" title="Roster"><span class="tcrn-shell-menu__text">Roster<\/span><\/span>/);
-  assert.match(renderToStaticMarkup(<NavItem href="#plain">Plain</NavItem>), /<span class="tcrn-nav-item__label">Plain<\/span>/);
+  assert.match(marked, /<span class="tcrn-nav-item__label" title="Roster" data-text="prail"><span class="tcrn-shell-menu__text">Roster<\/span><\/span>/);
+  assert.match(renderToStaticMarkup(<NavItem href="#plain">Plain</NavItem>), /<span class="tcrn-nav-item__label" data-text="prail">Plain<\/span>/);
   singleLine(rule(".tcrn-shell-menu .tcrn-nav-item__label"));
 });
 
@@ -2183,4 +2186,123 @@ test("ProductShell hands previewStates to the full menu and the drop-downs (TCRN
   assert.match(drop, /<[a-z]+(?=[^>]*title="Templates")(?=[^>]*aria-expanded="true")[^>]*>/);
   assert.match(drop, /data-drop-col="2"/);
   assert.doesNotMatch(shell({ openPinId: "contracts" }), /data-drop-col=/);
+});
+
+test("STORY-142 GWT1 STORY-149 GWT1 a row carries the guide-column hooks, and data-shell-group lands on the column that holds the group's title row (TCRN-DS-SUB-152)", () => {
+  const noop = () => undefined;
+  const html = renderToStaticMarkup(
+    <NavGroup label="Talent" data-shell-group="" data-shell-col="">
+      <NavItem href="#roster" iconName="users" data-shell-row="">Roster</NavItem>
+      <NavItem href="#teams" iconName="users" onPinnedChange={noop} data-shell-row="">Teams</NavItem>
+      <NavItem href="#plain" data-shell-row="">Plain</NavItem>
+    </NavGroup>
+  );
+  const { document } = new JSDOM(html).window;
+  const group = document.querySelector("[data-shell-group]");
+  assert.ok(group && group.matches(".tcrn-nav-group[data-shell-col]"), "the group hook lands on the group's column");
+  assert.ok(group.querySelector(":scope > .tcrn-nav-group__label > .tcrn-nav-group__label-text"), "the title row is the column's own child");
+  // Every row says where its text starts: on the label, once.
+  const rows = [...document.querySelectorAll("[data-shell-row]")];
+  assert.equal(rows.length, 3);
+  for (const row of rows) {
+    const texts = row.querySelectorAll('[data-text="prail"]');
+    assert.equal(texts.length, 1);
+    assert.ok(texts[0]?.matches(".tcrn-nav-item__label"));
+  }
+  // A row with an icon says where the guide column's icon starts: on the icon itself.
+  const guides = [...document.querySelectorAll('[data-guide="prail"]')];
+  assert.equal(guides.length, 2);
+  for (const guide of guides) assert.ok(guide.matches("svg.tcrn-icon") && guide.closest("[data-shell-row]"));
+  // A pinnable row keeps .tcrn-nav-item-row as its wrapper, the pin beside the link (P2).
+  const wrapper = document.querySelector('[data-shell-row][href="#teams"]')?.parentElement;
+  assert.ok(wrapper && wrapper.matches(".tcrn-nav-item-row"));
+  assert.ok(wrapper.querySelector(":scope > [data-pin-button]"));
+});
+
+test("ProductShell hands the held and the default menu query to the full menu, and the groups' descriptions with them (TCRN-DS-SUB-147)", () => {
+  const shell = (extra: Partial<ProductShellProps>) =>
+    renderToStaticMarkup(
+      <ProductShell
+        productName="TCRN TMS"
+        moduleName="Talent"
+        brandProductId="tms"
+        currentRouteLabel="Roster"
+        pageHeader={{ title: "Roster" }}
+        navGroups={shellNavGroups}
+        locales={shellLocales}
+        currentLocale="en"
+        menuOpen
+        {...extra}
+      >
+        <div>content</div>
+      </ProductShell>
+    );
+  const results = (html: string) => {
+    const { document } = new JSDOM(html).window;
+    return {
+      value: document.querySelector<HTMLInputElement>('[data-panel="expanded"] [data-shell-search] input[type="search"]')?.value,
+      titles: [...document.querySelectorAll('[data-panel="expanded"] [data-search-result] strong')].map((element) => element.textContent),
+      columns: document.querySelectorAll('[data-panel="expanded"] [data-shell-col]').length
+    };
+  };
+  assert.deepEqual(results(shell({})), { value: "", titles: [], columns: 2 });
+  assert.deepEqual(results(shell({ defaultMenuQuery: "Contr" })), { value: "Contr", titles: ["Active", "Drafts"], columns: 0 });
+  assert.deepEqual(results(shell({ menuQuery: "State", defaultMenuQuery: "Contr", onMenuQueryChange: () => undefined })), { value: "State", titles: ["Statements"], columns: 0 });
+  assert.doesNotMatch(shell({ menuQuery: "State", onMenuQueryChange: () => undefined }), /menuquery/i, "the props do not reach the shell root as attributes");
+  // A group's description is said with its title row and draws nothing.
+  const described = new JSDOM(shell({ navGroups: shellNavGroups.map((group, index) => (index === 1 ? { ...group, description: "Pay and statements" } : group)) })).window.document;
+  const title = described.querySelector('[data-panel="expanded"] [data-shell-group]:nth-child(2) > .tcrn-nav-group__label');
+  const said = described.getElementById(title?.getAttribute("aria-describedby") ?? "");
+  assert.equal(said?.textContent, "Pay and statements");
+  assert.ok(said?.matches(".tcrn-sr-only"));
+});
+
+test("ProductShell's paper gives the page header's title as the page's h1 unless the page says 2 (TCRN-DS-SUB-163)", () => {
+  const shell = (pageHeader: ProductShellProps["pageHeader"]) =>
+    renderToStaticMarkup(
+      <ProductShell
+        productName="TCRN TMS"
+        moduleName="Talent"
+        brandProductId="tms"
+        currentRouteLabel="Roster"
+        pageHeader={pageHeader}
+        navGroups={shellNavGroups}
+        locales={shellLocales}
+        currentLocale="en"
+      >
+        <div>content</div>
+      </ProductShell>
+    );
+  const headings = (html: string) => [...new JSDOM(html).window.document.querySelectorAll("[data-paper] h1, [data-paper] h2")].map((element) => `${element.tagName.toLowerCase()} ${element.className}`);
+  assert.deepEqual(headings(shell({ title: "Roster" })), ["h1 tcrn-heading tcrn-heading--2"]);
+  assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 2 })), ["h2 tcrn-heading tcrn-heading--2"]);
+  assert.deepEqual(headings(shell({ title: "Roster", headingLevel: 1 })), ["h1 tcrn-heading tcrn-heading--2"]);
+});
+
+test("STORY-147 STORY-140 landmarkLabel names a shell's two navs apart from another shell's on the same page; without it the names stay (TCRN-DS-SUB-148)", () => {
+  const shell = (extra: Partial<ProductShellProps>) => (
+    <ProductShell
+      productName="TCRN TMS"
+      moduleName="Talent"
+      brandProductId="tms"
+      currentRouteLabel="Roster"
+      pageHeader={{ title: "Roster" }}
+      navGroups={shellNavGroups}
+      locales={shellLocales}
+      currentLocale="en"
+      pinnedIds={["roster", "contracts"]}
+      {...extra}
+    >
+      <div>content</div>
+    </ProductShell>
+  );
+  const navNames = (html: string) => [...new JSDOM(html).window.document.querySelectorAll("nav[data-pins], nav.tcrn-breadcrumb")].map((nav) => nav.getAttribute("aria-label"));
+  assert.deepEqual(navNames(renderToStaticMarkup(shell({}))), ["Pinned items", "Breadcrumbs"], "without it the built-in names stay");
+  assert.deepEqual(navNames(renderToStaticMarkup(shell({ landmarkLabel: "Docs" }))), ["Docs · Pinned items", "Docs · Breadcrumbs"]);
+  assert.deepEqual(navNames(renderToStaticMarkup(shell({ landmarkLabel: "Docs", pageHeader: { title: "Roster", landmarkLabel: "Page" } }))), ["Docs · Pinned items", "Page · Breadcrumbs"]);
+  // Two shells on one page: every nav name is its own.
+  const both = navNames(renderToStaticMarkup(<>{shell({ landmarkLabel: "Docs" })}{shell({ landmarkLabel: "Example", currentLocale: "zh-CN" })}</>));
+  assert.equal(both.length, 4);
+  assert.equal(new Set(both).size, 4, both.join(" | "));
+  assert.doesNotMatch(renderToStaticMarkup(shell({ landmarkLabel: "Docs" })), /landmarklabel/i, "the prop does not reach the shell root as an attribute");
 });
