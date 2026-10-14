@@ -666,6 +666,9 @@ function ShellIntroStory() {
             { phase: "Ceiling", duration: `${timeline.max} ms` }
           ]}
         />
+        {/* TCRN-DS-SUB-187 (STORY-141): the page mounts the shell, so the intro plays here once per
+            session; the sentence is the dictionary's (five locales), the line below clears the marker. */}
+        <Text>This page mounts the shell in the browser, so the intro plays once per session; clear the session marker and reload to play it again.</Text>
         <Text>
           <code>{`sessionStorage.removeItem("${shellIntroSessionMarker}")`}</code>
         </Text>
