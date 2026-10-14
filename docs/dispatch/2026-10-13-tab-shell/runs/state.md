@@ -159,6 +159,8 @@
 - 开工链写：4 个 work-create，WORKSPACE_COMMAND_COMPLETED，version 2435 → 2439；读回零差异（planned）。
 - 跨包通告 `runs/r5/excerpts/cross-notes.md`。W1 已派：Q1（einzbern-main），包树 scratch `pkg/r5-q1`，摘录 `runs/r5/excerpts/Q1.md`。
 
+- 库门：Owner 已在 Atelier 声明 `verify`（covers 含 INIT-015 的 12 张与 INIT-016 的 16 张），引擎已是 2.0.3。按 START 第 2 步对 INIT-015 的 12 张跑 `gates-run` 三次都在执行 verify 前被拒（`GATES_PROJECT_UNKNOWN`：本机登记的 DS 条目没有 projectId）；补登记写本机设备配置，交 Owner（`runs/r5/problems/main.md` M2，收口文件写明命令）。START 写的「13 张」实为 12 张（M3）。
+
 | 包 | 状态 | 包内提交 | 合入 | 备注 |
 | --- | --- | --- | --- | --- |
 | Q1 | 实施中 | — | — | SUB-225 |
