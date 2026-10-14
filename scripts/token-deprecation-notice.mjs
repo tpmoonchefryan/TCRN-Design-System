@@ -18,6 +18,13 @@
 // tokens.css, a generated token block) is skipped, and so is a single copied alias declaration
 // (`--old: var(--new)`). Setting an old name to anything else counts as a use and gets a note,
 // because the G+ names are the ones to set.
+//
+// Only build output is left out of the walk (TCRN-DS-SUB-222). node_modules, .git, dist, coverage,
+// storybook-static, storybook-preview-static, .next and .turbo are skipped wherever they appear. A
+// `build` directory is judged by its relative path, the one the notice prints (from the parent of
+// the path given): with no `src` segment above it, it is a project's or package's build output and
+// is skipped; under a `src` segment it is source and is scanned (the Storybook's own build code
+// lives in apps/storybook/src/build).
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,7 +32,20 @@ import { formatDeprecatedTokenNotices, tcrnDeprecatedTokenAliases, tcrnDeprecate
 
 export const SOURCE_EXTENSIONS = Object.freeze([".css", ".scss", ".sass", ".less", ".pcss", ".html", ".vue", ".svelte", ".astro", ".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".mts", ".cts"]);
 const STYLESHEET_EXTENSIONS = new Set([".css", ".scss", ".sass", ".less", ".pcss"]);
-export const SKIPPED_DIRECTORIES = Object.freeze(["node_modules", ".git", "dist", "build", "coverage", "storybook-static", "storybook-preview-static", ".next", ".turbo"]);
+export const SKIPPED_DIRECTORIES = Object.freeze(["node_modules", ".git", "dist", "coverage", "storybook-static", "storybook-preview-static", ".next", ".turbo"]);
+export const BUILD_OUTPUT_DIRECTORY = "build";
+
+/**
+ * Whether the walk skips a directory, given its relative path as the notice prints it (from the
+ * parent of the path given, `/`-separated): the build output names anywhere, and `build` unless a
+ * `src` segment sits above it.
+ */
+export function isSkippedDirectory(relativePath) {
+  const segments = relativePath.split("/").filter(Boolean);
+  const name = segments[segments.length - 1];
+  if (SKIPPED_DIRECTORIES.includes(name)) return true;
+  return name === BUILD_OUTPUT_DIRECTORY && !segments.slice(0, -1).includes("src");
+}
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const TOKEN_BLOCK = /\{[^{}]*\/\*\s*tcrn-token-block:[^{}]*\}/g;
@@ -74,11 +94,12 @@ function collectFiles(target, problems) {
   const stat = fs.statSync(target);
   if (stat.isFile()) return [target];
   const files = [];
+  const base = path.dirname(target);
   const walk = (directory) => {
     for (const entry of fs.readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
       const full = path.join(directory, entry.name);
       if (entry.isDirectory()) {
-        if (!SKIPPED_DIRECTORIES.includes(entry.name)) walk(full);
+        if (!isSkippedDirectory(path.relative(base, full).split(path.sep).join("/"))) walk(full);
       } else if (entry.isFile() && SOURCE_EXTENSIONS.includes(path.extname(entry.name))) {
         files.push(full);
       }

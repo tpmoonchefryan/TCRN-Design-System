@@ -11,7 +11,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 import { createResolvedTokenMap, tcrnDeprecatedTokenAliases, tcrnDeprecatedTokens, tcrnThemeModes } from "../packages/ui-tokens/dist/index.js";
-import { runDeprecationNotice, scanDeprecatedTokenUses } from "../scripts/token-deprecation-notice.mjs";
+import { isSkippedDirectory, runDeprecationNotice, scanDeprecatedTokenUses } from "../scripts/token-deprecation-notice.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const script = path.join(repoRoot, "scripts/token-deprecation-notice.mjs");
@@ -95,6 +95,35 @@ test("the notice reports a path that does not exist as a usage error, and stays 
   const clean = runDeprecationNotice({ paths: [path.join(root, "clean")], label: "clean" });
   assert.deepEqual(clean.usages, []);
   assert.deepEqual(clean.lines, ["@tcrn/ui-tokens deprecated token notice (clean): no deprecated token names in 1 file(s)"]);
+});
+
+test("only build output is left out: a build directory under src is scanned, a root's own build output is not (TCRN-DS-SUB-222)", (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "tcrn-token-consumer-build-"));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const oldName = 'export const muted = "var(--tcrn-color-text-secondary)";\n';
+  write(root, "src/build/navigation.ts", oldName);
+  write(root, "build/navigation.js", oldName);
+  write(root, "src/dist/navigation.js", oldName);
+  const name = path.basename(root);
+  // Given the project root: the source file under src/build is counted; the root's build/ output
+  // and a dist/ anywhere are still skipped. The old rule skipped every directory named build, so
+  // it found no file here at all.
+  const whole = runDeprecationNotice({ paths: [root], label: "build-dirs" });
+  assert.deepEqual(whole.files, [`${name}/src/build/navigation.ts`]);
+  assert.deepEqual(whole.usages.map(({ variable, count, files }) => ({ variable, count, files })), [
+    { variable: "--tcrn-color-text-secondary", count: 1, files: [`${name}/src/build/navigation.ts`] }
+  ]);
+  // Given the source directory itself, as the Storybook build passes apps/storybook/src: its
+  // build directory is still under src, so it is scanned.
+  const fromSource = runDeprecationNotice({ paths: [path.join(root, "src")], label: "build-dirs" });
+  assert.deepEqual(fromSource.files, ["src/build/navigation.ts"]);
+  assert.deepEqual(fromSource.usages.map(({ variable, count }) => ({ variable, count })), [{ variable: "--tcrn-color-text-secondary", count: 1 }]);
+  // The rule reads the relative path the notice prints.
+  assert.equal(isSkippedDirectory("consumer/build"), true);
+  assert.equal(isSkippedDirectory("consumer/packages/ui/build"), true);
+  assert.equal(isSkippedDirectory("consumer/src/build"), false);
+  assert.equal(isSkippedDirectory("src/build"), false);
+  assert.equal(isSkippedDirectory("consumer/src/node_modules"), true);
 });
 
 test("definitions are not uses; setting an old name is, with a note to set the new one", () => {
