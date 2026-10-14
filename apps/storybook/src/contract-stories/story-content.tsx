@@ -2332,6 +2332,9 @@ const legacyContractStories: LegacyContractStory[] = [
             // landmarks are named after the proof, apart from the page's shell (TCRN-DS-SUB-150).
             pageHeader={{ title: "Cockpit", headingLevel: 2 }}
             landmarkLabel="Package-backed AOS shell boundary"
+            // Its content region is named after the proof too: the built-in name is the knowledge-base
+            // demo shell's on the same page (axe landmark-unique).
+            contentLabel="Package-backed AOS shell boundary"
             currentTheme="light"
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}
