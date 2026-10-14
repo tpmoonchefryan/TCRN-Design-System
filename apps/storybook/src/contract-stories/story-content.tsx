@@ -1160,7 +1160,7 @@ const legacyContractStories: LegacyContractStory[] = [
               rows={[
                 {
                   aspect: "Source library",
-                  standard: "37 icons drawn for @tcrn/ui-react from the design contract, exposed through Icon.",
+                  standard: "38 icons drawn for @tcrn/ui-react from the design contract, exposed through Icon.",
                   boundary: "Downstream UI imports TCRN icon primitives instead of drawing its own SVGs."
                 },
                 {
@@ -1507,14 +1507,14 @@ const legacyContractStories: LegacyContractStory[] = [
                 blocked: "Putting machine-contract JSON links in the primary human toolbar."
               },
               {
-                control: "Product SideNav collapse",
-                rule: "Any product or documentation shell that claims SideNav behavior exposes a keyboard-accessible collapse and expand control, persists or route-owns the collapsed state, and proves active location in both states.",
-                blocked: "Static left rails without collapse proof or inaccessible collapsed navigation."
+                control: "Top-band shell navigation",
+                rule: "Product and documentation shells are the top-band shell: the brand button opens the full menu, pinned items open their drop-downs, and the current page shows as the menu's current row and the paper's breadcrumb. Navigation lives only in the band, the full menu, and the drop-downs, so there is no collapse control.",
+                blocked: "Navigation outside the band, the full menu, and the drop-downs, or a collapse control."
               },
               {
                 control: "Product IA and brand",
-                rule: "Product shells use admitted brand assets and show only route-admitted modules as primary navigation or registered module cards.",
-                blocked: "Generic icon/text-only brand substitutes or planned modules presented as registered product IA."
+                rule: "Product shells use the approved product marks unchanged and show only route-admitted modules in the full menu. A product suffix keeps its approved color in both themes; its night value awaits the Owner's D7 ruling.",
+                blocked: "Generic icon/text-only brand substitutes, a separate night suffix color, or planned modules presented as registered product IA."
               }
             ]}
           />
@@ -2346,9 +2346,9 @@ const legacyContractStories: LegacyContractStory[] = [
             ]}
           >
             <ReadbackPanel title="Package-backed AOS shell boundary">
-              <Text>Search results are open as a static display state; the card text remains readable.</Text>
+              <Text>The avatar menu is open as a static display state, so its theme and language controls render; the card text remains readable.</Text>
               <Text>
-                Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Collapse, theme, locale popup, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.
+                Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Menu, drop-down, pin, theme, language, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.
               </Text>
               <ReferenceList items={["package-backed shell boundary", "semantic control APIs", "controller prop bundles", "product adoption separate"]} />
             </ReadbackPanel>
@@ -2845,21 +2845,21 @@ const legacyContractStories: LegacyContractStory[] = [
             }))}
           />
         </ReadbackPanel>
-        <ReadbackPanel title="Tree, canvas, and local rail">
-          <SplitView
-            label="Document component split view"
+        <ReadbackPanel title="Document tree in a drop-down">
+          <Text>A tree of destinations lives in the full menu and the drop-downs, so TreeNav sits in a drop-down and carries no frame of its own; a page does not take it as a navigation column.</Text>
+          <Popover title="Documents" open placement="bottom-start">
+            <TreeNav label="Document tree" items={documentTreeItems} density="dense" />
+          </Popover>
+        </ReadbackPanel>
+        <ReadbackPanel title="Canvas and contents in the page">
+          <Text>A page that needs its own contents shows them as page content: the document canvas and its TocRail sit in the paper.</Text>
+          <DocumentCanvas
             density="dense"
-            list={<TreeNav items={documentTreeItems} density="dense" />}
-            detail={
-              <DocumentCanvas
-                density="dense"
-                title="Owner inspection guide"
-                summary="Static document canvas using TCRN-owned component primitives and sanitized references."
-                labels={["owner-review", "static", "no-live"]}
-                meta={<MachineTokenCell token="KB-STATIC-01" kind="generic" density="dense" />}
-                sections={knowledgeDocumentSections}
-              />
-            }
+            title="Owner inspection guide"
+            summary="Static document canvas using TCRN-owned component primitives and sanitized references."
+            labels={["owner-review", "static", "no-live"]}
+            meta={<MachineTokenCell token="KB-STATIC-01" kind="generic" density="dense" />}
+            sections={knowledgeDocumentSections}
           />
           <TocRail
             density="dense"
@@ -2880,10 +2880,18 @@ const legacyContractStories: LegacyContractStory[] = [
     render: () => (
       <section className="alpha-story-stack">
         <ReadbackPanel title="Density variants">
-          <Text>Document surfaces accept the same comfortable, compact, or dense density. The same TreeNav is shown at all three. Only the dense modifier carries distinct package styling today; comfortable and compact record the density on data-density but share the default styling.</Text>
-          <TreeNav label="Document page tree (comfortable)" items={documentTreeItems} density="comfortable" />
-          <TreeNav label="Document page tree (compact)" items={documentTreeItems} density="compact" />
-          <TreeNav label="Document page tree (dense)" items={documentTreeItems} density="dense" />
+          <Text>Document surfaces accept the same comfortable, compact, or dense density. The same TreeNav is shown at all three, each in its drop-down. Only the dense modifier carries distinct package styling today; comfortable and compact record the density on data-density but share the default styling.</Text>
+          <div className="tcrn-doc-display-primitive-grid">
+            <Popover title="Comfortable" open placement="bottom-start">
+              <TreeNav label="Document page tree (comfortable)" items={documentTreeItems} density="comfortable" />
+            </Popover>
+            <Popover title="Compact" open placement="bottom-start">
+              <TreeNav label="Document page tree (compact)" items={documentTreeItems} density="compact" />
+            </Popover>
+            <Popover title="Dense" open placement="bottom-start">
+              <TreeNav label="Document page tree (dense)" items={documentTreeItems} density="dense" />
+            </Popover>
+          </div>
         </ReadbackPanel>
         <ReadbackPanel title="Metadata, comments, evidence, and history">
           <MetadataRail
