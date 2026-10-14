@@ -1,0 +1,964 @@
+[
+ {
+  "key": "TCRN-DS-SUB-178",
+  "parentKey": "TCRN-DS-STORY-135",
+  "parentId": "work:1ad3c63c6fe6468a9d553758",
+  "title": "壳件与首行的几何字面值改用 token：图标走 Icon 尺寸档，12、11 进 shell 组，首行标 22、44 读 token，补顶带 C8 样式",
+  "files": [
+   "packages/ui-react/src/components/Navigation/Navigation.tsx",
+   "packages/ui-react/src/components/Navigation/Navigation.test.tsx",
+   "packages/ui-react/src/components/Navigation/ShellBrandButton.tsx",
+   "packages/ui-react/src/components/Navigation/ShellBrandButton.test.tsx",
+   "packages/ui-react/src/components/Navigation/ShellMenu.tsx",
+   "packages/ui-react/src/components/Navigation/ShellMenu.test.tsx",
+   "packages/ui-react/src/components/Navigation/ShellPins.tsx",
+   "packages/ui-react/src/components/Navigation/ShellPins.test.tsx",
+   "packages/ui-react/src/styles/base.css.ts",
+   "packages/ui-react/src/styles/brand.css.ts",
+   "packages/ui-react/src/styles/shell.css.ts",
+   "docs/design/gplus-2026-10/contract/tokens.json",
+   "packages/ui-tokens/src/gplus-tokens.generated.ts",
+   "packages/ui-react/src/styles/generated/actions.pairs.ts",
+   "packages/ui-react/src/styles/generated/inputs.pairs.ts",
+   "packages/ui-react/src/styles/generated/typography.scale.ts",
+   "apps/storybook/src/contract-stories/gplus/generated/matrices.generated.ts",
+   "packages/ui-tokens/src/index.ts",
+   "packages/ui-tokens/src/index.test.ts",
+   "packages/ui-tokens/src/tokens.css",
+   "apps/storybook/src/storybook.css"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-194",
+   "TCRN-DS-SUB-191"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-generate.mjs",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-tokens build",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/tokens-sync.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/tokens-sync.mjs --check",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-tokens test",
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run typecheck",
+   "corepack pnpm@10.12.1 -C <包树> run tokens:proof",
+   "corepack pnpm@10.12.1 -C <包树> run shell:fidelity",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run contract:static",
+   "corepack pnpm@10.12.1 -C <包树> run contract:proof"
+  ],
+  "package": "M4",
+  "wave": "W2",
+  "sources": [
+   "R3-18",
+   "R3-8"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-179",
+  "parentKey": "TCRN-DS-STORY-138",
+  "parentId": "work:3d8ec5e9bbaaa3623c3315c8",
+  "title": "⌘K 只打开一个壳（挂载与门）：壳 story 默认关，门按页面参数开被测屏，focusLoop 断言焦点在被测屏搜索框",
+  "files": [
+   "apps/storybook/src/build/shell-hydrate.tsx",
+   "apps/storybook/src/build/page-template.tsx",
+   "scripts/shell-measure-proof.mjs",
+   "tests/shell-measure-proof.test.mjs",
+   "tests/fixtures/geometry-measure/shell/manifest.json"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-201",
+   "TCRN-DS-SUB-185",
+   "TCRN-DS-SUB-196"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> exec node --test tests/shell-measure-proof.test.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs --fixtures",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:smoke"
+  ],
+  "package": "M7",
+  "wave": "W3",
+  "sources": [
+   "R3-16",
+   "R3-14"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-180",
+  "parentKey": "TCRN-DS-STORY-139",
+  "parentId": "work:09e0986c769bddf72859897f",
+  "title": "下拉定位与级联回退补 DOM 用例：按固定层祖先定位、顶带尺寸变化后重定位、级联 ← 回到可见的打开行",
+  "files": [
+   "packages/ui-react/src/test/shell-dropdown.dom.spec.tsx"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> run test:dom"
+  ],
+  "package": "M3",
+  "wave": "W1",
+  "sources": [
+   "R3-13"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-181",
+  "parentKey": "TCRN-DS-STORY-140",
+  "parentId": "work:e14a7f089a9cac4c7da39d52",
+  "title": "geometry-proof 的 searchOverlay 只计所在面板之外的碰撞，并断言该面板两主题底色不透明",
+  "files": [
+   "scripts/geometry-proof.mjs"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run geometry:proof"
+  ],
+  "package": "M2",
+  "wave": "W1",
+  "sources": [
+   "R3-4"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-182",
+  "parentKey": "TCRN-DS-STORY-140",
+  "parentId": "work:e14a7f089a9cac4c7da39d52",
+  "title": "纸内滚动区的焦点内收可见，兜底规则不再盖掉头像等壳件自带的焦点对，focusRingClipInPage 纳入纸内滚动区",
+  "files": [
+   "packages/ui-react/src/styles/shell.css.ts",
+   "packages/ui-react/src/components/Navigation/Navigation.test.tsx",
+   "scripts/geometry-measure-proof.mjs",
+   "tests/geometry-measure-proof.test.mjs",
+   "tests/fixtures/geometry-measure/all.green.html",
+   "tests/fixtures/geometry-measure/manifest.json"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-188"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> exec node --test tests/geometry-measure-proof.test.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/geometry-measure-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-static-proof.mjs"
+  ],
+  "package": "M3",
+  "wave": "W1",
+  "sources": [
+   "R3-10"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-183",
+  "parentKey": "TCRN-DS-STORY-140",
+  "parentId": "work:e14a7f089a9cac4c7da39d52",
+  "title": "删死变量与死规则：--tcrn-motion-product-shell-search 连同其断言、门期望与登记，typographyCss03 连同其登记",
+  "files": [
+   "packages/ui-react/src/styles/base.css.ts",
+   "packages/ui-react/src/components/Navigation/Navigation.test.tsx",
+   "scripts/storybook-smoke.mjs",
+   "scripts/token-extension-proof.mjs",
+   "packages/ui-react/src/styles/typography.css.ts",
+   "packages/ui-react/src/styles/index.ts"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-192"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run typecheck",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/token-extension-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> run tokens:proof",
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:smoke"
+  ],
+  "package": "M3",
+  "wave": "W1",
+  "sources": [
+   "R3-12"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-184",
+  "parentKey": "TCRN-DS-STORY-140",
+  "parentId": "work:e14a7f089a9cac4c7da39d52",
+  "title": "地标名按实例区分：landmarkLabel 作壳内全部具名地标的前缀，TocRail 的 nav 取标题作名，两份样板传不同名",
+  "files": [
+   "packages/ui-react/src/components/Navigation/Navigation.tsx",
+   "packages/ui-react/src/components/Navigation/Navigation.test.tsx",
+   "packages/ui-react/src/components/Navigation/ShellMenu.tsx",
+   "packages/ui-react/src/components/Navigation/ShellMenu.test.tsx",
+   "packages/ui-react/src/components/Navigation/ShellDropdown.tsx",
+   "packages/ui-react/src/components/Navigation/ShellDropdown.test.tsx",
+   "packages/ui-react/src/components/Navigation/shell-copy.ts",
+   "packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx",
+   "packages/ui-react/src/components/DataDisplay/DomainDisplay.test.tsx",
+   "packages/ui-react/src/test/shell-menu.dom.spec.tsx",
+   "apps/storybook/src/contract-stories/prototypes/storybook-shell-demos.tsx",
+   "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-188",
+   "TCRN-DS-SUB-182",
+   "TCRN-DS-SUB-192",
+   "TCRN-DS-SUB-183",
+   "TCRN-DS-SUB-180"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run test:dom",
+   "corepack pnpm@10.12.1 -C <包树> run typecheck",
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof"
+  ],
+  "package": "M4",
+  "wave": "W2",
+  "sources": [
+   "R3-14"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-185",
+  "parentKey": "TCRN-DS-STORY-140",
+  "parentId": "work:e14a7f089a9cac4c7da39d52",
+  "title": "⌘K 只打开一个壳（包件）：ProductShell 透传 menuShortcut（默认开）给 ShellMenu，README 的壳控制边界同步",
+  "files": [
+   "packages/ui-react/src/components/Navigation/Navigation.tsx",
+   "packages/ui-react/src/components/Navigation/Navigation.test.tsx",
+   "packages/ui-react/src/components/Navigation/ShellMenu.tsx",
+   "packages/ui-react/src/components/Navigation/ShellMenu.test.tsx",
+   "packages/ui-react/README.md",
+   "packages/ui-react/src/test/shell-menu.dom.spec.tsx"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-184"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run test:dom",
+   "corepack pnpm@10.12.1 -C <包树> run typecheck",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:contracts"
+  ],
+  "package": "M4",
+  "wave": "W2",
+  "sources": [
+   "R3-16"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-186",
+  "parentKey": "TCRN-DS-STORY-140",
+  "parentId": "work:e14a7f089a9cac4c7da39d52",
+  "title": "文档页样板接上拖排与产品切换：shell-top-band 收起屏接控制器的本地偏好并传 products",
+  "files": [
+   "apps/storybook/src/build/shell-hydrate.tsx",
+   "apps/storybook/src/smoke.test.ts",
+   "scripts/lib/story-budget.mjs"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-198"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:smoke",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof"
+  ],
+  "package": "M5",
+  "wave": "W2",
+  "sources": [
+   "R3-25"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-187",
+  "parentKey": "TCRN-DS-STORY-141",
+  "parentId": "work:e2def1cb6cee96bcde0ea937",
+  "title": "登入动画读回渲染替换句：ShellIntroStory 的读回加上字典里已有的五语替换句",
+  "files": [
+   "apps/storybook/src/contract-stories/story-content.tsx"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:smoke"
+  ],
+  "package": "M9",
+  "wave": "W4",
+  "sources": [
+   "R3-26"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-188",
+  "parentKey": "TCRN-DS-STORY-142",
+  "parentId": "work:27344937d9f099034b0c773e",
+  "title": "菜单引导列图标按板 .ic 的盒画：宽高 22、内距 3、border-box、贴轨道起点，字形左缘 19，Sheet 行按板核对",
+  "files": [
+   "packages/ui-react/src/styles/shell.css.ts",
+   "packages/ui-react/src/styles/shell-sheet.css.ts",
+   "packages/ui-react/src/components/Navigation/ShellMenu.test.tsx"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run test:dom",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/css-template-integrity-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-static-proof.mjs"
+  ],
+  "package": "M3",
+  "wave": "W1",
+  "sources": [
+   "R3-9"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-189",
+  "parentKey": "TCRN-DS-STORY-143",
+  "parentId": "work:1b03f6ae2b1a9e080fde1432",
+  "title": "contract:static 的测试不变式随豁免到期更新：families.json 列已全量检查的批次，NOT_CHECKED_HERE.C10 补 shellGeometryLiterals",
+  "files": [
+   "tests/contract-static-proof.test.mjs",
+   "scripts/contract-static-proof.mjs",
+   "docs/contract/families.json"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run contract:static"
+  ],
+  "package": "M2",
+  "wave": "W1",
+  "sources": [
+   "R3-6"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-190",
+  "parentKey": "TCRN-DS-STORY-143",
+  "parentId": "work:1b03f6ae2b1a9e080fde1432",
+  "title": "C11 卡套卡按组合件的家族归属：同带两个家族根类时归组合件，只带 layout 根类的仍记 layout",
+  "files": [
+   "scripts/contract-static-proof.mjs",
+   "tests/contract-static-proof.test.mjs",
+   "docs/contract/exemptions.json"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-189"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run contract:static"
+  ],
+  "package": "M2",
+  "wave": "W1",
+  "sources": [
+   "R3-7"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-191",
+  "parentKey": "TCRN-DS-STORY-143",
+  "parentId": "work:1b03f6ae2b1a9e080fde1432",
+  "title": "把顶带登记为 C8 工具栏：容器 tcrn-shell-strip、让步项 tcrn-shell-pins、固定项标按钮与右簇，跑 C8 静态层与 story 层",
+  "files": [
+   "docs/contract/roles.json",
+   "tests/contract-static-proof.test.mjs",
+   "docs/contract/clauses.md"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-190"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run contract:static"
+  ],
+  "package": "M2",
+  "wave": "W1",
+  "sources": [
+   "R3-8"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-192",
+  "parentKey": "TCRN-DS-STORY-143",
+  "parentId": "work:1b03f6ae2b1a9e080fde1432",
+  "title": "导航项单行截断写进基础规则：.tcrn-nav-item__label 加 nowrap、ellipsis、overflow hidden、min-width 0，有文字就带 title",
+  "files": [
+   "packages/ui-react/src/styles/base.css.ts",
+   "packages/ui-react/src/styles/shell.css.ts",
+   "packages/ui-react/src/components/Navigation/Navigation.tsx",
+   "packages/ui-react/src/components/Navigation/Navigation.test.tsx"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-182"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run typecheck",
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/contract-static-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> run shell:fidelity"
+  ],
+  "package": "M3",
+  "wave": "W1",
+  "sources": [
+   "R3-11"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-193",
+  "parentKey": "TCRN-DS-STORY-143",
+  "parentId": "work:1b03f6ae2b1a9e080fde1432",
+  "title": "TocRail 加可选标题层级（2 或 3，默认 3）：包件与单测",
+  "files": [
+   "packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx",
+   "packages/ui-react/src/components/DataDisplay/DomainDisplay.test.tsx"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-184"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run typecheck"
+  ],
+  "package": "M4",
+  "wave": "W2",
+  "sources": [
+   "R3-15"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-194",
+  "parentKey": "TCRN-DS-STORY-145",
+  "parentId": "work:f19ca0b68e52842e947dcafc",
+  "title": "data-logo 改写标的 id：首行与底栏锁定块的 data-logo 用 asset.markId，品牌资产门的比对键同包对齐",
+  "files": [
+   "packages/ui-react/src/components/Navigation/Navigation.tsx",
+   "packages/ui-react/src/components/Navigation/Navigation.test.tsx",
+   "scripts/brand-asset-source-proof.mjs"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-185"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/ui-react test",
+   "corepack pnpm@10.12.1 -C <包树> run brand-asset:proof",
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs"
+  ],
+  "package": "M4",
+  "wave": "W2",
+  "sources": [
+   "R3-17"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-195",
+  "parentKey": "TCRN-DS-STORY-145",
+  "parentId": "work:f19ca0b68e52842e947dcafc",
+  "title": "品牌字标保持原样：首行锁定块的 __word、__suffix 进换字跳过表、台账与 axe 字标后缀表，三张名单载体一致",
+  "files": [
+   "apps/storybook/src/build/client-scripts.ts",
+   "scripts/lib/locale-invariant-ledger.mjs",
+   "scripts/internal-alpha-browser-proof.mjs",
+   "apps/storybook/src/smoke.test.ts"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-198"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs"
+  ],
+  "package": "M5",
+  "wave": "W2",
+  "sources": [
+   "R3-20"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-196",
+  "parentKey": "TCRN-DS-STORY-146",
+  "parentId": "work:792b63bc73100197f6f41e96",
+  "title": "singleLine 对纸内面包屑逐段读：收每一段 pageCrumb，每段照判单行、省略号与 title，夹具加溢出又无省略号的一段",
+  "files": [
+   "scripts/lib/shell-measure.mjs",
+   "scripts/shell-measure-proof.mjs",
+   "tests/shell-measure-proof.test.mjs",
+   "tests/fixtures/geometry-measure/shell/package-menu.html",
+   "tests/fixtures/geometry-measure/shell/package-pages.html",
+   "tests/fixtures/geometry-measure/shell/mutations.json",
+   "tests/fixtures/geometry-measure/shell/manifest.json",
+   "docs/design/gplus-2026-10/measure-shell.js"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-207"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> exec node --test tests/shell-measure-proof.test.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs --fixtures",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs"
+  ],
+  "package": "M1",
+  "wave": "W1",
+  "sources": [
+   "R3-3"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-197",
+  "parentKey": "TCRN-DS-STORY-147",
+  "parentId": "work:6fd15b4e5366871194d862ab",
+  "title": "parity 的 package-nav-item 两侧量同一种行盒：普通行取 .tcrn-nav-item，可钉行取 .tcrn-nav-item-row",
+  "files": [
+   "scripts/shell-parity-proof.mjs"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run shell:parity"
+  ],
+  "package": "M2",
+  "wave": "W1",
+  "sources": [
+   "R3-5"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-198",
+  "parentKey": "TCRN-DS-STORY-147",
+  "parentId": "work:6fd15b4e5366871194d862ab",
+  "title": "browser-proof 的期望与时机：复现性比投影、禁用项读打开的屏、泄漏扫描等水合标记、describedby 多 id 逐个取",
+  "files": [
+   "scripts/internal-alpha-browser-proof.mjs",
+   "apps/storybook/src/build/shell-hydrate.tsx"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof"
+  ],
+  "package": "M5",
+  "wave": "W2",
+  "sources": [
+   "R3-19"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-199",
+  "parentKey": "TCRN-DS-STORY-147",
+  "parentId": "work:6fd15b4e5366871194d862ab",
+  "title": "AOS 壳标题被判裁切：先读 browser-proof 的裁切判定定根因，是 story 塌陷就改视觉实例的画框或布局",
+  "files": [
+   "apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx",
+   "apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof"
+  ],
+  "package": "M6",
+  "wave": "W2",
+  "sources": [
+   "R3-23"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-200",
+  "parentKey": "TCRN-DS-STORY-147",
+  "parentId": "work:6fd15b4e5366871194d862ab",
+  "title": "AOS 搜索结果变体渲染打开的菜单与结果，查清 mobile-dark-zh-cn-work-queue 缺「工作项」的来源并在原处修",
+  "files": [
+   "apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx",
+   "apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx",
+   "apps/storybook/src/build/locales/storybook-content-text.ts"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-199"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:smoke",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test"
+  ],
+  "package": "M6",
+  "wave": "W2",
+  "sources": [
+   "R3-24"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-201",
+  "parentKey": "TCRN-DS-STORY-147",
+  "parentId": "work:6fd15b4e5366871194d862ab",
+  "title": "文档壳浮层换成水合的真件：受控 menuOpen、页内索引作 searchProvider、主题与语言接现有脚本，≤ 760 打开 Sheet",
+  "files": [
+   "apps/storybook/src/build/page-template.tsx",
+   "apps/storybook/src/build/client-scripts.ts",
+   "apps/storybook/src/build/shell-hydrate.tsx",
+   "scripts/storybook-smoke.mjs",
+   "scripts/internal-alpha-browser-proof.mjs"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-184",
+   "TCRN-DS-SUB-185",
+   "TCRN-DS-SUB-195",
+   "TCRN-DS-SUB-186"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:smoke",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof",
+   "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test"
+  ],
+  "package": "M7",
+  "wave": "W3",
+  "sources": [
+   "R3-21"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-202",
+  "parentKey": "TCRN-DS-STORY-147",
+  "parentId": "work:6fd15b4e5366871194d862ab",
+  "title": "文档页 TocRail 传标题层级 2，heading-order 归 0",
+  "files": [
+   "apps/storybook/src/build/page-template.tsx"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-193",
+   "TCRN-DS-SUB-179"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof"
+  ],
+  "package": "M7",
+  "wave": "W3",
+  "sources": [
+   "R3-15"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-203",
+  "parentKey": "TCRN-DS-STORY-147",
+  "parentId": "work:6fd15b4e5366871194d862ab",
+  "title": "AOS 标题裁切的门侧：按 SUB-199 的结论，门只读渲染出的元素，阈值不变",
+  "files": [
+   "scripts/internal-alpha-browser-proof.mjs"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-199"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof"
+  ],
+  "package": "M7",
+  "wave": "W3",
+  "sources": [
+   "R3-23"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-204",
+  "parentKey": "TCRN-DS-STORY-147",
+  "parentId": "work:6fd15b4e5366871194d862ab",
+  "title": "文档层弃用 token 换 G+ 新名，删 search-static 死规则、例外与白名单项，style-scale 与 icon-roster 去旧说法",
+  "files": [
+   "apps/storybook/src/alpha-styles.ts",
+   "apps/storybook/src/story-demo-styles.ts",
+   "apps/storybook/src/storybook.css",
+   "apps/storybook/src/internal-dev/overlay-family-lab/OverlayFamilyLab.tsx",
+   "scripts/shell-fidelity-proof.mjs",
+   "docs/style-scale.md",
+   "apps/storybook/src/contract-stories/gplus/icon-roster.tsx",
+   "docs/design/gplus-2026-10/doc-class-map.json"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-178",
+   "TCRN-DS-SUB-192"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run demo-styles:sync",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run shell:fidelity",
+   "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof",
+   "corepack pnpm@10.12.1 -C <包树> run tokens:proof"
+  ],
+  "package": "M8",
+  "wave": "W3",
+  "sources": [
+   "R3-27"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-205",
+  "parentKey": "TCRN-DS-STORY-148",
+  "parentId": "work:bad748579e7b1b7f0773bd53",
+  "title": "样板画框里的壳与画框同高：StaticMarkup 包装层加 block-size 100%，壳高 640、纸内可滚、overlap 0",
+  "files": [
+   "apps/storybook/src/contract-stories/gplus/samples/composition-one.tsx",
+   "apps/storybook/src/contract-stories/gplus/matrix-renderer.tsx"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:visual-proof",
+   "corepack pnpm@10.12.1 -C <包树> run geometry:measure"
+  ],
+  "package": "M6",
+  "wave": "W2",
+  "sources": [
+   "R3-22"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-206",
+  "parentKey": "TCRN-DS-STORY-149",
+  "parentId": "work:854cd021e8bb869b2b585fe0",
+  "title": "pinJitter 与 story-label-plus-40 只读渲染出的元素：钉钮与文字宽只收有 client rect 的，label-plus-40 改选可见文字",
+  "files": [
+   "scripts/lib/shell-measure.mjs",
+   "scripts/shell-measure-proof.mjs",
+   "tests/shell-measure-proof.test.mjs",
+   "tests/fixtures/geometry-measure/shell/package-menu.html",
+   "tests/fixtures/geometry-measure/shell/package-pages.html",
+   "tests/fixtures/geometry-measure/shell/mutations.json",
+   "tests/fixtures/geometry-measure/shell/manifest.json",
+   "docs/design/gplus-2026-10/measure-shell.js"
+  ],
+  "dependsOn": [],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> exec node --test tests/shell-measure-proof.test.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs --fixtures",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs"
+  ],
+  "package": "M1",
+  "wave": "W1",
+  "sources": [
+   "R3-1"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-207",
+  "parentKey": "TCRN-DS-STORY-149",
+  "parentId": "work:854cd021e8bb869b2b585fe0",
+  "title": "contrast 的底色按叠放取：对比度格按格中心 elementsFromPoint 的绘制栈往下合成到第一层不透明底",
+  "files": [
+   "scripts/lib/shell-measure.mjs",
+   "scripts/shell-measure-proof.mjs",
+   "tests/shell-measure-proof.test.mjs",
+   "tests/fixtures/geometry-measure/shell/package-menu.html",
+   "tests/fixtures/geometry-measure/shell/package-pages.html",
+   "tests/fixtures/geometry-measure/shell/mutations.json",
+   "tests/fixtures/geometry-measure/shell/manifest.json",
+   "docs/design/gplus-2026-10/measure-shell.js"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-206"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> exec node --test tests/shell-measure-proof.test.mjs",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs --fixtures",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/shell-measure-proof.mjs"
+  ],
+  "package": "M1",
+  "wave": "W1",
+  "sources": [
+   "R3-2"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-208",
+  "parentKey": "TCRN-DS-STORY-150",
+  "parentId": "work:b140305693da159bfdc615c8",
+  "title": "清掉代码与文案的旧壳残留：AI 契约、oracle、content rows、文档壳控制表、aos 两份与 smoke 交叉检查，弃用名换新",
+  "files": [
+   "apps/storybook/src/build/ai-consumption-contract.ts",
+   "apps/storybook/src/build/foundation-visual-standards.ts",
+   "apps/storybook/src/contract-stories/content/navigation-rows.ts",
+   "apps/storybook/src/contract-stories/content/component-rows.ts",
+   "apps/storybook/src/contract-stories/story-content.tsx",
+   "apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx",
+   "apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx",
+   "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+   "apps/storybook/src/build/locales/storybook-content-text.ts",
+   "apps/storybook/src/build/locales/storybook-locale-text.ts",
+   "scripts/storybook-smoke.mjs",
+   "apps/storybook/src/smoke.test.ts",
+   "scripts/lib/story-budget.mjs",
+   "scripts/lib/locale-invariant-ledger.mjs"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-187",
+   "TCRN-DS-SUB-201",
+   "TCRN-DS-SUB-200",
+   "TCRN-DS-SUB-204",
+   "TCRN-DS-SUB-184",
+   "TCRN-DS-SUB-186"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:smoke",
+   "corepack pnpm@10.12.1 -C <包树> --filter @tcrn/design-system-storybook test",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:contracts",
+   "corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan",
+   "corepack pnpm@10.12.1 -C <包树> run scan"
+  ],
+  "package": "M9",
+  "wave": "W4",
+  "sources": [
+   "R3-28",
+   "R3-27"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-209",
+  "parentKey": "TCRN-DS-STORY-150",
+  "parentId": "work:b140305693da159bfdc615c8",
+  "title": "清掉纯文档里的旧壳残留：设计 README、storybook-map、契约 README、ui-tokens README 改顶带壳、两主题同色与四块 token",
+  "files": [
+   "docs/design/gplus-2026-10/README.md",
+   "docs/design/gplus-2026-10/storybook-map.md",
+   "docs/contract/README.md",
+   "packages/ui-tokens/README.md"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-178",
+   "TCRN-DS-SUB-201"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run scan",
+   "corepack pnpm@10.12.1 -C <包树> run internal-vocab:scan"
+  ],
+  "package": "M10",
+  "wave": "W4",
+  "sources": [
+   "R3-28",
+   "R3-18"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-210",
+  "parentKey": "TCRN-DS-STORY-150",
+  "parentId": "work:b140305693da159bfdc615c8",
+  "title": "迁移说明从 M38 起追加本轮条目，CHANGELOG 摘要同步",
+  "files": [
+   "docs/migration-4.0.md",
+   "CHANGELOG.md"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-209",
+   "TCRN-DS-SUB-183",
+   "TCRN-DS-SUB-184",
+   "TCRN-DS-SUB-193",
+   "TCRN-DS-SUB-185",
+   "TCRN-DS-SUB-194",
+   "TCRN-DS-SUB-178",
+   "TCRN-DS-SUB-179",
+   "TCRN-DS-SUB-202"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run scaffold:proof",
+   "corepack pnpm@10.12.1 -C <包树> run scan"
+  ],
+  "package": "M10",
+  "wave": "W4",
+  "sources": [
+   "R3-29"
+  ]
+ },
+ {
+  "key": "TCRN-DS-SUB-211",
+  "parentKey": "TCRN-DS-STORY-150",
+  "parentId": "work:b140305693da159bfdc615c8",
+  "title": "批末生成物再生与清单校正（SUB-177 续做）：视觉基线按分类重收，生成物一次再生，owner-acceptance 改批末读数",
+  "files": [
+   "docs/verification/**",
+   "docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md"
+  ],
+  "dependsOn": [
+   "TCRN-DS-SUB-196",
+   "TCRN-DS-SUB-191",
+   "TCRN-DS-SUB-180",
+   "TCRN-DS-SUB-178",
+   "TCRN-DS-SUB-186",
+   "TCRN-DS-SUB-200",
+   "TCRN-DS-SUB-203",
+   "TCRN-DS-SUB-204",
+   "TCRN-DS-SUB-208",
+   "TCRN-DS-SUB-210"
+  ],
+  "localGates": [
+   "corepack pnpm@10.12.1 -C <包树> run build",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:build",
+   "corepack pnpm@10.12.1 -C <包树> run tokens:proof",
+   "corepack pnpm@10.12.1 -C <包树> run geometry:proof",
+   "corepack pnpm@10.12.1 -C <包树> run geometry:measure",
+   "corepack pnpm@10.12.1 -C <包树> run storybook:visual-proof",
+   "corepack pnpm@10.12.1 -C <包树> run doc-shell:proof",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:contracts",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/internal-alpha-browser-proof.mjs --update-visual-baseline <选择文件>",
+   "corepack pnpm@10.12.1 -C <包树> run internal-alpha:browser-proof",
+   "corepack pnpm@10.12.1 -C <包树> exec node scripts/internal-alpha-hardening-proof.mjs",
+   "corepack pnpm@10.12.1 -C <包树> run pack:smoke",
+   "corepack pnpm@10.12.1 -C <包树> run scan"
+  ],
+  "package": "M11",
+  "wave": "W5",
+  "sources": [
+   "R3-30"
+  ]
+ }
+]
