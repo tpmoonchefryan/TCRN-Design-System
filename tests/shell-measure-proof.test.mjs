@@ -15,6 +15,7 @@ import {
   D_SECTION_ROWS,
   GATES,
   GATE_IDS,
+  PAGE_FIXTURE_CHECK_IDS,
   READING_GATE_IDS,
   SHELL_STORY_IDS,
   STORY_RUN,
@@ -39,6 +40,7 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 const manifest = JSON.parse(read(DEFAULT_PATHS.fixtureManifest));
 const mutations = JSON.parse(read(DEFAULT_PATHS.fixtureMutations)).mutations;
+const storyMutationsAll = JSON.parse(read(DEFAULT_PATHS.fixtureMutations)).storyMutations;
 const boardSource = read("docs/design/gplus-2026-10/tools/build-shell2.mjs");
 const gateSource = read("scripts/shell-measure-proof.mjs");
 const referenceScript = read(manifest.referenceScript);
@@ -118,7 +120,10 @@ test("the D section's twelve relation rows each land on gates named in the gate 
 });
 
 test("every gate has exactly one mutation, taken from the G section; every check beyond it one of its own", () => {
-  for (const id of [...GATE_IDS, ...CHECK_IDS]) assert.equal(mutations.filter((m) => m.gate === id).length, 1, id);
+  // a check the boards cannot show (boards: false) has no board mutation: its story mutation is shown red
+  // on the page fixture instead (TCRN-DS-SUB-164)
+  for (const id of [...GATE_IDS, ...CHECK_IDS]) assert.equal(mutations.filter((m) => m.gate === id).length, PAGE_FIXTURE_CHECK_IDS.includes(id) ? 0 : 1, id);
+  for (const id of PAGE_FIXTURE_CHECK_IDS) assert.ok(manifest.pageFixture.green.includes(id) && manifest.pageFixture.storyMutations.some((mid) => storyMutationsAll.find((m) => m.id === mid && m.gate === id)), `${id} on the page fixture`);
   assert.equal(new Set(mutations.map((m) => m.id)).size, mutations.length);
   assert.deepEqual(CHECK_IDS.filter((id) => GATE_IDS.includes(id)), []);
   const boards = new Set(manifest.boards.map((board) => board.id));
@@ -206,6 +211,64 @@ test("single line: text cut by its box passes only as ellipsis with a title", ()
   assert.equal(judgeGate("singleLine", shell({ ...base, excess: 0, lines: 2 })).status, "fail");
   const leak = { shells: [{ id: "s", x: { missing: [], textLines: [], clip: { leaks: [{ el: "a", clip: "div", px: 0.4 }, { el: "b", clip: "div", px: 3 }] } } }] };
   assert.deepEqual(judgeGate("singleLine", leak).failures.map((f) => f.what), ["clip:b in div"]);
+});
+
+test("the page in the paper: three checks beyond the G section, two of them proven on the page fixture (TCRN-DS-SUB-164)", () => {
+  assert.deepEqual([...CHECK_IDS], ["prail", "pageCrumbs", "settingsLayout", "splitView"]);
+  assert.deepEqual([...PAGE_FIXTURE_CHECK_IDS], ["settingsLayout", "splitView"]);
+  assert.deepEqual(THRESHOLDS.pageCrumbs, { maxLines: 1, tolerancePx: 0.5 });
+  assert.deepEqual(THRESHOLDS.settingsLayout, { maxWidthPx: 1040, tolerancePx: 0.5 });
+  assert.deepEqual(THRESHOLDS.splitView, { insetPx: 28, phoneInsetPx: 16, phoneMaxWidthPx: 390, tolerancePx: 0.5 });
+  for (const id of ["pageCrumbs", "settingsLayout", "splitView"]) assert.match(gateSource, new RegExp(`^//\\s+${id}\\s`, "m"), `${id} in the gate header`);
+  // the C-12 screens and the brand story are fixed in the fixture manifest
+  const ids = (story) => manifest.stories.screens[story].map((s) => s.id);
+  assert.deepEqual(ids("shell-top-band").slice(6), ["ts-search-l", "ts-settings-l", "ts-roster-l"]);
+  assert.deepEqual(ids("shell-mobile").slice(2), ["ts-settings-m", "ts-roster-m"]);
+  const lines = manifest.stories.screens["shell-brand-first-line"];
+  assert.equal(lines.length, 8);
+  assert.deepEqual([...new Set(lines.map((s) => s.product))], ["tms", "einzbern", "mana-orchestrate", "design-system"]);
+  for (const product of new Set(lines.map((s) => s.product))) assert.deepEqual(lines.filter((s) => s.product === product).map((s) => s.lockup), ["lkr-line", "lk-line"], product);
+  assert.ok(SHELL_STORY_IDS.includes("shell-brand-first-line"));
+});
+
+test("pageCrumbs: one line, nothing past the trail's box, a crumb wider than its box cut only as an ellipsis under a title", () => {
+  const shell = (crumbs, w = 390) => ({ shells: [{ id: "s", w, x: { missing: [], pageCrumbs: crumbs } }] });
+  const crumb = { text: "Account and notification settings", over: 75, clip: true, ellipsis: true, title: true };
+  const trail = { el: "nav.tcrn-breadcrumb", lines: 1, excess: 0, clip: true, crumbs: [crumb, { ...crumb, over: 0, title: false, ellipsis: false }] };
+  assert.equal(judgeGate("pageCrumbs", shell([trail])).status, "pass");
+  const what = (crumbs) => judgeGate("pageCrumbs", shell(crumbs)).failures.map((f) => f.what.split(":")[0]);
+  assert.deepEqual(what([{ ...trail, crumbs: [{ ...crumb, title: false }] }]), ["crumb.truncatedWithoutTitle"]);
+  assert.deepEqual(what([{ ...trail, crumbs: [{ ...crumb, ellipsis: false }] }]), ["crumb.cut"]);
+  assert.deepEqual(what([{ ...trail, crumbs: [{ ...crumb, clip: false }] }]), ["crumb.spill"]);
+  assert.deepEqual(what([{ ...trail, lines: 2 }]), ["crumbs.lines"]);
+  assert.deepEqual(what([{ ...trail, excess: 477 }]), ["crumbs.cut"]);
+  assert.deepEqual(what([{ ...trail, excess: 30, clip: false }]), ["crumbs.spill"]);
+  assert.deepEqual(what([{ ...trail, crumbs: [] }]), ["crumbs.none"]);
+  // a shell without a page breadcrumb is not checked; a trail within the tolerance passes
+  assert.equal(judgeGate("pageCrumbs", shell([])).status, "n/a");
+  assert.equal(judgeGate("pageCrumbs", shell([{ ...trail, excess: 0.4 }])).status, "pass");
+});
+
+test("settingsLayout and splitView: at most 1040 and centred; the split view's left edge at the paper's content inset", () => {
+  const shell = (x, w = 1440) => ({ shells: [{ id: "s", w, x: { missing: [], ...x } }] });
+  const settings = (v) => judgeGate("settingsLayout", shell({ settingsLayouts: [v] }));
+  assert.equal(settings({ el: "div", w: 1040, left: 188, right: 188 }).status, "pass");
+  assert.equal(settings({ el: "div", w: 1040.4, left: 188.4, right: 188 }).status, "pass");
+  assert.deepEqual(settings({ el: "div", w: 1360, left: 28, right: 28 }).failures.map((f) => [f.what, f.value]), [["settings.w", 1360]]);
+  assert.deepEqual(settings({ el: "div", w: 1040, left: 28, right: 348 }).failures.map((f) => [f.what, f.value]), [["settings.left-right", -320]]);
+  assert.equal(judgeGate("settingsLayout", shell({})).status, "n/a");
+  const split = (left, w) => judgeGate("splitView", shell({ splitViews: [{ el: "section", left }] }, w));
+  assert.equal(split(28, 1440).status, "pass");
+  assert.equal(split(16, 390).status, "pass");
+  assert.deepEqual(split(268, 1440).failures.map((f) => [f.what, f.value, f.expect]), [["split.left", 268, 28]]);
+  assert.deepEqual(split(28, 390).failures.map((f) => [f.what, f.value, f.expect]), [["split.left", 28, 16]]);
+  assert.equal(judgeGate("splitView", shell({})).status, "n/a");
+});
+
+test("markText names a first line by its shell, kind, mark size and product", () => {
+  const reading = { shells: [], optical: [{ kind: "lkr-line", product: "tms", shell: null, mark: 22, inkMinusMark: 2.1, expect: 0 }, { kind: "brand", product: "tms", shell: "ts-closed-l", mark: 22, inkMinusMark: -1.4, expect: 0 }], lockups: [{ kind: "lk-line", product: "design-system", shell: null, off: 1.5 }] };
+  assert.deepEqual(judgeGate("markText", reading).failures.map((f) => [f.at, f.what]), [["lkr-line@22:tms", "ink-mark"], ["ts-closed-l:brand@22:tms", "ink-mark"], ["lk-line:design-system", "text-mark"]]);
+  assert.equal(judgeGate("markText", { shells: [], optical: [{ kind: "lk-line", mark: 44, inkMinusMark: 1, expect: 0 }], lockups: [] }).status, "pass");
 });
 
 test("149-GWT4: measure-shell.js and the library read the same numbers on the same board screens", async () => {
@@ -311,6 +374,12 @@ test("149-GWT1 board side: all eighteen gates and the checks green on both board
   assert.deepEqual(pf.green, Object.fromEntries(manifest.packageFixture.green.map((id) => [id, "pass"])));
   assert.deepEqual(pf.mutations.map((m) => [m.id, m.ok]), manifest.packageFixture.storyMutations.map((id) => [id, true]));
   assert.deepEqual(pf.listed.map((c) => c.cell).sort(), ["brand-mark-l", "panel-edge-l", "scrim-paper-l"]);
+  // the page fixture (TCRN-DS-SUB-164): the page in the paper and the brand story's first lines
+  const pg = report.pageFixture;
+  assert.deepEqual(pg.fixtureFailures, [], "page fixture");
+  assert.deepEqual(pg.green, Object.fromEntries(manifest.pageFixture.green.map((id) => [id, "pass"])));
+  assert.deepEqual(pg.mutations.map((m) => [m.id, m.gate, m.ok, m.verdict]), manifest.pageFixture.storyMutations.map((id) => [id, storyMutationsAll.find((m) => m.id === id).gate, true, "turns red"]));
+  for (const board of report.boards) for (const id of PAGE_FIXTURE_CHECK_IDS) assert.equal(board.checks[id].status, "n/a", `${board.id} draws no ${id}`);
   assert.equal(report.mutations.length, mutations.length);
   for (const result of report.mutations) assert.ok(result.ok, `${result.id}: failed ${JSON.stringify(result.failed)}, expected ${JSON.stringify(result.expected)}`);
   assert.ok(report.dSection.every((row) => row.status === "pass"));
@@ -335,7 +404,8 @@ test("the story run grid is 1440 x 900 and 390 x 844, en and zh-CN (C-11)", () =
   assert.deepEqual(Object.values(STORY_RUN.viewports).map((v) => `${v.width}x${v.height}`).sort(), ["1440x900", "390x844"]);
   assert.deepEqual([...STORY_RUN.locales], ["en", "zh-CN"]);
   assert.deepEqual(Object.keys(manifest.stories.screens).sort(), [...SHELL_STORY_IDS].sort());
-  for (const [story, screens] of Object.entries(manifest.stories.screens)) for (const screen of screens) assert.ok(["closed", "expanded", "drop", "sheet"].includes(screen.state), `${story} ${screen.id}`);
+  // a shell screen has its C-5 data-state; a first line of the brand story (no shell) its lockup and product
+  for (const [story, screens] of Object.entries(manifest.stories.screens)) for (const screen of screens) assert.ok(screen.lockup ? ["lkr-line", "lk-line"].includes(screen.lockup) && typeof screen.product === "string" && screen.state === undefined : ["closed", "expanded", "drop", "sheet"].includes(screen.state), `${story} ${screen.id}`);
   for (const probe of ["focusLoop", "intro"]) assert.ok(SHELL_STORY_IDS.includes(manifest.stories.behaviour[probe].story), probe);
 });
 
@@ -343,7 +413,9 @@ test("149-GWT1 real-part side: one story mutation per gate and check, the board 
   for (const id of [...GATE_IDS, ...CHECK_IDS]) assert.equal(storyMutations.filter((m) => m.gate === id).length, 1, id);
   assert.equal(new Set(storyMutations.map((m) => m.id)).size, storyMutations.length);
   for (const m of storyMutations) {
-    assert.equal(m.source, mutations.find((f) => f.gate === m.gate).source, `${m.id} source`);
+    const board = mutations.find((f) => f.gate === m.gate);
+    if (board) assert.equal(m.source, board.source, `${m.id} source`);
+    else assert.ok(PAGE_FIXTURE_CHECK_IDS.includes(m.gate) && manifest.pageFixture.storyMutations.includes(m.id) && m.source.length > 0, `${m.id}: proven on the page fixture`);
     assert.ok(SHELL_STORY_IDS.includes(m.story), `${m.id} story`);
     if (m.probe) assert.ok(BEHAVIOUR_GATE_IDS.includes(m.probe) && ((m.ops && m.ops.length) || (m.beforeReload && m.beforeReload.length)), m.id);
     else assert.ok(Array.isArray(m.ops) && m.ops.length > 0 && !BEHAVIOUR_GATE_IDS.includes(m.gate), m.id);
@@ -370,10 +442,19 @@ test("story mutations: green to red passes; on a red baseline only a new failure
 });
 
 test("story screens: order and the C-5 data-state are checked", () => {
-  const reading = { shells: [{ id: "ts-m-l", state: "closed" }, { id: "ts-m-s", state: "expanded" }] };
+  const reading = { shells: [{ id: "ts-m-l", state: "closed" }, { id: "ts-m-s", state: "expanded" }, { id: "ts-settings-m", state: "closed" }, { id: "ts-roster-m", state: "closed" }] };
   assert.deepEqual(checkStoryScreens(reading, manifest.stories.screens["shell-mobile"]), [{ what: "data-state", shell: "ts-m-s", value: "expanded", expect: "sheet" }]);
   assert.equal(checkStoryScreens({ shells: [] }, manifest.stories.screens["shell-mobile"])[0].what, "screens");
   assert.deepEqual(checkStoryScreens({ shells: [] }, manifest.stories.screens["shell-matrix"]), []);
+  // the brand story (TCRN-DS-SUB-164): the first lines outside every shell, as (lockup, product), in order
+  const want = manifest.stories.screens["shell-brand-first-line"];
+  const optical = want.map((s) => ({ kind: s.lockup, product: s.product, shell: null, mark: s.lockup === "lk-line" ? 44 : 22, inkMinusMark: 0, expect: 0 }));
+  assert.deepEqual(checkStoryScreens({ shells: [], optical }, want), []);
+  assert.deepEqual(checkStoryScreens({ shells: [], optical: [...optical, { kind: "brand", product: "tms", shell: "doc", mark: 22 }] }, want), [], "a first line inside a shell is not a brand screen");
+  const swapped = checkStoryScreens({ shells: [], optical: [optical[1], optical[0], ...optical.slice(2)] }, want);
+  assert.deepEqual(swapped.map((f) => f.what), ["first-lines"]);
+  assert.deepEqual(checkStoryScreens({ shells: [], optical: optical.slice(0, 7) }, want).map((f) => f.what), ["first-lines"]);
+  assert.deepEqual(checkStoryScreens({ shells: [{ id: "x", state: "closed" }], optical }, want).map((f) => f.what), ["screens"]);
 });
 
 test("touch: what opens at 390 must be the Sheet, so its rows-44 check cannot pass on a missing Sheet", () => {
@@ -537,6 +618,36 @@ test("package readings: the three 07a B reading cases (彩色标, 面板对画�
     const verdict = judgeShellReadings(reading);
     assert.equal(verdict.gates.contrast.status, "pass");
     assert.deepEqual(verdict.gates.contrast.listed.map((c) => [c.cell, c.ratio]), [["brand-mark-l", 4.85], ["panel-edge-l", 1.16], ["scrim-paper-l", 5.57]]);
+  } finally {
+    await close();
+  }
+});
+
+test("page readings (TCRN-DS-SUB-164): the breadcrumb per crumb, SettingsLayout against the paper's edges, SplitView's left edge, the first lines by product", async () => {
+  const { page, close } = await openBoard(manifest.pageFixture.file);
+  try {
+    const reading = await readPackage(page);
+    const byId = Object.fromEntries(reading.shells.map((s) => [s.id, s]));
+    assert.deepEqual(Object.keys(byId), ["ts-settings-l", "ts-roster-l", "ts-settings-m", "ts-roster-m"]);
+    for (const s of reading.shells) {
+      assert.deepEqual([s.x.missing, s.x.hookGaps], [[], []], s.id);
+      assert.equal(s.x.pageCrumbs.length, 1, s.id);
+      const [trail] = s.x.pageCrumbs;
+      assert.deepEqual([trail.lines, trail.excess], [1, 0], s.id);
+      for (const crumb of trail.crumbs) assert.ok(crumb.clip && crumb.ellipsis && crumb.title, `${s.id} ${crumb.text}`);
+      // at 1240 the long trail fits; on the 390 phone every crumb gives way
+      assert.ok(trail.crumbs.every((crumb) => (s.w > 390 ? crumb.over === 0 : crumb.over > 0)), s.id);
+    }
+    assert.deepEqual(byId["ts-settings-l"].x.settingsLayouts.map((v) => [v.w, v.left, v.right]), [[1040, 88, 88]]);
+    assert.deepEqual(byId["ts-settings-m"].x.settingsLayouts.map((v) => [v.w, v.left, v.right]), [[334, 16, 16]]);
+    assert.deepEqual([byId["ts-roster-l"].x.splitViews.map((v) => v.left), byId["ts-roster-m"].x.splitViews.map((v) => v.left)], [[28], [16]]);
+    assert.deepEqual([byId["ts-settings-l"].x.splitViews, byId["ts-roster-l"].x.settingsLayouts], [[], []]);
+    // the brand story's first lines sit outside every shell; the brand buttons' lines are their shells'
+    const lines = reading.optical.filter((o) => !o.shell);
+    assert.deepEqual(lines.map((o) => [o.kind, o.product, o.mark]), [["lkr-line", "tms", 22], ["lk-line", "tms", 44]]);
+    assert.ok(reading.optical.filter((o) => o.shell).every((o) => o.product === "tms" && byId[o.shell]));
+    const verdict = judgeShellReadings(reading);
+    for (const id of manifest.pageFixture.green) assert.equal({ ...verdict.gates, ...verdict.checks }[id].status, "pass", id);
   } finally {
     await close();
   }

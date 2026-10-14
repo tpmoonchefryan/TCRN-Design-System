@@ -167,17 +167,21 @@ test("every check has a red and a green fixture", () => {
   assert.deepEqual(fixtureCoverage(manifest), { ok: true, missingRed: [], missingGreen: [] });
   for (const spec of manifest.cases) assert.ok(readFileSync(new URL(`./fixtures/geometry-measure/${spec.file}`, import.meta.url), "utf8").includes("data-measure-root"), spec.file);
   const reds = manifest.cases.filter((spec) => (spec.fail ?? []).length);
-  // TCRN-DS-SUB-134: the clean page all.green.html still carries composition one's frame, which shellFrame
-  // no longer reads, so the top-band frame's injected mutations run on its own clean page.
-  const cleanPage = (id) => (id === "shellFrame" ? "shellFrame.green.html" : "all.green.html");
+  // TCRN-DS-SUB-164 (R2-28): the clean page all.green.html carries the top-band shell (a C-5 shell root),
+  // so every check, shellFrame included, has its injected mutation there again (TCRN-DS-SUB-134 had moved
+  // shellFrame's to shellFrame.green.html while the clean page still carried composition one's frame).
   for (const id of CHECK_IDS) {
     assert.ok(reds.some((spec) => spec.fail.includes(id) && !spec.mutationCss), `${id}: red fixture file`);
-    assert.ok(reds.some((spec) => spec.fail.includes(id) && spec.mutationCss && spec.file === cleanPage(id)), `${id}: injected mutation on the clean page`);
+    assert.ok(reds.some((spec) => spec.fail.includes(id) && spec.mutationCss && spec.file === "all.green.html"), `${id}: injected mutation on the clean page`);
   }
-  // 148-GWT3: a 1px rule under the top band turns the clean frame red.
-  const rule = manifest.cases.find((spec) => spec.id === "shell-frame-top-band-rule-mutation");
-  assert.deepEqual([rule.file, rule.fail, rule.reasons.shellFrame], ["shellFrame.green.html", ["shellFrame"], ["top_band_rule"]]);
-  assert.match(rule.mutationCss, /\[data-shell-strip\] \{ border-bottom: 1px solid/);
+  // 148-GWT3: a 1px rule under the top band turns the clean frame red, on the clean page and on the frame's own.
+  for (const [id, file] of [["shell-frame-mutation", "all.green.html"], ["shell-frame-top-band-rule-mutation", "shellFrame.green.html"]]) {
+    const rule = manifest.cases.find((spec) => spec.id === id);
+    assert.deepEqual([rule.file, rule.fail, rule.reasons.shellFrame], [file, ["shellFrame"], ["top_band_rule"]], id);
+    assert.match(rule.mutationCss, /\[data-shell-strip\] \{ border-bottom: 1px solid/, id);
+  }
+  // the clean page carries no composition-one frame any more
+  assert.doesNotMatch(readFileSync(new URL("./fixtures/geometry-measure/all.green.html", import.meta.url), "utf8"), /class="[^"]*(tcrn-product-shell__workspace|tcrn-top-bar)/);
 });
 
 test("the fixture self-check is green as a whole", () => {
@@ -209,21 +213,25 @@ test("the clean page reports every check value", () => {
   const verdict = selfCheck.verdicts["all-green"];
   assert.deepEqual(Object.keys(verdict.checks), [...CHECK_IDS]);
   for (const id of CHECK_IDS) {
-    // TCRN-DS-SUB-134: the clean page's composition-one frame has no C-5 shell root, so shellFrame is n/a
-    // there and its readings come from its own clean page below.
-    assert.equal(verdict.checks[id].status, id === "shellFrame" ? "n/a" : "pass", id);
+    // TCRN-DS-SUB-164: the clean page's shell is the top-band shell, so shellFrame passes there as well
+    assert.equal(verdict.checks[id].status, "pass", id);
     assert.ok(verdict.checks[id].value === null || typeof verdict.checks[id].value === "number", id);
   }
   assert.equal(verdict.checks.contrast.cells.length, 9);
+  // the top-band shell opts out of rail; the rail guide column is its own part, not a shell root
+  assert.deepEqual(verdict.checks.rail.shells.map((row) => row.shell), ["rail-guide"]);
   assert.deepEqual(verdict.checks.rail.shells[0].guideLefts, [16]);
   assert.deepEqual(verdict.checks.rail.shells[0].textLefts, [48]);
-  const frame = selfCheck.verdicts["shell-frame-green"].checks.shellFrame;
-  assert.equal(frame.status, "pass");
-  assert.equal(frame.checked, 1, "the data-shell without data-state is not a shell root");
-  assert.deepEqual(frame.shells[0].paperInsets, { top: 52, start: 12, end: 12, bottom: 12 });
-  assert.equal(frame.shells[0].topBarHeightPx, 52);
-  assert.deepEqual(frame.shells[0].paperRadiiPx, [14, 14, 14, 14]);
-  assert.deepEqual([frame.shells[0].topBand.bordersPx, frame.shells[0].topBand.boxShadow, frame.shells[0].topBand.fillAlpha], [[0, 0, 0, 0], null, 0]);
+  for (const [id, shell] of [["all-green", "fixture"], ["shell-frame-green", "frame"]]) {
+    const frame = selfCheck.verdicts[id].checks.shellFrame;
+    assert.equal(frame.status, "pass", id);
+    assert.equal(frame.checked, 1, `${id}: one shell root; a data-shell without data-state is not one`);
+    assert.equal(frame.shells[0].shell, shell, id);
+    assert.deepEqual(frame.shells[0].paperInsets, { top: 52, start: 12, end: 12, bottom: 12 }, id);
+    assert.equal(frame.shells[0].topBarHeightPx, 52, id);
+    assert.deepEqual(frame.shells[0].paperRadiiPx, [14, 14, 14, 14], id);
+    assert.deepEqual([frame.shells[0].topBand.bordersPx, frame.shells[0].topBand.boxShadow, frame.shells[0].topBand.fillAlpha], [[0, 0, 0, 0], null, 0], id);
+  }
   assert.deepEqual(verdict.checks.controlHeight.controls.map((c) => c.heightPx), [32, 28, 40]);
 });
 

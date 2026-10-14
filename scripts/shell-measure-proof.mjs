@@ -60,6 +60,24 @@
 //                                  「引导列 面板内图标 16 · 文字 48」, on the hooks of measure-shell.js
 //                                  o.prail); it takes over the first batch's rail on the top-band shell
 //                                  (storybook-map I16-P24)                (mutation: guide icons 4 to the right)
+// TCRN-DS-SUB-164 (R2-28; Story 145-GWT2, Story 146 GWT2-GWT4), three checks of the page in the paper:
+//   pageCrumbs     页面包屑         the page breadcrumb in the paper: the trail on one line, no crumb past
+//                                  the trail's box, and a crumb wider than its box cut only as an ellipsis
+//                                  under a title (C7; read per crumb, so a trail whose crumbs give way one
+//                                  by one is read as it is drawn)            (mutation: crumbs 30 wide, clipped)
+//   settingsLayout 设置页 1040     SettingsLayout in the paper: at most 1040 wide (D1, token
+//                                  layout-content-max-w), the same distance from the paper's left and
+//                                  right edges                        (story mutation: max-width taken away)
+//   splitView      分栏左缘         SplitView in the paper: left edge = paper left + the paper's content inset
+//                                  (07b .ts-content 28 at the sides; 16 on the 390 phone screen,
+//                                  .scr.ts.m .ts-content), no room kept for a side rail
+//                                                                  (story mutation: 240 kept for a rail)
+// The boards draw no settings page and no split view: those two checks are boards: false (CHECKS), read
+// n/a on the boards, and proven on the page fixture (manifest pageFixture) instead, where they must pass
+// and their story mutations must turn them red. markText reads, besides the shells' brand buttons, the
+// brand story shell-brand-first-line: the four products' first lines (ProductLockup firstLine) at the
+// rail and lockup scales, outside any shell; its screens are the (data-lockup, product) pairs listed in
+// the fixture manifest, in order, and the padding-top 4 story mutation runs on its TMS rail line.
 // Behaviour cannot be read from a board: intro, focusLoop and the outside-click half of noCollapse are
 // judged on behaviour traces. --fixtures judges the traces declared in the fixture manifest and their
 // mutated copies; on the package stories the probes below (TCRN-DS-SUB-137) record the traces on the
@@ -144,6 +162,9 @@ export const THRESHOLDS = deepFreeze({
   focusLoop: { afterEscape: "tab", afterCommandK: "search", commandKRegistrations: 1 },
   touch: { phoneMaxWidthPx: 390, sheetRowPx: 44, minTabHeightPx: 40, tolerancePx: 0.5 },
   prail: { iconLeftPx: 16, textLeftPx: 48, tolerancePx: 0.5 },
+  pageCrumbs: { maxLines: 1, tolerancePx: 0.5 },
+  settingsLayout: { maxWidthPx: 1040, tolerancePx: 0.5 },
+  splitView: { insetPx: 28, phoneInsetPx: 16, phoneMaxWidthPx: 390, tolerancePx: 0.5 },
   fixture: { boardWidthPx: 1240, phoneWidthPx: 390, tolerancePx: 0.5 }
 });
 
@@ -172,8 +193,13 @@ export const BEHAVIOUR_GATE_IDS = deepFreeze(["intro", "focusLoop"]);
 export const READING_GATE_IDS = deepFreeze(GATE_IDS.filter((id) => !BEHAVIOUR_GATE_IDS.includes(id)));
 // Checks beyond the G section (header): reading checks, reported under `checks`.
 export const CHECKS = deepFreeze([
-  { id: "prail", name: "菜单引导列", kind: "geometry", source: "07b 标注「引导列 面板内图标 16 · 文字 48」；measure-shell.js o.prail；storybook-map I16-P24" }
+  { id: "prail", name: "菜单引导列", kind: "geometry", source: "07b 标注「引导列 面板内图标 16 · 文字 48」；measure-shell.js o.prail；storybook-map I16-P24", boards: true },
+  { id: "pageCrumbs", name: "页面包屑", kind: "geometry", source: "07b D 段「面包屑」；C7；Story 146-GWT2", boards: true },
+  { id: "settingsLayout", name: "设置页 1040", kind: "geometry", source: "MIN-20261013-SHELL D1；Story 146-GWT3", boards: false },
+  { id: "splitView", name: "分栏左缘", kind: "geometry", source: "07b .ts-content 内距；Story 146-GWT4", boards: false }
 ]);
+// the checks the boards cannot show (boards: false): proven on the page fixture instead
+export const PAGE_FIXTURE_CHECK_IDS = deepFreeze(CHECKS.filter((check) => check.boards === false).map((check) => check.id));
 export const CHECK_IDS = deepFreeze(CHECKS.map((check) => check.id));
 
 export const D_SECTION_ROWS = deepFreeze([
@@ -201,7 +227,8 @@ export const DEFAULT_PATHS = Object.freeze({
 });
 
 // Package stories (C-9) and the only run grid for them (C-11).
-export const SHELL_STORY_IDS = deepFreeze(["shell-top-band", "shell-narrow", "shell-mobile", "shell-intro", "shell-matrix"]);
+// shell-brand-first-line (TCRN-DS-SUB-164, C-12): the brand story markText reads, no shell in it.
+export const SHELL_STORY_IDS = deepFreeze(["shell-top-band", "shell-narrow", "shell-mobile", "shell-intro", "shell-matrix", "shell-brand-first-line"]);
 export const STORY_RUN = deepFreeze({
   viewports: { desktop: { width: 1440, height: 900 }, phone: { width: 390, height: 844 } },
   storyViewport: { "shell-mobile": "phone" },
@@ -352,13 +379,16 @@ const READING_JUDGES = {
   },
   markText(reading, { T }) {
     const t = T.markText; const g = open();
+    // a row is named by its shell, lockup kind, mark size and product (the brand story shows four
+    // products at each scale outside any shell, so kind and size alone do not tell its first lines apart)
+    const named = (row, base) => (row.shell ? row.shell + ":" : "") + base + (row.product ? ":" + row.product : "");
     for (const o of reading.optical || []) {
       g.checked++;
-      if (Math.abs(o.inkMinusMark - o.expect) > t.maxInkOffsetPx + 1e-9) fail(g, o.kind + "@" + o.mark, "ink-mark", o.inkMinusMark, o.expect);
+      if (Math.abs(o.inkMinusMark - o.expect) > t.maxInkOffsetPx + 1e-9) fail(g, named(o, o.kind + "@" + o.mark), "ink-mark", o.inkMinusMark, o.expect);
     }
     for (const l of reading.lockups || []) {
       g.checked++;
-      if (Math.abs(l.off) > t.maxLockupOffsetPx + 1e-9) fail(g, l.kind, "text-mark", l.off, 0);
+      if (Math.abs(l.off) > t.maxLockupOffsetPx + 1e-9) fail(g, named(l, l.kind), "text-mark", l.off, 0);
     }
     for (const s of measured(reading)) {
       if (!s.x.tabGroup) continue;
@@ -505,6 +535,53 @@ const CHECK_JUDGES = {
       g.checked++;
       for (const v of p.icons) if (!near(v, t.iconLeftPx, t.tolerancePx)) fail(g, s.id, "prail.icon", v, t.iconLeftPx);
       for (const v of p.texts) if (!near(v, t.textLeftPx, t.tolerancePx)) fail(g, s.id, "prail.text", v, t.textLeftPx);
+    }
+    return finish(g);
+  },
+  // the page breadcrumb in the paper (x.pageCrumbs): one line; no crumb past the trail's box; a crumb
+  // wider than its box is cut only as an ellipsis under a title. A trail without crumbs is not read as
+  // a pass. A shell without a page breadcrumb is not checked.
+  pageCrumbs(reading, { T }) {
+    const t = T.pageCrumbs; const g = open();
+    for (const s of measured(reading)) {
+      for (const c of s.x.pageCrumbs || []) {
+        g.checked++;
+        if (c.lines > t.maxLines) fail(g, s.id, "crumbs.lines:" + c.el, c.lines, t.maxLines);
+        if (c.excess > t.tolerancePx + 1e-9) fail(g, s.id, (c.clip ? "crumbs.cut:" : "crumbs.spill:") + c.el, c.excess, 0);
+        if (!c.crumbs.length) fail(g, s.id, "crumbs.none:" + c.el, 0, "crumbs");
+        for (const crumb of c.crumbs) {
+          if (crumb.over > t.tolerancePx + 1e-9 && !(crumb.clip && crumb.ellipsis && crumb.title)) {
+            const what = !crumb.clip ? "spill" : !crumb.ellipsis ? "cut" : "truncatedWithoutTitle";
+            fail(g, s.id, "crumb." + what + ":" + crumb.text, crumb.over, 0);
+          }
+        }
+      }
+    }
+    return finish(g);
+  },
+  // SettingsLayout in the paper (x.settingsLayouts): at most 1040 wide, centred (left = right)
+  settingsLayout(reading, { T }) {
+    const t = T.settingsLayout; const g = open();
+    for (const s of measured(reading)) {
+      for (const v of s.x.settingsLayouts || []) {
+        g.checked++;
+        if (!(v.w <= t.maxWidthPx + t.tolerancePx + 1e-9)) fail(g, s.id, "settings.w", v.w, "<= " + t.maxWidthPx);
+        const diff = Math.round((v.left - v.right) * 10) / 10;
+        if (Math.abs(diff) > t.tolerancePx + 1e-9) fail(g, s.id, "settings.left-right", diff, 0);
+      }
+    }
+    return finish(g);
+  },
+  // SplitView in the paper (x.splitViews): left edge = the paper's content inset from the paper's left
+  // edge (28; 16 on a shell no wider than the 390 phone)
+  splitView(reading, { T }) {
+    const t = T.splitView; const g = open();
+    for (const s of measured(reading)) {
+      const inset = s.w <= t.phoneMaxWidthPx + t.tolerancePx ? t.phoneInsetPx : t.insetPx;
+      for (const v of s.x.splitViews || []) {
+        g.checked++;
+        if (!near(v.left, inset, t.tolerancePx)) fail(g, s.id, "split.left", v.left, inset);
+      }
     }
     return finish(g);
   }
@@ -665,9 +742,11 @@ function combine(statuses) {
 // The package-hook fixture (manifest packageFixture, TCRN-DS-SUB-174): read with the package hooks; the
 // gates and checks it names (green) must pass, every contrast cell on it must read its data-expect
 // (within the contrast gate's maxDiff: the 07a B readings, list-only cells included), and each story
-// mutation it names must turn its gate red on it (judgeStoryMutation, as on the real parts).
-async function runPackageFixture({ root, context, manifest, mutationsPath, thresholds, brandLockups, logoSources }) {
-  const spec = manifest.packageFixture;
+// mutation it names must turn its gate red on it (judgeStoryMutation, as on the real parts). The page
+// fixture (manifest pageFixture, TCRN-DS-SUB-164) runs the same way: the page in the paper (breadcrumb,
+// SettingsLayout, SplitView) and the brand story's first lines, with the package hooks; a fixture with
+// no contrast gate in its green list carries no contrast cells.
+async function runPackageFixture({ root, context, spec, mutationsPath, thresholds, brandLockups, logoSources }) {
   const storyMutations = new Map((readJson(resolve(root, mutationsPath)).storyMutations || []).map((m) => [m.id, m]));
   const measure = async (ops) => {
     const page = await openBoardPage(context, root, spec.file);
@@ -691,7 +770,7 @@ async function runPackageFixture({ root, context, manifest, mutationsPath, thres
   }
   if (base.missingHooks.length) fixtureFailures.push({ what: "missingHooks", value: base.missingHooks });
   const cells = base.reading.contrastCells || [];
-  if (cells.length === 0) fixtureFailures.push({ what: "readings", value: 0, expect: "contrast cells" });
+  if (spec.green.includes("contrast") && cells.length === 0) fixtureFailures.push({ what: "readings", value: 0, expect: "contrast cells" });
   for (const c of cells) {
     const value = isListOnlyCell(c, thresholds.contrast) ? sectionBReading(c) : c.ratio;
     if (c.expect === null || typeof value !== "number" || Math.abs(value - c.expect) > thresholds.contrast.maxDiff + 1e-9) fixtureFailures.push({ what: "reading", cell: c.cell, probe: c.probe, value, expect: c.expect });
@@ -759,8 +838,6 @@ export async function runFixtures({ root = process.cwd(), browser, launchOptions
       const behaviour = judgeBehaviour(traces, thresholds);
       const gates = {};
       for (const id of GATE_IDS) gates[id] = BEHAVIOUR_GATE_IDS.includes(id) ? behaviour[id].status : combine(boards.map((b) => b.gates[id].status));
-      const checks = {};
-      for (const id of CHECK_IDS) checks[id] = combine(boards.map((b) => b.checks[id].status));
       const mutationResults = [];
       for (const mutation of mutations) {
         if (onlyMutations && !onlyMutations.includes(mutation.id)) continue;
@@ -780,17 +857,29 @@ export async function runFixtures({ root = process.cwd(), browser, launchOptions
         const ok = failed.includes(mutation.gate) && JSON.stringify([...failed].sort()) === JSON.stringify(expected);
         mutationResults.push({ id: mutation.id, gate: mutation.gate, failed, expected, ok });
       }
-      const packageFixture = manifest.packageFixture ? await runPackageFixture({ root, context, manifest, mutationsPath, thresholds, brandLockups, logoSources }) : null;
+      const fixtureArgs = { root, context, mutationsPath, thresholds, brandLockups, logoSources };
+      const packageFixture = manifest.packageFixture ? await runPackageFixture({ ...fixtureArgs, spec: manifest.packageFixture }) : null;
+      const pageFixture = manifest.pageFixture ? await runPackageFixture({ ...fixtureArgs, spec: manifest.pageFixture }) : null;
+      const pageFixtures = [packageFixture, pageFixture].filter(Boolean);
+      // a check the boards cannot show (boards: false) takes its status from the fixtures that list it
+      // green, and its mutation is a story mutation that turns it red there
+      const checks = {};
+      for (const id of CHECK_IDS) {
+        const statuses = boards.map((b) => b.checks[id].status);
+        if (PAGE_FIXTURE_CHECK_IDS.includes(id)) for (const f of pageFixtures) if (f.green[id] !== undefined) statuses.push(f.green[id] || "n/a");
+        checks[id] = combine(statuses);
+      }
+      const fixtureMutated = new Set(pageFixtures.flatMap((f) => f.mutations.filter((m) => m.ok && m.gate).map((m) => m.gate)));
       const gatesGreen = GATE_IDS.every((id) => gates[id] === "pass");
       const checksGreen = CHECK_IDS.every((id) => checks[id] === "pass");
       const boardsClean = boards.every((b) => b.failed.length === 0 && b.failedChecks.length === 0 && b.fixtureFailures.length === 0);
-      const everyGateMutated = [...GATE_IDS, ...CHECK_IDS].every((id) => mutations.some((m) => m.gate === id));
+      const everyGateMutated = [...GATE_IDS, ...CHECK_IDS].every((id) => (PAGE_FIXTURE_CHECK_IDS.includes(id) ? fixtureMutated.has(id) : mutations.some((m) => m.gate === id)));
       const mutationsRed = mutationResults.every((m) => m.ok);
       return {
         schemaVersion: SCHEMA_VERSION,
         readingSchemaVersion: SHELL_MEASURE_SCHEMA_VERSION,
         mode: "fixtures",
-        ok: gatesGreen && checksGreen && boardsClean && everyGateMutated && mutationsRed && (!packageFixture || packageFixture.ok),
+        ok: gatesGreen && checksGreen && boardsClean && everyGateMutated && mutationsRed && pageFixtures.every((f) => f.ok),
         viewport: manifest.viewport,
         gates,
         checks,
@@ -798,6 +887,7 @@ export async function runFixtures({ root = process.cwd(), browser, launchOptions
         behaviour,
         mutations: mutationResults,
         packageFixture,
+        pageFixture,
         dSection: D_SECTION_ROWS.map((row) => ({ row: row.row, gates: row.gates, status: combine(row.gates.map((id) => gates[id])) }))
       };
     } finally {
@@ -1060,14 +1150,25 @@ export function judgeStoryMutation(mutation, baselineGates, mutatedGates) {
 const NO_MOTION_CSS = "*,*::before,*::after{transition:none!important;animation:none!important}";
 
 // The screens a story run must show, in order and in their data-state (fixture manifest, stories.screens).
+// A screen with a lockup (the brand story, TCRN-DS-SUB-164) is a first line outside every shell: the
+// first lines read outside the shells (optical rows with no shell) must be the listed (lockup, product)
+// pairs, in order.
 export function checkStoryScreens(reading, expected) {
   if (!Array.isArray(expected)) return [];
   const failures = [];
+  const shellScreens = expected.filter((s) => !s.lockup);
+  const lineScreens = expected.filter((s) => s.lockup);
   const ids = (reading.shells || []).map((s) => s.id);
-  if (JSON.stringify(ids) !== JSON.stringify(expected.map((s) => s.id))) failures.push({ what: "screens", value: ids, expect: expected.map((s) => s.id) });
-  for (const want of expected) {
+  if (JSON.stringify(ids) !== JSON.stringify(shellScreens.map((s) => s.id))) failures.push({ what: "screens", value: ids, expect: shellScreens.map((s) => s.id) });
+  for (const want of shellScreens) {
     const s = (reading.shells || []).find((item) => item.id === want.id);
     if (s && s.state !== want.state) failures.push({ what: "data-state", shell: s.id, value: s.state, expect: want.state });
+  }
+  if (lineScreens.length) {
+    const pair = (lockup, product) => lockup + ":" + product;
+    const lines = (reading.optical || []).filter((o) => !o.shell).map((o) => pair(o.kind, o.product));
+    const want = lineScreens.map((s) => pair(s.lockup, s.product));
+    if (JSON.stringify(lines) !== JSON.stringify(want)) failures.push({ what: "first-lines", value: lines, expect: want, screens: lineScreens.map((s) => s.id) });
   }
   return failures;
 }
@@ -1130,7 +1231,9 @@ export async function runStories({ root = process.cwd(), browser, launchOptions,
             for (const theme of STORY_RUN.themes) {
               const { reading, verdict } = await measureStory(route, { locale, theme });
               const screenFailures = checkStoryScreens(reading, (plan.screens || {})[route.id]);
-              runs.push({ story: route.id, locale, theme, viewport: viewportOf(route.id), shells: reading.shells.map((s) => s.id), gates: verdict.gates, checks: verdict.checks, failed: verdict.failed, failedChecks: verdict.failedChecks, missingHooks: verdict.missingHooks, screenFailures });
+              // the first lines outside every shell (the brand story) with their markText readings
+              const firstLines = (reading.optical || []).filter((o) => !o.shell).map((o) => ({ kind: o.kind, product: o.product, mark: o.mark, inkMinusMark: o.inkMinusMark }));
+              runs.push({ story: route.id, locale, theme, viewport: viewportOf(route.id), shells: reading.shells.map((s) => s.id), ...(firstLines.length ? { firstLines } : {}), gates: verdict.gates, checks: verdict.checks, failed: verdict.failed, failedChecks: verdict.failedChecks, missingHooks: verdict.missingHooks, screenFailures });
             }
           }
         }
@@ -1166,6 +1269,11 @@ export async function runStories({ root = process.cwd(), browser, launchOptions,
         if (mutations) {
           for (const mutation of storyMutations) {
             const route = routeOf.get(mutation.story);
+            // a story the registry does not have yet (reported under missing) cannot be mutated
+            if (!route) {
+              mutationResults.push({ id: mutation.id, gate: mutation.gate, ok: false, verdict: "not run: story missing", story: mutation.story, source: mutation.source });
+              continue;
+            }
             const locale = mutation.locale || STORY_RUN.locales[0];
             const theme = mutation.theme || "light";
             let result;
