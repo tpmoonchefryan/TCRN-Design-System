@@ -10,8 +10,8 @@
   },
   "totals": {
     "families": 5,
-    "files": 54,
-    "bytes": 3410312
+    "files": 58,
+    "bytes": 3667260
   },
   "families": [
     {
@@ -114,7 +114,9 @@
       "subsets": [
         "[27]",
         "[28]",
+        "[29]",
         "[43]",
+        "[47]",
         "[52]",
         "[101]",
         "[102]",
@@ -136,10 +138,10 @@
         "[118]",
         "[119]"
       ],
-      "files": 23,
-      "bytes": 1334324,
-      "slices": 23,
-      "coveredCodepoints": 4213
+      "files": 25,
+      "bytes": 1444488,
+      "slices": 25,
+      "coveredCodepoints": 4489
     },
     {
       "family": "Noto Serif SC",
@@ -163,7 +165,9 @@
       "subsets": [
         "[27]",
         "[28]",
+        "[29]",
         "[43]",
+        "[47]",
         "[52]",
         "[101]",
         "[102]",
@@ -185,10 +189,10 @@
         "[118]",
         "[119]"
       ],
-      "files": 23,
-      "bytes": 1742088,
-      "slices": 23,
-      "coveredCodepoints": 4213
+      "files": 25,
+      "bytes": 1888872,
+      "slices": 25,
+      "coveredCodepoints": 4489
     }
   ],
   "files": [
@@ -377,6 +381,25 @@
       }
     },
     {
+      "file": "noto-sans-sc-29-wght-normal.woff2",
+      "family": "Noto Sans SC",
+      "style": "normal",
+      "weight": "100 900",
+      "axes": {
+        "wght": "100 900"
+      },
+      "subset": "[29]",
+      "unicodeRange": "U+941c-942b,U+942d-942e,U+9432-9433,U+9435,U+9438,U+943a,U+943e,U+9444,U+944a,U+9451-9452,U+945a,U+9462-9463,U+9465,U+9470-9487,U+948a-9492,U+9494-9498,U+949a,U+949c-949d,U+94a1,U+94a3-94a4,U+94a8,U+94aa-94ad,U+94af,U+94b2,U+94b4-94ba,U+94bc-94c0,U+94c4,U+94c6-94db,U+94de-94ec,U+94ee-94f1,U+94f3",
+      "bytes": 54008,
+      "sha256": "ff21d8fcc60ce39145c09da40c66f190dbb52b4b5ae6de1861dcaf15f87ef497",
+      "upstream": {
+        "package": "@fontsource-variable/noto-sans-sc",
+        "version": "5.3.0",
+        "integrity": "sha512-lNar1dF7Ik/lHNPo/7JWG0TolXY29LtsqYgMvEysooZ5bsO9uH4shJmRrwyJ3PjyTPljhpMJEK0jDuLSU4vJ1w==",
+        "path": "files/noto-sans-sc-29-wght-normal.woff2"
+      }
+    },
+    {
       "file": "noto-sans-sc-43-wght-normal.woff2",
       "family": "Noto Sans SC",
       "style": "normal",
@@ -393,6 +416,25 @@
         "version": "5.3.0",
         "integrity": "sha512-lNar1dF7Ik/lHNPo/7JWG0TolXY29LtsqYgMvEysooZ5bsO9uH4shJmRrwyJ3PjyTPljhpMJEK0jDuLSU4vJ1w==",
         "path": "files/noto-sans-sc-43-wght-normal.woff2"
+      }
+    },
+    {
+      "file": "noto-sans-sc-47-wght-normal.woff2",
+      "family": "Noto Sans SC",
+      "style": "normal",
+      "weight": "100 900",
+      "axes": {
+        "wght": "100 900"
+      },
+      "subset": "[47]",
+      "unicodeRange": "U+7bd3-7bd4,U+7bd9-7bda,U+7bdd,U+7be0-7be1,U+7be4-7be6,U+7be9-7bea,U+7bef,U+7bf4,U+7bf6,U+7bfc,U+7bfe,U+7c01,U+7c03,U+7c07-7c08,U+7c0a-7c0d,U+7c0f,U+7c11,U+7c15-7c16,U+7c19,U+7c1e-7c21,U+7c23-7c24,U+7c26,U+7c28-7c33,U+7c35,U+7c37-7c3b,U+7c3d-7c3e,U+7c40-7c41,U+7c43,U+7c47-7c48,U+7c4c,U+7c50,U+7c53-7c54,U+7c59,U+7c5f-7c60,U+7c63-7c65,U+7c6c,U+7c6e,U+7c72,U+7c74,U+7c79-7c7a,U+7c7c,U+7c81-7c82,U+7c84-7c85,U+7c88,U+7c8a-7c91,U+7c93-7c96,U+7c99,U+7c9b-7c9e,U+7ca0-7ca2,U+7ca6-7ca9,U+7cac,U+7caf-7cb3,U+7cb5-7cb7,U+7cba-7cbd,U+7cbf-7cc2,U+7cc5,U+7cc7-7cc9,U+7ccc-7ccd,U+7cd7,U+7cdc,U+7cde,U+7ce0,U+7ce4-7ce5,U+7ce7",
+      "bytes": 56156,
+      "sha256": "b05afdd32b3bf722adac4b2c936a3c3390fb4b6b8adc20a132a0b42cb9c23e83",
+      "upstream": {
+        "package": "@fontsource-variable/noto-sans-sc",
+        "version": "5.3.0",
+        "integrity": "sha512-lNar1dF7Ik/lHNPo/7JWG0TolXY29LtsqYgMvEysooZ5bsO9uH4shJmRrwyJ3PjyTPljhpMJEK0jDuLSU4vJ1w==",
+        "path": "files/noto-sans-sc-47-wght-normal.woff2"
       }
     },
     {
@@ -814,6 +856,25 @@
       }
     },
     {
+      "file": "noto-serif-sc-29-wght-normal.woff2",
+      "family": "Noto Serif SC",
+      "style": "normal",
+      "weight": "200 900",
+      "axes": {
+        "wght": "200 900"
+      },
+      "subset": "[29]",
+      "unicodeRange": "U+941c-942b,U+942d-942e,U+9432-9433,U+9435,U+9438,U+943a,U+943e,U+9444,U+944a,U+9451-9452,U+945a,U+9462-9463,U+9465,U+9470-9487,U+948a-9492,U+9494-9498,U+949a,U+949c-949d,U+94a1,U+94a3-94a4,U+94a8,U+94aa-94ad,U+94af,U+94b2,U+94b4-94ba,U+94bc-94c0,U+94c4,U+94c6-94db,U+94de-94ec,U+94ee-94f1,U+94f3",
+      "bytes": 72784,
+      "sha256": "d4ba29a42d58e9c71f523225d6c2257e231e4d3fe92b720bbcbf99dd08add33c",
+      "upstream": {
+        "package": "@fontsource-variable/noto-serif-sc",
+        "version": "5.3.0",
+        "integrity": "sha512-7LcN2NEf4HDjoSkGWc79WqDDyMK8JvSPdA/gsHjJpZ8l9A9mcK/GQTazp3klmkBwJooy0eqeNvlmaZFXPupHrA==",
+        "path": "files/noto-serif-sc-29-wght-normal.woff2"
+      }
+    },
+    {
       "file": "noto-serif-sc-43-wght-normal.woff2",
       "family": "Noto Serif SC",
       "style": "normal",
@@ -830,6 +891,25 @@
         "version": "5.3.0",
         "integrity": "sha512-7LcN2NEf4HDjoSkGWc79WqDDyMK8JvSPdA/gsHjJpZ8l9A9mcK/GQTazp3klmkBwJooy0eqeNvlmaZFXPupHrA==",
         "path": "files/noto-serif-sc-43-wght-normal.woff2"
+      }
+    },
+    {
+      "file": "noto-serif-sc-47-wght-normal.woff2",
+      "family": "Noto Serif SC",
+      "style": "normal",
+      "weight": "200 900",
+      "axes": {
+        "wght": "200 900"
+      },
+      "subset": "[47]",
+      "unicodeRange": "U+7bd3-7bd4,U+7bd9-7bda,U+7bdd,U+7be0-7be1,U+7be4-7be6,U+7be9-7bea,U+7bef,U+7bf4,U+7bf6,U+7bfc,U+7bfe,U+7c01,U+7c03,U+7c07-7c08,U+7c0a-7c0d,U+7c0f,U+7c11,U+7c15-7c16,U+7c19,U+7c1e-7c21,U+7c23-7c24,U+7c26,U+7c28-7c33,U+7c35,U+7c37-7c3b,U+7c3d-7c3e,U+7c40-7c41,U+7c43,U+7c47-7c48,U+7c4c,U+7c50,U+7c53-7c54,U+7c59,U+7c5f-7c60,U+7c63-7c65,U+7c6c,U+7c6e,U+7c72,U+7c74,U+7c79-7c7a,U+7c7c,U+7c81-7c82,U+7c84-7c85,U+7c88,U+7c8a-7c91,U+7c93-7c96,U+7c99,U+7c9b-7c9e,U+7ca0-7ca2,U+7ca6-7ca9,U+7cac,U+7caf-7cb3,U+7cb5-7cb7,U+7cba-7cbd,U+7cbf-7cc2,U+7cc5,U+7cc7-7cc9,U+7ccc-7ccd,U+7cd7,U+7cdc,U+7cde,U+7ce0,U+7ce4-7ce5,U+7ce7",
+      "bytes": 74000,
+      "sha256": "a491a10a853d1fb3480d4471a275fd8824726b0e1a795fe8a98eb946001ac80e",
+      "upstream": {
+        "package": "@fontsource-variable/noto-serif-sc",
+        "version": "5.3.0",
+        "integrity": "sha512-7LcN2NEf4HDjoSkGWc79WqDDyMK8JvSPdA/gsHjJpZ8l9A9mcK/GQTazp3klmkBwJooy0eqeNvlmaZFXPupHrA==",
+        "path": "files/noto-serif-sc-47-wght-normal.woff2"
       }
     },
     {
