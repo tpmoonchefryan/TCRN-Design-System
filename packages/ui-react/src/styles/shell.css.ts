@@ -671,12 +671,25 @@ export const shellCss03 = `
 // inset space-1h; the search is the drop-down search height with a space-2 inset and the small
 // icon, space-1 above the rows; the rows have no icon column, so their text starts at space-1h +
 // space-2h (16).
+// Where the open cascades would pass the viewport's right edge, ShellDropdown says
+// data-cascade-side="start" (TCRN-DS-SUB-233): the grid then runs from the right, so the first
+// column keeps its place and each cascade stands the cascade gap to the left of the column before
+// it, as wide (the same tracks) and as tall (the same row). Only the order of the columns turns,
+// with no length and no colour of its own; the panel and the columns keep the left-to-right
+// reading of the five languages.
 export const shellCss04 = `
 .tcrn-shell-menu.tcrn-shell-dropdown {
   position: fixed;
   grid-template-columns: var(--tcrn-shell-drop-w);
   inline-size: var(--tcrn-shell-drop-w);
   margin-top: var(--tcrn-shell-menu-gap);
+}
+.tcrn-shell-dropdown[data-cascade-side="start"] {
+  direction: rtl;
+}
+.tcrn-shell-dropdown__panel,
+.tcrn-shell-dropdown__col {
+  direction: ltr;
 }
 .tcrn-shell-dropdown__panel {
   display: flex;
