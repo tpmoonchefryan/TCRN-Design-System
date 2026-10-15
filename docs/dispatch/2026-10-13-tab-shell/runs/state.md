@@ -176,6 +176,15 @@
 - INIT-016 收口注解：WORKSPACE_COMMAND_COMPLETED，version 2471 → 2472，head 082f09285fea…；读回 INIT-016 active，注解在。
 - 最终 HEAD：记录本条的提交（本文件的最后一笔，前一笔 57625c6）；`git status --short` 为空。
 
+### R6（Owner 完整授权）
+
+- 2026-10-16 Owner：引擎已改好，可配置门（可附加到工单的门、按需加进配置复用），随后给本轮完整授权：待裁项按建议定下并做到本阶段交付，交付后一次目视、一次提出、一次修改。
+- 门配置（纪要 TCRN-DS-MIN-20261016-GATES，minutes:770128917565162256d1d232，D1–D3）：`verify` 收为 covers `**` 的必需门（order 1）；新声明非必需门 `storybook-build`（order 2）与 `test-dom`（order 3）；INIT-015 附 `storybook-build`，INIT-016 附两道；本机登记补 projectId（O-21 解除）。读回：门 3 道，Story 120 的适用门 verify 与 storybook-build，Story 146 另加 test-dom。
+- 处置（纪要 TCRN-DS-MIN-20261016-R6，minutes:019a51580fa65197f0f4630c，D1–D8）：O-1 至 O-20 与 INIT-015 的 S-6 全部按建议落地，推送与发版仍是停点。链 version 2472 → 2479。
+- INIT-015 先跑门：main@69aa195 上 `gates-run --base 69aa195 --work-id <12 张>`，运行 20261015T194045Z-3b858b79aa07：`storybook-build` 绿，`verify` 红（输出超 1 MiB 被截断）；在主检出逐步复跑定位（会话 scratch `main-verify/`），结果决定 INIT-015 是单独再跑还是随 INIT-016 合入后一起跑。
+- 会话 scratch 在两次会话之间被系统回收：R1–R5 的逐段日志、链导出与工具都已不在；工具按原样重写（`tools/`），链导出重新导出（`chain/src/`）。仓内各轮 `steps.md` 与交回物不受影响。
+- 拆分：einzbern-economy 单独一次，输入 `runs/r6/brief.md`（R6-1 至 R6-12）；包名 S1…；键号从 `TCRN-DS-SUB-229` 起；产出写 `runs/r6/`。
+
 ## 下一步
 
-- 停在推送之前。剩余全部只等 Owner：O-21（本机登记补 projectId，命令在收口文件第 3.1 节）、O-19、O-4、O-8、O-2、150 判定、目视验收、推送与发版、画布发布。Owner 裁定后按收口文件第 3.3 节继续：INIT-015 的 12 张跑门转 done；INIT-016 开下一轮做 O-19、O-4 的返工，30 步全绿后合入主检出跑门转 16 张。
+- R6 拆分交回 → 建单 → 分波实施 → 批末 verify（含 storybook:build、test:dom）→ 三片验收 → 判断 → 链写与知识卡 →（R7 若有）→ 合入 main、跑门、28 张转 done → 收口与目视清单 → 交付汇报。
