@@ -254,6 +254,47 @@ test("C8: removing flex-shrink 0 from a fixed item turns C8 red; so does a yield
   assert.deepEqual(ruleIds(undeclared, "C8"), ["C8.yield-undeclared"]);
 });
 
+// Board-ruled yield (TCRN-DS-SUB-229, ruling TCRN-DS-MIN-20261016-R6 D2): a toolbar entry carrying
+// yieldMinWidth "zero-by-board" and yieldOptional true skips exactly C8.yield-without-min-width and
+// C8.story-yield-missing for that toolbar. The fixture below has both causes: the yielding item's
+// min-inline-size is 0 and the rendered toolbar holds no yielding item.
+const SEARCH_ITEM = `<div class="tcrn-product-shell-search" data-shell-control="product-shell-search"><input type="search" class="tcrn-input" aria-label="Search"></div>`;
+const ZERO_MIN_CSS = PACKAGE_CSS.replace("min-inline-size:140px", "min-inline-size:0");
+const BOARD_RULED = { yieldMinWidth: "zero-by-board", yieldOptional: true, yieldBoardRule: "fixture board: the yielding item has min-width 0 and is not rendered when it holds nothing" };
+const rolesWithToolbarFields = (fields) => ({ ...ROLES, toolbars: ROLES.toolbars.map((toolbar) => ({ ...toolbar, ...fields })) });
+const boardC8 = ({ css = ZERO_MIN_CSS, roles, pages = storyPage(SEARCH_ITEM, "") }) => run({ css, roles, pages });
+
+test("C8 board-ruled yield: an entry with both fields reports neither the zero min-width nor the missing yielding item (green)", () => {
+  assert.notEqual(ZERO_MIN_CSS, PACKAGE_CSS);
+  const report = boardC8({ roles: rolesWithToolbarFields(BOARD_RULED) });
+  assert.equal(status(report, "C8"), "green", JSON.stringify(report.clauses.C8.findings));
+  assert.deepEqual(ruleIds(report, "C8"), []);
+});
+
+test("C8 board-ruled yield: without the fields, or with other values, both findings are back (red); each field skips only its own check", () => {
+  const both = ["C8.story-yield-missing", "C8.yield-without-min-width"];
+  const report = boardC8({ roles: ROLES });
+  assert.equal(status(report, "C8"), "red");
+  assert.deepEqual(ruleIds(report, "C8"), both);
+  assert.deepEqual(ruleIds(boardC8({ roles: rolesWithToolbarFields({ yieldMinWidth: "zero", yieldOptional: "true" }) }), "C8"), both);
+  assert.deepEqual(ruleIds(boardC8({ roles: rolesWithToolbarFields({ yieldMinWidth: 0, yieldOptional: 1, yieldBoardRule: "fixture" }) }), "C8"), both);
+  assert.deepEqual(ruleIds(boardC8({ roles: rolesWithToolbarFields({ yieldMinWidth: "zero-by-board" }) }), "C8"), ["C8.story-yield-missing"]);
+  assert.deepEqual(ruleIds(boardC8({ roles: rolesWithToolbarFields({ yieldOptional: true }) }), "C8"), ["C8.yield-without-min-width"]);
+});
+
+test("C8 board-ruled yield: the other C8 rules still hold for an entry with both fields; a fixed item without flex-shrink 0 is red", () => {
+  const roles = rolesWithToolbarFields(BOARD_RULED);
+  const shrinking = ZERO_MIN_CSS.replace(".tcrn-top-bar__actions{display:flex;flex-shrink:0}", ".tcrn-top-bar__actions{display:flex}");
+  assert.notEqual(shrinking, ZERO_MIN_CSS);
+  const fixedShrinks = boardC8({ css: shrinking, roles });
+  assert.equal(status(fixedShrinks, "C8"), "red");
+  assert.deepEqual(ruleIds(fixedShrinks, "C8"), ["C8.fixed-item-shrinks"]);
+  assert.deepEqual(ruleIds(boardC8({ css: `${ZERO_MIN_CSS}\n.tcrn-product-shell-search{flex-shrink:0}`, roles, pages: pagesWith(STORY_PAGE) }), "C8"), ["C8.yield-does-not-shrink"]);
+  // Without a rendered yielding item the row is the container, and every item in it must still be fixed.
+  assert.deepEqual(ruleIds(boardC8({ roles, pages: storyPage(SEARCH_ITEM, `<div class="tcrn-top-bar__module">Module</div>`) }), "C8"), ["C8.story-item-not-fixed"]);
+  assert.deepEqual(ruleIds(boardC8({ roles, pages: storyPage(SEARCH_ITEM, `${SEARCH_ITEM}<div class="tcrn-product-shell-search"></div>`) }), "C8"), ["C8.story-yield-not-unique"]);
+});
+
 test("C5: themed token blocks must declare the same token set; theme-independent blocks are left out", () => {
   const missingDark = TOKENS_CSS.replace("  --tcrn-color-wash: rgba(255, 255, 255, .06);\n", "");
   assert.notEqual(missingDark, TOKENS_CSS);
@@ -580,7 +621,17 @@ test("the repository's family registry, exemptions and roles are consistent", ()
   // The shell's top band is the registered C8 toolbar (TCRN-DS-SUB-191): the strip yields at the pins and
   // holds the brand button and the right cluster fixed. The container, the yielding item and every fixed
   // item are shell-family blocks (fixed items since TCRN-DS-SUB-215, which registered tcrn-shell-cluster).
-  assert.deepEqual(roles.toolbars, [{ toolbar: "顶带", container: "tcrn-shell-strip", yield: "tcrn-shell-pins", fixed: ["tcrn-shell-brand", "tcrn-shell-cluster"] }]);
+  // The band follows its board (TCRN-DS-SUB-229, ruling TCRN-DS-MIN-20261016-R6 D2): yieldMinWidth
+  // "zero-by-board" and yieldOptional true, with yieldBoardRule naming the board rule it rests on.
+  const withoutBoardRule = (toolbar) => Object.fromEntries(Object.entries(toolbar).filter(([field]) => field !== "yieldBoardRule"));
+  assert.deepEqual(roles.toolbars.map(withoutBoardRule), [
+    { toolbar: "顶带", container: "tcrn-shell-strip", yield: "tcrn-shell-pins", fixed: ["tcrn-shell-brand", "tcrn-shell-cluster"], yieldMinWidth: "zero-by-board", yieldOptional: true }
+  ]);
+  for (const toolbar of roles.toolbars.filter((entry) => "yieldMinWidth" in entry || "yieldOptional" in entry)) {
+    assert.equal(typeof toolbar.yieldBoardRule, "string", `${toolbar.toolbar}: a board-ruled yield names its board rule`);
+    assert.match(toolbar.yieldBoardRule, /TCRN-DS-MIN-20261016-R6 D2/u, toolbar.toolbar);
+  }
+  assert.match(roles.toolbars[0].yieldBoardRule, /07a[^；]*\.ts-pins[^；]*min-width:0/u);
   for (const toolbar of roles.toolbars) for (const name of [toolbar.container, toolbar.yield, ...toolbar.fixed]) assert.equal(familyOfBlock.get(name), "shell", name);
   for (const control of roles.shell.controls) assert.ok(["shell", "navigation"].includes(familyOfBlock.get(control.class.replace(/__.*$/u, "").replace(/--.*$/u, ""))), control.class);
   for (const bar of roles.shell.bars) assert.equal(familyOfBlock.get(bar), "shell", bar);

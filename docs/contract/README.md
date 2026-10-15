@@ -10,7 +10,7 @@
 | `clauses.md` | 条款 C1–C17 原文、契约静态门的口径与各条落点 |
 | `families.json` | 16 个家族与包 CSS 根类的对应；`scope.checkedBatches` 列出已全量检查的批次，现为 `[1, 2]`：第一批五家族（字体、图标、品牌、动作、表单控件）与第二批三家族（导航、壳层、布局）。契约静态门的豁免校验（`validateExemptions`）与它的测试只读这一字段；原来只写第一批的 `scope.batch` 已删除（TCRN-DS-SUB-189） |
 | `exemptions.json` | 契约静态门的豁免登记：每条只豁免一个家族、一组类或一组选择器，写明条款并带裁定引用 |
-| `roles.json` | C7 单行角色的承载类、C8 工具栏登记、C11「通用件拼壳」的壳层登记。C8 的 `toolbars` 现登记一项「顶带」：容器 `tcrn-shell-strip`，让步项 `tcrn-shell-pins`，固定项 `tcrn-shell-brand` 与 `tcrn-shell-cluster`（TCRN-DS-SUB-191） |
+| `roles.json` | C7 单行角色的承载类、C8 工具栏登记、C11「通用件拼壳」的壳层登记。C8 的 `toolbars` 现登记一项「顶带」：容器 `tcrn-shell-strip`，让步项 `tcrn-shell-pins`，固定项 `tcrn-shell-brand` 与 `tcrn-shell-cluster`（TCRN-DS-SUB-191）；顶带按板让步，带 `yieldMinWidth: "zero-by-board"` 与 `yieldOptional: true`，`yieldBoardRule` 写板规则出处（TCRN-DS-SUB-229，纪要 TCRN-DS-MIN-20261016-R6 D2；口径见 `clauses.md` C8「板定让步」） |
 
 契约数据本身在 `docs/design/gplus-2026-10/contract/`：`tokens.json`、`typography.json`、`pairs.json`、`icons.json`、`marks.json`、`matrices.json`。生成物只由 `node scripts/contract-generate.mjs` 写入，文件头注明「由 contract 生成，勿手改」。
 
@@ -63,7 +63,7 @@
   - C5 浅色与夜间每个选择器的属性集相同，主题 token 块的键集相同；
   - C6 不用左边条或 inset x 偏移作选中标记；
   - C7 单行角色带 nowrap、ellipsis 与裁切；
-  - C8 工具栏恰有一个让步项（工具栏登记在 `roles.json` 的 `toolbars`，现只有顶带一项，见上表）；
+  - C8 工具栏恰有一个让步项（工具栏登记在 `roles.json` 的 `toolbars`，现只有顶带一项，见上表；带板定让步两字段的登记，门对它只不报 `C8.yield-without-min-width` 与 `C8.story-yield-missing`，其余照判，见 `clauses.md` C8）；
   - C11 禁用清单：渐变、模糊超过 3px、卡套卡、表情图标、左边条；
   - C13 文档层不渲染包里没有的 tcrn-* 类，取 doc-shell-class-proof 的差集。
   C7、C8、C11 另在静态 Storybook 的 story 区块上检查。读不到 story 区块或差集算不出时判红（`Cx.story-input-missing`、`C13.input-missing`），不跳过。

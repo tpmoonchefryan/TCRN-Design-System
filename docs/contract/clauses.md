@@ -112,13 +112,19 @@ node scripts/contract-static-proof.mjs [--details] [--report <path>] [--family <
   - `C8.yield-does-not-shrink`：让步项声明了 flex-shrink 0。
   - `C8.fixed-item-shrinks`：固定项的基础规则没有 flex-shrink 0（`flex-shrink: 0`、`flex: none` 或 `flex: <g> 0 <basis>`）。
   - `C8.yield-undeclared`、`C8.toolbar-missing`：登记缺让步项，或容器类在包 CSS 里没有规则。
-  - 第一批家族里没有工具栏。现登记的是壳的顶带（TCRN-DS-SUB-191）：容器 `tcrn-shell-strip`；让步项 `tcrn-shell-pins`（顶带上的固定项条）；C8 意义上的固定项（不收缩）是标按钮 `tcrn-shell-brand` 与右簇 `tcrn-shell-cluster`。壳层家族属第二批，全量检查，不豁免。
+  - 第一批家族里没有工具栏。现登记的是壳的顶带（TCRN-DS-SUB-191）：容器 `tcrn-shell-strip`；让步项 `tcrn-shell-pins`（顶带上的固定项条）；C8 意义上的固定项（不收缩）是标按钮 `tcrn-shell-brand` 与右簇 `tcrn-shell-cluster`。壳层家族属第二批，全量检查，不豁免。顶带按板让步，登记带下文「板定让步」的两个字段（TCRN-DS-SUB-229）。
 - story 层（每个渲染出的工具栏容器；未声明让步项的工具栏已由 `C8.yield-undeclared` 判红，story 层不重复）：
   - `C8.story-yield-missing`、`C8.story-yield-not-unique`：渲染出的工具栏里让步项不是恰好一个。
   - `C8.story-yield-in-fixed`：让步项落在固定项里面（固定项不收缩，让步项让不出来）。
   - `C8.story-item-not-fixed`：工具栏行（让步项外层第一个有多个子元素的元素，没有让步项时是容器本身）里，除让步项外的每一项都须是固定项：登记在 `fixed`，或其包类的基础规则声明 flex-shrink 0；否则让步项到 min-width 之前它先被压。这是「让步项达到 min-width 后其余不得被压」的静态一半，像素量测属几何门。
   - `C8.story-inline-override`：行内样式把让步项的 min-width 改成 0/auto 或让它不收缩，或让固定项可收缩。
   - 归属：story 层 C8 发现归到工具栏（容器、行与固定项的类），由工具栏负责项的布局。
+- 板定让步（TCRN-DS-SUB-229；依据纪要 TCRN-DS-MIN-20261016-R6 D2，O-19 选甲「顶带按板」）：板上让步项可收到 0、没有可让的内容时不渲染，这时工具栏登记带两个字段，门只对这个工具栏各跳过一项：
+  - `"yieldMinWidth": "zero-by-board"`：静态层不报 `C8.yield-without-min-width`（板上让步项写 `min-width: 0`）。
+  - `"yieldOptional": true`：story 层不报 `C8.story-yield-missing`（板上没有空的让步位，组件在没有内容时不渲染让步项）。
+  - 门只认这两个字面值；别的值（如 `"zero"`、字符串 `"true"`）按没带字段照判。带字段的登记另写 `yieldBoardRule`，写明板规则出处；仓库测试核对出处在、且引用纪要。
+  - 其余 C8 检查照旧：`C8.yield-does-not-shrink`、`C8.fixed-item-shrinks`、`C8.yield-undeclared`、`C8.toolbar-missing`，story 层的 `C8.story-yield-not-unique`、`C8.story-yield-in-fixed`、`C8.story-item-not-fixed`、`C8.story-inline-override`。渲染出的工具栏没有让步项时，行就是容器本身，容器里每一项都须是固定项。
+  - 这是按板放宽判定，效果与豁免相同，不是给让步项补数值。现只有顶带带这两个字段，出处是成品壳层板 07a（`docs/design/visual-standard/boards/Shell.dc.html`，由 `docs/design/gplus-2026-10/tools/shell-screen.mjs` 生成）的 `.ts-pins{…min-width:0;flex:0 1 auto}`；没有固定项的壳不渲染 `tcrn-shell-pins`。登记保留，它仍钉着标按钮与右簇不收缩。别的工具栏要带这两个字段，须另有裁定；去掉字段，两项照判红（自检见 `tests/contract-static-proof.test.mjs` 的 board-ruled yield 三条）。
 
 ### C9 品牌资产只复制不重绘
 
