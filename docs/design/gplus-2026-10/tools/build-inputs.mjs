@@ -13,6 +13,7 @@ const css = `
 .in:where(:hover,.is-hover){--fill:var(--fill-h);--ink-c:var(--ink-h);--edge:var(--edge-h)}
 .in:where(:focus-visible,.is-focus){--fill:var(--fill-f);--ink-c:var(--ink-f);--edge:var(--edge-f)}
 .in:where([readonly],.is-ro){--fill:var(--fill-r);--ink-c:var(--ink-r);--edge:var(--edge-r)}
+.in:where([readonly]:focus-visible,.is-ro.is-focus){--edge:var(--edge-rf)}
 .in:where([aria-invalid="true"],.is-err){--fill:var(--fill-e);--ink-c:var(--ink-e);--edge:var(--edge-e)}
 .in:where([aria-invalid="true"]:focus-visible,.is-err.is-focus){--edge:var(--edge-ef)}
 .in:where(:disabled){--fill:var(--fill-x);--ink-c:var(--ink-x);--edge:var(--edge-x);cursor:not-allowed}
@@ -23,7 +24,7 @@ const css = `
 .in.search::placeholder{color:var(--ink-2)}
 .sw{position:relative;display:block;min-width:0}
 .sw>.ic{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--ink-3);pointer-events:none}
-.sw>kbd{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:10px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:4px;padding:0 4px;line-height:14px;pointer-events:none}
+.sw>kbd{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:10px;color:var(--ink-2);border:1px solid var(--line-2);border-radius:4px;padding:0 4px;line-height:14px;pointer-events:none}
 .sw>.chev{position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--ink-3);pointer-events:none;left:auto}
 .in.sel{padding-right:30px;cursor:pointer;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
 .in.num{min-width:12ch;-moz-appearance:textfield}
@@ -107,8 +108,8 @@ fieldset.rg.row2{flex-direction:row;gap:22px;flex-wrap:wrap}
 
 function inp(opts) {
   const { cls = "", state = "", value = "", ph = "", attrs = "", type = "text", cell = "" } = opts;
-  const st = { hover: " is-hover", focus: " is-focus", err: " is-err", errfocus: " is-err is-focus", ro: " is-ro" }[state] || "";
-  const extra = state === "dis" ? " disabled" : state === "ro" ? " readonly" : "";
+  const st = { hover: " is-hover", focus: " is-focus", err: " is-err", errfocus: " is-err is-focus", ro: " is-ro", rofocus: " is-ro is-focus" }[state] || "";
+  const extra = state === "dis" ? " disabled" : state === "ro" || state === "rofocus" ? " readonly" : "";
   return `<input type="${type}" class="in${cls ? " " + cls : ""}${st}"${extra}${value ? ` value="${value}"` : ""}${ph ? ` placeholder="${ph}"` : ""} aria-label="示例"${attrs}${cell}>`;
 }
 
@@ -124,6 +125,7 @@ function pane(night) {
     ["focus", inp({ state: "focus", value: "季度复盘", cell: cell("in-focus") })],
     ["filled", inp({ value: "季度复盘", cell: cell("in-text") })],
     ["readonly", inp({ state: "ro", value: "设计组", cell: cell("in-ro") })],
+    ["readonly + focus", inp({ state: "rofocus", value: "设计组" })],
     ["disabled", inp({ state: "dis", value: "设计组", cell: cell("in-dis") })],
     ["error", inp({ state: "err", value: "lin.xiao@", attrs: ' aria-invalid="true"', cell: cell("in-err") })],
     ["error + focus", inp({ state: "errfocus", value: "lin.xiao@", attrs: ' aria-invalid="true"' })]
@@ -169,7 +171,7 @@ function pane(night) {
   return `<section class="pane gp${night ? " night" : ""}" aria-label="${night ? "夜间" : "浅色"}">
 ${grain("inp-" + th)}
 <span class="ptag">${night ? "night · 画布 #121210 · 纸 #191916" : "light · 画布 #efeeea · 纸 #ffffff"}</span>
-<div class="blk"><h6>Input · 八种状态 <span>轮廓 1px line-ctl（≥ 3），hover 加深，focus 青边加环，error 红边，error+focus 红环；禁用用 5% 洗底与三级墨</span></h6>
+<div class="blk"><h6>Input · 九种状态 <span>轮廓 1px line-ctl（≥ 3），hover 加深，focus 青边加环，readonly+focus 留只读底换环，error 红边，error+focus 红环；禁用用 5% 洗底与三级墨</span></h6>
 <div class="paper"><div class="g4">${states}</div></div></div>
 <div class="blk"><h6>尺寸与 Field <span>sm 28 · md 32 · lg 40；标签 12.5/500，帮助 11.5 三级墨，错误 11.5 红字加 alert-triangle；Field 件归第五批，这里只画其字体</span></h6>
 <div class="paper"><div class="g4">${sizes}<span class="lab">${errField}<small>error · aria-describedby 指向错误文案</small></span></div></div></div>
