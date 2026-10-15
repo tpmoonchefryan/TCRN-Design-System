@@ -9,7 +9,8 @@
 // G+ brand rules (STORY-127, boards V2-B1-Brand and V2-B2-Logos): the mark comes in four
 // sizes set by its container (side rail 22, lockup 28, product logo 38, about page 56 by
 // overriding the variable); TCRN is ink and a TCRN product suffix is the product's deep
-// colour from the brand-suffix tokens, the same in both themes; Einzbern and Mana
+// colour from the brand-suffix tokens (by night the TMS suffix token takes its mark's bright
+// step, TCRN-DS-MIN-20261016-R6 D4); Einzbern and Mana
 // Orchestrate are whole names in Source Serif 4 with the byline. Gradient text is retired.
 // The tier variables below are brand locals, registered in scripts/token-extension-proof.mjs.
 

@@ -809,10 +809,10 @@ test("brand lockup css follows the G+ brand rules", () => {
   };
 
   // STORY-127 GWT3: TCRN is ink; the TMS and design-system suffixes are the products'
-  // deep colours from the brand-suffix tokens, the same in both themes (STORY-145 GWT3,
-  // MIN-20261013-SHELL D2: the O-3 night value of the TMS suffix is withdrawn; its night
-  // contrast is a known red that D7 leaves to the Owner). Gradient text is retired, and so
-  // is the workflow suffix.
+  // deep colours from the brand-suffix tokens (MIN-20261013-SHELL D2); by night the TMS
+  // suffix takes its mark's bright step #7aa0f5, which TCRN-DS-MIN-20261016-R6 D4 rules for
+  // O-8 and INIT-015 closure S-6 (TCRN-DS-SUB-232), and the design-system suffix keeps one
+  // colour. Gradient text is retired, and so is the workflow suffix.
   assert.match(rule(".tcrn-brand-wordmark"), /color: var\(--tcrn-color-ink\);/);
   assert.match(rule(".tcrn-brand-wordmark__suffix"), /color: var\(--tcrn-color-ink\);/);
   assert.match(rule(".tcrn-product-logo__line-one"), /color: var\(--tcrn-color-ink\);/);
@@ -827,7 +827,8 @@ test("brand lockup css follows the G+ brand rules", () => {
   assert.equal(tokens["--tcrn-brand-suffix-tms"], "#2c63c8");
   assert.equal(tokens["--tcrn-brand-suffix-design-system"], "#6577f3");
   const night = createResolvedTokenMap("dark");
-  assert.equal(night["--tcrn-brand-suffix-tms"], "#2c63c8", "by night the TMS suffix reads the same approved colour");
+  assert.equal(night["--tcrn-brand-suffix-tms"], "#7aa0f5", "by night the TMS suffix reads its mark's bright step");
+  assert.equal(tcrnProductMarks.find((mark) => mark.productId === "tms")?.palette.bright, "#7aa0f5");
   assert.equal(night["--tcrn-brand-suffix-design-system"], "#6577f3");
   assert.equal(tcrnProductMarks.find((mark) => mark.productId === "tms")?.palette.deep, "#2c63c8");
   assert.equal(tcrnProductMarks.find((mark) => mark.productId === "design-system")?.palette.deep, "#6577f3");

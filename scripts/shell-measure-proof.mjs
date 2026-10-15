@@ -40,11 +40,13 @@
 //   lockupDecor    锁定块只装饰     the lockup in the floating layers is not a control, not in the Tab
 //                                  order, has no hover rule; sidebar scale mark 22     (mutation: button)
 //   contrast       每格对比度       every [data-cell] within 0.05 of data-expect; text >= 4.5, other >= 3;
-//                                  the night product-colour suffix cells stay red-and-pending under
-//                                  MIN-20261013-SHELL D7 (listed, not failed); the exempt cells that the
-//                                  07a B section marks 不进门 / 豁免 / 按设计不读 (彩色标, 面板对画布, 遮罩下的
-//                                  纸: THRESHOLDS.contrast.listOnly) are listed with their reading, not
-//                                  compared (TCRN-DS-SUB-174)                    (mutation: placeholder ink-3)
+//                                  no cell is pending: the night product-colour suffix cells read the
+//                                  TMS mark's bright step since MIN-20261016-R6 D4 (TCRN-DS-SUB-232) and
+//                                  are held to 4.5 (pendingBelowMinimum stays, frozen and empty); the
+//                                  exempt cells that the 07a B section marks 不进门 / 豁免 / 按设计不读
+//                                  (彩色标, 面板对画布, 遮罩下的纸: THRESHOLDS.contrast.listOnly) are
+//                                  listed with their reading, not compared (TCRN-DS-SUB-174)
+//                                                                       (mutation: placeholder ink-3)
 //   singleLine     单行与溢出       every row text one line; no element beyond its clipping ancestor (0.5);
 //                                  text cut by its box only as ellipsis with a title (C7 / C17)
 //                                                                       (mutation: label + 40 characters)
@@ -160,7 +162,7 @@ export const THRESHOLDS = deepFreeze({
   noCollapse: { maxCollapseButtons: 0, maxSidebars: 0 },
   pinJitter: { maxSpreadPx: 0.5, pinButtonPx: 24, tolerancePx: 0.5 },
   lockupDecor: { railMarkPx: 22, maxHoverRules: 0, tolerancePx: 0.5 },
-  contrast: { maxDiff: 0.05, minText: 4.5, minNonText: 3, pendingBelowMinimum: ["brand-suffix-n", "lk-em-n"], listOnly: ["brand-mark", "panel-edge", "scrim-paper"] },
+  contrast: { maxDiff: 0.05, minText: 4.5, minNonText: 3, pendingBelowMinimum: [], listOnly: ["brand-mark", "panel-edge", "scrim-paper"] },
   singleLine: { maxLines: 1, tolerancePx: 0.5 },
   shadowBlur: { maxBlurPx: 3 },
   intro: { firstLoadPlays: 1, reloadPlays: 0, reducedMotionPlays: 0, properties: ["transform", "opacity"], maxDurationMs: 700 },

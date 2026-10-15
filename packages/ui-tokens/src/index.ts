@@ -314,10 +314,10 @@ const gplusThemedEntries: TokenEntry[] = tcrnGplusThemedTokens.map((token) => ({
 // Contract fixed and brand tokens. A brand token with a night value (contract "night", published
 // as dark) is theme-scoped: its light value goes on the light theme block and its night value on
 // the dark block, so both blocks keep the same property names (C5). The rest stay theme
-// independent (TCRN-DS-SUB-088). No brand token has a night value at present: the TMS suffix
-// keeps the approved deep colour in both themes (TCRN-DS-MIN-20261013-SHELL D2), its O-3 night
-// value is withdrawn, and D7 leaves the night colour to the Owner with INIT-015 closure S-6
-// (TCRN-DS-SUB-128).
+// independent (TCRN-DS-SUB-088). The TMS suffix is the one brand token with a night value: by day
+// the approved deep colour (TCRN-DS-MIN-20261013-SHELL D2), by night its mark's bright step
+// #7aa0f5, which TCRN-DS-MIN-20261016-R6 D4 rules for O-8 and INIT-015 closure S-6 on the value
+// MIN-20261013-SHELL D7 suggested (TCRN-DS-SUB-232).
 const gplusContractFixedTokens: readonly TcrnGplusBrandToken[] = [...tcrnGplusFixedTokens, ...tcrnGplusBrandTokens];
 for (const key of Object.keys(retiredContractTokens)) {
   if (!tcrnGplusFixedTokens.some((token) => token.key === key)) throw new Error(`@tcrn/ui-tokens: the retired contract token "${key}" is not in the contract`);

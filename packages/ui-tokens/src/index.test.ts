@@ -84,11 +84,17 @@ test("G+ colour and outline tokens come from the generated contract file", () =>
   for (const variable of ["--tcrn-color-line-ctl", "--tcrn-color-surface", "--tcrn-color-acc-ul", "--tcrn-color-dis", "--tcrn-color-wash", "--tcrn-color-hover"]) {
     assert.ok(variable in light, `${variable} is defined`);
   }
-  // TCRN-DS-MIN-20261013-SHELL D2 (TCRN-DS-SUB-128): every suffix keeps the approved colour in
-  // both themes, TMS included, so all four stay theme independent; the O-3 night value of the
-  // TMS suffix is withdrawn. By night #2c63c8 is below 4.5, a known red that D7 leaves to the
-  // Owner with INIT-015 closure S-6 (the token-contrast gate registers it as pending).
-  for (const product of ["tms", "design-system", "einzbern", "mana-orchestrate"]) {
+  // TCRN-DS-MIN-20261016-R6 D4 (TCRN-DS-SUB-232): the TMS suffix keeps the approved deep colour by
+  // day (MIN-20261013-SHELL D2) and takes its mark's bright step #7aa0f5 by night, the value
+  // MIN-20261013-SHELL D7 suggested, ruled for O-8 and INIT-015 closure S-6; so it is theme-scoped.
+  // The other three suffixes keep one value and stay theme independent.
+  const tmsSuffix = tcrnTokens.find((candidate) => candidate.variable === "--tcrn-brand-suffix-tms");
+  assert.equal(tmsSuffix?.scope, "theme", "--tcrn-brand-suffix-tms is theme-scoped");
+  assert.equal(light["--tcrn-brand-suffix-tms"], "#2c63c8", "TMS suffix, light");
+  assert.equal(dark["--tcrn-brand-suffix-tms"], "#7aa0f5", "TMS suffix, night");
+  assert.equal(resolvedDark["--tcrn-brand-suffix-tms"], "#7aa0f5", "TMS suffix, night: the mark's bright step");
+  assert.equal(tcrnGplusBrandTokens.find((candidate) => candidate.cssVar === "--tcrn-brand-suffix-tms")?.dark, "#7aa0f5", "the contract gives the TMS suffix its night value");
+  for (const product of ["design-system", "einzbern", "mana-orchestrate"]) {
     const variable = `--tcrn-brand-suffix-${product}`;
     const token = tcrnTokens.find((candidate) => candidate.variable === variable);
     assert.equal(token?.scope, "fixed", `${variable} is theme independent`);
@@ -96,8 +102,6 @@ test("G+ colour and outline tokens come from the generated contract file", () =>
     assert.equal(tcrnGplusBrandTokens.find((candidate) => candidate.cssVar === variable)?.dark, undefined, `the contract gives ${variable} no night value`);
     assert.equal(resolvedDark[variable], resolvedLight[variable], `${variable} is the same colour in both themes`);
   }
-  assert.equal(light["--tcrn-brand-suffix-tms"], "#2c63c8", "TMS suffix, light");
-  assert.equal(resolvedDark["--tcrn-brand-suffix-tms"], "#2c63c8", "TMS suffix, night: the same approved colour");
   assert.equal(light["--tcrn-brand-suffix-design-system"], "#6577f3", "the Design System suffix is not changed");
   for (const token of tcrnGplusBrandTokens) {
     if (token.dark !== undefined) assert.equal(dark[token.cssVar], token.dark, `${token.cssVar} night value`);

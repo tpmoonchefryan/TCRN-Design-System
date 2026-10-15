@@ -156,11 +156,15 @@ test("behaviour gates judge traces: the manifest traces pass, their mutations fa
   assert.equal(judgeGate("noCollapse", { shells: [] }).status, "n/a");
 });
 
-test("contrast keeps the night suffix cells pending under D7 and fails any other low cell", () => {
+test("contrast holds the night suffix cells to 4.5 since R6 D4, with no pending cell, and fails any low cell (TCRN-DS-SUB-232)", () => {
   const cell = (name, ratio, expect = ratio, kind = "text") => ({ cell: name, kind, probe: "color", exempt: false, expect, ratio });
-  const pending = judgeGate("contrast", { contrastCells: [cell("brand-suffix-n", 3.33), cell("lk-em-n", 3.13), cell("tgl-l", 6.9, 6.9, "icon")] });
-  assert.equal(pending.status, "pass");
-  assert.equal(pending.pending.length, 2);
+  assert.deepEqual([...THRESHOLDS.contrast.pendingBelowMinimum], []);
+  // by night the suffix reads the TMS mark's bright step: 7.30 on the canvas, 6.74 on the hover wash, 6.86 on the paper
+  const night = judgeGate("contrast", { contrastCells: [cell("brand-suffix-n", 7.3), cell("brand-suffix-open-n", 6.74), cell("lk-em-n", 6.86), cell("tgl-n", 7.7, 7.7, "icon")] });
+  assert.equal(night.status, "pass");
+  assert.equal(night.pending, undefined);
+  // the day colour by night (3.33 on the canvas, 3.13 on the paper) is no longer pending: it fails
+  assert.deepEqual(judgeGate("contrast", { contrastCells: [cell("brand-suffix-n", 3.33), cell("lk-em-n", 3.13)] }).failures.map((f) => [f.at, f.what]), [["brand-suffix-n", "minimum"], ["lk-em-n", "minimum"]]);
   assert.equal(judgeGate("contrast", { contrastCells: [cell("brand-suffix-l", 3.33)] }).status, "fail");
   assert.equal(judgeGate("contrast", { contrastCells: [cell("srch-ph-l", 5.1, 7.59)] }).status, "fail");
   assert.equal(judgeGate("contrast", { contrastCells: [{ ...cell("srch-ph-l", 7.59), expect: null }] }).status, "fail");

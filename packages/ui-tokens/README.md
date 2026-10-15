@@ -39,10 +39,11 @@ component-specific colors or separate component forks.
 with a marker comment:
 
 - the light theme block on `:root, [data-tcrn-theme="light"]`
-  (`/* tcrn-token-block: theme */`, 85 declarations): colour, shadow, grain,
-  focus ring, and the deprecated colour, selection and elevation aliases;
+  (`/* tcrn-token-block: theme */`, 86 declarations): colour, shadow, grain,
+  focus ring, the TMS suffix colour, and the deprecated colour, selection and
+  elevation aliases;
 - the theme-independent block on `:root`
-  (`/* tcrn-token-block: theme-independent */`, 149 declarations): type, space,
+  (`/* tcrn-token-block: theme-independent */`, 148 declarations): type, space,
   radius (with `--tcrn-radius-paper`, 14px), control height and padding, icon
   size, motion, z-index, container widths, the top-band shell geometry (the
   `--tcrn-shell-*` tokens: band height 52px, brand button 134 × 40px, mark 22px,
@@ -51,23 +52,24 @@ with a marker comment:
   11px, the small chevron 12px (`--tcrn-shell-chevron`) and the language menu's
   chevron 11px (`--tcrn-shell-locale-chevron`); the old shell's
   `--tcrn-shell-sidebar-width`, `--tcrn-shell-sidebar-width-collapsed` and
-  `--tcrn-shell-topbar-height` stay as deprecated names), the four brand suffix
-  colours, and the deprecated type family and motion aliases;
+  `--tcrn-shell-topbar-height` stay as deprecated names), the other three brand
+  suffix colours, and the deprecated type family and motion aliases;
 - the coarse-pointer block, `:root` inside `@media (pointer: coarse)`
   (`/* tcrn-token-block: pointer-coarse */`, 2 declarations): `--tcrn-shell-row-h`
   and `--tcrn-shell-srch-h` point at `--tcrn-shell-touch`, so rows and the menu
   search are 44px high under a coarse pointer (`tcrnCoarsePointerMedia`,
   `tcrnCoarsePointerTokens`);
 - the dark theme block on `[data-tcrn-theme="dark"]`
-  (`/* tcrn-token-block: theme */`, 85 declarations): the same property names as
+  (`/* tcrn-token-block: theme */`, 86 declarations): the same property names as
   the light theme block, with the night values.
 
-The four brand suffix colours have one value for both themes, declared once in
-the theme-independent block: `--tcrn-brand-suffix-tms` is #2c63c8 by day and by
-night, the approved colour (TCRN-DS-MIN-20261013-SHELL D2). By night it is below
-4.5:1 on the paper and on the canvas; the night value is an open Owner decision
-(D7), and a ruling for a separate night value would move the variable into the two
-theme blocks.
+`--tcrn-brand-suffix-tms` is the one brand suffix colour with a night value, so it
+is declared in the two theme blocks: #2c63c8 by day, the approved colour
+(TCRN-DS-MIN-20261013-SHELL D2), and #7aa0f5 by night, its mark's bright step
+(`marks.json#tms.palette.bright`), which TCRN-DS-MIN-20261016-R6 D4 rules for O-8
+and INIT-015 closure S-6 on the value D7 suggested; by night it reads 4.5:1 or
+more on the paper and on the canvas. The other three suffix colours have one
+value for both themes, declared once in the theme-independent block.
 
 The two theme selectors are exported as `tcrnGplusThemeSelectors` (`light` is the
 selector list above). `compareTokenThemeBlocks(css)` checks that the two theme
