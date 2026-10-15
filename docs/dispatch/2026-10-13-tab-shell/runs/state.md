@@ -196,7 +196,7 @@
 | S3 | 已合入，包树已退役（279M） | ced3777、fee5399 | 0aaeb99 | SUB-233 完成：越右缘向左展开（DOM 用例与 Chromium 探针读数），不越界时与改前相同；ui-react 259、test:dom 62；geometry:measure 只剩既有 markText（归 S2）；问题 4 条，三条补派 S4 |
 | S4 | 实施中（einzbern-main，包树 scratch `pkg/r6-s4`，摘录 `runs/r6/excerpts/S4.md`） | — | — | SUB-234 |
 | S5 | 实施中（einzbern-economy，包树 scratch `pkg/r6-s5`，摘录 `runs/r6/excerpts/S5.md`） | — | — | SUB-235 |
-| S6 | 实施中（einzbern-economy，包树 scratch `pkg/r6-s6`，摘录 `runs/r6/excerpts/S6.md`） | — | — | SUB-236 → 237 |
+| S6 | 已合入，包树已退役（279M） | 044fefe、725fe0d、c9426ea | 02acb73 | 236、237 完成：Inputs rf 样片与 ink-2、底盘 kv 220/52、Icon pin 实心例外；矩阵格数不变；局部门全 0；问题 5 条（README 板高与映射文字交 S8，pairs.json 说明交 S7） |
 | S7 | 待 W2 | — | — | SUB-238 → 239 → 240 |
 | S8 | 待 W3 | — | — | SUB-241 → 242 |
 | S9 | 待 W4 | — | — | SUB-243 → 244 |
