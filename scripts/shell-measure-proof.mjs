@@ -24,9 +24,12 @@
 //   barCentering   底栏居中         lockup text, mark and crumbs centred between the divider (the bar's top
 //                                  border) and the panel's bottom edge (0.5); lockup right = menu right - 16
 //                                                                       (mutation: panel bottom padding 16)
-//   markText       标旁文字居中     ink midline of the text beside a mark = mark midline (1); lockup text
-//                                  block centre = mark centre (1); mark + word group centred in the tab (0.5)
-//                                                                       (mutation: word padding-top 4)
+//   markText       标旁文字居中     midline of the text beside a mark = mark midline (1), the text's midline
+//                                  the middle of the band from the first line's cap top (baseline less the
+//                                  face's cap height) to its baseline, a two-line lockup's band ending on the
+//                                  second line's baseline; no descender ink is read (MIN-20261016-R6 D3,
+//                                  TCRN-DS-SUB-230); lockup text block centre = mark centre (1); mark + word
+//                                  group centred in the tab (0.5)        (mutation: word padding-top 4)
 //   cascade        级联             column n height = column n-1 height; left = left column right + 4; same
 //                                  width                                            (mutation: column 2 height auto)
 //   noCollapse     无收起钮、无常驻侧栏  collapse buttons in the full menu, dropdowns and sheet = 0; resident

@@ -728,13 +728,54 @@ test("page readings (TCRN-DS-SUB-164): the breadcrumb per crumb, SettingsLayout 
     assert.deepEqual([byId["ts-settings-l"].x.splitViews, byId["ts-roster-l"].x.settingsLayouts], [[], []]);
     // the brand story's first lines sit outside every shell; the brand buttons' lines are their shells'
     const lines = reading.optical.filter((o) => !o.shell);
-    assert.deepEqual(lines.map((o) => [o.kind, o.product, o.mark]), [["lkr-line", "tms", 22], ["lk-line", "tms", 44]]);
+    // TCRN-DS-SUB-230: the Design System first line and the bottom bar's two-line lockup after the TMS lines
+    assert.deepEqual(lines.map((o) => [o.kind, o.product, o.mark]), [["lkr-line", "tms", 22], ["lk-line", "tms", 44], ["lkr-line", "design-system", 22], ["lkr", "tms", 22]]);
     assert.ok(reading.optical.filter((o) => o.shell).every((o) => o.product === "tms" && byId[o.shell]));
     const verdict = judgeShellReadings(reading);
     for (const id of manifest.pageFixture.green) assert.equal({ ...verdict.gates, ...verdict.checks }[id].status, "pass", id);
   } finally {
     await close();
   }
+});
+
+// TCRN-DS-SUB-230 (MIN-20261016-R6 D3): markText reads the middle of the band from the first line's cap top
+// (the baseline less the cap height of the line's face) to the baseline, so no ink below the baseline is
+// read: the Design System first line, whose "g" and "y" descend, reads what the TMS first line reads (the
+// R5 reading, cap top to ink bottom, put it 1.3 lower: 1.4 on the brand story). A lockup with a second line
+// ends the band on that line's baseline (the bottom bar's two-line block, centred on the mark as the Brand
+// board's section E draws it, reads 0.6): its second line's descenders are not read either, a first line
+// moved down 2 turns the gate red, and so does a second line moved down 4 (the band's lower end moves 4).
+test("markText reads the band from the first line's cap top to the baseline: descenders are not read; a two-line lockup's band ends on its second line's baseline (TCRN-DS-SUB-230)", async () => {
+  const twoLine = '[data-lockup="lkr"][data-product-id="tms"]';
+  const lineOf = (reading, kind, product) => reading.optical.find((o) => !o.shell && o.kind === kind && o.product === product);
+  const readWith = async (change) => {
+    const { page, close } = await openBoard(manifest.pageFixture.file);
+    try {
+      if (change) await page.evaluate(change.fn, change.arg);
+      const reading = await readPackage(page);
+      return { two: lineOf(reading, "lkr", "tms"), reading, markText: judgeShellReadings(reading).gates.markText };
+    } finally {
+      await close();
+    }
+  };
+  const css = (text) => ({ fn: applyMutationInPage, arg: [{ op: "css", css: text }] });
+  const base = await readWith(null);
+  const tms = lineOf(base.reading, "lkr-line", "tms"), ds = lineOf(base.reading, "lkr-line", "design-system");
+  assert.ok(Math.abs(ds.inkMinusMark - tms.inkMinusMark) <= 0.1, `descenders read: design-system ${ds.inkMinusMark}, tms ${tms.inkMinusMark}`);
+  for (const row of [tms, ds, base.two]) assert.ok(Math.abs(row.inkMinusMark - row.expect) <= THRESHOLDS.markText.maxInkOffsetPx, JSON.stringify(row));
+  assert.equal(base.markText.status, "pass", JSON.stringify(base.markText.failures));
+  // the second line without descenders reads the same
+  const caps = await readWith({ fn: (sel) => { document.querySelector(sel).textContent = "TALENT MANAGEMENT SYSTEM"; }, arg: `${twoLine} small` });
+  assert.ok(Math.abs(caps.two.inkMinusMark - base.two.inkMinusMark) <= 0.05, `second line ink read: ${caps.two.inkMinusMark} vs ${base.two.inkMinusMark}`);
+  assert.equal(caps.markText.status, "pass");
+  // the first line down 2 moves the band's upper end 2 (the midline 1): red
+  const firstDown = await readWith(css(`${twoLine} b { position: relative; top: 2px; }`));
+  assert.ok(Math.abs(firstDown.two.inkMinusMark - base.two.inkMinusMark - 1) <= 0.1, `first line down 2: ${firstDown.two.inkMinusMark}`);
+  assert.deepEqual(firstDown.markText.failures.map((f) => [f.at, f.what]), [["lkr@22:tms", "ink-mark"]]);
+  // the second line down 4 moves the band's lower end 4 (the midline 2): red
+  const secondDown = await readWith(css(`${twoLine} small { position: relative; top: 4px; }`));
+  assert.ok(Math.abs(secondDown.two.inkMinusMark - base.two.inkMinusMark - 2) <= 0.1, `second line down 4: ${secondDown.two.inkMinusMark}`);
+  assert.deepEqual(secondDown.markText.failures.map((f) => [f.at, f.what]), [["lkr@22:tms", "ink-mark"]]);
 });
 
 // TCRN-DS-SUB-196 (R3-3): singleLine reads the page breadcrumb crumb by crumb. The fixture's trails give way

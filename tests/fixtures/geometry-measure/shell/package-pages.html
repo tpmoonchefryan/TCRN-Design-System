@@ -51,6 +51,18 @@
   .lockup-line b { display: block; inline-size: max-content; padding-block: var(--tcrn-space-0h); overflow: hidden; font-size: 16px; font-weight: 600; line-height: 20px; letter-spacing: -0.005em; text-overflow: ellipsis; white-space: nowrap; }
   .lockup-line--rail b { font-size: 12.5px; line-height: 1.2; letter-spacing: 0; }
   .lockup-line em { font-style: normal; color: #2c63c8; }
+  /* TCRN-DS-SUB-230 (MIN-20261016-R6 D3): the Design System first line, whose "g" and "y" reach below the baseline,
+     centred by the same flex row as the TMS line; and the bottom bar's two-line lockup (brand.css.ts, data-lockup lkr:
+     mark 22, line one 12.5/16 its base and suffix 600 on a baseline row, line two 10.5/14, space-0h between, the block
+     centred on the mark) */
+  .lockup-line em.ds { color: #6577f3; }
+  .lockup-two { display: inline-flex; align-items: center; gap: 10px; min-width: 0; color: #16150f; }
+  .lockup-two svg { display: block; flex: none; width: 22px; height: 22px; }
+  .lockup-two .w { display: grid; gap: var(--tcrn-space-0h); min-width: 0; }
+  .lockup-two b { display: flex; align-items: baseline; gap: var(--tcrn-space-0h) 4px; font-size: 12.5px; font-weight: 500; line-height: 16px; white-space: nowrap; }
+  .lockup-two b span { font-weight: 600; }
+  .lockup-two em { font-style: normal; font-weight: 600; color: #2c63c8; }
+  .lockup-two small { color: #4f4c43; font-size: 10.5px; font-weight: 500; line-height: 14px; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -118,6 +130,8 @@
   <div class="first-lines">
     <div class="lockup-line lockup-line--rail" data-lockup="lkr-line" data-product-id="tms" role="img" aria-label="TCRN TMS"><svg data-logo="tms" viewBox="0 0 48 48" aria-hidden="true"><path d="M11 23L24 39" stroke="#2c63c8" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="#7aa0f5" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><span class="line" aria-hidden="true"><b title="TCRN TMS">TCRN <em>TMS</em></b></span></div>
     <div class="lockup-line" data-lockup="lk-line" data-product-id="tms" role="img" aria-label="TCRN TMS"><svg data-logo="tms" viewBox="0 0 48 48" aria-hidden="true"><path d="M11 23L24 39" stroke="#2c63c8" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="#7aa0f5" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><span class="line" aria-hidden="true"><b title="TCRN TMS">TCRN <em>TMS</em></b></span></div>
+    <div class="lockup-line lockup-line--rail" data-lockup="lkr-line" data-product-id="design-system" role="img" aria-label="TCRN Design System"><svg data-logo="ds" viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="4" width="17" height="40" rx="4" fill="#6577f3"/><rect x="24" y="4" width="20" height="17" rx="4" fill="#3096f4"/><rect x="24" y="24" width="9" height="20" rx="3" fill="#43d4cf"/><rect x="36" y="24" width="8" height="20" rx="3" fill="#78b957"/></svg><span class="line" aria-hidden="true"><b title="TCRN Design System">TCRN <em class="ds">Design System</em></b></span></div>
+    <div class="lockup-two" data-lockup="lkr" data-product-id="tms" role="img" aria-label="TCRN TMS, Talent Management System"><svg data-logo="tms" viewBox="0 0 48 48" aria-hidden="true"><path d="M11 23L24 39" stroke="#2c63c8" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M37 23L24 39" stroke="#7aa0f5" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><span class="w" aria-hidden="true"><b title="TCRN TMS"><span>TCRN</span> <em>TMS</em></b><small title="Talent Management System">Talent Management System</small></span></div>
   </div>
 </body>
 </html>
