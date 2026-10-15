@@ -3,7 +3,8 @@
 // cascade to the same row; Esc closes every column and returns focus to the pinned item; the search
 // matches only the drop-down's part of the menu; a press outside and a choice close it. TCRN-DS-SUB-180
 // (139-GWT1, GWT4) adds the placing from a framing ancestor, the placing again when the band changes,
-// and ← from a third column.
+// and ← from a third column. TCRN-DS-SUB-233 adds the side of the cascades: to the left of the first
+// column where they would pass the viewport's right edge, as before where they fit.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { act, useState } from "react";
@@ -376,6 +377,167 @@ test("opened to a third column, ← returns focus to the previous column's open 
     assert.equal(harness.document.querySelector("[data-drop-col]"), null);
   } finally {
     delete (prototype as { getClientRects?: unknown }).getClientRects;
+    await harness.cleanup();
+  }
+});
+
+// TCRN-DS-SUB-233. JSDOM lays nothing out, so the drop-down's boxes are laid out here as the package
+// CSS lays out its one-row grid (shellCss03 and shellCss04; the tests check the start rule's text): the
+// root at the left and top ShellDropdown writes, the hand-off gap (its margin) below them; the first
+// column, the panel, drop-w wide and as tall as its search and rows in its inset (the 07a reading);
+// each cascade column drop-w wide and as tall as the panel (the grid row), the cascade gap after the
+// column before it: rightwards, or leftwards when the root says data-cascade-side="start" (the grid
+// runs from the right). The viewport is the layout viewport's width (documentElement.clientWidth).
+function layOutTheDropDown(harness: DomInteractionHarness, viewport: { current: number }) {
+  const tokens = createTokenMap();
+  const px = (name: string) => Number.parseFloat(tokens[name]);
+  const width = px("--tcrn-shell-drop-w");
+  const gap = px("--tcrn-shell-cascade-gap");
+  const panelHeightOf = (rows: number) =>
+    2 * px("--tcrn-space-1h") + px("--tcrn-shell-drop-srch-h") + px("--tcrn-space-1") + rows * (px("--tcrn-shell-row-h") + px("--tcrn-space-0h"));
+  const elementBox = harness.window.Element.prototype.getBoundingClientRect;
+  const prototype = harness.window.HTMLElement.prototype as HTMLElement & { getBoundingClientRect: () => DOMRect };
+  prototype.getBoundingClientRect = function (this: HTMLElement) {
+    const root = this.matches("[data-shell-dropdown]") ? this : this.parentElement?.matches("[data-shell-dropdown]") ? this.parentElement : null;
+    if (!root) return elementBox.call(this);
+    const rows = root.querySelector('[data-panel="drop"]')?.querySelectorAll("[data-shell-row]").length ?? 0;
+    const columns = [...root.children].filter((child) => child.hasAttribute("data-drop-col"));
+    const step = (width + gap) * (root.getAttribute("data-cascade-side") === "start" ? -1 : 1);
+    const left = (Number.parseFloat(root.style.left) || 0) + (columns.indexOf(this) + 1) * step;
+    return rectAt(left, (Number.parseFloat(root.style.top) || 0) + px("--tcrn-shell-menu-gap"), width, panelHeightOf(rows));
+  };
+  Object.defineProperty(harness.document.documentElement, "clientWidth", { configurable: true, get: () => viewport.current });
+  return {
+    gap,
+    width,
+    restore() {
+      delete (prototype as { getBoundingClientRect?: unknown }).getBoundingClientRect;
+    }
+  };
+}
+
+const boxOf = (element: Element | null) => {
+  assert.ok(element, "the column is there");
+  const { left, right, width, height } = element.getBoundingClientRect();
+  return { left, right, width, height };
+};
+
+test("by the viewport's right edge the cascades open to the left of the first column: the second column's right edge 4 before the first column's left edge, the third 4 before the second, as wide and as tall, inside the viewport; ←, Esc and aria-owns do not change (TCRN-DS-SUB-233)", async (t) => {
+  const harness = createDomInteractionHarness();
+  const viewport = { current: 1240 };
+  const layout = layOutTheDropDown(harness, viewport);
+  try {
+    await harness.render(<FramedBand pin={talent} />);
+    const button = pinOf(harness, "talent");
+    assert.ok(button);
+    // The pinned group stands by the right edge of a 1240 viewport: its start edge is 1000.
+    button.getBoundingClientRect = () => rectAt(1000, 10, 63, 32);
+    await harness.dispatchClick(button);
+    const panel = drop(harness);
+    const root = panel?.parentElement;
+    assert.ok(panel && root, "the group's drop-down is open");
+    assert.equal(root.style.left, "1000px", "the first column keeps the item's start edge");
+    assert.equal(root.getAttribute("data-cascade-side"), null, "with no cascade open there is no side");
+    // 合约 opens the second column: after the first it would end at 1000 + 240 + 4 + 240 = 1484.
+    await harness.dispatchClick(row(harness, "合约") as Element);
+    assert.equal(root.getAttribute("data-cascade-side"), "start");
+    assert.match(tcrnComponentCss, /\n\.tcrn-shell-dropdown\[data-cascade-side="start"\] \{\n {2}direction: rtl;\n\}/, "the start rule turns the grid");
+    const first = boxOf(panel);
+    const second = boxOf(harness.document.querySelector('[data-drop-col="2"]'));
+    t.diagnostic(`start, viewport 0-${viewport.current}: first column ${first.left}-${first.right}, second ${second.left}-${second.right} (${second.width} x ${second.height}, first ${first.height} tall); second right - first left = ${second.right - first.left}`);
+    assert.equal(first.left - second.right, layout.gap, "the second column's right edge is the first column's left edge - 4");
+    assert.equal(layout.gap, 4);
+    assert.equal(second.width, 240);
+    assert.equal(second.height, first.height, "as tall as the first column");
+    assert.ok(second.left >= 0 && second.right <= viewport.current, "the whole column is inside the viewport");
+    assert.equal(panel.getAttribute("aria-owns"), "drop-talent-col-contracts", "aria-owns as on the right");
+    // 模板 opens the third column, 4 before the second, on the same side.
+    await harness.dispatchClick(row(harness, "模板") as Element);
+    const third = boxOf(harness.document.querySelector('[data-drop-col="3"]'));
+    const secondAgain = boxOf(harness.document.querySelector('[data-drop-col="2"]'));
+    t.diagnostic(`start, three columns: third ${third.left}-${third.right}, second ${secondAgain.left}-${secondAgain.right}; third right - second left = ${third.right - secondAgain.left}`);
+    assert.equal(root.getAttribute("data-cascade-side"), "start");
+    assert.equal(secondAgain.left - third.right, 4);
+    assert.equal(third.width, 240);
+    assert.equal(third.height, first.height);
+    assert.ok(third.left >= 0, "the third column is inside the viewport too");
+    assert.equal(panel.getAttribute("aria-owns"), "drop-talent-col-contracts drop-talent-col-templates");
+    // ← from the third column returns to the open row of the previous column and closes the third;
+    // the second alone would still pass the edge after the first, so it stays on the start side.
+    row(harness, "签约合同")?.focus();
+    await press(harness, row(harness, "签约合同") as Element, "ArrowLeft");
+    assert.equal(harness.document.activeElement, row(harness, "模板"), "← returns to the same row of the previous column");
+    assert.equal(harness.document.querySelector('[data-drop-col="3"]'), null);
+    assert.equal(root.getAttribute("data-cascade-side"), "start");
+    assert.equal(panel.getAttribute("aria-owns"), "drop-talent-col-contracts");
+    // Esc closes every column and returns focus to the pinned item.
+    await press(harness, harness.document.activeElement ?? harness.document, "Escape");
+    assert.equal(drop(harness), null);
+    assert.equal(harness.document.querySelector("[data-drop-col]"), null);
+    assert.equal(harness.document.activeElement, button);
+  } finally {
+    layout.restore();
+    await harness.cleanup();
+  }
+});
+
+test("where the cascade fits it opens after the first column as before, its left edge 4 after the first column's right edge, with no side on the root; a narrower window turns it to the start and a wider one back; with room on neither side it keeps the side it passes by less (TCRN-DS-SUB-233)", async (t) => {
+  const harness = createDomInteractionHarness();
+  const viewport = { current: 1240 };
+  const layout = layOutTheDropDown(harness, viewport);
+  try {
+    await harness.render(<FramedBand />);
+    const button = pinOf(harness, "contracts");
+    assert.ok(button);
+    // The pinned item 合约 of the 07a board: start edge 207.
+    let itemLeft = 207;
+    button.getBoundingClientRect = () => rectAt(itemLeft, 10, 63, 32);
+    await harness.dispatchClick(button);
+    const panel = drop(harness);
+    const root = panel?.parentElement;
+    assert.ok(panel && root, "the drop-down is open");
+    await harness.dispatchClick(row(harness, "模板") as Element);
+    const column = () => boxOf(harness.document.querySelector('[data-drop-col="2"]'));
+    let first = boxOf(panel);
+    let second = column();
+    t.diagnostic(`end, viewport 0-${viewport.current}: first column ${first.left}-${first.right}, second ${second.left}-${second.right} (${second.width} x ${second.height}, first ${first.height} tall); second left - first right = ${second.left - first.right}`);
+    assert.equal(root.getAttribute("data-cascade-side"), null, "a drop-down that fits says no side");
+    assert.deepEqual(root.getAttributeNames().sort(), ["class", "data-shell-dropdown", "style"], "its root carries what it carried before");
+    assert.equal(second.left - first.right, layout.gap, "the second column's left edge is the first column's right edge + 4");
+    assert.equal(second.width, layout.width);
+    assert.equal(second.height, first.height);
+    const resize = async (width: number) => {
+      viewport.current = width;
+      await act(async () => {
+        harness.window.dispatchEvent(new harness.window.Event("resize"));
+      });
+    };
+    // The window narrows to 800 with the item at 400: after the first column the cascade would end at
+    // 884, before it it starts at 156.
+    itemLeft = 400;
+    await resize(800);
+    first = boxOf(panel);
+    second = column();
+    t.diagnostic(`start after a resize, viewport 0-${viewport.current}: first column ${first.left}-${first.right}, second ${second.left}-${second.right}`);
+    assert.equal(root.style.left, "400px");
+    assert.equal(root.getAttribute("data-cascade-side"), "start");
+    assert.equal(first.left - second.right, 4);
+    assert.ok(second.left >= 0 && second.right <= viewport.current);
+    // Wider again: back after the first column.
+    await resize(1240);
+    first = boxOf(panel);
+    second = column();
+    assert.equal(root.getAttribute("data-cascade-side"), null);
+    assert.equal(second.left - first.right, 4);
+    // No room on either side (420 wide, the item at 20): after the first column the cascade passes the
+    // right edge by 84, before it the left edge by 224, so it stays after it.
+    itemLeft = 20;
+    await resize(420);
+    assert.equal(root.style.left, "20px");
+    assert.equal(root.getAttribute("data-cascade-side"), null);
+    assert.equal(column().left - boxOf(panel).right, 4);
+  } finally {
+    layout.restore();
     await harness.cleanup();
   }
 });

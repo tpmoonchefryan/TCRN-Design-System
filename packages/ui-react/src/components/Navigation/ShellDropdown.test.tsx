@@ -1,8 +1,9 @@
 // ShellDropdown (TCRN-DS-SUB-118): the drop-down's hooks and semantics and the rules that place and
 // size it — hand-off 6 under the pinned item at its start edge, 240 wide, inset 6, search 28, rows
 // with no icon column and text 16 in, cascades 4 to the right, as wide and as tall as the column on
-// their left. The rendered readings are the shell gate's (TCRN-DS-SUB-137); the interactions are in
-// src/test/shell-dropdown.dom.spec.tsx.
+// their left, or 4 to the left of the first column where they would pass the viewport's right edge
+// (data-cascade-side="start", TCRN-DS-SUB-233). The rendered readings are the shell gate's
+// (TCRN-DS-SUB-137); the interactions and the side's readings are in src/test/shell-dropdown.dom.spec.tsx.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -122,6 +123,30 @@ test("cascades sit 4 to the right, as wide, as tall as the column on their left 
   // No height is written by script or by a fixed value.
   assert.doesNotMatch(shellCss04, /height/);
   assert.doesNotMatch(render(), /style="[^"]*height/);
+});
+
+test("where the cascades would pass the viewport's right edge the root says data-cascade-side=\"start\", which turns only the grid's order: no length, no colour, the full menu untouched; the server says no side (TCRN-DS-SUB-233)", () => {
+  const declarationsOf = (body: string) => [...body.matchAll(/^\s*([a-z-]+): ([^;]+);$/gm)].map((match) => [match[1], match[2]]);
+  // The start side: the one-row grid runs from the right, so the first column keeps its place (the
+  // root's start edge is the pinned item's) and the cascades follow it leftwards on the same tracks
+  // (grid-auto-columns: drop-w) at the same gap (column-gap: cascade-gap), as tall by the same row.
+  assert.deepEqual(declarationsOf(ruleBody('.tcrn-shell-dropdown[data-cascade-side="start"]', shellCss04)), [["direction", "rtl"]]);
+  // The panel and the columns keep the left-to-right reading of the five languages on either side.
+  assert.deepEqual(declarationsOf(ruleBody(".tcrn-shell-dropdown__panel,\n.tcrn-shell-dropdown__col", shellCss04)), [["direction", "ltr"]]);
+  // The side is the one rule that names it, on the drop-down's class (two-class weight, as the
+  // variant), and the full menu's cascades have no side.
+  assert.deepEqual(shellCss04.match(/^[^\n{}]*data-cascade-side[^\n{}]*\{$/gm), ['.tcrn-shell-dropdown[data-cascade-side="start"] {']);
+  assert.doesNotMatch(shellCss03, /data-cascade-side|^\s*direction:/m);
+  assert.equal(declaration(ruleBody(".tcrn-shell-menu", shellCss03), "grid-auto-columns"), "var(--tcrn-shell-drop-w)");
+  assert.equal(declaration(ruleBody(".tcrn-shell-menu", shellCss03), "column-gap"), "var(--tcrn-shell-cascade-gap)");
+  assert.ok(tcrnComponentCss.includes('.tcrn-shell-dropdown[data-cascade-side="start"] {\n  direction: rtl;\n}'), "the rule ships in tcrnComponentCss");
+  // The server reads no viewport: its drop-down says no side, closed or with a cascade open, and the
+  // hidden root it renders is the one the page's client mount places (smoke: the server's drop-down).
+  assert.doesNotMatch(render(), /data-cascade-side/);
+  const withCascade = renderToStaticMarkup(<ShellDropdown id="drop" source={contracts} open previewStates={{ templates: "open" }} />);
+  assert.match(withCascade, /data-drop-col="2"/);
+  assert.doesNotMatch(withCascade, /data-cascade-side/);
+  assert.match(withCascade, /^<div class="tcrn-shell-menu tcrn-shell-dropdown" style="visibility:hidden" data-shell-dropdown="">/);
 });
 
 test("the drop-down's search placeholder is written in all five locales", () => {

@@ -14,6 +14,13 @@
 // closes every column and returns focus to the pinned item. It reuses the full menu's rows,
 // search and keyboard (ShellMenu.tsx), so its root also carries tcrn-shell-menu.
 //
+// Where the open cascades would pass the viewport's right edge after the first column, they open
+// before it instead (TCRN-DS-SUB-233): the root says data-cascade-side="start" and its grid runs
+// from the right, so each column stands the cascade gap to the left of the one that opened it, as
+// wide and as tall. The side is read on the client from the laid-out boxes (a drop-down that fits
+// is laid out as before and says no side; the server's says none); ←, Esc and aria-owns do not
+// change with it.
+//
 // This module and Navigation.tsx may import each other; what it takes from Navigation.tsx is
 // used inside function bodies only, never evaluated when the module loads (C-4).
 import { useEffect, useLayoutEffect, useRef, useState, type HTMLAttributes, type RefObject } from "react";
@@ -130,6 +137,31 @@ function fixedLayerOrigin(layer: HTMLElement | null): { left: number; top: numbe
   return { left: 0, top: 0 };
 }
 
+/** The side of the first column the open cascades stand on: after it (end) or before it (start). */
+type CascadeSide = "end" | "start";
+
+/**
+ * The side the open cascades of a laid-out drop-down take (TCRN-DS-SUB-233): after the first column,
+ * unless there they would pass the viewport's right edge and before it they would pass the
+ * viewport's left edge by less. How far the cascades reach beyond the first column is read on
+ * whichever side they stand and is the same on both, so the answer does not depend on the side
+ * they are read on (and does not swing when no style turns them). The viewport is the layout
+ * viewport, without its scroll bar; with no layout (no width), and with no open cascade, the side
+ * is the end.
+ */
+function cascadeSideOf(root: HTMLElement | null): CascadeSide {
+  const view = root?.ownerDocument.documentElement.clientWidth || root?.ownerDocument.defaultView?.innerWidth || 0;
+  const children = root ? [...root.children] : [];
+  const panel = children.find((child) => child.matches('[data-panel="drop"]'));
+  const columns = children.filter((child) => child.hasAttribute("data-drop-col"));
+  if (!panel || columns.length === 0 || !(view > 0)) return "end";
+  const first = panel.getBoundingClientRect();
+  const reach = Math.max(...columns.map((column) => column.getBoundingClientRect()).map((box) => Math.max(box.right - first.right, first.left - box.left)));
+  const pastEnd = first.right + reach - view;
+  const pastStart = reach - first.left;
+  return pastEnd > 0 && pastStart < pastEnd ? "start" : "end";
+}
+
 export function ShellDropdown({
   id,
   source,
@@ -154,6 +186,7 @@ export function ShellDropdown({
   const rootRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [anchor, setAnchor] = useState<{ left: number; top: number } | null>(null);
+  const [cascadeSide, setCascadeSide] = useState<CascadeSide>("end");
   const cascade = useShellMenuCascade(rootRef, firstLevel, previewOpenPath(entriesOf(source), previewStates, firstLevel));
   const { setOpenPath } = cascade;
   const onOpenChangeRef = useRef(onOpenChange);
@@ -171,7 +204,8 @@ export function ShellDropdown({
 
   // The start edge and the bottom of the pinned item, read again when the page moves or the band
   // changes size, from the origin the fixed drop-down is placed against (the viewport, unless an
-  // ancestor contains it).
+  // ancestor contains it); with them, the side the open cascades take (cascadeSideOf), so a
+  // narrower window turns them to the start and a wider one back.
   const placeRef = useRef<() => void>(() => undefined);
   useClientLayoutEffect(() => {
     if (!open) return undefined;
@@ -183,6 +217,7 @@ export function ShellDropdown({
       const left = box.left - origin.left;
       const top = box.bottom - origin.top;
       setAnchor((previous) => (previous && previous.left === left && previous.top === top ? previous : { left, top }));
+      setCascadeSide(cascadeSideOf(rootRef.current));
     };
     placeRef.current = place;
     place();
@@ -198,13 +233,14 @@ export function ShellDropdown({
       resized?.disconnect();
     };
   }, [open, id, triggerRef]);
-  // The pinned item moves when the band's words change (another language, a renamed item): read
-  // again after every render; an unchanged place renders nothing new.
+  // The pinned item moves when the band's words change (another language, a renamed item), and a
+  // cascade opens or closes: read again after every render, before it paints; an unchanged place
+  // and side render nothing new.
   useClientLayoutEffect(() => {
     placeRef.current();
   });
 
-  // Opening puts focus in the search; closing forgets the query and the open cascades.
+  // Opening puts focus in the search; closing forgets the query, the open cascades and their side.
   useEffect(() => {
     if (open) {
       rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]')?.focus();
@@ -212,6 +248,7 @@ export function ShellDropdown({
     }
     setQuery("");
     setOpenPath([]);
+    setCascadeSide("end");
   }, [open, setOpenPath]);
 
   if (!open) return null;
@@ -239,6 +276,7 @@ export function ShellDropdown({
       className={cx("tcrn-shell-menu", "tcrn-shell-dropdown", className)}
       style={anchor ? { ...style, left: `${anchor.left}px`, top: `${anchor.top}px` } : { ...style, visibility: "hidden" }}
       data-shell-dropdown=""
+      data-cascade-side={cascadeSide === "start" && cascades.length > 0 ? "start" : undefined}
       onKeyDown={(event) => {
         onKeyDown?.(event);
         if (!event.defaultPrevented) cascade.onKeyDown(event);
