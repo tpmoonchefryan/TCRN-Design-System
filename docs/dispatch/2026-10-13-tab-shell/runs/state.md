@@ -191,9 +191,9 @@
 
 | 包 | 状态 | 包内提交 | 合入 | 备注 |
 | --- | --- | --- | --- | --- |
-| S1 | 待派（W1） | — | — | SUB-229 |
-| S2 | 待派（W1） | — | — | SUB-230 → 231 → 232 |
-| S3 | 待派（W1） | — | — | SUB-233 |
+| S1 | 实施中（einzbern-main，包树 scratch `pkg/r6-s1`，摘录 `runs/r6/excerpts/S1.md`） | — | — | SUB-229 |
+| S2 | 实施中（einzbern-main，包树 scratch `pkg/r6-s2`，摘录 `runs/r6/excerpts/S2.md`） | — | — | SUB-230 → 231 → 232 |
+| S3 | 实施中（einzbern-main，包树 scratch `pkg/r6-s3`，摘录 `runs/r6/excerpts/S3.md`） | — | — | SUB-233 |
 | S4 | 待 W1 | — | — | SUB-234 |
 | S5 | 待 W1 | — | — | SUB-235 |
 | S6 | 待 W1 | — | — | SUB-236 → 237 |
