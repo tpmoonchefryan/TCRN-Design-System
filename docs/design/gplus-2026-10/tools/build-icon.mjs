@@ -1,8 +1,17 @@
 import { T, cr, fmt, icon, ICON_NAMES, ICON_NEW, matrixTable, kvTable, page, write, grain, cellAttrs } from "./lib.mjs";
-import { matrixCell } from "./data.mjs";
+import { matrixCell, icons } from "./data.mjs";
 import { sampleScreens, SAMPLE_CSS } from "./shell-screen.mjs";
 
 const height = process.argv[2] ? Number(process.argv[2]) : 0;
+
+// pin 的两态取 icons.json 的 variants：同一路径，fill 列出的子元素以 currentColor 填充，其余仍描边
+const PIN = icons.icons.find((i) => i.name === "pin");
+if (!PIN?.variants?.outline || !PIN?.variants?.solid) throw new Error("icons.json: pin needs the outline and solid variants");
+function pinVariant(variant, size) {
+  const fill = PIN.variants[variant].fill;
+  let k = -1;
+  return icon("pin", { size, attrs: `data-variant="${variant}"` }).replace(/<(path|circle|rect|ellipse) /g, (m) => (++k, fill.includes(k) ? `${m}fill="currentColor" ` : m));
+}
 
 const css = `
 .roster{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
@@ -65,6 +74,7 @@ function pane(night) {
   const mc = (id) => matrixCell("icon", `${id}-${th}`);
   const P = t.panel, B = t.bg;
   const roster = ICON_NAMES.map((n, i) => `<div class="ri"${i === 0 ? ` ${cell("roster")}` : ""}>${ICON_NEW.includes(n) ? "<i>新增</i>" : ""}${icon(n, { size: 20 })}<small>${n}</small></div>`).join("");
+  const pinStates = [["outline", "pin · outline 描边"], ["solid", "pin · solid 实心"]].map(([v, lbl]) => `<div class="ri">${pinVariant(v, 20)}<small>${lbl}</small></div>`).join("");
   const six = ["search", "settings", "check", "alert-triangle", "layers", "globe-2"];
   const sizes = [["sm", 14], ["md", 16], ["lg", 20]].map(([k, s]) => `<div class="sz"><div class="r">${six.map((n) => icon(n, { size: s })).join("")}</div><small>${k} ${s}px · 描边 1.25px</small></div>`).join("");
   const chips = [
@@ -76,6 +86,9 @@ ${grain("ic-" + th)}
 <span class="ptag">${night ? "night · 画布 #121210 · 纸 #191916" : "light · 画布 #efeeea · 纸 #ffffff"}</span>
 <div class="blk"><h6>名册 tcrnIconNames · ${ICON_NAMES.length} 件 <span>${ICON_NAMES.length - ICON_NEW.length} 件现有加 ${ICON_NEW.length} 件新增（Owner 2026-10-11 定，pin 随顶带壳加入）；20 格、1.25px 描边、圆头圆角，逐个重绘</span></h6>
 <div class="paper"><div class="roster">${roster}</div></div></div>
+
+<div class="blk"><h6>pin · 描边与实心两态 <span>同一名字的两个变体，名册仍算一件：描边是默认态，实心是固定态；实心只填 pin 身（第 0 个子元素），横杠与针仍是 1.25 描边</span></h6>
+<div class="paper"><div class="roster">${pinStates}</div></div></div>
 
 <div class="blk"><h6>尺寸 sm 14 · md 16 · lg 20 <span>描边不随尺寸缩放（vector-effect: non-scaling-stroke），三档都是 1.25px</span></h6>
 <div class="paper"><div class="sizes">${sizes}</div></div></div>
@@ -104,11 +117,11 @@ ${grain("ic-" + th)}
 <div class="blk"><h6>绘制规则 <span>重绘名册时逐条对照</span></h6>
 <div class="paper"><div class="rules">${gridSvg(th)}<ul>
 <li><b>20 格，活动区 16</b>：四周各留 2 格，圆形与方形都顶到活动区边缘（虚线框）。</li>
-<li><b>描边 1.25</b>，stroke-linecap 与 stroke-linejoin 均为 round；不用填充，不用双线。</li>
+<li><b>描边 1.25</b>，stroke-linecap 与 stroke-linejoin 均为 round；不用填充，不用双线。例外：pin 的固定态是实心（icons.json 的描边与实心两态，实心只填 pin 身），只此一例。</li>
 <li><b>圆角</b>：矩形 rx 1.5 到 2；小于 2 格的细节一律省略。</li>
 <li><b>点</b>用 .01 长的圆头线段（info、alert-triangle、palette），在 14px 下仍可见。</li>
 <li><b>光学对齐</b>：箭头、chevron 以视觉重心居中，不以包围盒居中。</li>
-<li><b>禁止</b>：表情符号、填充色块、双色图标、品牌 logo 混入名册（品牌件走 Brand 家族）。</li>
+<li><b>禁止</b>：表情符号、填充色块（pin 固定态的实心是唯一例外）、双色图标、品牌 logo 混入名册（品牌件走 Brand 家族）。</li>
 </ul></div></div></div>
 </section>`;
 }
