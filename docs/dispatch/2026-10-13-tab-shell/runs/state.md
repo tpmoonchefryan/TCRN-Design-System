@@ -192,7 +192,7 @@
 | 包 | 状态 | 包内提交 | 合入 | 备注 |
 | --- | --- | --- | --- | --- |
 | S1 | 已合入，包树已退役（279M） | 31b7649、00b843f | b18d845 | SUB-229 完成：roles.json 两字段与出处、C8 两层只跳两项、clauses.md 与 README 写明、自检 3 条；contract:static 0 发现（测试 77/77）；去字段判红 15、复原 0；问题 0 红、3 条非红 |
-| S2 | 实施中（einzbern-main，包树 scratch `pkg/r6-s2`，摘录 `runs/r6/excerpts/S2.md`） | — | — | SUB-230 → 231 → 232 |
+| S2 | 已合入，包树已退役（328M） | b7eea0b、e0c7fec、fb24cf6、c077cf8 | 18ee3a3 | 230 读法按实测定稿（纪要 R6-MARKTEXT 取代 D3）、231 无需改（DS 首行 0.1）、232 夜间 #7aa0f5（6.74 至 7.30）；geometry:measure 0；ui-react 257/258（过期期望交 S4）；问题 7 条，分派 S4、S7、S9 附录 |
 | S3 | 已合入，包树已退役（279M） | ced3777、fee5399 | 0aaeb99 | SUB-233 完成：越右缘向左展开（DOM 用例与 Chromium 探针读数），不越界时与改前相同；ui-react 259、test:dom 62；geometry:measure 只剩既有 markText（归 S2）；问题 4 条，三条补派 S4 |
 | S4 | 待 W1 | — | — | SUB-234 |
 | S5 | 待 W1 | — | — | SUB-235 |
