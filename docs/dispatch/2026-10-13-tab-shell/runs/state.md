@@ -185,6 +185,22 @@
 - 会话 scratch 在两次会话之间被系统回收：R1–R5 的逐段日志、链导出与工具都已不在；工具按原样重写（`tools/`），链导出重新导出（`chain/src/`）。仓内各轮 `steps.md` 与交回物不受影响。
 - 拆分：einzbern-economy 单独一次，输入 `runs/r6/brief.md`（R6-1 至 R6-12）；包名 S1…；键号从 `TCRN-DS-SUB-229` 起；产出写 `runs/r6/`。
 
+- 主检出逐步复跑：30 步只有第 19 步 `storybook:visual-proof` 红（草案板 `V2-B2-Shell-Draft*` 没有映射条目，是开单提交 d910ccb 带进 main 的，候选分支已补）；INIT-015 的 12 张改为随 INIT-016 合入 main 后同一次跑门转 done（`runs/r6/problems/main.md` M2）。主检出已收干净。
+- 拆分（3b4dc48）：16 张 Subtask（SUB-229…244）、9 包 5 波，约 625 响应：W1 S1（主力 30）、S2（主力 110）、S3（主力 40）；W2 S4（主力 95）、S5（经济 20）、S6（经济 40）；W3 S7（主力 110）；W4 S8（经济 90）；W5 S9（主力 90）。问题 16 条，主线程裁定见 `runs/r6/excerpts/cross-notes.md` 第 2 节（第 4 条 STORY-145 文字由主线程链写改；第 5 条预先允许 brandProductId 改可选；第 7 条先占满正文列）。
+- 开工链写：16 个 work-create，WORKSPACE_COMMAND_COMPLETED，version 2479 → 2495；读回零差异（planned）。
+
+| 包 | 状态 | 包内提交 | 合入 | 备注 |
+| --- | --- | --- | --- | --- |
+| S1 | 待派（W1） | — | — | SUB-229 |
+| S2 | 待派（W1） | — | — | SUB-230 → 231 → 232 |
+| S3 | 待派（W1） | — | — | SUB-233 |
+| S4 | 待 W1 | — | — | SUB-234 |
+| S5 | 待 W1 | — | — | SUB-235 |
+| S6 | 待 W1 | — | — | SUB-236 → 237 |
+| S7 | 待 W2 | — | — | SUB-238 → 239 → 240 |
+| S8 | 待 W3 | — | — | SUB-241 → 242 |
+| S9 | 待 W4 | — | — | SUB-243 → 244 |
+
 ## 下一步
 
 - R6 拆分交回 → 建单 → 分波实施 → 批末 verify（含 storybook:build、test:dom）→ 三片验收 → 判断 → 链写与知识卡 →（R7 若有）→ 合入 main、跑门、28 张转 done → 收口与目视清单 → 交付汇报。
