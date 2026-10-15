@@ -195,7 +195,7 @@
 | S2 | 已合入，包树已退役（328M） | b7eea0b、e0c7fec、fb24cf6、c077cf8 | 18ee3a3 | 230 读法按实测定稿（纪要 R6-MARKTEXT 取代 D3）、231 无需改（DS 首行 0.1）、232 夜间 #7aa0f5（6.74 至 7.30）；geometry:measure 0；ui-react 257/258（过期期望交 S4）；问题 7 条，分派 S4、S7、S9 附录 |
 | S3 | 已合入，包树已退役（279M） | ced3777、fee5399 | 0aaeb99 | SUB-233 完成：越右缘向左展开（DOM 用例与 Chromium 探针读数），不越界时与改前相同；ui-react 259、test:dom 62；geometry:measure 只剩既有 markText（归 S2）；问题 4 条，三条补派 S4 |
 | S4 | 实施中（einzbern-main，包树 scratch `pkg/r6-s4`，摘录 `runs/r6/excerpts/S4.md`） | — | — | SUB-234 |
-| S5 | 实施中（einzbern-economy，包树 scratch `pkg/r6-s5`，摘录 `runs/r6/excerpts/S5.md`） | — | — | SUB-235 |
+| S5 | 已合入，包树已退役（279M） | 19d10f5、ba4fb28 | dac20d3 | SUB-235 判据①–④满足、⑤待 S4 修过期单测（夜间期望）；粗指针图钉常显 ink-3，细指针不变；问题 3 条 |
 | S6 | 已合入，包树已退役（279M） | 044fefe、725fe0d、c9426ea | 02acb73 | 236、237 完成：Inputs rf 样片与 ink-2、底盘 kv 220/52、Icon pin 实心例外；矩阵格数不变；局部门全 0；问题 5 条（README 板高与映射文字交 S8，pairs.json 说明交 S7） |
 | S7 | 待 W2 | — | — | SUB-238 → 239 → 240 |
 | S8 | 待 W3 | — | — | SUB-241 → 242 |
