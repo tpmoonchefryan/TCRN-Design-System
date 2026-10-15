@@ -32,6 +32,7 @@
 | 包 | 交回物与行段 | 要点 |
 | --- | --- | --- |
 | S1 | `runs/r6/handoff/S1.md`（第 4 节接口 L134–147、第 5 节迁移条目 L148–174、第 6 节期望过期 L175–187）；`runs/r6/problems/S1.md` | `roles.json` 顶带一项带 `yieldMinWidth: "zero-by-board"`、`yieldOptional: true` 与板规则出处 `yieldBoardRule`；contract-static 的 C8 静态层与 story 层只对带字段的登记跳过两项；`contract:static` 全部条款 0 发现；去字段判红 15 条、复原为 0；迁移条目原文给 S8（M54 起）；`owner-acceptance.md` 与 M53 里写的 C8 15 条已过期，交 SUB-241、242；`closeout.md` 的 C8 读数由主线程收口时改 |
+| S3 | `runs/r6/handoff/S3.md`（第 3 节做法与选择 L22–31、第 6 节接口 L69–75、第 7 节迁移条目 L76–102、第 8 节目视项 L103–108）；`runs/r6/problems/S3.md` | 下拉的级联越过视口右缘时在第一列左侧展开，根元素写 `data-cascade-side="start"`，两侧都放不下时留在越界更少的一侧；`shell.css.ts` 只改第 674–679、687–693 行；props、导出与完整菜单不变；不越界时 DOM 与读数同改前；预期签名变化无；越界画面、方向读法与窄屏 drop 屏、文档页 Esc 三件补派给 S4（`runs/r6/excerpts/S4-addendum.md`） |
 
 ## 6. 其他事实
 
