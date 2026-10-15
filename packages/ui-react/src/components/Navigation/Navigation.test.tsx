@@ -1823,8 +1823,156 @@ test("STORY-142 GWT1 GWT4 the pin slot stays 24 and the pin shows by opacity on 
   assert.match(rule(".tcrn-nav-pin .tcrn-icon > :first-child"), /fill: var\(--tcrn-pair-pin-glyph\);/);
   assert.match(pin, /--tcrn-pair-pin-glyph-s: currentColor;/);
   assert.match(pin, /--tcrn-pair-pin-ink-s: var\(--tcrn-color-acc\);/);
-  // Touch: the 24 pin answers a 44 square.
-  assert.match(tcrnComponentCss, /@media \(pointer: coarse\) \{\s*\.tcrn-nav-pin::after \{\s*content: "";\s*position: absolute;\s*inset: calc\(-1 \* var\(--tcrn-space-2h\)\);\s*\}\s*\}/);
+  // Touch: the 24 pin answers a 44 square; the coarse-pointer block opens with it (the touch rest
+  // rule after it is read by the TCRN-DS-SUB-235 test below).
+  assert.match(tcrnComponentCss, /@media \(pointer: coarse\) \{\s*\.tcrn-nav-pin::after \{\s*content: "";\s*position: absolute;\s*inset: calc\(-1 \* var\(--tcrn-space-2h\)\);\s*\}/);
+});
+
+// The sheet split at its @media (pointer: coarse) blocks: their insides, and the rest of the sheet.
+function coarsePointerBlocks(sheet: string) {
+  const inside: string[] = [];
+  let outside = "";
+  let from = 0;
+  const opener = /@media \(pointer: coarse\) \{/g;
+  for (let match = opener.exec(sheet); match; match = opener.exec(sheet)) {
+    let depth = 1;
+    let index = match.index + match[0].length;
+    for (; index < sheet.length && depth > 0; index += 1) {
+      if (sheet[index] === "{") depth += 1;
+      else if (sheet[index] === "}") depth -= 1;
+    }
+    inside.push(sheet.slice(match.index + match[0].length, index - 1));
+    outside += sheet.slice(from, match.index);
+    from = index;
+    opener.lastIndex = index;
+  }
+  return { inside, outside: outside + sheet.slice(from) };
+}
+
+// The parts of a selector list, split at the commas outside parentheses.
+function selectorParts(selector: string) {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let index = 0; index < selector.length; index += 1) {
+    if (selector[index] === "(") depth += 1;
+    else if (selector[index] === ")") depth -= 1;
+    else if (selector[index] === "," && depth === 0) {
+      parts.push(selector.slice(start, index).trim());
+      start = index + 1;
+    }
+  }
+  parts.push(selector.slice(start).trim());
+  return parts;
+}
+
+// A selector with every :<name>(...) dropped, or replaced by its argument.
+function functionalPseudo(selector: string, name: string, keepArgument: boolean) {
+  const opener = `:${name}(`;
+  let text = selector;
+  for (let at = text.indexOf(opener); at !== -1; at = text.indexOf(opener)) {
+    let depth = 1;
+    let index = at + opener.length;
+    for (; index < text.length && depth > 0; index += 1) {
+      if (text[index] === "(") depth += 1;
+      else if (text[index] === ")") depth -= 1;
+    }
+    text = text.slice(0, at) + (keepArgument ? text.slice(at + opener.length, index - 1) : "") + text.slice(index);
+  }
+  return text;
+}
+
+// The specificity (ids, classes, types) of one selector: :where() weighs nothing, :not() and :is()
+// weigh their argument (one argument in the rules read here).
+function selectorSpecificity(selector: string): [number, number, number] {
+  const text = functionalPseudo(functionalPseudo(functionalPseudo(selector, "where", false), "not", true), "is", true);
+  const attributes = (text.match(/\[[^\]]*\]/g) ?? []).length;
+  const bare = text.replace(/\[[^\]]*\]/g, "");
+  const pseudoElements = (bare.match(/::[\w-]+/g) ?? []).length;
+  const pseudoClasses = (bare.replace(/::[\w-]+/g, "").match(/:[\w-]+/g) ?? []).length;
+  const ids = (bare.match(/#[\w-]+/g) ?? []).length;
+  const classes = (bare.match(/\.[\w-]+/g) ?? []).length;
+  const types = (bare.replace(/::?[\w-]+|[.#][\w-]+/g, "").match(/[a-z][\w-]*/gi) ?? []).length;
+  return [ids, classes + attributes + pseudoClasses, types + pseudoElements];
+}
+
+function notHeavier(a: readonly number[], b: readonly number[]) {
+  for (let index = 0; index < a.length; index += 1) {
+    if (a[index] !== b[index]) return a[index] < b[index];
+  }
+  return true;
+}
+
+// TCRN-DS-SUB-235 (STORY-142, R6 minutes D5, O-6): touch has no hover, so under a coarse pointer a
+// pin that is not pinned stays shown at rest, in its pair's rest ink (ink-3); under a fine pointer
+// it stays hidden at rest and shows on hover, focus and when pinned, as before.
+test("STORY-142 under a coarse pointer a pin that is not pinned stays shown in ink-3, and under a fine one it stays hidden at rest (TCRN-DS-SUB-235)", async () => {
+  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  const { inside, outside } = coarsePointerBlocks(sheet);
+  const touchRest = '.tcrn-nav-pin:not(:where([aria-pressed="true"]))';
+
+  // The coarse pointer: one rule on the pin itself, and it only shows the pin. It declares no colour
+  // and switches no pair, so the pin keeps its pair's ink, and the pinned, hover and focus pairs stay.
+  const coarsePinRules = inside
+    .flatMap((block) => cssRules(block))
+    .filter(({ selector }) => /\.tcrn-nav-pin(?![\w-])/.test(selector) && !selector.includes("::"));
+  assert.deepEqual(coarsePinRules.map(({ selector, body }) => [selector, body.trim()]), [[touchRest, "opacity: 1;"]]);
+  const pin = cssRules(sheet).find(({ selector }) => selector === ".tcrn-nav-pin")?.body ?? "";
+  assert.match(pin, /--tcrn-pair-pin-ink-d: var\(--tcrn-color-ink-3\);/, "the rest ink is ink-3");
+  assert.match(pin, /--tcrn-pair-pin-ink-h: var\(--tcrn-color-ink-3\);/, "a tap's hover keeps ink-3");
+  assert.match(pin, /--tcrn-pair-pin-ink: var\(--tcrn-pair-pin-ink-d\);/);
+  assert.match(pin, /color: var\(--tcrn-pair-pin-ink\);/);
+  assert.match(pin, /opacity: 0;/);
+  // Same weight as the pin's base rule and the rules that show it, so it comes after the base rule
+  // and outweighs none of them.
+  assert.ok(sheet.indexOf(`${touchRest} {`) > sheet.indexOf("\n.tcrn-nav-pin {\n"), "the touch rest rule follows the pin's base rule");
+  const shown = cssRules(sheet).find(({ selector, body }) => selector.includes("> .tcrn-nav-pin") && /opacity: 1;/.test(body));
+  assert.ok(shown, "one rule shows the pin");
+  assert.deepEqual(selectorSpecificity(touchRest), [0, 1, 0]);
+  for (const part of selectorParts(shown.selector)) {
+    assert.ok(notHeavier(selectorSpecificity(touchRest), selectorSpecificity(part)), `${touchRest} weighs no more than ${part}`);
+  }
+
+  // The fine pointer: outside the coarse blocks, every rule that shows the pin asks for a state
+  // (hover, focus, pinned or a preview state); none shows it at rest.
+  const states = [":hover", ":focus-within", ":focus-visible", '[aria-pressed="true"]', "data-tcrn-preview-state"];
+  let showing = 0;
+  for (const { selector, body } of cssRules(outside)) {
+    const opacity = /(?:^|;)\s*opacity:\s*([^;]+)/.exec(body)?.[1]?.trim();
+    if (opacity === undefined || Number.parseFloat(opacity) === 0) continue;
+    for (const part of selectorParts(selector)) {
+      // The subject: the last compound, read with every argument in parentheses or brackets left out.
+      const flat = part.replace(/\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)/g, "()").replace(/\[[^\]]*\]/g, "[]");
+      const subject = flat.trim().split(/\s*[>+~]\s*|\s+/).pop() ?? "";
+      if (!/\.tcrn-nav-pin(?![\w-])/.test(subject) || subject.includes("::")) continue;
+      showing += 1;
+      const asked = functionalPseudo(part, "not", false);
+      assert.ok(states.some((state) => asked.includes(state)), `${part} shows the pin at rest under a fine pointer`);
+    }
+  }
+  assert.ok(showing >= 3, "the hover, focus, pinned and preview rules show the pin");
+
+  // jsdom matches no coarse pointer (it applies @media rules for screen only): the page's pin that
+  // is not pinned computes opacity 0 at rest, the pinned one 1.
+  const harness = createDomInteractionHarness();
+  try {
+    const style = harness.document.createElement("style");
+    style.textContent = tcrnComponentCss;
+    harness.document.head.append(style);
+    await harness.render(
+      <>
+        <NavItem href="#teams" locale="en" pinned={false} onPinnedChange={() => undefined}>Teams</NavItem>
+        <NavItem href="#contracts" locale="en" pinned onPinnedChange={() => undefined}>Contracts</NavItem>
+      </>
+    );
+    const opacities = [...harness.document.querySelectorAll(".tcrn-nav-pin")].map((element) => [
+      element.getAttribute("aria-pressed"),
+      harness.window.getComputedStyle(element).opacity
+    ]);
+    assert.deepEqual(opacities, [["false", "0"], ["true", "1"]]);
+  } finally {
+    await harness.cleanup();
+  }
 });
 
 function PinFixture({ initial, onNavigate }: { initial: boolean; onNavigate: () => void }) {

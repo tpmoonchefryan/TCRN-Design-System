@@ -477,11 +477,17 @@ export const baseCss10 = `
 .tcrn-nav-pin:where([aria-pressed="true"], :focus-visible) {
   opacity: 1;
 }
+/* Touch has no hover (TCRN-DS-SUB-235): under a coarse pointer a pin that is not pinned stays
+   shown at rest, in its pair's rest ink (ink-3). The rule weighs one class, as the rules above,
+   and switches no pair, so the pinned, hover and focus pairs stay theirs. */
 @media (pointer: coarse) {
   .tcrn-nav-pin::after {
     content: "";
     position: absolute;
     inset: calc(-1 * var(--tcrn-space-2h));
+  }
+  .tcrn-nav-pin:not(:where([aria-pressed="true"])) {
+    opacity: 1;
   }
 }`;
 
