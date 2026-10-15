@@ -7,7 +7,9 @@
 // the same property set per selector; the themed token blocks declare the same token set), C6 (no
 // left bar or inset x offset as the selection mark; no opaque fill together with a one-side edge),
 // C7 (declared single-line roles carry nowrap, ellipsis and a clipping overflow), C8 (each declared
-// toolbar has one yielding item with a min-width and fixed items that do not shrink), C11 (the
+// toolbar has one yielding item with a min-width and fixed items that do not shrink; a toolbar whose
+// roles.json entry carries yieldMinWidth "zero-by-board" may yield to 0 by its board, so the static
+// layer skips C8.yield-without-min-width for it only, TCRN-DS-SUB-229), C11 (the
 // forbidden list: gradients, blur over 3px, card in card, emoji icons, left bars) and C13 (the
 // documentation layer renders no tcrn-* class that the package CSS lacks). Clause numbers and text
 // follow docs/design/gplus-2026-10/boards/V2-Rejections.dc.html; docs/contract/clauses.md has them.
@@ -28,7 +30,10 @@
 // of the static Storybook build (apps/storybook/storybook-static/*.html, the elements that carry
 // data-story-id): C7 title (on checked-batch elements a title that holds the visible text, TCRN-DS-SUB-079)
 // and forced line breaks on single-line roles, C8 one yielding item per
-// rendered toolbar with every other item fixed, C11 emoji in rendered text, card in card, banned
+// rendered toolbar with every other item fixed (a toolbar whose entry carries yieldOptional true may
+// render none, by its board: C8.story-yield-missing is skipped for it only, TCRN-DS-SUB-229; the two
+// fields count only with exactly these literal values, and every other C8 rule still applies to the
+// toolbar; ruling TCRN-DS-MIN-20261016-R6 D2), C11 emoji in rendered text, card in card, banned
 // features in inline styles, one shape for four semantics and generic parts standing in for shell
 // controls. Story findings go through the same family, class and selector exemptions; a missing
 // static build is red, not skipped.
@@ -641,6 +646,21 @@ function shrinkOf(declarations) {
   return shrink;
 }
 
+// Board-ruled yield (TCRN-DS-SUB-229; ruling TCRN-DS-MIN-20261016-R6 D2, O-19 option 甲 "the top band
+// follows its board"). A roles.json toolbar entry may carry two fields, each skipping one C8 check for
+// that toolbar only, with yieldBoardRule naming the board rule:
+//   yieldMinWidth "zero-by-board": the board lets the yielding item shrink to 0, so the static layer
+//     does not report C8.yield-without-min-width;
+//   yieldOptional true: the board renders no yielding item when there is nothing to yield, so the
+//     story layer does not report C8.story-yield-missing.
+// Only these literal values count; any other value is judged as if the field were absent. Every other
+// C8 rule still applies to the toolbar (the yielding item without flex-shrink 0, fixed items with
+// flex-shrink 0, at most one yielding item and not inside a fixed item, every other row item fixed,
+// no inline style undoing either).
+const BOARD_ZERO_MIN_WIDTH = "zero-by-board";
+const yieldsToZeroByBoard = (toolbar) => toolbar?.yieldMinWidth === BOARD_ZERO_MIN_WIDTH;
+const yieldOptionalByBoard = (toolbar) => toolbar?.yieldOptional === true;
+
 export function checkC8(rules, scope, roles) {
   const { add, result } = collector("C8", scope);
   for (const toolbar of roles?.toolbars ?? []) {
@@ -657,7 +677,8 @@ export function checkC8(rules, scope, roles) {
     const yieldDeclarations = baseDeclarations(rules, toolbar.yield).filter((hit) => hit.base).flatMap((hit) => hit.rule.declarations);
     const minWidth = yieldDeclarations.find((declaration) => ["min-width", "min-inline-size"].includes(declaration.prop));
     const minWidthPx = minWidth ? lengthPx(minWidth.value) : null;
-    if (!minWidth || minWidthPx === 0 || /^(?:auto|0|initial|unset)$/iu.test(minWidth.value.trim())) {
+    // A board-ruled zero min-width (yieldMinWidth "zero-by-board") is the board's value, not a missing one.
+    if (!yieldsToZeroByBoard(toolbar) && (!minWidth || minWidthPx === 0 || /^(?:auto|0|initial|unset)$/iu.test(minWidth.value.trim()))) {
       add([toolbar.yield, toolbar.container], { rule: "C8.yield-without-min-width", selector: `.${toolbar.yield}`, ...synthetic, detail: `${toolbar.toolbar}: the yielding item declares no min-width` });
     }
     if (shrinkOf(yieldDeclarations) === 0) {
@@ -916,6 +937,9 @@ function baseDeclarationsOfClasses(rules, classNames) {
  * flex-shrink 0 in the package CSS. That is the static half of "the others are not squeezed once the
  * yielding item reaches its min-width"; the measured half belongs to the geometry gates. Findings are
  * attributed to the toolbar (container, row and fixed classes), which owns the item layout.
+ * A toolbar registered with yieldOptional true (TCRN-DS-SUB-229, board-ruled yield above checkC8) may
+ * render no yielding item: C8.story-yield-missing is not reported for it, and its row is then the
+ * container, every item of which must still be fixed.
  */
 export function checkC8Story(layer, scope, roles, rules) {
   const { add, result } = collector("C8", scope);
@@ -933,7 +957,7 @@ export function checkC8Story(layer, scope, roles, rules) {
           if (elementClasses(node).includes(toolbar.yield)) yields.push(node);
           return true;
         });
-        if (yields.length === 0) add(toolbarClasses, { rule: "C8.story-yield-missing", ...storyWhere(story, container), detail: `${toolbar.toolbar}: the rendered toolbar holds no .${toolbar.yield}` });
+        if (yields.length === 0 && !yieldOptionalByBoard(toolbar)) add(toolbarClasses, { rule: "C8.story-yield-missing", ...storyWhere(story, container), detail: `${toolbar.toolbar}: the rendered toolbar holds no .${toolbar.yield}` });
         if (yields.length > 1) add(toolbarClasses, { rule: "C8.story-yield-not-unique", ...storyWhere(story, container), detail: `${toolbar.toolbar}: the rendered toolbar holds ${yields.length} yielding items` });
         for (const item of yields) {
           const chain = [];
