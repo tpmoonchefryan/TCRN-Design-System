@@ -29,7 +29,9 @@
 
 ## 5. R6 已合入包给下游的接口
 
-每个包交回后，主线程在本节补行。
+| 包 | 交回物与行段 | 要点 |
+| --- | --- | --- |
+| S1 | `runs/r6/handoff/S1.md`（第 4 节接口 L134–147、第 5 节迁移条目 L148–174、第 6 节期望过期 L175–187）；`runs/r6/problems/S1.md` | `roles.json` 顶带一项带 `yieldMinWidth: "zero-by-board"`、`yieldOptional: true` 与板规则出处 `yieldBoardRule`；contract-static 的 C8 静态层与 story 层只对带字段的登记跳过两项；`contract:static` 全部条款 0 发现；去字段判红 15 条、复原为 0；迁移条目原文给 S8（M54 起）；`owner-acceptance.md` 与 M53 里写的 C8 15 条已过期，交 SUB-241、242；`closeout.md` 的 C8 读数由主线程收口时改 |
 
 ## 6. 其他事实
 
