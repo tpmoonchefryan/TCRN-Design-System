@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: matrices.json, tokens.json, pairs.json
-// contract-sha256: 1e9dc8f202a1c0f79dede005e2adbd61e3d39646f0e5cd120c6945e546a349b0
+// contract-sha256: 7aef38ff38ac198f70723460704e7d57ab71be9195b75e3366b7147236be4ae9
 
 
 export type GplusMatrixKind = "text" | "icon" | "edge";
@@ -315,10 +315,10 @@ export const gplusMatrices: Readonly<Record<GplusMatrixBoard, readonly GplusMatr
     {"cellId":"scrim-paper-l","id":"scrim-paper","theme":"light","fill":"rgba(22,21,15,.2)","ink":"ink-2","surface":"panel","fillValue":"rgba(22,21,15,.2)","inkValue":"#4f4c43","surfaceValue":"#ffffff","kind":"text","exempt":true,"expect":"5.57","min":4.5},
     {"cellId":"brand-mark-n","id":"brand-mark","theme":"night","fill":"bg","ink":"#2c63c8","surface":"bg","fillValue":"#121210","inkValue":"#2c63c8","surfaceValue":"#121210","kind":"icon","exempt":true,"expect":"3.33","min":3},
     {"cellId":"brand-word-n","id":"brand-word","theme":"night","fill":"bg","ink":"ink","surface":"bg","fillValue":"#121210","inkValue":"#ebe8df","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"15.31","min":4.5},
-    {"cellId":"brand-suffix-n","id":"brand-suffix","theme":"night","fill":"bg","ink":"#2c63c8","surface":"bg","fillValue":"#121210","inkValue":"#2c63c8","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"3.33","min":4.5},
+    {"cellId":"brand-suffix-n","id":"brand-suffix","theme":"night","fill":"bg","ink":"#7aa0f5","surface":"bg","fillValue":"#121210","inkValue":"#7aa0f5","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"7.30","min":4.5},
     {"cellId":"tgl-n","id":"tgl","theme":"night","fill":"bg","ink":"ink-2","surface":"bg","fillValue":"#121210","inkValue":"#a9a69c","surfaceValue":"#121210","kind":"icon","exempt":false,"expect":"7.70","min":3},
     {"cellId":"brand-word-open-n","id":"brand-word","theme":"night","fill":"hover","ink":"ink","surface":"bg","fillValue":"rgba(235,232,223,.04)","inkValue":"#ebe8df","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"14.14","min":4.5},
-    {"cellId":"brand-suffix-open-n","id":"brand-suffix","theme":"night","fill":"hover","ink":"#2c63c8","surface":"bg","fillValue":"rgba(235,232,223,.04)","inkValue":"#2c63c8","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"3.07","min":4.5},
+    {"cellId":"brand-suffix-open-n","id":"brand-suffix","theme":"night","fill":"hover","ink":"#7aa0f5","surface":"bg","fillValue":"rgba(235,232,223,.04)","inkValue":"#7aa0f5","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"6.74","min":4.5},
     {"cellId":"brand-focus-n","id":"brand-focus","theme":"night","fill":"bg","ink":"acc","surface":"bg","fillValue":"#121210","inkValue":"#3fc7b7","surfaceValue":"#121210","kind":"edge","exempt":false,"expect":"8.99","min":3},
     {"cellId":"pin-rest-n","id":"pin-rest","theme":"night","fill":"bg","ink":"ink-2","surface":"bg","fillValue":"#121210","inkValue":"#a9a69c","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"7.70","min":4.5},
     {"cellId":"pin-hover-n","id":"pin-hover","theme":"night","fill":"hover","ink":"ink","surface":"bg","fillValue":"rgba(235,232,223,.04)","inkValue":"#ebe8df","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"14.14","min":4.5},
@@ -342,7 +342,7 @@ export const gplusMatrices: Readonly<Record<GplusMatrixBoard, readonly GplusMatr
     {"cellId":"pinb-on-wash-n","id":"pinb-on-wash","theme":"night","fill":"wash","ink":"acc","surface":"panel","fillValue":"rgba(235,232,223,.07)","inkValue":"#3fc7b7","surfaceValue":"#191916","kind":"icon","exempt":false,"expect":"7.13","min":3},
     {"cellId":"pbar-label-n","id":"pbar-label","theme":"night","fill":"panel","ink":"ink-3","surface":"panel","fillValue":"#191916","inkValue":"#85827a","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"4.59","min":4.5},
     {"cellId":"lk-b-n","id":"lk-b","theme":"night","fill":"panel","ink":"ink","surface":"panel","fillValue":"#191916","inkValue":"#ebe8df","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"14.38","min":4.5},
-    {"cellId":"lk-em-n","id":"lk-em","theme":"night","fill":"panel","ink":"#2c63c8","surface":"panel","fillValue":"#191916","inkValue":"#2c63c8","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"3.13","min":4.5},
+    {"cellId":"lk-em-n","id":"lk-em","theme":"night","fill":"panel","ink":"#7aa0f5","surface":"panel","fillValue":"#191916","inkValue":"#7aa0f5","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"6.86","min":4.5},
     {"cellId":"lk-small-n","id":"lk-small","theme":"night","fill":"panel","ink":"ink-3","surface":"panel","fillValue":"#191916","inkValue":"#85827a","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"4.59","min":4.5},
     {"cellId":"sheet-row-n","id":"sheet-row","theme":"night","fill":"panel","ink":"ink-2","surface":"panel","fillValue":"#191916","inkValue":"#a9a69c","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"7.23","min":4.5},
     {"cellId":"scrim-paper-n","id":"scrim-paper","theme":"night","fill":"rgba(22,21,15,.2)","ink":"ink-2","surface":"panel","fillValue":"rgba(22,21,15,.2)","inkValue":"#a9a69c","surfaceValue":"#191916","kind":"text","exempt":true,"expect":"7.29","min":4.5}

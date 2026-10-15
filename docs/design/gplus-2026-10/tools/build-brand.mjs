@@ -94,7 +94,7 @@ ${grain("br-" + th)}
 <span class="cell" style="margin-left:auto;max-width:520px"><span class="chk">${icon("shield-check", { size: 14 })}apps/storybook/assets/tcrn-brand-mark.svg · 64,989 B</span><small class="dig">源文件 sha256 ${SHA}</small><small class="dig">画布副本 65,194 B · sha256 ${BLOBSHA}（上传时被服务器重写，仓库文件未动）</small></span>
 </div></div></div>
 
-<div class="blk"><h6>ProductLogo · 标加两行 <span>mark 38 · 一行 14/18：TCRN 500 加后缀 600，后缀用各自产品标的深色（TMS #2c63c8、Design System #6577f3；渐变文字停用；本板样张仍为墨色，新产品标见第二批前置板）· 二行 11.5/16 三级墨 500；Design System 的后缀按注册表堆叠</span></h6>
+<div class="blk"><h6>ProductLogo · 标加两行 <span>mark 38 · 一行 14/18：TCRN 500 加后缀 600，后缀用各自产品标的深色（TMS #2c63c8，夜间取标的亮色 #7aa0f5；Design System #6577f3；渐变文字停用；本板样张仍为墨色，新产品标见第二批前置板）· 二行 11.5/16 三级墨 500；Design System 的后缀按注册表堆叠</span></h6>
 <div class="paper"><div class="spec2">
 <small>后缀色 · 2026-10-11 改为产品色</small><div class="row" style="gap:32px">${REG.map((r, i) => logo(r, { night, cellAttr: i === 1 ? cell("suffix-ink") : "" })).join("")}</div>
 <small>二行五语 · locale</small><div class="row" style="gap:32px">${["zh", "en", "ja", "ko", "fr"].map((l) => logo(REG[1], { night, lang: l })).join("")}</div>
@@ -185,7 +185,7 @@ const diff = kvTable([
   ["字标一行 line-one", "13 · 400 base + 700 suffix · Inter", "14/18 · 500 base + 600 suffix · Hanken Grotesk", "c28 为 13/18，c22 为 12.5/16（600）"],
   ["字标 wordmark（Lockup）", "18 · 400 base + 700 suffix", "16/20 · 500 base + 600 suffix", "顶栏高度 52 内两行不溢出"],
   ["标语 line-two", "12 · 700 · text-secondary", "11.5/16 · 500 · ink-3", "去粗，降一级墨"],
-  ["后缀颜色", "aos #187c7c · tms #2c63c8 · workflow #3b5272 · design-system 四色渐变文字", "各产品标的深色：tms #2c63c8 · design-system #6577f3（Owner 2026-10-11）", "渐变文字停用；#6577f3 于白 3.8，字标按 logotype 豁免 4.5"],
+  ["后缀颜色", "aos #187c7c · tms #2c63c8 · workflow #3b5272 · design-system 四色渐变文字", "各产品标的深色：tms #2c63c8，夜间取标的亮色 #7aa0f5（TCRN-DS-MIN-20261016-R6 D4）· design-system #6577f3（Owner 2026-10-11）", "渐变文字停用；#6577f3 于白 3.8，字标按 logotype 豁免 4.5"],
   ["--tcrn-color-brand-secondary-readable", "#246f80（无 productId 时的后缀色）", "ink（停用该 token）", "同上"],
   ["收起态", "inline-size 过渡 motion.emphasis", "文案 display:none，标 22 不动", "C16"],
   ["focus", "继承宿主 a 的 outline", "box-shadow var(--focus)", "2px 面色 + 2px 青"]

@@ -7,7 +7,7 @@
 // 用法：node tools/build-shell2.mjs <高度>
 import { T } from "./data.mjs";
 import { icon, grain, matrixTable, kvTable, page } from "./lib.mjs";
-import { SCREEN_CSS, mark, wm, lockup, lockupLine, railLockup, railLine, pin, cell, strip, screen, phone, shot } from "./shell-screen.mjs";
+import { SCREEN_CSS, DEEP, mark, wm, lockup, lockupLine, railLockup, railLine, pin, cell, strip, screen, phone, shot } from "./shell-screen.mjs";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -76,16 +76,24 @@ function versions(night) {
 </div></div></section>`;
 }
 
+// ---------- 后缀色（TCRN-DS-SUB-232）----------
+// TMS 后缀浅色取通过稿 #2c63c8（MIN-20261013-SHELL D2）；夜间取标的亮色 #7aa0f5（marks.json tms.palette.bright），
+// TCRN-DS-MIN-20261016-R6 D4 按 SHELL D7 的建议值裁定（O-8 与 INIT-015 收口 S-6）。shell-screen.mjs 用 DEEP.tms 画后缀与
+// 它的 data-cell（与四块家族板 D 段样张共用一色），所以本板的夜间屏在画的那一刻把 DEEP.tms 换成夜间值，画完换回。
+const SUFFIX = { light: "#2c63c8", night: "#7aa0f5" };
+const byNight = (draw) => { const day = DEEP.tms; DEEP.tms = SUFFIX.night; try { return draw(); } finally { DEEP.tms = day; } };
+const nightScreen = (o) => byNight(() => screen({ ...o, night: true }));
+
 // ---------- B · 状态矩阵 ----------
 const mkRow = (name, note, f) => ({ name, note, cells: [T.light, T.night].map((t, i) => f(t, i ? "night" : "light")) });
 const matrixRows = [
   { group: "标按钮（第二版，侧栏尺度）· 134 × 40，居中于顶带（行中线 26），含展开收起示意" },
   mkRow("idle · 彩色标", "通过稿的标原样，100%；两色只供参考，不进门（Logos 板 G 段）", (t) => ({ fill: t.bg, ink: "#2c63c8", surface: t.bg, kind: "icon", exempt: true, fillLabel: "bg", inkLabel: "标深色 #2c63c8" })),
   mkRow("idle · 字标 TCRN", "ink 于画布", (t) => ({ fill: t.bg, ink: t.ink, surface: t.bg, kind: "text", fillLabel: "bg", inkLabel: "ink" })),
-  mkRow("idle · 后缀 TMS", "通过稿 #2c63c8，两个主题同色；夜间低于 4.5，见待 Owner", (t) => ({ fill: t.bg, ink: "#2c63c8", surface: t.bg, kind: "text", fillLabel: "bg", inkLabel: "#2c63c8" })),
+  mkRow("idle · 后缀 TMS", "浅色通过稿 #2c63c8；夜间取标的亮色 #7aa0f5（R6 D4）", (t, th) => ({ fill: t.bg, ink: SUFFIX[th], surface: t.bg, kind: "text", fillLabel: "bg", inkLabel: SUFFIX[th] })),
   mkRow("idle · 展开示意", "chevron-down ink-2 于画布，无轮廓", (t) => ({ fill: t.bg, ink: t.ink2, surface: t.bg, kind: "icon", fillLabel: "bg", inkLabel: "ink-2" })),
   mkRow("hover / open · 字标", "ink 于 3.5% 墨洗；示意换 chevron-up", (t) => ({ fill: t.hover, ink: t.ink, surface: t.bg, kind: "text", fillLabel: "hover", inkLabel: "ink" })),
-  mkRow("hover / open · 后缀 TMS", "#2c63c8 于 3.5% 墨洗（6% 时浅色只有 4.31）", (t) => ({ fill: t.hover, ink: "#2c63c8", surface: t.bg, kind: "text", fillLabel: "hover", inkLabel: "#2c63c8" })),
+  mkRow("hover / open · 后缀 TMS", "#2c63c8 于 3.5% 墨洗（6% 时浅色只有 4.31）；夜间 #7aa0f5 于夜间墨洗", (t, th) => ({ fill: t.hover, ink: SUFFIX[th], surface: t.bg, kind: "text", fillLabel: "hover", inkLabel: SUFFIX[th] })),
   mkRow("focus · 环", "2px 承载面间隙 + 2px 强调色", (t) => ({ fill: t.bg, ink: t.acc, surface: t.bg, kind: "edge", fillLabel: "bg", inkLabel: "acc" })),
   { group: "顶带固定项 · 32 高；与标按钮隐形边界、彼此之间间距都是 8，无分割线；上限 6；固定的二级菜单带箭头" },
   mkRow("rest", "ink-2 于画布", (t) => ({ fill: t.bg, ink: t.ink2, surface: t.bg, kind: "text", fillLabel: "bg", inkLabel: "ink-2" })),
@@ -114,7 +122,7 @@ const matrixRows = [
   { group: "完整菜单底栏 · 当前位置 + 侧栏尺度锁定块（通过稿原样，只装饰）" },
   mkRow("当前位置 · 标签", "ink-3 于纸", (t) => ({ fill: t.panel, ink: t.ink3, surface: t.panel, kind: "text", fillLabel: "panel", inkLabel: "ink-3" })),
   mkRow("锁定块 · 字标 TCRN", "ink 于纸，12.5/600", (t) => ({ fill: t.panel, ink: t.ink, surface: t.panel, kind: "text", fillLabel: "panel", inkLabel: "ink" })),
-  mkRow("锁定块 · 后缀 TMS", "通过稿 #2c63c8 于纸；夜间低于 4.5，见待 Owner", (t) => ({ fill: t.panel, ink: "#2c63c8", surface: t.panel, kind: "text", fillLabel: "panel", inkLabel: "#2c63c8" })),
+  mkRow("锁定块 · 后缀 TMS", "浅色通过稿 #2c63c8 于纸；夜间 #7aa0f5（R6 D4）", (t, th) => ({ fill: t.panel, ink: SUFFIX[th], surface: t.panel, kind: "text", fillLabel: "panel", inkLabel: SUFFIX[th] })),
   mkRow("锁定块 · 艺人管理系统", "ink-3 于纸，10.5", (t) => ({ fill: t.panel, ink: t.ink3, surface: t.panel, kind: "text", fillLabel: "panel", inkLabel: "ink-3" })),
   { group: "手机 390 · 纯标 + 示意；Sheet，遮罩 20% 墨" },
   mkRow("Sheet 行 · 44", "同项 rest", (t) => ({ fill: t.panel, ink: t.ink2, surface: t.panel, kind: "text", fillLabel: "panel", inkLabel: "ink-2" })),
@@ -281,7 +289,7 @@ const gates = kvTable([
   ["无收起钮、无常驻侧栏", "完整菜单与下拉里收起钮数量 = 0；壳内常驻侧栏数量 = 0；点外部关闭（测试）", "加回 x 钮"],
   ["图钉位无抖动", "同一项 rest 与 hover 文字盒宽相等；钮 24", "图钉 display:none → inline"],
   ["锁定块只装饰", "不是按钮、不在 Tab 序列、无 hover 样式；侧栏尺度 22", "改成 button"],
-  ["每格对比度", "本板矩阵每格 ≥ 4.5 / 3，与 story 逐格比对；后缀夜间按 Owner 裁定处理", "占位改 ink-3"],
+  ["每格对比度", "本板矩阵每格 ≥ 4.5 / 3，与 story 逐格比对", "占位改 ink-3"],
   ["单行与溢出", "所有行文字一行、无元素超出裁切祖先", "标签加长 40 字"],
   ["阴影模糊", "≤ 3px", "面板阴影改 12px"],
   ["登入动画", "每会话 1 次；刷新 0 次；reduced-motion 下 0 次", "去掉会话标记"],
@@ -309,7 +317,7 @@ const initiativeNote = `<div class="cols2">
 <div class="box"><h4>待 Owner <small>按 2026-10-13 第二至五轮意见</small></h4><ol>
 <li>采用草案二 r6，取代构图一、三与草案一；D1 由新纪要取代。<b>建议：是。</b></li>
 <li>三处补充规则：固定项上限 6、窄于 1024 收进菜单；切换产品移到头像菜单；级联按点击展开。<b>不回复即按本板。</b></li>
-<li>后缀 #2c63c8 在夜间：于纸 3.13、于画布 3.33，低于 4.5。本板按通过稿保持同色；INIT-015 曾按 O-3 把夜间改为 #7aa0f5（收口 S-6 待你定）。<b>建议：夜间取 #7aa0f5，与 S-6 一并裁定。</b></li>
+<li>后缀在夜间取标的亮色 #7aa0f5：于纸 6.86、于画布 7.30，浅色仍是通过稿 #2c63c8。<b>已裁：TCRN-DS-MIN-20261016-R6 D4（O-8 与 INIT-015 收口 S-6，采用本条的建议值）。</b></li>
 <li>顶带空闲态按通过稿彩色标 100%；你原要的 50% 不透明度仍不建议（对比度不可算、触摸端无悬停、品牌不重绘）。<b>请表态。</b></li>
 <li>图标名册加 pin（取代 star），37 → 38。<b>建议：加。</b></li>
 <li>草案一板是否从画布移除。<b>建议：通过草案二后移除。</b></li>
@@ -324,7 +332,7 @@ const diff = kvTable([
   ["3 右下角锁定块只装饰，收起键到标右侧无轮廓", "锁定块兼切换产品；小面板有钉住钮", "右下角是侧栏尺度锁定块（标 22），只装饰；标按钮右侧 20 格 chevron 示意；切换产品移到头像菜单"],
   ["4 星改图钉，可固定二级菜单，纵向下拉带搜索，三四级向右级联", "星标常用列表", "图钉固定分组、项或子菜单；顶带点开 320 下拉带搜索，接续 6；三、四级 +4 向右同宽，高随左列，按点击"],
   ["5 保留当前位置，去掉收起钮，点外部即收", "搜索行有 ×，底栏有钉住钮", "底栏只有当前位置与装饰锁定块；收起钮数量 0；菜单接在标按钮下 6px；点外部、Esc、选中即收"],
-  ["r2 · 标与描述用通过稿资产", "—", "标 logos2/tms.svg 原样；锁定块文案「TCRN TMS / 艺人管理系统」；后缀 #2c63c8 两个主题同色"],
+  ["r2 · 标与描述用通过稿资产", "—", "标 logos2/tms.svg 原样；锁定块文案「TCRN TMS / 艺人管理系统」；后缀浅色 #2c63c8，夜间 #7aa0f5（R6 D4 已裁）"],
   ["r3 · 第四轮前四条", "—", "第二版标居中；无分割线、三处间距相等；右下角锁定块改侧栏尺度；浮层与键接续 6px"],
   ["r4 · 第四轮第五条的本意", "—", "移除钉住态常驻侧栏（r3 误删了固定二级菜单下拉，已恢复）；文档站同样用顶带壳，目录与书签进页内"],
   ["r5 · 第六轮三条", "—", "第二版卡片居中；下拉改紧凑：宽 240、内距 6、搜索 sm 28、行无图标列文字起点 16；曾把标旁文字下移 2 / 3px，r6 撤回"],
@@ -362,13 +370,13 @@ const body = `
 <div class="sec"><h3><b>1</b>标三版 <span>全部出自「品牌 Brand · 产品标」板（Owner 2026-10-11 通过）：A 段标、E 段锁定块与侧栏尺度；第二版只是锁定块首行与标垂直居中</span></h3><div class="two">${versions(false)}${versions(true)}</div></div>
 
 <div class="sec"><h3><b>A</b>三态 · 浅色与夜间 <span>收起 → 完整菜单 → 固定二级菜单下拉（含第三级级联）；每屏 1240 × 640，纸上是同一页名册；字幕在各屏下方</span></h3>
-<div class="screens gp">${shot(screen({ id: "ts-closed-l", night: false, state: "closed" }), "A1 · 顶带态 · 浅色", "整行中线 26 · 标按钮（彩色标 22 + TCRN TMS + 示意）→ 8 → 名册（当前）→ 8 → 合约▾ → 8 → 结算单（hover）→ 8 → 排期▾ · 无分割线 · 右上簇")}${shot(screen({ id: "ts-closed-n", night: true, state: "closed" }), "A2 · 顶带态 · 夜间", "同一规则只换 token；后缀 #2c63c8 同色（见待 Owner 第 3 条）")}</div>
-<div class="screens gp">${shot(screen({ id: "ts-x-l", night: false, state: "expanded" }), "A3 · 完整菜单 · 浅色", "点标按钮一段即开：3.5% 墨洗 + 示意朝上 · 菜单接在标按钮下 6px · 搜索 · 三列（分组行可固定）· 底栏 52 含面板底内距，当前位置 + 侧栏尺度锁定块（装饰）在分隔线到底缘之间居中 · 无收起钮")}${shot(screen({ id: "ts-x-n", night: true, state: "expanded" }), "A4 · 完整菜单 · 夜间", "")}</div>
-<div class="screens gp">${shot(screen({ id: "ts-drop-l", night: false, state: "drop" }), "A5 · 固定二级菜单下拉 · 浅色", "顶带点「合约」：240 纵向下拉接在项下 6px，内距 6，顶部搜索 sm 28 · 行无图标列，文字起点 16 · 「模板」已点开 → 第三级向右 +4 同宽，高 = 左列")}${shot(screen({ id: "ts-drop-n", night: true, state: "drop" }), "A6 · 固定二级菜单下拉 · 夜间", "")}</div>
+<div class="screens gp">${shot(screen({ id: "ts-closed-l", night: false, state: "closed" }), "A1 · 顶带态 · 浅色", "整行中线 26 · 标按钮（彩色标 22 + TCRN TMS + 示意）→ 8 → 名册（当前）→ 8 → 合约▾ → 8 → 结算单（hover）→ 8 → 排期▾ · 无分割线 · 右上簇")}${shot(nightScreen({ id: "ts-closed-n", state: "closed" }), "A2 · 顶带态 · 夜间", "同一规则只换 token；后缀 #2c63c8 同色（见待 Owner 第 3 条）")}</div>
+<div class="screens gp">${shot(screen({ id: "ts-x-l", night: false, state: "expanded" }), "A3 · 完整菜单 · 浅色", "点标按钮一段即开：3.5% 墨洗 + 示意朝上 · 菜单接在标按钮下 6px · 搜索 · 三列（分组行可固定）· 底栏 52 含面板底内距，当前位置 + 侧栏尺度锁定块（装饰）在分隔线到底缘之间居中 · 无收起钮")}${shot(nightScreen({ id: "ts-x-n", state: "expanded" }), "A4 · 完整菜单 · 夜间", "")}</div>
+<div class="screens gp">${shot(screen({ id: "ts-drop-l", night: false, state: "drop" }), "A5 · 固定二级菜单下拉 · 浅色", "顶带点「合约」：240 纵向下拉接在项下 6px，内距 6，顶部搜索 sm 28 · 行无图标列，文字起点 16 · 「模板」已点开 → 第三级向右 +4 同宽，高 = 左列")}${shot(nightScreen({ id: "ts-drop-n", state: "drop" }), "A6 · 固定二级菜单下拉 · 夜间", "")}</div>
 <div class="screens phones gp">${shot(phone({ id: "ts-m-l", night: false }), "A7 · 手机 390 · 顶带态", "纯标 + 示意；固定项收进 Sheet")}${shot(phone({ id: "ts-m-s", night: false, sheet: true }), "A8 · 手机 390 · Sheet", "固定项在前，全部在后；行 44")}</div>
 </div>
 
-<div class="sec"><h3><b>B</b>状态矩阵 <span>variant × state × theme；fill 与 ink 成对，与 A 段 data-cell 逐格比对；红色数字是通过稿后缀色在夜间的实测</span></h3>${matrix}</div>
+<div class="sec"><h3><b>B</b>状态矩阵 <span>variant × state × theme；fill 与 ink 成对，与 A 段 data-cell 逐格比对；TMS 后缀浅色 #2c63c8、夜间 #7aa0f5（R6 D4）</span></h3>${matrix}</div>
 
 <div class="sec"><h3><b>C</b>登入动画 <span>登入卡上是通过稿锁定块（标 128），收敛为顶带的第二版（标 22）；只用 transform 与 opacity</span></h3><div class="story gp">${story}</div>${storyRules}</div>
 
@@ -398,7 +406,7 @@ function cleanFinal(b) {
   b = b.replace(/<h1>[\s\S]*?<\/h1>/, '<h1>壳层：标按钮、固定项、一段即开<em>，三四级向右级联</em></h1>');
   b = b.replace(/<p>按 Owner 七轮意见改到 r6：[\s\S]*?<\/p>/, '<p>壳只有一种：顶带态。顶带左上是一个标按钮（通过稿锁定块的首行与标垂直居中，侧栏尺度标 22 + 12.5/600，右侧 20 格展开收起示意，无轮廓；整行中线 26），右侧一排用户固定项，无分割线，标按钮隐形边界到固定项、固定项之间的间距完全相等；点标按钮一段即开完整菜单（接在标按钮下 6px，搜索、三列、当前位置、右下角侧栏尺度锁定块只装饰，没有收起钮，点外部即收）。图钉可固定分组、项或子菜单；固定的二级菜单从顶带纵向下拉，接续 6px、顶部带搜索，三、四级向右级联，同宽，高度随左列。没有常驻侧栏：文档站同样用这套壳，目录与书签进页内；文档与设置页的内容居中 1040。固定项上限 6，窄于 1024 整组收进菜单；切换产品在头像菜单；级联按点击展开，不按悬停。</p>');
   b = b.replace(/<tr><td class="c">shell\.panel-w（小面板）<\/td>[\s\S]*?<\/tr>/, "").replace(/<tr><td class="c">标单色版、50% 不透明度<\/td>[\s\S]*?<\/tr>/, "");
-  b = b.split("；曾把标旁文字下移 2 / 3px，r6 撤回").join("").split("草案一的小面板与星标、r2 的下拉与级联撤销").join("").split("（见待 Owner 第 3 条）").join("").split("；夜间低于 4.5，见待 Owner").join("；夜间 3.33 / 3.13，低于 4.5").split("新 · 待 Owner").join("新").split("页签壳状态矩阵 · 草案二 r6").join("壳层状态矩阵").split("；后缀夜间按 Owner 裁定处理").join("");
+  b = b.split("；曾把标旁文字下移 2 / 3px，r6 撤回").join("").split("草案一的小面板与星标、r2 的下拉与级联撤销").join("").split("（见待 Owner 第 3 条）").join("").split("新 · 待 Owner").join("新").split("页签壳状态矩阵 · 草案二 r6").join("壳层状态矩阵");
   return b;
 }
 const draftHeader2 = headerFor("Batch two · Shell · draft 2 · r6 · 2 / 2 · 2026-10-13 · awaiting Owner", "页签壳草案二 · 下半块<em>：几何、契约、token、门</em>", "本块接上半块（标三版、三态、矩阵、动效）：几何用真实屏幕加标尺，px 由门量定；之后是消费方契约、与 G+ 底盘的 token 差异、门、与草案一的差异、Initiative 草案与待 Owner 事项、打回根因自检。画布画板高度上限 8000，壳层板因此分两块。");
