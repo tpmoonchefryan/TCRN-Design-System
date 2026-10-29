@@ -140,7 +140,7 @@
         {
           "key": "rf",
           "name": "readonly-focus",
-          "note": "只读框可获焦：保留 r 的底与字色，边换成 f 的焦点环（WCAG 2.4.7）。排在 r 之后、e 之前；画板的状态顺序是 r 盖住 f，这里与画板不同",
+          "note": "只读框可获焦：保留 r 的底与字色，边换成 f 的焦点环（WCAG 2.4.7）。排在 r 之后、e 之前。",
           "when": ["[readonly]:focus-visible", "[readonly][data-tcrn-preview-state=\"focus\"]", "[aria-readonly=\"true\"]:focus-visible", "[aria-readonly=\"true\"][data-tcrn-preview-state=\"focus\"]"]
         },
         {

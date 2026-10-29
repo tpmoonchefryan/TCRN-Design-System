@@ -6,7 +6,7 @@
 // Readings come from scripts/lib/shell-measure.mjs (a port of docs/design/gplus-2026-10/measure-shell.js,
 // readings only). This file owns THRESHOLDS and the verdicts. Gates (G section; mutation = the G-section
 // "会红的变异" column, stored in tests/fixtures/geometry-measure/shell/mutations.json):
-//   brandGeometry  标按钮几何       tab 134 x 40 (v2; v1 width follows its content), left 12, top 6; row
+//   brandGeometry  标按钮几何       tab min 134 x 40, content width (v2; v1 width follows its content), left 12, top 6; row
 //                                  midline 26 = pinned-item midline = cluster midline; pins sit 10 / 10
 //                                  inside the 52 strip                                  (mutation: top 0)
 //   brandDigest    品牌资产 digest  every svg[data-logo] has the drawing form of logos2/<product>.svg (the
@@ -136,8 +136,35 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { settlePage, startStaticServer } from "./lib/gplus-measure.mjs";
-import { BOARD_SELECTORS, PACKAGE_SELECTORS, SHELL_MEASURE_SCHEMA_VERSION, formDigest, loadLogoSources, measureShellPage, readBrandLockups } from "./lib/shell-measure.mjs";
+import { BOARD_SELECTORS, PACKAGE_SELECTORS, SHELL_MEASURE_SCHEMA_VERSION, formDigest, loadLogoSources, measureShellPage as readShellPage, readBrandLockups } from "./lib/shell-measure.mjs";
 import { STATIC_DOCS_ROOT, expandStory, loadStoryRegistry, resolveStoryRoutes, storyUrl } from "./lib/storybook-routes.mjs";
+
+// Intrinsic content measurement for the variable-width brand button (SUB-238).
+export async function measureShellPage(page, options = {}) {
+  const reading = await readShellPage(page, options);
+  const widths = await page.evaluate(({ selectors: sel, root }) => {
+    const region = root ? document.querySelector(root) : document;
+    return [...region.querySelectorAll(sel.shell)].map((shell) => {
+      const tab = shell.querySelector(sel.tab);
+      const word = tab?.querySelector("b");
+      const mark = tab?.querySelector("svg[data-logo]");
+      const toggle = tab?.querySelector(sel.toggle);
+      if (!tab || !word || !mark || !toggle) return null;
+      const cs = getComputedStyle(tab);
+      const range = document.createRange(); range.selectNodeContents(word);
+      const wordWidth = range.getBoundingClientRect().width;
+      const markWidth = mark.getBoundingClientRect().width;
+      // Both the board's three tracks and the package's nested line use the same two gaps.
+      const gap = parseFloat(cs.columnGap) || 0;
+      return { id: shell.getAttribute("data-shell"), width: markWidth + wordWidth + toggle.getBoundingClientRect().width + 2 * gap + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) };
+    }).filter(Boolean);
+  }, { selectors: options.selectors || BOARD_SELECTORS, root: options.root });
+  for (const shell of reading.shells || []) {
+    const item = widths.find((entry) => entry.id === shell.id);
+    if (item) shell.x.brand.contentWidth = item.width;
+  }
+  return reading;
+}
 
 export const SCHEMA_VERSION = "tcrn.ds.shell-measure-proof.v1";
 
@@ -150,7 +177,7 @@ function deepFreeze(value) {
 }
 
 export const THRESHOLDS = deepFreeze({
-  brandGeometry: { tabWidthV2Px: 134, tabHeightPx: 40, tabLeftPx: 12, tabTopPx: 6, rowMidPx: 26, pinBandPx: 10, tolerancePx: 0.5 },
+  brandGeometry: { tabMinWidthV2Px: 134, tabHeightPx: 40, tabLeftPx: 12, tabTopPx: 6, rowMidPx: 26, pinBandPx: 10, tolerancePx: 0.5 },
   brandDigest: { markOpacity: 1 },
   strip: { heightPx: 52, paperTopPx: 52, maxBorderPx: 0, maxBackgroundAlpha: 0, tolerancePx: 0.5 },
   edges: { insetPx: 12, tolerancePx: 0.5 },
@@ -273,7 +300,10 @@ const READING_JUDGES = {
       if (!near(s.tab.h, t.tabHeightPx, t.tolerancePx)) fail(g, s.id, "tab.h", s.tab.h, t.tabHeightPx);
       if (!near(s.tab.l, t.tabLeftPx, t.tolerancePx)) fail(g, s.id, "tab.left", s.tab.l, t.tabLeftPx);
       if (!near(s.tab.t, t.tabTopPx, t.tolerancePx)) fail(g, s.id, "tab.top", s.tab.t, t.tabTopPx);
-      if (s.x.brand.version === "v2" && !near(s.tab.w, t.tabWidthV2Px, t.tolerancePx)) fail(g, s.id, "tab.w", s.tab.w, t.tabWidthV2Px);
+      if (s.x.brand.version === "v2") {
+        const expectedWidth = Math.max(t.tabMinWidthV2Px, s.x.brand.contentWidth);
+        if (!near(s.tab.w, expectedWidth, t.tolerancePx)) fail(g, s.id, "tab.w", s.tab.w, expectedWidth);
+      }
       if (!near(s.rowMids.tab, t.rowMidPx, t.tolerancePx)) fail(g, s.id, "tab.mid", s.rowMids.tab, t.rowMidPx);
       if (!near(s.rowMids.cluster, t.rowMidPx, t.tolerancePx)) fail(g, s.id, "cluster.mid", s.rowMids.cluster, t.rowMidPx);
       for (const mid of s.pins && Array.isArray(s.pins.mids) ? s.pins.mids : []) if (!near(mid, t.rowMidPx, t.tolerancePx)) fail(g, s.id, "pins.mid", mid, t.rowMidPx);

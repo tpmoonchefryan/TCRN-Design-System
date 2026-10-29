@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 import * as lib from "../scripts/lib/shell-measure.mjs";
 import {
+  measureShellPage,
   BEHAVIOUR_GATE_IDS,
   CHECKS,
   CHECK_IDS,
@@ -280,7 +281,7 @@ test("149-GWT4: measure-shell.js and the library read the same numbers on the sa
     const { page, close } = await openBoard(board.file);
     try {
       const reference = await page.evaluate(referenceScript);
-      const reading = await lib.measureShellPage(page, { selectors: lib.BOARD_SELECTORS, selectorSet: "board" });
+      const reading = await measureShellPage(page, { selectors: lib.BOARD_SELECTORS, selectorSet: "board" });
       const diffs = [];
       const counter = { leaves: 0 };
       compareLeaves(reference, reading, board.id, diffs, counter);
@@ -298,7 +299,7 @@ test("the lower board reads the numbers its rulers were drawn from (spec-geom.js
   const board = manifest.boards.find((item) => item.id === "shell-lower");
   const { page, close } = await openBoard(board.file);
   try {
-    const reading = await lib.measureShellPage(page, { selectors: lib.BOARD_SELECTORS });
+    const reading = await measureShellPage(page, { selectors: lib.BOARD_SELECTORS });
     const byId = Object.fromEntries(reading.shells.map((s) => [s.id, s]));
     const expanded = byId["spec-expanded"], drop = byId["spec-drop"], closed = byId["spec-closed"];
     assert.equal(expanded.pbar.regionTop, geom.menuBarTop);
@@ -333,7 +334,7 @@ test("the package hooks read a C-5 shell", async () => {
         <nav data-pins><a data-pin="a" href="#a">名册</a><a data-pin="b" href="#b">合约</a></nav>
         <div data-cluster><button type="button" aria-label="通知">!</button></div>
       </div><main data-paper></main></div>`);
-    const reading = await lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
+    const reading = await measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
     assert.equal(reading.shells.length, 1);
     const [shell] = reading.shells;
     assert.deepEqual(shell.x.missing, []);
@@ -485,7 +486,7 @@ test("package readings: rows without the row-text hook are a hook gap; aria-owne
       </div><main data-paper></main>
       <div data-shell-dropdown><section data-panel="drop" role="dialog" aria-owns="col-2"><a href="#" data-shell-row>One</a><a href="#" data-shell-row>Two</a></section>
       <div id="col-2" data-drop-col="2" role="group"><a href="#" data-shell-row>Three</a></div></div></div>`);
-    const reading = await lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
+    const reading = await measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
     const [shell] = reading.shells;
     assert.deepEqual(shell.x.hookGaps, ["rowText"]);
     assert.equal(shell.x.rowGroups, null);
@@ -511,7 +512,7 @@ test("package readings: the rendered brand version, and the first-batch shadow p
         <button type="button" data-tab data-shell-brand="v2"><svg data-logo="tms" viewBox="0 0 48 48" width="22" height="22"><circle cx="24" cy="12.5" r="8" fill="#2c63c8"/></svg><b>TCRN <em>TMS</em></b></button>
         <div data-cluster><button type="button" class="ring" data-cell="ring-l" data-kind="edge" data-expect="5.5" data-probe="shadow">!</button></div>
       </div><main data-paper></main></div>`);
-    const reading = await lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
+    const reading = await measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
     assert.deepEqual([reading.shells[0].x.brand.version, reading.shells[0].x.brand.declared], ["v1", "v2"]);
     const [cell] = reading.contrastCells;
     assert.equal(cell.unknownProbe, undefined);
@@ -533,7 +534,7 @@ test("package readings: a shell inside another shell's paper is read against its
           <div data-cluster><button type="button" aria-label="Notifications">!</button></div>
         </div><aside>resident</aside><main data-paper></main></div>
       </main></div></div>`);
-    const reading = await lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package", root: "#content" });
+    const reading = await measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package", root: "#content" });
     const [shell] = reading.shells;
     assert.equal(shell.id, "inner");
     assert.ok(shell.x.textLines.some((line) => line.el === "b"), JSON.stringify(shell.x.textLines));
@@ -550,7 +551,7 @@ async function openPackageFixture() {
   const page = await openBoardPage(context, root, manifest.packageFixture.file);
   return { page, close: () => context.close() };
 }
-const readPackage = (page) => lib.measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
+const readPackage = (page) => measureShellPage(page, { selectors: lib.PACKAGE_SELECTORS, selectorSet: "package" });
 
 test("package readings: a pinnable row's pin is found in its .tcrn-nav-item-row, its column is the wrapper's parent, and the guide column reads every column as the first", async () => {
   const { page, close } = await openPackageFixture();
@@ -800,7 +801,7 @@ test("singleLine reads the page breadcrumb crumb by crumb: crumbs cut under thei
     }
     assert.equal(judgeShellReadings(reading).gates.singleLine.status, "pass");
     // the R2 reading (no crumb key: the trail as one line) cut the two phone trails
-    const r2 = await lib.measureShellPage(page, { selectors: { ...lib.PACKAGE_SELECTORS, pageCrumb: null }, selectorSet: "package" });
+    const r2 = await measureShellPage(page, { selectors: { ...lib.PACKAGE_SELECTORS, pageCrumb: null }, selectorSet: "package" });
     assert.deepEqual(judgeShellReadings(r2).gates.singleLine.failures.map((f) => [f.at, f.what]), [["ts-settings-m", "cut:nav.tcrn-breadcrumb"], ["ts-roster-m", "cut:nav.tcrn-breadcrumb"]]);
     // a crumb that gives way without an ellipsis fails, and only it
     await page.evaluate(() => {
@@ -976,4 +977,20 @@ test("cascade reads the start side and rejects the same columns read as end", ()
   assert.equal(judgeGate("cascade", reading).status, "pass");
   reading.shells[0].x.cascadeSide = "end";
   assert.equal(judgeGate("cascade", reading).status, "fail");
+});
+
+
+test("a long approved wordmark expands, and forcing it back to 134 fails brandGeometry", async () => {
+  const { page, close } = await openBoard("docs/design/visual-standard/boards/Shell-2.dc.html");
+  try {
+    const reading = await measureShellPage(page, { selectors: lib.BOARD_SELECTORS });
+    const shell = reading.shells.find((item) => item.id === "spec-long");
+    assert.ok(shell && shell.tab.w > 134);
+    assert.equal(judgeGate("brandGeometry", { ...reading, shells: [shell] }).status, "pass");
+    await page.addStyleTag({ content: '[data-shell="spec-long"] [data-tab] { width: 134px !important; min-width: 0 !important; }' });
+    const broken = await measureShellPage(page, { selectors: lib.BOARD_SELECTORS });
+    broken.shells = broken.shells.filter((item) => item.id === "spec-long");
+    assert.equal(broken.shells[0].tab.w, 134);
+    assert.equal(judgeGate("brandGeometry", broken).status, "fail");
+  } finally { await close(); }
 });

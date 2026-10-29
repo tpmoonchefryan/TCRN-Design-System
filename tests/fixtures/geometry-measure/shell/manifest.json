@@ -2,7 +2,10 @@
   "schemaVersion": "tcrn.ds.shell-measure-fixtures.v1",
   "about": "Board fixtures for scripts/shell-measure-proof.mjs --fixtures (TCRN-DS-SUB-135). The two finished Shell boards are measured in place (their bytes are the truth; nothing is copied here) with the board hooks of scripts/lib/shell-measure.mjs, at the boards' own screen width (1240, phones 390) in a 1240 x 900 viewport. Every gate must be green on the boards; mutations.json turns each gate red. Behaviour cannot be read from a board, so the intro, focus-loop and outside-click halves are judged on the traces below (the board's stated behaviour); on the package stories the probes of scripts/shell-measure-proof.mjs record the same traces on the real parts (stories.behaviour, TCRN-DS-SUB-137). This manifest does not touch ../manifest.json.",
   "boardWidth": 1240,
-  "viewport": { "width": 1240, "height": 900 },
+  "viewport": {
+    "width": 1240,
+    "height": 900
+  },
   "referenceScript": "docs/design/gplus-2026-10/measure-shell.js",
   "specGeometry": "docs/design/gplus-2026-10/boards/spec-geom.json",
   "brandBoard": "docs/design/visual-standard/boards/Brand.dc.html",
@@ -11,96 +14,278 @@
       "id": "shell-upper",
       "file": "docs/design/visual-standard/boards/Shell.dc.html",
       "shells": [
-        { "id": "ts-closed-l", "state": "closed", "width": 1240 },
-        { "id": "ts-closed-n", "state": "closed", "width": 1240 },
-        { "id": "ts-x-l", "state": "expanded", "width": 1240 },
-        { "id": "ts-x-n", "state": "expanded", "width": 1240 },
-        { "id": "ts-drop-l", "state": "drop", "width": 1240 },
-        { "id": "ts-drop-n", "state": "drop", "width": 1240 },
-        { "id": "ts-m-l", "state": "closed", "width": 390 },
-        { "id": "ts-m-s", "state": "sheet", "width": 390 }
+        {
+          "id": "ts-closed-l",
+          "state": "closed",
+          "width": 1240
+        },
+        {
+          "id": "ts-closed-n",
+          "state": "closed",
+          "width": 1240
+        },
+        {
+          "id": "ts-x-l",
+          "state": "expanded",
+          "width": 1240
+        },
+        {
+          "id": "ts-x-n",
+          "state": "expanded",
+          "width": 1240
+        },
+        {
+          "id": "ts-drop-l",
+          "state": "drop",
+          "width": 1240
+        },
+        {
+          "id": "ts-drop-n",
+          "state": "drop",
+          "width": 1240
+        },
+        {
+          "id": "ts-m-l",
+          "state": "closed",
+          "width": 390
+        },
+        {
+          "id": "ts-m-s",
+          "state": "sheet",
+          "width": 390
+        }
       ]
     },
     {
       "id": "shell-lower",
       "file": "docs/design/visual-standard/boards/Shell-2.dc.html",
       "shells": [
-        { "id": "spec-closed", "state": "closed", "width": 1240 },
-        { "id": "spec-expanded", "state": "expanded", "width": 1240 },
-        { "id": "spec-drop", "state": "drop", "width": 1240 }
+        {
+          "id": "spec-closed",
+          "state": "closed",
+          "width": 1240
+        },
+        {
+          "id": "spec-expanded",
+          "state": "expanded",
+          "width": 1240
+        },
+        {
+          "id": "spec-drop",
+          "state": "drop",
+          "width": 1240
+        },
+        {
+          "id": "spec-long",
+          "state": "closed",
+          "width": 1240
+        }
       ]
     }
   ],
   "behaviourTraces": {
     "intro": {
       "source": "G 段登入动画（每会话 1 次；刷新 0 次；reduced-motion 下 0 次）；Shell 板 C 段（只用 transform 与 opacity）；C-2 motion.intro 上限 700ms",
-      "trace": { "firstLoadPlays": 1, "reloadPlays": 0, "reducedMotionPlays": 0, "properties": ["transform", "opacity"], "durationMs": 700 }
+      "trace": {
+        "firstLoadPlays": 1,
+        "reloadPlays": 0,
+        "reducedMotionPlays": 0,
+        "properties": [
+          "transform",
+          "opacity"
+        ],
+        "durationMs": 700
+      }
     },
     "focusLoop": {
       "source": "G 段焦点回路（Esc 后回标按钮；⌘K 后到搜索框；← → 在级联列间移动）；C-7（⌘K / Ctrl+K 每个壳只注册一次）",
-      "trace": { "afterEscape": "tab", "afterCommandK": "search", "cascadeArrowRight": { "from": 1, "to": 2 }, "cascadeArrowLeft": { "from": 2, "to": 1 }, "commandKRegistrations": 1 }
+      "trace": {
+        "afterEscape": "tab",
+        "afterCommandK": "search",
+        "cascadeArrowRight": {
+          "from": 1,
+          "to": 2
+        },
+        "cascadeArrowLeft": {
+          "from": 2,
+          "to": 1
+        },
+        "commandKRegistrations": 1
+      }
     },
     "outsideClick": {
       "source": "G 段无收起钮、无常驻侧栏（点外部关闭）；C-7 临时浮层（点外部、Esc、选中即收）",
-      "trace": { "closesOnOutsideClick": true }
+      "trace": {
+        "closesOnOutsideClick": true
+      }
     }
   },
   "packageFixture": {
     "about": "Package-hook fixture (TCRN-DS-SUB-174), read with the package hooks in the same 1240 x 900 viewport: the package's pinnable-row markup and grid (base.css.ts: a link and its pin side by side in .tcrn-nav-item-row, the pin keeping its 24 track and showing with opacity), the guide-column hooks the rows will carry (data-guide and data-text = prail on the row icon and label, data-shell-col on the menu columns) and the three 07a B reading cases (彩色标, 面板对画布, 遮罩下的纸, beside a canvas text and a row on a layer above the scrim, which must not read it). green: the gates and checks that must pass on it; every contrast cell on it must read its data-expect (the 07a B numbers); storyMutations: the story mutations that must turn their gate red on it, before the real parts carry the hooks they read. TCRN-DS-SUB-206 (R3-1): the real part's full menu as drawn at >= 1024, the group headings (text truncating under its title, the group's pin beside it) and the pinned column the package hides there, with its four pins in the DOM and no client rect; pinJitter must read only what is drawn (the R2 reading took those pins as 0 x 0), singleLine must pass on the headings and the label + 40 story mutation must turn it red.",
     "file": "tests/fixtures/geometry-measure/shell/package-menu.html",
-    "green": ["pinJitter", "contrast", "singleLine", "prail"],
-    "storyMutations": ["story-pin-display-none-inline", "story-label-plus-40", "story-guide-icons-right-4"]
+    "green": [
+      "pinJitter",
+      "contrast",
+      "singleLine",
+      "prail"
+    ],
+    "storyMutations": [
+      "story-pin-display-none-inline",
+      "story-label-plus-40",
+      "story-guide-icons-right-4"
+    ]
   },
   "pageFixture": {
     "about": "Page fixture (TCRN-DS-SUB-164, R2-28), read with the package hooks in the same 1240 x 900 viewport: the page in the paper of four closed shells, the settings and roster screens of the stories at 1240 and at the 390 phone width (ts-settings-l, ts-roster-l, ts-settings-m, ts-roster-m), each with a long page breadcrumb in the package's markup and rules (every crumb gives way and ends in an ellipsis under its title), a SettingsLayout (1040, centred) or a SplitView (from the paper's content edge: 28, on the phone 16), and the brand story's first lines (ProductLockup firstLine, TMS at the rail and lockup scales, outside any shell). green: the gates and checks that must pass on it, the two checks the boards cannot show (settingsLayout, splitView) among them; storyMutations: the story mutations that must turn their gate red on it, before the real stories carry these screens (SUB-161). TCRN-DS-SUB-196 (R3-3): singleLine reads the page breadcrumb crumb by crumb and must pass on these trails, whose crumbs give way under their titles (the R2 reading of the whole trail as one line failed the two phone screens); the template #crumb-cut-without-ellipsis holds a crumb that gives way without an ellipsis, which the tests put into a trail and singleLine must fail. TCRN-DS-SUB-230 (MIN-20261016-R6 D3): beside the TMS lines, the Design System first line (its g and y below the baseline) and the bottom bar's two-line lockup (data-lockup lkr: line one 12.5/16, line two 10.5/14, the block centred on the mark); markText reads the band from the first line's cap top to the baseline (a second line's baseline for the two-line lockup) and must pass on both, and the tests move the two-line lockup's lines to show where the band ends.",
     "file": "tests/fixtures/geometry-measure/shell/package-pages.html",
-    "green": ["markText", "singleLine", "pageCrumbs", "settingsLayout", "splitView"],
-    "storyMutations": ["story-word-padding-top-4", "story-crumbs-spill", "story-settings-max-width-none", "story-split-rail-240"]
+    "green": [
+      "markText",
+      "singleLine",
+      "pageCrumbs",
+      "settingsLayout",
+      "splitView"
+    ],
+    "storyMutations": [
+      "story-word-padding-top-4",
+      "story-crumbs-spill",
+      "story-settings-max-width-none",
+      "story-split-rail-240"
+    ]
   },
   "stories": {
     "about": "Package-story side (TCRN-DS-SUB-137). screens: the screens each C-9 story must show, in order, with the C-5 data-state of the shell root (the board screen names of the TCRN-DS-SUB-121 stories; ts-m-s is the board's Sheet screen, so its root reads sheet). TCRN-DS-SUB-164 (R2-28, C-12) fixes the new screens and the brand story: ts-search-l is the full menu with a typed query and its results open (R2-24); ts-settings-l and ts-settings-m are the settings page (PageHeader whose breadcrumb is long, then SettingsLayout), ts-roster-l and ts-roster-m the roster page (PageHeader whose breadcrumb is long, then SplitView), closed, at 1440 and at 390. shell-brand-first-line (navigation-shells) has no shell: its screens are the first lines of the four products at the rail scale (data-lockup lkr-line, mark 22) and the lockup scale (lk-line, mark 44), ProductLockup firstLine, outside any shell, in the order listed; product is the lockup's data-product-id. behaviour: where the probes run, the focus loop and outside click on a closed screen and the arrows on a screen that shows the full menu; the intro on the intro story in a fresh session.",
     "screens": {
       "shell-top-band": [
-        { "id": "ts-closed-l", "state": "closed" },
-        { "id": "ts-closed-n", "state": "closed" },
-        { "id": "ts-x-l", "state": "expanded" },
-        { "id": "ts-x-n", "state": "expanded" },
-        { "id": "ts-drop-l", "state": "drop" },
-        { "id": "ts-drop-n", "state": "drop" },
-        { "id": "ts-drop-start-l", "state": "drop" },
-        { "id": "ts-search-l", "state": "expanded" },
-        { "id": "ts-settings-l", "state": "closed" },
-        { "id": "ts-roster-l", "state": "closed" }
+        {
+          "id": "ts-closed-l",
+          "state": "closed"
+        },
+        {
+          "id": "ts-closed-n",
+          "state": "closed"
+        },
+        {
+          "id": "ts-x-l",
+          "state": "expanded"
+        },
+        {
+          "id": "ts-x-n",
+          "state": "expanded"
+        },
+        {
+          "id": "ts-drop-l",
+          "state": "drop"
+        },
+        {
+          "id": "ts-drop-n",
+          "state": "drop"
+        },
+        {
+          "id": "ts-drop-start-l",
+          "state": "drop"
+        },
+        {
+          "id": "ts-search-l",
+          "state": "expanded"
+        },
+        {
+          "id": "ts-settings-l",
+          "state": "closed"
+        },
+        {
+          "id": "ts-roster-l",
+          "state": "closed"
+        }
       ],
       "shell-narrow": [
-        { "id": "ts-narrow-l", "state": "closed" },
-        { "id": "ts-narrow-x-l", "state": "expanded" }
+        {
+          "id": "ts-narrow-l",
+          "state": "closed"
+        },
+        {
+          "id": "ts-narrow-x-l",
+          "state": "expanded"
+        }
       ],
       "shell-mobile": [
-        { "id": "ts-m-l", "state": "closed" },
-        { "id": "ts-m-s", "state": "sheet" },
-        { "id": "ts-settings-m", "state": "closed" },
-        { "id": "ts-roster-m", "state": "closed" }
+        {
+          "id": "ts-m-l",
+          "state": "closed"
+        },
+        {
+          "id": "ts-m-s",
+          "state": "sheet"
+        },
+        {
+          "id": "ts-settings-m",
+          "state": "closed"
+        },
+        {
+          "id": "ts-roster-m",
+          "state": "closed"
+        }
       ],
       "shell-intro": [
-        { "id": "ts-intro-l", "state": "closed" }
+        {
+          "id": "ts-intro-l",
+          "state": "closed"
+        }
       ],
       "shell-matrix": [],
       "shell-brand-first-line": [
-        { "id": "fl-tms-rail", "lockup": "lkr-line", "product": "tms" },
-        { "id": "fl-tms-lockup", "lockup": "lk-line", "product": "tms" },
-        { "id": "fl-einzbern-rail", "lockup": "lkr-line", "product": "einzbern" },
-        { "id": "fl-einzbern-lockup", "lockup": "lk-line", "product": "einzbern" },
-        { "id": "fl-mana-rail", "lockup": "lkr-line", "product": "mana-orchestrate" },
-        { "id": "fl-mana-lockup", "lockup": "lk-line", "product": "mana-orchestrate" },
-        { "id": "fl-ds-rail", "lockup": "lkr-line", "product": "design-system" },
-        { "id": "fl-ds-lockup", "lockup": "lk-line", "product": "design-system" }
+        {
+          "id": "fl-tms-rail",
+          "lockup": "lkr-line",
+          "product": "tms"
+        },
+        {
+          "id": "fl-tms-lockup",
+          "lockup": "lk-line",
+          "product": "tms"
+        },
+        {
+          "id": "fl-einzbern-rail",
+          "lockup": "lkr-line",
+          "product": "einzbern"
+        },
+        {
+          "id": "fl-einzbern-lockup",
+          "lockup": "lk-line",
+          "product": "einzbern"
+        },
+        {
+          "id": "fl-mana-rail",
+          "lockup": "lkr-line",
+          "product": "mana-orchestrate"
+        },
+        {
+          "id": "fl-mana-lockup",
+          "lockup": "lk-line",
+          "product": "mana-orchestrate"
+        },
+        {
+          "id": "fl-ds-rail",
+          "lockup": "lkr-line",
+          "product": "design-system"
+        },
+        {
+          "id": "fl-ds-lockup",
+          "lockup": "lk-line",
+          "product": "design-system"
+        }
       ]
     },
     "behaviour": {
       "waitMs": 300,
-      "focusLoop": { "story": "shell-top-band", "screen": "ts-closed-l", "cascadeScreen": "ts-x-l" },
-      "intro": { "story": "shell-intro", "waitMs": 1500 }
+      "focusLoop": {
+        "story": "shell-top-band",
+        "screen": "ts-closed-l",
+        "cascadeScreen": "ts-x-l"
+      },
+      "intro": {
+        "story": "shell-intro",
+        "waitMs": 1500
+      }
     }
   }
 }

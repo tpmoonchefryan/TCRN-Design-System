@@ -144,6 +144,7 @@ body{margin:0}
 .vers .lkr{width:auto}
 /* 标按钮：侧栏尺度的锁定块首行 + 展开示意；挂上边界；隐形边界 134 × 40 */
 .ts-brand{width:134px;display:inline-grid;grid-template-columns:22px auto 20px;column-gap:10px;align-items:center;height:var(--tab);padding:0 6px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer;font-family:var(--sans);text-align:left;flex:0 0 auto}
+.ts-brand.long{width:max-content;min-width:134px}
 .ts-brand.v1{width:auto;grid-template-columns:22px 20px}
 .ts-brand svg[data-logo]{display:block}
 .ts-brand b{display:block;font-size:12.5px;font-weight:600;line-height:1.2;white-space:nowrap}
@@ -281,7 +282,7 @@ body{margin:0}
 <h1>壳层：标按钮、固定项、一段即开<em>，三四级向右级联</em></h1>
 <p>壳只有一种：顶带态。顶带左上是一个标按钮（通过稿锁定块的首行与标垂直居中，侧栏尺度标 22 + 12.5/600，右侧 20 格展开收起示意，无轮廓；整行中线 26），右侧一排用户固定项，无分割线，标按钮隐形边界到固定项、固定项之间的间距完全相等；点标按钮一段即开完整菜单（接在标按钮下 6px，搜索、三列、当前位置、右下角侧栏尺度锁定块只装饰，没有收起钮，点外部即收）。图钉可固定分组、项或子菜单；固定的二级菜单从顶带纵向下拉，接续 6px、顶部带搜索，三、四级向右级联，同宽，高度随左列。没有常驻侧栏：文档站同样用这套壳，目录与书签进页内；文档与设置页的内容居中 1040。固定项上限 6，窄于 1024 整组收进菜单；切换产品在头像菜单；级联按点击展开，不按悬停。</p>
 </div>
-<div class="meta"><b>标按钮 134 × 40 · 固定项 32 · 间距 8 · 行中线 26</b>无分割线，三处相等，带内居中<b>完整菜单 952 · 下拉 240 · 接续 6 · 级联 +4</b>高随左列；点外部即收<b>品牌资产只取通过稿</b>标 22 / 44 / 128，后缀 #2c63c8<b>登入动画 460ms</b>第三版收敛为第二版</div>
+<div class="meta"><b>标按钮最小宽 134、随字标加宽 × 高 40 · 固定项 32 · 间距 8 · 行中线 26</b>无分割线，三处相等，带内居中<b>完整菜单 952 · 下拉 240 · 接续 6 · 级联 +4</b>高随左列；点外部即收<b>品牌资产只取通过稿</b>标 22 / 44 / 128，后缀 #2c63c8<b>登入动画 460ms</b>第三版收敛为第二版</div>
 </header>
 
 <div class="sec"><h3><b>1</b>标三版 <span>全部出自「品牌 Brand · 产品标」板（Owner 2026-10-11 通过）：A 段标、E 段锁定块与侧栏尺度；第二版只是锁定块首行与标垂直居中</span></h3><div class="two"><section class="pane gp" aria-label="浅色"><svg class="grain" aria-hidden="true"><filter id="lv-l"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#lv-l)"/></svg><span class="ptag">light</span>

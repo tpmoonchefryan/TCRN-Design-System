@@ -78,11 +78,9 @@ function versions(night) {
 
 // ---------- 后缀色（TCRN-DS-SUB-232）----------
 // TMS 后缀浅色取通过稿 #2c63c8（MIN-20261013-SHELL D2）；夜间取标的亮色 #7aa0f5（marks.json tms.palette.bright），
-// TCRN-DS-MIN-20261016-R6 D4 按 SHELL D7 的建议值裁定（O-8 与 INIT-015 收口 S-6）。shell-screen.mjs 用 DEEP.tms 画后缀与
-// 它的 data-cell（与四块家族板 D 段样张共用一色），所以本板的夜间屏在画的那一刻把 DEEP.tms 换成夜间值，画完换回。
+// TMS suffixes now resolve by theme in the shared screen renderer (S7 addendum).
 const SUFFIX = { light: "#2c63c8", night: "#7aa0f5" };
-const byNight = (draw) => { const day = DEEP.tms; DEEP.tms = SUFFIX.night; try { return draw(); } finally { DEEP.tms = day; } };
-const nightScreen = (o) => byNight(() => screen({ ...o, night: true }));
+const nightScreen = (o) => screen({ ...o, night: true });
 
 // ---------- B · 状态矩阵 ----------
 const mkRow = (name, note, f) => ({ name, note, cells: [T.light, T.night].map((t, i) => f(t, i ? "night" : "light")) });
@@ -257,7 +255,7 @@ const contract = `<div class="cols3">
 const tokens = kvTable([
   ["token", "值", "状态", "说明"],
   ["shell.strip-h", "52", "新", "顶带高"],
-  ["shell.brand-h / brand-w", "40 / 134", "新", "标按钮高与宽（侧栏尺度首行 + 示意）；v1 纯标时宽自适应"],
+  ["shell.brand-h / brand-w", "40 / 134", "新", "标按钮高 / 最小宽 134，随字标加宽（侧栏尺度首行 + 示意）；v1 纯标时宽自适应"],
   ["shell.toggle", "20", "新", "展开收起示意，chevron 16"],
   ["shell.pin-h / pin-gap / pins-max", "32 / 8 / 6", "新", "顶带固定项高、间距（三处相等）、上限；无分割线"],
   ["shell.menu-gap", "6", "新", "完整菜单与下拉的顶到键底的接续间距"],
@@ -362,7 +360,7 @@ const body = `
 <h1>页签壳草案二：标按钮、固定项、一段即开<em>，三四级向右级联</em></h1>
 <p>按 Owner 七轮意见改到 r6：顶带左上是一个标按钮（通过锁定块的首行与标垂直居中，侧栏尺度标 22 + 12.5/600，右侧 20 格展开收起示意，无轮廓；整行中线 26，居中于顶带），右侧一排用户固定项，无分割线，标按钮隐形边界到固定项、固定项之间的间距完全相等；点标按钮一段即开完整菜单（接在标按钮下 6px，搜索、三列、当前位置、右下角侧栏尺度锁定块只装饰，没有收起钮，点外部即收）。图钉可固定分组、项或子菜单；固定的二级菜单从顶带纵向下拉，接续 6px、顶部带搜索，三、四级向右级联，同宽，高度随左列。没有钉住态常驻侧栏：文档站同样用这套壳，目录与书签进页内。设计会话补三条规则：固定项上限 6、窄于 1024 整组收进菜单；切换产品移到头像菜单；级联按点击展开，不按悬停。</p>
 </div>
-<div class="meta"><b>标按钮 134 × 40 · 固定项 32 · 间距 8 · 行中线 26</b>无分割线，三处相等，带内居中<b>完整菜单 952 · 下拉 240 · 接续 6 · 级联 +4</b>高随左列；点外部即收<b>品牌资产只取通过稿</b>标 22 / 44 / 128，后缀 #2c63c8<b>登入动画 460ms</b>第三版收敛为第二版</div>
+<div class="meta"><b>标按钮最小宽 134、随字标加宽 × 高 40 · 固定项 32 · 间距 8 · 行中线 26</b>无分割线，三处相等，带内居中<b>完整菜单 952 · 下拉 240 · 接续 6 · 级联 +4</b>高随左列；点外部即收<b>品牌资产只取通过稿</b>标 22 / 44 / 128，后缀 #2c63c8<b>登入动画 460ms</b>第三版收敛为第二版</div>
 </header>
 
 <div class="sec"><h3><b>0</b>与草案一的差异 <span>Owner 五轮意见逐条落点</span></h3>${diff}</div>
@@ -381,7 +379,7 @@ const body = `
 <div class="sec"><h3><b>C</b>登入动画 <span>登入卡上是通过稿锁定块（标 128），收敛为顶带的第二版（标 22）；只用 transform 与 opacity</span></h3><div class="story gp">${story}</div>${storyRules}</div>
 
 <!--SPLIT-->
-<div class="sec"><h3><b>D</b>几何 <span>真实屏幕加标尺，px；表为关系断言，由门量定</span></h3>${geoHtml}${geoRows}</div>
+<div class="sec"><h3><b>D</b>几何 <span>真实屏幕加标尺，px；表为关系断言，由门量定</span></h3>${geoHtml}${shot(screen({ id: "spec-long", night: false, state: "closed", brandProduct: "ds" }), "D4 · 长字标 · Design System", "标按钮宽 190.7px（字标 116.7 + 标 22 + 两段间距 20 + 示意 20 + 内距 12）；与首个固定项间距 8；中线 26；宽随字标加宽，不截断")}${geoRows}</div>
 
 <div class="sec"><h3><b>E</b>消费方契约 <span>须提供什么 · 何时用与不用 · 键盘与读屏</span></h3>${contract}</div>
 

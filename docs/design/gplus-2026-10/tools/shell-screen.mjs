@@ -12,14 +12,15 @@ import { cr, fmt, icon, grain } from "./lib.mjs";
 
 export const LOGOS = fileURLToPath(new URL("../logos2/", import.meta.url));
 export const svgBody = (f) => fs.readFileSync(LOGOS + f, "utf8").replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "").trim();
-export const BODY = { tms: svgBody("tms.svg") };
+export const BODY = { tms: svgBody("tms.svg"), ds: svgBody("ds.svg") };
 export const DEEP = { tms: "#2c63c8" };
+const suffix = (th) => th === "n" ? "#7aa0f5" : DEEP.tms;
 export const mark = (size, k = "tms", extra = "") => `<svg viewBox="0 0 48 48" width="${size}" height="${size}" aria-hidden="true" data-logo="${k}" data-mode="color" data-size="${size}"${extra}>${BODY[k]}</svg>`;
-export const wm = (em = "") => `TCRN <em style="color:${DEEP.tms}"${em}>TMS</em>`;
+export const wm = (em = "", th = "l") => `TCRN <em style="color:${suffix(th)}"${em}>TMS</em>`;
 export const ZH = "艺人管理系统";
 export const lockup = () => `<div class="lk" role="img" aria-label="TCRN TMS ${ZH}" data-lockup="lk">${mark(44)}<span class="w" aria-hidden="true"><b>${wm()}</b><small>${ZH}</small></span></div>`;
 export const lockupLine = () => `<div class="lk" role="img" aria-label="TCRN TMS" data-lockup="lk-line">${mark(44)}<span class="w" aria-hidden="true"><b>${wm()}</b></span></div>`;
-export const railLockup = (cells = {}) => `<div class="lkr" role="img" aria-label="TCRN TMS ${ZH}" data-lockup="lkr">${mark(22)}<span aria-hidden="true"><b${cells.b || ""}>${wm(cells.em || "")}</b><small${cells.small || ""}>${ZH}</small></span></div>`;
+export const railLockup = (cells = {}, th = "l") => `<div class="lkr" role="img" aria-label="TCRN TMS ${ZH}" data-lockup="lkr">${mark(22)}<span aria-hidden="true"><b${cells.b || ""}>${wm(cells.em || "", th)}</b><small${cells.small || ""}>${ZH}</small></span></div>`;
 export const railLine = () => `<div class="lkr" role="img" aria-label="TCRN TMS" data-lockup="lkr-line">${mark(22)}<span aria-hidden="true"><b>${wm()}</b></span></div>`;
 
 export const PIN_BODY = "M8 3.5h4v5.5l2.5 2.5v1.5h-9v-1.5L8 9z";
@@ -47,6 +48,7 @@ export const SCREEN_CSS = `
 .vers .lkr{width:auto}
 /* 标按钮：侧栏尺度的锁定块首行 + 展开示意；挂上边界；隐形边界 134 × 40 */
 .ts-brand{width:134px;display:inline-grid;grid-template-columns:22px auto 20px;column-gap:10px;align-items:center;height:var(--tab);padding:0 6px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer;font-family:var(--sans);text-align:left;flex:0 0 auto}
+.ts-brand.long{width:max-content;min-width:134px}
 .ts-brand.v1{width:auto;grid-template-columns:22px 20px}
 .ts-brand svg[data-logo]{display:block}
 .ts-brand b{display:block;font-size:12.5px;font-weight:600;line-height:1.2;white-space:nowrap}
@@ -172,9 +174,9 @@ export function groupRow(name, { pinned = false, hover = false } = {}, cells = "
 }
 export const PINS = [["名册", { on: true }], ["合约", { menu: true }], ["结算单", {}], ["排期", { menu: true }]];
 // current：哪个固定项是当前页（不传 = PINS 里的 on；null = 当前页不在固定项里）；demo = false 时不画第 3 项的静态悬停（样板用）
-export function strip(t, th, { open = false, drop = null, v1 = false, current, demo = true } = {}) {
+export function strip(t, th, { open = false, drop = null, v1 = false, current, demo = true, brandProduct = "tms" } = {}) {
   const P = t.bg; const F = open ? t.hover : P;
-  const brand = `<button type="button" class="ts-brand${open ? " open" : ""}${v1 ? " v1" : ""}" aria-label="${open ? "收起导航" : "展开导航"} · TCRN TMS" aria-expanded="${open ? "true" : "false"}" aria-haspopup="dialog" data-h="40" data-tab>${mark(22, "tms", ' data-guide="tab"')}${v1 ? "" : `<b${cell("brand-word", t.ink, F, P, "text", th)}>${wm(cell("brand-suffix", DEEP.tms, F, P, "text", th))}</b>`}<span class="ts-tgl"${cell("tgl", t.ink2, F, P, "icon", th)}>${chev(open ? "up" : "down", 16)}</span></button>`;
+  const brand = `<button type="button" class="ts-brand${brandProduct === "ds" ? " long" : ""}${open ? " open" : ""}${v1 ? " v1" : ""}" aria-label="${open ? "收起导航" : "展开导航"} · TCRN ${brandProduct === "ds" ? "Design System" : "TMS"}" aria-expanded="${open ? "true" : "false"}" aria-haspopup="dialog" data-h="40" data-tab>${mark(22, brandProduct, ' data-guide="tab"')}${v1 ? "" : `<b${cell("brand-word", t.ink, F, P, "text", th)}>${brandProduct === "ds" ? `TCRN <em style="color:#6577f3">Design System</em>` : wm(cell("brand-suffix", suffix(th), F, P, "text", th), th)}</b>`}<span class="ts-tgl"${cell("tgl", t.ink2, F, P, "icon", th)}>${chev(open ? "up" : "down", 16)}</span></button>`;
   const pins = `<nav class="ts-pins" aria-label="固定项" data-pins>${PINS.map(([l, o], i) => {
     const isOpen = drop === l;
     const on = current === undefined ? o.on : l === current;
@@ -200,7 +202,7 @@ export function dropdown(t, th, name) {
   return `<div class="ts-drop" role="dialog" id="drop-${name}" aria-label="${name}" data-panel="drop"><div class="ts-srch" data-h="28">${icon("search", { size: 14 })}<span class="ph2"${cell("drop-srch", t.ink2, t.wash, P, "text", th)}>搜索${name}</span><kbd>⌘K</kbd></div>${rows}${col2}</div>`;
 }
 // paper(t, th)：纸内内容（不传 = 名册页）；current、demo 传给 strip
-export function screen({ id, night, state, paper = paperBody, current, demo = true }) {
+export function screen({ id, night, state, paper = paperBody, current, demo = true, brandProduct = "tms" }) {
   const t = night ? T.night : T.light; const th = night ? "n" : "l"; const P = t.panel;
   let panel = "";
   if (state === "expanded") {
@@ -212,13 +214,13 @@ export function screen({ id, night, state, paper = paperBody, current, demo = tr
     panel = `<div class="ts-panel" role="dialog" aria-label="导航" data-panel="expanded">
 <div class="ts-srch" data-h="40">${icon("search", { size: 16 })}<span class="ph2"${cell("srch-ph", t.ink2, t.wash, P, "text", th)}>搜索页面、艺人、合约</span><kbd${cell("srch-kbd", t.ink2, t.wash, P, "text", th)}>⌘K</kbd></div>
 <div class="ts-cols">${cols}</div>
-<div class="ts-pbar"><div class="ts-crumbs"><span${cell("pbar-label", t.ink3, P, P, "text", th)}>当前位置</span><a href="#a">艺人</a>${chev("right", 11)}<b>名册</b></div>${railLockup({ b: cell("lk-b", t.ink, P, P, "text", th), em: cell("lk-em", DEEP.tms, P, P, "text", th), small: cell("lk-small", t.ink3, P, P, "text", th) })}</div>
+<div class="ts-pbar"><div class="ts-crumbs"><span${cell("pbar-label", t.ink3, P, P, "text", th)}>当前位置</span><a href="#a">艺人</a>${chev("right", 11)}<b>名册</b></div>${railLockup({ b: cell("lk-b", t.ink, P, P, "text", th), em: cell("lk-em", suffix(th), P, P, "text", th), small: cell("lk-small", t.ink3, P, P, "text", th) }, th)}</div>
 </div>`;
   }
   return `<div class="scr gp ts${night ? " night" : ""}" data-shell="${id}" data-state="${state}">
 ${grain("g-" + id)}
 <div class="lay">
-${strip(t, th, { open: state === "expanded", drop: state === "drop" ? "合约" : null, current, demo })}
+${strip(t, th, { open: state === "expanded", drop: state === "drop" ? "合约" : null, current, demo, brandProduct })}
 <div class="ts-paper" data-paper><div class="ts-content">${paper(t, th)}</div></div>
 ${panel}${state === "drop" ? dropdown(t, th, "合约") : ""}
 </div>
