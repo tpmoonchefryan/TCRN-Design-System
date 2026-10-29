@@ -30,12 +30,12 @@
 | R2-25 | R1 判断返工 R2-25：品牌样板表的资产 ID 列渲染的设计系统资产 ID 拼出仓库名，是渲染文本内部词汇扫描的唯一命中；按判据第一种做法删去该列，不给扫描器加豁免。 |
 | SUB-072 | R2 拆分 SUB-072 判据（R2-25 的落点）：composition-one.tsx 删掉 Asset ID 列，或改显示不含仓库名的标识；不给扫描器加豁免；internal-vocab:scan 零命中。样板按删列执行，本映射不恢复该列。 |
 | O-1 | R2 判断 O-1（设计会话 B 类裁定，Owner 可事后更正）：构图一壳层几何已授权，只含引导列 16 / 48、纸离边 12（圆角 14 加 s1）、顶栏 52、侧栏 220 与收起 52、侧栏画布色无右边线，数值取自 token；Navigation 家族其余行为、结构与 API 不动，留第二批。 |
-| O-3 | 已撤回（SHELL-D2）。原为 R2 判断 O-3（设计会话 B 类裁定）：夜间 TMS 后缀另取 TMS 标的亮色（`marks.json` 的 tms.palette.bright），撤去 token-contrast 与 axe 的两条 TMS 夜间豁免。现行：TMS 后缀两主题同色 #2c63c8，夜间取值待 D7 裁定（SHELL-D7）。 |
+| O-3 | R6 D4 已裁：浅色 TMS 后缀 #2c63c8，夜间 #7aa0f5；撤去两条夜间 pending 豁免（M56）。 |
 | O-4 | R2 判断 O-4（设计会话 B 类裁定，Owner 可事后更正）：映射待裁差异中 DIFF-3 以构图板 220 / 52 为准；DIFF-2 的构图三样板随 O-1 授权，R3 补。 |
 | SHELL-D1 | MIN-20261013-SHELL D1（Owner 2026-10-13「没问题」）：壳层采用顶带壳，取代 2026-10-11 纪要 D1 的构图一与构图三；顶带 52 无底无线，纸离壳边 12、圆角 14，壳内没有常驻侧栏。 |
 | SHELL-D2 | MIN-20261013-SHELL D2（品牌资产来源）：品牌资产只取通过稿原样（`logos2/*.svg` 与 Brand 板 E 段）；TMS 后缀取通过稿的标深色 #2c63c8，两主题同色，O-3 的夜间值随之撤回。 |
 | SHELL-D4 | MIN-20261013-SHELL D4：Typography、Actions、Icon、Inputs 四板的构图一样板退出标准，随第二批换壳重渲染后补入（INIT-016 SUB-133 补四板 D 段，SUB-134 换 Storybook 侧样板）。 |
-| SHELL-D7 | MIN-20261013-SHELL D7（未裁项暂行处置）：夜间仍用通过稿的 TMS 后缀色，夜间取值与 INIT-015 收口 S-6 一并由 Owner 裁定（设计会话建议取 TMS 标的亮色）。裁定前 TMS 后缀夜间于纸 3.13、于画布 3.33，低于 4.5，是已知待裁项：token-contrast 登记两条夜间豁免并注明待裁。 |
+| SHELL-D7 | R6 D4 对 O-8 的裁定：浅色 #2c63c8、夜间 #7aa0f5；夜间 pending 豁免已撤（M56）。 |
 | I16-C9 | INIT-016 R1 跨包约定 C-9：壳层 story 登记在 navigation-shells 类目（shell-top-band、shell-narrow、shell-mobile、shell-intro、shell-matrix），不进 gplus- 类目，本映射维持 23 行；第一批样板 id 不变，内容换顶带壳。 |
 | I16-P4 | INIT-016 R1 拆分问题 4：D4 只让四板退出构图一样板，Brand 成品板不加 D 段（壳层板 07a 第 1 段「标三版」已表达品牌在壳里的样子）；brand-sample-product 照常换壳，映射里 brand 样板行改指 07a 第 1 段（草稿画布 V2-B2-Shell-Draft2 第 1 段）。 |
 | I16-P5 | INIT-016 R1 拆分问题 5：构图一、构图三 6 行改标题并改指顶带壳样板与四板 D 段，板引用暂留草稿板（画布对应关系由设计会话定）。 |
@@ -122,20 +122,24 @@ V2-Families 与 V2-Rejections 两块板已入仓（`boards/`），整板没有 s
 | V2-Families | 全板 组件家族清单 · 16 个家族 125 件（含设计批次） | 家族清单与批次顺序是规划板，不是组件规格；第一批 23 件即五个矩阵的名册，其余家族不在本批。 | apps/storybook/src/contract-stories/gplus/matrix-stories.tsx（gplusMatrixComponents） | `typography-matrix`、`icon-matrix`、`brand-matrix`、`actions-matrix`、`inputs-matrix` | SCOPE | — |
 | V2-Rejections | 全板 打回根因总账 · 契约条款草案 | 打回总账与条款草案是治理文本；条款由各门执行，不是渲染面。 | boards/V2-Rejections.dc.html | — | D6 | — |
 
-## 差异（11 条，其中待 Owner 知悉 4 条：DIFF-7、DIFF-8、DIFF-9、DIFF-11；待 Owner 裁定 0 条；DIFF-10 已与画布对齐，TMS 后缀的夜间取值另在 D7 待裁，不是画布与 story 的差异）
+| R6-D4 | TCRN-DS-MIN-20261016-R6 D4：TMS 后缀浅色 #2c63c8、夜间 #7aa0f5；夜间待裁豁免已撤。 |
+| R6-S6 | TCRN-DS-SUB-236（044fefe）：底盘板的 shell key 值更正为 220 / 52。 |
+| R6-S7 | TCRN-DS-SUB-239（7190a0bf6764d7d14bddd50cde159725442eaeb5）：夜间 TMS 值同步到家族板。 |
+
+## 差异（11 条，其中待 Owner 知悉 4 条：DIFF-7、DIFF-8、DIFF-9、DIFF-11；待 Owner 裁定 0 条；DIFF-10 已按 R6 D4 裁定并同步夜间取值）
 
 | 编号 | 板 · 分段 | 画布 | story | 状态 | 引用 |
 | --- | --- | --- | --- | --- | --- |
 | DIFF-1 | V2-B1-Typography、V2-B1-Icon、V2-B1-Brand、V2-B1-Actions、V2-B1-Inputs、V2-GPlus-Compositions · D、构图一 | 构图一壳层：侧栏 220、收起 52、顶栏 52、纸离边 12（已由顶带壳取代）；四板 D 段与壳层板 07a 第 1 段是顶带壳：顶带 52 无底无线，纸顶 52、离壳边 12、圆角 14 加 s1，屏宽 1240。 | 五个样板用包内 ProductShell 顶带态，按四板 D 段的屏设置：TMS 标按钮、固定项名册 / 合约 / 结算单 / 排期、右上簇铃铛与头像、菜单模型与 07a 相同，面包屑取各板 D 段的上级 › 本页（actions 样板的名册是菜单项，固定项名册为当前）；壳根带 C-5 钩子，data-shell 为板上屏名（ty-l、ty-n 等）。门对样板量壳框 shellFrame（顶带 52、无底线无填充，纸顶 52、离壳边 12、圆角 14；SUB-134），不读旧 .tcrn-product-shell__workspace / .tcrn-top-bar。侧栏引导列 rail 随侧栏取消：样板行不再要求 rail，样板壳带 data-measure-skip="rail"，完整菜单内引导列 16 / 48 由壳层门量（拆分问题 24）。story 框在 1440 视口下比板上 1240 屏窄，壳宽随 story 框。 | 已按 MIN-20261013-SHELL D1、D4 换顶带壳（SUB-134） | P1、O-1、SHELL-D1、SHELL-D4、I16-P24 |
 | DIFF-2 | V2-GPlus-Compositions · 构图三 | 构图三：无侧栏，顶部一条导航，内容居中 1040。 | composition-three-sample 换包内 ProductShell 顶带壳（弃用的 TopBar、SubNav 与独立搜索已去掉）：顶带即顶部那条导航（标按钮、固定项、铃铛与头像），纸内页头之后的内容以 --tcrn-layout-content-max-w（1040）居中；壳根带 C-5 钩子（data-shell 为 c3-l、c3-n），门量壳框 shellFrame。与板的差：板上构图三是独立顶栏加文字导航，现由顶带取代；页头随纸宽，不随内容居中。 | 已按 MIN-20261013-SHELL D1 换顶带壳（SUB-134） | P1、COMP、O-4、SHELL-D1、I16-P5 |
-| DIFF-3 | V2-GPlus、V2-GPlus-Compositions · 两屏、去掉的套路与 kv 表、构图一 | 底盘板 kv 表写「壳层 侧栏 212 · 顶栏 48」，构图板写侧栏 220、顶栏 52（画布内部两处不一致；本目录 README 以构图板为壳层几何来源）。 | 构图一的侧栏与顶栏几何随顶带壳作废；样板按壳层板取值：顶带 52、纸离壳边 12（见 DIFF-1）。 | 已由顶带壳取代（MIN-20261013-SHELL D1） | P1、D6、O-4、SHELL-D1 |
+| DIFF-3 | V2-GPlus、V2-GPlus-Compositions · 两屏、去掉的套路与 kv 表 | 底盘板与构图板的记录都为 220 / 52（底盘由 SUB-236 更正）。 | 原构图几何已由顶带壳取代；自动 ProductShell 按自身容器宽度切换：1024 为宽呈现、1023 为窄呈现；自动 Sheet 在 760，761 不为 Sheet。显式 version / presentation 优先（SUB-234，M57）。 | 原几何已由顶带壳取代，数值对齐并按容器响应 | P1、D6、O-4、SHELL-D1、R6-S6、R6-D4 |
 | DIFF-4 | V2-B1-Typography、V2-B1-Icon、V2-B1-Brand、V2-B1-Actions、V2-B1-Inputs · A、B | 夜间块用 .gp.night 类。 | 夜间块用 data-tcrn-theme="dark"，浅色块用 data-tcrn-theme="light"。 | 已裁定 | C2 |
 | DIFF-5 | V2-B1-Actions、V2-B1-Inputs · A、B | 静态状态用 .is-hover、.is-active、.is-focus 类。 | 静态状态用 data-tcrn-preview-state，与真实伪类共用同一对表。 | 已裁定 | C4 |
 | DIFF-6 | V2-B1-Inputs · B | 开关钮格 sw-on 的探针是 after-bg（画板用 ::after 画钮）。 | 包内 Switch 用 ::before 画钮，story 的探针是 before-bg；测量库读 ::before 的背景（W5-C 加的 before-bg 探针），sw-on 两格照常与 data-expect 比对。 | 测量库已支持 before-bg（W5-C） | C9 |
 | DIFF-7 | V2-B1-Typography、V2-B1-Icon、V2-B1-Brand、V2-B1-Actions、V2-B1-Inputs · A | 每板左浅色、右夜间并排。 | typography 与 inputs 两块并排，icon、brand、actions 两块上下叠放（守 story 高度预算）。 | 待 Owner 知悉 | P24 |
 | DIFF-8 | V2-B2-Logos-Draft · A–E | 每枚产品标有大图、128 至 16 六档尺寸阶梯、淡底与深底贴片（64 / 32）、单色版与锁定块。 | brand-matrix 给 TCRN 标 22 / 28 / 38 / 56 四档、四枚产品标 38 一档与单色版、ProductLogo 四个产品与 ProductLockup；没有六档阶梯与贴片。 | 待 Owner 知悉：第二批品牌 | LOGOS、SCOPE |
 | DIFF-9 | V2-B1-Brand · D | 产品页表格四列：产品、资产 ID、标语 · zh / en、注册（浅色与夜间两块相同）。 | brand-sample-product 的表格删去资产 ID 列，剩产品、标语、注册三列（返工 R2-25）。 | 待 Owner 知悉 | R2-25、SUB-072 |
-| DIFF-10 | V2-B1-Brand · A、F | 夜间块 ProductLogo 说明写后缀用各自产品标的深色：TMS #2c63c8（F 段 token 差异表的后缀颜色同写 tms #2c63c8，不分主题）。 | 与画布一致：TMS 后缀两主题同色 #2c63c8（Design System #6577f3 不变），只写在主题无关块（SHELL-D2；O-3 的夜间值已撤回）。夜间于纸 3.13、于画布 3.33，低于 4.5：token-contrast 登记两条 TMS 夜间豁免（纸与画布）并注明待裁（SHELL-D7）。 | 已对齐画布（SHELL-D2）；夜间取值另待 D7 | SHELL-D2、SHELL-D7、O-3 |
+| DIFF-10 | V2-B1-Brand · A、F | 浅色 #2c63c8，夜间 #7aa0f5（R6 D4）。 | 同步浅色 #2c63c8、夜间 #7aa0f5；Design System #6577f3 不变，夜间 pending 豁免已撤（M56，S7 重生品牌板）。 | 已裁定并同步，无夜间待裁豁免 | SHELL-D2、SHELL-D7、O-3、R6-D4、R6-S7 |
 | DIFF-11 | V2-B1-Actions · D | 名册页样板表格三行：星野ひかり（A 组，签约，已复制）、Mika Lindqvist（B 组，试用）、陈嘉怡（B 组，签约）。 | actions-sample-project 的第二行换成名册里的 김하늘（C 组，试用）：拉丁字母人名在 zh-CN 页是两词连写的拉丁串，会被英文泄漏扫描当作未翻译文本；其余行、动作与危险区同板。story id 不变（INIT-016 C-9）。 | 待 Owner 知悉 | I16-C9 |
 
 渲染缺陷（例如状态格对比度偏离、缺格）不是设计差异，不记在这里；它们是门的不通过项，见逐行报告与本批问题清单。
