@@ -231,11 +231,15 @@ test("STORY-140 GWT1 product shell is the top band and the paper, through the sh
     /data-mobile-nav-expanded/,
     /--tcrn-product-shell-sidebar-width/,
     /var\(--tcrn-shell-sidebar-width(?:-collapsed)?\)/,
-    /var\(--tcrn-shell-topbar-height\)/,
-    /@media not all and \(max-width: 760px\)/
+    /var\(--tcrn-shell-topbar-height\)/
   ]) {
     assert.doesNotMatch(shellRules, retired);
   }
+  assert.match(
+    shellRules,
+    /@container tcrn-shell \(max-width: 1023px\) \{\n  \.tcrn-shell-pins \{\n    display: none;\n  \}\n\}/,
+    "the pinned items follow their owning shell below 1024"
+  );
   // The deprecated TopBar (TCRN-DS-SUB-125) keeps its own height, in the retired sheet only.
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-top-bar\b/);
   assert.match(tcrnRetiredComponentCss, /\.tcrn-top-bar \{\n  display: grid;\n  grid-template-columns: max-content max-content minmax\(0, 1fr\);\n  align-items: center;\n  gap: var\(--tcrn-space-4\);\n  min-height: 68px;/);
