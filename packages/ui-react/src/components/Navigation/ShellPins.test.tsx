@@ -134,7 +134,7 @@ test("selected is the 6% wash and weight 600, hover the 3.5% wash; states switch
 });
 
 test("narrower than 1024 the whole group is hidden", () => {
-  const narrow = /@media \(max-width: 1023px\) \{\n {2}\.tcrn-shell-pins \{\n {4}display: none;\n {2}\}\n\}/.exec(shellCss02);
+  const narrow = /@container tcrn-shell \(max-width: 1023px\) \{\n {2}\.tcrn-shell-pins \{\n {4}display: none;\n {2}\}\n\}/.exec(shellCss02);
   assert.ok(narrow, "the pins segment hides the group at 1023 and below");
 });
 
