@@ -1,6 +1,6 @@
 # G+ 焕新设计数据（2026-10）
 
-画布 https://claude.ai/artifact/DuPjVjwSK6Wb9qthW4BwFz（设计正本页，版本 33）的仓内副本：画布是草稿与确认面，这里的文件是实现、story 与门的数据来源（Owner 2026-10-11 裁定 D6）。
+当前参考入口见[设计参考索引](../README.md)：[Sites 草稿](https://tcrn-ds-visual-draft.honestfawn3.chatgpt.site)用于探索与待确认内容，[Sites 设计标准](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site)用于已确认标准（Owner 2026-10-29；沿用 TCRN-CROSS-MIN-308 D1 的分工）。本目录保留原版本 33 迁入后持续演进的实现、story 与门的数据；当前候选修改与 Sites 标准的对应关系须逐项核对。
 
 | 目录 / 文件 | 内容 | 用途 |
 | --- | --- | --- |

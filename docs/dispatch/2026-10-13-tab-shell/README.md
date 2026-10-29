@@ -40,7 +40,7 @@ INIT-015（work:e5b3880c835fd77f1c14b81b）保持 active：STORY-120 至 128、1
 
 ## 设计数据
 
-- 成品画布「TCRN 视觉设计标准」https://claude.ai/artifact/ArthUa2urzK714fA9yPDqp ；仓内同内容 `docs/design/visual-standard/boards/`（07a `Shell.dc.html`、07b `Shell-2.dc.html`）。
+- [Sites 设计标准](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site)与[Sites 草稿](https://tcrn-ds-visual-draft.honestfawn3.chatgpt.site)分别维护；标准只接收 Owner 明确确认的内容。当前参考版本与源码入口见[设计参考索引](../../design/README.md)（Owner 2026-10-29）。仓内对应文件为 `docs/design/visual-standard/boards/`（07a `Shell.dc.html`、07b `Shell-2.dc.html`），候选修改与 Sites 的一致性须核对。
 - 壳层生成器与数据 `docs/design/gplus-2026-10/tools/build-shell2.mjs`、`boards/spec-geom.json`、`measure-shell.js`、`logos2/*.svg`；草案板 `boards/V2-B2-Shell-Draft*.dc.html` 只作历史，不是标准。
 
 ## 停点

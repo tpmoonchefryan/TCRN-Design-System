@@ -25,7 +25,7 @@
 
 ## 设计数据
 
-`docs/design/gplus-2026-10/`：画板源（`boards/*.dc.html`，与画布版本 33 同内容）、生成器与数据（`tools/*.mjs`）、八项测量脚本（`measure.js`）、四枚产品标（`logos2/*.svg`）。见该目录 README。
+当前参考为 [Sites 设计标准](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site)与独立维护的 [Sites 草稿](https://tcrn-ds-visual-draft.honestfawn3.chatgpt.site)，分工、版本和源码入口见[设计参考索引](../../design/README.md)（Owner 2026-10-29）。`docs/design/gplus-2026-10/` 保留由原版本 33 迁入后持续演进的画板源（`boards/*.dc.html`）、生成器与数据（`tools/*.mjs`）、八项测量脚本（`measure.js`）、四枚产品标（`logos2/*.svg`）。见该目录 README。
 
 ## 停点
 

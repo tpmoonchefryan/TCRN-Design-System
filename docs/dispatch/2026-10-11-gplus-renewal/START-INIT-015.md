@@ -19,7 +19,8 @@ TCRN-DS-INIT-015 下 TCRN-DS-STORY-120 至 134 共 15 张 Story 全部 `done`，
 | --- | --- | --- |
 | 工单正文 | DS 库 `/Users/ryanlan/Code/TCRN Platform/TCRN-Design-System/.ether`（主检出里的库；工作树里没有它，`--workspace` 永远指向这个绝对路径） | `node ~/.einzbern/engine/einzbern.mjs work-show --external-key <键> --workspace <库>`；Story 的 goal、acceptance、body 在 `fields` 里；INIT 与 Epic 的 scope 在 `fields.body` |
 | 裁定 | `minutes:` 记录 `TCRN-DS-MIN-20261011-GPLUS-RENEWAL`（D1 至 D8） | `minutes-show` |
-| 设计正本 | 画布 https://claude.ai/artifact/DuPjVjwSK6Wb9qthW4BwFz 版本 33（草稿与确认面） | 只看，不改 |
+| 设计标准 | Sites「TCRN 视觉设计标准」https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site；当前已确认标准，新增内容须 Owner 明确确认 | [设计参考索引](../../design/README.md)；只读参考 |
+| 设计草稿 | Sites「DS 视觉方向方案 · 草稿」https://tcrn-ds-visual-draft.honestfawn3.chatgpt.site；探索与待确认内容，旧稿与取代标记继续有效 | [设计参考索引](../../design/README.md)；与标准分别维护 |
 | 设计数据与画板 | `docs/design/gplus-2026-10/`：`tools/lib.mjs` 的 `T`（token 对象）、`ICONS`（37 件路径）、`build-actions.mjs` 的 `pairs()`、`build-inputs.mjs` 的对表 CSS、`build-logos2.mjs` 的 `MARKS` 与 `PAL`、`boards/*.dc.html`（每块板的矩阵表与 F 段 token 差异）、`measure.js`（八项测量）、`logos2/*.svg` | 这是 STORY-122 要抽成 `contract/*.json` 的来源；在那之前实现与 story 直接读这些文件 |
 | 现仓真值 | `packages/ui-tokens/src/index.ts`、`packages/ui-react/src/components/**`、`tcrnComponentCss`、`apps/storybook/src`、`scripts/*-proof.mjs`、`docs/style-scale.md` | 改之前先读 |
 
