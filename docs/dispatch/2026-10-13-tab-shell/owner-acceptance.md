@@ -58,7 +58,7 @@ STORY-150 由实施会话按机器判据判定；Owner 在交付后目视，不�
 
 ## 机器证据入口（历史路径）
 
-历史报告仍可在 `docs/verification/` 下按原交回查阅：画板映射、几何、壳层 18 门、internal-alpha、契约、样板矩阵、对比度、字体与产品标 digest。历史读数和退出码见各轮 handoff。当前批末结果尚待 S9 批末处理，状态见上表。
+历史报告仍可在 `docs/verification/` 下按原交回查阅。S9 包内一次运行：build、storybook:build、browser-proof 均退出 1；隔离树缺依赖与构建产物，未获得当前 nonVisualProofOk，签名接受 0 条，基线不变。geometry:proof、几何报告、壳层报告、映射报告、contracts、doc-shell:proof、contract:static、tokens:proof、pack:smoke 均退出 1；contract:static 的 77 个测试通过后因 dist 缺失停止。壳层回执为 storybook_registry_missing，18 门未量；映射为 static_docs_missing，0/23 实测通过、23 条未测，不是视觉违规判定。hardening、scaffold:proof 均退出 0；hardening 读取历史回执（72 story、328 截图、axe 0），不代表本轮浏览器通过。逐门日志、字节与最终 scan 结果见 S9 handoff 的 scratch 入口。批末三门及 28 条 Story 状态仍见上表。
 
 ## 第六轮新增与变化的目视项
 
@@ -383,10 +383,19 @@ B、C、D 类 40 条（不属 A 类，按 story 合并；视口写宽度）：
 
 ## 第六轮视觉签名离群
 
-S9 使用此表记录接收后需解释的第六轮视觉签名离群；S8 不收、应用或重收签名。
+S9 本次没有接受签名。下表只转列 S7 历史回归中的 9 条 maxCell > 40 项；分类沿用第四轮同键 K12 分类，主题与语言沿 S7 记 unknown，不冒充 S9 新测。其余 7 条历史回归及 S2/S4 同键来源见 S9 交回与 scratch/signature-disposition.json。所有项留待批末判断。
 
 | Story / 画面 | 主题 / 语言 / 视口 | 差异 | 来源提交 / 预期依据 | S9 处置记录 |
 | --- | --- | --- | --- | --- |
+| `shell-top-band` | unknown / unknown / desktop-1440x900 | 历史 mean 54.047 / maxCell 229 > 40；K12 C | S4 容器/新增屏（SUB-233/234）及 S7 SUB-238/239 候选；保留 S4 归属 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
+| `frontend-shell-slice` | unknown / unknown / desktop-1440x900 | 历史 mean 18.117 / maxCell 127 > 40；K12 A | S7 SUB-240 c9c7f0c 撤 AOS 顶带及 SUB-238 文档顶带；只作候选 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
+| `owner-quality-product-shell` | unknown / unknown / desktop-1440x900 | 历史 mean 21.914 / maxCell 131 > 40；K12 A | S7 SUB-240 c9c7f0c 撤 AOS 顶带及 SUB-238 文档顶带；只作候选 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
+| `shell-top-band` | unknown / unknown / tablet-1024x768 | 历史 mean 55.254 / maxCell 229 > 40；K12 C | S4 容器/新增屏（SUB-233/234）及 S7 SUB-238/239 候选；保留 S4 归属 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
+| `frontend-shell-slice` | unknown / unknown / tablet-1024x768 | 历史 mean 15.012 / maxCell 142 > 40；K12 A | S7 SUB-240 c9c7f0c 撤 AOS 顶带及 SUB-238 文档顶带；只作候选 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
+| `owner-quality-product-shell` | unknown / unknown / tablet-1024x768 | 历史 mean 22.254 / maxCell 143 > 40；K12 A | S7 SUB-240 c9c7f0c 撤 AOS 顶带及 SUB-238 文档顶带；只作候选 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
+| `shell-top-band` | unknown / unknown / mobile-390x844 | 历史 mean 52.363 / maxCell 228 > 40；K12 C | S4 容器/新增屏（SUB-233/234）及 S7 SUB-238/239 候选；保留 S4 归属 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
+| `frontend-shell-slice` | unknown / unknown / mobile-390x844 | 历史 mean 10.348 / maxCell 79 > 40；K12 A | S7 SUB-240 c9c7f0c 撤 AOS 顶带及 SUB-238 文档顶带；只作候选 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
+| `owner-quality-product-shell` | unknown / unknown / mobile-390x844 | 历史 mean 16.863 / maxCell 96 > 40；K12 A | S7 SUB-240 c9c7f0c 撤 AOS 顶带及 SUB-238 文档顶带；只作候选 | 未接收；新 proof 缺失且既有 axe/height 红未处置 |
 
 ## 待发布的成品板（交设计会话）
 
