@@ -142,8 +142,8 @@ above; in either case:
    SVG file (M8).
 4. The TMS taglines come from the package: zh-CN 艺人管理系统 (was 人才管理系统),
    en Talent Management System, ko 탤런트 관리 시스템 (M8). The wordmark suffix reads
-   `--tcrn-brand-suffix-tms`: #2c63c8 in both themes (M28; the night value #7aa0f5
-   that M9 describes was withdrawn within 4.0.0).
+   `--tcrn-brand-suffix-tms`: #2c63c8 in light/daytime and #7aa0f5 at night (M56,
+   which supersedes M28's interim both-theme value).
 5. Take icons from the roster, not from a third-party set (M6, M7).
 6. Use `Text` props, the link classes (`tcrn-link`, with `tcrn-link--quiet` as its
    modifier), `Button size="lg"`, `ButtonGroup` and the pair-driven inputs instead
@@ -274,7 +274,7 @@ the wording they were written with; follow the right-hand column.
 | First-batch statement | What 4.0.0 ships instead |
 | --- | --- |
 | M7: the icon roster has 37 names | 38 names: `pin` was added (M25). |
-| M9: the TMS suffix is #7aa0f5 by night, declared in both theme blocks | #2c63c8 in both themes, declared once in the theme-independent block (M28). |
+| M9: the TMS suffix is #7aa0f5 by night, declared in both theme blocks | M28's interim value was #2c63c8 in both themes; M56 supersedes it with #2c63c8 in light/daytime and #7aa0f5 at night, withdrawing the two pending night exemptions. |
 | M15: the product shell's side-navigation and mobile-navigation toggles | The shell renders neither; the theme toggle sits in the avatar menu, and the two toggle parts are deprecated (M20, M23). |
 | M18: composition one's desktop geometry, its four tokens and the `--tcrn-product-shell-sidebar-width` override | The top band and the paper (M20); three of the four tokens are deprecated and `--tcrn-radius-paper` stays (M24); no package rule reads the override any more. |
 | "Open Owner decisions" below: the composition-one geometry, the night suffix values and the toggle sizes | The second-batch paragraph at the end of that section. |
@@ -875,7 +875,7 @@ Re-baseline settings and document pages wider than 1040px.
 Source: f635938 (TCRN-DS-SUB-129), 6d11e0a (TCRN-DS-SUB-130); handoff P6 (INIT-016
 r1).
 
-### M28 · The TMS suffix is one colour in both themes again
+### M28 · The TMS suffix is one colour in both themes again (historical; superseded by M56)
 
 Change: `--tcrn-brand-suffix-tms` is #2c63c8 in both themes, declared once in the
 theme-independent `:root` block, as the approved product-mark artwork has it
@@ -886,9 +886,15 @@ reads 3.13:1 on the paper and 3.33:1 on the canvas): the contrast proof and the 
 check carry two night TMS wordmark exemptions marked pending, and whether night
 takes #7aa0f5 is an open Owner decision (D7, with the first batch's S-6).
 
-Do: assert #2c63c8 for the TMS suffix in both themes; read a night value through
-`createResolvedTokenMap("dark")`, since `tcrnDarkThemeTokens` no longer has it; a
-parse of `tokens.css` finds the variable in the theme-independent block.
+This section records the M28 state and its open D7 question at that point. R6 D4/M56
+supersedes it: light/daytime remains #2c63c8, night uses #7aa0f5, and both pending
+night exemptions are withdrawn.
+
+M28's consumer step at the time was to assert #2c63c8 for the TMS suffix in both
+themes, read a night value through `createResolvedTokenMap("dark")` because
+`tcrnDarkThemeTokens` had no value, and find the variable in the theme-independent
+block of `tokens.css`. M56 supersedes that step; use M56 below for the current
+light/daytime and night values.
 
 Source: 1f67057 (TCRN-DS-SUB-128); handoff P4 (INIT-016 r1).
 
