@@ -716,6 +716,12 @@ export function ShellMenu({
         setOpenPath([]);
         onSearchQueryChange?.(next);
       }}
+      onDismiss={(reason) => {
+        if (reason !== "escape") return;
+        const trigger = triggerRef?.current ?? (rootRef.current && shellLayerTriggerOf(rootRef.current.ownerDocument, dialogId));
+        trigger?.focus();
+        onOpenChangeRef.current?.(false, "escape");
+      }}
       data-shell-search=""
     />
   );
