@@ -987,7 +987,10 @@ test("a long approved wordmark expands, and forcing it back to 134 fails brandGe
     const shell = reading.shells.find((item) => item.id === "spec-long");
     assert.ok(shell && shell.tab.w > 134);
     assert.equal(judgeGate("brandGeometry", { ...reading, shells: [shell] }).status, "pass");
-    const broken = structuredClone(reading); broken.shells = [structuredClone(shell)]; broken.shells[0].tab.w = 134;
+    await page.addStyleTag({ content: '[data-shell="spec-long"] [data-tab] { width: 134px !important; min-width: 0 !important; }' });
+    const broken = await measureShellPage(page, { selectors: lib.BOARD_SELECTORS });
+    broken.shells = broken.shells.filter((item) => item.id === "spec-long");
+    assert.equal(broken.shells[0].tab.w, 134);
     assert.equal(judgeGate("brandGeometry", broken).status, "fail");
   } finally { await close(); }
 });

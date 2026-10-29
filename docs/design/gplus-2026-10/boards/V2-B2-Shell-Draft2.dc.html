@@ -144,6 +144,7 @@ body{margin:0}
 .vers .lkr{width:auto}
 /* 标按钮：侧栏尺度的锁定块首行 + 展开示意；挂上边界；隐形边界 134 × 40 */
 .ts-brand{width:134px;display:inline-grid;grid-template-columns:22px auto 20px;column-gap:10px;align-items:center;height:var(--tab);padding:0 6px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer;font-family:var(--sans);text-align:left;flex:0 0 auto}
+.ts-brand.long{width:max-content;min-width:134px}
 .ts-brand.v1{width:auto;grid-template-columns:22px 20px}
 .ts-brand svg[data-logo]{display:block}
 .ts-brand b{display:block;font-size:12.5px;font-weight:600;line-height:1.2;white-space:nowrap}
@@ -273,7 +274,7 @@ body{margin:0}
 
 </style>
 </helmet>
-<div class="board" style="width: 2640px; height: 5781px">
+<div class="board" style="width: 2640px; height: 5324px">
 
 <header class="bh">
 <div>
@@ -281,7 +282,7 @@ body{margin:0}
 <h1>页签壳草案二：标按钮、固定项、一段即开<em>，三四级向右级联</em></h1>
 <p>按 Owner 七轮意见改到 r6：顶带左上是一个标按钮（通过锁定块的首行与标垂直居中，侧栏尺度标 22 + 12.5/600，右侧 20 格展开收起示意，无轮廓；整行中线 26，居中于顶带），右侧一排用户固定项，无分割线，标按钮隐形边界到固定项、固定项之间的间距完全相等；点标按钮一段即开完整菜单（接在标按钮下 6px，搜索、三列、当前位置、右下角侧栏尺度锁定块只装饰，没有收起钮，点外部即收）。图钉可固定分组、项或子菜单；固定的二级菜单从顶带纵向下拉，接续 6px、顶部带搜索，三、四级向右级联，同宽，高度随左列。没有钉住态常驻侧栏：文档站同样用这套壳，目录与书签进页内。设计会话补三条规则：固定项上限 6、窄于 1024 整组收进菜单；切换产品移到头像菜单；级联按点击展开，不按悬停。</p>
 </div>
-<div class="meta"><b>标按钮 134 × 40 · 固定项 32 · 间距 8 · 行中线 26</b>无分割线，三处相等，带内居中<b>完整菜单 952 · 下拉 240 · 接续 6 · 级联 +4</b>高随左列；点外部即收<b>品牌资产只取通过稿</b>标 22 / 44 / 128，后缀 #2c63c8<b>登入动画 460ms</b>第三版收敛为第二版</div>
+<div class="meta"><b>标按钮最小宽 134、随字标加宽 × 高 40 · 固定项 32 · 间距 8 · 行中线 26</b>无分割线，三处相等，带内居中<b>完整菜单 952 · 下拉 240 · 接续 6 · 级联 +4</b>高随左列；点外部即收<b>品牌资产只取通过稿</b>标 22 / 44 / 128，后缀 #2c63c8<b>登入动画 460ms</b>第三版收敛为第二版</div>
 </header>
 
 <div class="sec"><h3><b>0</b>与草案一的差异 <span>Owner 五轮意见逐条落点</span></h3><table class="mx"><colgroup><col style="width:300px"><col style="width:360px"><col></colgroup><thead><tr><th>Owner 意见</th><th>草案一</th><th>草案二 r4</th></tr></thead><tbody><tr><td class="c">1 标三版，常显第二版</td><td class="">40 见方纯标页签，挂上边界，空闲单色</td><td class="">三版全部出自 Logos 板通过稿：v1 标、v2 锁定块首行与标垂直居中（顶带用侧栏尺度 22 + 12.5）、v3 锁定块与侧栏原样；空闲态彩色 100%；标按钮居中于顶带，不再挂上边界</td></tr><tr><td class="c">2 标右侧放用户自定义项，一段即开</td><td class="">点标出小面板，再展开完整菜单</td><td class="">标右侧一排固定项，无分割线，三处间距都是 8；点标直接开完整菜单；小面板撤销</td></tr><tr><td class="c">3 右下角锁定块只装饰，收起键到标右侧无轮廓</td><td class="">锁定块兼切换产品；小面板有钉住钮</td><td class="">右下角是侧栏尺度锁定块（标 22），只装饰；标按钮右侧 20 格 chevron 示意；切换产品移到头像菜单</td></tr><tr><td class="c">4 星改图钉，可固定二级菜单，纵向下拉带搜索，三四级向右级联</td><td class="">星标常用列表</td><td class="">图钉固定分组、项或子菜单；顶带点开 320 下拉带搜索，接续 6；三、四级 +4 向右同宽，高随左列，按点击</td></tr><tr><td class="c">5 保留当前位置，去掉收起钮，点外部即收</td><td class="">搜索行有 ×，底栏有钉住钮</td><td class="">底栏只有当前位置与装饰锁定块；收起钮数量 0；菜单接在标按钮下 6px；点外部、Esc、选中即收</td></tr><tr><td class="c">r2 · 标与描述用通过稿资产</td><td class="">—</td><td class="">标 logos2/tms.svg 原样；锁定块文案「TCRN TMS / 艺人管理系统」；后缀浅色 #2c63c8，夜间 #7aa0f5（R6 D4 已裁）</td></tr><tr><td class="c">r3 · 第四轮前四条</td><td class="">—</td><td class="">第二版标居中；无分割线、三处间距相等；右下角锁定块改侧栏尺度；浮层与键接续 6px</td></tr><tr><td class="c">r4 · 第四轮第五条的本意</td><td class="">—</td><td class="">移除钉住态常驻侧栏（r3 误删了固定二级菜单下拉，已恢复）；文档站同样用顶带壳，目录与书签进页内</td></tr><tr><td class="c">r5 · 第六轮三条</td><td class="">—</td><td class="">第二版卡片居中；下拉改紧凑：宽 240、内距 6、搜索 sm 28、行无图标列文字起点 16；曾把标旁文字下移 2 / 3px，r6 撤回</td></tr><tr><td class="c">r6 · 第七轮：没在带里居中</td><td class="">—</td><td class="">「文字偏上」的真正原因是带内没居中：顶带整行中线放到 26（标按钮 6 → 46、固定项 10 → 42、右上簇居中），标按钮不再挂上边界；菜单底栏连同面板底内距一起居中，锁定块在分隔线到底缘之间上下留白相等；标旁文字回到与标几何居中</td></tr></tbody></table></div>
@@ -447,7 +448,7 @@ body{margin:0}
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2640,"height":5781}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2640,"height":5324}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
