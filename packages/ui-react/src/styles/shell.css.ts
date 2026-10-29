@@ -56,9 +56,9 @@ export const shellCss01 = `
   grid-template-columns: minmax(0, 1fr) var(--tcrn-shell-toggle);
   column-gap: var(--tcrn-space-2h);
   align-items: center;
-  inline-size: var(--tcrn-shell-brand-w);
+  inline-size: max-content;
   block-size: var(--tcrn-shell-brand-h);
-  min-inline-size: 0;
+  min-inline-size: var(--tcrn-shell-brand-w);
   margin: 0;
   padding: 0 var(--tcrn-space-1h);
   overflow: hidden;
@@ -77,6 +77,7 @@ export const shellCss01 = `
 }
 .tcrn-shell-brand[data-shell-brand="v1"] {
   inline-size: auto;
+  min-inline-size: 0;
 }
 .tcrn-shell-brand__line {
   --tcrn-brand-mark-size: var(--tcrn-shell-mark);
@@ -89,13 +90,11 @@ export const shellCss01 = `
   display: block;
   flex: none;
   min-inline-size: 0;
-  max-inline-size: calc(100% - var(--tcrn-brand-mark-size) - var(--tcrn-space-2h) + var(--tcrn-space-0h) / 2);
   padding-block: var(--tcrn-space-0h);
   overflow: hidden;
   font-size: 12.5px;
   font-weight: var(--tcrn-type-weight-strong);
   line-height: 1.2;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .tcrn-shell-brand.tcrn-shell-brand--serif .tcrn-shell-brand__word {
@@ -141,6 +140,7 @@ export const shellCss01 = `
 @container tcrn-shell (max-width: 1023px) {
   .tcrn-shell-brand[data-shell-brand-auto] {
     inline-size: auto;
+    min-inline-size: 0;
   }
   .tcrn-shell-brand[data-shell-brand-auto] .tcrn-shell-brand__word {
     display: none;

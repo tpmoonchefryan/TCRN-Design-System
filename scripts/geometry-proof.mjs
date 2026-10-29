@@ -157,7 +157,13 @@ async function measureBrands(page) {
     // The closed band of the host screen: the band's height, the brand button and its product mark.
     const shell = root?.querySelector(`[data-shell="${screen}"]`);
     const stripBox = shell?.querySelector("[data-shell-strip]")?.getBoundingClientRect();
-    const brandBox = shell?.querySelector("[data-tab]")?.getBoundingClientRect();
+    const brandButton = shell?.querySelector("[data-tab]");
+    const brandBox = brandButton?.getBoundingClientRect();
+    const word = brandButton?.querySelector("b");
+    const brandStyle = brandButton ? getComputedStyle(brandButton) : null;
+    const wordRange = document.createRange();
+    if (word) wordRange.selectNodeContents(word);
+    const brandContentWidth = brandButton && word ? wordRange.getBoundingClientRect().width + band.markPx + Number.parseFloat(brandStyle.paddingLeft) + Number.parseFloat(brandStyle.paddingRight) + 2 * Number.parseFloat(brandStyle.columnGap) + brandButton.querySelector("[data-shell-toggle]").getBoundingClientRect().width : null;
     const mark = shell?.querySelector("[data-tab] svg[data-logo]");
     const markBox = mark?.getBoundingClientRect();
     const markParent = mark?.parentElement?.getBoundingClientRect();
@@ -166,6 +172,7 @@ async function measureBrands(page) {
       state: shell?.getAttribute("data-state") ?? null,
       stripHeight: stripBox ? Number(stripBox.height.toFixed(2)) : null,
       brandWidth: brandBox ? Number(brandBox.width.toFixed(2)) : null,
+      brandContentWidth,
       brandHeight: brandBox ? Number(brandBox.height.toFixed(2)) : null,
       markWidth: markBox ? Number(markBox.width.toFixed(2)) : null,
       markHeight: markBox ? Number(markBox.height.toFixed(2)) : null,
@@ -175,7 +182,7 @@ async function measureBrands(page) {
     };
     closedBand.ok = closedBand.state === "closed"
       && near(closedBand.stripHeight, band.stripHeightPx)
-      && near(closedBand.brandWidth, band.brandWidthPx)
+      && near(closedBand.brandWidth, Math.max(band.brandWidthPx, closedBand.brandContentWidth))
       && near(closedBand.brandHeight, band.brandHeightPx)
       && near(closedBand.markWidth, band.markPx)
       && near(closedBand.markHeight, band.markPx)
@@ -632,7 +639,7 @@ async function main() {
     await removeMutation(page);
     const brandRestored = await measureBrands(page);
     // Closed band mutations: the brand button narrowed to 92, and the product mark scaled down.
-    await addMutation(page, `[data-shell="${closedScreen}"] { --tcrn-shell-brand-w: 92px !important; }`);
+    await addMutation(page, `[data-shell="${closedScreen}"] [data-tab] { inline-size: 92px !important; min-inline-size: 0 !important; }`);
     const brandRailBroken = await measureBrands(page);
     await removeMutation(page);
     const brandRailRestored = await measureBrands(page);

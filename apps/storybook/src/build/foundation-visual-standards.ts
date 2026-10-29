@@ -616,7 +616,7 @@ export const storybookDocShellVisualOracle = {
   shellMetrics: {
     // Top-band shell (TCRN-DS-INIT-016, 07a A segment), read back on the built documentation pages at 1440 x 900
     // (TCRN-DS-SUB-132): no resident side rail at any desktop width (min and max 0, so the viewport ratio does not
-    // move it); the 52px band (--tcrn-shell-strip-h) with the 134 x 40 brand button (--tcrn-shell-brand-w,
+    // move it); the 52px band (--tcrn-shell-strip-h) with the minimum 134 x 40 brand button (width grows with its wordmark) (--tcrn-shell-brand-w,
     // --tcrn-shell-brand-h); the avatar cluster 12px from the right edge (the band's inline padding).
     // The readings take the top band's names (TCRN-DS-SUB-208): residentNav* is the navigation that resides
     // beside the paper, 0 because the navigation is the full menu's, and band* is the band.

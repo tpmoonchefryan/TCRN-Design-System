@@ -92,7 +92,7 @@ export const ShellBrandButton = forwardRef<HTMLButtonElement, ShellBrandButtonPr
       <span className="tcrn-shell-brand__line" data-lockup="lkr-line">
         <TcrnBrandMark productId={productId} className="tcrn-shell-brand__mark" aria-hidden="true" data-logo={productMarkIdOf(productId)} data-guide="tab" />
         {version === "v1" ? null : (
-          <b className="tcrn-shell-brand__word" title={mark.name}>
+          <b className="tcrn-shell-brand__word">
             {mark.word}
             {mark.suffix ? (
               <>

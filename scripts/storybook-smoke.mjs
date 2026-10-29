@@ -320,7 +320,7 @@ const productShellComparatorContract = {
       paddingRight: `${shellBandInsetPx}px`
     },
     brandButton: {
-      width: gplusPx("--tcrn-shell-brand-w"),
+      minWidth: gplusPx("--tcrn-shell-brand-w"),
       height: gplusPx("--tcrn-shell-brand-h"),
       radius: gplusPx("--tcrn-radius-control"),
       transitionPropertyIncludes: ["background-color", "color", "box-shadow"],
@@ -2370,7 +2370,13 @@ async function collectProductShellMetrics(origin, viewport, reducedMotion, contr
           previousActive.focus({ preventScroll: true });
         }
       }
+      const brandWord = name === "brandButton" ? element.querySelector("b") : null;
+      const brandRange = document.createRange();
+      if (brandWord) brandRange.selectNodeContents(brandWord);
+      const brandWordVisible = brandWord && getComputedStyle(brandWord).display !== "none";
+      const brandIntrinsicWidth = name === "brandButton" ? Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight) + element.querySelector("svg[data-logo]").getBoundingClientRect().width + element.querySelector("[data-shell-toggle]").getBoundingClientRect().width + (Number.parseFloat(style.columnGap) || 0) * (brandWordVisible ? 2 : 1) + (brandWordVisible ? brandRange.getBoundingClientRect().width : 0) : null;
       measured[name] = {
+        brandWordVisible, brandIntrinsicWidth,
         width: rect.width,
         height: rect.height,
         disabled: element instanceof HTMLButtonElement ? element.disabled : element.getAttribute("disabled") !== null,
@@ -2543,9 +2549,11 @@ function validateProductShellReadback({
       if (!metric || metric.missing) {
         failures.push(`${label}:${name}:missing`);
       } else {
+        const expectedWidth = name === "brandButton" ? Math.max(metric.brandWordVisible ? expected.minWidth : 0, metric.brandIntrinsicWidth) : null;
+        const responsiveExpected = name === "brandButton" ? { ...Object.fromEntries(Object.entries(expected).filter(([key]) => key !== "minWidth")), width: expectedWidth } : expected;
         const expectedForMotion = reduced
-          ? Object.fromEntries(Object.entries(expected).filter(([key]) => !key.startsWith("transition")))
-          : expected;
+          ? Object.fromEntries(Object.entries(responsiveExpected).filter(([key]) => !key.startsWith("transition")))
+          : responsiveExpected;
         validateMetric({ failures, name: `${label}:${name}`, metric, expected: expectedForMotion });
       }
     }

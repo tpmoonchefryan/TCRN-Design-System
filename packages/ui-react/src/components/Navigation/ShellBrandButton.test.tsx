@@ -111,7 +111,7 @@ test("the brand button and ProductLockup's first line write the same data-logo f
 
 test("the geometry reads the shell tokens: 134 by 40, a 20 toggle, 6 from the band's top", () => {
   const base = ruleBody(".tcrn-shell-brand");
-  assert.match(base, /\n {2}inline-size: var\(--tcrn-shell-brand-w\);/);
+  assert.match(base, /\n {2}min-inline-size: var\(--tcrn-shell-brand-w\);/);
   assert.match(base, /\n {2}block-size: var\(--tcrn-shell-brand-h\);/);
   assert.match(base, /\n {2}grid-template-columns: minmax\(0, 1fr\) var\(--tcrn-shell-toggle\);/);
   assert.match(base, /\n {2}column-gap: var\(--tcrn-space-2h\);/);
@@ -207,24 +207,14 @@ test("the wordmark takes its content width: TCRN TMS is drawn whole in the 134 b
   const values: Record<string, number> = Object.fromEntries(Object.keys(tokens).map((name) => [name, px(name)] as const));
   values["--tcrn-brand-mark-size"] = markSize;
 
-  // scrollWidth ≤ clientWidth. The line is the 134 box less its two 6 insets, the 20 toggle and
-  // the 10 between them: 92. The wordmark does not shrink and may run 1 past what the 22 mark and
-  // the 10 gap leave it (60), so TCRN TMS keeps its 60.234 and shows no ellipsis.
   assert.equal(declaration(word, "flex"), "none");
-  const lineWidth = px("--tcrn-shell-brand-w") - 2 * px("--tcrn-space-1h") - px("--tcrn-shell-toggle") - px("--tcrn-space-2h");
-  assert.equal(lineWidth, 92);
-  const cell = lineWidth - markSize - px("--tcrn-space-2h");
-  assert.equal(cell, 60);
-  const cap = evaluateLength(declaration(word, "max-inline-size"), values, lineWidth);
-  assert.equal(cap, cell + 1, "1 past the cell");
-  const clientWidth = Math.min(tmsWordmarkWidthPx, cap);
-  const scrollWidth = tmsWordmarkWidthPx;
-  assert.ok(scrollWidth <= clientWidth, `TCRN TMS ${scrollWidth} in a wordmark box ${clientWidth} wide shows no ellipsis`);
-  // The overrun stays in the 10 before the toggle: the box keeps 134 and the toggle does not move.
-  assert.ok(cap - cell < px("--tcrn-space-2h"));
-  // Past the 1 the wordmark is cut with an ellipsis, and its title says the name in full.
-  assert.ok(Math.min(tmsWordmarkWidthPx + 2, cap) < tmsWordmarkWidthPx + 2);
-  assert.match(renderToStaticMarkup(<ShellBrandButton productId="design-system" />), /<b class="tcrn-shell-brand__word" title="TCRN Design System">/);
+  assert.equal(declaration(word, "max-inline-size"), "");
+  assert.equal(declaration(word, "text-overflow"), "");
+  const overhead = markSize + 2 * px("--tcrn-space-2h") + 2 * px("--tcrn-space-1h") + px("--tcrn-shell-toggle");
+  assert.equal(overhead, 74);
+  assert.ok(Math.abs(tmsWordmarkWidthPx + overhead - 134) <= 0.5);
+  assert.ok(117 + overhead > 134, "the approved long wordmark expands the button");
+  assert.doesNotMatch(renderToStaticMarkup(<ShellBrandButton productId="design-system" />), /title=/);
 
   // em inside b: the suffix's line box (17 at 12.5) is taller than the 1.2 line (15) by 1 above and
   // 1 below; the wordmark's space-0h above and below holds it, so the clipping wordmark cuts nothing.

@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: matrices.json, tokens.json, pairs.json
-// contract-sha256: 7aef38ff38ac198f70723460704e7d57ab71be9195b75e3366b7147236be4ae9
+// contract-sha256: 462ea8a78318f3ff62d7d6be40089338a7a2edac62dd74613befdc4861a623a7
 
 
 export type GplusMatrixKind = "text" | "icon" | "edge";

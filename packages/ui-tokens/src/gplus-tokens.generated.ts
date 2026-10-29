@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: tokens.json, marks.json, typography.json
-// contract-sha256: 91924f83b4b9b7a8667740419c3feea771a5e5b163d6cea12de1167331ac6a99
+// contract-sha256: b73b9e426d350d505bc93911279e3a9a451478200a56ebf91db4d1a4e6fad2ce
 
 
 export interface TcrnGplusThemedToken {

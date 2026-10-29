@@ -233,7 +233,7 @@ const gplusDescriptions: Readonly<Record<string, string>> = {
   "topbar-h": "Composition one's ProductShell top bar height; the top band took its place.",
   "shell-strip-h": "Top band height: the shell's only bar. The brand button, the pinned items and the cluster share its midline.",
   "shell-brand-h": "Brand button height; inside the top band it sits half the difference to the band height from the top.",
-  "shell-brand-w": "Brand button width in its second version (the sidebar-scale first lockup line plus the toggle); the first version, the mark alone, sizes to its content.",
+  "shell-brand-w": "Brand button minimum width, expanding with its wordmark, in its second version (the sidebar-scale first lockup line plus the toggle); the first version, the mark alone, sizes to its content.",
   "shell-toggle": "Toggle cell of the brand button, holding the chevron.",
   "shell-pin-h": "Height of a pinned item in the top band.",
   "shell-pin-gap": "Gap from the brand button to the first pinned item and between pinned items: one value, no divider.",
