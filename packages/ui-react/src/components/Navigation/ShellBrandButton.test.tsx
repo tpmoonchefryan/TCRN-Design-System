@@ -36,12 +36,12 @@ test("the brand button carries the shell hooks and the first lockup line (C-5, C
     /^<button type="button" class="tcrn-shell-brand" aria-label="Open navigation · TCRN TMS" aria-expanded="false" aria-haspopup="dialog" data-tab="" data-shell-brand="v2" data-shell-brand-auto="">/
   );
   assert.match(html, /<span class="tcrn-shell-brand__line" data-lockup="lkr-line"><svg aria-hidden="true" data-logo="tms" data-guide="tab" class="tcrn-brand-mark tcrn-shell-brand__mark"/);
-  assert.match(html, /<b class="tcrn-shell-brand__word" title="TCRN TMS">TCRN <em class="tcrn-shell-brand__suffix tcrn-shell-brand__suffix--tms">TMS<\/em><\/b><\/span>/);
+  assert.match(html, /<b class="tcrn-shell-brand__word">TCRN <em class="tcrn-shell-brand__suffix tcrn-shell-brand__suffix--tms">TMS<\/em><\/b><\/span>/);
   assert.match(html, /<span class="tcrn-shell-brand__toggle" data-shell-toggle=""><svg[^>]* width="16" height="16"[^>]*data-icon-name="chevron-down"/);
   // A serif product is its whole name, with no suffix.
   const serif = renderToStaticMarkup(<ShellBrandButton productId="einzbern" locale="en" />);
   assert.match(serif, /class="tcrn-shell-brand tcrn-shell-brand--serif"/);
-  assert.match(serif, /<b class="tcrn-shell-brand__word" title="Einzbern">Einzbern<\/b>/);
+  assert.match(serif, /<b class="tcrn-shell-brand__word">Einzbern<\/b>/);
 });
 
 test("the first version is the mark and the toggle; the open button says so and shows the up chevron", () => {
