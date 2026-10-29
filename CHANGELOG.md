@@ -62,6 +62,14 @@ change a step, by consumer and item by item:
 - Second batch, fifth round: the navigation, shell and inputs families list nine
   more root classes, and `roles.json` registers the top band as a C8 toolbar, so the
   block counts and the toolbar sentence at the end of M30 no longer hold (M53).
+- Second batch, sixth round: the C8 toolbar exception is explicit (M54); `markText`
+  measures capital-top to baseline (M55); the TMS suffix is #2c63c8 in light and
+  #7aa0f5 at night with no pending night exemptions (M56); automatic shell mode
+  follows its own container, with explicit props taking priority (M57); the brand
+  button grows to the full wordmark without truncation or title (M58); cascades open
+  left when required by the viewport edge (M59); an unpinned pin stays visible at
+  rest under a coarse pointer (M60); and Icon's solid pin exception and the AOS
+  example's use of Design System identity are recorded (M61).
 
 Overtaken within this release. The entries below keep the wording they were written
 with. The first batch was never published before the second replaced part of it, so
@@ -72,7 +80,7 @@ no consumer receives these first-batch statements:
   `--tcrn-product-shell-sidebar-width` override: the top band and the paper replace
   them, and three of the four tokens that entry added are deprecated ("Three shell
   tokens retired by the top band" below); `--tcrn-radius-paper` stays.
-- The night TMS suffix #7aa0f5: the suffix is #2c63c8 in both themes again.
+- M28's TMS suffix statement is superseded by M56: #2c63c8 in light and #7aa0f5 at night; the two night pending exemptions are withdrawn.
 - The 37-name icon roster: it has 38 names.
 - The product shell's side-navigation and mobile-navigation toggles: the shell no
   longer renders them, and the theme toggle sits in the avatar menu.
@@ -121,9 +129,9 @@ to that width, centred (M27).
 **Brand.** `ProductLockup` takes `firstLine` (`rail` or `lockup`), the brand board's
 first line with the colour mark (M26). Marks come from the approved product-mark
 artwork unchanged; AOS has none in it yet, so an AOS shell has no brand button. The
-TMS suffix is #2c63c8 in both themes, declared once in the theme-independent block.
-By night it is below 4.5:1, so the contrast proof and the axe check carry two
-pending night exemptions, and the night colour is an open Owner decision (M28).
+TMS suffix is #2c63c8 in light and #7aa0f5 at night, using the TMS mark's bright
+palette value. R6 D4 ruled the night value and withdrew the two pending exemptions
+(M56).
 
 **Sign-in intro.** `ShellIntro` plays once a session after sign-in: a 120ms fade, a
 240ms move and a 100ms rise of the paper, within 700ms, on transform and opacity
@@ -322,11 +330,9 @@ engine; Mana Orchestrate: 项目记忆助手, Project memory assistant; Design S
 Einzbern and Mana Orchestrate are whole names in the serif with the byline "by
 TCRN". The gradient suffix is gone: TCRN is set in ink, and the TMS and Design
 System suffixes read `--tcrn-brand-suffix-tms` and
-`--tcrn-brand-suffix-design-system`. Each suffix is one colour in both themes,
-declared in the theme-independent block: TMS #2c63c8 and Design System #6577f3.
-Whether the night TMS suffix takes #7aa0f5, the bright colour of the TMS mark, is an
-open Owner decision (D7); until it is ruled on, the suffix is #2c63c8 by night as
-well (M9, M28). The definitions of `--tcrn-brand-accent-tms`,
+`--tcrn-brand-suffix-design-system`. The TMS suffix is #2c63c8 in light and #7aa0f5 at night; Design System remains
+#6577f3 in both themes. R6 D4 ruled the night value and withdrew the two pending
+exemptions (M56). The definitions of `--tcrn-brand-accent-tms`,
 `--tcrn-brand-accent-workflow`, `--tcrn-brand-accent-design-system-1` to `-4` and
 `--tcrn-color-brand-secondary-readable` are removed. AOS keeps its entry, its
 accent and the mother mark.

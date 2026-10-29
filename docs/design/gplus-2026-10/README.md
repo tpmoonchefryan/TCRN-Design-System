@@ -18,6 +18,7 @@
 | `tools/lib.mjs` | 对比度算法（`cr` / `fmt`）、板面 CSS、构图一壳层（已退役，只留给已退役的 V2-B1-Brand 草稿板的 `build-brand.mjs`；家族板 D 段的顶带壳在 `tools/shell-screen.mjs`）、矩阵表、`cellAttrs` | 画板共用库 |
 | `tools/build-*.mjs` | 五块第一批画板与产品标板的生成器 | 经 `data.mjs` 读契约，不再内嵌数据 |
 | `measure.js` | 八项 DOM 测量：溢出、单行行框、阴影模糊、引导列、行对齐、mark 中性、每格对比度、控件高度；另有重叠检查 | STORY-131 移植为门 |
+| `measure-shell.js` | `markText` 按首行大写顶到基线量一行；两行锁定块量到第二行基线，容差 ±1；容器适配按 ProductShell 自身宽度（1024 / 1023，Sheet 760 / 761） | TCRN-DS-MIN-20261016-R6-MARKTEXT、SUB-230/231、SUB-234 |
 | `logos2/*.svg` | 四枚产品标 color 与 mono 版，viewBox 0 0 48 48 | STORY-127 的 digest 对象 |
 
 重新生成画板：在仓库根执行 `node docs/design/gplus-2026-10/tools/build-<family>.mjs <高度>`，高度取 `boards/canvas.json` 中该板的 `h`（Typography 5840、Icon 4280、Brand 4000、Actions 5220、Inputs 6540、Logos 3380），输出到 `boards/`（`build-logos2.mjs` 同时写 `logos2/`）。`build-brand.mjs` 需要三个参数（品牌标资产路径与两个 sha256，取现板内的值），画板里的 `/_blob/…` 路径只在画布上可解析。改契约后先重生成画板，再执行 `node scripts/contract-generate.mjs` 重生成包内生成物。

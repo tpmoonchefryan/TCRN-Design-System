@@ -4,7 +4,7 @@ This guide is for the three consumers of `@tcrn/ui-tokens`, `@tcrn/ui-copy-state
 and `@tcrn/ui-react`: TCRN AOS, TCRN TMS and the Einzbern portal. It covers the move
 from 3.0.0, and from the unreleased `main` that followed it, to 4.0.0. 4.0.0 is one
 release made of two batches: the G+ renewal (TCRN-DS-INIT-015, the first batch, M1
-to M19) and the top-band shell (TCRN-DS-INIT-016, the second batch, M20 to M53). The
+to M19) and the top-band shell (TCRN-DS-INIT-016, the second batch, M20 to M61). The
 major version did not move again for the second batch. Where the second batch
 replaced something the first batch had introduced, the first batch's item keeps its
 wording, and "Items the second batch overtook" below names what 4.0.0 ships instead.
@@ -23,13 +23,15 @@ on the INIT-015 integration branch, the Subtask key, and the package handoff in
 `docs/dispatch/2026-10-11-gplus-renewal/runs/r1/handoff/` (first round, handoffs
 named W1-A and so on), `runs/r2/handoff/` (second round, handoffs named P1 and
 so on, marked "r2" below) or `runs/r3/handoff/` (third round, handoffs named P0
-and so on, marked "r3" below). The second batch's items (M20 to M53) name a commit
+and so on, marked "r3" below). The second batch's items (M20 to M61) name a commit
 on the INIT-016 integration branch, the Subtask key and the package handoff in
 `docs/dispatch/2026-10-13-tab-shell/runs/r1/handoff/` (first round, handoffs named
 P1a and so on, marked "INIT-016 r1" below), `runs/r2/handoff/` (second round,
 handoffs named K1 and so on, marked "INIT-016 r2"), `runs/r3/handoff/` (third
 round, handoffs named M1 and so on, marked "INIT-016 r3") or `runs/r4/handoff/`
-(fourth round, handoffs named N1 and so on, marked "INIT-016 r4").
+(fourth round, handoffs named N1 and so on, marked "INIT-016 r4"), `runs/r5/handoff/`
+(fifth round, handoffs named Q1 and so on, marked "INIT-016 r5"), or `runs/r6/handoff/`
+(sixth round, handoffs named S1 and so on, marked "INIT-016 r6").
 
 ## By consumer
 
@@ -116,6 +118,16 @@ round, handoffs named M1 and so on, marked "INIT-016 r3") or `runs/r4/handoff/`
     The part families (M30, M53), the shell's size tokens (M43) and the
     documentation site's changes (M46, M50) need nothing in AOS code.
 
+24. Apply the sixth-round contract and shell updates where the consumer mirrors the
+    package contract or shell behavior: the C8 toolbar exception is explicit in
+    `roles.json` (M54), `markText` uses the settled capital-top measurement (M55),
+    automatic shell presentation follows its own container at 1024 / 1023 and the
+    automatic Sheet boundary at 760 / 761 (M57), long brand buttons grow without a
+    title fallback (M58), cascade menus open toward the left when needed (M59), and
+    coarse-pointer unpinned pins remain visible at rest (M60). The AOS sample uses
+    Design System identity and does not invent an AOS mark; pin has its one solid
+    fill exception (M61). The TMS suffix's light and night values are in M56.
+
 ### TCRN TMS
 
 `docs/tms-adoption-guide.md` records that TMS has no Design System dependency, so
@@ -172,6 +184,14 @@ above; in either case:
     `build` directory under `src` (M51). The part families (M30, M53), the shell's
     size tokens (M43) and the documentation site's changes (M46, M50) need nothing
     in TMS code.
+
+15. Carry the sixth-round package changes into any consumer-side contract or shell
+    proofs: C8 toolbar registration (M54), the settled `markText` measurement (M55),
+    the TMS suffix at #2c63c8 in light and #7aa0f5 at night with no night exemptions
+    (M56), automatic presentation thresholds from the shell container (M57), full
+    brand wordmarks without `title` fallback (M58), left-opening cascades at the
+    right edge (M59), and coarse-pointer pin visibility (M60). Preserve the one
+    solid pin exception; do not invent an AOS mark (M61).
 
 ### Einzbern portal
 
@@ -235,6 +255,15 @@ above; in either case:
     `--tcrn-motion-product-shell-search` (M38); the shell's sizes are tokens and
     need no change (M43); the deprecation notice now also lists old names in a
     `build` directory under `src` (M51).
+
+15. Update any consumer-side shell and contract proof for M54–M61: the C8 toolbar
+    registration and settled `markText` method (M54–M55); TMS night suffix
+    #7aa0f5 while light remains #2c63c8 and pending exemptions are removed (M56);
+    automatic shell presentation from the shell's own width, explicit prop priority,
+    growing brand buttons without truncation or `title`, left-opening cascade menus,
+    and the coarse-pointer unpinned pin at rest (M57–M60). Keep the Icon pin's solid
+    state as its single fill exception; the AOS example uses Design System identity
+    and makes no new mark or API claim (M61).
 
 ## Items the second batch overtook
 
@@ -1451,6 +1480,74 @@ Source: f29fb30 (TCRN-DS-SUB-215), f26c633 (TCRN-DS-SUB-191); handoffs N2
 (INIT-016 r4) and M2 (INIT-016 r3), as the fourth round's judgment asked
 (section 2, item R5-2).
 
+### M54 · C8 toolbar exception is explicit in the contract
+
+Change: the top-band toolbar entry carries the board rule and the zero minimum-width / optional-yield fields. C8 static and story checks skip only those two checks for that registered toolbar; all other C8 checks remain active.
+
+Do: consumers that read `roles.json` or mirror the contract proof should read the explicit toolbar fields rather than infer an exception from the component name.
+
+Source: TCRN-DS-SUB-229, commit `31b7649`, S1 handoff.
+
+### M55 · Measure markText from the capital top to its baseline
+
+Change: the settled one-line measurement runs from the first line's capital top to its baseline; a two-line lockup runs from the first line's capital top to the second line's baseline. The tolerance stays ±1. SUB-231 recorded that the four product first lines measured within 1 and required no code change.
+
+Do: keep consumer measurement and visual proof aligned with this method; do not use the prior glyph-ink midpoint or first-line-only method for two-line lockups.
+
+Source: TCRN-DS-SUB-230, commit `b7eea0b`, and TCRN-DS-SUB-231, commit `e0c7fec`; S2 handoff and `TCRN-DS-MIN-20261016-R6-MARKTEXT`.
+
+### M56 · TMS suffix uses the approved night value
+
+Change: the light TMS suffix remains #2c63c8; night uses #7aa0f5 from the TMS mark's bright palette value. The two night pending exemptions are withdrawn.
+
+Do: update consumer theme snapshots and contrast expectations to the light/night split.
+
+Source: TCRN-DS-SUB-232, commit `fb24cf6`; S2 handoff, R6 D4, and S7 board regeneration.
+
+### M57 · Automatic shell behavior follows its own container
+
+Change: `ProductShell` automatic version and presentation respond to the shell's own container width; 1024 selects the wide presentation with fixed items on the band, while 1023 selects the narrow presentation with fixed items in the menu. Automatic Sheet presentation begins at 760; at 761 it is not Sheet. Explicit `version` and `presentation` props retain priority.
+
+Do: keep a shell embedded in a page responsive to its own width rather than the viewport. Consumers need no new prop.
+
+Source: TCRN-DS-SUB-234, candidate commit `13bbe29`; S4 handoff (partial package status and its outstanding problems are recorded in `runs/r6/problems/S4.md`).
+
+### M58 · Long brand buttons grow to fit the full wordmark
+
+Change: the brand button width is a minimum of 134px and grows to fit the full wordmark. It does not truncate the wordmark or add a title fallback.
+
+Do: allow the button to grow for long product names and remove truncation or title-based expectations.
+
+Source: TCRN-DS-SUB-238, commit `d4da5b7da5998f42879807d572d5715fa30bae96`; S7 handoff.
+
+### M59 · Cascades open left when the right edge requires it
+
+Change: a cascading menu opens to the left of its first column when opening right would exceed the viewport; when neither side fits, it chooses the side with less overflow. The root exposes `data-cascade-side`.
+
+Do: keep both-direction behavior in consumer integration checks and do not assume cascades always open right.
+
+Source: TCRN-DS-SUB-233, commit `ced3777`; S3 handoff.
+
+### M60 · Show an unpinned pin at rest under a coarse pointer
+
+Change: under a coarse pointer, an unpinned pin remains visible at rest in `ink-3`; fine-pointer behavior is unchanged.
+
+Do: include the coarse-pointer state in consumer visual checks; do not expect focus to be required to discover the pin.
+
+Source: TCRN-DS-SUB-235, commit `19d10f5`; S5 handoff.
+
+### M61 · Keep the pin exception and do not invent an AOS mark
+
+Change: the pinned Icon state is the sole fill exception and is shown as a solid pin. The AOS examples keep their page content and use Design System identity in the shell contract example; no AOS mark, fallback API, token, export, or locale key is added.
+
+Do: preserve the one solid pin state. Keep AOS examples free of an invented AOS mark and treat the existing required brand identity as-is.
+
+Source: TCRN-DS-SUB-237, commit `725fe0d`, S6 handoff; TCRN-DS-SUB-240, commit `c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788`, S7 handoff.
+
+## Sources added after M53
+
+M54–M61 draw only on the named INIT-016 R6 S1–S7 package handoffs and the R6 decision excerpts. The automatic-container package (SUB-234) is partial; its known gates, landmark and height debt remain in `runs/r6/problems/S4.md`. This section does not claim visual acceptance, publication, or consumer adoption.
+
 ## Deprecated token names
 
 The value of each old name is `var(<new name>)`. "Theme" means the alias is
@@ -1525,68 +1622,43 @@ motion shorthands `--tcrn-motion-fast`, `-instant`, `-standard`, `-emphasis` and
 
 ## Open Owner decisions that can still move values
 
-These are recorded in `docs/dispatch/2026-10-11-gplus-renewal/owner-acceptance.md`.
-Until they are ruled on, 4.0.0 behaves as described above.
+These first-batch items remain open or correctable; the R6 resolutions below have
+been removed from this pending list.
 
-- Composition-one shell geometry (sidebar 220, collapsed 52, top bar 52, paper
-  inset 12, paper radius 14): implemented in `ProductShell` with four new shell
-  tokens under a design-session ruling of 2026-10-11 that the Owner can correct
-  (M18; problem P1, storybook map DIFF-1 to DIFF-3). A correction would withdraw
-  the four tokens and the new geometry.
-- Night values of the suffix colours: the same ruling gave the TMS suffix #7aa0f5
-  by night; 4.0.0 ships one value for both suffixes in both themes instead (TMS
-  #2c63c8, Design System #6577f3; M9, M28), and the night TMS value is the open
-  decision D7 listed below.
-- Sizes of the shell theme and side-navigation toggles (36 and 38px): kept by
-  default (M15); the 52px collapsed rail holds the 38px toggle.
-- The `.tcrn-icon` base rule in the package, a design-session ruling open to Owner
-  correction: M7.
-- The four type declarations that keep a literal (inline numeral 16px, large
-  numeral 44px on 48px, mono text 11.5px): new tokens or existing steps, M3; by
-  default no token is added.
-- Second-round items done as recommended and open to Owner correction: the
-  read-only focus ring against the board's state order, the removed error-field
-  wash and the shortcut in ink-2 against the board's ink-3 (M14); the
-  "label — reason" title of disabled buttons (M12); the theme toggle icon by
-  `data-current-theme` (M15).
+- The package `.tcrn-icon` base rule (M7) remains open to Owner correction.
+- Literal type declarations (M3): inline numeral 16px, large numeral 44px on 48px,
+  and mono text 11.5px; default remains no added token.
+- The six-size product-mark ladder and background patches are not in the first-batch
+  story (DIFF-8); the Owner may still decide whether to add them.
+- Text paragraph margin (M10): generated segment has zero margin and the family rule
+  restores its existing top margin; no new ruling is recorded here.
+- Second-round first-batch defaults remain open to correction: read-only focus ring,
+  the removed error-field wash, shortcut ink-2, disabled-button reason title, and
+  theme-toggle icon selected by `data-current-theme`.
 
-Since the second batch (TCRN-DS-INIT-016), whose open items are listed in
-`docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md`:
+### R6 decisions already applied
 
-- The composition-one geometry and the toggle sizes above no longer apply: the top
-  band replaced composition one (TCRN-DS-MIN-20261013-SHELL D1; M20, M24).
-- The night TMS suffix: 4.0.0 ships the approved single colour, #2c63c8 in both
-  themes, which is below 4.5:1 by night; the design session suggests #7aa0f5 by
-  night, for the Owner to rule on with the first batch's S-6 (D7; M28). A ruling for
-  #7aa0f5 would move the variable back into the two theme blocks.
-- An AOS shell has no brand button until AOS has a mark in the approved set (M20).
-- M30 to M37 come from the second batch's second round (INIT-016 r2); they add to
-  M20 to M29 and change none of them.
-- M38 to M46 come from the second batch's third round (INIT-016 r3, handoffs in
-  `docs/dispatch/2026-10-13-tab-shell/runs/r3/handoff/`): M38 the two dead names, M39
-  the landmark names, M40 `TocRail`'s title level, M41 `menuShortcut`, M42 the
-  lockups' `data-logo`, M43 the three shell tokens and the `Icon` sizes, M44
-  `previewStates`, M45 the row labels, the paper's focus ring and the menu's icon
-  boxes, and M46 the changes outside the packages. They add to M20 to M37. Two of
-  them change what an earlier item states, and the earlier item keeps its wording:
-  M39 extends the two names M35 prefixes to every landmark of the shell, and M42
-  replaces M36's `data-logo={productId}` with the mark's id.
-- M47 and M48 come from the third round too (handoff M9): M47 the AI consumption
-  contract and M48 the AOS visual instances. M49 to M52 come from the second batch's
-  fourth round (INIT-016 r4, handoffs in
-  `docs/dispatch/2026-10-13-tab-shell/runs/r4/handoff/`): M49 the brand button's
-  and the sign-in intro's `data-logo`, M50 the changes outside the packages, M51 the
-  deprecation notice's skip rule and M52 the shortcut hint of a shell without ⌘K.
-  They add to M20 to M48. One of them changes what an earlier item states, and the
-  earlier item keeps its wording: M49 makes M42's last sentence no longer hold, since
-  the brand button's and the intro's marks now carry the mark's id too.
-- M53 comes from the second batch's fifth round (INIT-016 r5), as the fourth round's
-  judgment asked: the families' blocks and the top band's toolbar entry. It adds to
-  M20 to M52. It changes what an earlier item states, and the earlier item keeps its
-  wording: M53 makes the block counts and the toolbar sentence of M30's last
-  paragraph no longer hold, since the families list the nine root classes the batch
-  added and `roles.json` registers the top band as a toolbar.
-- One correction in place: M9's change and do lines and the night-suffix item of the
-  first batch's list above stated the withdrawn night value #7aa0f5 as current, so
-  the second round brought them to the single colour (M28). This is the one
-  exception to the introduction's rule that a first-batch item keeps its wording.
+- O-19: C8's board-ruled toolbar exception is explicit in `roles.json` and scoped to
+  the two named checks; TCRN-DS-SUB-229 / M54, R6 D1.
+- O-4: `markText` is measured from capital top to baseline for one line and to the
+  second-line baseline for two lines, at ±1; TCRN-DS-MIN-20261016-R6-MARKTEXT and
+  TCRN-DS-SUB-230/231 / M55.
+- O-8: light TMS suffix #2c63c8 and night #7aa0f5, with night pending exemptions
+  withdrawn; R6 D4 and TCRN-DS-SUB-232 / M56.
+- O-11: automatic presentation follows the shell container, with explicit props
+  taking priority; R6 D4 and TCRN-DS-SUB-234 / M57.
+- O-1: brand button has a 134px minimum and grows to show the full wordmark without
+  truncation or `title`; R6 D5 and TCRN-DS-SUB-238 / M58.
+- O-3: cascade opens left when the right edge requires it; R6 D5 and
+  TCRN-DS-SUB-233 / M59.
+- O-6: coarse-pointer unpinned pins remain visible at rest in `ink-3`; R6 D5 and
+  TCRN-DS-SUB-235 / M60.
+- O-5: the solid pin is the single fill exception; O-9: the AOS example uses Design
+  System identity and invents no AOS mark or API; R6 D6 and TCRN-DS-SUB-237/240 / M61.
+- O-18: the `test-dom` gate is included by `MIN-20261016-GATES D1`.
+- O-2, O-14 and O-20: R6 D4 records the approved story-text and implementation
+  disposition; coordinator-owned chain updates are outside this package.
+
+The D8 visual holds and the Owner's visual decision remain in
+`docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md`; this migration guide does
+not turn them into implementation or publication decisions.

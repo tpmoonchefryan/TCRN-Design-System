@@ -206,8 +206,11 @@ do not claim React state management, product persistence, or product adoption.
 `PageHierarchy` takes an explicit `depth`: `two` renders `PageHeader`, parent-level
 `SubNav`/`SectionTabs`, then lower content; `three` renders the same Header and
 parent tabs, then the selected subpage's local navigation and content. The global
-`ProductShell` topbar is external, and container width only adapts the third-level
-region after depth has been chosen.
+`ProductShell` top band is external. `ProductShell presentation="auto"` follows its
+own container: 1024 selects the wide presentation and 1023 the narrow presentation;
+automatic Sheet begins at 760 (761 is not Sheet). Explicit `version` and
+`presentation` props take priority. `PageHierarchy`'s third-level region remains
+chosen by its explicit depth.
 
 ## G+ First-Batch Families
 
