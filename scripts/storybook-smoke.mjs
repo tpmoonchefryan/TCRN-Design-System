@@ -1062,21 +1062,16 @@ const payloadTranslationCoverage = [
   "TCRN 디자인 시스템 계약 스토리"
 ];
 const missing = required.filter((text) => !combinedContractText.includes(text));
-// O-9 (judgment §3.1, default until the Owner rules): AOS has no mark in logos2 yet, so its two
-// visual instances wear the design-system mark as a placeholder and keep declaring the AOS asset
-// they are owed. The two AOS pins are read in that placeholder form, not dropped: the owner-quality
-// instance still names tcrn-aos-two-line, and both AOS instances carry the design-system mark.
+// O-9: AOS examples show only page content until an approved mark exists.
 for (const storyId of ["frontend-shell-slice", "owner-quality-product-shell"]) {
   const storyHtml = readStoryHtml(combinedHtml, storyId);
-  if (!/data-aos-visual-instance-oracle="true"|data-visual-instance-product-logo="tcrn-aos-two-line"/.test(storyHtml)) {
-    missing.push(`aos-placeholder:${storyId}:aos-instance`);
-  }
-  if (!storyHtml.includes('data-product-mark="design-system"')) {
-    missing.push(`aos-placeholder:${storyId}:design-system-mark`);
+  if (storyHtml.includes('data-product-mark=') || storyHtml.includes('data-visual-instance-product-logo=')) {
+    missing.push(`aos-unbranded:${storyId}:borrowed-or-invented-mark`);
   }
 }
-if (!readStoryHtml(combinedHtml, "owner-quality-product-shell").includes('data-visual-instance-product-logo="tcrn-aos-two-line"')) {
-  missing.push("aos-placeholder:owner-quality-product-shell:declared-asset:tcrn-aos-two-line");
+const dsShellProofHtml = readStoryHtml(combinedHtml, "navigation-product-shell-spec");
+if (dsShellProofHtml.includes('data-brand-placeholder') || dsShellProofHtml.includes('AOS Rebuild Workspace') || !dsShellProofHtml.includes('data-product-mark="design-system"')) {
+  missing.push("design-system-shell-proof:own-brand-required");
 }
 for (const text of requiredRendered.filter((text) => !renderedCombinedText.includes(text))) {
   missing.push(`unrendered-dictionary-backed-pin:${text}`);
@@ -2713,6 +2708,27 @@ async function runProductShellComparatorProof(contract = productShellComparatorC
   const failures = [];
   const { server, origin } = await startStaticServer(staticRoot);
   try {
+    if (["frontend-shell-slice", "owner-quality-product-shell"].includes(contract.storyId)) {
+      const browser = await chromium.launch();
+      const readbacks = {};
+      try {
+        for (const fixture of contract.variantFixtures) {
+          const page = await browser.newPage({ viewport: fixture.viewport });
+          try {
+            await page.goto(`${origin}/${contract.page}`);
+            const result = await page.locator(fixture.selector).evaluate((node) => ({
+              productMarkCount: node.querySelectorAll("[data-product-mark]").length,
+              shellCount: node.querySelectorAll(".tcrn-product-shell, [data-shell-brand]").length,
+              heading: node.querySelector("h2")?.textContent ?? "",
+              contentCount: node.children.length
+            }));
+            readbacks[fixture.id] = result;
+            if (result.productMarkCount !== 0 || result.shellCount !== 0 || !result.heading.includes("AOS") || result.contentCount < 2) failures.push(`${fixture.id}:unbranded-content-boundary`);
+          } finally { await page.close(); }
+        }
+      } finally { await browser.close(); }
+      return { ok: failures.length === 0, failures, contract, rendering: "unbranded-page-content", readbacks };
+    }
     if (contract.variantFixtures) {
       const variantReadbacks = {};
       for (const fixture of contract.variantFixtures) {

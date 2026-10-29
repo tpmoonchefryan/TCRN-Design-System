@@ -172,10 +172,7 @@ export const frontendShellSliceVisualInstanceReadback = {
   props: {
     productName: "AOS Rebuild Workspace",
     moduleName: "Frontend shell slice",
-    // O-9: the shell wears the design-system brand as a placeholder until the Owner decides the AOS mark.
-    brandProductId: "design-system",
-    brandPlaceholderFor: "aos",
-    productLogoAssetId: "tcrn-aos-two-line",
+    productLogoAssetId: null, // AOS has no approved product mark.
     primaryIa: ["Cockpit", "Work"],
     contentRole: "region"
   },
@@ -462,37 +459,12 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
   const currentRouteLabel = variant.route === "work" ? labels.work : labels.cockpit;
   return (
     <div data-shell-frame="" style={shellFrameStyle}>
-      <ProductShell
-        style={shellFillStyle}
-        productName={labels.productName}
-        moduleName={labels.moduleName}
-        brandProductId="design-system"
-        currentRouteLabel={currentRouteLabel}
-        // The paper's first row: the current route, under its trail in the menu model (TCRN-DS-SUB-129).
-        // The documentation page has its own h1, so the instance's title is a level-2 heading, and the
-        // instance's landmarks are named after it, apart from the page's shell (TCRN-DS-SUB-150).
-        pageHeader={{ title: currentRouteLabel, headingLevel: 2 }}
-        landmarkLabel={`${labels.contentLabel}: ${variant.id}`}
-        navGroups={buildNavGroups(variant)}
-        currentTheme={variant.theme}
-        locales={tcrnLocaleMetadata}
-        currentLocale={variant.locale}
-        contentId={`${variant.id}-content`}
-        contentRole="region"
-        contentLabel={`${labels.contentLabel}: ${variant.id}`}
-        skipLinkLabel={labels.skipLink}
-        searchPlaceholder={labels.searchPlaceholder}
-        // TCRN-DS-SUB-200 (STORY-147, 150): the search-results variant is the full menu held open with
-        // its query typed, listing the instance's fixture records that match it; the other variants
-        // keep the shell's own closed menu.
-        menuOpen={isSearchResults ? true : undefined}
-        menuQuery={isSearchResults ? query : undefined}
-        searchProvider={fixtureSearch(buildSearchResults(variant))}
+      <section
         data-storybook-visual-instance="frontend-shell-slice"
         data-visual-instance-name="FrontendShellSliceVisualInstance"
         data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
         data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
-        data-visual-instance-slots="brand pins cluster full-menu search content secondary-disclosure"
+        data-visual-instance-slots="content secondary-disclosure"
         data-visual-instance-primary-ia="cockpit-work-only"
         data-visual-instance-negative-criteria="no-local-visible-css no-storybook-only-prototype no-raw-primary no-owner-readiness"
         data-visual-instance-variant={variant.id}
@@ -510,6 +482,7 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
         data-live-dispatch="not-enabled"
         data-aos-visual-instance-oracle="true"
       >
+        <h2>{labels.productName}</h2>
         {/* TCRN-DS-SUB-199 (STORY-147, 140, 150): the page sits in the package's content stack, as the
             owner-quality instance and the samples set it. Set straight into the paper, the first
             read-back panel (a box that hides its overflow) was a row of the paper's grid, and with the
@@ -520,7 +493,7 @@ function FrontendShellVariantFixture({ variant }: { variant: ShellVisualInstance
           {variant.contentMode === "cockpit" ? <CockpitContent variant={variant} /> : <WorkContent variant={variant} />}
           <BoundaryContent variant={variant} />
         </div>
-      </ProductShell>
+      </section>
     </div>
   );
 }

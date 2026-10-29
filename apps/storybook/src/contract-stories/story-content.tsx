@@ -2306,24 +2306,21 @@ const legacyContractStories: LegacyContractStory[] = [
           className="tcrn-doc-product-shell-contract-proof"
           data-package-backed-product-shell-proof="true"
           data-aos-shell-effect-boundary="package-backed"
-          // O-9: until the Owner decides the AOS mark, the AOS shells wear the design-system brand as a placeholder.
-          data-brand-placeholder="design-system"
-          data-brand-placeholder-for="aos"
           style={shellProofFrameStyle}
         >
           <ProductShell
             style={shellProofFillStyle}
-            productName="AOS Rebuild Workspace"
+            productName="TCRN Design System"
             moduleName="Frontend shell slice"
             brandProductId="design-system"
             currentRouteLabel="Cockpit"
             // The documentation page has its own h1: this shell's title is a level-2 heading and its
             // landmarks are named after the proof, apart from the page's shell (TCRN-DS-SUB-150).
             pageHeader={{ title: "Cockpit", headingLevel: 2 }}
-            landmarkLabel="Package-backed AOS shell boundary"
+            landmarkLabel="Package-backed Design System shell boundary"
             // Its content region is named after the proof too: the built-in name is the knowledge-base
             // demo shell's on the same page (axe landmark-unique).
-            contentLabel="Package-backed AOS shell boundary"
+            contentLabel="Package-backed Design System shell boundary"
             currentTheme="light"
             locales={tcrnLocaleMetadata}
             currentLocale={tcrnDefaultLocale}
@@ -2343,7 +2340,7 @@ const legacyContractStories: LegacyContractStory[] = [
               }
             ]}
           >
-            <ReadbackPanel title="Package-backed AOS shell boundary">
+            <ReadbackPanel title="Package-backed Design System shell boundary">
               <Text>The avatar menu is open as a static display state, so its theme and language controls render; the card text remains readable.</Text>
               <Text>
                 Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks. Menu, drop-down, pin, theme, language, and search behavior must flow through ProductShell semantic props or the useProductShellController prop bundles instead of wrapper event delegation.

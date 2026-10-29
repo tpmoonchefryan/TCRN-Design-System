@@ -156,10 +156,7 @@ export const ownerQualityShellOracleReadback = {
   props: {
     productName: "TCRN AOS",
     moduleName: "Operations Cockpit",
-    // O-9: the shell wears the design-system brand as a placeholder until the Owner decides the AOS mark.
-    brandProductId: "design-system",
-    brandPlaceholderFor: "aos",
-    productLogoAssetId: "tcrn-aos-two-line",
+    productLogoAssetId: null, // AOS has no approved product mark.
     // Eleven destinations in four groups: the consuming product's real IA, not
     // a two-item sample. A shell oracle at a scale no consumer uses cannot fail
     // the way a consumer fails, which is how the mobile posture shipped a
@@ -540,42 +537,15 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
   const currentRouteLabel = variant.route === "work" ? copy.work : copy.cockpit;
   return (
     <div data-shell-frame="" style={shellFrameStyle}>
-      <ProductShell
-        style={shellFillStyle}
-        productName={copy.productName}
-        moduleName={copy.moduleName}
-        brandProductId="design-system"
-        currentRouteLabel={currentRouteLabel}
-        // The paper's first row: the current route, under its trail in the menu model (TCRN-DS-SUB-129).
-        // The documentation page has its own h1, so the instance's title is a level-2 heading, and the
-        // instance's landmarks are named after it, apart from the page's shell (TCRN-DS-SUB-150).
-        pageHeader={{ title: currentRouteLabel, headingLevel: 2 }}
-        landmarkLabel={`${copy.contentLabel}: ${variant.id}`}
-        navGroups={navGroups(variant)}
-        currentTheme={variant.theme}
-        locales={tcrnLocaleMetadata}
-        currentLocale={variant.locale}
-        contentId={`${variant.id}-owner-quality-content`}
-        contentRole="region"
-        contentLabel={`${copy.contentLabel}: ${variant.id}`}
-        skipLinkLabel={copy.skipLink}
-        searchPlaceholder={copy.searchPlaceholder}
-        // TCRN-DS-SUB-200 (STORY-147, 150): the search-results variant is the full menu held open with
-        // its query typed, listing the instance's fixture records that match it; the other variants
-        // keep the shell's own closed menu.
-        menuOpen={searchExpanded ? true : undefined}
-        menuQuery={searchExpanded ? query : undefined}
-        searchProvider={fixtureSearch(searchResults(variant))}
+      <section
         data-storybook-visual-instance="owner-quality-product-shell"
         data-visual-instance-name="OwnerQualityShellOracle"
         data-visual-instance-disposition="ds_oracle_review_required_before_owner_admission"
         data-visual-instance-style-source="@tcrn/ui-react/tcrnComponentCss"
         data-visual-instance-owner-quality="product-first"
-        data-visual-instance-slots="brand pins cluster full-menu search operations-cockpit work-queue gates-evidence owner-actions service-health secondary-disclosure"
+        data-visual-instance-slots="operations-cockpit work-queue gates-evidence owner-actions service-health secondary-disclosure"
         data-visual-instance-primary-ia="operations-cockpit-work-queue"
         data-visual-instance-negative-criteria="no-proof-scaffold-hero no-dummy-cockpit no-raw-primary no-owner-readiness"
-        data-visual-instance-product-logo="tcrn-aos-two-line"
-        data-visual-instance-mobile-menu="sheet"
         data-visual-instance-variant={variant.id}
         data-visual-instance-theme={variant.theme}
         data-tcrn-theme={variant.theme}
@@ -591,8 +561,9 @@ function OwnerQualityVariantFixture({ variant }: { variant: OwnerQualityVariant 
         data-live-dispatch="not-enabled"
         data-owner-quality-product-shell-oracle="true"
       >
+        <h2>{copy.productName}</h2>
         <OperationsContent variant={variant} />
-      </ProductShell>
+      </section>
     </div>
   );
 }
