@@ -299,7 +299,7 @@ async function documentContentEdgeProof(page, origin) {
   const matrix = [];
   for (const locale of ["en", "zh-CN", "ja", "ko", "fr"]) {
     for (const theme of ["light", "dark"]) {
-      for (const width of [195, 390, 760, 1024, 1440, 1920]) {
+      for (const width of [195, 390, 760, 1023, 1024, 1440, 1920]) {
         await page.setViewportSize({ width, height: 900 });
         await page.goto(`${origin}/style-guide.html?theme=${theme}&locale=${locale}`);
         // The top-band shell has no side rail to collapse (MIN-20261013-SHELL D1), so each cell is read once.

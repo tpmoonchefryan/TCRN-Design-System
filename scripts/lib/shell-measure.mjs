@@ -379,6 +379,7 @@ export function readShellInPage(options) {
           return n(a) - n(b);
         });
         x.openPin = pr;
+        x.cascadeSide = drop.closest("[data-cascade-side]")?.getAttribute("data-cascade-side") ?? "end";
         x.dropCols = [dr, ...cols.map((c) => rel(c))].map((r) => ({ l: r.l, t: r.t, w: r.w, h: r.h }));
       }
     }

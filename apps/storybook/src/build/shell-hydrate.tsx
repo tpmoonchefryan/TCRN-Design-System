@@ -138,6 +138,7 @@ export const shellTopBandScreens: readonly ShellStoryScreen[] = [
   { screen: "ts-x-n", state: "expanded", theme: "night", label: "Full menu open (night)", presentation: "panel" },
   { screen: "ts-drop-l", state: "drop", theme: "light", label: "Drop-down open" },
   { screen: "ts-drop-n", state: "drop", theme: "night", label: "Drop-down open (night)" },
+  { screen: "ts-drop-start-l", state: "drop", theme: "light", label: "Drop-down open" },
   // The full menu with a query typed and its results open (TCRN-DS-SUB-150, R2-24): the host of
   // geometry-proof's searchOverlay.
   { screen: "ts-search-l", state: "expanded", theme: "light", label: "Full menu with search results", presentation: "panel", typed: "Contracts" },

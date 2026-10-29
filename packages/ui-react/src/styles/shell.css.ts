@@ -138,7 +138,7 @@ export const shellCss01 = `
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
-@media (max-width: 1023px) {
+@container tcrn-shell (max-width: 1023px) {
   .tcrn-shell-brand[data-shell-brand-auto] {
     inline-size: auto;
   }
@@ -260,7 +260,7 @@ export const shellCss02 = `
 .tcrn-shell-pins__item:where([data-pin-dragging]) {
   cursor: grabbing;
 }
-@media (max-width: 1023px) {
+@container tcrn-shell (max-width: 1023px) {
   .tcrn-shell-pins {
     display: none;
   }
@@ -646,7 +646,7 @@ export const shellCss03 = `
   margin-inline-start: auto;
   padding: var(--tcrn-space-1h) var(--tcrn-space-1);
 }
-@media (min-width: 1024px) {
+@container tcrn-shell (min-width: 1024px) {
   .tcrn-shell-menu .tcrn-shell-menu__col--pinned {
     display: none;
   }
@@ -749,6 +749,8 @@ export const shellCss04 = `
 // shadow s1; the page scrolls inside it, so the band and the paper's edges never move.
 export const shellCss05 = `
 .tcrn-product-shell {
+  container-type: inline-size;
+  container-name: tcrn-shell;
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);

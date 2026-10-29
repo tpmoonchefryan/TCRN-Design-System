@@ -332,7 +332,7 @@ test("cascade columns follow the panel at the cascade gap, drop-down wide, as ta
 });
 
 test("narrower than 1024 the pinned group shows; under reduced motion nothing fades or transitions", () => {
-  assert.match(shellCss03, /@media \(min-width: 1024px\) \{\n {2}\.tcrn-shell-menu \.tcrn-shell-menu__col--pinned \{\n {4}display: none;\n {2}\}\n\}/);
+  assert.match(shellCss03, /@container tcrn-shell \(min-width: 1024px\) \{\n {2}\.tcrn-shell-menu \.tcrn-shell-menu__col--pinned \{\n {4}display: none;\n {2}\}\n\}/);
   const reduced = /@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/.exec(shellCss03);
   assert.ok(reduced, "the segment has a reduced-motion block");
   assert.match(reduced[1], /\.tcrn-shell-menu__panel,\n {2}\.tcrn-shell-menu \.tcrn-shell-menu__cascade \{\n {4}animation: none;/);

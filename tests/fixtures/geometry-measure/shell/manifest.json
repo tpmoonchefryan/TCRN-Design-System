@@ -67,6 +67,7 @@
         { "id": "ts-x-n", "state": "expanded" },
         { "id": "ts-drop-l", "state": "drop" },
         { "id": "ts-drop-n", "state": "drop" },
+        { "id": "ts-drop-start-l", "state": "drop" },
         { "id": "ts-search-l", "state": "expanded" },
         { "id": "ts-settings-l", "state": "closed" },
         { "id": "ts-roster-l", "state": "closed" }

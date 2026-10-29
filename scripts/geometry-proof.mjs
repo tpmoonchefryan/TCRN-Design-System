@@ -438,6 +438,32 @@ async function mobileNavigationScript() {
   return mobileNavigationBundle;
 }
 
+// The shell width is independent of the viewport. Both sides carry a negative control.
+async function measureContainerNavigation(page, width, viewportWidth = 1440, broken = false) {
+  await page.setViewportSize({ width: viewportWidth, height: MOBILE_HEIGHT_PX });
+  await page.setContent('<!doctype html><meta charset="utf-8"><body style="margin:0"><div id="fixture"></div></body>');
+  await page.addScriptTag({ content: await mobileNavigationScript() });
+  await page.addStyleTag({ content: `.tcrn-product-shell { inline-size: ${width}px; }` });
+  if (broken) await page.addStyleTag({ content: width < 1024
+    ? '.tcrn-shell-pins { display: flex !important; }'
+    : '.tcrn-shell-pins { display: none !important; }' });
+  await settle(page);
+  await page.locator('[data-tab]').click();
+  await settle(page);
+  const observation = await page.locator('[data-shell]').evaluate((shell) => {
+    const visible = (x) => x.getBoundingClientRect().width > 0 && x.getClientRects().length > 0;
+    const tab = shell.querySelector('[data-tab]');
+    const group = shell.querySelector('.tcrn-shell-menu__col--pinned');
+    return { shellWidth: shell.getBoundingClientRect().width, brandVersion: tab.getAttribute('data-shell-brand'),
+      pinsShown: [...shell.querySelectorAll('[data-pins] [data-pin]')].filter(visible).length,
+      pinnedGroup: Boolean(group && visible(group)), presentation: shell.getAttribute('data-state') };
+  });
+  const narrow = width < 1024;
+  return { width, viewportWidth, ...observation, ok: observation.shellWidth === width
+    && observation.brandVersion === (narrow ? 'v1' : 'v2')
+    && observation.pinsShown === (narrow ? 0 : 2) && observation.pinnedGroup === narrow };
+}
+
 async function measureMobileNavigation(page, width, broken = false) {
   await page.setViewportSize({ width, height: MOBILE_HEIGHT_PX });
   await page.setContent('<!doctype html><meta charset="utf-8"><body style="margin:0"><div id="fixture"></div></body>');
@@ -642,6 +668,12 @@ async function main() {
     if (searchTheme !== null) await setSearchTheme(page, searchTheme);
     const searchThemes = searchBaseline.theme === "light" && searchDark.theme === "dark";
 
+    const containerNavigation = [];
+    for (const width of [1023, 1024]) {
+      containerNavigation.push({ baseline: await measureContainerNavigation(page, width),
+        broken: await measureContainerNavigation(page, width, 1440, true),
+        standalone: await measureContainerNavigation(page, width, width) });
+    }
     const mobileNavigation = [];
     for (const width of [760, 390]) mobileNavigation.push({
       baseline: await measureMobileNavigation(page, width),
@@ -651,9 +683,10 @@ async function main() {
     const recordContainment = await recordContainmentMatrix(page, server.origin);
     result = {
       recordContainment,
+      containerNavigation,
       mobileNavigation,
       schemaVersion: "tcrn.ds.geometry-proof.v2",
-      ok: recordContainment.ok && mobileNavigation.every(row => row.baseline.ok && !row.broken.ok && row.restored.ok) && badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
+      ok: containerNavigation.every(row => row.baseline.ok && !row.broken.ok && row.standalone.ok) && recordContainment.ok && mobileNavigation.every(row => row.baseline.ok && !row.broken.ok && row.restored.ok) && badgeBaseline.ok && !badgeBroken.ok && badgeRestored.ok
         && brandBaseline.ok && !brandBroken.ok && brandRestored.ok
         && !brandRailBroken.ok && brandRailRestored.ok && !brandMarkBroken.ok && brandMarkRestored.ok
         && copyBaseline.ok && !copyBroken.ok && copyRestored.ok

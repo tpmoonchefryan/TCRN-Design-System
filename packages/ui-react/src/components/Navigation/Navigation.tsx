@@ -2247,7 +2247,8 @@ export function ProductShell({
   // The full menu shows as the panel or, 760 wide and narrower, as the Sheet; ShellMenu picks the
   // same presentation from the same context and viewport, and the root reports it: an open Sheet
   // is data-state="sheet" (C-5; TCRN-DS-SUB-159).
-  const menuPresentation = useShellMenuPresentation();
+  const shellRef = useRef<HTMLDivElement>(null);
+  const menuPresentation = useShellMenuPresentation(undefined, shellRef);
   const state = shownMenuOpen ? (menuPresentation === "sheet" ? "sheet" : "expanded") : openTarget ? "drop" : "closed";
   const unread = notifications?.unread ?? 0;
 
@@ -2256,6 +2257,7 @@ export function ProductShell({
       // data-shell names the shell for the measurement; a consumer may give it a value.
       data-shell=""
       {...props}
+      ref={shellRef}
       className={cx("tcrn-product-shell", className)}
       data-state={state}
       data-package-backed-product-shell-boundary="top-band-shell-v2"
@@ -2364,6 +2366,7 @@ export function ProductShell({
         </div>
       </header>
       <ShellMenu
+        presentation={menuPresentation}
         id={menuId}
         open={shownMenuOpen}
         onOpenChange={changeMenu}

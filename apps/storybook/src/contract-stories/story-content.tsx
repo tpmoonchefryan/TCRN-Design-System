@@ -603,9 +603,8 @@ const documentSearchResults = [
 // no preview states. Each block is a layout-containment box, so a fixed drop-down is placed in its
 // own block as a full-window shell places it in the window (ShellDropdown measures from that box);
 // the intro's block is not, so its layer covers the window as at sign-in. The narrow and phone
-// presentations follow the viewport (media queries of the package): shell-narrow and shell-mobile
-// show them at a viewport of that width (the shell gate opens shell-mobile at 390); at the
-// documentation's desktop width their frames are 1023 and 390 wide.
+// presentations follow the shell container (container queries of the package): shell-narrow and shell-mobile
+// show those presentations even on a desktop documentation page.
 function shellStoryMarkup(storyId: string, screen: ShellStoryScreen): string {
   const html = renderToString(<ShellStoryRoot storyId={storyId} screen={screen} />, { identifierPrefix: shellStoryIdentifierPrefix(storyId, screen.screen) });
   // The board's closed screens only: the settings and roster pages (TCRN-DS-SUB-161) are pages, not
@@ -616,7 +615,7 @@ function shellStoryMarkup(storyId: string, screen: ShellStoryScreen): string {
 
 function shellStoryBlockStyle(width?: number, contained = true): CSSProperties {
   const style: CSSProperties = contained ? { contain: "layout" } : {};
-  return width ? { ...style, inlineSize: `min(100%, ${width}px)` } : style;
+  return width ? { ...style, inlineSize: width >= 1023 ? `${width}px` : `min(100%, ${width}px)` } : style;
 }
 
 function ShellStoryBlock({ storyId, screen, width, contained = true }: { storyId: string; screen: ShellStoryScreen; width?: number; contained?: boolean }) {
@@ -624,7 +623,8 @@ function ShellStoryBlock({ storyId, screen, width, contained = true }: { storyId
     <div
       data-tcrn-theme={shellStoryThemeAttribute[screen.theme]}
       data-shell-story-block={screen.screen}
-      style={shellStoryBlockStyle(width, contained)}
+      style={{ ...shellStoryBlockStyle(width ?? (storyId === "shell-top-band" ? 1240 : undefined), contained),
+        ...(screen.screen === "ts-drop-start-l" ? { marginInlineStart: "calc(3 * var(--tcrn-shell-drop-w))" } : {}) }}
       data-shell-hydrate=""
       dangerouslySetInnerHTML={{ __html: shellStoryMarkup(storyId, screen) }}
     />
@@ -633,7 +633,7 @@ function ShellStoryBlock({ storyId, screen, width, contained = true }: { storyId
 
 function ShellStoryBlocks({ storyId, screens, width }: { storyId: string; screens: readonly ShellStoryScreen[]; width?: number }) {
   return (
-    <section className="alpha-story-stack" data-shell-story={storyId}>
+    <section className="alpha-story-stack" data-shell-story={storyId} style={{ overflowX: "auto" }}>
       {screens.map((screen) => (
         <ShellStoryBlock key={screen.screen} storyId={storyId} screen={screen} width={width} />
       ))}

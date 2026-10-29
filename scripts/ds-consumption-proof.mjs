@@ -990,6 +990,7 @@ export async function runDsConsumptionProof() {
       { id: "wide", viewportWidth: 1440 },
       { id: "narrow", viewportWidth: 390 },
       { id: "wide-before-frame-split", viewportWidth: 980 },
+      { id: "shell-boundary-before", viewportWidth: 1023 },
       { id: "wide-after-frame-split", viewportWidth: 1024 },
       { id: "nested-narrow", viewportWidth: 1440, motherWidth: 600 },
       { id: "below-content-boundary", viewportWidth: 1440, motherWidth: 719 },
