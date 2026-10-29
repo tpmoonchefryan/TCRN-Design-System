@@ -550,7 +550,7 @@ function TwoShells({ firstShortcut, secondShortcut }: { firstShortcut?: boolean;
 }
 
 test("with two shells on a page, ⌘K and Ctrl+K open only the one that has the key, with focus in its own search; without the prop both answer (TCRN-DS-SUB-185)", async () => {
-  const harness = createDomInteractionHarness();
+  const harness = createDomInteractionHarness({ shellContainerWidth: 1240 });
   try {
     const shellOf = (name: string) => harness.document.querySelector<HTMLElement>(`[data-shell="${name}"]`);
     const stateOf = (name: string) => shellOf(name)?.getAttribute("data-state");

@@ -134,6 +134,7 @@ test("Esc closes every column and returns focus to the pinned item", async () =>
     await harness.render(<Band closes={closes} />);
     await openFromThePin(harness);
     await harness.dispatchClick(row(harness, "模板") as Element);
+    assert.ok(harness.document.activeElement?.matches('input[type="search"]'), "the opening search retains focus before Escape");
     await press(harness, harness.document.activeElement ?? harness.document, "Escape");
     assert.equal(drop(harness), null);
     assert.equal(harness.document.querySelector("[data-drop-col]"), null);

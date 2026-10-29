@@ -1064,7 +1064,7 @@ async function dispatchMouseDown(harness: ReturnType<typeof createDomInteraction
 }
 
 test("product shell keeps one layer open: the full menu, a drop-down or the avatar menu", async () => {
-  const harness = createDomInteractionHarness();
+  const harness = createDomInteractionHarness({ shellContainerWidth: 1240 });
   const events: string[] = [];
   try {
     await harness.render(<ProductShellSemanticFixture events={events} />);
@@ -1445,7 +1445,7 @@ const pinGroups: ProductShellNavGroup[] = ["g1", "g2", "g3", "g4", "g5", "g6", "
 }));
 
 test("STORY-140 GWT3 pinning a seventh entry keeps it in the preference while the band shows six, and a drag's order persists", async () => {
-  const harness = createDomInteractionHarness();
+  const harness = createDomInteractionHarness({ shellContainerWidth: 1240 });
   const events: string[] = [];
   try {
     harness.window.localStorage.clear();
@@ -1459,6 +1459,7 @@ test("STORY-140 GWT3 pinning a seventh entry keeps it in the preference while th
     const pin = harness.document.querySelector('[data-panel="expanded"] [data-shell-group] [aria-label$="G7"][data-pin-button]');
     assert.ok(pin instanceof harness.window.HTMLButtonElement, "the seventh group has a pin in the full menu");
     await harness.dispatchClick(pin);
+    assert.equal(pin.getAttribute("aria-pressed"), "true", "G7 has the pinned marker in the full menu while it is absent from the band");
     assert.equal(events[events.length - 1], "pins:g1,g2,g3,g4,g5,g6,g7");
     assert.equal(harness.window.localStorage.getItem("tcrn-shell-pins:tms"), JSON.stringify(["g1", "g2", "g3", "g4", "g5", "g6", "g7"]));
     assert.deepEqual(

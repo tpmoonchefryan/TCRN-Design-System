@@ -303,6 +303,12 @@ export function ShellDropdown({
             setQuery(next);
             setOpenPath([]);
           }}
+          onDismiss={(reason) => {
+            if (reason !== "escape") return;
+            const trigger = triggerRef?.current ?? (rootRef.current && shellLayerTriggerOf(rootRef.current.ownerDocument, id));
+            trigger?.focus();
+            onOpenChangeRef.current?.(false, "escape");
+          }}
           data-shell-search=""
         />
         {searching ? null : (

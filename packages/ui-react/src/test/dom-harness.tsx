@@ -39,7 +39,7 @@ export interface DomInteractionHarness {
   cleanup(): Promise<void>;
 }
 
-export function createDomInteractionHarness(): DomInteractionHarness {
+export function createDomInteractionHarness({ shellContainerWidth }: { shellContainerWidth?: number } = {}): DomInteractionHarness {
   const dom = new JSDOM("<!doctype html><html><body></body></html>", {
     pretendToBeVisual: true,
     url: "http://localhost/"
@@ -71,6 +71,17 @@ export function createDomInteractionHarness(): DomInteractionHarness {
   };
   htmlElementPrototype.attachEvent ??= () => undefined;
   htmlElementPrototype.detachEvent ??= () => undefined;
+
+  // JSDOM has no layout. Only fixtures that need a measured shell opt in; the viewport and
+  // every other element keep their own readings, including all narrow-container fixtures.
+  if (shellContainerWidth !== undefined) {
+    const getBoundingClientRect = htmlElementPrototype.getBoundingClientRect;
+    htmlElementPrototype.getBoundingClientRect = function () {
+      return this.matches(".tcrn-product-shell")
+        ? new window.DOMRect(0, 0, shellContainerWidth, 0)
+        : getBoundingClientRect.call(this);
+    };
+  }
 
   const container = document.createElement("div");
   document.body.append(container);
