@@ -94,7 +94,7 @@ if (!mobileHeaderLayerSelfCheck.ok) {
 // §3 O-2), so they still count.
 // TCRN-DS-SUB-169 (2026-10-11 D2, judgment §3.4 item 1): the top band's brand button draws the same
 // wordmark suffix in its own element, .tcrn-shell-brand__suffix, so that selector joins the two. The
-// register is unchanged: the dark TMS suffix stays registered as pending (O-8), not ruled.
+// 夜间后缀按裁定取值，不再登记 pending
 // TCRN-DS-SUB-195 (R3-20; the same 2026-10-11 D2 reading, INIT-016 R2 judgment §3.4 item 1): the
 // first-line lockup (ProductLockup firstLine) draws the suffix in .tcrn-brand-lockup__suffix, so it joins
 // too, and no other selector does. The list names the same carriers as the page's string swap and the

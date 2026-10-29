@@ -82,7 +82,7 @@
     {
       "path": "CHANGELOG.md",
       "exists": true,
-      "sha256": "aba346a187eb1d9f63e82e270086ceb621d3e641fd5ce1a064228d9bbfcb640c"
+      "sha256": "e8ef69c577fb5f3e6a7a74aab8ed93e2e4b5b684dc180461eab0e56969b1b6cf"
     },
     {
       "path": "LICENSE",
@@ -107,7 +107,7 @@
     {
       "path": "packages/ui-tokens/src/index.ts",
       "exists": true,
-      "sha256": "a805b06825de512fac1ddcaa6edf0232f43cfe1607d85d12d6d627999e367d24"
+      "sha256": "69c4927f19ceb1f4a2d9c83a4803dc3f3f732aa9d2b8411ee87df5cea3c0e576"
     },
     {
       "path": "packages/ui-copy-state/src/index.ts",
@@ -174,7 +174,7 @@
     }
   ],
   "lockfileExists": true,
-  "storybookHtmlExists": true,
+  "storybookHtmlExists": false,
   "routeLocalNoOverclaim": {
     "githubPushPerformedByThisRoute": false,
     "githubReleaseCreatedByThisRoute": false,

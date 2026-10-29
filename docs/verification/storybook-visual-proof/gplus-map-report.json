@@ -1,10 +1,10 @@
 {
   "schemaVersion": "tcrn.ds.storybook-visual-proof.gplus-map.v1",
   "measureSchemaVersion": "tcrn.ds.gplus-measure.v1",
-  "generatedAtUtc": "2026-10-14T10:47:14.197Z",
-  "head": "c9f36bb12516f325fcdeac814a5be55af782fb53",
-  "ok": true,
-  "reason": null,
+  "generatedAtUtc": "2026-10-29T14:19:50.455Z",
+  "head": "c9ccd9719effd1ea399402d293fa6d2514380880",
+  "ok": false,
+  "reason": "static_docs_missing",
   "scope": {
     "kinds": [
       "matrix",
@@ -179,97 +179,7 @@
     "missingSections": [],
     "unknownSections": []
   },
-  "stories": {
-    "ok": true,
-    "kinds": [
-      "matrix",
-      "sample"
-    ],
-    "mapStories": [
-      "typography-matrix",
-      "typography-sample-billing",
-      "icon-matrix",
-      "icon-sample-project",
-      "brand-matrix",
-      "brand-sample-product",
-      "actions-matrix",
-      "actions-sample-project",
-      "inputs-matrix",
-      "inputs-sample-members",
-      "composition-three-sample"
-    ],
-    "storyList": [
-      {
-        "id": "typography-matrix",
-        "kind": "matrix",
-        "categoryId": "gplus-matrices",
-        "inRegistry": true
-      },
-      {
-        "id": "icon-matrix",
-        "kind": "matrix",
-        "categoryId": "gplus-matrices",
-        "inRegistry": true
-      },
-      {
-        "id": "brand-matrix",
-        "kind": "matrix",
-        "categoryId": "gplus-matrices",
-        "inRegistry": true
-      },
-      {
-        "id": "actions-matrix",
-        "kind": "matrix",
-        "categoryId": "gplus-matrices",
-        "inRegistry": true
-      },
-      {
-        "id": "inputs-matrix",
-        "kind": "matrix",
-        "categoryId": "gplus-matrices",
-        "inRegistry": true
-      },
-      {
-        "id": "typography-sample-billing",
-        "kind": "sample",
-        "categoryId": "gplus-samples",
-        "inRegistry": true
-      },
-      {
-        "id": "icon-sample-project",
-        "kind": "sample",
-        "categoryId": "gplus-samples",
-        "inRegistry": true
-      },
-      {
-        "id": "brand-sample-product",
-        "kind": "sample",
-        "categoryId": "gplus-samples",
-        "inRegistry": true
-      },
-      {
-        "id": "actions-sample-project",
-        "kind": "sample",
-        "categoryId": "gplus-samples",
-        "inRegistry": true
-      },
-      {
-        "id": "inputs-sample-members",
-        "kind": "sample",
-        "categoryId": "gplus-samples",
-        "inRegistry": true
-      },
-      {
-        "id": "composition-three-sample",
-        "kind": "sample",
-        "categoryId": "gplus-samples",
-        "inRegistry": true
-      }
-    ],
-    "notInList": [],
-    "notInRegistry": [],
-    "notInMap": []
-  },
+  "stories": null,
   "rows": [
     {
       "row": "typography.A",
@@ -289,145 +199,28 @@
         "DIFF-4",
         "DIFF-7"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 28,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 14,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 44,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 49,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 28,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 14,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 44,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 49,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#typography-matrix"
+      "route": null
     },
     {
       "row": "typography.B",
@@ -442,171 +235,28 @@
       "differences": [
         "DIFF-4"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 28,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 14,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 44,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 49,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 44,
-            "contract": "typography",
-            "rendered": 44,
-            "unique": 44,
-            "declared": 44,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 28,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 14,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 44,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 49,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 44,
-            "contract": "typography",
-            "rendered": 44,
-            "unique": 44,
-            "declared": 44,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#typography-matrix"
+      "route": null
     },
     {
       "row": "typography.D",
@@ -622,145 +272,28 @@
       "differences": [
         "DIFF-1"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 252,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 58,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 26,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 45,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 252,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 58,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 26,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 45,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#typography-sample-billing"
+      "route": null
     },
     {
       "row": "icon.A",
@@ -779,145 +312,28 @@
         "DIFF-4",
         "DIFF-7"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 12,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 16,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 28,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 23,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 12,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 16,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 28,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 23,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#icon-matrix"
+      "route": null
     },
     {
       "row": "icon.B",
@@ -932,171 +348,28 @@
       "differences": [
         "DIFF-4"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 12,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 16,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 28,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 23,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 28,
-            "contract": "icon",
-            "rendered": 28,
-            "unique": 28,
-            "declared": 28,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 12,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 16,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 28,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 23,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 28,
-            "contract": "icon",
-            "rendered": 28,
-            "unique": 28,
-            "declared": 28,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#icon-matrix"
+      "route": null
     },
     {
       "row": "icon.D",
@@ -1112,145 +385,28 @@
       "differences": [
         "DIFF-1"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 268,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 34,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 50,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 59,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 268,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 34,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 50,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 59,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#icon-sample-project"
+      "route": null
     },
     {
       "row": "brand.A",
@@ -1269,145 +425,28 @@
         "DIFF-4",
         "DIFF-7"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 36,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 2,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 10,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 57,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 36,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 2,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 10,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 57,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#brand-matrix"
+      "route": null
     },
     {
       "row": "brand.B",
@@ -1422,171 +461,28 @@
       "differences": [
         "DIFF-4"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 36,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 2,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 10,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 57,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 10,
-            "contract": "brand",
-            "rendered": 10,
-            "unique": 10,
-            "declared": 10,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 36,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 2,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 10,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 57,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 10,
-            "contract": "brand",
-            "rendered": 10,
-            "unique": 10,
-            "declared": 10,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#brand-matrix"
+      "route": null
     },
     {
       "row": "brand.D",
@@ -1603,145 +499,28 @@
         "DIFF-1",
         "DIFF-9"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 216,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 44,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 22,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 63,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 216,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 44,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 22,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 63,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#brand-sample-product"
+      "route": null
     },
     {
       "row": "actions.A",
@@ -1763,145 +542,28 @@
         "DIFF-5",
         "DIFF-7"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 462,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 104,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 136,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 116,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "pass",
-              "checked": 130,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 41,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 462,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 104,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 136,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 116,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "pass",
-              "checked": 130,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 41,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#actions-matrix"
+      "route": null
     },
     {
       "row": "actions.B",
@@ -1917,171 +579,28 @@
         "DIFF-4",
         "DIFF-5"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 462,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 104,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 136,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 116,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "pass",
-              "checked": 130,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 41,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 116,
-            "contract": "actions",
-            "rendered": 116,
-            "unique": 116,
-            "declared": 116,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 462,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 104,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 136,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 4,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 116,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "pass",
-              "checked": 130,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 41,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 116,
-            "contract": "actions",
-            "rendered": 116,
-            "unique": 116,
-            "declared": 116,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#actions-matrix"
+      "route": null
     },
     {
       "row": "actions.D",
@@ -2098,145 +617,28 @@
         "DIFF-1",
         "DIFF-11"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 278,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 48,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 58,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 73,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 278,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 48,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 58,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 73,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#actions-sample-project"
+      "route": null
     },
     {
       "row": "inputs.A",
@@ -2257,145 +659,28 @@
         "DIFF-5",
         "DIFF-7"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 26,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 32,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 54,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 42,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "pass",
-              "checked": 26,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 69,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 26,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 32,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 54,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 42,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "pass",
-              "checked": 26,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 69,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#inputs-matrix"
+      "route": null
     },
     {
       "row": "inputs.B",
@@ -2412,171 +697,28 @@
         "DIFF-5",
         "DIFF-6"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 26,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 32,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 54,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 42,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "pass",
-              "checked": 26,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 69,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 42,
-            "contract": "inputs",
-            "rendered": 42,
-            "unique": 42,
-            "declared": 42,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 26,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 32,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 54,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 42,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "pass",
-              "checked": 26,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 69,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
           "requiredNotApplicable": [],
-          "cells": {
-            "expected": 42,
-            "contract": "inputs",
-            "rendered": 42,
-            "unique": 42,
-            "declared": 42,
-            "missing": [],
-            "extra": [],
-            "duplicated": [],
-            "expectMismatches": [],
-            "notOnBoard": [],
-            "ok": true
-          }
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#inputs-matrix"
+      "route": null
     },
     {
       "row": "inputs.D",
@@ -2591,145 +733,28 @@
       "differences": [
         "DIFF-1"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 194,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 24,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 50,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 55,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 194,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 24,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 50,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 55,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#inputs-sample-members"
+      "route": null
     },
     {
       "row": "compositions.1.typography",
@@ -2746,145 +771,28 @@
         "DIFF-1",
         "DIFF-3"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 252,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 58,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 26,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 45,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 252,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 58,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 26,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 45,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#typography-sample-billing"
+      "route": null
     },
     {
       "row": "compositions.1.icon",
@@ -2901,145 +809,28 @@
         "DIFF-1",
         "DIFF-3"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 268,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 34,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 50,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 59,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 268,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 34,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 50,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 59,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#icon-sample-project"
+      "route": null
     },
     {
       "row": "compositions.1.brand",
@@ -3056,145 +847,28 @@
         "DIFF-1",
         "DIFF-3"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 216,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 44,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 22,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 63,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 216,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 44,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 22,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 63,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#brand-sample-product"
+      "route": null
     },
     {
       "row": "compositions.1.actions",
@@ -3212,145 +886,28 @@
         "DIFF-3",
         "DIFF-11"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 278,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 48,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 58,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 73,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 278,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 48,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 58,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 73,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#actions-sample-project"
+      "route": null
     },
     {
       "row": "compositions.1.inputs",
@@ -3366,145 +923,28 @@
         "DIFF-1",
         "DIFF-3"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 194,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 24,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 50,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 55,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 194,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 24,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 50,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 55,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#inputs-sample-members"
+      "route": null
     },
     {
       "row": "compositions.3",
@@ -3523,145 +963,28 @@
       "differences": [
         "DIFF-2"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 196,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 34,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 26,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 49,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 196,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 34,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 26,
-              "value": 1,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "n/a",
-              "checked": 0,
-              "value": null,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 49,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-samples.html#composition-three-sample"
+      "route": null
     },
     {
       "row": "logos.A-E",
@@ -3679,145 +1002,28 @@
       "differences": [
         "DIFF-8"
       ],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 36,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 2,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 10,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 57,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 36,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 2,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 10,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 57,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#brand-matrix"
+      "route": null
     },
     {
       "row": "logos.I",
@@ -3830,236 +1036,231 @@
         "contrast"
       ],
       "differences": [],
-      "ok": true,
-      "reasons": [],
+      "ok": false,
+      "reasons": [
+        "light:story_not_measured",
+        "dark:story_not_measured"
+      ],
       "themes": {
         "light": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 36,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 2,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 10,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 57,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         },
         "dark": {
-          "ok": true,
-          "checks": {
-            "clip": {
-              "status": "pass",
-              "checked": 2,
-              "value": 0,
-              "violationCount": 0
-            },
-            "singleLine": {
-              "status": "pass",
-              "checked": 36,
-              "value": 1,
-              "violationCount": 0
-            },
-            "shadowBlur": {
-              "status": "pass",
-              "checked": 2,
-              "value": 3,
-              "violationCount": 0
-            },
-            "rail": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "rowAlign": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "mark": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "contrast": {
-              "status": "pass",
-              "checked": 10,
-              "value": 0,
-              "violationCount": 0
-            },
-            "controlHeight": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            },
-            "overlap": {
-              "status": "pass",
-              "checked": 57,
-              "value": 0,
-              "violationCount": 0
-            },
-            "shellFrame": {
-              "status": "n/a",
-              "checked": 0,
-              "value": 0,
-              "violationCount": 0
-            }
-          },
+          "ok": false,
+          "checks": {},
           "failed": [],
-          "requiredNotApplicable": []
+          "requiredNotApplicable": [],
+          "error": "story_not_measured"
         }
       },
-      "route": "/components-gplus-matrices.html#brand-matrix"
+      "route": null
     }
   ],
-  "mutations": [
-    {
-      "id": "clip-actions-button-out-of-section",
-      "storyId": "actions-matrix",
-      "check": "clip",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    },
-    {
-      "id": "single-line-actions-label-first-letter",
-      "storyId": "actions-matrix",
-      "check": "singleLine",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    },
-    {
-      "id": "shadow-blur-brand-logo-cloud",
-      "storyId": "brand-matrix",
-      "check": "shadowBlur",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    },
-    {
-      "id": "row-align-actions-second-row-indented",
-      "storyId": "actions-matrix",
-      "check": "rowAlign",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    },
-    {
-      "id": "mark-typography-padded",
-      "storyId": "typography-matrix",
-      "check": "mark",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    },
-    {
-      "id": "contrast-brand-wordmark-greyed",
-      "storyId": "brand-matrix",
-      "check": "contrast",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    },
-    {
-      "id": "control-height-actions-primary-34",
-      "storyId": "actions-matrix",
-      "check": "controlHeight",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    },
-    {
-      "id": "overlap-brand-logo-row",
-      "storyId": "brand-matrix",
-      "check": "overlap",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    },
-    {
-      "id": "shell-frame-sample-paper-flush",
-      "storyId": "actions-sample-project",
-      "check": "shellFrame",
-      "theme": "light",
-      "status": "fail",
-      "killed": true
-    }
-  ],
+  "mutations": [],
   "summary": {
     "rows": 23,
-    "rowsOk": 23,
-    "redRows": [],
+    "rowsOk": 0,
+    "redRows": [
+      {
+        "row": "typography.A",
+        "storyId": "typography-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "typography.B",
+        "storyId": "typography-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "typography.D",
+        "storyId": "typography-sample-billing",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "icon.A",
+        "storyId": "icon-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "icon.B",
+        "storyId": "icon-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "icon.D",
+        "storyId": "icon-sample-project",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "brand.A",
+        "storyId": "brand-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "brand.B",
+        "storyId": "brand-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "brand.D",
+        "storyId": "brand-sample-product",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "actions.A",
+        "storyId": "actions-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "actions.B",
+        "storyId": "actions-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "actions.D",
+        "storyId": "actions-sample-project",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "inputs.A",
+        "storyId": "inputs-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "inputs.B",
+        "storyId": "inputs-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "inputs.D",
+        "storyId": "inputs-sample-members",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.typography",
+        "storyId": "typography-sample-billing",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.icon",
+        "storyId": "icon-sample-project",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.brand",
+        "storyId": "brand-sample-product",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.actions",
+        "storyId": "actions-sample-project",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.1.inputs",
+        "storyId": "inputs-sample-members",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "compositions.3",
+        "storyId": "composition-three-sample",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "logos.A-E",
+        "storyId": "brand-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      },
+      {
+        "row": "logos.I",
+        "storyId": "brand-matrix",
+        "reasons": [
+          "light:story_not_measured",
+          "dark:story_not_measured"
+        ]
+      }
+    ],
     "checks": {
-      "clip": "pass",
-      "singleLine": "pass",
-      "shadowBlur": "pass",
+      "clip": "n/a",
+      "singleLine": "n/a",
+      "shadowBlur": "n/a",
       "rail": "n/a",
-      "rowAlign": "pass",
-      "mark": "pass",
-      "contrast": "pass",
-      "controlHeight": "pass",
-      "overlap": "pass",
-      "shellFrame": "pass"
+      "rowAlign": "n/a",
+      "mark": "n/a",
+      "contrast": "n/a",
+      "controlHeight": "n/a",
+      "overlap": "n/a",
+      "shellFrame": "n/a"
     }
   }
 }
