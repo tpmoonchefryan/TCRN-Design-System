@@ -417,7 +417,7 @@ const READING_JUDGES = {
       for (let n = 1; n < cols.length; n++) {
         const prev = cols[n - 1], col = cols[n];
         if (!near(col.h, prev.h, t.tolerancePx)) fail(g, s.id, "col" + (n + 1) + ".h", col.h, prev.h);
-        if (!near(Math.round((col.l - (prev.l + prev.w)) * 10) / 10, t.gapPx, t.tolerancePx)) fail(g, s.id, "col" + (n + 1) + ".gap", Math.round((col.l - (prev.l + prev.w)) * 10) / 10, t.gapPx);
+        if (!near(Math.round((s.x.cascadeSide === "start" ? prev.l - (col.l + col.w) : col.l - (prev.l + prev.w)) * 10) / 10, t.gapPx, t.tolerancePx)) fail(g, s.id, "col" + (n + 1) + ".gap", Math.round((s.x.cascadeSide === "start" ? prev.l - (col.l + col.w) : col.l - (prev.l + prev.w)) * 10) / 10, t.gapPx);
         if (!near(col.w, prev.w, t.tolerancePx)) fail(g, s.id, "col" + (n + 1) + ".w", col.w, prev.w);
       }
     }

@@ -283,24 +283,19 @@ test("the pinned group lists every pinned item; the ⌘K key is registered once 
 // The Sheet (TCRN-DS-SUB-126): jsdom has no matchMedia, so the viewport is the test's — 760 wide or
 // narrower while `narrow` — and a resize tells the listeners the query's answer changed.
 function stubViewport(harness: DomInteractionHarness, narrow: boolean) {
-  const listeners = new Set<() => void>();
-  const state = { narrow };
-  harness.window.matchMedia = ((query: string) => ({
-    get matches() {
-      return query === "(max-width: 760px)" ? state.narrow : false;
-    },
-    media: query,
-    addEventListener: (_type: string, listener: () => void) => listeners.add(listener),
-    removeEventListener: (_type: string, listener: () => void) => listeners.delete(listener)
-  })) as unknown as typeof harness.window.matchMedia;
-  return {
-    async resize(next: boolean) {
-      state.narrow = next;
-      await act(async () => {
-        for (const listener of listeners) listener();
-      });
-    }
+  Object.defineProperty(harness.window, "innerWidth", { configurable: true, writable: true, value: narrow ? 760 : 1024 });
+  // JSDOM has no layout; the owning shell's box models the same container width.
+  const original = harness.window.HTMLElement.prototype.getBoundingClientRect;
+  harness.window.HTMLElement.prototype.getBoundingClientRect = function () {
+    if (this.matches(".tcrn-product-shell")) return { width: harness.window.innerWidth } as DOMRect;
+    return original.call(this);
   };
+  return { async resize(next: boolean) {
+    await act(async () => {
+      Object.defineProperty(harness.window, "innerWidth", { configurable: true, writable: true, value: next ? 760 : 1024 });
+      harness.window.dispatchEvent(new harness.window.Event("resize"));
+    });
+  } };
 }
 
 const sheet = (harness: DomInteractionHarness) => harness.document.querySelector<HTMLElement>('[data-panel="sheet"]');

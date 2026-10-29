@@ -969,3 +969,11 @@ test("parseArgs", () => {
   assert.deepEqual(parseArgs(["--story", "shell-top-band", "--write-report"]), { fixtures: false, stories: ["shell-top-band"], writeReport: DEFAULT_PATHS.reportPath });
   assert.throws(() => parseArgs(["--nope"]), /unknown_argument/);
 });
+
+// Direction is part of the reading: reversing it must turn a correct start cascade red.
+test("cascade reads the start side and rejects the same columns read as end", () => {
+  const reading = { shells: [{ id: "start", x: { missing: [], dropCols: [{ l: 1000, w: 240, h: 112 }, { l: 756, w: 240, h: 112 }], cascadeSide: "start" } }] };
+  assert.equal(judgeGate("cascade", reading).status, "pass");
+  reading.shells[0].x.cascadeSide = "end";
+  assert.equal(judgeGate("cascade", reading).status, "fail");
+});

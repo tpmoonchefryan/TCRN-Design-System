@@ -209,7 +209,10 @@ export function useShellTransientLayer({ open, layerRef, triggerRef, controlsId,
       onCloseRef.current(reason);
     };
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      const focused = doc.activeElement;
+      // Several documentation previews can be open. Only the layer containing focus owns Esc.
+      if (focused && focused !== doc.body && !layer.contains(focused) && !trigger()?.contains(focused)) return;
       event.preventDefault();
       close("escape", true);
     };
@@ -489,20 +492,23 @@ export const shellMenuPresentationContext = createContext<ShellMenuPresentation>
  * mounted, before the browser paints, and followed as it changes; on the server and in the first
  * render "auto" is the panel. ProductShell can read it to report data-state="sheet".
  */
-export function useShellMenuPresentation(presentation?: ShellMenuPresentation): "panel" | "sheet" {
+export function useShellMenuPresentation(presentation?: ShellMenuPresentation, ownerRef?: RefObject<HTMLElement | null>): "panel" | "sheet" {
   const inherited = useContext(shellMenuPresentationContext);
   const wanted = presentation ?? inherited;
   const [narrow, setNarrow] = useState(false);
   useLayoutEffect(() => {
-    if (wanted !== "auto" || typeof window === "undefined" || typeof window.matchMedia !== "function") return undefined;
-    const list = window.matchMedia(shellMenuSheetMediaQuery);
-    const update = () => setNarrow(list.matches);
+    if (wanted !== "auto" || typeof window === "undefined") return undefined;
+    const owner = ownerRef?.current;
+    const shell = owner?.closest<HTMLElement>(".tcrn-product-shell");
+    const view = owner?.ownerDocument.defaultView ?? window;
+    const update = () => setNarrow((shell ? shell.getBoundingClientRect().width : view.innerWidth) <= 760);
     update();
-    list.addEventListener("change", update);
-    return () => list.removeEventListener("change", update);
-  }, [wanted]);
-  if (wanted === "auto") return narrow ? "sheet" : "panel";
-  return wanted;
+    const observer = shell && view.ResizeObserver ? new view.ResizeObserver(update) : null;
+    if (shell) observer?.observe(shell);
+    view.addEventListener("resize", update);
+    return () => { observer?.disconnect(); view.removeEventListener("resize", update); };
+  }, [wanted, ownerRef]);
+  return wanted === "auto" ? (narrow ? "sheet" : "panel") : wanted;
 }
 
 export interface ShellMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "title"> {
@@ -591,7 +597,7 @@ export function ShellMenu({
   const sheetRef = useRef<HTMLElement>(null);
   const [ownQuery, setOwnQuery] = useState(defaultQuery);
   const query = controlledQuery ?? ownQuery;
-  const shown = useShellMenuPresentation(presentation);
+  const shown = useShellMenuPresentation(presentation, rootRef);
   const sheet = shown === "sheet";
   // The Sheet's first list holds the groups themselves (level 1); the panel's columns are groups,
   // so its first rows are items (level 2).

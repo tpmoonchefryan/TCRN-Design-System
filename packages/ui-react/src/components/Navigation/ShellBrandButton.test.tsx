@@ -124,7 +124,7 @@ test("the geometry reads the shell tokens: 134 by 40, a 20 toggle, 6 from the ba
   assert.match(toggle, /block-size: var\(--tcrn-shell-toggle\);/);
   assert.match(ruleBody('.tcrn-shell-brand[data-shell-brand="v1"]'), /inline-size: auto;/);
   // Narrower than 1024 the automatic button drops the wordmark before any script runs.
-  const narrow = /@media \(max-width: 1023px\) \{([\s\S]*?)\n\}/.exec(shellCss01);
+  const narrow = /@container tcrn-shell \(max-width: 1023px\) \{([\s\S]*?)\n\}/.exec(shellCss01);
   assert.ok(narrow, "the shell segment switches at 1023");
   assert.match(narrow[1], /\.tcrn-shell-brand\[data-shell-brand-auto\] \.tcrn-shell-brand__word \{\n {4}display: none;/);
   // The mark and the wordmark are centred by the flex line, with no line-height nudge.
@@ -290,19 +290,10 @@ function suffixOnWash(theme: "light" | "dark"): number {
   return (light + 0.05) / (dark + 0.05);
 }
 
-test("the TMS suffix reads at 4.5 or more on the hover wash by day; by night it keeps the day colour, a known red pending D7", () => {
-  const day = suffixOnWash("light");
-  assert.ok(day >= 4.5, `light: the suffix on the wash is ${day.toFixed(2)}`);
-  // By night the suffix keeps the approved colour, its mark's deep step, the same in both themes
-  // (TCRN-DS-MIN-20261013-SHELL D2), so on the night wash it reads 3.07, below 4.5. That is the
-  // known red the token-contrast gate registers in WORDMARK_EXEMPTIONS with its pending note:
-  // D7 keeps the approved colour by night and rules the night value together with INIT-015
-  // closure S-6. Until that ruling this test holds the colour and records the reading; once the
-  // night value is ruled, the night side goes back to 4.5 like the day side.
-  const dayColour = createResolvedTokenMap("light")["--tcrn-brand-suffix-tms"];
-  assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-tms"], dayColour, "dark: the suffix keeps the day colour (D2)");
-  const night = suffixOnWash("dark");
-  assert.equal(night.toFixed(2), "3.07", "dark: the recorded reading of the suffix on the wash (pending D7)");
+test("the TMS suffix reads at least 4.5 on the hover wash in both themes", () => {
+  assert.equal(createResolvedTokenMap("light")["--tcrn-brand-suffix-tms"], "#2c63c8");
+  assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-tms"], "#7aa0f5");
+  for (const theme of ["light", "dark"] as const) assert.ok(suffixOnWash(theme) >= 4.5, theme);
 });
 
 test("the ref reaches the button, and an automatic button reports the first version on a narrow viewport", async () => {
@@ -312,16 +303,8 @@ test("the ref reaches the button, and an automatic button reports the first vers
     await harness.render(<ShellBrandButton ref={ref} productId="tms" locale="en" />);
     assert.equal(ref.current?.tagName, "BUTTON");
     assert.equal(ref.current?.getAttribute("data-shell-brand"), "v2", "no viewport query: the second version");
-    const queries: string[] = [];
-    Object.defineProperty(harness.window, "matchMedia", {
-      configurable: true,
-      value: (query: string) => {
-        queries.push(query);
-        return { matches: true, media: query, addEventListener() {}, removeEventListener() {} };
-      }
-    });
+    Object.defineProperty(harness.window, "innerWidth", { configurable: true, value: 1023 });
     await harness.render(<ShellBrandButton key="narrow" ref={ref} productId="tms" locale="en" />);
-    assert.deepEqual([...new Set(queries)], ["(max-width: 1023px)"]);
     assert.equal(ref.current?.getAttribute("data-shell-brand"), "v1");
     assert.equal(ref.current?.getAttribute("aria-haspopup"), "dialog");
   } finally {

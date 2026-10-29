@@ -3137,7 +3137,7 @@ async function runCrossSectionShellParityProof() {
       const context = await browser.newContext({ viewport });
       const page = await context.newPage();
       const readbacks = [];
-      const isDesktopViewport = viewport.width >= 1024;
+
       for (const route of routes) {
         if (!route.storyId) {
           readbacks.push({ ...route, ok: false, failures: ["missing-first-story"] });
@@ -3152,6 +3152,8 @@ async function runCrossSectionShellParityProof() {
         await page.waitForTimeout(180);
         await waitForDocShell(page, "zh-CN");
         const menuModel = await readDocMenuModel(page, Object.values(pagesByGroup));
+        const shellWidth = await page.locator('[data-shell="doc"]').evaluate(node => node.getBoundingClientRect().width);
+        const isDesktopViewport = shellWidth >= 1024;
         // The search sits in the full menu and the theme and language controls in the avatar menu; each layer is read
         // open through the page's layer interface and closed again before the next readback.
         const readOpenLayer = async (layer, read) => {
@@ -3484,10 +3486,10 @@ async function runCrossSectionShellParityProof() {
         }
         if (!metrics.pageHeadStartsBelowHeader) routeFailures.push("page-head-not-below-header");
         if (!metrics.storyStartsAfterPageHead) routeFailures.push("story-not-after-page-head");
-        readbacks.push({ ...metrics, ok: routeFailures.length === 0, failures: routeFailures });
+        readbacks.push({ ...metrics, shellWidth, ok: routeFailures.length === 0, failures: routeFailures });
       }
       await context.close();
-      const desktopReadbacks = readbacks.filter((item) => viewport.width >= 1024);
+      const desktopReadbacks = readbacks.filter((item) => item.shellWidth >= 1024);
       const signatures = {
         headerStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.headerStyles))).size,
         workspaceStyles: new Set(desktopReadbacks.map((item) => JSON.stringify(item.workspaceStyles))).size,
@@ -3498,7 +3500,7 @@ async function runCrossSectionShellParityProof() {
           : 0
       };
       const parityFailures = [];
-      if (viewport.width >= 1024) {
+      if (desktopReadbacks.length) {
         for (const [name, count] of Object.entries(signatures)) {
           if (name.endsWith("Delta")) {
             if (count > 2) parityFailures.push(`${name}:${count}`);
