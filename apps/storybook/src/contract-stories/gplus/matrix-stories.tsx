@@ -17,21 +17,28 @@ import {
   IconButton,
   Input,
   LinkButton,
+  LineNumberedEditor,
   LockHint,
   MultiSelect,
   NumberInput,
   ProductLockup,
   ProductLogo,
   ProductShell,
+  ProductShellSearch,
   RadioGroup,
   SearchInput,
+  SettingChoice,
   Select,
   ShellBrandButton,
   ShellDropdown,
   ShellMenu,
+  ShellLocaleMenu,
+  ShellThemeToggle,
+  ShellBrandLockup,
   ShellPins,
   SuggestInput,
   Surface,
+  StateSurface,
   Switch,
   TcrnBrandMark,
   Text,
@@ -88,6 +95,12 @@ export const gplusMatrixStoryIds: Readonly<Record<GplusFamilyMatrixBoard, string
 
 const disabledFieldReason = "Field unavailable in this example";
 
+/** Additive public package specimens for the strict style sampler. They carry
+ * no original contrast cells and are separate from the original default-edge fixtures. */
+function StyleReferences({ children }: { children: ReactNode }) {
+  return <div className="tcrn-doc-action-row" data-gplus-style-reference="">{children}</div>;
+}
+
 // data-h declares a control's rendered height for the controlHeight measurement: the package size
 // tier of the control (sm 28, md 32, lg 40; Button, IconButton, LinkButton and the text-like inputs
 // default to md). Controls without a height tier (Textarea, Checkbox, RadioGroup, Switch) carry none.
@@ -107,6 +120,15 @@ function TypographyMatrix({ theme }: { theme: MatrixTheme }) {
         <MatrixRow label="h2"><Heading level={2} {...cell("h2")}>Members and permissions</Heading></MatrixRow>
         <MatrixRow label="h3"><Heading level={3} {...cell("h3")}>October invoice</Heading></MatrixRow>
         <MatrixRow label="h4"><Heading level={4} {...cell("h4")}>Notification preferences</Heading></MatrixRow>
+        <StyleReferences>
+          <Heading level={1} visualLevel={2}>Quarterly review</Heading>
+          <Heading level={3} visualLevel={1}>Quarterly review</Heading>
+          <Heading level={3} visualLevel={2}>Quarterly review</Heading>
+          <Heading level={2} visualLevel={3}>Quarterly review</Heading>
+          <Heading level={2} visualLevel={4}>Quarterly review</Heading>
+          <StateSurface tone="warning" title="Quarterly review" />
+          <StateSurface tone="danger" title="Quarterly review" />
+        </StyleReferences>
       </MatrixSection>
       <MatrixSection component="Text">
         <MatrixRow label="body"><Text {...cell("body")}>The project has 12 members and 3 pending invitations.</Text></MatrixRow>
@@ -119,6 +141,7 @@ function TypographyMatrix({ theme }: { theme: MatrixTheme }) {
           <code>hover</code>
           <Text><a className="tcrn-link" href="#typography-matrix" {...previewState("hover")} {...cell("link-hover")}>Billing history</a></Text>
         </MatrixRow>
+        <StyleReferences><a className="tcrn-link" href="#typography-matrix">View project</a></StyleReferences>
         <MatrixRow label="numeral">
           <Text variant="numeral" {...cell("num")}>128<small {...cell("unit")}>seats</small></Text>
           <Text variant="numeral" data-criterion-plain-numeral="">4,280.00</Text>
@@ -128,6 +151,7 @@ function TypographyMatrix({ theme }: { theme: MatrixTheme }) {
         <MatrixRow label="mono"><Text className="tcrn-text--mono" {...cell("id")}>PRJ-2026-0412 · INV-2026-10-0031</Text></MatrixRow>
       </MatrixSection>
       <MatrixSection component="Highlight">
+        <StyleReferences><Text tone="strong"><Highlight text="PRJ-2026-0412" query="2026" /></Text></StyleReferences>
         <MatrixRow label="mark">
           <Text>
             <StaticMarkup
@@ -153,7 +177,7 @@ function TypographyMatrix({ theme }: { theme: MatrixTheme }) {
   );
 }
 
-function clipboardStateMarkup(id: string, state: "copying" | "copied" | "failed" | "unsupported", label: string, attributes: Record<string, string>, iconCell?: Record<string, string>) {
+function clipboardStateMarkup(id: string, state: "copying" | "copied" | "failed" | "unsupported", label: string, attributes: Record<string, string>, iconCell?: Record<string, string>, variant: "secondary" | "quiet" = "secondary") {
   const edits = [
     { marker: 'data-clipboard-copy-state="idle"', set: { "data-clipboard-copy-state": state, ...(state === "copying" ? { "aria-busy": "true" } : {}) } },
     ...(iconCell ? [cellEdit(`data-clipboard-state-icon="${state}"`, iconCell)] : [])
@@ -161,7 +185,7 @@ function clipboardStateMarkup(id: string, state: "copying" | "copied" | "failed"
   return (
     <StaticMarkup
       id={id}
-      element={<ClipboardCopyButton text="PRJ-2026-0412" ariaLabel="Copy ID" idleLabel={label} variant="secondary" size="sm" {...attributes} />}
+      element={<ClipboardCopyButton text="PRJ-2026-0412" ariaLabel="Copy ID" idleLabel={label} variant={variant} size="sm" {...attributes} />}
       edits={edits}
     />
   );
@@ -205,6 +229,17 @@ function IconMatrix({ theme }: { theme: MatrixTheme }) {
           <LockHint icon={<Icon name="alert-triangle" {...cell("warn-panel")} />}>Seat limit reached</LockHint>
           {clipboardStateMarkup(`icon-failed-${theme}`, "failed", "Copy failed", {}, cell("bad-panel"))}
         </MatrixRow>
+        <StyleReferences>
+          <Icon name="loader-circle" />
+          <Icon name="settings" size={14} />
+          <ShellLocaleMenu locales={tcrnLocaleMetadata} currentLocale={tcrnDefaultLocale} />
+          <ShellMenu
+            open productId="tms" shortcut={false} presentation="panel"
+            landmarkLabel={shellMatrixLandmarkOf(theme)}
+            style={{ position: "relative", top: "auto", left: "auto" }}
+            groups={[{ id: `icon-reference-${theme}`, label: "Members", items: [{ id: "reference-roster", label: "Roster", href: "#icon-matrix", iconName: "users" }] }]}
+          />
+        </StyleReferences>
       </MatrixSection>
       <div className="tcrn-doc-form-stack" data-gplus-matrix-canvas="Icon">
         <MatrixRow label="canvas">
@@ -256,6 +291,9 @@ function BrandMatrix({ theme }: { theme: MatrixTheme }) {
         </MatrixRow>
       </MatrixSection>
       <MatrixSection component="ProductLogo">
+        <StyleReferences>
+          {productMarkIds.map((productId) => <ShellBrandLockup key={productId} productId={productId} data-lockup="lkr" />)}
+        </StyleReferences>
         <MatrixRow label="sans">
           <StaticMarkup
             id={`brand-logo-ds-${theme}`}
@@ -284,6 +322,13 @@ function BrandMatrix({ theme }: { theme: MatrixTheme }) {
         </MatrixRow>
       </MatrixSection>
       <MatrixSection component="ProductLockup">
+        <StyleReferences>
+          {productMarkIds.map((productId) => <ProductLockup key={productId} productId={productId} />)}
+          {productMarkIds.flatMap((productId) => (["rail", "lockup"] as const).map((firstLine) => <ProductLockup key={`${productId}-${firstLine}`} productId={productId} firstLine={firstLine} />))}
+          <ProductLockup suffix="AOS" suffixClassName="tcrn-brand-wordmark__suffix--aos" />
+          <ProductLockup suffix="TMS" suffixClassName="tcrn-brand-wordmark__suffix--tms" />
+          <ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />
+        </StyleReferences>
         <MatrixRow label="suffix">
           <ProductLockup productId="design-system" />
         </MatrixRow>
@@ -359,12 +404,27 @@ function ActionsMatrix({ theme }: { theme: MatrixTheme }) {
   return (
     <>
       <MatrixSection component="Button">
+        <StyleReferences>
+          {actionVariants.flatMap((variant) => (["sm", "md", "lg"] as const).flatMap((size) => [false, true].map((disabled) => (
+            <Button key={`${variant}-${size}-${disabled}`} variant={variant} size={size} disabled={disabled} disabledReason={disabledFieldReason}>
+              <Icon name={actionIcons[variant]} />{actionLabels[variant]}
+            </Button>
+          ))))}
+          <Button aria-expanded="false" aria-controls={`action-reference-${theme}`}>Settings</Button>
+          <div id={`action-reference-${theme}`} hidden>Settings</div>
+        </StyleReferences>
         <StateGrid columns={actionColumns} rows={buttonRows} />
       </MatrixSection>
       <MatrixSection component="IconButton">
+        <StyleReferences>
+          {actionVariants.flatMap((variant) => (["sm", "md", "lg"] as const).map((size) => <IconButton key={`${variant}-${size}`} ariaLabel={actionLabels[variant]} variant={variant} size={size} iconName={actionIcons[variant]} />))}
+          <ShellThemeToggle currentTheme="light" />
+          <ShellThemeToggle currentTheme="dark" />
+        </StyleReferences>
         <StateGrid columns={actionColumns} rows={iconRows} />
       </MatrixSection>
       <MatrixSection component="LinkButton">
+        <StyleReferences><LinkButton variant="quiet" size="sm" href="#actions-matrix"><Icon name="external-link" />View project</LinkButton></StyleReferences>
         <MatrixRow label="variant">
           <LinkButton variant="primary" href="#actions-matrix" {...heightHook("md")}>Invoices</LinkButton>
           <LinkButton variant="secondary" href="#actions-matrix" {...heightHook("md")}>Settings</LinkButton>
@@ -372,6 +432,12 @@ function ActionsMatrix({ theme }: { theme: MatrixTheme }) {
         </MatrixRow>
       </MatrixSection>
       <MatrixSection component="ClipboardCopyButton">
+        <StyleReferences>
+          {clipboardStateMarkup(`reference-copied-${theme}`, "copied", "Copied", {}, undefined, "quiet")}
+          {(["quiet", "secondary"] as const).flatMap((variant) => (["sm", "md"] as const).flatMap((size) => [false, true].map((disabled) => (
+            <ClipboardCopyButton key={`${variant}-${size}-${disabled}`} text="PRJ-2026-0412" ariaLabel="Copy ID" idleLabel="Copy ID" variant={variant} size={size} disabled={disabled} disabledReason={disabledFieldReason} />
+          ))))}
+        </StyleReferences>
         <MatrixRow label="state">
           <ClipboardCopyButton text="PRJ-2026-0412" ariaLabel="Copy ID" idleLabel="Copy ID" variant="secondary" size="sm" {...cell("cb-idle")} {...heightHook("sm")} />
           {clipboardStateMarkup(`actions-copying-${theme}`, "copying", "Copying", { ...cell("cb-copying"), ...heightHook("sm") })}
@@ -381,6 +447,7 @@ function ActionsMatrix({ theme }: { theme: MatrixTheme }) {
         </MatrixRow>
       </MatrixSection>
       <MatrixSection component="ButtonGroup">
+        <StyleReferences><ButtonGroup ariaLabel="View"><IconButton size="sm" ariaLabel="Layers" iconName="layers" aria-pressed="true" /><IconButton size="sm" ariaLabel="Grid" iconName="layout-grid" /></ButtonGroup></StyleReferences>
         <MatrixRow label="selected">
           <ButtonGroup ariaLabel="View">
             <IconButton ariaLabel="Layers" iconName="layers" aria-pressed="true" {...cell("grp-sel")} {...heightHook("md")} />
@@ -409,6 +476,10 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
   return (
     <>
       <MatrixSection component="Input">
+        <StyleReferences>
+          <Input type="email" aria-label="Email" defaultValue="lin.xiao@example.com" />
+          <Input aria-label="Email" aria-invalid="true" readOnly defaultValue="lin.xiao@" />
+        </StyleReferences>
         <MatrixRow label="placeholder"><Input aria-label="Project name" placeholder="Project name" {...cell("in-ph", "ph")} {...heightHook("md")} /></MatrixRow>
         <MatrixRow label="default"><Input aria-label="Project name" defaultValue="Quarterly review" {...cell("in-text")} {...heightHook("md")} /></MatrixRow>
         <MatrixRow label="focus"><Input aria-label="Project name" defaultValue="Quarterly review" {...previewState("focus")} {...cell("in-focus")} {...heightHook("md")} /></MatrixRow>
@@ -427,9 +498,21 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         </MatrixRow>
       </MatrixSection>
       <MatrixSection component="Textarea">
+        <StyleReferences>
+          <Textarea aria-label="Notes" readOnly defaultValue="Quarterly review" />
+          <Textarea aria-label="Notes" disabled disabledReason={disabledFieldReason} defaultValue="Quarterly review" />
+          <LineNumberedEditor value={["const route = 'local';", "return route;"].join("\n")} readOnly findings={[{ line: 2, label: "Review return path", tone: "warning" }]} />
+        </StyleReferences>
         <Textarea aria-label="Notes" defaultValue="Seats are billed monthly; annual plans are charged once per term." />
       </MatrixSection>
       <MatrixSection component="SearchInput">
+        <StyleReferences>
+          {([false, "auto"] as const).flatMap((shortcut) => [false, true].map((expanded) => (
+            <ProductShellSearch key={`${shortcut}-${expanded}`} shortcut={shortcut} expanded={expanded} query="review" onQueryChange={() => undefined}
+              results={[{ id: `search-reference-${theme}`, title: "Quarterly review", href: "#inputs-matrix" }]} />
+          )))}
+          <SearchInput aria-label="Search" placeholder="Search" shortcut="auto" />
+        </StyleReferences>
         <MatrixRow label="focus"><SearchInput aria-label="Search" defaultValue="design" {...previewState("focus")} {...cell("search-focus")} {...heightHook("md")} /></MatrixRow>
         <MatrixRow label="placeholder"><SearchInput aria-label="Search" placeholder="Search" {...cell("search-ph", "ph")} {...heightHook("md")} /></MatrixRow>
       </MatrixSection>
@@ -437,6 +520,7 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         <SuggestInput aria-label="Team" defaultValue="Design team" suggestions={["Design team", "Product team"]} {...heightHook("md")} />
       </MatrixSection>
       <MatrixSection component="Select">
+        <StyleReferences><Select aria-label="Project" disabled disabledReason={disabledFieldReason} options={projectOptions} /></StyleReferences>
         <StaticMarkup
           id={`inputs-select-${theme}`}
           element={<Select aria-label="Project" defaultValue="review" options={projectOptions} {...heightHook("md")} />}
@@ -444,6 +528,7 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         />
       </MatrixSection>
       <MatrixSection component="MultiSelect">
+        <StyleReferences><MultiSelect aria-label="Projects" presentation="dropdown" options={projectOptions} defaultValue={["review"]} /></StyleReferences>
         {/* The open list is shown in place: MultiSelect has no open entry, and the page's static
             bridge mounts every [data-choice-presentation=dropdown] root and moves an open list to
             document.body, out of this theme block. Dropping that hook keeps the expanded list and
@@ -471,6 +556,7 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         />
       </MatrixSection>
       <MatrixSection component="Checkbox">
+        <StyleReferences><Checkbox aria-label="Weekly digest" disabled disabledReason={disabledFieldReason} /></StyleReferences>
         <MatrixRow label="state">
           <Checkbox aria-label="Weekly digest" {...cell("ck-edge", "shadow")} />
           <Checkbox aria-label="Weekly digest" defaultChecked {...cell("ck-on", "after-border")} />
@@ -478,6 +564,10 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         </MatrixRow>
       </MatrixSection>
       <MatrixSection component="RadioGroup">
+        <StyleReferences>
+          <SettingChoice label="Billing cycle" name={`reference-choice-${theme}`} availableInlineSize={420} defaultValue="monthly"
+            options={[{ value: "monthly", label: "Monthly", description: "Quarterly review", minInlineSize: 140 }, { value: "annual", label: "Annual", description: "Quarterly review", minInlineSize: 140 }]} />
+        </StyleReferences>
         <StaticMarkup
           id={`inputs-radio-${theme}`}
           block
@@ -496,6 +586,7 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         />
       </MatrixSection>
       <MatrixSection component="Switch">
+        <StyleReferences><Switch label="Email notifications" description="Quarterly review" /></StyleReferences>
         <MatrixRow label="state">
           <Switch label="Email notifications" {...cell("sw-edge", "shadow")} />
           <Switch label="Weekly digest" defaultChecked {...cell("sw-on", "before-bg")} />

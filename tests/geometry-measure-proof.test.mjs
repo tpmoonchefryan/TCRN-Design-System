@@ -39,7 +39,7 @@ import {
   runFixtureSelfCheck,
   runGeometryMeasureProof
 } from "../scripts/geometry-measure-proof.mjs";
-import { captureBrandSuffixStates, defaultTextControlsInPage, settleControlPaint } from "../scripts/geometry-measure-proof.mjs";
+import { captureBrandSuffixStates, defaultTextControlsInPage, evaluateDefaultTextControlEdges, settleControlPaint } from "../scripts/geometry-measure-proof.mjs";
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 const fixtureDir = fileURLToPath(new URL("./fixtures/geometry-measure/", import.meta.url));
@@ -118,6 +118,48 @@ test("default textual edge capture composites RGBA as RGB and follows the visibl
     assert.equal(result.readings[1].ratio, result.readings[0].ratio);
     assert.equal(result.readings[2].ratio, null, "an absent edge is not replaced by a token ratio");
     assert.deepEqual(result.excluded.map((row) => row.reason).sort(), ["hidden value/control", "read-only"]);
+  } finally { await page.close(); }
+});
+
+test("SOURCE-RECONCILE distinguishes the two actual borderless SearchInput roles from missing ordinary paint", async () => {
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const ui = await import("../packages/ui-react/dist/index.js");
+  const { tcrnTokenCss } = await import("../packages/ui-tokens/dist/index.js");
+  const { createElement: h } = await import("react");
+  const page = await browser.newPage();
+  const ordinary = (suffix) => [
+    h(ui.Input, { "data-cell": `in-ph-${suffix}`, placeholder: "Project name" }),
+    h(ui.Input, { "data-cell": `in-text-${suffix}`, defaultValue: "Quarterly review" }),
+    h(ui.Textarea, { defaultValue: "Quarterly review" }),
+    h(ui.SuggestInput, { suggestions: ["Quarterly review"], defaultValue: "Quarterly review" }),
+    h(ui.Select, { options: [{ value: "review", label: "Quarterly review" }] }),
+    h(ui.MultiSelect, { presentation: "dropdown", options: [{ value: "review", label: "Quarterly review" }] }),
+    h(ui.NumberInput, { "data-cell": `num-${suffix}`, defaultValue: 12 }),
+    h(ui.DatePicker, { "data-cell": `date-${suffix}`, defaultValue: "2026-10-31" })
+  ];
+  try {
+    const html = renderToStaticMarkup(h("div", { id: "controls" }, ...["light", "dark"].map((theme) => {
+      const suffix = theme === "light" ? "l" : "n";
+      return h("div", { key: theme, "data-tcrn-theme": theme }, ...ordinary(suffix), h("section", { "data-gplus-matrix-component": "SearchInput" }, h(ui.SearchInput, { "data-cell": `search-ph-${suffix}`, placeholder: "Search" })));
+    })));
+    await page.setContent(`<style>${tcrnTokenCss}${ui.tcrnComponentCss}</style>${html}`);
+    await page.mouse.move(0, 899);
+    const green = await page.evaluate(defaultTextControlsInPage, "#controls");
+    assert.equal(evaluateDefaultTextControlEdges(green).ok, true);
+    assert.equal(green.applicable.length, 16);
+    assert.equal(green.notApplicable.length, 2);
+    assert.ok(green.notApplicable.every((r) => r.ratio === null && r.paintedEdge === null && !r.finite));
+    await page.locator('[data-cell="in-text-l"]').evaluate((el) => { el.style.boxShadow = "none"; });
+    const missing = await page.evaluate(defaultTextControlsInPage, "#controls");
+    assert.equal(evaluateDefaultTextControlEdges(missing).ok, false, "a normal Input losing its edge fails");
+    await page.locator('[data-cell="in-text-l"]').evaluate((el) => { el.removeAttribute("style"); });
+    await page.locator('[data-cell="search-ph-l"]').evaluate((el) => { el.style.border = "1px solid black"; });
+    assert.equal(evaluateDefaultTextControlEdges(await page.evaluate(defaultTextControlsInPage, "#controls")).ok, false, "decorated SearchInput cannot keep N/A");
+    await page.locator('[data-cell="search-ph-l"]').evaluate((el) => { el.removeAttribute("style"); el.setAttribute("aria-invalid", "true"); });
+    assert.equal(evaluateDefaultTextControlEdges(await page.evaluate(defaultTextControlsInPage, "#controls")).ok, false, "an invalid state cannot disappear as N/A");
+    assert.equal(evaluateDefaultTextControlEdges({ readings: green.readings.slice(1) }).ok, false, "an unobserved original control fails");
+    const generic = structuredClone(green); generic.readings.find((r) => r.cell === "search-ph-l").applicability = { status: "applicable" };
+    assert.equal(evaluateDefaultTextControlEdges(generic).ok, false, "generic null/type=search is not an exemption");
   } finally { await page.close(); }
 });
 

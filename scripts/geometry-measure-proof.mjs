@@ -414,7 +414,7 @@ export function defaultTextControlsInPage(root) {
   for (const el of scope.querySelectorAll('input,textarea,select,button.tcrn-select')) {
     if (['checkbox','radio'].includes(el.type)) continue;
     const identity = { element: el.tagName, type: el.type, classes: el.className, cell: el.getAttribute('data-cell'), theme: el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme') };
-    const reason = el.type === 'hidden' || !visible(el) ? 'hidden value/control' : el.disabled ? 'disabled' : el.readOnly ? 'read-only' : el.closest('[aria-invalid="true"]') ? 'invalid' : el.closest('[data-tcrn-preview-state]') ? 'preview state' : null;
+    const reason = el.closest('[data-gplus-style-reference]') ? 'additional style-reference specimen; not an original default-edge fixture' : el.type === 'hidden' || !visible(el) ? 'hidden value/control' : el.disabled ? 'disabled' : el.readOnly ? 'read-only' : el.closest('[aria-invalid="true"]') ? 'invalid' : el.closest('[data-tcrn-preview-state]') ? 'preview state' : null;
     if (reason) { excluded.push({ ...identity, reason }); continue; }
     const edgeOf = (node) => {
       const cs = getComputedStyle(node);
@@ -429,9 +429,50 @@ export function defaultTextControlsInPage(root) {
     const paintedEdge = edgeOf(paint);
     const carrier = toRgb(panel).slice(0, 3), edge = paintedEdge ? over(toRgb(paintedEdge), carrier) : null, a = edge ? lum(edge) : null, b = lum(carrier);
     const ratio = a === null ? null : (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
-    readings.push({ ...identity, paintCarrier: { element: paint.tagName, classes: paint.className }, carrierCandidates: candidates.map((node) => ({ element: node.tagName, classes: node.className, border: getComputedStyle(node).border, shadow: getComputedStyle(node).boxShadow, paintedEdge: edgeOf(node) ?? null })), border: cs.border, shadow: cs.boxShadow, lineCtl: line, paintedEdge: paintedEdge ?? null, panel, edge, carrier, ratio, finite: Number.isFinite(ratio), missingPaint: paintedEdge ? null : 'No visible default border or one-pixel shadow on the control or its SearchInput wrapper', requiredMinimum: 3.1 });
+    // SOURCE-RECONCILE D1 applies only to the two original, observable SearchInput
+    // tool specimens. Identity, public structure and actual default wash/borderless
+    // state are conjuncts; a type=search or missing paint alone grants nothing.
+    const expectedCell = identity.theme === 'light' ? 'search-ph-l' : identity.theme === 'dark' ? 'search-ph-n' : null;
+    const expectedWash = identity.theme === 'light' ? [22, 21, 15, .06] : [235, 232, 223, .07];
+    const actualWash = rgba(getComputedStyle(el).backgroundColor);
+    const borderlessRole = identity.cell === expectedCell && expectedCell !== null
+      && scope.querySelectorAll(`[data-cell="${expectedCell}"]`).length === 1
+      && el.matches('input.tcrn-input.tcrn-search-input__control[type="search"]')
+      && el.closest('[data-gplus-matrix-component="SearchInput"]') !== null
+      && searchWrapper?.getAttribute('data-search-input') === 'true'
+      && searchWrapper.querySelector('.tcrn-search-input__icon svg[data-icon-name="search"]') !== null
+      && !el.matches(':focus') && !searchWrapper.matches(':hover,:focus-within')
+      && candidates.every((node) => ['Top','Right','Bottom','Left'].every((side) => parseFloat(getComputedStyle(node)[`border${side}Width`]) === 0) && !edgeOf(node))
+      && actualWash.length === 4 && actualWash.every((value, index) => value === expectedWash[index]);
+    const applicability = borderlessRole
+      ? { status: 'n/a', role: 'approved-borderless-SearchInput-tool', decision: 'TCRN-DS-MIN-20261031-SOURCE-RECONCILE#D1', validated: true }
+      : { status: 'applicable' };
+    readings.push({ ...identity, paintCarrier: { element: paint.tagName, classes: paint.className }, carrierCandidates: candidates.map((node) => ({ element: node.tagName, classes: node.className, border: getComputedStyle(node).border, shadow: getComputedStyle(node).boxShadow, paintedEdge: edgeOf(node) ?? null })), border: cs.border, shadow: cs.boxShadow, lineCtl: line, paintedEdge: paintedEdge ?? null, panel, edge, carrier, ratio, finite: Number.isFinite(ratio), applicability, missingPaint: paintedEdge ? null : 'No visible default border or one-pixel shadow on the control or its SearchInput wrapper', requiredMinimum: 3.1 });
   }
-  return { readings, excluded, minimum: readings.length && readings.every((r) => r.finite) ? Math.min(...readings.map((r) => r.ratio)) : null };
+  const applicable = readings.filter((r) => r.applicability.status === 'applicable');
+  const notApplicable = readings.filter((r) => r.applicability.status === 'n/a');
+  return { readings, applicable, notApplicable, excluded, minimum: applicable.length && applicable.every((r) => r.finite) ? Math.min(...applicable.map((r) => r.ratio)) : null };
+}
+
+export function evaluateDefaultTextControlEdges({ readings }) {
+  const applicable = readings.filter((r) => r.applicability?.status !== 'n/a');
+  const notApplicable = readings.filter((r) => r.applicability?.status === 'n/a');
+  const problems = [];
+  if (applicable.length !== 16) problems.push('expected16originalOrdinaryControls');
+  for (const [theme, suffix] of [['light', 'l'], ['dark', 'n']]) {
+    for (const [element, type, cell, requiredClass] of [
+      ['INPUT', 'text', `in-ph-${suffix}`, 'tcrn-input'], ['INPUT', 'text', `in-text-${suffix}`, 'tcrn-input'],
+      ['TEXTAREA', 'textarea', null, 'tcrn-textarea'], ['INPUT', 'text', null, 'tcrn-input'],
+      ['SELECT', 'select-one', null, 'tcrn-select'], ['BUTTON', 'button', null, 'tcrn-multi-select-dropdown__trigger'],
+      ['INPUT', 'number', `num-${suffix}`, 'tcrn-number-input'], ['INPUT', 'date', `date-${suffix}`, 'tcrn-date-picker']
+    ]) {
+      if (applicable.filter((r) => r.theme === theme && r.element === element && r.type === type && r.cell === cell && r.classes.split(/\s+/).includes(requiredClass)).length !== 1) problems.push(`unobservedOrDuplicate:${theme}:${cell ?? type}`);
+    }
+  }
+  if (notApplicable.length !== 2 || ['search-ph-l', 'search-ph-n'].some((id) => notApplicable.filter((r) => r.cell === id).length !== 1)) problems.push('expectedTwoNamedSearchInputRoles');
+  for (const r of applicable) if (!r.finite || !Number.isFinite(r.ratio) || r.ratio < 3.1) problems.push(`ordinaryEdge:${r.cell ?? r.type}`);
+  for (const r of notApplicable) if (r.applicability.validated !== true || r.applicability.role !== 'approved-borderless-SearchInput-tool' || r.ratio !== null || r.paintedEdge !== null) problems.push(`invalidNotApplicable:${r.cell}`);
+  return { ok: problems.length === 0, problems, ordinaryCount: applicable.length, notApplicableCount: notApplicable.length, minimum: applicable.length && applicable.every((r) => r.finite) ? Math.min(...applicable.map((r) => r.ratio)) : null };
 }
 
 export async function captureGeometryCriteria(page, { root, storyId, artifactRoot = null } = {}) {
@@ -482,7 +523,10 @@ export async function captureGeometryCriteria(page, { root, storyId, artifactRoo
 
   if (storyId === "inputs-matrix") {
     const defaultControls = await page.evaluate(defaultTextControlsInPage, root);
-    output.defaultTextControls = defaultControls.readings;
+    output.defaultTextControls = defaultControls.applicable;
+    output.defaultTextControlsObserved = defaultControls.readings;
+    output.defaultTextControlsNotApplicable = defaultControls.notApplicable;
+    output.defaultTextControlsVerdict = evaluateDefaultTextControlEdges(defaultControls);
     output.defaultTextControlsExcluded = defaultControls.excluded;
     output.defaultTextControlsMinimum = defaultControls.minimum;
     output.invalidFocus = [];
