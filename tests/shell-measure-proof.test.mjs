@@ -2,6 +2,7 @@
 // Tab-shell reading library and the eighteen shell gates (TCRN-DS-STORY-149, TCRN-DS-SUB-135).
 import test, { after, before } from "node:test";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
@@ -227,7 +228,8 @@ test("the page in the paper: three checks beyond the G section, two of them prov
   for (const id of ["pageCrumbs", "settingsLayout", "splitView"]) assert.match(gateSource, new RegExp(`^//\\s+${id}\\s`, "m"), `${id} in the gate header`);
   // the C-12 screens and the brand story are fixed in the fixture manifest
   const ids = (story) => manifest.stories.screens[story].map((s) => s.id);
-  assert.deepEqual(ids("shell-top-band").slice(6), ["ts-search-l", "ts-settings-l", "ts-roster-l"]);
+  // The overflow cascade precedes the C-12 page screens (SUB-234), as in the hydrated story.
+  assert.deepEqual(ids("shell-top-band").slice(6), ["ts-drop-start-l", "ts-search-l", "ts-settings-l", "ts-roster-l"]);
   assert.deepEqual(ids("shell-mobile").slice(2), ["ts-settings-m", "ts-roster-m"]);
   const lines = manifest.stories.screens["shell-brand-first-line"];
   assert.equal(lines.length, 8);
@@ -276,7 +278,7 @@ test("markText names a first line by its shell, kind, mark size and product", ()
   assert.equal(judgeGate("markText", { shells: [], optical: [{ kind: "lk-line", mark: 44, inkMinusMark: 1, expect: 0 }], lockups: [] }).status, "pass");
 });
 
-test("149-GWT4: measure-shell.js and the library read the same numbers on the same board screens", async () => {
+test("149-GWT4: measure-shell.js and the library read the same numbers on the same board screens", async (t) => {
   for (const board of manifest.boards) {
     const { page, close } = await openBoard(board.file);
     try {
@@ -285,6 +287,7 @@ test("149-GWT4: measure-shell.js and the library read the same numbers on the sa
       const diffs = [];
       const counter = { leaves: 0 };
       compareLeaves(reference, reading, board.id, diffs, counter);
+      t.diagnostic(JSON.stringify({ schemaVersion: "tcrn.ds.shell-paired-reading.v1", board: board.id, file: board.file, viewport: page.viewportSize(), referenceScript: manifest.referenceScript, referenceSha256: createHash("sha256").update(referenceScript).digest("hex"), tolerancePx: 0.5, comparedLeaves: counter.leaves, reference, reading, differences: diffs }));
       assert.deepEqual(diffs, [], board.id);
       assert.ok(counter.leaves > 250, `${board.id}: ${counter.leaves} reference leaves compared`);
       assert.equal(reference.shells.length, board.shells.length);

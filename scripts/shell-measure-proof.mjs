@@ -873,7 +873,7 @@ export async function runFixtures({ root = process.cwd(), browser, launchOptions
           if (s && (!near(s.w, expected.width, thresholds.fixture.tolerancePx) || s.state !== expected.state)) fixtureFailures.push({ what: "shell", shell: s.id, value: { w: s.w, state: s.state }, expect: { w: expected.width, state: expected.state } });
         }
         if (verdict.missingHooks.length) fixtureFailures.push({ what: "missingHooks", value: verdict.missingHooks });
-        boards.push({ id: board.id, file: board.file, shells: ids.length, gates: verdict.gates, checks: verdict.checks, failed: verdict.failed, failedChecks: verdict.failedChecks, fixtureFailures, digests: Object.fromEntries(Object.entries(reading.logoForms).filter(([, form]) => form).map(([id, form]) => [id, formDigest(form)])) });
+        boards.push({ id: board.id, file: board.file, shells: ids.length, reading, gates: verdict.gates, checks: verdict.checks, failed: verdict.failed, failedChecks: verdict.failedChecks, fixtureFailures, digests: Object.fromEntries(Object.entries(reading.logoForms).filter(([, form]) => form).map(([id, form]) => [id, formDigest(form)])) });
       }
       const behaviour = judgeBehaviour(traces, thresholds);
       const gates = {};
@@ -1280,7 +1280,8 @@ export async function runStories({ root = process.cwd(), browser, launchOptions,
               const screenFailures = checkStoryScreens(reading, (plan.screens || {})[route.id]);
               // the first lines outside every shell (the brand story) with their markText readings
               const firstLines = (reading.optical || []).filter((o) => !o.shell).map((o) => ({ kind: o.kind, product: o.product, mark: o.mark, inkMinusMark: o.inkMinusMark }));
-              runs.push({ story: route.id, locale, theme, viewport: viewportOf(route.id), shells: reading.shells.map((s) => s.id), ...(firstLines.length ? { firstLines } : {}), gates: verdict.gates, checks: verdict.checks, failed: verdict.failed, failedChecks: verdict.failedChecks, missingHooks: verdict.missingHooks, screenFailures });
+              // Keep the measured values as well as the verdict, including values that pass.
+              runs.push({ story: route.id, locale, theme, viewport: viewportOf(route.id), shells: reading.shells.map((s) => s.id), reading, ...(firstLines.length ? { firstLines } : {}), gates: verdict.gates, checks: verdict.checks, failed: verdict.failed, failedChecks: verdict.failedChecks, missingHooks: verdict.missingHooks, screenFailures });
             }
           }
         }

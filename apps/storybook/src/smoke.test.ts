@@ -808,7 +808,9 @@ test("static contract story surface is retained and synthetic", () => {
   assert.match(readGroupPage("Components"), /data-locale-dismissal-contract="selection-outside-pointer-escape-focus-return"/);
   assert.match(readGroupPage("Components"), /data-locale-semantic-api="onOpenChange-onLocaleChange"/);
   assert.match(readGroupPage("Components"), /data-theme-transition-contract="whole-page-view-transition-or-token-wash"/);
-  assert.match(readGroupPage("Components"), /Package-backed AOS shell boundary/);
+  // The contract specimen uses its own registered brand (SUB-240); the AOS consumer boundary stays package-backed.
+  assert.match(readGroupPage("Components"), /Package-backed Design System shell boundary/);
+  assert.match(readGroupPage("Components"), /data-aos-shell-effect-boundary="package-backed"/);
   assert.match(readGroupPage("Components"), /Product consumers supply only route IA, labels, locale data, search records, content slots, and named DS callbacks/);
   assert.match(readGroupPage("Components"), /useProductShellController prop bundles instead of wrapper event delegation/);
   assert.match(readGroupPage("Components"), /tcrn-side-nav/);
@@ -1972,6 +1974,8 @@ test("top-band shell stories render the package shell with its measurement hooks
       ["ts-closed-l", "closed", "light"], ["ts-closed-n", "closed", "dark"],
       ["ts-x-l", "expanded", "light"], ["ts-x-n", "expanded", "dark"],
       ["ts-drop-l", "drop", "light"], ["ts-drop-n", "drop", "dark"],
+      // The overflow fixture added by SUB-234 exercises the cascade opening to the start side.
+      ["ts-drop-start-l", "drop", "light"],
       ["ts-search-l", "expanded", "light"],
       ["ts-settings-l", "closed", "light"], ["ts-roster-l", "closed", "light"]
     ],
