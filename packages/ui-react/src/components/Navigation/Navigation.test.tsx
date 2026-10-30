@@ -654,9 +654,22 @@ test("product shell component css carries the relocated component families (TCRN
   // The storybook-only static tooltip hook must NOT be shipped in the package; it stays
   // in the docs demo layer (it is not emitted by the Tooltip component).
   assert.doesNotMatch(tcrnComponentCss, /data-storybook-static-tooltip/);
-  // .tcrn-filter-bar must not become a top-level package selector, or the shell-fidelity
-  // duplicate-selector gate fires (it stays doc-side; package owns it only scoped).
-  assert.doesNotMatch(tcrnComponentCss, /\n\.tcrn-filter-bar\s*[,{]/);
+  // FilterBar now ships its standalone public layout; TableToolbar keeps its denser gap.
+  const filterBar = /\n\.tcrn-filter-bar \{([^}]*)\}/.exec(tcrnComponentCss);
+  assert.ok(filterBar, "the standalone FilterBar has a package rule");
+  assert.match(filterBar[1], /display: flex;/);
+  assert.match(filterBar[1], /flex-wrap: wrap;/);
+  assert.match(filterBar[1], /gap: var\(--tcrn-space-1h\);/);
+  assert.match(filterBar[1], /min-width: 0;/);
+  const toolbarFilterBar = /\n\.tcrn-table-toolbar \.tcrn-filter-bar \{([^}]*)\}/.exec(tcrnComponentCss);
+  assert.ok(toolbarFilterBar, "TableToolbar retains its scoped FilterBar rule");
+  assert.match(toolbarFilterBar[1], /display: flex;/);
+  assert.match(toolbarFilterBar[1], /flex-wrap: wrap;/);
+  assert.match(toolbarFilterBar[1], /align-items: center;/);
+  assert.match(toolbarFilterBar[1], /gap: var\(--tcrn-space-1\);/);
+  const tokens = createResolvedTokenMap();
+  assert.equal(tokens["--tcrn-space-1h"], "6px");
+  assert.equal(tokens["--tcrn-space-1"], "4px");
   // Guard: relocated rules reference tokens via var(); they must not DEFINE tokens.
   assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-state-blocked:/);
   assert.doesNotMatch(tcrnComponentCss, /--tcrn-z-popover:/);
