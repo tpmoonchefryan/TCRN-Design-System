@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: matrices.json, tokens.json, pairs.json
-// contract-sha256: 2c733a612ef6440ec61b2463f5be8599a9e89212476a888f750c65e69df520a3
+// contract-sha256: b8d9b019c0a0fa5c1c05a38b89dd3f32acdc40bf181a88e9fba5c3d6ac531f03
 
 
 export type GplusMatrixKind = "text" | "icon" | "edge";
@@ -89,7 +89,7 @@ export const gplusMatrices: Readonly<Record<GplusMatrixBoard, readonly GplusMatr
     {"cellId":"dis-l","id":"dis","theme":"light","fill":"dis","ink":"ink-3","surface":"panel","fillValue":"rgba(22,21,15,.05)","inkValue":"#6b675d","surfaceValue":"#ffffff","kind":"icon","exempt":true,"expect":"5.10","min":3},
     {"cellId":"ink2-bg-l","id":"ink2-bg","theme":"light","fill":"bg","ink":"ink-2","surface":"bg","fillValue":"#efeeea","inkValue":"#4f4c43","surfaceValue":"#efeeea","kind":"icon","exempt":false,"expect":"7.39","min":3},
     {"cellId":"ink3-bg-l","id":"ink3-bg","theme":"light","fill":"bg","ink":"ink-3","surface":"bg","fillValue":"#efeeea","inkValue":"#6b675d","surfaceValue":"#efeeea","kind":"icon","exempt":false,"expect":"4.86","min":3},
-    {"cellId":"ink-panel-l","id":"ink-panel","theme":"light","fill":"panel","ink":"ink","surface":"panel","fillValue":"#ffffff","inkValue":"#16150f","surfaceValue":"#ffffff","kind":"icon","exempt":false,"expect":"18.29","min":3},
+    {"cellId":"ink-panel-l","id":"ink-panel","theme":"light","fill":"wash","ink":"ink","surface":"panel","fillValue":"rgba(22,21,15,.06)","inkValue":"#16150f","surfaceValue":"#ffffff","kind":"icon","exempt":false,"expect":"16.18","min":3},
     {"cellId":"roster-n","id":"roster","theme":"night","fill":"panel","ink":"ink-2","surface":"panel","fillValue":"#191916","inkValue":"#a9a69c","surfaceValue":"#191916","kind":"icon","exempt":false,"expect":"7.23","min":3},
     {"cellId":"ink2-panel-n","id":"ink2-panel","theme":"night","fill":"panel","ink":"ink-2","surface":"panel","fillValue":"#191916","inkValue":"#a9a69c","surfaceValue":"#191916","kind":"icon","exempt":false,"expect":"7.23","min":3},
     {"cellId":"ink3-panel-n","id":"ink3-panel","theme":"night","fill":"panel","ink":"ink-3","surface":"panel","fillValue":"#191916","inkValue":"#85827a","surfaceValue":"#191916","kind":"icon","exempt":false,"expect":"4.59","min":3},
@@ -103,19 +103,19 @@ export const gplusMatrices: Readonly<Record<GplusMatrixBoard, readonly GplusMatr
     {"cellId":"dis-n","id":"dis","theme":"night","fill":"dis","ink":"ink-3","surface":"panel","fillValue":"rgba(235,232,223,.05)","inkValue":"#85827a","surfaceValue":"#191916","kind":"icon","exempt":true,"expect":"4.09","min":3},
     {"cellId":"ink2-bg-n","id":"ink2-bg","theme":"night","fill":"bg","ink":"ink-2","surface":"bg","fillValue":"#121210","inkValue":"#a9a69c","surfaceValue":"#121210","kind":"icon","exempt":false,"expect":"7.70","min":3},
     {"cellId":"ink3-bg-n","id":"ink3-bg","theme":"night","fill":"bg","ink":"ink-3","surface":"bg","fillValue":"#121210","inkValue":"#85827a","surfaceValue":"#121210","kind":"icon","exempt":false,"expect":"4.89","min":3},
-    {"cellId":"ink-panel-n","id":"ink-panel","theme":"night","fill":"panel","ink":"ink","surface":"panel","fillValue":"#191916","inkValue":"#ebe8df","surfaceValue":"#191916","kind":"icon","exempt":false,"expect":"14.38","min":3}
+    {"cellId":"ink-panel-n","id":"ink-panel","theme":"night","fill":"wash","ink":"ink","surface":"panel","fillValue":"rgba(235,232,223,.07)","inkValue":"#ebe8df","surfaceValue":"#191916","kind":"icon","exempt":false,"expect":"12.15","min":3}
   ],
   "brand": [
-    {"cellId":"suffix-ink-l","id":"suffix-ink","theme":"light","fill":"panel","ink":"ink","surface":"panel","fillValue":"#ffffff","inkValue":"#16150f","surfaceValue":"#ffffff","kind":"text","exempt":false,"expect":"18.29","min":4.5},
+    {"cellId":"suffix-ink-l","id":"suffix-ink","theme":"light","fill":"panel","ink":"#2c63c8","surface":"panel","fillValue":"#ffffff","inkValue":"#2c63c8","surfaceValue":"#ffffff","kind":"text","exempt":false,"expect":"5.64","min":4.5},
     {"cellId":"tagline-l","id":"tagline","theme":"light","fill":"panel","ink":"ink-3","surface":"panel","fillValue":"#ffffff","inkValue":"#6b675d","surfaceValue":"#ffffff","kind":"text","exempt":false,"expect":"5.64","min":4.5},
     {"cellId":"wm-l","id":"wm","theme":"light","fill":"panel","ink":"ink","surface":"panel","fillValue":"#ffffff","inkValue":"#16150f","surfaceValue":"#ffffff","kind":"text","exempt":false,"expect":"18.29","min":4.5},
-    {"cellId":"rail-wm-l","id":"rail-wm","theme":"light","fill":"bg","ink":"ink","surface":"bg","fillValue":"#efeeea","inkValue":"#16150f","surfaceValue":"#efeeea","kind":"text","exempt":false,"expect":"15.75","min":4.5},
-    {"cellId":"rail-tag-l","id":"rail-tag","theme":"light","fill":"bg","ink":"ink-3","surface":"bg","fillValue":"#efeeea","inkValue":"#6b675d","surfaceValue":"#efeeea","kind":"text","exempt":false,"expect":"4.86","min":4.5},
-    {"cellId":"suffix-ink-n","id":"suffix-ink","theme":"night","fill":"panel","ink":"ink","surface":"panel","fillValue":"#191916","inkValue":"#ebe8df","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"14.38","min":4.5},
+    {"cellId":"rail-wm-l","id":"rail-wm","theme":"light","fill":"panel","ink":"ink","surface":"panel","fillValue":"#ffffff","inkValue":"#16150f","surfaceValue":"#ffffff","kind":"text","exempt":false,"expect":"18.29","min":4.5},
+    {"cellId":"rail-tag-l","id":"rail-tag","theme":"light","fill":"panel","ink":"ink-3","surface":"panel","fillValue":"#ffffff","inkValue":"#6b675d","surfaceValue":"#ffffff","kind":"text","exempt":false,"expect":"5.64","min":4.5},
+    {"cellId":"suffix-ink-n","id":"suffix-ink","theme":"night","fill":"panel","ink":"#7aa0f5","surface":"panel","fillValue":"#191916","inkValue":"#7aa0f5","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"6.86","min":4.5},
     {"cellId":"tagline-n","id":"tagline","theme":"night","fill":"panel","ink":"ink-3","surface":"panel","fillValue":"#191916","inkValue":"#85827a","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"4.59","min":4.5},
     {"cellId":"wm-n","id":"wm","theme":"night","fill":"panel","ink":"ink","surface":"panel","fillValue":"#191916","inkValue":"#ebe8df","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"14.38","min":4.5},
-    {"cellId":"rail-wm-n","id":"rail-wm","theme":"night","fill":"bg","ink":"ink","surface":"bg","fillValue":"#121210","inkValue":"#ebe8df","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"15.31","min":4.5},
-    {"cellId":"rail-tag-n","id":"rail-tag","theme":"night","fill":"bg","ink":"ink-3","surface":"bg","fillValue":"#121210","inkValue":"#85827a","surfaceValue":"#121210","kind":"text","exempt":false,"expect":"4.89","min":4.5}
+    {"cellId":"rail-wm-n","id":"rail-wm","theme":"night","fill":"panel","ink":"ink","surface":"panel","fillValue":"#191916","inkValue":"#ebe8df","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"14.38","min":4.5},
+    {"cellId":"rail-tag-n","id":"rail-tag","theme":"night","fill":"panel","ink":"ink-3","surface":"panel","fillValue":"#191916","inkValue":"#85827a","surfaceValue":"#191916","kind":"text","exempt":false,"expect":"4.59","min":4.5}
   ],
   "actions": [
     {"cellId":"pri-d-l","id":"pri-d","theme":"light","fill":"acc","ink":"on-acc","surface":"panel","fillValue":"#0b6b65","inkValue":"#ffffff","surfaceValue":"#ffffff","kind":"text","exempt":false,"pair":"actions.primary.d","expect":"6.35","min":4.5},
