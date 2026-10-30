@@ -276,3 +276,16 @@ test("a proprietary face inside a distributable stack stays red", async (t) => {
   assert.match(text, /--tcrn-type-family-distributable-zh-cn advertises bundleability but names "PingFang"/);
   assert.doesNotMatch(text, /distributable-latin/);
 });
+
+test("build-time source guard retains local CSS and rejects remote, inline and host controls", async () => {
+  const { guardStaticFontSource } = await import("../scripts/fonts-proof.mjs");
+  const local = '@font-face { src: url("fonts/local.woff2") format("woff2"); }';
+  assert.equal(guardStaticFontSource(local), local);
+  for (const css of [
+    '@import url("https://fonts.googleapis.com/css2?family=Example");',
+    '@font-face { src: url("//fonts.gstatic.com/example.woff2"); }',
+    '@font-face { src: url("https://example.test/font.woff2"); }',
+    '@font-face { src: url("data:font/woff2;base64,AAAA"); }',
+    '/* fonts.googleapis.com: retained literal guard also rejects this comment */' + local
+  ]) assert.throws(() => guardStaticFontSource(css), /storybook_fonts_remote_or_inline_source/);
+});

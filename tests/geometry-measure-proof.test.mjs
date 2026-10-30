@@ -709,6 +709,15 @@ test("D03: browser paint limits the new DS colour to daytime shell hover/open an
     t.diagnostic(JSON.stringify({ minute: 'TCRN-DS-MIN-20261030-D03-COLOR D1-D3', actualRoleStates: rows }));
     for (const row of rows) {
       const ds = row.product === 'design-system', expected = row.theme === 'light' && ds ? 'rgb(80, 95, 193)' : row.rest.suffix;
+      assert.equal(row.rest.hover, false);
+      assert.equal(row.hover.hover, true, 'the pointer must genuinely hover the actual button');
+      assert.equal(row.hover.settlement.pointerWithin, true);
+      assert.equal(row.open.hover, false, 'SSR-expanded paint is separate from hover/handler-open');
+      for (const state of ['rest', 'hover', 'open']) {
+        assert.equal(row[state].settlement.documentMode, 'CSS1Compat');
+        assert.equal(row[state].settlement.pendingFiniteTransitions, 0);
+        assert.ok(row[state].settlement.stableReadings >= 2);
+      }
       if (ds) assert.equal(row.rest.suffix, 'rgb(101, 119, 243)');
       for (const state of ['hover','open']) {
         assert.equal(row[state].suffix, expected);

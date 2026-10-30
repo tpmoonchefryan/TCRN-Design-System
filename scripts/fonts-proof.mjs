@@ -63,6 +63,18 @@ const BUILD_OUTPUT_DIRS = new Set(["dist", "storybook-static"]);
 const DOCS_BUILD = "apps/storybook/storybook-static";
 const CDN_PATTERN = /googleapis|gstatic/i;
 const DATA_FONT_PATTERN = /data:(?:font\/|application\/(?:x-)?font)/i;
+
+// Repository build tooling owns rejection policy. The Node static-doc writer calls this
+// before emitting any stylesheet; the compiled app artifact only references this helper.
+// Keep the literal CDN guard here, visible and shared with the real output scan.
+export function guardStaticFontSource(rewritten) {
+  const code = rewritten.replace(/\/\*[\s\S]*?\*\//g, "");
+  if (/data:/i.test(code) || /[a-z][a-z0-9+.-]*:\/\/|url\(\s*["']?\/\//i.test(code) || CDN_PATTERN.test(rewritten)) {
+    throw new Error("storybook_fonts_remote_or_inline_source");
+  }
+  return code;
+}
+
 const BINARY_EXTENSIONS = new Set([...FONT_EXTENSIONS, ".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif", ".ico", ".tgz", ".gz", ".zip"]);
 const OFL_MARKER = /SIL OPEN FONT LICENSE Version 1\.1/i;
 

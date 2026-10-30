@@ -482,14 +482,55 @@ export async function captureBrandSuffixStates(page, { root } = {}) {
   const rows = [];
   for (const theme of ['light', 'dark']) {
     const markup = ['tms','design-system','einzbern','mana-orchestrate'].map((product) => `<section data-product="${product}">${renderToStaticMarkup(createElement(ui.ShellBrandButton, {productId:product,version:'v2',locale:'en'}))}${renderToStaticMarkup(createElement(ui.ShellBrandButton, {productId:product,version:'v2',locale:'en',expanded:true}))}${renderToStaticMarkup(createElement(ui.ProductLockup, {productId:product,firstLine:'rail',locale:'en'}))}</section>`).join('');
-    await page.setContent(`<style>${tokens.tcrnTokenCss}${ui.tcrnComponentCss}</style><main data-tcrn-theme="${theme}" style="background:var(--tcrn-color-bg);padding:24px">${markup}</main>`);
+    // Use the same standards mode as the built documentation. In quirks mode Chromium's
+    // unqualified matches(':hover') can be false even while button:hover paints normally.
+    await page.setContent(`<!doctype html><style>${tokens.tcrnTokenCss}${ui.tcrnComponentCss}</style><main data-tcrn-theme="${theme}" style="background:var(--tcrn-color-bg);padding:24px">${markup}</main>`);
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      window.__brandCapturePointer = null;
+      window.addEventListener('pointermove', (event) => { window.__brandCapturePointer = { x: event.clientX, y: event.clientY }; });
+    });
+    // Observe actual pointer state and finite CSS transitions; never neutralize product motion.
+    // Reacquire computed styles each frame and again for the final raw reading below.
+    const settle = (button, expectedHover) => button.evaluate(async (el, expectedHover) => {
+      const startedAt = performance.now(), budgetMs = 2000, observed = new Map();
+      let prior = null, stableReadings = 0, frames = 0;
+      while (performance.now() - startedAt < budgetMs) {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        const cs = getComputedStyle(el), suffix = el.querySelector('em'), word = el.querySelector('b');
+        const paint = JSON.stringify([cs.backgroundColor, cs.boxShadow, cs.color, suffix ? getComputedStyle(suffix).color : null, word ? getComputedStyle(word).color : null]);
+        const finite = el.getAnimations({ subtree: true }).filter((animation) => Number.isFinite(animation.effect?.getComputedTiming().endTime));
+        for (const animation of finite) {
+          const timing = animation.effect.getComputedTiming(), property = animation.transitionProperty ?? animation.animationName ?? animation.constructor.name;
+          observed.set(property, { property, duration: timing.duration, delay: timing.delay, endTime: timing.endTime });
+        }
+        const pending = finite.filter((animation) => animation.playState === 'running' || animation.pending);
+        const actualHover = el.matches('button:hover');
+        stableReadings = actualHover === expectedHover && pending.length === 0 && paint === prior ? stableReadings + 1 : 0;
+        prior = paint; frames += 1;
+        if (stableReadings >= 2) {
+          const pointer = window.__brandCapturePointer, hit = pointer ? document.elementFromPoint(pointer.x, pointer.y) : null;
+          const pointerWithin = Boolean(hit && el.contains(hit));
+          if (expectedHover && !pointerWithin) throw new Error('brand_capture_hover_hit_target_lost');
+          return { documentMode: document.compatMode, expectedHover, actualHover, pointer, pointerWithin, hit: hit ? { tag: hit.tagName, classes: hit.getAttribute('class') } : null, finiteTransitions: [...observed.values()], pendingFiniteTransitions: pending.length, frames, stableReadings, elapsedMs: performance.now() - startedAt, budgetMs };
+        }
+      }
+      throw new Error(`brand_capture_paint_unsettled:expectedHover=${expectedHover}`);
+    }, expectedHover);
     for (const product of ['tms','design-system','einzbern','mana-orchestrate']) {
       const idle = page.locator(`[data-product="${product}"] button`).nth(0), open = page.locator(`[data-product="${product}"] button`).nth(1);
       const read = (button) => button.evaluate((el) => {
         const cs = getComputedStyle(el), suffix = el.querySelector('em'), word = el.querySelector('b'), mark = el.querySelector('svg[data-logo]');
         return { suffix: suffix ? getComputedStyle(suffix).color : null, word: word ? getComputedStyle(word).color : null, background: cs.backgroundColor, canvas: getComputedStyle(el.closest('main')).backgroundColor, panel: cs.getPropertyValue('--tcrn-color-panel').trim(), opacity: cs.opacity, markOpacity: mark ? getComputedStyle(mark).opacity : null, mark: mark?.innerHTML ?? null, expanded: el.getAttribute('aria-expanded'), hover: el.matches(':hover'), geometry: { button: el.getBoundingClientRect().toJSON(), word: word?.getBoundingClientRect().toJSON() ?? null, wordClientWidth: word?.clientWidth ?? null, wordScrollWidth: word?.scrollWidth ?? null, mark: mark?.getBoundingClientRect().toJSON() ?? null, toggle: el.querySelector('[data-shell-toggle]')?.getBoundingClientRect().toJSON() ?? null, minWidth: cs.minInlineSize, carrier: el.closest('main').getBoundingClientRect().toJSON() } };
       });
-      await page.mouse.move(0,0); const rest = await read(idle); await idle.hover(); const hover = await read(idle); await page.mouse.move(0,0); const expanded = await read(open);
+      await idle.scrollIntoViewIfNeeded();
+      await page.mouse.move(0, 0);
+      const restSettlement = await settle(idle, false), rest = { ...await read(idle), settlement: restSettlement };
+      await idle.hover();
+      const hoverSettlement = await settle(idle, true), hover = { ...await read(idle), settlement: hoverSettlement };
+      await page.mouse.move(0, 0);
+      await settle(idle, false);
+      const openSettlement = await settle(open, false), expanded = { ...await read(open), settlement: openSettlement };
       for (const reading of [rest, hover, expanded]) {
         if (!reading.suffix) continue;
         const ink = parseColor(reading.suffix), canvas = parseColor(reading.canvas), fill = compositeOver(parseColor(reading.background), canvas);

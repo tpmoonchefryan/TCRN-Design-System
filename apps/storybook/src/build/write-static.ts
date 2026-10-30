@@ -9,6 +9,13 @@ import { DESIGN_AUTHORITY_ARTIFACT, designAuthorityContract } from "./design-aut
 import { contractPages } from "./navigation.js";
 import { pageHtml } from "./page-template.js";
 
+// This Node-only writer runs from the repository, where the shared build-time font
+// safety policy lives. src/build and dist/build have the same depth. Keep the real
+// rejection guard in build tooling instead of shipping a copy as an app artifact.
+const { guardStaticFontSource } = await import(new URL("../../../../scripts/fonts-proof.mjs", import.meta.url).href) as {
+  guardStaticFontSource(css: string): string;
+};
+
 function stableJson(value: unknown): string {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
@@ -95,10 +102,7 @@ export function rewriteFontStylesheet(css: string, faces: ReadonlySet<string>): 
     declared.add(file);
     return `url("${STATIC_FONT_DIR}/${file}")`;
   });
-  const code = rewritten.replace(/\/\*[\s\S]*?\*\//g, "");
-  if (/data:/i.test(code) || /[a-z][a-z0-9+.-]*:\/\/|url\(\s*["']?\/\//i.test(code) || /googleapis|gstatic/i.test(rewritten)) {
-    throw new Error("storybook_fonts_remote_or_inline_source");
-  }
+  const code = guardStaticFontSource(rewritten);
   for (const url of code.match(/url\([^)]*\)/g) ?? []) {
     if (!REWRITTEN_FONT_URL.test(url)) {
       throw new Error(`storybook_fonts_unrewritten_url:${url.slice(0, 80)}`);
