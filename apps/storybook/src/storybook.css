@@ -875,26 +875,6 @@ label {
   align-self: start;
 }
 
-.tcrn-doc-package-nav-proof__skip .tcrn-skip-link:not(:focus) {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  border: 0;
-  padding: 0;
-  white-space: nowrap;
-  transform: none;
-}
-
-.tcrn-doc-package-nav-proof__skip .tcrn-skip-link:focus {
-  display: inline-flex;
-  align-items: center;
-  max-width: 100%;
-}
-
 .tcrn-doc-demo-frame {
   position: relative;
   display: grid;
