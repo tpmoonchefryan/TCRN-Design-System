@@ -435,7 +435,7 @@ function ActionsMatrix({ theme }: { theme: MatrixTheme }) {
         <StyleReferences>
           {clipboardStateMarkup(`reference-copied-${theme}`, "copied", "Copied", {}, undefined, "quiet")}
           {(["quiet", "secondary"] as const).flatMap((variant) => (["sm", "md"] as const).flatMap((size) => [false, true].map((disabled) => (
-            <ClipboardCopyButton key={`${variant}-${size}-${disabled}`} text="PRJ-2026-0412" ariaLabel="Copy ID" idleLabel="Copy ID" variant={variant} size={size} disabled={disabled} disabledReason={disabledFieldReason} />
+            <ClipboardCopyButton key={`${variant}-${size}-${disabled}`} text="PRJ-2026-0412" ariaLabel="Copy ID" idleLabel="Copy ID" variant={variant} size={size} disabled={disabled} disabledReason={disabled ? disabledFieldReason : undefined} />
           ))))}
         </StyleReferences>
         <MatrixRow label="state">

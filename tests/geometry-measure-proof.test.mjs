@@ -121,7 +121,7 @@ test("default textual edge capture composites RGBA as RGB and follows the visibl
   } finally { await page.close(); }
 });
 
-test("SOURCE-RECONCILE distinguishes the two actual borderless SearchInput roles from missing ordinary paint", async () => {
+test("SOURCE-RECONCILE distinguishes the two actual borderless SearchInput roles from missing ordinary paint", async (t) => {
   const { renderToStaticMarkup } = await import("react-dom/server");
   const ui = await import("../packages/ui-react/dist/index.js");
   const { tcrnTokenCss } = await import("../packages/ui-tokens/dist/index.js");
@@ -149,17 +149,44 @@ test("SOURCE-RECONCILE distinguishes the two actual borderless SearchInput roles
     assert.equal(green.applicable.length, 16);
     assert.equal(green.notApplicable.length, 2);
     assert.ok(green.notApplicable.every((r) => r.ratio === null && r.paintedEdge === null && !r.finite));
-    await page.locator('[data-cell="in-text-l"]').evaluate((el) => { el.style.boxShadow = "none"; });
+    // Removing the public edge starts the real 120ms box-shadow transition. Measure its
+    // settled paint with the existing finite-animation/stable-frame reader before judging it.
+    const normalInput = page.locator('[data-cell="in-text-l"]');
+    await normalInput.evaluate((el) => { el.style.boxShadow = "none"; });
+    const missingPaintSettled = await settleControlPaint(normalInput);
+    assert.equal(missingPaintSettled.timedOut, false);
+    assert.equal(missingPaintSettled.stableFrames, 3);
     const missing = await page.evaluate(defaultTextControlsInPage, "#controls");
     assert.equal(evaluateDefaultTextControlEdges(missing).ok, false, "a normal Input losing its edge fails");
-    await page.locator('[data-cell="in-text-l"]').evaluate((el) => { el.removeAttribute("style"); });
-    await page.locator('[data-cell="search-ph-l"]').evaluate((el) => { el.style.border = "1px solid black"; });
-    assert.equal(evaluateDefaultTextControlEdges(await page.evaluate(defaultTextControlsInPage, "#controls")).ok, false, "decorated SearchInput cannot keep N/A");
-    await page.locator('[data-cell="search-ph-l"]').evaluate((el) => { el.removeAttribute("style"); el.setAttribute("aria-invalid", "true"); });
-    assert.equal(evaluateDefaultTextControlEdges(await page.evaluate(defaultTextControlsInPage, "#controls")).ok, false, "an invalid state cannot disappear as N/A");
+    await normalInput.evaluate((el) => { el.removeAttribute("style"); });
+    const normalRestored = await settleControlPaint(normalInput);
+    assert.equal(normalRestored.timedOut, false);
+    assert.equal(normalRestored.stableFrames, 3);
+    const searchInput = page.locator('[data-cell="search-ph-l"]');
+    await searchInput.evaluate((el) => { el.style.border = "1px solid black"; });
+    const decorated = await page.evaluate(defaultTextControlsInPage, "#controls");
+    assert.equal(evaluateDefaultTextControlEdges(decorated).ok, false, "decorated SearchInput cannot keep N/A");
+    await searchInput.evaluate((el) => { el.removeAttribute("style"); el.setAttribute("aria-invalid", "true"); });
+    const invalid = await page.evaluate(defaultTextControlsInPage, "#controls");
+    assert.equal(evaluateDefaultTextControlEdges(invalid).ok, false, "an invalid state cannot disappear as N/A");
     assert.equal(evaluateDefaultTextControlEdges({ readings: green.readings.slice(1) }).ok, false, "an unobserved original control fails");
     const generic = structuredClone(green); generic.readings.find((r) => r.cell === "search-ph-l").applicability = { status: "applicable" };
     assert.equal(evaluateDefaultTextControlEdges(generic).ok, false, "generic null/type=search is not an exemption");
+    await searchInput.evaluate((el) => { el.removeAttribute("aria-invalid"); });
+    const searchRestored = await settleControlPaint(searchInput);
+    assert.equal(searchRestored.timedOut, false);
+    assert.equal(searchRestored.stableFrames, 3);
+    const restored = await page.evaluate(defaultTextControlsInPage, "#controls");
+    assert.equal(evaluateDefaultTextControlEdges(restored).ok, true, "restoring both public controls restores the original16+2 premise");
+    const target = (capture, cell) => capture.readings.find((row) => row.cell === cell) ?? capture.excluded.find((row) => row.cell === cell);
+    t.diagnostic(JSON.stringify({ criterion: "126#1", viewport: page.viewportSize(), root: "#controls", green: { readings: green.readings, excluded: green.excluded, verdict: evaluateDefaultTextControlEdges(green) },
+      ordinaryEdgeRemoved: { settled: missingPaintSettled, reading: target(missing, "in-text-l"), verdict: evaluateDefaultTextControlEdges(missing) },
+      ordinaryRestoration: normalRestored,
+      decoratedSearch: { reading: target(decorated, "search-ph-l"), verdict: evaluateDefaultTextControlEdges(decorated) },
+      invalidSearch: { reading: target(invalid, "search-ph-l"), verdict: evaluateDefaultTextControlEdges(invalid) },
+      unobservedOrdinary: evaluateDefaultTextControlEdges({ readings: green.readings.slice(1) }),
+      genericNullSearch: evaluateDefaultTextControlEdges(generic),
+      restored: { settled: searchRestored, verdict: evaluateDefaultTextControlEdges(restored) } }));
   } finally { await page.close(); }
 });
 
