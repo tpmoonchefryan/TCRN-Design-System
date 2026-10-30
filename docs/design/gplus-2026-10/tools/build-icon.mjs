@@ -80,7 +80,7 @@ function pane(night) {
   const chips = [
     ["默认 ink-2", "ink2-panel"], ["次要 ink-3", "ink3-panel"], ["当前 ink 于 wash", "ink-wash"], ["主按钮 on-acc", "onacc-acc"], ["链接 acc", "acc-panel"], ["危险 red", "red-panel"], ["成功 ok", "ok-panel"], ["警告 warn", "warn-panel"], ["错误 bad", "bad-panel"], ["禁用 ink-3 于 dis", "dis"]
   ].map(([lbl, id]) => { const c = mc(id); return `<div class="chip-i"><span class="b" style="background:${c.fillValue};color:${c.inkValue}" ${cell(id)}>${icon(id === "dis" ? "settings" : id === "onacc-acc" ? "check" : id === "red-panel" ? "alert-triangle" : id === "ok-panel" ? "shield-check" : id === "warn-panel" ? "info" : id === "bad-panel" ? "x" : id === "acc-panel" ? "external-link" : "search", { size: 16 })}</span><small>${lbl}</small></div>`; }).join("");
-  const onCanvas = [["默认 ink-2 于画布", "ink2-bg"], ["次要 ink-3 于画布", "ink3-bg"], ["当前 ink 于纸（侧栏选中）", "ink-panel"]].map(([lbl, id]) => { const c = mc(id); return `<div class="chip-i"><span class="b" style="background:${c.fillValue};color:${c.inkValue};box-shadow:inset 0 0 0 1px var(--line)" ${cell(id)}>${icon("layout-grid", { size: 16 })}</span><small>${lbl}</small></div>`; }).join("");
+  const onCanvas = [["默认 ink-2 于画布", "ink2-bg"], ["次要 ink-3 于画布", "ink3-bg"], ["当前 ink 于墨洗（菜单选中）", "ink-panel"]].map(([lbl, id]) => { const c = mc(id); return `<div class="chip-i"><span class="b" style="background:${c.fillValue};color:${c.inkValue};box-shadow:inset 0 0 0 1px var(--line)" ${cell(id)}>${icon("layout-grid", { size: 16 })}</span><small>${lbl}</small></div>`; }).join("");
   return `<section class="pane gp${night ? " night" : ""}" aria-label="${night ? "夜间" : "浅色"}">
 ${grain("ic-" + th)}
 <span class="ptag">${night ? "night · 画布 #121210 · 纸 #191916" : "light · 画布 #efeeea · 纸 #ffffff"}</span>

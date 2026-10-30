@@ -608,6 +608,12 @@ export const baseCss11 = `
 }`;
 
 export const baseCss12 = `
+.tcrn-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tcrn-space-1h);
+  min-width: 0;
+}
 .tcrn-table-toolbar .tcrn-filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -2302,9 +2308,8 @@ export const baseCss29 = `
   margin-top: var(--tcrn-space-2);
 }
 
-/* Overlay tooltip — genuine :hover / :focus-within reveal only. The storybook
-   static-preview hook (a docs-only attribute variant the component never emits) stays in
-   the docs demo layer. */
+/* Tooltip's public staticPreview also opens inline SSR specimens. Interactive
+   hover/focus and the portaled boundary retain their existing behavior. */
 .tcrn-tooltip {
   position: relative;
   display: inline-flex;
@@ -2332,7 +2337,8 @@ export const baseCss29 = `
 }
 
 .tcrn-tooltip:hover .tcrn-tooltip__content,
-.tcrn-tooltip:focus-within .tcrn-tooltip__content {
+.tcrn-tooltip:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-tooltip-open="true"] .tcrn-tooltip__content {
   opacity: 1;
   transform: translateY(0);
 }
@@ -2344,7 +2350,8 @@ export const baseCss29 = `
 }
 
 .tcrn-tooltip[data-placement="top"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="top"]:focus-within .tcrn-tooltip__content {
+.tcrn-tooltip[data-placement="top"]:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="top"][data-tooltip-open="true"] .tcrn-tooltip__content {
   transform: translate(-50%, 0);
 }
 
@@ -2355,7 +2362,8 @@ export const baseCss29 = `
 }
 
 .tcrn-tooltip[data-placement="bottom"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="bottom"]:focus-within .tcrn-tooltip__content {
+.tcrn-tooltip[data-placement="bottom"]:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="bottom"][data-tooltip-open="true"] .tcrn-tooltip__content {
   transform: translate(-50%, 0);
 }
 
@@ -2366,7 +2374,8 @@ export const baseCss29 = `
 }
 
 .tcrn-tooltip[data-placement="right"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="right"]:focus-within .tcrn-tooltip__content {
+.tcrn-tooltip[data-placement="right"]:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="right"][data-tooltip-open="true"] .tcrn-tooltip__content {
   transform: translate(0, -50%);
 }
 
@@ -2377,7 +2386,8 @@ export const baseCss29 = `
 }
 
 .tcrn-tooltip[data-placement="left"]:hover .tcrn-tooltip__content,
-.tcrn-tooltip[data-placement="left"]:focus-within .tcrn-tooltip__content {
+.tcrn-tooltip[data-placement="left"]:focus-within .tcrn-tooltip__content,
+.tcrn-tooltip[data-placement="left"][data-tooltip-open="true"] .tcrn-tooltip__content {
   transform: translate(0, -50%);
 }
 
@@ -2510,9 +2520,8 @@ export const baseCss30 = `
   font-size: var(--tcrn-type-size-meta);
 }
 
-/* Navigation tab families — .tcrn-filter-bar stays doc-side (already package-owned via
-   the scoped .tcrn-table-toolbar .tcrn-filter-bar rule; introducing a top-level
-   .tcrn-filter-bar here would trip the shell-fidelity duplicate-selector gate). */
+/* Navigation tab families. Standalone FilterBar and the denser TableToolbar
+   context both receive their layout from this package. */
 
 /* TCRN-DS-STORY-063: interactive feedback family completion. Every clickable navigation / row /
    tab / button surface now answers hover + keyboard focus, and the pressable button families

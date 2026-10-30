@@ -16,10 +16,18 @@ import {
   StatCard,
   TableShell,
   TableToolbar,
+  FilterBar,
   validateContentScope
 } from "./DataDisplay.js";
 import { EmptyState, EnvironmentBanner, ErrorState, StateSurface } from "../Feedback/index.js";
 import { TopBar } from "../Navigation/index.js";
+
+test("standalone FilterBar preserves its named section and supplied controls", () => {
+  const html = renderToStaticMarkup(<FilterBar label="Project filters"><button type="button" aria-pressed="true">Active</button><span>3 selected</span></FilterBar>);
+  assert.match(html, /^<section class="tcrn-filter-bar" aria-label="Project filters">/);
+  assert.match(html, /<button type="button" aria-pressed="true">Active<\/button><span>3 selected<\/span>/);
+  assert.doesNotMatch(html, /tcrn-table-toolbar/);
+});
 
 test("stat cards and definition lists preserve their distinct display semantics", () => {
   const html = renderToStaticMarkup(

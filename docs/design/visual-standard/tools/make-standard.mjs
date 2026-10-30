@@ -34,14 +34,13 @@ function fixIcon(h) {
   h = replaceRow(h, "次要 · 侧栏图标", mxRow("次要 · 菜单项图标", "ink-3 于纸", both((t) => ({ fill: t.panel, ink: t.ink3, surface: t.panel, kind: "icon", fillLabel: "panel", inkLabel: "ink-3" }))));
   h = replaceRow(h, "当前 · 侧栏选中（纸色）", mxRow("当前 · 菜单选中", "ink 于 6% 墨洗（于纸）", both((t) => ({ fill: t.wash, ink: t.ink, surface: t.panel, kind: "icon", fillLabel: "wash", inkLabel: "ink" }))));
   h = replaceRow(h, "悬停 · 侧栏", mxRow("悬停 · 菜单项", "ink 于 3.5% 墨洗（于纸）", both((t) => ({ fill: t.hover, ink: t.ink, surface: t.panel, kind: "icon", fillLabel: "hover", inkLabel: "ink" }))));
-  // A 段「当前」样片：底改墨洗、expect 重算、标签改
+  // SOURCE-RECONCILE D2: the draft source now consumes the adopted wash contract.
+  // Refuse stale panel inputs rather than silently rewriting a source-role mismatch.
   for (const [th, t] of [["l", T.light], ["n", T.night]]) {
-    const f = over(parseColor(t.wash), over(parseColor(t.panel), [255, 255, 255, 1]));
-    const re = new RegExp('(style="background:)' + t.panel + '(;color:' + t.ink + ';box-shadow:inset 0 0 0 1px var\\(--line\\)" data-cell="ink-panel-' + th + '" data-kind="icon" data-expect=")[\\d.]+(")');
-    if (!re.test(h)) throw new Error("Icon A 段当前样片不存在：" + th);
-    h = h.replace(re, `$1${hex(f)}$2${fmt(cr(t.ink, t.wash, t.panel))}$3`);
+    const source = `style="background:${t.wash};color:${t.ink};box-shadow:inset 0 0 0 1px var(--line)" data-cell="ink-panel-${th}" data-kind="icon" data-expect="${fmt(cr(t.ink, t.wash, t.panel))}"`;
+    if (!h.includes(source)) throw new Error("Icon selected-wash source mismatch: " + th);
   }
-  h = must(h, "当前 ink 于纸（侧栏选中）", "当前 ink 于墨洗（菜单选中）", "Icon");
+  h = must(h, "当前 ink 于墨洗（菜单选中）", "当前 ink 于墨洗（菜单选中）", "Icon");
   h = must(h, "成员导航（Inputs 板侧栏）、顶栏通知按钮", "成员导航（菜单项）、顶带通知按钮", "Icon");
   h = h.replace(/docs 层（待裁定）<\/td><td[^>]*>进包<\/td><td[^>]*>style-scale\.md 记为待 Owner 裁定，本批建议进包/, "docs 层</td><td>进包</td><td>已进包：packages/ui-react/src/styles/icon.css.ts（2026-10-11 裁定）");
   return h;
@@ -77,6 +76,29 @@ m = must(m, "<p>Owner 2026-10-11 通过本稿（两处修订：TCRN 产品后缀
 m = must(m, "侧栏与应用图标用淡底贴片，favicon 用深底贴片", "应用图标与产品切换菜单用淡底贴片，favicon 用深底贴片", "Brand");
 m = must(m, "淡底贴片用于侧栏与应用图标，深底贴片用于 favicon 与深色场合", "淡底贴片用于应用图标与产品切换菜单，深底贴片用于 favicon 与深色场合", "Brand");
 m = m.split("E · 锁定块与侧栏 <span>").join("E · 锁定块与侧栏尺度 <span>");
+// SOURCE-RECONCILE D3: retain the approved E typography and bind stable matrix IDs
+// to its actual product text on panel. Only the already-authorized night TMS suffix changes paint.
+let paneIndex = 0;
+m = m.replace(/<section class="pane gp(?: night)?"[\s\S]*?<\/section>/g, (pane) => {
+  const night = paneIndex++ === 1, th = night ? "n" : "l";
+  const t = night ? T.night : T.light;
+  const attr = (id, ink) => `data-cell="${id}-${th}" data-kind="text" data-expect="${fmt(cr(ink, t.panel, t.panel))}"`;
+  const e = pane.indexOf("E · 锁定块与侧栏尺度");
+  if (e < 0) throw new Error("Brand section E missing: " + th);
+  let section = pane.slice(e);
+  if (night) section = must(section, '<em style="color:#2c63c8">TMS</em>', '<em style="color:#7aa0f5">TMS</em>', "Brand night TMS");
+  const suffix = night ? "#7aa0f5" : "#2c63c8";
+  const tmsWord = `<b class="">TCRN <em style="color:${suffix}">TMS</em></b>`;
+  if (!section.includes(tmsWord)) throw new Error("Brand TMS roles missing: " + th);
+  section = section.replace(tmsWord,
+    `<b class=""><span ${attr("wm", t.ink)}>TCRN</span> <em style="color:${suffix}" ${attr("suffix-ink", suffix)}>TMS</em></b>`);
+  // First occurrence is the full lockup on panel; keep the separate rail rendition intact.
+  section = section.replace('<b class="serif">Einzbern</b><small>项目记忆引擎</small>',
+    `<b class="serif" ${attr("rail-wm", t.ink)}>Einzbern</b><small ${attr("rail-tag", t.ink3)}>项目记忆引擎</small>`);
+  section = section.replace('<small>设计系统</small>', `<small ${attr("tagline", t.ink3)}>设计系统</small>`);
+  return pane.slice(0, e) + section;
+});
+if (paneIndex !== 2) throw new Error("Brand needs the two original theme panes");
 m = setHeight(m, "Brand");
 fs.writeFileSync(OUT + "Brand.dc.html", m); console.log("wrote Brand (product marks)", m.length);
 for (const stale of ["ProductMarks.dc.html"]) if (fs.existsSync(OUT + stale)) { fs.renameSync(OUT + stale, OUT + "../" + stale + ".retired"); console.log("retired", stale); }

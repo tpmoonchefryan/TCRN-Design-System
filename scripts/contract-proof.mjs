@@ -108,7 +108,8 @@ export const BOARD_DIR = `${DESIGN_DIR}/boards`;
 export const BOARD_FILES = Object.freeze({
   typography: "V2-B1-Typography.dc.html",
   icon: "V2-B1-Icon.dc.html",
-  brand: "V2-B1-Brand.dc.html",
+  // SOURCE-RECONCILE D3: the approved product board replaces the obsolete generic Brand source.
+  brand: "../../visual-standard/boards/Brand.dc.html",
   actions: "V2-B1-Actions.dc.html",
   inputs: "V2-B1-Inputs.dc.html"
 });
@@ -314,6 +315,36 @@ export function boardCells(html) {
     cells.push({ cellId: match[1], kind: attribute("data-kind"), expect: attribute("data-expect"), exempt: /\sdata-exempt(?=[\s/>=])/u.test(tag) });
   }
   return cells;
+}
+
+/** The adopted Brand source is its existing E product lockups on panel. Verify
+ * actual text/paint/structure separately from the generated data-expect numbers. */
+export function reconciledBrandSourceProblems(html) {
+  const problems = [];
+  const panes = [...html.matchAll(/<section class="pane gp(?: night)?"[\s\S]*?<\/section>/gu)].map((m) => m[0]);
+  if (panes.length !== 2) return ["Brand source needs its two original panes"];
+  for (const [index, pane] of panes.entries()) {
+    const th = index ? "n" : "l";
+    const css = new RegExp(`\\.gp${index ? "\\.night" : ""}\\{([^}]+)\\}`, "u").exec(html)?.[1] ?? "";
+    for (const value of index ? ["--panel:#191916", "--ink:#ebe8df", "--ink-3:#85827a"] : ["--panel:#ffffff", "--ink:#16150f", "--ink-3:#6b675d"]) {
+      if (!css.split(";").includes(value)) problems.push(`${th}: source token ${value}`);
+    }
+    const e = pane.slice(pane.indexOf("E · 锁定块与侧栏尺度"));
+    if (!e.includes('<div class="paper"><div class="lock">')) problems.push(`${th}: source panel carrier`);
+    const locks = [...e.matchAll(/<div class="lk" role="img" aria-label="([^"]+)">([\s\S]*?)<\/div>/gu)];
+    for (const [id, name, tag, text, extra] of [
+      ["wm", "TCRN TMS", "span", "TCRN", ""],
+      ["suffix-ink", "TCRN TMS", "em", "TMS", `style="color:${index ? "#7aa0f5" : "#2c63c8"}"`],
+      ["rail-wm", "Einzbern", "b", "Einzbern", 'class="serif"'],
+      ["rail-tag", "Einzbern", "small", "项目记忆引擎", ""],
+      ["tagline", "TCRN Design System", "small", "设计系统", ""]
+    ]) {
+      const lock = locks.find((match) => match[1].startsWith(name + " "))?.[2] ?? "";
+      const node = new RegExp(`<${tag}\\b([^>]*data-cell="${id}-${th}"[^>]*)>${text}<\\/${tag}>`, "u").exec(lock);
+      if (!node || (extra && !node[1].includes(extra))) problems.push(`${id}-${th}: source product/text/paint mismatch`);
+    }
+  }
+  return problems;
 }
 
 /**
@@ -639,11 +670,16 @@ function checkMatrices({ root, data, lib, loadError }) {
       continue;
     }
     const boardPath = join(root, BOARD_DIR, BOARD_FILES[board]);
+    if (board === "brand" && data.matrices.boards.brand.sourceBoard !== "docs/design/visual-standard/boards/Brand.dc.html") {
+      failures.push("brand: effective product sourceBoard must be the approved visual-standard Brand board");
+    }
     if (!existsSync(boardPath)) {
       failures.push(`${BOARD_DIR}/${BOARD_FILES[board]}: missing`);
       continue;
     }
-    const onBoard = boardCells(readFileSync(boardPath, "utf8"));
+    const boardHtml = readFileSync(boardPath, "utf8");
+    if (board === "brand") failures.push(...reconciledBrandSourceProblems(boardHtml));
+    const onBoard = boardCells(boardHtml);
     total += onBoard.length;
     if (contractCells.length !== wanted) failures.push(`${board}: matrices.json has ${contractCells.length} cells; the board has ${wanted}`);
     if (generatedData && dataCells.length !== wanted) failures.push(`${board}: the generated matrix data has ${dataCells.length} cells; the board has ${wanted}`);

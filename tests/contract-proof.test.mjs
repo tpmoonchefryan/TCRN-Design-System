@@ -10,6 +10,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { generate } from "../scripts/contract-generate.mjs";
+import { RECONCILED_ROLES, reconciledRoleProblems } from "../scripts/storybook-visual-proof.mjs";
 import {
   BOARD_DIR,
   BOARD_FILES,
@@ -32,6 +33,7 @@ import {
   pairBaseClasses,
   pairStateAtoms,
   runContractProof,
+  reconciledBrandSourceProblems,
   shellBoardMatrix,
   stateRuleLiterals
 } from "../scripts/contract-proof.mjs";
@@ -48,6 +50,38 @@ const read = (root, rel) => readFileSync(join(root, rel), "utf8");
 const write = (root, rel, text) => writeFileSync(join(root, rel), text);
 const checkOf = (result, id) => result.checks.find((check) => check.id === id);
 const moduleOf = (table) => (table === "actions" ? ACTIONS_PAIRS : INPUTS_PAIRS);
+
+test("SOURCE-RECONCILE requires the actual product atom and selected painted carrier, not matching candidate numbers", () => {
+  for (const board of ["icon", "brand"]) {
+    const cells = Object.entries(RECONCILED_ROLES).filter(([, role]) => role.board === board).map(([id, { board: _board, ...role }]) => ({ id, expect: "18.29", role }));
+    assert.deepEqual(reconciledRoleProblems(board, cells), []);
+    assert.ok(reconciledRoleProblems(board, cells.slice(1)).length > 0, "an unobserved role fails");
+    const wrongCarrier = structuredClone(cells); wrongCarrier[0].role.carrier = "#efeeea";
+    assert.ok(reconciledRoleProblems(board, wrongCarrier).some((p) => p.property === "carrier"));
+    const wrongRole = structuredClone(cells);
+    if (board === "icon") wrongRole[0].role.selected = false;
+    else wrongRole[0].role.product = "design-system";
+    assert.ok(reconciledRoleProblems(board, wrongRole).length > 0);
+    const wrongForeground = structuredClone(cells); wrongForeground[0].role.foreground = "#a0a0a0";
+    assert.ok(reconciledRoleProblems(board, wrongForeground).some((p) => p.property === "foreground"));
+    if (board === "brand") {
+      const generic = structuredClone(cells); generic[0].role.text = "TCRN Docs";
+      assert.ok(reconciledRoleProblems(board, generic).some((p) => p.property === "text"));
+    }
+  }
+});
+
+test("SOURCE-RECONCILE rejects a source product/carrier mismatch even with unchanged data-expect", () => {
+  const html = read(repoRoot, "docs/design/visual-standard/boards/Brand.dc.html");
+  assert.deepEqual(reconciledBrandSourceProblems(html), []);
+  const wrongSuffix = html.replace(/(<em style="color:)#7aa0f5(" data-cell="suffix-ink-n")/u, "$1#2c63c8$2");
+  assert.notEqual(wrongSuffix, html);
+  assert.ok(reconciledBrandSourceProblems(wrongSuffix).some((p) => p.includes("suffix-ink-n")));
+  const wrongProduct = html.replace(/(<span data-cell="wm-l"[^>]*>)TCRN(<\/span>)/u, "$1Docs$2");
+  assert.ok(reconciledBrandSourceProblems(wrongProduct).some((p) => p.includes("wm-l")));
+  const wrongCarrier = html.replace(/--panel:#ffffff;/u, "--panel:#efeeea;");
+  assert.ok(reconciledBrandSourceProblems(wrongCarrier).some((p) => p.includes("source token")));
+});
 
 let uiModule;
 async function realUi() {

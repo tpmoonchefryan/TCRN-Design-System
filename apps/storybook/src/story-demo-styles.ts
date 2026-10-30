@@ -440,47 +440,6 @@ label {
   align-items: start;
 }
 
-/* Tooltip base, content, the :hover/:focus-within reveal and the four data-placement
-   position rules moved into the package component CSS — TCRN-DS-STORY-037. The docs demo
-   layer keeps ONLY the storybook static-preview hook
-   ([data-storybook-static-tooltip="true"]), which the Tooltip component never emits, so
-   it is presentation chrome. The package rules supply the base placement; these force the
-   revealed state for the static preview. */
-.tcrn-tooltip[data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.tcrn-tooltip[data-placement="top"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
-  transform: translate(-50%, 0);
-}
-
-.tcrn-tooltip[data-placement="bottom"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
-  transform: translate(-50%, 0);
-}
-
-.tcrn-tooltip[data-placement="right"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
-  transform: translate(0, -50%);
-}
-
-.tcrn-tooltip[data-placement="left"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content {
-  transform: translate(0, -50%);
-}
-
-/* Navigation families .tcrn-breadcrumb* and the tab layouts (.tcrn-product-launcher,
-   .tcrn-product-switcher, .tcrn-module-tabs, .tcrn-section-tabs, .tcrn-segmented-nav,
-   including their button + selected rules) moved into the package component CSS —
-   TCRN-DS-STORY-037. .tcrn-filter-bar is docs-only demo chrome and stays; it shares the
-   flex layout the tab families use. It is package-owned only via the scoped
-   ".tcrn-table-toolbar .tcrn-filter-bar" rule, so a top-level .tcrn-filter-bar here does
-   not duplicate a package selector. */
-.tcrn-filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-}
-
 .tcrn-doc-nav-component-preview {
   display: grid;
   gap: var(--tcrn-space-3);

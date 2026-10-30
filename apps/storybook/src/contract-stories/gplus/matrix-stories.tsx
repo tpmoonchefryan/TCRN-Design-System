@@ -185,11 +185,11 @@ function IconMatrix({ theme }: { theme: MatrixTheme }) {
         {/* The labelled size roster above puts every icon inside Text. Standalone package
             icons also occur in stories: keep their real, distinct signatures observable
             without changing the existing roster, contrast cells or control-context roles. */}
-        <MatrixRow label="standalone reference sizes">
+        <MatrixRow label="size">
           {[11, 12, 20].map((size) => <Icon key={size} name="settings" size={size} />)}
         </MatrixRow>
         <MatrixRow label="ink">
-          <Text tone="strong"><Icon name={sample} {...cell("ink-panel")} /></Text>
+          <IconButton ariaLabel="Layers" variant="secondary" aria-pressed="true" icon={<Icon name={sample} {...cell("ink-panel")} />} />
           <Text><Icon name={sample} {...cell("ink2-panel")} /></Text>
           <Text size="meta"><Icon name={sample} {...cell("ink3-panel")} /></Text>
           <Text><a className="tcrn-link" href="#icon-matrix" aria-label="Layers"><Icon name={sample} {...cell("acc-panel")} /></a></Text>
@@ -249,7 +249,7 @@ function BrandMatrix({ theme }: { theme: MatrixTheme }) {
         {/* Decorative marks use the public aria-hidden contract in product compositions.
             These samples supply that missing primitive signature; their approved assets
             and the original ten Brand contrast cells remain unchanged. */}
-        <MatrixRow label="decorative reference marks">
+        <MatrixRow label="mark">
           {productMarkIds.map((productId) => (
             <span key={productId} style={brandMarkSize(38)}><TcrnBrandMark productId={productId} aria-hidden="true" /></span>
           ))}
@@ -262,38 +262,32 @@ function BrandMatrix({ theme }: { theme: MatrixTheme }) {
             element={<ProductLogo productId="design-system" />}
             edits={[cellEdit('class="tcrn-product-logo__line-two"', cell("tagline"))]}
           />
-          <ProductLogo productId="tms" />
-        </MatrixRow>
-        <MatrixRow label="serif">
-          <ProductLogo productId="einzbern" />
-          <ProductLogo productId="mana-orchestrate" />
-        </MatrixRow>
-      </MatrixSection>
-      <MatrixSection component="ProductLockup">
-        <MatrixRow label="suffix">
           <StaticMarkup
-            id={`brand-lockup-${theme}`}
-            element={<ProductLockup suffix="Docs" />}
+            id={`brand-tms-${theme}`}
+            element={<ProductLogo productId="tms" />}
             edits={[
-              cellEdit('class="tcrn-brand-wordmark"', cell("wm")),
-              cellEdit('class="tcrn-brand-wordmark__suffix"', cell("suffix-ink"))
+              cellEdit('class="tcrn-product-logo__line-one-base"', cell("wm")),
+              cellEdit('class="tcrn-product-logo__line-one-suffix ', cell("suffix-ink"))
             ]}
           />
-          <ProductLockup productId="design-system" />
         </MatrixRow>
-      </MatrixSection>
-      <div className="tcrn-doc-form-stack" data-gplus-matrix-canvas="ProductLogo">
-        <MatrixRow label="canvas">
+        <MatrixRow label="serif">
           <StaticMarkup
-            id={`brand-rail-${theme}`}
+            id={`brand-einzbern-${theme}`}
             element={<ProductLogo productId="einzbern" />}
             edits={[
               cellEdit('class="tcrn-product-logo__line-one"', cell("rail-wm")),
               cellEdit('class="tcrn-product-logo__line-two"', cell("rail-tag"))
             ]}
           />
+          <ProductLogo productId="mana-orchestrate" />
         </MatrixRow>
-      </div>
+      </MatrixSection>
+      <MatrixSection component="ProductLockup">
+        <MatrixRow label="suffix">
+          <ProductLockup productId="design-system" />
+        </MatrixRow>
+      </MatrixSection>
     </>
   );
 }

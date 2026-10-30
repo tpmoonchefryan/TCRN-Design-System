@@ -68,7 +68,7 @@
         { "cellId": "dis-l", "id": "dis", "theme": "light", "fill": "dis", "ink": "ink-3", "surface": "panel", "kind": "icon", "exempt": true },
         { "cellId": "ink2-bg-l", "id": "ink2-bg", "theme": "light", "fill": "bg", "ink": "ink-2", "surface": "bg", "kind": "icon", "exempt": false },
         { "cellId": "ink3-bg-l", "id": "ink3-bg", "theme": "light", "fill": "bg", "ink": "ink-3", "surface": "bg", "kind": "icon", "exempt": false },
-        { "cellId": "ink-panel-l", "id": "ink-panel", "theme": "light", "fill": "panel", "ink": "ink", "surface": "panel", "kind": "icon", "exempt": false },
+        { "cellId": "ink-panel-l", "id": "ink-panel", "theme": "light", "fill": "wash", "ink": "ink", "surface": "panel", "kind": "icon", "exempt": false },
         { "cellId": "roster-n", "id": "roster", "theme": "night", "fill": "panel", "ink": "ink-2", "surface": "panel", "kind": "icon", "exempt": false },
         { "cellId": "ink2-panel-n", "id": "ink2-panel", "theme": "night", "fill": "panel", "ink": "ink-2", "surface": "panel", "kind": "icon", "exempt": false },
         { "cellId": "ink3-panel-n", "id": "ink3-panel", "theme": "night", "fill": "panel", "ink": "ink-3", "surface": "panel", "kind": "icon", "exempt": false },
@@ -82,22 +82,23 @@
         { "cellId": "dis-n", "id": "dis", "theme": "night", "fill": "dis", "ink": "ink-3", "surface": "panel", "kind": "icon", "exempt": true },
         { "cellId": "ink2-bg-n", "id": "ink2-bg", "theme": "night", "fill": "bg", "ink": "ink-2", "surface": "bg", "kind": "icon", "exempt": false },
         { "cellId": "ink3-bg-n", "id": "ink3-bg", "theme": "night", "fill": "bg", "ink": "ink-3", "surface": "bg", "kind": "icon", "exempt": false },
-        { "cellId": "ink-panel-n", "id": "ink-panel", "theme": "night", "fill": "panel", "ink": "ink", "surface": "panel", "kind": "icon", "exempt": false }
+        { "cellId": "ink-panel-n", "id": "ink-panel", "theme": "night", "fill": "wash", "ink": "ink", "surface": "panel", "kind": "icon", "exempt": false }
       ]
     },
     "brand": {
       "board": "V2-B1-Brand.dc.html",
+      "sourceBoard": "docs/design/visual-standard/boards/Brand.dc.html",
       "cells": [
-        { "cellId": "suffix-ink-l", "id": "suffix-ink", "theme": "light", "fill": "panel", "ink": "ink", "surface": "panel", "kind": "text", "exempt": false },
+        { "cellId": "suffix-ink-l", "id": "suffix-ink", "theme": "light", "fill": "panel", "ink": "#2c63c8", "surface": "panel", "kind": "text", "exempt": false },
         { "cellId": "tagline-l", "id": "tagline", "theme": "light", "fill": "panel", "ink": "ink-3", "surface": "panel", "kind": "text", "exempt": false },
         { "cellId": "wm-l", "id": "wm", "theme": "light", "fill": "panel", "ink": "ink", "surface": "panel", "kind": "text", "exempt": false },
-        { "cellId": "rail-wm-l", "id": "rail-wm", "theme": "light", "fill": "bg", "ink": "ink", "surface": "bg", "kind": "text", "exempt": false },
-        { "cellId": "rail-tag-l", "id": "rail-tag", "theme": "light", "fill": "bg", "ink": "ink-3", "surface": "bg", "kind": "text", "exempt": false },
-        { "cellId": "suffix-ink-n", "id": "suffix-ink", "theme": "night", "fill": "panel", "ink": "ink", "surface": "panel", "kind": "text", "exempt": false },
+        { "cellId": "rail-wm-l", "id": "rail-wm", "theme": "light", "fill": "panel", "ink": "ink", "surface": "panel", "kind": "text", "exempt": false },
+        { "cellId": "rail-tag-l", "id": "rail-tag", "theme": "light", "fill": "panel", "ink": "ink-3", "surface": "panel", "kind": "text", "exempt": false },
+        { "cellId": "suffix-ink-n", "id": "suffix-ink", "theme": "night", "fill": "panel", "ink": "#7aa0f5", "surface": "panel", "kind": "text", "exempt": false },
         { "cellId": "tagline-n", "id": "tagline", "theme": "night", "fill": "panel", "ink": "ink-3", "surface": "panel", "kind": "text", "exempt": false },
         { "cellId": "wm-n", "id": "wm", "theme": "night", "fill": "panel", "ink": "ink", "surface": "panel", "kind": "text", "exempt": false },
-        { "cellId": "rail-wm-n", "id": "rail-wm", "theme": "night", "fill": "bg", "ink": "ink", "surface": "bg", "kind": "text", "exempt": false },
-        { "cellId": "rail-tag-n", "id": "rail-tag", "theme": "night", "fill": "bg", "ink": "ink-3", "surface": "bg", "kind": "text", "exempt": false }
+        { "cellId": "rail-wm-n", "id": "rail-wm", "theme": "night", "fill": "panel", "ink": "ink", "surface": "panel", "kind": "text", "exempt": false },
+        { "cellId": "rail-tag-n", "id": "rail-tag", "theme": "night", "fill": "panel", "ink": "ink-3", "surface": "panel", "kind": "text", "exempt": false }
       ]
     },
     "actions": {

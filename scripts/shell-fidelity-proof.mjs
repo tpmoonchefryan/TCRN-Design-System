@@ -86,10 +86,8 @@ const DUPLICATE_DOCS_SURFACES = [
 // § "Demo-chrome exemption list". Every entry below is a key-subject the expanded gate
 // flags only because it is scoped under one of those documented demo containers
 // (.tcrn-doc-*, which since TCRN-DS-SUB-025 covers the knowledge-shell, nav-preview,
-// package-nav-proof and form-stack scaffolding, and the tooltip static-preview hook), or —
-// for .tcrn-filter-bar — is documented there as non-duplicating (the package owns it only via the scoped
-// `.tcrn-table-toolbar .tcrn-filter-bar` rule, so a top-level docs `.tcrn-filter-bar`
-// shares the key-subject but not the selector).
+// package-nav-proof and form-stack scaffolding). Tooltip staticPreview and standalone
+// FilterBar layout are now package capabilities, so their doc rules and entries are gone.
 // A whitelisted subject is still held to placement by the rule-level guard below
 // (TCRN-DS-SUB-065): only placement properties, or an exception registered for that exact
 // selector, pass. Entries go when their last doc rule goes (.tcrn-sr-only and
@@ -103,20 +101,17 @@ const DUPLICATE_SELECTOR_WHITELIST = new Set([
   ".tcrn-product-switcher",
   ".tcrn-segmented-nav",
   ".tcrn-field",
-  ".tcrn-tooltip__content",
   // The package-nav proof places the package side nav in its demo grid
   // (`.tcrn-doc-package-nav-proof > .tcrn-side-nav`); the package owns its appearance and the
   // docs only position it. The brand lockup entries (.tcrn-shell-brand-lockup and its copy and
   // caption) went with the last doc rules that placed them (TCRN-DS-SUB-219).
-  ".tcrn-side-nav",
+  ".tcrn-side-nav"
   // The entry for the ProductShell story's static search result list (TCRN-DS-SUB-100) went with
   // its doc rule and its registered exception once no story wrote that doc container any more
   // (TCRN-DS-SUB-204).
   // The knowledge-base sample's .tcrn-nav-group__label and .tcrn-nav-item entries (TCRN-DS-SUB-101,
   // R3M5) went with their four document-scoped exceptions once the sample and the documentation shell
   // became the package's top-band ProductShell (TCRN-DS-SUB-132, INIT-015 N-2).
-  // Documented demo-chrome hook — not a duplicate (see comment above):
-  ".tcrn-filter-bar"
 ]);
 
 // A line that defines a token (`--tcrn-…: #hex/999px`) or is a comment is not drift:
@@ -328,30 +323,7 @@ const SINGLE_LINE_CARRIER_CLASSES = new Set(
 // to the top-band ProductShell (TCRN-DS-SUB-132, INIT-015 closeout N-2). The entry for the
 // ProductShell story's static search result list (TCRN-DS-SUB-100) went with its doc rule once no
 // story wrote that doc container any more (TCRN-DS-SUB-204).
-export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([
-  {
-    id: "EX-INIT015-doc-tooltip-static-preview",
-    selectors: [
-      '.tcrn-tooltip[data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
-      '.tcrn-tooltip[data-placement="top"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
-      '.tcrn-tooltip[data-placement="bottom"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
-      '.tcrn-tooltip[data-placement="right"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content',
-      '.tcrn-tooltip[data-placement="left"][data-storybook-static-tooltip="true"] .tcrn-tooltip__content'
-    ],
-    properties: ["opacity", "transform"],
-    ruling: "docs/style-scale.md「Demo-chrome exemption list」Component-scoped demo hooks 条：tooltip 静态预览钩子为静态文档强制显示展开态；Tooltip 属 Overlay 家族，TCRN-DS-INIT-015 scope 不授权改动后续批次家族（同 EX-INIT015-overlay）",
-    reason: "静态文档页没有悬停，钩子只把包的 tooltip 内容移到展开位置并显示（opacity、transform），不改颜色、字号与边框",
-    until: "Overlay 家族所在批次获得授权、包提供静态展开态时删除本条"
-  },
-  {
-    id: "EX-INIT015-doc-filter-bar",
-    selectors: [".tcrn-filter-bar"],
-    properties: ["display", "flex-wrap", "gap"],
-    ruling: "docs/style-scale.md「Demo-chrome exemption list」Component-scoped demo hooks 条：顶层 .tcrn-filter-bar 是文档的标签排布钩子，包只在 .tcrn-table-toolbar .tcrn-filter-bar 里定义它；所属 Navigation 家族属后续批次（同 EX-INIT015-navigation）",
-    reason: "包没有独立 FilterBar 的排布规则，文档只给演示行排布（display、flex-wrap、gap），不改颜色、字号与边框",
-    until: "Navigation 家族所在批次获得授权、包给 FilterBar 独立排布时删除本条"
-  }
-]);
+export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([]);
 
 function isPackageClass(name) {
   return name.startsWith("tcrn-") && !name.startsWith("tcrn-doc-");

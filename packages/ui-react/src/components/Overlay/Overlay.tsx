@@ -320,13 +320,17 @@ export interface TooltipProps extends Omit<HTMLAttributes<HTMLSpanElement>, "chi
   content: string;
   children: ReactElement<Record<string, unknown>>;
   placement?: TooltipPlacement;
+  /** Forces a visible documentation specimen, including inline SSR. This is not
+   * an interactive controlled-open mode and is not dismissed by Escape. */
+  staticPreview?: boolean;
 }
 
-export function Tooltip({ content, children, placement = "top", className, ...props }: TooltipProps) {
+export function Tooltip({ content, children, placement = "top", staticPreview = false, className, ...props }: TooltipProps) {
   const tooltipId = useId();
   const triggerRef = useRef<HTMLSpanElement>(null);
   const contentRef = useRef<HTMLSpanElement>(null);
   const [revealed, setRevealed] = useState(false);
+  const open = staticPreview || revealed;
   const floating = useFloatingLayer({ enabled: true, placement, triggerRef, layerRef: contentRef });
   const childProps = childPropsOf(children);
   const trigger = {
@@ -351,7 +355,7 @@ export function Tooltip({ content, children, placement = "top", className, ...pr
   };
   const onKeyDown = (event: ReactKeyboardEvent<HTMLSpanElement>) => {
     props.onKeyDown?.(event);
-    if (event.defaultPrevented || event.key !== "Escape") return;
+    if (staticPreview || event.defaultPrevented || event.key !== "Escape") return;
     event.preventDefault();
     setRevealed(false);
   };
@@ -369,7 +373,7 @@ export function Tooltip({ content, children, placement = "top", className, ...pr
       role="tooltip"
       className="tcrn-tooltip__content"
       data-tooltip-portal={floating.shouldPortal ? "true" : undefined}
-      data-tooltip-open={revealed ? "true" : undefined}
+      data-tooltip-open={open ? "true" : undefined}
       data-tooltip-placement={floating.position?.placement ?? placement}
       style={contentStyle}
     >
@@ -390,7 +394,7 @@ export function Tooltip({ content, children, placement = "top", className, ...pr
       data-tooltip-scope="supplemental"
       data-tooltip-interactive-content="forbidden"
       data-placement={placement}
-      data-tooltip-open={revealed ? "true" : undefined}
+      data-tooltip-open={open ? "true" : undefined}
       data-overlay-boundary={floating.shouldPortal ? "document-body" : "inline-static"}
     >
       {cloneElement(children, trigger)}

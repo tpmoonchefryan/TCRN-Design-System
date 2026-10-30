@@ -70,7 +70,10 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 17029 -> 16565 (TCRN-DS-INIT-015 R3, SUB-046; measured at the R3 batch end, attributed, not decomposed per change): the full ProductShell instances take composition one's geometry, top bar 52 and sidebar 220 (SUB-090), and the documentation shell's 220px rail (was the 280px docs sidebar) widens the story column at 1440 (SUB-101).
     // 16565 -> 11098 (TCRN-DS-INIT-016 R2, SUB-175; measured at 1440x900 on the R2 package tree after the K1–K5 and K7 merges, attributed, not decomposed per change): the full ProductShell instances render the top-band shell, without the side rail, inside a frame (TCRN-DS-SUB-160), and the documentation pages moved from the 220px rail into the top-band shell's paper beside its contents rail (TCRN-DS-SUB-131, TCRN-DS-SUB-132), so the story column has a new width.
     // 11098 -> 7872 (TCRN-DS-INIT-016 R3, SUB-208; measured at 1440x900 on the R3 M9 package tree after the M1–M8 merges, attributed, not decomposed per change): the three collapsed fixtures retired with the side rail (the top band has no collapsed state), so the oracle renders six ProductShell frames, not nine.
-    recordedHeightPx: 7872,
+    // 7872 -> 7969 (INIT-016 R17, SUB-267): the six authorized product-name headings add
+    // 97.03125px to this page-only fixture; preserve the original 79px drift allowance.
+    recordedHeightPx: 7969,
+    recordedTolerancePx: 79,
     owedTo: "beyond-INIT-008",
     note: "AOS owner-quality visual-instance oracle (full ProductShell renders); inherently tall — gated debt, per-viewport oracle split is future work"
   },
@@ -79,7 +82,10 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 9659 -> 10070 (TCRN-DS-INIT-015 R2, SUB-075): the shell slice takes the G+ type scale with px line heights, the bundled Hanken Grotesk / Noto Sans SC faces and the G+ control height and padding (CHANGELOG 4.0.0); not decomposed per instance.
     // 10070 -> 7595 (TCRN-DS-INIT-016 R2, SUB-175; measured at 1440x900 on the R2 package tree after the K1–K5 and K7 merges, attributed, not decomposed per change): the full ProductShell instances render the top-band shell, without the side rail, inside a frame (TCRN-DS-SUB-160), and the documentation pages moved from the 220px rail into the top-band shell's paper beside its contents rail (TCRN-DS-SUB-131, TCRN-DS-SUB-132), so the story column has a new width.
     // 7595 -> 7575 (TCRN-DS-INIT-016 R3, SUB-199 and SUB-208; measured at 1440x900 on the R3 M9 package tree after the M1–M8 merges, attributed, not decomposed per change): the page sits in the content stack, and the fixtures read their shell state (closed, or the full menu open) instead of a collapsed flag.
-    recordedHeightPx: 7575,
+    // 7575 -> 7672 (INIT-016 R17, SUB-267): the same six product-name headings add
+    // 97.03125px to this page-only fixture; preserve the original 76px drift allowance.
+    recordedHeightPx: 7672,
+    recordedTolerancePx: 76,
     owedTo: "beyond-INIT-008",
     note: "AOS frontend-shell-slice visual-instance oracle; inherently tall — gated debt"
   },
@@ -169,7 +175,10 @@ export const STORY_HEIGHT_GRACE_ALLOWLIST = {
     // 5556 -> 8312 (TCRN-DS-INIT-016 R2): three more full-window screens the shell gate names, the
     // full menu with a query typed (ts-search-l, SUB-150) and the settings and roster pages in the
     // paper (ts-settings-l, ts-roster-l, SUB-161); measured at 1440x900 with every story open.
-    recordedHeightPx: 8312,
+    // 8312 -> 9224 (INIT-016 R17, SUB-267): the authorized start-cascade fixture adds
+    // 912px; preserve the original 83px drift allowance rather than deriving a wider one.
+    recordedHeightPx: 9224,
+    recordedTolerancePx: 83,
     owedTo: "beyond-INIT-016",
     note: "Nine full-window shell screens are the measured surface of the shell gate (C-11, C-12): the board's six, the typed search and the two pages in the paper; splitting them across stories would split the board's section A and move ids the gate resolves — gated debt"
   },
@@ -267,7 +276,14 @@ export function evaluateBudget({
     }
     if (recordedKey && has(allowlist[id], recordedKey)) {
       const recorded = allowlist[id][recordedKey];
-      const tolerance = Math.max(recordedToleranceFloor, Math.round(recorded * recordedToleranceFraction));
+      const explicitHeightTolerance = recordedKey === "recordedHeightPx" && has(allowlist[id], "recordedTolerancePx");
+      if (explicitHeightTolerance && (!Number.isFinite(allowlist[id].recordedTolerancePx) || allowlist[id].recordedTolerancePx < 0)) {
+        staleAllowlist.push({ id, reason: "invalid-recorded-tolerance", note: "recordedTolerancePx must be a finite nonnegative number" });
+        continue;
+      }
+      const tolerance = explicitHeightTolerance
+        ? allowlist[id].recordedTolerancePx
+        : Math.max(recordedToleranceFloor, Math.round(recorded * recordedToleranceFraction));
       if (Math.abs(it.measure - recorded) > tolerance) {
         staleAllowlist.push({
           id,

@@ -81,6 +81,31 @@ export const ROW_MUTATIONS = Object.freeze([
 const STORY_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const STATUS_RANK = { "n/a": 0, pass: 1, fail: 2 };
 
+// Exact SOURCE-RECONCILE D2-D3 roles. A matching number alone cannot substitute
+// for the approved public consumer, text atom and painted carrier.
+export const RECONCILED_ROLES = Object.freeze(Object.fromEntries(["l", "n"].flatMap((th) => {
+  const night = th === "n", ink = night ? "#ebe8df" : "#16150f", panel = night ? "#191916" : "#ffffff";
+  return [
+    [`ink-panel-${th}`, { board: "icon", part: "icon", selected: true, foreground: ink, carrier: night ? "#282724" : "#f1f1f1" }],
+    [`wm-${th}`, { board: "brand", product: "tms", part: "base", text: "TCRN", foreground: ink, carrier: panel }],
+    [`suffix-ink-${th}`, { board: "brand", product: "tms", part: "suffix", text: "TMS", foreground: night ? "#7aa0f5" : "#2c63c8", carrier: panel }],
+    [`rail-wm-${th}`, { board: "brand", product: "einzbern", part: "word", text: "Einzbern", foreground: ink, carrier: panel }],
+    [`rail-tag-${th}`, { board: "brand", product: "einzbern", part: "tagline", text: "Project memory engine", foreground: night ? "#85827a" : "#6b675d", carrier: panel }]
+  ];
+})));
+
+export function reconciledRoleProblems(board, cells) {
+  const problems = [];
+  for (const [id, expected] of Object.entries(RECONCILED_ROLES)) {
+    if (expected.board !== board) continue;
+    const actual = cells?.find((cell) => cell.id === id)?.role;
+    for (const [key, value] of Object.entries(expected)) {
+      if (key !== "board" && actual?.[key] !== value) problems.push({ id, property: key, expected: value, actual: actual?.[key] ?? null });
+    }
+  }
+  return problems;
+}
+
 function readJson(root, path) {
   return JSON.parse(readFileSync(resolve(root, path), "utf8"));
 }
@@ -301,8 +326,13 @@ export function evaluateRow(row, { runs, facts, contract, boards, themes }) {
     entry.failed = CHECK_IDS.filter((id) => entry.checks[id].status === "fail" || entry.checks[id].status === "missing");
     entry.requiredNotApplicable = (row.requiredChecks ?? []).filter((id) => entry.checks[id]?.status !== "pass" && entry.checks[id]?.status !== "fail");
     if (row.cells) {
-      const contractCells = contract?.boards?.[row.cells.contract]?.cells ?? null;
-      entry.cells = evaluateCells(row.cells, facts?.get(`${row.storyId}@${theme}`), contractCells, boards?.get(row.board));
+      const contractBoard = contract?.boards?.[row.cells.contract];
+      const contractCells = contractBoard?.cells ?? null;
+      const sourceBoard = contractBoard?.sourceBoard ?? row.board;
+      entry.cells = evaluateCells(row.cells, facts?.get(`${row.storyId}@${theme}`), contractCells, boards?.get(sourceBoard));
+      entry.cells.sourceBoard = sourceBoard;
+      entry.cells.roleProblems = reconciledRoleProblems(row.cells.contract, facts?.get(`${row.storyId}@${theme}`)?.cells);
+      entry.cells.ok &&= entry.cells.roleProblems.length === 0;
     }
     entry.ok = !entry.error && entry.failed.length === 0 && entry.requiredNotApplicable.length === 0 && (!entry.cells || entry.cells.ok);
     if (entry.error) report.reasons.push(`${theme}:error:${entry.error}`);
@@ -342,9 +372,30 @@ async function collectStoryFacts(page, bodySelector) {
     const root = document.querySelector(selector);
     if (!root) return null;
     const board = root.querySelector("[data-gplus-matrix-cell-count]");
+    const color = (value) => (value.match(/[\d.]+/g) ?? []).map(Number);
+    const hex = (rgb) => "#" + rgb.slice(0, 3).map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
+    const carrier = (element) => {
+      const paints = [];
+      for (let el = element; el; el = el.parentElement) paints.push(color(getComputedStyle(el).backgroundColor));
+      return hex(paints.reverse().reduce((bg, paint) => {
+        const alpha = paint[3] ?? 1;
+        return bg.map((value, index) => paint[index] * alpha + value * (1 - alpha));
+      }, [255, 255, 255]));
+    };
     return {
       declaredCount: board ? Number(board.getAttribute("data-gplus-matrix-cell-count")) : null,
-      cells: [...root.querySelectorAll("[data-cell]")].map((el) => ({ id: el.getAttribute("data-cell"), expect: el.getAttribute("data-expect") }))
+      cells: [...root.querySelectorAll("[data-cell]")].map((el) => ({
+        id: el.getAttribute("data-cell"), expect: el.getAttribute("data-expect"),
+        role: {
+          product: el.closest("[data-product-id]")?.getAttribute("data-product-id") ?? null,
+          text: el.textContent?.trim(),
+          part: el.matches(".tcrn-icon") ? "icon" : el.matches(".tcrn-product-logo__line-one-base") ? "base"
+            : el.matches(".tcrn-product-logo__line-one-suffix") ? "suffix" : el.matches(".tcrn-product-logo__line-one") ? "word"
+              : el.matches(".tcrn-product-logo__line-two") ? "tagline" : null,
+          selected: Boolean(el.closest('.tcrn-icon-button.tcrn-button--secondary[aria-pressed="true"]')),
+          foreground: hex(color(getComputedStyle(el).color)), carrier: carrier(el)
+        }
+      }))
     };
   }, bodySelector);
 }
@@ -403,6 +454,12 @@ export async function runStorybookVisualProof({
   report.coverage = boardCoverage(activeMap, canvas, boards);
   const boardCells = new Map(Object.entries(boards).filter(([, html]) => typeof html === "string").map(([name, html]) => [name, parseBoardCells(html)]));
   const contract = readJson(root, DEFAULT_PATHS.matrices);
+  for (const board of Object.values(contract.boards)) {
+    if (board.sourceBoard) {
+      const file = resolve(root, board.sourceBoard);
+      boardCells.set(board.sourceBoard, parseBoardCells(existsSync(file) ? readFileSync(file, "utf8") : ""));
+    }
+  }
 
   const staticRoot = resolve(root, DEFAULT_PATHS.staticRoot);
   let activeRegistry = registry ?? null;

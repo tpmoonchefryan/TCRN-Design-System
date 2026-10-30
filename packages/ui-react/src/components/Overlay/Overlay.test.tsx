@@ -125,6 +125,29 @@ test("tooltip preserves existing described-by ids", () => {
   assert.match(html, /aria-describedby="existing-id [^"]+"/);
 });
 
+test("static tooltip previews keep all four SSR placements, unique descriptions and text-only content", () => {
+  const html = renderToStaticMarkup(<>{(["top", "right", "bottom", "left"] as const).map((placement) => (
+    <Tooltip key={placement} placement={placement} staticPreview content={`Detail <button>${placement}</button>`}>
+      <button type="button" aria-describedby="existing-description">Inspect {placement}</button>
+    </Tooltip>
+  ))}</>);
+  const ids = [...html.matchAll(/role="tooltip"/g)];
+  assert.equal(ids.length, 4);
+  const descriptions = [...html.matchAll(/aria-describedby="existing-description ([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(new Set(descriptions).size, 4);
+  for (const id of descriptions) assert.ok(html.includes(`id="${id}" role="tooltip"`));
+  assert.equal((html.match(/data-tooltip-open="true"/g) ?? []).length, 8, "wrapper and content share the forced open state");
+  assert.equal((html.match(/data-overlay-boundary="inline-static"/g) ?? []).length, 4);
+  for (const placement of ["top", "right", "bottom", "left"]) {
+    assert.ok(html.includes(`data-placement="${placement}"`));
+    assert.ok(html.includes(`data-tooltip-placement="${placement}"`));
+    assert.ok(html.includes(`Detail &lt;button&gt;${placement}&lt;/button&gt;`), "content is escaped text, never an interactive descendant");
+  }
+  assert.doesNotMatch(html, /staticPreview|data-storybook-static-tooltip/);
+  const ordinary = renderToStaticMarkup(<Tooltip content="Detail"><button type="button">Inspect</button></Tooltip>);
+  assert.doesNotMatch(ordinary, /data-tooltip-open="true"/, "the default remains an ordinary interactive tooltip");
+});
+
 
 // TCRN-DS-STORY-092 batch 3. The declaration flipped, so this asserts the thing the
 // declaration now claims. `aria-modal` tells assistive technology the rest of the

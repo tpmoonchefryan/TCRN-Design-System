@@ -1879,16 +1879,16 @@ const legacyContractStories: LegacyContractStory[] = [
         </ReadbackPanel>
         <ReadbackPanel title="Tooltip">
           <div className="tcrn-doc-interaction-primitive-row">
-            <Tooltip content="Supplemental detail only; visible labels stay required." placement="right" data-storybook-static-tooltip="true">
+            <Tooltip content="Supplemental detail only; visible labels stay required." placement="right" staticPreview>
               <Button>Inspect route</Button>
             </Tooltip>
             <Tooltip content="Tooltip content is text-only and non-interactive." placement="top">
               <span tabIndex={0}><MachineToken token="proof token" /></span>
             </Tooltip>
-            <Tooltip content="Bottom placement reveals beneath the trigger." placement="bottom" data-storybook-static-tooltip="true">
+            <Tooltip content="Bottom placement reveals beneath the trigger." placement="bottom" staticPreview>
               <Button>Bottom trigger</Button>
             </Tooltip>
-            <Tooltip content="Left placement reveals to the start of the trigger." placement="left" data-storybook-static-tooltip="true">
+            <Tooltip content="Left placement reveals to the start of the trigger." placement="left" staticPreview>
               <Button>Left trigger</Button>
             </Tooltip>
           </div>

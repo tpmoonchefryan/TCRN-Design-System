@@ -247,10 +247,8 @@ components instead.
   repaint it, for example
   `.tcrn-doc-package-nav-proof > .tcrn-segmented-nav { grid-area: tabs; align-self: start; }`.
   The key subjects such placements may take are the shell-fidelity whitelist:
-  `.tcrn-side-nav`, `.tcrn-product-switcher`, `.tcrn-segmented-nav`, `.tcrn-field` and
-  `.tcrn-tooltip__content`, plus the infra primitive `.tcrn-skip-link` that the
-  package-nav proof places; the whitelist's last entry, `.tcrn-filter-bar`, is the demo hook
-  described below. The docs shell's verbatim copies of `.tcrn-sr-only` and `.tcrn-skip-link`
+  `.tcrn-side-nav`, `.tcrn-product-switcher`, `.tcrn-segmented-nav` and `.tcrn-field`,
+  plus the infra primitive `.tcrn-skip-link` that the package-nav proof places. The docs shell's verbatim copies of `.tcrn-sr-only` and `.tcrn-skip-link`
   were removed (TCRN-DS-SUB-063), and `.tcrn-brand-wordmark__base` and `.tcrn-brand-wordmark`
   left the whitelist with their last doc rules (TCRN-DS-SUB-063, TCRN-DS-SUB-065), as did
   `.tcrn-nav-group__label` and `.tcrn-nav-item` (TCRN-DS-SUB-132) and
@@ -261,12 +259,8 @@ components instead.
 - **Registered exceptions** (`DOC_PACKAGE_CLASS_EXCEPTIONS` in
   `scripts/shell-fidelity-proof.mjs`; each entry names exact selectors and the non-placement
   properties it admits, with a ruling, a reason and a removal condition):
-  - `EX-INIT015-doc-tooltip-static-preview`: `opacity` and `transform` on the content of the
-    tooltip static-preview hook (one selector per placement variant); goes when the Overlay
-    family's batch has the package provide a static revealed state.
-  - `EX-INIT015-doc-filter-bar`: `display`, `flex-wrap` and `gap` on the top-level
-    `.tcrn-filter-bar` demo hook; goes when the Navigation family's batch gives FilterBar a
-    layout of its own.
+  The current list is empty. The two remaining Tooltip and FilterBar exceptions were
+  removed after the package capabilities and their actual consumers were converted.
   - Removed: `EX-INIT015-doc-nav-proof-skip-link` (TCRN-DS-SUB-268). The Navigation
     proof renders the public `SkipLink` component and now uses its own hidden/focused states;
     the documentation's 1px box and focused-layout overrides have been removed.
@@ -277,12 +271,12 @@ components instead.
     top-band ProductShell (TCRN-DS-SUB-132); and `EX-INIT015-doc-product-shell-search-static`
     (TCRN-DS-SUB-100), with its doc rule, once no story wrote that doc container any more
     (TCRN-DS-SUB-204).
-- **Component-scoped demo hooks** (same base class as a package component, but a
-  presentation-only hook that the component never emits): `.tcrn-filter-bar` (demo tab
-  layout; the package owns it only via the scoped `.tcrn-table-toolbar .tcrn-filter-bar` rule,
-  so a top-level `.tcrn-filter-bar` here does not duplicate a package selector) and the
-  tooltip static-preview hook `.tcrn-tooltip[data-storybook-static-tooltip="true"]` (and its
-  `[data-placement]` variants), which forces the revealed state for static docs screenshots.
+- **Promoted package capabilities:** `Tooltip staticPreview` forces the same open state on
+  wrapper and content, including inline SSR with all four placements and portaled rendering.
+  It is a visible static documentation specimen, not an interactive controlled-open API or
+  an Escape-dismissible mode. Ordinary tooltips retain hover/focus, blur/mouseleave and Escape
+  behavior. The standalone `FilterBar` owns flex wrapping, 6px gap and `min-width: 0`; the
+  TableToolbar child retains its 4px gap and centered alignment. These no longer need doc hooks.
 - **Icon base class (promoted):** the `.tcrn-icon` base rule (Icon-emitted) is the
   package's, in `packages/ui-react/src/styles/icon.css.ts` (Icon board section E; design
   session ruling of 2026-10-11 under STORY-128, open to Owner correction). The docs layer

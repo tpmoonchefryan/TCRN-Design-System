@@ -73,8 +73,13 @@ function passingVerdict() {
 }
 
 function cellFacts(board, mutate = (cells) => cells) {
-  const cells = contract.boards[board].cells.map((cell) => ({ id: cell.cellId, expect: parseBoardCells(boards[`V2-B1-${board[0].toUpperCase()}${board.slice(1)}.dc.html`]).get(cell.cellId) }));
+  const cells = contract.boards[board].cells.map((cell) => ({ id: cell.cellId, expect: parseBoardCells(matrixSource(board)).get(cell.cellId) }));
   return { declaredCount: cells.length, cells: mutate(cells) };
+}
+
+function matrixSource(board) {
+  const source = contract.boards[board].sourceBoard;
+  return source ? readFileSync(join(repoRoot, source), "utf8") : boards[`V2-B1-${board[0].toUpperCase()}${board.slice(1)}.dc.html`];
 }
 
 let browser;
@@ -247,7 +252,7 @@ test("a required check that is n/a, or a story that was not measured, turns the 
 });
 
 test("cells must match the contract count and ids and the board data-expect", () => {
-  const boardCells = parseBoardCells(boards["V2-B1-Brand.dc.html"]);
+  const boardCells = parseBoardCells(matrixSource("brand"));
   const spec = { expected: 10, contract: "brand" };
   assert.equal(evaluateCells(spec, cellFacts("brand"), contract.boards.brand.cells, boardCells).ok, true);
   const dropped = evaluateCells(spec, cellFacts("brand", (cells) => cells.slice(1)), contract.boards.brand.cells, boardCells);
@@ -262,7 +267,7 @@ test("cells must match the contract count and ids and the board data-expect", ()
 test("the boards carry every contract cell with a data-expect", () => {
   const counts = { Typography: 44, Icon: 28, Brand: 10, Actions: 116, Inputs: 42 };
   for (const [name, count] of Object.entries(counts)) {
-    const cells = parseBoardCells(boards[`V2-B1-${name}.dc.html`]);
+    const cells = parseBoardCells(matrixSource(name.toLowerCase()));
     assert.equal(cells.size, count, name);
     assert.ok([...cells.values()].every((value) => value !== null), name);
     assert.equal(contract.boards[name.toLowerCase()].cells.length, count, name);
