@@ -443,7 +443,7 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         <StaticMarkup
           id={`inputs-multi-${theme}`}
           block
-          element={<MultiSelect aria-label="Projects" presentation="dropdown" defaultValue={["review", "launch"]} options={projectOptions} />}
+          element={<MultiSelect aria-label="Projects" aria-invalid={false} presentation="dropdown" defaultValue={["review", "launch"]} options={projectOptions} />}
           edits={[
             { marker: 'data-choice-presentation="dropdown"', remove: ["data-choice-presentation"] },
             { marker: 'aria-haspopup="listbox"', set: { "aria-expanded": "true", ...heightHook("md") } },

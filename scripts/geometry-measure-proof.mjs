@@ -486,18 +486,25 @@ export async function captureGeometryCriteria(page, { root, storyId, artifactRoo
     output.defaultTextControlsExcluded = defaultControls.excluded;
     output.defaultTextControlsMinimum = defaultControls.minimum;
     output.invalidFocus = [];
-    const controls = page.locator(`${root} input:not(:disabled):not([type=checkbox]):not([type=radio]),${root} textarea:not(:disabled),${root} select:not(:disabled)`);
+    output.invalidFocusExcluded = [];
+    const controls = page.locator(`${root} input:not(:disabled):not([type=checkbox]):not([type=radio]),${root} textarea:not(:disabled),${root} select:not(:disabled),${root} button.tcrn-multi-select-dropdown__trigger:not(:disabled)`);
     const seen = new Set();
     for (let index = 0; index < await controls.count(); index += 1) {
       const control = controls.nth(index), identity = await control.evaluate((el) => `${el.tagName}/${el.type}/${el.className}/${el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme')}`);
+      const hiddenValue = await control.evaluate((el) => Boolean(el.closest('[aria-hidden="true"],.tcrn-sr-only')));
+      if (hiddenValue) { output.invalidFocusExcluded.push({ identity, reason: 'hidden value/control; not the visible painted carrier' }); continue; }
       if (seen.has(identity) || !await control.isVisible()) continue; seen.add(identity);
       const prior = await control.getAttribute('aria-invalid');
       await control.evaluate((el) => el.setAttribute('aria-invalid', 'true'));
-      await page.mouse.move(0, 0); await page.keyboard.press('Tab'); await control.focus();
-      const paintSettled = await settleControlPaint(control);
-      const invalidReading = await control.evaluate((el) => { const cs = getComputedStyle(el); return { element: el.tagName, type: el.type, classes: el.className, invalid: el.getAttribute('aria-invalid'), active: document.activeElement === el, focusVisible: el.matches(':focus-visible'), border: cs.border, shadow: cs.boxShadow, outline: cs.outline, red: cs.getPropertyValue('--tcrn-color-bad'), teal: cs.getPropertyValue('--tcrn-color-acc') }; });
-      output.invalidFocus.push({ ...invalidReading, paintSettled });
-      await control.evaluate((el, prior) => { el.blur(); if (prior === null) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid', prior); }, prior);
+      try {
+        await page.mouse.move(0, 0); await page.keyboard.press('Tab'); await control.focus();
+        const paintSettled = await settleControlPaint(control);
+        const invalidReading = await control.evaluate((el) => { const cs = getComputedStyle(el); return { element: el.tagName, type: el.type, classes: el.className, theme: el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme'), invalid: el.getAttribute('aria-invalid'), active: document.activeElement === el, focusVisible: el.matches(':focus-visible'), border: cs.border, shadow: cs.boxShadow, outline: cs.outline, red: cs.getPropertyValue('--tcrn-color-bad'), teal: cs.getPropertyValue('--tcrn-color-acc') }; });
+        output.invalidFocus.push({ ...invalidReading, paintSettled, priorInvalid: prior,
+          carrier: invalidReading.classes.includes('tcrn-multi-select-dropdown__trigger') ? 'visible MultiSelect dropdown trigger; aria-invalid is forwarded by the component prop' : 'visible value control' });
+      } finally {
+        await control.evaluate((el, prior) => { el.blur(); if (prior === null) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid', prior); }, prior);
+      }
     }
     output.nativeDatePicker = [];
     const dates = page.locator(`${root} input.tcrn-date-picker:not(:disabled)`);

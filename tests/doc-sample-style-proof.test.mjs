@@ -12,6 +12,7 @@ import {
   FIRST_BATCH_ROOTS,
   HEIGHT_ROOTS,
   MUTATIONS,
+  classifySampleMismatch,
   collectSamplesInPage,
   compareSample,
   rereadWithoutDocLayerInPage,
@@ -97,6 +98,37 @@ test("a documentation-layer override is told apart from the package rendering", 
   assert.equal(samples[1].styles.borderTopLeftRadius, "6px");
   assert.equal(compareSample(samples[0], [{ styles: samples[1].styles }]).status, "mismatch");
   assert.equal(compareSample({ styles: reread[0].withoutDoc }, [{ styles: samples[1].styles }]).status, "match");
+});
+
+test("a container-hidden icon cannot turn an observed height mismatch into an inline-style match", async () => {
+  const tab = await browser.newPage();
+  try {
+    await tab.setContent(page(`<div class="owning" style="width:300px"><div class="pinned"><svg class="tcrn-icon" width="16" height="16"></svg></div></div>`));
+    await tab.addStyleTag({ content: '.owning{container-type:inline-size}.pinned .tcrn-icon{height:22px}@container (min-width:500px){.pinned{display:none}}' });
+    const { samples } = await tab.evaluate(collectSamplesInPage, { regionSelector: '#region', roots, heightRoots: [...HEIGHT_ROOTS], properties: COMPARED_PROPERTIES, keep: true });
+    const [sample] = samples;
+    const references = [{ styles: { ...sample.styles, height: '16px' } }];
+    const mismatch = compareSample(sample, references);
+    assert.deepEqual(mismatch.diffs, [{ property: 'height', story: '22px', matrix: '16px' }]);
+    const [reread] = await tab.evaluate(rereadWithoutDocLayerInPage, { indexes: [0], docStyleSelector: 'style[data-tcrn-static-doc-style-source]', regionSelector: '#region' });
+    assert.equal(reread.withoutDoc.height, '22px');
+    assert.equal('height' in reread.withoutInline, false, 'removing the owning width hides the icon');
+    const classification = classifySampleMismatch(mismatch.diffs, references, reread);
+    assert.equal(classification.cause, 'package-context');
+    assert.deepEqual(classification.evidence.withoutInline.missingProperties, ['height']);
+    assert.equal(classification.evidence.withoutInline.matches, false);
+    assert.equal(await tab.locator('.pinned .tcrn-icon').isVisible(), true, 'the original container is restored');
+  } finally { await tab.close(); }
+});
+
+test("an observable inline icon-height override remains a failing inline-style cause", async () => {
+  const { samples, reread } = await collect(page('<svg class="tcrn-icon" width="16" height="16" style="height:22px"></svg>'), { reread: [0] });
+  const references = [{ styles: { ...samples[0].styles, height: '16px' } }];
+  const mismatch = compareSample(samples[0], references);
+  const classification = classifySampleMismatch(mismatch.diffs, references, reread[0]);
+  assert.equal(classification.cause, 'story-inline-style');
+  assert.deepEqual(classification.evidence.withoutInline.missingProperties, []);
+  assert.equal(classification.evidence.withoutInline.matches, true);
 });
 
 test("the gate reports missing static docs instead of passing", async () => {

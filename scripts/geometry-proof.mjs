@@ -427,11 +427,16 @@ import { tcrnTokenCss } from "./packages/ui-tokens/dist/index.js";
 const style = document.createElement("style");
 style.textContent = tcrnTokenCss + tcrnComponentCss;
 document.head.append(style);
+const fixture = document.getElementById("fixture");
+const locale = fixture.dataset.locale || "en";
+const theme = fixture.dataset.theme || "light";
+document.documentElement.lang = locale;
+document.documentElement.setAttribute("data-tcrn-theme", theme);
 const navGroups = [{ id: "pages", label: "Pages", items: [{ id: "settings", label: "Settings", href: "#settings" }, { id: "members", label: "Members", href: "#members" }] }];
 const content = Array.from({ length: 160 }, (_, i) => h("p", { key: i }, "Example content " + i));
 flushSync(() => createRoot(document.getElementById("fixture")).render(h(ProductShell, {
   productName: "Navigation example", moduleName: "Library", brandProductId: "design-system", currentRouteLabel: "Settings",
-  pageHeader: { title: "Settings" }, navGroups, locales: [{ value: "en", label: "English" }], currentLocale: "en",
+  pageHeader: { title: "Settings" }, navGroups, locales: [{ value: "en", label: "English" }, { value: "zh-CN", label: "简体中文" }], currentLocale: locale, currentTheme: theme,
   pinnedIds: ["settings", "members"], onPinnedChange: () => undefined
 }, content)));
 `;
@@ -471,9 +476,13 @@ async function measureContainerNavigation(page, width, viewportWidth = 1440, bro
     && observation.pinsShown === (narrow ? 0 : 2) && observation.pinnedGroup === narrow };
 }
 
-export async function measureMobileNavigation(page, width, broken = false) {
+export async function measureMobileNavigation(page, width, broken = false, { locale = "en", theme = "light" } = {}) {
   await page.setViewportSize({ width, height: MOBILE_HEIGHT_PX });
   await page.setContent('<!doctype html><meta charset="utf-8"><body style="margin:0"><div id="fixture"></div></body>');
+  await page.locator('#fixture').evaluate((fixture, options) => {
+    fixture.dataset.locale = options.locale;
+    fixture.dataset.theme = options.theme;
+  }, { locale, theme });
   await page.addScriptTag({ content: await mobileNavigationScript() });
   if (broken) await page.addStyleTag({ content: MOBILE_BROKEN_CSS });
   await settle(page);
@@ -508,7 +517,11 @@ export async function measureMobileNavigation(page, width, broken = false) {
     });
   }
   const expanded = await page.locator("[data-tab]").getAttribute("aria-expanded") === "true";
-  return { width, broken, scrolled, ...observation, expanded, sheet, ok: observation.reachable && expanded && Boolean(sheet?.shown) };
+  const brandPresentationOk = observation.owningWidth === width && observation.markVisible && observation.toggleVisible
+    && !observation.wordVisible && observation.pinsShown === 0 && observation.box.height >= 40;
+  const localeThemeOk = observation.locale === locale && observation.theme === theme;
+  return { width, broken, requestedLocale: locale, requestedTheme: theme, scrolled, ...observation, expanded, sheet,
+    brandPresentationOk, localeThemeOk, ok: brandPresentationOk && localeThemeOk && observation.reachable && expanded && Boolean(sheet?.shown) };
 }
 
 /** Browser-serializable geometry oracle shared by capture qualification and mutation proof.
@@ -686,10 +699,11 @@ async function main() {
         standalone: await measureContainerNavigation(page, width, width) });
     }
     const mobileNavigation = [];
-    for (const width of [760, 390]) mobileNavigation.push({
-      baseline: await measureMobileNavigation(page, width),
-      broken: await measureMobileNavigation(page, width, true),
-      restored: await measureMobileNavigation(page, width),
+    for (const width of [760, 390]) for (const locale of ['en', 'zh-CN']) for (const theme of ['light', 'dark']) mobileNavigation.push({
+      width, locale, theme,
+      baseline: await measureMobileNavigation(page, width, false, { locale, theme }),
+      broken: await measureMobileNavigation(page, width, true, { locale, theme }),
+      restored: await measureMobileNavigation(page, width, false, { locale, theme }),
     });
     const recordContainment = await recordContainmentMatrix(page, server.origin);
     result = {

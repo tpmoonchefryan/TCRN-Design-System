@@ -276,6 +276,21 @@ export function compareSample(sample, references) {
   return { status: "mismatch", diffs: best.diffs, reference: { element: best.reference.element, storyId: best.reference.storyId } };
 }
 
+// Removing an ancestor's inline sizing can hide a sample through a package container query.
+// A missing layout measurement is not evidence that the measured mismatch disappeared.
+export function classifySampleMismatch(diffs, references, reread = {}) {
+  const requiredProperties = [...new Set(diffs.map(({ property }) => property))];
+  const inspect = (styles) => {
+    const missingProperties = requiredProperties.filter((name) => !styles || !(name in styles));
+    return { missingProperties, matches: Boolean(styles) && missingProperties.length === 0
+      && references.some((reference) => styleDiffs(styles, reference.styles).length === 0) };
+  };
+  const withoutDoc = inspect(reread.withoutDoc);
+  const withoutInline = inspect(reread.withoutInline);
+  return { cause: withoutDoc.matches ? "doc-stylesheet" : withoutInline.matches ? "story-inline-style" : "package-context",
+    evidence: { requiredProperties, withoutDoc, withoutInline } };
+}
+
 function rootsList() {
   return [...new Set(Object.values(FIRST_BATCH_ROOTS).flat())];
 }
@@ -414,9 +429,9 @@ export async function runDocSampleStyleProof({
             const reread = await page.evaluate(rereadWithoutDocLayerInPage, { indexes: storyMismatches.map((item) => item.index), docStyleSelector: DOC_STYLE_SELECTOR, regionSelector: route.bodySelector });
             storyMismatches.forEach((item, position) => {
               const refs = references.get(`${item.block}|${item.signature}`) ?? [];
-              const matches = (styles) => Boolean(styles) && refs.some((reference) => styleDiffs(styles, reference.styles).length === 0);
-              const { withoutDoc, withoutInline } = reread[position] ?? {};
-              item.cause = matches(withoutDoc) ? "doc-stylesheet" : matches(withoutInline) ? "story-inline-style" : "package-context";
+              const classification = classifySampleMismatch(item.diffs, refs, reread[position]);
+              item.cause = classification.cause;
+              item.causeEvidence = classification.evidence;
               delete item.index;
             });
           }
