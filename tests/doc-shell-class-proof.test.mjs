@@ -3,7 +3,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { withIsolatedProofTree, runProofProcess } from "../scripts/contract-proof.mjs";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import {
@@ -256,12 +256,23 @@ test("128 GWT2: a new tcrn-foo source/output class makes the actual doc-shell CL
     const argv = ["scripts/doc-shell-class-proof.mjs"];
     const clean = runProofProcess(root, argv);
     assert.equal(clean.status, 0, clean.stdout + clean.stderr);
+    assert.deepEqual(JSON.parse(clean.stdout).criterion147Conjunction, { outsideClassesZero: true, exceptionListEmpty: true });
     const rel = "apps/storybook/src/criterion-tcrn-foo.tsx";
     writeFileSync(join(root, rel), 'export const NewClass = () => <div className="tcrn-foo"/>;\n');
     writeFileSync(join(root, "apps/storybook/storybook-static/criterion-tcrn-foo.html"), '<!doctype html><div class="tcrn-foo">negative control</div>');
     const changed = runProofProcess(root, argv);
-    t.diagnostic(JSON.stringify({ criterion: "128#2", source: rel, clean, changed, cleanup: "isolated copy removed in finally" }));
     assert.equal(changed.status, 1, changed.stderr);
     assert.ok(JSON.parse(changed.stdout).outOfPackage.includes("tcrn-foo"), changed.stdout);
+    assert.deepEqual(JSON.parse(changed.stdout).criterion147Conjunction, { outsideClassesZero: false, exceptionListEmpty: true });
+    // Restore the original absent-file premise before checking the real CLI again. Keep the exact
+    // negative inputs outside the scanned roots until the isolated fixture's normal final cleanup.
+    const retainedNegative = join(root, "criterion-negative-inputs");
+    mkdirSync(retainedNegative);
+    renameSync(join(root, rel), join(retainedNegative, "criterion-tcrn-foo.tsx"));
+    renameSync(join(root, "apps/storybook/storybook-static/criterion-tcrn-foo.html"), join(retainedNegative, "criterion-tcrn-foo.html"));
+    const restored = runProofProcess(root, argv);
+    assert.equal(restored.status, 0, restored.stdout + restored.stderr);
+    assert.deepEqual(JSON.parse(restored.stdout).criterion147Conjunction, { outsideClassesZero: true, exceptionListEmpty: true });
+    t.diagnostic(JSON.stringify({ criterion: "128#2", retainedConjunction: "147#1", source: rel, clean, changed, restored, cleanup: "isolated copy removed in finally" }));
   });
 });
