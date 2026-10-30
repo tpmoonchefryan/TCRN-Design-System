@@ -122,10 +122,10 @@ function TypographyMatrix({ theme }: { theme: MatrixTheme }) {
         <MatrixRow label="h4"><Heading level={4} {...cell("h4")}>Notification preferences</Heading></MatrixRow>
         <StyleReferences>
           <Heading level={1} visualLevel={2}>Quarterly review</Heading>
-          <Heading level={3} visualLevel={1}>Quarterly review</Heading>
-          <Heading level={3} visualLevel={2}>Quarterly review</Heading>
           <Heading level={2} visualLevel={3}>Quarterly review</Heading>
           <Heading level={2} visualLevel={4}>Quarterly review</Heading>
+          <Heading level={3} visualLevel={1}>Quarterly review</Heading>
+          <Heading level={3} visualLevel={2}>Quarterly review</Heading>
           <StateSurface tone="warning" title="Quarterly review" />
           <StateSurface tone="danger" title="Quarterly review" />
         </StyleReferences>
@@ -474,7 +474,7 @@ const projectOptions = [
 function InputsMatrix({ theme }: { theme: MatrixTheme }) {
   const cell = (id: string, probe?: Parameters<typeof cellAttributes>[3]) => cellAttributes("inputs", id, theme, probe);
   return (
-    <>
+    <div className="tcrn-doc-display-primitive-grid">
       <MatrixSection component="Input">
         <StyleReferences>
           <Input type="email" aria-label="Email" defaultValue="lin.xiao@example.com" />
@@ -592,7 +592,7 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
           <Switch label="Weekly digest" defaultChecked {...cell("sw-on", "before-bg")} />
         </MatrixRow>
       </MatrixSection>
-    </>
+    </div>
   );
 }
 
@@ -634,7 +634,7 @@ export const gplusMatrixStoryText: Readonly<Record<GplusFamilyMatrixBoard, Matri
 };
 
 // Boards whose two blocks sit side by side to stay inside the story height budget.
-const columnBoards: ReadonlySet<GplusFamilyMatrixBoard> = new Set<GplusFamilyMatrixBoard>(["typography", "inputs"]);
+const columnBoards: ReadonlySet<GplusFamilyMatrixBoard> = new Set<GplusFamilyMatrixBoard>(["typography", "actions", "inputs"]);
 
 function matrixStory(board: GplusFamilyMatrixBoard): ContractStory {
   const id = gplusMatrixStoryIds[board];
