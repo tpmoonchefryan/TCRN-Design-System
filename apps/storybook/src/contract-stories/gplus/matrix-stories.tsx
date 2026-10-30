@@ -182,6 +182,12 @@ function IconMatrix({ theme }: { theme: MatrixTheme }) {
             </Text>
           ))}
         </MatrixRow>
+        {/* The labelled size roster above puts every icon inside Text. Standalone package
+            icons also occur in stories: keep their real, distinct signatures observable
+            without changing the existing roster, contrast cells or control-context roles. */}
+        <MatrixRow label="standalone reference sizes">
+          {[11, 12, 20].map((size) => <Icon key={size} name="settings" size={size} />)}
+        </MatrixRow>
         <MatrixRow label="ink">
           <Text tone="strong"><Icon name={sample} {...cell("ink-panel")} /></Text>
           <Text><Icon name={sample} {...cell("ink2-panel")} /></Text>
@@ -238,6 +244,14 @@ function BrandMatrix({ theme }: { theme: MatrixTheme }) {
         <MatrixRow label="mono">
           {productMarkIds.map((productId) => (
             <span key={productId} style={brandMarkSize(38)}><TcrnBrandMark productId={productId} variant="mono" /></span>
+          ))}
+        </MatrixRow>
+        {/* Decorative marks use the public aria-hidden contract in product compositions.
+            These samples supply that missing primitive signature; their approved assets
+            and the original ten Brand contrast cells remain unchanged. */}
+        <MatrixRow label="decorative reference marks">
+          {productMarkIds.map((productId) => (
+            <span key={productId} style={brandMarkSize(38)}><TcrnBrandMark productId={productId} aria-hidden="true" /></span>
           ))}
         </MatrixRow>
       </MatrixSection>
