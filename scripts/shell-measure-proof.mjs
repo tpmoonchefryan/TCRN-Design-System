@@ -1088,24 +1088,36 @@ export async function probeShellBehaviour(page, { scope = "body", screen, cascad
 // Installed with addInitScript before any page script: counts the [data-shell-intro] layers that enter
 // the document and reads the animations that run while one does (property names, latest end).
 export function installIntroProbe() {
-  const probe = { plays: 0, properties: [], start: null, end: null };
+  const probe = { plays: 0, properties: [], start: null, end: null, frames: [], animations: [] };
   window.__tcrnShellIntroProbe = probe;
   const seen = new WeakSet();
   const counted = new WeakSet();
+  const animationIds = new WeakMap();
   const kebab = (name) => name.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
   const sample = () => {
+    const now = performance.now();
+    const frame = { time: now, phase: document.querySelector('[data-shell-intro]')?.getAttribute('data-intro-phase') ?? 'done', animations: [] };
     for (const animation of document.getAnimations()) {
       let names = [];
       if (typeof animation.transitionProperty === "string") names = [animation.transitionProperty];
       else if (animation.effect && typeof animation.effect.getKeyframes === "function") names = animation.effect.getKeyframes().flatMap((frame) => Object.keys(frame)).filter((key) => !["offset", "computedOffset", "easing", "composite"].includes(key));
       for (const name of names.map(kebab)) if (!probe.properties.includes(name)) probe.properties.push(name);
       const timing = animation.effect && typeof animation.effect.getComputedTiming === "function" ? animation.effect.getComputedTiming() : null;
+      const target = animation.effect?.target;
+      if (!animationIds.has(animation)) {
+        const id = probe.animations.length;
+        animationIds.set(animation, id);
+        probe.animations.push({ id, target: target?.className?.baseVal ?? target?.className ?? null, duration: timing?.duration ?? null, delay: timing?.delay ?? null, easing: timing?.easing ?? null, properties: names.map(kebab) });
+      }
+      const cs = target instanceof Element ? getComputedStyle(target) : null;
+      frame.animations.push({ id: animationIds.get(animation), currentTime: animation.currentTime, playState: animation.playState, progress: timing?.progress ?? null, opacity: cs?.opacity ?? null, transform: cs?.transform ?? null, rect: target instanceof Element ? target.getBoundingClientRect().toJSON() : null });
       if (timing && Number.isFinite(timing.endTime) && typeof animation.startTime === "number" && !counted.has(animation)) {
         counted.add(animation);
         const end = animation.startTime + timing.endTime;
         probe.end = probe.end === null ? end : Math.max(probe.end, end);
       }
     }
+    if (probe.frames.length < 240) probe.frames.push(frame);
   };
   const watch = () => {
     for (const layer of document.querySelectorAll("[data-shell-intro]")) {
@@ -1127,7 +1139,8 @@ export function installIntroProbe() {
 const readIntroProbe = (page) => page.evaluate(() => {
   const probe = window.__tcrnShellIntroProbe;
   if (!probe) return { plays: null, properties: [], durationMs: null };
-  return { plays: probe.plays, properties: probe.properties.slice(), durationMs: probe.start === null || probe.end === null ? null : Math.round(probe.end - probe.start) };
+  const phases = ['fade','move','rise','done'].map((phase) => { const frames=probe.frames.filter((frame)=>frame.phase===phase); return {phase,firstFrameMs:frames[0]?.time??null,lastFrameMs:frames.at(-1)?.time??null,frameCount:frames.length}; });
+  return { plays: probe.plays, properties: probe.properties.slice(), durationMs: probe.start === null || probe.end === null ? null : Math.round(probe.end - probe.start), frames: probe.frames, animations: probe.animations, phaseWindows: phases, observation: 'unmodified browser animations and rAF paint tuples; frame boundaries remain quantized by the actual frame interval' };
 });
 
 // intro on the real part: a fresh session plays once, a reload in the same session plays 0 times,
@@ -1153,7 +1166,7 @@ export async function probeShellIntro(browser, url, { viewport = STORY_RUN.viewp
     return { first, reload: await readIntroProbe(page) };
   });
   const reduced = await visit({ reducedMotion: "reduce" }, (page) => readIntroProbe(page));
-  const trace = { firstLoadPlays: session.first.plays, reloadPlays: session.reload.plays, reducedMotionPlays: reduced.plays, properties: session.first.properties };
+  const trace = { firstLoadPlays: session.first.plays, reloadPlays: session.reload.plays, reducedMotionPlays: reduced.plays, properties: session.first.properties, actualFrames: session.first.frames, actualAnimations: session.first.animations, phaseWindows: session.first.phaseWindows, reload: session.reload, reduced };
   if (typeof session.first.durationMs === "number") trace.durationMs = session.first.durationMs;
   return trace;
 }
@@ -1216,6 +1229,67 @@ export function checkStoryScreens(reading, expected) {
   return failures;
 }
 
+// Additional raw tuples for original Story premises. These supplement the fixed eighteen-gate
+// verdict, without turning an unobserved native interaction or a different preview row into a pass.
+export async function captureShellCriteria(page, { scope } = {}) {
+  const result = { viewport: page.viewportSize(), scope, screens: [], unknowns: [] };
+  result.outerDocumentation = await page.evaluate(() => {
+    const host = document.querySelector('[data-doc-shell-root]'), shell = host?.querySelector('.tcrn-product-shell'), paper = shell?.querySelector('[data-paper]'), strip = shell?.querySelector('[data-shell-strip]');
+    if (!shell || !paper || !strip) return { status: 'unverified', reason: 'outer documentation shell not found' };
+    const sr = shell.getBoundingClientRect(), pr = paper.getBoundingClientRect(), tr = strip.getBoundingClientRect();
+    return { shell: sr.toJSON(), paper: pr.toJSON(), stripHeight: tr.height, insets: { left: pr.left-sr.left, right: sr.right-pr.right, top: pr.top-sr.top, bottom: sr.bottom-pr.bottom }, radius: getComputedStyle(paper).borderRadius, residentSidebars: [...shell.querySelectorAll('aside')].filter((el) => !paper.contains(el)).length, tocRails: [...paper.querySelectorAll('.tcrn-toc-rail')].map((el) => { const r=el.getBoundingClientRect(); return { rect:r.toJSON(), insideOwnPaper:el.closest('[data-paper]')===paper, rectangleContained:r.left>=pr.left-.5&&r.right<=pr.right+.5&&r.top>=pr.top-.5&&r.bottom<=pr.bottom+.5 }; }) };
+  });
+  const shells = page.locator(`${scope} [data-shell]`), count = await shells.count();
+  for (let index = 0; index < count; index += 1) {
+    const shell = shells.nth(index), id = await shell.getAttribute('data-shell');
+    const capture = { id, sameRow: null, clickGeometry: [], unknowns: [] };
+    try {
+      const rows = shell.locator('.tcrn-nav-item-row');
+      if (await rows.count()) {
+        const row = rows.filter({ has: page.locator('[data-pin-button]') }).filter({ has: page.locator('[data-shell-row]:not([data-tcrn-preview-state]):not([aria-current="page"])') }).first();
+        if (await row.count() && await row.isVisible()) {
+          const link = row.locator('[data-shell-row]').first();
+          const read = () => row.evaluate((el) => { const text=el.querySelector('[data-text="prail"]'), pin=el.querySelector('[data-pin-button]'), pcs=pin?getComputedStyle(pin):null, link=el.querySelector('[data-shell-row]'); return {text:text?.textContent,textWidth:text?.getBoundingClientRect().width,hover:el.matches(':hover'),focusVisible:link?.matches(':focus-visible'),pin:pin?{display:pcs.display,visibility:pcs.visibility,opacity:pcs.opacity,rect:pin.getBoundingClientRect().toJSON()}:null}; });
+          await row.scrollIntoViewIfNeeded(); await page.mouse.move(0,0); const rest=await read(); await row.hover(); const hover=await read();
+          await page.mouse.move(0,0); await page.keyboard.press('Tab'); await link.focus(); const focus=await read(); await link.blur();
+          const negativeStyle=await page.addStyleTag({content:`[data-shell="${id}"] .tcrn-nav-item-row{grid-template-columns:minmax(0,1fr) auto!important}[data-shell="${id}"] .tcrn-nav-item-row [data-pin-button]{display:none!important}[data-shell="${id}"] .tcrn-nav-item-row:hover [data-pin-button]{display:inline-flex!important}`});
+          await page.mouse.move(0,0); const negativeRest=await read(); await row.hover(); const negativeHover=await read(); await negativeStyle.evaluate((el)=>el.remove()); await page.mouse.move(0,0);
+          capture.sameRow={rest,hover,focus,exactWidthDifference:Math.abs(rest.textWidth-hover.textWidth),negative:{rest:negativeRest,hover:negativeHover,exactWidthDifference:Math.abs(negativeRest.textWidth-negativeHover.textWidth),source:'same row; auto-sized pin track and display:none -> inline-flex on actual hover'}};
+        }
+      }
+    } catch (error) { capture.unknowns.push(error.message.split('\n')[0]); }
+    result.screens.push(capture);
+  }
+  // Capture every same-row baseline before Escape/click changes any other pre-opened screen.
+  for (let index = 0; index < count; index += 1) {
+    const shell = shells.nth(index), capture = result.screens[index], id = capture.id;
+    const geometry = () => shell.evaluate((shell) => {
+      const sr=shell.getBoundingClientRect(), rel=(el)=>{if(!el)return null;const r=el.getBoundingClientRect();return {left:r.left-sr.left,top:r.top-sr.top,width:r.width,height:r.height,bottom:r.bottom-sr.top,right:r.right-sr.left};};
+      const tab=shell.querySelector('[data-tab]'),panel=shell.querySelector('[data-panel="expanded"],[data-panel="sheet"],[data-panel="drop"]'),pin=shell.querySelector('[data-open-pin]');
+      return {owningWidth:sr.width,owningHeight:sr.height,tab:rel(tab),expanded:tab?.getAttribute('aria-expanded'),openPin:rel(pin),panel:rel(panel),panelKind:panel?.getAttribute('data-panel'),shadow:panel?getComputedStyle(panel).boxShadow:null,search:rel(panel?.querySelector('[data-shell-search]')),columns:[...shell.querySelectorAll('[data-drop-col]')].map((el)=>({index:el.getAttribute('data-drop-col'),side:el.getAttribute('data-side'),...rel(el)}))};
+    });
+    try {
+      // Preserve the original owning dimensions; perform the triggering click before reading.
+      if (/ts-closed-|^ts-m-/.test(id ?? '')) {
+        const tab=shell.locator('[data-tab]').first();
+        if (await tab.isVisible()) { await page.keyboard.press('Escape'); await tab.click({timeout:3000}); await page.waitForTimeout(30); capture.clickGeometry.push({trigger:'actual brand click',reading:await geometry()}); await page.keyboard.press('Escape'); }
+      }
+      if (/ts-drop/.test(id ?? '')) {
+        await page.keyboard.press('Escape');
+        const contracts=shell.locator('[data-pins] [data-pin]').filter({hasText:/Contracts|合约/}).first();
+        if (await contracts.count() && await contracts.isVisible()) {
+          await contracts.click({timeout:3000}); await page.waitForTimeout(30); capture.clickGeometry.push({trigger:'actual Contracts pin click',reading:await geometry()});
+          const parent=shell.locator('[data-panel="drop"] [data-shell-row][aria-haspopup]').first();
+          if (await parent.count()) { await parent.click({timeout:3000}); await page.waitForTimeout(30); capture.clickGeometry.push({trigger:'actual cascade row click',reading:await geometry()}); }
+          else capture.unknowns.push('no cascade row with aria-haspopup found after click');
+          await page.keyboard.press('Escape');
+        } else capture.unknowns.push('Contracts pin unavailable in this exact owning container');
+      }
+    } catch (error) { capture.unknowns.push(error.message.split('\n')[0]); }
+  }
+  return result;
+}
+
 // The package stories with the package hooks, the behaviour probes and the story mutations.
 export async function runStories({ root = process.cwd(), browser, launchOptions, thresholds = THRESHOLDS, storyIds = SHELL_STORY_IDS, staticRoot = DEFAULT_PATHS.staticRoot, manifestPath = DEFAULT_PATHS.fixtureManifest, mutationsPath = DEFAULT_PATHS.fixtureMutations, behaviour = true, mutations = true } = {}) {
   let registry;
@@ -1266,7 +1340,8 @@ export async function runStories({ root = process.cwd(), browser, launchOptions,
           const page = await openStory(route, options);
           try {
             const reading = await measureShellPage(page, { selectors: PACKAGE_SELECTORS, selectorSet: "package", root: route.bodySelector, logoSources });
-            return { reading, verdict: judgeShellReadings(reading, { thresholds, brandLockups, compareDescription: options.locale === "zh-CN" }) };
+            const criterionCaptures = options.ops ? null : await captureShellCriteria(page, { scope: route.bodySelector });
+            return { reading, criterionCaptures, verdict: judgeShellReadings(reading, { thresholds, brandLockups, compareDescription: options.locale === "zh-CN" }) };
           } finally {
             await page.close();
           }
@@ -1276,12 +1351,12 @@ export async function runStories({ root = process.cwd(), browser, launchOptions,
         for (const route of routes) {
           for (const locale of STORY_RUN.locales) {
             for (const theme of STORY_RUN.themes) {
-              const { reading, verdict } = await measureStory(route, { locale, theme });
+              const { reading, criterionCaptures, verdict } = await measureStory(route, { locale, theme });
               const screenFailures = checkStoryScreens(reading, (plan.screens || {})[route.id]);
               // the first lines outside every shell (the brand story) with their markText readings
               const firstLines = (reading.optical || []).filter((o) => !o.shell).map((o) => ({ kind: o.kind, product: o.product, mark: o.mark, inkMinusMark: o.inkMinusMark }));
               // Keep the measured values as well as the verdict, including values that pass.
-              runs.push({ story: route.id, locale, theme, viewport: viewportOf(route.id), shells: reading.shells.map((s) => s.id), reading, ...(firstLines.length ? { firstLines } : {}), gates: verdict.gates, checks: verdict.checks, failed: verdict.failed, failedChecks: verdict.failedChecks, missingHooks: verdict.missingHooks, screenFailures });
+              runs.push({ story: route.id, locale, theme, viewport: viewportOf(route.id), shells: reading.shells.map((s) => s.id), reading, criterionCaptures, ...(firstLines.length ? { firstLines } : {}), gates: verdict.gates, checks: verdict.checks, failed: verdict.failed, failedChecks: verdict.failedChecks, missingHooks: verdict.missingHooks, screenFailures });
             }
           }
         }

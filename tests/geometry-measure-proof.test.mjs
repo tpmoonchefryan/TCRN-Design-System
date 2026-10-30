@@ -39,6 +39,7 @@ import {
   runFixtureSelfCheck,
   runGeometryMeasureProof
 } from "../scripts/geometry-measure-proof.mjs";
+import { captureBrandSuffixStates } from "../scripts/geometry-measure-proof.mjs";
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 const fixtureDir = fileURLToPath(new URL("./fixtures/geometry-measure/", import.meta.url));
@@ -595,6 +596,20 @@ test("the focus ring probe reads the paper's scrolling region: an outward ring t
   assert.equal(none.checked, 2);
 });
 
+test("paper focus ownership includes the whole shell while a fixed-size gallery screen scrolls", async () => {
+  const html = (ring) => paperHtml(ring).replace('<div class="tcrn-product-shell__paper"', '<div style="width:100px;overflow:auto"><div class="tcrn-product-shell" style="width:500px"><div class="tcrn-product-shell__paper"').replace('</section></div></main>', '</section></div></div></div></main>');
+  const green = await onPage(html("outline:2px solid transparent;outline-offset:-2px;box-shadow:inset 0 0 0 4px #0b6b65"), (tab) => tab.evaluate(focusRingClipInPage, { root: "#root" }));
+  assert.equal(green.regions, 1);
+  assert.equal(green.regionReadings[0].focusVisible, true);
+  assert.equal(green.regionReadings[0].boundary, ".tcrn-product-shell");
+  assert.equal(green.violationCount, 0);
+  const red = await onPage(html("outline:2px solid transparent;outline-offset:2px;box-shadow:0 0 0 4px #0b6b65"), (tab) => tab.evaluate(focusRingClipInPage, { root: "#root" }));
+  assert.equal(red.regions, 1);
+  assert.equal(red.violationCount, 1);
+  assert.equal(red.violations[0].cutPx, 4);
+  assert.match(red.violations[0].clippedBy, /tcrn-product-shell__paper/);
+});
+
 test("the Highlight width probe turns red when a mark changes the text width", async () => {
   const html = (markCss) => `<!doctype html><html><head><style>mark { background: #fde68a; ${markCss} }</style></head><body><main id="root"><span class="tcrn-highlight-text">PRJ-<mark class="tcrn-highlight__mark">2026</mark>-0412</span></main></body></html>`;
   const green = await onPage(html(""), (tab) => tab.evaluate(highlightWidthInPage, { root: "#root" }));
@@ -685,4 +700,31 @@ test("--family runs one family and keeps a missing sample red", { skip: !staticD
     assert.ok(report.missingStories.every((id) => GPLUS_SAMPLE_STORY_IDS.includes(id)));
     assert.equal(report.ok, false);
   }
+});
+
+test("D03: browser paint limits the new DS colour to daytime shell hover/open and keeps >=4.5", async (t) => {
+  const page = await browser.newPage();
+  try {
+    const rows = await captureBrandSuffixStates(page, { root: repoRoot });
+    t.diagnostic(JSON.stringify({ minute: 'TCRN-DS-MIN-20261030-D03-COLOR D1-D3', actualRoleStates: rows }));
+    for (const row of rows) {
+      const ds = row.product === 'design-system', expected = row.theme === 'light' && ds ? 'rgb(80, 95, 193)' : row.rest.suffix;
+      if (ds) assert.equal(row.rest.suffix, 'rgb(101, 119, 243)');
+      for (const state of ['hover','open']) {
+        assert.equal(row[state].suffix, expected);
+        assert.equal(row[state].mark, row.rest.mark);
+        assert.equal(row[state].markOpacity, '1');
+        assert.equal(row[state].opacity, '1');
+        if (ds && row.theme === 'light') assert.ok(row[state].contrastOnCanvas >= 4.5, JSON.stringify(row));
+      }
+      assert.equal(row.lockup.suffix, row.rest.suffix, 'ordinary lockup keeps its default suffix');
+      assert.equal(row.rest.background, 'rgba(0, 0, 0, 0)');
+      assert.equal(row.hover.background, row.theme === 'light' ? 'rgba(22, 21, 15, 0.035)' : 'rgba(235, 232, 223, 0.04)');
+      assert.equal(row.open.background, row.hover.background);
+      if (row.product === 'tms') {
+        assert.equal(row.rest.suffix, row.theme === 'light' ? 'rgb(44, 99, 200)' : 'rgb(122, 160, 245)');
+        if (row.theme === 'dark') { assert.ok(row.rest.contrastOnCanvas >= 4.5); assert.ok(row.rest.contrastOnPanel >= 4.5); }
+      }
+    }
+  } finally { await page.close(); }
 });

@@ -337,7 +337,7 @@ export function readShellInPage(options) {
     const stripRel = rel(stripEl);
     // the rendered version: v2 shows the word; a v2 tab whose word is hidden (version auto under 1024)
     // renders the first version, whose width follows its content. declared: the hook as written.
-    x.brand = { version: tab.matches(sel.brandV1) ? "v1" : word && visible(word) ? "v2" : "v1", declared: tab.getAttribute("data-shell-brand"), hasWord: Boolean(word) };
+    x.brand = { version: tab.matches(sel.brandV1) ? "v1" : word && visible(word) ? "v2" : "v1", declared: tab.getAttribute("data-shell-brand"), hasWord: Boolean(word), wordVisible: Boolean(word && visible(word)), markVisible: Boolean(mk && visible(mk)), toggleVisible: Boolean(tgl && visible(tgl)), wordClientWidth: word?.clientWidth ?? null, wordScrollWidth: word?.scrollWidth ?? null };
     const stripBg = parseAny(scs.backgroundColor);
     x.strip = { t: stripRel.t, h: stripRel.h, borderTop: px(scs.borderTopWidth), borderBottom: px(scs.borderBottomWidth), bgAlpha: r2(stripBg[3]), bgImage: scs.backgroundImage !== "none" };
     const tabRect = tab.getBoundingClientRect();
@@ -349,6 +349,10 @@ export function readShellInPage(options) {
 
     // pinned items in the strip
     const pins = [...scr.querySelectorAll(sel.pinItem)];
+    x.selectedPins = pins.filter((pin) => pin.matches('[aria-current="page"],[aria-pressed="true"],[data-selected="true"]')).map((pin) => {
+      const cs = getComputedStyle(pin), fill = effBg(pin);
+      return { text: text(pin), backgroundColor: cs.backgroundColor, effectiveBackground: fill, color: cs.color, fontWeight: cs.fontWeight, borderLeftWidth: cs.borderLeftWidth, boxShadow: cs.boxShadow, ratio: contrast(over(parse(cs.color), fill), fill) };
+    });
     const pinsNav = scr.querySelector(sel.pins);
     if (pins.length && pinsNav) {
       const first = rel(pins[0]);

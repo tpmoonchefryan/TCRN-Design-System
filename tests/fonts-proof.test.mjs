@@ -4,6 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 import { runFontsProof } from "../scripts/fonts-proof.mjs";
 import { CSS_NAME, FONTS_DIR, LICENSES_DIR, MANIFEST_NAME, inRanges, parseUnicodeRange } from "../scripts/fonts-vendor.mjs";
 
@@ -128,6 +129,24 @@ test("a woff2 copy with one byte changed turns the digest check red", async (t) 
   const report = await prove(root);
   assert.equal(report.ok, false);
   assert.match(failures(report, "digests"), new RegExp(`${firstFile}: sha256 .* does not match`));
+});
+
+test("121 GWT3: a one-byte font mutation turns the real fonts-proof process red", (t) => {
+  const root = fixture(t);
+  write(root, "packages/ui-tokens/dist/index.js", `export const tcrnTokens = ${JSON.stringify(openTokens)};\n`);
+  const invoke = () => {
+    const argv = [path.join(repoRoot, "scripts/fonts-proof.mjs"), "--root", root];
+    const run = spawnSync(process.execPath, argv, { cwd: root, encoding: "utf8" });
+    return { argv: [process.execPath, ...argv], cwd: root, status: run.status, stdout: run.stdout, stderr: run.stderr };
+  };
+  const clean = invoke();
+  assert.equal(clean.status, 0, clean.stderr);
+  fs.writeFileSync(vendored(root), oneByteChanged(vendored(root)));
+  const changed = invoke();
+  t.diagnostic(JSON.stringify({ criterion: "121#3", fixture: root, file: firstFile, changedBytes: 1, clean, changed, cleanup: "test after removes isolated fixture" }));
+  assert.equal(changed.status, 1, changed.stderr);
+  assert.match(changed.stderr, /FAIL: digests/);
+  assert.match(changed.stderr, /sha256 .* does not match/);
 });
 
 test("build output may hold identical copies of vendored files, never altered ones", async (t) => {

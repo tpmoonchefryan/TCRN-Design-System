@@ -50,7 +50,8 @@
 //   node scripts/contract-proof.mjs [--json]
 //   import { runContractProof } from "./contract-proof.mjs"   // options { root, distEntry, ui } for tests
 import { createHash } from "node:crypto";
-import { existsSync, readdirSync, readFileSync, realpathSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, symlinkSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { selectorFacts } from "./contract-static-proof.mjs";
@@ -58,6 +59,46 @@ import { colourLiterals, compounds, parseCompound, parseCss, selectorList } from
 
 export const SCHEMA_VERSION = "tcrn.ds.contract-proof.v1";
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+// Process-level negative controls need real CLI input, not an injected exports object. Copies have
+// their own sources, built entries and workspace links; only the already installed tools are shared.
+// The finally owns their lifetime, including a failed compiler or assertion.
+export async function withIsolatedProofTree(fn, { sourceRoot = ROOT } = {}) {
+  const scratch = join(sourceRoot, "node_modules/.cache/tcrn-proof-fixtures");
+  mkdirSync(scratch, { recursive: true });
+  const root = mkdtempSync(join(scratch, "process-"));
+  const excluded = new Set(["node_modules", ".git", ".cache", ".tarball-smoke"]);
+  try {
+    for (const rel of ["package.json", "tsconfig.base.json", "scripts", "packages", "docs/contract", "docs/style-scale.md", "docs/verification/doc-shell-class", "docs/design/gplus-2026-10", "docs/design/visual-standard", "apps/storybook/src", "apps/storybook/.storybook", "apps/storybook/dist", "apps/storybook/assets", "apps/storybook/storybook-static", "examples"]) {
+      if (!existsSync(join(sourceRoot, rel))) continue;
+      mkdirSync(dirname(join(root, rel)), { recursive: true });
+      cpSync(join(sourceRoot, rel), join(root, rel), { recursive: true, filter: (file) => !excluded.has(file.split(sep).at(-1)) });
+    }
+    symlinkSync(join(sourceRoot, "node_modules"), join(root, "node_modules"), "dir");
+    for (const rel of ["packages/ui-react", "apps/storybook", "examples/tms-react-pilot", "examples/aos-token-copy-state-pilot"]) {
+      const modules = join(sourceRoot, rel, "node_modules");
+      if (!existsSync(modules)) continue;
+      for (const entry of readdirSync(modules, { withFileTypes: true })) {
+        if (entry.name.startsWith(".")) continue;
+        const children = entry.name.startsWith("@") ? readdirSync(join(modules, entry.name)).map((name) => `${entry.name}/${name}`) : [entry.name];
+        for (const name of children) {
+          const destination = join(root, rel, "node_modules", name);
+          const target = name.startsWith("@tcrn/") ? join(root, "packages", name.slice("@tcrn/".length)) : realpathSync(join(modules, name));
+          mkdirSync(dirname(destination), { recursive: true });
+          symlinkSync(target, destination, "dir");
+        }
+      }
+    }
+    return await fn(root);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+}
+
+export function runProofProcess(root, argv) {
+  const run = spawnSync(process.execPath, argv, { cwd: root, encoding: "utf8", maxBuffer: 32 * 1024 * 1024 });
+  return { cwd: root, argv: [process.execPath, ...argv], status: run.status, signal: run.signal, error: run.error?.message ?? null, stdout: run.stdout ?? "", stderr: run.stderr ?? "" };
+}
 export const GENERATOR = "scripts/contract-generate.mjs";
 export const DESIGN_DIR = "docs/design/gplus-2026-10";
 export const CONTRACT_DIR = `${DESIGN_DIR}/contract`;
@@ -728,7 +769,8 @@ function invokedDirectly() {
 }
 
 if (invokedDirectly()) {
-  const result = await runContractProof();
+  const rootAt = process.argv.indexOf("--root");
+  const result = await runContractProof({ root: rootAt > 0 ? resolve(process.argv[rootAt + 1]) : ROOT });
   console.log(process.argv.includes("--json") ? JSON.stringify(result, null, 2) : formatResult(result));
   if (!result.ok) process.exitCode = 1;
 }

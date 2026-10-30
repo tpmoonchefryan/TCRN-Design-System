@@ -3,12 +3,14 @@
 // (TCRN-DS-STORY-130, TCRN-DS-SUB-033). Every criterion of the gate has a case here that turns it red.
 import test, { after, before } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 import { CHECK_IDS } from "../scripts/lib/gplus-measure.mjs";
 import { GPLUS_MATRIX_STORY_IDS, GPLUS_SAMPLE_STORY_IDS, GPLUS_STORY_IDS, loadStoryRegistry } from "../scripts/lib/storybook-routes.mjs";
 import { THRESHOLDS as GEOMETRY_THRESHOLDS } from "../scripts/geometry-measure-proof.mjs";
+import { withIsolatedProofTree, runProofProcess } from "../scripts/contract-proof.mjs";
 import {
   DEFAULT_PATHS,
   EIGHT_MEASUREMENTS,
@@ -35,6 +37,23 @@ const map = loadMap({ root: repoRoot });
 const { canvas, boards } = loadBoards({ root: repoRoot });
 const contract = JSON.parse(readFileSync(new URL("../docs/design/gplus-2026-10/contract/matrices.json", import.meta.url), "utf8"));
 const clone = (value) => JSON.parse(JSON.stringify(value));
+
+test("148 GWT2: deleting one real built story makes the 23-row mapping CLI red", async (t) => {
+  await withIsolatedProofTree(async (root) => {
+    const rel = "apps/storybook/dist/contract-stories/governance.js", file = join(root, rel), original = readFileSync(file, "utf8");
+    const removed = original.replace(/^\s*\{ id: "typography-matrix",[^\n]*\n/m, "");
+    assert.notEqual(removed, original);
+    writeFileSync(file, removed);
+    const process = runProofProcess(root, ["scripts/storybook-visual-proof.mjs"]);
+    writeFileSync(file, original);
+    t.diagnostic(JSON.stringify({ criterion: "148#2", removedStory: "typography-matrix", mutationFile: rel, originalRows: map.rows.length, process, restored: readFileSync(file, "utf8") === original }));
+    assert.equal(map.rows.length, 23);
+    assert.equal(process.status, 1, process.stderr);
+    const report = JSON.parse(process.stdout);
+    assert.match(JSON.stringify(report.stories), /typography-matrix/);
+    assert.equal(report.ok, false);
+  });
+});
 
 // A registry that carries all ten G+ stories (what the merged batch builds), plus the composition three
 // sample that enters the story list through the gplus-samples category (TCRN-DS-SUB-092, mapped by

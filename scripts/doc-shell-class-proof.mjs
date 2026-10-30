@@ -29,6 +29,7 @@ import ts from "typescript";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, extname, join, relative, sep } from "node:path";
 import { pathToFileURL } from "node:url";
+import { DOC_PACKAGE_CLASS_EXCEPTIONS } from "./shell-fidelity-proof.mjs";
 
 export const SCHEMA_VERSION = "tcrn.ds.doc-shell-class-proof.v2";
 export const BASELINE_SCHEMA_VERSION = "tcrn.ds.doc-shell-class-baseline.v1";
@@ -728,6 +729,11 @@ export async function runDocShellClassProof({ root = process.cwd(), paths = DEFA
     },
     outOfPackageCount: outOfPackage.length,
     outOfPackage,
+    // STORY-147#1 is a conjunction. Keep the live exception declarations explicit, including their
+    // actual scopes/rulings/removal conditions; outside-classes=0 alone cannot certify this row.
+    effectiveExceptionList: DOC_PACKAGE_CLASS_EXCEPTIONS,
+    exceptionListEmpty: DOC_PACKAGE_CLASS_EXCEPTIONS.length === 0,
+    criterion147Conjunction: { outsideClassesZero: outOfPackage.length === 0, exceptionListEmpty: DOC_PACKAGE_CLASS_EXCEPTIONS.length === 0 },
     exemptDocClassCount: exemptDocClasses.length,
     packageEmittedWithoutRuleCount: packageEmittedWithoutRule.length,
     packageEmittedWithoutRule,

@@ -42,6 +42,32 @@ const consumerTsx = `export function LegacyBadge() {
 `;
 const FIXTURE_OLD_NAMES = [...CONSUMER_RULES.map(([, , old]) => old), "--tcrn-color-text-secondary", "--tcrn-color-border-subtle", "--tcrn-motion-press-scale"];
 
+test("120 GWT4: an old-name-only consumer really compiles, emits its notice and resolves its built CSS", async (t) => {
+  const root = consumerProject(t);
+  write(root, "src/entry.tsx", 'import "./legacy-card.css"; export { LegacyBadge } from "./LegacyBadge";\n');
+  write(root, "build.mjs", `import { build } from ${JSON.stringify(path.join(repoRoot, "node_modules/esbuild/lib/main.js"))};\nimport { runDeprecationNotice } from ${JSON.stringify(script)};\nfor (const line of runDeprecationNotice({ paths: [${JSON.stringify(path.join(root, "src"))}], label: "old-only-compiled-consumer" }).lines) console.log(line);\nawait build({ absWorkingDir: ${JSON.stringify(root)}, entryPoints: ["src/entry.tsx"], bundle: true, format: "esm", jsx: "automatic", external: ["react/jsx-runtime"], outfile: "dist/consumer.js" });\nconsole.log("consumer compiler: esbuild completed");\n`);
+  const run = spawnSync(process.execPath, [path.join(root, "build.mjs")], { cwd: root, encoding: "utf8" });
+  const processEvidence = { cwd: root, argv: [process.execPath, path.join(root, "build.mjs")], status: run.status, stdout: run.stdout, stderr: run.stderr };
+  t.diagnostic(JSON.stringify({ criterion: "120#4", process: processEvidence }));
+  assert.equal(run.status, 0, run.stderr);
+  assert.match(run.stdout, /deprecated token --tcrn-color-text-primary/);
+  assert.match(run.stdout, /consumer compiler: esbuild completed/);
+  const builtCss = fs.readFileSync(path.join(root, "dist/consumer.css"), "utf8");
+  const used = [...builtCss.matchAll(/var\(\s*(--tcrn-[a-z0-9-]+)/g)].map((match) => match[1]);
+  assert.ok(used.length > 0);
+  assert.deepEqual(used.filter((name) => !tcrnDeprecatedTokens.some((token) => token.variable === name)), []);
+  const page = await browser.newPage();
+  try {
+    await page.setContent(`<style>${shippedTokensCss.replace(/@import[^;]*;/g, "")}</style><style>${builtCss}</style><div id="light"><div class="legacy-card"></div></div><div id="dark" data-tcrn-theme="dark"><div class="legacy-card"></div></div>`);
+    const readings = await page.evaluate(() => ["light", "dark"].map((theme) => {
+      const element = document.querySelector(`#${theme} .legacy-card`), cs = getComputedStyle(element);
+      return { theme, color: cs.color, successor: cs.getPropertyValue("--tcrn-color-ink").trim(), fill: cs.backgroundColor };
+    }));
+    t.diagnostic(JSON.stringify({ criterion: "120#4", builtReadings: readings }));
+    assert.deepEqual(readings.map((row) => row.color), ["rgb(22, 21, 15)", "rgb(235, 232, 223)"]);
+  } finally { await page.close(); }
+});
+
 function write(root, rel, body) {
   fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
   fs.writeFileSync(path.join(root, rel), body);

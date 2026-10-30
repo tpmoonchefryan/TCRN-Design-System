@@ -41,7 +41,9 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { CHECK_IDS, MEASURE_SCHEMA_VERSION, assertThresholds, runMeasureTargets, startStaticServer } from "./lib/gplus-measure.mjs";
+import { createRequire } from "node:module";
+import { pathToFileURL } from "node:url";
+import { CHECK_IDS, MEASURE_SCHEMA_VERSION, assertThresholds, compositeOver, contrastRatio, parseColor, runMeasureTargets, startStaticServer } from "./lib/gplus-measure.mjs";
 import { GPLUS_STORY_IDS, STATIC_DOCS_ROOT, STORY_REGISTRY_MODULE, expandStory, loadStoryRegistry, resolveStoryRoutes, storyUrl } from "./lib/storybook-routes.mjs";
 
 // TCRN-DS-SUB-035 wiring. The measured set is the G+ matrix and sample stories (cross-package convention
@@ -178,7 +180,7 @@ export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
     return extent;
   };
   // The deepest cut of a ring by the clipping ancestors of element up to root, or null.
-  const cutOf = (element, extent) => {
+  const cutOf = (element, extent, boundary = scope) => {
     const rect = element.getBoundingClientRect();
     const ring = { left: rect.left - extent, right: rect.right + extent, top: rect.top - extent, bottom: rect.bottom + extent };
     for (let node = element.parentElement; node; node = node.parentElement) {
@@ -191,7 +193,7 @@ export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
         const cut = Math.max(clipX ? inner.left - ring.left : 0, clipX ? ring.right - inner.right : 0, clipY ? inner.top - ring.top : 0, clipY ? ring.bottom - inner.bottom : 0);
         if (cut > tolerancePx) return { clippedBy: `${node.tagName.toLowerCase()}.${[...node.classList].slice(0, 2).join(".")}`, cutPx: Math.round(cut * 10) / 10 };
       }
-      if (node === scope) break;
+      if (node === boundary) break;
     }
     return null;
   };
@@ -210,6 +212,7 @@ export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
     }
   }
   let regions = 0;
+  const regionReadings = [];
   const before = document.activeElement;
   for (const region of scope.querySelectorAll(".tcrn-product-shell__paper > .tcrn-product-shell__main")) {
     const name = (region.getAttribute("aria-label") || region.id || "paper region").trim().slice(0, 30);
@@ -223,12 +226,19 @@ export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
     const cs = getComputedStyle(region);
     const outline = cs.outlineStyle === "none" ? 0 : parseFloat(cs.outlineWidth) + parseFloat(cs.outlineOffset);
     const extent = Math.max(extentOf(cs.boxShadow), outline, 0);
-    const cut = cutOf(region, extent);
+    // The fixed-size screens in the docs gallery intentionally scroll inside alpha-story-stack.
+    // That gallery is not the ProductShell's paper. Read every screen's entire focus edge against
+    // all of its own clipping ancestors, through the owning shell; outer docs containment has its
+    // own shell proof. Otherwise a 1240px screen in a narrower gallery reports its clipped content
+    // width (222px in the original failure) as a cut ring even when the ring is fully inset.
+    const boundary = region.closest(".tcrn-product-shell") ?? scope;
+    const cut = cutOf(region, extent, boundary);
+    regionReadings.push({ region: name, focusVisible: true, extent, boundary: boundary === scope ? root : ".tcrn-product-shell", boxShadow: cs.boxShadow, outlineWidth: cs.outlineWidth, outlineOffset: cs.outlineOffset, cut });
     if (cut) violations.push({ region: name, extent, ...cut });
     region.blur();
   }
   if (regions > 0 && before && typeof before.focus === "function") before.focus({ preventScroll: true });
-  return { checked, regions, value: violations.length, violationCount: violations.length, violations };
+  return { checked, regions, regionReadings, value: violations.length, violationCount: violations.length, violations };
 }
 
 // Browser side: each .tcrn-highlight-text under root must be as wide as the same text without marks.
@@ -238,6 +248,7 @@ export function highlightWidthInPage({ root, tolerancePx = 0.5 }) {
   const violations = [];
   let checked = 0;
   let worst = 0;
+  const readings = [];
   for (const el of scope.querySelectorAll(".tcrn-highlight-text")) {
     if (!el.querySelector("mark, .tcrn-highlight__mark")) continue;
     const plain = el.cloneNode(false);
@@ -250,14 +261,16 @@ export function highlightWidthInPage({ root, tolerancePx = 0.5 }) {
     measured.style.visibility = "hidden";
     measured.style.whiteSpace = "nowrap";
     el.parentElement.append(plain, measured);
-    const diff = Math.abs(measured.getBoundingClientRect().width - plain.getBoundingClientRect().width);
+    const measuredWidth = measured.getBoundingClientRect().width, plainWidth = plain.getBoundingClientRect().width;
+    const diff = Math.abs(measuredWidth - plainWidth);
+    readings.push({ text: el.textContent, measuredWidth, plainWidth, exactDiff: diff, exactlyEqual: diff === 0 });
     plain.remove();
     measured.remove();
     checked += 1;
     worst = Math.max(worst, diff);
     if (diff > tolerancePx) violations.push({ text: el.textContent.trim().slice(0, 40), diffPx: Math.round(diff * 100) / 100 });
   }
-  return { checked, value: Math.round(worst * 100) / 100, violationCount: violations.length, violations };
+  return { checked, value: Math.round(worst * 100) / 100, exactValue: worst, readings, violationCount: violations.length, violations };
 }
 
 // Browser side: every icon matching iconSelector under root must be sizePx square, and every child of
@@ -270,6 +283,7 @@ export function iconStrokeInPage({ root, iconSelector, sizePx, strokeWidthPx, ve
   const violations = [];
   const strokeWidths = new Set();
   const vectorEffects = new Set();
+  const icons = [];
   let checked = 0;
   let children = 0;
   let worst = 0;
@@ -277,6 +291,7 @@ export function iconStrokeInPage({ root, iconSelector, sizePx, strokeWidthPx, ve
     checked += 1;
     const icon = svg.getAttribute("data-icon-name") || svg.getAttribute("aria-label") || "";
     const box = svg.getBoundingClientRect();
+    icons.push({ name: icon, variant: svg.getAttribute('data-icon-variant'), width: box.width, height: box.height, children: [...svg.children].map((child) => ({ tag: child.tagName, strokeWidth: getComputedStyle(child).strokeWidth, vectorEffect: getComputedStyle(child).vectorEffect, fill: getComputedStyle(child).fill })) });
     if (Math.abs(box.width - sizePx) > 0.5 || Math.abs(box.height - sizePx) > 0.5) violations.push({ icon, reasons: ["size"], widthPx: round(box.width), heightPx: round(box.height) });
     if (svg.children.length === 0) violations.push({ icon, reasons: ["no_children"] });
     for (const child of svg.children) {
@@ -293,7 +308,7 @@ export function iconStrokeInPage({ root, iconSelector, sizePx, strokeWidthPx, ve
       if (reasons.length) violations.push({ icon, child: child.tagName.toLowerCase(), strokeWidth: cs.strokeWidth, vectorEffect: cs.vectorEffect, reasons });
     }
   }
-  return { checked, children, value: Number.isFinite(worst) ? round(worst) : null, strokeWidths: [...strokeWidths], vectorEffects: [...vectorEffects], violationCount: violations.length, violations: violations.slice(0, 10) };
+  return { checked, children, icons, rosterNames: [...new Set(icons.map((icon) => icon.name))], value: Number.isFinite(worst) ? round(worst) : null, strokeWidths: [...strokeWidths], vectorEffects: [...vectorEffects], violationCount: violations.length, violations: violations.slice(0, 10) };
 }
 
 // Node side: the right 30px of every DatePicker input must be its native ::-webkit-calendar-picker-indicator
@@ -367,6 +382,127 @@ async function runStoryProbe(probe, page) {
   const fn = PAGE_PROBES[probe.id];
   if (!fn) return { error: `unknown_probe:${probe.id}` };
   return page.evaluate(fn, { ...(PROBE_OPTIONS[probe.id] ?? {}), root: probe.root });
+}
+
+// Original criterion captures are raw observations, separate from the existing general-purpose
+// verdicts. A 0.5px probe pass, a hit test, or a source token must not silently certify a stricter row.
+export async function captureGeometryCriteria(page, { root, storyId, artifactRoot = null } = {}) {
+  const output = { storyId, root, viewport: page.viewportSize(), unknowns: [] };
+  if (storyId === "typography-matrix") output.typography = await page.evaluate((root) => {
+    const scope = document.querySelector(root);
+    const tuple = (el) => { const cs = getComputedStyle(el); return { text: el.textContent, family: cs.fontFamily, weight: cs.fontWeight, numeric: cs.fontVariantNumeric, fontCheck: document.fonts.check(`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`, el.textContent) }; };
+    const headings = Array.from(scope.querySelectorAll('.tcrn-heading')).map((el) => {
+      const prior = el.getAttribute('style');
+      el.style.inlineSize = '80px'; el.style.maxInlineSize = '80px'; el.style.minInlineSize = '0';
+      const cs = getComputedStyle(el), range = document.createRange(); range.selectNodeContents(el);
+      const reading = { ...tuple(el), title: el.getAttribute('title'), width: el.clientWidth, scrollWidth: el.scrollWidth, actualOverflow: el.scrollWidth > el.clientWidth, whiteSpace: cs.whiteSpace, overflow: cs.overflow, textOverflow: cs.textOverflow, lineBoxes: [...new Set(Array.from(range.getClientRects()).map((r) => r.y))].length };
+      if (prior === null) el.removeAttribute('style'); else el.setAttribute('style', prior);
+      return reading;
+    });
+    return { headings, numerals: Array.from(scope.querySelectorAll('.tcrn-text')).filter((el) => el.textContent.trim() === '4,280.00').map(tuple) };
+  }, root);
+
+  if (storyId === "actions-matrix") {
+    output.pressed = [];
+    const buttons = page.locator(`${root} button.tcrn-button:not(:disabled)`);
+    for (let index = 0; index < await buttons.count(); index += 1) {
+      const button = buttons.nth(index);
+      if (!await button.isVisible()) continue;
+      await button.scrollIntoViewIfNeeded(); const box = await button.boundingBox();
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await page.mouse.down();
+      try { output.pressed.push(await button.evaluate((el) => ({ text: el.textContent, classes: el.className, active: el.matches(':active'), transform: getComputedStyle(el).transform, theme: el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme') }))); }
+      finally { await page.mouse.up(); }
+    }
+    output.buttonGroups = [];
+    const groups = page.locator(`${root} .tcrn-button-group`);
+    for (let index = 0; index < await groups.count(); index += 1) {
+      const group = groups.nth(index), first = group.locator('button:not(:disabled)').nth(0);
+      if (!await first.isVisible() || await group.locator('button:not(:disabled)').count() < 2) continue;
+      await first.scrollIntoViewIfNeeded(); await page.mouse.move(0, 0); await first.focus(); await page.keyboard.press('Tab');
+      const reading = await group.evaluate((el) => {
+        const buttons = [...el.querySelectorAll('button:not(:disabled)')], focused = document.activeElement, cs = getComputedStyle(focused);
+        return { activeIndex: buttons.indexOf(focused), focusVisible: focused.matches(':focus-visible'), shadow: cs.boxShadow, outline: cs.outline, outlineOffset: cs.outlineOffset, zIndex: cs.zIndex, groupOverflow: getComputedStyle(el).overflow, rect: focused.getBoundingClientRect().toJSON(), siblings: buttons.map((button) => ({ rect: button.getBoundingClientRect().toJSON(), zIndex: getComputedStyle(button).zIndex })) };
+      });
+      if (artifactRoot) { mkdirSync(artifactRoot, { recursive: true }); reading.screenshot = join(artifactRoot, `button-group-${index}.png`); await page.screenshot({ path: reading.screenshot }); }
+      reading.probe = await page.evaluate(focusRingClipInPage, { root });
+      reading.occlusionEvidence = 'native second-button focus, computed paint order and screenshot; ancestor probe alone does not certify sibling paint';
+      output.buttonGroups.push(reading);
+    }
+  }
+
+  if (storyId === "inputs-matrix") {
+    output.defaultTextControls = await page.evaluate((root) => {
+      const rgba = (s) => { const a = s.match(/[\d.]+/g)?.map(Number) ?? []; return a.length === 3 ? [...a, 1] : a; };
+      const over = (a, b) => a.slice(0, 3).map((v, i) => v * a[3] + b[i] * (1 - a[3]));
+      const lum = (a) => a.map((v) => v / 255).map((v) => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4).reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0);
+      return [...document.querySelector(root).querySelectorAll('input,textarea,select')].filter((el) => !['checkbox','radio','hidden'].includes(el.type) && !el.disabled && el.getAttribute('aria-invalid') !== 'true' && !el.hasAttribute('data-tcrn-preview-state')).map((el) => {
+        const cs = getComputedStyle(el), line = cs.getPropertyValue('--tcrn-color-line-ctl').trim(), panel = cs.getPropertyValue('--tcrn-color-panel').trim();
+        const toRgb = (color) => { const probe = document.createElement('span'); probe.style.color = color; el.parentElement.append(probe); const value = rgba(getComputedStyle(probe).color); probe.remove(); return value; };
+        const shadowColor = cs.boxShadow.split(/,(?![^(]*\))/).map((layer) => ({ layer, color: layer.match(/rgba?\([^)]*\)/)?.[0] })).find((entry) => entry.color && /(?:^|\s)1px(?:\s|$)/.test(entry.layer));
+        const paintedEdge = parseFloat(cs.borderBottomWidth) > 0 && cs.borderBottomStyle !== 'none' ? cs.borderBottomColor : shadowColor?.color;
+        const carrier = toRgb(panel), edge = paintedEdge ? over(toRgb(paintedEdge), carrier) : null, a = edge ? lum(edge) : null, b = lum(carrier);
+        return { element: el.tagName, type: el.type, classes: el.className, cell: el.getAttribute('data-cell'), theme: el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme'), border: cs.border, shadow: cs.boxShadow, lineCtl: line, paintedEdge: paintedEdge ?? null, panel, edge, carrier, ratio: a === null ? null : (Math.max(a,b)+.05)/(Math.min(a,b)+.05), requiredMinimum: 3.1 };
+      });
+    }, root);
+    output.invalidFocus = [];
+    const controls = page.locator(`${root} input:not(:disabled):not([type=checkbox]):not([type=radio]),${root} textarea:not(:disabled),${root} select:not(:disabled)`);
+    const seen = new Set();
+    for (let index = 0; index < await controls.count(); index += 1) {
+      const control = controls.nth(index), identity = await control.evaluate((el) => `${el.tagName}/${el.type}/${el.className}/${el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme')}`);
+      if (seen.has(identity) || !await control.isVisible()) continue; seen.add(identity);
+      const prior = await control.getAttribute('aria-invalid');
+      await control.evaluate((el) => el.setAttribute('aria-invalid', 'true'));
+      await page.mouse.move(0, 0); await page.keyboard.press('Tab'); await control.focus();
+      output.invalidFocus.push(await control.evaluate((el) => { const cs = getComputedStyle(el); return { element: el.tagName, type: el.type, classes: el.className, invalid: el.getAttribute('aria-invalid'), active: document.activeElement === el, focusVisible: el.matches(':focus-visible'), border: cs.border, shadow: cs.boxShadow, outline: cs.outline, red: cs.getPropertyValue('--tcrn-color-bad'), teal: cs.getPropertyValue('--tcrn-color-acc') }; }));
+      await control.evaluate((el, prior) => { el.blur(); if (prior === null) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid', prior); }, prior);
+    }
+    output.nativeDatePicker = [];
+    const dates = page.locator(`${root} input.tcrn-date-picker:not(:disabled)`);
+    for (let index = 0; index < await dates.count(); index += 1) {
+      const date = dates.nth(index); if (!await date.isVisible()) continue;
+      await date.scrollIntoViewIfNeeded(); const box = await date.boundingBox();
+      for (const inset of [29, 15, 1]) {
+        await page.keyboard.press('Escape');
+        const before = await date.evaluate((el) => ({ open: CSS.supports('selector(:open)') ? el.matches(':open') : false, supportsOpen: CSS.supports('selector(:open)'), hasShowPicker: typeof el.showPicker === 'function' }));
+        await page.mouse.click(box.x + box.width - inset, box.y + box.height / 2);
+        const after = await date.evaluate((el) => ({ open: CSS.supports('selector(:open)') ? el.matches(':open') : false, active: document.activeElement === el, userActivated: navigator.userActivation.hasBeenActive }));
+        output.nativeDatePicker.push({ index, rightInset: inset, box, before, after, openingObserved: before.supportsOpen && !before.open && after.open, limitation: after.open ? null : 'No native picker opening observed by :open; hit testing or showPicker availability alone is insufficient. Visible-browser observation remains available in the existing validation phase.' });
+        await page.keyboard.press('Escape');
+      }
+    }
+  }
+  return output;
+}
+
+export async function captureBrandSuffixStates(page, { root } = {}) {
+  const ui = await import(pathToFileURL(join(root, 'packages/ui-react/dist/index.js')).href);
+  const tokens = await import(pathToFileURL(join(root, 'packages/ui-tokens/dist/index.js')).href);
+  const require = createRequire(join(root, 'packages/ui-react/package.json'));
+  const { createElement } = require('react'), { renderToStaticMarkup } = require('react-dom/server');
+  const rows = [];
+  for (const theme of ['light', 'dark']) {
+    const markup = ['tms','design-system','einzbern','mana-orchestrate'].map((product) => `<section data-product="${product}">${renderToStaticMarkup(createElement(ui.ShellBrandButton, {productId:product,version:'v2',locale:'en'}))}${renderToStaticMarkup(createElement(ui.ShellBrandButton, {productId:product,version:'v2',locale:'en',expanded:true}))}${renderToStaticMarkup(createElement(ui.ProductLockup, {productId:product,firstLine:'rail',locale:'en'}))}</section>`).join('');
+    await page.setContent(`<style>${tokens.tcrnTokenCss}${ui.tcrnComponentCss}</style><main data-tcrn-theme="${theme}" style="background:var(--tcrn-color-bg);padding:24px">${markup}</main>`);
+    for (const product of ['tms','design-system','einzbern','mana-orchestrate']) {
+      const idle = page.locator(`[data-product="${product}"] button`).nth(0), open = page.locator(`[data-product="${product}"] button`).nth(1);
+      const read = (button) => button.evaluate((el) => {
+        const cs = getComputedStyle(el), suffix = el.querySelector('em'), word = el.querySelector('b'), mark = el.querySelector('svg[data-logo]');
+        return { suffix: suffix ? getComputedStyle(suffix).color : null, word: word ? getComputedStyle(word).color : null, background: cs.backgroundColor, canvas: getComputedStyle(el.closest('main')).backgroundColor, panel: cs.getPropertyValue('--tcrn-color-panel').trim(), opacity: cs.opacity, markOpacity: mark ? getComputedStyle(mark).opacity : null, mark: mark?.innerHTML ?? null, expanded: el.getAttribute('aria-expanded'), hover: el.matches(':hover'), geometry: { button: el.getBoundingClientRect().toJSON(), word: word?.getBoundingClientRect().toJSON() ?? null, wordClientWidth: word?.clientWidth ?? null, wordScrollWidth: word?.scrollWidth ?? null, mark: mark?.getBoundingClientRect().toJSON() ?? null, toggle: el.querySelector('[data-shell-toggle]')?.getBoundingClientRect().toJSON() ?? null, minWidth: cs.minInlineSize, carrier: el.closest('main').getBoundingClientRect().toJSON() } };
+      });
+      await page.mouse.move(0,0); const rest = await read(idle); await idle.hover(); const hover = await read(idle); await page.mouse.move(0,0); const expanded = await read(open);
+      for (const reading of [rest, hover, expanded]) {
+        if (!reading.suffix) continue;
+        const ink = parseColor(reading.suffix), canvas = parseColor(reading.canvas), fill = compositeOver(parseColor(reading.background), canvas);
+        reading.effectiveBackground = fill;
+        reading.contrastOnCanvas = contrastRatio(compositeOver(ink, fill), fill);
+        const panel = parseColor(reading.panel);
+        reading.contrastOnPanel = contrastRatio(ink, panel);
+      }
+      const lockup = await page.locator(`[data-product="${product}"] [data-lockup="lkr-line"]`).last().evaluate((el) => ({ suffix: el.querySelector('em') ? getComputedStyle(el.querySelector('em')).color : null, word: getComputedStyle(el.querySelector('b')).color }));
+      rows.push({ theme, product, role: 'actual package ShellBrandButton v2; open supplied through expanded prop', rest, hover, open: expanded, lockup });
+    }
+  }
+  return rows;
 }
 
 // A story whose shell blocks hydrate on the page (data-shell-hydrate, the shell stories) is read once
@@ -534,6 +670,8 @@ export async function runGeometryMeasureProof({
     runs: [],
     mutations: [],
     probes: [],
+    criterionCaptures: [],
+    criterionCaptureScope: fullSet ? "original full CLI story set" : "not run for this scoped helper invocation",
     checksNeverApplied: [],
     summary: {}
   };
@@ -639,6 +777,24 @@ export async function runGeometryMeasureProof({
             } finally {
               await page.close();
             }
+          }
+          for (const route of routes.filter((route) => fullSet && ['typography-matrix','actions-matrix','inputs-matrix'].includes(route.id))) {
+            const page = await context.newPage();
+            try {
+              await page.goto(storyUrl(server.origin, route, { theme: themes[0], locale }), { waitUntil: 'load' });
+              await expandStory(page, route.id);
+              await waitForHydratedBlocks(page, route.bodySelector);
+              await page.evaluate(() => document.fonts.ready);
+              report.criterionCaptures.push(await captureGeometryCriteria(page, { root: route.bodySelector, storyId: route.id, artifactRoot: join(root, '.tarball-smoke/criterion-captures', `${Date.now()}-${process.pid}`, route.id) }));
+            } catch (error) {
+              report.criterionCaptures.push({ storyId: route.id, error: error.message, status: 'unverified' });
+            } finally { await page.close(); }
+          }
+          if (fullSet && ids.includes('brand-matrix')) {
+            const page = await context.newPage();
+            try { report.brandStateCaptures = await captureBrandSuffixStates(page, { root }); }
+            catch (error) { report.brandStateCaptures = { status: 'unverified', error: error.message }; }
+            finally { await page.close(); }
           }
         } finally {
           await context.close();

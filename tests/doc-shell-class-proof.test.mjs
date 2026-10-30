@@ -2,6 +2,7 @@
 // Out-of-package class gate for the documentation layer (TCRN-DS-STORY-128, TCRN-DS-SUB-024).
 import test from "node:test";
 import assert from "node:assert/strict";
+import { withIsolatedProofTree, runProofProcess } from "../scripts/contract-proof.mjs";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -249,3 +250,18 @@ test("the committed class map gives every baseline class exactly one allowed dis
 function sortedUnique(values) {
   return [...new Set(values)].sort();
 }
+
+test("128 GWT2: a new tcrn-foo source/output class makes the actual doc-shell CLI red", async (t) => {
+  await withIsolatedProofTree(async (root) => {
+    const argv = ["scripts/doc-shell-class-proof.mjs"];
+    const clean = runProofProcess(root, argv);
+    assert.equal(clean.status, 0, clean.stdout + clean.stderr);
+    const rel = "apps/storybook/src/criterion-tcrn-foo.tsx";
+    writeFileSync(join(root, rel), 'export const NewClass = () => <div className="tcrn-foo"/>;\n');
+    writeFileSync(join(root, "apps/storybook/storybook-static/criterion-tcrn-foo.html"), '<!doctype html><div class="tcrn-foo">negative control</div>');
+    const changed = runProofProcess(root, argv);
+    t.diagnostic(JSON.stringify({ criterion: "128#2", source: rel, clean, changed, cleanup: "isolated copy removed in finally" }));
+    assert.equal(changed.status, 1, changed.stderr);
+    assert.ok(JSON.parse(changed.stdout).outOfPackage.includes("tcrn-foo"), changed.stdout);
+  });
+});

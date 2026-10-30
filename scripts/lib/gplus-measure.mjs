@@ -484,7 +484,11 @@ export function measureInPage(options) {
       if (!reader) row.reasons.push("unknown_probe");
       else {
         const fill = effBg(el);
-        const ink = over(reader(el, cs), fill);
+        const foreground = reader(el, cs);
+        const ink = over(foreground, fill);
+        // Keep the actual specialized/pseudo reading, carrier composition and control state.
+        // A text-colour collector cannot stand in for placeholder/edge/checkmark/knob paint.
+        row.raw = { foreground, compositedInk: ink, effectiveBackground: fill, ratio: contrast(ink, fill), color: cs.color, backgroundColor: cs.backgroundColor, boxShadow: cs.boxShadow, placeholder: styleOf(el, "::placeholder").color, afterBorder: styleOf(el, "::after").borderBottomColor, afterShadow: styleOf(el, "::after").boxShadow, beforeBackground: styleOf(el, "::before").backgroundColor, checked: "checked" in el ? el.checked : null, disabled: "disabled" in el ? el.disabled : el.getAttribute("aria-disabled"), focusVisible: el.matches(":focus-visible"), preview: el.getAttribute("data-tcrn-preview-state") };
         row.ratio = round2(contrast(ink, fill));
         if (expected === null || !Number.isFinite(expected)) row.reasons.push("missing_expect");
         else {

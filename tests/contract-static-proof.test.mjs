@@ -3,11 +3,12 @@
 // mutation per rule that must turn the gate red from a green fixture (C14: red and green both reachable).
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { colourLiterals, compounds, elementClasses, emojiIn, emojiInText, parseCss, parseHtml, selectorClasses, shadowLayers, specificity, textContent, walkElements, withoutPseudoElements } from "../scripts/lib/css-rules.mjs";
 import { CHECKED_CLAUSES, checkedBatchesOf, evaluateContract, familyArguments, outOfPackageClasses, selectedPairKeys, semanticOf, validateExemptions } from "../scripts/contract-static-proof.mjs";
+import { withIsolatedProofTree, runProofProcess } from "../scripts/contract-proof.mjs";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readRepoJson = (path) => JSON.parse(readFileSync(join(repoRoot, path), "utf8"));
@@ -199,6 +200,33 @@ test("132-GWT3: a linear-gradient background turns C11 red", () => {
   const report = run({ css: `${PACKAGE_CSS}\n.tcrn-button.tcrn-button--primary{background-image:linear-gradient(90deg,#0b7f74,#43d4cf)}` });
   assert.equal(status(report, "C11"), "red");
   assert.deepEqual(ruleIds(report, "C11"), ["C11.gradient"]);
+});
+
+test("125/132: the four literal repository CSS mutations are rejected by actual CLI processes", async (t) => {
+  await withIsolatedProofTree(async (root) => {
+    const rel = "packages/ui-react/dist/styles/index.js", file = join(root, rel), original = readFileSync(file, "utf8");
+    const clean = runProofProcess(root, ["scripts/contract-static-proof.mjs"]);
+    t.diagnostic(JSON.stringify({ control: "pristine contract-static process", process: clean }));
+    assert.equal(clean.status, 0, clean.stdout + clean.stderr);
+    for (const scenario of [
+      { criterion: "125#2", css: ".scope .tcrn-button:hover{background:#fff}", clauses: ["C2"] },
+      { criterion: "132#1", css: ".x .tcrn-button:hover{background:#fff}", clauses: ["C2"] },
+      { criterion: "132#2", css: '[data-tcrn-theme="dark"] .tcrn-button:where([aria-pressed="true"]){box-shadow:inset 2px 0 0 var(--tcrn-color-acc)}', clauses: ["C5", "C6"] },
+      { criterion: "132#3", css: ".tcrn-button.tcrn-button--primary{background-image:linear-gradient(90deg,#0b7f74,#43d4cf)}", clauses: ["C11"] }
+    ]) {
+      // Mutate the real copied built module read by the CLI; no ui/evaluator parameter is supplied.
+      const changed = original.replace('].join("")', `,${JSON.stringify(scenario.css)}].join("")`);
+      assert.notEqual(changed, original);
+      writeFileSync(file, changed);
+      const process = runProofProcess(root, ["scripts/contract-static-proof.mjs"]);
+      writeFileSync(file, original);
+      t.diagnostic(JSON.stringify({ ...scenario, mutationFile: rel, process, restored: readFileSync(file, "utf8") === original }));
+      assert.equal(process.status, 1, process.stdout + process.stderr);
+      const result = JSON.parse(process.stdout);
+      for (const clause of scenario.clauses) assert.equal(result.clauses[clause].status, "red", process.stdout);
+      assert.equal(readFileSync(file, "utf8"), original);
+    }
+  });
 });
 
 // ---------------------------------------------------------------------------------------------

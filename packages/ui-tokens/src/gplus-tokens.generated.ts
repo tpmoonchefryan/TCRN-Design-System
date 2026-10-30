@@ -1,6 +1,6 @@
 // 由 docs/design/gplus-2026-10/contract 生成，勿手改（node scripts/contract-generate.mjs）。
 // contract files: tokens.json, marks.json, typography.json
-// contract-sha256: b73b9e426d350d505bc93911279e3a9a451478200a56ebf91db4d1a4e6fad2ce
+// contract-sha256: a2db02c7e379ed3f286ec7cee6fa2c1722fa6eb7a4e0a2c2e7ef8c1ff532bce7
 
 
 export interface TcrnGplusThemedToken {
@@ -27,6 +27,13 @@ export interface TcrnGplusBrandToken extends TcrnGplusFixedToken {
 export const tcrnGplusThemeSelectors = { light: ":root, [data-tcrn-theme=\"light\"]", dark: "[data-tcrn-theme=\"dark\"]" } as const;
 
 export const tcrnGplusThemedTokens: readonly TcrnGplusThemedToken[] = [
+  {
+    "key": "shell-brand-suffix-design-system-interactive",
+    "cssVar": "--tcrn-color-shell-brand-suffix-design-system-interactive",
+    "group": "color",
+    "light": "#505fc1",
+    "dark": "#6577f3"
+  },
   {
     "key": "bg",
     "cssVar": "--tcrn-color-bg",

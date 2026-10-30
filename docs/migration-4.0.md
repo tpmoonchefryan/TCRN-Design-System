@@ -15,6 +15,15 @@ is the Owner's visual acceptance, whose list for both batches is
 `docs/dispatch/2026-10-13-tab-shell/owner-acceptance.md`. The release notes are the
 4.0.0 section of `CHANGELOG.md`.
 
+TCRN-DS-MIN-20261030-D03-COLOR D1–D3 scopes the Design System suffix in a
+ProductShell brand button: daytime hover/open uses `#505fc1`, while default/idle
+and night keep `#6577f3`. Consume the state role through
+`--tcrn-color-shell-brand-suffix-design-system-interactive`; the global default suffix
+token keeps its original meaning. Other products, ProductLockup, SVG bytes and
+fills are unchanged. The daytime 3.5% wash and the suffix contrast requirement
+of at least 4.5 still apply; this decision does not publish the candidate or the
+visual Standard Site.
+
 How this guide was written: from this repository's commits and the package
 handoffs of both batches only. It does not read any consumer repository, so it says
 what changed and what to do, not where a consumer uses each item. Each consumer

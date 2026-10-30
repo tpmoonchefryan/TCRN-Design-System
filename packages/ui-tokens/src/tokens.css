@@ -1,6 +1,7 @@
 @import "../fonts/fonts.css";
 :root, [data-tcrn-theme="light"] {
   /* tcrn-token-block: theme */
+  --tcrn-color-shell-brand-suffix-design-system-interactive: #505fc1;
   --tcrn-color-bg: #efeeea;
   --tcrn-color-bg-2: #e7e5df;
   --tcrn-color-panel: #ffffff;
@@ -248,6 +249,7 @@
 }
 [data-tcrn-theme="dark"] {
   /* tcrn-token-block: theme */
+  --tcrn-color-shell-brand-suffix-design-system-interactive: #6577f3;
   --tcrn-color-bg: #121210;
   --tcrn-color-bg-2: #0d0d0b;
   --tcrn-color-panel: #191916;

@@ -243,6 +243,7 @@ test("states switch the pair and write no colour; hover and open take the 3.5% i
   for (const [selector, key] of states) {
     const declarations = ruleBody(selector).trim().split("\n").map((line) => line.trim());
     assert.deepEqual(declarations, [
+      `--tcrn-pair-ds-suffix: var(--tcrn-pair-ds-suffix-${key});`,
       `--tcrn-pair-fill: var(--tcrn-pair-fill-${key});`,
       `--tcrn-pair-ink: var(--tcrn-pair-ink-${key});`,
       `--tcrn-pair-edge: var(--tcrn-pair-edge-${key});`
@@ -284,6 +285,23 @@ test("the TMS suffix reads at least 4.5 on the hover wash in both themes", () =>
   assert.equal(createResolvedTokenMap("light")["--tcrn-brand-suffix-tms"], "#2c63c8");
   assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-tms"], "#7aa0f5");
   for (const theme of ["light", "dark"] as const) assert.ok(suffixOnWash(theme) >= 4.5, theme);
+});
+
+test("D03 maps only the DS shell suffix state; default, night, marks and other product roles stay separate", () => {
+  const light = createResolvedTokenMap("light"), night = createResolvedTokenMap("dark");
+  assert.equal(light["--tcrn-brand-suffix-design-system"], "#6577f3");
+  assert.equal(night["--tcrn-brand-suffix-design-system"], "#6577f3");
+  assert.equal(light["--tcrn-color-shell-brand-suffix-design-system-interactive"], "#505fc1");
+  assert.equal(night["--tcrn-color-shell-brand-suffix-design-system-interactive"], "#6577f3");
+  assert.equal(light["--tcrn-brand-suffix-tms"], "#2c63c8");
+  assert.equal(night["--tcrn-brand-suffix-tms"], "#7aa0f5");
+  assert.match(ruleBody(".tcrn-shell-brand"), /--tcrn-pair-ds-suffix-d: var\(--tcrn-brand-suffix-design-system\)/);
+  for (const [state, key] of [['.tcrn-shell-brand:where(:hover, [data-tcrn-preview-state="hover"])', "h"], ['.tcrn-shell-brand:where([aria-expanded="true"])', "o"]]) {
+    assert.ok(ruleBody(state).includes(`--tcrn-pair-ds-suffix: var(--tcrn-pair-ds-suffix-${key});`));
+  }
+  assert.equal(ruleBody(".tcrn-shell-brand__suffix--design-system").trim(), "color: var(--tcrn-pair-ds-suffix);");
+  assert.equal(ruleBody(".tcrn-shell-brand__suffix--tms").trim(), "color: var(--tcrn-brand-suffix-tms);");
+  // The real role/theme/state paint and >=4.5 are additionally read by the browser proof.
 });
 
 test("the ref reaches the button, and an automatic button reports the first version on a narrow viewport", async () => {

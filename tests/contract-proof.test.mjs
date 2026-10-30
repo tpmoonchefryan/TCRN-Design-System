@@ -35,6 +35,7 @@ import {
   shellBoardMatrix,
   stateRuleLiterals
 } from "../scripts/contract-proof.mjs";
+import { withIsolatedProofTree, runProofProcess } from "../scripts/contract-proof.mjs";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const distEntry = join(repoRoot, DIST_ENTRY);
@@ -224,6 +225,43 @@ test("GWT2: after regenerating (and rebuilding) the proof is green again", async
     const result = await runContractProof({ root, ui: { ...ui, tcrnComponentCss: css } });
     assert.equal(result.ok, true, formatResult(result));
     assert.ok(read(root, moduleOf(change.table)).includes(`--tcrn-pair-ink-${change.state}:var(${change.cssVar})`));
+  });
+});
+
+test("122 GWT1/2: the stale CLI is red, then real generation and TypeScript rebuild make the CLI green", async (t) => {
+  await withIsolatedProofTree(async (root) => {
+    const change = changeOneInk(root);
+    const stale = runProofProcess(root, ["scripts/contract-proof.mjs", "--json"]);
+    t.diagnostic(JSON.stringify({ criterion: "122#1", fixture: root, change, process: stale }));
+    assert.equal(stale.status, 1, stale.stderr);
+    assert.equal(checkOf(JSON.parse(stale.stdout), "generated-sources").ok, false);
+    const generation = runProofProcess(root, ["scripts/contract-generate.mjs"]);
+    const compiler = runProofProcess(root, [join(repoRoot, "node_modules/typescript/bin/tsc"), "-b", "packages/ui-tokens", "packages/ui-copy-state", "packages/ui-react", "--force", "--pretty", "false"]);
+    const regenerated = runProofProcess(root, ["scripts/contract-proof.mjs", "--json"]);
+    t.diagnostic(JSON.stringify({ criterion: "122#2", fixture: root, change, generation, compiler, process: regenerated, isolation: "copy-only; finally removes fixture" }));
+    assert.equal(generation.status, 0, generation.stderr);
+    assert.equal(compiler.status, 0, compiler.stdout + compiler.stderr);
+    assert.equal(regenerated.status, 0, regenerated.stdout + regenerated.stderr);
+    const result = JSON.parse(regenerated.stdout);
+    for (const id of ["generated-sources", "generated-state-rules", "package-css"]) assert.equal(checkOf(result, id).ok, true, regenerated.stdout);
+  });
+});
+
+test("127 GWT2: changing one SVG byte makes the actual brand-asset CLI red", async (t) => {
+  await withIsolatedProofTree(async (root) => {
+    const rel = `${LOGO_DIR}/tms.svg`;
+    const before = readFileSync(join(root, rel));
+    const changed = Buffer.from(before);
+    const at = changed.indexOf(Buffer.from("<path")) + 1;
+    assert.ok(at > 0);
+    changed[at] = changed[at] === 112 ? 113 : 112;
+    writeFileSync(join(root, rel), changed);
+    const run = runProofProcess(root, ["scripts/brand-asset-source-proof.mjs"]);
+    t.diagnostic(JSON.stringify({ criterion: "127#2", file: rel, byteOffset: at, beforeByte: before[at], afterByte: changed[at], process: run }));
+    assert.equal(run.status, 1, run.stderr);
+    const result = JSON.parse(run.stdout);
+    assert.equal(result.productMarks.ok, false);
+    assert.ok(result.failures.some((failure) => failure.includes(rel) && failure.includes("sha256")), run.stdout);
   });
 });
 

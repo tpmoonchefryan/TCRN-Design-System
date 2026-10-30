@@ -51,6 +51,10 @@ export const shellCss01 = `
   --tcrn-pair-ink-o: var(--tcrn-color-ink);
   --tcrn-pair-edge-o: 0 0 #0000;
   --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-ds-suffix-d: var(--tcrn-brand-suffix-design-system);
+  --tcrn-pair-ds-suffix-h: var(--tcrn-color-shell-brand-suffix-design-system-interactive);
+  --tcrn-pair-ds-suffix-o: var(--tcrn-color-shell-brand-suffix-design-system-interactive);
+  --tcrn-pair-ds-suffix: var(--tcrn-pair-ds-suffix-d);
   display: inline-grid;
   flex: 0 0 auto;
   grid-template-columns: minmax(0, 1fr) var(--tcrn-shell-toggle);
@@ -108,7 +112,7 @@ export const shellCss01 = `
   color: var(--tcrn-brand-suffix-tms);
 }
 .tcrn-shell-brand__suffix--design-system {
-  color: var(--tcrn-brand-suffix-design-system);
+  color: var(--tcrn-pair-ds-suffix);
 }
 .tcrn-shell-brand__toggle {
   display: inline-flex;
@@ -119,11 +123,13 @@ export const shellCss01 = `
   color: var(--tcrn-color-ink-2);
 }
 .tcrn-shell-brand:where(:hover, [data-tcrn-preview-state="hover"]) {
+  --tcrn-pair-ds-suffix: var(--tcrn-pair-ds-suffix-h);
   --tcrn-pair-fill: var(--tcrn-pair-fill-h);
   --tcrn-pair-ink: var(--tcrn-pair-ink-h);
   --tcrn-pair-edge: var(--tcrn-pair-edge-h);
 }
 .tcrn-shell-brand:where([aria-expanded="true"]) {
+  --tcrn-pair-ds-suffix: var(--tcrn-pair-ds-suffix-o);
   --tcrn-pair-fill: var(--tcrn-pair-fill-o);
   --tcrn-pair-ink: var(--tcrn-pair-ink-o);
   --tcrn-pair-edge: var(--tcrn-pair-edge-o);

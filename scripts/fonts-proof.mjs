@@ -325,6 +325,24 @@ function checkBuildOutput(root, failures, notes) {
   return { roots, scanned };
 }
 
+// Preserve STORY-121#1's original broad literal search alongside the narrower deployed-font
+// check. A compiled rejection regexp is a real textual hit, but is not a network request. This
+// observation deliberately makes neither a zero-hit nor a no-request claim when evidence is absent.
+export function scanBroadFontArtifacts(root) {
+  const roots = ["packages/ui-tokens/dist", "packages/ui-copy-state/dist", "packages/ui-react/dist", "examples/tms-react-pilot/dist", "examples/aos-token-copy-state-pilot/dist", "apps/storybook/dist", DOCS_BUILD];
+  const missingRoots = roots.filter((rel) => !fs.existsSync(path.join(root, rel)));
+  const hits = [];
+  let files = 0;
+  for (const start of roots.filter((rel) => !missingRoots.includes(rel))) walk(root, start, (rel, full) => {
+    if (BINARY_EXTENSIONS.has(path.extname(rel).toLowerCase())) return;
+    files += 1;
+    fs.readFileSync(full, "utf8").split("\n").forEach((line, index) => {
+      if (/googleapis/i.test(line)) hits.push({ path: rel, line: index + 1, text: line.trim() });
+    });
+  });
+  return { criterion: "121#1", roots, missingRoots, files, literalHitCount: hits.length, hits, zeroHitObserved: missingRoots.length === 0 && hits.length === 0, networkRequests: "not measured by this textual scan" };
+}
+
 async function loadTokenList(root, tokens, failures) {
   if (tokens) return tokens;
   const distIndex = path.join(root, PACKAGE_DIR, "dist/index.js");
@@ -469,7 +487,7 @@ export async function runFontsProof({ root = scriptRoot, tokens } = {}) {
   const families = await checkTokenFamilies(root, tokens, familyFailures);
   record("token-families", familyFailures, `the ${families.stacks} G+ family tokens open with their vendored faces and keep the Noto fallbacks; all ${families.faces} faces they name have an @font-face in ${CSS_NAME}`);
 
-  return { ok: checks.every((check) => check.ok), checks };
+  return { ok: checks.every((check) => check.ok), checks, broadArtifactTextScan: scanBroadFontArtifacts(root) };
 }
 
 function isMain() {
@@ -485,6 +503,7 @@ if (isMain()) {
   const rootFlag = process.argv.indexOf("--root");
   const root = rootFlag > 0 && process.argv[rootFlag + 1] ? path.resolve(process.argv[rootFlag + 1]) : scriptRoot;
   const report = await runFontsProof({ root });
+  console.log(`observation broad-artifact-text-scan: ${JSON.stringify(report.broadArtifactTextScan)}`);
   for (const check of report.checks) {
     if (check.ok) console.log(`pass  ${check.id}: ${check.pass}`);
     else {
