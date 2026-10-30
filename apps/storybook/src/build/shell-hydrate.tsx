@@ -121,6 +121,12 @@ export const shellStoryThemeAttribute: Readonly<Record<ShellStoryTheme, "light" 
 // PINS of the board: the current page, a pinned item with a menu, a link and a second menu.
 export const shellStoryPinnedIds: readonly string[] = ["roster", "contracts", "statements", "schedule"];
 const shellStoryDropPinId = "contracts";
+// The start-opening specimen needs room for its cascade inside its own 1240px shell. Moving
+// the whole framed screen towards the viewport's end makes the drop-down turn, but the second
+// pin is still less than a column and its gap from that shell's start (and the shell clips it).
+// Keep the same four pins and put this specimen's trigger last; the other screens retain the
+// board's order and the package still chooses the side from the real viewport.
+const shellStoryStartPinnedIds: readonly string[] = [...shellStoryPinnedIds.filter((id) => id !== shellStoryDropPinId), shellStoryDropPinId];
 // The board's states, by screen state: the full-menu screens show the Teams row under the pointer;
 // the drop-down screens show the Contracts drop-down with its Templates row's cascade open. (The
 // closed screens' third pinned item under the pointer is a markup edit of story-content.tsx:
@@ -445,7 +451,7 @@ function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t =
       currentTheme={shellStoryThemeAttribute[screen.theme]}
       account={{ name: "Lin Xia", initials: "LX" }}
       notifications={{ unread: 3 }}
-      pinnedIds={control?.pinnedIds ?? shellStoryPinnedIds}
+      pinnedIds={control?.pinnedIds ?? (screen.screen === "ts-drop-start-l" ? shellStoryStartPinnedIds : shellStoryPinnedIds)}
       onPinnedChange={control?.onPinnedChange ?? ignore}
       onPinsReorder={control?.onPinsReorder}
       products={control?.products}

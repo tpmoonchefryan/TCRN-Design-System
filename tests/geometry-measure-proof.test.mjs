@@ -39,7 +39,7 @@ import {
   runFixtureSelfCheck,
   runGeometryMeasureProof
 } from "../scripts/geometry-measure-proof.mjs";
-import { captureBrandSuffixStates } from "../scripts/geometry-measure-proof.mjs";
+import { captureBrandSuffixStates, defaultTextControlsInPage, settleControlPaint } from "../scripts/geometry-measure-proof.mjs";
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 const fixtureDir = fileURLToPath(new URL("./fixtures/geometry-measure/", import.meta.url));
@@ -96,6 +96,48 @@ test("Node colour math matches the canvas formulas", () => {
   assert.equal(expectedContrast("#1e3a8a", ["rgba(43, 89, 195, 0.12)"]), 8.68);
   assert.deepEqual(parseColor("#11223380"), [17, 34, 51, 128 / 255]);
   assert.throws(() => parseColor("oklch(0.5 0.1 120)"), /gplus_measure_color_unsupported/);
+});
+
+test("default textual edge capture composites RGBA as RGB and follows the visible carrier", async () => {
+  const page = await browser.newPage();
+  try {
+    await page.setContent(`<!doctype html><style>
+      #controls{--tcrn-color-panel:#fff;--tcrn-color-line-ctl:rgba(22,21,15,.47)}
+      input{width:120px;height:32px;border:0;box-shadow:inset 0 0 0 1px rgba(22,21,15,.47)}
+      .tcrn-search-input{display:inline-block;box-shadow:inset 0 0 0 1px rgba(22,21,15,.47)}
+      .tcrn-search-input input,.quiet{box-shadow:none}.tcrn-sr-only{display:none}
+      </style><div id="controls"><input id="normal"><input readonly><input class="tcrn-sr-only">
+      <span class="tcrn-search-input"><input id="outer-edge"></span><input id="no-edge" class="quiet"></div>`);
+    const result = await page.evaluate(defaultTextControlsInPage, "#controls");
+    const expected = contrastRatio(compositeOver(parseColor("rgba(22,21,15,.47)"), parseColor("#fff")), parseColor("#fff"));
+    assert.equal(result.readings.length, 3);
+    assert.ok(result.readings[0].finite);
+    assert.ok(Math.abs(result.readings[0].ratio - expected) < 1e-12);
+    assert.equal(result.readings[0].carrier.length, 3);
+    assert.equal(result.readings[1].paintCarrier.classes, "tcrn-search-input");
+    assert.equal(result.readings[1].ratio, result.readings[0].ratio);
+    assert.equal(result.readings[2].ratio, null, "an absent edge is not replaced by a token ratio");
+    assert.deepEqual(result.excluded.map((row) => row.reason).sort(), ["hidden value/control", "read-only"]);
+  } finally { await page.close(); }
+});
+
+test("control paint capture waits for a real finite invalid-focus transition", async () => {
+  const page = await browser.newPage();
+  try {
+    await page.setContent(`<!doctype html><style>input{width:120px;height:32px;box-shadow:inset 0 0 0 1px rgb(11,107,101);transition:box-shadow 120ms linear}input[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 1px rgb(168,50,31),0 0 0 4px rgb(168,50,31)}</style><button>before</button><input>`);
+    const control = page.locator("input");
+    await page.mouse.move(0, 0); await page.locator("button").focus();
+    await control.evaluate((el) => el.setAttribute("aria-invalid", "true"));
+    await page.keyboard.press("Tab");
+    const settled = await settleControlPaint(control);
+    assert.equal(settled.timedOut, false);
+    assert.ok(settled.finiteAnimations > 0);
+    assert.equal(settled.stableFrames, 3);
+    const paint = await control.evaluate((el) => ({ active: document.activeElement === el, invalid: el.getAttribute("aria-invalid"), shadow: getComputedStyle(el).boxShadow }));
+    assert.equal(paint.active, true); assert.equal(paint.invalid, "true");
+    assert.ok(paint.shadow.includes("rgb(168, 50, 31)"));
+    assert.ok(!paint.shadow.includes("rgb(11, 107, 101)"));
+  } finally { await page.close(); }
 });
 
 test("judgeMeasurements maps raw values to pass, fail and n/a against the thresholds", () => {

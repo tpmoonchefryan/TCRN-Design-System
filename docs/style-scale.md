@@ -267,9 +267,9 @@ components instead.
   - `EX-INIT015-doc-filter-bar`: `display`, `flex-wrap` and `gap` on the top-level
     `.tcrn-filter-bar` demo hook; goes when the Navigation family's batch gives FilterBar a
     layout of its own.
-  - `EX-INIT015-doc-nav-proof-skip-link`: the package-nav proof's skip link, a 1px
-    screen-reader box until focused and an inline flex box on focus; goes when the Navigation
-    family's batch has the proof render its skip link through the package component.
+  - Removed: `EX-INIT015-doc-nav-proof-skip-link` (TCRN-DS-SUB-268). The Navigation
+    proof renders the public `SkipLink` component and now uses its own hidden/focused states;
+    the documentation's 1px box and focused-layout overrides have been removed.
   - Removed: `EX-INIT015-doc-shell-brand-collapse` and `EX-INIT015-doc-shell-brand-narrow`
     (TCRN-DS-SUB-101); the knowledge-base sample's four entries
     (`EX-INIT015-doc-knowledge-shell-topbar`, `-side-nav`, `-group-title` and `-nav-item`,

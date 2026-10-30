@@ -386,11 +386,59 @@ async function runStoryProbe(probe, page) {
 
 // Original criterion captures are raw observations, separate from the existing general-purpose
 // verdicts. A 0.5px probe pass, a hit test, or a source token must not silently certify a stricter row.
+// Real focus/invalid paint is transitional. Wait for the finite transitions of this control,
+// then require consecutive paint readings; no forced pseudo-state or motion override is used.
+export async function settleControlPaint(control) {
+  return control.evaluate(async (el) => {
+    const started = performance.now(), frame = () => new Promise((done) => requestAnimationFrame(done));
+    const snapshot = () => { const cs = getComputedStyle(el); return [cs.border, cs.boxShadow, cs.outline, cs.color, cs.backgroundColor].join("|"); };
+    snapshot(); await frame();
+    const animations = el.getAnimations().filter((a) => { const end = a.effect?.getComputedTiming().endTime; return Number.isFinite(end) && end > 0; });
+    let timer, timedOut = false;
+    await Promise.race([Promise.all(animations.map((a) => a.finished.catch(() => undefined))), new Promise((done) => { timer = setTimeout(() => { timedOut = true; done(); }, 2000); })]);
+    clearTimeout(timer);
+    let prior = snapshot(), stableFrames = 0;
+    for (let i = 0; i < 120 && stableFrames < 3; i++) { await frame(); const next = snapshot(); stableFrames = next === prior ? stableFrames + 1 : 0; prior = next; }
+    return { finiteAnimations: animations.length, timedOut, stableFrames, elapsedMs: performance.now() - started };
+  });
+}
+
+// Default textual controls, with the carrier that actually paints their edge. An RGBA tuple's
+// alpha is used only when compositing; relative luminance always has exactly three channels.
+export function defaultTextControlsInPage(root) {
+  const scope = document.querySelector(root), readings = [], excluded = [];
+  const rgba = (s) => { const a = s.match(/[\d.]+/g)?.map(Number) ?? []; return a.length === 3 ? [...a, 1] : a; };
+  const over = (a, b) => a.slice(0, 3).map((v, i) => v * a[3] + b[i] * (1 - a[3]));
+  const lum = (a) => a.slice(0, 3).map((v) => v / 255).map((v) => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4).reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0);
+  const visible = (el) => { const cs = getComputedStyle(el), r = el.getBoundingClientRect(); return el.getClientRects().length > 0 && r.width > 0 && r.height > 0 && cs.display !== "none" && cs.visibility !== "hidden" && !el.closest('[aria-hidden="true"],.tcrn-sr-only'); };
+  for (const el of scope.querySelectorAll('input,textarea,select,button.tcrn-select')) {
+    if (['checkbox','radio'].includes(el.type)) continue;
+    const identity = { element: el.tagName, type: el.type, classes: el.className, cell: el.getAttribute('data-cell'), theme: el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme') };
+    const reason = el.type === 'hidden' || !visible(el) ? 'hidden value/control' : el.disabled ? 'disabled' : el.readOnly ? 'read-only' : el.closest('[aria-invalid="true"]') ? 'invalid' : el.closest('[data-tcrn-preview-state]') ? 'preview state' : null;
+    if (reason) { excluded.push({ ...identity, reason }); continue; }
+    const edgeOf = (node) => {
+      const cs = getComputedStyle(node);
+      const shadowColor = cs.boxShadow.split(/,(?![^(]*\))/).map((layer) => ({ layer, color: layer.match(/rgba?\([^)]*\)/)?.[0] })).find((entry) => entry.color && /(?:^|\s)1px(?:\s|$)/.test(entry.layer));
+      return parseFloat(cs.borderBottomWidth) > 0 && cs.borderBottomStyle !== 'none' ? cs.borderBottomColor : shadowColor?.color;
+    };
+    const searchWrapper = el.closest('.tcrn-search-input');
+    const candidates = [el, ...(searchWrapper && searchWrapper !== el ? [searchWrapper] : [])];
+    const paint = candidates.find((node) => edgeOf(node)) ?? el, cs = getComputedStyle(paint);
+    const line = cs.getPropertyValue('--tcrn-color-line-ctl').trim(), panel = cs.getPropertyValue('--tcrn-color-panel').trim();
+    const toRgb = (color) => { const probe = document.createElement('span'); probe.style.color = color; paint.parentElement.append(probe); const value = rgba(getComputedStyle(probe).color); probe.remove(); return value; };
+    const paintedEdge = edgeOf(paint);
+    const carrier = toRgb(panel).slice(0, 3), edge = paintedEdge ? over(toRgb(paintedEdge), carrier) : null, a = edge ? lum(edge) : null, b = lum(carrier);
+    const ratio = a === null ? null : (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+    readings.push({ ...identity, paintCarrier: { element: paint.tagName, classes: paint.className }, carrierCandidates: candidates.map((node) => ({ element: node.tagName, classes: node.className, border: getComputedStyle(node).border, shadow: getComputedStyle(node).boxShadow, paintedEdge: edgeOf(node) ?? null })), border: cs.border, shadow: cs.boxShadow, lineCtl: line, paintedEdge: paintedEdge ?? null, panel, edge, carrier, ratio, finite: Number.isFinite(ratio), missingPaint: paintedEdge ? null : 'No visible default border or one-pixel shadow on the control or its SearchInput wrapper', requiredMinimum: 3.1 });
+  }
+  return { readings, excluded, minimum: readings.length && readings.every((r) => r.finite) ? Math.min(...readings.map((r) => r.ratio)) : null };
+}
+
 export async function captureGeometryCriteria(page, { root, storyId, artifactRoot = null } = {}) {
   const output = { storyId, root, viewport: page.viewportSize(), unknowns: [] };
   if (storyId === "typography-matrix") output.typography = await page.evaluate((root) => {
     const scope = document.querySelector(root);
-    const tuple = (el) => { const cs = getComputedStyle(el); return { text: el.textContent, family: cs.fontFamily, weight: cs.fontWeight, numeric: cs.fontVariantNumeric, fontCheck: document.fonts.check(`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`, el.textContent) }; };
+    const tuple = (el) => { const cs = getComputedStyle(el); return { text: el.textContent, classes: el.className, theme: el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme'), plainNumeral: el.classList.contains('tcrn-text--numeral') && !el.classList.contains('tcrn-text--numeral-inline'), family: cs.fontFamily, weight: cs.fontWeight, numeric: cs.fontVariantNumeric, fontCheck: document.fonts.check(`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`, el.textContent) }; };
     const headings = Array.from(scope.querySelectorAll('.tcrn-heading')).map((el) => {
       const prior = el.getAttribute('style');
       el.style.inlineSize = '80px'; el.style.maxInlineSize = '80px'; el.style.minInlineSize = '0';
@@ -419,10 +467,12 @@ export async function captureGeometryCriteria(page, { root, storyId, artifactRoo
       const group = groups.nth(index), first = group.locator('button:not(:disabled)').nth(0);
       if (!await first.isVisible() || await group.locator('button:not(:disabled)').count() < 2) continue;
       await first.scrollIntoViewIfNeeded(); await page.mouse.move(0, 0); await first.focus(); await page.keyboard.press('Tab');
+      const paintSettled = await settleControlPaint(group.locator('button:not(:disabled)').nth(1));
       const reading = await group.evaluate((el) => {
         const buttons = [...el.querySelectorAll('button:not(:disabled)')], focused = document.activeElement, cs = getComputedStyle(focused);
-        return { activeIndex: buttons.indexOf(focused), focusVisible: focused.matches(':focus-visible'), shadow: cs.boxShadow, outline: cs.outline, outlineOffset: cs.outlineOffset, zIndex: cs.zIndex, groupOverflow: getComputedStyle(el).overflow, rect: focused.getBoundingClientRect().toJSON(), siblings: buttons.map((button) => ({ rect: button.getBoundingClientRect().toJSON(), zIndex: getComputedStyle(button).zIndex })) };
+        return { activeIndex: buttons.indexOf(focused), focusVisible: focused.matches(':focus-visible'), hover: focused.matches(':hover'), theme: focused.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme'), shadow: cs.boxShadow, outline: cs.outline, outlineOffset: cs.outlineOffset, zIndex: cs.zIndex, groupOverflow: getComputedStyle(el).overflow, rect: focused.getBoundingClientRect().toJSON(), siblings: buttons.map((button) => ({ rect: button.getBoundingClientRect().toJSON(), zIndex: getComputedStyle(button).zIndex })) };
       });
+      reading.paintSettled = paintSettled;
       if (artifactRoot) { mkdirSync(artifactRoot, { recursive: true }); reading.screenshot = join(artifactRoot, `button-group-${index}.png`); await page.screenshot({ path: reading.screenshot }); }
       reading.probe = await page.evaluate(focusRingClipInPage, { root });
       reading.occlusionEvidence = 'native second-button focus, computed paint order and screenshot; ancestor probe alone does not certify sibling paint';
@@ -431,19 +481,10 @@ export async function captureGeometryCriteria(page, { root, storyId, artifactRoo
   }
 
   if (storyId === "inputs-matrix") {
-    output.defaultTextControls = await page.evaluate((root) => {
-      const rgba = (s) => { const a = s.match(/[\d.]+/g)?.map(Number) ?? []; return a.length === 3 ? [...a, 1] : a; };
-      const over = (a, b) => a.slice(0, 3).map((v, i) => v * a[3] + b[i] * (1 - a[3]));
-      const lum = (a) => a.map((v) => v / 255).map((v) => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4).reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0);
-      return [...document.querySelector(root).querySelectorAll('input,textarea,select')].filter((el) => !['checkbox','radio','hidden'].includes(el.type) && !el.disabled && el.getAttribute('aria-invalid') !== 'true' && !el.hasAttribute('data-tcrn-preview-state')).map((el) => {
-        const cs = getComputedStyle(el), line = cs.getPropertyValue('--tcrn-color-line-ctl').trim(), panel = cs.getPropertyValue('--tcrn-color-panel').trim();
-        const toRgb = (color) => { const probe = document.createElement('span'); probe.style.color = color; el.parentElement.append(probe); const value = rgba(getComputedStyle(probe).color); probe.remove(); return value; };
-        const shadowColor = cs.boxShadow.split(/,(?![^(]*\))/).map((layer) => ({ layer, color: layer.match(/rgba?\([^)]*\)/)?.[0] })).find((entry) => entry.color && /(?:^|\s)1px(?:\s|$)/.test(entry.layer));
-        const paintedEdge = parseFloat(cs.borderBottomWidth) > 0 && cs.borderBottomStyle !== 'none' ? cs.borderBottomColor : shadowColor?.color;
-        const carrier = toRgb(panel), edge = paintedEdge ? over(toRgb(paintedEdge), carrier) : null, a = edge ? lum(edge) : null, b = lum(carrier);
-        return { element: el.tagName, type: el.type, classes: el.className, cell: el.getAttribute('data-cell'), theme: el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme'), border: cs.border, shadow: cs.boxShadow, lineCtl: line, paintedEdge: paintedEdge ?? null, panel, edge, carrier, ratio: a === null ? null : (Math.max(a,b)+.05)/(Math.min(a,b)+.05), requiredMinimum: 3.1 };
-      });
-    }, root);
+    const defaultControls = await page.evaluate(defaultTextControlsInPage, root);
+    output.defaultTextControls = defaultControls.readings;
+    output.defaultTextControlsExcluded = defaultControls.excluded;
+    output.defaultTextControlsMinimum = defaultControls.minimum;
     output.invalidFocus = [];
     const controls = page.locator(`${root} input:not(:disabled):not([type=checkbox]):not([type=radio]),${root} textarea:not(:disabled),${root} select:not(:disabled)`);
     const seen = new Set();
@@ -453,7 +494,9 @@ export async function captureGeometryCriteria(page, { root, storyId, artifactRoo
       const prior = await control.getAttribute('aria-invalid');
       await control.evaluate((el) => el.setAttribute('aria-invalid', 'true'));
       await page.mouse.move(0, 0); await page.keyboard.press('Tab'); await control.focus();
-      output.invalidFocus.push(await control.evaluate((el) => { const cs = getComputedStyle(el); return { element: el.tagName, type: el.type, classes: el.className, invalid: el.getAttribute('aria-invalid'), active: document.activeElement === el, focusVisible: el.matches(':focus-visible'), border: cs.border, shadow: cs.boxShadow, outline: cs.outline, red: cs.getPropertyValue('--tcrn-color-bad'), teal: cs.getPropertyValue('--tcrn-color-acc') }; }));
+      const paintSettled = await settleControlPaint(control);
+      const invalidReading = await control.evaluate((el) => { const cs = getComputedStyle(el); return { element: el.tagName, type: el.type, classes: el.className, invalid: el.getAttribute('aria-invalid'), active: document.activeElement === el, focusVisible: el.matches(':focus-visible'), border: cs.border, shadow: cs.boxShadow, outline: cs.outline, red: cs.getPropertyValue('--tcrn-color-bad'), teal: cs.getPropertyValue('--tcrn-color-acc') }; });
+      output.invalidFocus.push({ ...invalidReading, paintSettled });
       await control.evaluate((el, prior) => { el.blur(); if (prior === null) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid', prior); }, prior);
     }
     output.nativeDatePicker = [];

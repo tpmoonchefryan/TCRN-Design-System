@@ -121,6 +121,7 @@ function TypographyMatrix({ theme }: { theme: MatrixTheme }) {
         </MatrixRow>
         <MatrixRow label="numeral">
           <Text variant="numeral" {...cell("num")}>128<small {...cell("unit")}>seats</small></Text>
+          <Text variant="numeral" data-criterion-plain-numeral="">4,280.00</Text>
           <Text variant="numeral" className="tcrn-text--numeral-inline" {...cell("num-inl")}>4,280.00</Text>
         </MatrixRow>
         <MatrixRow label="caps"><Text variant="caps" {...cell("caps")}><b>01</b>Basic info</Text></MatrixRow>

@@ -1258,6 +1258,24 @@ export async function captureShellCriteria(page, { scope } = {}) {
         }
       }
     } catch (error) { capture.unknowns.push(error.message.split('\n')[0]); }
+    // Exercise overflow on the actual, unchanged trail in its own paper at the current viewport.
+    // A desktop viewport alone need not overflow the sample's words. A temporary narrow inline
+    // allocation is a layout premise of this capture, recorded separately from the original box;
+    // it changes neither strings nor the shell width, and is restored before any other reading.
+    capture.breadcrumbOverflow = await shell.evaluate((shell) => {
+      const paper = shell.querySelector('[data-paper]');
+      return [...shell.querySelectorAll('nav.tcrn-breadcrumb')].filter((nav) => nav.closest('[data-paper]') === paper).map((nav) => {
+        const labels = [...nav.querySelectorAll('.tcrn-breadcrumb__crumb')], originalStyle = nav.getAttribute('style');
+        const read = () => ({ width: nav.getBoundingClientRect().width, crumbs: labels.map((el) => { const cs = getComputedStyle(el), range = document.createRange(); range.selectNodeContents(el); return { text: el.textContent, width: el.clientWidth, scrollWidth: el.scrollWidth, overflow: Math.max(0, el.scrollWidth - el.clientWidth), whiteSpace: cs.whiteSpace, clip: cs.overflowX !== 'visible', ellipsis: cs.textOverflow === 'ellipsis', title: el.getAttribute('title'), lineTops: [...new Set([...range.getClientRects()].filter((r) => r.width > 0 && r.height > 0).map((r) => r.top))] }; }) });
+        const original = read();
+        const allocation = Math.max(1, Math.floor(Math.max(...labels.map((el) => el.scrollWidth), 2) / 2));
+        try {
+          nav.style.inlineSize = `${allocation}px`; nav.style.maxInlineSize = `${allocation}px`;
+          const exercised = read();
+          return { owningWidth: shell.getBoundingClientRect().width, viewport: { width: innerWidth, height: innerHeight }, original, allocation, exercised, actuallyOverflowing: exercised.crumbs.some((c) => c.overflow > 0), sameStrings: original.crumbs.every((c, i) => c.text === exercised.crumbs[i].text) };
+        } finally { if (originalStyle === null) nav.removeAttribute('style'); else nav.setAttribute('style', originalStyle); }
+      });
+    });
     result.screens.push(capture);
   }
   // Capture every same-row baseline before Escape/click changes any other pre-opened screen.
@@ -1266,7 +1284,7 @@ export async function captureShellCriteria(page, { scope } = {}) {
     const geometry = () => shell.evaluate((shell) => {
       const sr=shell.getBoundingClientRect(), rel=(el)=>{if(!el)return null;const r=el.getBoundingClientRect();return {left:r.left-sr.left,top:r.top-sr.top,width:r.width,height:r.height,bottom:r.bottom-sr.top,right:r.right-sr.left};};
       const tab=shell.querySelector('[data-tab]'),panel=shell.querySelector('[data-panel="expanded"],[data-panel="sheet"],[data-panel="drop"]'),pin=shell.querySelector('[data-open-pin]');
-      return {owningWidth:sr.width,owningHeight:sr.height,tab:rel(tab),expanded:tab?.getAttribute('aria-expanded'),openPin:rel(pin),panel:rel(panel),panelKind:panel?.getAttribute('data-panel'),shadow:panel?getComputedStyle(panel).boxShadow:null,search:rel(panel?.querySelector('[data-shell-search]')),columns:[...shell.querySelectorAll('[data-drop-col]')].map((el)=>({index:el.getAttribute('data-drop-col'),side:el.getAttribute('data-side'),...rel(el)}))};
+      return {owningWidth:sr.width,owningHeight:sr.height,tab:rel(tab),expanded:tab?.getAttribute('aria-expanded'),openPin:rel(pin),panel:rel(panel),panelKind:panel?.getAttribute('data-panel'),cascadeSide:panel?.closest('[data-cascade-side]')?.getAttribute('data-cascade-side')??'end',shadow:panel?getComputedStyle(panel).boxShadow:null,search:rel(panel?.querySelector('[data-shell-search]')),columns:[...shell.querySelectorAll('[data-drop-col]')].map((el)=>({index:el.getAttribute('data-drop-col'),side:el.getAttribute('data-side'),...rel(el)}))};
     });
     try {
       // Preserve the original owning dimensions; perform the triggering click before reading.
@@ -1276,12 +1294,19 @@ export async function captureShellCriteria(page, { scope } = {}) {
       }
       if (/ts-drop/.test(id ?? '')) {
         await page.keyboard.press('Escape');
-        const contracts=shell.locator('[data-pins] [data-pin]').filter({hasText:/Contracts|合约/}).first();
+        const contracts=shell.locator('[data-pins] [data-pin="contracts"] .tcrn-shell-pins__item').first();
         if (await contracts.count() && await contracts.isVisible()) {
           await contracts.click({timeout:3000}); await page.waitForTimeout(30); capture.clickGeometry.push({trigger:'actual Contracts pin click',reading:await geometry()});
-          const parent=shell.locator('[data-panel="drop"] [data-shell-row][aria-haspopup]').first();
-          if (await parent.count()) { await parent.click({timeout:3000}); await page.waitForTimeout(30); capture.clickGeometry.push({trigger:'actual cascade row click',reading:await geometry()}); }
-          else capture.unknowns.push('no cascade row with aria-haspopup found after click');
+          // A cascade opener is the actual row button for its aria-controls column. ShellMenu
+          // deliberately uses aria-expanded/aria-controls, without aria-haspopup.
+          const parent=shell.locator('[data-panel="drop"] [data-shell-row][aria-controls][aria-expanded]').first();
+          if (await parent.count()) {
+            // A preview may already have this row open. Close it with its real handler first,
+            // then click the closed row to establish the original open-by-click premise.
+            if (await parent.getAttribute('aria-expanded') === 'true') { await parent.click({timeout:3000}); await page.waitForTimeout(30); capture.clickGeometry.push({trigger:'actual cascade row close before open',reading:await geometry()}); }
+            await parent.click({timeout:3000}); await page.waitForTimeout(30); capture.clickGeometry.push({trigger:'actual cascade row click',reading:await geometry()});
+          }
+          else capture.unknowns.push('no cascade opener with aria-controls/aria-expanded found after click');
           await page.keyboard.press('Escape');
         } else capture.unknowns.push('Contracts pin unavailable in this exact owning container');
       }

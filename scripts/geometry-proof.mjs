@@ -471,7 +471,7 @@ async function measureContainerNavigation(page, width, viewportWidth = 1440, bro
     && observation.pinsShown === (narrow ? 0 : 2) && observation.pinnedGroup === narrow };
 }
 
-async function measureMobileNavigation(page, width, broken = false) {
+export async function measureMobileNavigation(page, width, broken = false) {
   await page.setViewportSize({ width, height: MOBILE_HEIGHT_PX });
   await page.setContent('<!doctype html><meta charset="utf-8"><body style="margin:0"><div id="fixture"></div></body>');
   await page.addScriptTag({ content: await mobileNavigationScript() });
@@ -485,10 +485,14 @@ async function measureMobileNavigation(page, width, broken = false) {
   }, MOBILE_SCROLL_PX);
   const observation = await page.locator("[data-tab]").evaluate((tab) => {
     const box = tab.getBoundingClientRect();
+    const shell = tab.closest('[data-shell]'), own = shell.getBoundingClientRect();
+    const visible = (el) => Boolean(el && el.getClientRects().length && el.getBoundingClientRect().width > 0 && el.getBoundingClientRect().height > 0 && getComputedStyle(el).visibility !== 'hidden' && getComputedStyle(el).display !== 'none');
     const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
     // Narrower than 1024 the band shows the first version of the brand button and no pinned item.
     const pinsShown = [...document.querySelectorAll("[data-pins] [data-pin]")].filter((pin) => pin.getBoundingClientRect().width > 0).length;
-    return { box: box.toJSON(), brandVersion: tab.getAttribute("data-shell-brand"), pinsShown, hit: hit ? hit.outerHTML.slice(0, 200) : null, reachable: tab === hit || tab.contains(hit) };
+    return { box: box.toJSON(), owningWidth: own.width, owningHeight: own.height, viewport: { width: innerWidth, height: innerHeight }, locale: shell.getAttribute('lang') ?? document.documentElement.lang, theme: shell.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme') ?? null,
+      brandVersion: tab.getAttribute("data-shell-brand"), markVisible: visible(tab.querySelector('svg[data-logo]')), toggleVisible: visible(tab.querySelector('[data-shell-toggle]')), wordVisible: visible(tab.querySelector('b')),
+      populatedPins: shell.querySelectorAll('[data-pins] [data-pin]').length, pinsShown, hit: hit ? hit.outerHTML.slice(0, 200) : null, reachable: tab === hit || tab.contains(hit) };
   });
   let sheet = null;
   if (observation.reachable) {

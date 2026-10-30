@@ -350,17 +350,6 @@ export const DOC_PACKAGE_CLASS_EXCEPTIONS = Object.freeze([
     ruling: "docs/style-scale.md「Demo-chrome exemption list」Component-scoped demo hooks 条：顶层 .tcrn-filter-bar 是文档的标签排布钩子，包只在 .tcrn-table-toolbar .tcrn-filter-bar 里定义它；所属 Navigation 家族属后续批次（同 EX-INIT015-navigation）",
     reason: "包没有独立 FilterBar 的排布规则，文档只给演示行排布（display、flex-wrap、gap），不改颜色、字号与边框",
     until: "Navigation 家族所在批次获得授权、包给 FilterBar 独立排布时删除本条"
-  },
-  {
-    id: "EX-INIT015-doc-nav-proof-skip-link",
-    selectors: [
-      ".tcrn-doc-package-nav-proof__skip .tcrn-skip-link:not(:focus)",
-      ".tcrn-doc-package-nav-proof__skip .tcrn-skip-link:focus"
-    ],
-    properties: ["position", "height", "overflow", "clip", "clip-path", "border", "padding", "transform", "display", "align-items"],
-    ruling: "docs/style-scale.md「Demo-chrome exemption list」Package components placed by doc scaffolding 条：文档保留基础原件 .tcrn-skip-link 的演示放置；包导航证明框属 Navigation 家族演示，TCRN-DS-INIT-015 scope 不授权改动后续批次家族（同 EX-INIT015-navigation）",
-    reason: "证明框里的跳转链接未获焦时收成 1px 的读屏隐藏框（position、height、overflow、clip、clip-path、border、padding、transform），获焦时按行内弹性盒显示（display、align-items）；文档壳自己的 .tcrn-skip-link 副本已删（TCRN-DS-SUB-063）",
-    until: "Navigation 家族所在批次获得授权、包导航证明框改由包组件呈现跳转链接时删除本条"
   }
 ]);
 

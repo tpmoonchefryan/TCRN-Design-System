@@ -349,9 +349,12 @@ export function readShellInPage(options) {
 
     // pinned items in the strip
     const pins = [...scr.querySelectorAll(sel.pinItem)];
-    x.selectedPins = pins.filter((pin) => pin.matches('[aria-current="page"],[aria-pressed="true"],[data-selected="true"]')).map((pin) => {
-      const cs = getComputedStyle(pin), fill = effBg(pin);
-      return { text: text(pin), backgroundColor: cs.backgroundColor, effectiveBackground: fill, color: cs.color, fontWeight: cs.fontWeight, borderLeftWidth: cs.borderLeftWidth, boxShadow: cs.boxShadow, ratio: contrast(over(parse(cs.color), fill), fill) };
+    const selectedPin = '[aria-current="page"],[aria-pressed="true"],[data-selected="true"]';
+    x.selectedPins = pins.map((pin) => ({ pin, selected: pin.matches(selectedPin) ? pin : pin.querySelector(selectedPin) })).filter(({ selected }) => selected && visible(selected)).map(({ pin, selected }) => {
+      // Package pins put aria-current and the painted selected pair on their child link; the
+      // data-pin wrapper owns its identity and geometry, but has no selected paint of its own.
+      const cs = getComputedStyle(selected), fill = effBg(selected);
+      return { text: text(selected), ownerPin: pin.getAttribute("data-pin"), selection: selected.getAttribute("aria-current") ?? selected.getAttribute("aria-pressed") ?? selected.getAttribute("data-selected"), backgroundColor: cs.backgroundColor, effectiveBackground: fill, color: cs.color, fontWeight: cs.fontWeight, borderLeftWidth: cs.borderLeftWidth, boxShadow: cs.boxShadow, ratio: contrast(over(parse(cs.color), fill), fill) };
     });
     const pinsNav = scr.querySelector(sel.pins);
     if (pins.length && pinsNav) {
@@ -400,6 +403,15 @@ export function readShellInPage(options) {
         itemBorders: shown.map((p) => { const c = getComputedStyle(p); return px(c.borderLeftWidth) + px(c.borderRightWidth); }),
         separators: pcs.display !== "none" ? [...pinsNav.querySelectorAll("hr, [role='separator']")].filter(visible).length : 0,
         items: shown.map((p) => { const q = rel(p); return { l: q.l, w: q.w }; }),
+        // Keep measure-shell.js's rounded legacy fields above for same-algorithm parity. Exact
+        // pin spacing is subtracted before any rounding, separately from the brand-to-first gap.
+        raw: {
+          rectangles: rects.map((r) => ({ left: r.left - s.left, right: r.right - s.left, top: r.top - s.top, width: r.width, height: r.height })),
+          brandToFirstGap: rects.length ? rects[0].left - tabRect.right : null,
+          interPinGaps: rects.slice(1).map((r, i) => r.left - rects[i].right),
+          heights: rects.map((r) => r.height),
+          mids: rects.map((r) => (r.top + r.bottom) / 2 - s.top)
+        },
         topGap: box ? r1(box.top - stripRect.top) : null,
         bottomGap: box ? r1(stripRect.bottom - box.bottom) : null
       };
