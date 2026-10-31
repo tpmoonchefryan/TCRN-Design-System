@@ -241,8 +241,10 @@ export function focusRingClipInPage({ root, tolerancePx = 0.5 }) {
   return { checked, regions, regionReadings, value: violations.length, violationCount: violations.length, violations };
 }
 
-// Browser side: each .tcrn-highlight-text under root must be as wide as the same text without marks.
-export function highlightWidthInPage({ root, tolerancePx = 0.5 }) {
+// Browser side: Owner D1 permits at most 1/64 CSS px of raw same-text width difference.
+// This local limit is independent of the other geometry probes' tolerances and display rounding.
+export function highlightWidthInPage({ root }) {
+  const widthLimitPx = 1 / 64;
   const scope = document.querySelector(root);
   if (!scope) return { error: "root_not_found" };
   const violations = [];
@@ -263,14 +265,15 @@ export function highlightWidthInPage({ root, tolerancePx = 0.5 }) {
     el.parentElement.append(plain, measured);
     const measuredWidth = measured.getBoundingClientRect().width, plainWidth = plain.getBoundingClientRect().width;
     const diff = Math.abs(measuredWidth - plainWidth);
-    readings.push({ text: el.textContent, measuredWidth, plainWidth, exactDiff: diff, exactlyEqual: diff === 0 });
+    const finite = Number.isFinite(measuredWidth) && Number.isFinite(plainWidth) && Number.isFinite(diff);
+    readings.push({ text: el.textContent, measuredWidth, plainWidth, exactDiff: diff, exactlyEqual: diff === 0, finite });
     plain.remove();
     measured.remove();
     checked += 1;
     worst = Math.max(worst, diff);
-    if (diff > tolerancePx) violations.push({ text: el.textContent.trim().slice(0, 40), diffPx: Math.round(diff * 100) / 100 });
+    if (!finite || diff > widthLimitPx) violations.push({ text: el.textContent.trim().slice(0, 40), measuredWidth, plainWidth, exactDiff: diff, finite, diffPx: Math.round(diff * 100) / 100 });
   }
-  return { checked, value: Math.round(worst * 100) / 100, exactValue: worst, readings, violationCount: violations.length, violations };
+  return { checked, widthLimitPx, value: Math.round(worst * 100) / 100, exactValue: worst, readings, violationCount: violations.length, violations };
 }
 
 // Browser side: every icon matching iconSelector under root must be sizePx square, and every child of

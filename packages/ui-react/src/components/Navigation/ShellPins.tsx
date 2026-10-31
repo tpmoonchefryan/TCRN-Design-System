@@ -9,7 +9,7 @@
 // group is hidden and the full menu carries them. An item with a drop-down is a button that opens
 // a non-modal dialog (aria-haspopup="dialog", aria-expanded, aria-controls); an item without one
 // is a link, and the current page's link says aria-current="page". The selected item takes the
-// 6% ink wash and weight 600, never a side bar; hover takes the 3.5% wash.
+// day 6% / night 7% ink wash and weight 600, never a side bar; hover takes the 3.5% wash.
 //
 // Ordering (TCRN-DS-SUB-149; STORY-140 GWT3, STORY-137): given onPinsReorder, the reader reorders
 // the items the band shows. A press that travels past the drag threshold is a drag: the dragged

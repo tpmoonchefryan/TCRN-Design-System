@@ -96,7 +96,7 @@ const matrixRows = [
   { group: "顶带固定项 · 32 高；与标按钮隐形边界、彼此之间间距都是 8，无分割线；上限 6；固定的二级菜单带箭头" },
   mkRow("rest", "ink-2 于画布", (t) => ({ fill: t.bg, ink: t.ink2, surface: t.bg, kind: "text", fillLabel: "bg", inkLabel: "ink-2" })),
   mkRow("hover", "ink 于 3.5% 墨洗", (t) => ({ fill: t.hover, ink: t.ink, surface: t.bg, kind: "text", fillLabel: "hover", inkLabel: "ink" })),
-  mkRow("selected（当前页）", "ink 于 6% 墨洗 + 600", (t) => ({ fill: t.wash, ink: t.ink, surface: t.bg, kind: "text", fillLabel: "wash", inkLabel: "ink" })),
+  mkRow("selected（当前页）", "选中 ShellPins：ink 于浅色 6%／夜间 7% 墨洗 + 600，无 border-left", (t) => ({ fill: t.wash, ink: t.ink, surface: t.bg, kind: "text", fillLabel: "wash", inkLabel: "ink" })),
   mkRow("open（下拉已开）", "ink 于 6% 墨洗，字重不变", (t) => ({ fill: t.wash, ink: t.ink, surface: t.bg, kind: "text", fillLabel: "wash", inkLabel: "ink" })),
   mkRow("二级菜单箭头", "chevron-down 12 ink-3 于画布", (t) => ({ fill: t.bg, ink: t.ink3, surface: t.bg, kind: "icon", fillLabel: "bg", inkLabel: "ink-3" })),
   { group: "右上簇 · 铃铛 32、头像 28" },

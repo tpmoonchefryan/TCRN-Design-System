@@ -34,12 +34,13 @@ after(async () => {
   await browser?.close();
 });
 
-const page = (body) => `<!doctype html><html><head>
+const page = (body, packageCss = "") => `<!doctype html><html><head>
 <style data-tcrn-component-style-source="@tcrn/ui-react">
 .tcrn-button { height: 32px; border-radius: 6px; color: rgb(22, 21, 15); background-color: rgb(255, 255, 255); font: 500 13px/20px sans-serif; border: 0 solid; }
 .tcrn-button.tcrn-button--primary { color: rgb(255, 255, 255); background-color: rgb(11, 107, 101); }
 .tcrn-button[aria-pressed="true"] { background-color: rgb(230, 240, 238); }
 .tcrn-icon { width: 16px; height: 16px; }
+${packageCss}
 </style>
 <style data-tcrn-static-doc-style-source="storybook">.doc-override .tcrn-button { border-radius: 0; }</style>
 </head><body><main id="region">${body}</main></body></html>`;
@@ -103,17 +104,16 @@ test("a documentation-layer override is told apart from the package rendering", 
 test("SearchInput references retain the owning drop-down, full-menu or Sheet role and raw height", async () => {
   const search = '<span class="tcrn-search-input"><input type="search" aria-expanded="false" class="tcrn-input tcrn-search-input__control"></span>';
   const { samples, reread } = await collect(page(`
-    <style data-tcrn-component-style-source="search-owners">
-      .tcrn-search-input__control { height:32px; padding:0; border:0; }
-      .tcrn-shell-dropdown__panel .tcrn-search-input__control { height:28px; }
-      .tcrn-shell-menu__panel .tcrn-search-input__control { height:40px; }
-      .tcrn-shell-sheet__panel .tcrn-search-input__control { height:44px; }
-    </style>
     ${search}
     <section class="tcrn-shell-dropdown__panel">${search}</section>
     <section class="tcrn-shell-menu__panel">${search}</section>
     <section class="tcrn-shell-sheet__panel">${search}</section>
     <section class="tcrn-shell-sheet__panel"><span class="tcrn-search-input"><input type="search" aria-expanded="false" class="tcrn-input tcrn-search-input__control" style="height:40px"></span></section>
+  `, `
+    .tcrn-search-input__control { height:32px; padding:0; border:0; }
+    .tcrn-shell-dropdown__panel .tcrn-search-input__control { height:28px; }
+    .tcrn-shell-menu__panel .tcrn-search-input__control { height:40px; }
+    .tcrn-shell-sheet__panel .tcrn-search-input__control { height:44px; }
   `), { reread: [9] });
   const controls = samples.filter((sample) => sample.classes.includes("tcrn-search-input__control"));
   assert.deepEqual(controls.map((sample) => sample.styles.height), ["32px", "28px", "40px", "44px", "40px"]);

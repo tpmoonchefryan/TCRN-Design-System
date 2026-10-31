@@ -729,6 +729,46 @@ test("the Highlight width probe turns red when a mark changes the text width", a
   const red = await onPage(html("padding: 0 2px;"), (tab) => tab.evaluate(highlightWidthInPage, { root: "#root" }));
   assert.equal(red.violationCount, 1);
   assert.equal(red.violations[0].diffPx, 4);
+  const restored = await onPage(html(""), (tab) => tab.evaluate(highlightWidthInPage, { root: "#root" }));
+  assert.deepEqual(restored, green, "restoring the original mark padding restores the exact readings");
+});
+
+test("Highlight D1 uses finite unrounded raw widths at 1/64 CSS px, independently of the rounded display and generic tolerance", async () => {
+  const cases = [
+    { name: "inside", plainWidth: 1, measuredWidth: 1 + 1 / 128, pass: true },
+    { name: "boundary", plainWidth: 1, measuredWidth: 1 + 1 / 64, pass: true },
+    { name: "outside", plainWidth: 1, measuredWidth: 1 + 1 / 64 + 2 ** -40, pass: false },
+    { name: "outside in the other direction", plainWidth: 1 + 1 / 64 + 2 ** -40, measuredWidth: 1, pass: false },
+    { name: "non-finite marked", plainWidth: 1, measuredWidth: Infinity, pass: false },
+    { name: "non-finite plain", plainWidth: Infinity, measuredWidth: 1, pass: false },
+    { name: "non-finite difference", plainWidth: Infinity, measuredWidth: Infinity, pass: false },
+    { name: "NaN", plainWidth: 1, measuredWidth: NaN, pass: false }
+  ];
+  const results = [];
+  for (const spec of cases) {
+    const result = await onPage('<main id="root"><span class="tcrn-highlight-text">PRJ-<mark>2026</mark>-0412</span></main>', async (tab) => {
+      // Supply exact raw observations to the actual browser probe. Real DOMRect widths are
+      // quantized; this counterexample must retain the fraction just outside the boundary.
+      await tab.evaluate(({ plainWidth, measuredWidth }) => {
+        const native = Element.prototype.getBoundingClientRect;
+        Element.prototype.getBoundingClientRect = function () {
+          const box = native.call(this);
+          if (!this.matches(".tcrn-highlight-text")) return box;
+          return { ...box.toJSON(), width: this.querySelector("mark") ? measuredWidth : plainWidth };
+        };
+      }, spec);
+      return tab.evaluate(highlightWidthInPage, { root: "#root", tolerancePx: 0.5 });
+    });
+    assert.equal(result.widthLimitPx, 0.015625, spec.name);
+    assert.equal(result.violationCount, spec.pass ? 0 : 1, spec.name);
+    assert.equal(result.readings[0].measuredWidth, spec.measuredWidth, spec.name);
+    assert.equal(result.readings[0].plainWidth, spec.plainWidth, spec.name);
+    assert.equal(result.exactValue, Math.abs(spec.measuredWidth - spec.plainWidth), spec.name);
+    results.push(result);
+  }
+  assert.equal(results[1].value, 0.02);
+  assert.equal(results[2].value, 0.02, "identical display rounding does not make the outside observation pass");
+  assert.ok(results[2].violations[0].exactDiff > results[2].widthLimitPx);
 });
 
 // TCRN-DS-SUB-056: 124-GWT1. The page mirrors the package Icon (stroke on the svg, vector-effect on

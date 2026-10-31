@@ -162,8 +162,8 @@ export const shellCss01 = `
 // gap before the first item (after the brand button) and between items is --tcrn-shell-pin-gap,
 // three equal readings for four items, with no divider; each item is --tcrn-shell-pin-h high
 // with a 10 inset, its label 12.5 at 500 as on the board. Rest is ink-2 on no fill; hover takes
-// the 3.5% ink wash, an open drop-down and the selected item the 6% wash, and the selected item
-// weight 600 (pair key s) — no side bar, no fill with an edge. Items shrink before they spill and
+// the 3.5% ink wash, an open drop-down the 6% wash, and the selected item the day 6% / night 7%
+// wash at weight 600 (pair key s) — no side bar, no fill with an edge. Items shrink before they spill and
 // their labels truncate on one line. Narrower than 1024 the whole group is hidden.
 export const shellCss02 = `
 .tcrn-shell-pins {

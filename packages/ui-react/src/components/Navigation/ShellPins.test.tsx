@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 import { useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
-import { createTokenMap, tcrnTokens } from "@tcrn/ui-tokens";
+import { createResolvedTokenMap, createTokenMap, tcrnTokens } from "@tcrn/ui-tokens";
 import { shellCss02 } from "../../styles/shell.css.js";
 import { createDomInteractionHarness } from "../../test/dom-harness.js";
 import { ShellPins, shellPinsMax, shellPinsOverflowIds, type ShellPinItem } from "./ShellPins.js";
@@ -93,7 +93,7 @@ test("the gaps and the item height read the shell tokens: 8 before and between, 
   assert.equal(px("--tcrn-shell-strip-h") / 2, 26, "its midline is the band's");
 });
 
-test("selected is the 6% wash and weight 600, hover the 3.5% wash; states switch the pair only", () => {
+test("selected ShellPins use the day 6% / night 7% wash and weight 600; states switch the shared pair only", () => {
   const item = ruleBody(".tcrn-shell-pins__item");
   for (const [declaration, value] of [
     ["--tcrn-pair-fill-d", "transparent"],
@@ -129,6 +129,7 @@ test("selected is the 6% wash and weight 600, hover the 3.5% wash; states switch
   assert.doesNotMatch(shellCss02, /data-tcrn-theme/);
   const tokens = createTokenMap();
   assert.equal(tokens["--tcrn-color-wash"], "rgba(22,21,15,.06)");
+  assert.equal(createResolvedTokenMap("dark")["--tcrn-color-wash"], "rgba(235,232,223,.07)", "the same selected ShellPins pair resolves to the existing night 7% wash");
   assert.equal(tokens["--tcrn-color-hover"], "rgba(22,21,15,.035)");
   assert.equal(tokens["--tcrn-type-weight-strong"], "600");
 });
