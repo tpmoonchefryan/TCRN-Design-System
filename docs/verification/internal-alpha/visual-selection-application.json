@@ -1,0 +1,1188 @@
+{
+  "ok": true,
+  "inputSha256": "22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+  "baselineBeforeSha256": "21b915643554dcce0fdbc477a75e863dbcc3f8be24cc9270414c6c1a030e4d3d",
+  "baselineAfterSha256": "9a0a1eaf9e6e46e13a388ebb52f4a1e4a56f1c32f81e9186ed2d8f2f447f1e9d",
+  "changes": [
+    {
+      "key": "actions-matrix@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved public Button/IconButton/LinkButton/Clipboard/ButtonGroup references add visible role/state specimens. The accepted eb45be4 column arrangement places both themes side by side to preserve the height budget; the original 116 cells remain.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [373-470]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 7b8894863a86fbfc5aabc62be8ce93ece58aad44256acb719aa9af87c44ef4bb; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "9d422ce7ad2eb2b9406bba455f0c9d489e2242bc34ba545ac67d309ac148d9dd",
+      "beforeSignatureSha256": "7e3cfbc7e5522520bcb153dd8d0950db8eb897b6ea6e7b84a8e67d78126790ea",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "373-470",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 226,
+      "meanAbsolute": 101.297,
+      "ownerVisualItem": "Pending Owner visual review: actions-matrix@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 226 (>40), meanAbsolute 101.297. Approved public Button/IconButton/LinkButton/Clipboard/ButtonGroup references add visible role/state specimens. The accepted eb45be4 column arrangement places both themes side by side to preserve the height budget; the original 116 cells remain.",
+      "afterSignatureSha256": "9d422ce7ad2eb2b9406bba455f0c9d489e2242bc34ba545ac67d309ac148d9dd",
+      "captureSha256": "7b8894863a86fbfc5aabc62be8ce93ece58aad44256acb719aa9af87c44ef4bb"
+    },
+    {
+      "key": "actions-matrix@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved public Button/IconButton/LinkButton/Clipboard/ButtonGroup references add visible role/state specimens. The accepted eb45be4 column arrangement places both themes side by side to preserve the height budget; the original 116 cells remain.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [373-470]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 611798b3324d0520ff64f36e198845da030e7d525eacb7df36393b58a43eefec; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "0591e2f0d3ae08cc96f7671af9a0175e3563a8e567d92999184a6202f93154e8",
+      "beforeSignatureSha256": "43e9f8001e69a8f2300ce8621554d4075f4b193b24b941d97d6c8997e6a0e201",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "373-470",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 73,
+      "meanAbsolute": 12.418,
+      "ownerVisualItem": "Pending Owner visual review: actions-matrix@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 73 (>40), meanAbsolute 12.418. Approved public Button/IconButton/LinkButton/Clipboard/ButtonGroup references add visible role/state specimens. The accepted eb45be4 column arrangement places both themes side by side to preserve the height budget; the original 116 cells remain.",
+      "afterSignatureSha256": "0591e2f0d3ae08cc96f7671af9a0175e3563a8e567d92999184a6202f93154e8",
+      "captureSha256": "611798b3324d0520ff64f36e198845da030e7d525eacb7df36393b58a43eefec"
+    },
+    {
+      "key": "actions-matrix@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved public Button/IconButton/LinkButton/Clipboard/ButtonGroup references add visible role/state specimens. The accepted eb45be4 column arrangement places both themes side by side to preserve the height budget; the original 116 cells remain.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [373-470]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 222095565a98ee7823f52a7f83df71600e3273aacb2b4072ff8bf8a61b9cc994; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "8b4c1e0f56a95c3f754da6f10b1d4f8bafa67824acd18009a8cf2e8cb3ac30d5",
+      "beforeSignatureSha256": "1c32e542a57051dacb9309ab41de36138ae2a3cf464afe77942872722cb0ce99",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "373-470",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 226,
+      "meanAbsolute": 100.129,
+      "ownerVisualItem": "Pending Owner visual review: actions-matrix@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 226 (>40), meanAbsolute 100.129. Approved public Button/IconButton/LinkButton/Clipboard/ButtonGroup references add visible role/state specimens. The accepted eb45be4 column arrangement places both themes side by side to preserve the height budget; the original 116 cells remain.",
+      "afterSignatureSha256": "8b4c1e0f56a95c3f754da6f10b1d4f8bafa67824acd18009a8cf2e8cb3ac30d5",
+      "captureSha256": "222095565a98ee7823f52a7f83df71600e3273aacb2b4072ff8bf8a61b9cc994"
+    },
+    {
+      "key": "brand-matrix@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved decorative public mark references, ShellBrandLockup/ProductLockup references and SOURCE-RECONCILE D3 formal ProductLogo owning atoms replace the older generic suffix/canvas role. Original ten cells remain; visible public references enlarge the family block.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [264-337]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 938295f08461e814e7b48ab8d330079dca8081e85622b8b890b47f73d782b963; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "2ec55b35048bc9aa56904e9722b01beb38eed883c56e2f9b29036abff7798cd0",
+      "beforeSignatureSha256": "1c97dfce5a232d6e2a6463b28d4a178213db90384a565a1ea177d354cd197a62",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "264-337",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 49,
+      "meanAbsolute": 6.73,
+      "ownerVisualItem": "Pending Owner visual review: brand-matrix@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 49 (>40), meanAbsolute 6.73. Approved decorative public mark references, ShellBrandLockup/ProductLockup references and SOURCE-RECONCILE D3 formal ProductLogo owning atoms replace the older generic suffix/canvas role. Original ten cells remain; visible public references enlarge the family block.",
+      "afterSignatureSha256": "2ec55b35048bc9aa56904e9722b01beb38eed883c56e2f9b29036abff7798cd0",
+      "captureSha256": "938295f08461e814e7b48ab8d330079dca8081e85622b8b890b47f73d782b963"
+    },
+    {
+      "key": "brand-matrix@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved decorative public mark references, ShellBrandLockup/ProductLockup references and SOURCE-RECONCILE D3 formal ProductLogo owning atoms replace the older generic suffix/canvas role. Original ten cells remain; visible public references enlarge the family block.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [264-337]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 f3cafe90c84ad989f3b3ab4408301682fe9d4fb115c6462b06094cc68668f710; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "cd1ab2aaded72d16d4e70f2e6375e74adc811440e82153244ef28d519faf0fe0",
+      "beforeSignatureSha256": "a62a2ba54f2a42f4d6283aefb22af67d690a42f281fc5579008511ea78e92515",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "264-337",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 107,
+      "meanAbsolute": 13.957,
+      "ownerVisualItem": "Pending Owner visual review: brand-matrix@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 107 (>40), meanAbsolute 13.957. Approved decorative public mark references, ShellBrandLockup/ProductLockup references and SOURCE-RECONCILE D3 formal ProductLogo owning atoms replace the older generic suffix/canvas role. Original ten cells remain; visible public references enlarge the family block.",
+      "afterSignatureSha256": "cd1ab2aaded72d16d4e70f2e6375e74adc811440e82153244ef28d519faf0fe0",
+      "captureSha256": "f3cafe90c84ad989f3b3ab4408301682fe9d4fb115c6462b06094cc68668f710"
+    },
+    {
+      "key": "brand-matrix@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved decorative public mark references, ShellBrandLockup/ProductLockup references and SOURCE-RECONCILE D3 formal ProductLogo owning atoms replace the older generic suffix/canvas role. Original ten cells remain; visible public references enlarge the family block.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [264-337]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 ed70310d4c53a3eb624aa90aae85b2350afb89ea453d2e18a619b348ff75b3aa; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "8ab1e625752872d1d80709ffa6b9f2e65fb9b59d3d967adec933dce6f1a81a4d",
+      "beforeSignatureSha256": "1232b795ed76e857deb455e222dd6bb22b67ae98b1374df1ddff89ddf5be65ca",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "264-337",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 52,
+      "meanAbsolute": 7.102,
+      "ownerVisualItem": "Pending Owner visual review: brand-matrix@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 52 (>40), meanAbsolute 7.102. Approved decorative public mark references, ShellBrandLockup/ProductLockup references and SOURCE-RECONCILE D3 formal ProductLogo owning atoms replace the older generic suffix/canvas role. Original ten cells remain; visible public references enlarge the family block.",
+      "afterSignatureSha256": "8ab1e625752872d1d80709ffa6b9f2e65fb9b59d3d967adec933dce6f1a81a4d",
+      "captureSha256": "ed70310d4c53a3eb624aa90aae85b2350afb89ea453d2e18a619b348ff75b3aa"
+    },
+    {
+      "key": "color-palette@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "Authentic retained S4 PNG independently recomputes to the unchanged baseline signature (exact equality), and current B18 PNG independently recomputes to its recorded signature. The approved D03 token --tcrn-color-shell-brand-suffix-design-system-interactive was inserted as the first group=color entry in 4e0e041; story-content.tsx 929-940 enumerates that group dynamically. Old image starts the token index with --tcrn-color-bg; current image visibly starts with the added #505fc1 role and shifts the following grid. All preceding overlap pixels are identical until y=2486. Whole-story heights change 4741 to 4781. This is the existing approved token-list addition, not an unapproved palette-value change.",
+      "evidence": "apps/storybook/src/contract-stories/story-content.tsx [867-951]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 3400fd1e01ef575f3e6a9373733c885f55befac3d9dd5f13c5db71c84a856dbc; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "155d385ed1026c0444d59fe95baa303574f1761b036c4b60f62d0fc9dbca25c4",
+      "beforeSignatureSha256": "2bc4cd17d64ce136bdc5288a0cd1878a2a9c347ffe846b0aa547ebc4f4930c7b",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "867-951"
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 12,
+      "meanAbsolute": 1.488,
+      "ownerVisualItem": "Pending Owner visual review: color-palette@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "155d385ed1026c0444d59fe95baa303574f1761b036c4b60f62d0fc9dbca25c4",
+      "captureSha256": "3400fd1e01ef575f3e6a9373733c885f55befac3d9dd5f13c5db71c84a856dbc"
+    },
+    {
+      "key": "color-palette@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "Authentic retained S4 PNG independently recomputes to the unchanged baseline signature (exact equality), and current B18 PNG independently recomputes to its recorded signature. The approved D03 token --tcrn-color-shell-brand-suffix-design-system-interactive was inserted as the first group=color entry in 4e0e041; story-content.tsx 929-940 enumerates that group dynamically. Old image starts the token index with --tcrn-color-bg; current image visibly starts with the added #505fc1 role and shifts the following grid. All preceding overlap pixels are identical until y=2546. Whole-story heights change 4881 to 4941. This is the existing approved token-list addition, not an unapproved palette-value change.",
+      "evidence": "apps/storybook/src/contract-stories/story-content.tsx [867-951]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 ef6ff69966e9b283b7bb3c075bbc0ed83b931385505360e5e7a71eba3e43962a; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "5184affd88d2894897d699c83bdcd57f9a690c47507f9af62d549832c79ab013",
+      "beforeSignatureSha256": "ba891b6df99c3f479d5462b68a38db2f419251a1f2a18c046efafebd6d33a894",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "867-951"
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 17,
+      "meanAbsolute": 1.711,
+      "ownerVisualItem": "Pending Owner visual review: color-palette@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "5184affd88d2894897d699c83bdcd57f9a690c47507f9af62d549832c79ab013",
+      "captureSha256": "ef6ff69966e9b283b7bb3c075bbc0ed83b931385505360e5e7a71eba3e43962a"
+    },
+    {
+      "key": "frontend-shell-slice@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md [49-78]; apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx [459–495]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 3964cdddfa1b23ee46336e6a97ceeabd0786d8973b589766d38e11597cf5c7f0; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "48c43a14dba26c828be13480c7bb29f3d96478af2a2459e6e747db463340f177",
+      "beforeSignatureSha256": "0e27c33de9a7e94b82e1618caa421761346e8b2e5d4e3688aa565e3ad30b83b5",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md",
+          "lines": "49-78",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx",
+          "lines": "459–495",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 127,
+      "meanAbsolute": 18.117,
+      "ownerVisualItem": "Pending Owner visual review: frontend-shell-slice@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 A, maxCell 127 (>40), meanAbsolute 18.117. adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "afterSignatureSha256": "48c43a14dba26c828be13480c7bb29f3d96478af2a2459e6e747db463340f177",
+      "captureSha256": "3964cdddfa1b23ee46336e6a97ceeabd0786d8973b589766d38e11597cf5c7f0"
+    },
+    {
+      "key": "frontend-shell-slice@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md [49-78]; apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx [459–495]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 47a4713350aee69a0f57bb06b7c44206727c437a0a27d3739435672e2c87885f; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "5fdc19128d5ad3cfbf0d0a900eabf2a0536d43282b2d2ac63876922b0c58e00f",
+      "beforeSignatureSha256": "224016d1fdc92175d8161e3f2120ca2c9f25cd2508d56bb387e6c63285092319",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md",
+          "lines": "49-78",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx",
+          "lines": "459–495",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 79,
+      "meanAbsolute": 10.348,
+      "ownerVisualItem": "Pending Owner visual review: frontend-shell-slice@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 A, maxCell 79 (>40), meanAbsolute 10.348. adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "afterSignatureSha256": "5fdc19128d5ad3cfbf0d0a900eabf2a0536d43282b2d2ac63876922b0c58e00f",
+      "captureSha256": "47a4713350aee69a0f57bb06b7c44206727c437a0a27d3739435672e2c87885f"
+    },
+    {
+      "key": "frontend-shell-slice@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md [49-78]; apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx [459–495]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 abae2c69e3bbb81111415b9a4db432e5463d94ebab4fdc53a56c5088cf510f7a; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "6ea1e3d3e41f903e91f6b5cd195b7bb7252ce54e18646da81466e8d96088dc7b",
+      "beforeSignatureSha256": "e6e48fd3a583fa9fafd963e07a2dcf963b6e6982343aef90cbb1efd74a7a28eb",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md",
+          "lines": "49-78",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/visual-instances/aos-frontend-shell-slice.tsx",
+          "lines": "459–495",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 142,
+      "meanAbsolute": 15.012,
+      "ownerVisualItem": "Pending Owner visual review: frontend-shell-slice@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 A, maxCell 142 (>40), meanAbsolute 15.012. adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "afterSignatureSha256": "6ea1e3d3e41f903e91f6b5cd195b7bb7252ce54e18646da81466e8d96088dc7b",
+      "captureSha256": "abae2c69e3bbb81111415b9a4db432e5463d94ebab4fdc53a56c5088cf510f7a"
+    },
+    {
+      "key": "icon-matrix@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved standalone Icon sizes and public ShellLocaleMenu/ShellMenu references are additive visible specimens. SOURCE-RECONCILE D2 places ink-panel on the selected secondary IconButton wash; the original roster and cells remain. Exact source additions and owning roles differ from the baseline source.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [194-260]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 3fc4f4b9dbf725cfe77702b5f231081ca21769a5ce67a6acd18dd1dd38ae24f3; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "afb3aab690a5739afaef8ad23d022fcf24ee6760b4e73fb14ece376384f0ee6c",
+      "beforeSignatureSha256": "5edd52c5bfbb637df358d787b1ae84a3d47f81af191831a46d63f91096130f4e",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "194-260",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 33,
+      "meanAbsolute": 6.5,
+      "ownerVisualItem": "Pending Owner visual review: icon-matrix@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "afb3aab690a5739afaef8ad23d022fcf24ee6760b4e73fb14ece376384f0ee6c",
+      "captureSha256": "3fc4f4b9dbf725cfe77702b5f231081ca21769a5ce67a6acd18dd1dd38ae24f3"
+    },
+    {
+      "key": "icon-matrix@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved standalone Icon sizes and public ShellLocaleMenu/ShellMenu references are additive visible specimens. SOURCE-RECONCILE D2 places ink-panel on the selected secondary IconButton wash; the original roster and cells remain. Exact source additions and owning roles differ from the baseline source.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [194-260]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 f311967a9f48b3054f4b5350f4533c1c4aa1b1db1e76cef9561f905a6632979c; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "771aace61429560e622e62f9d37e25f47a8969bfa7060f8400a69fa689433cca",
+      "beforeSignatureSha256": "498d997c15175c40372d1bdbd1d4c17b361b10c9a1ea2d2b2e1f4fc265b43ac4",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "194-260",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 40,
+      "meanAbsolute": 4.047,
+      "ownerVisualItem": "Pending Owner visual review: icon-matrix@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "771aace61429560e622e62f9d37e25f47a8969bfa7060f8400a69fa689433cca",
+      "captureSha256": "f311967a9f48b3054f4b5350f4533c1c4aa1b1db1e76cef9561f905a6632979c"
+    },
+    {
+      "key": "icon-matrix@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved standalone Icon sizes and public ShellLocaleMenu/ShellMenu references are additive visible specimens. SOURCE-RECONCILE D2 places ink-panel on the selected secondary IconButton wash; the original roster and cells remain. Exact source additions and owning roles differ from the baseline source.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [194-260]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 fc52f1c0ad955df388d2b6e59fa4eb52c23ff85cba244a7cc05a96d7705d25bc; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "dfed0bdec393ec4dd99fc285890212efdd9283a67254f1e26bf037a209ef0cbb",
+      "beforeSignatureSha256": "ce5eac7c919b6046f4525913cd248ae2b5ff2e80ee56c7d270b2180341b1a658",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "194-260",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 28,
+      "meanAbsolute": 4.883,
+      "ownerVisualItem": "Pending Owner visual review: icon-matrix@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "dfed0bdec393ec4dd99fc285890212efdd9283a67254f1e26bf037a209ef0cbb",
+      "captureSha256": "fc52f1c0ad955df388d2b6e59fa4eb52c23ff85cba244a7cc05a96d7705d25bc"
+    },
+    {
+      "key": "inputs-matrix@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "The current Inputs family retains all42 stable matrix cells and the approved visible public Input/Textarea/SearchInput/ProductShellSearch/MultiSelect/SettingChoice references, including distinct populated40px, empty,28px and44px owning roles. R26 natural-height columns/frames removed overlap; R27 removes only redundant containing-track gutters and groups the short versus full-menu reference tracks. Public control sizes, contents, roles, states and IDs remain. These authorised source/reference additions and containing-layout corrections explain the current whole-story change. Current same-build nonvisual proof passes the unchanged2000px budget; no clipping, scaling, sample deletion or evaluator/tolerance change is used.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 d7fd63d7080dfdb0e4148d5f74ecc6aac928953124ed6b3bae4dc33635bbdac6; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "044714669d98fd200cc578d1874ce170ce06cd3054bf48429850a924c49647aa",
+      "beforeSignatureSha256": "092ab4a462ff495b606601b5b8bc8a45e9b8381424e69a7b85dc97c3fcf58fcc",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "role": "approved public reference additions and current R26/R27 natural-height containing layout",
+          "commits": [
+            "1ef380f1b75a1be35b7130a92c69e0495e500541",
+            "3b42517ed61d91085821eee4cfca28a59e0ce4f2",
+            "c19c3cadef9995af047775482f3a5e243a36b75a"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 141,
+      "meanAbsolute": 8.703,
+      "ownerVisualItem": "Pending Owner visual review: inputs-matrix@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 141 (>40), meanAbsolute 8.703. The current Inputs family retains all42 stable matrix cells and the approved visible public Input/Textarea/SearchInput/ProductShellSearch/MultiSelect/SettingChoice references, including distinct populated40px, empty,28px and44px owning roles. R26 natural-height columns/frames removed overlap; R27 removes only redundant containing-track gutters and groups the short versus full-menu reference tracks. Public control sizes, contents, roles, states and IDs remain. These authorised source/reference additions and containing-layout corrections explain the current whole-story change. Current same-build nonvisual proof passes the unchanged2000px budget; no clipping, scaling, sample deletion or evaluator/tolerance change is used.",
+      "afterSignatureSha256": "044714669d98fd200cc578d1874ce170ce06cd3054bf48429850a924c49647aa",
+      "captureSha256": "d7fd63d7080dfdb0e4148d5f74ecc6aac928953124ed6b3bae4dc33635bbdac6"
+    },
+    {
+      "key": "inputs-matrix@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "The current Inputs family retains all42 stable matrix cells and the approved visible public Input/Textarea/SearchInput/ProductShellSearch/MultiSelect/SettingChoice references, including distinct populated40px, empty,28px and44px owning roles. R26 natural-height columns/frames removed overlap; R27 removes only redundant containing-track gutters and groups the short versus full-menu reference tracks. Public control sizes, contents, roles, states and IDs remain. These authorised source/reference additions and containing-layout corrections explain the current whole-story change. Current same-build nonvisual proof passes the unchanged2000px budget; no clipping, scaling, sample deletion or evaluator/tolerance change is used.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 828a318470c13aebeaddd2a36a2762457ad74cf5cb26c5dc45414e5c4ce67394; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "7f6a48729705e1636d9cc261bcc162a44ffc7756495ec580812b75c0130be7a4",
+      "beforeSignatureSha256": "abd74596526275e0ea33befe7439f620d8f846b7d95acc1b572999c477f24770",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "role": "approved public reference additions and current R26/R27 natural-height containing layout",
+          "commits": [
+            "1ef380f1b75a1be35b7130a92c69e0495e500541",
+            "3b42517ed61d91085821eee4cfca28a59e0ce4f2",
+            "c19c3cadef9995af047775482f3a5e243a36b75a"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 19,
+      "meanAbsolute": 4.398,
+      "ownerVisualItem": "Pending Owner visual review: inputs-matrix@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "7f6a48729705e1636d9cc261bcc162a44ffc7756495ec580812b75c0130be7a4",
+      "captureSha256": "828a318470c13aebeaddd2a36a2762457ad74cf5cb26c5dc45414e5c4ce67394"
+    },
+    {
+      "key": "inputs-matrix@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "The current Inputs family retains all42 stable matrix cells and the approved visible public Input/Textarea/SearchInput/ProductShellSearch/MultiSelect/SettingChoice references, including distinct populated40px, empty,28px and44px owning roles. R26 natural-height columns/frames removed overlap; R27 removes only redundant containing-track gutters and groups the short versus full-menu reference tracks. Public control sizes, contents, roles, states and IDs remain. These authorised source/reference additions and containing-layout corrections explain the current whole-story change. Current same-build nonvisual proof passes the unchanged2000px budget; no clipping, scaling, sample deletion or evaluator/tolerance change is used.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 b074e7ac4590d3b6b881c574f0876b40fd8e2ba6d0577542cefce215ac47d1d9; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "1a10fa36a241c8f8647510595d32fefbaae29bbd932a0478bbee092a05a8fb5c",
+      "beforeSignatureSha256": "5d1bd46556fc5840e3addd14f25826d419531e48b1f17aadbf9b5ec3af46a3fa",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "role": "approved public reference additions and current R26/R27 natural-height containing layout",
+          "commits": [
+            "1ef380f1b75a1be35b7130a92c69e0495e500541",
+            "3b42517ed61d91085821eee4cfca28a59e0ce4f2",
+            "c19c3cadef9995af047775482f3a5e243a36b75a"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 159,
+      "meanAbsolute": 11.176,
+      "ownerVisualItem": "Pending Owner visual review: inputs-matrix@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 159 (>40), meanAbsolute 11.176. The current Inputs family retains all42 stable matrix cells and the approved visible public Input/Textarea/SearchInput/ProductShellSearch/MultiSelect/SettingChoice references, including distinct populated40px, empty,28px and44px owning roles. R26 natural-height columns/frames removed overlap; R27 removes only redundant containing-track gutters and groups the short versus full-menu reference tracks. Public control sizes, contents, roles, states and IDs remain. These authorised source/reference additions and containing-layout corrections explain the current whole-story change. Current same-build nonvisual proof passes the unchanged2000px budget; no clipping, scaling, sample deletion or evaluator/tolerance change is used.",
+      "afterSignatureSha256": "1a10fa36a241c8f8647510595d32fefbaae29bbd932a0478bbee092a05a8fb5c",
+      "captureSha256": "b074e7ac4590d3b6b881c574f0876b40fd8e2ba6d0577542cefce215ac47d1d9"
+    },
+    {
+      "key": "interaction-disclosure-spec@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "The retained baseline-equal S4 PNG/signature records establish the original visual reference. Inspected historical inline-static Tooltip CSS keeps the right/bottom/left previews visible, but equally specific later .story-body placement rules retain their closed-state 4px offsets. Current public staticPreview emits data-tooltip-open and its more specific open placement rules remove those offsets. The already recorded old/current difference is limited to the three Tooltip preview region; the Disclosure and surrounding pixels are unchanged. This is the approved public Tooltip preview/cascade conversion. The attribution uses retained source/cascade evidence and original PNG linkage, not a rerun or an assertion that one HTML hash equals the historical aggregate.",
+      "evidence": "apps/storybook/src/contract-stories/story-content.tsx [1876-1895]; packages/ui-react/src/styles/base.css.ts [2307-2404]; docs/dispatch/2026-10-13-tab-shell/runs/r5/handoff/Q1.md [107-108]; packages/ui-react/src/components/Overlay/Overlay.tsx; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 3867bd2c54d515ec80728e6fa23e84c2a76197da6caea42983440076f4b95005; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "c8f7b6e2963e05af953182893a918beaed831f2c7867cfd96bd4ba20f910f96f",
+      "beforeSignatureSha256": "c74f5c5e51a3c770ee66ac6950a156438d95e7e5abab55950c66acca6cae1bed",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "1876-1895",
+          "commits": [
+            "9641b45919847368d94ef4f465938ef0f03853d7"
+          ]
+        },
+        {
+          "repositoryRelativePath": "packages/ui-react/src/styles/base.css.ts",
+          "lines": "2307-2404",
+          "commits": [
+            "9641b45919847368d94ef4f465938ef0f03853d7"
+          ]
+        },
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r5/handoff/Q1.md",
+          "lines": "107-108",
+          "commits": [
+            "14f2849ceafa8248c1ba789497f3131570592d6f"
+          ]
+        },
+        {
+          "repositoryRelativePath": "packages/ui-react/src/components/Overlay/Overlay.tsx",
+          "role": "current public Tooltip staticPreview/open state source"
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "A",
+      "maxCell": 15,
+      "meanAbsolute": 0.258,
+      "ownerVisualItem": "Pending Owner visual review: interaction-disclosure-spec@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "c8f7b6e2963e05af953182893a918beaed831f2c7867cfd96bd4ba20f910f96f",
+      "captureSha256": "3867bd2c54d515ec80728e6fa23e84c2a76197da6caea42983440076f4b95005"
+    },
+    {
+      "key": "interaction-disclosure-spec@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "The retained baseline-equal S4 PNG/signature records establish the original visual reference. Inspected historical inline-static Tooltip CSS keeps the right/bottom/left previews visible, but equally specific later .story-body placement rules retain their closed-state 4px offsets. Current public staticPreview emits data-tooltip-open and its more specific open placement rules remove those offsets. The already recorded old/current difference is limited to the three Tooltip preview region; the Disclosure and surrounding pixels are unchanged. This is the approved public Tooltip preview/cascade conversion. The attribution uses retained source/cascade evidence and original PNG linkage, not a rerun or an assertion that one HTML hash equals the historical aggregate.",
+      "evidence": "apps/storybook/src/contract-stories/story-content.tsx [1876-1895]; packages/ui-react/src/styles/base.css.ts [2307-2404]; docs/dispatch/2026-10-13-tab-shell/runs/r5/handoff/Q1.md [107-108]; packages/ui-react/src/components/Overlay/Overlay.tsx; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 1a2c76042798d8ce2f410008e7252fae9251b0ff9d879023c326520f68b6b9a1; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "8c72c5268c9d493a6517b0e77169dc48bb2f6448384eee8a7b8afe074f35d44c",
+      "beforeSignatureSha256": "1caf5ce4c121dc05bc59245514a0878d09eb02cb4e43f5703dbd8c5939c84577",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "1876-1895",
+          "commits": [
+            "9641b45919847368d94ef4f465938ef0f03853d7"
+          ]
+        },
+        {
+          "repositoryRelativePath": "packages/ui-react/src/styles/base.css.ts",
+          "lines": "2307-2404",
+          "commits": [
+            "9641b45919847368d94ef4f465938ef0f03853d7"
+          ]
+        },
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r5/handoff/Q1.md",
+          "lines": "107-108",
+          "commits": [
+            "14f2849ceafa8248c1ba789497f3131570592d6f"
+          ]
+        },
+        {
+          "repositoryRelativePath": "packages/ui-react/src/components/Overlay/Overlay.tsx",
+          "role": "current public Tooltip staticPreview/open state source"
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "A",
+      "maxCell": 15,
+      "meanAbsolute": 0.293,
+      "ownerVisualItem": "Pending Owner visual review: interaction-disclosure-spec@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "8c72c5268c9d493a6517b0e77169dc48bb2f6448384eee8a7b8afe074f35d44c",
+      "captureSha256": "1a2c76042798d8ce2f410008e7252fae9251b0ff9d879023c326520f68b6b9a1"
+    },
+    {
+      "key": "navigation-focused-shells-spec@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "embedded knowledge-base shell uses owning container width",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; apps/storybook/src/contract-stories/story-content.tsx [2213–2230]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 0b4e1e6436fdd1b3e378d98ed4893762d345f378ea6d3cb73a6f238839414759; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "f3c3b2618d3b46b5e27998c23813e8eab116fa53ca06276498851f79238aa1dd",
+      "beforeSignatureSha256": "d61e280c636a7b747b675c3b2145f2e38f191c8fa1174edb53e9a77d35384d45",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "2213–2230",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 15,
+      "meanAbsolute": 0.645,
+      "ownerVisualItem": "Pending Owner visual review: navigation-focused-shells-spec@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "f3c3b2618d3b46b5e27998c23813e8eab116fa53ca06276498851f79238aa1dd",
+      "captureSha256": "0b4e1e6436fdd1b3e378d98ed4893762d345f378ea6d3cb73a6f238839414759"
+    },
+    {
+      "key": "navigation-product-shell-spec@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "container-width interpretation plus deliberate package-backed DS name/brand replaces borrowed AOS placeholder",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md [49-78]; apps/storybook/src/contract-stories/story-content.tsx [2299–2351]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 4d2f6826e75ae8b45e3eff5ef181744dbe6d7d6920cb67c6aa37bd445a679f93; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "fd8aabb08321efe5ab1c7e69fad5772cc8f7be711fd8a5d0c632f984e46c88b0",
+      "beforeSignatureSha256": "dd080f9549e8dacf8952328b8433efbe5a62766a45cf9876acdba76074a0c45f",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md",
+          "lines": "49-78",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "2299–2351",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 15,
+      "meanAbsolute": 0.215,
+      "ownerVisualItem": "Pending Owner visual review: navigation-product-shell-spec@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "fd8aabb08321efe5ab1c7e69fad5772cc8f7be711fd8a5d0c632f984e46c88b0",
+      "captureSha256": "4d2f6826e75ae8b45e3eff5ef181744dbe6d7d6920cb67c6aa37bd445a679f93"
+    },
+    {
+      "key": "navigation-product-shell-spec@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "container-width interpretation plus deliberate package-backed DS name/brand replaces borrowed AOS placeholder",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md [49-78]; apps/storybook/src/contract-stories/story-content.tsx [2299–2351]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 4d94d2187ce8096db2c270fa18b911ac1c9d279a3a575f32ec99d2484f360113; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "192ad2f71ce9daa9acfa33f4569e6588255907b4badb5ffa29f551acf6c85c80",
+      "beforeSignatureSha256": "9aee40463f22967f8b9ea14852391352acbf1956af6b0f71af7f3b2c31d00ee8",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md",
+          "lines": "49-78",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "2299–2351",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 15,
+      "meanAbsolute": 0.887,
+      "ownerVisualItem": "Pending Owner visual review: navigation-product-shell-spec@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "192ad2f71ce9daa9acfa33f4569e6588255907b4badb5ffa29f551acf6c85c80",
+      "captureSha256": "4d94d2187ce8096db2c270fa18b911ac1c9d279a3a575f32ec99d2484f360113"
+    },
+    {
+      "key": "owner-quality-product-shell@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md [49-78]; apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx [537–566]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 e95fcdc3c74a701e3797b4ee3dbb15ad70b9fb38484f41eb37d3afcd2b2a00c8; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "c0f03356f4b562d60c993a9be0e0616f3db93dafabdc4aa62b48953c08d8a6a5",
+      "beforeSignatureSha256": "4076c124478f3701cf5d1a5a1c8bdf4540df2506a8f1bfa7339e5286298e013e",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md",
+          "lines": "49-78",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx",
+          "lines": "537–566",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 131,
+      "meanAbsolute": 21.914,
+      "ownerVisualItem": "Pending Owner visual review: owner-quality-product-shell@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 A, maxCell 131 (>40), meanAbsolute 21.914. adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "afterSignatureSha256": "c0f03356f4b562d60c993a9be0e0616f3db93dafabdc4aa62b48953c08d8a6a5",
+      "captureSha256": "e95fcdc3c74a701e3797b4ee3dbb15ad70b9fb38484f41eb37d3afcd2b2a00c8"
+    },
+    {
+      "key": "owner-quality-product-shell@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md [49-78]; apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx [537–566]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 843902eb9df948ab4fe29c0a088e5c91f1151aaaec19b8888576e2cb7bb38d9f; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "750b074e6a7812d24ea0f5d29f578a69cad6045230520be040340c3de925afc3",
+      "beforeSignatureSha256": "29c11c6664ef9e774033c54ba9211e41f258acc0ed277832ed615fa73e0a7f06",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md",
+          "lines": "49-78",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx",
+          "lines": "537–566",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 96,
+      "meanAbsolute": 16.863,
+      "ownerVisualItem": "Pending Owner visual review: owner-quality-product-shell@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 A, maxCell 96 (>40), meanAbsolute 16.863. adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "afterSignatureSha256": "750b074e6a7812d24ea0f5d29f578a69cad6045230520be040340c3de925afc3",
+      "captureSha256": "843902eb9df948ab4fe29c0a088e5c91f1151aaaec19b8888576e2cb7bb38d9f"
+    },
+    {
+      "key": "owner-quality-product-shell@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md [49-78]; apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx [537–566]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 726ac5494ff436732fa01c66e809635a47278291f78731e7001073fa733c970f; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "0d11bd67c76da0add77274af0b7c3cff3de5c75670e87a519dcb88c08b5c55ea",
+      "beforeSignatureSha256": "211ef91bb71cad54d19fe22b3cea17497374ea98e276f3ac9915b7aa43f7761f",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S7.md",
+          "lines": "49-78",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/visual-instances/aos-owner-quality-product-shell.tsx",
+          "lines": "537–566",
+          "commits": [
+            "c9c7f0c7af00ac9f6908c8c84971e1eaeb2f2788"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "A",
+      "maxCell": 143,
+      "meanAbsolute": 22.254,
+      "ownerVisualItem": "Pending Owner visual review: owner-quality-product-shell@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 A, maxCell 143 (>40), meanAbsolute 22.254. adopted option(b) removes borrowed branded shell and retains six AOS page-only content/name fixtures;6 heading start-margin flow contributions total97.03125 measured in B12",
+      "afterSignatureSha256": "0d11bd67c76da0add77274af0b7c3cff3de5c75670e87a519dcb88c08b5c55ea",
+      "captureSha256": "726ac5494ff436732fa01c66e809635a47278291f78731e7001073fa733c970f"
+    },
+    {
+      "key": "shell-intro@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "The current same original ShellIntroStory/ts-intro-l uses the already supported canonical1240 owner frame and its own overflow arrangement. Original runtime evidence reads actual owning width1240 and automatic brand v2, preserving the original128px card to22px destination, timing/session/reduced-motion behaviour. This fulfils native whole141 second-version context. Earlier container-width/narrow descriptions describe prior stages; the current capture is the approved R26 wide-v2 example input. The current captured distance and screenshot are bound to this exact existing story/viewport key; no palette, library runtime, viewport grid or threshold is changed.",
+      "evidence": "apps/storybook/src/contract-stories/story-content.tsx; apps/storybook/src/build/shell-hydrate.tsx; packages/ui-react/src/components/Navigation/ShellBrandButton.tsx; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 a215ea7d8e016f198bcbc26b4c119c3b085ad5c209ab38299db78f9801aa5893; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "13d1c9f4aea40a87652ea660253ca468bc2cecf58b2257f89eec7c6a44815a40",
+      "beforeSignatureSha256": "1dc3593e8162a31a0c8eae020ea8ba72a202ad9a9e8dfbc3ec5839631a79b93a",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "role": "current same original ShellIntroStory supportedwidth1240 authoring input",
+          "commits": [
+            "3b42517ed61d91085821eee4cfca28a59e0ce4f2"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/build/shell-hydrate.tsx",
+          "role": "actual original128px ProductLockup card input and owning shell reference"
+        },
+        {
+          "repositoryRelativePath": "packages/ui-react/src/components/Navigation/ShellBrandButton.tsx",
+          "role": "unchanged automatic owner-width version selection"
+        }
+      ],
+      "partition": "new2",
+      "outlierClass": "C",
+      "maxCell": 11,
+      "meanAbsolute": 0.43,
+      "ownerVisualItem": "Pending Owner visual review: shell-intro@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "13d1c9f4aea40a87652ea660253ca468bc2cecf58b2257f89eec7c6a44815a40",
+      "captureSha256": "a215ea7d8e016f198bcbc26b4c119c3b085ad5c209ab38299db78f9801aa5893"
+    },
+    {
+      "key": "shell-intro@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "The current same original ShellIntroStory/ts-intro-l uses the already supported canonical1240 owner frame and its own overflow arrangement. Original runtime evidence reads actual owning width1240 and automatic brand v2, preserving the original128px card to22px destination, timing/session/reduced-motion behaviour. This fulfils native whole141 second-version context. Earlier container-width/narrow descriptions describe prior stages; the current capture is the approved R26 wide-v2 example input. The current captured distance and screenshot are bound to this exact existing story/viewport key; no palette, library runtime, viewport grid or threshold is changed.",
+      "evidence": "apps/storybook/src/contract-stories/story-content.tsx; apps/storybook/src/build/shell-hydrate.tsx; packages/ui-react/src/components/Navigation/ShellBrandButton.tsx; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 76773f7815fcc7c4b78743d4aa78d5c8e1e8b75dcbcc8d1be1f01bdc460d3abe; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "289f478320acbdc5c4c1312ad6902c43d0032d79f6835380ff73555563f08924",
+      "beforeSignatureSha256": "11076da5e2fc6d50e49d7128d487c642af229b292d0e9771fb0b812d560bd6bf",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "role": "current same original ShellIntroStory supportedwidth1240 authoring input",
+          "commits": [
+            "3b42517ed61d91085821eee4cfca28a59e0ce4f2"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/build/shell-hydrate.tsx",
+          "role": "actual original128px ProductLockup card input and owning shell reference"
+        },
+        {
+          "repositoryRelativePath": "packages/ui-react/src/components/Navigation/ShellBrandButton.tsx",
+          "role": "unchanged automatic owner-width version selection"
+        }
+      ],
+      "partition": "new2",
+      "outlierClass": "C",
+      "maxCell": 17,
+      "meanAbsolute": 3.043,
+      "ownerVisualItem": "Pending Owner visual review: shell-intro@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "289f478320acbdc5c4c1312ad6902c43d0032d79f6835380ff73555563f08924",
+      "captureSha256": "76773f7815fcc7c4b78743d4aa78d5c8e1e8b75dcbcc8d1be1f01bdc460d3abe"
+    },
+    {
+      "key": "shell-intro@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "The current same original ShellIntroStory/ts-intro-l uses the already supported canonical1240 owner frame and its own overflow arrangement. Original runtime evidence reads actual owning width1240 and automatic brand v2, preserving the original128px card to22px destination, timing/session/reduced-motion behaviour. This fulfils native whole141 second-version context. Earlier container-width/narrow descriptions describe prior stages; the current capture is the approved R26 wide-v2 example input. The current captured distance and screenshot are bound to this exact existing story/viewport key; no palette, library runtime, viewport grid or threshold is changed.",
+      "evidence": "apps/storybook/src/contract-stories/story-content.tsx; apps/storybook/src/build/shell-hydrate.tsx; packages/ui-react/src/components/Navigation/ShellBrandButton.tsx; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 50eb90807b6fb72632ac3f2d641b55871fe43de3046e7e793856e6d6cba10447; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "e3f7657aeacc1dda9546ff024cc62e23a619249e9513966499ad71399acc46b7",
+      "beforeSignatureSha256": "fa25a040ee1ff4209f9e1e0a5c7ae00a7d531153515e5b6ed58f9aceaaadd7af",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "role": "current same original ShellIntroStory supportedwidth1240 authoring input",
+          "commits": [
+            "3b42517ed61d91085821eee4cfca28a59e0ce4f2"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/build/shell-hydrate.tsx",
+          "role": "actual original128px ProductLockup card input and owning shell reference"
+        },
+        {
+          "repositoryRelativePath": "packages/ui-react/src/components/Navigation/ShellBrandButton.tsx",
+          "role": "unchanged automatic owner-width version selection"
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "C",
+      "maxCell": 11,
+      "meanAbsolute": 1.066,
+      "ownerVisualItem": "Pending Owner visual review: shell-intro@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "e3f7657aeacc1dda9546ff024cc62e23a619249e9513966499ad71399acc46b7",
+      "captureSha256": "50eb90807b6fb72632ac3f2d641b55871fe43de3046e7e793856e6d6cba10447"
+    },
+    {
+      "key": "shell-narrow@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "1023px owning frame and package container-width interpretation",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; apps/storybook/src/contract-stories/story-content.tsx [634–641,649]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 c2bfcc71019936ccaebe1544c6d8b077c8a0f50c36d26b7f7eb6fabed5e19b23; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "dbbccea91fb2efa618ef0e2a3d097e46da43af90019a7d896e0bb0b8d806aff9",
+      "beforeSignatureSha256": "3768e1b8ebd8e06cbc425f378f5712b143801e886605d050b50fbdf0ba1afc20",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "634–641,649",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "C",
+      "maxCell": 16,
+      "meanAbsolute": 1.188,
+      "ownerVisualItem": "Pending Owner visual review: shell-narrow@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "dbbccea91fb2efa618ef0e2a3d097e46da43af90019a7d896e0bb0b8d806aff9",
+      "captureSha256": "c2bfcc71019936ccaebe1544c6d8b077c8a0f50c36d26b7f7eb6fabed5e19b23"
+    },
+    {
+      "key": "shell-narrow@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "1023px owning frame and package container-width interpretation",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; apps/storybook/src/contract-stories/story-content.tsx [634–641,649]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 4332cedd5a728f887f8e231dcc71a46557386165a7c5c4a168504630b510316f; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "566012ebca64aa54b835590ee8e883e81fab64cc0a543be84d5b2a72771206f8",
+      "beforeSignatureSha256": "dddad16b591348ebad51a37d925d9d1ca2d7850f85d45275988a58964ab631f7",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "634–641,649",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "C",
+      "maxCell": 10,
+      "meanAbsolute": 0.633,
+      "ownerVisualItem": "Pending Owner visual review: shell-narrow@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "566012ebca64aa54b835590ee8e883e81fab64cc0a543be84d5b2a72771206f8",
+      "captureSha256": "4332cedd5a728f887f8e231dcc71a46557386165a7c5c4a168504630b510316f"
+    },
+    {
+      "key": "shell-narrow@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "1023px owning frame and package container-width interpretation",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; apps/storybook/src/contract-stories/story-content.tsx [634–641,649]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 66a6e43d98e7a0a71b4e5635d7b6e729044e4fc3bba671205c5f34004882de7c; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "a95a80127e7bd5d6436741a0427ab01d9d8728ebac8ee77919d538a97ab590be",
+      "beforeSignatureSha256": "f2ab9799d33c7b3d77220d6496f73c8b24b9861a528ab3faf6f4b5c59dbbf9a7",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/story-content.tsx",
+          "lines": "634–641,649",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "C",
+      "maxCell": 15,
+      "meanAbsolute": 1.41,
+      "ownerVisualItem": "Pending Owner visual review: shell-narrow@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "a95a80127e7bd5d6436741a0427ab01d9d8728ebac8ee77919d538a97ab590be",
+      "captureSha256": "66a6e43d98e7a0a71b4e5635d7b6e729044e4fc3bba671205c5f34004882de7c"
+    },
+    {
+      "key": "shell-top-band@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "1240px fixed desktop frames and additional ts-drop-start-l; start-cascade placement later corrected in a27c252; exact new-screen height contribution912 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; apps/storybook/src/build/shell-hydrate.tsx [140–152;story-content.tsx 620–641]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 0bf44defdbd601ebb9714a68125d337a97e0eeff4f39b7d10d6dd92b10a8e3a6; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "a112ba76072b80f49829ba377bcd5b8622333cadf5a501d35763e2f1cb4357d1",
+      "beforeSignatureSha256": "1f963b5b51bdbb964fe8054ae3a71576dde65415c91956966e1b4c10a18d7d3f",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/build/shell-hydrate.tsx",
+          "lines": "140–152;story-content.tsx 620–641",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "C",
+      "maxCell": 229,
+      "meanAbsolute": 54.047,
+      "ownerVisualItem": "Pending Owner visual review: shell-top-band@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 C, maxCell 229 (>40), meanAbsolute 54.047. 1240px fixed desktop frames and additional ts-drop-start-l; start-cascade placement later corrected in a27c252; exact new-screen height contribution912 measured in B12",
+      "afterSignatureSha256": "a112ba76072b80f49829ba377bcd5b8622333cadf5a501d35763e2f1cb4357d1",
+      "captureSha256": "0bf44defdbd601ebb9714a68125d337a97e0eeff4f39b7d10d6dd92b10a8e3a6"
+    },
+    {
+      "key": "shell-top-band@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "1240px fixed desktop frames and additional ts-drop-start-l; start-cascade placement later corrected in a27c252; exact new-screen height contribution912 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; apps/storybook/src/build/shell-hydrate.tsx [140–152;story-content.tsx 620–641]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 2e2e8019294ad5f39997beb75759774381d958ad550839c9ed445ac64ef1f98e; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "ef8593bf1213c92c844ece1c4ca470d8592136f5025c6692368e1da21b7266cb",
+      "beforeSignatureSha256": "a859caac15e6e6a6b4d0e0b4db3d4a9631231085a3fbd787c6f962ab6fca1500",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/build/shell-hydrate.tsx",
+          "lines": "140–152;story-content.tsx 620–641",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "C",
+      "maxCell": 228,
+      "meanAbsolute": 52.352,
+      "ownerVisualItem": "Pending Owner visual review: shell-top-band@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 C, maxCell 228 (>40), meanAbsolute 52.352. 1240px fixed desktop frames and additional ts-drop-start-l; start-cascade placement later corrected in a27c252; exact new-screen height contribution912 measured in B12",
+      "afterSignatureSha256": "ef8593bf1213c92c844ece1c4ca470d8592136f5025c6692368e1da21b7266cb",
+      "captureSha256": "2e2e8019294ad5f39997beb75759774381d958ad550839c9ed445ac64ef1f98e"
+    },
+    {
+      "key": "shell-top-band@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "1240px fixed desktop frames and additional ts-drop-start-l; start-cascade placement later corrected in a27c252; exact new-screen height contribution912 measured in B12",
+      "evidence": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md [88-107]; apps/storybook/src/build/shell-hydrate.tsx [140–152;story-content.tsx 620–641]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 5b1bc54bd31817c1e0867369ef231b992590f71cc7f951d9d5912e9638ccd36a; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "54bcccfd91b628f047b8e0f695acc63e03b816759dabcfdea99448a56fc9678b",
+      "beforeSignatureSha256": "9bfc517df39de411063f201be8efae3d2734f1baa84b37a63568ec277f62c860",
+      "source": [
+        {
+          "repositoryRelativePath": "docs/dispatch/2026-10-13-tab-shell/runs/r6/handoff/S4.md",
+          "lines": "88-107",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        },
+        {
+          "repositoryRelativePath": "apps/storybook/src/build/shell-hydrate.tsx",
+          "lines": "140–152;story-content.tsx 620–641",
+          "commits": [
+            "13bbe294232ac90fdaf32033a34f725eaf9bdf12"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "C",
+      "maxCell": 229,
+      "meanAbsolute": 55.246,
+      "ownerVisualItem": "Pending Owner visual review: shell-top-band@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 C, maxCell 229 (>40), meanAbsolute 55.246. 1240px fixed desktop frames and additional ts-drop-start-l; start-cascade placement later corrected in a27c252; exact new-screen height contribution912 measured in B12",
+      "afterSignatureSha256": "54bcccfd91b628f047b8e0f695acc63e03b816759dabcfdea99448a56fc9678b",
+      "captureSha256": "5b1bc54bd31817c1e0867369ef231b992590f71cc7f951d9d5912e9638ccd36a"
+    },
+    {
+      "key": "typography-matrix@desktop-1440x900",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved public Heading visual-level/StateSurface, link, plain numeral and strong Highlight references are additional visible content relative to the frozen baseline source. eb45be4 also arranges semantic Heading levels without changing visualLevel. The source diff and current capture identify these specimens; this is not an inference from pixel counts.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [114-176]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 5e72ab3465cfd2361bcfb46e9142e3b3b532e8a78fa7958753dee32cf45fb73c; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "e329d8ce41342296cb3a3b409b31a73a5586710b97518695ef1dc2ea6fcbf839",
+      "beforeSignatureSha256": "2afb7ccc34a97c84b5a915df014f5bee8e0197f9a738747e9212cca1d3fc35fd",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "114-176",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 56,
+      "meanAbsolute": 6.535,
+      "ownerVisualItem": "Pending Owner visual review: typography-matrix@desktop-1440x900; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "outlierReason": "K12 D, maxCell 56 (>40), meanAbsolute 6.535. Approved public Heading visual-level/StateSurface, link, plain numeral and strong Highlight references are additional visible content relative to the frozen baseline source. eb45be4 also arranges semantic Heading levels without changing visualLevel. The source diff and current capture identify these specimens; this is not an inference from pixel counts.",
+      "afterSignatureSha256": "e329d8ce41342296cb3a3b409b31a73a5586710b97518695ef1dc2ea6fcbf839",
+      "captureSha256": "5e72ab3465cfd2361bcfb46e9142e3b3b532e8a78fa7958753dee32cf45fb73c"
+    },
+    {
+      "key": "typography-matrix@mobile-390x844",
+      "disposition": "accepted-layout-change",
+      "reason": "Authentic retained S4 mobile PNG independently recomputes exactly to the unchanged baseline signature. Current B18 PNG reproduces its recorded signature. The old frame has no public-reference block between h4 and Text; current frame first differs at y=412, exactly where the approved Heading visualLevel/StateSurface specimens in matrix-stories.tsx 122-130 begin. The linked additions also include the public link, plain numeral and strong Highlight references in 68e39e4/7fa4f0b; eb45be4 arranges semantic levels without changing visualLevel. Old/current whole-story heights are 2499/3675, and current browser names/rectangles identify all five additional Heading and two StateSurface headings in each theme. The original mobile key is separately source-linked to the actual baseline-equal old artifact, rather than inheriting the new desktop/tablet disposition. Runtime Typography remains unchanged.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [114-176]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 715401810bbde8507ec63551f31879d54e81a99460c542f2c54a8223de949dc6; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "406f73edc786a665fe24cc43a90e98cecc30bc1b948b034cdcc952f8c673864f",
+      "beforeSignatureSha256": "586b328920a377217a43d83c0096d41268e95776ad4c0f8e4154c5a7c50df702",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "114-176",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "eb45be41e889d1d6f895b52bd86346607ff57493"
+          ]
+        }
+      ],
+      "partition": "original19",
+      "outlierClass": "D",
+      "maxCell": 23,
+      "meanAbsolute": 5.867,
+      "ownerVisualItem": "Pending Owner visual review: typography-matrix@mobile-390x844; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "406f73edc786a665fe24cc43a90e98cecc30bc1b948b034cdcc952f8c673864f",
+      "captureSha256": "715401810bbde8507ec63551f31879d54e81a99460c542f2c54a8223de949dc6"
+    },
+    {
+      "key": "typography-matrix@tablet-1024x768",
+      "disposition": "accepted-layout-change",
+      "reason": "Approved public Heading visual-level/StateSurface, link, plain numeral and strong Highlight references are additional visible content relative to the frozen baseline source. eb45be4 also arranges semantic Heading levels without changing visualLevel. The source diff and current capture identify these specimens; this is not an inference from pixel counts.",
+      "evidence": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx [114-176]; Main input packet SHA256 1e66e2f894d8dbb065dc49d84cbfb65048444d81841e1f7bd85393d28bbea220; source commit c19c3cadef9995af047775482f3a5e243a36b75a; current capture SHA256 848488c8b75b34b026fd07e490ee677a077f449e394f04a0f3ec1ccc91d8cfc6; same-build input SHA256 22a85d163e76df434f3bed293bba818125e45de4885eeb172006cea7ec7118c2",
+      "expectedSignatureSha256": "8f2aa94f795082cce6d5bd8b704d3582db54920ae763b22598e163904c6d373d",
+      "beforeSignatureSha256": "72601ff5c7f6dfc58bf773e517d7ea6f06b324ef9d45110635c256d027fbd1b4",
+      "source": [
+        {
+          "repositoryRelativePath": "apps/storybook/src/contract-stories/gplus/matrix-stories.tsx",
+          "lines": "114-176",
+          "commits": [
+            "7fa4f0beac53b864d0604a0e2ce159a3229158ec",
+            "9641b45919847368d94ef4f465938ef0f03853d7",
+            "68e39e4ebfc95ea09f5d2189db89fdd5b710630f",
+            "5d745adb5e5b63d7430076a33360fdf0c584cec2",
+            "eb45be41e889d1d6f895b52bd86346607ff57493",
+            "1ef380f1b75a1be35b7130a92c69e0495e500541"
+          ]
+        }
+      ],
+      "partition": "additional16",
+      "outlierClass": "D",
+      "maxCell": 36,
+      "meanAbsolute": 7.238,
+      "ownerVisualItem": "Pending Owner visual review: typography-matrix@tablet-1024x768; confirm the documented source/layout change and preserved component roles.",
+      "ownerVisualAccepted": false,
+      "afterSignatureSha256": "8f2aa94f795082cce6d5bd8b704d3582db54920ae763b22598e163904c6d373d",
+      "captureSha256": "848488c8b75b34b026fd07e490ee677a077f449e394f04a0f3ec1ccc91d8cfc6"
+    }
+  ],
+  "refused": []
+}
