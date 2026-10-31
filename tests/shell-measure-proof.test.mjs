@@ -6,6 +6,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
+import { runInNewContext } from "node:vm";
 import { chromium } from "@playwright/test";
 import * as lib from "../scripts/lib/shell-measure.mjs";
 import {
@@ -29,6 +30,7 @@ import {
   judgeFocusTrace,
   judgeGate,
   judgeIntroTrace,
+  installIntroProbe,
   judgeShellReadings,
   judgeStoryMutation,
   openBoardPage,
@@ -50,6 +52,68 @@ const traces = Object.fromEntries(Object.entries(manifest.behaviourTraces).map((
 
 // The G section of the 07b board, in order (build-shell2.mjs, gates table).
 const G_SECTION = ["标按钮几何", "品牌资产 digest", "顶带", "三缘对齐", "固定项间距", "接续", "底栏居中", "标旁文字居中", "级联", "无收起钮、无常驻侧栏", "图钉位无抖动", "锁定块只装饰", "每格对比度", "单行与溢出", "阴影模糊", "登入动画", "焦点回路", "触摸端"];
+
+test("synthetic intro observation serializes its own landing hit and leaves missing targets unverified", () => {
+  // Explicit synthetic unit data exercises collection/serialization only. These rectangles and
+  // hit results are not actual browser geometry, pointer reachability or click-delivery proof.
+  function fixture({ hasOwner = true, hitIntro = false, inViewport = true } = {}) {
+    class UnitElement {
+      constructor(tag, attributes = {}) { this.tagName = tag.toUpperCase(); this.attributes = attributes; this.id = attributes.id ?? ""; this.isConnected = true; }
+      getAttribute(name) { return this.attributes[name] ?? null; }
+      contains(element) { return this.children?.includes(element) ?? false; }
+    }
+    const layer = new UnitElement("div", { "data-intro-phase": "move", class: "tcrn-shell-intro" });
+    const control = new UnitElement("button", { class: "tcrn-shell-brand" });
+    const landing = new UnitElement("svg", { "data-logo": "tms" });
+    const shell = new UnitElement("div", { "data-shell": "intro-own-shell" });
+    const scope = new UnitElement("div", { "data-shell-story-block": "intro-own-block" });
+    const rect = { left: inViewport ? 12 : 2000, top: 6, width: 22, height: 22 };
+    landing.getBoundingClientRect = () => ({ ...rect, toJSON: () => ({ ...rect }) });
+    landing.closest = () => control;
+    control.children = [landing];
+    shell.querySelector = () => landing;
+    scope.querySelectorAll = () => [shell];
+    layer.closest = () => hasOwner ? scope : null;
+    const callbacks = [];
+    let observe;
+    let point = null;
+    const document = {
+      timeline: { currentTime: 0 }, getAnimations: () => [],
+      querySelectorAll: () => [layer],
+      querySelector: () => { throw new Error("a global first brand/phase is not the intro's owner"); },
+      elementFromPoint: (x, y) => { point = { x, y }; return hitIntro ? layer : landing; }
+    };
+    const window = { innerWidth: 1440, innerHeight: 900 };
+    runInNewContext(`(${installIntroProbe.toString()})()`, {
+      window, document, Element: UnitElement, performance: { now: () => 25 },
+      getComputedStyle: () => ({ pointerEvents: "none" }),
+      requestAnimationFrame: (callback) => callbacks.push(callback),
+      MutationObserver: class { constructor(callback) { observe = callback; } observe() {} }
+    });
+    observe();
+    callbacks.shift()();
+    return { frame: JSON.parse(JSON.stringify(window.__tcrnShellIntroProbe.frames[0])), point };
+  }
+  const observed = fixture();
+  assert.equal(observed.frame.phase, "move");
+  assert.equal(observed.frame.pointer.status, "observed");
+  assert.equal(observed.frame.pointer.shell.shell, "intro-own-shell");
+  assert.deepEqual(observed.point, { x: 23, y: 17 });
+  assert.equal(observed.frame.pointer.hitWithinUnderlyingControl, true);
+  assert.equal(observed.frame.pointer.hitWithinIntro, false);
+  const blocked = fixture({ hitIntro: true });
+  assert.equal(blocked.frame.pointer.hitWithinUnderlyingControl, false);
+  assert.equal(blocked.frame.pointer.hitWithinIntro, true);
+  const missing = fixture({ hasOwner: false });
+  assert.equal(missing.frame.pointer.status, "unverified-target");
+  assert.equal(missing.frame.pointer.point, null);
+  assert.equal(missing.frame.pointer.hitWithinUnderlyingControl, null);
+  assert.equal(missing.point, null);
+  const outside = fixture({ inViewport: false });
+  assert.equal(outside.frame.pointer.status, "unverified-point");
+  assert.equal(outside.frame.pointer.point, null);
+  assert.equal(outside.point, null);
+});
 
 let browser;
 before(async () => {

@@ -967,6 +967,50 @@ test("product shell search stays hidden when compact at rest", () => {
   assert.match(html, /data-product-shell-search-results="true" hidden=""/);
 });
 
+test("search keeps the field and query while empty status changes to real options and back", async () => {
+  const harness = createDomInteractionHarness();
+  const events: string[] = [];
+  function Search() {
+    const [query, setQuery] = useState("");
+    const [expanded, setExpanded] = useState(false);
+    return <ProductShellSearch locale="en" query={query} expanded={expanded}
+      results={query === "work" ? [{ id: "work", title: "Work", href: "#work" }] : []}
+      onQueryChange={(next) => { events.push(`query:${next}`); setQuery(next); }}
+      onExpandedChange={(next, reason) => { events.push(`expanded:${next}:${reason}`); setExpanded(next); }}
+      onDismiss={(reason) => events.push(`dismiss:${reason}`)} />;
+  }
+  try {
+    await harness.render(<Search />);
+    const input = harness.document.querySelector<HTMLInputElement>("input");
+    assert.ok(input);
+    const listbox = harness.document.querySelector<HTMLElement>('[role="listbox"]');
+    const status = harness.document.querySelector<HTMLElement>('[role="status"]');
+    assert.ok(listbox && status);
+    await focusElement(harness, input);
+    assert.equal(input.getAttribute("aria-expanded"), "false");
+    assert.equal(status.hidden, false);
+    await updateInputValue(harness, input, "work");
+    assert.equal(input.getAttribute("aria-expanded"), "true");
+    assert.equal(listbox.hidden, false);
+    assert.equal(listbox.querySelectorAll('[role="option"]').length, 1);
+    assert.equal(status.hidden, true);
+    await updateInputValue(harness, input, "zz");
+    assert.equal(input.value, "zz");
+    assert.equal(input.getAttribute("aria-expanded"), "false");
+    assert.equal(listbox.hidden, true);
+    assert.equal(status.hidden, false);
+    assert.equal(status.textContent, "No results");
+    assert.equal(harness.document.activeElement, input, "empty results keep editing focus");
+    await harness.dispatchKeydown(input, "Escape");
+    assert.equal(status.hidden, true);
+    assert.equal(input.value, "zz", "dismissal preserves the typed query");
+    assert.ok(events.includes("query:work") && events.includes("query:zz"));
+    assert.ok(events.includes("expanded:false:escape") && events.includes("dismiss:escape"));
+  } finally {
+    await harness.cleanup();
+  }
+});
+
 interface ProductShellSemanticFixtureProps {
   events: string[];
 }
@@ -1636,7 +1680,7 @@ test("STORY-093 a segmented nav renders an activation handler when the consumer 
 
 // TCRN-DS-SUB-124 (STORY-143 GWT2). Five tab-shaped forms grew up apart and said "selected" three
 // ways. They now render one block in three variants, and the family has one selected structure:
-// the 6% ink wash and the strong weight, with nothing added on top.
+// the shared ink wash (day 6% / night 7%) and the strong weight, with nothing added on top.
 test("STORY-143 GWT2 the five tab forms render one family with one selected structure", () => {
   const two = [{ id: "a", label: "Alpha" }, { id: "b", label: "Beta", selected: true }];
   const forms = {
@@ -1665,7 +1709,7 @@ test("STORY-143 GWT2 the five tab forms render one family with one selected stru
   assert.match(body, /--tcrn-pair-tab-fill: var\(--tcrn-pair-tab-fill-s\);/);
   assert.match(body, /font-weight: var\(--tcrn-type-weight-strong\);/);
   assert.doesNotMatch(body, /border|outline|box-shadow|text-decoration|transform|brand/);
-  assert.match(sheet, /--tcrn-pair-tab-fill-s: var\(--tcrn-color-wash\);/, "the selected fill is the 6% wash");
+  assert.match(sheet, /--tcrn-pair-tab-fill-s: var\(--tcrn-color-wash\);/, "the selected fill is the shared day 6% / night 7% wash");
   // The old roots are hooks without rules: no package rule styles them any more.
   assert.doesNotMatch(sheet, /\.tcrn-(?:module-tabs|section-tabs|segmented-nav|view-tabs)\b/);
 });
@@ -2226,10 +2270,34 @@ test("STORY-143 C7 group titles, search results and pinnable labels carry their 
   // 3. Open with no match, the empty line shows instead of being hidden with the results; closed,
   // the list stays hidden.
   const empty = renderToStaticMarkup(<ProductShellSearch query="zz" expanded results={[]} emptyLabel="No match" />);
-  assert.match(empty, /data-product-shell-search-results="true"><span class="tcrn-product-shell-search__empty">No match<\/span><\/div>/);
-  assert.doesNotMatch(empty, /data-product-shell-search-results="true" hidden=""/);
+  assert.match(empty, /data-product-shell-search-empty="true"><span class="tcrn-product-shell-search__empty">No match<\/span><\/div>/);
+  assert.doesNotMatch(empty, /data-product-shell-search-empty="true" hidden=""/);
+  const emptyDocument = new JSDOM(empty).window.document;
+  const emptyInput = emptyDocument.querySelector('input[role="combobox"]');
+  const emptyListbox = emptyDocument.querySelector('[role="listbox"]');
+  const emptyStatus = emptyDocument.querySelector('[role="status"]');
+  assert.ok(emptyInput && emptyListbox && emptyStatus);
+  assert.equal(emptyInput.getAttribute("value"), "zz");
+  assert.equal(emptyInput.getAttribute("aria-expanded"), "false", "no option popup is expanded for an empty result");
+  assert.equal(emptyInput.getAttribute("aria-controls"), emptyListbox.id);
+  assert.equal(emptyListbox.hasAttribute("hidden"), true);
+  assert.equal(emptyListbox.querySelectorAll('[role="option"]').length, 0, "an empty result invents no option");
+  assert.equal(emptyStatus.hasAttribute("hidden"), false);
+  assert.equal(emptyStatus.textContent, "No match");
+  assert.equal(emptyInput.getAttribute("aria-describedby"), emptyStatus.id, "the visible status describes the field");
+  const populatedDocument = new JSDOM(results).window.document;
+  const populatedInput = populatedDocument.querySelector('input[role="combobox"]');
+  const populatedListbox = populatedDocument.querySelector('[role="listbox"]');
+  assert.equal(populatedInput?.getAttribute("aria-expanded"), "true");
+  assert.equal(populatedInput?.getAttribute("aria-controls"), populatedListbox?.id);
+  assert.equal(populatedListbox?.hasAttribute("hidden"), false);
+  assert.equal(populatedListbox?.querySelectorAll('[role="option"]').length, 2);
+  assert.equal(populatedDocument.querySelector('[role="status"]')?.hasAttribute("hidden"), true);
+  const described = new JSDOM(renderToStaticMarkup(<ProductShellSearch expanded inputProps={{ "aria-describedby": "query-help" }} />)).window.document;
+  assert.equal(described.querySelector("input")?.getAttribute("aria-describedby"), `query-help ${described.querySelector('[role="status"]')?.id}`);
   const closed = renderToStaticMarkup(<ProductShellSearch query="" expanded={false} results={[]} />);
   assert.match(closed, /data-product-shell-search-results="true" hidden=""/);
+  assert.match(closed, /data-product-shell-search-empty="true" hidden=""/);
 
   // 4. Every item's label is one line with its title (TCRN-DS-SUB-192): the base rule cuts it, a
   // block so the cut applies wherever the item is, and NavItem gives it its words, pinnable or not,

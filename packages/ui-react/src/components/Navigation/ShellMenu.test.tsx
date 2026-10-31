@@ -5,6 +5,7 @@
 // equal margins) are the shell gate's (TCRN-DS-SUB-137); here the rules are held to their tokens.
 import test from "node:test";
 import assert from "node:assert/strict";
+import { act } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { JSDOM } from "jsdom";
 import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
@@ -24,6 +25,7 @@ import {
   type ShellMenuGroup
 } from "./ShellMenu.js";
 import { tcrnShellCopy } from "./shell-copy.js";
+import { createDomInteractionHarness } from "../../test/dom-harness.js";
 
 const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -153,7 +155,7 @@ test("the bottom bar holds the current position and the lockup, which is a pictu
   const html = renderBoardMenu();
   const bar = /<div class="tcrn-shell-menu__pbar" data-shell-pbar="">([\s\S]*)<\/div><\/section>/.exec(html);
   assert.ok(bar, "the bar closes the panel");
-  assert.match(bar[1], /^<nav class="tcrn-shell-menu__crumbs" aria-label="当前位置"><span class="tcrn-shell-menu__crumbs-label" aria-hidden="true">当前位置<\/span><a class="tcrn-shell-menu__crumb" href="#talent" title="艺人">艺人<\/a><svg[^>]*data-icon-name="chevron-right"[^>]*>[\s\S]*?<\/svg><b class="tcrn-shell-menu__crumb tcrn-shell-menu__crumb--current" aria-current="page" title="名册">名册<\/b><\/nav>/);
+  assert.match(bar[1], /^<nav class="tcrn-shell-menu__crumbs" aria-label="当前位置"><span class="tcrn-shell-menu__crumbs-label" aria-hidden="true" title="当前位置">当前位置<\/span><a class="tcrn-shell-menu__crumb" href="#talent" title="艺人">艺人<\/a><svg[^>]*data-icon-name="chevron-right"[^>]*>[\s\S]*?<\/svg><b class="tcrn-shell-menu__crumb tcrn-shell-menu__crumb--current" aria-current="page" title="名册">名册<\/b><\/nav>/);
   const lockup = /<div ([^>]*data-lockup="lkr"[^>]*)>/.exec(bar[1]);
   assert.ok(lockup, "the lockup is a div in the bar");
   assert.match(lockup[1], /role="img"/);
@@ -651,7 +653,7 @@ test("with landmarkLabel the panel, its bottom bar's trail and the Sheet are nam
     assert.deepEqual(names(renderBoardMenu({ locale, landmarkLabel: "TMS", presentation: "sheet" })), [copy.landmarkOf("TMS", copy.navigation)], locale);
   }
   // The bottom bar's visible label is the menu's own copy; only the names carry the shell's.
-  assert.match(renderBoardMenu({ landmarkLabel: "TMS" }), /<span class="tcrn-shell-menu__crumbs-label" aria-hidden="true">当前位置<\/span>/);
+  assert.match(renderBoardMenu({ landmarkLabel: "TMS" }), /<span class="tcrn-shell-menu__crumbs-label" aria-hidden="true" title="当前位置">当前位置<\/span>/);
   // Two menus on one page, told apart by the name alone.
   const both = names(
     renderToStaticMarkup(
@@ -664,4 +666,52 @@ test("with landmarkLabel the panel, its bottom bar's trail and the Sheet are nam
   assert.equal(both.length, 4);
   assert.equal(new Set(both).size, 4, both.join(" | "));
   assert.doesNotMatch(renderBoardMenu({ landmarkLabel: "TMS" }), /landmarklabel/i, "the prop reaches no element as an attribute");
+});
+
+test("an empty Sheet keeps its named scroll region in keyboard order in every locale", () => {
+  for (const locale of tcrnSupportedLocales) {
+    const copy = tcrnShellCopy[locale];
+    const dom = new JSDOM(renderBoardMenu({ groups: [], pinnedItems: [], presentation: "sheet", locale, landmarkLabel: "Reference" }));
+    try {
+      const { document } = dom.window;
+      const list = document.querySelector<HTMLElement>(".tcrn-shell-sheet__list");
+      assert.ok(list);
+      assert.equal(list.getAttribute("role"), "region");
+      assert.equal(list.getAttribute("aria-label"), copy.landmarkOf("Reference", copy.allNavigation));
+      assert.equal(list.tabIndex, 0, "the scroll region itself is a keyboard stop, including with no links");
+      assert.equal(list.querySelectorAll("a, button").length, 0, "no dummy action or result supplies focus");
+      assert.ok(list.querySelector("[data-shell-group]"), "the empty navigation group remains visible");
+      list.focus();
+      assert.equal(document.activeElement, list, "the real SSR scroll region accepts focus; jsdom does not prove browser scrolling");
+    } finally {
+      dom.window.close();
+    }
+  }
+  const list = ruleBody(".tcrn-shell-sheet__list", shellSheetCss01);
+  assert.equal(declaration(list, "overflow-y"), "auto", "keyboard access keeps the actual scroll region");
+  const focus = ruleBody(".tcrn-shell-menu .tcrn-shell-sheet__list:where(:focus-visible)", tcrnComponentCss);
+  assert.equal(declaration(focus, "box-shadow"), "var(--tcrn-pair-edge-f)");
+  assert.equal(declaration(focus, "outline-offset"), "-2px", "the family focus edge remains inside its scroll box");
+});
+
+test("the empty Sheet scroll region keeps native scrolling keys and the existing Escape dismissal", async () => {
+  const harness = createDomInteractionHarness();
+  const changes: string[] = [];
+  try {
+    await harness.render(<ShellMenu groups={[]} open presentation="sheet" productId="tms" locale="en" shortcut={false} onOpenChange={(open, reason) => changes.push(`${open}:${reason}`)} />);
+    const list = harness.document.querySelector<HTMLElement>(".tcrn-shell-sheet__list");
+    assert.ok(list);
+    await act(async () => list.focus());
+    assert.equal(harness.document.activeElement, list);
+    for (const key of ["ArrowDown", "PageDown", "Home", "End"]) {
+      const event = new harness.window.KeyboardEvent("keydown", { key, bubbles: true, cancelable: true });
+      await act(async () => { list.dispatchEvent(event); });
+      assert.equal(event.defaultPrevented, false, `${key} remains available for the browser to scroll the region`);
+      assert.equal(harness.document.activeElement, list);
+    }
+    await harness.dispatchKeydown(list, "Escape");
+    assert.ok(changes.includes("false:escape"));
+  } finally {
+    await harness.cleanup();
+  }
 });

@@ -1094,9 +1094,31 @@ export function installIntroProbe() {
   const counted = new WeakSet();
   const animationIds = new WeakMap();
   const kebab = (name) => name.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
-  const sample = () => {
+  const identity = (element) => element instanceof Element ? {
+    tag: element.tagName.toLowerCase(), id: element.id || null,
+    className: element.getAttribute("class"), shell: element.getAttribute("data-shell"),
+    block: element.getAttribute("data-shell-story-block"), logo: element.getAttribute("data-logo")
+  } : null;
+  const pointerObservation = (layer, owner) => {
+    const { scope, shell, landing, control } = owner;
+    const rect = landing?.isConnected ? landing.getBoundingClientRect() : null;
+    const center = rect && rect.width > 0 && rect.height > 0 ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 } : null;
+    const inViewport = center && center.x >= 0 && center.y >= 0 && center.x < window.innerWidth && center.y < window.innerHeight;
+    const point = inViewport ? center : null;
+    const hit = point ? document.elementFromPoint(point.x, point.y) : null;
+    return {
+      method: "elementFromPoint at the owning landing mark's observed center; observation only, no click",
+      status: !scope || !shell || !landing?.isConnected || !control?.isConnected ? "unverified-target" : !point ? "unverified-point" : !hit ? "unverified-hit" : "observed",
+      scope: identity(scope), shell: identity(shell), landing: identity(landing), underlyingControl: identity(control),
+      landingRect: rect ? rect.toJSON() : null, point, hit: identity(hit),
+      hitWithinUnderlyingControl: hit && control ? control === hit || control.contains(hit) : null,
+      hitWithinIntro: hit ? layer === hit || layer.contains(hit) : null,
+      layerPointerEvents: layer.isConnected ? getComputedStyle(layer).pointerEvents : null
+    };
+  };
+  const sample = (layer, owner) => {
     const now = performance.now();
-    const frame = { time: now, phase: document.querySelector('[data-shell-intro]')?.getAttribute('data-intro-phase') ?? 'done', animations: [] };
+    const frame = { time: now, phase: layer.isConnected ? layer.getAttribute('data-intro-phase') : 'done', pointer: pointerObservation(layer, owner), animations: [] };
     for (const animation of document.getAnimations()) {
       let names = [];
       if (typeof animation.transitionProperty === "string") names = [animation.transitionProperty];
@@ -1125,9 +1147,16 @@ export function installIntroProbe() {
       seen.add(layer);
       probe.plays += 1;
       if (probe.start === null) probe.start = document.timeline.currentTime;
+      // The real story intro receives this block as shellRef. Resolve only that owner;
+      // a document-global brand (for example the docs shell) is a different target.
+      const scope = layer.closest("[data-shell-hydrate]");
+      const shells = scope ? [...scope.querySelectorAll("[data-shell]")] : [];
+      const shell = shells.length === 1 ? shells[0] : null;
+      const landing = shell?.querySelector("[data-shell-brand] svg[data-logo]") ?? null;
+      const owner = { scope, shell, landing, control: landing?.closest("[data-shell-brand]") ?? null };
       const until = performance.now() + 3000;
       const tick = () => {
-        sample();
+        sample(layer, owner);
         if (performance.now() < until) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
@@ -1140,7 +1169,12 @@ const readIntroProbe = (page) => page.evaluate(() => {
   const probe = window.__tcrnShellIntroProbe;
   if (!probe) return { plays: null, properties: [], durationMs: null };
   const phases = ['fade','move','rise','done'].map((phase) => { const frames=probe.frames.filter((frame)=>frame.phase===phase); return {phase,firstFrameMs:frames[0]?.time??null,lastFrameMs:frames.at(-1)?.time??null,frameCount:frames.length}; });
-  return { plays: probe.plays, properties: probe.properties.slice(), durationMs: probe.start === null || probe.end === null ? null : Math.round(probe.end - probe.start), frames: probe.frames, animations: probe.animations, phaseWindows: phases, observation: 'unmodified browser animations and rAF paint tuples; frame boundaries remain quantized by the actual frame interval' };
+  const pointerPhases = phases.map(({ phase }) => {
+    const frames = probe.frames.filter((frame) => frame.phase === phase);
+    const observed = frames.filter((frame) => frame.pointer?.status === "observed");
+    return { phase, status: observed.length ? "observed" : "unverified", frameCount: frames.length, observedHitCount: observed.length, underlyingControlHitCount: observed.filter((frame) => frame.pointer.hitWithinUnderlyingControl === true).length, introHitCount: observed.filter((frame) => frame.pointer.hitWithinIntro === true).length };
+  });
+  return { plays: probe.plays, properties: probe.properties.slice(), durationMs: probe.start === null || probe.end === null ? null : Math.round(probe.end - probe.start), frames: probe.frames, animations: probe.animations, phaseWindows: phases, pointerPhases, observation: 'unmodified browser animations and rAF paint tuples with owning-target hit observations only; no pointer click delivery is measured; frame boundaries remain quantized by the actual frame interval' };
 });
 
 // intro on the real part: a fresh session plays once, a reload in the same session plays 0 times,
@@ -1166,7 +1200,7 @@ export async function probeShellIntro(browser, url, { viewport = STORY_RUN.viewp
     return { first, reload: await readIntroProbe(page) };
   });
   const reduced = await visit({ reducedMotion: "reduce" }, (page) => readIntroProbe(page));
-  const trace = { firstLoadPlays: session.first.plays, reloadPlays: session.reload.plays, reducedMotionPlays: reduced.plays, properties: session.first.properties, actualFrames: session.first.frames, actualAnimations: session.first.animations, phaseWindows: session.first.phaseWindows, reload: session.reload, reduced };
+  const trace = { firstLoadPlays: session.first.plays, reloadPlays: session.reload.plays, reducedMotionPlays: reduced.plays, properties: session.first.properties, actualFrames: session.first.frames, actualAnimations: session.first.animations, phaseWindows: session.first.phaseWindows, pointerPhases: session.first.pointerPhases, reload: session.reload, reduced };
   if (typeof session.first.durationMs === "number") trace.durationMs = session.first.durationMs;
   return trace;
 }

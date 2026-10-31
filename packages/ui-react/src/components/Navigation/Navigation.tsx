@@ -1310,7 +1310,7 @@ export function Breadcrumb({ items, label, locale }: BreadcrumbProps) {
  *
  * Every variant renders the same tab, `tcrn-tabs__tab` with its label in
  * `tcrn-tabs__label`, marks the chosen one with `data-selected="true"` and says so one
- * way: the 6% ink wash and the strong weight, nothing added on top. The old names stay
+ * way: the shared ink wash (day 6% / night 7%) and the strong weight, nothing added on top. The old names stay
  * exported as the family's variant exports, and their old root class stays on the root
  * through 4.0.x as a hook without rules.
  */
@@ -1755,6 +1755,7 @@ export function ProductShellSearch({
   ...props
 }: ProductShellSearchProps) {
   const resultsId = useId();
+  const emptyId = `${resultsId}-empty`;
   const rootRef = useRef<HTMLDivElement>(null);
   const isExpanded = expanded;
   const hasResults = results.length > 0;
@@ -1842,7 +1843,8 @@ export function ProductShellSearch({
         role="combobox"
         aria-label={resolvedLabel}
         aria-controls={resultsId}
-        aria-expanded={isExpanded ? "true" : "false"}
+        aria-expanded={isExpanded && hasResults ? "true" : "false"}
+        aria-describedby={[inputProps?.["aria-describedby"], isExpanded && !hasResults ? emptyId : undefined].filter(Boolean).join(" ") || undefined}
         aria-haspopup="listbox"
         aria-autocomplete="list"
         placeholder={resolvedPlaceholder}
@@ -1860,9 +1862,9 @@ export function ProductShellSearch({
         role="listbox"
         aria-label={resolvedResultsLabel}
         data-product-shell-search-results
-        hidden={!isExpanded}
+        hidden={!isExpanded || !hasResults}
       >
-        {hasResults ? results.map((result) => (
+        {results.map((result) => (
           <a key={result.id}
             className="tcrn-product-shell-search__result"
             href={result.href}
@@ -1878,11 +1880,18 @@ export function ProductShellSearch({
             <strong>{result.title}</strong>
             {result.meta ? <span>{result.meta}</span> : null}
           </a>
-        )) : (
-          // While the search is open and nothing matches, the empty line shows in place of the
-          // results; it is not hidden with them (TCRN-DS-SUB-154).
-          <span className="tcrn-product-shell-search__empty">{resolvedEmptyLabel}</span>
-        )}
+        ))}
+      </div>
+      <div
+        id={emptyId}
+        className="tcrn-product-shell-search__results"
+        role="status"
+        data-product-shell-search-empty
+        hidden={!isExpanded || hasResults}
+      >
+        {/* The visible no-match status is separate from the collapsed option popup. It is
+            descriptive text, never a selectable result (TCRN-DS-SUB-154). */}
+        <span className="tcrn-product-shell-search__empty">{resolvedEmptyLabel}</span>
       </div>
     </div>
   );

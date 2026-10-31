@@ -24,7 +24,7 @@
 // moment the page stands for sign-in succeeding.
 //
 // This module is imported on the server by story-content.tsx; nothing in it runs when it loads.
-import { memo, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
 import { flushSync } from "react-dom";
 import { hydrateRoot } from "react-dom/client";
 import {
@@ -479,7 +479,7 @@ function ShellStoryScreenView({ storyId, screen, locale = tcrnDefaultLocale, t =
   return (
     <>
       {framed}
-      {screen.intro && introScope ? <ShellIntro productId="tms" card={<ProductLockup productId="tms" />} locale={locale} shellRef={introScope} /> : null}
+      {screen.intro && introScope ? <ShellIntro productId="tms" card={<ProductLockup productId="tms" locale={locale} style={{ "--tcrn-brand-mark-size": "128px" } as CSSProperties} />} locale={locale} shellRef={introScope} /> : null}
     </>
   );
 }

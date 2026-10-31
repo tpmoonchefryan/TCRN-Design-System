@@ -749,7 +749,7 @@ export function ShellMenu({
             <span className="tcrn-shell-sheet__grab" aria-hidden="true" />
             {searchField}
             {searching ? null : (
-              <div className="tcrn-shell-sheet__list" data-shell-cols="">
+              <div className="tcrn-shell-sheet__list" data-shell-cols="" role="region" aria-label={landmarkName(copy.allNavigation)} tabIndex={0}>
                 {pinnedSheetRows.length > 0 ? (
                   <NavGroup
                     label={copy.pinnedItemsOf(pinnedSheetRows.length)}

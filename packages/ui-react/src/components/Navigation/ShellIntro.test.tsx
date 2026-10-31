@@ -101,7 +101,7 @@ test("the paper rises by the space-2h token while it comes in", () => {
   assert.deepEqual(paper.keyframes, [{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }]);
 });
 
-test("the segment places the layer and animates nothing; after the fade the pointer goes through", () => {
+test("the segment places the layer and animates nothing; the pointer goes through from the initial phase", () => {
   assert.doesNotMatch(shellIntroCss01, /transition|animation|@keyframes/, "only the Web Animations of the plan move anything");
   assert.doesNotMatch(shellIntroCss01, /opacity|filter|color|background/, "no fade, filter or colour of its own");
   const rule = (selector: string) => {
@@ -111,7 +111,7 @@ test("the segment places the layer and animates nothing; after the fade the poin
   };
   const layer = rule(".tcrn-shell-intro");
   assert.match(layer, /^ {2}position: fixed;\n {2}inset: 0;\n {2}z-index: var\(--tcrn-z-overlay\);/);
-  assert.match(layer, /\n {2}pointer-events: auto;/);
+  assert.match(layer, /\n {2}pointer-events: none;/);
   assert.equal(rule('.tcrn-shell-intro:where([data-intro-phase="move"], [data-intro-phase="rise"])').trim(), "pointer-events: none;");
   assert.match(rule(".tcrn-shell-intro__mark"), /^ {2}position: fixed;\n {2}margin: 0;\n {2}transform-origin: 0 0;/);
   assert.ok(rule(".tcrn-shell-intro__card"));

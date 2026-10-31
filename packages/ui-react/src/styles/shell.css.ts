@@ -1007,6 +1007,16 @@ export const shellCss05 = `
   outline-offset: 2px;
   box-shadow: var(--tcrn-pair-shell-edge-f);
 }
+/* The Sheet's scroll region stays reachable even when it has no navigation rows. Its
+   inset focus edge remains inside the scrolling box, including in a standalone Sheet. */
+.tcrn-shell-menu .tcrn-shell-sheet__list {
+  --tcrn-pair-edge-f: inset 0 0 0 var(--tcrn-space-0h) var(--tcrn-color-surface), inset 0 0 0 var(--tcrn-space-1) var(--tcrn-color-acc);
+}
+.tcrn-shell-menu .tcrn-shell-sheet__list:where(:focus-visible) {
+  box-shadow: var(--tcrn-pair-edge-f);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
 @media (prefers-reduced-motion: reduce) {
   .tcrn-shell-bell {
     transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
