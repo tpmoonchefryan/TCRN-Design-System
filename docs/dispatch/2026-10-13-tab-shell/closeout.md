@@ -1,3 +1,38 @@
+# TCRN-DS-INIT-016 当前本地交付记录（2026-11-01）
+
+B23/R27 的本地实现和机器验证已通过，候选 e5dd957bf1ec629e7bd9299f6eee9e82cd421c23 已快进合入本地 main；Owner 目视和外部发布仍保留。图钉名称的一项语义澄清已交 Owner，正式原生覆盖与工单收口按原阶段执行；当前工单状态以引擎读回为准。
+
+## 当前证据与边界
+
+| 项目 | 已取得的本地结果 | 仍保留的边界 |
+| --- | --- | --- |
+| B23 固定三门 | verify、storybook:build、test:dom 均退出0，DOM 65/65 | 正式 gates-run 在本地 main 按28工单覆盖执行，不能把 shell 命令冒充原生回执 |
+| 独立几何 | 原 geometry:measure 退出0，78/78 与45/45 | 不等于 Owner 目视 |
+| 浏览器 | 328截图，217 gated match，111 recorded-only，回归0、新基线0、axe0 | 37项基线变更与18项>40离群均待 Owner |
+| Inputs | 高1990px，预算2000px；重叠0；240 IDs 与44/28/10/116/42保留 | 不裁切、不缩放、不删除样片，不放宽预算 |
+| 原 Doc 外壳 | 1440/1024/390 的真实 owner；header52，paper 12/12/52/12、radius14、sidebar0 | 独立 Doc390 与内层 owner300 不混用；未宣称物理指针已投递 |
+| SUB243 | 精确37项，原19/后增16/新2；应用37、拒绝0 | 仅机械基线准入；37项目视均留空 |
+| Sites | 草稿与标准入口已替代 Claude artifacts | 当前源码、交付包不等于线上已原地替换或设计会话已读回 |
+| 原生记录 | B23版本19193的四条Subtask摘要是实施前范围采用，含旧的114/2/2/1读数 | 最终本地B23判断为117机证/1待澄清/1退役；Root原收口引用最终证据，保留旧回执 |
+
+参考入口：[设计标准站点](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site)、[草稿站点](https://tcrn-ds-visual-draft.honestfawn3.chatgpt.site)。完整目视列表在同目录 `owner-acceptance.md`，当前选择原因在 `docs/verification/internal-alpha/visual-baseline-selection-r6.json`，应用记录在同目录 `visual-selection-application.json`。
+
+## 已有裁定的适用
+
+- TCRN-DS-MIN-20261016-R6 D1/D8：本阶段按机器判据收28张Story，两个INIT保持active到Owner目视；STORY-150由实施会话按机器判据判定。原“13张第一批”计数以D1明确的12张及其实际编号集合为准，取消的129/130/134不重开。
+- TCRN-DS-MIN-20261030-D03-COLOR D1/D2：标按钮背景保留日3.5%／夜4%；136#3的≥4.5门槛不放宽。原136/137未分主题的3.5%文字按此已批准映射对齐，不另改夜间产品色。
+- TCRN-DS-MIN-20261013-SHELL D1及INIT016 D8：旧220/52侧栏几何由顶带壳替代；127#4保留历史原文并记录退役适用，不恢复侧栏，也不虚报旧布局实测通过。
+- TCRN-DS-MIN-20261016-R6 D7：Sheet“自底升起、最高84%”仅改正文、不改实现；当前opacity淡入保留供Owner目视。
+- 图钉的“可见名五语同源”与纯图标aria-label形式：待Owner当前集中澄清，不擅自添加新的显示形式或把可访问名等同于可见文字。
+
+## 交付停点
+
+目视清单的所有 `[ ]` 保持未勾选。Sites/成品板线上发布与设计会话读回、推送、tag、npm发布和部署均有各自停点，本地main合入与门通过不授予这些操作。
+
+## 历史收口（2026-10-14，仅留证）
+
+以下原文保留当时的候选、失败、计数与建议，已经被上面的当前结果及后续原生纪要取代；它不构成新的执行指令。旧登记路径、旧引擎版本、旧O项和签名数不代表当前状态。
+
 # TCRN-DS-INIT-016 收口（顶带壳第二批）
 
 INIT-016 的实施已经做完，停在推送之前：五轮返工后第六轮没有可做的返工，候选分支 `claude/init016-tab-shell` 只在本地；`corepack pnpm@10.12.1 run verify` 30 步还剩 2 步红，两步都只等 Owner 裁定（第 13 步 C8 → O-19，第 18 步 markText → O-4），`storybook:build` 退出 0。Owner 已在 Atelier 声明库门 `verify`，但 `gates-run` 在执行 verify 之前就被拒（本机设备登记的 DS 条目没有 projectId，O-21），所以本批 16 张与 INIT-015 的 12 张 Story 都还不能转 done。Owner 要做的事按先后列在第 3 节。

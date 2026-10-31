@@ -2,52 +2,52 @@
 
 本清单供 Owner 在交付后逐项目视，不由实施会话、子代理或机器门代签。8 块成品标准板各有一节；每个 `[ ]` 都留空，表示尚无 Owner 目视结论。机器门、Story 机器判据、Owner 目视、发布与部署状态分别记录。
 
-先看「门与 Story 状态」和「第六轮新增与变化的目视项」，再依次检查 Tokens、Typography、Icon、Brand、Actions、Inputs、Shell、Shell-2。第三至第五轮历史目视项完整保留在后文，按来源查找；第六轮签名离群表留给 S9 填写。
+先看「门与 Story 状态」和「第六轮新增与变化的目视项」，再依次检查 Tokens、Typography、Icon、Brand、Actions、Inputs、Shell、Shell-2。第三至第五轮历史目视项完整保留在后文，按来源查找；当前 37 项签名变更与 18 项离群见下文「当前 B23/R27 视觉清单」；后面的早期轮次均为历史。
 
 ## 门与 Story 状态
 
-批末状态目前未知，以下按交接契约记为 `待批末`；本包局部门退出码见 `runs/r6/handoff/S8.md`，不代替批末结果。
+B23/R27 已在候选 e5dd957bf1ec629e7bd9299f6eee9e82cd421c23 完成固定三门与独立验收；该候选已合入本地 main。下表记录本地机器结果；正式原生 gates-run 与工单转态由既定 Root 收口阶段处理，工单当前状态以引擎为准。Owner 目视尚未进行。
 
 | 批末门 | 状态 |
 | --- | --- |
-| `verify` | 待批末 |
-| `storybook:build` | 待批末 |
-| `test-dom` | 待批末（O-18 已按 MIN-20261016-GATES D1 纳入） |
+| `verify` | B23 退出 0 |
+| `storybook:build` | B23 退出 0 |
+| `test-dom` | B23 退出 0，65/65（O-18 按 MIN-20261016-GATES D1 纳入） |
 
 INIT-016 的 16 张 Story 与 INIT-015 的 12 张 Story：
 
-| Initiative | Story | 批末状态 |
+| Initiative | Story | 本地机器 / 原生边界 |
 | --- | --- | --- |
-| INIT-016 | STORY-135 | 待批末 |
-| INIT-016 | STORY-136 | 待批末 |
-| INIT-016 | STORY-137 | 待批末 |
-| INIT-016 | STORY-138 | 待批末 |
-| INIT-016 | STORY-139 | 待批末 |
-| INIT-016 | STORY-140 | 待批末 |
-| INIT-016 | STORY-141 | 待批末 |
-| INIT-016 | STORY-142 | 待批末 |
-| INIT-016 | STORY-143 | 待批末 |
-| INIT-016 | STORY-144 | 待批末 |
-| INIT-016 | STORY-145 | 待批末 |
-| INIT-016 | STORY-146 | 待批末 |
-| INIT-016 | STORY-147 | 待批末 |
-| INIT-016 | STORY-148 | 待批末 |
-| INIT-016 | STORY-149 | 待批末 |
-| INIT-016 | STORY-150 | 待批末 |
-| INIT-015 | STORY-120 | 待批末 |
-| INIT-015 | STORY-121 | 待批末 |
-| INIT-015 | STORY-122 | 待批末 |
-| INIT-015 | STORY-123 | 待批末 |
-| INIT-015 | STORY-124 | 待批末 |
-| INIT-015 | STORY-125 | 待批末 |
-| INIT-015 | STORY-126 | 待批末 |
-| INIT-015 | STORY-127 | 待批末 |
-| INIT-015 | STORY-128 | 待批末 |
-| INIT-015 | STORY-131 | 待批末 |
-| INIT-015 | STORY-132 | 待批末 |
-| INIT-015 | STORY-133 | 待批末 |
+| INIT-016 | STORY-135 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-136 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-137 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-138 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-139 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-140 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-141 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-142 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-143 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-144 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-145 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-146 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-147 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-148 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-149 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-016 | STORY-150 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-120 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-121 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-122 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-123 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-124 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-125 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-126 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-127 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-128 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-131 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-132 | 本地编号判据有证据；原生状态以引擎为准 |
+| INIT-015 | STORY-133 | 本地编号判据有证据；原生状态以引擎为准 |
 
-STORY-150 由实施会话按机器判据判定；Owner 在交付后目视，不从此处的 `待批末` 推测结果。
+STORY-150 由实施会话按机器判据判定；Owner 在交付后目视，其原生转态与 Owner 目视仍分别记录。
 
 ## 怎么看
 
@@ -59,6 +59,60 @@ STORY-150 由实施会话按机器判据判定；Owner 在交付后目视，不�
 ## 机器证据入口（历史路径）
 
 历史报告仍可在 `docs/verification/` 下按原交回查阅。S9 包内一次运行：build、storybook:build、browser-proof 均退出 1；隔离树缺依赖与构建产物，未获得当前 nonVisualProofOk，签名接受 0 条，基线不变。geometry:proof、几何报告、壳层报告、映射报告、contracts、doc-shell:proof、contract:static、tokens:proof、pack:smoke 均退出 1；contract:static 的 77 个测试通过后因 dist 缺失停止。壳层回执为 storybook_registry_missing，18 门未量；映射为 static_docs_missing，0/23 实测通过、23 条未测，不是视觉违规判定。hardening、scaffold:proof 均退出 0；hardening 读取历史回执（72 story、328 截图、axe 0），不代表本轮浏览器通过。逐门日志、字节与最终 scan 结果见 S9 handoff 的 scratch 入口。批末三门及 28 条 Story 状态仍见上表。
+
+## 当前 B23/R27 视觉清单
+
+当前实现与参考入口是 Sites 的[设计标准站点](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site)及[草稿站点](https://tcrn-ds-visual-draft.honestfawn3.chatgpt.site)，依据 TCRN-DS-MIN-20261029-SITES。草稿只供方向与历史比较；已批准的局部裁定和本仓当前契约一并对照。仓内板副本与 Sites 待发布交付物不是已完成的线上替换；线上发布及设计会话读回保持待办，不要求重新登录来完成本地实施。
+
+当前本地机器结果：328 张截图、217 个 gated 签名匹配、111 个 recorded-only；回归 0、新基线 0、axe 违规 0。Inputs 的 42 格与全部 240 个稳定 ID 保留，五家族格数 44/28/10/116/42；Inputs 高度 1990px，预算仍为 2000px，重叠读数 0。独立 Doc 外壳实测 header 52、paper 边距左/右/下 12 与顶 52、圆角 14，无常驻侧栏；独立原始 390px Doc 消费者有真实 40px 高标按钮，内嵌 mobile story 仍为 owner300，二者不混用。
+
+原条件式 SUB243 接纳下列精确 37 个来源已说明的变更：原 19 + 后增 16 + ShellIntro 新 2。选择文件 `docs/verification/internal-alpha/visual-baseline-selection-r6.json` 的 SHA256 为 acf5e68b1d684ff9096b96b1fc81f98af9b49fa0d21a670cc9a9c70c5e163560；应用 37、拒绝 0，后续证明回归/新基线均为 0。18 项 maxCell >40 在表中标出；分类 A 为文档、C 为壳 story、D 为矩阵。原因、源文件/提交与每项签名 hash 均在选择文件逐项保存。
+
+此处的签名应用只表示来源审查与机器基线更新。下列 37 项和全部历史目视项均未由 Owner 验收。距离是应用前的实测 meanAbsolute/maxCell，不是应用后的回归计数。
+
+| Story @ 视口 | K12 / 来源组 | mean / maxCell | >40 | 目视 |
+| --- | --- | --- | --- | --- |
+| `actions-matrix@desktop-1440x900` | D / 后增16 | 101.297 / 226 | 是 | [ ] |
+| `actions-matrix@mobile-390x844` | D / 后增16 | 12.418 / 73 | 是 | [ ] |
+| `actions-matrix@tablet-1024x768` | D / 后增16 | 100.129 / 226 | 是 | [ ] |
+| `brand-matrix@desktop-1440x900` | D / 后增16 | 6.73 / 49 | 是 | [ ] |
+| `brand-matrix@mobile-390x844` | D / 后增16 | 13.957 / 107 | 是 | [ ] |
+| `brand-matrix@tablet-1024x768` | D / 后增16 | 7.102 / 52 | 是 | [ ] |
+| `color-palette@desktop-1440x900` | A / 原19 | 1.488 / 12 | — | [ ] |
+| `color-palette@tablet-1024x768` | A / 原19 | 1.711 / 17 | — | [ ] |
+| `frontend-shell-slice@desktop-1440x900` | A / 原19 | 18.117 / 127 | 是 | [ ] |
+| `frontend-shell-slice@mobile-390x844` | A / 原19 | 10.348 / 79 | 是 | [ ] |
+| `frontend-shell-slice@tablet-1024x768` | A / 原19 | 15.012 / 142 | 是 | [ ] |
+| `icon-matrix@desktop-1440x900` | D / 后增16 | 6.5 / 33 | — | [ ] |
+| `icon-matrix@mobile-390x844` | D / 后增16 | 4.047 / 40 | — | [ ] |
+| `icon-matrix@tablet-1024x768` | D / 后增16 | 4.883 / 28 | — | [ ] |
+| `inputs-matrix@desktop-1440x900` | D / 后增16 | 8.703 / 141 | 是 | [ ] |
+| `inputs-matrix@mobile-390x844` | D / 后增16 | 4.398 / 19 | — | [ ] |
+| `inputs-matrix@tablet-1024x768` | D / 后增16 | 11.176 / 159 | 是 | [ ] |
+| `interaction-disclosure-spec@desktop-1440x900` | A / 后增16 | 0.258 / 15 | — | [ ] |
+| `interaction-disclosure-spec@tablet-1024x768` | A / 后增16 | 0.293 / 15 | — | [ ] |
+| `navigation-focused-shells-spec@desktop-1440x900` | A / 原19 | 0.645 / 15 | — | [ ] |
+| `navigation-product-shell-spec@desktop-1440x900` | A / 原19 | 0.215 / 15 | — | [ ] |
+| `navigation-product-shell-spec@tablet-1024x768` | A / 原19 | 0.887 / 15 | — | [ ] |
+| `owner-quality-product-shell@desktop-1440x900` | A / 原19 | 21.914 / 131 | 是 | [ ] |
+| `owner-quality-product-shell@mobile-390x844` | A / 原19 | 16.863 / 96 | 是 | [ ] |
+| `owner-quality-product-shell@tablet-1024x768` | A / 原19 | 22.254 / 143 | 是 | [ ] |
+| `shell-intro@desktop-1440x900` | C / 新2 | 0.43 / 11 | — | [ ] |
+| `shell-intro@mobile-390x844` | C / 新2 | 3.043 / 17 | — | [ ] |
+| `shell-intro@tablet-1024x768` | C / 原19 | 1.066 / 11 | — | [ ] |
+| `shell-narrow@desktop-1440x900` | C / 原19 | 1.188 / 16 | — | [ ] |
+| `shell-narrow@mobile-390x844` | C / 原19 | 0.633 / 10 | — | [ ] |
+| `shell-narrow@tablet-1024x768` | C / 原19 | 1.41 / 15 | — | [ ] |
+| `shell-top-band@desktop-1440x900` | C / 原19 | 54.047 / 229 | 是 | [ ] |
+| `shell-top-band@mobile-390x844` | C / 原19 | 52.352 / 228 | 是 | [ ] |
+| `shell-top-band@tablet-1024x768` | C / 原19 | 55.246 / 229 | 是 | [ ] |
+| `typography-matrix@desktop-1440x900` | D / 后增16 | 6.535 / 56 | 是 | [ ] |
+| `typography-matrix@mobile-390x844` | D / 原19 | 5.867 / 23 | — | [ ] |
+| `typography-matrix@tablet-1024x768` | D / 后增16 | 7.238 / 36 | — | [ ] |
+
+当前已采纳的局部口径也需目视核对：DS 日间标按钮 hover/open 后缀 #505fc1；有描边文本控件边框 ≥3.1，两个无边 SearchInput 不适用该边框项；Icon 使用选中洗色；八格 Brand 使用正式产品映射；Highlight 原始绝对差 ≤1/64 CSS px；选中 ShellPins 与 Tabs 为日6%／夜7%。标按钮 hover/open 的日3.5%／夜4% 由 D03 既有裁定保留；Sheet 的「自底升起」文字按 R6 D7 仅同步正文、维持实现，目视确认实际淡入效果。旧侧栏52px 条款随顶带壳替代，不恢复退役侧栏。
+
+图钉“可见名五语同源”的文字与当前纯图标 / aria-label 形式已集中交 Owner 澄清；确认前不代签这一完整目标。无关的 LineNumberedEditor invalid-focus 青色 outline 观察只进入范围外问题清单，不改写 STORY-126 的已验收范围。
 
 ## 第六轮新增与变化的目视项
 
@@ -381,7 +435,7 @@ B、C、D 类 40 条（不属 A 类，按 story 合并；视口写宽度）：
 
 第五轮没有重收：gated 视觉签名 217 条全部在容差内，`interaction-disclosure-spec` 三宽的签名距离都是 0 / 0，没有离群项要看。
 
-## 第六轮视觉签名离群
+## 第六轮早期视觉签名离群（历史）
 
 S9 本次没有接受签名。下表只转列 S7 历史回归中的 9 条 maxCell > 40 项；分类沿用第四轮同键 K12 分类，主题与语言沿 S7 记 unknown，不冒充 S9 新测。其余 7 条历史回归及 S2/S4 同键来源见 S9 交回与 scratch/signature-disposition.json。所有项留待批末判断。
 
