@@ -474,102 +474,108 @@ const projectOptions = [
 function InputsMatrix({ theme }: { theme: MatrixTheme }) {
   const cell = (id: string, probe?: Parameters<typeof cellAttributes>[3]) => cellAttributes("inputs", id, theme, probe);
   return (
-    <div className="tcrn-doc-display-primitive-grid">
-      <MatrixSection component="Input">
-        <StyleReferences>
-          <Input type="email" aria-label="Email" defaultValue="lin.xiao@example.com" />
-          <Input aria-label="Email" aria-invalid="true" readOnly defaultValue="lin.xiao@" />
-        </StyleReferences>
-        <MatrixRow label="placeholder"><Input aria-label="Project name" placeholder="Project name" {...cell("in-ph", "ph")} {...heightHook("md")} /></MatrixRow>
-        <MatrixRow label="default"><Input aria-label="Project name" defaultValue="Quarterly review" {...cell("in-text")} {...heightHook("md")} /></MatrixRow>
-        <MatrixRow label="focus"><Input aria-label="Project name" defaultValue="Quarterly review" {...previewState("focus")} {...cell("in-focus")} {...heightHook("md")} /></MatrixRow>
-        <MatrixRow label="read-only"><Input aria-label="Team" defaultValue="Design team" readOnly {...cell("in-ro")} {...heightHook("md")} /></MatrixRow>
-        <MatrixRow label="disabled"><Input aria-label="Team" defaultValue="Design team" disabled disabledReason={disabledFieldReason} {...cell("in-dis")} {...heightHook("md")} /></MatrixRow>
-        <MatrixRow label="error">
+    <div className="tcrn-doc-display-primitive-grid" style={{ alignItems: "start" }}>
+      {/* Independent specimen columns avoid stretching every short reference panel
+          to its tallest neighbour. Each public specimen keeps its own content and size. */}
+      <div className="tcrn-doc-form-stack">
+        <MatrixSection component="Input">
+          <StyleReferences>
+            <Input type="email" aria-label="Email" defaultValue="lin.xiao@example.com" />
+            <Input aria-label="Email" aria-invalid="true" readOnly defaultValue="lin.xiao@" />
+          </StyleReferences>
+          <MatrixRow label="placeholder"><Input aria-label="Project name" placeholder="Project name" {...cell("in-ph", "ph")} {...heightHook("md")} /></MatrixRow>
+          <MatrixRow label="default"><Input aria-label="Project name" defaultValue="Quarterly review" {...cell("in-text")} {...heightHook("md")} /></MatrixRow>
+          <MatrixRow label="focus"><Input aria-label="Project name" defaultValue="Quarterly review" {...previewState("focus")} {...cell("in-focus")} {...heightHook("md")} /></MatrixRow>
+          <MatrixRow label="read-only"><Input aria-label="Team" defaultValue="Design team" readOnly {...cell("in-ro")} {...heightHook("md")} /></MatrixRow>
+          <MatrixRow label="disabled"><Input aria-label="Team" defaultValue="Design team" disabled disabledReason={disabledFieldReason} {...cell("in-dis")} {...heightHook("md")} /></MatrixRow>
+          <MatrixRow label="error">
+            <StaticMarkup
+              id={`inputs-error-${theme}`}
+              element={(
+                <Field label="Email" error="Enter a complete email address">
+                  <Input defaultValue="lin.xiao@" aria-invalid="true" {...cell("in-err")} {...heightHook("md")} />
+                </Field>
+              )}
+              edits={[cellEdit('class="tcrn-field__error"', cell("err-msg"))]}
+            />
+          </MatrixRow>
+        </MatrixSection>
+        <MatrixSection component="SearchInput">
+          <StyleReferences>
+            {([false, "auto"] as const).flatMap((shortcut) => [false, true].map((expanded) => (
+              <ProductShellSearch key={`${shortcut}-${expanded}`} shortcut={shortcut} expanded={expanded} query="review" onQueryChange={() => undefined}
+                results={[{ id: `search-reference-${theme}`, title: "Quarterly review", href: "#inputs-matrix" }]} />
+            )))}
+            <SearchInput aria-label="Search" placeholder="Search" shortcut="auto" />
+          </StyleReferences>
+          <MatrixRow label="focus"><SearchInput aria-label="Search" defaultValue="design" {...previewState("focus")} {...cell("search-focus")} {...heightHook("md")} /></MatrixRow>
+          <MatrixRow label="placeholder"><SearchInput aria-label="Search" placeholder="Search" {...cell("search-ph", "ph")} {...heightHook("md")} /></MatrixRow>
+        </MatrixSection>
+        <MatrixSection component="SuggestInput">
+          <SuggestInput aria-label="Team" defaultValue="Design team" suggestions={["Design team", "Product team"]} {...heightHook("md")} />
+        </MatrixSection>
+        <MatrixSection component="NumberInput">
+          <NumberInput aria-label="Seats" defaultValue={12} min={1} max={120} {...cell("num")} {...heightHook("md")} />
+        </MatrixSection>
+        <MatrixSection component="DatePicker">
           <StaticMarkup
-            id={`inputs-error-${theme}`}
-            element={(
-              <Field label="Email" error="Enter a complete email address">
-                <Input defaultValue="lin.xiao@" aria-invalid="true" {...cell("in-err")} {...heightHook("md")} />
-              </Field>
-            )}
-            edits={[cellEdit('class="tcrn-field__error"', cell("err-msg"))]}
+            id={`inputs-date-${theme}`}
+            element={<DatePicker aria-label="Due date" defaultValue="2026-10-31" min="2026-10-01" {...cell("date")} {...heightHook("md")} />}
+            edits={[cellEdit("tcrn-date-picker-wrap__icon", cell("cal"))]}
           />
-        </MatrixRow>
-      </MatrixSection>
-      <MatrixSection component="Textarea">
-        <StyleReferences>
-          <Textarea aria-label="Notes" readOnly defaultValue="Quarterly review" />
-          <Textarea aria-label="Notes" disabled disabledReason={disabledFieldReason} defaultValue="Quarterly review" />
-          <LineNumberedEditor value={["const route = 'local';", "return route;"].join("\n")} readOnly findings={[{ line: 2, label: "Review return path", tone: "warning" }]} />
-        </StyleReferences>
-        <Textarea aria-label="Notes" defaultValue="Seats are billed monthly; annual plans are charged once per term." />
-      </MatrixSection>
-      <MatrixSection component="SearchInput">
-        <StyleReferences>
-          {([false, "auto"] as const).flatMap((shortcut) => [false, true].map((expanded) => (
-            <ProductShellSearch key={`${shortcut}-${expanded}`} shortcut={shortcut} expanded={expanded} query="review" onQueryChange={() => undefined}
-              results={[{ id: `search-reference-${theme}`, title: "Quarterly review", href: "#inputs-matrix" }]} />
-          )))}
-          <SearchInput aria-label="Search" placeholder="Search" shortcut="auto" />
-        </StyleReferences>
-        <MatrixRow label="focus"><SearchInput aria-label="Search" defaultValue="design" {...previewState("focus")} {...cell("search-focus")} {...heightHook("md")} /></MatrixRow>
-        <MatrixRow label="placeholder"><SearchInput aria-label="Search" placeholder="Search" {...cell("search-ph", "ph")} {...heightHook("md")} /></MatrixRow>
-      </MatrixSection>
-      <MatrixSection component="MultiSelect">
-        <StyleReferences><MultiSelect aria-label="Projects" presentation="dropdown" options={projectOptions} defaultValue={["review"]} /></StyleReferences>
-        {/* The open list is shown in place: MultiSelect has no open entry, and the page's static
-            bridge mounts every [data-choice-presentation=dropdown] root and moves an open list to
-            document.body, out of this theme block. Dropping that hook keeps the expanded list and
-            its selected option (opt-sel) inside the block. */}
-        <StaticMarkup
-          id={`inputs-multi-${theme}`}
-          block
-          element={<MultiSelect aria-label="Projects" aria-invalid={false} presentation="dropdown" defaultValue={["review", "launch"]} options={projectOptions} />}
-          edits={[
-            { marker: 'data-choice-presentation="dropdown"', remove: ["data-choice-presentation"] },
-            { marker: 'aria-haspopup="listbox"', set: { "aria-expanded": "true", ...heightHook("md") } },
-            { marker: 'role="listbox"', remove: ["hidden"] },
-            cellEdit('aria-selected="true"', cell("opt-sel"))
-          ]}
-        />
-      </MatrixSection>
-      <MatrixSection component="SuggestInput">
-        <SuggestInput aria-label="Team" defaultValue="Design team" suggestions={["Design team", "Product team"]} {...heightHook("md")} />
-      </MatrixSection>
-      <MatrixSection component="Select">
-        <StyleReferences><Select aria-label="Project" disabled disabledReason={disabledFieldReason} options={projectOptions} /></StyleReferences>
-        <StaticMarkup
-          id={`inputs-select-${theme}`}
-          element={<Select aria-label="Project" defaultValue="review" options={projectOptions} {...heightHook("md")} />}
-          edits={[cellEdit("tcrn-select-wrap__icon", cell("chev"))]}
-        />
-      </MatrixSection>
-      <MatrixSection component="NumberInput">
-        <NumberInput aria-label="Seats" defaultValue={12} min={1} max={120} {...cell("num")} {...heightHook("md")} />
-      </MatrixSection>
-      <MatrixSection component="DatePicker">
-        <StaticMarkup
-          id={`inputs-date-${theme}`}
-          element={<DatePicker aria-label="Due date" defaultValue="2026-10-31" min="2026-10-01" {...cell("date")} {...heightHook("md")} />}
-          edits={[cellEdit("tcrn-date-picker-wrap__icon", cell("cal"))]}
-        />
-      </MatrixSection>
-      <MatrixSection component="Checkbox">
-        <StyleReferences><Checkbox aria-label="Weekly digest" disabled disabledReason={disabledFieldReason} /></StyleReferences>
-        <MatrixRow label="state">
-          <Checkbox aria-label="Weekly digest" {...cell("ck-edge", "shadow")} />
-          <Checkbox aria-label="Weekly digest" defaultChecked {...cell("ck-on", "after-border")} />
-          <Checkbox aria-label="Weekly digest" defaultChecked disabled disabledReason={disabledFieldReason} {...cell("ck-dis", "after-border")} />
-        </MatrixRow>
-      </MatrixSection>
-      <MatrixSection component="Switch">
-        <StyleReferences><Switch label="Email notifications" description="Quarterly review" /></StyleReferences>
-        <MatrixRow label="state">
-          <Switch label="Email notifications" {...cell("sw-edge", "shadow")} />
-          <Switch label="Weekly digest" defaultChecked {...cell("sw-on", "before-bg")} />
-        </MatrixRow>
-      </MatrixSection>
+        </MatrixSection>
+      </div>
+      <div className="tcrn-doc-form-stack">
+        <MatrixSection component="Textarea">
+          <StyleReferences>
+            <Textarea aria-label="Notes" readOnly defaultValue="Quarterly review" />
+            <Textarea aria-label="Notes" disabled disabledReason={disabledFieldReason} defaultValue="Quarterly review" />
+            <LineNumberedEditor value={["const route = 'local';", "return route;"].join("\n")} readOnly findings={[{ line: 2, label: "Review return path", tone: "warning" }]} />
+          </StyleReferences>
+          <Textarea aria-label="Notes" defaultValue="Seats are billed monthly; annual plans are charged once per term." />
+        </MatrixSection>
+        <MatrixSection component="MultiSelect">
+          <StyleReferences><MultiSelect aria-label="Projects" presentation="dropdown" options={projectOptions} defaultValue={["review"]} /></StyleReferences>
+          {/* The open list is shown in place: MultiSelect has no open entry, and the page's static
+              bridge mounts every [data-choice-presentation=dropdown] root and moves an open list to
+              document.body, out of this theme block. Dropping that hook keeps the expanded list and
+              its selected option (opt-sel) inside the block. */}
+          <StaticMarkup
+            id={`inputs-multi-${theme}`}
+            block
+            element={<MultiSelect aria-label="Projects" aria-invalid={false} presentation="dropdown" defaultValue={["review", "launch"]} options={projectOptions} />}
+            edits={[
+              { marker: 'data-choice-presentation="dropdown"', remove: ["data-choice-presentation"] },
+              { marker: 'aria-haspopup="listbox"', set: { "aria-expanded": "true", ...heightHook("md") } },
+              { marker: 'role="listbox"', remove: ["hidden"] },
+              cellEdit('aria-selected="true"', cell("opt-sel"))
+            ]}
+          />
+        </MatrixSection>
+        <MatrixSection component="Select">
+          <StyleReferences><Select aria-label="Project" disabled disabledReason={disabledFieldReason} options={projectOptions} /></StyleReferences>
+          <StaticMarkup
+            id={`inputs-select-${theme}`}
+            element={<Select aria-label="Project" defaultValue="review" options={projectOptions} {...heightHook("md")} />}
+            edits={[cellEdit("tcrn-select-wrap__icon", cell("chev"))]}
+          />
+        </MatrixSection>
+        <MatrixSection component="Checkbox">
+          <StyleReferences><Checkbox aria-label="Weekly digest" disabled disabledReason={disabledFieldReason} /></StyleReferences>
+          <MatrixRow label="state">
+            <Checkbox aria-label="Weekly digest" {...cell("ck-edge", "shadow")} />
+            <Checkbox aria-label="Weekly digest" defaultChecked {...cell("ck-on", "after-border")} />
+            <Checkbox aria-label="Weekly digest" defaultChecked disabled disabledReason={disabledFieldReason} {...cell("ck-dis", "after-border")} />
+          </MatrixRow>
+        </MatrixSection>
+        <MatrixSection component="Switch">
+          <StyleReferences><Switch label="Email notifications" description="Quarterly review" /></StyleReferences>
+          <MatrixRow label="state">
+            <Switch label="Email notifications" {...cell("sw-edge", "shadow")} />
+            <Switch label="Weekly digest" defaultChecked {...cell("sw-on", "before-bg")} />
+          </MatrixRow>
+        </MatrixSection>
+      </div>
       {/* The unchanged measured option minima need the full reference track. */}
       <div className="tcrn-doc-static-section" style={{ gridColumn: "1 / -1" }}>
         <MatrixSection component="RadioGroup">
@@ -598,10 +604,11 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
       {/* These public owners supply the distinct search roles (drop-down 28,
           full menu 40, Sheet 44). Keep their package controls and states intact;
           the containing frames only place the previews within the matrix. Their
-          bases leave room for each search minimum and the full menu footer;
-          a narrower reference track wraps whole previews instead of clipping them. */}
+          bases leave room for each search minimum and the full menu footer. The
+          in-flow previews grow to their content before the next flex line begins;
+          only the fixed Sheet keeps a definite containing frame. */}
       <div className="tcrn-doc-static-section" data-gplus-style-reference="" style={{ gridColumn: "1 / -1", display: "flex", flexWrap: "wrap", gap: 12 }}>
-        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "1 0 108px" }}>
+        <div style={{ position: "relative", contain: "layout", minBlockSize: 132, flex: "1 0 108px" }}>
           <StaticMarkup
             id={`search-dropdown-reference-${theme}`}
             block
@@ -611,12 +618,12 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
             edits={[{ marker: 'data-shell-dropdown=""', set: { style: "position:relative;top:auto;left:auto;inline-size:100%;grid-template-columns:minmax(0,1fr);visibility:visible" } }]}
           />
         </div>
-        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "2 0 218px" }}>
+        <div style={{ position: "relative", contain: "layout", minBlockSize: 132, flex: "2 0 218px" }}>
           <ShellMenu open productId="design-system" shortcut={false} presentation="panel" query="review" groups={[]} landmarkLabel={`Expanded search reference ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />
         </div>
         {/* A populated menu keeps its actual 40px owner and expanded combobox state;
             the empty menu above deliberately has aria-expanded=false. */}
-        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "2 0 218px" }}>
+        <div style={{ position: "relative", contain: "layout", minBlockSize: 132, flex: "2 0 218px" }}>
           <ShellMenu open productId="design-system" shortcut={false} presentation="panel" query="review" groups={[{ id: `search-reference-${theme}`, label: "Members", items: [{ id: `search-review-${theme}`, label: "Quarterly review", href: "#inputs-matrix" }] }]} landmarkLabel={`Search references ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />
         </div>
         <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "1 0 116px" }}>

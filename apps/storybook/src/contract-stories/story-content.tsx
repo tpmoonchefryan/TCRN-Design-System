@@ -652,8 +652,8 @@ const shellProofFillStyle: CSSProperties = { blockSize: "100%" };
 function ShellIntroStory() {
   const timeline = shellIntroTimeline();
   return (
-    <section className="alpha-story-stack" data-shell-story="shell-intro">
-      <ShellStoryBlock storyId="shell-intro" screen={shellIntroScreen} contained={false} />
+    <section className="alpha-story-stack" data-shell-story="shell-intro" style={{ overflowX: "auto" }}>
+      <ShellStoryBlock storyId="shell-intro" screen={shellIntroScreen} width={1240} contained={false} />
       <ReadbackPanel title="Sign-in intro">
         <Text>When sign-in succeeds, the card fades, the product mark travels into the brand button and the paper rises: once per session, and never under reduced motion.</Text>
         <TableShell
