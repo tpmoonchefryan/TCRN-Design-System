@@ -187,7 +187,14 @@ export function collectSamplesInPage({ regionSelector, scopeSelector, roots, hei
       let ancestor = el.parentElement;
       while (ancestor && ancestor !== scopeRoot && !firstBatchClasses(ancestor).length) ancestor = ancestor.parentElement;
       const parentSignature = ancestor && ancestor !== scopeRoot ? ownSignature(ancestor) : "";
-      const signature = parentSignature ? `${parentSignature} > ${ownSignature(el)}` : ownSignature(el);
+      const componentSignature = parentSignature ? `${parentSignature} > ${ownSignature(el)}` : ownSignature(el);
+      // SearchInput has three public owning roles whose package CSS deliberately
+      // sets different heights. Its nearest first-batch ancestor is the same span
+      // in each, so retain the actual owning panel in the key instead of allowing
+      // a generic search or a different menu presentation to supply its reference.
+      const searchOwner = el.closest(".tcrn-search-input")?.closest(".tcrn-shell-dropdown__panel, .tcrn-shell-sheet__panel, .tcrn-shell-menu__panel");
+      const searchOwnerClass = searchOwner && ["tcrn-shell-dropdown__panel", "tcrn-shell-sheet__panel", "tcrn-shell-menu__panel"].find((name) => searchOwner.classList.contains(name));
+      const signature = searchOwnerClass ? `${searchOwner.tagName.toLowerCase()}.${searchOwnerClass} >> ${componentSignature}` : componentSignature;
       const styles = readStyles(el, classes);
       const text = (el.textContent || el.getAttribute("aria-label") || "").replace(/\s+/g, " ").trim().slice(0, 40);
       const path = [];

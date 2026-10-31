@@ -100,6 +100,34 @@ test("a documentation-layer override is told apart from the package rendering", 
   assert.equal(compareSample({ styles: reread[0].withoutDoc }, [{ styles: samples[1].styles }]).status, "match");
 });
 
+test("SearchInput references retain the owning drop-down, full-menu or Sheet role and raw height", async () => {
+  const search = '<span class="tcrn-search-input"><input type="search" aria-expanded="false" class="tcrn-input tcrn-search-input__control"></span>';
+  const { samples, reread } = await collect(page(`
+    <style data-tcrn-component-style-source="search-owners">
+      .tcrn-search-input__control { height:32px; padding:0; border:0; }
+      .tcrn-shell-dropdown__panel .tcrn-search-input__control { height:28px; }
+      .tcrn-shell-menu__panel .tcrn-search-input__control { height:40px; }
+      .tcrn-shell-sheet__panel .tcrn-search-input__control { height:44px; }
+    </style>
+    ${search}
+    <section class="tcrn-shell-dropdown__panel">${search}</section>
+    <section class="tcrn-shell-menu__panel">${search}</section>
+    <section class="tcrn-shell-sheet__panel">${search}</section>
+    <section class="tcrn-shell-sheet__panel"><span class="tcrn-search-input"><input type="search" aria-expanded="false" class="tcrn-input tcrn-search-input__control" style="height:40px"></span></section>
+  `), { reread: [9] });
+  const controls = samples.filter((sample) => sample.classes.includes("tcrn-search-input__control"));
+  assert.deepEqual(controls.map((sample) => sample.styles.height), ["32px", "28px", "40px", "44px", "40px"]);
+  assert.equal(new Set(controls.slice(0, 4).map((sample) => sample.signature)).size, 4, "generic and all three owning roles stay distinct");
+  assert.ok(controls[1].signature.startsWith("section.tcrn-shell-dropdown__panel >> "));
+  assert.ok(controls[2].signature.startsWith("section.tcrn-shell-menu__panel >> "));
+  assert.ok(controls[3].signature.startsWith("section.tcrn-shell-sheet__panel >> "));
+  assert.equal(controls[4].signature, controls[3].signature, "an inline override cannot change the owning role");
+  const mismatch = compareSample(controls[4], [controls[3]]);
+  assert.deepEqual(mismatch.diffs, [{ property: "height", story: "40px", matrix: "44px" }]);
+  assert.equal(classifySampleMismatch(mismatch.diffs, [controls[3]], reread[0]).cause, "story-inline-style");
+  assert.equal(reread[0].withoutInline.height, "44px", "removing the override restores the genuine Sheet value");
+});
+
 test("a container-hidden icon cannot turn an observed height mismatch into an inline-style match", async () => {
   const tab = await browser.newPage();
   try {

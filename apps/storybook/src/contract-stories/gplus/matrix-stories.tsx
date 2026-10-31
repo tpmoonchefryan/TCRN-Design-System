@@ -595,6 +595,27 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
           />
         </MatrixSection>
       </div>
+      {/* These public owners supply the distinct search roles (drop-down 28,
+          full menu 40, Sheet 44). Keep their package controls and states intact;
+          the containing frames only place the previews within the matrix. */}
+      <div className="tcrn-doc-static-section" data-gplus-style-reference="" style={{ gridColumn: "1 / -1", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 140px), 1fr))", gap: 12 }}>
+        <div style={{ position: "relative", contain: "layout", blockSize: 132 }}>
+          <StaticMarkup
+            id={`search-dropdown-reference-${theme}`}
+            block
+            element={<ShellDropdown id={`search-dropdown-dialog-${theme}`} open source={{ id: `search-dropdown-source-${theme}`, label: "Members", items: [] }} landmarkLabel={`Search references ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />}
+            // The SSR preview has no client trigger rectangle; reveal the actual
+            // public drop-down markup without changing its search or its styles.
+            edits={[{ marker: 'data-shell-dropdown=""', set: { style: "position:relative;top:auto;left:auto;inline-size:100%;grid-template-columns:minmax(0,1fr);visibility:visible" } }]}
+          />
+        </div>
+        <div style={{ position: "relative", contain: "layout", blockSize: 132 }}>
+          <ShellMenu open productId="design-system" shortcut={false} presentation="panel" query="review" groups={[]} landmarkLabel={`Expanded search reference ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />
+        </div>
+        <div style={{ position: "relative", contain: "layout", blockSize: 132 }}>
+          <ShellMenu open productId="design-system" shortcut={false} presentation="sheet" groups={[]} landmarkLabel={`Sheet search reference ${theme}`} />
+        </div>
+      </div>
     </div>
   );
 }
