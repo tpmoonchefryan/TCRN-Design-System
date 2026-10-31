@@ -223,6 +223,12 @@ export const brandCss02 = `
 .tcrn-product-shell .tcrn-product-logo__byline,
 .tcrn-shell-brand-lockup[data-lockup="lkr"] .tcrn-product-logo__byline {
   display: none;
+}
+/* The registered DS menu lockup keeps its first line in one inline flow at the rail tier.
+   The larger stacked-suffix renditions retain their two-line arrangement. */
+.tcrn-shell-menu__lockup[data-lockup="lkr"][data-product-id="design-system"] .tcrn-product-logo__line-one {
+  display: block;
+  white-space: nowrap;
 }`;
 
 export const brandCss04 = `

@@ -5,9 +5,9 @@
 // Nothing here transitions or animates: ShellIntro moves its parts with the Web Animations API, on
 // transform and opacity only, for the durations of the motion intro tokens. These rules only
 // place the layer and its parts. The layer covers the viewport above the shell (--tcrn-z-overlay)
-// and centres the card; during the fade it takes the pointer, after it the pointer goes through
-// to the shell (the phase rule is a :where() rule at the specificity of the base class and writes
-// no colour). The flying mark is placed in the viewport on the mark of the card's lockup and
+// and centres the decorative card; the pointer goes through to the shell from the first phase.
+// The phase rule keeps that pass-through explicit and writes no colour. The flying mark is
+// placed in the viewport on the mark of the card's lockup and
 // scales from its top left corner; nothing here fades or filters it, so it keeps its colour from
 // start to end. A backtick ends a segment early, so the comments in it never use one
 // (scripts/css-template-integrity-proof.mjs checks every segment).
@@ -18,7 +18,7 @@ export const shellIntroCss01 = `
   z-index: var(--tcrn-z-overlay);
   display: grid;
   place-items: center;
-  pointer-events: auto;
+  pointer-events: none;
 }
 .tcrn-shell-intro:where([data-intro-phase="move"], [data-intro-phase="rise"]) {
   pointer-events: none;

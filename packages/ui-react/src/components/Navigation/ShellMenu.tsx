@@ -833,7 +833,7 @@ export function ShellMenu({
         )}
         <div className="tcrn-shell-menu__pbar" data-shell-pbar="">
           <nav className="tcrn-shell-menu__crumbs" aria-label={landmarkName(copy.currentPosition)}>
-            <span className="tcrn-shell-menu__crumbs-label" aria-hidden="true">
+            <span className="tcrn-shell-menu__crumbs-label" aria-hidden="true" title={copy.currentPosition}>
               {copy.currentPosition}
             </span>
             {currentPath.map((crumb, index) => (

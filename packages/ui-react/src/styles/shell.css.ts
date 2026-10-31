@@ -625,8 +625,12 @@ export const shellCss03 = `
   white-space: nowrap;
 }
 .tcrn-shell-menu__crumbs-label {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  overflow: hidden;
   color: var(--tcrn-color-ink-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .tcrn-shell-menu__crumb {
   min-inline-size: 0;

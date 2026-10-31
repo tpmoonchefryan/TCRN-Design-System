@@ -597,9 +597,11 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
       </div>
       {/* These public owners supply the distinct search roles (drop-down 28,
           full menu 40, Sheet 44). Keep their package controls and states intact;
-          the containing frames only place the previews within the matrix. */}
-      <div className="tcrn-doc-static-section" data-gplus-style-reference="" style={{ gridColumn: "1 / -1", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 140px), 1fr))", gap: 12 }}>
-        <div style={{ position: "relative", contain: "layout", blockSize: 132 }}>
+          the containing frames only place the previews within the matrix. Their
+          bases leave room for each search minimum and the full menu footer;
+          a narrower reference track wraps whole previews instead of clipping them. */}
+      <div className="tcrn-doc-static-section" data-gplus-style-reference="" style={{ gridColumn: "1 / -1", display: "flex", flexWrap: "wrap", gap: 12 }}>
+        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "1 0 108px" }}>
           <StaticMarkup
             id={`search-dropdown-reference-${theme}`}
             block
@@ -609,10 +611,10 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
             edits={[{ marker: 'data-shell-dropdown=""', set: { style: "position:relative;top:auto;left:auto;inline-size:100%;grid-template-columns:minmax(0,1fr);visibility:visible" } }]}
           />
         </div>
-        <div style={{ position: "relative", contain: "layout", blockSize: 132 }}>
+        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "2 0 218px" }}>
           <ShellMenu open productId="design-system" shortcut={false} presentation="panel" query="review" groups={[]} landmarkLabel={`Expanded search reference ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />
         </div>
-        <div style={{ position: "relative", contain: "layout", blockSize: 132 }}>
+        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "1 0 116px" }}>
           <ShellMenu open productId="design-system" shortcut={false} presentation="sheet" groups={[]} landmarkLabel={`Sheet search reference ${theme}`} />
         </div>
       </div>

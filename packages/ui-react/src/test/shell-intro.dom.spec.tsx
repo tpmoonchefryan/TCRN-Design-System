@@ -13,6 +13,7 @@ import { hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { ProductLockup, ShellBrandButton, ShellIntro, shellIntroSessionMarker, type TcrnProductMarkId } from "../index.js";
 import { tcrnProductMarks } from "../components/Navigation/product-marks.generated.js";
+import { shellIntroCss01 } from "../styles/shell-intro.css.js";
 import { createDomInteractionHarness, type DomInteractionHarness } from "./dom-harness.js";
 
 interface AnimateCall {
@@ -319,12 +320,19 @@ test("input is not held up: the card is inert, the layer hidden, the brand butto
   instrument(harness);
   mock.timers.enable({ apis: ["setTimeout"] });
   try {
+    // jsdom can read the real layer CSS and phases, but has no physical pointer hit-testing.
+    // Programmatic focus below remains keyboard evidence only.
+    const style = harness.document.createElement("style");
+    style.textContent = shellIntroCss01;
+    harness.document.head.append(style);
     for (const [locale, text] of Object.entries(expected)) {
       harness.window.sessionStorage.clear();
       await harness.render(<div />);
       await harness.render(<Shell key={locale} locale={locale} />);
       const layer = harness.document.querySelector("[data-shell-intro]");
       assert.ok(layer, `${locale}: the layer is up`);
+      assert.equal(layer.getAttribute("data-intro-phase"), "fade");
+      assert.equal(harness.window.getComputedStyle(layer).pointerEvents, "none", "the initial decorative layer passes the pointer through");
       assert.equal(layer.getAttribute("aria-hidden"), "true", "the layer is decoration");
       assert.equal(layer.querySelector(".tcrn-shell-intro__card")?.hasAttribute("inert"), true, "the card takes no focus and no press");
       assert.equal(layer.querySelectorAll("a, button, input, [tabindex]").length > 0, true, "the card is the reader's own, form and all");
@@ -337,9 +345,16 @@ test("input is not held up: the card is inert, the layer hidden, the brand butto
       await act(async () => {
         mock.timers.tick(120);
       });
+      assert.equal(layer.getAttribute("data-intro-phase"), "move");
+      assert.equal(harness.window.getComputedStyle(layer).pointerEvents, "none", "the moving layer keeps pointer pass-through");
       assert.equal(harness.document.querySelector("[role='status']")?.textContent, text, `${locale}: the status says it`);
       await act(async () => {
-        mock.timers.tick(340);
+        mock.timers.tick(240);
+      });
+      assert.equal(layer.getAttribute("data-intro-phase"), "rise");
+      assert.equal(harness.window.getComputedStyle(layer).pointerEvents, "none", "the rising layer keeps pointer pass-through");
+      await act(async () => {
+        mock.timers.tick(100);
       });
       assert.equal(harness.document.querySelector("[data-shell-intro]"), null);
     }
