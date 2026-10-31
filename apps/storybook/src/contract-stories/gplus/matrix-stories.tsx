@@ -516,17 +516,6 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         <MatrixRow label="focus"><SearchInput aria-label="Search" defaultValue="design" {...previewState("focus")} {...cell("search-focus")} {...heightHook("md")} /></MatrixRow>
         <MatrixRow label="placeholder"><SearchInput aria-label="Search" placeholder="Search" {...cell("search-ph", "ph")} {...heightHook("md")} /></MatrixRow>
       </MatrixSection>
-      <MatrixSection component="SuggestInput">
-        <SuggestInput aria-label="Team" defaultValue="Design team" suggestions={["Design team", "Product team"]} {...heightHook("md")} />
-      </MatrixSection>
-      <MatrixSection component="Select">
-        <StyleReferences><Select aria-label="Project" disabled disabledReason={disabledFieldReason} options={projectOptions} /></StyleReferences>
-        <StaticMarkup
-          id={`inputs-select-${theme}`}
-          element={<Select aria-label="Project" defaultValue="review" options={projectOptions} {...heightHook("md")} />}
-          edits={[cellEdit("tcrn-select-wrap__icon", cell("chev"))]}
-        />
-      </MatrixSection>
       <MatrixSection component="MultiSelect">
         <StyleReferences><MultiSelect aria-label="Projects" presentation="dropdown" options={projectOptions} defaultValue={["review"]} /></StyleReferences>
         {/* The open list is shown in place: MultiSelect has no open entry, and the page's static
@@ -543,6 +532,17 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
             { marker: 'role="listbox"', remove: ["hidden"] },
             cellEdit('aria-selected="true"', cell("opt-sel"))
           ]}
+        />
+      </MatrixSection>
+      <MatrixSection component="SuggestInput">
+        <SuggestInput aria-label="Team" defaultValue="Design team" suggestions={["Design team", "Product team"]} {...heightHook("md")} />
+      </MatrixSection>
+      <MatrixSection component="Select">
+        <StyleReferences><Select aria-label="Project" disabled disabledReason={disabledFieldReason} options={projectOptions} /></StyleReferences>
+        <StaticMarkup
+          id={`inputs-select-${theme}`}
+          element={<Select aria-label="Project" defaultValue="review" options={projectOptions} {...heightHook("md")} />}
+          edits={[cellEdit("tcrn-select-wrap__icon", cell("chev"))]}
         />
       </MatrixSection>
       <MatrixSection component="NumberInput">
@@ -563,28 +563,6 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
           <Checkbox aria-label="Weekly digest" defaultChecked disabled disabledReason={disabledFieldReason} {...cell("ck-dis", "after-border")} />
         </MatrixRow>
       </MatrixSection>
-      <MatrixSection component="RadioGroup">
-        <StyleReferences>
-          <SettingChoice label="Billing cycle" name={`reference-choice-${theme}`} availableInlineSize={420} defaultValue="monthly"
-            options={[{ value: "monthly", label: "Monthly", description: "Quarterly review", minInlineSize: 140 }, { value: "annual", label: "Annual", description: "Quarterly review", minInlineSize: 140 }]} />
-        </StyleReferences>
-        <StaticMarkup
-          id={`inputs-radio-${theme}`}
-          block
-          element={(
-            <RadioGroup
-              legend="Billing cycle"
-              name={`gplus-billing-cycle-${theme}`}
-              defaultValue="monthly"
-              options={[
-                { value: "monthly", label: "Monthly" },
-                { value: "annual", label: "Annual" }
-              ]}
-            />
-          )}
-          edits={[cellEdit('type="radio"', cell("rd-on", "after-shadow"), 0), cellEdit('type="radio"', cell("rd-edge", "shadow"), 1)]}
-        />
-      </MatrixSection>
       <MatrixSection component="Switch">
         <StyleReferences><Switch label="Email notifications" description="Quarterly review" /></StyleReferences>
         <MatrixRow label="state">
@@ -592,6 +570,31 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
           <Switch label="Weekly digest" defaultChecked {...cell("sw-on", "before-bg")} />
         </MatrixRow>
       </MatrixSection>
+      {/* The unchanged measured option minima need the full reference track. */}
+      <div className="tcrn-doc-static-section" style={{ gridColumn: "1 / -1" }}>
+        <MatrixSection component="RadioGroup">
+          <StyleReferences>
+            <SettingChoice label="Billing cycle" name={`reference-choice-${theme}`} availableInlineSize={420} defaultValue="monthly"
+              options={[{ value: "monthly", label: "Monthly", description: "Quarterly review", minInlineSize: 140 }, { value: "annual", label: "Annual", description: "Quarterly review", minInlineSize: 140 }]} />
+          </StyleReferences>
+          <StaticMarkup
+            id={`inputs-radio-${theme}`}
+            block
+            element={(
+              <RadioGroup
+                legend="Billing cycle"
+                name={`gplus-billing-cycle-${theme}`}
+                defaultValue="monthly"
+                options={[
+                  { value: "monthly", label: "Monthly" },
+                  { value: "annual", label: "Annual" }
+                ]}
+              />
+            )}
+            edits={[cellEdit('type="radio"', cell("rd-on", "after-shadow"), 0), cellEdit('type="radio"', cell("rd-edge", "shadow"), 1)]}
+          />
+        </MatrixSection>
+      </div>
     </div>
   );
 }
