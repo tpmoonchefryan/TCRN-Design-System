@@ -2816,6 +2816,7 @@ test("STORY-140 STORY-147 STORY-143 landmarkLabel names every landmark of a shel
     "banner Talent shell controls",
     "navigation Pinned items",
     "dialog Navigation",
+    "region All",
     "region Product shell workspace",
     "navigation Breadcrumbs"
   ]);

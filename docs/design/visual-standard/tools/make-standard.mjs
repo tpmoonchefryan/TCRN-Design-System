@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import { T, cr, fmt, hex, over, parseColor } from "../../gplus-2026-10/tools/lib.mjs";
+import { SAMPLE_CSS, screen } from "../../gplus-2026-10/tools/shell-screen.mjs";
 const SRC = fileURLToPath(new URL("../../gplus-2026-10/boards/", import.meta.url));
 const OUT = fileURLToPath(new URL("../boards/", import.meta.url));
 const heights = process.argv[2] ? JSON.parse(fs.readFileSync(process.argv[2], "utf8")) : {};
@@ -99,6 +100,12 @@ m = m.replace(/<section class="pane gp(?: night)?"[\s\S]*?<\/section>/g, (pane) 
   return pane.slice(0, e) + section;
 });
 if (paneIndex !== 2) throw new Error("Brand needs the two original theme panes");
+// Brand owns the same approved top-band product sample as the other finished boards.
+// Sample screens are compositions, not additional matrix cells.
+const brandSamples = `<div class="sec"><h3><b>D</b>组合样板 · 顶带壳 <span>同 Shell 07a / 07b 的通用名册页；顶带 52，纸离边 12，圆角 14</span></h3><div class="screens gp">${[false, true].map((night) => screen({ id: `br-${night ? "n" : "l"}`, night, state: "closed", demo: false })).join("")}</div></div>`
+  .replace(/ data-cell="[^"]*" data-kind="[^"]*" data-expect="[^"]*"/g, "");
+m = must(m, "</style>", `${SAMPLE_CSS}</style>`, "Brand sample CSS");
+m = must(m, '<div class="sec"><h3><b>F</b>构法', `${brandSamples}\n<div class="sec"><h3><b>F</b>构法`, "Brand sample");
 m = setHeight(m, "Brand");
 fs.writeFileSync(OUT + "Brand.dc.html", m); console.log("wrote Brand (product marks)", m.length);
 for (const stale of ["ProductMarks.dc.html"]) if (fs.existsSync(OUT + stale)) { fs.renameSync(OUT + stale, OUT + "../" + stale + ".retired"); console.log("retired", stale); }

@@ -116,7 +116,7 @@ for (const { rule, css } of grammarMutants) {
 // TCRN-DS-SUB-124 (STORY-143 GWT2) — one family, one selected structure. The five tab-shaped
 // forms (Tabs, ModuleTabs, SectionTabs, SegmentedNav, ViewTabs) render one block, tcrn-tabs, and
 // the family says "selected" exactly one way: the tab's pair switches to its selected values,
-// the 6% ink wash and ink, and the label takes the strong weight. Nothing is added on top, so a
+// the day 6% / night 7% ink wash and ink, and the label takes the strong weight. Nothing is added on top, so a
 // selected tab rule that draws an edge, an outline, a shadow, an underline or a lift is a second
 // structure, and so is any selection rule left on one of the old roots in the package
 // stylesheet. Only the package modules are read for this check: the tab family's selected
@@ -177,7 +177,7 @@ const result = {
   grammar: "selection is ink: surface-bearing controls take --tcrn-color-wash, framed controls promote their border to --tcrn-color-ink",
   sourcesScanned: SOURCES.length,
   selectionRulesScanned: ruleCount,
-  tabsFamily: { block: TAB.block, selectedRules: tabsFamily.selectedRules, structure: "the 6% ink wash and the strong weight" },
+  tabsFamily: { block: TAB.block, selectedRules: tabsFamily.selectedRules, structure: "the day 6% / night 7% ink wash and the strong weight" },
   findings
 };
 

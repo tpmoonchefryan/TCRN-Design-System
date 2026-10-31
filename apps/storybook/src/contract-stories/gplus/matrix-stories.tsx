@@ -614,6 +614,11 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
         <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "2 0 218px" }}>
           <ShellMenu open productId="design-system" shortcut={false} presentation="panel" query="review" groups={[]} landmarkLabel={`Expanded search reference ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />
         </div>
+        {/* A populated menu keeps its actual 40px owner and expanded combobox state;
+            the empty menu above deliberately has aria-expanded=false. */}
+        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "2 0 218px" }}>
+          <ShellMenu open productId="design-system" shortcut={false} presentation="panel" query="review" groups={[{ id: `search-reference-${theme}`, label: "Members", items: [{ id: `search-review-${theme}`, label: "Quarterly review", href: "#inputs-matrix" }] }]} landmarkLabel={`Search references ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />
+        </div>
         <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "1 0 116px" }}>
           <ShellMenu open productId="design-system" shortcut={false} presentation="sheet" groups={[]} landmarkLabel={`Sheet search reference ${theme}`} />
         </div>
