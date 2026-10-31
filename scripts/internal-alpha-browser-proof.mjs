@@ -555,6 +555,94 @@ async function collectPageHealth(page) {
     // avatar) replaces the former header and side rail.
     const docShellOwn = (layer) => document.querySelector(`[data-shell="doc"] ${layer}:not([data-paper] *)`);
     const shell = document.querySelector("[data-contract-surface]");
+    // Raw original-document observations, before the existing temporary layer reads or capture styles.
+    // Keep this owner distinct from embedded story shells and from docShellSidebarVisible (the brand tab).
+    const docShellOwnerReadback = (() => {
+      const selector = '[data-shell="doc"][data-doc-shell][data-contract-surface]';
+      const roots = Array.from(document.querySelectorAll(selector));
+      const owner = roots.length === 1 ? roots[0] : null;
+      const host = owner?.closest("[data-doc-shell-root]");
+      const identity = owner ? {
+        shell: owner.getAttribute("data-shell"), authority: owner.getAttribute("data-doc-shell"),
+        surface: owner.getAttribute("data-contract-surface"),
+        packageBoundary: owner.getAttribute("data-package-backed-product-shell-boundary"),
+        productShellClass: owner.classList.contains("tcrn-product-shell"),
+        outsideStoryAndPaper: !owner.closest(".story-body, [data-paper]"),
+        firstContractSurfaceIsOwner: shell === owner, hostCount: document.querySelectorAll("[data-doc-shell-root]").length
+      } : null;
+      const unknowns = [];
+      const context = {
+        viewport: { width: window.innerWidth, height: window.innerHeight },
+        locale: owner?.getAttribute("data-storybook-locale") ?? null,
+        theme: owner?.getAttribute("data-product-shell-theme") ?? null,
+        readyState: document.readyState, hydrationMarker: host?.getAttribute("data-shell-hydrate") ?? null,
+        docLayerInterfaceAvailable: Boolean(window.tcrnDocShellLayers), state: owner?.getAttribute("data-state") ?? null
+      };
+      const result = { selector, rootCount: roots.length, identity, context, root: null, header: null, paper: null, residentSidebar: null, mobileBrand: null, unknowns };
+      if (!owner || !host || identity.hostCount !== 1 || !identity.productShellClass
+        || !identity.outsideStoryAndPaper || !identity.firstContractSurfaceIsOwner
+        || identity.authority !== "online-docs" || identity.surface !== "tcrn-design-system-storybook"
+        || identity.packageBoundary !== "top-band-shell-v2") {
+        unknowns.push("original-document-owner-missing-ambiguous-or-wrong-identity");
+        return result;
+      }
+      const own = (query) => Array.from(owner.querySelectorAll(query)).filter((node) => node.closest(".tcrn-product-shell") === owner);
+      const rect = (node) => node?.getBoundingClientRect().toJSON() ?? null;
+      const visible = (node) => {
+        if (!node) return null;
+        const box = node.getBoundingClientRect();
+        if (box.width <= 0 || box.height <= 0) return false;
+        for (let ancestor = node; ancestor; ancestor = ancestor.parentElement) {
+          const style = getComputedStyle(ancestor);
+          if (ancestor.hidden || style.display === "none" || ["hidden", "collapse"].includes(style.visibility) || Number(style.opacity) === 0) return false;
+        }
+        return true;
+      };
+      const headers = own("[data-shell-strip]").filter((node) => node.parentElement === owner);
+      const papers = own("[data-paper]").filter((node) => node.parentElement === owner);
+      result.root = rect(owner);
+      result.header = { count: headers.length, sameOwner: headers.length === 1, rect: headers.length === 1 ? rect(headers[0]) : null };
+      result.paper = { count: papers.length, sameOwner: papers.length === 1, rect: null, insetsFromOwner: null, computed: null };
+      if (headers.length !== 1 || papers.length !== 1) {
+        unknowns.push("original-document-header-or-paper-missing-or-ambiguous");
+        return result;
+      }
+      const paper = papers[0], paperRect = rect(paper), paperStyle = getComputedStyle(paper);
+      result.paper.rect = paperRect;
+      result.paper.insetsFromOwner = { left: paperRect.left - result.root.left, right: result.root.right - paperRect.right, top: paperRect.top - result.root.top, bottom: result.root.bottom - paperRect.bottom };
+      result.paper.computed = Object.fromEntries(["position", "top", "right", "bottom", "left", "margin-top", "margin-right", "margin-bottom", "margin-left", "border-top-left-radius", "border-top-right-radius", "border-bottom-right-radius", "border-bottom-left-radius"].map((property) => [property, paperStyle.getPropertyValue(property)]));
+      const outsidePaper = own("aside, [role='complementary'], [data-product-shell-region='side-navigation'], .tcrn-product-shell__sidebar").filter((node) => !paper.contains(node));
+      const transient = (node) => Boolean(node.closest("[data-shell-menu], [data-panel], [role='dialog']"));
+      const resident = outsidePaper.filter((node) => !transient(node));
+      result.residentSidebar = { outsidePaperCount: outsidePaper.length, transientCount: outsidePaper.filter(transient).length, count: resident.length, present: resident.length > 0, visibleCount: resident.filter(visible).length };
+      if (context.viewport.width !== 390) return result;
+      if (result.root.width !== 390) {
+        unknowns.push("original-document-owning-width-is-not-390");
+        return result;
+      }
+      const brands = own("button[data-tab][data-shell-brand]").filter((node) => headers[0].contains(node));
+      if (brands.length !== 1) {
+        unknowns.push("original-document-brand-missing-or-ambiguous");
+        return result;
+      }
+      const brand = brands[0], buttonRect = rect(brand);
+      const parts = (query) => Array.from(brand.querySelectorAll(query)).filter((node) => node.closest("button[data-shell-brand]") === brand);
+      const mark = parts("svg[data-logo]"), word = parts(".tcrn-shell-brand__word"), toggle = parts("[data-shell-toggle]");
+      const center = { x: buttonRect.left + buttonRect.width / 2, y: buttonRect.top + buttonRect.height / 2 };
+      const centerInViewport = center.x >= 0 && center.x < window.innerWidth && center.y >= 0 && center.y < window.innerHeight;
+      const hit = centerInViewport ? document.elementFromPoint(center.x, center.y) : null;
+      const part = (nodes) => ({ count: nodes.length, visible: nodes.length === 1 ? visible(nodes[0]) : null, rect: nodes.length === 1 ? rect(nodes[0]) : null });
+      result.mobileBrand = {
+        count: brands.length, sameOwner: brand.closest(".tcrn-product-shell") === owner,
+        version: brand.getAttribute("data-shell-brand"), automatic: brand.hasAttribute("data-shell-brand-auto"),
+        button: { rect: buttonRect, visible: visible(brand), disabled: brand.disabled, enabled: !brand.matches(":disabled") && brand.getAttribute("aria-disabled") !== "true" && !brand.closest("[inert]"), ariaDisabled: brand.getAttribute("aria-disabled"), inert: Boolean(brand.closest("[inert]")), pointerEvents: getComputedStyle(brand).pointerEvents },
+        mark: part(mark), word: part(word), toggle: part(toggle), center, centerInViewport,
+        hit: hit ? { tag: hit.tagName, id: hit.id || null, classes: hit.getAttribute("class"), owner: hit.closest("[data-shell]")?.getAttribute("data-shell") ?? null, isOriginalBrandButton: hit.closest("button[data-shell-brand]") === brand } : null
+      };
+      if (!brand.hasAttribute("data-shell-brand-auto") || mark.length !== 1 || word.length !== 1 || toggle.length !== 1
+        || !context.docLayerInterfaceAvailable || !centerInViewport || !hit) unknowns.push("original-document-mobile-brand-context-incomplete");
+      return result;
+    })();
     // The full menu is the hydrated ProductShell's and is in the page only while open (TCRN-DS-SUB-201): it is opened
     // through the page's layer interface for the readings below and closed again before the summary returns.
     const docMenuOpenedHere = !docShellOwn("[data-shell-menu]") && Boolean(window.tcrnDocShellLayers);
@@ -670,6 +758,7 @@ async function collectPageHealth(page) {
     return {
       title: document.title,
       shellAuthority: shell?.getAttribute("data-doc-shell") ?? null,
+      docShellOwnerReadback,
       docShellSelectorCount: [shell?.matches("[data-shell='doc'][data-doc-shell]") ? shell : null, docStrip, docBrandTab, storybookNav, docMenuSearchInput, docPaper].filter(Boolean).length,
       // The documentation shell's own root and main region are the page chrome (once per page); any other global
       // ProductShell marker outside a story body still counts.
@@ -1257,8 +1346,12 @@ const browserProofEnvironmentNormalizationContract = {
 };
 
 function normalizeBrowserProofSummaryForCommit(summary) {
+  // Identical original-document observations share one raw record in this existing receipt.
+  const docShellOwnerReadbacks = [];
+  const docShellOwnerReadbackIndices = new Map();
   return {
     ...summary,
+    docShellOwnerReadbacks,
     environmentNormalization: {
       ...browserProofEnvironmentNormalizationContract,
       ...(summary.environmentNormalization ?? {})
@@ -1273,10 +1366,17 @@ function normalizeBrowserProofSummaryForCommit(summary) {
         storyRegions,
         referenceRegions,
         menuRowLabelReadabilityFailures,
+        docShellOwnerReadback,
         ...stableEntry
       } = entry;
+      const ownerKey = JSON.stringify(docShellOwnerReadback ?? null);
+      if (!docShellOwnerReadbackIndices.has(ownerKey)) {
+        docShellOwnerReadbackIndices.set(ownerKey, docShellOwnerReadbacks.length);
+        docShellOwnerReadbacks.push(docShellOwnerReadback ?? null);
+      }
       return {
         ...stableEntry,
+        docShellOwnerReadbackIndex: docShellOwnerReadbackIndices.get(ownerKey),
         storyRegions: (storyRegions ?? []).map(({ id, visible }) => ({ id, visible })),
         referenceRegions: (referenceRegions ?? []).map(({ id, visible }) => ({ id, visible })),
         menuRowLabelReadabilityFailures: (menuRowLabelReadabilityFailures ?? []).map((readback) => {

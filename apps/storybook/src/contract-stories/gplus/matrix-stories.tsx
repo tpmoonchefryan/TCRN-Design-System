@@ -474,10 +474,11 @@ const projectOptions = [
 function InputsMatrix({ theme }: { theme: MatrixTheme }) {
   const cell = (id: string, probe?: Parameters<typeof cellAttributes>[3]) => cellAttributes("inputs", id, theme, probe);
   return (
-    <div className="tcrn-doc-display-primitive-grid" style={{ alignItems: "start" }}>
+    <div className="tcrn-doc-display-primitive-grid" style={{ alignItems: "start", gap: 0 }}>
       {/* Independent specimen columns avoid stretching every short reference panel
-          to its tallest neighbour. Each public specimen keeps its own content and size. */}
-      <div className="tcrn-doc-form-stack">
+          to its tallest neighbour. The surfaced sections keep their own internal
+          spacing; their containing tracks need no additional vertical gutter. */}
+      <div className="tcrn-doc-form-stack" style={{ gap: 0 }}>
         <MatrixSection component="Input">
           <StyleReferences>
             <Input type="email" aria-label="Email" defaultValue="lin.xiao@example.com" />
@@ -525,7 +526,7 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
           />
         </MatrixSection>
       </div>
-      <div className="tcrn-doc-form-stack">
+      <div className="tcrn-doc-form-stack" style={{ gap: 0 }}>
         <MatrixSection component="Textarea">
           <StyleReferences>
             <Textarea aria-label="Notes" readOnly defaultValue="Quarterly review" />
@@ -604,10 +605,10 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
       {/* These public owners supply the distinct search roles (drop-down 28,
           full menu 40, Sheet 44). Keep their package controls and states intact;
           the containing frames only place the previews within the matrix. Their
-          bases leave room for each search minimum and the full menu footer. The
-          in-flow previews grow to their content before the next flex line begins;
-          only the fixed Sheet keeps a definite containing frame. */}
-      <div className="tcrn-doc-static-section" data-gplus-style-reference="" style={{ gridColumn: "1 / -1", display: "flex", flexWrap: "wrap", gap: 12 }}>
+          tracks leave room for the full menu footer. The short drop-down and Sheet
+          share a row; both natural-height full menus share the next row, so neither
+          tall menu stretches a short owner's row. The fixed Sheet keeps its frame. */}
+      <div className="tcrn-doc-static-section" data-gplus-style-reference="" style={{ gridColumn: "1 / -1", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 218px), 1fr))", gap: 0 }}>
         <div style={{ position: "relative", contain: "layout", minBlockSize: 132, flex: "1 0 108px" }}>
           <StaticMarkup
             id={`search-dropdown-reference-${theme}`}
@@ -618,6 +619,9 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
             edits={[{ marker: 'data-shell-dropdown=""', set: { style: "position:relative;top:auto;left:auto;inline-size:100%;grid-template-columns:minmax(0,1fr);visibility:visible" } }]}
           />
         </div>
+        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "1 0 116px" }}>
+          <ShellMenu open productId="design-system" shortcut={false} presentation="sheet" groups={[]} landmarkLabel={`Sheet search reference ${theme}`} />
+        </div>
         <div style={{ position: "relative", contain: "layout", minBlockSize: 132, flex: "2 0 218px" }}>
           <ShellMenu open productId="design-system" shortcut={false} presentation="panel" query="review" groups={[]} landmarkLabel={`Expanded search reference ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />
         </div>
@@ -625,9 +629,6 @@ function InputsMatrix({ theme }: { theme: MatrixTheme }) {
             the empty menu above deliberately has aria-expanded=false. */}
         <div style={{ position: "relative", contain: "layout", minBlockSize: 132, flex: "2 0 218px" }}>
           <ShellMenu open productId="design-system" shortcut={false} presentation="panel" query="review" groups={[{ id: `search-reference-${theme}`, label: "Members", items: [{ id: `search-review-${theme}`, label: "Quarterly review", href: "#inputs-matrix" }] }]} landmarkLabel={`Search references ${theme}`} style={{ position: "relative", top: "auto", left: "auto", inlineSize: "100%", gridTemplateColumns: "minmax(0, 1fr)" }} />
-        </div>
-        <div style={{ position: "relative", contain: "layout", blockSize: 132, flex: "1 0 116px" }}>
-          <ShellMenu open productId="design-system" shortcut={false} presentation="sheet" groups={[]} landmarkLabel={`Sheet search reference ${theme}`} />
         </div>
       </div>
     </div>
