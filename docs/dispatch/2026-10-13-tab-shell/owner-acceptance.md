@@ -64,7 +64,7 @@ STORY-150 由实施会话按机器判据判定；Owner 在交付后目视，其�
 
 当前实现与参考入口是 Sites 的[设计标准站点](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site)及[草稿站点](https://tcrn-ds-visual-draft.honestfawn3.chatgpt.site)，依据 TCRN-DS-MIN-20261029-SITES。草稿只供方向与历史比较；已批准的局部裁定和本仓当前契约一并对照。仓内板副本与 Sites 待发布交付物不是已完成的线上替换；线上发布及设计会话读回保持待办，不要求重新登录来完成本地实施。
 
-当前本地机器结果：328 张截图、217 个 gated 签名匹配、111 个 recorded-only；回归 0、新基线 0、axe 违规 0。Inputs 的 42 格与全部 240 个稳定 ID 保留，五家族格数 44/28/10/116/42；Inputs 高度 1990px，预算仍为 2000px，重叠读数 0。独立 Doc 外壳实测 header 52、paper 边距左/右/下 12 与顶 52、圆角 14，无常驻侧栏；独立原始 390px Doc 消费者有真实 40px 高标按钮，内嵌 mobile story 仍为 owner300，二者不混用。
+当前本地机器结果：328 张截图、217 个 gated 签名匹配、111 个 recorded-only；回归 0、新基线 0、axe 违规 0。Inputs 的 42 格与全部 240 个稳定 ID 保留，五家族格数 44/28/10/116/42；Inputs 高度 1990px，预算仍为 2000px，重叠读数 0。独立 Doc 外壳实测 header 52、paper 边距左/右/下 12 与顶 52、圆角 14，无常驻导航轨；独立原始 390px Doc 消费者有真实 40px 高标按钮，内嵌 mobile story 仍为 owner300，二者不混用。
 
 原条件式 SUB243 接纳下列精确 37 个来源已说明的变更：原 19 + 后增 16 + ShellIntro 新 2。选择文件 `docs/verification/internal-alpha/visual-baseline-selection-r6.json` 的 SHA256 为 acf5e68b1d684ff9096b96b1fc81f98af9b49fa0d21a670cc9a9c70c5e163560；应用 37、拒绝 0，后续证明回归/新基线均为 0。18 项 maxCell >40 在表中标出；分类 A 为文档、C 为壳 story、D 为矩阵。原因、源文件/提交与每项签名 hash 均在选择文件逐项保存。
 
@@ -110,7 +110,7 @@ STORY-150 由实施会话按机器判据判定；Owner 在交付后目视，其�
 | `typography-matrix@mobile-390x844` | D / 原19 | 5.867 / 23 | — | [ ] |
 | `typography-matrix@tablet-1024x768` | D / 后增16 | 7.238 / 36 | — | [ ] |
 
-当前已采纳的局部口径也需目视核对：DS 日间标按钮 hover/open 后缀 #505fc1；有描边文本控件边框 ≥3.1，两个无边 SearchInput 不适用该边框项；Icon 使用选中洗色；八格 Brand 使用正式产品映射；Highlight 原始绝对差 ≤1/64 CSS px；选中 ShellPins 与 Tabs 为日6%／夜7%。标按钮 hover/open 的日3.5%／夜4% 由 D03 既有裁定保留；Sheet 的「自底升起」文字按 R6 D7 仅同步正文、维持实现，目视确认实际淡入效果。旧侧栏52px 条款随顶带壳替代，不恢复退役侧栏。
+当前已采纳的局部口径也需目视核对：DS 日间标按钮 hover/open 后缀 #505fc1；有描边文本控件边框 ≥3.1，两个无边 SearchInput 不适用该边框项；Icon 使用选中洗色；八格 Brand 使用正式产品映射；Highlight 原始绝对差 ≤1/64 CSS px；选中 ShellPins 与 Tabs 为日6%／夜7%。标按钮 hover/open 的日3.5%／夜4% 由 D03 既有裁定保留；Sheet 的「自底升起」文字按 R6 D7 仅同步正文、维持实现，目视确认实际淡入效果。旧52px 收起布局条款随顶带壳替代，不恢复该退役布局。
 
 图钉“可见名五语同源”的文字与当前纯图标 / aria-label 形式已集中交 Owner 澄清；确认前不代签这一完整目标。无关的 LineNumberedEditor invalid-focus 青色 outline 观察只进入范围外问题清单，不改写 STORY-126 的已验收范围。
 
