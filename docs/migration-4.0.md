@@ -977,8 +977,8 @@ navigation counts 10.
 | `ShellDropdown` | — | New (M29) | shell |
 | `ShellIntro` | — | New (M29) | shell |
 
-The blocks follow: navigation lists 9 (`tcrn-shell-side-nav-toggle` and
-`tcrn-shell-mobile-nav-toggle` left), and shell lists 14 (`tcrn-top-bar` left and
+The blocks follow: navigation lists 11 (`tcrn-shell-side-nav-toggle` and
+`tcrn-shell-mobile-nav-toggle` left), and shell lists 19 (`tcrn-top-bar` left and
 `tcrn-shell-strip` arrived). The three first-batch exemptions of the navigation, shell
 and layout families are deleted, so all three families are checked in full by
 `pnpm contract:static`, and `roles.json` lists no toolbar, `tcrn-shell-strip` as the
