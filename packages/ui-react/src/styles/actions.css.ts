@@ -188,14 +188,14 @@ export const actionsCss03 = actionsPairsCss + `
 }`;
 
 export const actionsCss04 = `
-.tcrn-icon-button {
+.tcrn-icon-button:where(:not(.tcrn-icon-button--labelled)) {
   inline-size: var(--tcrn-control-height-md);
   padding: 0;
 }
-.tcrn-icon-button.tcrn-button--sm {
+.tcrn-icon-button.tcrn-button--sm:where(:not(.tcrn-icon-button--labelled)) {
   inline-size: var(--tcrn-control-height-sm);
 }
-.tcrn-icon-button.tcrn-button--lg {
+.tcrn-icon-button.tcrn-button--lg:where(:not(.tcrn-icon-button--labelled)) {
   inline-size: var(--tcrn-control-height-lg);
 }`;
 
@@ -212,7 +212,7 @@ export const actionsCss05 = `
 // 05 C preserves the 120ms color transition and the 900ms loader under reduced motion.
 export const actionsCss06 = `
 .tcrn-button:where(:active,[data-tcrn-preview-state="active"]),.tcrn-link-button:where(:active,[data-tcrn-preview-state="active"]){transition-duration:var(--tcrn-motion-duration-press)}
-.tcrn-icon-button--labelled{inline-size:auto;padding:0 var(--tcrn-control-padding-md)}
+.tcrn-icon-button--labelled{inline-size:auto}
 .tcrn-icon-button--labelled .tcrn-icon-button__label{position:static;inline-size:auto;block-size:auto;overflow:visible;clip-path:none}
 `;
 

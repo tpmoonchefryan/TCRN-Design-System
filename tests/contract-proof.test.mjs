@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import fs from "node:fs";
 import path from "node:path";
-import { ROOT,readApprovedSource,extractTokens,extractIcons,extractMarks,extractMatrixOccurrences } from "../scripts/lib/approved-site-source.mjs";
+import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,assertTokenGraph,resolveSourceLocals,cssRule,extractIcons,extractMarks,extractMatrixOccurrences } from "../scripts/lib/approved-site-source.mjs";
 import { APPROVED_SITE,APPROVED_BOARD_IDS } from "../scripts/lib/approved-site-pins.mjs";
 const read=fs.readFileSync;
 test("V1 published identity is the actual eight sourceIds and immutable source commit",()=>{
@@ -39,4 +39,38 @@ test("V4 source scene, state and literal icon carriers survive extraction indepe
  const cells=extractMatrixOccurrences(readApprovedSource());assert.equal(cells.length,455);
  for(const [id,color] of [['ink-panel-l','#f1f1f1'],['ink-panel-n','#282724']]){const cell=cells.find(c=>c.board==='03-icons'&&c.cellId===id);assert.equal(cell.carrierBackground,color);assert.ok(cell.carrier.some(c=>c.style.includes(color)));}
  const same=cells.filter(c=>c.board==='07a-shell-upper'&&c.cellId==='brand-suffix-l');assert.equal(new Set(same.map(c=>c.sourceScene)).size,same.length);assert.ok(same.some(c=>c.expect==='4.85')&&same.some(c=>c.expect==='4.53'));
+});
+
+test('V1 local bindings resolve before renaming and all125 token nodes retain acyclic two-theme dependencies',()=>{
+ const source=readApprovedSource(),tokens=extractTokens(source),bindings=extractPackageBindings(source);
+ const radius=bindings.find(row=>row.cssVar==='--tcrn-radius-paper');
+ assert.equal(radius.value,cssRule(source.board('07b-shell-lower').css,'.scr.ts')['--paper-r']);
+ assert.match(radius.source,/\.ts-paper:border-radius via \.scr\.ts/);
+ const rows=[...tokens.themed,...tokens.fixed,...bindings,...extractMarks(source).filter(m=>m.suffix).map(m=>({cssVar:`--tcrn-brand-suffix-${m.productId}`,value:m.palette.deep}))];
+ assert.equal(rows.length,125);
+ for(const theme of ['light','dark']){
+  assert.doesNotThrow(()=>assertTokenGraph(rows,theme));
+  assert.throws(()=>assertTokenGraph(rows.map(row=>row===radius?{...row,value:'var(--tcrn-radius-paper)'}:row),theme),/token cycle/);
+  assert.throws(()=>assertTokenGraph(rows.filter(row=>row.cssVar!=='--tcrn-color-bg'),theme),/Missing published package token/);
+ }
+ assert.equal(resolveSourceLocals('var(--a)',{'--a':'var(--b)','--b':'14px'}),'14px');
+ assert.throws(()=>resolveSourceLocals('var(--a)',{'--a':'var(--b)','--b':'var(--a)'}),/local variable cycle/);
+ assert.throws(()=>assertTokenGraph([...rows,rows[0]],'light'),/Duplicate/);
+});
+
+test('V5 both entry documents link formal font resources outside the generated component CSS',()=>{
+ const sync=read(path.join(ROOT,'scripts/demo-styles-sync.mjs'),'utf8'),manager=read(path.join(ROOT,'apps/storybook/.storybook/main.ts'),'utf8'),writer=read(path.join(ROOT,'apps/storybook/src/build/write-static.tsx'),'utf8');
+ assert.doesNotMatch(sync,/@import[^;]*fonts\/fonts\.css/);
+ assert.match(manager,/previewHead:[\s\S]*<link rel="stylesheet" href="\/fonts\/fonts\.css">/);
+ assert.match(manager,/from:"\.\.\/storybook-static\/fonts",to:"\/fonts"/);
+ assert.match(writer,/<link rel="stylesheet" href="\/fonts\/fonts\.css">/);
+});
+
+test('C01 retains the exact source contradiction and nominal06 text threshold without silently certifying ink-2',async()=>{
+ const {checkContrast}=await import('../scripts/lib/published-standard-proof.mjs'),result=checkContrast();
+ const reading=result.measurements.find(r=>r.conflict==='S03-C01'&&r.theme==='dark');
+ assert.equal(reading.ink,'#85827a');assert.equal(reading.surface,'#191916');
+ assert.ok(Math.abs(reading.ratio-3.876921784985055)<1e-10);
+ assert.equal(reading.min,4.5);assert.ok(result.issues.some(i=>i.includes('cannot certify unchanged06')));
+ assert.equal(result.formalAmendmentState,'direction decided; pending formal-standard amendment/publication and consumer-version alignment');
 });

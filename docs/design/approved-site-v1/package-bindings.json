@@ -296,7 +296,8 @@
     "cssVar": "--tcrn-radius-paper",
     "board": "07b-shell-lower",
     "selector": ".ts-paper",
-    "property": "border-radius"
+    "property": "border-radius",
+    "variables": [".scr.ts"]
   },
   {
     "cssVar": "--tcrn-z-overlay",

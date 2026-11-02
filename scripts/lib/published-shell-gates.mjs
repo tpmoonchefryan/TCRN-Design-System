@@ -32,8 +32,13 @@ export async function readShellGeometry(frame){return frame.evaluate(frame=>{
     const clips=[];for(let p=el.parentElement;p&&p!==shell.parentElement;p=p.parentElement){const ps=getComputedStyle(p);if(/hidden|clip|auto|scroll/.test(`${ps.overflowX} ${ps.overflowY}`)){const pr=p.getBoundingClientRect();if(r.left<pr.left-.5||r.right>pr.right+.5||(/hidden|clip/.test(ps.overflowY)&&(r.top<pr.top-.5||r.bottom>pr.bottom+.5)))clips.push({className:p.className,rect:box(p)});}}
     return {text:el.textContent,title:el.title,whiteSpace:s.whiteSpace,overflow:s.overflow,textOverflow:s.textOverflow,lineCount,clips,rect:box(el)};
   });
-  const lockup=q('.tcrn-shell-menu__lockup'),panel=q('.tcrn-shell-menu__panel');
+  const lockup=q('.tcrn-shell-menu__lockup'),panel=q('.tcrn-shell-menu__panel'),cluster=q('[data-cluster]');
+  // G04 is the visible rightmost control edge, not the flex wrapper's border box.
+  // End-aligned wrappers keep that border edge when padding pushes their contents in.
+  const clusterControls=cluster?[...cluster.querySelectorAll('button,a,input,select')].filter(visible).map(box):[];
+  const clusterContentRight=clusterControls.length?Math.max(...clusterControls.map(r=>r.right)):null;
   return {root:box(shell),brand:box(brand),mark:box(mark),toggle:box(q('[data-shell-toggle]')),glyph:box(q('[data-shell-toggle] svg')),strip:box(q('[data-shell-strip]')),paper:box(q('[data-paper]')),cluster:box(q('[data-cluster]')),ink,
+    clusterControls,clusterContentRight,clusterContentInset:clusterContentRight===null?null:box(cluster).right-clusterContentRight,
     pins:all('.tcrn-shell-pins__item').filter(visible).map(box),panel:box(panel),pbar:box(q('[data-shell-pbar]')),crumbs:box(q('.tcrn-shell-menu__crumbs')),lockup:box(lockup),lockupMark:box(lockup?.querySelector('[data-logo]')),
     lockupInteractive:!!lockup&&(lockup.matches('button,a,[tabindex]')||!!lockup.closest('button,a')||!!lockup.querySelector('a,button,input,[tabindex]:not([tabindex="-1"])')),
     drop:box(q('.tcrn-shell-dropdown__panel')),dropRows:all('.tcrn-shell-dropdown__panel [data-shell-row]').filter(visible).map(box),dropText:box(q('.tcrn-shell-dropdown__panel .tcrn-nav-item__label')),dropTrigger:box(q('.tcrn-shell-pins__item[aria-expanded="true"]')),dropSearch:box(q('.tcrn-shell-dropdown__panel input[type="search"]')),dropColumns:all('.tcrn-shell-dropdown__panel,.tcrn-shell-dropdown__col').filter(visible).map(box),cascadeSide:q('[data-shell-dropdown]')?.getAttribute('data-cascade-side')??'end',
@@ -63,7 +68,7 @@ export function judgeShellG18(facts,source){
   fail('G02',facts.brandWords?.word==='TCRN'&&facts.brandWords?.suffix==='TMS'&&facts.brandWords?.tagline===mark.taglines[facts.locale??'en'],'lockup wording/tagline differs from Brand E/I');
   fail('G03',close(b.strip.height,e.strip)&&close(b.paper.y-b.root.y,e.strip)&&b.strip.borders.every(v=>v===0)&&/rgba\([^)]*,\s*0\)|transparent/.test(b.strip.background),'strip 0–52 is transparent and borderless; paper top52');
   fail('G03',close(b.root.bottom-b.paper.bottom,e.edge)&&close(b.paper.radius,14),'paper bottom12 and radius14');
-  fail('G04',close(b.brand.x,b.paper.x)&&close(m.panel.x-m.root.x,e.edge)&&close(b.cluster.right,b.paper.right)&&close(b.root.right-b.paper.right,e.edge),'brand/paper/menu left12, cluster right=paper right');
+  fail('G04',close(b.brand.x,b.paper.x)&&close(m.panel.x-m.root.x,e.edge)&&close(b.clusterContentRight,b.paper.right)&&close(b.clusterContentInset,0)&&close(b.root.right-b.paper.right,e.edge),'brand/paper/menu left12, visible cluster control right=paper right without hidden inset');
   const gaps=b.pins.slice(0,3).map((pin,i)=>pin.x-(i?b.pins[i-1].right:b.brand.right));
   fail('G05',gaps.length===3&&gaps.every(g=>close(g,e.pinGap))&&b.pins.length<=e.pinMax,'three equal8 gaps and <=6 pins');
   fail('G05',b.pins.every(pin=>close(pin.height,e.pinH)&&pin.borders.every(v=>v===0)&&close(center(pin)-(b.root.y+6),20)),'32-high borderless pins, localY20');

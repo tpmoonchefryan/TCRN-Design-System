@@ -216,9 +216,9 @@ test("icon buttons are square and their icon follows the button size", () => {
   assert.match(renderToStaticMarkup(<IconButton ariaLabel="Menu" iconName="menu" size="sm" />), /width="14"/);
   assert.match(renderToStaticMarkup(<IconButton ariaLabel="Menu" iconName="menu" />), /width="16"/);
   assert.match(renderToStaticMarkup(<IconButton ariaLabel="Menu" iconName="menu" size="lg" />), /width="20"/);
-  assert.match(ruleFor(".tcrn-icon-button")?.body ?? "", /inline-size:\s*var\(--tcrn-control-height-md\)/);
-  assert.match(ruleFor(".tcrn-icon-button.tcrn-button--sm")?.body ?? "", /inline-size:\s*var\(--tcrn-control-height-sm\)/);
-  assert.match(ruleFor(".tcrn-icon-button.tcrn-button--lg")?.body ?? "", /inline-size:\s*var\(--tcrn-control-height-lg\)/);
+  assert.match(ruleFor(".tcrn-icon-button:where(:not(.tcrn-icon-button--labelled))")?.body ?? "", /inline-size:\s*var\(--tcrn-control-height-md\)/);
+  assert.match(ruleFor(".tcrn-icon-button.tcrn-button--sm:where(:not(.tcrn-icon-button--labelled))")?.body ?? "", /inline-size:\s*var\(--tcrn-control-height-sm\)/);
+  assert.match(ruleFor(".tcrn-icon-button.tcrn-button--lg:where(:not(.tcrn-icon-button--labelled))")?.body ?? "", /inline-size:\s*var\(--tcrn-control-height-lg\)/);
 });
 
 test("125-GWT1: hover, active and pressed rules on a button name no colour and stay at (0,1,0)", () => {
@@ -332,8 +332,8 @@ test("the loader is shown only while the button is busy", () => {
 });
 
 test("published 05 IconButton optional visible children preserve the pure icon and labelled renditions", () => {
-  for (const children of ["Settings", 0, <strong key="label">Settings</strong>]) {
-    const html=renderToStaticMarkup(<IconButton ariaLabel="Settings" iconName="settings">{children}</IconButton>);
+  for (const size of ["sm","md","lg"] as const) for (const children of ["Settings", 0, <strong key="label">Settings</strong>]) {
+    const html=renderToStaticMarkup(<IconButton ariaLabel="Settings" iconName="settings" size={size}>{children}</IconButton>);
     assert.match(html, /tcrn-icon-button--labelled/);
     assert.match(html, /tcrn-icon-button__label/);
     assert.match(html, /aria-label="Settings"/);

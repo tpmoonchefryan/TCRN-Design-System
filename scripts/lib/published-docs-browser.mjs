@@ -13,28 +13,46 @@ export function geometryIssues(readings,{source=readApprovedSource()}={}){
    if(r.width!==n(track.width)||r.height!==n(track.height)||r.knobWidth!==n(knob.width)||r.knobHeight!==n(knob.height)||r.travel!==travel)issues.push(`Switch actual track/knob/travel mismatch ${r.small?'sm':'md'}/${r.checked}`);
   }else if(r.kind==='control'){
    const key=r.size==='sm'?'--h-sm':r.size==='lg'?'--h-lg':'--h-md',height=n(cssRule(source.board('01-tokens').css,'.gp')[key]);
-   if(Math.abs(r.height-height)>.5)issues.push(`Control variant ${r.size} height ${r.height} != ${height}: ${r.className}`);
+   if(!Number.isFinite(r.height)||Math.abs(r.height-height)>.5)issues.push(`Control variant ${r.size} height ${r.height} != ${height}: ${r.className}`);
    if(r.className.includes('tcrn-button')&&r.transform!=='none')issues.push('Action transform contradicts published 05');
+   if(r.iconButton){
+    const token=cssRule(source.board('01-tokens').css,'.gp'),pad=n(token[`--pad-${r.size}`]);
+    if(r.labelled){if(![r.width,r.labelWidth,r.iconWidth,r.gap,r.paddingLeft,r.paddingRight].every(Number.isFinite)||Math.abs(r.paddingLeft-pad)>.5||Math.abs(r.paddingRight-pad)>.5||Math.abs(r.width-(r.labelWidth+r.iconWidth+r.gap+2*pad))>.5)issues.push(`Labelled IconButton ${r.size} content width/padding differs from formal Button size`);}
+    else if(!Number.isFinite(r.width)||Math.abs(r.width-height)>.5||r.paddingLeft!==0||r.paddingRight!==0)issues.push(`Square IconButton ${r.size} differs from formal square`);
+   }
+   if(r.number&&(![r.minimum,r.twelveCh,r.squeezedWidth].every(Number.isFinite)||Math.abs(r.minimum-r.twelveCh)>.5||Math.abs(r.squeezedWidth-r.twelveCh)>.5))issues.push('NumberInput actual12ch minimum lost under assembled cascade/squeeze');
+  }else if(r.kind==='page-header'){
+   const role=cssRule(source.board('07a-shell-upper').css,'.ph h2');
+   if(![r.fontSize,r.lineHeight].every(Number.isFinite)||Math.abs(r.fontSize-n(role['font-size']))>.1||Math.abs(r.lineHeight-n(role['font-size'])*n(role['line-height']))>.1)issues.push('PageHeader contextual26px/1.1 overridden by generic Heading');
   }else if(r.kind==='checkbox'&&(r.width!==16||r.height!==16))issues.push('Checkbox geometry differs from published16');
  }
  return issues;
 }
-export async function proveGeometry({root=ROOT}={}){return withPublishedBrowser(async({browser,base,source})=>{
+async function proveGeometryEntry({root,entry}){return withPublishedBrowser(async({browser,base,source})=>{
  const issues=[],observations=[],page=await browser.newPage({viewport:{width:1440,height:1000}});
- try{for(const board of ['05-actions','06-inputs']){
-  await page.goto(`${base}/en/${board}.html`);await page.evaluate(()=>document.fonts.ready);
-  // Capture both real checked positions. Only the native input state is toggled, then restored.
-  for(const position of ['initial','toggled']){
+ try{for(const board of ['05-actions','06-inputs','07a-shell-upper','07b-shell-lower']){
+  await page.goto(entry==='static'?`${base}/en/${board}.html`:`${base}/iframe.html?id=${managerStoryId(board)}&viewMode=story&globals=locale:en`);await page.locator(`[data-approved-board="${board}"]`).waitFor();await page.evaluate(()=>document.fonts.ready);
+  // Read both actual knob positions and restore their initial state by closing the page.
+  for(const position of (board==='06-inputs'?['initial','toggled']:['initial'])){
    if(position==='toggled')await page.locator('[data-approved-board] .tcrn-switch__control').evaluateAll(async els=>{for(const el of els){el.checked=!el.checked;getComputedStyle(el,'::before').transform;}await Promise.all(els.flatMap(el=>el.getAnimations({subtree:true}).map(animation=>animation.finished.catch(()=>{}))));});
-   const readings=await page.locator('[data-approved-board] .tcrn-button,[data-approved-board] input.tcrn-input,[data-approved-board] select.tcrn-select:not([multiple]),[data-approved-board] .tcrn-checkbox,[data-approved-board] .tcrn-switch__control').evaluateAll(els=>els.filter(el=>el.getBoundingClientRect().width>0).map(el=>{
-    const s=getComputedStyle(el),r=el.getBoundingClientRect(),small=!!el.closest('.tcrn-switch--sm'),kind=el.matches('.tcrn-switch__control')?'switch':el.matches('.tcrn-checkbox')?'checkbox':'control';
-    const knob=getComputedStyle(el,'::before'),matrix=knob.transform==='none'?null:new DOMMatrixReadOnly(knob.transform);
-    return {className:el.className,kind,small,size:/--sm\b/.test(el.className)?'sm':/--lg\b/.test(el.className)?'lg':'md',checked:el.checked,width:r.width,height:r.height,transform:s.transform,knobWidth:parseFloat(knob.width),knobHeight:parseFloat(knob.height),travel:matrix?.m41??0};
+   const readings=await page.locator('[data-approved-board] .tcrn-button,[data-approved-board] input.tcrn-input,[data-approved-board] select.tcrn-select:not([multiple]),[data-approved-board] .tcrn-checkbox,[data-approved-board] .tcrn-switch__control,[data-approved-board] .tcrn-page-header__title').evaluateAll(els=>els.filter(el=>el.getBoundingClientRect().width>0).map(el=>{
+    const s=getComputedStyle(el),r=el.getBoundingClientRect(),small=!!el.closest('.tcrn-switch--sm'),kind=el.matches('.tcrn-page-header__title')?'page-header':el.matches('.tcrn-switch__control')?'switch':el.matches('.tcrn-checkbox')?'checkbox':'control';
+    const knob=getComputedStyle(el,'::before'),matrix=knob.transform==='none'?null:new DOMMatrixReadOnly(knob.transform),number=el.matches('.tcrn-number-input');
+    let twelveCh=null,squeezedWidth=null;
+    if(number){
+     const probe=document.createElement('span');probe.style.cssText=`position:absolute;display:block;width:12ch;height:0;padding:0;border:0;box-sizing:content-box;font:${s.font};`;el.parentElement.append(probe);
+     const original=el.getAttribute('style');try{twelveCh=probe.getBoundingClientRect().width;el.style.inlineSize='1px';squeezedWidth=el.getBoundingClientRect().width;}finally{probe.remove();if(original===null)el.removeAttribute('style');else el.setAttribute('style',original);}
+    }
+    return {className:el.className,kind,small,size:/--sm\b/.test(el.className)?'sm':/--lg\b/.test(el.className)?'lg':'md',checked:el.checked,width:r.width,height:r.height,transform:s.transform,knobWidth:parseFloat(knob.width),knobHeight:parseFloat(knob.height),travel:matrix?.m41??0,iconButton:el.matches('.tcrn-icon-button'),labelled:el.matches('.tcrn-icon-button--labelled'),paddingLeft:parseFloat(s.paddingLeft),paddingRight:parseFloat(s.paddingRight),gap:parseFloat(s.columnGap),labelWidth:el.querySelector('.tcrn-icon-button__label')?.getBoundingClientRect().width,iconWidth:el.querySelector('svg')?.getBoundingClientRect().width,number,minimum:parseFloat(s.minInlineSize),twelveCh,squeezedWidth,fontSize:parseFloat(s.fontSize),lineHeight:parseFloat(s.lineHeight)};
    }));
-   issues.push(...geometryIssues(readings,{source}));observations.push({board,position,readings});
+   issues.push(...geometryIssues(readings,{source}).map(issue=>`${entry}/${board}: ${issue}`));observations.push({entry,board,position,readings});
   }
  }}finally{await page.close();}return {issues,observations};
-},{root});}
+},{root,entry});}
+export async function proveGeometry({root=ROOT}={}){
+ const entries=[];for(const entry of ['static','manager'])entries.push(await proveGeometryEntry({root,entry}));
+ return {issues:entries.flatMap(e=>e.issues),observations:entries.flatMap(e=>e.observations)};
+}
 async function renderedFonts(page,selector){
  const session=await page.context().newCDPSession(page);
  try{await session.send("DOM.enable");await session.send("CSS.enable");const {root}=await session.send("DOM.getDocument");const {nodeId}=await session.send("DOM.querySelector",{nodeId:root.nodeId,selector});if(!nodeId)throw new Error(`Missing rendered-font probe ${selector}`);const {fonts}=await session.send("CSS.getPlatformFontsForNode",{nodeId});const byFamily=new Map();for(const font of fonts)if(font.glyphCount)byFamily.set(font.familyName,(byFamily.get(font.familyName)??0)+font.glyphCount);return [...byFamily].sort(([a],[b])=>a.localeCompare(b));}
@@ -58,8 +76,9 @@ export async function proveFontsInBrowser({root=ROOT,entry="static"}={}){return 
 },{root,entry});}
 const managerExports={"01-tokens":"tokens","02-typography":"typography","03-icons":"icons","04-brand":"brand","05-actions":"actions","06-inputs":"inputs","07a-shell-upper":"shell-upper","07b-shell-lower":"shell-lower"};
 export function managerStoryId(board){if(!managerExports[board])throw new Error(`Unsupported manager board ${board}`);return `published-standards--${managerExports[board]}`;}
-async function apiRuntime(page,board,{browser,url}){
- let facts=await readApiFacts(page);facts=await exerciseApiBoard(page,board,facts);
+async function apiRuntime(page,board,{browser,url,source,locale}){
+ let facts=await readApiFacts(page,{source,locale});facts=await exerciseApiBoard(page,board,facts);
+ if(facts.IconButton){facts.IconButton.geometryIssues=geometryIssues(facts.IconButton.sizeReadings,{source});facts.IconButton.allPublishedSizes&&=facts.IconButton.geometryIssues.length===0;}
  if(board==='07a-shell-upper'){
   const introPage=await browser.newPage();try{await installIntroRecorder(introPage);const intro=await readIntro(introPage,url);facts.ShellIntro.sessionMotionContract=intro.first>0&&intro.refresh===0&&intro.reduced===0&&intro.total===460&&intro.total<=700&&intro.plan.card===120&&intro.plan.mark===240&&intro.plan.paper===100&&intro.landingMatches&&intro.markOpaque&&intro.frames.length>1&&intro.properties.every(p=>['transform','opacity'].includes(p));facts.ShellIntro.observation=intro;}finally{await introPage.close();}
  }
@@ -87,7 +106,7 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
    if(JSON.stringify(facts.apis.map(a=>a.name).sort())!==JSON.stringify(expectedApis.sort()))issues.push(`${entry}/${locale}/${id}: emitted API membership differs`);
    for(const api of facts.apis){if(api.formal!==formal[api.name]?.formal||api.summaryLang!==locale||!api.example?.includes(`<${api.name}`))issues.push(`${entry}/${locale}/${api.name}: required/use/forbidden/behavior text or concrete example missing`);}
    if(APPROVED_BOARD_IDS[id]){
-    try{const apiFacts=await apiRuntime(page,id,{browser,url});const names=Object.keys(formal).filter(name=>formal[name].board===id);for(const name of names)issues.push(...apiBehaviorIssues(name,apiFacts[name]).map(issue=>`${entry}/${locale}: ${issue}`));facts.apiRuntime=apiFacts;}catch(error){issues.push(`${entry}/${locale}/${id}: actual API interaction incomplete: ${error.message}`);}
+    try{const apiFacts=await apiRuntime(page,id,{browser,url,source,locale});const names=Object.keys(formal).filter(name=>formal[name].board===id);for(const name of names)issues.push(...apiBehaviorIssues(name,apiFacts[name]).map(issue=>`${entry}/${locale}: ${issue}`));facts.apiRuntime=apiFacts;}catch(error){issues.push(`${entry}/${locale}/${id}: actual API interaction incomplete: ${error.message}`);}
    }
    observations.push({entry,locale,id,...facts});
   }

@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { readApprovedSource, extractTokens, extractPackageBindings, extractIcons, extractMarks, extractMatrixOccurrences, cssRule, cssRules, packageValue, SOURCE_REL, ROOT, sha256 } from "./lib/approved-site-source.mjs";
+import { readApprovedSource, extractTokens, extractPackageBindings, assertTokenGraph, extractIcons, extractMarks, extractMatrixOccurrences, cssRule, cssRules, packageValue, SOURCE_REL, ROOT, sha256 } from "./lib/approved-site-source.mjs";
 const q = JSON.stringify;
 const cssModule = (name, css, head) => `${head}\nexport const ${name} = ${q(css)};\n`;
 const pairNames = { fill: "fill", "ink": "ink", "ink-c": "ink", edge: "edge", fw: "weight", mk: "mark", trk: "fill", kn: "knob", kedge: "knob-edge" };
@@ -61,6 +61,8 @@ export function generate(root = ROOT) {
   const inputHash = sha256(JSON.stringify(source.manifest.files));
   const header = `// Generated from published Sites v1, commit ${source.manifest.site.sourceCommit}. Do not edit.\n// ${SOURCE_REL}/source-manifest.json; input-sha256 ${inputHash}\n`;
   const icons = extractIcons(source), marks = extractMarks(source), tk = extractTokens(source), bindings = extractPackageBindings(source), mx = extractMatrixOccurrences(source);
+  const tokenGraph = [...tk.themed, ...tk.fixed, ...bindings, ...marks.filter(m => m.suffix).map(m => ({cssVar:`--tcrn-brand-suffix-${m.productId}`,value:m.palette.deep}))];
+  for (const theme of ["light", "dark"]) assertTokenGraph(tokenGraph, theme);
   const ip = inputs(source);
   const tokens = header + `export interface TcrnGplusFixedToken { readonly key:string; readonly cssVar:string; readonly group:string; readonly value:string; readonly source?:string }\nexport interface TcrnGplusThemedToken extends TcrnGplusFixedToken { readonly light:string; readonly dark:string }\nexport interface TcrnGplusBrandToken extends TcrnGplusFixedToken { readonly dark?:string }\nexport const tcrnGplusThemeSelectors = {light: ':root, [data-tcrn-theme="light"]', dark: '[data-tcrn-theme="dark"]'} as const;\nexport const tcrnGplusThemedTokens:readonly TcrnGplusThemedToken[] = ${q(tk.themed)};\nexport const tcrnGplusFixedTokens:readonly TcrnGplusFixedToken[] = ${q([...tk.fixed, ...bindings])};\nexport const tcrnGplusTypeTokens:readonly TcrnGplusFixedToken[] = [];\nexport const tcrnGplusBrandTokens:readonly TcrnGplusBrandToken[] = ${q(marks.filter((m) => m.suffix).map((m) => ({key:`brand-suffix-${m.productId}`,cssVar:`--tcrn-brand-suffix-${m.productId}`,group:"brand",value:m.palette.deep,source:m.source})))};\n`;
   const iconFile = header + `export const tcrnIconViewBox="0 0 20 20";\nexport const tcrnIconStrokeWidth=1.25;\nexport const tcrnIconPathNames=${q(icons.map((x) => x.name))} as const;\nexport type TcrnIconPathName=(typeof tcrnIconPathNames)[number];\nexport const tcrnIconPaths:Readonly<Record<TcrnIconPathName,string>>=${q(Object.fromEntries(icons.map((x) => [x.name,x.body])))};\n`;

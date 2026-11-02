@@ -28,12 +28,12 @@ export async function writeStorybookStaticBuild(bundle:Uint8Array){
   files.set("fonts/fonts.css",fs.readFileSync(path.join(fontRoot,"fonts.css")));files.set("fonts/manifest.json",JSON.stringify(fonts,null,2)+"\n");
   for(const name of fonts.licenses)files.set(`licenses/${name}`,fs.readFileSync(path.join(licenseRoot,name)));
   files.set("ai-consumption-contract.json",JSON.stringify(createAiConsumptionContract(candidate,fonts.files),null,2)+"\n");files.set("design-authority.json",JSON.stringify({...designAuthority,candidate},null,2)+"\n");
-  files.set("llms.txt",`# TCRN Design System candidate ${candidate.version}\nCandidate commit: ${candidate.commit}\nPublished standard: ${approvedSource.site.url}\nPublished Site version: 1\nPublished source commit: ${approvedSource.site.sourceCommit}\nThis candidate retains unresolved K1 and K5; no Owner acceptance is claimed.\n\n/en/source.html\n/en/api.html\n${approvedSource.boards.map(b=>`/en/${b.slug}.html`).join("\n")}\n`);
+  files.set("llms.txt",`# TCRN Design System candidate ${candidate.version}\nCandidate commit: ${candidate.commit}\nPublished standard: ${approvedSource.site.url}\nPublished Site version: 1\nPublished source commit: ${approvedSource.site.sourceCommit}\nK1/K5 directions are decided; formal amendment/publication and consumer-version alignment are pending. S03-C01 shortcut ink clarification is undecided. Published v1 is still current; no Owner acceptance is claimed.\n\n/en/source.html\n/en/api.html\n${approvedSource.boards.map(b=>`/en/${b.slug}.html`).join("\n")}\n`);
   files.set("robots.txt","User-agent: *\nAllow: /\n");
   const inventory=[...files].map(([name,bytes])=>({path:name,bytes:typeof bytes==="string"?Buffer.byteLength(bytes):bytes.length,sha256:hash(bytes)}));
   files.set("output-manifest.json",JSON.stringify({schemaVersion:"tcrn.storybook-output.v1",candidate,standardSource:approvedSource.site,files:inventory},null,2)+"\n");
   const helpers=await import(pathToFileURL(path.join(root,"scripts/lib/generated-output.mjs")).href) as {reconcileOutput:(dir:string,expected:string[])=>unknown};
   helpers.reconcileOutput(output,[...files.keys()]);fs.mkdirSync(output,{recursive:true});
   for(const [rel,bytes] of files){const target=path.join(output,rel);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,bytes);}
-  console.log(`Storybook: ${supportedLocales.length} locales, ${approvedSource.boards.length} source boards, ${files.size} exact output files; K1/K5 unresolved`);
+  console.log(`Storybook: ${supportedLocales.length} locales, ${approvedSource.boards.length} source boards, ${files.size} exact output files; K1/K5 directions decided; formal amendment/publication/consumer alignment pending; C01 clarification undecided`);
 }

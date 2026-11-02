@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,extractMarks,extractIcons,extractFontFaces,extractMatrixOccurrences,normalizeSvgBody,decodeHtml,sha256 } from "./approved-site-source.mjs";
+import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,extractMarks,extractIcons,extractFontFaces,extractMatrixOccurrences,cssRule,normalizeSvgBody,decodeHtml,sha256 } from "./approved-site-source.mjs";
 import { APPROVED_SITE,APPROVED_BOARD_IDS } from "./approved-site-pins.mjs";
 import { listFiles } from "./generated-output.mjs";
 
 export const OLD_MOTHER_SHA256="5f28f17c599c63a05a51c81be03f9ef7845299af1940ebe6aef61f7af47fc25b";
 export const OLD_MOTHER_GEOMETRY_SHA256="12704ec78903e1609d0bf0dcfbb833ad3a5f9d2a4827f823608fe9d27b2e2089";
+export const FORMAL_AMENDMENT_STATE="direction decided; pending formal-standard amendment/publication and consumer-version alignment";
 export const LOCALES=["zh-CN","en","ja","ko","fr"];
 const publishedApiBoards={Heading:"02-typography",Text:"02-typography",Highlight:"02-typography",Icon:"03-icons",ProductLogo:"04-brand",ProductLockup:"04-brand",Button:"05-actions",IconButton:"05-actions",LinkButton:"05-actions",ClipboardCopyButton:"05-actions",ButtonGroup:"05-actions",Input:"06-inputs",Textarea:"06-inputs",SearchInput:"06-inputs",SuggestInput:"06-inputs",Select:"06-inputs",MultiSelect:"06-inputs",NumberInput:"06-inputs",DatePicker:"06-inputs",Checkbox:"06-inputs",RadioGroup:"06-inputs",Switch:"06-inputs",ProductShell:"07b-shell-lower",ShellBrandButton:"07a-shell-upper",ShellMenu:"07b-shell-lower",ShellPins:"07b-shell-lower",ShellDropdown:"07b-shell-lower",ShellIntro:"07a-shell-upper"};
 export const APPROVED_API_BOARDS=Object.freeze(publishedApiBoards);
@@ -79,7 +80,14 @@ export function checkContrast(root=ROOT){
   const source=readApprovedSource(root),tokens=extractTokens(source),themes={light:Object.fromEntries(tokens.themed.map(t=>[t.key,t.light])),dark:Object.fromEntries(tokens.themed.map(t=>[t.key,t.dark]))},issues=[],measurements=[];
   for(const [theme,values] of Object.entries(themes))for(const role of ["ink","ink-2","ink-3","acc","red","ok","warn","bad"])for(const carrier of ["bg","panel"]){const ratio=contrast(values[role],values[carrier]);measurements.push({theme,role,carrier,ink:values[role],fill:values[carrier],ratio,min:4.5});if(ratio<4.5)issues.push(`Text contrast ${theme}/${role}/${carrier} ${ratio.toFixed(2)} < 4.5`);}
   for(const mark of extractMarks(source).filter(m=>m.suffix))for(const [theme,values] of Object.entries(themes))for(const carrier of ["bg","panel","hover"]){const surface=carrier==="hover"?values.bg:values[carrier],ratio=contrast(mark.palette.deep,values[carrier],surface);measurements.push({conflict:"K1",theme,role:`${mark.productId} suffix text`,carrier,ink:mark.palette.deep,fill:values[carrier],surface,ratio,min:4.5});if(ratio<4.5)issues.push(`K1 text contrast ${theme}/${mark.productId}/${carrier} ${ratio.toFixed(2)} < 4.5`);}
-  return {issues,measurements,thresholds:{text:4.5,icon:3,edge:3},unresolved:["K1","K5"]};
+  const formShortcut=cssRule(source.board('06-inputs').css,'.sw>kbd').color,shellShortcut=cssRule(source.board('07a-shell-upper').css,'.ts-srch kbd').color;
+  if(formShortcut!==shellShortcut)issues.push(`S03-C01 formal shortcut text roles differ:06 ${formShortcut},07 ${shellShortcut}; current ink-2 cannot certify unchanged06`);
+  for(const [theme,values] of Object.entries(themes)){
+    const ink=values[/var\(--([\w-]+)\)/.exec(formShortcut)?.[1]],ratio=contrast(ink,values.wash,values.panel);
+    measurements.push({conflict:'S03-C01',board:'06-inputs',theme,role:'shortcut text',state:'idle',carrier:'wash on panel',ink,fill:values.wash,surface:values.panel,ratio,min:4.5,method:'source-only nominal sRGB composition; not browser/grain measurement'});
+    if(ratio<4.5)issues.push(`S03-C01 nominal06 ${theme}/idle shortcut ${ratio.toFixed(6)} < 4.5`);
+  }
+  return {issues,measurements,thresholds:{text:4.5,icon:3,edge:3},pendingFormalAmendments:["K1","K5"],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:["S03-C01"]};
 }
 export async function checkBrand(root=ROOT){const source=readApprovedSource(root),marks=extractMarks(source),icons=extractIcons(source),ui=await compiled(root,"packages/ui-react/dist/approved.js"),nav=await compiled(root,"packages/ui-react/dist/components/Navigation/Navigation.js"),issues=[];
   if(JSON.stringify(Object.keys(nav.tcrnProductLogoRegistry).sort())!==JSON.stringify(marks.map(m=>m.productId).sort()))issues.push("Product registry has an unapproved identity or misses a formal mark");

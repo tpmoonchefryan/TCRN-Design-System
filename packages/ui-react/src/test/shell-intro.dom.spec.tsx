@@ -234,7 +234,7 @@ test("the mark on the layer is the published 04 color mark, opaque, placed on th
   mock.timers.enable({ apis: ["setTimeout"] });
   try {
     await harness.render(<Shell />);
-    const flying = harness.document.querySelector("[data-shell-intro] svg[data-logo='tms']");
+    const flying = harness.document.querySelector("[data-shell-intro] svg.tcrn-shell-intro__mark[data-logo='tms']");
     assert.ok(flying, "the layer draws the product's mark");
     assert.equal(flying.getAttribute("class"), "tcrn-brand-mark tcrn-shell-intro__mark");
     assert.equal(flying.getAttribute("data-product-mark-variant"), "color");

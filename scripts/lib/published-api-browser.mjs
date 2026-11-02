@@ -1,9 +1,35 @@
+import { readApprovedSource,extractMarks,sourceElements,decodeHtml } from "./approved-site-source.mjs";
 // Runtime assertions are separate from the normative API text and from engineering exports.
 export const API_BEHAVIOR_REQUIREMENTS=Object.freeze({
- Heading:['semanticLevels','visualFamilies','singleLineTitle'],Text:['bodyScale','numeralCaps','strongSample'],Highlight:['markOnlyPaint','emptyQuery'],Icon:['rosterGeometry','namesAndDecoration'],ProductLogo:['registeredGraphicOnly','renditions'],ProductLockup:['registeredWording','railAndFirstLine'],Button:['disabledDescription','loadingFeedback','dangerInk'],IconButton:['named','squareAndLabelled'],LinkButton:['nativeAnchor','noBusyOrDisabled'],ClipboardCopyButton:['secretOutsideDom','fiveStatesAndReset'],ButtonGroup:['namedGroup','twoToFive','childSelection'],Input:['nativeNamed','errorsAndReasons'],Textarea:['nativeNamed','widthAndMultiline'],SearchInput:['namedTool','shortcutAndFill'],SuggestInput:['openDomain','deduplicatedDatalist'],Select:['nativeClosedSingle','placeholderDisabled'],MultiSelect:['closedSetPresentations','bodyListbox','selectionAndLabels'],NumberInput:['nativeNumber','rangeAndKeyboard'],DatePicker:['nativeIso','calendarIndicator'],Checkbox:['nativeNamed','mixedAndError'],RadioGroup:['nativeLegendAndName','oneChoicePerGroup'],Switch:['namedImmediateBinary','descriptionAssociated'],ProductShell:['oneTopBand','headerAndPreferences'],ShellBrandButton:['onePressFullDialog','namedRegisteredVersions'],ShellMenu:['nonModalAndDismiss','globalSearchAndKeys'],ShellPins:['orderedReorder','sixAndResponsive'],ShellDropdown:['subtreeSearch','clickAndKeys'],ShellIntro:['mountedAfterSignIn','sessionMotionContract']
+ Heading:['semanticLevels','visualFamilies','singleLineTitle'],Text:['bodyScale','numeralCaps','strongSample'],Highlight:['markOnlyPaint','emptyQuery'],Icon:['rosterGeometry','namesAndDecoration'],ProductLogo:['registeredGraphicOnly','renditions'],ProductLockup:['registeredWording','railAndFirstLine','exactLineRoles'],Button:['disabledDescription','loadingFeedback','dangerInk'],IconButton:['named','squareAndLabelled','allPublishedSizes'],LinkButton:['nativeAnchor','noBusyOrDisabled'],ClipboardCopyButton:['secretOutsideDom','fiveStatesAndReset'],ButtonGroup:['namedGroup','twoToFive','childSelection'],Input:['nativeNamed','errorsAndReasons'],Textarea:['nativeNamed','widthAndMultiline'],SearchInput:['namedTool','shortcutAndFill'],SuggestInput:['openDomain','deduplicatedDatalist'],Select:['nativeClosedSingle','placeholderDisabled'],MultiSelect:['closedSetPresentations','bodyListbox','selectionAndLabels'],NumberInput:['nativeNumber','rangeAndKeyboard','twelveChMinimum'],DatePicker:['nativeIso','calendarIndicator'],Checkbox:['nativeNamed','mixedAndError'],RadioGroup:['nativeLegendAndName','oneChoicePerGroup'],Switch:['namedImmediateBinary','descriptionAssociated'],ProductShell:['oneTopBand','headerAndPreferences','contextualHeader'],ShellBrandButton:['onePressFullDialog','namedRegisteredVersions','localizedNames'],ShellMenu:['nonModalAndDismiss','globalSearchAndKeys','rowCarrierStates'],ShellPins:['orderedReorder','sixAndResponsive'],ShellDropdown:['subtreeSearch','clickAndKeys'],ShellIntro:['mountedAfterSignIn','sessionMotionContract']
 });
 export function apiBehaviorIssues(name,facts){return (API_BEHAVIOR_REQUIREMENTS[name]??['unknownAPI']).filter(key=>facts?.[key]!==true).map(key=>`${name}: published API behavior ${key} not established`);}
-export async function readApiFacts(page){return page.locator('[data-approved-board]').first().evaluate(root=>{
+// Expected line roles come from the actual 04 full/rail nodes; translated taglines from 04 I.
+export function formalLockupExpectations(source,locale){
+ const html=source.board('04-brand').html,marks=extractMarks(source),nodes=sourceElements(html);
+ const descendants=node=>node.children.flatMap(child=>[child,...descendants(child)]);
+ const text=node=>node?decodeHtml(html.slice(html.indexOf('>',node.offset)+1,html.indexOf(`</${node.tag}>`,node.offset)).replace(/<[^>]*>/g,'')).replace(/\s+/g,' ').trim():null;
+ const has=(node,name)=>(node.attrs.class??'').split(/\s+/).includes(name);
+ return nodes.filter(node=>has(node,'lk')||has(node,'rail')).map(node=>{
+  const children=descendants(node),mark=marks.find(mark=>mark.id===children.find(child=>child.tag==='svg')?.attrs['data-logo']);
+  if(!mark)throw new Error('Unbound formal lockup product');
+  return {productId:mark.productId,scale:has(node,'rail')?'rail':'lockup',name:text(children.find(child=>child.tag==='b')),tagline:mark.taglines[locale],byline:text(children.find(child=>has(child,'by')))};
+ });
+}
+export function lockupRoleIssues(readings,expected){
+ const issues=[];
+ for(const row of readings){
+  const e=expected.find(e=>e.productId===row.productId&&e.scale===(row.firstLine||row.scale));
+  if(!e||row.name!==e.name||row.byline!==(row.firstLine?null:e.byline)||row.tagline!==(row.firstLine?null:e.tagline)||row.accessibleName!==(row.firstLine?e.name:`${e.name} ${e.tagline}`))issues.push(`ProductLockup exact line roles ${row.productId}/${row.firstLine||row.scale}`);
+ }
+ for(const e of expected)if(!readings.some(r=>r.productId===e.productId&&r.scale===e.scale&&!r.firstLine))issues.push(`Missing actual ${e.productId}/${e.scale} lockup`);
+ return issues;
+}
+// The accessible-copy contract names the action and registered product, in the requested
+// reader locale. It must also hold when the manager's document-root language is different.
+export const SHELL_BRAND_NAMES=Object.freeze({'zh-CN':['展开导航','收起导航'],en:['Open navigation','Close navigation'],ja:['ナビゲーションを開く','ナビゲーションを閉じる'],ko:['내비게이션 열기','내비게이션 닫기'],fr:['Ouvrir la navigation','Fermer la navigation']});
+export function shellBrandNameIssues(readings,locale){return readings.filter(r=>r.label!==`${SHELL_BRAND_NAMES[locale]?.[r.expanded?1:0]} · ${r.product}`).map(r=>`ShellBrandButton locale ${locale}/${r.version}/${r.expanded}: ${r.label}`);}
+export async function readApiFacts(page,{source=readApprovedSource(),locale='en'}={}){const facts=await page.locator('[data-approved-board]').first().evaluate(root=>{
  const one=s=>root.querySelector(s),all=s=>[...root.querySelectorAll(s)],style=el=>el?getComputedStyle(el):null;
  const named=el=>!!(el.getAttribute('aria-label')?.trim()||el.labels?.length);
  const color=(el,value)=>{const probe=document.createElement('span');probe.style.color=value;el.append(probe);const result=getComputedStyle(probe).color;probe.remove();return result;};
@@ -28,12 +54,14 @@ export async function readApiFacts(page){return page.locator('[data-approved-boa
  if(root.dataset.approvedBoard==='04-brand'){
   const products=['tms','einzbern','mana-orchestrate','design-system'],graphics=all('.tcrn-product-symbol');
   facts.ProductLogo={registeredGraphicOnly:products.every(id=>graphics.some(el=>el.getAttribute('data-product-id')===id&&!el.textContent.trim()&&el.querySelector('svg[data-logo]'))),renditions:products.every(id=>['color','mono','tile-tint','tile-deep'].every(v=>one(`[data-product-mark="${id}"][data-product-mark-variant="${v}"]`)))};
-  facts.ProductLockup={registeredWording:products.every(id=>one(`.tcrn-product-logo[data-product-id="${id}"] [data-logo]`)&&one(`.tcrn-product-logo[data-product-id="${id}"] .tcrn-product-logo__line-two`)?.textContent.trim()),railAndFirstLine:!!one('.tcrn-product-logo--rail')&&!!one('[data-lockup="lkr-line"]')&&!!one('[data-lockup="lk-line"]')};
+  const readings=all('.tcrn-product-logo,[data-brand-lockup="line"]').map(el=>({productId:el.dataset.productId,scale:el.classList.contains('tcrn-product-logo--rail')?'rail':'lockup',firstLine:el.dataset.brandLockup==='line'?(el.dataset.lockup==='lkr-line'?'rail':'lockup'):null,name:(el.querySelector('.tcrn-product-logo__line-one,.tcrn-brand-lockup__word')?.textContent??'').replace(/\s+/g,' ').trim(),tagline:el.querySelector('.tcrn-product-logo__line-two')?.textContent.trim()??null,byline:el.querySelector('.tcrn-product-logo__byline')?.textContent.trim()??null,accessibleName:el.getAttribute('aria-label')}));
+  facts.ProductLockup={registeredWording:products.every(id=>readings.some(r=>r.productId===id&&r.tagline)),railAndFirstLine:products.every(id=>readings.some(r=>r.productId===id&&r.scale==='rail')&&['rail','lockup'].every(scale=>readings.some(r=>r.productId===id&&r.firstLine===scale))),readings};
  }
  if(root.dataset.approvedBoard==='05-actions'){
   const busy=one('[data-formal-action$="-loading"]'),danger=one('[data-formal-action="danger-default"]'),square=one('.tcrn-icon-button:not(.tcrn-icon-button--labelled)'),labelled=one('.tcrn-icon-button--labelled');
   facts.Button={disabledDescription:reasons('button.tcrn-button'),loadingFeedback:busy?.getAttribute('aria-busy')==='true'&&!!busy.querySelector('[data-icon-name="loader-circle"]')&&!!busy.textContent.trim(),dangerInk:!!danger&&style(danger).color!==style(danger).backgroundColor&&style(danger).backgroundColor===color(danger.closest('[data-tcrn-theme]'),'var(--tcrn-color-panel)')};
-  facts.IconButton={named:all('.tcrn-icon-button').every(el=>el.getAttribute('aria-label')?.trim()),squareAndLabelled:!!square&&!!labelled&&square.getBoundingClientRect().width===square.getBoundingClientRect().height&&labelled.getBoundingClientRect().width>labelled.getBoundingClientRect().height};
+  const sizeReadings=all('.tcrn-icon-button').map(el=>{const s=style(el),r=el.getBoundingClientRect();return {kind:'control',className:el.className,size:/--sm\b/.test(el.className)?'sm':/--lg\b/.test(el.className)?'lg':'md',width:r.width,height:r.height,transform:s.transform,iconButton:true,labelled:el.classList.contains('tcrn-icon-button--labelled'),paddingLeft:parseFloat(s.paddingLeft),paddingRight:parseFloat(s.paddingRight),gap:parseFloat(s.columnGap),labelWidth:el.querySelector('.tcrn-icon-button__label')?.getBoundingClientRect().width,iconWidth:el.querySelector('svg')?.getBoundingClientRect().width};});
+  facts.IconButton={sizeReadings,allPublishedSizes:all('[data-formal-theme]').every(theme=>['sm','md','lg'].every(size=>{const group=theme.querySelector(`[data-icon-button-size="${size}"]`);return group?.querySelector('.tcrn-icon-button--labelled')&&group.querySelector('.tcrn-icon-button:not(.tcrn-icon-button--labelled)');})),named:all('.tcrn-icon-button').every(el=>el.getAttribute('aria-label')?.trim()),squareAndLabelled:!!square&&!!labelled&&square.getBoundingClientRect().width===square.getBoundingClientRect().height&&labelled.getBoundingClientRect().width>labelled.getBoundingClientRect().height};
   facts.LinkButton={nativeAnchor:all('.tcrn-link-button').length>0&&all('.tcrn-link-button').every(el=>el.tagName==='A'&&!!el.getAttribute('href')),noBusyOrDisabled:all('.tcrn-link-button').every(el=>!el.hasAttribute('aria-busy')&&!el.hasAttribute('disabled'))};
   const groups=all('.tcrn-button-group');facts.ButtonGroup={namedGroup:groups.length>0&&groups.every(el=>el.getAttribute('role')==='group'&&el.getAttribute('aria-label')),twoToFive:groups.every(el=>el.children.length>=2&&el.children.length<=5),childSelection:groups.every(el=>!el.hasAttribute('aria-pressed')&&!!el.querySelector('[aria-pressed="true"]'))};
  }
@@ -45,7 +73,9 @@ export async function readApiFacts(page){return page.locator('[data-approved-boa
   facts.SuggestInput={openDomain:suggest?.getAttribute('data-choice-value-mode')==='open'&&!!list,deduplicatedDatalist:!!list&&new Set([...list.children].map(o=>o.value)).size===list.children.length};
   facts.Select={nativeClosedSingle:!!select&&!select.multiple&&select.options.length>1,placeholderDisabled:!!select?.options[0].disabled};
   facts.MultiSelect={closedSetPresentations:!!one('select[multiple]')&&!!one('.tcrn-multi-select-dropdown__trigger')&&!!one('[data-choice-presentation="checkboxes"]'),selectionAndLabels:!!one('[data-multi-select-summary]')?.textContent.trim()&&!!one('.tcrn-multi-select-dropdown__trigger')?.getAttribute('aria-label')};
-  facts.NumberInput={nativeNumber:!!number&&number.type==='number'&&number.min==='1'&&number.max==='120'};
+  let minimumObservation=null;
+  if(number){const probe=document.createElement('span');probe.style.cssText=`position:absolute;display:block;width:12ch;padding:0;border:0;box-sizing:content-box;font:${style(number).font};`;number.parentElement.append(probe);const original=number.getAttribute('style');try{const twelveCh=probe.getBoundingClientRect().width,minimum=parseFloat(style(number).minInlineSize);number.style.inlineSize='1px';minimumObservation={twelveCh,minimum,squeezed:number.getBoundingClientRect().width};}finally{probe.remove();if(original===null)number.removeAttribute('style');else number.setAttribute('style',original);}}
+  facts.NumberInput={nativeNumber:!!number&&number.type==='number'&&number.min==='1'&&number.max==='120',minimumObservation,twelveChMinimum:!!minimumObservation&&Math.abs(minimumObservation.minimum-minimumObservation.twelveCh)<.5&&Math.abs(minimumObservation.squeezed-minimumObservation.twelveCh)<.5};
   facts.DatePicker={nativeIso:!!date&&/^\d{4}-\d{2}-\d{2}$/.test(date.value)&&named(date),calendarIndicator:!!one('.tcrn-date-picker-wrap [data-icon-name="calendar"]')&&getComputedStyle(date,'::-webkit-calendar-picker-indicator').opacity==='0'};
   const checks=all('input.tcrn-checkbox');facts.Checkbox={nativeNamed:checks.length>0&&checks.every(named),mixedAndError:checks.some(el=>el.getAttribute('aria-invalid')==='true')&&checks.some(el=>el.disabled)};
   const radios=all('fieldset.tcrn-radio-group');facts.RadioGroup={nativeLegendAndName:radios.length>0&&radios.every(el=>el.querySelector('legend')?.textContent.trim()&&[...el.querySelectorAll('input[type="radio"]')].every(input=>input.name)),oneChoicePerGroup:radios.some(el=>el.querySelectorAll('input[type="radio"]:checked').length===1)&&radios.every(el=>el.querySelectorAll('input[type="radio"]:checked').length<=1)};
@@ -53,15 +83,20 @@ export async function readApiFacts(page){return page.locator('[data-approved-boa
  }
  if(root.dataset.approvedBoard?.startsWith('07')){
   const frame=one('[data-formal-shell-scene="band"]'),shell=frame?.querySelector('.tcrn-product-shell'),trigger=frame?.querySelector('[data-shell-brand]'),menu=one('[data-formal-shell-scene="menu"] [role="dialog"]'),pins=frame?.querySelector('.tcrn-shell-pins'),drop=one('[data-formal-shell-scene="drop"] [data-panel="drop"]');
-  facts.ProductShell={oneTopBand:!!shell&&shell.querySelectorAll(':scope > [data-shell-strip]').length===1&&!shell.querySelector('.tcrn-side-nav'),headerAndPreferences:!!shell?.querySelector('.tcrn-page-header')&&!!shell?.querySelector('[data-shell-account]')};
-  facts.ShellBrandButton={namedRegisteredVersions:!!trigger?.getAttribute('aria-label')&&trigger.getAttribute('aria-haspopup')==='dialog'&&!!trigger.querySelector('svg[data-logo="tms"]')&&!!one('[data-shell-brand="v1"]')&&!!one('[data-shell-brand="v2"]')};
-  facts.ShellMenu={nonModalAndDismiss:!!menu&&menu.getAttribute('aria-modal')==='false'&&!menu.querySelector('[data-shell-close]')};
+  facts.ProductShell={oneTopBand:!!shell&&shell.querySelectorAll(':scope > [data-shell-strip]').length===1&&!shell.querySelector('.tcrn-side-nav'),headerAndPreferences:!!shell?.querySelector('.tcrn-page-header')&&!!shell?.querySelector('[data-shell-account]'),contextualHeader:all('.tcrn-page-header__title').length>0&&all('.tcrn-page-header__title').every(el=>Math.abs(parseFloat(style(el).lineHeight)-26*1.1)<.1)};
+  facts.ShellBrandButton={readings:all('[data-shell-brand]').map(el=>({label:el.getAttribute('aria-label'),expanded:el.getAttribute('aria-expanded')==='true',version:el.dataset.shellBrand,product:'TCRN TMS',standalone:el.hasAttribute('data-standalone-brand')})),namedRegisteredVersions:!!trigger?.getAttribute('aria-label')&&trigger.getAttribute('aria-haspopup')==='dialog'&&!!trigger.querySelector('svg[data-logo="tms"]')&&!!one('[data-shell-brand="v1"]')&&!!one('[data-shell-brand="v2"]')};
+  const rowReadings=all('.tcrn-shell-menu .tcrn-nav-item-row').map(row=>{const child=row.querySelector(':scope > .tcrn-nav-item'),selected=child?.matches('[aria-current="page"],[aria-expanded="true"]'),hover=row.matches(':hover')||child?.getAttribute('data-tcrn-preview-state')?.split(/\s+/).includes('hover'),state=selected?'selected':hover?'hover':'default',expectedInk=color(row,`var(--tcrn-color-${selected||hover?'ink':'ink-2'})`),expectedFill=state==='default'?'rgba(0, 0, 0, 0)':color(row,`var(--tcrn-color-${selected?'wash':'hover'})`),pin=row.querySelector(':scope > [data-pin-button]');return {state,ink:child&&style(child).color,fill:style(row).backgroundColor,childFill:child&&style(child).backgroundColor,weight:child&&style(child).fontWeight,expectedInk,expectedFill,pinWidth:pin?.getBoundingClientRect().width,columns:style(row).gridTemplateColumns};});
+  facts.ShellMenu={nonModalAndDismiss:!!menu&&menu.getAttribute('aria-modal')==='false'&&!menu.querySelector('[data-shell-close]'),rowReadings,rowCarrierStates:rowReadings.length>0&&rowReadings.every(r=>r.ink===r.expectedInk&&r.fill===r.expectedFill&&r.childFill==='rgba(0, 0, 0, 0)'&&r.weight===(r.state==='selected'?'600':'500')&&r.pinWidth===24&&r.columns.endsWith('24px'))};
   facts.ShellPins={sixAndResponsive:!!pins&&pins.querySelectorAll('.tcrn-shell-pins__item').length<=6};
   facts.ShellDropdown={subtreeSearch:!!drop?.querySelector('input[type="search"]')&&!!drop?.getAttribute('aria-label')};
   facts.ShellIntro={mountedAfterSignIn:!!one('[data-formal-intro]')&&!one('[data-shell-intro]')};
  }
  return facts;
-});}
+});
+ if(facts.ProductLockup){facts.ProductLockup.exactLineRoles=lockupRoleIssues(facts.ProductLockup.readings,formalLockupExpectations(source,locale)).length===0;}
+ if(facts.ShellBrandButton){facts.ShellBrandButton.localizedNames=shellBrandNameIssues(facts.ShellBrandButton.readings,locale).length===0;}
+ return facts;
+}
 
 export async function exerciseApiBoard(page,board,facts){
  const root=page.locator('[data-approved-board]').first();

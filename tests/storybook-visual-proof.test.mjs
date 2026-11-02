@@ -20,3 +20,24 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
  assert.ok(managerIndexIssues({entries:{...entries,legacy:{id:'legacy',type:'story',title:'Style Guide',importPath:'./src/legacy.stories.tsx'}}}).length);
  const changed=structuredClone(entries);changed[MANAGER_STORY_IDS[0]].importPath='./src/renamed-legacy.stories.tsx';assert.ok(managerIndexIssues({entries:changed}).length);
 });
+
+import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
+import { readApprovedSource } from '../scripts/lib/approved-site-source.mjs';
+test('actual04 full and rail roles reject an extra byline or wrong words instead of testing class presence',()=>{
+ const expected=formalLockupExpectations(readApprovedSource(),'en');
+ assert.equal(expected.length,16);assert.ok(expected.filter(e=>e.scale==='rail').every(e=>e.byline===null));
+ const readings=expected.map(e=>({...e,firstLine:null,accessibleName:`${e.name} ${e.tagline}`}));
+ assert.deepEqual(lockupRoleIssues(readings,expected),[]);
+ for(const productId of ['einzbern','mana-orchestrate']){
+  const altered=readings.map(r=>r.productId===productId&&r.scale==='rail'?{...r,byline:'by TCRN'}:r);
+  assert.ok(lockupRoleIssues(altered,expected).length);
+ }
+ assert.ok(lockupRoleIssues(readings.map(r=>({...r,name:'Wrong name'})),expected).length);
+});
+test('all five actual accessible copy contracts reject English fallback in fragment locale pages',()=>{
+ for(const [locale,words]of Object.entries(SHELL_BRAND_NAMES))for(const version of ['v1','v2'])for(const expanded of [false,true]){
+  const row={version,expanded,product:'TCRN TMS',label:`${words[expanded?1:0]} · TCRN TMS`};assert.deepEqual(shellBrandNameIssues([row],locale),[]);
+  assert.ok(shellBrandNameIssues([{...row,label:'Open navigation · Wrong product'}],locale).length);
+  if(locale!=='en')assert.ok(shellBrandNameIssues([{...row,label:`${SHELL_BRAND_NAMES.en[expanded?1:0]} · TCRN TMS`}],locale).length);
+ }
+});

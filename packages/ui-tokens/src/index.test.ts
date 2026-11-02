@@ -38,7 +38,7 @@ test("retired compatibility vocabulary cannot enter the current package sheet", 
   assert.deepEqual(findDeprecatedTokenUsages("color:var(--tcrn-color-ink)"),[]);
 });
 
-test("unresolved K1 preserves formal suffix bytes and does not smuggle in a contrast exemption", () => {
+test("K1 direction is decided but unpublished: formal suffix bytes and contrast threshold remain", () => {
   assert.equal(light["--tcrn-brand-suffix-tms"],"#2c63c8");
   assert.equal(resolvedDark["--tcrn-brand-suffix-tms"],"#2c63c8");
   assert.equal(light["--tcrn-brand-suffix-design-system"],"#6577f3");
@@ -67,6 +67,18 @@ test("light subtrees rebind all theme values and dark blocks have identical name
   assert.equal(resolvedLight["--tcrn-color-surface"],sourceLight["--bg"]);
   assert.equal(resolvedDark["--tcrn-color-surface"],sourceNight["--bg"]);
   assert.equal(resolvedDark["--tcrn-focus-ring"],`0 0 0 2px ${sourceNight["--bg"]},0 0 0 4px ${sourceNight["--acc"]}`);
+});
+
+test("all actual package dependencies resolve in both themes, including the source-local paper radius", () => {
+  assert.equal(tcrnTokens.length,125);
+  const shellCss=readFileSync(new URL("../../../docs/design/approved-site-v1/src/boards/07b-shell-lower/board.css",import.meta.url),"utf8");
+  const localRadius=/\.scr\.ts\{[^}]*--paper-r:([^;}]*)/.exec(shellCss)?.[1];
+  assert.ok(localRadius);
+  for(const values of [resolvedLight,resolvedDark]) {
+    assert.equal(values["--tcrn-radius-paper"],localRadius);
+    assert.equal(Object.keys(values).length,tcrnTokens.length);
+    assert.ok(Object.values(values).every(value=>!value.includes("var(")));
+  }
 });
 
 test("theme block parser rejects a missing light subtree, extra selectors and asymmetric declarations", () => {

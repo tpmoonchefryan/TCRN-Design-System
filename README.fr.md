@@ -4,7 +4,7 @@ Le Storybook actuel utilise uniquement les huit planches de la norme visuelle Si
 
 [Published visual standard](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site) · [Pinned source and mapping](docs/design/approved-site-v1/source-manifest.json) · [Source contract](docs/design/README.md)
 
-Source commit: `a643d4cfcd239f6f81b1715ded6a63caead9d619`. The source Site is version 1; `@tcrn/ui-react` and `@tcrn/ui-tokens` are package candidates at 4.0.0. These are distinct version identities. K1 (suffix text contrast) and K5 (strong text wording) remain unresolved in the published source; machine results and Owner visual acceptance are recorded separately.
+Source commit: `a643d4cfcd239f6f81b1715ded6a63caead9d619`. The source Site is version 1; `@tcrn/ui-react` and `@tcrn/ui-tokens` are package candidates at 4.0.0. These are distinct version identities. K1 (suffix text contrast) and K5 (strong wording): direction decided; pending formal-standard amendment/publication and consumer-version alignment (TCRN-DS-MIN-20261102-STANDARD-AMENDMENTS D1–D4). Published v1 values remain current. S03-C01 (06/07 shortcut text ink) is a separate undecided source clarification; the candidate’s ink-2 cannot establish unchanged06 conformity. Machine results and Owner visual acceptance are recorded separately.
 
 ## Packages
 

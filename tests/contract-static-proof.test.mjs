@@ -14,5 +14,5 @@ test("V4 action/input states switch pairs and cannot paint a color literal or co
 import { checkPairReferences } from '../scripts/lib/published-standard-proof.mjs';
 test('V4 no rf or obsolete shell alias can become an unresolved live CSS dependency',()=>{
  assert.deepEqual(checkPairReferences('.in{--tcrn-pair-edge-f:var(--tcrn-focus-ring);--tcrn-pair-edge:var(--tcrn-pair-edge-f)}'),[]);
- for(const name of ['--tcrn-pair-edge-rf','--tcrn-pair-shell-edge-f'])assert.ok(checkPairReferences(`.field{box-shadow:var(${name})}`).some(issue=>issue.includes(name)));
+ for(const name of ['--tcrn-pair-edge-rf','--tcrn-pair-shell-edge-f','--tcrn-pair-row-fill-h','--tcrn-pair-row-fill-s','--tcrn-pair-row-ink-h','--tcrn-pair-row-ink-s'])assert.ok(checkPairReferences(`.field{box-shadow:var(${name})}`).some(issue=>issue.includes(name)));
 });

@@ -58,8 +58,9 @@ export const inputsCss02 = `
 .tcrn-input.tcrn-search-input__control::placeholder {
   color: var(--tcrn-color-ink-2);
 }
-/* The shortcut label is text, so it takes ink-2 for the same reason the placeholder does:
-   ink-3 on the night wash falls under the 4.5 text contrast. */
+/* Current ink-2 follows published07. Published06 .sw>kbd says ink-3; S03-C01
+   remains an undecided source clarification. Keeping this value does not certify
+   unchanged06, and its nominal night wash failure does not waive text >=4.5. */
 .tcrn-search-input__shortcut {
   position: absolute;
   inset-block-start: 50%;
@@ -409,7 +410,7 @@ export const inputsCss11 = `
 .tcrn-multi-select-dropdown__option [data-multi-select-check][data-selected="true"]{visibility:visible}`;
 
 export const inputsCss13 = `
-.tcrn-number-input{inline-size:100%;min-inline-size:12ch;font-variant-numeric:tabular-nums;text-overflow:clip;-moz-appearance:textfield;appearance:textfield}
+.tcrn-input.tcrn-number-input{inline-size:100%;min-inline-size:12ch;font-variant-numeric:tabular-nums;text-overflow:clip;-moz-appearance:textfield;appearance:textfield}
 .tcrn-number-input::-webkit-inner-spin-button,.tcrn-number-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}`;
 
 export const inputsSizesCss = `

@@ -24,7 +24,7 @@ export const formalLayoutCss = `
 .tcrn-page-header__description{margin:0}
 .tcrn-page-header__meta{padding-bottom:4px;flex:none;white-space:nowrap}
 .tcrn-page-header__lead{flex:1;min-width:0}
-.tcrn-page-header__title{line-height:1.1;letter-spacing:-.005em}
+.tcrn-page-header .tcrn-page-header__title{line-height:1.1;letter-spacing:-.005em}
 .tcrn-page-header__content{flex:1;min-width:0}
 .tcrn-page-header__actions{display:flex;align-items:center;gap:8px;flex:none}
 .tcrn-breadcrumb{display:flex;align-items:center;gap:6px;min-width:0;color:var(--tcrn-color-ink-3);font-size:12px;white-space:nowrap}
@@ -39,11 +39,11 @@ export const formalLayoutCss = `
 .tcrn-nav-group__label-text{margin:0;font:500 10px/16px var(--tcrn-type-family-ui);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* 07 .ts-it paints once across the text and reserved pin slot. Its accessible
    package rendition uses sibling link/button nodes, so the wrapper owns that carrier. */
-.tcrn-nav-item-row{--tcrn-pair-fill-d:transparent;--tcrn-pair-fill-h:var(--tcrn-color-hover);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-fill:var(--tcrn-pair-fill-d);display:grid;grid-template-columns:minmax(0,1fr) 24px;align-items:center;column-gap:0;min-width:0;border-radius:8px;color:var(--tcrn-color-ink-2);background:var(--tcrn-pair-fill)}
+.tcrn-nav-item-row{--tcrn-pair-row-fill-d:transparent;--tcrn-pair-row-fill-h:var(--tcrn-color-hover);--tcrn-pair-row-fill-s:var(--tcrn-color-wash);--tcrn-pair-row-ink-d:var(--tcrn-color-ink-2);--tcrn-pair-row-ink-h:var(--tcrn-color-ink);--tcrn-pair-row-ink-s:var(--tcrn-color-ink);--tcrn-pair-row-fill:var(--tcrn-pair-row-fill-d);--tcrn-pair-row-ink:var(--tcrn-pair-row-ink-d);display:grid;grid-template-columns:minmax(0,1fr) 24px;align-items:center;column-gap:0;min-width:0;border-radius:8px;font-weight:500;color:var(--tcrn-pair-row-ink);background:var(--tcrn-pair-row-fill)}
 .tcrn-nav-item{display:flex;align-items:center;gap:10px;min-width:0;height:var(--tcrn-shell-row-h);padding:0 4px 0 8px;border:0;border-radius:8px;background:transparent;color:inherit;text-decoration:none;text-align:left;font:500 12.5px/20px var(--tcrn-type-family-ui);white-space:nowrap}
 .tcrn-nav-item__content,.tcrn-nav-item__label{display:inline-flex;align-items:center;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tcrn-nav-item-row:where(:hover,:has(>.tcrn-nav-item[data-tcrn-preview-state="hover"])){--tcrn-pair-fill:var(--tcrn-pair-fill-h)}
-.tcrn-nav-item-row:where(:has(>[aria-current="page"]),:has(>[aria-expanded="true"])){--tcrn-pair-fill:var(--tcrn-pair-fill-s);font-weight:600}
+.tcrn-nav-item-row:where(:hover,:has(>.tcrn-nav-item[data-tcrn-preview-state~="hover"])){--tcrn-pair-row-fill:var(--tcrn-pair-row-fill-h);--tcrn-pair-row-ink:var(--tcrn-pair-row-ink-h)}
+.tcrn-nav-item-row:where(:has(>[aria-current="page"]),:has(>[aria-expanded="true"])){--tcrn-pair-row-fill:var(--tcrn-pair-row-fill-s);--tcrn-pair-row-ink:var(--tcrn-pair-row-ink-s);font-weight:600}
 .tcrn-nav-pin{display:inline-flex;align-items:center;justify-content:center;justify-self:end;width:24px;height:24px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--tcrn-color-ink-3);opacity:0;cursor:pointer}
 .tcrn-nav-pin>.tcrn-icon{width:16px;height:16px}
 .tcrn-nav-item-row:hover .tcrn-nav-pin,.tcrn-nav-item-row:focus-within .tcrn-nav-pin,.tcrn-nav-group__label:hover .tcrn-nav-pin,.tcrn-nav-group__label:focus-within .tcrn-nav-pin,.tcrn-nav-pin[aria-pressed="true"],.tcrn-nav-pin:focus-visible{opacity:1}

@@ -60,6 +60,27 @@ export const CSS_VAR = Object.freeze({
 export function packageValue(value) {
   return value.replace(/var\((--[a-z0-9-]+)\)/g, (whole, name) => { if (!CSS_VAR[name]) throw new Error(`Unmapped published token ${name}`); return `var(${CSS_VAR[name]})`; });
 }
+// Resolve an explicitly anchored source scope before renaming its variables. A local
+// --paper-r is data on .scr.ts, not an alias to its own package destination.
+export function resolveSourceLocals(value, locals, trail = []) {
+  return value.replace(/var\((--[a-z0-9-]+)\)/g, (whole, name) => {
+    if (!(name in locals)) return whole; // Global themed tokens remain live references.
+    if (trail.includes(name)) throw new Error(`Published local variable cycle: ${[...trail, name].join(" -> ")}`);
+    return resolveSourceLocals(locals[name], locals, [...trail, name]);
+  });
+export function assertTokenGraph(entries, theme) {
+  const values = new Map(entries.map(row => [row.cssVar, row[theme] ?? row.value]));
+  if (values.size !== entries.length) throw new Error("Duplicate published package token");
+  const done = new Set();
+  function visit(name, trail = []) {
+    if (trail.includes(name)) throw new Error(`Published package token cycle: ${[...trail, name].join(" -> ")}`);
+    if (done.has(name)) return;
+    if (!values.has(name)) throw new Error(`Missing published package token ${name}`);
+    for (const match of values.get(name).matchAll(/var\((--[a-z0-9-]+)\)/g)) visit(match[1], [...trail, name]);
+    done.add(name);
+  }
+  for (const name of values.keys()) visit(name);
+}
 export function extractTokens(source) {
   const css = source.board("01-tokens").css;
   const light = cssRule(css, ".gp"), night = cssRule(css, ".gp.night");
@@ -91,7 +112,12 @@ export function extractPackageBindings(source, bindings = JSON.parse(fs.readFile
       if (binding.transform === "footerInner") value = `${parseFloat(value) - 8}px`; // 07b D2/F: 52 total, including panel bottom padding 8.
       if (binding.transform === "loadingLoop") value = value.replace(/^spin\s+/, "").replace(/\s+infinite$/, "");
     }
-    return { key: binding.cssVar.slice(7), cssVar: binding.cssVar, group: "contract", value: packageValue(value), source: `${binding.board}/${binding.text ? `index.dc.html:${binding.text}` : `board.css#${binding.selector}:${binding.property}`}` };
+    if (binding.variables) {
+      const locals = Object.assign({}, ...binding.variables.map(selector => cssRule(board.css, selector)));
+      value = resolveSourceLocals(value, locals);
+    }
+    const origin = `${binding.board}/${binding.text ? `index.dc.html:${binding.text}` : `board.css#${binding.selector}:${binding.property}`}`;
+    return { key: binding.cssVar.slice(7), cssVar: binding.cssVar, group: "contract", value: packageValue(value), source: origin + (binding.variables ? ` via ${binding.variables.join(" + ")}` : "") };
   });
 }
 export function svgBodies(html, attribute) {

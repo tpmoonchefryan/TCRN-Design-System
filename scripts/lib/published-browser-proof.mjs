@@ -3,7 +3,7 @@ import path from "node:path";
 import http from "node:http";
 import { chromium } from "@playwright/test";
 import { ROOT,readApprovedSource,extractMatrixOccurrences } from "./approved-site-source.mjs";
-import { contrast } from "./published-standard-proof.mjs";
+import { contrast,FORMAL_AMENDMENT_STATE } from "./published-standard-proof.mjs";
 import { SHELL_G18, SHELL_G18_FIXTURES, collectShellG18, installIntroRecorder, readIntro, judgeShellG18, installShellFixture } from "./published-shell-gates.mjs";
 
 function referenceHtml(source,board){
@@ -61,7 +61,7 @@ export async function proveFamilyMatrices({root=ROOT}={}){return withPublishedBr
       }
     }finally{await reference.close();await candidate.close();}
   }
-  return {issues,sourceCommit:source.manifest.site.sourceCommit,sourceOccurrences:cells.length,observed:observations.length,observations,unresolved:["K5"]};
+  return {issues,sourceCommit:source.manifest.site.sourceCommit,sourceOccurrences:cells.length,observed:observations.length,observations,pendingFormalAmendments:["K5"],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:["S03-C01"]};
 },{root});}
 const shellRoles={
  "brand-word":".tcrn-shell-brand__word","brand-suffix":".tcrn-shell-brand__suffix",tgl:"[data-shell-toggle]",
@@ -109,5 +109,5 @@ export async function proveShell({root=ROOT,fixtures=false}={}){return withPubli
    }catch(error){issues.push(`${definition.id}: fixture execution incomplete: ${error.message}`);fixtureResults.push({id:definition.id,caught:false,error:error.message});}finally{await mutated.close();}}
   }else{for(const [id,failures]of Object.entries(gates))issues.push(...failures.map(message=>`${id}: ${message}`));}
  }finally{await page.close();}
- return {issues,sourceCommit:source.manifest.site.sourceCommit,sourceOccurrences:matrix?.sourceOccurrences??225,observations:matrix?.observations??[],g18:gates,facts,mode:fixtures?'local-negative-fixtures':'candidate-measurement',fixtureResults,unresolved:['K1','K5']};
+ return {issues,sourceCommit:source.manifest.site.sourceCommit,sourceOccurrences:matrix?.sourceOccurrences??225,observations:matrix?.observations??[],g18:gates,facts,mode:fixtures?'local-negative-fixtures':'candidate-measurement',fixtureResults,pendingFormalAmendments:['K1','K5'],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:['S03-C01']};
 },{root});}

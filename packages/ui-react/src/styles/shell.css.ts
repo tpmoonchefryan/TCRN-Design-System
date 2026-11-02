@@ -490,15 +490,8 @@ export const shellCss03 = `
   block-size: 100%;
   padding-inline-end: 0;
   background: transparent;
-  color: var(--tcrn-pair-row-ink);
-}
-.tcrn-shell-menu .tcrn-nav-item-row:where(:has(> [data-tcrn-preview-state~="hover"])) {
-  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-h);
-  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-h);
-}
-.tcrn-shell-menu .tcrn-nav-item-row:where(:has(> [aria-expanded="true"])) {
-  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-s);
-  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-s);
+  color: inherit;
+  font-weight: inherit;
 }
 :where(.tcrn-shell-menu .tcrn-nav-item-row:has(> [data-tcrn-preview-state~="hover"]), .tcrn-shell-menu .tcrn-nav-group[data-tcrn-preview-state~="hover"] > .tcrn-nav-group__label) > .tcrn-nav-pin {
   opacity: 1;
