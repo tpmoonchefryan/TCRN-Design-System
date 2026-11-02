@@ -29,6 +29,7 @@ export function readApprovedSource(root = ROOT, options = {}) {
   for (const [key, expected] of Object.entries(APPROVED_SITE)) if (manifest.site?.[key] !== expected) throw new Error(`Unapproved Site identity: ${key}`);
   if (JSON.stringify(Object.fromEntries(manifest.boards.map((b) => [b.slug, b.sourceId]))) !== JSON.stringify(APPROVED_BOARD_IDS)) throw new Error("Published eight-board identities/order changed");
   const actualFiles = new Map(manifest.files.map((entry) => [entry.path, entry]));
+  if (actualFiles.size !== manifest.files.length) throw new Error("Duplicate published source file claim");
   for (const [rel, expected] of Object.entries(APPROVED_SOURCE_PINS)) {
     if (rel === "font-files") continue;
     const bytes = readSource(path.join(base, rel));

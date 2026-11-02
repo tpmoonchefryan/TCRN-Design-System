@@ -29,3 +29,8 @@ test("V1 prose bindings derive their number from the actual source anchor, not a
  assert.throws(()=>extractPackageBindings(source,[{...binding,value:'8'}]),/Unbacked numeric value/);
  assert.throws(()=>extractPackageBindings(source,[{...binding,text:'上限8'}]),/Missing published text anchor/);
 });
+
+test("V1 package/source commit agreement cannot hide a wrong project, version, deployment or publication state",async()=>{
+ const {sourceIdentityIssues}=await import('../scripts/lib/published-standard-proof.mjs');assert.deepEqual(sourceIdentityIssues(APPROVED_SITE),[]);
+ for(const [key,value]of Object.entries({projectId:'wrong',versionId:'wrong',versionNumber:2,deploymentId:'wrong',deploymentStatus:'pending',sourceCommit:'wrong'}))assert.ok(sourceIdentityIssues({...APPROVED_SITE,[key]:value}).some(issue=>issue.includes(key)));
+});
