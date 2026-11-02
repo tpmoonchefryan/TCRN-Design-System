@@ -580,6 +580,17 @@
           "slot": true
         },
         {
+          "name": "size",
+          "type": "ButtonProps[\"size\"]",
+          "required": false,
+          "default": "\"md\"",
+          "enumValues": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
           "name": "variant",
           "type": "\"secondary\" | \"quiet\"",
           "required": false,
@@ -591,6 +602,11 @@
         }
       ],
       "variants": {
+        "size": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "variant": [
           "secondary",
           "quiet"

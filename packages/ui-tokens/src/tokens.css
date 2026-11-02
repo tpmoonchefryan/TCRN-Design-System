@@ -118,7 +118,7 @@
   --tcrn-shell-pbar-h: 44px;
   --tcrn-shell-pins-max: 6;
   --tcrn-motion-intro-duration: 460ms;
-  --tcrn-radius-paper: var(--tcrn-radius-paper);
+  --tcrn-radius-paper: 14px;
   --tcrn-z-overlay: 3;
   --tcrn-z-popover: 3;
   --tcrn-radius-pill: 999px;
