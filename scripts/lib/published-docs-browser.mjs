@@ -99,6 +99,16 @@ export function provenanceActivationIssues(reading,{base,entry,locale,source,boa
  if(!reading.visible||!reading.text?.includes(source.manifest.site.sourceCommit)||sourceIds.some(id=>!id||!reading.text.includes(id))||(entry==='static'&&!reading.text?.includes(source.manifest.site.url)))issues.push('provenance activation did not render the expected published source content');
  return issues;
 }
+// Static API results leave readers on api.html, which has no board marker.
+// Only manager source sections need the current board's source ID.
+export async function activateProvenanceResult(page,result,{base,entry,locale,source}){
+ const before=page.url(),board=entry==='manager'?await page.locator('[data-approved-board]').first().getAttribute('data-approved-board'):null,href=await result.getAttribute('href');
+ const expected=new URL(entry==='static'?`/${locale}/source.html`:'#source',entry==='static'?base:before).href;
+ await result.click();await page.waitForURL(expected);await page.locator('[data-docs-ready="true"]').waitFor();
+ const content=page.locator(entry==='static'?'main .tcrn-doc-content':'section#source');await content.waitFor({state:'visible'});
+ const reading={before,href,activated:page.url(),visible:await content.isVisible(),text:await content.textContent()};
+ return {board,...reading,issues:provenanceActivationIssues(reading,{base,entry,locale,source,board})};
+}
 export async function exerciseDocsNavigation(page,{base,entry,locale,source,formal}){
  const issues=[],observations=[];
  const owner=()=>page.locator('.tcrn-product-shell').first();
@@ -130,13 +140,9 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
  try{
   const menu=await open();await menu.locator('[data-shell-search] input[type="search"]').fill(source.manifest.site.sourceCommit);
   const result=menu.locator('[data-search-result]');await result.waitFor({state:'visible'});
-  const before=page.url(),board=await page.locator('[data-approved-board]').first().getAttribute('data-approved-board'),href=await result.getAttribute('href');
-  const expected=new URL(entry==='static'?`/${locale}/source.html`:'#source',entry==='static'?base:before).href;
-  await result.click();await page.waitForURL(expected);await page.locator('[data-docs-ready="true"]').waitFor();
-  const content=page.locator(entry==='static'?'main .tcrn-doc-content':'section#source');await content.waitFor({state:'visible'});
-  const reading={before,href,activated:page.url(),visible:await content.isVisible(),text:await content.textContent()};
-  issues.push(...provenanceActivationIssues(reading,{base,entry,locale,source,board}).map(issue=>`${entry}/${locale}: ${issue}`));
-  observations.push({kind:'source-search-activation',entry,locale,board,...reading});
+  const {issues:activationIssues,...reading}=await activateProvenanceResult(page,result,{base,entry,locale,source});
+  issues.push(...activationIssues.map(issue=>`${entry}/${locale}: ${issue}`));
+  observations.push({kind:'source-search-activation',entry,locale,...reading});
  }catch(error){issues.push(`${entry}/${locale}: provenance search ${error.message}`);}
  return {issues,observations};
 }

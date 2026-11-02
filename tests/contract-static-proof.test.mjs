@@ -12,22 +12,34 @@ test("V4 action/input states switch pairs and cannot paint a color literal or co
 });
 
 import { checkPairReferences } from '../scripts/lib/published-standard-proof.mjs';
-import { describedErrorRoleIssues } from '../scripts/lib/published-api-browser.mjs';
+import { describedErrorRoleIssues,hintRoleIssues } from '../scripts/lib/published-api-browser.mjs';
 import { readApprovedSource,ROOT } from '../scripts/lib/approved-site-source.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-test('06 actual primary described messages retain bad ink and error geometry across both entries/locales/themes',()=>{
+test('06 actual primary described messages retain bad ink, native association and effective text overflow across both entries/locales/themes',()=>{
  const source=readApprovedSource();
+ const textCarrier={text:'Required',direct:true,whiteSpace:'nowrap',overflowX:'hidden',overflowY:'hidden',textOverflow:'ellipsis',display:'block',minWidth:'0px',flexShrink:'1',width:100,height:16,availableWidth:100,clientWidth:100,scrollWidth:160};
  for(const entry of ['static','manager'])for(const locale of ['zh-CN','en','ja','ko','fr']){
-  const rows=['light','dark'].flatMap(theme=>['error','error-focus'].map(state=>({entry,locale,theme,state,primary:true,invalid:true,describedIds:[`${theme}-error`],messages:[{id:`${theme}-error`,unique:true,primary:true,text:'Required',color:theme==='dark'?'rgb(229, 137, 123)':'rgb(168, 50, 31)',fontSize:'11.5px',lineHeight:'16px',gap:'5px',display:'flex',alignItems:'center'}]})));
+  const rows=['light','dark'].flatMap(theme=>['error','error-focus'].map(state=>({entry,locale,theme,state,primary:true,invalid:true,describedIds:[`${theme}-error`],messages:[{id:`${theme}-error`,unique:true,primary:true,text:'Required',color:theme==='dark'?'rgb(229, 137, 123)':'rgb(168, 50, 31)',fontSize:'11.5px',lineHeight:'16px',gap:'5px',display:'flex',alignItems:'center',minWidth:'0px',textCarrier:{...textCarrier},icons:[{name:'alert-triangle',hidden:true,width:14,flexShrink:'0'}]}]})));
   assert.deepEqual(describedErrorRoleIssues(rows,{source}),[]);
   // Change only the actual error carrier ink; association/text/geometry stay correct.
   for(const index of [0,2]){const wrong=structuredClone(rows);wrong[index].messages[0].color=wrong[index].theme==='dark'?'rgb(133, 130, 122)':'rgb(107, 103, 93)';assert.ok(describedErrorRoleIssues(wrong,{source}).length,`${entry}/${locale}/${wrong[index].theme} wrong ink`);}
   for(const change of [r=>r.messages[0].fontSize='11px',r=>r.messages[0].lineHeight='20px',r=>r.messages[0].gap='0px',r=>r.describedIds=[],r=>r.invalid=false,r=>r.messages[0].unique=false,r=>r.messages[0].primary=false]){const wrong=structuredClone(rows);change(wrong[0]);assert.ok(describedErrorRoleIssues(wrong,{source}).length);}
+  // Correct color/type on a flex wrapper cannot mask wrapping, visible overflow,
+  // clipped-without-ellipsis text, an unshrinkable item, or lost accessible text.
+  for(const change of [{whiteSpace:'normal'},{overflowX:'visible'},{overflowY:'visible'},{textOverflow:'clip'},{display:'inline'},{minWidth:'auto'},{flexShrink:'0'},{width:160},{height:32},{direct:false},{text:'Req'}]){
+   const wrong=structuredClone(rows);Object.assign(wrong[0].messages[0].textCarrier,change);assert.ok(describedErrorRoleIssues(wrong,{source}).length,JSON.stringify(change));
+  }
+  const wrapperOnly=structuredClone(rows);Object.assign(wrapperOnly[0].messages[0],{whiteSpace:'nowrap',overflowX:'hidden',overflowY:'hidden',textOverflow:'ellipsis',textCarrier:null});assert.ok(describedErrorRoleIssues(wrapperOnly,{source}).length,'wrapper properties alone cannot ellipsize anonymous flex text');
+  const missingIcon=structuredClone(rows);missingIcon[0].messages[0].icons=[];assert.ok(describedErrorRoleIssues(missingIcon,{source}).length);
   assert.ok(describedErrorRoleIssues(rows.map(r=>({...r,primary:false})),{source}).length,'source-matrix roles cannot stand in for primary messages');
+  const hints=['light','dark'].map(theme=>({...textCarrier,entry,locale,theme,color:theme==='dark'?'rgb(133, 130, 122)':'rgb(107, 103, 93)',fontSize:'11.5px',lineHeight:'16px'}));assert.deepEqual(hintRoleIssues(hints,{source}),[]);
+  for(const change of [{whiteSpace:'normal'},{overflowX:'visible'},{overflowY:'visible'},{textOverflow:'clip'},{minWidth:'auto'},{width:160},{height:32}]){const wrong=structuredClone(hints);Object.assign(wrong[0],change);assert.ok(hintRoleIssues(wrong,{source}).length,`hint ${JSON.stringify(change)}`);}
  }
  const specimens=fs.readFileSync(path.join(ROOT,'apps/storybook/src/specimens.tsx'),'utf8');
  assert.match(specimens,/<p id=\{`\$\{prefix\}-\$\{theme\}-err`\} className="tcrn-doc-error" data-primary-input-error=""/);
+ assert.match(specimens,/<Icon name="alert-triangle" size="sm"\/><span className="tcrn-doc-error__text">\{c.error\}<\/span><\/p>/);
+ const matrices=fs.readFileSync(path.join(ROOT,'apps/storybook/src/source-matrices.tsx'),'utf8');assert.equal((matrices.match(/className="tcrn-doc-error__text">\{c.error\}<\/span>/g)??[]).length,2,'actual matrix messages use the same text carrier, with and without an icon');
  assert.match(specimens,/aria-describedby=\{state==="error"\|\|state==="error-focus"\?`\$\{prefix\}-\$\{theme\}-err`:undefined\}/);
  assert.match(specimens,/data-tcrn-preview-state=\{state==="hover"\|\|state==="focus"\|\|state==="error-focus"\?state:undefined\}/);
 });

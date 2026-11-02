@@ -27,6 +27,7 @@ import {
 } from "./Form.js";
 import { tcrnComponentCss } from "../../styles/index.js";
 import { inputsCheckPairsCss, inputsSwitchPairsCss, inputsTextPairsCss } from "../../styles/generated/inputs.pairs.js";
+import { Icon } from "../Icon/Icon.js";
 
 function escapeRegExp(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -581,13 +582,25 @@ test("STORY-126 the field no longer washes on focus, and every ring keeps a forc
   assert.doesNotMatch(tcrnComponentCss, /(?:^|\}|\*\/)\s*\.tcrn-field--error\s*\{/);
   assert.doesNotMatch(tcrnComponentCss, /state-blocked-bg\) 62%/);
   const error = cssRule(".tcrn-doc-error");
-  for (const declaration of ["color:var(--tcrn-color-bad)", "font:400 11.5px/16px", "gap:5px"]) assert.ok(error.includes(declaration), declaration);
-  const dom = new JSDOM(renderToStaticMarkup(<><Input aria-label="Name" aria-invalid="true" aria-describedby="name-error" /><p id="name-error" className="tcrn-doc-error">Name is required</p></>));
+  for (const declaration of ["color:var(--tcrn-color-bad)", "font:400 11.5px/16px", "gap:5px", "min-width:0"]) assert.ok(error.includes(declaration), declaration);
+  const errorText = cssRule(".tcrn-doc-error__text"), hint = cssRule(".tcrn-doc-hint");
+  for (const role of [errorText, hint]) for (const declaration of ["min-width:0", "white-space:nowrap", "overflow:hidden", "text-overflow:ellipsis"]) assert.ok(role.includes(declaration), `actual text carrier ${declaration}`);
+  for (const declaration of ["display:block", "flex:1"]) assert.ok(errorText.includes(declaration), declaration);
+  for (const declaration of ["font-size:11.5px", "line-height:16px", "color:var(--tcrn-color-ink-3)"]) assert.ok(hint.includes(declaration), declaration);
+  assert.match(cssRule(".tcrn-doc-error>.tcrn-icon"), /flex-shrink:0/);
+  assert.doesNotMatch(cssRule(".tcrn-doc-label"), /overflow|text-overflow|white-space/, "clipping the label would also clip its native control/focus ring");
+  assert.doesNotMatch(error, /overflow|text-overflow/, "the flex wrapper is not the message text carrier");
+  const fullText = "Name is required; keep the full described message available even when its visual line is constrained";
+  const dom = new JSDOM(renderToStaticMarkup(<><label className="tcrn-doc-label">Name<Input aria-label="Name" aria-invalid="true" aria-describedby="name-error" data-tcrn-preview-state="error-focus" /><span className="tcrn-doc-hint">The complete hint remains in the document</span></label><p id="name-error" className="tcrn-doc-error"><Icon name="alert-triangle" size="sm" /><span className="tcrn-doc-error__text">{fullText}</span></p></>));
   try {
     const input = dom.window.document.querySelector("input");
     assert.equal(input?.getAttribute("aria-invalid"), "true");
     const message = dom.window.document.getElementById(input?.getAttribute("aria-describedby") ?? "");
-    assert.equal(message?.textContent, "Name is required");assert.ok(message?.classList.contains("tcrn-doc-error"));
+    assert.equal(message?.textContent, fullText);assert.ok(message?.classList.contains("tcrn-doc-error"));
+    assert.equal(message?.querySelector(":scope > .tcrn-doc-error__text")?.textContent, fullText);
+    assert.equal(message?.querySelector(":scope > svg")?.getAttribute("aria-hidden"), "true");
+    assert.equal(input?.getAttribute("data-tcrn-preview-state"), "error-focus");
+    assert.equal(dom.window.document.querySelector(".tcrn-doc-hint")?.textContent, "The complete hint remains in the document");
   } finally { dom.window.close(); }
   for (const control of [".tcrn-input", ".tcrn-select", ".tcrn-checkbox", ".tcrn-radio-group__control", ".tcrn-switch__control"]) {
     assert.match(tcrnComponentCss, new RegExp(`${escapeRegExp(control)}:where\\(:focus-visible\\)[^{]*\\{\\s*outline: 2px solid transparent;\\s*outline-offset: 2px;`));

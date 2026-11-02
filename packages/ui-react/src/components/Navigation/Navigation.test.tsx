@@ -801,8 +801,8 @@ test("shell chrome says its own words in the reader's language", () => {
   assert.match(zh, /placeholder="检索"/);
   assert.match(zh, />没有结果</);
   assert.match(zh, />该导航项在此路由下不可用</);
-  assert.match(zh, />产品</);
-  assert.match(zh, />产品外壳</);
+  assert.match(zh, /<b class="tcrn-product-logo__line-one" title="TCRN TMS"><span class="tcrn-product-logo__line-one-base">TCRN<\/span> <em[^>]*>TMS<\/em><\/b>/);
+  assert.match(zh, /<small class="tcrn-product-logo__line-two" title="艺人管理系统">艺人管理系统<\/small>/);
   for (const englishDefault of [
     "Switch to dark mode", "Collapse side navigation", "Breadcrumb", "Search product shell",
     "Search results", "No results", "Product launcher", "Product switcher", "Module sections",

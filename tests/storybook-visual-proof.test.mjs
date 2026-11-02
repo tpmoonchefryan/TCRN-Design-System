@@ -22,8 +22,37 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
 });
 
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
-import { readApprovedSource } from '../scripts/lib/approved-site-source.mjs';
-import { provenanceActivationIssues } from '../scripts/lib/published-docs-browser.mjs';
+import { readApprovedSource,sourceElements,decodeHtml } from '../scripts/lib/approved-site-source.mjs';
+import { provenanceActivationIssues,activateProvenanceResult } from '../scripts/lib/published-docs-browser.mjs';
+import fs from 'node:fs';
+import path from 'node:path';
+test('the real provenance caller clicks from each emitted static API page without a board-only precondition',async()=>{
+ const source=readApprovedSource(),base='http://127.0.0.1:1234';
+ for(const locale of ['zh-CN','en','ja','ko','fr']){
+  const apiHtml=fs.readFileSync(path.join(ROOT,'apps/storybook/storybook-static',locale,'api.html'),'utf8'),nodes=sourceElements(apiHtml);
+  assert.equal(nodes.filter(n=>Object.hasOwn(n.attrs,'data-approved-board')).length,0,'the actual all-API page has no board marker');
+  assert.deepEqual(nodes.filter(n=>Object.hasOwn(n.attrs,'data-approved-api')).map(n=>n.attrs['data-approved-api']).sort(),apis.map(a=>a.name).sort());
+  const sourceHtml=fs.readFileSync(path.join(ROOT,'apps/storybook/storybook-static',locale,'source.html'),'utf8');
+  const sourceText=decodeHtml(sourceHtml.replace(/<[^>]*>/g,' ')),before=`${base}/${locale}/api.html#api-ShellIntro`,destination=`${base}/${locale}/source.html`;
+  // This caller stub starts on actual emitted API markup, before collection/click.
+  // Browser hydration/visibility remain duties of the existing real browser proof.
+  function caller({prevented=false,text=sourceText,visible=true,clickError=false}={}){
+   let url=before,clicks=0;const waits=[];
+   const page={url:()=>url,waitForURL:async expected=>{assert.equal(url,expected,'only the actual result click may change route');},locator:selector=>{
+    assert.notEqual(selector,'[data-approved-board]','static collection must not await a marker absent from api.html');
+    if(selector==='[data-docs-ready="true"]')return {waitFor:async()=>{assert.ok(sourceHtml.includes('data-docs-ready='));waits.push(selector);}};
+    assert.equal(selector,'main .tcrn-doc-content');return {waitFor:async options=>{assert.deepEqual(options,{state:'visible'});waits.push(selector);},isVisible:async()=>visible,textContent:async()=>text};
+   }};
+   const result={getAttribute:async name=>{assert.equal(name,'href');return `/${locale}/source.html`;},click:async()=>{clicks++;if(clickError)throw new Error('activation blocked');if(!prevented)url=destination;}};
+   return {run:()=>activateProvenanceResult(page,result,{base,entry:'static',locale,source}),state:()=>({url,clicks,waits})};
+  }
+  const good=caller(),reading=await good.run();assert.deepEqual(reading.issues,[]);assert.equal(reading.board,null);assert.deepEqual(good.state(),{url:destination,clicks:1,waits:['[data-docs-ready="true"]','main .tcrn-doc-content']});
+  await assert.rejects(caller({prevented:true}).run(),/only the actual result click/);
+  await assert.rejects(caller({clickError:true}).run(),/activation blocked/);
+  assert.ok((await caller({text:'Source'}).run()).issues.some(i=>i.includes('render')));
+  assert.ok((await caller({visible:false}).run()).issues.some(i=>i.includes('render')));
+ }
+});
 test('provenance activation rejects a prevented click even with a correct href and already rendered source text',()=>{
  const source=readApprovedSource(),base='http://127.0.0.1:1234',board='07a-shell-upper';
  for(const entry of ['static','manager'])for(const locale of ['zh-CN','en','ja','ko','fr']){
