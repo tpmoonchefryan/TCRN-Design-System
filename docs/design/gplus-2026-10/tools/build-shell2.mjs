@@ -245,7 +245,7 @@ const contract = `<div class="cols3">
 <div class="box"><h4>键盘与读屏</h4><ul>
 <li><code>⌘K / Ctrl+K</code> 打开完整菜单并聚焦搜索；<code>Esc</code> 关闭，焦点回标按钮；菜单内 ↑↓ 走项，→ 进入子项列，← 回左列。</li>
 <li>标按钮 <code>aria-expanded</code>、<code>aria-haspopup="dialog"</code>；固定的二级菜单同样；浮层 <code>role="dialog"</code> 非模态。</li>
-<li>图钉是真按钮，<code>aria-pressed</code>，可见名「固定到顶带：合约」；行获焦时图钉同 hover 出现。</li>
+<li>图钉保留纯图标按钮，<code>aria-pressed</code>，<code>aria-label</code> 提供五语可访问名称「固定到顶带：合约」；行获焦时图钉同 hover 出现。</li>
 <li>所有可见字符串五语同源；图标钮都有 aria-label。</li>
 <li>触摸端：标按钮 ≥ 40，Sheet 行 44，图钉热区 44。</li>
 </ul></div>
