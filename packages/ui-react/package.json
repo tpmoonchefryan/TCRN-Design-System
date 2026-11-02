@@ -12,6 +12,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./approved": {
+      "types": "./dist/approved.d.ts",
+      "default": "./dist/approved.js"
     }
   },
   "peerDependencies": {
@@ -31,7 +35,7 @@
     "react-dom": "19.1.0"
   },
   "scripts": {
-    "build": "node -e \"const fs=require('node:fs');fs.rmSync('dist',{recursive:true,force:true});fs.rmSync('tsconfig.tsbuildinfo',{force:true})\" && tsc -p tsconfig.json",
+    "build": "node ../../scripts/prepare-output.mjs --root packages/ui-react/dist && tsc -p tsconfig.json",
     "test": "pnpm test:ssr",
     "test:dom": "pnpm build && node --test \"dist/test/**/*.dom.spec.js\"",
     "test:ssr": "node --test \"dist/**/*.test.js\""

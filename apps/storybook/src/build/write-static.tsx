@@ -1,0 +1,39 @@
+import fs from "node:fs";
+import path from "node:path";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { renderToStaticMarkup } from "react-dom/server";
+import { tcrnComponentCss,tcrnProductMarkSvg } from "@tcrn/ui-react/approved";
+import { tcrnTokenCss } from "@tcrn/ui-tokens";
+import { App,type DocsPage } from "../app.js";
+import { approvedSource,supportedLocales,type DocsLocale } from "../approved-source.js";
+import { docsCopy } from "../locales.js";
+import { createAiConsumptionContract } from "./ai-consumption-contract.js";
+import { designAuthority } from "./design-authority.js";
+const root=fileURLToPath(new URL("../../../../",import.meta.url));
+const hash=(bytes:Uint8Array|string)=>createHash("sha256").update(bytes).digest("hex");
+const escape=(value:string)=>value.replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;");
+function pageHtml(page:DocsPage,locale:DocsLocale){const c=docsCopy(locale);const state={page,locale};return `<!doctype html><html lang="${locale}" data-tcrn-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="standard-source-commit" content="${approvedSource.site.sourceCommit}"><title>${escape(c.title)}</title><link rel="icon" type="image/svg+xml" href="/assets/ds-tile-deep.svg"><link rel="stylesheet" href="/fonts/fonts.css"><link rel="stylesheet" href="/storybook.css"></head><body style="margin:0"><div id="app">${renderToStaticMarkup(<App {...state}/>)}</div><script id="page-state" type="application/json">${JSON.stringify(state).replaceAll("<","\\u003c")}</script><script type="module" src="/storybook.js"></script></body></html>`;}
+export async function writeStorybookStaticBuild(bundle:Uint8Array){
+  const output=path.join(root,"apps/storybook/storybook-static"),fontRoot=path.join(root,"packages/ui-tokens/fonts"),licenseRoot=path.join(root,"packages/ui-tokens/licenses");
+  const fonts=JSON.parse(fs.readFileSync(path.join(fontRoot,"manifest.json"),"utf8"));
+  if(fonts.site?.sourceCommit!==approvedSource.site.sourceCommit)throw new Error("Fonts were not generated from this published Site");
+  const candidate={version:JSON.parse(fs.readFileSync(path.join(root,"packages/ui-react/package.json"),"utf8")).version,commit:execFileSync("git",["-C",root,"rev-parse","HEAD"],{encoding:"utf8"}).trim(),dirty:execFileSync("git",["-C",root,"status","--porcelain=v1"],{encoding:"utf8"}).trim().length>0};
+  const files=new Map<string,Uint8Array|string>();
+  for(const locale of supportedLocales)for(const page of ["index",...approvedSource.boards.map(b=>b.slug),"api","source"] as DocsPage[])files.set(`${locale}/${page}.html`,pageHtml(page,locale));
+  files.set("index.html",pageHtml("index","en"));files.set("storybook.js",bundle);files.set("storybook.css",tcrnTokenCss+"\n"+tcrnComponentCss);
+  files.set("assets/ds-tile-deep.svg",tcrnProductMarkSvg("design-system","tile-deep",{size:48}));
+  for(const file of fonts.files){const bytes=fs.readFileSync(path.join(fontRoot,file.file));if(hash(bytes)!==file.sha256)throw new Error(`Font digest mismatch ${file.file}`);files.set(`fonts/${file.file}`,bytes);}
+  files.set("fonts/fonts.css",fs.readFileSync(path.join(fontRoot,"fonts.css")));files.set("fonts/manifest.json",JSON.stringify(fonts,null,2)+"\n");
+  for(const name of fonts.licenses)files.set(`licenses/${name}`,fs.readFileSync(path.join(licenseRoot,name)));
+  files.set("ai-consumption-contract.json",JSON.stringify(createAiConsumptionContract(candidate,fonts.files),null,2)+"\n");files.set("design-authority.json",JSON.stringify({...designAuthority,candidate},null,2)+"\n");
+  files.set("llms.txt",`# TCRN Design System candidate ${candidate.version}\nCandidate commit: ${candidate.commit}\nPublished standard: ${approvedSource.site.url}\nPublished Site version: 1\nPublished source commit: ${approvedSource.site.sourceCommit}\nThis candidate retains unresolved K1 and K5; no Owner acceptance is claimed.\n\n/en/source.html\n/en/api.html\n${approvedSource.boards.map(b=>`/en/${b.slug}.html`).join("\n")}\n`);
+  files.set("robots.txt","User-agent: *\nAllow: /\n");
+  const inventory=[...files].map(([name,bytes])=>({path:name,bytes:typeof bytes==="string"?Buffer.byteLength(bytes):bytes.length,sha256:hash(bytes)}));
+  files.set("output-manifest.json",JSON.stringify({schemaVersion:"tcrn.storybook-output.v1",candidate,standardSource:approvedSource.site,files:inventory},null,2)+"\n");
+  const helpers=await import(pathToFileURL(path.join(root,"scripts/lib/generated-output.mjs")).href) as {reconcileOutput:(dir:string,expected:string[])=>unknown};
+  helpers.reconcileOutput(output,[...files.keys()]);fs.mkdirSync(output,{recursive:true});
+  for(const [rel,bytes] of files){const target=path.join(output,rel);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,bytes);}
+  console.log(`Storybook: ${supportedLocales.length} locales, ${approvedSource.boards.length} source boards, ${files.size} exact output files; K1/K5 unresolved`);
+}

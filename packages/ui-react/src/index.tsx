@@ -137,7 +137,6 @@ export type ComponentLibraryPublicComponentName = (typeof componentLibraryPublic
 export const componentLibraryPublicUtilityNames = [
   "tcrnIconNames",
   "tcrnComponentCss",
-  "tcrnRetiredComponentCss",
   "tcrnProductLogoRegistry",
   "getTcrnProductLogoAsset",
   "tcrnSettingChoiceDecisionTable",
@@ -159,7 +158,7 @@ export type ComponentLibraryPublicUtilityName = (typeof componentLibraryPublicUt
  * The deprecated components (TCRN-DS-SUB-125, STORY-143): one shell, the top band, has no place for a
  * resident side rail, its collapse and mobile toggles, the old top bar or the product launcher and
  * switcher. Each stays exported, and in the public roster above, through 4.0.x with a migration step in
- * docs/migration-4.0.md; their rules left tcrnComponentCss for tcrnRetiredComponentCss. Removed in 4.1.
+ * docs/migration-4.0.md; their visual rules are outside the published Site stylesheet. Removed in 4.1.
  */
 export const componentLibraryDeprecatedComponentNames = [
   "SideNav",

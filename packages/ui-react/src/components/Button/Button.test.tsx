@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { publishedToken } from "../../test/published-source.js";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Button, IconButton, LinkButton } from "./Button.js";
 import { tcrnComponentCss } from "../../styles/index.js";
@@ -99,22 +99,9 @@ const bodiesFor = (selector: string) =>
     .filter((rule) => rule.selectors.includes(selector))
     .map((rule) => rule.body)
     .join(";");
-const contractToken = (cssVar: string): string => {
-  const contract = JSON.parse(
-    readFileSync(new URL("../../../../../docs/design/gplus-2026-10/contract/tokens.json", import.meta.url), "utf8")
-  ) as Record<string, unknown>;
-  const found: string[] = [];
-  const walk = (node: unknown) => {
-    if (Array.isArray(node)) node.forEach(walk);
-    else if (node && typeof node === "object") {
-      const record = node as Record<string, unknown>;
-      if (record.cssVar === cssVar) found.push(String(record.value));
-      Object.values(record).forEach(walk);
-    }
-  };
-  walk(contract);
-  assert.equal(found.length, 1, `${cssVar} is declared once in the token contract`);
-  return found[0];
+const contractToken=(cssVar:string):string=>{
+ const mapping:Record<string,string>={"--tcrn-radius-control":"--r-ctl",...Object.fromEntries(["sm","md","lg"].flatMap(size=>[[`--tcrn-control-height-${size}`,`--h-${size}`],[`--tcrn-control-padding-${size}`,`--pad-${size}`]]))};
+ if(!mapping[cssVar])throw new Error(`Unmapped published test token ${cssVar}`);return publishedToken(mapping[cssVar]);
 };
 
 test("core primitives render normalized class names and accessibility attributes", () => {

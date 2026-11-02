@@ -1,50 +1,26 @@
-<p align="center">
-  <img src="apps/storybook/assets/tcrn-brand-mark.svg" alt="" width="88" />
-</p>
+# TCRN Design System
 
-<h1 align="center">TCRN 设计系统</h1>
+当前 Storybook 唯一采用已发布 Sites 视觉标准第 1 版的 8 块画板。草稿与退役 Storybook 示例不作为实施输入。
 
-<p align="center">TCRN 产品前端使用的包级 UI 原语、语义令牌、文案状态词汇和 Storybook 契约文档。</p>
+[Published visual standard](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site) · [Pinned source and mapping](docs/design/approved-site-v1/source-manifest.json) · [Source contract](docs/design/README.md)
 
-<p align="center">
-  <a href="README.md">English</a>
-  · <a href="README.zh-CN.md">简体中文</a>
-  · <a href="README.ja.md">日本語</a>
-  · <a href="README.ko.md">한국어</a>
-  · <a href="README.fr.md">Français</a>
-</p>
+Source commit: `a643d4cfcd239f6f81b1715ded6a63caead9d619`. The source Site is version 1; `@tcrn/ui-react` and `@tcrn/ui-tokens` are package candidates at 4.0.0. These are distinct version identities. K1 (suffix text contrast) and K5 (strong text wording) remain unresolved in the published source; machine results and Owner visual acceptance are recorded separately.
 
-## 这是什么
+## Packages
 
-本仓库是 TCRN Design System 的源码入口。产品前端实现者和 AI agent 在声称符合设计系统前，必须先阅读 Storybook 契约和机器可读 AI 契约。
+- `@tcrn/ui-react/approved`: the explicit current Storybook consumption boundary for the published families and top-band shell.
+- `@tcrn/ui-react`: engineering exports; the existence of an API does not publish a visual standard or an API reference in Storybook.
+- `@tcrn/ui-tokens`: source-mapped values, current CSS and the actual five-family font assets of the published source.
+- `@tcrn/ui-copy-state`: engineering localization and state helpers.
 
-- Storybook: [默认入口](https://tcrn-design-system-storybook.vercel.app/)
-- 中文 Storybook: [zh-CN](https://tcrn-design-system-storybook.vercel.app/?locale=zh-CN)
-- 深色外壳: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
-- AI 契约: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
-- AI 首读入口: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) 与 HTML head discovery；回传字段必须包括 contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, coveredStorybookSections, requiredProof, noOverclaimBoundaries。
-- AI 消费必须覆盖所有 Storybook 章节: Welcome, Style Guide, Foundations, Components, Patterns, Proof, Change Log。符合 Design System 不只是同包或 boundary marker；必须证明同一 Storybook 视觉实例，包括包版本、导出组件、variant/props/slots、实际渲染指标、动效、降级动效、主题/语言、移动重排和信息层级。
+The product assets are TCRN TMS, Einzbern, Mana Orchestrate and TCRN Design System. A registered product key is required. There is no mother-mark default, free-text lockup suffix or implied AOS mark.
 
-## 包与边界
+## Development
 
-- `@tcrn/ui-tokens`: 语义令牌和浅色/深色主题覆盖。
-- `@tcrn/ui-copy-state`: `zh-CN`、`en`、`ja`、`ko`、`fr` 本地化与文案状态。
-- `@tcrn/ui-react`: 包级 React UI 原语。
-- `apps/storybook`: 静态契约文档、合成故事和本地证明。
+Use the pinned `pnpm@10.12.1` toolchain. The configured commands remain `pnpm verify`, `pnpm storybook:build`, and `pnpm test:dom`, in their configured order. Source generation is a batch-end responsibility; follow [the source-generation order](docs/design/README.md) before compiling a changed source snapshot. No old screenshot baseline is automatically accepted.
 
-Storybook 是契约地图，不自动证明 AOS/TMS 产品采用。品牌标识示例是视觉评审指南，不是已发布的品牌组件导出，也不声明最终品牌验收。
+The static docs and manager consume the same eight-board registry. The docs produce five locales; API reference entries are the explicit published E-section obligations, rather than all engineering exports. Fonts are self-hosted and preserve their original bytes, face weights, Unicode ranges and OFL notices; see [font licensing](packages/ui-tokens/FONT-LICENSES.md).
 
-## 验证
+## Licensing
 
-```bash
-pnpm build
-pnpm test
-pnpm storybook:smoke
-node --test scripts/readme-public-contract.test.mjs
-pnpm storybook:visual-proof
-pnpm verify
-```
-
-契约门清单、各门在 `pnpm verify` 里的顺序与单跑方式，见 [docs/contract/README.md](docs/contract/README.md)。
-
-本 README 不声明 npm 包发布、Storybook 文档发布就绪、hosted-doc readiness、产品采用、release readiness、产品验收或最终 MVP 验收。
+Repository code: Apache-2.0, see [LICENSE](LICENSE). Font software retains SIL OFL 1.1 and its copyright notices. Product marks are TCRN assets; source lineage is recorded independently from code licensing.

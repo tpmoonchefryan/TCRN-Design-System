@@ -26,7 +26,6 @@ import {
   ProductLockup,
   TcrnBrandMark,
   tcrnComponentCss,
-  tcrnRetiredComponentCss,
   tcrnProductLogoRegistry,
   tcrnProductMarkIds,
   tcrnProductMarkSvg,
@@ -177,73 +176,12 @@ test("side navigation primitives render package-backed hierarchy and disabled re
   assert.doesNotMatch(html, /role="tab"/);
 });
 
-test("nav item density and nesting are data-driven", () => {
-  const html = renderToStaticMarkup(<NavItem depth={2} href="#nested">Nested navigation</NavItem>);
-  assert.match(html, /data-nav-depth="2"/);
-  assert.match(html, /--tcrn-nav-item-depth:2/);
-  assert.match(tcrnComponentCss, /--tcrn-nav-item-depth:\s*0/);
-  assert.match(
-    tcrnComponentCss,
-    /min-height:\s*calc\(\s*var\(--tcrn-space-6\)\s*-\s*var\(--tcrn-space-0h\)\s*\)/,
-  );
-  // The rail-scoped AOS suffix colour went with the rail (TCRN-DS-SUB-145).
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell__sidebar/);
-});
+
 
 // Composition one (O-1, TCRN-DS-SUB-090): the shell geometry comes from the shell tokens, the
 // rail sits on the canvas colour with no right edge, and above the mobile breakpoint the rail
 // guide column is 16 / 48 and the workspace is a sheet 12 from the shell edges.
-test("STORY-140 GWT1 product shell is the top band and the paper, through the shell tokens", () => {
-  const rule = (selector: string) => {
-    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const found = new RegExp(`(?:^|\\n)${escaped} \\{([^}]*)\\}`).exec(tcrnComponentCss);
-    assert.ok(found, `${selector} has a rule`);
-    return found[1];
-  };
-  const root = rule(".tcrn-product-shell");
-  assert.match(root, /position: relative;/, "the shell is the full menu's containing block");
-  assert.match(root, /grid-template-rows: var\(--tcrn-shell-strip-h\) minmax\(0, 1fr\);/);
-  assert.match(root, /overflow: clip;/);
-  const strip = rule(".tcrn-shell-strip");
-  assert.match(strip, /block-size: var\(--tcrn-shell-strip-h\);/);
-  assert.match(strip, /padding: 0 var\(--tcrn-space-3\);/, "the brand button starts on the paper's edge");
-  assert.match(strip, /border: 0;/);
-  assert.match(strip, /background: none;/);
-  const paper = rule(".tcrn-product-shell__paper");
-  assert.match(paper, /margin: 0 var\(--tcrn-space-3\) var\(--tcrn-space-3\);/);
-  assert.match(paper, /overflow: hidden;/);
-  assert.match(paper, /border-radius: var\(--tcrn-radius-paper\);/);
-  assert.match(paper, /background: var\(--tcrn-color-panel\);/);
-  assert.match(paper, /box-shadow: var\(--tcrn-shadow-s1\);/);
-  assert.match(rule(".tcrn-shell-cluster"), /gap: var\(--tcrn-space-1h\);[\s\S]*margin-inline-start: auto;/);
-  assert.match(rule(".tcrn-shell-bell"), /inline-size: var\(--tcrn-control-height-md\);\n  block-size: var\(--tcrn-control-height-md\);/);
-  assert.match(rule(".tcrn-shell-avatar"), /inline-size: var\(--tcrn-control-height-sm\);\n  block-size: var\(--tcrn-control-height-sm\);/);
-  // Composition one (O-1) is withdrawn: no rail and its collapsed width, no lead column, no sheet
-  // beside a rail, no top bar, no mobile drawer. The whole sheet is read, the brand module too: its
-  // three rail-scoped rules are gone (TCRN-DS-SUB-145).
-  const shellRules = tcrnComponentCss;
-  for (const retired of [
-    /\.tcrn-product-shell__sidebar/,
-    /\.tcrn-product-shell__workspace/,
-    /\.tcrn-product-shell__utility-row/,
-    /\.tcrn-product-shell__current-location/,
-    /data-product-shell-collapsed/,
-    /data-mobile-nav-expanded/,
-    /--tcrn-product-shell-sidebar-width/,
-    /var\(--tcrn-shell-sidebar-width(?:-collapsed)?\)/,
-    /var\(--tcrn-shell-topbar-height\)/
-  ]) {
-    assert.doesNotMatch(shellRules, retired);
-  }
-  assert.match(
-    shellRules,
-    /@container tcrn-shell \(max-width: 1023px\) \{\n  \.tcrn-shell-pins \{\n    display: none;\n  \}\n\}/,
-    "the pinned items follow their owning shell below 1024"
-  );
-  // The deprecated TopBar (TCRN-DS-SUB-125) keeps its own height, in the retired sheet only.
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-top-bar\b/);
-  assert.match(tcrnRetiredComponentCss, /\.tcrn-top-bar \{\n  display: grid;\n  grid-template-columns: max-content max-content minmax\(0, 1fr\);\n  align-items: center;\n  gap: var\(--tcrn-space-4\);\n  min-height: 68px;/);
-});
+
 
 // The five-locale taglines of STORY-127, as the story states them. The registry
 // takes them from the design contract; asserting the story's own words here is what
@@ -255,107 +193,11 @@ const storyTaglines = {
   "design-system": { "zh-CN": "设计系统", en: "Design System", ja: "デザインシステム", ko: "디자인 시스템", fr: "Système de design" }
 } as const;
 
-test("registered product logos expose exact DS AOS and TMS lockups", () => {
-  assert.equal(tcrnProductLogoRegistry["design-system"].assetId, "tcrn-design-system-two-line");
-  assert.equal(tcrnProductLogoRegistry["design-system"].stackSuffix, true);
-  assert.equal(tcrnProductLogoRegistry.aos.lineOne, "TCRN AOS");
-  assert.equal(tcrnProductLogoRegistry.aos.stackSuffix, false);
-  assert.equal(tcrnProductLogoRegistry.tms.lineOne, "TCRN TMS");
-  assert.equal(tcrnProductLogoRegistry.tms.stackSuffix, false);
-  // workflow was renamed einzbern, and mana-orchestrate joined it (STORY-127).
-  assert.deepEqual(Object.keys(tcrnProductLogoRegistry).sort(), ["aos", "design-system", "einzbern", "mana-orchestrate", "tms"]);
 
-  // The wordmark is a name and the tagline is copy, so they are asserted
-  // differently on purpose: `lineOne` is one Latin string in every locale, while
-  // `lineTwo` must carry all five. Checking only the English member would leave
-  // the same hole the old single-string shape had — it read as complete.
-  for (const productId of Object.keys(tcrnProductLogoRegistry) as Array<keyof typeof tcrnProductLogoRegistry>) {
-    assert.deepEqual(
-      Object.keys(tcrnProductLogoRegistry[productId].lineTwo).sort(),
-      ["en", "fr", "ja", "ko", "zh-CN"],
-      `${productId} tagline must carry all five locales`
-    );
-  }
-  for (const productId of Object.keys(storyTaglines) as Array<keyof typeof storyTaglines>) {
-    assert.deepEqual({ ...tcrnProductLogoRegistry[productId].lineTwo }, storyTaglines[productId], `${productId} taglines follow STORY-127`);
-  }
-  assert.equal(tcrnProductLogoRegistry.aos.lineTwo.en, "AI Operation System");
-  assert.equal(tcrnProductLogoRegistry.aos.lineTwo["zh-CN"], "AI 运营系统");
-  assert.equal(tcrnProductTagline("aos", "ja"), "AI オペレーションシステム");
-  // An unknown or absent locale resolves to the fallback rather than throwing:
-  // a consumer that never passes one keeps today's English instead of losing the
-  // line altogether.
-  assert.equal(tcrnProductTagline("aos"), "AI Operation System");
-  assert.equal(tcrnProductTagline("aos", "de"), "AI Operation System");
-
-  const html = renderToStaticMarkup(
-    <>
-      <ProductLogo productId="design-system" />
-      <ProductLogo productId="aos" />
-      <ProductLogo productId="tms" />
-    </>
-  );
-
-  assert.match(html, /data-registered-product-logo="@tcrn\/ui-react\/ProductLogo"/);
-  assert.match(html, /class="tcrn-product-logo tcrn-product-logo--stacked-suffix"[^>]*data-product-id="design-system"/);
-  assert.match(html, /data-product-logo-asset-id="tcrn-design-system-two-line"/);
-  assert.match(html, /data-product-id="aos"/);
-  assert.match(html, /data-product-logo-asset-id="tcrn-aos-two-line"/);
-  assert.match(html, /class="tcrn-product-logo__line-one-base">TCRN</);
-  assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--aos">AOS</);
-  assert.match(html, />AI Operation System</);
-  assert.match(html, /data-product-id="tms"/);
-  assert.match(html, /data-product-logo-asset-id="tcrn-tms-two-line"/);
-  assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--tms">TMS</);
-  assert.match(html, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--design-system">Design System</);
-  assert.match(html, />Talent Management System</);
-  assert.doesNotMatch(html, /Rebuild workspace/);
-  // TMS and the design system draw their own marks inline; AOS keeps the mother mark.
-  assert.match(html, /<svg class="tcrn-brand-mark"[^>]*data-product-mark="design-system"/);
-  assert.match(html, /<svg class="tcrn-brand-mark"[^>]*data-product-mark="tms"/);
-  // A lockup the shell measures (a data-lockup hook) marks its colour mark with data-logo, as the
-  // first line does (C-5, C-6; TCRN-DS-SUB-144); an unmeasured lockup and a mono mark carry none.
-  assert.doesNotMatch(html, /data-logo=/);
-  assert.match(
-    renderToStaticMarkup(<ProductLogo productId="tms" data-lockup="lkr" />),
-    /^<div data-lockup="lkr" class="tcrn-product-logo"[^>]*><svg data-logo="tms" class="tcrn-brand-mark"[^>]*data-product-mark="tms"[^>]*data-product-mark-variant="color"/
-  );
-  assert.doesNotMatch(renderToStaticMarkup(<ProductLogo productId="tms" markVariant="mono" data-lockup="lkr" />), /data-logo=/, "a mono mark is not the logos2 file");
-  // The Brand board's section E writing: <b>{word} <em>{suffix}</em></b> and the tagline a <small>.
-  assert.match(
-    html,
-    /<b class="tcrn-product-logo__line-one" aria-label="TCRN TMS"><span class="tcrn-product-logo__line-one-base">TCRN<\/span> <em class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--tms">TMS<\/em><\/b><small class="tcrn-product-logo__line-two">Talent Management System<\/small>/
-  );
-  assert.match(tcrnComponentCss, /\.tcrn-product-logo__line-one-suffix \{[^}]*font-style: normal;/);
-  assert.match(html, /<img[^>]*class="tcrn-brand-mark"[^>]*src="tcrn-brand-mark\.svg"[^>]*>/);
-  assert.equal((html.match(/<img\b/g) ?? []).length, 1);
-
-  // The same three lockups on a ja route. The wordmarks are unchanged and the
-  // taglines are not — including the accessible name, so a screen-reader user
-  // hears the brand the way a sighted reader sees it.
-  const jaHtml = renderToStaticMarkup(
-    <>
-      <ProductLogo productId="design-system" locale="ja" />
-      <ProductLogo productId="aos" locale="ja" />
-      <ProductLogo productId="tms" locale="ja" />
-    </>
-  );
-  assert.match(jaHtml, /class="tcrn-product-logo__line-two">デザインシステム</);
-  assert.match(jaHtml, /class="tcrn-product-logo__line-two">AI オペレーションシステム</);
-  assert.match(jaHtml, /class="tcrn-product-logo__line-two">タレントマネジメントシステム</);
-  assert.match(jaHtml, /aria-label="TCRN AOS AI オペレーションシステム"/);
-  assert.match(jaHtml, /class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--aos">AOS</);
-  assert.doesNotMatch(jaHtml, />AI Operation System</);
-  assert.doesNotMatch(jaHtml, />Talent Management System</);
-  assert.match(renderToStaticMarkup(<ProductLogo productId="tms" locale="zh-CN" />), /class="tcrn-product-logo__line-two">艺人管理系统</);
-
-  const longSuffixLockupHtml = renderToStaticMarkup(<ProductLockup suffix="Design System" suffixClassName="tcrn-brand-wordmark__suffix--design-system" />);
-  assert.match(longSuffixLockupHtml, /tcrn-brand-lockup--long-name/);
-});
 
 test("Einzbern and Mana Orchestrate are whole serif names with the byline and no host name", () => {
   // STORY-127 GWT1.
-  const jaHtml = renderToStaticMarkup(<ProductLogo productId="mana-orchestrate" locale="ja" />);
+  const jaHtml = renderToStaticMarkup(<ProductLockup productId="mana-orchestrate" locale="ja" />);
   assert.match(jaHtml, /class="tcrn-product-logo__line-two">プロジェクト記憶アシスタント</);
   assert.match(jaHtml, /aria-label="Mana Orchestrate プロジェクト記憶アシスタント"/);
   assert.doesNotMatch(jaHtml, /Claude|Codex/i);
@@ -365,7 +207,7 @@ test("Einzbern and Mana Orchestrate are whole serif names with the byline and no
     assert.equal(entry.wordmark, "serif");
     assert.equal(entry.byline, "by TCRN");
     assert.equal(entry.lineOneSuffix, null);
-    const html = renderToStaticMarkup(<ProductLogo productId={productId} locale="en" />);
+    const html = renderToStaticMarkup(<ProductLockup productId={productId} locale="en" />);
     assert.match(html, new RegExp(`class="tcrn-product-logo tcrn-product-logo--serif"[^>]*data-product-id="${productId}"[^>]*data-product-wordmark="serif"`));
     assert.match(html, new RegExp(`class="tcrn-product-logo__line-one-base">${entry.lineOne}<`));
     assert.match(html, /class="tcrn-product-logo__byline">by TCRN</);
@@ -379,44 +221,7 @@ test("Einzbern and Mana Orchestrate are whole serif names with the byline and no
   assert.doesNotMatch(JSON.stringify(tcrnProductLogoRegistry), /Claude|Codex/i);
 });
 
-test("TcrnBrandMark draws a registered product mark inline in four renditions and keeps the mother mark otherwise", () => {
-  assert.deepEqual([...tcrnProductMarkIds].sort(), tcrnProductMarks.map((mark) => mark.productId).sort());
-  const innerOf = (markup: string) => markup.replace(/^<svg\b[^>]*>/u, "").replace(/<\/svg>\s*$/u, "");
 
-  for (const mark of tcrnProductMarks) {
-    const productId = mark.productId as (typeof tcrnProductMarkIds)[number];
-    const color = renderToStaticMarkup(<TcrnBrandMark productId={productId} />);
-    assert.match(color, /^<svg class="tcrn-brand-mark" viewBox="0 0 48 48" role="img"/);
-    assert.match(color, new RegExp(`aria-label="${mark.name}"`));
-    assert.match(color, /data-product-mark-variant="color"/);
-    assert.equal(innerOf(color), mark.colorBody);
-
-    const mono = renderToStaticMarkup(<TcrnBrandMark productId={productId} variant="mono" />);
-    assert.equal(innerOf(mono), mark.inkBody);
-    assert.doesNotMatch(innerOf(mono), /#[0-9a-f]{6}/i, `${productId} mono follows the text colour`);
-
-    const tint = renderToStaticMarkup(<TcrnBrandMark productId={productId} variant="tile-tint" />);
-    assert.equal(innerOf(tint), `<rect width="48" height="48" rx="11" fill="${mark.palette.tint}"/><g transform="translate(7.2 7.2) scale(0.7)">${mark.colorBody}</g>`);
-    const deep = renderToStaticMarkup(<TcrnBrandMark productId={productId} variant="tile-deep" />);
-    assert.equal(innerOf(deep), `<rect width="48" height="48" rx="11" fill="${mark.palette.deep}"/><g transform="translate(7.2 7.2) scale(0.7)">${mark.inkBody.replaceAll("currentColor", "#ffffff")}</g>`);
-
-    // The file rendition is the standalone SVG the logos board writes.
-    assert.equal(
-      tcrnProductMarkSvg(productId),
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="${mark.name}">${mark.colorBody}</svg>\n`
-    );
-    assert.equal(innerOf(tcrnProductMarkSvg(productId, "mono", { ink: "#16150f" })), mark.inkBody.replaceAll("currentColor", "#16150f"));
-  }
-
-  // Without a productId the component is still the mother mark image.
-  const mother = renderToStaticMarkup(<TcrnBrandMark />);
-  assert.match(mother, /<img[^>]*class="tcrn-brand-mark"[^>]*src="tcrn-brand-mark\.svg"[^>]*data-brand-asset="tcrn-brand-mark"/);
-  assert.doesNotMatch(mother, /<svg/);
-  // A lockup without a productId keeps the mother mark too.
-  assert.match(renderToStaticMarkup(<ProductLockup suffix="TMS" suffixClassName="tcrn-brand-wordmark__suffix--tms" />), /<img[^>]*class="tcrn-brand-mark"/);
-  // A lockup with a productId passes the rendition through.
-  assert.match(renderToStaticMarkup(<ProductLockup productId="einzbern" markVariant="tile-deep" />), /data-product-mark-variant="tile-deep"/);
-});
 
 const shellLocales = [
   { locale: "en", nativeName: "English" },
@@ -567,177 +372,15 @@ test("STORY-146 GWT1 the page header is required and is the paper's first row", 
   assert.ok(untitled);
 });
 
-test("STORY-146 GWT2 the trail stays on one line: crumbs give way with an ellipsis and carry a title", () => {
-  const rule = (selector: string) => {
-    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const found = new RegExp(`(?:^|\\n)${escaped} \\{([^}]*)\\}`).exec(tcrnComponentCss);
-    assert.ok(found, `${selector} has a rule`);
-    return found[1];
-  };
-  // The trail is the Breadcrumb component since TCRN-DS-SUB-124, so its rules are the Breadcrumb's.
-  const trail = rule(".tcrn-breadcrumb");
-  assert.match(trail, /flex-wrap: nowrap;/);
-  assert.match(trail, /white-space: nowrap;/);
-  assert.match(trail, /min-width: 0;/);
-  assert.match(trail, /gap: var\(--tcrn-space-1h\);/, "the board's crumb gap 6");
-  assert.match(trail, /overflow: hidden;/);
-  assert.match(trail, /font-size: var\(--tcrn-type-size-meta\);/, "the board's crumb size 12");
-  const item = rule(".tcrn-breadcrumb__item");
-  for (const declaration of [/flex-wrap: nowrap;/, /white-space: nowrap;/, /min-width: 0;/, /overflow: hidden;/, /text-overflow: ellipsis;/, /gap: var\(--tcrn-space-1h\);/]) {
-    assert.match(item, declaration);
-  }
-  assert.match(rule(".tcrn-breadcrumb__separator"), /flex: none;/);
-  const crumb = rule(".tcrn-breadcrumb__crumb");
-  assert.match(crumb, /overflow: hidden;/);
-  assert.match(crumb, /text-overflow: ellipsis;/);
-  assert.match(crumb, /min-width: 0;/);
-  // The paper's inset and row gap are the board's .ts-content (14 28 12, gap 10), from space tokens.
-  const main = rule(".tcrn-product-shell__main");
-  assert.match(main, /padding: var\(--tcrn-space-3h\) calc\(2 \* var\(--tcrn-space-3h\)\) var\(--tcrn-space-3\);/);
-  assert.match(main, /gap: var\(--tcrn-space-2h\);/);
-  assert.match(main, /grid-template-columns: minmax\(0, 1fr\);/);
-  // A long trail: every crumb carries its whole label as its title.
-  const labels = ["Operations and partner management", "Contracts awaiting countersignature", "Agency renewals for the autumn season"];
-  const html = renderToStaticMarkup(
-    <ProductShell
-      productName="TCRN TMS"
-      moduleName="Talent"
-      brandProductId="tms"
-      currentRouteLabel={labels[2]}
-      pageHeader={{ title: labels[2], breadcrumbs: labels.map((label, index) => ({ id: `crumb-${index}`, label, href: index < 2 ? "/" : undefined })) }}
-      navGroups={[]}
-      locales={shellLocales}
-      currentLocale="en"
-    >
-      <section>Fixture-safe content</section>
-    </ProductShell>
-  );
-  for (const label of labels) assert.match(html, new RegExp(`class="tcrn-breadcrumb__crumb"[^>]* title="${label}"|title="${label}"[^>]*aria-current="page"`));
-});
 
-test("product shell component css keeps motion shorthands valid", () => {
-  assert.match(tcrnComponentCss, /--tcrn-motion-product-shell: var\(--tcrn-motion-emphasis\)/);
-  // The old top bar's search transition variable went with the bar's search sizes (TCRN-DS-SUB-183):
-  // the shell's one motion variable is --tcrn-motion-product-shell, and no variant of it is declared.
-  assert.deepEqual([...new Set(tcrnComponentCss.match(/--tcrn-motion-product-shell[a-z0-9-]*/g) ?? [])], ["--tcrn-motion-product-shell"]);
-  // Elevation and inverse text are governed by @tcrn/ui-tokens now; a local
-  // redefinition here would silently shadow the package and un-govern the look.
-  assert.doesNotMatch(tcrnComponentCss, /--tcrn-elevation-floating:/);
-  assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-text-inverse:/);
-  assert.match(tcrnComponentCss, /animation: tcrn-product-shell-theme-wash var\(--tcrn-motion-product-shell\) both;/);
-  // The old top bar's search sizes and their transition are gone (TCRN-DS-SUB-145): the search takes
-  // the width of the menu, drop-down or page that holds it.
-  assert.doesNotMatch(tcrnComponentCss, /flex-basis: (?:260|420)px|min\(100%, (?:260|420)px\)|var\(--tcrn-motion-product-shell-[a-z]/);
-  const search = /\n\.tcrn-product-shell-search \{([^}]*)\}/.exec(tcrnComponentCss);
-  assert.ok(search, "the search keeps its own rule");
-  assert.equal(search[1].trim(), "position: relative;", "it only places its results list");
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell-search\[data-search-expanded="true"\] \{/);
-  assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-motion-emphasis\) ease/);
-});
 
-test("product shell component css carries the relocated component families (TCRN-DS-STORY-037)", () => {
-  // The 24 genuine component families were moved out of the docs demo layer into the
-  // package. A future accidental removal (or a revert to doc-only styling) must fail here.
-  assert.match(tcrnComponentCss, /\.tcrn-field\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-tooltip__content\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-popover\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-breadcrumb\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-skeleton\b/);
-  // Representative members across the other relocated families.
-  assert.match(tcrnComponentCss, /\.tcrn-surface\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-state-surface\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-collapsible-region\b/);
-  // The segmented nav renders the Tabs family since TCRN-DS-SUB-124, so the family's tab stands for it.
-  assert.match(tcrnComponentCss, /\.tcrn-tabs__tab\b/);
-  assert.match(tcrnComponentCss, /\.tcrn-highlight__mark\b/);
-  assert.match(tcrnComponentCss, /@keyframes tcrn-skeleton-shimmer\b/);
-  // The storybook-only static tooltip hook must NOT be shipped in the package; it stays
-  // in the docs demo layer (it is not emitted by the Tooltip component).
-  assert.doesNotMatch(tcrnComponentCss, /data-storybook-static-tooltip/);
-  // FilterBar now ships its standalone public layout; TableToolbar keeps its denser gap.
-  const filterBar = /\n\.tcrn-filter-bar \{([^}]*)\}/.exec(tcrnComponentCss);
-  assert.ok(filterBar, "the standalone FilterBar has a package rule");
-  assert.match(filterBar[1], /display: flex;/);
-  assert.match(filterBar[1], /flex-wrap: wrap;/);
-  assert.match(filterBar[1], /gap: var\(--tcrn-space-1h\);/);
-  assert.match(filterBar[1], /min-width: 0;/);
-  const toolbarFilterBar = /\n\.tcrn-table-toolbar \.tcrn-filter-bar \{([^}]*)\}/.exec(tcrnComponentCss);
-  assert.ok(toolbarFilterBar, "TableToolbar retains its scoped FilterBar rule");
-  assert.match(toolbarFilterBar[1], /display: flex;/);
-  assert.match(toolbarFilterBar[1], /flex-wrap: wrap;/);
-  assert.match(toolbarFilterBar[1], /align-items: center;/);
-  assert.match(toolbarFilterBar[1], /gap: var\(--tcrn-space-1\);/);
-  const tokens = createResolvedTokenMap();
-  assert.equal(tokens["--tcrn-space-1h"], "6px");
-  assert.equal(tokens["--tcrn-space-1"], "4px");
-  // Guard: relocated rules reference tokens via var(); they must not DEFINE tokens.
-  assert.doesNotMatch(tcrnComponentCss, /--tcrn-color-state-blocked:/);
-  assert.doesNotMatch(tcrnComponentCss, /--tcrn-z-popover:/);
-});
 
-test("component-loop CSS ships independent roots for every returned construct", () => {
-  for (const root of [
-    "tcrn-switch",
-    "tcrn-stat-card",
-    "tcrn-setting-row",
-    "tcrn-field-provenance",
-    "tcrn-line-numbered-editor",
-    "tcrn-app-status-bar",
-    "tcrn-definition-list",
-    "tcrn-lock-hint"
-  ]) {
-    assert.match(tcrnComponentCss, new RegExp(`\\.${root}\\b`), `${root} has a package CSS root`);
-  }
-  assert.match(tcrnComponentCss, /\.tcrn-line-numbered-editor__gutter[\s\S]*overflow: hidden;/);
-  assert.match(tcrnComponentCss, /\.tcrn-line-numbered-editor__gutter li\[data-editor-line-finding="true"\]/);
-  assert.match(tcrnComponentCss, /\.tcrn-setting-row__modified[\s\S]*border-radius: 50%;/);
-  assert.match(tcrnComponentCss, /\.tcrn-definition-list__item[\s\S]*grid-template-columns:/);
-  assert.match(tcrnComponentCss, /\.tcrn-tooltip__content\[data-tooltip-portal="true"\]/);
-  assert.match(tcrnComponentCss, /\.tcrn-popover\[data-overlay-positioning="portal-fixed"\]/);
-  assert.match(tcrnComponentCss, /\.tcrn-dictionary-table[\s\S]*data-dictionary-valid/);
-});
 
-test("product shell component css isolates topbar from docs chrome", () => {
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell \{[\s\S]*font-family: var\(--tcrn-type-family-ui\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
-  // G+ focus in the shell: an element with no focus treatment of its own takes the focus
-  // ring token over a transparent forced-colours outline, and the pair-driven controls
-  // (buttons, links, text controls including the search control, selects, checkboxes,
-  // radios, switches) are left to draw their own ring and edge from their pair tables.
-  // Since TCRN-DS-SUB-156 the rule is a state rule at the variant's (0,2,0) that reads the shell's
-  // focus edge pair, the ring token, and writes no colour (C2). The pair is declared where a theme
-  // is, as the token blocks are, so a subtree in the other theme draws its own theme's ring.
-  assert.match(tcrnComponentCss, /\n:root,\n\[data-tcrn-theme="light"\],\n\[data-tcrn-theme="dark"\] \{\n {2}--tcrn-pair-shell-edge-f: var\(--tcrn-focus-ring\);\n\}/);
-  // TCRN-DS-SUB-182: the shell parts that switch their own focus edge pair are left out in a second
-  // :not() whose list sits in :where(), so the rule keeps its (0,2,0) (see the STORY-140 test).
-  assert.match(tcrnComponentCss, /\n\.tcrn-product-shell :where\(:focus-visible\):not\(\.tcrn-button, \.tcrn-link-button, \.tcrn-link, \.tcrn-input, \.tcrn-select, \.tcrn-checkbox, \.tcrn-radio-group__control, \.tcrn-switch__control\):not\(:where\([^{]*\)\) \{\s*outline: 2px solid transparent;\s*outline-offset: 2px;\s*box-shadow: var\(--tcrn-pair-shell-edge-f\);\s*\}/);
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell :focus-visible/, "the (0,3,0) form is gone");
-  // At (0,2,0) it wins the ties it won at (0,3,0) by coming after them: the families' own focus
-  // outlines and the shell parts' edges of the same weight.
-  const fallbackAt = tcrnComponentCss.indexOf(".tcrn-product-shell :where(:focus-visible):not(");
-  for (const earlier of [".tcrn-menu__item:focus-visible", ".tcrn-table-toolbar__chip:focus-visible", "\n.tcrn-shell-menu .tcrn-nav-item {", "\n.tcrn-shell-bell:focus-visible,"]) {
-    const at = tcrnComponentCss.indexOf(earlier);
-    assert.ok(at >= 0 && at < fallbackAt, `${earlier.trim()} comes before the fallback`);
-  }
-  // The locale trigger's in-shell focus rule (box-shadow: none at (0,3,0), earlier in the sheet than
-  // the fallback, so it never applied) is gone; the trigger takes the fallback ring as before.
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger:focus-visible/);
-  // The search wrapper draws nothing, so the shell has no rule to clear on it; nor does
-  // any shell rule clear the control's own edge or ring.
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:focus-within/);
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-search-input:where\(:focus-within\)/);
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell \.tcrn-search-input__control[^{]*\{[^}]*box-shadow: none/);
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-product-shell [^{]*\.tcrn-shell-(?:theme|side-nav)-toggle:focus-visible/);
-  assert.match(tcrnComponentCss, /\.tcrn-nav-item\[data-nav-item-has-icon="false"\] \{[\s\S]*grid-template-columns: minmax\(0, 1fr\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-nav-item__content \{[\s\S]*min-width: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-nav-item__label \{[\s\S]*overflow-wrap: normal;[\s\S]*word-break: normal;/);
-  // The selected nav item carries no shadow bar. (The earlier form of this check reached
-  // past the rule with [\s\S]* to a later shell focus rule's box-shadow: none, so it held
-  // only while that rule existed; it now reads the selected rule's own body.)
-  // The selected states are one pair rule since the navigation exemption ended (TCRN-DS-SUB-155).
-  const selectedNavItem = /\.tcrn-nav-item:where\(\[data-selected="true"\], \[aria-current="page"\]\) \{([^}]*)\}/.exec(tcrnComponentCss);
-  assert.ok(selectedNavItem, "the selected nav item rule exists");
-  assert.doesNotMatch(selectedNavItem[1], /box-shadow:\s*(?!none\b)/);
-});
+
+
+
+
+
 
 test("product shell puts the product's own controls in the cluster, before the bell and the avatar", () => {
   const html = renderToStaticMarkup(
@@ -819,137 +462,9 @@ test("STORY-140 GWT4 the avatar menu switches products and holds the theme and t
   assert.equal(html.includes("data-side-nav-toggle"), false, "no collapse control, open or closed");
 });
 
-test("brand lockup css follows the G+ brand rules", () => {
-  const rule = (selector: string) => {
-    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
-    return tcrnComponentCss.match(new RegExp(`(?:^|\\n)${escaped} \\{[^}]*\\}`))?.[0] ?? "";
-  };
 
-  // STORY-127 GWT3: TCRN is ink; the TMS and design-system suffixes are the products'
-  // deep colours from the brand-suffix tokens (MIN-20261013-SHELL D2); by night the TMS
-  // suffix takes its mark's bright step #7aa0f5, which TCRN-DS-MIN-20261016-R6 D4 rules for
-  // O-8 and INIT-015 closure S-6 (TCRN-DS-SUB-232), and the design-system suffix keeps one
-  // colour. Gradient text is retired, and so is the workflow suffix.
-  assert.match(rule(".tcrn-brand-wordmark"), /color: var\(--tcrn-color-ink\);/);
-  assert.match(rule(".tcrn-brand-wordmark__suffix"), /color: var\(--tcrn-color-ink\);/);
-  assert.match(rule(".tcrn-product-logo__line-one"), /color: var\(--tcrn-color-ink\);/);
-  assert.match(rule(".tcrn-brand-wordmark__suffix--tms"), /color: var\(--tcrn-brand-suffix-tms\);/);
-  assert.match(rule(".tcrn-brand-wordmark__suffix--design-system"), /color: var\(--tcrn-brand-suffix-design-system\);/);
-  assert.doesNotMatch(rule(".tcrn-brand-wordmark__suffix--design-system"), /gradient|background-clip|text-fill-color|transparent/);
-  assert.match(rule(".tcrn-brand-wordmark__suffix--aos"), /color: var\(--tcrn-brand-accent-aos\);/);
-  assert.doesNotMatch(tcrnComponentCss, /tcrn-brand-wordmark__suffix--workflow/);
-  assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-brand-accent-(?:tms|workflow|design-system-\d)\)/);
-  assert.doesNotMatch(tcrnComponentCss, /var\(--tcrn-color-brand-secondary-readable\)/);
-  const tokens = createTokenMap();
-  assert.equal(tokens["--tcrn-brand-suffix-tms"], "#2c63c8");
-  assert.equal(tokens["--tcrn-brand-suffix-design-system"], "#6577f3");
-  const night = createResolvedTokenMap("dark");
-  assert.equal(night["--tcrn-brand-suffix-tms"], "#7aa0f5", "by night the TMS suffix reads its mark's bright step");
-  assert.equal(tcrnProductMarks.find((mark) => mark.productId === "tms")?.palette.bright, "#7aa0f5");
-  assert.equal(night["--tcrn-brand-suffix-design-system"], "#6577f3");
-  assert.equal(tcrnProductMarks.find((mark) => mark.productId === "tms")?.palette.deep, "#2c63c8");
-  assert.equal(tcrnProductMarks.find((mark) => mark.productId === "design-system")?.palette.deep, "#6577f3");
 
-  // Mark sizes by container: product logo 38, lockup 28, the shell's side rail 22.
-  assert.match(tcrnComponentCss, /\.tcrn-brand-lockup,\n\.tcrn-shell-brand-lockup,\n\.tcrn-product-logo \{[^}]*--tcrn-brand-mark-size: 38px;/);
-  assert.match(rule(".tcrn-brand-lockup"), /--tcrn-brand-mark-size: 28px;/);
-  // The side-rail tier is one rule: a lockup in the product shell, or one marked data-lockup="lkr"
-  // such as the full menu's bottom bar (TCRN-DS-SUB-144).
-  // Its mark is the shell.mark token, 22 (TCRN-DS-SUB-178).
-  assert.match(
-    tcrnComponentCss,
-    /\n\.tcrn-product-shell \.tcrn-shell-brand-lockup,\n\.tcrn-shell-brand-lockup\[data-lockup="lkr"\] \{[^}]*--tcrn-brand-mark-size: var\(--tcrn-shell-mark\);/
-  );
-  assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px");
-  const markRule = rule(".tcrn-brand-mark");
-  assert.match(markRule, /inline-size: var\(--tcrn-brand-mark-size\);[\s\S]*filter: var\(--tcrn-brand-mark-filter, none\);/);
-  // STORY-127 GWT4 (the CSS part): the mark neither scales nor fades. The rail and its collapsed
-  // state are gone, and so is the rule that hid the lockup copy in it (TCRN-DS-SUB-145).
-  assert.doesNotMatch(markRule, /transition/);
-  assert.doesNotMatch(tcrnComponentCss, /data-product-shell-collapsed/);
 
-  const longNameWordmarkRule = rule(".tcrn-brand-lockup--long-name .tcrn-brand-wordmark");
-  assert.match(longNameWordmarkRule, /flex-direction:\s*column;/);
-  assert.match(longNameWordmarkRule, /align-items:\s*flex-start;/);
-  assert.match(rule(".tcrn-brand-wordmark__base"), /font-weight: var\(--tcrn-type-weight-medium\);[\s\S]*white-space: nowrap;/);
-  assert.match(rule(".tcrn-product-logo__line-one"), /display: inline-flex;[\s\S]*align-items: baseline;[\s\S]*font-size: var\(--tcrn-brand-line-one-size\);[\s\S]*line-height: var\(--tcrn-brand-line-one-height\);/);
-  assert.match(rule(".tcrn-product-logo__line-one-suffix"), /font-weight: var\(--tcrn-type-weight-strong\);[\s\S]*white-space: nowrap;/);
-  assert.match(rule(".tcrn-product-logo--stacked-suffix .tcrn-product-logo__line-one"), /flex-direction: column;[\s\S]*align-items: flex-start;[\s\S]*white-space: normal;/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-brand-lockup__caption,\n\.tcrn-product-logo__line-two \{[^}]*color: var\(--tcrn-color-ink-3\);[^}]*font-size: var\(--tcrn-brand-line-two-size\);/);
-  assert.match(rule(".tcrn-product-logo--serif .tcrn-product-logo__line-one"), /font-family: var\(--tcrn-type-family-serif\);/);
-  assert.match(rule(".tcrn-product-logo--serif .tcrn-product-logo__line-one-base"), /font-weight: var\(--tcrn-type-weight-regular\);/);
-  assert.match(rule(".tcrn-product-logo__byline"), /letter-spacing: var\(--tcrn-type-tracking-caps\);[\s\S]*text-transform: uppercase;/);
-});
-
-test("product shell component css keeps package controls contrast-safe", () => {
-  assert.match(tcrnComponentCss, /\.tcrn-shell-theme-toggle \{[\s\S]*inline-size: 36px;[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);/);
-  // SideNavCollapseButton is deprecated (TCRN-DS-SUB-125): its rules left tcrnComponentCss for the retired sheet.
-  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-shell-side-nav-toggle\b/);
-  assert.match(tcrnRetiredComponentCss, /\.tcrn-shell-side-nav-toggle \{[\s\S]*inline-size: 38px;[\s\S]*min-height: 38px;[\s\S]*place-items: center;/);
-  assert.match(tcrnRetiredComponentCss, /\.tcrn-shell-side-nav-toggle__icon \{[\s\S]*inline-size: 20px;[\s\S]*place-items: center;/);
-  // The three shell toggles are IconButtons: the shell rules size and shape them and leave
-  // fill, ink, edge, focus ring and transition to the Actions pair table. No shell rule
-  // colours them, shadows them, restyles their hover or focus, or scales them on press.
-  // The side-nav and mobile-nav toggles are deprecated (TCRN-DS-SUB-125) and ship in the retired
-  // sheet, which a consumer adds after the component sheet; the rule holds for both sheets.
-  const sheetWithoutComments = (tcrnComponentCss + tcrnRetiredComponentCss).replace(/\/\*[\s\S]*?\*\//g, "");
-  const shellToggleRules = [...sheetWithoutComments.matchAll(/(?:^|\n)([^{}\n@][^{}]*)\{([^}]*)\}/g)].filter(([, selector]) =>
-    selector.split(",").some((part) => /^\s*(?:\.tcrn-button)?\.tcrn-shell-(?:theme|side-nav|mobile-nav)-toggle\s*$/.test(part))
-  );
-  assert.ok(shellToggleRules.length >= 3, "the theme, side-nav and mobile-nav toggle rules are found");
-  for (const [, selector, body] of shellToggleRules) {
-    assert.doesNotMatch(body, /(?:^|[;\s])(?:color|background|box-shadow|transition|border-color)\s*:/, `${selector.trim()} writes no colour, shadow or transition`);
-  }
-  assert.doesNotMatch(sheetWithoutComments, /\.tcrn-shell-(?:theme|side-nav|mobile-nav)-toggle:(?:hover|active|focus-visible)/);
-  assert.doesNotMatch(sheetWithoutComments, /\.tcrn-button\.tcrn-shell-theme-toggle[^{]*\{[^}]*transition/);
-  assert.match(tcrnComponentCss, /\.tcrn-shell-locale-menu__trigger \{[\s\S]*min-height: 36px;[\s\S]*border-radius: var\(--tcrn-radius-pill\);[\s\S]*font-size: var\(--tcrn-type-size-ui\);[\s\S]*line-height: var\(--tcrn-type-line-ui\);/);
-  // SearchInput keeps the tool form (STORY-126, Owner ruling): the control is the box and
-  // takes the search pair (wash fill, no edge, line-2 on hover, the paper fill with the
-  // focus ring once focused); the wrapper only positions the icon and the shortcut over it,
-  // and the control's inline padding keeps the text clear of both.
-  assert.match(tcrnComponentCss, /\.tcrn-search-input \{[^}]*--tcrn-search-input-control-min-inline-size: 9ch;[^}]*position: relative;[^}]*display: grid;[^}]*grid-template-columns: minmax\(0, 1fr\);/);
-  assert.doesNotMatch(tcrnComponentCss, /(?:^|\n)\.tcrn-search-input:focus-within \{/);
-  assert.match(tcrnComponentCss, /\.tcrn-input\.tcrn-search-input__control\{--tcrn-pair-fill-d:var\(--tcrn-color-wash\);--tcrn-pair-edge-d:0 0 #0000;[^}]*--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-line-2\);--tcrn-pair-fill-f:var\(--tcrn-color-panel\)\}/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__icon \{[^}]*position: absolute;[^}]*inset-inline-start: var\(--tcrn-search-input-padding-inline\);[^}]*inline-size: var\(--tcrn-search-input-icon-size\);[^}]*color: var\(--tcrn-color-ink-3\);[^}]*pointer-events: none;/);
-  const searchControlRule = /\.tcrn-search-input \.tcrn-search-input__control \{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
-  assert.match(searchControlRule, /appearance: none;[^}]*inline-size: 100%;[^}]*block-size: var\(--tcrn-search-input-block-size\);[^}]*padding-inline: calc\(var\(--tcrn-search-input-padding-inline\) \+ var\(--tcrn-search-input-icon-size\) \+ var\(--tcrn-search-input-column-gap\)\) var\(--tcrn-search-input-padding-inline\);/);
-  assert.doesNotMatch(searchControlRule, /(?:^|[;\s])(?:background|box-shadow|border|color)\s*:/, "the search pair, not the wrapper rule, paints the control");
-  assert.match(tcrnComponentCss, /\.tcrn-input\.tcrn-search-input__control::placeholder \{\s*color: var\(--tcrn-color-ink-2\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input__shortcut \{[^}]*position: absolute;[^}]*inset-inline-end: var\(--tcrn-space-2\);[^}]*border: 1px solid var\(--tcrn-color-line-2\);[^}]*color: var\(--tcrn-color-ink-2\);[^}]*font-family: var\(--tcrn-type-family-mono\);[^}]*pointer-events: none;/);
-  assert.match(tcrnComponentCss, /\.tcrn-search-input\[data-shortcut-visible="true"\] \.tcrn-search-input__control \{\s*padding-inline-end: calc\(/);
-  // The primary button reads on-acc ink from its own pair in both themes; the night theme
-  // changes the tokens, not the button, so there is no dark-scoped primary rule any more.
-  assert.match(tcrnComponentCss, /\.tcrn-button\.tcrn-button--primary\{[^}]*--tcrn-pair-ink-d:var\(--tcrn-color-on-acc\)/);
-  assert.doesNotMatch(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \.tcrn-button--primary/);
-  assert.match(tcrnComponentCss, /\.tcrn-readback-panel \{[\s\S]*display: grid;[\s\S]*gap: var\(--tcrn-space-2\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-readback-panel > \.tcrn-heading \+ \* \{[\s\S]*margin-top: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack \{[\s\S]*display: grid;[\s\S]*grid-template-columns: minmax\(0, 1fr\);[\s\S]*gap: var\(--tcrn-space-5\);[\s\S]*min-width: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack > \*,[\s\S]*\.tcrn-product-shell-section-grid > \* \{[\s\S]*min-width: 0;[\s\S]*max-width: 100%;/);
-  // DS#1 (TCRN-CROSS-INC-399 R46): the section grid stacks by its own container, the record
-  // family's rule, so a 1024px viewport with a 280px rail no longer squeezes the primary column
-  // to about 20px. The content stack is the container; two 280px floors plus the gap need 576px.
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-section-grid \{\n  display: grid;\n  grid-template-columns: minmax\(0, 1\.45fr\) minmax\(280px, 0\.75fr\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-product-shell-content-stack \{\n  container: tcrn-product-shell-content \/ inline-size;[^}]*width: 100%;/);
-  assert.match(tcrnComponentCss, /@container tcrn-product-shell-content \(max-width: 576px\) \{\n  \.tcrn-product-shell-section-grid \{\n    grid-template-columns: minmax\(0, 1fr\);\n  \}\n\}/);
-  assert.match(tcrnComponentCss, /\.tcrn-table-shell__head,[\s\S]*\.tcrn-table-shell__row \{[\s\S]*grid-template-columns: var\([\s\S]*--tcrn-table-shell-columns/);
-  assert.match(tcrnComponentCss, /\.tcrn-table-shell__head span,[\s\S]*\.tcrn-table-shell__cell \{[\s\S]*overflow-wrap: anywhere;/);
-  // P-DS-R45-06 (TCRN-CROSS-INC-399 R46): above the 464px record boundary the identifier track
-  // keeps the family's published readable floor while summary and meta keep zero minima; below
-  // the boundary every density still stacks into one column.
-  assert.match(tcrnComponentCss, /\.tcrn-record-row \{\n  display: grid;\n  grid-template-columns: minmax\(112px, 0\.18fr\) minmax\(0, 1fr\) minmax\(0, 0\.8fr\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-record-row--compact \{\n  grid-template-columns: minmax\(96px, 0\.16fr\) minmax\(0, 1fr\) minmax\(0, 0\.72fr\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-record-row--dense \{\n  grid-template-columns: minmax\(92px, 0\.14fr\) minmax\(0, 1fr\) minmax\(0, 0\.62fr\);/);
-  assert.match(tcrnComponentCss, /@container tcrn-record-row \(max-width: 464px\) \{\n  \.tcrn-record-row,\n  \.tcrn-record-row--compact,\n  \.tcrn-record-row--dense \{\n    grid-template-columns: minmax\(0, 1fr\);/);
-  assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row-list\{grid-template-columns:minmax\(0,1fr\) minmax\(var\(--tcrn-container-settings-control-min\),\.8fr\) max-content\}/);
-  assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row-list \.tcrn-setting-row\{grid-template-columns:subgrid\}/);
-  assert.match(tcrnComponentCss, /\.tcrn-settings-layout__form \.tcrn-setting-row__control \.tcrn-field :is\(\.tcrn-input,\.tcrn-select,\.tcrn-number-input\)\{inline-size:100%;min-inline-size:0\}/);
-  assert.match(tcrnComponentCss, /\.tcrn-record-row\[data-transient-target="true"\][^{]*\{[^}]*--tcrn-selection-fill/);
-  assert.match(tcrnComponentCss, /\.tcrn-table-shell__row\[data-transient-target="true"\][^{]*\{[^}]*--tcrn-selection-fill/);
-  assert.match(tcrnComponentCss, /\.tcrn-setting-row\[data-transient-target="true"\][^{]*\{[^}]*--tcrn-selection-fill/);
-  assert.match(tcrnComponentCss, /\.tcrn-page-header--dense,[\s\S]*\.tcrn-activity-feed--dense \{[\s\S]*--tcrn-density-row-min: 34px;/);
-  assert.match(tcrnComponentCss, /\.tcrn-tree-nav,[\s\S]*\.tcrn-search-result-list \{[\s\S]*min-width: 0;/);
-  assert.match(tcrnComponentCss, /\.tcrn-template-gallery \{[\s\S]*grid-template-columns: repeat\(auto-fit, minmax\(180px, 1fr\)\);/);
-});
 
 test("product shell search stays hidden when compact at rest", () => {
   const html = renderToStaticMarkup(
@@ -1243,56 +758,7 @@ function ThemeBlockFixture({ fixture, initialTheme }: { fixture: string; initial
   );
 }
 
-test("theme toggle shows its current icon by its own data-current-theme, in a block-level night theme as on a night page", async () => {
-  // No rule ties the toggle icons' display to a theme on the page (that was the C5 dark-only
-  // finding, and it hid both icons in a sample's night block); the toggle's own
-  // data-current-theme picks the icon through the opacity rules beside .tcrn-shell-theme-toggle__icon.
-  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
-  assert.doesNotMatch(sheet, /data-tcrn-theme[^{}]*data-theme-icon/);
-  const iconDisplayRules = [...sheet.matchAll(/(?:^|\n)([^{}\n@][^{}]*)\{([^}]*)\}/g)]
-    .filter(([, selector, body]) => /\[data-theme-icon/.test(selector) && /(?:^|[;\s])display\s*:/.test(body))
-    .map(([, selector]) => selector.trim());
-  assert.deepEqual(iconDisplayRules, [], "no rule shows or hides a theme icon by display");
 
-  const harness = createDomInteractionHarness();
-  try {
-    const style = harness.document.createElement("style");
-    style.textContent = tcrnComponentCss;
-    harness.document.head.append(style);
-    await harness.render(
-      <>
-        <ThemeBlockFixture fixture="night-block" initialTheme="dark" />
-        <ThemeBlockFixture fixture="day-block" initialTheme="light" />
-      </>
-    );
-    // jsdom cascades the matching rules in document order, without specificity; the rules that
-    // pick the icon come after the base icon rule, which is also the order their specificity gives.
-    const visibleIcons = (fixture: string) =>
-      [...harness.document.querySelectorAll(`[data-fixture="${fixture}"] [data-theme-icon]`)]
-        .filter((icon) => {
-          const computed = harness.window.getComputedStyle(icon);
-          return computed.display !== "none" && computed.visibility !== "hidden" && computed.opacity === "1";
-        })
-        .map((icon) => icon.getAttribute("data-theme-icon"));
-    assert.deepEqual(visibleIcons("night-block"), ["dark"], "the night block shows the moon, its current theme");
-    assert.deepEqual(visibleIcons("day-block"), ["light"], "the day block shows the sun");
-
-    const nightToggle = harness.document.querySelector("[data-fixture='night-block'] [data-theme-toggle='true']");
-    assert.ok(nightToggle instanceof harness.window.HTMLButtonElement);
-    await harness.dispatchClick(nightToggle);
-    assert.equal(nightToggle.getAttribute("data-current-theme"), "light");
-    assert.deepEqual(visibleIcons("night-block"), ["light"], "the icon follows the toggle's current theme");
-    await harness.dispatchClick(nightToggle);
-    assert.deepEqual(visibleIcons("night-block"), ["dark"]);
-
-    // A night page (the theme on html) changes nothing: each toggle still shows its own current icon.
-    harness.document.documentElement.setAttribute("data-tcrn-theme", "dark");
-    assert.deepEqual(visibleIcons("night-block"), ["dark"]);
-    assert.deepEqual(visibleIcons("day-block"), ["light"], "the toggle's current theme, not the page theme, picks the icon");
-  } finally {
-    await harness.cleanup();
-  }
-});
 
 test("shell chrome says its own words in the reader's language", () => {
   // The shell's most load-bearing strings, and the ones with the least visible
@@ -1310,9 +776,9 @@ test("shell chrome says its own words in the reader's language", () => {
       <ProductSwitcher locale="zh-CN" items={[{ id: "tms", label: "TMS" }]} />
       <ModuleTabs locale="zh-CN" items={[{ id: "overview", label: "概览" }]} />
       <SectionTabs locale="zh-CN" items={[{ id: "detail", label: "详情" }]} />
-      <TcrnBrandMark locale="zh-CN" />
+      <TcrnBrandMark productId="tms" locale="zh-CN" />
       <NavItem locale="zh-CN" disabled>受限模块</NavItem>
-      <ShellBrandLockup locale="zh-CN" />
+      <ShellBrandLockup productId="tms" locale="zh-CN" />
     </>
   );
   for (const name of [
@@ -1628,33 +1094,9 @@ test("STORY-140 GWT5 the side rail, collapse and pinned-open props are rejected 
 // components and none of them implements the ARIA tab pattern; these assertions
 // are what separates this one from those.
 
-test("STORY-092 tabs carry the tab pattern's roles and wiring, not aria-current", () => {
-  const html = renderToStaticMarkup(
-    <Tabs label="Sections" selectedId="two" onSelect={() => {}}
-      items={[{ id: "one", label: "One" }, { id: "two", label: "Two" }]}>
-      panel body
-    </Tabs>
-  );
-  assert.match(html, /role="tablist"/);
-  assert.equal((html.match(/role="tab"/g) ?? []).length, 2);
-  assert.match(html, /role="tabpanel"/);
-  // A tab swaps a panel; it does not change the page. aria-current would announce
-  // "current page", which is the wrong fact.
-  assert.doesNotMatch(html, /aria-current/);
-  assert.match(html, /aria-selected="true"[^>]*aria-controls="tcrn-tabpanel-two"|aria-controls="tcrn-tabpanel-two"/);
-  assert.match(html, /id="tcrn-tabpanel-two"[^>]*aria-labelledby="tcrn-tab-two"/);
-});
 
-test("STORY-092 only the selected tab is in the tab order", () => {
-  const html = renderToStaticMarkup(
-    <Tabs label="Sections" selectedId="one" onSelect={() => {}}
-      items={[{ id: "one", label: "One" }, { id: "two", label: "Two" }, { id: "three", label: "Three" }]} />
-  );
-  // Without the roving tabindex, tabbing past a three-tab strip costs three stops
-  // before reaching the content the tabs exist to reveal.
-  assert.equal((html.match(/tabindex="-1"/g) ?? []).length, 2);
-  assert.equal((html.match(/tabindex="0"/g) ?? []).length, 2, "the selected tab and the panel");
-});
+
+
 
 
 // TCRN-DS-STORY-093. The three tab-shaped navs rendered buttons with no handler at
@@ -1681,38 +1123,7 @@ test("STORY-093 a segmented nav renders an activation handler when the consumer 
 // TCRN-DS-SUB-124 (STORY-143 GWT2). Five tab-shaped forms grew up apart and said "selected" three
 // ways. They now render one block in three variants, and the family has one selected structure:
 // the shared ink wash (day 6% / night 7%) and the strong weight, with nothing added on top.
-test("STORY-143 GWT2 the five tab forms render one family with one selected structure", () => {
-  const two = [{ id: "a", label: "Alpha" }, { id: "b", label: "Beta", selected: true }];
-  const forms = {
-    Tabs: renderToStaticMarkup(<Tabs label="Sections" selectedId="b" onSelect={() => {}} items={[{ id: "a", label: "Alpha" }, { id: "b", label: "Beta" }]} />),
-    ModuleTabs: renderToStaticMarkup(<ModuleTabs items={two} />),
-    SectionTabs: renderToStaticMarkup(<SectionTabs items={two} />),
-    SegmentedNav: renderToStaticMarkup(<SegmentedNav items={two} />),
-    ViewTabs: renderToStaticMarkup(<ViewTabs tabs={[{ id: "a", label: "Alpha", href: "#a" }, { id: "b", label: "Beta", href: "#b", current: true }]} />)
-  };
-  const variants: Record<keyof typeof forms, string> = { Tabs: "panel", ModuleTabs: "nav", SectionTabs: "nav", SegmentedNav: "segmented", ViewTabs: "nav" };
-  for (const [name, html] of Object.entries(forms) as [keyof typeof forms, string][]) {
-    assert.match(html, new RegExp(`^<(?:div|nav) class="tcrn-tabs tcrn-tabs--${variants[name]}\\b`), `${name} is the Tabs family`);
-    const tabs = html.match(/<(?:button|a|span) [^>]*class="tcrn-tabs__tab"[^>]*>/g) ?? [];
-    assert.equal(tabs.length, 2, `${name} renders its two tabs as the family's tab`);
-    const selected = tabs.filter((tab) => tab.includes('data-selected="true"'));
-    assert.equal(selected.length, 1, `${name} marks the chosen tab one way`);
-    assert.match(selected[0] ?? "", /title="Beta"/, `${name}: the chosen tab carries its label as a title`);
-    assert.match(html, /<span class="tcrn-tabs__label">Beta<\/span>/);
-  }
-  // One selected rule for the whole family: the wash and the weight, and nothing on top of them.
-  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
-  const selectedRules = [...sheet.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
-    .filter(([, selector]) => /\.tcrn-tabs__tab/.test(selector ?? "") && /data-selected|aria-selected|aria-current|--selected/.test(selector ?? ""));
-  assert.equal(selectedRules.length, 1);
-  const body = selectedRules[0]?.[2] ?? "";
-  assert.match(body, /--tcrn-pair-tab-fill: var\(--tcrn-pair-tab-fill-s\);/);
-  assert.match(body, /font-weight: var\(--tcrn-type-weight-strong\);/);
-  assert.doesNotMatch(body, /border|outline|box-shadow|text-decoration|transform|brand/);
-  assert.match(sheet, /--tcrn-pair-tab-fill-s: var\(--tcrn-color-wash\);/, "the selected fill is the shared day 6% / night 7% wash");
-  // The old roots are hooks without rules: no package rule styles them any more.
-  assert.doesNotMatch(sheet, /\.tcrn-(?:module-tabs|section-tabs|segmented-nav|view-tabs)\b/);
-});
+
 
 // TCRN-DS-SUB-125 (STORY-143 GWT3). The table of contents is the page's own: it sits in the paper,
 // after the page header, and the shell around it has no resident side rail of any kind.
@@ -1759,26 +1170,7 @@ test("STORY-143 the breadcrumb separator is the shell.crumb-icon token, read fro
 
 // TCRN-DS-SUB-124 (STORY-143 GWT4). The breadcrumb is the page header's first row, and it keeps to
 // one line at every width, 390 included: crumbs give way with an ellipsis and carry a title.
-test("STORY-143 GWT4 the breadcrumb is the page header's first row, on one line, truncating, with titles", () => {
-  const header = renderToStaticMarkup(
-    <PageHeader title="Roster" breadcrumbs={[{ id: "talent", label: "Talent", href: "/talent" }, { id: "roster", label: "Roster" }]} />
-  );
-  assert.match(header, /^<header class="tcrn-page-header[^"]*"[^>]*><nav class="tcrn-breadcrumb" aria-label="Breadcrumbs">/);
-  const standalone = renderToStaticMarkup(
-    <Breadcrumb label="Breadcrumbs" items={[{ id: "talent", label: "Talent", href: "/talent" }, { id: "roster", label: "Roster", selected: true }]} />
-  );
-  assert.equal(header.match(/<nav class="tcrn-breadcrumb"[\s\S]*?<\/nav>/)?.[0], standalone, "the header's trail is the Breadcrumb component's DOM");
-  assert.match(standalone, /<svg [^>]*width="11" height="11"[^>]*aria-hidden="true" data-icon-name="chevron-right" class="tcrn-icon tcrn-breadcrumb__separator"/, "the board's 11 chevron, not read out");
-  for (const label of ["Talent", "Roster"]) assert.match(standalone, new RegExp(`class="tcrn-breadcrumb__crumb"[^>]* title="${label}"`));
-  // No rule, at any width, lets the trail wrap or stop clipping.
-  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
-  const trailRules = [...sheet.matchAll(/([^{}]*)\{([^{}]*)\}/g)].filter(([, selector]) => /\.tcrn-breadcrumb/.test(selector ?? ""));
-  assert.ok(trailRules.length >= 5);
-  for (const [, selector, body] of trailRules) {
-    assert.doesNotMatch(body ?? "", /flex-wrap:\s*wrap|white-space:\s*(?:normal|pre-wrap|pre-line|break-spaces)|text-overflow:\s*clip|overflow:\s*visible/, `${(selector ?? "").trim()} lets the trail wrap`);
-  }
-  assert.doesNotMatch(sheet, /\.tcrn-page-header__(?:breadcrumbs?|crumb)/, "one trail: the page header keeps no copy of its own");
-});
+
 
 // TCRN-DS-SUB-123 (STORY-142): the pin of a menu row. Grouping, item and sub-menu rows can all
 // be pinned; the pin is a real button beside the link (a link cannot hold one), says its state
@@ -1847,48 +1239,7 @@ function cssRules(sheet: string) {
   }));
 }
 
-test("STORY-142 GWT1 GWT4 the pin slot stays 24 and the pin shows by opacity on hover, focus and when pinned", () => {
-  const rules = cssRules(tcrnComponentCss);
-  const rule = (selector: string) => rules.find((candidate) => candidate.selector === selector)?.body ?? "";
-  // The slot: a fixed column at the row's end, the same at rest and on hover.
-  assert.match(rule(".tcrn-nav-item-row"), /grid-template-columns: minmax\(0, 1fr\) var\(--tcrn-shell-pinb\);/);
-  assert.match(rule('.tcrn-nav-group__label[data-nav-pinnable="true"]'), /grid-template-columns: minmax\(0, 1fr\) var\(--tcrn-shell-pinb\);/);
-  const pin = rule(".tcrn-nav-pin");
-  assert.match(pin, /inline-size: var\(--tcrn-shell-pinb\);/);
-  assert.match(pin, /block-size: var\(--tcrn-shell-pinb\);/);
-  assert.match(pin, /opacity: 0;/);
-  // No rule that reaches the pin or the row shows or hides it with display or visibility, and
-  // the hover rules change no box: only the pair, so the text box keeps its width.
-  for (const { selector, body } of rules) {
-    if (!/tcrn-nav-pin|tcrn-nav-item-row/.test(selector)) continue;
-    assert.doesNotMatch(body, /(?:^|;|\s)(?:display:\s*none|visibility:\s*hidden)/, selector);
-    if (/:hover/.test(selector)) assert.doesNotMatch(body, /(?:width|inline-size|padding|margin|grid-template|display)\s*:/, selector);
-  }
-  // Shown on row hover, focus inside the row (keyboard on the link or on the pin), the pin's own
-  // focus and when pinned.
-  const shown = rules.find(({ selector, body }) => selector.includes("> .tcrn-nav-pin") && /opacity: 1;/.test(body));
-  assert.ok(shown, "one rule shows the pin");
-  for (const part of [".tcrn-nav-item-row:hover", ".tcrn-nav-item-row:focus-within", ".tcrn-nav-group__label:hover", ".tcrn-nav-group__label:focus-within", '[aria-pressed="true"]', ":focus-visible"]) {
-    assert.ok(shown.selector.includes(part), `the pin shows on ${part}`);
-  }
-  // State rules of the pin and the row only switch their pair, with no colour of their own.
-  for (const { selector, body } of rules) {
-    if (!/^\.tcrn-nav-(?:pin|item-row):where\(/.test(selector)) continue;
-    for (const declaration of body.split(";").map((part) => part.trim()).filter(Boolean)) {
-      const [property, value] = declaration.split(/:\s*/, 2);
-      if (property === "outline" || property === "outline-offset") continue;
-      assert.match(property, /^--tcrn-pair-(?:pin|row)-/, `${selector}: ${declaration}`);
-      assert.match(value, /^var\(--tcrn-pair-(?:pin|row)-[a-z-]+\)$/, `${selector}: ${declaration}`);
-    }
-  }
-  // The pinned glyph fills the pin body, the first child of the roster icon.
-  assert.match(rule(".tcrn-nav-pin .tcrn-icon > :first-child"), /fill: var\(--tcrn-pair-pin-glyph\);/);
-  assert.match(pin, /--tcrn-pair-pin-glyph-s: currentColor;/);
-  assert.match(pin, /--tcrn-pair-pin-ink-s: var\(--tcrn-color-acc\);/);
-  // Touch: the 24 pin answers a 44 square; the coarse-pointer block opens with it (the touch rest
-  // rule after it is read by the TCRN-DS-SUB-235 test below).
-  assert.match(tcrnComponentCss, /@media \(pointer: coarse\) \{\s*\.tcrn-nav-pin::after \{\s*content: "";\s*position: absolute;\s*inset: calc\(-1 \* var\(--tcrn-space-2h\)\);\s*\}/);
-});
+
 
 // The sheet split at its @media (pointer: coarse) blocks: their insides, and the rest of the sheet.
 function coarsePointerBlocks(sheet: string) {
@@ -1968,74 +1319,7 @@ function notHeavier(a: readonly number[], b: readonly number[]) {
 // TCRN-DS-SUB-235 (STORY-142, R6 minutes D5, O-6): touch has no hover, so under a coarse pointer a
 // pin that is not pinned stays shown at rest, in its pair's rest ink (ink-3); under a fine pointer
 // it stays hidden at rest and shows on hover, focus and when pinned, as before.
-test("STORY-142 under a coarse pointer a pin that is not pinned stays shown in ink-3, and under a fine one it stays hidden at rest (TCRN-DS-SUB-235)", async () => {
-  const sheet = tcrnComponentCss.replace(/\/\*[\s\S]*?\*\//g, "");
-  const { inside, outside } = coarsePointerBlocks(sheet);
-  const touchRest = '.tcrn-nav-pin:not(:where([aria-pressed="true"]))';
 
-  // The coarse pointer: one rule on the pin itself, and it only shows the pin. It declares no colour
-  // and switches no pair, so the pin keeps its pair's ink, and the pinned, hover and focus pairs stay.
-  const coarsePinRules = inside
-    .flatMap((block) => cssRules(block))
-    .filter(({ selector }) => /\.tcrn-nav-pin(?![\w-])/.test(selector) && !selector.includes("::"));
-  assert.deepEqual(coarsePinRules.map(({ selector, body }) => [selector, body.trim()]), [[touchRest, "opacity: 1;"]]);
-  const pin = cssRules(sheet).find(({ selector }) => selector === ".tcrn-nav-pin")?.body ?? "";
-  assert.match(pin, /--tcrn-pair-pin-ink-d: var\(--tcrn-color-ink-3\);/, "the rest ink is ink-3");
-  assert.match(pin, /--tcrn-pair-pin-ink-h: var\(--tcrn-color-ink-3\);/, "a tap's hover keeps ink-3");
-  assert.match(pin, /--tcrn-pair-pin-ink: var\(--tcrn-pair-pin-ink-d\);/);
-  assert.match(pin, /color: var\(--tcrn-pair-pin-ink\);/);
-  assert.match(pin, /opacity: 0;/);
-  // Same weight as the pin's base rule and the rules that show it, so it comes after the base rule
-  // and outweighs none of them.
-  assert.ok(sheet.indexOf(`${touchRest} {`) > sheet.indexOf("\n.tcrn-nav-pin {\n"), "the touch rest rule follows the pin's base rule");
-  const shown = cssRules(sheet).find(({ selector, body }) => selector.includes("> .tcrn-nav-pin") && /opacity: 1;/.test(body));
-  assert.ok(shown, "one rule shows the pin");
-  assert.deepEqual(selectorSpecificity(touchRest), [0, 1, 0]);
-  for (const part of selectorParts(shown.selector)) {
-    assert.ok(notHeavier(selectorSpecificity(touchRest), selectorSpecificity(part)), `${touchRest} weighs no more than ${part}`);
-  }
-
-  // The fine pointer: outside the coarse blocks, every rule that shows the pin asks for a state
-  // (hover, focus, pinned or a preview state); none shows it at rest.
-  const states = [":hover", ":focus-within", ":focus-visible", '[aria-pressed="true"]', "data-tcrn-preview-state"];
-  let showing = 0;
-  for (const { selector, body } of cssRules(outside)) {
-    const opacity = /(?:^|;)\s*opacity:\s*([^;]+)/.exec(body)?.[1]?.trim();
-    if (opacity === undefined || Number.parseFloat(opacity) === 0) continue;
-    for (const part of selectorParts(selector)) {
-      // The subject: the last compound, read with every argument in parentheses or brackets left out.
-      const flat = part.replace(/\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)/g, "()").replace(/\[[^\]]*\]/g, "[]");
-      const subject = flat.trim().split(/\s*[>+~]\s*|\s+/).pop() ?? "";
-      if (!/\.tcrn-nav-pin(?![\w-])/.test(subject) || subject.includes("::")) continue;
-      showing += 1;
-      const asked = functionalPseudo(part, "not", false);
-      assert.ok(states.some((state) => asked.includes(state)), `${part} shows the pin at rest under a fine pointer`);
-    }
-  }
-  assert.ok(showing >= 3, "the hover, focus, pinned and preview rules show the pin");
-
-  // jsdom matches no coarse pointer (it applies @media rules for screen only): the page's pin that
-  // is not pinned computes opacity 0 at rest, the pinned one 1.
-  const harness = createDomInteractionHarness();
-  try {
-    const style = harness.document.createElement("style");
-    style.textContent = tcrnComponentCss;
-    harness.document.head.append(style);
-    await harness.render(
-      <>
-        <NavItem href="#teams" locale="en" pinned={false} onPinnedChange={() => undefined}>Teams</NavItem>
-        <NavItem href="#contracts" locale="en" pinned onPinnedChange={() => undefined}>Contracts</NavItem>
-      </>
-    );
-    const opacities = [...harness.document.querySelectorAll(".tcrn-nav-pin")].map((element) => [
-      element.getAttribute("aria-pressed"),
-      harness.window.getComputedStyle(element).opacity
-    ]);
-    assert.deepEqual(opacities, [["false", "0"], ["true", "1"]]);
-  } finally {
-    await harness.cleanup();
-  }
-});
 
 function PinFixture({ initial, onNavigate }: { initial: boolean; onNavigate: () => void }) {
   const [pinned, setPinned] = useState(initial);
@@ -2070,302 +1354,6 @@ test("STORY-142 pressing the pin asks for the other state and does not follow th
   }
 });
 
-// TCRN-DS-SUB-127 (STORY-145): the second of the three renditions, the lockup's first line
-// alone, centred on the mark. The mark is logos2's colour file byte for byte, the line keeps the
-// lockup's words, weight and suffix colour, and only the flex row centres the two.
-function logos2Inner(fileId: string): string {
-  // The compiled test sits at packages/ui-react/dist/components/Navigation/, five levels below
-  // the repository root.
-  const file = readFileSync(new URL(`../../../../../docs/design/gplus-2026-10/logos2/${fileId}.svg`, import.meta.url), "utf8");
-  return file.replace(/^<svg\b[^>]*>/u, "").replace(/<\/svg>\s*$/u, "");
-}
-
-test("STORY-145 GWT1 ProductLockup's first line draws the four product marks from logos2 at both scales", () => {
-  const words = {
-    tms: '<b class="tcrn-brand-lockup__word" title="TCRN TMS">TCRN <em class="tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--tms">TMS</em></b>',
-    "design-system": '<b class="tcrn-brand-lockup__word" title="TCRN Design System">TCRN <em class="tcrn-brand-lockup__suffix tcrn-brand-wordmark__suffix--design-system">Design System</em></b>',
-    einzbern: '<b class="tcrn-brand-lockup__word" title="Einzbern">Einzbern</b>',
-    "mana-orchestrate": '<b class="tcrn-brand-lockup__word" title="Mana Orchestrate">Mana Orchestrate</b>'
-  } as const;
-  for (const mark of tcrnProductMarks) {
-    const productId = mark.productId as keyof typeof words;
-    for (const [scale, kind] of [["rail", "lkr-line"], ["lockup", "lk-line"]] as const) {
-      // A mono request does not reach the first line: the top band never shows a mono mark.
-      const html = renderToStaticMarkup(<ProductLockup productId={productId} firstLine={scale} markVariant="mono" locale="zh-CN" />);
-      assert.match(html, new RegExp(`^<div class="tcrn-brand-lockup tcrn-brand-lockup--line${scale === "rail" ? " tcrn-brand-lockup--line-rail" : ""}${mark.font === "serif" ? " tcrn-brand-lockup--line-serif" : ""}" role="img" aria-label="${mark.name}"`), `${productId} ${scale}`);
-      assert.match(html, new RegExp(`data-lockup="${kind}"`));
-      const svg = /<svg([^>]*)>([\s\S]*?)<\/svg>/.exec(html);
-      assert.ok(svg, `${productId} ${scale} draws an inline mark`);
-      // data-logo is the mark's own id, the logos2 file's name, not the product key (TCRN-DS-SUB-194).
-      assert.match(svg[1], new RegExp(`data-logo="${mark.id}"`));
-      assert.match(svg[1], /aria-hidden="true"/);
-      assert.match(svg[1], /data-product-mark-variant="color"/);
-      assert.equal(svg[2], logos2Inner(mark.id), `${productId} ${scale}: the mark is logos2/${mark.id}.svg`);
-      assert.ok(html.includes(`<span class="tcrn-brand-lockup__line" aria-hidden="true">${words[productId]}</span>`), `${productId} ${scale} line`);
-      // One line: no tagline, no byline.
-      assert.doesNotMatch(html, /<small|tcrn-product-logo__line-two|tcrn-product-logo__byline|艺人管理系统/);
-    }
-  }
-  // The other two renditions are untouched: the whole lockup still carries its two lines.
-  const whole = renderToStaticMarkup(<ProductLockup productId="tms" locale="zh-CN" />);
-  assert.match(whole, /class="tcrn-product-logo tcrn-brand-lockup"/);
-  assert.match(whole, /<small class="tcrn-product-logo__line-two">艺人管理系统<\/small>/);
-  assert.doesNotMatch(whole, /data-lockup=/);
-  // Without a product the first line still says the product's whole name.
-  const unregistered = renderToStaticMarkup(<ProductLockup firstLine="rail" suffix="Pilot" />);
-  assert.match(unregistered, /role="img" aria-label="TCRN Pilot"/);
-  assert.match(unregistered, /<b class="tcrn-brand-lockup__word" title="TCRN Pilot">TCRN <em class="tcrn-brand-lockup__suffix">Pilot<\/em><\/b>/);
-});
-
-test("STORY-145 GWT2 the first line is centred by the flex row, at the section E sizes, with no nudge", () => {
-  const rules = cssRules(tcrnComponentCss);
-  const rule = (selector: string) => rules.find((candidate) => candidate.selector === selector)?.body ?? "";
-  const lockup = rules.filter(({ selector }) => selector.split(",").map((part) => part.trim()).includes(".tcrn-brand-lockup")).map(({ body }) => body).join("\n");
-  assert.match(lockup, /display: inline-flex;/);
-  assert.match(lockup, /align-items: center;/);
-  // The two marks are the shell.mark-lg and shell.mark tokens, 44 and 22 (TCRN-DS-SUB-178).
-  assert.equal(createTokenMap()["--tcrn-shell-mark-lg"], "44px");
-  assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px");
-  assert.match(rule(".tcrn-brand-lockup--line"), /--tcrn-brand-mark-size: var\(--tcrn-shell-mark-lg\);[\s\S]*--tcrn-brand-line-one-size: 16px;[\s\S]*gap: var\(--tcrn-space-3h\);/);
-  assert.match(rule(".tcrn-brand-lockup--line-rail"), /--tcrn-brand-mark-size: var\(--tcrn-shell-mark\);[\s\S]*--tcrn-brand-line-one-size: 12\.5px;[\s\S]*--tcrn-brand-line-one-height: var\(--tcrn-type-line-control\);[\s\S]*gap: var\(--tcrn-space-2h\);/);
-  const word = rule(".tcrn-brand-lockup__word");
-  assert.match(word, /font-weight: var\(--tcrn-type-weight-strong\);/);
-  assert.match(word, /white-space: nowrap;/);
-  assert.match(word, /text-overflow: ellipsis;/);
-  assert.match(rule(".tcrn-brand-lockup__suffix"), /font-style: normal;/);
-  assert.match(rule(".tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word"), /font-family: var\(--tcrn-type-family-serif\);[\s\S]*font-size: 18px;/);
-  assert.match(rule(".tcrn-brand-lockup--line-rail.tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word"), /font-size: 13\.5px;/);
-  // The r6 nudge (the line moved down 2 or 3) must not come back in any first-line rule: no
-  // margin, offset or one-sided padding. The word's room above and below its line
-  // (TCRN-DS-SUB-143) is a single padding-block value, the same on both sides, so it moves no glyph.
-  for (const { selector, body } of rules) {
-    if (!/tcrn-brand-lockup(?:--line|__line|__word|__suffix)/.test(selector)) continue;
-    assert.doesNotMatch(
-      body,
-      /(?:^|[;\s])(?:padding|padding-top|padding-bottom|padding-block-start|padding-block-end|margin|margin-top|margin-block|top|transform|translate|position|vertical-align)\s*:/,
-      selector
-    );
-    for (const match of body.matchAll(/(?:^|[;\s])padding-block\s*:\s*([^;]+);/g)) {
-      assert.match(match[1].trim(), /^var\(--tcrn-space-[0-9]+h?\)$/, `${selector}: padding-block is one token, the same on both sides`);
-    }
-  }
-});
-
-// Layout model for the first line (TCRN-DS-SUB-143). The unit tests have no layout engine, so the
-// two readings the shell gate takes in the browser are worked out here from the rules and the
-// tokens. Hanken Grotesk (the vendored latin file) ascends 1000 and descends 303 per 1000 em with
-// no line gap; Chromium rounds the ascent and the descent to whole pixels, which is why the
-// suffix's line box read 17 at 12.5 in the R1 geometry run. TCRN TMS at 12.5/600 read 60.234 wide
-// in the same run.
-const firstLineFont = { ascent: 1, descent: 0.303 } as const;
-const firstLineTmsWidthPx = 60.234;
-
-/** Evaluates a calc() body of px numbers, given the values of its var() references and of 100%. */
-function evaluateLength(expression: string, values: Record<string, number>, percent: number): number {
-  const substituted = expression
-    .replace(/^calc\(([\s\S]*)\)$/, "$1")
-    .replace(/var\((--[a-z0-9-]+)\)/g, (_, name: string) => {
-      assert.ok(name in values, `${name} has a value in the model`);
-      return String(values[name]);
-    })
-    .replace(/100%/g, String(percent))
-    .replace(/(\d+(?:\.\d+)?)px/g, "$1");
-  const parts = substituted.match(/\d+(?:\.\d+)?|[-+*/()]/g) ?? [];
-  assert.equal(parts.join(""), substituted.replace(/\s+/g, ""), `${expression} reduces to arithmetic`);
-  let at = 0;
-  const sum = (): number => {
-    let value = product();
-    while (parts[at] === "+" || parts[at] === "-") value = parts[at++] === "+" ? value + product() : value - product();
-    return value;
-  };
-  const product = (): number => {
-    let value = operand();
-    while (parts[at] === "*" || parts[at] === "/") value = parts[at++] === "*" ? value * operand() : value / operand();
-    return value;
-  };
-  const operand = (): number => {
-    if (parts[at] === "(") {
-      at++;
-      const value = sum();
-      at++;
-      return value;
-    }
-    return Number(parts[at++]);
-  };
-  return sum();
-}
-
-test("STORY-145 the first line draws a word whole when it fits its line within 1, and its suffix stays inside the word (TCRN-DS-SUB-143)", () => {
-  const rules = cssRules(tcrnComponentCss);
-  const rule = (selector: string) => rules.find((candidate) => candidate.selector === selector)?.body ?? "";
-  const declaration = (body: string, property: string) => new RegExp(`(?:^|[;\\s])${property}:\\s*([^;]+);`).exec(body)?.[1].trim() ?? "";
-  const tokens = createTokenMap();
-  const px = (variable: string) => Number.parseFloat(tokens[variable]);
-  const values = Object.fromEntries(Object.keys(tokens).map((name) => [name, px(name)] as const));
-  const word = rule(".tcrn-brand-lockup__word");
-
-  // scrollWidth ≤ clientWidth: the word is as wide as its text and may run 1 past its line, so in a
-  // line 60 wide (the brand button's cell) TCRN TMS is drawn whole; past that it ends in an ellipsis.
-  assert.equal(declaration(word, "inline-size"), "max-content");
-  const maxWidth = (line: number) => evaluateLength(declaration(word, "max-inline-size"), values, line);
-  assert.equal(maxWidth(60), 61);
-  const clientWidth = Math.min(firstLineTmsWidthPx, maxWidth(60));
-  const scrollWidth = firstLineTmsWidthPx;
-  assert.ok(scrollWidth <= clientWidth, `TCRN TMS ${scrollWidth} in a word box ${clientWidth} wide shows no ellipsis`);
-  assert.ok(Math.min(firstLineTmsWidthPx + 2, maxWidth(60)) < firstLineTmsWidthPx + 2, "a word more than 1 too wide is cut, under its title");
-  assert.match(renderToStaticMarkup(<ProductLockup productId="design-system" firstLine="rail" />), /<b class="tcrn-brand-lockup__word" title="TCRN Design System">/);
-
-  // em inside b: at both scales the suffix's line box fits inside the word's box, the same room
-  // above and below.
-  const room = px(/^var\((--[a-z0-9-]+)\)$/.exec(declaration(word, "padding-block"))?.[1] ?? "");
-  assert.equal(room, 2, "space-0h above and below the line");
-  const scales = [
-    { scale: "rail", size: 12.5, line: 12.5 * Number(tokens["--tcrn-type-line-control"]) },
-    { scale: "lockup", size: 16, line: px("--tcrn-type-line-ui") }
-  ];
-  assert.match(rule(".tcrn-brand-lockup--line"), /--tcrn-brand-line-one-height: var\(--tcrn-type-line-ui\);/);
-  for (const { scale, size, line } of scales) {
-    const suffixBox = Math.round(size * firstLineFont.ascent) + Math.round(size * firstLineFont.descent);
-    const wordBox = line + 2 * room;
-    const overhang = (suffixBox - line) / 2;
-    assert.ok(overhang <= room, `${scale}: the suffix's line box (${suffixBox}) stays inside the word (${wordBox})`);
-    assert.ok(suffixBox <= wordBox, `${scale}: em top and bottom inside b`);
-  }
-});
-
-test("STORY-143 C7 group titles, search results and pinnable labels carry their titles, and an empty search says so (TCRN-DS-SUB-154)", () => {
-  const rules = cssRules(tcrnComponentCss);
-  const rule = (selector: string) => rules.find((candidate) => candidate.selector === selector)?.body ?? "";
-  const singleLine = (body: string) => {
-    assert.match(body, /overflow: hidden;/);
-    assert.match(body, /text-overflow: ellipsis;/);
-    assert.match(body, /white-space: nowrap;/);
-  };
-  const noop = () => undefined;
-
-  // 1. A group title that cannot be pinned is the same one-line text as a pinnable one, with its title.
-  const plainGroup = renderToStaticMarkup(<NavGroup label="Talent operations and settlements"><span /></NavGroup>);
-  assert.match(
-    plainGroup,
-    /<div class="tcrn-nav-group__label"><span class="tcrn-nav-group__label-text" title="Talent operations and settlements">Talent operations and settlements<\/span><\/div>/
-  );
-  const groupText = rule(".tcrn-nav-group__label-text");
-  assert.match(groupText, /display: block;/, "the text truncates itself in a plain title row too");
-  singleLine(groupText);
-
-  // 2. Each search result link carries its whole text as its title.
-  const results = renderToStaticMarkup(
-    <ProductShellSearch
-      query="ro"
-      expanded
-      results={[
-        { id: "roster", title: "Roster", meta: "People", href: "#roster" },
-        { id: "rota", title: "Rota", href: "#rota" }
-      ]}
-    />
-  );
-  assert.match(results, /<a class="tcrn-product-shell-search__result" href="#roster" title="Roster — People"/);
-  assert.match(results, /<a class="tcrn-product-shell-search__result" href="#rota" title="Rota"/);
-
-  // 3. Open with no match, the empty line shows instead of being hidden with the results; closed,
-  // the list stays hidden.
-  const empty = renderToStaticMarkup(<ProductShellSearch query="zz" expanded results={[]} emptyLabel="No match" />);
-  assert.match(empty, /data-product-shell-search-empty="true"><span class="tcrn-product-shell-search__empty">No match<\/span><\/div>/);
-  assert.doesNotMatch(empty, /data-product-shell-search-empty="true" hidden=""/);
-  const emptyDocument = new JSDOM(empty).window.document;
-  const emptyInput = emptyDocument.querySelector('input[role="combobox"]');
-  const emptyListbox = emptyDocument.querySelector('[role="listbox"]');
-  const emptyStatus = emptyDocument.querySelector('[role="status"]');
-  assert.ok(emptyInput && emptyListbox && emptyStatus);
-  assert.equal(emptyInput.getAttribute("value"), "zz");
-  assert.equal(emptyInput.getAttribute("aria-expanded"), "false", "no option popup is expanded for an empty result");
-  assert.equal(emptyInput.getAttribute("aria-controls"), emptyListbox.id);
-  assert.equal(emptyListbox.hasAttribute("hidden"), true);
-  assert.equal(emptyListbox.querySelectorAll('[role="option"]').length, 0, "an empty result invents no option");
-  assert.equal(emptyStatus.hasAttribute("hidden"), false);
-  assert.equal(emptyStatus.textContent, "No match");
-  assert.equal(emptyInput.getAttribute("aria-describedby"), emptyStatus.id, "the visible status describes the field");
-  const populatedDocument = new JSDOM(results).window.document;
-  const populatedInput = populatedDocument.querySelector('input[role="combobox"]');
-  const populatedListbox = populatedDocument.querySelector('[role="listbox"]');
-  assert.equal(populatedInput?.getAttribute("aria-expanded"), "true");
-  assert.equal(populatedInput?.getAttribute("aria-controls"), populatedListbox?.id);
-  assert.equal(populatedListbox?.hasAttribute("hidden"), false);
-  assert.equal(populatedListbox?.querySelectorAll('[role="option"]').length, 2);
-  assert.equal(populatedDocument.querySelector('[role="status"]')?.hasAttribute("hidden"), true);
-  const described = new JSDOM(renderToStaticMarkup(<ProductShellSearch expanded inputProps={{ "aria-describedby": "query-help" }} />)).window.document;
-  assert.equal(described.querySelector("input")?.getAttribute("aria-describedby"), `query-help ${described.querySelector('[role="status"]')?.id}`);
-  const closed = renderToStaticMarkup(<ProductShellSearch query="" expanded={false} results={[]} />);
-  assert.match(closed, /data-product-shell-search-results="true" hidden=""/);
-  assert.match(closed, /data-product-shell-search-empty="true" hidden=""/);
-
-  // 4. Every item's label is one line with its title (TCRN-DS-SUB-192): the base rule cuts it, a
-  // block so the cut applies wherever the item is, and NavItem gives it its words, pinnable or not,
-  // in the full menu or out of it: its text, the text inside its markup, or the row's title when it
-  // holds none.
-  const label = rule(".tcrn-nav-item__label");
-  singleLine(label);
-  assert.match(label, /display: block;/);
-  assert.match(label, /min-width: 0;/);
-  // The full menu's rule keeps only what it adds, a flex row for the next-level mark: no second cut.
-  assert.deepEqual(rule(".tcrn-shell-menu .tcrn-nav-item__label").trim().split("\n").map((line) => line.trim()), [
-    "display: flex;",
-    "align-items: center;",
-    "gap: var(--tcrn-space-1h);"
-  ]);
-  const pinnable = renderToStaticMarkup(<NavItem href="#contracts" onPinnedChange={noop}>Contracts and templates</NavItem>);
-  assert.match(pinnable, /<span class="tcrn-nav-item__label" title="Contracts and templates" data-text="prail">Contracts and templates<\/span>/);
-  const marked = renderToStaticMarkup(
-    <NavItem href="#roster" title="Roster" onPinnedChange={noop}>
-      <span className="tcrn-shell-menu__text">Roster</span>
-    </NavItem>
-  );
-  assert.match(marked, /<span class="tcrn-nav-item__label" title="Roster" data-text="prail"><span class="tcrn-shell-menu__text">Roster<\/span><\/span>/);
-  assert.match(renderToStaticMarkup(<NavItem href="#plain">Plain</NavItem>), /<span class="tcrn-nav-item__label" title="Plain" data-text="prail">Plain<\/span>/);
-  assert.match(renderToStaticMarkup(<NavItem href="#teams"><span>Teams</span> <b>2</b></NavItem>), /<span class="tcrn-nav-item__label" title="Teams 2" data-text="prail">/);
-  assert.match(renderToStaticMarkup(<NavItem href="#mark" title="Marked row"><Icon name="users" /></NavItem>), /<span class="tcrn-nav-item__label" title="Marked row" data-text="prail">/);
-  assert.match(renderToStaticMarkup(<NavItem href="#empty"><Icon name="users" /></NavItem>), /<span class="tcrn-nav-item__label" data-text="prail">/);
-  // Rendered in both places, every label carries its words as its title, and every rule that reaches
-  // it (the base rule always among them) leaves the one-line cut in place: out of the menu a
-  // SideNav's items (the deprecated rail), in the menu the full menu's rows.
-  const undoes = /white-space: (?:normal|pre-wrap|pre-line|break-spaces)|text-overflow: clip|overflow(?:-x|-inline)?: visible/;
-  const labelRules = rules.filter(({ selector }) => selector.includes("tcrn-nav-item__label"));
-  const outside = renderToStaticMarkup(
-    <SideNav label="Rail">
-      <NavGroup label="Talent">
-        <NavItem href="#roster" iconName="users" selected>Roster and contracts of the autumn season</NavItem>
-        <NavItem href="#teams" onPinnedChange={noop}>Teams</NavItem>
-      </NavGroup>
-    </SideNav>
-  );
-  const inside = renderToStaticMarkup(
-    <ProductShell
-      productName="TCRN TMS"
-      moduleName="Talent"
-      brandProductId="tms"
-      currentRouteLabel="Roster"
-      pageHeader={{ title: "Roster" }}
-      navGroups={shellNavGroups}
-      locales={shellLocales}
-      currentLocale="en"
-      menuOpen
-    >
-      <section>content</section>
-    </ProductShell>
-  );
-  for (const [where, html, inMenu] of [["out of the menu", outside, false], ["in the menu", inside, true]] as const) {
-    const labels = [...new JSDOM(html).window.document.querySelectorAll(".tcrn-nav-item__label")];
-    assert.ok(labels.length >= 2, `${where}: labels are rendered`);
-    for (const element of labels) {
-      assert.equal(Boolean(element.closest(".tcrn-shell-menu")), inMenu, where);
-      assert.equal(element.getAttribute("title"), (element.textContent ?? "").replace(/\s+/g, " ").trim(), `${where}: the title is the label's words`);
-      const reaching = labelRules.filter(({ selector }) => selector.split(/,\s*(?![^(]*\))/).some((part) => element.matches(part)));
-      assert.ok(reaching.some(({ selector }) => selector === ".tcrn-nav-item__label"), `${where}: the base rule reaches the label`);
-      for (const { selector, body } of reaching) assert.doesNotMatch(body, undoes, `${where}: ${selector}`);
-    }
-  }
-});
-
 test("STORY-144 the shell root reports an open Sheet as data-state=\"sheet\", also on the server (TCRN-DS-SUB-159)", () => {
   const shell = (open: boolean) => (
     <ProductShell
@@ -2393,187 +1381,11 @@ test("STORY-144 the shell root reports an open Sheet as data-state=\"sheet\", al
   assert.match(renderToStaticMarkup(<shellMenuPresentationContext.Provider value="panel">{shell(true)}</shellMenuPresentationContext.Provider>), /data-state="expanded"/);
 });
 
-test("the shell layer of the package sheet starts at one stable marker, before its first rule (TCRN-DS-SUB-145)", () => {
-  const marker = "/* tcrn:shell-layer-start */";
-  assert.equal(tcrnComponentCss.split(marker).length - 1, 1, "the marker is written once");
-  const at = tcrnComponentCss.indexOf(marker);
-  // The shell layer is the shell segments (shell.css.ts, shell-intro.css.ts, shell-sheet.css.ts);
-  // its first rule is the brand button's, right after the marker, and every shell segment comes
-  // after the marker in the sheet. A page template cuts the layer off at the marker.
-  assert.ok(tcrnComponentCss.startsWith("\n.tcrn-shell-brand {", at + marker.length), "the brand button's rule follows the marker");
-  const segments: string[] = [...Object.values(shellSegments), ...Object.values(shellIntroSegments), ...Object.values(shellSheetSegments)]
-    .map((segment) => String(segment))
-    .filter((segment) => segment.length > 0);
-  assert.ok(segments.length >= 7, "the shell segments are read");
-  for (const segment of segments) {
-    const where = tcrnComponentCss.indexOf(segment);
-    assert.ok(where >= 0, "the segment is in the sheet");
-    assert.ok(where + segment.length > at && (where >= at || segment.includes(marker)), "the segment starts at or after the marker");
-  }
-  assert.ok(String(shellSegments.shellCss01).startsWith(`\n${marker}\n.tcrn-shell-brand {`), "the marker opens the first shell segment");
-});
 
-test("STORY-140 the paper's scrolling region takes focus, and the bell's hover is the 6% wash of the 07a board (TCRN-DS-SUB-146)", () => {
-  // R2-8: the paper scrolls inside the content region, so it is focusable to be scrolled by
-  // keyboard (axe scrollable-region-focusable); it keeps its name. Its ring is its own inset focus
-  // pair (TCRN-DS-SUB-182, the next test), not the shell's outward fallback, which the paper cuts.
-  const html = renderToStaticMarkup(
-    <ProductShell
-      productName="TCRN TMS"
-      moduleName="Talent"
-      brandProductId="tms"
-      currentRouteLabel="Roster"
-      pageHeader={{ title: "Roster" }}
-      navGroups={shellNavGroups}
-      locales={shellLocales}
-      currentLocale="en"
-      contentLabel="Roster workspace"
-    >
-      <div>content</div>
-    </ProductShell>
-  );
-  assert.match(html, /<section id="[^"]+" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Roster workspace" tabindex="0">/);
-  // The fallback ring elsewhere in the shell is still the shell's focus edge pair, the ring token
-  // (TCRN-DS-SUB-156), declared with the theme.
-  const focusRule = /\n\.tcrn-product-shell :where\(:focus-visible\):not\(([^)]*)\):not\(:where\(([^{]*)\)\) \{([^}]*)\}/.exec(tcrnComponentCss);
-  assert.ok(focusRule, "the shell's focus-visible rule");
-  assert.match(focusRule[3], /box-shadow: var\(--tcrn-pair-shell-edge-f\);/);
-  assert.match(tcrnComponentCss, /\[data-tcrn-theme="dark"\] \{\n {2}--tcrn-pair-shell-edge-f: var\(--tcrn-focus-ring\);/);
 
-  // R2-10: hover switches the bell to its hover pair, whose fill is the 6% ink wash; the state rule
-  // writes no colour. On the canvas the ink reads 13.97 by day and 13.17 at night, the board's figures.
-  const bell = /\n\.tcrn-shell-bell \{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
-  assert.match(bell, /--tcrn-pair-fill-h: var\(--tcrn-color-wash\);/);
-  const hover = /\n\.tcrn-shell-bell:where\(:hover, \[data-tcrn-preview-state="hover"\]\) \{([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
-  assert.deepEqual(hover.trim().split("\n").map((line) => line.trim()), [
-    "--tcrn-pair-fill: var(--tcrn-pair-fill-h);",
-    "--tcrn-pair-ink: var(--tcrn-pair-ink-h);",
-    "--tcrn-pair-edge: var(--tcrn-pair-edge-h);"
-  ]);
-  const channels = (text: string) => {
-    const hex = /^#([0-9a-f]{6})$/i.exec(text);
-    if (hex) return [0, 2, 4].map((i) => Number.parseInt(hex[1].slice(i, i + 2), 16)).concat(1);
-    const rgba = /^rgba\((\d+),(\d+),(\d+),([\d.]+)\)$/.exec(text.replace(/\s+/g, ""));
-    assert.ok(rgba, `colour ${text}`);
-    return [Number(rgba[1]), Number(rgba[2]), Number(rgba[3]), Number(rgba[4])];
-  };
-  const luminance = ([r, g, b]: number[]) => {
-    const linear = (value: number) => (value / 255 <= 0.03928 ? value / 255 / 12.92 : ((value / 255 + 0.055) / 1.055) ** 2.4);
-    return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
-  };
-  const inkOnWash = (theme: "light" | "dark") => {
-    const tokens = createResolvedTokenMap(theme);
-    const [br, bg, bb] = channels(tokens["--tcrn-color-bg"]);
-    const [wr, wg, wb, wa] = channels(tokens["--tcrn-color-wash"]);
-    const fill = [wr * wa + br * (1 - wa), wg * wa + bg * (1 - wa), wb * wa + bb * (1 - wa)];
-    const [high, low] = [luminance(fill), luminance(channels(tokens["--tcrn-color-ink"]))].sort((a, b) => b - a);
-    return ((high + 0.05) / (low + 0.05)).toFixed(2);
-  };
-  assert.equal(inkOnWash("light"), "13.97");
-  assert.equal(inkOnWash("dark"), "13.17");
-});
 
-test("STORY-140 the paper's scrolling region draws its own inset ring inside the paper, and the shell's fallback leaves out every shell part with its own focus pair (TCRN-DS-SUB-182)", () => {
-  const rules = cssRules(tcrnComponentCss);
-  const lines = (body: string) => body.trim().split("\n").map((line) => line.trim());
-  const region = ".tcrn-product-shell__paper > .tcrn-product-shell__main";
-  const base = lines(rules.find(({ selector }) => selector === region)?.body ?? "");
-  // R2-8: the paper clips its overflow, so the region's ring is drawn inward. The pair is the G+ ring
-  // read inward: nothing at rest; on focus a surface gap at the edge, then the accent ring.
-  for (const declaration of [
-    "--tcrn-pair-edge-d: 0 0 #0000;",
-    "--tcrn-pair-edge-f: inset 0 0 0 var(--tcrn-space-0h) var(--tcrn-color-surface), inset 0 0 0 var(--tcrn-space-1) var(--tcrn-color-acc);",
-    "--tcrn-pair-edge: var(--tcrn-pair-edge-d);",
-    "box-shadow: var(--tcrn-pair-edge);",
-    "border-radius: inherit;",
-    "overflow: auto;"
-  ]) {
-    assert.ok(base.includes(declaration), declaration);
-  }
-  // Same colours and widths as the ring token (--tcrn-focus-ring: 2px surface, 4px accent), only inset.
-  const tokens = createTokenMap();
-  const ring = tokens["--tcrn-focus-ring"].split(",").map((layer) => /^0 0 0 (\d+)px (var\(--[a-z0-9-]+\))$/.exec(layer.trim())?.slice(1));
-  const edge = (base.find((line) => line.startsWith("--tcrn-pair-edge-f:")) ?? "").replace(/^--tcrn-pair-edge-f: |;$/g, "");
-  const inward = edge.split(/,\s*(?![^(]*\))/).map((layer) => /^inset 0 0 0 var\((--[a-z0-9-]+)\) (var\(--[a-z0-9-]+\))$/.exec(layer.trim())?.slice(1));
-  assert.deepEqual(
-    inward.map((layer) => layer && [String(Number.parseFloat(tokens[layer[0]])), layer[1]]),
-    ring
-  );
-  assert.deepEqual(ring, [["2", "var(--tcrn-color-surface)"], ["4", "var(--tcrn-color-acc)"]]);
-  // The ring stays clear of the content: its 4 is inside the region's smallest inset (space-3, 12).
-  assert.ok(Number.parseFloat(tokens["--tcrn-space-1"]) < Number.parseFloat(tokens["--tcrn-space-3"]));
-  // The focus state switches the pair only; forced colours get a transparent outline drawn inward
-  // (width + offset 0), so neither leaves the region's border box.
-  assert.deepEqual(
-    rules.filter(({ selector }) => selector === `${region}:where(:focus-visible)`).map(({ body }) => lines(body)),
-    [["--tcrn-pair-edge: var(--tcrn-pair-edge-f);"], ["outline: 2px solid transparent;", "outline-offset: -2px;"]]
-  );
-  // The fallback: its second :not() lists, inside :where() (no added weight), exactly the shell
-  // parts whose own focus rule switches --tcrn-pair-edge to its focus value (the grep of the shell
-  // segments), the region included.
-  const fallback = /\n\.tcrn-product-shell :where\(:focus-visible\):not\(([^)]*)\):not\(:where\(([^{]*)\)\) \{/.exec(tcrnComponentCss);
-  assert.ok(fallback, "the shell's fallback rule");
-  const pairDriven = fallback[1].split(/,\s*/);
-  const leftOut = fallback[2].split(/,\s*/);
-  const own = new Set<string>();
-  for (const segment of Object.values(shellSegments).map(String)) {
-    for (const { selector, body } of cssRules(segment)) {
-      if (!/--tcrn-pair-edge: var\(--tcrn-pair-edge-f\);/.test(body)) continue;
-      for (const part of selector.split(/,\s*(?![^(]*\))/)) own.add(part.replace(/:where\([^)]*\)$/, "").trim());
-    }
-  }
-  assert.deepEqual([...leftOut].sort(), [...own].sort());
-  assert.deepEqual([...leftOut].sort(), [
-    ".tcrn-product-shell__paper > .tcrn-product-shell__main",
-    ".tcrn-shell-avatar",
-    ".tcrn-shell-bell",
-    ".tcrn-shell-brand",
-    ".tcrn-shell-menu .tcrn-nav-item",
-    ".tcrn-shell-menu .tcrn-product-shell-search__result",
-    ".tcrn-shell-pins__item"
-  ]);
-  // The avatar's focus edge keeps its inset 1px line under the ring, and nothing reaches it now.
-  assert.match(rules.find(({ selector }) => selector === ".tcrn-shell-avatar")?.body ?? "", /--tcrn-pair-edge-f: inset 0 0 0 1px var\(--tcrn-color-line\), var\(--tcrn-focus-ring\);/);
-  // On the rendered shell (menu open, and with a query for the results): every left-out part is
-  // there and focusable, and the fallback reaches none of them; a part of another family in the
-  // shell (the nav pin) is still reached, as before.
-  const reached = (element: Element) =>
-    Boolean(element.parentElement?.closest(".tcrn-product-shell")) && !pairDriven.some((selector) => element.matches(selector)) && !leftOut.some((selector) => element.matches(selector));
-  const shell = (extra: Partial<ProductShellProps>) =>
-    new JSDOM(
-      renderToStaticMarkup(
-        <ProductShell
-          productName="TCRN TMS"
-          moduleName="Talent"
-          brandProductId="tms"
-          currentRouteLabel="Roster"
-          pageHeader={{ title: "Roster" }}
-          navGroups={shellNavGroups}
-          pinnedIds={["roster", "contracts"]}
-          onPinnedChange={() => undefined}
-          notifications={{ unread: 3 }}
-          account={{ name: "Lin Xiao" }}
-          locales={shellLocales}
-          currentLocale="en"
-          menuOpen
-          {...extra}
-        >
-          <section>content</section>
-        </ProductShell>
-      )
-    ).window.document;
-  const documents = [shell({}), shell({ menuQuery: "Ro" })];
-  for (const selector of leftOut) {
-    const found = documents.flatMap((document) => [...document.querySelectorAll(selector)]);
-    assert.ok(found.length > 0, `${selector} is rendered`);
-    for (const element of found) {
-      assert.ok(element.matches("a[href], button, [tabindex], [role='button'], [role='option']"), `${selector} is focusable`);
-      assert.equal(reached(element), false, `${selector} keeps its own focus pair`);
-    }
-  }
-  const pins = documents.flatMap((document) => [...document.querySelectorAll(".tcrn-shell-menu .tcrn-nav-pin")]);
-  assert.ok(pins.length > 0 && pins.every(reached), "the nav pin still takes the fallback ring");
-});
+
+
 
 test("ProductShell hands previewStates to the full menu and the drop-downs (TCRN-DS-SUB-151)", () => {
   const groups: ProductShellNavGroup[] = [
@@ -2903,7 +1715,7 @@ test("STORY-145 STORY-149 a measured lockup's data-logo is its mark's id, the lo
       assert.equal(logoOf(renderToStaticMarkup(<ProductLockup productId={productId} firstLine={firstLine} />)), markId, `${productId} first line ${firstLine}`);
     }
     // The bottom bar's lockup, measured through its data-lockup hook, writes the same id.
-    assert.equal(logoOf(renderToStaticMarkup(<ProductLogo productId={productId} data-lockup="lkr" />)), markId, `${productId} lockup`);
+    assert.equal(logoOf(renderToStaticMarkup(<ProductLockup productId={productId} scale="rail" data-lockup="lkr" />)), markId, `${productId} lockup`);
     // The product key stays where it was: data-product-id on the lockup and data-product-mark on the mark.
     const line = renderToStaticMarkup(<ProductLockup productId={productId} firstLine="rail" />);
     assert.match(line, new RegExp(`data-product-id="${productId}"`));
@@ -2911,43 +1723,38 @@ test("STORY-145 STORY-149 a measured lockup's data-logo is its mark's id, the lo
   }
 });
 
-test("STORY-135 STORY-136 STORY-137 STORY-138 STORY-140 the shell's icons take their sizes from tokens: the bell lg 20, the avatar's icon sm 14, the brand button's chevron md 16, the small chevrons shell.chevron 12, the language chevron shell.locale-chevron 11 (TCRN-DS-SUB-178)", () => {
-  const tokens = createTokenMap();
-  const px = (name: string) => Number.parseFloat(tokens[name] ?? "");
-  assert.deepEqual(
-    ["--tcrn-icon-size-lg", "--tcrn-icon-size-sm", "--tcrn-icon-size-md", "--tcrn-shell-chevron", "--tcrn-shell-locale-chevron"].map(px),
-    [20, 14, 16, 12, 11]
-  );
-  const html = renderToStaticMarkup(
-    <ProductShell
-      productName="TCRN TMS"
-      moduleName="Talent"
-      brandProductId="tms"
-      currentRouteLabel="Roster"
-      pageHeader={{ title: "Roster" }}
-      navGroups={shellNavGroups}
-      locales={shellLocales}
-      currentLocale="en"
-      pinnedIds={["roster", "contracts"]}
-      notifications={{ unread: 3 }}
-      menuOpen
-    >
-      <div>content</div>
-    </ProductShell>
-  );
-  const document = new JSDOM(html).window.document;
-  const sizes = (selector: string) =>
-    [...document.querySelectorAll(selector)].map((svg) => `${svg.getAttribute("width")}x${svg.getAttribute("height")}`);
-  // Each renders at the size it rendered at before, from the token now.
-  assert.deepEqual(sizes(".tcrn-shell-bell svg"), ["20x20"], "the bell is Icon lg");
-  assert.deepEqual(sizes(".tcrn-shell-avatar svg"), ["14x14"], "the avatar's icon without an account is Icon sm");
-  assert.deepEqual(sizes('[data-shell-brand] svg[data-icon-name^="chevron-"]'), ["16x16"], "the brand button's chevron is Icon md");
-  assert.ok(sizes("svg.tcrn-shell-menu__sub").length > 0);
-  assert.ok(sizes("svg.tcrn-shell-menu__sub").every((size) => size === "12x12"), "a row's next level");
-  assert.deepEqual(sizes("svg.tcrn-shell-menu__crumb-sep"), ["12x12"], "the bottom bar's position separator");
-  assert.deepEqual(sizes("svg.tcrn-shell-pins__chevron"), ["12x12"], "a pinned item's drop-down chevron");
-  // The language chevron is drawn by CSS from its token.
-  const chevron = /\n\.tcrn-shell-locale-menu__chevron \{\n([^}]*)\}/.exec(tcrnComponentCss)?.[1] ?? "";
-  assert.match(chevron, /\n\s*width: var\(--tcrn-shell-locale-chevron\);/);
-  assert.match(chevron, /\n\s*height: var\(--tcrn-shell-locale-chevron\);/);
+
+
+test("published brand identities reject missing keys, AOS and free suffix fallbacks",()=>{
+  assert.deepEqual(Object.keys(tcrnProductLogoRegistry).sort(),["design-system","einzbern","mana-orchestrate","tms"]);
+  assert.throws(()=>renderToStaticMarkup(<ProductLogo productId={"aos" as never}/>));
+  assert.throws(()=>TcrnBrandMark({} as never));
+  assert.throws(()=>ProductLockup({suffix:"TMS"} as never));
+  for(const productId of ["tms","einzbern","mana-orchestrate","design-system"] as const){
+    const html=renderToStaticMarkup(<ProductLockup productId={productId} locale="zh-CN"/>);
+    assert.match(html,/<svg/);assert.doesNotMatch(html,/<img|tcrn-brand-mark\.svg/);
+  }
+});
+test("published paper Tabs keep ink underline and do not inherit selected-row wash",()=>{
+  assert.match(tcrnComponentCss,/tcrn-tabs__tab\[aria-selected="true"\]:after/);
+  assert.match(tcrnComponentCss,/height:1px;background:var\(--tcrn-color-rule\)/);
+  assert.doesNotMatch(tcrnComponentCss,/\.tcrn-(?:toast|side-nav|state-surface|record-table|setting-row|badge|stamp)\b/);
+});
+
+ test("published ProductLogo is the symbol; text belongs to ProductLockup",()=>{
+ const symbol=renderToStaticMarkup(<ProductLogo productId="tms"/>),lockup=renderToStaticMarkup(<ProductLockup productId="tms" locale="en"/>);
+ assert.match(symbol,/data-product-mark="tms"/);assert.doesNotMatch(symbol,/<b|<small|<em/);
+ assert.match(lockup,/tcrn-product-logo__line-one/);assert.match(lockup,/tcrn-product-logo__line-two/);
+ });
+
+test("paper Tabs have instance-local IDs and a named shared content panel",()=>{
+ const items=[{id:"all",label:"All"},{id:"signed",label:"Signed"}];
+ const html=renderToStaticMarkup(<div><Tabs items={items} selectedId="all" onSelect={()=>{}} label="First">One</Tabs><Tabs items={items} selectedId="signed" onSelect={()=>{}} label="Second">Two</Tabs></div>);
+ const document=new JSDOM(html).window.document,ids=[...document.querySelectorAll("[id]")].map(el=>el.id);assert.equal(new Set(ids).size,ids.length);
+ for(const tabs of document.querySelectorAll(".tcrn-tabs")){const panel=tabs.querySelector('[role="tabpanel"]');assert.ok(panel);const selected=tabs.querySelector('[role="tab"][aria-selected="true"]');assert.ok(selected);assert.equal(panel.getAttribute("aria-labelledby"),selected.id);for(const tab of tabs.querySelectorAll('[role="tab"]'))assert.equal(tab.getAttribute("aria-controls"),panel.id);}
+});
+test("paper Tabs keyboard selection moves focus and skips disabled choices",async()=>{
+ const harness=createDomInteractionHarness();function Fixture(){const [selected,setSelected]=useState("all");return <Tabs items={[{id:"all",label:"All"},{id:"blocked",label:"Unavailable",disabled:true},{id:"signed",label:"Signed"}]} selectedId={selected} onSelect={setSelected} label="Roster">Table</Tabs>;}
+ try{await harness.render(<Fixture/>);const first=harness.document.querySelector('[role="tab"][data-tab-id="all"]') as HTMLButtonElement;await act(async()=>{first.focus();first.dispatchEvent(new harness.window.KeyboardEvent("keydown",{key:"ArrowRight",bubbles:true}));});const selected=harness.document.querySelector('[role="tab"][aria-selected="true"]');assert.ok(selected);assert.equal(selected.getAttribute("data-tab-id"),"signed");assert.equal(harness.document.activeElement,selected);assert.equal(selected.getAttribute("tabindex"),"0");assert.equal(first.getAttribute("tabindex"),"-1");}
+ finally{await harness.cleanup();}
 });

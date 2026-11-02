@@ -209,17 +209,12 @@ export const actionsCss05 = `
   white-space: nowrap;
 }`;
 
+// 05 C preserves the 120ms color transition and the 900ms loader under reduced motion.
 export const actionsCss06 = `
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-button,
-  .tcrn-link-button {
-    transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
-  }
-  /* The loader keeps its arc and stops turning: rotation is transform. */
-  .tcrn-button__spinner {
-    animation: none;
-  }
-}`;
+.tcrn-button:where(:active,[data-tcrn-preview-state="active"]),.tcrn-link-button:where(:active,[data-tcrn-preview-state="active"]){transition-duration:var(--tcrn-motion-duration-press)}
+.tcrn-icon-button--labelled{inline-size:auto;padding:0 var(--tcrn-control-padding-md)}
+.tcrn-icon-button--labelled .tcrn-icon-button__label{position:static;inline-size:auto;block-size:auto;overflow:visible;clip-path:none}
+`;
 
 // Former landing places of the press-scale overrides. Buttons no longer transform, so there
 // is nothing left to undo under reduced motion; the segments stay joined, empty.

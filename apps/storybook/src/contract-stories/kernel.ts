@@ -1,35 +1,10 @@
-import type { ContractStory, ContractStoryGroup } from "./types.js";
-import { storybookTopLevelSections } from "./governance.js";
-import { welcomeStories } from "./groups/welcome.js";
-import { styleGuideStories } from "./groups/style-guide.js";
-import { foundationsStories } from "./groups/foundations.js";
-import { componentsStories } from "./groups/components.js";
-import { patternsStories } from "./groups/patterns.js";
-import { proofStories } from "./groups/proof.js";
-import { changeLogStories } from "./groups/change-log.js";
-
-export type { ContractStory, ContractStoryGroup } from "./types.js";
-
-export const contractStoryGroups: readonly ContractStoryGroup[] = storybookTopLevelSections;
-
-export const contractStories: ContractStory[] = [
-  ...welcomeStories,
-  ...styleGuideStories,
-  ...foundationsStories,
-  ...componentsStories,
-  ...patternsStories,
-  ...proofStories,
-  ...changeLogStories
-];
-
-export function getContractStory(id: string): ContractStory {
-  const story = contractStories.find((item) => item.id === id);
-  if (!story) {
-    throw new Error(`missing_contract_story:${id}`);
-  }
-  return story;
-}
-
-export function contractStoriesByGroup(group: ContractStoryGroup): ContractStory[] {
-  return contractStories.filter((story) => story.group === group);
-}
+import { createElement } from "react";
+import { approvedSource, type ApprovedBoardId } from "../approved-source.js";
+import { BoardSpecimens } from "../specimens.js";
+export const contractStories=approvedSource.boards.map(board=>({id:board.slug,title:board.title,group:"Standards",categoryId:board.slug,sourceId:board.sourceId,sourcePath:`docs/design/approved-site-v1/src/boards/${board.slug}/index.dc.html`,render:()=>createElement(BoardSpecimens,{board:board.slug,locale:"en"})}));
+export const contractStoryGroups=["Standards"] as const;
+export function getContractStory(id:string){const story=contractStories.find(s=>s.id===id);if(!story)throw new Error(`Unpublished story ${id}`);return story;}
+export function contractStoriesByGroup(group:string){return group==="Standards"?contractStories:[];}
+export type ContractStory=(typeof contractStories)[number];
+export type ContractStoryGroup="Standards";
+export type { ApprovedBoardId };

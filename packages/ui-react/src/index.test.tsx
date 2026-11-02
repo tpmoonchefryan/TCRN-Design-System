@@ -111,7 +111,7 @@ test("the checks can fail — a name removed from the roster is caught", () => {
 // a migration step, and its rules left the component stylesheet for the retired sheet.
 test("STORY-143 GWT1 each deprecated component is exported, declared and given a migration step", async () => {
   const { readFile } = await import("node:fs/promises");
-  const { componentLibraryDeprecatedComponentNames, tcrnComponentCss, tcrnRetiredComponentCss } = await import("./index.js");
+  const { componentLibraryDeprecatedComponentNames, tcrnComponentCss } = await import("./index.js");
   const migration = await readFile(new URL("../../../docs/migration-4.0.md", import.meta.url), "utf8");
   const changelog = await readFile(new URL("../../../CHANGELOG.md", import.meta.url), "utf8");
   assert.deepEqual([...componentLibraryDeprecatedComponentNames].sort(), ["MobileNavToggle", "ProductLauncher", "ProductSwitcher", "SideNav", "SideNavCollapseButton", "TopBar"]);
@@ -123,6 +123,5 @@ test("STORY-143 GWT1 each deprecated component is exported, declared and given a
   }
   for (const block of ["tcrn-side-nav", "tcrn-shell-side-nav-toggle", "tcrn-shell-mobile-nav-toggle", "tcrn-top-bar", "tcrn-product-launcher", "tcrn-product-switcher"]) {
     assert.doesNotMatch(tcrnComponentCss, new RegExp(`\\.${block}\\b`), `${block} left tcrnComponentCss`);
-    assert.match(tcrnRetiredComponentCss, new RegExp(`\\.${block}\\b`), `${block} is in the retired sheet`);
   }
 });

@@ -1,50 +1,26 @@
-<p align="center">
-  <img src="apps/storybook/assets/tcrn-brand-mark.svg" alt="" width="88" />
-</p>
+# TCRN Design System
 
-<h1 align="center">Design System TCRN</h1>
+Le Storybook actuel utilise uniquement les huit planches de la norme visuelle Sites publiée, version 1. Les brouillons et les anciens exemples Storybook ne sont pas des sources d’implémentation.
 
-<p align="center">Primitives UI adossées aux packages, tokens sémantiques, vocabulaire d'état de copie et docs Storybook contractuelles pour les frontends produit TCRN.</p>
+[Published visual standard](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site) · [Pinned source and mapping](docs/design/approved-site-v1/source-manifest.json) · [Source contract](docs/design/README.md)
 
-<p align="center">
-  <a href="README.md">English</a>
-  · <a href="README.zh-CN.md">简体中文</a>
-  · <a href="README.ja.md">日本語</a>
-  · <a href="README.ko.md">한국어</a>
-  · <a href="README.fr.md">Français</a>
-</p>
+Source commit: `a643d4cfcd239f6f81b1715ded6a63caead9d619`. The source Site is version 1; `@tcrn/ui-react` and `@tcrn/ui-tokens` are package candidates at 4.0.0. These are distinct version identities. K1 (suffix text contrast) and K5 (strong text wording) remain unresolved in the published source; machine results and Owner visual acceptance are recorded separately.
 
-## Ce dépôt
+## Packages
 
-Ce dépôt est l'entrée source-control du Design System TCRN. Les implémenteurs frontend produit et les agents IA doivent lire le contrat Storybook et le contrat IA lisible par machine avant de revendiquer la conformité au Design System.
+- `@tcrn/ui-react/approved`: the explicit current Storybook consumption boundary for the published families and top-band shell.
+- `@tcrn/ui-react`: engineering exports; the existence of an API does not publish a visual standard or an API reference in Storybook.
+- `@tcrn/ui-tokens`: source-mapped values, current CSS and the actual five-family font assets of the published source.
+- `@tcrn/ui-copy-state`: engineering localization and state helpers.
 
-- Storybook: [default](https://tcrn-design-system-storybook.vercel.app/)
-- Storybook français: [`?locale=fr`](https://tcrn-design-system-storybook.vercel.app/?locale=fr)
-- Enveloppe sombre: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
-- Contrat IA: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
-- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) et HTML head discovery; les readback fields doivent inclure contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, coveredStorybookSections, requiredProof, noOverclaimBoundaries.
-- AI consumption must cover every Storybook section: Welcome, Style Guide, Foundations, Components, Patterns, Proof, and Change Log. Design System compliance means the same Storybook visual instance, not only the same package or a boundary marker; proof must cover package version, exported component, variant/props/slots, rendered metrics, motion/effects, reduced motion, theme/locale, mobile reflow, and information hierarchy.
+The product assets are TCRN TMS, Einzbern, Mana Orchestrate and TCRN Design System. A registered product key is required. There is no mother-mark default, free-text lockup suffix or implied AOS mark.
 
-## Packages et limites
+## Development
 
-- `@tcrn/ui-tokens`: tokens sémantiques et surcharges de thème clair/sombre.
-- `@tcrn/ui-copy-state`: locales `zh-CN`, `en`, `ja`, `ko`, `fr` et état de copie.
-- `@tcrn/ui-react`: primitives UI React adossées aux packages.
-- `apps/storybook`: docs contractuelles statiques, stories synthétiques et preuve locale.
+Use the pinned `pnpm@10.12.1` toolchain. The configured commands remain `pnpm verify`, `pnpm storybook:build`, and `pnpm test:dom`, in their configured order. Source generation is a batch-end responsibility; follow [the source-generation order](docs/design/README.md) before compiling a changed source snapshot. No old screenshot baseline is automatically accepted.
 
-Storybook est une carte contractuelle, pas une preuve automatique d'adoption produit AOS/TMS. Les exemples de marque sont une guidance de revue visuelle, pas des exports de composants marque publiés ni une acceptation finale de marque.
+The static docs and manager consume the same eight-board registry. The docs produce five locales; API reference entries are the explicit published E-section obligations, rather than all engineering exports. Fonts are self-hosted and preserve their original bytes, face weights, Unicode ranges and OFL notices; see [font licensing](packages/ui-tokens/FONT-LICENSES.md).
 
-## Vérification
+## Licensing
 
-```bash
-pnpm build
-pnpm test
-pnpm storybook:smoke
-node --test scripts/readme-public-contract.test.mjs
-pnpm storybook:visual-proof
-pnpm verify
-```
-
-La liste des portes de contrat, leur ordre dans `pnpm verify` et la façon de lancer chacune seule se trouvent dans [docs/contract/README.md](docs/contract/README.md).
-
-Ce README ne revendique pas la publication npm/package, la préparation de publication des docs Storybook, hosted-doc readiness, l'adoption produit, release readiness, l'acceptation produit ou l'acceptation MVP finale.
+Repository code: Apache-2.0, see [LICENSE](LICENSE). Font software retains SIL OFL 1.1 and its copyright notices. Product marks are TCRN assets; source lineage is recorded independently from code licensing.

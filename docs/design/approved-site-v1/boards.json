@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "01-tokens",
+    "id": 1,
+    "title": "01 · 底盘 Token",
+    "sourceTitle": "底盘 Token",
+    "width": 2640,
+    "height": 3451,
+    "sourceId": "db5cf377-a278-4e21-96e1-fe241768fe93"
+  },
+  {
+    "slug": "02-typography",
+    "id": 2,
+    "title": "02 · 字体 Typography",
+    "sourceTitle": "字体 Typography",
+    "width": 2640,
+    "height": 5111,
+    "sourceId": "78ffb0ce-6861-4895-a5b3-e33607db0200"
+  },
+  {
+    "slug": "03-icons",
+    "id": 3,
+    "title": "03 · 图标 Icon",
+    "sourceTitle": "图标 Icon",
+    "width": 2640,
+    "height": 3547,
+    "sourceId": "9cf67430-d184-45f0-a3bd-8da8447d7e79"
+  },
+  {
+    "slug": "04-brand",
+    "id": 4,
+    "title": "04 · 品牌 Brand · 产品标",
+    "sourceTitle": "品牌 Brand · 产品标",
+    "width": 2640,
+    "height": 3372,
+    "sourceId": "ee0f582f-d81c-47f4-8a5b-d16631584d81"
+  },
+  {
+    "slug": "05-actions",
+    "id": 5,
+    "title": "05 · 动作 Actions",
+    "sourceTitle": "动作 Actions",
+    "width": 2640,
+    "height": 4470,
+    "sourceId": "f3436fe2-995c-46d6-aa73-f121fac5db2d"
+  },
+  {
+    "slug": "06-inputs",
+    "id": 6,
+    "title": "06 · 表单控件 Inputs",
+    "sourceTitle": "表单控件 Inputs",
+    "width": 2640,
+    "height": 5806,
+    "sourceId": "eced7b64-8310-442f-8b69-3696360269eb"
+  },
+  {
+    "slug": "07a-shell-upper",
+    "id": 7,
+    "title": "07a · 壳层 · 顶带壳 · 标三版、三态、矩阵、动效",
+    "sourceTitle": "壳层 · 顶带壳 · 上半块",
+    "width": 2640,
+    "height": 5324,
+    "sourceId": "74786e48-536f-4d84-9894-1bc55df2ab45"
+  },
+  {
+    "slug": "07b-shell-lower",
+    "id": 8,
+    "title": "07b · 壳层 · 顶带壳 · 几何、契约、token、门",
+    "sourceTitle": "壳层 · 顶带壳 · 下半块",
+    "width": 2640,
+    "height": 4895,
+    "sourceId": "19d5fc40-2c24-4b4c-a9fa-784c2e5ae161"
+  }
+]

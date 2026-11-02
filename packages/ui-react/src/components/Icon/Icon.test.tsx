@@ -1,23 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { publishedIconBodies, normalizePublishedSvg } from "../../test/published-source.js";
 import { renderToStaticMarkup } from "react-dom/server";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 import { tcrnComponentCss } from "../../styles/index.js";
 import { Icon, tcrnIconNames, type IconName } from "./Icon.js";
-import { tcrnIconNewNames, tcrnIconPaths } from "./icon-paths.generated.js";
+import { tcrnIconPaths } from "./icon-paths.generated.js";
 
-interface IconContract {
-  viewBox: string;
-  strokeWidth: number;
-  icons: { name: string; new: boolean; body: string; variants?: Record<string, { fill: number[] }> }[];
-}
-
-// The compiled test sits at packages/ui-react/dist/components/Icon/, five levels below
-// the repository root that holds the design contract.
-const iconContract = JSON.parse(
-  readFileSync(new URL("../../../../../docs/design/gplus-2026-10/contract/icons.json", import.meta.url), "utf8")
-) as IconContract;
+const rawIcons=publishedIconBodies();
+const iconContract={viewBox:"0 0 20 20",strokeWidth:1.25,icons:[...rawIcons].map(([name,body])=>({name,body,variants:name==="pin"?{outline:{fill:[] as number[]},solid:{fill:[0]}}:undefined}))};
 
 function tokenValue(variable: string): string | undefined {
   return tcrnTokens.find((entry) => entry.variable === variable)?.value;
@@ -32,17 +23,14 @@ function svgOpeningTag(markup: string): string {
 // is non-scaling" and "the children are exactly the contract paths" one comparison.
 function childrenAsContractMarkup(markup: string): string {
   const inner = markup.slice(markup.indexOf(">") + 1, markup.lastIndexOf("</svg>"));
-  return inner.replace(/<(path|circle|ellipse|rect) vector-effect="non-scaling-stroke"([^>]*)><\/\1>/g, "<$1$2/>");
+  assert.equal([...inner.matchAll(/vector-effect="non-scaling-stroke"/g)].length,[...inner.matchAll(/<(?:path|circle|ellipse|rect)\b/g)].length);
+  return normalizePublishedSvg(inner,true);
 }
 
-test("the roster is the icons.json name set: 38 names, the 9 G+ ones and pin included", () => {
+test("the roster is the published 03 set plus the 07 pin, with no candidate additions", () => {
   assert.equal(tcrnIconNames.length, 38);
   assert.deepEqual([...tcrnIconNames], iconContract.icons.map((icon) => icon.name));
   assert.equal(new Set(tcrnIconNames).size, tcrnIconNames.length);
-  assert.deepEqual(
-    [...tcrnIconNewNames],
-    iconContract.icons.filter((icon) => icon.new).map((icon) => icon.name)
-  );
   for (const name of ["plus", "minus", "users", "bell", "copy", "trash", "calendar", "more-horizontal", "chevron-up", "pin"] as const) {
     assert.ok(tcrnIconNames.includes(name), name);
   }
@@ -156,16 +144,13 @@ test("decorative and accessible-name behaviour is unchanged", () => {
   assert.doesNotMatch(decorative, /viewBox="0 0 20 20" focusable="false" aria-hidden="true"/);
 });
 
-test("loader-circle turns on the loading loop token and stops under reduced motion", () => {
+test("published 03 retains its visible 900ms loading loop under reduced motion", () => {
   assert.equal(tokenValue("--tcrn-motion-loading-loop"), "900ms linear");
   assert.match(
     tcrnComponentCss,
     /\.tcrn-icon\[data-icon-name="loader-circle"\] \{[^}]*animation: tcrn-icon-spin var\(--tcrn-motion-loading-loop\) infinite;/
   );
   assert.match(tcrnComponentCss, /@keyframes tcrn-icon-spin \{\s*to \{\s*transform: rotate\(360deg\);/);
-  assert.match(
-    tcrnComponentCss,
-    /@media \(prefers-reduced-motion: reduce\) \{\s*\.tcrn-icon\[data-icon-name="loader-circle"\] \{\s*animation: none;/
-  );
+  assert.doesNotMatch(tcrnComponentCss,/\.tcrn-icon\[data-icon-name="loader-circle"\]\s*\{[^}]*animation:\s*none/);
   assert.match(renderToStaticMarkup(<Icon name="loader-circle" />), /data-icon-name="loader-circle"/);
 });

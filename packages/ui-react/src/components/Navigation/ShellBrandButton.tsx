@@ -11,7 +11,7 @@
 // reports the version it shows in data-shell-brand.
 //
 // The mark is the registered product mark drawn by TcrnBrandMark from the design contract
-// (product-marks.generated, the bytes of docs/design/gplus-2026-10/logos2), in colour and opaque:
+// (product-marks.generated from the pinned published 04-brand SVG bodies), in colour and opaque:
 // no redrawn, single-colour or translucent mark. The first-line markup — a data-lockup="lkr-line"
 // container holding svg[data-logo] and <b>{word} <em>{suffix}</em></b> — is the one the
 // ProductLockup first-line variant uses too; the two implement it separately. Both write the mark's

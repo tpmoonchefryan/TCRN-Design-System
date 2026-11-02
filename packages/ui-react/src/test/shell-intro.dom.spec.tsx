@@ -2,12 +2,12 @@
 // plays the three phases once (120, 240 and 100 on transform and opacity only) and leaves the band
 // in its final state; with the session marker there (a reload) and under prefers-reduced-motion it
 // plays 0 times; a server-rendered first screen is not replayed on hydration; the mark on the layer
-// is the logos2 colour mark, opaque, placed on the card's mark and landing on the brand button's;
+// is the published 04 color mark, opaque, placed on the card's mark and landing on the brand button's;
 // the card is inert and the layer hidden, so the keyboard reaches the brand button at once.
 import test, { mock } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { publishedMarkBody } from "./published-source.js";
 import { act } from "react";
 import { hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
@@ -228,7 +228,7 @@ test("a server-rendered first screen is not replayed on hydration: the band stay
   }
 });
 
-test("the mark on the layer is the logos2 colour mark, opaque, placed on the card's mark and landing on the brand button's", async () => {
+test("the mark on the layer is the published 04 color mark, opaque, placed on the card's mark and landing on the brand button's", async () => {
   const harness = createDomInteractionHarness();
   const calls = instrument(harness);
   mock.timers.enable({ apis: ["setTimeout"] });
@@ -239,15 +239,13 @@ test("the mark on the layer is the logos2 colour mark, opaque, placed on the car
     assert.equal(flying.getAttribute("class"), "tcrn-brand-mark tcrn-shell-intro__mark");
     assert.equal(flying.getAttribute("data-product-mark-variant"), "color");
 
-    // GWT4: the digest of logos2. jsdom re-serialises what it parsed, so the file's body goes
+    // GWT4: the normalized published SVG. jsdom re-serialises what it parsed, so the file's body goes
     // through the same parser before the two are compared.
     const mark = tcrnProductMarks.find((candidate) => candidate.productId === "tms");
     assert.ok(mark);
-    const file = readFileSync(new URL(`../../../../docs/design/gplus-2026-10/logos2/${mark.id}.svg`, import.meta.url), "utf8");
-    const body = /^<svg[^>]*>([\s\S]*)<\/svg>\n?$/.exec(file);
-    assert.ok(body, `logos2/${mark.id}.svg is one svg element`);
+    const body = publishedMarkBody(mark.id);
     const probe = harness.document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    probe.innerHTML = body[1];
+    probe.innerHTML = body;
     assert.equal(sha256(flying.innerHTML), sha256(probe.innerHTML), "the flying mark is the file's");
     const landing = harness.document.querySelector("[data-shell-brand] svg[data-logo='tms']");
     assert.ok(landing);
@@ -277,7 +275,7 @@ for (const [productId, markId] of [
   ["design-system", "ds"],
   ["mana-orchestrate", "mana"]
 ] as const) {
-  test(`the flying mark of ${productId} writes its mark's id, ${markId}, in data-logo and draws logos2/${markId}.svg (TCRN-DS-SUB-214)`, async () => {
+  test(`the flying mark of ${productId} writes its mark's id, ${markId}, in data-logo and draws the published 04 ${markId} SVG (TCRN-DS-SUB-214)`, async () => {
     const harness = createDomInteractionHarness();
     instrument(harness);
     mock.timers.enable({ apis: ["setTimeout"] });
@@ -292,11 +290,9 @@ for (const [productId, markId] of [
       const mark = tcrnProductMarks.find((candidate) => candidate.productId === productId);
       assert.ok(mark);
       assert.equal(mark.id, markId);
-      const file = readFileSync(new URL(`../../../../docs/design/gplus-2026-10/logos2/${markId}.svg`, import.meta.url), "utf8");
-      const body = /^<svg[^>]*>([\s\S]*)<\/svg>\n?$/.exec(file);
-      assert.ok(body, `logos2/${markId}.svg is one svg element`);
+      const body = publishedMarkBody(markId);
       const probe = harness.document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      probe.innerHTML = body[1];
+      probe.innerHTML = body;
       assert.equal(sha256(flying.innerHTML), sha256(probe.innerHTML), "the flying mark is the file's");
       const landing = harness.document.querySelector(`[data-shell-brand] svg[data-logo='${markId}']`);
       assert.ok(landing, "the brand button's mark writes the same id");

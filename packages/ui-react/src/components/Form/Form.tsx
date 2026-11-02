@@ -511,7 +511,13 @@ export interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> 
 }
 
 export function SearchInput({ className, shortcut = false, fill = false, disabled, disabledReason, title, ...props }: SearchInputProps) {
-  const shortcutLabel = shortcut === false ? undefined : shortcut === "auto" ? "Ctrl K" : shortcut;
+  const [automaticShortcut, setAutomaticShortcut] = useState("Ctrl K");
+  useEffect(() => {
+    if (shortcut !== "auto" || typeof navigator === "undefined") return;
+    const platform = navigator.platform || navigator.userAgent;
+    setAutomaticShortcut(/Mac|iPhone|iPad|iPod/i.test(platform) ? "⌘K" : "Ctrl K");
+  }, [shortcut]);
+  const shortcutLabel = shortcut === false ? undefined : shortcut === "auto" ? automaticShortcut : shortcut;
   const ariaKeyShortcuts = props["aria-keyshortcuts"] ?? (shortcutLabel ? "Control+K Meta+K" : undefined);
   const normalizedReason = disabled ? requiredText(disabledReason, "Search unavailable in this route") : undefined;
   const disabledReasonId = useId();

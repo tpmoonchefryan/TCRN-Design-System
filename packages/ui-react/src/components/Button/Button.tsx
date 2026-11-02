@@ -120,7 +120,7 @@ export function IconButton({ ariaLabel, icon, iconName, children, ...props }: Ic
   // The icon follows the button size (sm 14, md 16, lg 20); while busy the loader takes its place.
   const renderedIcon = props.loading ? null : icon ?? (iconName ? <Icon name={iconName} size={props.size ?? "md"} /> : null);
   return (
-    <Button {...props} aria-label={requiredText(ariaLabel, "Unnamed icon action")} className={cx("tcrn-icon-button", props.className)}>
+    <Button {...props} aria-label={requiredText(ariaLabel, "Unnamed icon action")} className={cx("tcrn-icon-button", children && "tcrn-icon-button--labelled", props.className)}>
       {renderedIcon}
       {children ? <span className="tcrn-icon-button__label">{children}</span> : null}
     </Button>

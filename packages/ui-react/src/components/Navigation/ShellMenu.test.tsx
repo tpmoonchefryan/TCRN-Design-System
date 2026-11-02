@@ -369,8 +369,8 @@ function renderBoardSheet(extra: Partial<Parameters<typeof ShellMenu>[0]> = {}) 
   return renderBoardMenu({ groups: sheetMenu, presentation: "sheet", pinnedItems: boardPins, ...extra });
 }
 
-test("760 wide and narrower the menu is the Sheet: the scrim, one non-modal dialog, the grab line, the search and the two lists", () => {
-  assert.equal(shellMenuSheetMediaQuery, "(max-width: 760px)");
+test("390 wide and narrower the menu is the Sheet: the scrim, one non-modal dialog, the grab line, the search and the two lists", () => {
+  assert.equal(shellMenuSheetMediaQuery, "(max-width: 390px)");
   const html = renderBoardSheet();
   assert.match(
     html,

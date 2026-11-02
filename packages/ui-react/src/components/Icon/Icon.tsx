@@ -9,7 +9,7 @@ import {
   type TcrnIconPathName
 } from "./icon-paths.generated.js";
 
-// The icon roster is docs/design/gplus-2026-10/contract/icons.json. Names, the 20 grid,
+// The icon roster is the pinned Sites 03 roster and 07 shell pin. Names, the 20 grid,
 // the stroke width and every path arrive through icon-paths.generated.ts, which only
 // scripts/contract-generate.mjs writes, so this file draws nothing by hand: adding or
 // redrawing an icon is a contract change and a regenerate.

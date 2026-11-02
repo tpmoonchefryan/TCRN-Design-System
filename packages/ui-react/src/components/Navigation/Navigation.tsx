@@ -3,7 +3,6 @@ import type {
   FocusEvent,
   FormEvent,
   HTMLAttributes,
-  ImgHTMLAttributes,
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
   CSSProperties,
@@ -91,7 +90,6 @@ interface ShellChromeLabels {
    * reach them short of forking the component. Two are the only accessible name
    * their nav has.
    */
-  brandMarkAlt: string;
   navItemUnavailable: string;
   moduleSections: string;
   sectionNavigation: string;
@@ -133,7 +131,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     currentLocation: "当前位置",
     shellWorkspace: "产品外壳工作区",
     skipToContent: "跳到外壳内容",
-    brandMarkAlt: "TCRN 品牌标识",
     navItemUnavailable: "该导航项在此路由下不可用",
     moduleSections: "模块分区",
     sectionNavigation: "分区导航",
@@ -162,7 +159,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     currentLocation: "Current location",
     shellWorkspace: "Product shell workspace",
     skipToContent: "Skip to shell content",
-    brandMarkAlt: "TCRN brand mark",
     navItemUnavailable: "Navigation item unavailable in this route",
     moduleSections: "Module sections",
     sectionNavigation: "Section navigation",
@@ -191,7 +187,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     currentLocation: "現在の位置",
     shellWorkspace: "製品シェルのワークスペース",
     skipToContent: "シェルの本文へスキップ",
-    brandMarkAlt: "TCRN のブランドマーク",
     navItemUnavailable: "このルートではこのナビゲーション項目を使用できません",
     moduleSections: "モジュールのセクション",
     sectionNavigation: "セクションのナビゲーション",
@@ -220,7 +215,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     currentLocation: "현재 위치",
     shellWorkspace: "제품 셸 작업 공간",
     skipToContent: "셸 본문으로 이동",
-    brandMarkAlt: "TCRN 브랜드 마크",
     navItemUnavailable: "이 경로에서는 이 내비게이션 항목을 사용할 수 없습니다",
     moduleSections: "모듈 섹션",
     sectionNavigation: "섹션 내비게이션",
@@ -249,7 +243,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     currentLocation: "Emplacement actuel",
     shellWorkspace: "Espace de travail de la coque produit",
     skipToContent: "Aller au contenu de la coque",
-    brandMarkAlt: "Marque TCRN",
     navItemUnavailable: "Élément de navigation indisponible sur cette route",
     moduleSections: "Sections du module",
     sectionNavigation: "Navigation des sections",
@@ -284,7 +277,7 @@ export interface TopBarProps extends Omit<HTMLAttributes<HTMLElement>, "children
 
 /**
  * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): the shell is the top band. Use ProductShell, whose band
- * holds the brand button, the pins and the cluster. Its rules moved to tcrnRetiredComponentCss; removed
+ * holds the brand button, the pins and the cluster. Its visual rules are outside the published stylesheet; removed
  * in 4.1 (docs/migration-4.0.md).
  */
 export function TopBar({ productName, moduleName, actions, brandProps, className, ...rest }: TopBarProps) {
@@ -303,8 +296,7 @@ export function TopBar({ productName, moduleName, actions, brandProps, className
  * Four solid marks on a 48 grid, each in two flat tones (the design system's in
  * four), approved by the Owner on 2026-10-11. Their SVG bodies, palettes, names and
  * taglines are generated from the design contract into product-marks.generated.ts,
- * so nothing here redraws a shape or restates a colour; a product without a
- * registered mark (AOS) keeps the TCRN mother mark, which awaits its own redesign.
+ * so nothing here redraws a shape or restates a colour; unregistered products have no implied asset.
  */
 export const tcrnProductMarkIds = ["tms", "einzbern", "mana-orchestrate", "design-system"] as const;
 export type TcrnProductMarkId = (typeof tcrnProductMarkIds)[number];
@@ -318,25 +310,10 @@ export type TcrnProductMarkId = (typeof tcrnProductMarkIds)[number];
 export const tcrnProductMarkVariants = ["color", "mono", "tile-tint", "tile-deep"] as const;
 export type TcrnProductMarkVariant = (typeof tcrnProductMarkVariants)[number];
 
-// The grid comes from the generated viewBox. The tile geometry (radius 11 of 48,
-// the mark inset at 70%) and the white of the deep tile are the logos board's; the
-// generator does not emit the contract's `tile` block, so they are restated here and
-// scripts/brand-asset-source-proof.mjs checks them against marks.json.
-const productMarkGrid = Number(tcrnProductMarkViewBox.split(" ")[2]);
-const productMarkTileRadius = 11;
-const productMarkTileInset = "translate(7.2 7.2) scale(0.7)";
-const productMarkTileInk = "#ffffff";
-
-// productMark (the lookup by product key) and productMarkIdOf (the mark's own id, which a measured
-// lockup writes in data-logo: the name of its logos2 file and of the Brand board's mark, not the
-// product key; TCRN-DS-SUB-194) live in product-mark-id.ts since TCRN-DS-SUB-212.
+const productMarkGrid=Number(tcrnProductMarkViewBox.split(" ")[2]);
 
 function inkedProductMarkBody(mark: TcrnProductMark, ink: string): string {
   return ink === "currentColor" ? mark.inkBody : mark.inkBody.replaceAll("currentColor", ink);
-}
-
-function productMarkTile(fill: string, inner: string): string {
-  return `<rect width="${productMarkGrid}" height="${productMarkGrid}" rx="${productMarkTileRadius}" fill="${fill}"/><g transform="${productMarkTileInset}">${inner}</g>`;
 }
 
 /** The children of one rendition's `<svg>`, shared by the component and the file export. */
@@ -345,9 +322,9 @@ function productMarkBody(mark: TcrnProductMark, variant: TcrnProductMarkVariant,
     case "mono":
       return inkedProductMarkBody(mark, ink);
     case "tile-tint":
-      return productMarkTile(mark.palette.tint, mark.colorBody);
+      return mark.tileTintBody;
     case "tile-deep":
-      return productMarkTile(mark.palette.deep, inkedProductMarkBody(mark, productMarkTileInk));
+      return mark.tileDeepBody;
     default:
       return mark.colorBody;
   }
@@ -367,8 +344,8 @@ export interface TcrnProductMarkSvgOptions {
 /**
  * One rendition of a registered product mark as a standalone SVG file, for the
  * places that serve a file rather than mount a component: favicons, application
- * icons, an about page. `color`, and `mono` given the contract's mono ink, are byte
- * for byte the files in docs/design/gplus-2026-10/logos2.
+ * icons, an about page. Child geometry is normalized from published 04-brand SVG markup;
+ * this serialization is not claimed to be byte-identical to a Site HTML element.
  */
 export function tcrnProductMarkSvg(
   productId: TcrnProductMarkId,
@@ -381,65 +358,16 @@ export function tcrnProductMarkSvg(
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${tcrnProductMarkViewBox}" width="${size}" height="${size}" role="img" aria-label="${escapeSvgAttribute(mark.name)}">${body}</svg>\n`;
 }
 
-export interface TcrnBrandMarkProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"> {
-  /** The mother mark's image; ignored when `productId` names a registered product mark. */
-  src?: string;
+export interface TcrnBrandMarkProps extends Omit<SVGAttributes<SVGSVGElement>, "children"> {
+  productId: TcrnProductMarkId;
   alt?: string;
-  /** Which language the built-in alt text is said in; defaults to the page's own. */
-  locale?: TcrnLocale | string;
-  /**
-   * A registered product mark, drawn inline from the design contract. Without it
-   * the component is the TCRN mother mark image.
-   */
-  productId?: TcrnProductMarkId;
-  /** Which rendition of the product mark; `color` when omitted. */
+  locale?: TcrnLocale|string;
   variant?: TcrnProductMarkVariant;
 }
-
-export function TcrnBrandMark({ src = "tcrn-brand-mark.svg", alt, locale, productId, variant = "color", className, ...props }: TcrnBrandMarkProps) {
-  if (productId) {
-    // A product mark is inline SVG, so `mono` can follow the text colour around it
-    // and the bytes on the page are the contract's own. Its default name is the
-    // product's, which is Latin in every locale.
-    const mark = productMark(productId);
-    const accessibleName = requiredText(alt, mark.name);
-    const svgProps = props as unknown as SVGAttributes<SVGSVGElement>;
-    return (
-      <svg
-        {...svgProps}
-        className={cx("tcrn-brand-mark", className)}
-        viewBox={tcrnProductMarkViewBox}
-        role="img"
-        aria-label={accessibleName}
-        focusable="false"
-        data-component-source="@tcrn/ui-react"
-        data-brand-asset={`tcrn-product-mark-${productId}`}
-        data-tcrn-brand-mark="registered"
-        data-brand-asset-registration="design-system"
-        data-product-mark={productId}
-        data-product-mark-variant={variant}
-        dangerouslySetInnerHTML={{ __html: productMarkBody(mark, variant) }}
-      />
-    );
-  }
-
-  // The mark is an image, so this alt text is its whole contribution to the
-  // accessibility tree — and this component is mounted by every lockup on every
-  // page, which made one English literal the most widely rendered of them all.
-  const accessibleName = requiredText(alt, chromeLabels(locale).brandMarkAlt);
-  return (
-    <img
-      {...props}
-      className={cx("tcrn-brand-mark", className)}
-      src={src}
-      alt={accessibleName}
-      aria-label={accessibleName}
-      data-component-source="@tcrn/ui-react"
-      data-brand-asset="tcrn-brand-mark"
-      data-tcrn-brand-mark="registered"
-      data-brand-asset-registration="design-system"
-    />
-  );
+/** Only a registered formal product mark is renderable; there is no default image or URL path. */
+export function TcrnBrandMark({alt, locale: _locale, productId, variant="color", className, ...props}:TcrnBrandMarkProps) {
+  const mark=productMark(productId);
+  return <svg {...props} className={cx("tcrn-brand-mark",className)} viewBox={tcrnProductMarkViewBox} role="img" aria-label={requiredText(alt,mark.name)} focusable="false" data-component-source="@tcrn/ui-react" data-brand-asset={`tcrn-product-mark-${productId}`} data-tcrn-brand-mark="registered" data-brand-asset-registration="design-system" data-product-mark={productId} data-product-mark-variant={variant} dangerouslySetInnerHTML={{__html:productMarkBody(mark,variant)}} />;
 }
 
 const tmsMark = productMark("tms");
@@ -455,15 +383,13 @@ const designSystemMark = productMark("design-system");
  * tagline, which is copy: it says what the product *is*, and a reader who cannot
  * read it learns nothing from it. So the taglines carry all five locales while
  * the wordmarks carry none, and the distinction is the point — "brand identity"
- * covered both here, so `AI Operation System` and `Talent Management System`
- * rendered in English on every localized route of every consuming product, in the
- * one component every page mounts.
+ * has distinct visible-name and tagline roles in the published 04 board.
  *
  * The four products with a registered mark take their names, wordmark face and
  * taglines from the design contract (product-marks.generated.ts). A TCRN product
  * (`wordmark: "sans"`) is TCRN in ink plus a suffix in the product's deep colour;
  * Einzbern and Mana Orchestrate (`wordmark: "serif"`) are whole names in ink with
- * the byline. AOS is not in this phase and keeps its entry and the mother mark.
+ * the byline. Only the four published product identities are registered.
  *
  * `alt` combines the two and follows the tagline, because a screen-reader user on
  * a ja route should hear the shell's brand the way a sighted reader sees it.
@@ -480,29 +406,7 @@ export const tcrnProductLogoRegistry = {
     suffixClassName: "tcrn-brand-wordmark__suffix--design-system",
     byline: null,
     lineTwo: designSystemMark.taglines,
-    // "Design System" is two words that would otherwise double the lockup's width.
-    stackSuffix: true,
     alt: designSystemMark.name
-  },
-  aos: {
-    productId: "aos",
-    assetId: "tcrn-aos-two-line",
-    markId: null,
-    wordmark: "sans",
-    lineOne: "TCRN AOS",
-    lineOneBase: "TCRN",
-    lineOneSuffix: "AOS",
-    suffixClassName: "tcrn-brand-wordmark__suffix--aos",
-    byline: null,
-    lineTwo: {
-      "zh-CN": "AI 运营系统",
-      en: "AI Operation System",
-      ja: "AI オペレーションシステム",
-      ko: "AI 운영 시스템",
-      fr: "Système d'exploitation IA"
-    },
-    stackSuffix: false,
-    alt: "TCRN AOS"
   },
   tms: {
     productId: "tms",
@@ -515,7 +419,6 @@ export const tcrnProductLogoRegistry = {
     suffixClassName: "tcrn-brand-wordmark__suffix--tms",
     byline: null,
     lineTwo: tmsMark.taglines,
-    stackSuffix: false,
     alt: tmsMark.name
   },
   einzbern: {
@@ -529,7 +432,6 @@ export const tcrnProductLogoRegistry = {
     suffixClassName: null,
     byline: tcrnProductMarkWordmark.serif.byline,
     lineTwo: einzbernMark.taglines,
-    stackSuffix: false,
     alt: einzbernMark.name
   },
   "mana-orchestrate": {
@@ -543,7 +445,6 @@ export const tcrnProductLogoRegistry = {
     suffixClassName: null,
     byline: tcrnProductMarkWordmark.serif.byline,
     lineTwo: manaOrchestrateMark.taglines,
-    stackSuffix: false,
     alt: manaOrchestrateMark.name
   }
 } as const;
@@ -555,276 +456,45 @@ export function getTcrnProductLogoAsset(productId: TcrnProductLogoId) {
   return tcrnProductLogoRegistry[productId];
 }
 
-function shouldStackProductSuffix(productSuffix: string) {
-  const cjkCount = Array.from(productSuffix).filter((character) => /[㐀-鿿]/u.test(character)).length;
-  return productSuffix.length > 8 || productSuffix.includes(" ") || cjkCount >= 4;
-}
-
 /** The registered tagline for `productId`, in the reader's language. */
 export function tcrnProductTagline(productId: TcrnProductLogoId, locale?: string): string {
   return tcrnProductLogoRegistry[productId].lineTwo[resolveTcrnLocale(locale)];
 }
 
 export interface ProductLogoProps extends HTMLAttributes<HTMLDivElement> {
-  productId: TcrnProductLogoId;
-  /** The mother mark's image, for a product with no registered mark (AOS). */
-  brandMarkSrc?: string;
-  brandMarkAlt?: string;
-  /** Which rendition of a registered product mark; `color` when omitted. */
-  markVariant?: TcrnProductMarkVariant;
-  /**
-   * Which language the tagline is said in. Defaults to the fallback locale, so a
-   * consumer that never passes it keeps today's English rather than losing the
-   * line — but a localized shell must pass it or the brand block is the one part
-   * of the page that stays English.
-   */
-  locale?: string;
+  productId:TcrnProductLogoId;
+  markVariant?:TcrnProductMarkVariant;
+  locale?:string;
 }
-
-export function ProductLogo({
-  productId,
-  brandMarkSrc = "tcrn-brand-mark.svg",
-  brandMarkAlt,
-  markVariant,
-  locale,
-  className,
-  ...props
-}: ProductLogoProps) {
-  const asset = getTcrnProductLogoAsset(productId);
-  const tagline = tcrnProductTagline(productId, locale);
-  // The accessible name says the wordmark and the tagline together, so a
-  // screen-reader user hears what a sighted reader sees — including the
-  // translation, which is why it is composed here rather than stored.
-  const accessibleName = `${asset.lineOne} ${tagline}`;
-  const markAlt = brandMarkAlt ?? accessibleName;
-  const measured = (props as { "data-lockup"?: string })["data-lockup"] !== undefined;
-
-  return (
-    <div
-      {...props}
-      className={cx(
-        "tcrn-product-logo",
-        asset.stackSuffix && "tcrn-product-logo--stacked-suffix",
-        asset.wordmark === "serif" && "tcrn-product-logo--serif",
-        className
-      )}
-      aria-label={accessibleName}
-      data-component-source="@tcrn/ui-react"
-      data-registered-product-logo="@tcrn/ui-react/ProductLogo"
-      data-product-id={asset.productId}
-      data-product-logo-asset-id={asset.assetId}
-      data-product-wordmark={asset.wordmark}
-    >
-      {/* A lockup the shell measures (one given a data-lockup hook, such as the full menu's
-          bottom bar) marks its colour mark with data-logo, the mark's own id, as the first line
-          does (C-5, C-6; TCRN-DS-SUB-194). The
-          other renditions do not, since their bytes are not the logos2 file's, and an unmeasured
-          lockup (a card, a launcher) adds no hook. */}
-      {asset.markId ? (
-        <TcrnBrandMark
-          productId={asset.markId}
-          variant={markVariant}
-          alt={markAlt}
-          data-logo={measured && (markVariant ?? "color") === "color" ? productMarkIdOf(asset.markId) : undefined}
-        />
-      ) : (
-        <TcrnBrandMark src={brandMarkSrc} alt={markAlt} />
-      )}
-      {/* The Brand board's section E writing (C-6): the wordmark is <b>{word} <em>{suffix}</em></b>
-          and the tagline a <small>; the space between word and suffix is the copy's, the flex gap
-          draws it. */}
-      <span className="tcrn-product-logo__copy" aria-hidden="true">
-        <b className="tcrn-product-logo__line-one" aria-label={asset.lineOne}>
-          <span className="tcrn-product-logo__line-one-base">{asset.lineOneBase}</span>
-          {asset.lineOneSuffix ? (
-            <>
-              {" "}
-              <em className={cx("tcrn-product-logo__line-one-suffix", asset.suffixClassName ?? undefined)}>{asset.lineOneSuffix}</em>
-            </>
-          ) : null}
-        </b>
-        <small className="tcrn-product-logo__line-two">{tagline}</small>
-        {asset.byline ? <span className="tcrn-product-logo__byline">{asset.byline}</span> : null}
-      </span>
-    </div>
-  );
+/** Published 04 A: the product symbol alone. Wordmark/tagline composition belongs to ProductLockup. */
+export function ProductLogo({productId,markVariant="color",locale:_locale,className,...props}:ProductLogoProps) {
+ const asset=getTcrnProductLogoAsset(productId);if(!asset)throw new Error(`Unregistered product logo ${productId}`);
+ return <div {...props} className={cx("tcrn-product-symbol",className)} role="img" aria-label={asset.lineOne} data-component-source="@tcrn/ui-react" data-registered-product-logo="@tcrn/ui-react/ProductLogo" data-product-id={productId}><TcrnBrandMark productId={asset.markId} variant={markVariant} aria-hidden="true" data-logo={productMarkIdOf(asset.markId)}/></div>;
 }
-
-/**
- * The scale of ProductLockup's first-line rendition: `rail` is the side-rail writing of the
- * Brand board's section E (mark 22, wordmark 12.5/600), `lockup` the lockup writing (mark 44,
- * wordmark 16/600). The top band's brand button uses the rail scale.
- */
-export type ProductLockupFirstLineScale = "rail" | "lockup";
-
-export interface ProductLockupProps extends HTMLAttributes<HTMLDivElement> {
-  suffix?: string;
-  suffixClassName?: string;
-  brandMarkSrc?: string;
-  brandMarkAlt?: string;
-  productId?: TcrnProductLogoId;
-  /** Passed to `ProductLogo` when `productId` is given; ignored otherwise and by `firstLine`. */
-  markVariant?: TcrnProductMarkVariant;
-  /** Passed to `ProductLogo` when `productId` is given; ignored otherwise. */
-  locale?: string;
-  /**
-   * The second of the product's three renditions (MIN-20261013-SHELL D2, STORY-145): the
-   * lockup's first line alone, centred on the mark, at the given scale. Nothing is redrawn or
-   * restyled: the mark is the colour mark of logos2 (never mono or faded), the line keeps the
-   * lockup's words, weights and suffix colour, and the two are centred by the flex row, not by
-   * nudging the line. Omitted, the lockup is the whole block (the third rendition).
-   */
-  firstLine?: ProductLockupFirstLineScale;
+function RegisteredProductLockup({productId,markVariant="color",scale="lockup",locale,className,...props}:ProductLockupProps) {
+  const asset=getTcrnProductLogoAsset(productId);
+  if(!asset) throw new Error(`Unregistered product logo ${productId}`);
+  const tagline=tcrnProductTagline(productId,locale);
+  return <div {...props} className={cx("tcrn-product-logo",scale==="rail"&&"tcrn-product-logo--rail",asset.wordmark==="serif"&&"tcrn-product-logo--serif",className)} role="img" aria-label={`${asset.lineOne} ${tagline}`} data-component-source="@tcrn/ui-react" data-registered-product-logo="@tcrn/ui-react/ProductLogo" data-product-id={asset.productId} data-product-logo-asset-id={asset.assetId} data-product-wordmark={asset.wordmark}>
+    <TcrnBrandMark productId={asset.markId} variant={markVariant} aria-hidden="true" data-logo={productMarkIdOf(asset.markId)} />
+    <span className="tcrn-product-logo__copy" aria-hidden="true"><b className="tcrn-product-logo__line-one" title={asset.lineOne}><span className="tcrn-product-logo__line-one-base">{asset.lineOneBase}</span>{asset.lineOneSuffix ? <> <em className={cx("tcrn-product-logo__line-one-suffix",asset.suffixClassName??undefined)}>{asset.lineOneSuffix}</em></> : null}</b><small className="tcrn-product-logo__line-two" title={tagline}>{tagline}</small>{asset.byline?<span className="tcrn-product-logo__byline">{asset.byline}</span>:null}</span>
+  </div>;
 }
-
-/** The first-line rendition of ProductLockup: data-lockup lk-line or lkr-line (C-6). */
-function ProductLockupFirstLine({
-  scale,
-  productId,
-  suffix,
-  suffixClassName,
-  brandMarkSrc,
-  brandMarkAlt,
-  locale,
-  className,
-  ...props
-}: Omit<ProductLockupProps, "firstLine" | "markVariant"> & { scale: ProductLockupFirstLineScale }) {
-  const asset = productId ? getTcrnProductLogoAsset(productId) : null;
-  const word = asset ? asset.lineOneBase : "TCRN";
-  const lineSuffix = asset ? asset.lineOneSuffix : requiredText(suffix, chromeLabels(locale).productSuffix);
-  const lineSuffixClassName = asset ? asset.suffixClassName : suffixClassName;
-  const name = asset ? asset.lineOne : `${word} ${lineSuffix}`;
-  return (
-    <div
-      {...props}
-      className={cx(
-        "tcrn-brand-lockup",
-        "tcrn-brand-lockup--line",
-        scale === "rail" && "tcrn-brand-lockup--line-rail",
-        asset?.wordmark === "serif" && "tcrn-brand-lockup--line-serif",
-        className
-      )}
-      role="img"
-      aria-label={name}
-      data-component-source="@tcrn/ui-react"
-      data-brand-lockup="line"
-      data-lockup={scale === "rail" ? "lkr-line" : "lk-line"}
-      data-product-id={asset?.productId}
-    >
-      {asset?.markId ? (
-        <TcrnBrandMark productId={asset.markId} variant="color" aria-hidden="true" data-logo={productMarkIdOf(asset.markId)} />
-      ) : (
-        <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} aria-hidden="true" />
-      )}
-      <span className="tcrn-brand-lockup__line" aria-hidden="true">
-        {/* A word too long for its line ends in an ellipsis; the title says it in full (C7). */}
-        <b className="tcrn-brand-lockup__word" title={name}>
-          {word}
-          {lineSuffix ? (
-            <>
-              {" "}
-              <em className={cx("tcrn-brand-lockup__suffix", lineSuffixClassName ?? undefined)}>{lineSuffix}</em>
-            </>
-          ) : null}
-        </b>
-      </span>
-    </div>
-  );
+export type ProductLockupFirstLineScale="rail"|"lockup";
+export interface ProductLockupProps extends ProductLogoProps { firstLine?:ProductLockupFirstLineScale;scale?:"lockup"|"rail" }
+export function ProductLockup({productId,markVariant,locale,firstLine,scale,className,...props}:ProductLockupProps) {
+  const asset=getTcrnProductLogoAsset(productId);
+  if(!asset) throw new Error(`Unregistered product lockup ${productId}`);
+  if(!firstLine) return <RegisteredProductLockup {...props} productId={productId} markVariant={markVariant} locale={locale} scale={scale} className={cx("tcrn-brand-lockup",className)} />;
+  return <div {...props} className={cx("tcrn-brand-lockup","tcrn-brand-lockup--line",firstLine==="rail"&&"tcrn-brand-lockup--line-rail",asset.wordmark==="serif"&&"tcrn-brand-lockup--line-serif",className)} role="img" aria-label={asset.lineOne} data-component-source="@tcrn/ui-react" data-brand-lockup="line" data-lockup={firstLine==="rail"?"lkr-line":"lk-line"} data-product-id={productId}>
+    <TcrnBrandMark productId={asset.markId} variant="color" aria-hidden="true" data-logo={productMarkIdOf(asset.markId)} />
+    <span className="tcrn-brand-lockup__line" aria-hidden="true"><b className="tcrn-brand-lockup__word" title={asset.lineOne}>{asset.lineOneBase}{asset.lineOneSuffix?<> <em className={cx("tcrn-brand-lockup__suffix",asset.suffixClassName??undefined)}>{asset.lineOneSuffix}</em></>:null}</b></span>
+  </div>;
 }
-
-export function ProductLockup({ suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, markVariant, locale, firstLine, className, ...props }: ProductLockupProps) {
-  if (firstLine) {
-    return (
-      <ProductLockupFirstLine
-        {...props}
-        scale={firstLine}
-        productId={productId}
-        suffix={suffix}
-        suffixClassName={suffixClassName}
-        brandMarkSrc={brandMarkSrc}
-        brandMarkAlt={brandMarkAlt}
-        locale={locale}
-        className={className}
-      />
-    );
-  }
-  if (productId) {
-    return (
-      <ProductLogo
-        {...props}
-        locale={locale}
-        productId={productId}
-        brandMarkSrc={brandMarkSrc}
-        brandMarkAlt={brandMarkAlt}
-        markVariant={markVariant}
-        className={cx("tcrn-brand-lockup", className)}
-      />
-    );
-  }
-
-  // Reached only without a `productId`, where there is no registered lockup to
-  // read a name from — so this visible fallback is the product's whole name.
-  const productSuffix = requiredText(suffix, chromeLabels(locale).productSuffix);
-  const isLongSuffix = shouldStackProductSuffix(productSuffix);
-
-  return (
-    <div
-      {...props}
-      className={cx("tcrn-brand-lockup", isLongSuffix && "tcrn-brand-lockup--long-name", className)}
-      data-component-source="@tcrn/ui-react"
-      data-brand-lockup="product"
-      data-package-backed-brand-lockup="product"
-    >
-      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} />
-      <span className="tcrn-brand-wordmark">
-        <span className="tcrn-brand-wordmark__base">TCRN</span>
-        <span className={cx("tcrn-brand-wordmark__suffix", suffixClassName)}>{productSuffix}</span>
-      </span>
-    </div>
-  );
-}
-
-export interface ShellBrandLockupProps extends Omit<ProductLockupProps, "firstLine"> {
-  caption?: string;
-}
-
-export function ShellBrandLockup({ caption, suffix, suffixClassName, brandMarkSrc, brandMarkAlt, productId, markVariant, locale, className, ...props }: ShellBrandLockupProps) {
-  if (productId) {
-    return (
-      <ProductLogo
-        {...props}
-        locale={locale}
-        productId={productId}
-        brandMarkSrc={brandMarkSrc}
-        brandMarkAlt={brandMarkAlt}
-        markVariant={markVariant}
-        className={cx("tcrn-shell-brand-lockup", className)}
-      />
-    );
-  }
-
-  // Two visible fallbacks and the mark's alt text, all reached only on the
-  // no-`productId` path.
-  const chrome = chromeLabels(locale);
-
-  return (
-    <div
-      {...props}
-      className={cx("tcrn-shell-brand-lockup", className)}
-      data-component-source="@tcrn/ui-react"
-      data-brand-lockup="shell"
-      data-package-backed-brand-lockup="shell"
-    >
-      <TcrnBrandMark src={brandMarkSrc} alt={brandMarkAlt} locale={locale} />
-      <span className="tcrn-shell-brand-lockup__copy">
-        <span className="tcrn-brand-wordmark">
-          <span className="tcrn-brand-wordmark__base">TCRN</span>
-          <span className={cx("tcrn-brand-wordmark__suffix", suffixClassName)}>{requiredText(suffix, chrome.productSuffix)}</span>
-        </span>
-        <span className="tcrn-shell-brand-lockup__caption">{requiredText(caption, chrome.productShellCaption)}</span>
-      </span>
-    </div>
-  );
+export interface ShellBrandLockupProps extends Omit<ProductLockupProps,"firstLine"> {}
+/** Published menu decoration. The product key supplies all names and assets. */
+export function ShellBrandLockup({productId,locale,className,...props}:ShellBrandLockupProps) {
+  return <ProductLockup {...props} productId={productId} locale={locale} scale="rail" markVariant="color" className={cx("tcrn-shell-brand-lockup",className)} />;
 }
 
 export type ShellThemeMode = "light" | "dark";
@@ -1035,7 +705,7 @@ export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, "ariaL
 
 /**
  * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): there is no side rail left to collapse; the full menu
- * opens from ProductShell's brand button. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ * opens from ProductShell's brand button. Its visual rules are outside the published stylesheet; removed in 4.1.
  */
 export function SideNavCollapseButton({
   collapsed,
@@ -1134,7 +804,7 @@ export interface MobileNavToggleProps extends Omit<IconButtonProps, "ariaLabel" 
  *
  * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): on a phone ProductShell's brand button opens the full
  * menu as a Sheet, so there is no separate navigation toggle. Its rules moved to
- * tcrnRetiredComponentCss; removed in 4.1.
+ * the published stylesheet; removed in 4.1.
  */
 export function MobileNavToggle({
   expanded,
@@ -1196,7 +866,7 @@ function LauncherItems({ items }: ProductLauncherProps) {
 
 /**
  * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): products are switched from the avatar menu; pass
- * ProductShell its products. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ * ProductShell its products. Its visual rules are outside the published stylesheet; removed in 4.1.
  */
 export function ProductLauncher({ items, locale }: ProductLauncherProps) {
   return (
@@ -1208,7 +878,7 @@ export function ProductLauncher({ items, locale }: ProductLauncherProps) {
 
 /**
  * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): products are switched from the avatar menu; pass
- * ProductShell its products. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ * ProductShell its products. Its visual rules are outside the published stylesheet; removed in 4.1.
  */
 export function ProductSwitcher({ items, locale }: ProductLauncherProps) {
   return (
@@ -1348,6 +1018,13 @@ export interface TabsProps {
 }
 
 export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps) {
+  const instanceId = useId();
+  const listRef = useRef<HTMLDivElement>(null);
+  const panelId = `${instanceId}-tabpanel`;
+  const activate = (id: string) => {
+    onSelect(id);
+    Array.from(listRef.current?.querySelectorAll<HTMLButtonElement>('button[role="tab"]') ?? []).find(button=>button.dataset.tabId===id)?.focus();
+  };
   const enabled = items.filter((item) => !item.disabled);
   const move = (delta: number) => {
     if (enabled.length === 0) return;
@@ -1355,27 +1032,28 @@ export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps
     // Wrapping is the documented behaviour: a reader holding ArrowRight expects to
     // come round rather than to stop at a wall with no feedback.
     const next = enabled[(((at < 0 ? 0 : at) + delta) % enabled.length + enabled.length) % enabled.length];
-    if (next) onSelect(next.id);
+    if (next) activate(next.id);
   };
   const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); move(1); }
     else if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); move(-1); }
-    else if (event.key === "Home") { event.preventDefault(); if (enabled[0]) onSelect(enabled[0].id); }
-    else if (event.key === "End") { event.preventDefault(); const last = enabled[enabled.length - 1]; if (last) onSelect(last.id); }
+    else if (event.key === "Home") { event.preventDefault(); if (enabled[0]) activate(enabled[0].id); }
+    else if (event.key === "End") { event.preventDefault(); const last = enabled[enabled.length - 1]; if (last) activate(last.id); }
   };
   return (
     <div className="tcrn-tabs tcrn-tabs--panel" data-tabs="true">
-      <div className="tcrn-tabs__list" role="tablist" aria-label={label} onKeyDown={onKeyDown}>
+      <div className="tcrn-tabs__list" ref={listRef} role="tablist" aria-label={label} onKeyDown={onKeyDown}>
         {items.map((item) => {
           const selected = item.id === selectedId;
           return (
             <button key={item.id} type="button"
-              id={`tcrn-tab-${item.id}`}
+              id={`${instanceId}-tab-${item.id}`}
+              data-tab-id={item.id}
               role="tab"
               className="tcrn-tabs__tab"
               data-selected={selected ? "true" : undefined}
               aria-selected={selected}
-              aria-controls={`tcrn-tabpanel-${item.id}`}
+              aria-controls={panelId}
               disabled={item.disabled}
               tabIndex={selected ? 0 : -1}
               title={typeof item.label === "string" ? item.label : undefined}
@@ -1386,7 +1064,7 @@ export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps
           );
         })}
       </div>
-      <div className="tcrn-tabs__panel" role="tabpanel" id={`tcrn-tabpanel-${selectedId}`} aria-labelledby={`tcrn-tab-${selectedId}`} tabIndex={0}>
+      <div className="tcrn-tabs__panel" role="tabpanel" id={panelId} aria-labelledby={`${instanceId}-tab-${selectedId}`} tabIndex={0}>
         {children}
       </div>
     </div>
@@ -1456,7 +1134,7 @@ export interface SideNavProps extends HTMLAttributes<HTMLElement> {
 /**
  * @deprecated Since 4.0.0 (TCRN-DS-SUB-125): the top-band shell has no resident side rail. Give
  * ProductShell the navigation as its menu model (navGroups); NavGroup and NavItem rows render in the
- * full menu and the drop-downs. Its rules moved to tcrnRetiredComponentCss; removed in 4.1.
+ * full menu and the drop-downs. Its visual rules are outside the published stylesheet; removed in 4.1.
  */
 export function SideNav({ label, className, children, ...props }: SideNavProps) {
   return (
@@ -2253,7 +1931,7 @@ export function ProductShell({
   const currentTrail: readonly PageHeaderBreadcrumb[] = currentPath.map((step, index) => (
     step.href && index < currentPath.length - 1 ? { id: `${baseId}-crumb-${index}`, label: step.label, href: step.href } : { id: `${baseId}-crumb-${index}`, label: step.label }
   ));
-  // The full menu shows as the panel or, 760 wide and narrower, as the Sheet; ShellMenu picks the
+  // The full menu shows as the panel or, 390 wide and narrower, as the Sheet; ShellMenu picks the
   // same presentation from the same context and viewport, and the root reports it: an open Sheet
   // is data-state="sheet" (C-5; TCRN-DS-SUB-159).
   const shellRef = useRef<HTMLDivElement>(null);
@@ -2278,6 +1956,7 @@ export function ProductShell({
       data-product-shell-header-actions={headerActions ? "present" : "absent"}
       data-product-shell-current-route-label-key={currentRouteLabelKey}
     >
+      <svg className="tcrn-shell-grain" aria-hidden="true"><filter id={`${baseId}-grain`}><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter={`url(#${baseId}-grain)`}/></svg>
       <SkipLink href={`#${contentId}`}>{resolvedSkipLinkLabel}</SkipLink>
       {/* Composed per locale: the module name is the consumer's own. */}
       <header className="tcrn-shell-strip" aria-label={landmarkName(chrome.shellControlsOf(moduleName))} data-shell-strip="" data-product-shell-region="strip">
@@ -2977,4 +2656,4 @@ export function Pagination({ label, shown, total, nextHref, prevHref, locale }: 
 // The component stylesheet is composed in ../../styles/: one module per family, joined in
 // cascade order by styles/index.ts. It is re-exported here so the public export and every
 // existing import of it from this module keep working.
-export { tcrnComponentCss, tcrnRetiredComponentCss } from "../../styles/index.js";
+export { tcrnComponentCss } from "../../styles/index.js";

@@ -1,0 +1,1022 @@
+{
+  "purpose": "Removal and negative-regression inventory only; never a rendering registry or design source.",
+  "oldRoutes": {
+    "welcome-governance": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M20"
+    },
+    "governance-boundaries": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M20"
+    },
+    "maintainers-routing": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M20"
+    },
+    "contribution-model": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M20"
+    },
+    "release-bug-policy": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M20"
+    },
+    "brand-identity": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "04-brand",
+      "matrix": "M02"
+    },
+    "color-palette": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "01-tokens",
+      "matrix": "M05"
+    },
+    "text-styles": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "02-typography",
+      "matrix": "M06"
+    },
+    "grid-system": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "icons-motion": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "03-icons",
+      "matrix": "M03"
+    },
+    "global-states": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "copy-creation-rules": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "tokens-copy-state": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "01-tokens",
+      "matrix": "M05"
+    },
+    "i18n-theme-contract": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "02-typography",
+      "matrix": "M04"
+    },
+    "foundation-visual-standards": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "copy-guidelines": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "component-family-index": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "display-primitives-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "interaction-disclosure-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "stamp-spec-usage": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "button-spec-usage": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "05-actions",
+      "matrix": "M07"
+    },
+    "field-spec-usage": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "06-inputs",
+      "matrix": "M08"
+    },
+    "navigation-shell-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "navigation-dense-operations-shell-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "navigation-focused-shells-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "navigation-primitives-spec": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "07a-shell-upper",
+      "matrix": "M10"
+    },
+    "navigation-product-shell-spec": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "07a-shell-upper",
+      "matrix": "M09"
+    },
+    "shell-top-band": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "07a-shell-upper",
+      "matrix": "M09"
+    },
+    "shell-narrow": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "07a-shell-upper",
+      "matrix": "M09"
+    },
+    "shell-mobile": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "07a-shell-upper",
+      "matrix": "M09"
+    },
+    "shell-intro": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "07a-shell-upper",
+      "matrix": "M09"
+    },
+    "shell-matrix": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "07a-shell-upper",
+      "matrix": "M09"
+    },
+    "shell-brand-first-line": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "07a-shell-upper",
+      "matrix": "M09"
+    },
+    "dialog-spec-usage": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M16"
+    },
+    "table-record-index-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "records-and-boards-components-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "hierarchy-and-relations-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "detail-and-inspection-density-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "detail-and-inspection-route-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "records-and-boards-backlog-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "hierarchy-and-relations-stages-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "detail-and-inspection-inspector-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "documents-and-collaboration-components-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "documents-and-collaboration-density-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "documents-and-collaboration-templates-spec": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "typography-matrix": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "02-typography",
+      "matrix": "M06"
+    },
+    "typography-sample-billing": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M12"
+    },
+    "icon-matrix": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "03-icons",
+      "matrix": "M03"
+    },
+    "icon-sample-project": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M12"
+    },
+    "brand-matrix": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "04-brand",
+      "matrix": "M02"
+    },
+    "brand-sample-product": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M12"
+    },
+    "actions-matrix": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "05-actions",
+      "matrix": "M07"
+    },
+    "actions-sample-project": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M12"
+    },
+    "inputs-matrix": {
+      "disposition": "removed-original-route; replaced-by-published-board",
+      "replacement": "06-inputs",
+      "matrix": "M08"
+    },
+    "inputs-sample-members": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M12"
+    },
+    "composition-three-sample": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M12"
+    },
+    "forms-patterns": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "workbench-patterns": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "records-and-boards-patterns": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "readiness-notification-patterns": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "selection-list-patterns": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "modal-validation-patterns": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "datagrid-fields-patterns": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "big-list-search-patterns": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "dashboard-page-templates": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "proof-matrix": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M20"
+    },
+    "ai-consumption-contract": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M18"
+    },
+    "blocked-actions": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M11"
+    },
+    "overlay-focus": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M16"
+    },
+    "frontend-shell-slice": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M16"
+    },
+    "owner-quality-product-shell": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M16"
+    },
+    "local-changelog": {
+      "disposition": "removed-original-route-and-exclusive-source",
+      "replacement": null,
+      "matrix": "M20"
+    }
+  },
+  "oldApis": {
+    "ActionDrawer": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ActivityFeed": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "AppStatusBar": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "AttachmentList": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Avatar": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Badge": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Breadcrumb": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Button": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "05-actions",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ButtonGroup": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "05-actions",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Card": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Checkbox": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ClipboardCopyButton": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "05-actions",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "CollapsibleRegion": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ConfirmActionDialog": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ContentScope": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DataGrid": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DatePicker": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DefinitionList": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DetailDrawer": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DetailInspector": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DetailLayout": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Dialog": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DictionaryTable": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DisclosurePanel": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Divider": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "DocumentCanvas": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "EmptyState": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "EnvironmentBanner": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ErrorState": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Field": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "FieldProvenance": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "FilterBar": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Heading": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "02-typography",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Highlight": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "02-typography",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Icon": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "03-icons",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "IconButton": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "05-actions",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "InlineAlert": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "InlineCommentList": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "InlineCreate": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Input": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "KeyValueList": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "LabelSet": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "LaneBoard": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "LineNumberedEditor": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "LinkButton": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "05-actions",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "LiveRegion": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "LockHint": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "MachineToken": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "MachineTokenCell": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Menu": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "MetadataRail": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "MobileNavToggle": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ModuleTabs": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "MultiSelect": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "NavGroup": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "NavItem": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "NumberInput": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "OperationFeedback": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "PageHeader": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "PageHierarchy": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Pagination": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Popover": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ProductLauncher": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ProductLockup": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "04-brand",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ProductLogo": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "04-brand",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ProductShell": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "07a-shell-upper",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ProductShellSearch": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "07a-shell-upper",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ProductSwitcher": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Progress": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "QuickFilters": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "RadioGroup": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ReadbackPanel": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "RecordInspector": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "RecordRow": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "RecordTable": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "RelationGraph": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "RelationshipChip": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "RowGroup": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SavedViewToolbar": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SearchInput": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SearchResultList": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SearchableList": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SectionTabs": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SegmentedNav": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Select": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SettingChoice": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SettingRow": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SettingRowList": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SettingsHostSwitcher": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SettingsLayout": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ShellBrandButton": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "07a-shell-upper",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ShellBrandLockup": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ShellDropdown": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "07a-shell-upper",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ShellIntro": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "07a-shell-upper",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ShellLocaleMenu": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ShellMenu": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "07a-shell-upper",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ShellPins": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "07a-shell-upper",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ShellThemeToggle": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SideNav": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SideNavCollapseButton": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Skeleton": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SkipLink": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SplitView": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "StagePipeline": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Stamp": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "StampRule": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "StatCard": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "StateSurface": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "StateView": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "StatusBadge": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "StatusSummaryPanel": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Stepper": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SubNav": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "SuggestInput": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Surface": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Switch": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "TableShell": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "TableToolbar": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Tabs": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "TcrnBrandMark": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "TemplateGallery": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Text": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "02-typography",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Textarea": {
+      "disposition": "rebuild-formal-API-reference-only",
+      "formalBoard": "06-inputs",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Toast": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "TocRail": {
+      "disposition": "scoped-formal-support-only; remove-old-full-reference",
+      "formalBoard": "scoped role in official boards",
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Tooltip": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "TopBar": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "Tree": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "TreeNav": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "VersionHistory": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    },
+    "ViewTabs": {
+      "disposition": "remove-current-storybook-reference-and-unbacked-visual-consumption",
+      "formalBoard": null,
+      "engineeringExportDoesNotPublishDesign": true
+    }
+  }
+}

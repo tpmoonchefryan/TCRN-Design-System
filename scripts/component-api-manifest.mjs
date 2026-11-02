@@ -27,7 +27,7 @@ import ts from "typescript";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const uiReactSrcMarker = "/packages/ui-react/src/";
 const entrySourcePath = "packages/ui-react/src/index.tsx";
-const outputRoot = "docs/verification/internal-alpha";
+const outputRoot = "docs/verification/current-standard-only";
 const outputPath = join(outputRoot, "component-api-manifest.json");
 
 function normalizePath(value) {

@@ -1,37 +1,5 @@
-import { rmSync } from "node:fs";
-import { readdirSync } from "node:fs";
-import { join } from "node:path";
-
-for (const path of [
-  "packages/ui-tokens/dist",
-  "packages/ui-copy-state/dist",
-  "packages/ui-react/dist",
-  "apps/storybook/dist",
-  "apps/storybook/apps",
-  "apps/storybook/storybook-static",
-  "apps/storybook/storybook-preview-static",
-  "docs/verification/internal-alpha",
-  "examples/tms-react-pilot/dist",
-  "examples/aos-token-copy-state-pilot/dist",
-  ".tarball-smoke"
-]) {
-  rmSync(path, { recursive: true, force: true });
-}
-
-function removeBuildInfo(directory) {
-  for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    if (entry.name === "node_modules" || entry.name === ".git") {
-      continue;
-    }
-    const path = join(directory, entry.name);
-    if (entry.isDirectory()) {
-      removeBuildInfo(path);
-    } else if (entry.isFile() && entry.name.endsWith(".tsbuildinfo")) {
-      rmSync(path, { force: true });
-    }
-  }
-}
-
-removeBuildInfo(".");
-
-console.log(JSON.stringify({ ok: true, cleaned: true }, null, 2));
+// Explicit generated output reconciliation only. Never remove docs/verification or other evidence.
+import path from "node:path";
+import { ROOT } from "./lib/approved-site-source.mjs";
+import { reconcileOutput } from "./lib/generated-output.mjs";
+for(const rel of ["apps/storybook/dist","apps/storybook/storybook-static","apps/storybook/storybook-preview-static","packages/ui-react/dist","packages/ui-tokens/dist","packages/ui-copy-state/dist"])reconcileOutput(path.join(ROOT,rel),[]);

@@ -1,32 +1,5 @@
-// Inputs segments of tcrnComponentCss: every rule whose selector subject is an input,
-// textarea, select, multi-select, suggest, number, date, checkbox, radio, switch,
-// search-input or field class.
-//
-// styles/index.ts joins the segments of all six family modules in the stylesheet's cascade
-// order, so where a segment sits in the sheet is decided there; this module owns what the
-// segment says. A backtick ends a segment early, so the CSS comments in it never use one
-// (scripts/css-template-integrity-proof.mjs checks every segment).
-//
-// State colours come only from the generated pair segments in generated/inputs.pairs.ts
-// (written by scripts/contract-generate.mjs from the design contract). The family base
-// rules here read the live pair (--tcrn-pair-fill, --tcrn-pair-ink, --tcrn-pair-edge, and
-// --tcrn-pair-mark or --tcrn-pair-knob with --tcrn-pair-knob-edge) and never declare it;
-// each pair segment is joined after the base rules it serves. One local pair is written
-// here by hand: the multi-select dropdown option, which has no table in pairs.json,
-// declares its fill and weight values on its own class, and its state rules only switch
-// the live pair, the same form the generated segments take.
-
+// Published 06 Inputs controls and the limited label/hint role. No unapproved field extensions.
 import { inputsCheckPairsCss, inputsSwitchPairsCss, inputsTextPairsCss } from "./generated/inputs.pairs.js";
-
-// Former landing place of a product-shell focus rule for the search wrapper (a state rule
-// at specificity 0,3,0 that cleared the wrapper's outline and shadow while focus was
-// inside it). The wrapper paints no fill, edge, outline or ring in any context, so there
-// was nothing left for the shell to clear: the control draws its own edge and focus ring
-// from the inputs pair table, and the shell-wide focus rule in the base segment leaves
-// every pair-driven control alone, the search control among them. The segment stays
-// joined, empty.
-export const inputsCss01 = ``;
-
 export const inputsCss02 = `
 /* SearchInput is a quiet tool, the same in a form and in a top bar: a wash fill with no
    edge, a line-2 edge on hover, and the paper fill with the focus ring once focused. The
@@ -106,69 +79,7 @@ export const inputsCss02 = `
   pointer-events: none;
 }`;
 
-export const inputsCss03 = `
-.tcrn-table-toolbar .tcrn-search-input {
-  flex: 1 1 220px;
-  min-width: 180px;
-}`;
-
-// Former landing place of a reduced-motion transition for the search wrapper. The wrapper
-// no longer paints a fill or an edge, so there was nothing left to soften; the control's
-// own transition is the inputs family's. The segment stays joined, empty.
-export const inputsCss04 = ``;
-
 export const inputsCss05 = `
-
-/* Form field */
-.tcrn-field {
-  display: grid;
-  /* The field's rows are label and control, both content-sized. Left to stretch, a
-     field that a layout has made taller than its content hands the extra height to
-     those rows, and the control inside grows past the min-height it declares — a
-     select stating 34px was observed at 44.1px this way. The field keeps its own
-     size; whatever gave it extra height is the layout's business, not the control's. */
-  align-content: start;
-  gap: var(--tcrn-space-1);
-  margin-bottom: 10px;
-  border-radius: var(--tcrn-radius-control);
-  background-color: transparent;
-  outline: 1px solid transparent;
-  outline-offset: 2px;
-  transition:
-    background-color 150ms ease-out,
-    outline-color 150ms ease-out;
-}
-
-/* Focus no longer washes the whole field: the control inside changes its own edge and
-   draws the focus ring from the inputs pair table. An error does not wash it or ring it
-   either: the control takes the invalid pair (the bad edge) and the message below it is
-   set in bad straight on the surface the field sits on, so the message keeps the
-   contrast the Inputs matrix expects of bad on panel. Only forced colours outline the
-   field in error, with the system's Highlight (see the forced-colours block). */
-
-.tcrn-field__label {
-  font-weight: 600;
-}
-.tcrn-field:is(fieldset) {
-  min-inline-size: 0;
-  padding: 0;
-  border: 0;
-}
-
-.tcrn-field__hint {
-  color: var(--tcrn-color-text-secondary);
-}
-
-.tcrn-field__error {
-  color: var(--tcrn-color-bad);
-}
-
-/* Form input + select. Their width comes from their container; the package has no size
-   modifier for them. The text-like controls share one pair table: Input, Textarea,
-   NumberInput, DatePicker and SuggestInput carry .tcrn-input; Select and the MultiSelect
-   trigger carry .tcrn-select. This base only reads the live pair; the generated state
-   rules choose which pair is live. The edge is an inset box-shadow, so hover, focus and
-   error change edge and ring together and the box never moves. */
 .tcrn-input,
 .tcrn-select {
   box-sizing: border-box;
@@ -230,7 +141,7 @@ export const inputsCss06 = `
   gap: var(--tcrn-space-1) var(--tcrn-space-2h);
   align-items: center;
   min-width: 0;
-  color: var(--tcrn-color-text-primary);
+  color: var(--tcrn-color-ink);
   cursor: pointer;
 }
 /* Switch: a 34 by 20 track (fill and edge of the pair) with a 16px knob (knob and
@@ -285,7 +196,7 @@ export const inputsCss06 = `
 .tcrn-switch__description {
   grid-column: 2;
   min-width: 0;
-  color: var(--tcrn-color-text-secondary);
+  color: var(--tcrn-color-ink-2);
   font-size: var(--tcrn-type-size-meta);
   line-height: var(--tcrn-type-line-caption);
 }
@@ -357,43 +268,8 @@ export const inputsCss06 = `
   cursor: not-allowed;
 }` + inputsCheckPairsCss + inputsSwitchPairsCss;
 
-export const inputsCss07 = `
-
-.tcrn-field-provenance {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) max-content max-content;
-  gap: var(--tcrn-space-2);
-  align-items: center;
-  min-width: 0;
-  padding: var(--tcrn-space-2);
-  border: 1px dashed var(--tcrn-color-border-subtle);
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-surface-muted);
-}
-.tcrn-field-provenance__value {
-  min-width: 0;
-  color: var(--tcrn-color-text-primary);
-  overflow-wrap: anywhere;
-}
-.tcrn-field-provenance__source {
-  color: var(--tcrn-color-text-secondary);
-  font-size: var(--tcrn-type-size-meta);
-}
-.tcrn-field-provenance__action {
-  display: inline-flex;
-  align-items: center;
-}
-.tcrn-field-provenance--overridden {
-  border-style: solid;
-  border-color: var(--tcrn-selection-edge);
-  background: var(--tcrn-selection-fill);
-}`;
-
 export const inputsCss08 = `
 @media (prefers-reduced-motion: reduce) {
-  .tcrn-field {
-    transition: none;
-  }
   /* The knob jumps instead of travelling and keeps its colour change; the radio dot
      appears at once. */
   .tcrn-switch__control::before {
@@ -405,10 +281,6 @@ export const inputsCss08 = `
 }
 
 @media (forced-colors: active) {
-  .tcrn-field--error {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
-  }
   /* Forced colours drop every box-shadow, which is where the edges, rings, knob and
      radio dot live. Text controls get a real border back, and the checkable controls
      return to the system's own drawing. */
@@ -443,8 +315,8 @@ export const inputsCss09 = `
   align-items: center;
   gap: var(--tcrn-space-2);
 }
-.tcrn-radio-group__description { grid-column: 2; font-size: var(--tcrn-type-size-caption); color: var(--tcrn-color-text-secondary); }
-.tcrn-radio-group__option[data-option-disabled="true"] { color: var(--tcrn-color-text-muted); }`;
+.tcrn-radio-group__description { grid-column: 2; font-size: var(--tcrn-type-size-caption); color: var(--tcrn-color-ink-2); }
+.tcrn-radio-group__option[data-option-disabled="true"] { color: var(--tcrn-color-ink-3); }`;
 
 export const inputsCss10 = `
 
@@ -536,17 +408,20 @@ export const inputsCss11 = `
 .tcrn-multi-select-dropdown__option [data-multi-select-check]{flex:0 0 auto;visibility:hidden}
 .tcrn-multi-select-dropdown__option [data-multi-select-check][data-selected="true"]{visibility:visible}`;
 
-export const inputsCss12 = `
-.tcrn-setting-choice__select-label>:is(.tcrn-select,.tcrn-select-wrap){inline-size:100%}
-.tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group{flex-direction:row;flex-wrap:nowrap;gap:var(--tcrn-space-2);max-inline-size:100%;overflow-x:auto;padding:var(--tcrn-container-settings-choice-padding);border:1px solid var(--tcrn-color-border-subtle);border-radius:var(--tcrn-radius-surface);background:var(--tcrn-color-surface-muted)}
-.tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group__option{min-inline-size:0;flex:1 1 0}
-.tcrn-setting-choice[data-setting-choice-control="radio"] .tcrn-radio-group__label{min-inline-size:0;overflow-wrap:anywhere}`;
-
 export const inputsCss13 = `
-.tcrn-number-input{inline-size:100%;min-inline-size:var(--tcrn-container-settings-number-min);font-variant-numeric:tabular-nums;text-overflow:clip;-moz-appearance:textfield;appearance:textfield}
+.tcrn-number-input{inline-size:100%;min-inline-size:12ch;font-variant-numeric:tabular-nums;text-overflow:clip;-moz-appearance:textfield;appearance:textfield}
 .tcrn-number-input::-webkit-inner-spin-button,.tcrn-number-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}`;
 
-export const inputsCss14 = `
-.tcrn-settings-layout__form .tcrn-setting-row__control .tcrn-field :is(.tcrn-input,.tcrn-select,.tcrn-number-input){inline-size:100%;min-inline-size:0}
-.tcrn-settings-layout__form .tcrn-setting-row__control .tcrn-field{margin:0}
-.tcrn-settings-layout__form .tcrn-setting-row__control>.tcrn-number-input{inline-size:100%}`;
+export const inputsSizesCss = `
+.tcrn-input--sm,.tcrn-select--sm{block-size:var(--tcrn-control-height-sm);font-size:var(--tcrn-type-size-control-sm);padding:0 8px}
+.tcrn-input--lg,.tcrn-select--lg{block-size:var(--tcrn-control-height-lg);font-size:var(--tcrn-type-size-control-lg);padding:0 12px}
+.tcrn-input,.tcrn-select{width:100%;min-width:0}
+`;
+
+// Published 06 .tg.sm; the class selects the documented small rendition without changing semantics.
+export const inputsSmallSwitchCss = `
+.tcrn-switch--sm{grid-template-columns:28px minmax(0,1fr)}
+.tcrn-switch--sm .tcrn-switch__control{inline-size:28px;block-size:16px}
+.tcrn-switch--sm .tcrn-switch__control::after{inline-size:12px;block-size:12px}
+.tcrn-switch--sm .tcrn-switch__control:where(:checked)::after{transform:translateX(12px)}
+`;

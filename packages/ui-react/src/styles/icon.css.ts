@@ -8,7 +8,7 @@
 // segment says. A backtick ends a segment early, so the CSS comments in it never use one
 // (scripts/css-template-integrity-proof.mjs checks every segment).
 //
-// The stroke width is the icon contract's (docs/design/gplus-2026-10/contract/icons.json,
+// The stroke width is the icon contract's (docs/design/approved-site-v1/src/boards/03-icons,
 // through the generated path module), so the base class cannot drift from the roster.
 
 import { tcrnIconStrokeWidth } from "../components/Icon/icon-paths.generated.js";
@@ -46,8 +46,7 @@ export const iconCss01 = `
   block-size: var(--tcrn-icon-size-md);
 }
 /* loader-circle turns on the loading loop token, motion.loading.loop (900ms linear). A
-   loop needs visible status copy beside it, so reduced motion stops the turn: rotation
-   is transform travel, and the copy still says that work is under way. */
+   loop needs visible status copy beside it; published 03 C retains the 900ms linear loop under reduced motion. */
 .tcrn-icon[data-icon-name="loader-circle"] {
   transform-origin: 50% 50%;
   animation: tcrn-icon-spin var(--tcrn-motion-loading-loop) infinite;
@@ -55,11 +54,6 @@ export const iconCss01 = `
 @keyframes tcrn-icon-spin {
   to {
     transform: rotate(360deg);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-icon[data-icon-name="loader-circle"] {
-    animation: none;
   }
 }
 /* ClipboardCopyButton renders one icon for each settled state and shows the one its state

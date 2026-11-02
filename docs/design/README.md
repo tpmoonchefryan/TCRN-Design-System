@@ -1,19 +1,21 @@
-# Design System 设计参考入口
+# Current design input
 
-Owner 于 2026-10-29 指定：后续重做开发改用下列两个 Sites，不再以 Claude Artifacts 作为当前参考入口。两站沿用 TCRN-CROSS-MIN-308 D1 的分工，分别维护。
+The only current design source is the published [Sites standard](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site), version 1, source commit `a643d4cfcd239f6f81b1715ded6a63caead9d619`. `approved-site-v1/source-manifest.json` records the real Site project/version/deployment identities, eight sourceIds, original byte hashes and original provenance digest. The snapshot contains normative HTML/CSS, inert component declarations, the one deduplicated font-face stylesheet and its actual font files. Site React/DC runtime is excluded.
 
-| 参考 | 当前入口 | 使用范围 | 可维护源码（平台容器内） |
-| --- | --- | --- | --- |
-| DS 视觉方向方案 · 草稿 | https://tcrn-ds-visual-draft.honestfawn3.chatgpt.site | 13 块画板；探索、待确认内容及保留的旧稿。旧稿与取代标记继续有效，不将全部草稿视为实施标准 | `sites/tcrn-ds-draft/` |
-| TCRN 视觉设计标准 | https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site | 8 块已确认画板；实现时对照的设计标准。新增内容仅在 Owner 明确确认后进入标准 | `sites/tcrn-ds-standards/` |
+`package-bindings.json` describes engineering spellings for exact published properties and normative prose. `scripts/lib/approved-site-pins.mjs` independently pins the real source bytes and identities; neither a package registry nor a newly self-reported manifest grants source authority. `retired-content.json` is a removal/negative-regression inventory of 72 previous stories and 131 previous engineering API projections. It is never a render registry or a design input.
 
-截至 2026-10-29，Sites 读回两站均为第 1 版，部署成功，访问权限均只有 Owner，无群组或外部访客。可维护源码中的 `boards.json` 管理画板索引，`src/boards/` 管理各板结构、样式与交互，`provenance.json` 记录迁移来源。
+The old local boards, data modules, board builders, proof oracles and unpublished combination examples have left the current source tree. Git history and prior governance evidence retain their original facts. Current proof/generator outputs use `docs/verification/current-standard-only/`; previous verification evidence is not read as the new candidate's oracle.
 
-| 站点 | Sites project_id | 第 1 版源码提交 |
-| --- | --- | --- |
-| 草稿 | `appgprj_6ad4ec20b4708191ab99397e9fa310b9` | `0605dba982b0b6ca74c9aff6fde35a1e7ef7c3c7` |
-| 设计标准 | `appgprj_6ad4ec31ec7c8191aa3b577750b37a34` | `a643d4cfcd239f6f81b1715ded6a63caead9d619` |
+## Batch-end source generation
 
-本次只更新参考入口，不改变已批准的开发范围、执行方法、验收判据或发布授权。仓内 `gplus-2026-10/contract/`、生成器、测量脚本与 `visual-standard/boards/` 继续作为实现和门的数据输入；候选分支改过的画板仍须与 Sites 标准逐项核对，不能仅因仓内已有修改就视为标准已发布。
+The implementation package does not run these commands. The existing integration/verification responsibility executes them once after source integration, with an owned scratch `trash` directory supplied as `TCRN_BUILD_TRASH`:
 
-Claude Artifacts 的旧链接与版本号只在原有纪要和历史记录中保留出处。接续 INIT-016 时读实时工单及 `docs/dispatch/2026-10-13-tab-shell/runs/state.md` 的 R6 段；早期收口文件的待裁项按后续纪要处理。
+1. `node scripts/contract-generate.mjs` — seven source sets, strictly from the pinned published source.
+2. `node scripts/fonts-vendor.mjs` — original source font files, face/weight/Unicode mappings, CSS and the retained notices. No npm font bytes are substituted.
+3. Compile the current `@tcrn/ui-tokens` and `@tcrn/ui-copy-state` dependencies, then `@tcrn/ui-react` in the existing dependency order. Retire stale generated `dist` files and incremental metadata through `scripts/prepare-output.mjs` before a dependency compilation; the helper accepts only declared generated roots and moves files into the owned trash directory.
+4. `node scripts/tokens-sync.mjs` then `node scripts/demo-styles-sync.mjs` — `tokens.css` and `storybook.css`, using this batch's compiled modules.
+5. Generate current engineering manifests through `pnpm internal-alpha:contracts`, then use the unchanged configured commands for the same candidate. No old 37-image or 119-obligation admission is reused or automatically accepted.
+
+The static writer reconciles exact current output membership. Removed HTML/API pages, old bundles, fonts and copied assets are moved to the owned trash before fresh output is written. `pnpm clean` is now restricted to declared rebuildable output roots and never clears `docs/verification`.
+
+K1 is unresolved: the published suffix colors conflict with the text threshold 4.5. The source color is retained without a contrast exception; proposals are not product tokens. K5 is unresolved: prose says no color change, while the specimen and CSS use ink/600. K4 retains the formal pure-icon pin plus its item-specific accessible name under the Owner's decision; the formal prose has not been edited. The 20px toggle slot and 16px glyph are distinct; pin center coordinates are global Y26 and local Y20.

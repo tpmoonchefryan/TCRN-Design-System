@@ -35,7 +35,7 @@
 // element) and which draws nothing; without one the row's markup is unchanged.
 //
 // The Sheet (TCRN-DS-SUB-126; 07a board, section A, screens A7 and A8; 07b board, section D row
-// "窄于 1024"): on a viewport 760 wide or narrower the menu is not the panel but a Sheet that rises
+// "窄于 1024"): on a viewport 390 wide or narrower the menu is not the panel but a Sheet that rises
 // from the bottom edge and stays below the top band (at most 84% of the viewport high), over a
 // scrim of 20% ink. Top to bottom it holds a grab line (a picture), the search and one list: the
 // pinned entries first under "固定项 · n", then every group under "全部". Rows and the search are 44
@@ -476,8 +476,8 @@ export function useShellMenuCascade(rootRef: RefObject<HTMLElement | null>, firs
 /** How the full menu shows: the panel under the brand button or the Sheet from the bottom edge; "auto" follows the viewport. */
 export type ShellMenuPresentation = "auto" | "panel" | "sheet";
 
-/** Viewports that match this show the Sheet instead of the panel: 760 wide and narrower (C-7). */
-export const shellMenuSheetMediaQuery = "(max-width: 760px)";
+/** The published phone specimen is 390px. Hosts can explicitly choose Sheet; no unpublished 760px rule is inherited. */
+export const shellMenuSheetMediaQuery = "(max-width: 390px)";
 
 /**
  * The presentation of the full menus inside it that are given none; "auto" by default. A page
@@ -501,7 +501,7 @@ export function useShellMenuPresentation(presentation?: ShellMenuPresentation, o
     const owner = ownerRef?.current;
     const shell = owner?.closest<HTMLElement>(".tcrn-product-shell");
     const view = owner?.ownerDocument.defaultView ?? window;
-    const update = () => setNarrow((shell ? shell.getBoundingClientRect().width : view.innerWidth) <= 760);
+    const update = () => setNarrow((shell ? shell.getBoundingClientRect().width : view.innerWidth) <= 390);
     update();
     const observer = shell && view.ResizeObserver ? new view.ResizeObserver(update) : null;
     if (shell) observer?.observe(shell);

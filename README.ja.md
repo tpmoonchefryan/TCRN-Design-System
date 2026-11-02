@@ -1,50 +1,26 @@
-<p align="center">
-  <img src="apps/storybook/assets/tcrn-brand-mark.svg" alt="" width="88" />
-</p>
+# TCRN Design System
 
-<h1 align="center">TCRN デザインシステム</h1>
+現在の Storybook は公開済み Sites 視覚標準第1版の8枚のボードだけを採用します。草稿と退役済みの Storybook の例は実装の入力ではありません。
 
-<p align="center">TCRN 製品フロントエンド向けのパッケージ backed UI プリミティブ、セマンティックトークン、コピー状態語彙、Storybook 契約ドキュメント。</p>
+[Published visual standard](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site) · [Pinned source and mapping](docs/design/approved-site-v1/source-manifest.json) · [Source contract](docs/design/README.md)
 
-<p align="center">
-  <a href="README.md">English</a>
-  · <a href="README.zh-CN.md">简体中文</a>
-  · <a href="README.ja.md">日本語</a>
-  · <a href="README.ko.md">한국어</a>
-  · <a href="README.fr.md">Français</a>
-</p>
+Source commit: `a643d4cfcd239f6f81b1715ded6a63caead9d619`. The source Site is version 1; `@tcrn/ui-react` and `@tcrn/ui-tokens` are package candidates at 4.0.0. These are distinct version identities. K1 (suffix text contrast) and K5 (strong text wording) remain unresolved in the published source; machine results and Owner visual acceptance are recorded separately.
 
-## これは何か
+## Packages
 
-このリポジトリは TCRN Design System のソース管理入口です。製品フロントエンド実装者と AI agent は、Design System 準拠を主張する前に Storybook 契約と機械可読 AI 契約を読む必要があります。
+- `@tcrn/ui-react/approved`: the explicit current Storybook consumption boundary for the published families and top-band shell.
+- `@tcrn/ui-react`: engineering exports; the existence of an API does not publish a visual standard or an API reference in Storybook.
+- `@tcrn/ui-tokens`: source-mapped values, current CSS and the actual five-family font assets of the published source.
+- `@tcrn/ui-copy-state`: engineering localization and state helpers.
 
-- Storybook: [default](https://tcrn-design-system-storybook.vercel.app/)
-- 日本語 Storybook: [`?locale=ja`](https://tcrn-design-system-storybook.vercel.app/?locale=ja)
-- ダークシェル: [`?theme=dark`](https://tcrn-design-system-storybook.vercel.app/?theme=dark)
-- AI 契約: [`ai-consumption-contract.json`](https://tcrn-design-system-storybook.vercel.app/ai-consumption-contract.json)
-- AI first-read entry: [`llms.txt`](https://tcrn-design-system-storybook.vercel.app/llms.txt) と HTML head discovery。readback fields は contractVersion, contractPayloadDigest, artifact, route, readAt, coveredRules, coveredStorybookSections, requiredProof, noOverclaimBoundaries。
-- AI consumption must cover every Storybook section: Welcome, Style Guide, Foundations, Components, Patterns, Proof, and Change Log. Design System compliance means the same Storybook visual instance, not only the same package or a boundary marker; proof must cover package version, exported component, variant/props/slots, rendered metrics, motion/effects, reduced motion, theme/locale, mobile reflow, and information hierarchy.
+The product assets are TCRN TMS, Einzbern, Mana Orchestrate and TCRN Design System. A registered product key is required. There is no mother-mark default, free-text lockup suffix or implied AOS mark.
 
-## パッケージと境界
+## Development
 
-- `@tcrn/ui-tokens`: セマンティックトークンとライト/ダークテーマ上書き。
-- `@tcrn/ui-copy-state`: `zh-CN`、`en`、`ja`、`ko`、`fr` のロケールとコピー状態。
-- `@tcrn/ui-react`: パッケージ backed React UI プリミティブ。
-- `apps/storybook`: 静的契約ドキュメント、合成ストーリー、ローカル証明。
+Use the pinned `pnpm@10.12.1` toolchain. The configured commands remain `pnpm verify`, `pnpm storybook:build`, and `pnpm test:dom`, in their configured order. Source generation is a batch-end responsibility; follow [the source-generation order](docs/design/README.md) before compiling a changed source snapshot. No old screenshot baseline is automatically accepted.
 
-Storybook は契約マップであり、AOS/TMS の製品採用を自動的に証明しません。ブランド表示例はビジュアルレビュー用ガイダンスであり、公開済みブランドコンポーネント export や最終ブランド承認を主張しません。
+The static docs and manager consume the same eight-board registry. The docs produce five locales; API reference entries are the explicit published E-section obligations, rather than all engineering exports. Fonts are self-hosted and preserve their original bytes, face weights, Unicode ranges and OFL notices; see [font licensing](packages/ui-tokens/FONT-LICENSES.md).
 
-## 検証
+## Licensing
 
-```bash
-pnpm build
-pnpm test
-pnpm storybook:smoke
-node --test scripts/readme-public-contract.test.mjs
-pnpm storybook:visual-proof
-pnpm verify
-```
-
-契約ゲートの一覧、`pnpm verify` 内での順序、個別の実行方法は [docs/contract/README.md](docs/contract/README.md) を参照してください。
-
-この README は npm パッケージ公開、Storybook ドキュメント公開準備、hosted-doc readiness、製品採用、release readiness、製品受け入れ、最終 MVP 受け入れを主張しません。
+Repository code: Apache-2.0, see [LICENSE](LICENSE). Font software retains SIL OFL 1.1 and its copyright notices. Product marks are TCRN assets; source lineage is recorded independently from code licensing.

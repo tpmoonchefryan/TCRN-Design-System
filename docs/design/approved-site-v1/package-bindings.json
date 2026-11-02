@@ -1,0 +1,350 @@
+[
+  {
+    "cssVar": "--tcrn-type-size-page",
+    "board": "02-typography",
+    "selector": ".h1",
+    "property": "font-size"
+  },
+  {
+    "cssVar": "--tcrn-type-size-heading-2",
+    "board": "02-typography",
+    "selector": ".h2",
+    "property": "font-size"
+  },
+  {
+    "cssVar": "--tcrn-type-size-heading-3",
+    "board": "02-typography",
+    "selector": ".h3",
+    "property": "font-size"
+  },
+  {
+    "cssVar": "--tcrn-type-size-ui",
+    "board": "02-typography",
+    "selector": ".tx",
+    "property": "font-size"
+  },
+  {
+    "cssVar": "--tcrn-type-size-reading",
+    "board": "02-typography",
+    "selector": ".tx.read",
+    "property": "font-size"
+  },
+  {
+    "cssVar": "--tcrn-type-size-meta",
+    "board": "02-typography",
+    "selector": ".tx.meta",
+    "property": "font-size"
+  },
+  {
+    "cssVar": "--tcrn-type-size-caption",
+    "board": "02-typography",
+    "selector": ".tx.cap",
+    "property": "font-size"
+  },
+  {
+    "cssVar": "--tcrn-type-line-ui",
+    "board": "02-typography",
+    "selector": ".tx",
+    "property": "line-height"
+  },
+  {
+    "cssVar": "--tcrn-type-line-control",
+    "board": "02-typography",
+    "selector": ".tx",
+    "property": "line-height"
+  },
+  {
+    "cssVar": "--tcrn-type-line-reading",
+    "board": "02-typography",
+    "selector": ".tx.read",
+    "property": "line-height"
+  },
+  {
+    "cssVar": "--tcrn-type-line-caption",
+    "board": "02-typography",
+    "selector": ".tx.cap",
+    "property": "line-height"
+  },
+  {
+    "cssVar": "--tcrn-type-line-heading-1",
+    "board": "02-typography",
+    "selector": ".h1",
+    "property": "line-height"
+  },
+  {
+    "cssVar": "--tcrn-type-line-heading-2",
+    "board": "02-typography",
+    "selector": ".h2",
+    "property": "line-height"
+  },
+  {
+    "cssVar": "--tcrn-type-line-heading-3",
+    "board": "02-typography",
+    "selector": ".h3",
+    "property": "line-height"
+  },
+  {
+    "cssVar": "--tcrn-type-weight-regular",
+    "board": "02-typography",
+    "selector": ".h1,.h2,.h3",
+    "property": "font-weight"
+  },
+  {
+    "cssVar": "--tcrn-type-weight-medium",
+    "board": "02-typography",
+    "selector": ".caps",
+    "property": "font-weight"
+  },
+  {
+    "cssVar": "--tcrn-type-weight-strong",
+    "board": "02-typography",
+    "selector": ".tx.strong",
+    "property": "font-weight"
+  },
+  {
+    "cssVar": "--tcrn-type-tracking-caps",
+    "board": "02-typography",
+    "selector": ".caps",
+    "property": "letter-spacing"
+  },
+  {
+    "cssVar": "--tcrn-space-0h",
+    "board": "07b-shell-lower",
+    "selector": ".lk .w",
+    "property": "gap"
+  },
+  {
+    "cssVar": "--tcrn-space-1",
+    "board": "07b-shell-lower",
+    "selector": ".ts-drop2",
+    "property": "left",
+    "transform": "cascadeGap"
+  },
+  {
+    "cssVar": "--tcrn-space-1h",
+    "board": "07b-shell-lower",
+    "selector": ".ts-pin-it",
+    "property": "gap"
+  },
+  {
+    "cssVar": "--tcrn-space-2",
+    "board": "07b-shell-lower",
+    "selector": ".ts-pins",
+    "property": "gap",
+    "transform": "pinGap"
+  },
+  {
+    "cssVar": "--tcrn-space-2h",
+    "board": "07b-shell-lower",
+    "selector": ".ts-brand",
+    "property": "column-gap"
+  },
+  {
+    "cssVar": "--tcrn-space-3",
+    "board": "07b-shell-lower",
+    "selector": ".ts-strip",
+    "property": "padding",
+    "transform": "stripInset"
+  },
+  {
+    "cssVar": "--tcrn-space-3h",
+    "board": "07b-shell-lower",
+    "selector": ".lk",
+    "property": "column-gap"
+  },
+  {
+    "cssVar": "--tcrn-space-4",
+    "board": "07b-shell-lower",
+    "selector": ".ts-cols",
+    "property": "column-gap"
+  },
+  {
+    "cssVar": "--tcrn-shell-strip-h",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--strip-h"
+  },
+  {
+    "cssVar": "--tcrn-shell-brand-h",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--tab"
+  },
+  {
+    "cssVar": "--tcrn-shell-brand-w",
+    "board": "07b-shell-lower",
+    "selector": ".ts-brand",
+    "property": "width"
+  },
+  {
+    "cssVar": "--tcrn-shell-toggle",
+    "board": "07b-shell-lower",
+    "selector": ".ts-tgl",
+    "property": "width"
+  },
+  {
+    "cssVar": "--tcrn-shell-pin-h",
+    "board": "07b-shell-lower",
+    "selector": ".gp",
+    "property": "--h-md"
+  },
+  {
+    "cssVar": "--tcrn-shell-pin-gap",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--pin-gap"
+  },
+  {
+    "cssVar": "--tcrn-shell-menu-gap",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--menu-gap"
+  },
+  {
+    "cssVar": "--tcrn-shell-panel-w-expanded",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--panel-wx"
+  },
+  {
+    "cssVar": "--tcrn-shell-drop-w",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--drop-w"
+  },
+  {
+    "cssVar": "--tcrn-shell-cascade-gap",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--cascade-gap"
+  },
+  {
+    "cssVar": "--tcrn-shell-row-h",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--row-h"
+  },
+  {
+    "cssVar": "--tcrn-shell-srch-h",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--srch-h"
+  },
+  {
+    "cssVar": "--tcrn-shell-pinb",
+    "board": "07b-shell-lower",
+    "selector": ".scr.ts",
+    "property": "--pinb"
+  },
+  {
+    "cssVar": "--tcrn-shell-drop-srch-h",
+    "board": "07b-shell-lower",
+    "selector": ".ts-drop .ts-srch",
+    "property": "height"
+  },
+  {
+    "cssVar": "--tcrn-shell-touch",
+    "board": "07b-shell-lower",
+    "selector": ".ts-li",
+    "property": "height"
+  },
+  {
+    "cssVar": "--tcrn-shell-mark",
+    "board": "07b-shell-lower",
+    "selector": ".lkr",
+    "property": "grid-template-columns",
+    "transform": "firstLength"
+  },
+  {
+    "cssVar": "--tcrn-shell-mark-lg",
+    "board": "07b-shell-lower",
+    "text": "标128→22",
+    "unit": "px"
+  },
+  {
+    "cssVar": "--tcrn-shell-crumb-icon",
+    "board": "07b-shell-lower",
+    "selector": ".ts-crumbs .ic",
+    "property": "width"
+  },
+  {
+    "cssVar": "--tcrn-shell-chevron",
+    "board": "07b-shell-lower",
+    "selector": ".ts-pin-it .ic",
+    "property": "width"
+  },
+  {
+    "cssVar": "--tcrn-shell-pbar-h",
+    "board": "07b-shell-lower",
+    "selector": ".ts-pbar",
+    "property": "height",
+    "transform": "footerInner"
+  },
+  {
+    "cssVar": "--tcrn-shell-pins-max",
+    "board": "07b-shell-lower",
+    "text": "上限6",
+    "unit": ""
+  },
+  {
+    "cssVar": "--tcrn-motion-intro-duration",
+    "board": "07a-shell-upper",
+    "text": "总时长460ms",
+    "unit": "ms"
+  },
+  {
+    "cssVar": "--tcrn-radius-paper",
+    "board": "07b-shell-lower",
+    "selector": ".ts-paper",
+    "property": "border-radius"
+  },
+  {
+    "cssVar": "--tcrn-z-overlay",
+    "board": "07b-shell-lower",
+    "selector": ".ts-panel",
+    "property": "z-index"
+  },
+  {
+    "cssVar": "--tcrn-z-popover",
+    "board": "07b-shell-lower",
+    "selector": ".ts-drop",
+    "property": "z-index"
+  },
+  {
+    "cssVar": "--tcrn-radius-pill",
+    "board": "06-inputs",
+    "selector": ".tg>input",
+    "property": "border-radius"
+  },
+  {
+    "cssVar": "--tcrn-motion-loading-loop",
+    "board": "01-tokens",
+    "selector": ".spin",
+    "property": "animation",
+    "transform": "loadingLoop"
+  },
+  {
+    "cssVar": "--tcrn-motion-intro-fade",
+    "board": "01-tokens",
+    "selector": ".gp",
+    "property": "--t-fill"
+  },
+  {
+    "cssVar": "--tcrn-motion-intro-move",
+    "board": "01-tokens",
+    "selector": ".gp",
+    "property": "--t-move"
+  },
+  {
+    "cssVar": "--tcrn-motion-intro-rise",
+    "board": "07a-shell-upper",
+    "text": "100纸升起与字标淡入",
+    "unit": "ms"
+  },
+  {
+    "cssVar": "--tcrn-motion-intro-max",
+    "board": "07a-shell-upper",
+    "text": "上限700",
+    "unit": "ms"
+  }
+]

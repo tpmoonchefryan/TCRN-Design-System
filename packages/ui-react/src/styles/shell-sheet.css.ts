@@ -1,5 +1,5 @@
 // Sheet segment of tcrnComponentCss (TCRN-DS-SUB-126; TCRN-DS-INIT-016, C-7, C-8): the full menu
-// as ShellMenu shows it on a viewport 760 wide or narrower (07a board, screens A7 and A8; 07b board,
+// as ShellMenu shows it on a viewport 390 wide or narrower (07a board, screens A7 and A8; 07b board,
 // section D row "窄于 1024"). styles/index.ts joins it after the shell and the sign-in intro segments.
 //
 // The Sheet's root keeps tcrn-shell-menu, so its rows, group titles, pins, search and results are
@@ -51,7 +51,7 @@ export const shellSheetCss01 = `
   overflow: hidden;
   border-radius: var(--tcrn-radius-paper) var(--tcrn-radius-paper) 0 0;
   background: var(--tcrn-color-panel);
-  box-shadow: var(--tcrn-shadow-s3);
+  box-shadow: var(--tcrn-elevation-s3);
   color: var(--tcrn-color-ink);
   animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
 }

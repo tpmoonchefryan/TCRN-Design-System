@@ -3,8 +3,8 @@
 
 import { readFileSync } from "node:fs";
 
-const GOVERNANCE_SOURCE = "apps/storybook/src/contract-stories/governance.ts";
-const LOCALE_SOURCE = "apps/storybook/src/build/locales/storybook-locale-text.ts";
+const GOVERNANCE_SOURCE = "apps/storybook/src/approved-source.ts";
+const LOCALE_SOURCE = "apps/storybook/src/locales.ts";
 
 /** Product names and product-domain compounds are a maintained vocabulary. */
 export const PUBLIC_NAME_TERMS = Object.freeze([
@@ -63,10 +63,14 @@ function quotedValue(source, start, key) {
 }
 
 export function readPublicNamingInputs({ governanceSource = readFileSync(GOVERNANCE_SOURCE, "utf8"), localeSource = readFileSync(LOCALE_SOURCE, "utf8") } = {}) {
-  const categories = [...governanceSource.matchAll(/\{\s*id:\s*"([^"]+)",\s*label:\s*"([^"]+)"/gu)]
-    .map((match) => ({ id: match[1], label: match[2] }));
-  const stories = [...governanceSource.matchAll(/\{\s*id:\s*"([^"]+)",\s*group:\s*"(?:Welcome|Style Guide|Foundations|Components|Patterns|Proof|Change Log)"/gu)]
-    .map((match) => ({ id: match[1] }));
+  if(governanceSource.includes("export const approvedSource")){
+    const json=governanceSource.slice(governanceSource.indexOf("= ")+2,governanceSource.indexOf(" as const;"));
+    const source=JSON.parse(json),stories=source.boards.map(b=>({id:b.slug})),categories=source.boards.map(b=>({id:b.slug,label:b.title}));
+    const titles=[...localeSource.matchAll(/boardTitles:\s*(\[[^\]]+\])/g)].map(m=>JSON.parse(m[1]));
+    return {categories,stories,localeLabels:titles.flatMap((list,i)=>list.map((value,n)=>({id:source.boards[n].slug,locale:String(i),value})))};
+  }
+  const categories=[...governanceSource.matchAll(/\{\s*id:\s*"([^"]+)",\s*label:\s*"([^"]+)"/gu)].map(match=>({id:match[1],label:match[2]}));
+  const stories=[...governanceSource.matchAll(/\{\s*id:\s*"([^"]+)",\s*group:\s*"[^"]+"/gu)].map(match=>({id:match[1]}));
   const knownStoryIds = new Set(stories.map((story) => story.id));
   const localeLabels = [...localeSource.matchAll(/"story\.([^".]+)\.title":\s*"([^"]*)"/gu)]
     .filter((match) => knownStoryIds.has(match[1]))

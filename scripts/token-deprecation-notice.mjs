@@ -1,30 +1,7 @@
-// Deprecated token notice — TCRN-DS-STORY-120 GWT4.
-//
-// G+ renamed the colour, elevation, selection, motion and type-family tokens. The old names stay
-// in @tcrn/ui-tokens/tokens.css as aliases (`--old: var(--new)`), so a consumer stylesheet that
-// still says an old name keeps resolving to the G+ value. This notice lists the old names a
-// consumer's source still uses, one line per name, with the name to write instead. The table
-// comes from the @tcrn/ui-tokens build: tcrnDeprecatedTokenAliases (old name to new name) and
-// tcrnDeprecatedTokens (which also lists the names without a successor); the wording of each line
-// is formatDeprecatedTokenNotices from the same package.
-//
-//   node scripts/token-deprecation-notice.mjs [--label <name>] <file-or-directory>...
-//
-// It never fails a build: exit 0 whatever it finds. Exit 2 is kept for a usage error (no path
-// given, or a path that does not exist). The Storybook build calls it once over its own sources;
-// a consumer can call it over theirs.
-//
-// Token definitions are not uses: a token block carrying a `tcrn-token-block` marker (a vendored
-// tokens.css, a generated token block) is skipped, and so is a single copied alias declaration
-// (`--old: var(--new)`). Setting an old name to anything else counts as a use and gets a note,
-// because the G+ names are the ones to set.
-//
-// Only build output is left out of the walk (TCRN-DS-SUB-222). node_modules, .git, dist, coverage,
-// storybook-static, storybook-preview-static, .next and .turbo are skipped wherever they appear. A
-// `build` directory is judged by its relative path, the one the notice prints (from the parent of
-// the path given): with no `src` segment above it, it is a project's or package's build output and
-// is skipped; under a `src` segment it is source and is scanned (the Storybook's own build code
-// lives in apps/storybook/src/build).
+// Optional engineering scanner; the current published-source token registry has no legacy aliases.
+// Injecting a table lets an external migration tool inspect its own vocabulary. That does not add
+// old names to the token sheet or Storybook. This command is informational and never publishes CSS.
+// Usage: node scripts/token-deprecation-notice.mjs [--label <name>] <file-or-directory>...
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

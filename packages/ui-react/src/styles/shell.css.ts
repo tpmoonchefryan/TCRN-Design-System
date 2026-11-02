@@ -51,10 +51,6 @@ export const shellCss01 = `
   --tcrn-pair-ink-o: var(--tcrn-color-ink);
   --tcrn-pair-edge-o: 0 0 #0000;
   --tcrn-pair-edge-f: var(--tcrn-focus-ring);
-  --tcrn-pair-ds-suffix-d: var(--tcrn-brand-suffix-design-system);
-  --tcrn-pair-ds-suffix-h: var(--tcrn-color-shell-brand-suffix-design-system-interactive);
-  --tcrn-pair-ds-suffix-o: var(--tcrn-color-shell-brand-suffix-design-system-interactive);
-  --tcrn-pair-ds-suffix: var(--tcrn-pair-ds-suffix-d);
   display: inline-grid;
   flex: 0 0 auto;
   grid-template-columns: minmax(0, 1fr) var(--tcrn-shell-toggle);
@@ -94,7 +90,6 @@ export const shellCss01 = `
   display: block;
   flex: none;
   min-inline-size: 0;
-  padding-block: var(--tcrn-space-0h);
   overflow: hidden;
   font-size: 12.5px;
   font-weight: var(--tcrn-type-weight-strong);
@@ -102,7 +97,7 @@ export const shellCss01 = `
   white-space: nowrap;
 }
 .tcrn-shell-brand.tcrn-shell-brand--serif .tcrn-shell-brand__word {
-  font-family: var(--tcrn-type-family-serif);
+  font-family: var(--tcrn-type-family-heading);
   font-weight: var(--tcrn-type-weight-regular);
 }
 .tcrn-shell-brand__suffix {
@@ -112,7 +107,7 @@ export const shellCss01 = `
   color: var(--tcrn-brand-suffix-tms);
 }
 .tcrn-shell-brand__suffix--design-system {
-  color: var(--tcrn-pair-ds-suffix);
+  color: var(--tcrn-brand-suffix-design-system);
 }
 .tcrn-shell-brand__toggle {
   display: inline-flex;
@@ -123,13 +118,11 @@ export const shellCss01 = `
   color: var(--tcrn-color-ink-2);
 }
 .tcrn-shell-brand:where(:hover, [data-tcrn-preview-state="hover"]) {
-  --tcrn-pair-ds-suffix: var(--tcrn-pair-ds-suffix-h);
   --tcrn-pair-fill: var(--tcrn-pair-fill-h);
   --tcrn-pair-ink: var(--tcrn-pair-ink-h);
   --tcrn-pair-edge: var(--tcrn-pair-edge-h);
 }
 .tcrn-shell-brand:where([aria-expanded="true"]) {
-  --tcrn-pair-ds-suffix: var(--tcrn-pair-ds-suffix-o);
   --tcrn-pair-fill: var(--tcrn-pair-fill-o);
   --tcrn-pair-ink: var(--tcrn-pair-ink-o);
   --tcrn-pair-edge: var(--tcrn-pair-edge-o);
@@ -154,7 +147,7 @@ export const shellCss01 = `
 }
 @media (prefers-reduced-motion: reduce) {
   .tcrn-shell-brand {
-    transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
+    transition: none;
   }
 }`;
 
@@ -273,7 +266,7 @@ export const shellCss02 = `
 }
 @media (prefers-reduced-motion: reduce) {
   .tcrn-shell-pins__item {
-    transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
+    transition: none;
   }
 }`;
 
@@ -330,7 +323,7 @@ export const shellCss03 = `
   overflow: hidden;
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-panel);
-  box-shadow: var(--tcrn-shadow-s3);
+  box-shadow: var(--tcrn-elevation-s3);
   animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
 }
 .tcrn-shell-menu .tcrn-shell-menu__cascade {
@@ -346,7 +339,7 @@ export const shellCss03 = `
   overflow-y: auto;
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-panel);
-  box-shadow: var(--tcrn-shadow-s3);
+  box-shadow: var(--tcrn-elevation-s3);
   animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
 }
 @keyframes tcrn-shell-menu-enter {
@@ -712,7 +705,7 @@ export const shellCss04 = `
   overflow: hidden;
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-panel);
-  box-shadow: var(--tcrn-shadow-s3);
+  box-shadow: var(--tcrn-elevation-s3);
   color: var(--tcrn-color-ink-2);
   animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
 }
@@ -902,7 +895,7 @@ export const shellCss05 = `
   overflow-y: auto;
   border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-panel);
-  box-shadow: var(--tcrn-shadow-s3);
+  box-shadow: var(--tcrn-elevation-s3);
   color: var(--tcrn-color-ink-2);
 }
 .tcrn-shell-account__who {
@@ -961,7 +954,7 @@ export const shellCss05 = `
   overflow: hidden;
   border-radius: var(--tcrn-radius-paper);
   background: var(--tcrn-color-panel);
-  box-shadow: var(--tcrn-shadow-s1);
+  box-shadow: var(--tcrn-elevation-s1);
 }
 /* The paper's scrolling region takes keyboard focus to be scrolled (TCRN-DS-SUB-146), and the paper
    clips its overflow, so an outward ring there is cut whole (TCRN-DS-SUB-182, WCAG 2.4.7). Its focus
@@ -1019,6 +1012,10 @@ export const shellCss05 = `
 }
 @media (prefers-reduced-motion: reduce) {
   .tcrn-shell-bell {
-    transition: background-color var(--tcrn-motion-comprehension), color var(--tcrn-motion-comprehension), box-shadow var(--tcrn-motion-comprehension);
+    transition: none;
   }
 }`;
+
+export const shellReducedMotionCss = `
+@media (prefers-reduced-motion:reduce){.tcrn-shell-brand,.tcrn-shell-pins__item,.tcrn-shell-menu,.tcrn-shell-menu *,.tcrn-shell-dropdown,.tcrn-shell-dropdown *,.tcrn-shell-bell,.tcrn-shell-avatar{transition-duration:0s;animation-duration:0s;animation-iteration-count:0}}
+`;

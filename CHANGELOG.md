@@ -1,3 +1,9 @@
+# Unreleased candidate: published Sites standard only
+
+Storybook source, assets, routes, API projections and current proof inputs now derive only from the eight published Sites v1 boards (`a643d4cfcd239f6f81b1715ded6a63caead9d619`). The default mother mark, AOS brand registration and free-suffix brand fallback are removed. The explicit `@tcrn/ui-react/approved` boundary separates current documentation from independent engineering exports. Source fonts and the DS deep-tile favicon replace unmapped assets; exact output reconciliation prevents stale HTML/JS/font/API files from surviving incremental builds.
+
+K1/K5 remain unresolved source conflicts; this entry does not record a successful build, publication or Owner visual acceptance. The historical entries below retain their original facts.
+
 # Changelog
 
 ## 4.0.0

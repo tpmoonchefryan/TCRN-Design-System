@@ -240,7 +240,7 @@ export interface PageHeaderProps {
    */
   breadcrumbs?: readonly PageHeaderBreadcrumb[];
   meta?: ReactNode;
-  actions?: ActionDescriptor[];
+  actions?: ActionDescriptor[] | ReactNode;
   density?: Density;
   /** Which language the trail's built-in name is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
@@ -267,7 +267,7 @@ export function PageHeader({ title, description, breadcrumbs = [], meta, actions
   const trailName = patternLabels(locale).breadcrumbs;
   const prefix = landmarkLabel?.trim();
   return (
-    <header className={cx("tcrn-page-header", `tcrn-page-header--${density}`)} data-pattern="page-header" data-density={density}>
+    <header className="tcrn-page-header" data-pattern="page-header" data-density={density}>
       {breadcrumbs.length ? (
         // The trail is the Breadcrumb component (TCRN-DS-SUB-124): one line, truncating crumbs with
         // titles, the board's chevron between them. The last crumb without an href is the page itself.
@@ -292,13 +292,13 @@ export function PageHeader({ title, description, breadcrumbs = [], meta, actions
           {description ? <Text className="tcrn-page-header__description">{description}</Text> : null}
         </div>
         {meta ? <div className="tcrn-page-header__meta">{meta}</div> : null}
-        {actions.length ? (
+        {actions ? (
           <div className="tcrn-page-header__actions">
-            {actions.map((action) => (
+            {Array.isArray(actions) ? actions.map((action: ActionDescriptor) => (
               <Button key={action.id} type="button" size="sm" disabled disabledReason={action.disabledReason}>
                 {action.label}
               </Button>
-            ))}
+            )) : actions}
           </div>
         ) : null}
       </div>

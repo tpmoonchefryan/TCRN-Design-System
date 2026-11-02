@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<title>字体 Typography</title>
+<script>window.__resources={"https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js":"/vendor/react.js","https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js":"/vendor/react-dom.js"};</script>
+<script src="/vendor/react.js"></script>
+<script src="/vendor/react-dom.js"></script>
+<script src="/vendor/dc-runtime.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>/*__FONTS_CSS__*/</style>
+<style>/*__BOARD_CSS__*/</style>
+</helmet>
+<div class="board" style="width: 2640px; height: 5111px">
+
+<header class="bh">
+<div>
+<p class="k">Visual standard · Typography · 2026-10-13</p>
+<h1>字体：衬线标题与数字，怪诞体正文，等宽编号<em>，两种新样式</em></h1>
+<p>Heading、Text、Highlight 三件现有组件换到 G+ 字体底盘，并加入「衬线数字」与「小型大写标签」两种样式。上半部分是浅色与夜间两套同一规则的静态样张，中间是逐格算出的对比度矩阵与动效规范，最后是消费方契约与 token 差异；组合样板随顶带壳重渲染后补入（第二批）。</p>
+</div>
+<div class="meta"><b>Hanken Grotesk 13/20 · Source Serif 4 300/400 · IBM Plex Mono 11.5</b>中文 Noto Sans SC / Noto Serif SC；五款全部 SIL OFL 1.1，可商用、可打包，产品须自托管<b>文字对比 ≥ 4.5 · 边线与点 ≥ 3</b>矩阵里每格由脚本算出，夜间同一属性集只换值<b>单行元素一律截断加 title</b>标题、标签、表头、编号不折行</div>
+</header>
+
+<div class="sec"><h3><b>A</b>组件与样式 <span>左浅色、右夜间；每块纸是一张 panel，纸外是画布</span></h3>
+<div class="two"><section class="pane gp" aria-label="浅色">
+<svg class="grain" aria-hidden="true"><filter id="ty-l"><feTurbulence type="fractalNoise" sc-camel-base-frequency="0.9" sc-camel-num-octaves="2" sc-camel-stitch-tiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#ty-l)"></rect></svg>
+<span class="ptag">light · 画布 #efeeea · 纸 #ffffff</span>
+<div class="blk"><h6>Heading · 四级 <span>level 决定标签，visualLevel 决定外观；1 至 3 级衬线 400，4 级怪诞体 600</span></h6>
+<div class="paper"><div class="spec">
+<small>h1 · serif 36/40 · -.01em</small><h1 class="h1" data-cell="h1-l" data-kind="text" data-expect="18.29">季度复盘与产品发布 Q3 Review</h1>
+<small>h2 · serif 26/30</small><h2 class="h2" data-cell="h2-l" data-kind="text" data-expect="18.29">成员与权限 Members</h2>
+<small>h3 · serif 20/26</small><h3 class="h3" data-cell="h3-l" data-kind="text" data-expect="18.29">本月账单 October invoice</h3>
+<small>h4 · sans 13/20 · 600</small><h4 class="h4" data-cell="h4-l" data-kind="text" data-expect="18.29">通知偏好 Notification preferences</h4>
+</div></div></div>
+
+<div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调加字重不换色；元数据与说明用三级墨；阅读体 14/22</span></h6>
+<div class="paper"><div class="spec">
+<small>body · 13/20 · ink-2</small><p class="tx" data-cell="body-l" data-kind="text" data-expect="8.58">项目「季度复盘」已有 12 位成员，3 人待邀请。邀请邮件会在 7 天内送达，之后链接失效。</p>
+<small>strong · 13/20 · 600 ink</small><p class="tx strong" data-cell="strong-l" data-kind="text" data-expect="18.29">删除后 30 天内可从回收站恢复，之后永久删除。</p>
+<small>reading · 14/22 · ink-2</small><p class="tx read" data-cell="read-l" data-kind="text" data-expect="8.58">账单按席位计费，每月 1 日生成；年付在当期账单中一次扣除，并在下一期显示抵扣。</p>
+<small>meta · 12/16 · ink-3</small><p class="tx meta" data-cell="meta-l" data-kind="text" data-expect="5.64">最近活跃 2 分钟前 · 由 林晓 创建于 2026-09-14</p>
+<small>caption · 11/16 · ink-3</small><p class="tx cap" data-cell="cap-l" data-kind="text" data-expect="5.64">对团队成员可见；更改后立即生效</p>
+<small>link · acc · 下划线 70%</small><p class="tx">查看 <a class="lnk" href="#a" data-cell="link-l" data-kind="text" data-expect="6.35">全部账单</a> 或 <a class="lnk is-hover" href="#b" data-cell="link-hover-l" data-kind="text" data-expect="7.51">悬停态</a> 与 <a class="lnk is-focus" href="#c">焦点态</a></p>
+</div></div>
+<div class="on-canvas"><div class="spec">
+<small>同四种 · 落在画布上</small><p class="tx" data-cell="body-canvas-l" data-kind="text" data-expect="7.39">正文落在画布色上：顶带固定项、页脚与空状态说明会用到。</p>
+<small></small><p class="tx strong" data-cell="strong-canvas-l" data-kind="text" data-expect="15.75">强调仍是同一墨色。</p>
+<small></small><p class="tx meta" data-cell="meta-canvas-l" data-kind="text" data-expect="4.86">元数据 · 2 分钟前</p>
+<small></small><p class="tx">链接 <a class="lnk" href="#d" data-cell="link-canvas-l" data-kind="text" data-expect="5.47">查看项目</a></p>
+</div></div></div>
+
+<div class="blk"><h6>Highlight · 搜索命中 <span>mark 只加 8% 青洗底：不改字重、字距、字号，不加内距；2px 晕用 box-shadow 画在行内盒之外，排版零变化；在正文、列表与选中行里同一规则</span></h6>
+<div class="paper">
+<p class="tx">在「<mark class="hl" data-cell="mark-l" data-kind="text" data-expect="7.63">设计</mark>组」里搜索「设计」：命中两处，其余文字不变。</p>
+<div class="list" data-rows="">
+<div class="li"><b>TCRN <mark class="hl">设计</mark>系统 · 组件库</b><span class="id">PRJ-2026-0412</span><span><mark class="hl">设计</mark>组</span></div>
+<div class="li b2"><b>季度复盘 · <mark class="hl">设计</mark>评审</b><span class="id">PRJ-2026-0391</span><span>产品组</span></div>
+<div class="sel-row" data-cell="sel-l" data-kind="text" data-expect="16.18">选中行里的命中：<mark class="hl">设计</mark>评审<span style="margin-left:auto" class="id">PRJ-2026-0391</span></div>
+</div>
+<p class="tx meta">选中行的墨洗向左右各出血 10px（margin 0 -10px），文字起点与同容器各行相同；所有列表与表格的选中态都按这条规则。</p>
+<span class="sr"><mark class="hl">设计</mark></span>
+</div></div>
+
+<div class="blk"><h6>衬线数字 numeral · 新样式 <span>Source Serif 4 300，等宽数字；单位缩小、拉开字距、三级墨；行内 16/20 用 400</span></h6>
+<div class="paper">
+<div class="stats">
+<div class="stat"><span class="caps">活跃成员</span><span class="num" data-cell="num-l" data-kind="text" data-expect="18.29">128<small data-cell="unit-l" data-kind="text" data-expect="5.64">人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+<div class="stat"><span class="caps">本月账单</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
+<div class="stat"><span class="caps">待处理</span><span class="num">7</span><span class="d warn"><i></i>3 项逾期</span></div>
+<div class="stat"><span class="caps">席位用量</span><span class="num">86<small>/ 120</small></span><span class="d"><i></i>剩余 34 席</span></div>
+</div>
+<div class="spec" style="margin-top:4px">
+<small>inline · 16/20 · 400</small><p class="tx">本期应付 <span class="num inl" data-cell="num-inl-l" data-kind="text" data-expect="18.29">4,280.00<small>元</small></span>，含税 <span class="num inl">232.45<small>元</small></span>；到期日 <span class="id">2026-10-31</span>。</p>
+<small>big · 44/48 · 300</small><span class="num big">12,480<small>.00 元</small></span>
+</div>
+</div></div>
+
+<div class="blk"><h6>小型大写标签 caps · 新样式 <span>11/16 · 500 · 字距 .14em · 三级墨；用于区段编号、表头、指标标签；中文不转大写但同字距</span></h6>
+<div class="paper">
+<div class="secrule"><span class="caps" data-cell="caps-l" data-kind="text" data-expect="5.64"><b>01</b>基本信息 Basic info</span><i></i></div>
+<div class="secrule"><span class="caps"><b>02</b>成员与权限 Members</span><i></i></div>
+<div class="spec">
+<small>table header</small><div class="list"><div class="li" style="height:30px;color:var(--ink-3);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500"><span>项目 Project</span><span>编号 ID</span><span>团队 Team</span></div></div>
+<small>stat label</small><span class="caps">本月账单 Invoice</span>
+</div>
+</div></div>
+
+<div class="blk"><h6>等宽编号 mono <span>IBM Plex Mono 11.5/16 · 次墨；编号、邮箱、时间戳、快捷键；永不用于正文</span></h6>
+<div class="paper"><div class="spec">
+<small>id · 11.5/16</small><span class="id" data-cell="id-l" data-kind="text" data-expect="8.58">PRJ-2026-0412 · INV-2026-10-0031</span>
+<small>email · time</small><span class="id">lin.xiao@tcrn.app · 2026-10-11 09:41:07 +08:00</span>
+<small>kbd</small><span class="id">⌘K · ⇧⌘P · Esc</span>
+</div></div></div>
+
+<div class="blk"><h6>中英混排 <span>衬线标题回退 Noto Serif SC 400，正文回退 Noto Sans SC；数字与拉丁永远用主字体</span></h6>
+<div class="paper"><div class="mixed">
+<h2 class="h2">2026 年第三季度 · Q3 复盘 Review</h2>
+<p class="tx read">本季度新增 <span class="num inl">24</span> 位成员，<span class="num inl">3</span> 个项目归档；「账单」页改为按席位计费（per-seat billing）。</p>
+<p class="tx meta">更新于 2026-10-09 · Updated Oct 9, 2026</p>
+</div></div></div>
+</section><section class="pane gp night" aria-label="夜间">
+<svg class="grain" aria-hidden="true"><filter id="ty-n"><feTurbulence type="fractalNoise" sc-camel-base-frequency="0.9" sc-camel-num-octaves="2" sc-camel-stitch-tiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#ty-n)"></rect></svg>
+<span class="ptag">night · 画布 #121210 · 纸 #191916</span>
+<div class="blk"><h6>Heading · 四级 <span>level 决定标签，visualLevel 决定外观；1 至 3 级衬线 400，4 级怪诞体 600</span></h6>
+<div class="paper"><div class="spec">
+<small>h1 · serif 36/40 · -.01em</small><h1 class="h1" data-cell="h1-n" data-kind="text" data-expect="14.38">季度复盘与产品发布 Q3 Review</h1>
+<small>h2 · serif 26/30</small><h2 class="h2" data-cell="h2-n" data-kind="text" data-expect="14.38">成员与权限 Members</h2>
+<small>h3 · serif 20/26</small><h3 class="h3" data-cell="h3-n" data-kind="text" data-expect="14.38">本月账单 October invoice</h3>
+<small>h4 · sans 13/20 · 600</small><h4 class="h4" data-cell="h4-n" data-kind="text" data-expect="14.38">通知偏好 Notification preferences</h4>
+</div></div></div>
+
+<div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调加字重不换色；元数据与说明用三级墨；阅读体 14/22</span></h6>
+<div class="paper"><div class="spec">
+<small>body · 13/20 · ink-2</small><p class="tx" data-cell="body-n" data-kind="text" data-expect="7.23">项目「季度复盘」已有 12 位成员，3 人待邀请。邀请邮件会在 7 天内送达，之后链接失效。</p>
+<small>strong · 13/20 · 600 ink</small><p class="tx strong" data-cell="strong-n" data-kind="text" data-expect="14.38">删除后 30 天内可从回收站恢复，之后永久删除。</p>
+<small>reading · 14/22 · ink-2</small><p class="tx read" data-cell="read-n" data-kind="text" data-expect="7.23">账单按席位计费，每月 1 日生成；年付在当期账单中一次扣除，并在下一期显示抵扣。</p>
+<small>meta · 12/16 · ink-3</small><p class="tx meta" data-cell="meta-n" data-kind="text" data-expect="4.59">最近活跃 2 分钟前 · 由 林晓 创建于 2026-09-14</p>
+<small>caption · 11/16 · ink-3</small><p class="tx cap" data-cell="cap-n" data-kind="text" data-expect="4.59">对团队成员可见；更改后立即生效</p>
+<small>link · acc · 下划线 70%</small><p class="tx">查看 <a class="lnk" href="#a" data-cell="link-n" data-kind="text" data-expect="8.44">全部账单</a> 或 <a class="lnk is-hover" href="#b" data-cell="link-hover-n" data-kind="text" data-expect="9.70">悬停态</a> 与 <a class="lnk is-focus" href="#c">焦点态</a></p>
+</div></div>
+<div class="on-canvas"><div class="spec">
+<small>同四种 · 落在画布上</small><p class="tx" data-cell="body-canvas-n" data-kind="text" data-expect="7.70">正文落在画布色上：顶带固定项、页脚与空状态说明会用到。</p>
+<small></small><p class="tx strong" data-cell="strong-canvas-n" data-kind="text" data-expect="15.31">强调仍是同一墨色。</p>
+<small></small><p class="tx meta" data-cell="meta-canvas-n" data-kind="text" data-expect="4.89">元数据 · 2 分钟前</p>
+<small></small><p class="tx">链接 <a class="lnk" href="#d" data-cell="link-canvas-n" data-kind="text" data-expect="8.99">查看项目</a></p>
+</div></div></div>
+
+<div class="blk"><h6>Highlight · 搜索命中 <span>mark 只加 8% 青洗底：不改字重、字距、字号，不加内距；2px 晕用 box-shadow 画在行内盒之外，排版零变化；在正文、列表与选中行里同一规则</span></h6>
+<div class="paper">
+<p class="tx">在「<mark class="hl" data-cell="mark-n" data-kind="text" data-expect="6.09">设计</mark>组」里搜索「设计」：命中两处，其余文字不变。</p>
+<div class="list" data-rows="">
+<div class="li"><b>TCRN <mark class="hl">设计</mark>系统 · 组件库</b><span class="id">PRJ-2026-0412</span><span><mark class="hl">设计</mark>组</span></div>
+<div class="li b2"><b>季度复盘 · <mark class="hl">设计</mark>评审</b><span class="id">PRJ-2026-0391</span><span>产品组</span></div>
+<div class="sel-row" data-cell="sel-n" data-kind="text" data-expect="12.15">选中行里的命中：<mark class="hl">设计</mark>评审<span style="margin-left:auto" class="id">PRJ-2026-0391</span></div>
+</div>
+<p class="tx meta">选中行的墨洗向左右各出血 10px（margin 0 -10px），文字起点与同容器各行相同；所有列表与表格的选中态都按这条规则。</p>
+<span class="sr"><mark class="hl">设计</mark></span>
+</div></div>
+
+<div class="blk"><h6>衬线数字 numeral · 新样式 <span>Source Serif 4 300，等宽数字；单位缩小、拉开字距、三级墨；行内 16/20 用 400</span></h6>
+<div class="paper">
+<div class="stats">
+<div class="stat"><span class="caps">活跃成员</span><span class="num" data-cell="num-n" data-kind="text" data-expect="14.38">128<small data-cell="unit-n" data-kind="text" data-expect="4.59">人</small></span><span class="d ok"><i></i>较上月 +12%</span></div>
+<div class="stat"><span class="caps">本月账单</span><span class="num">4,280<small>.00 元</small></span><span class="d"><i></i>与上月持平</span></div>
+<div class="stat"><span class="caps">待处理</span><span class="num">7</span><span class="d warn"><i></i>3 项逾期</span></div>
+<div class="stat"><span class="caps">席位用量</span><span class="num">86<small>/ 120</small></span><span class="d"><i></i>剩余 34 席</span></div>
+</div>
+<div class="spec" style="margin-top:4px">
+<small>inline · 16/20 · 400</small><p class="tx">本期应付 <span class="num inl" data-cell="num-inl-n" data-kind="text" data-expect="14.38">4,280.00<small>元</small></span>，含税 <span class="num inl">232.45<small>元</small></span>；到期日 <span class="id">2026-10-31</span>。</p>
+<small>big · 44/48 · 300</small><span class="num big">12,480<small>.00 元</small></span>
+</div>
+</div></div>
+
+<div class="blk"><h6>小型大写标签 caps · 新样式 <span>11/16 · 500 · 字距 .14em · 三级墨；用于区段编号、表头、指标标签；中文不转大写但同字距</span></h6>
+<div class="paper">
+<div class="secrule"><span class="caps" data-cell="caps-n" data-kind="text" data-expect="4.59"><b>01</b>基本信息 Basic info</span><i></i></div>
+<div class="secrule"><span class="caps"><b>02</b>成员与权限 Members</span><i></i></div>
+<div class="spec">
+<small>table header</small><div class="list"><div class="li" style="height:30px;color:var(--ink-3);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500"><span>项目 Project</span><span>编号 ID</span><span>团队 Team</span></div></div>
+<small>stat label</small><span class="caps">本月账单 Invoice</span>
+</div>
+</div></div>
+
+<div class="blk"><h6>等宽编号 mono <span>IBM Plex Mono 11.5/16 · 次墨；编号、邮箱、时间戳、快捷键；永不用于正文</span></h6>
+<div class="paper"><div class="spec">
+<small>id · 11.5/16</small><span class="id" data-cell="id-n" data-kind="text" data-expect="7.23">PRJ-2026-0412 · INV-2026-10-0031</span>
+<small>email · time</small><span class="id">lin.xiao@tcrn.app · 2026-10-11 09:41:07 +08:00</span>
+<small>kbd</small><span class="id">⌘K · ⇧⌘P · Esc</span>
+</div></div></div>
+
+<div class="blk"><h6>中英混排 <span>衬线标题回退 Noto Serif SC 400，正文回退 Noto Sans SC；数字与拉丁永远用主字体</span></h6>
+<div class="paper"><div class="mixed">
+<h2 class="h2">2026 年第三季度 · Q3 复盘 Review</h2>
+<p class="tx read">本季度新增 <span class="num inl">24</span> 位成员，<span class="num inl">3</span> 个项目归档；「账单」页改为按席位计费（per-seat billing）。</p>
+<p class="tx meta">更新于 2026-10-09 · Updated Oct 9, 2026</p>
+</div></div></div>
+</section></div></div>
+
+<div class="sec"><h3><b>B</b>状态矩阵 <span>fill 与 ink 成对；对比度为 WCAG 2.x 相对亮度比，脚本计算，半透明先合成到承载面</span></h3><sc-raw-table class="mx" aria-label="字体状态矩阵"><sc-raw-thead><sc-raw-tr><sc-raw-th>变体 · 状态</sc-raw-th><sc-raw-th>规则</sc-raw-th><sc-raw-th>浅色 fill</sc-raw-th><sc-raw-th>浅色 ink</sc-raw-th><sc-raw-th class="r">浅色 对比</sc-raw-th><sc-raw-th>夜间 fill</sc-raw-th><sc-raw-th>夜间 ink</sc-raw-th><sc-raw-th class="r">夜间 对比</sc-raw-th></sc-raw-tr></sc-raw-thead><sc-raw-tbody><sc-raw-tr class="grp"><sc-raw-td colspan="8">在纸上 · panel</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">heading 1–4</sc-raw-td><sc-raw-td>ink 于纸 / 画布</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="18.29">18.29</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="14.38">14.38</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">body · reading</sc-raw-td><sc-raw-td>ink-2</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="8.58">8.58</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="7.23">7.23</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">strong</sc-raw-td><sc-raw-td>ink · 600</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="18.29">18.29</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="14.38">14.38</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">meta · caption · caps · unit</sc-raw-td><sc-raw-td>ink-3</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#6b675d"></span>ink-3</sc-raw-td><sc-raw-td class="n " data-cr="5.64">5.64</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#85827a"></span>ink-3</sc-raw-td><sc-raw-td class="n " data-cr="4.59">4.59</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">numeral</sc-raw-td><sc-raw-td>ink · serif 300</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="18.29">18.29</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="14.38">14.38</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">mono id</sc-raw-td><sc-raw-td>ink-2</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="8.58">8.58</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="7.23">7.23</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">link · default</sc-raw-td><sc-raw-td>acc · 下划线 acc 70%</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#0b6b65"></span>acc</sc-raw-td><sc-raw-td class="n " data-cr="6.35">6.35</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#3fc7b7"></span>acc</sc-raw-td><sc-raw-td class="n " data-cr="8.44">8.44</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">link · hover</sc-raw-td><sc-raw-td>acc-2 · 下划线 100%</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#0a5f5a"></span>acc-2</sc-raw-td><sc-raw-td class="n " data-cr="7.51">7.51</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#5ad3c5"></span>acc-2</sc-raw-td><sc-raw-td class="n " data-cr="9.70">9.70</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">link · focus</sc-raw-td><sc-raw-td>同 default + 焦点环 4px acc</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#0b6b65"></span>acc</sc-raw-td><sc-raw-td class="n " data-cr="6.35">6.35</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#3fc7b7"></span>acc</sc-raw-td><sc-raw-td class="n " data-cr="8.44">8.44</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">link underline · 70%</sc-raw-td><sc-raw-td>边线类 ≥ 3</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#549793"></span>acc-ul .7</sc-raw-td><sc-raw-td class="n " data-cr="3.36">3.36</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#349387"></span>acc-ul .7</sc-raw-td><sc-raw-td class="n " data-cr="4.74">4.74</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">highlight mark · 正文里</sc-raw-td><sc-raw-td>继承字色 ink-2 于 acc-bg 8%（取最低）</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebf3f3"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="7.63">7.63</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#1d2a26"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="6.09">6.09</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">highlight mark · 强调或标题里</sc-raw-td><sc-raw-td>继承字色 ink 于 acc-bg 8%</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebf3f3"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="16.27">16.27</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#1d2a26"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="12.10">12.10</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">highlight in selected row</sc-raw-td><sc-raw-td>ink 于 acc-bg 于 wash</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#dfe6e6"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="14.47">14.47</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#2a3733"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="10.12">10.12</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">selected row text</sc-raw-td><sc-raw-td>ink 于 wash 6%</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#f1f1f1"></span>wash</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="16.18">16.18</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#282724"></span>wash</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="12.15">12.15</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">section rule</sc-raw-td><sc-raw-td>rule 1px 于纸</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>rule</sc-raw-td><sc-raw-td class="n " data-cr="18.29">18.29</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>rule</sc-raw-td><sc-raw-td class="n " data-cr="14.38">14.38</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">status dot ok / warn</sc-raw-td><sc-raw-td>ok · warn 6px 点</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ffffff"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#8a5a08"></span>warn</sc-raw-td><sc-raw-td class="n " data-cr="5.92">5.92</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#191916"></span>panel</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#d9ab52"></span>warn</sc-raw-td><sc-raw-td class="n " data-cr="8.30">8.30</sc-raw-td></sc-raw-tr>
+<sc-raw-tr class="grp"><sc-raw-td colspan="8">在画布上 · bg</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">heading 1–4</sc-raw-td><sc-raw-td>ink 于纸 / 画布</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="15.75">15.75</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="15.31">15.31</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">body · reading</sc-raw-td><sc-raw-td>ink-2</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="7.39">7.39</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="7.70">7.70</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">strong</sc-raw-td><sc-raw-td>ink · 600</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="15.75">15.75</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="15.31">15.31</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">meta · caption · caps · unit</sc-raw-td><sc-raw-td>ink-3</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#6b675d"></span>ink-3</sc-raw-td><sc-raw-td class="n " data-cr="4.86">4.86</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#85827a"></span>ink-3</sc-raw-td><sc-raw-td class="n " data-cr="4.89">4.89</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">numeral</sc-raw-td><sc-raw-td>ink · serif 300</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="15.75">15.75</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="15.31">15.31</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">mono id</sc-raw-td><sc-raw-td>ink-2</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="7.39">7.39</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="7.70">7.70</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">link · default</sc-raw-td><sc-raw-td>acc · 下划线 acc 70%</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#0b6b65"></span>acc</sc-raw-td><sc-raw-td class="n " data-cr="5.47">5.47</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#3fc7b7"></span>acc</sc-raw-td><sc-raw-td class="n " data-cr="8.99">8.99</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">link · hover</sc-raw-td><sc-raw-td>acc-2 · 下划线 100%</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#0a5f5a"></span>acc-2</sc-raw-td><sc-raw-td class="n " data-cr="6.47">6.47</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#5ad3c5"></span>acc-2</sc-raw-td><sc-raw-td class="n " data-cr="10.32">10.32</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">link · focus</sc-raw-td><sc-raw-td>同 default + 焦点环 4px acc</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#0b6b65"></span>acc</sc-raw-td><sc-raw-td class="n " data-cr="5.47">5.47</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#3fc7b7"></span>acc</sc-raw-td><sc-raw-td class="n " data-cr="8.99">8.99</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">link underline · 70%</sc-raw-td><sc-raw-td>边线类 ≥ 3</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#4f928d"></span>acc-ul .7</sc-raw-td><sc-raw-td class="n " data-cr="3.09">3.09</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#319185"></span>acc-ul .7</sc-raw-td><sc-raw-td class="n " data-cr="4.91">4.91</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">highlight mark · 正文里</sc-raw-td><sc-raw-td>继承字色 ink-2 于 acc-bg 8%（取最低）</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#dde4df"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#4f4c43"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="6.61">6.61</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#172421"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#a9a69c"></span>ink-2</sc-raw-td><sc-raw-td class="n " data-cr="6.58">6.58</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">highlight mark · 强调或标题里</sc-raw-td><sc-raw-td>继承字色 ink 于 acc-bg 8%</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#dde4df"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="14.09">14.09</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#172421"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="13.08">13.08</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">highlight in selected row</sc-raw-td><sc-raw-td>ink 于 acc-bg 于 wash</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#dde4df"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="14.09">14.09</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#172421"></span>acc-bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="13.08">13.08</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">selected row text</sc-raw-td><sc-raw-td>ink 于 wash 6%</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#e2e1dd"></span>wash</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="13.97">13.97</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#21211e"></span>wash</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>ink</sc-raw-td><sc-raw-td class="n " data-cr="13.17">13.17</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">section rule</sc-raw-td><sc-raw-td>rule 1px 于纸</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#16150f"></span>rule</sc-raw-td><sc-raw-td class="n " data-cr="15.75">15.75</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#ebe8df"></span>rule</sc-raw-td><sc-raw-td class="n " data-cr="15.31">15.31</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="c">status dot ok / warn</sc-raw-td><sc-raw-td>ok · warn 6px 点</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#efeeea"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#8a5a08"></span>warn</sc-raw-td><sc-raw-td class="n " data-cr="5.10">5.10</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#121210"></span>bg</sc-raw-td><sc-raw-td class="m"><span class="sw" style="background:#d9ab52"></span>warn</sc-raw-td><sc-raw-td class="n " data-cr="8.84">8.84</sc-raw-td></sc-raw-tr></sc-raw-tbody></sc-raw-table></div>
+
+<div class="sec"><h3><b>C</b>动效规范 <span>字体家族本身几乎不动；只有链接与焦点环有过渡</span></h3><sc-raw-table class="mx"><sc-raw-thead><sc-raw-tr><sc-raw-th>元素 · 触发</sc-raw-th><sc-raw-th>变化的属性</sc-raw-th><sc-raw-th>时长</sc-raw-th><sc-raw-th>曲线</sc-raw-th><sc-raw-th>reduced-motion</sc-raw-th><sc-raw-th>备注</sc-raw-th></sc-raw-tr></sc-raw-thead><sc-raw-tbody><sc-raw-tr><sc-raw-td class="c">link · hover</sc-raw-td><sc-raw-td class="">color · text-decoration-color</sc-raw-td><sc-raw-td class="">120ms</sc-raw-td><sc-raw-td class="">cubic-bezier(.22,1,.36,1)</sc-raw-td><sc-raw-td class="">保留（颜色是理解线索）</sc-raw-td><sc-raw-td class="">只换色，不位移、不加粗</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">link · focus-visible</sc-raw-td><sc-raw-td class="">box-shadow 焦点环</sc-raw-td><sc-raw-td class="">120ms</sc-raw-td><sc-raw-td class="">同上</sc-raw-td><sc-raw-td class="">保留</sc-raw-td><sc-raw-td class="">环 2px 面色 + 2px 青</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">highlight mark</sc-raw-td><sc-raw-td class="">无</sc-raw-td><sc-raw-td class="">0</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">命中即出现，不闪、不渐入</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">numeral 数值变化</sc-raw-td><sc-raw-td class="">无（禁止滚动计数）</sc-raw-td><sc-raw-td class="">0</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">新值直接替换；加载态用骨架，不用数字跳动</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">heading · text 出现</sc-raw-td><sc-raw-td class="">opacity（随所在面板）</sc-raw-td><sc-raw-td class="">240ms</sc-raw-td><sc-raw-td class="">cubic-bezier(.22,1,.36,1)</sc-raw-td><sc-raw-td class="">保留 opacity，去位移</sc-raw-td><sc-raw-td class="">交错 20ms 由容器控制，字体本身不动</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">字体加载</sc-raw-td><sc-raw-td class="">font-display swap</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">回退字体同度量级（Noto Sans SC / Noto Serif SC），避免换字跳动</sc-raw-td></sc-raw-tr></sc-raw-tbody></sc-raw-table></div>
+
+<div class="sec"><h3><b>E</b>消费方须提供什么 · 何时用与不用 <span>每件一句话摘要在前</span></h3><div class="cols3">
+<div class="box"><h4>Heading <small>level 1–4 · visualLevel 1–4</small></h4><p class="lead">一句话：标签级别由 <code>level</code> 定，外观由 <code>visualLevel</code> 定，1 至 3 级衬线 400、4 级怪诞体 600，一律单行截断。</p><ul><li><b>须提供</b>：文本 children；<code>level</code>（默认 2）；需要和文档结构不同的外观时给 <code>visualLevel</code>。</li><li><b>容器</b>：由页头、区段、卡片提供宽度；标题自己不折行，装不下截断加 title（C7）。</li><li><b>用</b>：页标题 h1/2、区段 h3、卡片与设置行 h4。</li><li><b>不用</b>：表头与指标标签（用 caps 样式）；按钮与导航项文字。</li></ul></div>
+<div class="box"><h4>Text <small>size body | reading | meta | caption · tone default | strong · variant numeral | caps</small></h4><p class="lead">一句话：段落文本，13/20 次墨为默认；强调只加字重不换色，说明文字用三级墨。</p><ul><li><b>须提供</b>：children；可选 <code>size</code>、<code>tone</code>、<code>variant</code>（现包只有一个 <code>Text</code> 类；三个 prop 为本批新增，Owner 2026-10-11 定，默认值不变）。</li><li><b>容器</b>：可折行，由父级定宽；表格单元内不用 Text，用单元自身样式。</li><li><b>用</b>：说明、帮助、空状态、通知正文。</li><li><b>不用</b>：标题、标签、编号。</li></ul></div>
+<div class="box"><h4>Highlight <small>text · query · caseSensitive · markClassName</small></h4><p class="lead">一句话：把 <code>query</code> 在 <code>text</code> 里的命中包成 mark，只加 8% 青洗底；字重、字距、字号、内距全部不变，命中前后的排版与未命中时逐像素相同。</p><ul><li><b>须提供</b>：<code>text</code> 字符串与 <code>query</code>；query 为空时原样输出。</li><li><b>容器</b>：行内；在选中行与表格单元里同一规则，不另配色。</li><li><b>用</b>：搜索结果、过滤命中、命令面板。</li><li><b>不用</b>：强调语气（用 strong）；状态（用点加字）。</li></ul></div>
+<div class="box"><h4>numeral <small>新样式 · Text 的 variant 值（已定）</small></h4><p class="lead">一句话：数字用 Source Serif 4 300 等宽数字，单位进 <code>small</code> 槽缩小拉距；只给指标与金额。</p><ul><li><b>须提供</b>：数值文本；单位放在 unit 槽；行内用 inl（16/20 400）。</li><li><b>用</b>：指标、金额、席位、计数。</li><li><b>不用</b>：编号与时间（mono）、表格里的普通数字（正文）。</li></ul></div>
+<div class="box"><h4>caps <small>新样式 · Text 的 variant 值（已定）</small></h4><p class="lead">一句话：11/16 500、字距 .14em、三级墨；区段编号前缀用等宽。</p><ul><li><b>须提供</b>：短标签文本；可选编号前缀。</li><li><b>用</b>：区段标题、表头、指标标签、页头副标。</li><li><b>不用</b>：可点击元素的文字；超过四个词的句子。</li></ul></div>
+<div class="box"><h4>mono <small>编号 · 现有 --tcrn-type-family-mono 换字体</small></h4><p class="lead">一句话：IBM Plex Mono 11.5/16 次墨，只给机器可读的值。</p><ul><li><b>用</b>：ID、邮箱、时间戳、快捷键、哈希。</li><li><b>不用</b>：任何给人读的句子。</li></ul></div>
+</div></div>
+
+<div class="sec"><h3><b>F</b>与 G+ 底盘的 token 差异 <span>现值取自 packages/ui-tokens/src/tokens.css</span></h3><sc-raw-table class="mx"><sc-raw-thead><sc-raw-tr><sc-raw-th>Token</sc-raw-th><sc-raw-th>现值（@tcrn/ui-tokens 3.0.0）</sc-raw-th><sc-raw-th>G+ 值</sc-raw-th><sc-raw-th>说明</sc-raw-th></sc-raw-tr></sc-raw-thead><sc-raw-tbody><sc-raw-tr><sc-raw-td class="c">type.family.ui</sc-raw-td><sc-raw-td class="">Inter, Avenir Next, Helvetica Neue, Arial</sc-raw-td><sc-raw-td class="">Hanken Grotesk, Noto Sans SC</sc-raw-td><sc-raw-td class="">正文与控件；中文回退 Noto Sans SC</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.family.heading（新）</sc-raw-td><sc-raw-td class="">无，继承 ui</sc-raw-td><sc-raw-td class="">Source Serif 4, Noto Serif SC</sc-raw-td><sc-raw-td class="">1 至 3 级标题与数字</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.family.mono</sc-raw-td><sc-raw-td class="">SFMono-Regular, Consolas, Liberation Mono, Menlo</sc-raw-td><sc-raw-td class="">IBM Plex Mono</sc-raw-td><sc-raw-td class="">编号</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.family.stamp</sc-raw-td><sc-raw-td class="">Source Serif 4, Songti SC, Noto Serif CJK SC</sc-raw-td><sc-raw-td class="">不变</sc-raw-td><sc-raw-td class="">印章沿用</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.size.page / heading-2 / heading-3</sc-raw-td><sc-raw-td class="">28 / 22 / 16</sc-raw-td><sc-raw-td class="">36 / 26 / 20</sc-raw-td><sc-raw-td class="">h1 不再用 clamp(28, 3vw, 44)，产品页固定 36</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.size.ui · body · control</sc-raw-td><sc-raw-td class="">13</sc-raw-td><sc-raw-td class="">13</sc-raw-td><sc-raw-td class="">不变；行高改 20px</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.line.ui</sc-raw-td><sc-raw-td class="">1.35</sc-raw-td><sc-raw-td class="">20px（1.54）</sc-raw-td><sc-raw-td class="">正文行距放松到 20</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.size.reading / line</sc-raw-td><sc-raw-td class="">14 / 1.45</sc-raw-td><sc-raw-td class="">14 / 22px</sc-raw-td><sc-raw-td class="">阅读体</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.size.meta / caption</sc-raw-td><sc-raw-td class="">12 / 11</sc-raw-td><sc-raw-td class="">12/16 · 11/16</sc-raw-td><sc-raw-td class="">不变，行高定为 16</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.weight.medium</sc-raw-td><sc-raw-td class="">600</sc-raw-td><sc-raw-td class="">500（标签）· 600（强调）</sc-raw-td><sc-raw-td class="">两档拆开；caps 与控件文字 500</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">type.tracking.caps（新）</sc-raw-td><sc-raw-td class="">无</sc-raw-td><sc-raw-td class="">.14em</sc-raw-td><sc-raw-td class="">小型大写标签</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">font-variant-numeric（新）</sc-raw-td><sc-raw-td class="">无</sc-raw-td><sc-raw-td class="">tabular-nums 全局</sc-raw-td><sc-raw-td class="">数字对齐</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">color.text.primary / secondary / muted</sc-raw-td><sc-raw-td class="">#1c1d21 / #55575e / #8a8c93</sc-raw-td><sc-raw-td class="">#16150f / #4f4c43 / #6b675d</sc-raw-td><sc-raw-td class="">muted 现值在白底 3.44，不达 4.5；G+ 三级墨 5.64</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">color.brand.primary（链接）</sc-raw-td><sc-raw-td class="">#17707f</sc-raw-td><sc-raw-td class="">#0b6b65（夜间 #3fc7b7）</sc-raw-td><sc-raw-td class="">链接下划线 70% 不透明</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">highlight mark</sc-raw-td><sc-raw-td class="">brand-primary-bg #e6f1f3 · r 4 · 600 · padding 0 2</sc-raw-td><sc-raw-td class="">acc-bg 8% · r 2 · 字重与内距不变 · 2px box-shadow 晕</sc-raw-td><sc-raw-td class="">命中不改排版</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">selection-fill</sc-raw-td><sc-raw-td class="">rgba(28,29,33,.06)</sc-raw-td><sc-raw-td class="">rgba(22,21,15,.06)</sc-raw-td><sc-raw-td class="">数值同为 6%，底色随墨换</sc-raw-td></sc-raw-tr></sc-raw-tbody></sc-raw-table></div>
+
+<div class="sec"><h3><b>G</b>许可与分发 <span>字体、图标、品牌标各自能不能商用、能不能打进包</span></h3><sc-raw-table class="mx"><sc-raw-thead><sc-raw-tr><sc-raw-th>资源</sc-raw-th><sc-raw-th>来源与版权方</sc-raw-th><sc-raw-th>许可证</sc-raw-th><sc-raw-th>商用 · 嵌入网页与应用 · 打进 @tcrn/ui 分发</sc-raw-th><sc-raw-th>义务与限制</sc-raw-th></sc-raw-tr></sc-raw-thead><sc-raw-tbody><sc-raw-tr><sc-raw-td class="c">Hanken Grotesk</sc-raw-td><sc-raw-td class="">Hanken Design Co.（Google Fonts 收录）</sc-raw-td><sc-raw-td class="">SIL Open Font License 1.1</sc-raw-td><sc-raw-td class="">全部允许</sc-raw-td><sc-raw-td class="">分发时附 OFL 许可文本与版权声明；不得把字体文件单独出售；修改后不得再用保留字体名</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">Source Serif 4</sc-raw-td><sc-raw-td class="">Adobe（Frank Grießhammer），GitHub adobe-fonts/source-serif</sc-raw-td><sc-raw-td class="">SIL OFL 1.1</sc-raw-td><sc-raw-td class="">全部允许</sc-raw-td><sc-raw-td class="">同上</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">IBM Plex Mono</sc-raw-td><sc-raw-td class="">IBM，GitHub IBM/plex</sc-raw-td><sc-raw-td class="">SIL OFL 1.1</sc-raw-td><sc-raw-td class="">全部允许</sc-raw-td><sc-raw-td class="">同上</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">Noto Sans SC · Noto Serif SC</sc-raw-td><sc-raw-td class="">Google（Noto 项目）</sc-raw-td><sc-raw-td class="">SIL OFL 1.1</sc-raw-td><sc-raw-td class="">全部允许；体积大，按产品用字子集化</sc-raw-td><sc-raw-td class="">同上</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">Google Fonts css2 链接</sc-raw-td><sc-raw-td class="">Google</sc-raw-td><sc-raw-td class="">服务条款</sc-raw-td><sc-raw-td class="">画板预览用；产品不依赖</sc-raw-td><sc-raw-td class="">fonts.googleapis.com 在中国大陆不可靠，产品必须自托管 woff2（OFL 允许），不走 CDN</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">图标 37 件</sc-raw-td><sc-raw-td class="">本批自绘（20 格 1.25px）</sc-raw-td><sc-raw-td class="">随 TCRN-Design-System 仓库许可</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">不再依赖 lucide-react（ISC）；无第三方义务</sc-raw-td></sc-raw-tr><sc-raw-tr><sc-raw-td class="c">品牌标 tcrn-brand-mark.svg</sc-raw-td><sc-raw-td class="">TCRN 自有资产</sc-raw-td><sc-raw-td class="">内部</sc-raw-td><sc-raw-td class="">—</sc-raw-td><sc-raw-td class="">Owner 另行重设计；重设计前资产只复制不重绘</sc-raw-td></sc-raw-tr></sc-raw-tbody></sc-raw-table></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:2640,&quot;height&quot;:5111}}">/*__COMPONENT_JS__*/</script>
+
+
+</body></html>
