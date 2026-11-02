@@ -1,0 +1,431 @@
+{
+  "schemaVersion": "tcrn.package-engineering-contract.v2",
+  "standardSource": {
+    "projectId": "appgprj_6ad4ec31ec7c8191aa3b577750b37a34",
+    "versionNumber": 1,
+    "versionId": "appgprj_6ad4ec31ec7c8191aa3b577750b37a34~appgver_d33d707bc1308191af0e341e58c29479",
+    "deploymentId": "appgdep_6ad4f5b64a648191b49fa862b3d9e365",
+    "deploymentStatus": "succeeded",
+    "url": "https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site",
+    "sourceCommit": "a643d4cfcd239f6f81b1715ded6a63caead9d619",
+    "originalDocumentSha256": "6c8a9f442a59632744f4af97ae9ae66223197098e3b87f5506381a771211731d"
+  },
+  "boards": [
+    {
+      "slug": "01-tokens",
+      "id": 1,
+      "title": "01 · 底盘 Token",
+      "sourceTitle": "底盘 Token",
+      "width": 2640,
+      "height": 3451,
+      "sourceId": "db5cf377-a278-4e21-96e1-fe241768fe93"
+    },
+    {
+      "slug": "02-typography",
+      "id": 2,
+      "title": "02 · 字体 Typography",
+      "sourceTitle": "字体 Typography",
+      "width": 2640,
+      "height": 5111,
+      "sourceId": "78ffb0ce-6861-4895-a5b3-e33607db0200"
+    },
+    {
+      "slug": "03-icons",
+      "id": 3,
+      "title": "03 · 图标 Icon",
+      "sourceTitle": "图标 Icon",
+      "width": 2640,
+      "height": 3547,
+      "sourceId": "9cf67430-d184-45f0-a3bd-8da8447d7e79"
+    },
+    {
+      "slug": "04-brand",
+      "id": 4,
+      "title": "04 · 品牌 Brand · 产品标",
+      "sourceTitle": "品牌 Brand · 产品标",
+      "width": 2640,
+      "height": 3372,
+      "sourceId": "ee0f582f-d81c-47f4-8a5b-d16631584d81"
+    },
+    {
+      "slug": "05-actions",
+      "id": 5,
+      "title": "05 · 动作 Actions",
+      "sourceTitle": "动作 Actions",
+      "width": 2640,
+      "height": 4470,
+      "sourceId": "f3436fe2-995c-46d6-aa73-f121fac5db2d"
+    },
+    {
+      "slug": "06-inputs",
+      "id": 6,
+      "title": "06 · 表单控件 Inputs",
+      "sourceTitle": "表单控件 Inputs",
+      "width": 2640,
+      "height": 5806,
+      "sourceId": "eced7b64-8310-442f-8b69-3696360269eb"
+    },
+    {
+      "slug": "07a-shell-upper",
+      "id": 7,
+      "title": "07a · 壳层 · 顶带壳 · 标三版、三态、矩阵、动效",
+      "sourceTitle": "壳层 · 顶带壳 · 上半块",
+      "width": 2640,
+      "height": 5324,
+      "sourceId": "74786e48-536f-4d84-9894-1bc55df2ab45"
+    },
+    {
+      "slug": "07b-shell-lower",
+      "id": 8,
+      "title": "07b · 壳层 · 顶带壳 · 几何、契约、token、门",
+      "sourceTitle": "壳层 · 顶带壳 · 下半块",
+      "width": 2640,
+      "height": 4895,
+      "sourceId": "19d5fc40-2c24-4b4c-a9fa-784c2e5ae161"
+    }
+  ],
+  "engineeringComponents": [
+    "Button",
+    "Icon",
+    "IconButton",
+    "LinkButton",
+    "ButtonGroup",
+    "ClipboardCopyButton",
+    "Field",
+    "Input",
+    "NumberInput",
+    "Textarea",
+    "SearchInput",
+    "Select",
+    "MultiSelect",
+    "SuggestInput",
+    "Checkbox",
+    "Switch",
+    "SettingRowList",
+    "SettingRow",
+    "FieldProvenance",
+    "LineNumberedEditor",
+    "LockHint",
+    "Badge",
+    "Stamp",
+    "StampRule",
+    "EmptyState",
+    "ErrorState",
+    "OperationFeedback",
+    "Highlight",
+    "StatusBadge",
+    "StateSurface",
+    "StateView",
+    "InlineAlert",
+    "LiveRegion",
+    "Skeleton",
+    "EnvironmentBanner",
+    "StatusSummaryPanel",
+    "ReadbackPanel",
+    "Text",
+    "Heading",
+    "Surface",
+    "Divider",
+    "AppStatusBar",
+    "CollapsibleRegion",
+    "DisclosurePanel",
+    "SettingsLayout",
+    "PageHierarchy",
+    "KeyValueList",
+    "DatePicker",
+    "Tree",
+    "DataGrid",
+    "Menu",
+    "Toast",
+    "RadioGroup",
+    "SettingChoice",
+    "SettingsHostSwitcher",
+    "Tabs",
+    "Card",
+    "Avatar",
+    "Progress",
+    "Stepper",
+    "DefinitionList",
+    "DictionaryTable",
+    "ContentScope",
+    "StatCard",
+    "FilterBar",
+    "TableShell",
+    "TableToolbar",
+    "DetailInspector",
+    "SearchableList",
+    "TemplateGallery",
+    "Breadcrumb",
+    "ModuleTabs",
+    "SectionTabs",
+    "SegmentedNav",
+    "Pagination",
+    "TopBar",
+    "SideNav",
+    "NavGroup",
+    "NavItem",
+    "ProductLauncher",
+    "ProductSwitcher",
+    "SkipLink",
+    "TcrnBrandMark",
+    "ProductLogo",
+    "ProductLockup",
+    "ShellBrandLockup",
+    "ShellBrandButton",
+    "ShellPins",
+    "ShellMenu",
+    "ShellDropdown",
+    "ShellIntro",
+    "ShellThemeToggle",
+    "ShellLocaleMenu",
+    "SideNavCollapseButton",
+    "MobileNavToggle",
+    "ProductShell",
+    "ProductShellSearch",
+    "DetailDrawer",
+    "ActionDrawer",
+    "Tooltip",
+    "Popover",
+    "Dialog",
+    "ConfirmActionDialog",
+    "RelationshipChip",
+    "MachineToken",
+    "MachineTokenCell",
+    "SubNav",
+    "SavedViewToolbar",
+    "PageHeader",
+    "ViewTabs",
+    "QuickFilters",
+    "RecordRow",
+    "RecordTable",
+    "SplitView",
+    "InlineCreate",
+    "RowGroup",
+    "LaneBoard",
+    "RelationGraph",
+    "StagePipeline",
+    "AttachmentList",
+    "MetadataRail",
+    "ActivityFeed",
+    "DetailLayout",
+    "RecordInspector",
+    "TreeNav",
+    "LabelSet",
+    "DocumentCanvas",
+    "TocRail",
+    "InlineCommentList",
+    "VersionHistory",
+    "SearchResultList"
+  ],
+  "engineeringUtilities": [
+    "tcrnIconNames",
+    "tcrnComponentCss",
+    "tcrnProductLogoRegistry",
+    "getTcrnProductLogoAsset",
+    "tcrnSettingChoiceDecisionTable",
+    "resolveSettingChoiceControl",
+    "resolveFieldValueControl",
+    "mountStaticOverlayBoundary",
+    "mountStaticMultiSelect",
+    "mountStaticClipboardCopyButton",
+    "useProductShellController",
+    "validateContentScope",
+    "evaluateConsumerEvidence",
+    "serializeConsumerEvidenceValue",
+    "presentOperationFeedbackPhase"
+  ],
+  "iconSources": [
+    {
+      "name": "alert-triangle",
+      "body": "<path d=\"M10 3.5L2.5 16.5h15L10 3.5z\"/><path d=\"M10 8v4\"/><path d=\"M10 14.25h.01\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "arrow-left",
+      "body": "<path d=\"M16 10H4\"/><path d=\"M9 5l-5 5 5 5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "arrow-right",
+      "body": "<path d=\"M4 10h12\"/><path d=\"M11 5l5 5-5 5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "book-open",
+      "body": "<path d=\"M10 6.5C8.6 5.3 6.6 5 3.5 5v10c3.1 0 5.1.3 6.5 1.5 1.4-1.2 3.4-1.5 6.5-1.5V5c-3.1 0-5.1.3-6.5 1.5z\"/><path d=\"M10 6.5v10\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "check",
+      "body": "<path d=\"M4 10.5l4 4 8-9\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "chevron-down",
+      "body": "<path d=\"M5 8l5 5 5-5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "chevron-left",
+      "body": "<path d=\"M12 5l-5 5 5 5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "chevron-right",
+      "body": "<path d=\"M8 5l5 5-5 5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "database",
+      "body": "<ellipse cx=\"10\" cy=\"5.5\" rx=\"6.5\" ry=\"2.5\"/><path d=\"M3.5 5.5v9c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5v-9\"/><path d=\"M3.5 10c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "external-link",
+      "body": "<path d=\"M11.5 4H16v4.5\"/><path d=\"M16 4l-7 7\"/><path d=\"M14 11v4.25a.75.75 0 0 1-.75.75h-8.5a.75.75 0 0 1-.75-.75v-8.5A.75.75 0 0 1 4.75 6H9\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "globe-2",
+      "body": "<circle cx=\"10\" cy=\"10\" r=\"7\"/><path d=\"M3 10h14\"/><path d=\"M10 3c2 2 3 4.5 3 7s-1 5-3 7c-2-2-3-4.5-3-7s1-5 3-7z\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "history",
+      "body": "<path d=\"M3.5 10a6.5 6.5 0 1 0 1.9-4.6\"/><path d=\"M3.5 4v3.5H7\"/><path d=\"M10 7v3.5l2.5 1.5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "home",
+      "body": "<path d=\"M3 9l7-6 7 6v8h-5v-5H8v5H3z\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "info",
+      "body": "<circle cx=\"10\" cy=\"10\" r=\"7\"/><path d=\"M10 9v4.5\"/><path d=\"M10 6.75h.01\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "layers",
+      "body": "<path d=\"M10 3l7 3.5-7 3.5-7-3.5z\"/><path d=\"M3 10l7 3.5 7-3.5\"/><path d=\"M3 13.5L10 17l7-3.5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "layout-grid",
+      "body": "<rect height=\"6\" rx=\"1.5\" width=\"6\" x=\"3\" y=\"3\"/><rect height=\"6\" rx=\"1.5\" width=\"6\" x=\"11\" y=\"3\"/><rect height=\"6\" rx=\"1.5\" width=\"6\" x=\"3\" y=\"11\"/><rect height=\"6\" rx=\"1.5\" width=\"6\" x=\"11\" y=\"11\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "loader-circle",
+      "body": "<path d=\"M10 3a7 7 0 0 1 7 7\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "menu",
+      "body": "<path d=\"M3 6h14\"/><path d=\"M3 10h14\"/><path d=\"M3 14h14\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "moon",
+      "body": "<path d=\"M16.5 12.5A6.5 6.5 0 0 1 7.5 3.5a6.5 6.5 0 1 0 9 9z\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "package",
+      "body": "<path d=\"M10 3l7 3.5v7L10 17l-7-3.5v-7z\"/><path d=\"M3 6.5l7 3.5 7-3.5\"/><path d=\"M10 10v7\"/><path d=\"M6.5 4.75l7 3.5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "palette",
+      "body": "<path d=\"M10 3a7 7 0 1 0 0 14c.9 0 1.5-.7 1.5-1.5 0-.6-.4-1-.4-1.6 0-.8.7-1.4 1.5-1.4H14a3 3 0 0 0 3-3c0-3.6-3.1-6.5-7-6.5z\"/><path d=\"M7 9.25h.01\"/><path d=\"M10 6.5h.01\"/><path d=\"M13 8.25h.01\"/><path d=\"M6.75 12.5h.01\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "panel-left-close",
+      "body": "<rect height=\"12\" rx=\"2\" width=\"14\" x=\"3\" y=\"4\"/><path d=\"M8 4v12\"/><path d=\"M14 8l-2 2 2 2\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "panel-left-open",
+      "body": "<rect height=\"12\" rx=\"2\" width=\"14\" x=\"3\" y=\"4\"/><path d=\"M8 4v12\"/><path d=\"M11.5 8l2 2-2 2\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "search",
+      "body": "<circle cx=\"9\" cy=\"9\" r=\"5.5\"/><path d=\"M13 13l4 4\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "settings",
+      "body": "<circle cx=\"10\" cy=\"10\" r=\"2.5\"/><path d=\"M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.5 1.5M13.5 13.5L15 15M15 5l-1.5 1.5M6.5 13.5L5 15\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "shield-check",
+      "body": "<path d=\"M10 3l6 2.5v4.5c0 3.5-2.5 6-6 7-3.5-1-6-3.5-6-7V5.5z\"/><path d=\"M7.5 10l2 2 3.5-4\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "sun",
+      "body": "<circle cx=\"10\" cy=\"10\" r=\"3.5\"/><path d=\"M10 3v1.5M10 15.5V17M3 10h1.5M15.5 10H17M5 5l1 1M14 14l1 1M15 5l-1 1M6 14l-1 1\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "x",
+      "body": "<path d=\"M5 5l10 10\"/><path d=\"M15 5L5 15\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "plus",
+      "body": "<path d=\"M10 4v12\"/><path d=\"M4 10h12\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "minus",
+      "body": "<path d=\"M4 10h12\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "users",
+      "body": "<circle cx=\"8\" cy=\"7\" r=\"3\"/><path d=\"M2.5 16a5.5 5.5 0 0 1 11 0\"/><path d=\"M13 4.5a3 3 0 0 1 0 5.5\"/><path d=\"M17.5 16a5 5 0 0 0-3.5-4.7\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "bell",
+      "body": "<path d=\"M5 15V8a5 5 0 0 1 10 0v7l1.5 1.5h-13z\"/><path d=\"M8.5 17.5a1.5 1.5 0 0 0 3 0\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "copy",
+      "body": "<rect height=\"10\" rx=\"2\" width=\"10\" x=\"7\" y=\"7\"/><path d=\"M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "trash",
+      "body": "<path d=\"M3.5 5.5h13\"/><path d=\"M8 5.5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5\"/><path d=\"M5 5.5l.8 10A1.5 1.5 0 0 0 7.3 17h5.4a1.5 1.5 0 0 0 1.5-1.5l.8-10\"/><path d=\"M8.5 9v5\"/><path d=\"M11.5 9v5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "calendar",
+      "body": "<rect height=\"12.5\" rx=\"2\" width=\"14\" x=\"3\" y=\"4.5\"/><path d=\"M3 9h14\"/><path d=\"M7 3v3\"/><path d=\"M13 3v3\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "more-horizontal",
+      "body": "<path d=\"M4.5 10h1\"/><path d=\"M9.5 10h1\"/><path d=\"M14.5 10h1\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "chevron-up",
+      "body": "<path d=\"M5 12l5-5 5 5\"/>",
+      "source": "03-icons/index.dc.html:32"
+    },
+    {
+      "name": "pin",
+      "body": "<path d=\"M8 3.5h4v5.5l2.5 2.5v1.5h-9v-1.5L8 9z\"/><path d=\"M6.5 3.5h7\"/><path d=\"M10 13v3.5\"/>",
+      "source": "07a-shell-upper/index.dc.html:74"
+    }
+  ],
+  "publishedDocumentationEntry": "@tcrn/ui-react/approved",
+  "note": "Engineering exports are not a published design catalogue. Storybook API obligations come only from the explicit published E sections."
+}

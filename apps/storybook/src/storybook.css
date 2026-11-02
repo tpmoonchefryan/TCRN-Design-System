@@ -1,9 +1,7 @@
-/* Token blocks below are generated from @tcrn/ui-tokens — the single source of
-   truth for the visual language. Do not hand-edit: run `pnpm tokens:sync` and let
-   `pnpm tokens:proof` fail the build if this file drifts from the package. */
+/* Generated after current package compilation; published Site v1 only. */
+@import url("/fonts/fonts.css");
 :root, [data-tcrn-theme="light"] {
   /* tcrn-token-block: theme */
-  --tcrn-color-shell-brand-suffix-design-system-interactive: #505fc1;
   --tcrn-color-bg: #efeeea;
   --tcrn-color-bg-2: #e7e5df;
   --tcrn-color-panel: #ffffff;
@@ -32,76 +30,30 @@
   --tcrn-color-wash: rgba(22,21,15,.06);
   --tcrn-color-hover: rgba(22,21,15,.035);
   --tcrn-color-dis: rgba(22,21,15,.05);
-  --tcrn-shadow-s1: 0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07);
-  --tcrn-shadow-s2: 0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08);
-  --tcrn-shadow-s3: 0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10);
+  --tcrn-elevation-s1: 0 1px 1px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.07);
+  --tcrn-elevation-s2: 0 1px 2px rgba(22,21,15,.05),0 2px 3px rgba(22,21,15,.04),0 0 0 1px rgba(22,21,15,.08);
+  --tcrn-elevation-s3: 0 2px 3px rgba(22,21,15,.06),0 3px 3px rgba(22,21,15,.06),0 0 0 1px rgba(22,21,15,.10);
   --tcrn-color-glass: rgba(255,255,255,.78);
-  --tcrn-shadow-edge: inset 0 0 0 1px rgba(255,255,255,.8);
-  --tcrn-grain-opacity: .035;
-  --tcrn-grain-blend: multiply;
+  --tcrn-elevation-glass-edge: inset 0 0 0 1px rgba(255,255,255,.8);
+  --tcrn-texture-grain-opacity: .035;
+  --tcrn-texture-grain-blend: multiply;
   --tcrn-color-av-bg: #e7e5df;
   --tcrn-color-av-ink: #16150f;
   --tcrn-color-knob: #ffffff;
   --tcrn-color-chrome: rgba(239,238,234,.82);
   --tcrn-color-surface: var(--tcrn-color-bg);
   --tcrn-focus-ring: 0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-acc);
-  --tcrn-brand-suffix-tms: #2c63c8;
-  --tcrn-color-text-primary: var(--tcrn-color-ink);
-  --tcrn-color-text-secondary: var(--tcrn-color-ink-2);
-  --tcrn-color-text-muted: var(--tcrn-color-ink-3);
-  --tcrn-color-text-tertiary: var(--tcrn-color-ink-3);
-  --tcrn-color-text-inverse: var(--tcrn-color-on-acc);
-  --tcrn-color-surface-canvas: var(--tcrn-color-bg);
-  --tcrn-color-surface-panel: var(--tcrn-color-panel);
-  --tcrn-color-surface-muted: var(--tcrn-color-panel-2);
-  --tcrn-color-neutral-calibration-canvas: var(--tcrn-color-bg);
-  --tcrn-color-neutral-calibration-panel: var(--tcrn-color-panel);
-  --tcrn-color-neutral-calibration-muted: var(--tcrn-color-panel-2);
-  --tcrn-color-neutral-calibration-border: var(--tcrn-color-line-ctl);
-  --tcrn-color-border-subtle: var(--tcrn-color-line);
-  --tcrn-color-border-strong: var(--tcrn-color-line-2);
-  --tcrn-color-border-control: var(--tcrn-color-line-ctl);
-  --tcrn-color-brand-teal: var(--tcrn-color-acc);
-  --tcrn-color-brand-primary: var(--tcrn-color-acc);
-  --tcrn-color-brand-primary-bg: var(--tcrn-color-acc-bg);
-  --tcrn-color-brand-secondary: var(--tcrn-color-acc-2);
-  --tcrn-color-brand-secondary-bg: var(--tcrn-color-acc-bg);
-  --tcrn-color-brand-accent: var(--tcrn-color-red);
-  --tcrn-color-brand-accent-bg: var(--tcrn-color-red-bg);
-  --tcrn-color-brand-neutral: var(--tcrn-color-ink-2);
-  --tcrn-color-brand-neutral-bg: var(--tcrn-color-panel-2);
-  --tcrn-color-focus-ring: var(--tcrn-color-acc);
-  --tcrn-color-focus-ring-calibrated: var(--tcrn-color-acc);
-  --tcrn-color-progress-track-calibrated: var(--tcrn-color-wash);
-  --tcrn-color-progress-fill-start-calibrated: var(--tcrn-color-acc);
-  --tcrn-color-progress-fill-end-calibrated: var(--tcrn-color-acc);
-  --tcrn-color-state-ready: var(--tcrn-color-ok);
-  --tcrn-color-state-ready-bg: var(--tcrn-color-wash);
-  --tcrn-color-state-blocked: var(--tcrn-color-bad);
-  --tcrn-color-state-blocked-bg: var(--tcrn-color-bad-bg);
-  --tcrn-color-state-warning: var(--tcrn-color-warn);
-  --tcrn-color-state-warning-bg: var(--tcrn-color-wash);
-  --tcrn-color-state-warning-calibrated: var(--tcrn-color-warn);
-  --tcrn-color-state-warning-calibrated-bg: var(--tcrn-color-wash);
-  --tcrn-color-state-danger-calibrated: var(--tcrn-color-bad);
-  --tcrn-color-state-danger-calibrated-bg: var(--tcrn-color-bad-bg);
-  --tcrn-elevation-floating: var(--tcrn-shadow-s3);
-  --tcrn-selection-fill: var(--tcrn-color-wash);
-  --tcrn-selection-fill-hover: var(--tcrn-color-hover);
-  --tcrn-selection-edge: var(--tcrn-color-ink);
-  --tcrn-elevation-focus: var(--tcrn-focus-ring);
 }
 :root {
   /* tcrn-token-block: theme-independent */
-  --tcrn-type-family-serif: "Source Serif 4","Noto Serif SC",Georgia,serif;
+  --tcrn-type-family-heading: "Source Serif 4","Noto Serif SC",Georgia,serif;
   --tcrn-type-family-ui: "Hanken Grotesk","Noto Sans SC",system-ui,sans-serif;
-  --tcrn-type-family-mono: "IBM Plex Mono","Noto Sans SC",ui-monospace,Menlo,monospace;
+  --tcrn-type-family-mono: "IBM Plex Mono",ui-monospace,Menlo,monospace;
   --tcrn-radius-control: 8px;
-  --tcrn-radius-small: 6px;
+  --tcrn-radius-sm: 6px;
   --tcrn-radius-panel: 12px;
   --tcrn-radius-check: 4px;
   --tcrn-radius-stamp: 3px;
-  --tcrn-radius-paper: 14px;
   --tcrn-control-height-sm: 28px;
   --tcrn-control-height-md: 32px;
   --tcrn-control-height-lg: 40px;
@@ -119,84 +71,24 @@
   --tcrn-motion-duration-press: 80ms;
   --tcrn-motion-duration-move: 240ms;
   --tcrn-motion-duration-loop: 900ms;
-  --tcrn-motion-intro-fade: 120ms;
-  --tcrn-motion-intro-move: 240ms;
-  --tcrn-motion-intro-rise: 100ms;
-  --tcrn-motion-intro-max: 700ms;
-  --tcrn-shell-sidebar-width: 220px;
-  --tcrn-shell-sidebar-width-collapsed: 52px;
-  --tcrn-shell-topbar-height: var(--tcrn-shell-strip-h);
-  --tcrn-shell-strip-h: 52px;
-  --tcrn-shell-brand-h: 40px;
-  --tcrn-shell-brand-w: 134px;
-  --tcrn-shell-toggle: 20px;
-  --tcrn-shell-pin-h: 32px;
-  --tcrn-shell-pin-gap: 8px;
-  --tcrn-shell-pins-max: 6;
-  --tcrn-shell-menu-gap: 6px;
-  --tcrn-shell-panel-w-expanded: 952px;
-  --tcrn-shell-pbar-h: 44px;
-  --tcrn-shell-drop-w: 240px;
-  --tcrn-shell-drop-srch-h: 28px;
-  --tcrn-shell-cascade-gap: 4px;
-  --tcrn-shell-row-h: 32px;
-  --tcrn-shell-srch-h: 40px;
-  --tcrn-shell-pinb: 24px;
-  --tcrn-shell-mark: 22px;
-  --tcrn-shell-touch: 44px;
-  --tcrn-shell-crumb-icon: 11px;
-  --tcrn-shell-chevron: 12px;
-  --tcrn-shell-locale-chevron: 11px;
-  --tcrn-shell-mark-lg: 44px;
-  --tcrn-layout-content-max-w: 1040px;
-  --tcrn-brand-suffix-einzbern: #3b5272;
-  --tcrn-brand-suffix-mana-orchestrate: #3a9a63;
-  --tcrn-brand-suffix-design-system: #6577f3;
-  --tcrn-type-family-heading: "Source Serif 4","Noto Serif SC",Georgia,serif;
-  --tcrn-type-weight-light: 300;
-  --tcrn-type-weight-semibold: 600;
-  --tcrn-type-tracking-caps: .14em;
-  --tcrn-type-numeric-tabular: tabular-nums lining-nums;
-  --tcrn-type-line-meta: 16px;
-  --tcrn-type-line-heading-2: 30px;
-  --tcrn-type-line-heading-3: 26px;
-  --tcrn-type-family-latin: var(--tcrn-type-family-ui);
-  --tcrn-type-family-distributable-latin: var(--tcrn-type-family-ui);
-  --tcrn-type-family-distributable-zh-cn: var(--tcrn-type-family-ui);
-  --tcrn-type-family-distributable-ja: Noto Sans CJK JP, Source Han Sans JP, sans-serif;
-  --tcrn-type-family-distributable-ko: Noto Sans CJK KR, Source Han Sans KR, sans-serif;
-  --tcrn-type-family-distributable-mono: var(--tcrn-type-family-mono);
-  --tcrn-type-family-zh-cn: var(--tcrn-type-family-ui);
-  --tcrn-type-family-ja: Hiragino Sans, Yu Gothic, Noto Sans CJK JP, Source Han Sans JP, Meiryo, sans-serif;
-  --tcrn-type-family-ko: Apple SD Gothic Neo, Malgun Gothic, Noto Sans CJK KR, Source Han Sans KR, sans-serif;
-  --tcrn-type-family-stamp: Source Serif 4, Songti SC, Noto Serif CJK SC, Georgia, serif;
-  --tcrn-type-family-distributable-stamp-latin: Source Serif 4, serif;
-  --tcrn-type-family-distributable-stamp-zh-cn: Noto Serif CJK SC, serif;
-  --tcrn-type-size-stamp-min: 12px;
-  --tcrn-type-tracking-stamp: 0.06em;
-  --tcrn-type-size-ui: 13px;
-  --tcrn-type-size-reading: 14px;
-  --tcrn-type-size-caption: 11px;
-  --tcrn-type-size-meta: 12px;
-  --tcrn-type-size-body: 13px;
-  --tcrn-type-size-section: 20px;
   --tcrn-type-size-page: 36px;
   --tcrn-type-size-heading-2: 26px;
   --tcrn-type-size-heading-3: 20px;
+  --tcrn-type-size-ui: 13px;
+  --tcrn-type-size-reading: 14px;
+  --tcrn-type-size-meta: 12px;
+  --tcrn-type-size-caption: 11px;
   --tcrn-type-line-ui: 20px;
+  --tcrn-type-line-control: 20px;
   --tcrn-type-line-reading: 22px;
   --tcrn-type-line-caption: 16px;
-  --tcrn-type-line-body: 20px;
-  --tcrn-type-line-control: 1.2;
-  --tcrn-type-line-section: 26px;
-  --tcrn-type-line-page: 40px;
+  --tcrn-type-line-heading-1: 40px;
+  --tcrn-type-line-heading-2: 30px;
+  --tcrn-type-line-heading-3: 26px;
   --tcrn-type-weight-regular: 400;
   --tcrn-type-weight-medium: 500;
   --tcrn-type-weight-strong: 600;
-  --tcrn-text-body-dense: var(--tcrn-type-weight-regular) var(--tcrn-type-size-ui)/var(--tcrn-type-line-ui) var(--tcrn-type-family-ui);
-  --tcrn-text-body-reading: var(--tcrn-type-weight-regular) var(--tcrn-type-size-reading)/var(--tcrn-type-line-reading) var(--tcrn-type-family-ui);
-  --tcrn-state-dot-size: 6px;
-  --tcrn-state-chip-padding: 3px 8px 3px 6px;
+  --tcrn-type-tracking-caps: .14em;
   --tcrn-space-0h: 2px;
   --tcrn-space-1: 4px;
   --tcrn-space-1h: 6px;
@@ -204,43 +96,40 @@
   --tcrn-space-2h: 10px;
   --tcrn-space-3: 12px;
   --tcrn-space-3h: 14px;
-  --tcrn-density-compact-row-height: 36px;
   --tcrn-space-4: 16px;
-  --tcrn-space-4h: 18px;
-  --tcrn-space-5: 20px;
-  --tcrn-space-6: 32px;
-  --tcrn-selection-glide: 240ms cubic-bezier(.22,1,.36,1);
-  --tcrn-radius-surface: 12px;
+  --tcrn-shell-strip-h: 52px;
+  --tcrn-shell-brand-h: 40px;
+  --tcrn-shell-brand-w: 134px;
+  --tcrn-shell-toggle: 20px;
+  --tcrn-shell-pin-h: 32px;
+  --tcrn-shell-pin-gap: 8px;
+  --tcrn-shell-menu-gap: 6px;
+  --tcrn-shell-panel-w-expanded: 952px;
+  --tcrn-shell-drop-w: 240px;
+  --tcrn-shell-cascade-gap: 4px;
+  --tcrn-shell-row-h: 32px;
+  --tcrn-shell-srch-h: 40px;
+  --tcrn-shell-pinb: 24px;
+  --tcrn-shell-drop-srch-h: 28px;
+  --tcrn-shell-touch: 44px;
+  --tcrn-shell-mark: 22px;
+  --tcrn-shell-mark-lg: 128px;
+  --tcrn-shell-crumb-icon: 11px;
+  --tcrn-shell-chevron: 12px;
+  --tcrn-shell-pbar-h: 44px;
+  --tcrn-shell-pins-max: 6;
+  --tcrn-motion-intro-duration: 460ms;
+  --tcrn-radius-paper: var(--tcrn-radius-paper);
+  --tcrn-z-overlay: 3;
+  --tcrn-z-popover: 3;
   --tcrn-radius-pill: 999px;
-  --tcrn-motion-ease-out: var(--tcrn-motion-ease);
-  --tcrn-motion-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --tcrn-motion-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  --tcrn-motion-comprehension: 160ms linear;
-  --tcrn-motion-press-scale: 0.97;
-  --tcrn-motion-spring-duration: 0.5s;
-  --tcrn-motion-spring-bounce: 0.15;
-  --tcrn-motion-fast: 120ms cubic-bezier(.22,1,.36,1);
-  --tcrn-motion-instant: 80ms cubic-bezier(.22,1,.36,1);
-  --tcrn-motion-standard: 240ms cubic-bezier(.22,1,.36,1);
-  --tcrn-motion-emphasis: 240ms cubic-bezier(.22,1,.36,1);
-  --tcrn-motion-loading-loop: 900ms linear;
-  --tcrn-motion-skeleton-loop: 1400ms ease-in-out;
-  --tcrn-motion-progress-loop: 1200ms ease-in-out;
-  --tcrn-motion-reduced-duration: 0.01ms;
-  --tcrn-z-overlay: 30;
-  --tcrn-z-popover: 20;
-  --tcrn-container-readable: 1120px;
-  --tcrn-container-settings-split: 960px;
-  --tcrn-container-settings-content-stack: 720px;
-  --tcrn-container-settings-local-nav: 208px;
-  --tcrn-container-settings-control-min: 240px;
-  --tcrn-container-settings-choice-option: 112px;
-  --tcrn-container-settings-choice-padding: 8px;
-  --tcrn-container-settings-number-min: 12ch;
-  --tcrn-container-page-third-level-split: 960px;
-  --tcrn-container-page-third-level-nav: 208px;
-  --tcrn-brand-mark-filter: none;
-  --tcrn-search-input-min-inline-size: 0;
+  --tcrn-motion-loading-loop: var(--tcrn-motion-duration-loop) linear;
+  --tcrn-motion-intro-fade: 120ms;
+  --tcrn-motion-intro-move: 240ms;
+  --tcrn-motion-intro-rise: 100ms;
+  --tcrn-motion-intro-max: 700ms;
+  --tcrn-brand-suffix-tms: #2c63c8;
+  --tcrn-brand-suffix-design-system: #6577f3;
 }
 @media (pointer: coarse) {
   :root {
@@ -251,7 +140,6 @@
 }
 [data-tcrn-theme="dark"] {
   /* tcrn-token-block: theme */
-  --tcrn-color-shell-brand-suffix-design-system-interactive: #6577f3;
   --tcrn-color-bg: #121210;
   --tcrn-color-bg-2: #0d0d0b;
   --tcrn-color-panel: #191916;
@@ -280,919 +168,1893 @@
   --tcrn-color-wash: rgba(235,232,223,.07);
   --tcrn-color-hover: rgba(235,232,223,.04);
   --tcrn-color-dis: rgba(235,232,223,.05);
-  --tcrn-shadow-s1: 0 1px 1px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.06);
-  --tcrn-shadow-s2: 0 1px 2px rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.07);
-  --tcrn-shadow-s3: 0 2px 3px rgba(0,0,0,.4),0 3px 3px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.09);
+  --tcrn-elevation-s1: 0 1px 1px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.06);
+  --tcrn-elevation-s2: 0 1px 2px rgba(0,0,0,.35),0 2px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.07);
+  --tcrn-elevation-s3: 0 2px 3px rgba(0,0,0,.4),0 3px 3px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.09);
   --tcrn-color-glass: rgba(25,25,22,.74);
-  --tcrn-shadow-edge: inset 0 1px 0 rgba(255,255,255,.06);
-  --tcrn-grain-opacity: .06;
-  --tcrn-grain-blend: screen;
+  --tcrn-elevation-glass-edge: inset 0 1px 0 rgba(255,255,255,.06);
+  --tcrn-texture-grain-opacity: .06;
+  --tcrn-texture-grain-blend: screen;
   --tcrn-color-av-bg: #2a2a26;
   --tcrn-color-av-ink: #ebe8df;
   --tcrn-color-knob: #ffffff;
   --tcrn-color-chrome: rgba(18,18,16,.82);
   --tcrn-color-surface: var(--tcrn-color-bg);
   --tcrn-focus-ring: 0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-acc);
-  --tcrn-brand-suffix-tms: #7aa0f5;
-  --tcrn-color-text-primary: var(--tcrn-color-ink);
-  --tcrn-color-text-secondary: var(--tcrn-color-ink-2);
-  --tcrn-color-text-muted: var(--tcrn-color-ink-3);
-  --tcrn-color-text-tertiary: var(--tcrn-color-ink-3);
-  --tcrn-color-text-inverse: var(--tcrn-color-on-acc);
-  --tcrn-color-surface-canvas: var(--tcrn-color-bg);
-  --tcrn-color-surface-panel: var(--tcrn-color-panel);
-  --tcrn-color-surface-muted: var(--tcrn-color-panel-2);
-  --tcrn-color-neutral-calibration-canvas: var(--tcrn-color-bg);
-  --tcrn-color-neutral-calibration-panel: var(--tcrn-color-panel);
-  --tcrn-color-neutral-calibration-muted: var(--tcrn-color-panel-2);
-  --tcrn-color-neutral-calibration-border: var(--tcrn-color-line-ctl);
-  --tcrn-color-border-subtle: var(--tcrn-color-line);
-  --tcrn-color-border-strong: var(--tcrn-color-line-2);
-  --tcrn-color-border-control: var(--tcrn-color-line-ctl);
-  --tcrn-color-brand-teal: var(--tcrn-color-acc);
-  --tcrn-color-brand-primary: var(--tcrn-color-acc);
-  --tcrn-color-brand-primary-bg: var(--tcrn-color-acc-bg);
-  --tcrn-color-brand-secondary: var(--tcrn-color-acc-2);
-  --tcrn-color-brand-secondary-bg: var(--tcrn-color-acc-bg);
-  --tcrn-color-brand-accent: var(--tcrn-color-red);
-  --tcrn-color-brand-accent-bg: var(--tcrn-color-red-bg);
-  --tcrn-color-brand-neutral: var(--tcrn-color-ink-2);
-  --tcrn-color-brand-neutral-bg: var(--tcrn-color-panel-2);
-  --tcrn-color-focus-ring: var(--tcrn-color-acc);
-  --tcrn-color-focus-ring-calibrated: var(--tcrn-color-acc);
-  --tcrn-color-progress-track-calibrated: var(--tcrn-color-wash);
-  --tcrn-color-progress-fill-start-calibrated: var(--tcrn-color-acc);
-  --tcrn-color-progress-fill-end-calibrated: var(--tcrn-color-acc);
-  --tcrn-color-state-ready: var(--tcrn-color-ok);
-  --tcrn-color-state-ready-bg: var(--tcrn-color-wash);
-  --tcrn-color-state-blocked: var(--tcrn-color-bad);
-  --tcrn-color-state-blocked-bg: var(--tcrn-color-bad-bg);
-  --tcrn-color-state-warning: var(--tcrn-color-warn);
-  --tcrn-color-state-warning-bg: var(--tcrn-color-wash);
-  --tcrn-color-state-warning-calibrated: var(--tcrn-color-warn);
-  --tcrn-color-state-warning-calibrated-bg: var(--tcrn-color-wash);
-  --tcrn-color-state-danger-calibrated: var(--tcrn-color-bad);
-  --tcrn-color-state-danger-calibrated-bg: var(--tcrn-color-bad-bg);
-  --tcrn-elevation-floating: var(--tcrn-shadow-s3);
-  --tcrn-selection-fill: var(--tcrn-color-wash);
-  --tcrn-selection-fill-hover: var(--tcrn-color-hover);
-  --tcrn-selection-edge: var(--tcrn-color-ink);
-  --tcrn-elevation-focus: var(--tcrn-focus-ring);
 }
 
-* {
+
+:where([data-tcrn-root]){box-sizing:border-box;color:var(--tcrn-color-ink);font:400 13px/20px var(--tcrn-type-family-ui);font-variant-numeric:tabular-nums;background:var(--tcrn-color-bg)}
+:where([data-tcrn-root]) *,:where([data-tcrn-root]) *:before,:where([data-tcrn-root]) *:after{box-sizing:border-box}
+.tcrn-heading{min-width:0}
+.tcrn-text--body{font-size:13px;line-height:20px}
+.tcrn-highlight-text{font:inherit;letter-spacing:inherit;color:inherit}
+.tcrn-sr-only,.tcrn-live-region{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.tcrn-product-shell{min-width:0;min-height:100vh;background:var(--tcrn-color-bg);color:var(--tcrn-color-ink);font:400 13px/20px var(--tcrn-type-family-ui)}
+
+.tcrn-shell-grain{position:absolute;inset:0;width:100%;height:100%;opacity:var(--tcrn-texture-grain-opacity);mix-blend-mode:var(--tcrn-texture-grain-blend);pointer-events:none;z-index:0}
+.tcrn-skip-link{position:absolute;left:12px;top:6px;padding:4px 10px;border-radius:8px;background:var(--tcrn-color-panel);color:var(--tcrn-color-ink);transform:translateY(-200%);z-index:4}
+.tcrn-skip-link:focus{transform:none;box-shadow:var(--tcrn-focus-ring)}
+.tcrn-shell-theme-toggle{position:relative;display:inline-grid;place-items:center}
+.tcrn-shell-theme-toggle__icon{grid-area:1/1;display:flex;align-items:center;justify-content:center;transition:opacity var(--tcrn-motion-duration-move) var(--tcrn-motion-ease)}
+.tcrn-shell-theme-toggle[data-current-theme="light"] [data-theme-icon="dark"],.tcrn-shell-theme-toggle[data-current-theme="dark"] [data-theme-icon="light"]{opacity:0}
+.tcrn-shell-locale-menu{position:relative;min-width:0}
+.tcrn-shell-locale-menu__trigger,.tcrn-shell-locale-menu__option{display:flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:var(--tcrn-color-ink-2);font:500 12.5px/20px var(--tcrn-type-family-ui);cursor:pointer;white-space:nowrap}
+.tcrn-shell-locale-menu__trigger:hover,.tcrn-shell-locale-menu__option:hover{background:var(--tcrn-color-hover);color:var(--tcrn-color-ink)}
+.tcrn-shell-locale-menu__option[aria-checked="true"]{background:var(--tcrn-color-wash);color:var(--tcrn-color-ink);font-weight:600}
+.tcrn-shell-locale-menu__panel{position:absolute;right:0;top:calc(100% + 6px);width:240px;padding:6px;background:var(--tcrn-color-panel);border-radius:12px;box-shadow:var(--tcrn-elevation-s3);display:flex;flex-direction:column;gap:2px;z-index:3}
+.tcrn-page-header{display:flex;flex-direction:column;gap:10px;min-width:0}
+.tcrn-page-header__body{display:flex;align-items:flex-end;gap:14px;min-width:0;border-bottom:1px solid var(--tcrn-color-line-2);padding-bottom:12px}
+.tcrn-page-header__description{margin:0}
+.tcrn-page-header__meta{padding-bottom:4px;flex:none;white-space:nowrap}
+.tcrn-page-header__lead{flex:1;min-width:0}
+.tcrn-page-header__title{line-height:1.1;letter-spacing:-.005em}
+.tcrn-page-header__content{flex:1;min-width:0}
+.tcrn-page-header__actions{display:flex;align-items:center;gap:8px;flex:none}
+.tcrn-breadcrumb{display:flex;align-items:center;gap:6px;min-width:0;color:var(--tcrn-color-ink-3);font-size:12px;white-space:nowrap}
+.tcrn-breadcrumb ol{display:flex;align-items:center;gap:6px;min-width:0;margin:0;padding:0;list-style:none}
+.tcrn-breadcrumb__separator{flex:none}
+.tcrn-breadcrumb__item{display:inline-flex;align-items:center;gap:6px;min-width:0}
+.tcrn-breadcrumb a{color:var(--tcrn-color-ink-2);text-decoration:none}
+.tcrn-breadcrumb__crumb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tcrn-nav-group{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tcrn-nav-group__items{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tcrn-nav-group__label{display:grid;grid-template-columns:minmax(0,1fr) 24px;column-gap:10px;align-items:center;min-width:0;height:28px;padding:0 4px 0 8px;margin-top:6px;color:var(--tcrn-color-ink-3)}
+.tcrn-nav-group__label-text{margin:0;font:500 10px/16px var(--tcrn-type-family-ui);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 07 .ts-it paints once across the text and reserved pin slot. Its accessible
+   package rendition uses sibling link/button nodes, so the wrapper owns that carrier. */
+.tcrn-nav-item-row{--tcrn-pair-fill-d:transparent;--tcrn-pair-fill-h:var(--tcrn-color-hover);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-fill:var(--tcrn-pair-fill-d);display:grid;grid-template-columns:minmax(0,1fr) 24px;align-items:center;column-gap:0;min-width:0;border-radius:8px;color:var(--tcrn-color-ink-2);background:var(--tcrn-pair-fill)}
+.tcrn-nav-item{display:flex;align-items:center;gap:10px;min-width:0;height:var(--tcrn-shell-row-h);padding:0 4px 0 8px;border:0;border-radius:8px;background:transparent;color:inherit;text-decoration:none;text-align:left;font:500 12.5px/20px var(--tcrn-type-family-ui);white-space:nowrap}
+.tcrn-nav-item__content,.tcrn-nav-item__label{display:inline-flex;align-items:center;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tcrn-nav-item-row:where(:hover,:has(>.tcrn-nav-item[data-tcrn-preview-state="hover"])){--tcrn-pair-fill:var(--tcrn-pair-fill-h)}
+.tcrn-nav-item-row:where(:has(>[aria-current="page"]),:has(>[aria-expanded="true"])){--tcrn-pair-fill:var(--tcrn-pair-fill-s);font-weight:600}
+.tcrn-nav-pin{display:inline-flex;align-items:center;justify-content:center;justify-self:end;width:24px;height:24px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--tcrn-color-ink-3);opacity:0;cursor:pointer}
+.tcrn-nav-pin>.tcrn-icon{width:16px;height:16px}
+.tcrn-nav-item-row:hover .tcrn-nav-pin,.tcrn-nav-item-row:focus-within .tcrn-nav-pin,.tcrn-nav-group__label:hover .tcrn-nav-pin,.tcrn-nav-group__label:focus-within .tcrn-nav-pin,.tcrn-nav-pin[aria-pressed="true"],.tcrn-nav-pin:focus-visible{opacity:1}
+.tcrn-nav-pin[aria-pressed="true"]{color:var(--tcrn-color-acc)}
+.tcrn-nav-pin[aria-pressed="true"] .tcrn-icon>path:first-child{fill:currentColor}
+.tcrn-nav-pin:hover{background:var(--tcrn-color-wash)}
+/* 07a/07b: paper Tabs use a 1px ink underline; selected lists/table rows use wash. */
+.tcrn-tabs{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tcrn-tabs--panel,.tcrn-tabs__panel{min-width:0}
+.tcrn-tabs__list{display:flex;gap:18px;border-bottom:1px solid var(--tcrn-color-line);min-width:0}
+.tcrn-tabs__tab{position:relative;display:inline-flex;align-items:center;gap:6px;padding:4px 0 9px;border:0;border-radius:0;background:transparent;color:var(--tcrn-color-ink-3);font:500 12.5px/20px var(--tcrn-type-family-ui);text-decoration:none;white-space:nowrap;cursor:pointer}
+.tcrn-tabs__tab[aria-selected="true"],.tcrn-tabs__tab[aria-current="page"]{color:var(--tcrn-color-ink);font-weight:600}
+.tcrn-tabs__tab[aria-selected="true"]:after,.tcrn-tabs__tab[aria-current="page"]:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--tcrn-color-rule)}
+.tcrn-tabs__label{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+
+/* The icon base class (Icon board, section E). It moved here from the docs layer, which
+   now keeps only sample layout (docs/style-scale.md). An icon is an inline-block that
+   neither grows nor shrinks in a flex row and sits on the middle of the text line around
+   it, as the board draws it; containers that centre their icon (buttons, nav items,
+   inputs) do so themselves. The size is the svg width and height: sm 14, md 16 or lg 20
+   from the icon size tokens, or a number. The roster line is restated so that a page
+   rule aimed at svg cannot fill, thin or recolour an icon: no fill, the current text
+   colour, one stroke width at every size, round caps and joins. vector-effect is not
+   inherited, so it is set on the shapes. */
+.tcrn-icon {
+  display: inline-block;
+  flex: none;
+  color: currentColor;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+.tcrn-icon > * {
+  vector-effect: non-scaling-stroke;
+}
+/* Markup written without size attributes takes the md step rather than the 300 by 150
+   default of a replaced element. Zero specificity, so a host rule still wins. */
+:where(.tcrn-icon:not([width])) {
+  inline-size: var(--tcrn-icon-size-md);
+}
+:where(.tcrn-icon:not([height])) {
+  block-size: var(--tcrn-icon-size-md);
+}
+/* loader-circle turns on the loading loop token, motion.loading.loop (900ms linear). A
+   loop needs visible status copy beside it; published 03 C retains the 900ms linear loop under reduced motion. */
+.tcrn-icon[data-icon-name="loader-circle"] {
+  transform-origin: 50% 50%;
+  animation: tcrn-icon-spin var(--tcrn-motion-loading-loop) infinite;
+}
+@keyframes tcrn-icon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* ClipboardCopyButton renders one icon for each settled state and shows the one its state
+   names: copy while idle, check once copied, alert-triangle when the copy failed, info
+   where the browser cannot copy. While it copies, the loader stands in their place and
+   none of them shows. The static bridge only switches data-clipboard-copy-state, so the
+   static button shows the same icon. The box is the loader's (13, or 15 on a large
+   button, as in the Actions board), so the label does not move when the icon changes. */
+.tcrn-icon[data-clipboard-state-icon] {
+  display: none;
+  inline-size: 13px;
+  block-size: 13px;
+}
+.tcrn-button--lg > .tcrn-icon[data-clipboard-state-icon] {
+  inline-size: 15px;
+  block-size: 15px;
+}
+[data-clipboard-copy-state="idle"] > .tcrn-icon[data-clipboard-state-icon="idle"],
+[data-clipboard-copy-state="copied"] > .tcrn-icon[data-clipboard-state-icon="copied"],
+[data-clipboard-copy-state="failed"] > .tcrn-icon[data-clipboard-state-icon="failed"],
+[data-clipboard-copy-state="unsupported"] > .tcrn-icon[data-clipboard-state-icon="unsupported"] {
+  display: inline-block;
+}
+
+.tcrn-button {
+  font: inherit;
+}
+
+/* Geometry is token by token (sm 28, md 32, lg 40, radius 8). A press neither moves nor
+   scales the button: the switch to the active pair is the whole answer, the same under a
+   finger as under a pointer. */
+.tcrn-button,
+.tcrn-link-button {
+  position: relative;
   box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tcrn-space-1h);
+  max-inline-size: 100%;
+  block-size: var(--tcrn-control-height-md);
+  padding: 0 var(--tcrn-control-padding-md);
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-family: var(--tcrn-type-family-ui);
+  font-size: var(--tcrn-type-size-control);
+  font-weight: var(--tcrn-pair-weight);
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-button--sm,
+.tcrn-link-button--sm {
+  block-size: var(--tcrn-control-height-sm);
+  padding: 0 var(--tcrn-control-padding-sm);
+  font-size: var(--tcrn-type-size-control-sm);
+}
+.tcrn-button--md,
+.tcrn-link-button--md {
+  block-size: var(--tcrn-control-height-md);
+  padding: 0 var(--tcrn-control-padding-md);
+  font-size: var(--tcrn-type-size-control);
+}
+.tcrn-button--lg,
+.tcrn-link-button--lg {
+  block-size: var(--tcrn-control-height-lg);
+  padding: 0 var(--tcrn-control-padding-lg);
+  font-size: var(--tcrn-type-size-control-lg);
+}
+/* One line, cut with an ellipsis; the component repeats the text in title. The label keeps
+   a normal line height so the cut never clips ascenders or descenders. */
+.tcrn-button__label {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: normal;
+}
+.tcrn-button__spinner {
+  flex: 0 0 auto;
+  inline-size: 13px;
+  block-size: 13px;
+  animation: tcrn-button-spin var(--tcrn-motion-duration-loop) linear infinite;
+}
+.tcrn-button--lg .tcrn-button__spinner {
+  inline-size: 15px;
+  block-size: 15px;
+}
+@keyframes tcrn-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.tcrn-button,.tcrn-link-button{--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-ink:var(--tcrn-pair-ink-d);--tcrn-pair-edge:var(--tcrn-pair-edge-d);--tcrn-pair-weight:500}
+.tcrn-button.tcrn-button--primary{--tcrn-pair-fill-d:var(--tcrn-color-acc);--tcrn-pair-ink-d:var(--tcrn-color-on-acc);--tcrn-pair-edge-d:0 0 #0000;--tcrn-pair-fill-h:var(--tcrn-color-acc-2);--tcrn-pair-ink-h:var(--tcrn-color-on-acc);--tcrn-pair-edge-h:var(--tcrn-pair-edge-d);--tcrn-pair-fill-a:var(--tcrn-color-acc-3);--tcrn-pair-ink-a:var(--tcrn-color-on-acc);--tcrn-pair-edge-a:var(--tcrn-pair-edge-d);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:var(--tcrn-pair-edge-d);--tcrn-pair-fill-s:var(--tcrn-color-acc-3);--tcrn-pair-ink-s:var(--tcrn-color-on-acc);--tcrn-pair-edge-s:var(--tcrn-pair-edge-d);--tcrn-pair-fill-f:var(--tcrn-color-acc);--tcrn-pair-fill-l:var(--tcrn-color-acc);--tcrn-pair-ink-f:var(--tcrn-color-on-acc);--tcrn-pair-ink-l:var(--tcrn-color-on-acc);--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 0 #0000;--tcrn-pair-edge-l:0 0 #0000}
+.tcrn-button.tcrn-button--secondary{--tcrn-pair-fill-d:var(--tcrn-color-panel);--tcrn-pair-ink-d:var(--tcrn-color-ink);--tcrn-pair-edge-d:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-fill-h:var(--tcrn-color-panel-2);--tcrn-pair-ink-h:var(--tcrn-color-ink);--tcrn-pair-edge-h:var(--tcrn-pair-edge-d);--tcrn-pair-fill-a:var(--tcrn-color-bg-2);--tcrn-pair-ink-a:var(--tcrn-color-ink);--tcrn-pair-edge-a:var(--tcrn-pair-edge-d);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-ink-s:var(--tcrn-color-ink);--tcrn-pair-edge-s:var(--tcrn-pair-edge-d);--tcrn-pair-fill-f:var(--tcrn-color-panel);--tcrn-pair-fill-l:var(--tcrn-color-panel);--tcrn-pair-ink-f:var(--tcrn-color-ink);--tcrn-pair-ink-l:var(--tcrn-color-ink);--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-edge-l:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl)}
+.tcrn-button.tcrn-button--quiet{--tcrn-pair-fill-d:#0000;--tcrn-pair-ink-d:var(--tcrn-color-ink-2);--tcrn-pair-edge-d:0 0 #0000;--tcrn-pair-fill-h:var(--tcrn-color-hover);--tcrn-pair-ink-h:var(--tcrn-color-ink);--tcrn-pair-edge-h:var(--tcrn-pair-edge-d);--tcrn-pair-fill-a:var(--tcrn-color-wash);--tcrn-pair-ink-a:var(--tcrn-color-ink);--tcrn-pair-edge-a:var(--tcrn-pair-edge-d);--tcrn-pair-fill-x:#0000;--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:var(--tcrn-pair-edge-d);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-ink-s:var(--tcrn-color-ink);--tcrn-pair-edge-s:var(--tcrn-pair-edge-d);--tcrn-pair-fill-f:#0000;--tcrn-pair-fill-l:#0000;--tcrn-pair-ink-f:var(--tcrn-color-ink-2);--tcrn-pair-ink-l:var(--tcrn-color-ink-2);--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 0 #0000;--tcrn-pair-edge-l:0 0 #0000}
+.tcrn-button.tcrn-button--danger{--tcrn-pair-fill-d:var(--tcrn-color-panel);--tcrn-pair-ink-d:var(--tcrn-color-red);--tcrn-pair-edge-d:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-fill-h:var(--tcrn-color-red-bg);--tcrn-pair-ink-h:var(--tcrn-color-red);--tcrn-pair-edge-h:var(--tcrn-pair-edge-d);--tcrn-pair-fill-a:var(--tcrn-color-red-bg-2);--tcrn-pair-ink-a:var(--tcrn-color-red);--tcrn-pair-edge-a:var(--tcrn-pair-edge-d);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-s:var(--tcrn-color-red-bg);--tcrn-pair-ink-s:var(--tcrn-color-red);--tcrn-pair-edge-s:var(--tcrn-pair-edge-d);--tcrn-pair-fill-f:var(--tcrn-color-panel);--tcrn-pair-fill-l:var(--tcrn-color-panel);--tcrn-pair-ink-f:var(--tcrn-color-red);--tcrn-pair-ink-l:var(--tcrn-color-red);--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-edge-l:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl)}
+.tcrn-link-button.tcrn-link-button--primary{--tcrn-pair-fill-d:var(--tcrn-color-acc);--tcrn-pair-ink-d:var(--tcrn-color-on-acc);--tcrn-pair-edge-d:0 0 #0000;--tcrn-pair-fill-h:var(--tcrn-color-acc-2);--tcrn-pair-ink-h:var(--tcrn-color-on-acc);--tcrn-pair-edge-h:var(--tcrn-pair-edge-d);--tcrn-pair-fill-a:var(--tcrn-color-acc-3);--tcrn-pair-ink-a:var(--tcrn-color-on-acc);--tcrn-pair-edge-a:var(--tcrn-pair-edge-d);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:var(--tcrn-pair-edge-d);--tcrn-pair-fill-s:var(--tcrn-color-acc-3);--tcrn-pair-ink-s:var(--tcrn-color-on-acc);--tcrn-pair-edge-s:var(--tcrn-pair-edge-d);--tcrn-pair-fill-f:var(--tcrn-color-acc);--tcrn-pair-fill-l:var(--tcrn-color-acc);--tcrn-pair-ink-f:var(--tcrn-color-on-acc);--tcrn-pair-ink-l:var(--tcrn-color-on-acc);--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 0 #0000;--tcrn-pair-edge-l:0 0 #0000}
+.tcrn-link-button.tcrn-link-button--secondary{--tcrn-pair-fill-d:var(--tcrn-color-panel);--tcrn-pair-ink-d:var(--tcrn-color-ink);--tcrn-pair-edge-d:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-fill-h:var(--tcrn-color-panel-2);--tcrn-pair-ink-h:var(--tcrn-color-ink);--tcrn-pair-edge-h:var(--tcrn-pair-edge-d);--tcrn-pair-fill-a:var(--tcrn-color-bg-2);--tcrn-pair-ink-a:var(--tcrn-color-ink);--tcrn-pair-edge-a:var(--tcrn-pair-edge-d);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-ink-s:var(--tcrn-color-ink);--tcrn-pair-edge-s:var(--tcrn-pair-edge-d);--tcrn-pair-fill-f:var(--tcrn-color-panel);--tcrn-pair-fill-l:var(--tcrn-color-panel);--tcrn-pair-ink-f:var(--tcrn-color-ink);--tcrn-pair-ink-l:var(--tcrn-color-ink);--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-edge-l:0 1px 1px rgba(22,21,15,.04),0 0 0 1px var(--tcrn-color-line-ctl)}
+.tcrn-link-button.tcrn-link-button--quiet{--tcrn-pair-fill-d:#0000;--tcrn-pair-ink-d:var(--tcrn-color-ink-2);--tcrn-pair-edge-d:0 0 #0000;--tcrn-pair-fill-h:var(--tcrn-color-hover);--tcrn-pair-ink-h:var(--tcrn-color-ink);--tcrn-pair-edge-h:var(--tcrn-pair-edge-d);--tcrn-pair-fill-a:var(--tcrn-color-wash);--tcrn-pair-ink-a:var(--tcrn-color-ink);--tcrn-pair-edge-a:var(--tcrn-pair-edge-d);--tcrn-pair-fill-x:#0000;--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:var(--tcrn-pair-edge-d);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-ink-s:var(--tcrn-color-ink);--tcrn-pair-edge-s:var(--tcrn-pair-edge-d);--tcrn-pair-fill-f:#0000;--tcrn-pair-fill-l:#0000;--tcrn-pair-ink-f:var(--tcrn-color-ink-2);--tcrn-pair-ink-l:var(--tcrn-color-ink-2);--tcrn-pair-edge-f:var(--tcrn-focus-ring),0 0 #0000;--tcrn-pair-edge-l:0 0 #0000}
+.tcrn-button:where(:hover,[data-tcrn-preview-state="hover"]),.tcrn-link-button:where(:hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h);--tcrn-pair-ink:var(--tcrn-pair-ink-h);--tcrn-pair-edge:var(--tcrn-pair-edge-h)}
+.tcrn-button:where(:active,[data-tcrn-preview-state="active"]),.tcrn-link-button:where(:active,[data-tcrn-preview-state="active"]){--tcrn-pair-fill:var(--tcrn-pair-fill-a);--tcrn-pair-ink:var(--tcrn-pair-ink-a);--tcrn-pair-edge:var(--tcrn-pair-edge-a)}
+.tcrn-button:where(:focus-visible,[data-tcrn-preview-state="focus"]),.tcrn-link-button:where(:focus-visible,[data-tcrn-preview-state="focus"]){--tcrn-pair-edge:var(--tcrn-pair-edge-f)}
+.tcrn-button:where([aria-pressed="true"]),.tcrn-link-button:where([aria-pressed="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-s);--tcrn-pair-ink:var(--tcrn-pair-ink-s);--tcrn-pair-edge:var(--tcrn-pair-edge-s);--tcrn-pair-weight:600}
+.tcrn-button:where(:disabled,[aria-disabled="true"]),.tcrn-link-button:where(:disabled,[aria-disabled="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-x);--tcrn-pair-ink:var(--tcrn-pair-ink-x);--tcrn-pair-edge:var(--tcrn-pair-edge-x)}
+.tcrn-button:where([aria-busy="true"]),.tcrn-link-button:where([aria-busy="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-l);--tcrn-pair-ink:var(--tcrn-pair-ink-l);--tcrn-pair-edge:var(--tcrn-pair-edge-l)}
+/* What the disabled and busy states do besides switching the pair. */
+.tcrn-button:where(:disabled,[aria-disabled="true"]),
+.tcrn-link-button:where([aria-disabled="true"]) {
+  cursor: not-allowed;
+}
+.tcrn-button:where([aria-busy="true"]),
+.tcrn-link-button:where([aria-busy="true"]) {
+  pointer-events: none;
+}
+.tcrn-button:where(:not([aria-busy="true"])) > .tcrn-button__spinner {
+  display: none;
+}
+/* The focus ring is part of the edge pair, and forced colours paint no box-shadow. The
+   transparent outline is invisible everywhere else; in forced colours the system recolours
+   it, so the focused button still shows a ring there. */
+.tcrn-button:focus-visible,
+.tcrn-link-button:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+/* ClipboardCopyButton says how the copy went with the ink alone: copied ok, failed bad,
+   unsupported ink-3. Fill and edge stay the variant's, so the face does not change. The ink
+   is given for default, hover, active and focus alike, because the pointer is still over the
+   button, and focus is back on it, when the result arrives. */
+.tcrn-button[data-clipboard-copy-state="copied"] {
+  --tcrn-pair-ink-d: var(--tcrn-color-ok);
+  --tcrn-pair-ink-h: var(--tcrn-color-ok);
+  --tcrn-pair-ink-a: var(--tcrn-color-ok);
+  --tcrn-pair-ink-f: var(--tcrn-color-ok);
+}
+.tcrn-button[data-clipboard-copy-state="failed"] {
+  --tcrn-pair-ink-d: var(--tcrn-color-bad);
+  --tcrn-pair-ink-h: var(--tcrn-color-bad);
+  --tcrn-pair-ink-a: var(--tcrn-color-bad);
+  --tcrn-pair-ink-f: var(--tcrn-color-bad);
+}
+.tcrn-button[data-clipboard-copy-state="unsupported"] {
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-3);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink-3);
+  --tcrn-pair-ink-a: var(--tcrn-color-ink-3);
+  --tcrn-pair-ink-f: var(--tcrn-color-ink-3);
+}
+/* ButtonGroup: attached buttons share one outline, drawn by the group; the members drop
+   their own edges, square their inner corners and sit 1px apart beside a 1px separator.
+   The group isolates its stacking, so the focused member, raised by one, draws its whole
+   ring above its neighbours; nothing here clips (no overflow), so the ring is never cut.
+   The member rules sit after the generated variant declarations they override, at the
+   same (0,2,0). */
+.tcrn-button-group {
+  display: inline-flex;
+  align-items: stretch;
+  max-inline-size: 100%;
+  border-radius: var(--tcrn-radius-control);
+  box-shadow: 0 1px 1px rgba(22, 21, 15, 0.04), 0 0 0 1px var(--tcrn-color-line-ctl);
+  isolation: isolate;
+}
+.tcrn-button-group--quiet {
+  box-shadow: none;
+}
+.tcrn-button-group__separator {
+  flex: 0 0 auto;
+  inline-size: 1px;
+  background: var(--tcrn-color-line-ctl);
+}
+.tcrn-button-group--quiet > .tcrn-button-group__separator {
+  background: var(--tcrn-color-line-2);
+}
+.tcrn-button-group > .tcrn-button {
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-h: 0 0 #0000;
+  --tcrn-pair-edge-a: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-edge-x: 0 0 #0000;
+  --tcrn-pair-edge-l: 0 0 #0000;
+  --tcrn-pair-edge-s: 0 0 #0000;
+  margin-inline-start: 1px;
+  border-radius: 0;
+}
+.tcrn-button-group > .tcrn-button:first-child {
+  margin-inline-start: 0;
+  border-start-start-radius: var(--tcrn-radius-control);
+  border-end-start-radius: var(--tcrn-radius-control);
+}
+.tcrn-button-group > .tcrn-button:last-child {
+  border-start-end-radius: var(--tcrn-radius-control);
+  border-end-end-radius: var(--tcrn-radius-control);
+}
+:where(.tcrn-button-group) > .tcrn-button:where(:focus-visible,[data-tcrn-preview-state="focus"]) {
+  z-index: 1;
 }
 
-body {
+.tcrn-icon-button {
+  inline-size: var(--tcrn-control-height-md);
+  padding: 0;
+}
+.tcrn-icon-button.tcrn-button--sm {
+  inline-size: var(--tcrn-control-height-sm);
+}
+.tcrn-icon-button.tcrn-button--lg {
+  inline-size: var(--tcrn-control-height-lg);
+}
+
+.tcrn-icon-button__label {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.tcrn-button:where(:active,[data-tcrn-preview-state="active"]),.tcrn-link-button:where(:active,[data-tcrn-preview-state="active"]){transition-duration:var(--tcrn-motion-duration-press)}
+.tcrn-icon-button--labelled{inline-size:auto;padding:0 var(--tcrn-control-padding-md)}
+.tcrn-icon-button--labelled .tcrn-icon-button__label{position:static;inline-size:auto;block-size:auto;overflow:visible;clip-path:none}
+
+
+
+
+/* SearchInput is a quiet tool, the same in a form and in a top bar: a wash fill with no
+   edge, a line-2 edge on hover, and the paper fill with the focus ring once focused. The
+   control itself is the box and takes those values from the inputs pair table (the
+   search variant of .tcrn-input); the wrapper only positions the icon and the shortcut
+   over it, and the control's inline padding keeps the text clear of both. */
+.tcrn-search-input {
+  --tcrn-search-input-icon-size: var(--tcrn-icon-size-sm);
+  --tcrn-search-input-block-size: var(--tcrn-control-height-md);
+  --tcrn-search-input-padding-inline: var(--tcrn-space-2h);
+  --tcrn-search-input-column-gap: var(--tcrn-space-1h);
+  --tcrn-search-input-control-min-inline-size: 9ch;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  min-inline-size: var(--tcrn-search-input-min-inline-size, 0);
+  max-inline-size: 100%;
+}
+/* The fill prop: the wrapper takes its container's full inline size. */
+.tcrn-search-input--fill {
+  inline-size: 100%;
+}
+.tcrn-search-input__icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: var(--tcrn-search-input-padding-inline);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tcrn-search-input-icon-size);
+  block-size: var(--tcrn-search-input-icon-size);
+  color: var(--tcrn-color-ink-3);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.tcrn-search-input__icon svg {
+  inline-size: var(--tcrn-search-input-icon-size);
+  block-size: var(--tcrn-search-input-icon-size);
+}
+.tcrn-search-input .tcrn-search-input__control {
+  -webkit-appearance: none;
+  appearance: none;
+  inline-size: 100%;
+  min-inline-size: calc(var(--tcrn-search-input-control-min-inline-size) + var(--tcrn-search-input-icon-size) + var(--tcrn-search-input-column-gap) + 2 * var(--tcrn-search-input-padding-inline));
+  max-inline-size: none;
+  block-size: var(--tcrn-search-input-block-size);
+  padding-block: 0;
+  padding-inline: calc(var(--tcrn-search-input-padding-inline) + var(--tcrn-search-input-icon-size) + var(--tcrn-search-input-column-gap)) var(--tcrn-search-input-padding-inline);
+}
+/* With a shortcut the text stops short of it: the reserve fits the six-character
+   automatic label in the shortcut's 10px mono with room to spare. */
+.tcrn-search-input[data-shortcut-visible="true"] .tcrn-search-input__control {
+  padding-inline-end: calc(var(--tcrn-space-2) + var(--tcrn-search-input-column-gap) + 7ch);
+}
+.tcrn-input.tcrn-search-input__control::placeholder {
+  color: var(--tcrn-color-ink-2);
+}
+/* The shortcut label is text, so it takes ink-2 for the same reason the placeholder does:
+   ink-3 on the night wash falls under the 4.5 text contrast. */
+.tcrn-search-input__shortcut {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--tcrn-space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--tcrn-space-1);
+  border: 1px solid var(--tcrn-color-line-2);
+  border-radius: 4px;
+  color: var(--tcrn-color-ink-2);
+  font-family: var(--tcrn-type-family-mono);
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.tcrn-input,
+.tcrn-select {
+  box-sizing: border-box;
+  max-width: 100%;
+  block-size: var(--tcrn-control-height-md);
+  padding: 0 var(--tcrn-space-2h);
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  outline: 0;
+  background-color: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-family: var(--tcrn-type-family-ui);
+  font-size: var(--tcrn-type-size-control);
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-input {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.tcrn-input::placeholder {
+  color: var(--tcrn-color-ink-3);
+  opacity: 1;
+}
+.tcrn-select {
+  cursor: pointer;
+}
+/* Forced colours drop box-shadow, so the ring keeps a transparent outline behind it for
+   the system to paint; everywhere else the outline is invisible. */
+.tcrn-input:where(:focus-visible),
+.tcrn-select:where(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-input:where(:disabled),
+.tcrn-select:where(:disabled) {
+  cursor: not-allowed;
+}
+/* Textarea is a modifier on .tcrn-input (pair, radius and font come from the base);
+   these deltas give it a multi-line box and a vertical resize handle. */
+.tcrn-textarea {
+  block-size: auto;
+  min-block-size: 76px;
+  padding: var(--tcrn-space-1h) var(--tcrn-space-2h);
+  resize: vertical;
+}.tcrn-input,.tcrn-select{--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-ink:var(--tcrn-pair-ink-d);--tcrn-pair-edge:var(--tcrn-pair-edge-d);--tcrn-pair-fill-d:var(--tcrn-color-panel);--tcrn-pair-ink-d:var(--tcrn-color-ink);--tcrn-pair-edge-d:inset 0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-fill-h:var(--tcrn-color-panel);--tcrn-pair-ink-h:var(--tcrn-color-ink);--tcrn-pair-edge-h:inset 0 0 0 1px var(--tcrn-color-ink-2);--tcrn-pair-fill-f:var(--tcrn-color-panel);--tcrn-pair-ink-f:var(--tcrn-color-ink);--tcrn-pair-edge-f:inset 0 0 0 1px var(--tcrn-color-acc),var(--tcrn-focus-ring);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-ink-x:var(--tcrn-color-ink-3);--tcrn-pair-edge-x:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-r:var(--tcrn-color-panel-2);--tcrn-pair-ink-r:var(--tcrn-color-ink);--tcrn-pair-edge-r:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-e:var(--tcrn-color-panel);--tcrn-pair-ink-e:var(--tcrn-color-ink);--tcrn-pair-edge-e:inset 0 0 0 1px var(--tcrn-color-bad);--tcrn-pair-edge-ef:inset 0 0 0 1px var(--tcrn-color-bad),0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-bad)}
+.tcrn-input.tcrn-search-input__control{--tcrn-pair-fill-d:var(--tcrn-color-wash);--tcrn-pair-edge-d:0 0 #0000;--tcrn-pair-fill-h:var(--tcrn-color-wash);--tcrn-pair-edge-h:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-f:var(--tcrn-color-panel)}
+.tcrn-input:where(:hover,[data-tcrn-preview-state="hover"]),.tcrn-select:where(:hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h);--tcrn-pair-ink:var(--tcrn-pair-ink-h);--tcrn-pair-edge:var(--tcrn-pair-edge-h)}
+.tcrn-input:where(:focus-visible,[data-tcrn-preview-state="focus"]),.tcrn-select:where(:focus-visible,[data-tcrn-preview-state="focus"]){--tcrn-pair-fill:var(--tcrn-pair-fill-f);--tcrn-pair-ink:var(--tcrn-pair-ink-f);--tcrn-pair-edge:var(--tcrn-pair-edge-f)}
+.tcrn-input:where([readonly],[aria-readonly="true"]),.tcrn-select:where([readonly],[aria-readonly="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-r);--tcrn-pair-ink:var(--tcrn-pair-ink-r);--tcrn-pair-edge:var(--tcrn-pair-edge-r)}
+.tcrn-input:where([aria-invalid="true"],[data-tcrn-preview-state="error"]),.tcrn-select:where([aria-invalid="true"],[data-tcrn-preview-state="error"]){--tcrn-pair-fill:var(--tcrn-pair-fill-e);--tcrn-pair-ink:var(--tcrn-pair-ink-e);--tcrn-pair-edge:var(--tcrn-pair-edge-e)}
+.tcrn-input:where([aria-invalid="true"]:focus-visible,[data-tcrn-preview-state="error-focus"]),.tcrn-select:where([aria-invalid="true"]:focus-visible,[data-tcrn-preview-state="error-focus"]){--tcrn-pair-edge:var(--tcrn-pair-edge-ef)}
+.tcrn-input:where(:disabled),.tcrn-select:where(:disabled){--tcrn-pair-fill:var(--tcrn-pair-fill-x);--tcrn-pair-ink:var(--tcrn-pair-ink-x);--tcrn-pair-edge:var(--tcrn-pair-edge-x)}
+
+
+/* Component-loop primitives: each rule stays package-owned and token-led so the
+   exported CSS can be consumed without importing the React implementation. */
+.tcrn-switch {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--tcrn-space-1) var(--tcrn-space-2h);
+  align-items: center;
+  min-width: 0;
+  color: var(--tcrn-color-ink);
+  cursor: pointer;
+}
+/* Switch: a 34 by 20 track (fill and edge of the pair) with a 16px knob (knob and
+   knob-edge) that travels 14px. Checked, the knob takes on-acc, a dark knob at night. */
+.tcrn-switch__control {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  inline-size: 34px;
+  block-size: 20px;
   margin: 0;
+  border: 0;
+  border-radius: var(--tcrn-radius-pill);
+  outline: 0;
+  background-color: var(--tcrn-pair-fill);
+  box-shadow: var(--tcrn-pair-edge);
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-switch__control::before {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  inline-size: 16px;
+  block-size: 16px;
+  border-radius: 50%;
+  background-color: var(--tcrn-pair-knob);
+  box-shadow: var(--tcrn-pair-knob-edge);
+  content: "";
+  transition:
+    transform var(--tcrn-motion-duration-move) var(--tcrn-motion-ease),
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-switch__control:where(:checked)::before {
+  transform: translateX(14px);
+}
+.tcrn-switch__control:where(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-switch__control:where(:disabled) {
+  cursor: not-allowed;
+}
+.tcrn-switch__label {
+  min-width: 0;
+  font-weight: var(--tcrn-type-weight-medium);
+}
+.tcrn-switch__description {
+  grid-column: 2;
+  min-width: 0;
+  color: var(--tcrn-color-ink-2);
+  font-size: var(--tcrn-type-size-meta);
+  line-height: var(--tcrn-type-line-caption);
+}
+.tcrn-switch--disabled {
+  color: var(--tcrn-color-ink-3);
+  cursor: not-allowed;
+}
+
+/* Checkbox and radio draw a 16px box from the pair table (fill, edge and mark). The tick
+   is an ::after border and the radio dot an inset 5px ring, never an image. */
+.tcrn-checkbox,
+.tcrn-radio-group__control {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  inline-size: 16px;
+  block-size: 16px;
+  margin: 0;
+  border: 0;
+  border-radius: var(--tcrn-radius-check);
+  outline: 0;
+  background-color: var(--tcrn-pair-fill);
+  box-shadow: var(--tcrn-pair-edge);
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-checkbox::after {
+  position: absolute;
+  top: 1.5px;
+  left: 5px;
+  box-sizing: content-box;
+  inline-size: 4px;
+  block-size: 8px;
+  border: solid var(--tcrn-pair-mark);
+  border-width: 0 1.5px 1.5px 0;
+  content: "";
+  transform: rotate(45deg);
+}
+.tcrn-checkbox:where(:indeterminate)::after {
+  top: 7px;
+  left: 4px;
+  inline-size: 8px;
+  block-size: 0;
+  border-width: 0 0 1.5px;
+  transform: none;
+}
+.tcrn-radio-group__control {
+  border-radius: 50%;
+}
+.tcrn-radio-group__control::after {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 5px var(--tcrn-pair-mark);
+  content: "";
+  transition: box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-checkbox:where(:focus-visible),
+.tcrn-radio-group__control:where(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-checkbox:where(:disabled),
+.tcrn-radio-group__control:where(:disabled) {
+  cursor: not-allowed;
+}.tcrn-checkbox,.tcrn-radio-group__control{--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-edge:var(--tcrn-pair-edge-d);--tcrn-pair-mark:var(--tcrn-pair-mark-d);--tcrn-pair-fill-d:var(--tcrn-color-panel);--tcrn-pair-edge-d:inset 0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-mark-d:transparent;--tcrn-pair-fill-h:var(--tcrn-color-panel);--tcrn-pair-edge-h:inset 0 0 0 1px var(--tcrn-color-ink-2);--tcrn-pair-mark-h:transparent;--tcrn-pair-fill-c:var(--tcrn-color-acc);--tcrn-pair-edge-c:0 0 #0000;--tcrn-pair-mark-c:var(--tcrn-color-on-acc);--tcrn-pair-fill-f:var(--tcrn-color-panel);--tcrn-pair-edge-f:inset 0 0 0 1px var(--tcrn-color-acc),var(--tcrn-focus-ring);--tcrn-pair-mark-f:transparent;--tcrn-pair-fill-cf:var(--tcrn-color-acc);--tcrn-pair-edge-cf:var(--tcrn-focus-ring);--tcrn-pair-mark-cf:var(--tcrn-color-on-acc);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-edge-x:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-mark-x:transparent;--tcrn-pair-fill-cx:var(--tcrn-color-dis);--tcrn-pair-edge-cx:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-mark-cx:var(--tcrn-color-ink-3);--tcrn-pair-fill-e:var(--tcrn-color-panel);--tcrn-pair-edge-e:inset 0 0 0 1px var(--tcrn-color-bad);--tcrn-pair-mark-e:transparent}
+.tcrn-radio-group__control{}
+.tcrn-checkbox:where(:hover,[data-tcrn-preview-state="hover"]),.tcrn-radio-group__control:where(:hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h);--tcrn-pair-edge:var(--tcrn-pair-edge-h);--tcrn-pair-mark:var(--tcrn-pair-mark-h)}
+.tcrn-checkbox:where(:checked,:indeterminate,[data-tcrn-preview-state="indeterminate"]),.tcrn-radio-group__control:where(:checked,:indeterminate,[data-tcrn-preview-state="indeterminate"]){--tcrn-pair-fill:var(--tcrn-pair-fill-c);--tcrn-pair-edge:var(--tcrn-pair-edge-c);--tcrn-pair-mark:var(--tcrn-pair-mark-c)}
+.tcrn-checkbox:where(:focus-visible,[data-tcrn-preview-state="focus"]),.tcrn-radio-group__control:where(:focus-visible,[data-tcrn-preview-state="focus"]){--tcrn-pair-fill:var(--tcrn-pair-fill-f);--tcrn-pair-edge:var(--tcrn-pair-edge-f);--tcrn-pair-mark:var(--tcrn-pair-mark-f)}
+.tcrn-checkbox:where(:checked:focus-visible,:checked[data-tcrn-preview-state="focus"],[data-tcrn-preview-state="indeterminate"][data-focus="true"]),.tcrn-radio-group__control:where(:checked:focus-visible,:checked[data-tcrn-preview-state="focus"],[data-tcrn-preview-state="indeterminate"][data-focus="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-cf);--tcrn-pair-edge:var(--tcrn-pair-edge-cf);--tcrn-pair-mark:var(--tcrn-pair-mark-cf)}
+.tcrn-checkbox:where([aria-invalid="true"]),.tcrn-radio-group__control:where([aria-invalid="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-e);--tcrn-pair-edge:var(--tcrn-pair-edge-e);--tcrn-pair-mark:var(--tcrn-pair-mark-e)}
+.tcrn-checkbox:where(:disabled),.tcrn-radio-group__control:where(:disabled){--tcrn-pair-fill:var(--tcrn-pair-fill-x);--tcrn-pair-edge:var(--tcrn-pair-edge-x);--tcrn-pair-mark:var(--tcrn-pair-mark-x)}
+.tcrn-checkbox:where(:disabled:checked,:disabled:indeterminate),.tcrn-radio-group__control:where(:disabled:checked,:disabled:indeterminate){--tcrn-pair-fill:var(--tcrn-pair-fill-cx);--tcrn-pair-edge:var(--tcrn-pair-edge-cx);--tcrn-pair-mark:var(--tcrn-pair-mark-cx)}.tcrn-switch__control{--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-edge:var(--tcrn-pair-edge-d);--tcrn-pair-knob:var(--tcrn-pair-knob-d);--tcrn-pair-knob-edge:var(--tcrn-pair-knob-edge-d);--tcrn-pair-fill-d:var(--tcrn-color-bg-2);--tcrn-pair-edge-d:inset 0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-knob-d:var(--tcrn-color-panel);--tcrn-pair-knob-edge-d:0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-fill-h:var(--tcrn-color-bg-2);--tcrn-pair-edge-h:inset 0 0 0 1px var(--tcrn-color-ink-2);--tcrn-pair-knob-h:var(--tcrn-color-panel);--tcrn-pair-knob-edge-h:0 0 0 1px var(--tcrn-color-ink-2);--tcrn-pair-fill-c:var(--tcrn-color-acc);--tcrn-pair-edge-c:0 0 #0000;--tcrn-pair-knob-c:var(--tcrn-color-on-acc);--tcrn-pair-knob-edge-c:0 0 #0000;--tcrn-pair-fill-f:var(--tcrn-color-bg-2);--tcrn-pair-edge-f:inset 0 0 0 1px var(--tcrn-color-line-ctl),var(--tcrn-focus-ring);--tcrn-pair-knob-f:var(--tcrn-color-panel);--tcrn-pair-knob-edge-f:0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-fill-cf:var(--tcrn-color-acc);--tcrn-pair-edge-cf:var(--tcrn-focus-ring);--tcrn-pair-knob-cf:var(--tcrn-color-on-acc);--tcrn-pair-knob-edge-cf:0 0 #0000;--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-edge-x:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-knob-x:var(--tcrn-color-panel);--tcrn-pair-knob-edge-x:0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-cx:var(--tcrn-color-dis);--tcrn-pair-edge-cx:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-knob-cx:var(--tcrn-color-ink-3);--tcrn-pair-knob-edge-cx:0 0 #0000}
+.tcrn-switch__control:where(:hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h);--tcrn-pair-edge:var(--tcrn-pair-edge-h);--tcrn-pair-knob:var(--tcrn-pair-knob-h);--tcrn-pair-knob-edge:var(--tcrn-pair-knob-edge-h)}
+.tcrn-switch__control:where(:checked,[data-tcrn-preview-state="indeterminate"]){--tcrn-pair-fill:var(--tcrn-pair-fill-c);--tcrn-pair-edge:var(--tcrn-pair-edge-c);--tcrn-pair-knob:var(--tcrn-pair-knob-c);--tcrn-pair-knob-edge:var(--tcrn-pair-knob-edge-c)}
+.tcrn-switch__control:where(:focus-visible,[data-tcrn-preview-state="focus"]){--tcrn-pair-fill:var(--tcrn-pair-fill-f);--tcrn-pair-edge:var(--tcrn-pair-edge-f);--tcrn-pair-knob:var(--tcrn-pair-knob-f);--tcrn-pair-knob-edge:var(--tcrn-pair-knob-edge-f)}
+.tcrn-switch__control:where(:checked:focus-visible,:checked[data-tcrn-preview-state="focus"],[data-tcrn-preview-state="indeterminate"][data-focus="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-cf);--tcrn-pair-edge:var(--tcrn-pair-edge-cf);--tcrn-pair-knob:var(--tcrn-pair-knob-cf);--tcrn-pair-knob-edge:var(--tcrn-pair-knob-edge-cf)}
+.tcrn-switch__control:where(:disabled){--tcrn-pair-fill:var(--tcrn-pair-fill-x);--tcrn-pair-edge:var(--tcrn-pair-edge-x);--tcrn-pair-knob:var(--tcrn-pair-knob-x);--tcrn-pair-knob-edge:var(--tcrn-pair-knob-edge-x)}
+.tcrn-switch__control:where(:disabled:checked,:disabled:indeterminate){--tcrn-pair-fill:var(--tcrn-pair-fill-cx);--tcrn-pair-edge:var(--tcrn-pair-edge-cx);--tcrn-pair-knob:var(--tcrn-pair-knob-cx);--tcrn-pair-knob-edge:var(--tcrn-pair-knob-edge-cx)}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The knob jumps instead of travelling and keeps its colour change; the radio dot
+     appears at once. */
+  .tcrn-switch__control::before {
+    transition: background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+  }
+  .tcrn-radio-group__control::after {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  /* Forced colours drop every box-shadow, which is where the edges, rings, knob and
+     radio dot live. Text controls get a real border back, and the checkable controls
+     return to the system's own drawing. */
+  .tcrn-input,
+  .tcrn-select {
+    border: 1px solid;
+  }
+  .tcrn-checkbox,
+  .tcrn-radio-group__control,
+  .tcrn-switch__control {
+    -webkit-appearance: auto;
+    appearance: auto;
+  }
+  .tcrn-switch__control {
+    inline-size: auto;
+    block-size: auto;
+  }
+  .tcrn-checkbox::after,
+  .tcrn-radio-group__control::after,
+  .tcrn-switch__control::before {
+    content: none;
+  }
+}
+
+
+.tcrn-radio-group { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--tcrn-space-2); }
+.tcrn-radio-group__legend { padding: 0; font-weight: 600; }
+.tcrn-radio-group__option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--tcrn-space-2);
+}
+.tcrn-radio-group__description { grid-column: 2; font-size: var(--tcrn-type-size-caption); color: var(--tcrn-color-ink-2); }
+.tcrn-radio-group__option[data-option-disabled="true"] { color: var(--tcrn-color-ink-3); }
+
+
+/* DatePicker is a .tcrn-input and shares the text pair table. The native picker
+   indicator stays the click target: it is transparent and stretched over the 30px at
+   the end of the box, where the calendar icon sits, so a click there still opens the
+   system calendar the way the browser's own showPicker does. */
+.tcrn-date-picker { position: relative; padding-inline-end: 30px; }
+.tcrn-date-picker::-webkit-calendar-picker-indicator { position: absolute; inset-block: 0; inset-inline-end: 0; inline-size: 30px; block-size: 100%; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
+
+/* Select and DatePicker sit in a wrapper that only positions their end icon (Inputs
+   board .sw > .chev): chevron-down for Select, calendar for DatePicker, at the sm icon
+   size in ink-3, centred in the 30px the control keeps clear at its end. The wrapper
+   draws nothing and takes the control's place in the layout: it shrinks to the control
+   in a line of text and stretches with it where its container stretches its items. The
+   icon is decorative and lets the pointer through, to the native select or to the
+   transparent date indicator, which covers the same 30px. */
+.tcrn-select-wrap,
+.tcrn-date-picker-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+.tcrn-select-wrap > .tcrn-select,
+.tcrn-date-picker-wrap > .tcrn-date-picker {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+/* With the chevron drawn, the native arrow goes and the label stops short of the icon. */
+.tcrn-select-wrap > .tcrn-select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-inline-end: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-select-wrap__icon,
+.tcrn-date-picker-wrap__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: calc((30px - var(--tcrn-icon-size-sm)) / 2);
+  margin-block: auto;
+  inline-size: var(--tcrn-icon-size-sm);
+  block-size: var(--tcrn-icon-size-sm);
+  color: var(--tcrn-color-ink-3);
+  pointer-events: none;
+}
+
+.tcrn-multi-select-group{display:grid;gap:var(--tcrn-space-2);min-inline-size:0;max-inline-size:100%}
+.tcrn-multi-select-group__options{display:grid;gap:var(--tcrn-space-1);min-inline-size:0;margin:0;padding:0;border:0}
+.tcrn-multi-select-group__option{display:flex;align-items:flex-start;gap:var(--tcrn-space-2);min-inline-size:0;overflow-wrap:anywhere}
+.tcrn-multi-select-group__option input{flex:0 0 auto;margin-block-start:var(--tcrn-space-0h)}
+.tcrn-multi-select-group__actions{display:flex;justify-content:flex-start}
+.tcrn-multi-select-group__clear{justify-self:start}
+
+
+/* The native listbox presentation keeps the Select pair and grows to its rows. */
+.tcrn-select.tcrn-multi-select{block-size:auto;padding:var(--tcrn-space-1)}
+
+/* A collection dropdown uses the Select trigger (the .tcrn-select pair table) and Menu
+   option families. The summary stays on one line and carries its full text as a title.
+   The dropdown stacks its items in one column, each stretched to its width. The trigger
+   comes first and keeps the Select geometry: a flex item at the control height, as the
+   select wrapper lays out a Select, with the same 30px clear at its end, where the caret
+   sits at the sm icon size in ink-3, placed exactly as the Select chevron. A list shown
+   in place (a static open state) comes under the trigger at the trigger's width; at run
+   time the list moves to a fixed overlay layer sized to the trigger, so the column does
+   not place it. */
+.tcrn-multi-select-dropdown{position:relative;display:flex;flex-direction:column;align-items:stretch;min-inline-size:0;max-inline-size:100%}
+.tcrn-multi-select-dropdown__trigger{-webkit-appearance:none;appearance:none;position:relative;display:flex;align-items:center;justify-content:space-between;gap:var(--tcrn-space-2);inline-size:100%;padding-inline-end:30px;text-align:start;cursor:pointer}
+.tcrn-multi-select-dropdown__trigger [data-multi-select-summary]{min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tcrn-multi-select-dropdown__caret{position:absolute;inset-block:0;inset-inline-end:calc((30px - var(--tcrn-icon-size-sm)) / 2);margin-block:auto;inline-size:var(--tcrn-icon-size-sm);block-size:var(--tcrn-icon-size-sm);color:var(--tcrn-color-ink-3);pointer-events:none}
+.tcrn-multi-select-dropdown__trigger:disabled{cursor:not-allowed}
+.tcrn-multi-select-dropdown__list{z-index:var(--tcrn-z-popover);min-inline-size:0;max-inline-size:calc(100vw - var(--tcrn-space-4));max-block-size:calc(100vh - var(--tcrn-space-4));overflow:auto;box-sizing:border-box}
+.tcrn-multi-select-dropdown__list[hidden]{display:none}
+/* An option draws its fill and weight from a pair kept on the option itself (Inputs board
+   .opt): no fill and the regular weight by default, the hover fill on hover, the wash and
+   600 once selected. The base reads the live pair; the two state rules only switch it, and
+   the hover rule comes last, so a hovered selected option shows the hover fill and keeps
+   its weight. */
+.tcrn-multi-select-dropdown__option{--tcrn-pair-fill-d:transparent;--tcrn-pair-fill-h:var(--tcrn-color-hover);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-weight:400;display:flex;justify-content:space-between;align-items:center;gap:var(--tcrn-space-2);font:inherit;font-weight:var(--tcrn-pair-weight);background-color:var(--tcrn-pair-fill);color:var(--tcrn-color-ink);overflow-wrap:anywhere}
+.tcrn-multi-select-dropdown__option:where([aria-selected="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-s);--tcrn-pair-weight:600}
+.tcrn-multi-select-dropdown__option:where(:not(:disabled):hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h)}
+.tcrn-multi-select-dropdown__option [data-multi-select-check]{flex:0 0 auto;visibility:hidden}
+.tcrn-multi-select-dropdown__option [data-multi-select-check][data-selected="true"]{visibility:visible}
+
+.tcrn-number-input{inline-size:100%;min-inline-size:12ch;font-variant-numeric:tabular-nums;text-overflow:clip;-moz-appearance:textfield;appearance:textfield}
+.tcrn-number-input::-webkit-inner-spin-button,.tcrn-number-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+
+.tcrn-input--sm,.tcrn-select--sm{block-size:var(--tcrn-control-height-sm);font-size:var(--tcrn-type-size-control-sm);padding:0 8px}
+.tcrn-input--lg,.tcrn-select--lg{block-size:var(--tcrn-control-height-lg);font-size:var(--tcrn-type-size-control-lg);padding:0 12px}
+.tcrn-input,.tcrn-select{width:100%;min-width:0}
+/* 06 .in.search.sm: the actual control owns the size override, after the wrapper rule. */
+.tcrn-search-input .tcrn-search-input__control.tcrn-input--sm{--tcrn-search-input-block-size:var(--tcrn-control-height-sm);font-size:var(--tcrn-type-size-control-sm);padding-inline-start:28px}
+.tcrn-search-input .tcrn-search-input__control.tcrn-input--lg{--tcrn-search-input-block-size:var(--tcrn-control-height-lg);font-size:var(--tcrn-type-size-control-lg)}
+
+
+.tcrn-switch--sm{grid-template-columns:28px minmax(0,1fr)}
+.tcrn-switch--sm .tcrn-switch__control{inline-size:28px;block-size:16px}
+.tcrn-switch--sm .tcrn-switch__control::before{inline-size:12px;block-size:12px}
+.tcrn-switch--sm .tcrn-switch__control:where(:checked)::before{transform:translateX(12px)}
+
+.tcrn-heading--1,.tcrn-heading--2,.tcrn-heading--3{margin:0;font-family:var(--tcrn-type-family-heading);font-weight:400;color:var(--tcrn-color-ink);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcrn-heading--1{font-size:36px;line-height:40px}
+.tcrn-heading--2{font-size:26px;line-height:30px;letter-spacing:-.005em}
+.tcrn-heading--3{font-size:20px;line-height:26px;letter-spacing:0}
+.tcrn-heading--4{margin:0;font-family:var(--tcrn-type-family-ui);font-size:13px;line-height:20px;font-weight:600;color:var(--tcrn-color-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcrn-text{margin:0;font-size:13px;line-height:20px;color:var(--tcrn-color-ink-2)}
+.tcrn-text.tcrn-text--strong{color:var(--tcrn-color-ink);font-weight:600}
+.tcrn-text.tcrn-text--reading{font-size:14px;line-height:22px}
+.tcrn-text.tcrn-text--meta{font-size:12px;line-height:16px;color:var(--tcrn-color-ink-3)}
+.tcrn-text.tcrn-text--caption{font-size:11px;line-height:16px;color:var(--tcrn-color-ink-3)}
+.tcrn-text.tcrn-text--numeral{margin:0;font-family:var(--tcrn-type-family-heading);font-weight:300;font-size:26px;line-height:30px;letter-spacing:-.01em;color:var(--tcrn-color-ink);font-variant-numeric:tabular-nums lining-nums;display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}
+.tcrn-text.tcrn-text--numeral small{font-family:var(--tcrn-type-family-ui);font-size:11px;line-height:16px;letter-spacing:.06em;color:var(--tcrn-color-ink-3);font-weight:500}
+.tcrn-text.tcrn-text--numeral.tcrn-text--numeral-inline{font-size:16px;line-height:20px;font-weight:400;letter-spacing:0}
+.tcrn-text.tcrn-text--numeral.tcrn-text--numeral-large{font-size:44px;line-height:48px}
+.tcrn-text.tcrn-text--caps{margin:0;font-family:var(--tcrn-type-family-ui);font-size:11px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--tcrn-color-ink-3);font-weight:500;white-space:nowrap}
+.tcrn-text.tcrn-text--caps b{font-family:var(--tcrn-type-family-mono);color:var(--tcrn-color-ink);font-weight:500;margin-right:8px;letter-spacing:.04em}
+.tcrn-text--mono{font-family:var(--tcrn-type-family-mono);font-size:11.5px;line-height:16px;color:var(--tcrn-color-ink-2)}
+.tcrn-link{color:var(--tcrn-color-acc);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:var(--tcrn-color-acc-ul);border-radius:2px}
+.tcrn-link:hover,.tcrn-link.is-hover{color:var(--tcrn-color-acc-2);text-decoration-color:var(--tcrn-color-acc-2)}
+.tcrn-link:focus-visible,.tcrn-link.is-focus{outline:none;box-shadow:var(--tcrn-focus-ring)}
+mark.tcrn-highlight__mark{background:var(--tcrn-color-acc-bg);color:inherit;font:inherit;letter-spacing:inherit;padding:0;margin:0;border-radius:2px;box-shadow:0 0 0 2px var(--tcrn-color-acc-bg);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+.tcrn-brand-lockup{min-width:0}
+.tcrn-product-logo__line-one-base{font:inherit;color:inherit}
+.tcrn-product-symbol{display:inline-block;flex:none;color:var(--tcrn-color-ink)}
+.tcrn-brand-mark{display:block;flex:none;width:44px;height:44px}
+.tcrn-product-logo{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:center;min-width:0;color:var(--tcrn-color-ink);font-family:var(--tcrn-type-family-ui)}
+.tcrn-product-logo__copy{display:grid;gap:2px;min-width:0}
+.tcrn-product-logo__line-one{display:block;font-size:16px;line-height:20px;font-weight:600;letter-spacing:-.005em;white-space:nowrap}
+.tcrn-product-logo__line-one-suffix,.tcrn-brand-lockup__suffix{font-style:normal}
+.tcrn-brand-wordmark__suffix--tms{color:var(--tcrn-brand-suffix-tms)}
+.tcrn-brand-wordmark__suffix--design-system{color:var(--tcrn-brand-suffix-design-system)}
+.tcrn-product-logo__line-two{display:block;min-width:0;font-size:11.5px;line-height:16px;color:var(--tcrn-color-ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcrn-product-logo--serif .tcrn-product-logo__line-one{font-family:var(--tcrn-type-family-heading);font-weight:400;font-size:18px;letter-spacing:.03em}
+.tcrn-product-logo__byline{font-size:10px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--tcrn-color-ink-3)}
+.tcrn-product-logo--rail{grid-template-columns:22px minmax(0,1fr);column-gap:10px;padding:6px 4px;width:210px}
+.tcrn-product-logo--rail .tcrn-brand-mark{width:22px;height:22px}
+.tcrn-product-logo--rail .tcrn-product-logo__line-one{font-size:12.5px;line-height:1.2;letter-spacing:normal}
+.tcrn-product-logo--rail.tcrn-product-logo--serif .tcrn-product-logo__line-one{font-size:13.5px;letter-spacing:.02em}
+.tcrn-product-logo--rail .tcrn-product-logo__copy{display:block}
+.tcrn-product-logo--rail .tcrn-product-logo__line-two{font-size:10.5px;line-height:1.5}
+.tcrn-brand-lockup--line{display:grid;grid-template-columns:44px auto;column-gap:14px;align-items:center;min-width:0;color:var(--tcrn-color-ink)}
+.tcrn-brand-lockup__line{display:flex;align-items:center;min-width:0}
+.tcrn-brand-lockup__word{display:block;font:600 16px/20px var(--tcrn-type-family-ui);letter-spacing:-.005em;white-space:nowrap}
+.tcrn-brand-lockup--line-rail{grid-template-columns:22px auto;column-gap:10px}
+.tcrn-brand-lockup--line-rail .tcrn-brand-mark{width:22px;height:22px}
+.tcrn-brand-lockup--line-rail .tcrn-brand-lockup__word{font-size:12.5px;line-height:1.2;letter-spacing:normal}
+.tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word{font-family:var(--tcrn-type-family-heading);font-weight:400;font-size:18px;letter-spacing:.03em}
+.tcrn-brand-lockup--line-rail.tcrn-brand-lockup--line-serif .tcrn-brand-lockup__word{font-size:13.5px;letter-spacing:.02em}
+
+
+.tcrn-shell-brand-lockup{padding:0;width:auto;grid-template-columns:22px minmax(0,1fr);column-gap:10px;color:var(--tcrn-color-ink);pointer-events:none}
+.tcrn-shell-brand-lockup .tcrn-brand-mark{width:22px;height:22px}
+.tcrn-shell-brand-lockup .tcrn-product-logo__line-one{font-size:12.5px;line-height:1.2;font-weight:600;letter-spacing:normal}
+.tcrn-shell-brand-lockup .tcrn-product-logo__line-two{font-size:10.5px;line-height:1.5}
+
+
+/* tcrn:shell-layer-start */
+.tcrn-shell-brand {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-edge-h: 0 0 #0000;
+  --tcrn-pair-fill-o: var(--tcrn-color-hover);
+  --tcrn-pair-ink-o: var(--tcrn-color-ink);
+  --tcrn-pair-edge-o: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  display: inline-grid;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(0, 1fr) var(--tcrn-shell-toggle);
+  column-gap: var(--tcrn-space-2h);
+  align-items: center;
+  inline-size: max-content;
+  block-size: var(--tcrn-shell-brand-h);
+  min-inline-size: var(--tcrn-shell-brand-w);
+  margin: 0;
+  padding: 0 var(--tcrn-space-1h);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-family: var(--tcrn-type-family-ui);
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-shell-brand[data-shell-brand="v1"] {
+  inline-size: auto;
+  min-inline-size: 0;
+}
+.tcrn-shell-brand__line {
+  --tcrn-brand-mark-size: var(--tcrn-shell-mark);
+  display: flex;
+  align-items: center;
+  column-gap: var(--tcrn-space-2h);
+  min-inline-size: 0;
+}
+.tcrn-shell-brand__word {
+  display: block;
+  flex: none;
+  min-inline-size: 0;
+  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: var(--tcrn-type-weight-strong);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.tcrn-shell-brand.tcrn-shell-brand--serif .tcrn-shell-brand__word {
+  font-family: var(--tcrn-type-family-heading);
+  font-weight: var(--tcrn-type-weight-regular);
+}
+.tcrn-shell-brand__suffix {
+  font-style: normal;
+}
+.tcrn-shell-brand__suffix--tms {
+  color: var(--tcrn-brand-suffix-tms);
+}
+.tcrn-shell-brand__suffix--design-system {
+  color: var(--tcrn-brand-suffix-design-system);
+}
+.tcrn-shell-brand__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tcrn-shell-toggle);
+  block-size: var(--tcrn-shell-toggle);
+  color: var(--tcrn-color-ink-2);
+}
+.tcrn-shell-brand:where(:hover, [data-tcrn-preview-state="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-h);
+}
+.tcrn-shell-brand:where([aria-expanded="true"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-o);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-o);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-o);
+}
+.tcrn-shell-brand:where(:focus-visible, [data-tcrn-preview-state="focus"]) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+/* The focus ring is part of the edge pair, and forced colours paint no box-shadow; the
+   transparent outline shows only there, where the system recolours it. */
+.tcrn-shell-brand:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+@container tcrn-shell (max-width: 1023px) {
+  .tcrn-shell-brand[data-shell-brand-auto] {
+    inline-size: auto;
+    min-inline-size: 0;
+  }
+  .tcrn-shell-brand[data-shell-brand-auto] .tcrn-shell-brand__word {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-brand {
+    transition: none;
+  }
+}
+
+.tcrn-shell-pins {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--tcrn-shell-pin-gap);
+  min-inline-size: 0;
+  margin: 0;
+  margin-inline-start: var(--tcrn-shell-pin-gap);
+}
+.tcrn-shell-pins__pin {
+  display: inline-flex;
+  flex: 0 1 auto;
+  min-inline-size: 0;
+}
+.tcrn-shell-pins__item {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  --tcrn-pair-weight: var(--tcrn-type-weight-medium);
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-edge-h: 0 0 #0000;
+  --tcrn-pair-fill-o: var(--tcrn-color-wash);
+  --tcrn-pair-ink-o: var(--tcrn-color-ink);
+  --tcrn-pair-edge-o: 0 0 #0000;
+  --tcrn-pair-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-edge-s: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-pin-h);
+  margin: 0;
+  padding: 0 var(--tcrn-space-2h);
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-family: var(--tcrn-type-family-ui);
+  font-size: 12.5px;
+  font-weight: var(--tcrn-pair-weight);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-shell-pins__label {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-pins__chevron {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+.tcrn-shell-pins__item:where(:hover, [data-tcrn-preview-state="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-h);
+}
+.tcrn-shell-pins__item:where([aria-expanded="true"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-o);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-o);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-o);
+}
+.tcrn-shell-pins__item:where([aria-current="page"], [aria-current="true"], [data-tcrn-preview-state="selected"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-s);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-s);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-s);
+  --tcrn-pair-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-shell-pins__item:where(:focus-visible, [data-tcrn-preview-state="focus"]) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-shell-pins__item:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+/* Reordering (TCRN-DS-SUB-149): the items move in place and the band draws nothing for it, no
+   insertion line, no ghost, no handle. A movable item takes only the pointer's behaviour (a
+   sideways drag is the band's while an upward one still scrolls the page, and a drag selects no
+   text), and the dragged item shows the grabbing cursor. */
+.tcrn-shell-pins__item:where([data-pin-movable]) {
+  touch-action: pan-y;
+  user-select: none;
+}
+.tcrn-shell-pins__item:where([data-pin-dragging]) {
+  cursor: grabbing;
+}
+@container tcrn-shell (max-width: 1023px) {
+  .tcrn-shell-pins {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-pins__item {
+    transition: none;
+  }
+}
+
+.tcrn-shell-menu {
+  position: absolute;
+  top: calc((var(--tcrn-shell-strip-h) - var(--tcrn-shell-brand-h)) / 2 + var(--tcrn-shell-brand-h) + var(--tcrn-shell-menu-gap));
+  left: var(--tcrn-space-3);
+  z-index: var(--tcrn-z-popover);
+  display: grid;
+  grid-template-columns: min(var(--tcrn-shell-panel-w-expanded), calc(100vw - 2 * var(--tcrn-space-3)));
+  grid-auto-columns: var(--tcrn-shell-drop-w);
+  grid-auto-flow: column;
+  align-items: stretch;
+  column-gap: var(--tcrn-shell-cascade-gap);
+  inline-size: min(var(--tcrn-shell-panel-w-expanded), calc(100vw - 2 * var(--tcrn-space-3)));
+  margin: 0;
+  color: var(--tcrn-color-ink);
+  font-family: var(--tcrn-type-family-ui);
+}
+.tcrn-shell-menu__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  max-block-size: calc(100vh - var(--tcrn-shell-strip-h));
+  margin: 0;
+  padding: var(--tcrn-space-2) var(--tcrn-space-2) 0;
+  overflow: hidden;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-elevation-s3);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+.tcrn-shell-menu .tcrn-shell-menu__cascade {
+  contain: size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: var(--tcrn-space-1h);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-elevation-s3);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+@keyframes tcrn-shell-menu-enter {
+  from {
+    opacity: 0;
+  }
+}
+.tcrn-shell-menu .tcrn-shell-menu__search {
+  flex: 0 0 auto;
+  inline-size: auto;
+  max-inline-size: none;
+  margin: 0 0 var(--tcrn-space-1h);
+  transition: none;
+}
+.tcrn-shell-menu__search .tcrn-search-input {
+  --tcrn-search-input-block-size: var(--tcrn-shell-srch-h);
+  inline-size: 100%;
+}
+.tcrn-shell-menu__cols {
+  display: grid;
+  flex: 0 1 auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: start;
+  gap: 0 var(--tcrn-space-4);
+  min-block-size: 0;
+  padding: 0 0 var(--tcrn-space-1);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.tcrn-shell-menu .tcrn-shell-menu__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+}
+.tcrn-shell-menu .tcrn-nav-group__label {
+  align-items: center;
+  block-size: var(--tcrn-control-height-sm);
+  min-inline-size: 0;
+  margin: var(--tcrn-space-1h) 0 0;
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-control);
+  color: var(--tcrn-color-ink-3);
+  font-size: 10px;
+  font-weight: var(--tcrn-type-weight-medium);
+  letter-spacing: 0.14em;
+  line-height: var(--tcrn-control-height-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tcrn-shell-menu .tcrn-nav-group__label:not([data-nav-pinnable="true"]) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tcrn-shell-menu .tcrn-shell-menu__cascade > .tcrn-nav-group__label {
+  flex: 0 0 auto;
+  block-size: var(--tcrn-shell-pinb);
+  margin: var(--tcrn-space-0h) 0 0;
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2h);
+  line-height: var(--tcrn-shell-pinb);
+}
+.tcrn-shell-menu .tcrn-nav-group__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+}
+.tcrn-shell-menu .tcrn-nav-item {
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-icon-d: var(--tcrn-color-ink-3);
+  --tcrn-pair-weight-d: var(--tcrn-type-weight-medium);
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-fill-s: var(--tcrn-color-wash);
+  --tcrn-pair-ink-s: var(--tcrn-color-ink);
+  --tcrn-pair-icon-s: var(--tcrn-color-ink);
+  --tcrn-pair-weight-s: var(--tcrn-type-weight-strong);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-icon: var(--tcrn-pair-icon-d);
+  --tcrn-pair-weight: var(--tcrn-pair-weight-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--tcrn-space-2h);
+  min-inline-size: 0;
+  min-block-size: 0;
+  block-size: var(--tcrn-shell-row-h);
+  margin: 0;
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2h);
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-size: 12.5px;
+  font-weight: var(--tcrn-pair-weight);
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-shell-menu__cols .tcrn-nav-item {
+  grid-template-columns: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h)) minmax(0, 1fr);
+  padding-inline-start: var(--tcrn-space-2);
+}
+.tcrn-shell-menu__cols .tcrn-nav-item[data-nav-item-has-icon="false"] > .tcrn-nav-item__content {
+  grid-column: 2;
+}
+.tcrn-shell-menu .tcrn-nav-item > .tcrn-icon {
+  box-sizing: border-box;
+  inline-size: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h));
+  block-size: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h));
+  padding: calc(var(--tcrn-space-1h) / 2);
+  justify-self: center;
+  color: var(--tcrn-pair-icon);
+}
+.tcrn-shell-menu .tcrn-nav-item:where(:hover, [data-tcrn-preview-state~="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+}
+.tcrn-shell-menu .tcrn-nav-item:where([aria-current="page"], [aria-expanded="true"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-s);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-s);
+  --tcrn-pair-icon: var(--tcrn-pair-icon-s);
+  --tcrn-pair-weight: var(--tcrn-pair-weight-s);
+}
+.tcrn-shell-menu .tcrn-nav-item:where(:focus-visible, [data-tcrn-preview-state~="focus"]) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-shell-menu .tcrn-nav-item:where(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-shell-menu .tcrn-nav-item-row {
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-row-h);
+  column-gap: var(--tcrn-space-2h);
+}
+.tcrn-shell-menu .tcrn-nav-item-row > .tcrn-nav-item {
+  block-size: 100%;
+  padding-inline-end: 0;
+  background: transparent;
+  color: var(--tcrn-pair-row-ink);
+}
+.tcrn-shell-menu .tcrn-nav-item-row:where(:has(> [data-tcrn-preview-state~="hover"])) {
+  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-h);
+  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-h);
+}
+.tcrn-shell-menu .tcrn-nav-item-row:where(:has(> [aria-expanded="true"])) {
+  --tcrn-pair-row-fill: var(--tcrn-pair-row-fill-s);
+  --tcrn-pair-row-ink: var(--tcrn-pair-row-ink-s);
+}
+:where(.tcrn-shell-menu .tcrn-nav-item-row:has(> [data-tcrn-preview-state~="hover"]), .tcrn-shell-menu .tcrn-nav-group[data-tcrn-preview-state~="hover"] > .tcrn-nav-group__label) > .tcrn-nav-pin {
+  opacity: 1;
+}
+.tcrn-shell-menu .tcrn-nav-item__content {
+  display: block;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+/* A row's label is one line (C7; TCRN-DS-SUB-154): the cut (nowrap, ellipsis, overflow hidden,
+   min-width 0) and the title are the base rule's and NavItem's, as for every item (TCRN-DS-SUB-192).
+   Here the label is a flex row, so the next-level mark sits after the text, and the text span
+   inside truncates itself. */
+.tcrn-shell-menu .tcrn-nav-item__label {
+  display: flex;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+}
+.tcrn-shell-menu__text {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-menu__sub {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__results {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  inline-size: auto;
+  max-block-size: none;
+  margin: var(--tcrn-space-1h) 0 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__results[hidden] {
+  display: none;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result {
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-fill-h: var(--tcrn-color-hover);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--tcrn-space-2h);
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-row-h);
+  padding: 0 var(--tcrn-space-1) 0 var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:where(:hover, [data-tcrn-preview-state~="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result strong,
+.tcrn-shell-menu .tcrn-product-shell-search__result span {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result strong {
+  font-weight: var(--tcrn-type-weight-medium);
+}
+.tcrn-shell-menu .tcrn-product-shell-search__result span {
+  color: var(--tcrn-color-ink-2);
+  font-size: 11.5px;
+}
+.tcrn-shell-menu__pbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--tcrn-space-3);
+  min-inline-size: 0;
+  block-size: calc(var(--tcrn-shell-pbar-h) + var(--tcrn-space-2));
+  margin: var(--tcrn-space-1h) 0 0;
+  padding: 0 var(--tcrn-space-2);
+  border-top: 1px solid var(--tcrn-color-line);
+}
+.tcrn-shell-menu__crumbs {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--tcrn-space-1h);
+  min-inline-size: 0;
+  overflow: hidden;
+  color: var(--tcrn-color-ink-2);
+  font-size: 11.5px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.tcrn-shell-menu__crumbs-label {
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  overflow: hidden;
+  color: var(--tcrn-color-ink-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-menu__crumb {
+  min-inline-size: 0;
+  overflow: hidden;
+  color: var(--tcrn-color-ink-2);
+  font-weight: var(--tcrn-type-weight-medium);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-menu__crumb--current {
+  color: var(--tcrn-color-ink);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-shell-menu__crumb-sep {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+/* The bar places the lockup; its side-rail sizes are the brand tier of brand.css.ts, which the
+   lockup takes through its data-lockup="lkr" hook (TCRN-DS-SUB-144). */
+.tcrn-shell-menu__lockup {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  padding: var(--tcrn-space-1h) var(--tcrn-space-1);
+}
+@container tcrn-shell (min-width: 1024px) {
+  .tcrn-shell-menu .tcrn-shell-menu__col--pinned {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-menu__panel,
+  .tcrn-shell-menu .tcrn-shell-menu__cascade {
+    animation: none;
+  }
+  .tcrn-shell-menu .tcrn-nav-item {
+    transition: none;
+  }
+}
+
+.tcrn-shell-menu.tcrn-shell-dropdown {
+  position: fixed;
+  grid-template-columns: var(--tcrn-shell-drop-w);
+  inline-size: var(--tcrn-shell-drop-w);
+  margin-top: var(--tcrn-shell-menu-gap);
+}
+.tcrn-shell-dropdown[data-cascade-side="start"] {
+  direction: rtl;
+}
+.tcrn-shell-dropdown__panel,
+.tcrn-shell-dropdown__col {
+  direction: ltr;
+}
+.tcrn-shell-dropdown__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  max-block-size: calc(100vh - var(--tcrn-shell-strip-h));
+  margin: 0;
+  padding: var(--tcrn-space-1h);
+  overflow: hidden;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-elevation-s3);
+  color: var(--tcrn-color-ink-2);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+.tcrn-shell-dropdown .tcrn-shell-dropdown__search {
+  margin: 0 0 var(--tcrn-space-1);
+}
+.tcrn-shell-dropdown__search .tcrn-search-input {
+  --tcrn-search-input-block-size: var(--tcrn-shell-drop-srch-h);
+  --tcrn-search-input-padding-inline: var(--tcrn-space-2);
+  --tcrn-search-input-icon-size: var(--tcrn-icon-size-sm);
+}
+.tcrn-shell-dropdown__list {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.tcrn-shell-dropdown .tcrn-product-shell-search__result {
+  padding-inline-start: var(--tcrn-space-2h);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-dropdown__panel {
+    animation: none;
+  }
+}
+
+.tcrn-product-shell {
+  container-type: inline-size;
+  container-name: tcrn-shell;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--tcrn-shell-strip-h) minmax(0, 1fr);
+  block-size: 100dvh;
+  min-inline-size: 0;
+  overflow: clip;
   background: var(--tcrn-color-bg);
   color: var(--tcrn-color-ink);
   font-family: var(--tcrn-type-family-ui);
   font-size: var(--tcrn-type-size-ui);
   line-height: var(--tcrn-type-line-ui);
-}
-
-.tcrn-doc-chapter-pager :focus-visible {
-  outline: 2px solid var(--tcrn-color-acc);
-  outline-offset: 2px;
-  box-shadow: var(--tcrn-focus-ring);
-}
-
-/* Demo layer generated from story-demo-styles.ts — do not hand-edit; run `pnpm demo-styles:sync` */
-.alpha-frame {
-  display: grid;
-  gap: var(--tcrn-space-4);
-  width: 100%;
-  min-width: 0;
-  max-width: var(--tcrn-container-readable);
-  margin: 0 auto;
-  padding: var(--tcrn-space-5);
-}
-
-/* The shared base-card group (border/radius/panel-bg + the display:grid variant) moved
-   into the package component CSS (tcrnComponentCss) — TCRN-DS-STORY-037 — because every
-   member except .alpha-story-card is a real @tcrn/ui-react component surface. The demo
-   card keeps its own self-contained block here. */
-.alpha-story-card {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-panel);
-  padding: var(--tcrn-space-4);
-  max-width: 100%;
-  min-width: 0;
-}
-
-.tcrn-doc-story-kicker {
-  color: var(--tcrn-color-acc);
-  font-size: var(--tcrn-type-size-meta);
-  font-weight: 700;
   letter-spacing: 0;
 }
-
-.tcrn-doc-static-section {
-  display: grid;
-  gap: var(--tcrn-space-3h);
-}
-
-h1,
-h2,
-h3,
-p,
-span,
-button,
-label {
-  overflow-wrap: anywhere;
-}
-
-/* The .tcrn-icon base rule is the package's (styles/icon.css.ts); the docs layer only
-   lays icon samples out, and it addresses a package icon as svg[data-icon-name] so that
-   no docs rule takes .tcrn-icon as its subject. */
-
-/* .tcrn-highlight-text / .tcrn-highlight-mark (Typography-emitted) moved into the
-   package component CSS — TCRN-DS-STORY-037. */
-
-.alpha-story-stack {
-  display: grid;
-  gap: var(--tcrn-space-3);
-}
-
-.tcrn-doc-changelog-records {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-}
-
-.tcrn-doc-changelog-record {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-panel);
-  padding: var(--tcrn-space-3);
-}
-
-.tcrn-doc-changelog-record__header {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-}
-
-.tcrn-doc-changelog-record__header h3,
-.tcrn-doc-changelog-record__header p {
+.tcrn-shell-strip {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-strip-h);
   margin: 0;
+  padding: 0 var(--tcrn-space-3);
+  border: 0;
+  background: none;
 }
-
-.tcrn-doc-changelog-record__evidence-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-}
-
-.tcrn-doc-changelog-record__evidence-list {
-  display: grid;
-  gap: var(--tcrn-space-2);
-  min-width: 0;
-}
-
-.tcrn-doc-changelog-record__evidence-list h4 {
-  margin: 0;
-  font-size: var(--tcrn-type-size-body);
-}
-
-.tcrn-doc-changelog-record__evidence-list ul {
-  display: grid;
+.tcrn-shell-cluster {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
   gap: var(--tcrn-space-1h);
-  margin: 0;
-  padding-inline-start: 18px;
-  min-width: 0;
+  block-size: var(--tcrn-control-height-lg);
+  min-inline-size: 0;
+  margin-inline-start: auto;
 }
-
-.tcrn-doc-changelog-record__evidence-list li {
-  min-width: 0;
+.tcrn-shell-cluster > .tcrn-product-shell__header-actions {
+  flex-wrap: nowrap;
 }
-
-.tcrn-doc-changelog-record__artifact,
-.tcrn-doc-changelog-record__boundary {
-  display: inline-block;
-  max-width: 100%;
-  overflow: hidden;
-  color: var(--tcrn-color-ink-2);
-  text-overflow: ellipsis;
-  vertical-align: bottom;
-  white-space: nowrap;
-}
-
-.tcrn-doc-guidance-grid,
-.tcrn-doc-spec-grid {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  min-width: 0;
-}
-
-/* The record-index panel carries two status chips per row. Reserve the wider
-   half for that scan surface so the chips stay on one line after the badge's
-   geometry is corrected; the paired empty-state panel remains readable. */
-.tcrn-doc-spec-grid--record-index {
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
-}
-
-@media (max-width: 760px) {
-  .tcrn-doc-spec-grid--record-index {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* At 200% zoom a 390px physical viewport has a 195px CSS viewport. Remove the
-   220px demo-card floor at that effective width so the page itself never grows
-   a horizontal scrollbar; tables retain their own local overflow contract. */
-@media (max-width: 240px) {
-  .tcrn-doc-spec-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .tcrn-doc-spec-grid > * {
-    min-inline-size: 0;
-    max-inline-size: 100%;
-  }
-}
-
-.tcrn-doc-status-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-doc-form-stack {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-}
-
-.tcrn-doc-form-stack .tcrn-field {
-  margin-bottom: 0;
-}
-
-.tcrn-doc-action-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-2);
-  min-width: 0;
-}
-
-.tcrn-doc-locale-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-doc-token-swatch-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-}
-
-.tcrn-doc-token-swatch {
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
-  gap: var(--tcrn-space-1) var(--tcrn-space-2h);
-  align-items: center;
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  padding: var(--tcrn-space-2h);
-  min-width: 0;
-}
-
-.tcrn-doc-token-swatch__color {
-  grid-row: span 3;
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--tcrn-color-line-2);
-  border-radius: var(--tcrn-radius-control);
-}
-
-.tcrn-doc-token-swatch strong,
-.tcrn-doc-token-swatch code,
-.tcrn-doc-token-swatch p {
-  min-width: 0;
-}
-
-.tcrn-doc-token-swatch code {
-  color: var(--tcrn-color-ink-2);
-  overflow-wrap: anywhere;
-}
-
-.tcrn-doc-token-swatch p {
-  margin: 0;
-}
-
-.tcrn-doc-type-scale-demo {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  padding: var(--tcrn-space-3);
-  background: var(--tcrn-color-panel);
-  min-width: 0;
-}
-
-.tcrn-doc-icon-sample-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
-  gap: var(--tcrn-space-2);
-  margin: var(--tcrn-space-4) 0 0;
-  padding: 0;
-  list-style: none;
-  min-width: 0;
-}
-
-.tcrn-doc-icon-sample {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr);
-  align-items: center;
-  gap: var(--tcrn-space-2);
-  min-width: 0;
-  min-height: 40px;
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-panel-2);
-  color: var(--tcrn-color-ink-2);
-  padding: var(--tcrn-space-2) var(--tcrn-space-2h);
-}
-
-/* The sample only places the package icon in its track: size (Icon's default md, 16px)
-   and colour stay the package's. */
-.tcrn-doc-icon-sample svg[data-icon-name] {
-  justify-self: center;
-}
-
-.tcrn-doc-icon-sample code {
-  min-width: 0;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  overflow-wrap: anywhere;
-  color: var(--tcrn-color-ink);
-  font-family: var(--tcrn-type-family-mono);
-  font-size: var(--tcrn-type-size-meta);
-  line-height: 1.3;
-}
-
-.tcrn-doc-motion-demo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-}
-
-.tcrn-doc-motion-demo {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  padding: var(--tcrn-space-3);
-  min-width: 0;
-  background: var(--tcrn-color-panel);
-}
-
-.tcrn-doc-motion-demo h3,
-.tcrn-doc-motion-demo p {
-  margin: 0;
-}
-
-.tcrn-doc-motion-demo__track {
+.tcrn-shell-bell {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  --tcrn-pair-fill-d: transparent;
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-2);
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-fill-h: var(--tcrn-color-wash);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink);
+  --tcrn-pair-edge-h: 0 0 #0000;
+  --tcrn-pair-edge-f: var(--tcrn-focus-ring);
   position: relative;
-  min-height: 28px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tcrn-control-height-md);
+  block-size: var(--tcrn-control-height-md);
+  margin: 0;
+  padding: 0;
+  border: 0;
   border-radius: var(--tcrn-radius-control);
-  background: var(--tcrn-color-panel-2);
-  overflow: hidden;
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  cursor: pointer;
+  transition:
+    background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
 }
-
-.tcrn-doc-motion-demo__dot {
+.tcrn-shell-bell__dot {
   position: absolute;
-  top: 6px;
-  left: 8px;
-  width: 16px;
-  height: 16px;
+  inset-block-start: calc((var(--tcrn-control-height-md) - var(--tcrn-icon-size-lg)) / 2 + 1px);
+  inset-inline-end: calc((var(--tcrn-control-height-md) - var(--tcrn-icon-size-lg)) / 2 + 1px);
+  inline-size: var(--tcrn-space-1h);
+  block-size: var(--tcrn-space-1h);
   border-radius: var(--tcrn-radius-pill);
-  background: var(--tcrn-color-acc);
-  animation: tcrn-motion-travel var(--tcrn-motion-standard) infinite alternate;
-}
-
-.tcrn-doc-motion-demo--instant .tcrn-doc-motion-demo__dot {
-  animation-duration: 700ms;
-  animation-timing-function: ease-out;
-}
-
-.tcrn-doc-motion-demo--standard .tcrn-doc-motion-demo__dot {
-  background: var(--tcrn-color-acc-2);
-  animation-duration: 1100ms;
-  animation-timing-function: ease;
-}
-
-.tcrn-doc-motion-demo--emphasis .tcrn-doc-motion-demo__dot {
   background: var(--tcrn-color-red);
-  animation-duration: 1400ms;
-  animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+  box-shadow: 0 0 0 var(--tcrn-space-0h) var(--tcrn-color-bg);
 }
-
-.tcrn-doc-motion-demo--reduced .tcrn-doc-motion-demo__dot {
-  left: 50%;
-  background: var(--tcrn-color-ink-2);
-  animation: none;
-}
-
-@keyframes tcrn-motion-travel {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(calc(100% + 128px));
-  }
-}
-
-.tcrn-doc-loading-motion-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-}
-
-.tcrn-doc-loading-card__row {
-  display: flex;
+.tcrn-shell-avatar {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-d);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-d);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  --tcrn-pair-fill-d: var(--tcrn-color-av-bg);
+  --tcrn-pair-ink-d: var(--tcrn-color-av-ink);
+  --tcrn-pair-edge-d: inset 0 0 0 1px var(--tcrn-color-line);
+  --tcrn-pair-edge-f: inset 0 0 0 1px var(--tcrn-color-line), var(--tcrn-focus-ring);
+  display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-}
-
-.tcrn-doc-loading-copy {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  min-width: 0;
-}
-
-.tcrn-doc-theme-preview {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-  color: var(--tcrn-color-ink);
-  background: var(--tcrn-color-bg);
-  /* Token-driven so the preview shows the language it documents. It used to paint a
-     hardcoded v1 navy wash with a blue-grey edge, which meant the component whose whole
-     job is demonstrating the dark theme was demonstrating a theme that no longer exists. */
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  box-shadow: var(--tcrn-shadow-s3);
-  padding: var(--tcrn-space-3);
-}
-
-/* Feedback families .tcrn-state-view / .tcrn-skeleton* (+ @keyframes
-   tcrn-skeleton-shimmer) / .tcrn-state-surface* moved into the package component CSS —
-   TCRN-DS-STORY-037. (.tcrn-state-surface__action stays out of scope; it is S036.) */
-
-.tcrn-doc-display-primitive-grid {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  align-items: stretch;
-}
-
-/* A wrapping reference strip must not take its longest reference as its minimum width:
-   inside a panel's grid that minimum widens the whole track and the panel clips its
-   tables instead of letting them scroll. */
-.tcrn-doc-reference-strip[data-reference-wrap="true"] {
-  min-width: 0;
-}
-
-.tcrn-doc-interaction-primitive-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-3);
-  align-items: center;
-}
-
-.tcrn-doc-interaction-primitive-grid {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  align-items: start;
-}
-
-.tcrn-doc-nav-component-preview {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-line) 78%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: color-mix(in srgb, var(--tcrn-color-panel-2) 48%, var(--tcrn-color-panel));
-  padding: var(--tcrn-space-3);
-}
-
-.tcrn-doc-nav-component-preview .tcrn-product-switcher {
-  width: max-content;
-  max-width: 100%;
-}
-
-.tcrn-doc-package-nav-proof {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "skip"
-    "sidenav"
-    "tabs";
-  column-gap: var(--tcrn-space-3);
-  row-gap: var(--tcrn-space-2h);
-  align-items: start;
-  min-width: 0;
-}
-
-.tcrn-doc-package-nav-proof__skip {
-  position: relative;
-  grid-area: skip;
-  min-width: 0;
-  min-height: 0;
-}
-
-.tcrn-doc-package-nav-proof > .tcrn-side-nav {
-  grid-area: sidenav;
-  justify-self: stretch;
-  min-width: min(180px, 100%);
-  width: 100%;
-}
-
-.tcrn-doc-package-nav-proof > .tcrn-segmented-nav {
-  grid-area: tabs;
-  align-self: start;
-}
-
-.tcrn-doc-demo-frame {
-  position: relative;
-  display: grid;
-  gap: var(--tcrn-space-3h);
-  min-width: 0;
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-panel);
-  padding: var(--tcrn-space-3h);
-  box-shadow: var(--tcrn-shadow-s3);
-}
-
-.tcrn-doc-knowledge-preview {
-  display: grid;
-  gap: var(--tcrn-space-2);
-  min-width: 0;
-}
-
-.tcrn-doc-demo-frame--knowledge {
+  justify-content: center;
+  inline-size: var(--tcrn-control-height-sm);
+  block-size: var(--tcrn-control-height-sm);
+  margin: 0;
   padding: 0;
   overflow: hidden;
+  border: 0;
+  border-radius: var(--tcrn-radius-pill);
+  background: var(--tcrn-pair-fill);
+  color: var(--tcrn-pair-ink);
+  box-shadow: var(--tcrn-pair-edge);
+  font-family: var(--tcrn-type-family-ui);
+  font-size: var(--tcrn-type-size-caption);
+  font-weight: var(--tcrn-type-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
 }
-
-.tcrn-doc-knowledge-preview__panel,
-.tcrn-doc-demo-pager {
-  display: grid;
-  gap: var(--tcrn-space-2);
-  min-width: 0;
+.tcrn-shell-bell:where(:hover, [data-tcrn-preview-state="hover"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-h);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-h);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-h);
 }
-
-.tcrn-doc-knowledge-preview {
-  align-content: start;
-  border: 1px solid color-mix(in srgb, var(--tcrn-color-line) 84%, transparent);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-panel);
-  padding: var(--tcrn-space-3h);
+.tcrn-shell-bell:where(:focus-visible, [data-tcrn-preview-state="focus"]),
+.tcrn-shell-avatar:where(:focus-visible, [data-tcrn-preview-state="focus"]) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
 }
-
-.tcrn-doc-knowledge-preview__panel {
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-panel) 90%, transparent);
-  padding: var(--tcrn-space-3);
-}
-
-.tcrn-doc-demo-pager {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: auto;
-}
-
-.tcrn-doc-demo-pager a {
-  display: grid;
-  gap: var(--tcrn-space-1);
-  min-width: 0;
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-control);
-  background: color-mix(in srgb, var(--tcrn-color-panel) 92%, transparent);
-  color: var(--tcrn-color-ink);
-  padding: var(--tcrn-space-3);
-  text-decoration: none;
-  transition: background-color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast);
-}
-/* TCRN-DS-STORY-065: the demo's chapter pager answers hover and keyboard focus, as the
-   documentation chapter pager does. */
-.tcrn-doc-demo-pager a:hover {
-  border-color: var(--tcrn-color-line-ctl);
-  background: var(--tcrn-color-panel-2);
-}
-.tcrn-doc-demo-pager a:focus-visible {
-  outline: 2px solid var(--tcrn-color-acc);
+.tcrn-shell-bell:focus-visible,
+.tcrn-shell-avatar:focus-visible {
+  outline: 2px solid transparent;
   outline-offset: 2px;
 }
-
-.tcrn-doc-demo-pager a:last-child {
-  text-align: right;
+.tcrn-shell-account {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
 }
-
-.tcrn-doc-demo-pager span {
-  color: var(--tcrn-color-ink-2);
-  font-size: var(--tcrn-type-size-caption);
-  font-weight: 700;
-}
-
-.alpha-overlay-demo {
-  display: grid;
-  gap: var(--tcrn-space-3);
-}
-
-.tcrn-doc-overlay-mode-matrix,
-.tcrn-doc-overlay-static-modes {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-panel);
-  padding: var(--tcrn-space-3);
-}
-
-.tcrn-doc-overlay-mode-matrix__intro {
-  display: grid;
-  gap: var(--tcrn-space-1h);
-}
-
-.tcrn-doc-overlay-mode-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--tcrn-space-2h);
-}
-
-.tcrn-doc-overlay-mode-card,
-.tcrn-doc-overlay-static-card {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-  min-width: 0;
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-panel-2);
-  padding: var(--tcrn-space-3);
-}
-
-.tcrn-doc-overlay-mode-card {
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-}
-
-.tcrn-doc-overlay-mode-card > div {
-  display: grid;
-  gap: var(--tcrn-space-1h);
-  min-width: 0;
-}
-
-.tcrn-doc-overlay-static-modes {
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-}
-
-.tcrn-doc-dialog-spec-fixture {
-  display: grid;
-  gap: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
-  background: var(--tcrn-color-panel-2);
-  padding: var(--tcrn-space-3);
-}
-
-.tcrn-doc-dialog-spec-fixture__header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--tcrn-space-3);
-  align-items: start;
-}
-
-.tcrn-doc-dialog-spec-fixture__summary {
-  min-width: 0;
-}
-
-.tcrn-doc-dialog-spec-fixture__summary {
-  display: grid;
-  gap: var(--tcrn-space-1h);
-}
-
-.tcrn-doc-dialog-spec-fixture__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--tcrn-space-2);
-}
-
-.tcrn-doc-dialog-spec-fixture [data-dialog-fixture-panel],
-.tcrn-doc-dialog-spec-fixture [data-popover-fixture-panel] {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  transform: translateY(-8px) scale(0.985);
-  transform-origin: top left;
-  transition:
-    max-height var(--tcrn-motion-emphasis),
-    opacity var(--tcrn-motion-standard),
-    transform var(--tcrn-motion-emphasis);
-}
-
-.tcrn-doc-dialog-spec-fixture [data-dialog-fixture-panel][data-overlay-transition-state="open"],
-.tcrn-doc-dialog-spec-fixture [data-dialog-fixture-panel][data-overlay-transition-state="opening"],
-.tcrn-doc-dialog-spec-fixture [data-popover-fixture-panel][data-overlay-transition-state="open"],
-.tcrn-doc-dialog-spec-fixture [data-popover-fixture-panel][data-overlay-transition-state="opening"] {
-  max-height: 720px;
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-
-.tcrn-doc-dialog-spec-fixture [data-dialog-fixture-panel][hidden],
-.tcrn-doc-dialog-spec-fixture [data-popover-fixture-panel][hidden] {
-  display: none;
-}
-
-/* Overlay .tcrn-dialog / .tcrn-popover grid + the .tcrn-popover specifics moved into the
-   package component CSS — TCRN-DS-STORY-037. The demo .alpha-overlay-demo__dialog keeps
-   its own grid layout here. */
-.alpha-overlay-demo__dialog {
-  display: grid;
-  gap: var(--tcrn-space-2h);
-}
-
-@media (max-width: 760px) {
-  .alpha-frame {
-    padding: var(--tcrn-space-4);
-  }
-
-  .tcrn-doc-overlay-mode-grid,
-  .tcrn-doc-overlay-static-modes {
-    grid-template-columns: 1fr;
-  }
-
-  .tcrn-doc-package-nav-proof {
-    grid-template-columns: 1fr;
-  }
-
-  .tcrn-doc-nav-component-preview .tcrn-product-switcher {
-    width: 100%;
-  }
-
-  .tcrn-doc-demo-pager {
-    grid-template-columns: 1fr;
-  }
-
-  .tcrn-doc-dialog-spec-fixture__header {
-    grid-template-columns: 1fr;
-  }
-
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tcrn-doc-motion-demo__dot {
-    animation-duration: var(--tcrn-motion-reduced-duration);
-    animation-iteration-count: 1;
-  }
-
-/* Reduced motion stops loops and cancels travel, but does not flatten the v2
-     comprehension cue: opacity and colour transitions survive at a real duration,
-     governed by the component reduced-motion rules. The old blanket
-     transition-duration clamp made the docs shell demonstrate the v1 kill-switch the
-     component CSS had deliberately moved away from. */
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-}
-
-/* TCRN-DS-STORY-066: moved from alpha-styles (Track B only) into the shared demo layer so
-   the real Storybook (Track A) gets the reference-page + bare-anchor styling too. */
-/* Base style for BARE anchors in story bodies. Components style their own anchors, but an
-   unclassed <a> in story content previously fell back to the UA default (pure blue, full
-   underline, purple visited) — visually foreign to the token language. :where() keeps this at
-   element-level specificity so it fills the UA gap without ever out-competing a component rule;
-   anchors that carry a class are excluded entirely. */
-.story-body :where(a:not([class])),
-.alpha-story-card :where(a:not([class])) {
-  color: var(--tcrn-color-acc);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  text-decoration-color: color-mix(in srgb, var(--tcrn-color-acc) 35%, transparent);
-  transition: text-decoration-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast);
-}
-.story-body :where(a:not([class])):hover,
-.alpha-story-card :where(a:not([class])):hover {
-  text-decoration-color: var(--tcrn-color-acc);
-}
-.story-body :where(a:not([class])):focus-visible,
-.alpha-story-card :where(a:not([class])):focus-visible {
-  outline: none;
-  box-shadow: var(--tcrn-focus-ring);
-}
-
-/* TCRN-DS-STORY-058: component API reference pages + the index links grid. */
-.tcrn-doc-reference-index {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--tcrn-space-1);
-}
-.tcrn-doc-reference-index__item {
-  margin: 0;
-}
-/* The index links are navigation TILES, not prose links: 100 underlines in a grid read as
-   noise, so the rest state stays quiet (text-primary, no underline) and hover floats the
-   quiet brand background + brand text. No press scale: the motion press-scale token has no G+
-   successor and the G+ button family does not scale on press. */
-.tcrn-doc-reference-index__item a {
-  display: block;
-  padding: var(--tcrn-space-0h) var(--tcrn-space-1);
-  border-radius: var(--tcrn-radius-control);
-  border: 1px solid transparent;
-  color: var(--tcrn-color-ink);
-  text-decoration: none;
-  transition: background-color var(--tcrn-motion-fast), color var(--tcrn-motion-fast), border-color var(--tcrn-motion-fast);
-}
-.tcrn-doc-reference-index__item a:hover {
-  background: var(--tcrn-color-acc-bg);
-  color: var(--tcrn-color-acc);
-  border-color: color-mix(in srgb, var(--tcrn-color-acc) 25%, transparent);
-}
-.tcrn-doc-reference-index__item a:focus-visible {
-  outline: none;
-  box-shadow: var(--tcrn-focus-ring);
-}
-.tcrn-doc-component-reference {
+.tcrn-shell-account__panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--tcrn-shell-menu-gap));
+  inset-inline-end: 0;
+  z-index: var(--tcrn-z-popover);
   display: flex;
   flex-direction: column;
-  gap: var(--tcrn-space-1h);
-  padding: var(--tcrn-space-3);
-  border: 1px solid var(--tcrn-color-line);
-  border-radius: var(--tcrn-radius-surface);
+  gap: var(--tcrn-space-1);
+  inline-size: var(--tcrn-shell-drop-w);
+  max-block-size: calc(100vh - var(--tcrn-shell-strip-h));
+  margin: 0;
+  padding: var(--tcrn-space-1h);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: var(--tcrn-radius-panel);
   background: var(--tcrn-color-panel);
-  scroll-margin-top: var(--tcrn-anchor-scroll-offset);
-}
-.tcrn-doc-component-reference__meta,
-.tcrn-doc-component-reference__facet,
-.tcrn-doc-component-reference__empty {
-  color: var(--tcrn-color-ink-2);
-  margin: 0;
-}
-.tcrn-doc-reference-table-scroll {
-  overflow-x: auto;
-}
-.tcrn-doc-reference-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.tcrn-doc-reference-table th,
-.tcrn-doc-reference-table td {
-  text-align: left;
-  padding: var(--tcrn-space-1) var(--tcrn-space-1h);
-  border-bottom: 1px solid var(--tcrn-color-line);
-  vertical-align: top;
-}
-.tcrn-doc-reference-table th {
+  box-shadow: var(--tcrn-elevation-s3);
   color: var(--tcrn-color-ink-2);
 }
-.tcrn-doc-reference-table td code {
-  overflow-wrap: anywhere;
-}
-/* End demo layer generated from story-demo-styles.ts */
-
-/* Track-A-only doc scaffolding — real Storybook preview only; not part of the
-   shared demo layer, kept outside the generated markers so sync leaves it alone. */
-.alpha-story-card > h1,
-.alpha-story-card > p {
+.tcrn-shell-account__who {
+  display: grid;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
   margin: 0;
+  padding: var(--tcrn-space-1) var(--tcrn-space-2h);
+}
+.tcrn-shell-account__who b,
+.tcrn-shell-account__who span,
+.tcrn-shell-account__heading {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-shell-account__who b {
+  color: var(--tcrn-color-ink);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-shell-account__who span,
+.tcrn-shell-account__heading {
+  color: var(--tcrn-color-ink-3);
+  font-size: var(--tcrn-type-size-meta);
+}
+.tcrn-shell-account__products {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  padding-block-start: var(--tcrn-space-1);
+  border-block-start: 1px solid var(--tcrn-color-line);
+}
+.tcrn-shell-account__heading {
+  padding: var(--tcrn-space-1) var(--tcrn-space-2h);
+}
+.tcrn-shell-account__products .tcrn-nav-item {
+  min-block-size: var(--tcrn-shell-row-h);
+}
+.tcrn-shell-account__prefs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tcrn-space-2);
+  min-inline-size: 0;
+  padding: var(--tcrn-space-1) var(--tcrn-space-1) 0;
+  border-block-start: 1px solid var(--tcrn-color-line);
+}
+.tcrn-product-shell__paper {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0 var(--tcrn-space-3) var(--tcrn-space-3);
+  overflow: hidden;
+  border-radius: var(--tcrn-radius-paper);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-elevation-s1);
+}
+/* The paper's scrolling region takes keyboard focus to be scrolled (TCRN-DS-SUB-146), and the paper
+   clips its overflow, so an outward ring there is cut whole (TCRN-DS-SUB-182, WCAG 2.4.7). Its focus
+   edge pair is the G+ focus ring read inward: the ring's own tokens, a surface gap of space-0h at
+   the paper's edge, then the accent ring to space-1, as inset shadows, with a transparent outline
+   at a negative offset for forced colours, so the whole ring lies inside the region's border box
+   and so inside the paper. The region takes the paper's corners, so the ring follows the paper's
+   curve. The focus state switches the pair only and writes no colour (C2). */
+.tcrn-product-shell__paper > .tcrn-product-shell__main {
+  --tcrn-pair-edge-d: 0 0 #0000;
+  --tcrn-pair-edge-f: inset 0 0 0 var(--tcrn-space-0h) var(--tcrn-color-surface), inset 0 0 0 var(--tcrn-space-1) var(--tcrn-color-acc);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-d);
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: inherit;
+  box-shadow: var(--tcrn-pair-edge);
+}
+.tcrn-product-shell__paper > .tcrn-product-shell__main:where(:focus-visible) {
+  --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+.tcrn-product-shell__paper > .tcrn-product-shell__main:where(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+/* The published 01/07 --focus is the surface gap plus accent ring. Generic focus
+   consumes that actual token; controls and shell parts keep their own state tables. */
+.tcrn-product-shell :where(:focus-visible):not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control):not(:where(.tcrn-shell-brand, .tcrn-shell-pins__item, .tcrn-shell-menu .tcrn-nav-item, .tcrn-shell-menu .tcrn-product-shell-search__result, .tcrn-shell-bell, .tcrn-shell-avatar, .tcrn-product-shell__paper > .tcrn-product-shell__main)) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: var(--tcrn-focus-ring);
+}
+/* The Sheet's scroll region stays reachable even when it has no navigation rows. Its
+   inset focus edge remains inside the scrolling box, including in a standalone Sheet. */
+.tcrn-shell-menu .tcrn-shell-sheet__list {
+  --tcrn-pair-edge-f: inset 0 0 0 var(--tcrn-space-0h) var(--tcrn-color-surface), inset 0 0 0 var(--tcrn-space-1) var(--tcrn-color-acc);
+}
+.tcrn-shell-menu .tcrn-shell-sheet__list:where(:focus-visible) {
+  box-shadow: var(--tcrn-pair-edge-f);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-bell {
+    transition: none;
+  }
 }
 
-.tcrn-doc-static-section > h2,
-article > h2,
-article > p {
-  margin: 0;
+.tcrn-shell-intro {
+  position: fixed;
+  inset: 0;
+  z-index: var(--tcrn-z-overlay);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
 }
+.tcrn-shell-intro:where([data-intro-phase="move"], [data-intro-phase="rise"]) {
+  pointer-events: none;
+}
+.tcrn-shell-intro__card {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.tcrn-shell-intro__mark {
+  position: fixed;
+  margin: 0;
+  transform-origin: 0 0;
+}
+
+
+.tcrn-shell-menu.tcrn-shell-sheet {
+  display: contents;
+}
+.tcrn-shell-sheet__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--tcrn-z-overlay);
+  background: color-mix(in srgb, var(--tcrn-color-ink) 20%, transparent);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+.tcrn-shell-sheet__panel {
+  --tcrn-shell-row-h: var(--tcrn-shell-touch);
+  --tcrn-shell-srch-h: var(--tcrn-shell-touch);
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: var(--tcrn-z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+  max-block-size: min(84%, calc(100% - var(--tcrn-shell-strip-h)));
+  margin: 0;
+  padding: var(--tcrn-space-2) var(--tcrn-space-2) var(--tcrn-space-3);
+  overflow: hidden;
+  border-radius: var(--tcrn-radius-paper) var(--tcrn-radius-paper) 0 0;
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-elevation-s3);
+  color: var(--tcrn-color-ink);
+  animation: tcrn-shell-menu-enter var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease) both;
+}
+.tcrn-shell-sheet__grab {
+  flex: 0 0 auto;
+  inline-size: calc(3 * var(--tcrn-space-3));
+  block-size: var(--tcrn-space-1);
+  margin: var(--tcrn-space-0h) auto var(--tcrn-space-2);
+  border-radius: var(--tcrn-radius-pill);
+  background: var(--tcrn-color-line-2);
+}
+.tcrn-shell-sheet__list {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-block-size: 0;
+  margin-inline: calc(-1 * var(--tcrn-space-2));
+  padding-inline: var(--tcrn-space-2);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.tcrn-shell-sheet .tcrn-shell-sheet__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  min-inline-size: 0;
+}
+.tcrn-shell-sheet .tcrn-nav-item {
+  grid-template-columns: calc(var(--tcrn-icon-size-md) + var(--tcrn-space-1h)) minmax(0, 1fr);
+  padding-inline-start: var(--tcrn-space-2);
+}
+.tcrn-shell-sheet .tcrn-nav-item[data-nav-item-has-icon="false"] > .tcrn-nav-item__content {
+  grid-column: 2;
+}
+.tcrn-shell-sheet .tcrn-nav-pin::after {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--tcrn-space-2h));
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-sheet__scrim,
+  .tcrn-shell-sheet__panel {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){.tcrn-shell-brand,.tcrn-shell-pins__item,.tcrn-shell-menu,.tcrn-shell-menu *,.tcrn-shell-dropdown,.tcrn-shell-dropdown *,.tcrn-shell-bell,.tcrn-shell-avatar{transition-duration:0s;animation-duration:0s;animation-iteration-count:0}}
+
+
+.tcrn-shell-menu .tcrn-nav-item-row>.tcrn-nav-item{background:transparent}
+.tcrn-doc-content{width:min(100%,1040px);margin-inline:auto;display:flex;flex-direction:column;gap:22px;min-width:0}
+.tcrn-doc-section{display:flex;flex-direction:column;gap:14px;min-width:0}
+.tcrn-doc-themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;align-items:start}
+.tcrn-doc-pane{display:flex;flex-direction:column;gap:14px;min-width:0;padding:24px 28px 28px;border-radius:14px;background:var(--tcrn-color-bg);color:var(--tcrn-color-ink);box-shadow:var(--tcrn-elevation-s1)}
+.tcrn-doc-paper{display:flex;flex-direction:column;gap:14px;min-width:0;padding:16px 18px;border-radius:var(--tcrn-radius-panel);background:var(--tcrn-color-panel);box-shadow:var(--tcrn-elevation-s1);--tcrn-color-surface:var(--tcrn-color-panel)}
+.tcrn-doc-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0}
+.tcrn-doc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:14px 18px;min-width:0}
+.tcrn-doc-label{display:flex;flex-direction:column;gap:5px;min-width:0;color:var(--tcrn-color-ink);font-size:12.5px;font-weight:500}
+.tcrn-doc-hint{font-size:11.5px;line-height:16px;color:var(--tcrn-color-ink-3)}
+.tcrn-doc-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12.5px}
+.tcrn-doc-table th{height:30px;text-align:left;padding:0 10px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tcrn-color-ink-3);font-weight:500;border-bottom:1px solid var(--tcrn-color-line-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcrn-doc-table td{height:38px;padding:0 10px;border-bottom:1px solid var(--tcrn-color-line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tcrn-color-ink-2)}
+.tcrn-doc-table tr[aria-selected="true"] td{background:var(--tcrn-color-wash);color:var(--tcrn-color-ink)}
+.tcrn-doc-code{font:400 11.5px/16px var(--tcrn-type-family-mono);color:var(--tcrn-color-ink-2);overflow-wrap:anywhere}
+.tcrn-doc-swatch{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-right:6px;box-shadow:inset 0 0 0 1px var(--tcrn-color-line-2)}
+.tcrn-doc-shell-frame{position:relative;min-width:0;height:640px;overflow:auto;background:var(--tcrn-color-bg);border-radius:14px;box-shadow:var(--tcrn-elevation-s1)}
+/* Formal 07 .scr desktop scenes are1240 wide, with scrolling in the specimen host.
+   The normal document content keeps its published1040 limit; phone scenes stay390. */
+.tcrn-doc-shell-frame>.tcrn-product-shell{width:1240px;min-width:1240px;height:640px;min-height:0}
+.tcrn-doc-shell-frame[data-phone]>.tcrn-product-shell{width:390px;min-width:390px}
+.tcrn-doc-shell-frame[data-phone]{width:390px;max-width:100%}
+.tcrn-doc-source{font:400 11px/16px var(--tcrn-type-family-mono);color:var(--tcrn-color-ink-3);overflow-wrap:anywhere}
+ .tcrn-product-shell__paper{--tcrn-color-surface:var(--tcrn-color-panel)}
+.tcrn-doc-roster-name{font-size:12.5px;line-height:1.2;font-weight:500;color:var(--tcrn-color-ink)}
+.tcrn-doc-status{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--tcrn-color-ink-2);white-space:nowrap}
+.tcrn-doc-status i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.tcrn-doc-status--ok{color:var(--tcrn-color-ok)}
+.tcrn-doc-status--warn{color:var(--tcrn-color-warn)}
+.tcrn-doc-handle{font-family:var(--tcrn-type-family-mono);font-size:11.5px;color:var(--tcrn-color-ink-3)}
+.tcrn-doc-table .tcrn-doc-date{font-family:var(--tcrn-type-family-mono);font-size:11.5px}
+.tcrn-doc-table th:last-child,.tcrn-doc-table td:last-child{text-align:right}
+.tcrn-doc-roster-table{width:calc(100% + 16px);margin:0 -8px}
+.tcrn-doc-roster-table th:first-child,.tcrn-doc-roster-table td:first-child{padding-left:8px}
+.tcrn-doc-roster-table th:last-child,.tcrn-doc-roster-table td:last-child{padding-right:8px}
+.tcrn-doc-shell-sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--tcrn-color-ink-3);font-weight:500;white-space:nowrap}
+.tcrn-breadcrumb [aria-current="page"]{color:var(--tcrn-color-ink);font-weight:600}
+.tcrn-doc-selected-row{display:flex;align-items:center;height:36px;padding:0 10px;background:var(--tcrn-color-wash);color:var(--tcrn-color-ink);font-weight:600;border-radius:6px}
+.tcrn-doc-error{display:flex;align-items:center;gap:5px;font:400 11.5px/16px var(--tcrn-type-family-ui);color:var(--tcrn-color-bad)}
+.tcrn-doc-intro-lockup>.tcrn-brand-mark{width:128px;height:128px}
+.tcrn-doc-api pre{white-space:pre-wrap;max-width:100%;margin:0}
+.tcrn-doc-api{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;border-bottom:1px solid var(--tcrn-color-line);padding-block:12px}
