@@ -68,6 +68,7 @@ export function resolveSourceLocals(value, locals, trail = []) {
     if (trail.includes(name)) throw new Error(`Published local variable cycle: ${[...trail, name].join(" -> ")}`);
     return resolveSourceLocals(locals[name], locals, [...trail, name]);
   });
+}
 export function assertTokenGraph(entries, theme) {
   const values = new Map(entries.map(row => [row.cssVar, row[theme] ?? row.value]));
   if (values.size !== entries.length) throw new Error("Duplicate published package token");

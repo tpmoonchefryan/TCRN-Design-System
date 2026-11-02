@@ -27,7 +27,7 @@ test("a button group is a named role=group with a separator between neighbours",
       <IconButton ariaLabel="Grid" iconName="layout-grid" aria-pressed="false" />
     </ButtonGroup>
   );
-  assert.match(html, /^<div role="group" aria-label="View" class="tcrn-button-group">/);
+  assert.match(html, /^<div data-button-group-size="md" role="group" aria-label="View" class="tcrn-button-group">/);
   assert.equal(html.split(SEPARATOR).length - 1, 1);
   assert.match(html, /<\/button><span class="tcrn-button-group__separator" aria-hidden="true"><\/span><button/);
   // Single choice is said by aria-pressed on the members; the group holds no choice.
@@ -48,11 +48,11 @@ test("separators go only between rendered members", () => {
   assert.equal(html.split(SEPARATOR).length - 1, 2);
   assert.doesNotMatch(html, /class="tcrn-button-group"><span class="tcrn-button-group__separator"/);
   assert.doesNotMatch(html, /aria-hidden="true"><\/span><\/div>$/);
-  assert.equal(renderToStaticMarkup(<ButtonGroup ariaLabel="Alone"><Button>Only</Button></ButtonGroup>).includes(SEPARATOR), false);
+  assert.throws(()=>renderToStaticMarkup(<ButtonGroup ariaLabel="Alone"><Button>Only</Button></ButtonGroup>),/two to five/);
 });
 
 test("a group without a usable name fails closed to a generic one", () => {
-  assert.match(renderToStaticMarkup(<ButtonGroup ariaLabel="   "><Button>One</Button></ButtonGroup>), /aria-label="Unnamed button group"/);
+  assert.match(renderToStaticMarkup(<ButtonGroup ariaLabel="   "><Button>One</Button><Button>Two</Button></ButtonGroup>), /aria-label="Unnamed button group"/);
 });
 
 test("the quiet group is marked for its lighter treatment", () => {
@@ -103,4 +103,24 @@ test("125-GWT4: the focused member is raised above its neighbours at (0,1,0)", (
   );
   // The raise needs a positioned member, which the family base rule provides.
   assert.ok(declarationsOf(".tcrn-button").includes("position: relative"));
+});
+
+
+test("the group binds every published size to two/four/five actual actions, preserving child-owned semantics", () => {
+  for (const size of ["sm","md","lg"] as const) for (const variant of ["secondary","quiet"] as const) for (const count of [2,4,5]) {
+    const children=Array.from({length:count},(_,i)=>i===count-1?<IconButton key={i} iconName="settings" ariaLabel="Settings" size="lg" aria-pressed={false}/>:<Button key={i} size="sm" aria-pressed={i===0}>Action {i}</Button>);
+    const html=renderToStaticMarkup(<ButtonGroup ariaLabel="Actions" size={size} variant={variant}>{children}</ButtonGroup>);
+    assert.equal((html.match(/<button /g)??[]).length,count);
+    assert.equal(html.split(SEPARATOR).length-1,count-1);
+    assert.equal((html.match(new RegExp(`tcrn-button--${size}\\b`,"g"))??[]).length,count);
+    assert.equal((html.match(new RegExp(`tcrn-button--${variant}\\b`,"g"))??[]).length,count);
+    assert.equal((html.match(/aria-pressed="true"/g)??[]).length,1);
+    assert.doesNotMatch(html,/<div[^>]*aria-pressed=/);
+    assert.equal(children[0].props.size,"sm","caller elements are not mutated");
+  }
+});
+
+test("invalid action counts and kinds fail at the component boundary, without counting decorative spans", () => {
+  for (const count of [0,1,6]) assert.throws(()=>renderToStaticMarkup(<ButtonGroup ariaLabel="Invalid">{Array.from({length:count},(_,i)=><Button key={i}>Action</Button>)}</ButtonGroup>),/two to five/);
+  for (const invalid of [<span key="span">Decoration</span>,<button key="native">Native</button>,<>Fragment</>,"text",<Button key="primary" variant="primary">Main</Button>,<Button key="danger" variant="danger">Delete</Button>]) assert.throws(()=>renderToStaticMarkup(<ButtonGroup ariaLabel="Invalid"><Button>Action</Button>{invalid}</ButtonGroup>),/direct Button|secondary or quiet/);
 });

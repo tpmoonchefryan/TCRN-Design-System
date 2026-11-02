@@ -492,6 +492,12 @@ export const shellCss03 = `
   background: transparent;
   color: inherit;
   font-weight: inherit;
+  box-shadow: none;
+}
+/* 07 focus belongs to the complete row, including its reserved sibling pin slot. */
+.tcrn-shell-menu .tcrn-nav-item-row > :where(.tcrn-nav-item,.tcrn-nav-pin):focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 :where(.tcrn-shell-menu .tcrn-nav-item-row:has(> [data-tcrn-preview-state~="hover"]), .tcrn-shell-menu .tcrn-nav-group[data-tcrn-preview-state~="hover"] > .tcrn-nav-group__label) > .tcrn-nav-pin {
   opacity: 1;
@@ -976,7 +982,7 @@ export const shellCss05 = `
 }
 /* The published 01/07 --focus is the surface gap plus accent ring. Generic focus
    consumes that actual token; controls and shell parts keep their own state tables. */
-.tcrn-product-shell :where(:focus-visible):not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control):not(:where(.tcrn-shell-brand, .tcrn-shell-pins__item, .tcrn-shell-menu .tcrn-nav-item, .tcrn-shell-menu .tcrn-product-shell-search__result, .tcrn-shell-bell, .tcrn-shell-avatar, .tcrn-product-shell__paper > .tcrn-product-shell__main)) {
+.tcrn-product-shell :where(:focus-visible):not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control):not(:where(.tcrn-shell-brand, .tcrn-shell-pins__item, .tcrn-shell-menu .tcrn-nav-item, .tcrn-nav-item-row > .tcrn-nav-pin, .tcrn-shell-menu .tcrn-product-shell-search__result, .tcrn-shell-bell, .tcrn-shell-avatar, .tcrn-product-shell__paper > .tcrn-product-shell__main)) {
   outline: 2px solid transparent;
   outline-offset: 2px;
   box-shadow: var(--tcrn-focus-ring);

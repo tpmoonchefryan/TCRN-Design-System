@@ -1,9 +1,33 @@
 import { readApprovedSource,extractMarks,sourceElements,decodeHtml } from "./approved-site-source.mjs";
+import { readPinnableFocus,rowFocusValid } from "./published-shell-gates.mjs";
 // Runtime assertions are separate from the normative API text and from engineering exports.
 export const API_BEHAVIOR_REQUIREMENTS=Object.freeze({
- Heading:['semanticLevels','visualFamilies','singleLineTitle'],Text:['bodyScale','numeralCaps','strongSample'],Highlight:['markOnlyPaint','emptyQuery'],Icon:['rosterGeometry','namesAndDecoration'],ProductLogo:['registeredGraphicOnly','renditions'],ProductLockup:['registeredWording','railAndFirstLine','exactLineRoles'],Button:['disabledDescription','loadingFeedback','dangerInk'],IconButton:['named','squareAndLabelled','allPublishedSizes'],LinkButton:['nativeAnchor','noBusyOrDisabled'],ClipboardCopyButton:['secretOutsideDom','fiveStatesAndReset'],ButtonGroup:['namedGroup','twoToFive','childSelection'],Input:['nativeNamed','errorsAndReasons'],Textarea:['nativeNamed','widthAndMultiline'],SearchInput:['namedTool','shortcutAndFill'],SuggestInput:['openDomain','deduplicatedDatalist'],Select:['nativeClosedSingle','placeholderDisabled'],MultiSelect:['closedSetPresentations','bodyListbox','selectionAndLabels'],NumberInput:['nativeNumber','rangeAndKeyboard','twelveChMinimum'],DatePicker:['nativeIso','calendarIndicator'],Checkbox:['nativeNamed','mixedAndError'],RadioGroup:['nativeLegendAndName','oneChoicePerGroup'],Switch:['namedImmediateBinary','descriptionAssociated'],ProductShell:['oneTopBand','headerAndPreferences','contextualHeader'],ShellBrandButton:['onePressFullDialog','namedRegisteredVersions','localizedNames'],ShellMenu:['nonModalAndDismiss','globalSearchAndKeys','rowCarrierStates'],ShellPins:['orderedReorder','sixAndResponsive'],ShellDropdown:['subtreeSearch','clickAndKeys'],ShellIntro:['mountedAfterSignIn','sessionMotionContract']
+ Heading:['semanticLevels','visualFamilies','singleLineTitle'],Text:['bodyScale','numeralCaps','strongSample'],Highlight:['markOnlyPaint','emptyQuery'],Icon:['rosterGeometry','namesAndDecoration'],ProductLogo:['registeredGraphicOnly','renditions'],ProductLockup:['registeredWording','railAndFirstLine','exactLineRoles'],Button:['disabledDescription','loadingFeedback','dangerInk'],IconButton:['named','squareAndLabelled','allPublishedSizes'],LinkButton:['nativeAnchor','noBusyOrDisabled'],ClipboardCopyButton:['secretOutsideDom','fiveStatesAndReset'],ButtonGroup:['namedGroup','twoToFive','allPublishedSizes','childSelection'],Input:['nativeNamed','errorsAndReasons'],Textarea:['nativeNamed','widthAndMultiline'],SearchInput:['namedTool','shortcutAndFill'],SuggestInput:['openDomain','deduplicatedDatalist'],Select:['nativeClosedSingle','placeholderDisabled'],MultiSelect:['closedSetPresentations','bodyListbox','selectionAndLabels'],NumberInput:['nativeNumber','rangeAndKeyboard','twelveChMinimum'],DatePicker:['nativeIso','calendarIndicator'],Checkbox:['nativeNamed','mixedAndError'],RadioGroup:['nativeLegendAndName','oneChoicePerGroup'],Switch:['namedImmediateBinary','descriptionAssociated'],ProductShell:['oneTopBand','headerAndPreferences','contextualHeader'],ShellBrandButton:['onePressFullDialog','namedRegisteredVersions','localizedNames'],ShellMenu:['nonModalAndDismiss','globalSearchAndKeys','rowCarrierStates'],ShellPins:['orderedReorder','sixAndResponsive'],ShellDropdown:['subtreeSearch','clickAndKeys'],ShellIntro:['mountedAfterSignIn','sessionMotionContract']
 });
 export function apiBehaviorIssues(name,facts){return (API_BEHAVIOR_REQUIREMENTS[name]??['unknownAPI']).filter(key=>facts?.[key]!==true).map(key=>`${name}: published API behavior ${key} not established`);}
+// Counts come from native direct action controls. Decorative separators never
+// contribute to the formal two-to-five action boundary.
+export function buttonGroupIssues(rows){
+ const issues=[];
+ if(!rows.length)issues.push('Missing actual ButtonGroup');
+ for(const row of rows){
+  if(row.actions.length<2||row.actions.length>5)issues.push('ButtonGroup requires two to five actions');
+  if(row.otherChildren||row.actions.some(a=>a.tag!=='BUTTON'||!a.family))issues.push('ButtonGroup allows only direct Button/IconButton actions');
+  if(row.separators!==row.actions.length-1||row.childCount!==row.actions.length+row.separators)issues.push('ButtonGroup decorative separator structure');
+  if(!['sm','md','lg'].includes(row.size)||row.actions.some(a=>a.size!==row.size||a.variant!==row.variant))issues.push('ButtonGroup uniform family size/variant');
+ }
+ return issues;
+}
+export function rowCarrierIssues(rows){
+ const issues=[];
+ if(!rows.length)issues.push('Missing actual pinnable row');
+ for(const r of rows){
+  if(r.ink!==r.expectedInk||r.fill!==r.expectedFill||r.childFill!=='rgba(0, 0, 0, 0)'||r.weight!==(r.state==='selected'?'600':'500'))issues.push('Row single wash/ink/weight carrier');
+  if(![r.row?.right,r.link?.right,r.pin?.right,r.pin?.width,r.pinInset].every(Number.isFinite)||r.pin.width!==24||Math.abs(r.pinInset-4)>.5||r.link.right>r.pin.x+.5||!r.columns.endsWith('24px'))issues.push('Row sibling pin slot/trailing4px inset');
+  if(r.focused&&(!r.expectedFocus||r.shadow!==r.expectedFocus||r.childShadow!=='none'||r.pinShadow!=='none'||r.row.right<r.pin.right))issues.push('Full-row focus carrier must include link and pin');
+ }
+ return issues;
+}
 // Expected line roles come from the actual 04 full/rail nodes; translated taglines from 04 I.
 export function formalLockupExpectations(source,locale){
  const html=source.board('04-brand').html,marks=extractMarks(source),nodes=sourceElements(html);
@@ -63,7 +87,11 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
   const sizeReadings=all('.tcrn-icon-button').map(el=>{const s=style(el),r=el.getBoundingClientRect();return {kind:'control',className:el.className,size:/--sm\b/.test(el.className)?'sm':/--lg\b/.test(el.className)?'lg':'md',width:r.width,height:r.height,transform:s.transform,iconButton:true,labelled:el.classList.contains('tcrn-icon-button--labelled'),paddingLeft:parseFloat(s.paddingLeft),paddingRight:parseFloat(s.paddingRight),gap:parseFloat(s.columnGap),labelWidth:el.querySelector('.tcrn-icon-button__label')?.getBoundingClientRect().width,iconWidth:el.querySelector('svg')?.getBoundingClientRect().width};});
   facts.IconButton={sizeReadings,allPublishedSizes:all('[data-formal-theme]').every(theme=>['sm','md','lg'].every(size=>{const group=theme.querySelector(`[data-icon-button-size="${size}"]`);return group?.querySelector('.tcrn-icon-button--labelled')&&group.querySelector('.tcrn-icon-button:not(.tcrn-icon-button--labelled)');})),named:all('.tcrn-icon-button').every(el=>el.getAttribute('aria-label')?.trim()),squareAndLabelled:!!square&&!!labelled&&square.getBoundingClientRect().width===square.getBoundingClientRect().height&&labelled.getBoundingClientRect().width>labelled.getBoundingClientRect().height};
   facts.LinkButton={nativeAnchor:all('.tcrn-link-button').length>0&&all('.tcrn-link-button').every(el=>el.tagName==='A'&&!!el.getAttribute('href')),noBusyOrDisabled:all('.tcrn-link-button').every(el=>!el.hasAttribute('aria-busy')&&!el.hasAttribute('disabled'))};
-  const groups=all('.tcrn-button-group');facts.ButtonGroup={namedGroup:groups.length>0&&groups.every(el=>el.getAttribute('role')==='group'&&el.getAttribute('aria-label')),twoToFive:groups.every(el=>el.children.length>=2&&el.children.length<=5),childSelection:groups.every(el=>!el.hasAttribute('aria-pressed')&&!!el.querySelector('[aria-pressed="true"]'))};
+  const groups=all('.tcrn-button-group'),groupReadings=groups.map(el=>{
+   const children=[...el.children],actions=children.filter(child=>child.matches('button.tcrn-button')),separators=children.filter(child=>child.matches('.tcrn-button-group__separator[aria-hidden="true"]'));
+   return {theme:el.closest('[data-formal-theme]')?.getAttribute('data-formal-theme'),size:el.dataset.buttonGroupSize,variant:el.classList.contains('tcrn-button-group--quiet')?'quiet':'secondary',childCount:children.length,separators:separators.length,otherChildren:children.length-actions.length-separators.length,actions:actions.map(action=>({tag:action.tagName,family:action.matches('.tcrn-button'),size:/--sm\b/.test(action.className)?'sm':/--lg\b/.test(action.className)?'lg':'md',variant:action.classList.contains('tcrn-button--quiet')?'quiet':action.classList.contains('tcrn-button--secondary')?'secondary':'unsupported',height:action.getBoundingClientRect().height,pressed:action.getAttribute('aria-pressed')}))};
+  });
+  facts.ButtonGroup={groupReadings,namedGroup:groups.length>0&&groups.every(el=>el.getAttribute('role')==='group'&&el.getAttribute('aria-label')),twoToFive:false,allPublishedSizes:false,childSelection:groups.every(el=>!el.hasAttribute('aria-pressed')&&el.querySelectorAll(':scope > button[aria-pressed="true"]').length===1)};
  }
  if(root.dataset.approvedBoard==='06-inputs'){
   const inputs=all('input.tcrn-input:not([type="search"])'),invalid=inputs.filter(el=>el.getAttribute('aria-invalid')==='true'),ta=one('textarea'),suggest=one('input[list]'),list=suggest&&document.getElementById(suggest.getAttribute('list')),select=one('select:not([multiple])'),number=one('input[type="number"]'),date=one('input[type="date"]');
@@ -85,14 +113,19 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
   const frame=one('[data-formal-shell-scene="band"]'),shell=frame?.querySelector('.tcrn-product-shell'),trigger=frame?.querySelector('[data-shell-brand]'),menu=one('[data-formal-shell-scene="menu"] [role="dialog"]'),pins=frame?.querySelector('.tcrn-shell-pins'),drop=one('[data-formal-shell-scene="drop"] [data-panel="drop"]');
   facts.ProductShell={oneTopBand:!!shell&&shell.querySelectorAll(':scope > [data-shell-strip]').length===1&&!shell.querySelector('.tcrn-side-nav'),headerAndPreferences:!!shell?.querySelector('.tcrn-page-header')&&!!shell?.querySelector('[data-shell-account]'),contextualHeader:all('.tcrn-page-header__title').length>0&&all('.tcrn-page-header__title').every(el=>Math.abs(parseFloat(style(el).lineHeight)-26*1.1)<.1)};
   facts.ShellBrandButton={readings:all('[data-shell-brand]').map(el=>({label:el.getAttribute('aria-label'),expanded:el.getAttribute('aria-expanded')==='true',version:el.dataset.shellBrand,product:'TCRN TMS',standalone:el.hasAttribute('data-standalone-brand')})),namedRegisteredVersions:!!trigger?.getAttribute('aria-label')&&trigger.getAttribute('aria-haspopup')==='dialog'&&!!trigger.querySelector('svg[data-logo="tms"]')&&!!one('[data-shell-brand="v1"]')&&!!one('[data-shell-brand="v2"]')};
-  const rowReadings=all('.tcrn-shell-menu .tcrn-nav-item-row').map(row=>{const child=row.querySelector(':scope > .tcrn-nav-item'),selected=child?.matches('[aria-current="page"],[aria-expanded="true"]'),hover=row.matches(':hover')||child?.getAttribute('data-tcrn-preview-state')?.split(/\s+/).includes('hover'),state=selected?'selected':hover?'hover':'default',expectedInk=color(row,`var(--tcrn-color-${selected||hover?'ink':'ink-2'})`),expectedFill=state==='default'?'rgba(0, 0, 0, 0)':color(row,`var(--tcrn-color-${selected?'wash':'hover'})`),pin=row.querySelector(':scope > [data-pin-button]');return {state,ink:child&&style(child).color,fill:style(row).backgroundColor,childFill:child&&style(child).backgroundColor,weight:child&&style(child).fontWeight,expectedInk,expectedFill,pinWidth:pin?.getBoundingClientRect().width,columns:style(row).gridTemplateColumns};});
-  facts.ShellMenu={nonModalAndDismiss:!!menu&&menu.getAttribute('aria-modal')==='false'&&!menu.querySelector('[data-shell-close]'),rowReadings,rowCarrierStates:rowReadings.length>0&&rowReadings.every(r=>r.ink===r.expectedInk&&r.fill===r.expectedFill&&r.childFill==='rgba(0, 0, 0, 0)'&&r.weight===(r.state==='selected'?'600':'500')&&r.pinWidth===24&&r.columns.endsWith('24px'))};
+  const rowReadings=all('.tcrn-shell-menu .tcrn-nav-item-row').map(row=>{
+   const child=row.querySelector(':scope > .tcrn-nav-item'),pin=row.querySelector(':scope > [data-pin-button]'),selected=child?.matches('[aria-current="page"],[aria-expanded="true"]'),hover=row.matches(':hover')||child?.getAttribute('data-tcrn-preview-state')?.split(/\s+/).includes('hover'),state=selected?'selected':hover?'hover':'default',rect=el=>{const r=el?.getBoundingClientRect();return r?{x:r.x,right:r.right,width:r.width,height:r.height}:null;};
+   return {state,ink:child&&style(child).color,fill:style(row).backgroundColor,childFill:child&&style(child).backgroundColor,weight:child&&style(child).fontWeight,expectedInk:color(row,`var(--tcrn-color-${selected||hover?'ink':'ink-2'})`),expectedFill:state==='default'?'rgba(0, 0, 0, 0)':color(row,`var(--tcrn-color-${selected?'wash':'hover'})`),row:rect(row),link:rect(child),pin:rect(pin),pinInset:row.getBoundingClientRect().right-pin?.getBoundingClientRect().right,columns:style(row).gridTemplateColumns};
+  });
+  facts.ShellMenu={nonModalAndDismiss:!!menu&&menu.getAttribute('aria-modal')==='false'&&!menu.querySelector('[data-shell-close]'),rowReadings,rowCarrierStates:false};
   facts.ShellPins={sixAndResponsive:!!pins&&pins.querySelectorAll('.tcrn-shell-pins__item').length<=6};
   facts.ShellDropdown={subtreeSearch:!!drop?.querySelector('input[type="search"]')&&!!drop?.getAttribute('aria-label')};
   facts.ShellIntro={mountedAfterSignIn:!!one('[data-formal-intro]')&&!one('[data-shell-intro]')};
  }
  return facts;
 });
+ if(facts.ButtonGroup){const rows=facts.ButtonGroup.groupReadings;facts.ButtonGroup.twoToFive=buttonGroupIssues(rows).length===0;facts.ButtonGroup.allPublishedSizes=['light','dark'].every(theme=>['sm','md','lg'].every(size=>['secondary','quiet'].every(variant=>[2,4,5].every(count=>rows.some(row=>row.theme===theme&&row.size===size&&row.variant===variant&&row.actions.length===count)))));}
+ if(facts.ShellMenu)facts.ShellMenu.rowCarrierStates=rowCarrierIssues(facts.ShellMenu.rowReadings).length===0;
  if(facts.ProductLockup){facts.ProductLockup.exactLineRoles=lockupRoleIssues(facts.ProductLockup.readings,formalLockupExpectations(source,locale)).length===0;}
  if(facts.ShellBrandButton){facts.ShellBrandButton.localizedNames=shellBrandNameIssues(facts.ShellBrandButton.readings,locale).length===0;}
  return facts;
@@ -104,6 +137,10 @@ export async function exerciseApiBoard(page,board,facts){
   const pair=await root.locator('[data-highlight-specimen]').first().evaluate(el=>{const reference=el.previousElementSibling,a=el.getBoundingClientRect(),b=reference.getBoundingClientRect();return {width:a.width,referenceWidth:b.width,height:a.height,referenceHeight:b.height};});facts.Highlight.markOnlyPaint&&=pair.width===pair.referenceWidth&&pair.height===pair.referenceHeight;
  }
  if(board==='05-actions'){
+  for(const group of await root.locator('.tcrn-button-group').all()){
+   const actions=group.locator(':scope > button.tcrn-button');await actions.nth(1).click();
+   facts.ButtonGroup.childSelection&&=await group.evaluate(el=>!el.hasAttribute('aria-pressed')&&el.querySelectorAll(':scope > button[aria-pressed="true"]').length===1&&el.querySelectorAll(':scope > button')[1].getAttribute('aria-pressed')==='true');
+  }
   const copySelector='[data-formal-section="ClipboardCopyButton"] > .tcrn-button[data-clipboard-copy-state]',button=root.locator(copySelector).first();
   if(await button.count()){
    const waitState=async state=>page.waitForFunction(({element,state})=>element.getAttribute('data-clipboard-copy-state')===state,{element:await button.elementHandle(),state});
@@ -125,6 +162,9 @@ export async function exerciseApiBoard(page,board,facts){
   const checkbox=root.locator('input.tcrn-checkbox').first();await checkbox.evaluate(el=>{el.indeterminate=true;});facts.Checkbox.mixedAndError&&=await checkbox.evaluate(el=>el.matches(':indeterminate'));await checkbox.evaluate(el=>{el.indeterminate=false;});
  }
  if(board.startsWith('07')){
+  const focusRows=await readPinnableFocus(page,root);
+  facts.ShellMenu.focusRows=focusRows;
+  facts.ShellMenu.rowCarrierStates&&=rowFocusValid(focusRows);
   const frame=root.locator('[data-formal-shell-scene="band"]').first(),trigger=frame.locator('[data-shell-brand]');await trigger.click();facts.ShellBrandButton.onePressFullDialog=await frame.locator('[data-panel="expanded"]').count()===1;
   const search=frame.locator('[data-shell-search] input[type="search"]');await search.fill((await frame.locator('[data-shell-row]').first().textContent()).trim());facts.ShellMenu.globalSearchAndKeys=await frame.locator('[data-product-shell-search-results]').count()>0;await page.keyboard.press('Escape');facts.ShellMenu.nonModalAndDismiss&&=await frame.locator('[role="dialog"]').count()===0&&await trigger.evaluate(el=>el===document.activeElement);
   const owner=page.locator('.tcrn-product-shell').first();await page.keyboard.press('Control+k');const ownedSearch=owner.locator(':scope > .tcrn-shell-menu input[type="search"]').first();facts.ShellMenu.globalSearchAndKeys&&=await ownedSearch.evaluate(el=>el===document.activeElement);await page.keyboard.press('Escape');

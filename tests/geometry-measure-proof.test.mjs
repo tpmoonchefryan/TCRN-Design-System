@@ -21,3 +21,11 @@ test('all labelled IconButton sizes, NumberInput12ch and actual header context r
  for(const change of [{minimum:0},{minimum:undefined},{squeezedWidth:1}])assert.ok(geometryIssues([{...number,...change}]).some(i=>i.includes('12ch')));
  const header={kind:'page-header',fontSize:26,lineHeight:28.6};assert.deepEqual(geometryIssues([header]),[]);assert.ok(geometryIssues([{...header,lineHeight:30}]).some(i=>i.includes('PageHeader')));
 });
+
+test('ButtonGroup geometry measures actions independently of its decorative separators at every boundary/size',()=>{
+ for(const [size,height]of [['sm',28],['md',32],['lg',40]])for(const count of [2,4,5]){
+  const row={kind:'button-group',size,actionCount:count,separators:count-1,heights:Array(count).fill(height)};
+  assert.deepEqual(geometryIssues([row]),[]);
+  for(const change of [{actionCount:2*count-1},{separators:count},{heights:[...row.heights.slice(1),32===height?28:32]}])assert.ok(geometryIssues([{...row,...change}]).length);
+ }
+});

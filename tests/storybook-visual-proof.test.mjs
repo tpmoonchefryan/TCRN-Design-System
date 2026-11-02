@@ -41,3 +41,19 @@ test('all five actual accessible copy contracts reject English fallback in fragm
   if(locale!=='en')assert.ok(shellBrandNameIssues([{...row,label:`${SHELL_BRAND_NAMES.en[expanded?1:0]} · TCRN TMS`}],locale).length);
  }
 });
+
+
+import { buttonGroupIssues,rowCarrierIssues } from '../scripts/lib/published-api-browser.mjs';
+test('actual direct action/cardinality readings reject invalid kinds/counts and ignore decorative separators',()=>{
+ for(const size of ['sm','md','lg'])for(const count of [2,4,5]){
+  const row={size,variant:'quiet',childCount:2*count-1,separators:count-1,otherChildren:0,actions:Array.from({length:count},()=>({tag:'BUTTON',family:true,size,variant:'quiet'}))};
+  assert.deepEqual(buttonGroupIssues([row]),[]);
+  for(const actions of [row.actions.slice(0,1),[...row.actions,...row.actions],row.actions.map((a,i)=>i? a:{...a,tag:'SPAN',family:false}),row.actions.map(a=>({...a,size:size==='sm'?'lg':'sm'}))])assert.ok(buttonGroupIssues([{...row,actions}]).length);
+  assert.ok(buttonGroupIssues([{...row,otherChildren:1}]).length);
+ }
+});
+test('row focus and end-inset checks reject the former link-only focus and zero-inset sibling slot',()=>{
+ const row={state:'selected',ink:'ink',expectedInk:'ink',fill:'wash',expectedFill:'wash',childFill:'rgba(0, 0, 0, 0)',weight:'600',row:{right:300},link:{right:272},pin:{x:272,right:296,width:24},pinInset:4,columns:'260px 24px',focused:true,shadow:'formal ring',expectedFocus:'formal ring',childShadow:'none',pinShadow:'none'};
+ assert.deepEqual(rowCarrierIssues([row]),[]);
+ for(const change of [{pinInset:0},{shadow:'none',childShadow:'formal ring'},{pin:{...row.pin,width:20}},{childFill:'wash'},{ink:'ink-2'}])assert.ok(rowCarrierIssues([{...row,...change}]).length);
+});

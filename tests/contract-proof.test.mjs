@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,assertTokenGraph,resolveSourceLocals,cssRule,extractIcons,extractMarks,extractMatrixOccurrences } from "../scripts/lib/approved-site-source.mjs";
 import { APPROVED_SITE,APPROVED_BOARD_IDS } from "../scripts/lib/approved-site-pins.mjs";
+import * as approvedSourceModule from "../scripts/lib/approved-site-source.mjs";
 const read=fs.readFileSync;
 test("V1 published identity is the actual eight sourceIds and immutable source commit",()=>{
  const s=readApprovedSource();assert.equal(APPROVED_SITE.sourceCommit,"a643d4cfcd239f6f81b1715ded6a63caead9d619");assert.equal(Object.keys(APPROVED_BOARD_IDS).length,8);assert.equal(APPROVED_BOARD_IDS["04-brand"],"ee0f582f-d81c-47f4-8a5b-d16631584d81");assert.equal(s.manifest.site.versionNumber,1);assert.equal(s.manifest.site.deploymentStatus,"succeeded");
@@ -56,6 +57,15 @@ test('V1 local bindings resolve before renaming and all125 token nodes retain ac
  assert.equal(resolveSourceLocals('var(--a)',{'--a':'var(--b)','--b':'14px'}),'14px');
  assert.throws(()=>resolveSourceLocals('var(--a)',{'--a':'var(--b)','--b':'var(--a)'}),/local variable cycle/);
  assert.throws(()=>assertTokenGraph([...rows,rows[0]],'light'),/Duplicate/);
+});
+
+test('V1 local resolution leaves adjacent source readers and graph guards as independent module exports',()=>{
+ for(const name of ['resolveSourceLocals','assertTokenGraph','readApprovedSource','extractTokens','extractPackageBindings','extractIcons','extractMarks','extractMatrixOccurrences','extractFontFaces','normalizeSvgBody','sourceElements'])assert.equal(typeof approvedSourceModule[name],'function',name);
+ const locals={'--paper-r':'14px'},input='var(--paper-r) var(--ink)';
+ assert.equal(resolveSourceLocals(input,locals),'14px var(--ink)');
+ assert.deepEqual(locals,{'--paper-r':'14px'});
+ assert.equal(resolveSourceLocals(input,{'--paper-r':'16px'}),'16px var(--ink)');
+ assert.equal(extractPackageBindings(readApprovedSource()).find(row=>row.cssVar==='--tcrn-radius-paper').value,'14px');
 });
 
 test('V5 both entry documents link formal font resources outside the generated component CSS',()=>{

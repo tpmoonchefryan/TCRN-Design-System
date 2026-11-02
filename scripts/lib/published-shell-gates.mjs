@@ -44,11 +44,26 @@ export async function readShellGeometry(frame){return frame.evaluate(frame=>{
     drop:box(q('.tcrn-shell-dropdown__panel')),dropRows:all('.tcrn-shell-dropdown__panel [data-shell-row]').filter(visible).map(box),dropText:box(q('.tcrn-shell-dropdown__panel .tcrn-nav-item__label')),dropTrigger:box(q('.tcrn-shell-pins__item[aria-expanded="true"]')),dropSearch:box(q('.tcrn-shell-dropdown__panel input[type="search"]')),dropColumns:all('.tcrn-shell-dropdown__panel,.tcrn-shell-dropdown__col').filter(visible).map(box),cascadeSide:q('[data-shell-dropdown]')?.getAttribute('data-cascade-side')??'end',
     closeControls:all('.tcrn-shell-menu button,.tcrn-shell-dropdown button').filter(el=>el.matches('[data-shell-close],.tcrn-shell-close')||el.querySelector('[data-icon-name="x"]')).length,sidebars:all('.tcrn-side-nav,[data-permanent-sidebar]').length,
     pinButtons:all('[data-pin-button]').filter(visible).map(box),rows,
+    navRows:all('.tcrn-nav-item-row').filter(visible).map(row=>{const link=row.querySelector(':scope > .tcrn-nav-item'),pin=row.querySelector(':scope > [data-pin-button]');return {row:box(row),link:box(link),pin:box(pin),pinInset:pin?row.getBoundingClientRect().right-pin.getBoundingClientRect().right:null};}),
     shadows:all('.tcrn-shell-menu__panel,.tcrn-shell-dropdown__panel,.tcrn-shell-dropdown__col,[data-paper]').filter(visible).map(el=>({className:el.className,value:getComputedStyle(el).boxShadow})),
     assets:all('svg[data-logo]').filter(visible).map(el=>({id:el.getAttribute('data-logo'),body:el.innerHTML})),
     sheet:box(q('[data-panel="sheet"]')),sheetRows:all('.tcrn-shell-sheet [data-shell-row]').filter(visible).map(box),sheetSearch:box(q('.tcrn-shell-sheet input[type="search"]')),sheetPins:all('.tcrn-shell-sheet [data-pin-button]').filter(visible).map(el=>{const s=getComputedStyle(el,'::after');return {...box(el),hitWidth:Math.max(el.getBoundingClientRect().width,parseFloat(s.width)||0),hitHeight:Math.max(el.getBoundingClientRect().height,parseFloat(s.height)||0)};})
   };
 });}
+// Focus the two real accessible siblings, then read the painted carrier and its
+// boundaries. CSS declaration/pair presence alone cannot establish row focus.
+export async function readPinnableFocus(page,scope){
+ const readings=[];await page.keyboard.press('Tab');
+ for(const row of await scope.locator('.tcrn-nav-item-row').all())for(const target of ['.tcrn-nav-item','[data-pin-button]']){
+  await row.locator(`:scope > ${target}`).focus();
+  readings.push(await row.evaluate(row=>{
+   const link=row.querySelector(':scope > .tcrn-nav-item'),pin=row.querySelector(':scope > [data-pin-button]'),s=getComputedStyle(row),rect=el=>{const r=el.getBoundingClientRect();return {x:r.x,right:r.right,width:r.width,height:r.height};},probe=document.createElement('span');probe.style.boxShadow='var(--tcrn-focus-ring)';row.append(probe);const expectedFocus=getComputedStyle(probe).boxShadow;probe.remove();
+   return {row:rect(row),link:rect(link),pin:rect(pin),pinInset:rect(row).right-rect(pin).right,columns:s.gridTemplateColumns,focused:row.contains(document.activeElement),target:document.activeElement===pin?'pin':'link',shadow:s.boxShadow,expectedFocus,childShadow:getComputedStyle(link).boxShadow,pinShadow:getComputedStyle(pin).boxShadow};
+  }));
+ }
+ return readings;
+}
+export function rowFocusValid(rows){return rows?.length>0&&rows.every(r=>r.focused&&r.expectedFocus!=='none'&&r.shadow===r.expectedFocus&&r.childShadow==='none'&&r.pinShadow==='none'&&close(r.pinInset,4)&&r.pin.width===24&&r.link.right<=r.pin.x+.5&&r.row.right>=r.pin.right);}
 export function shadowBlurs(value){
   if(value==='none')return [];
   // Drop the colour before parsing lengths: colour-channel numbers are not shadow geometry.
@@ -85,6 +100,7 @@ export function judgeShellG18(facts,source){
   for(let i=1;i<d.dropColumns.length;i++){const prev=d.dropColumns[i-1],col=d.dropColumns[i];fail('G09',close(col.height,prev.height)&&close(col.width,prev.width)&&close(d.cascadeSide==='start'?prev.x-col.right:col.x-prev.right,e.cascadeGap),'cascade same width/height, adjacent gap4');}
   fail('G09',facts.cascadeClick===true&&facts.cascadeHover===false,'cascade opens by click, not hover');
   fail('G10',[b,m,d,p].every(r=>!r.sidebars&&!r.closeControls)&&facts.outsideClosed===true,'no close button/permanent sidebar; outside click closes');
+  fail('G11',m.navRows?.length>0&&m.navRows.every(r=>close(r.pin?.width,24)&&close(r.pinInset,4)&&r.link?.right<=r.pin?.x+.5),'actual row/link/pin boundaries preserve24px slot and trailing4px inset');
   fail('G11',facts.jitter?.length>0&&facts.jitter.every(j=>close(j.rest,j.hover,0)&&close(j.button,e.pinButton)),'same-row rest/hover text widths equal; button24');
   fail('G12',!m.lockupInteractive&&close(m.lockupMark?.width,e.mark)&&m.lockup?.cursor!=='pointer'&&facts.lockupHoverSame===true&&facts.lockupTabSkipped===true,'lockup decorative, not focusable/hoverable, mark22');
   fail('G13',facts.matrix?.sourceOccurrences===225&&facts.matrix?.observations.length===225,'all225 shell occurrences retain independent readings');
@@ -92,6 +108,7 @@ export function judgeShellG18(facts,source){
   for(const row of [...b.rows,...m.rows,...d.rows,...p.rows])fail('G14',row.lineCount<=1&&row.whiteSpace==='nowrap'&&!row.clips.length,`single line/clip: ${row.text}`);
   for(const row of [...b.shadows,...m.shadows,...d.shadows])fail('G15',shadowBlurs(row.value).every(v=>v<=e.maxBlur),`shadow blur >3: ${row.className}`);
   const intro=facts.intro;fail('G16',!!intro&&intro.first>0&&intro.refresh===0&&intro.reduced===0&&intro.total===460&&intro.total<=700&&intro.plan?.card===120&&intro.plan?.mark===240&&intro.plan?.paper===100&&intro.landingMatches===true&&intro.markOpaque===true&&intro.properties.every(p=>['opacity','transform'].includes(p))&&intro.frames.length>1,'intro once/session, refresh0, reduced0, <=700, actual frames/transform+opacity');
+  fail('G17',rowFocusValid(facts.focus?.rows),'actual keyboard focus paints the whole row including its sibling pin slot');
   fail('G17',facts.focus?.escapeRestored===true&&facts.focus?.shortcutSearch===true&&facts.focus?.rightEntered===true&&facts.focus?.leftReturned===true,'Esc/shortcut and real cascade arrow focus loop');
   fail('G18',close(p.root.width,390)&&p.brand.height>=40&&p.brand.width>=40&&p.pins.length===0&&!!p.sheet&&p.sheetRows.length>0&&p.sheetRows.every(r=>close(r.height,e.touch))&&close(p.sheetSearch?.height,e.touch)&&p.sheetPins.length>0&&p.sheetPins.every(r=>r.hitHeight>=e.touch&&r.hitWidth>=e.touch)&&facts.touchClickable===true,'390: tappable brand, no top pins, Sheet search/rows/pin targets44');
   return result;
@@ -113,7 +130,7 @@ export const SHELL_G18_FIXTURES=Object.freeze({
  G13:{css:'.tcrn-shell-brand__word{color:transparent!important}'},
  G14:{mutate:'long-label',css:'.tcrn-shell-menu__text{white-space:normal!important;overflow:visible!important;max-width:6ch!important}'},
  G15:{css:'.tcrn-shell-menu__panel{box-shadow:0 0 12px black!important}'},
- G16:{mutate:'session'}, G17:{mutate:'focus'},
+ G16:{mutate:'session'}, G17:{mutate:'focus',css:'.tcrn-nav-item-row{box-shadow:none!important}.tcrn-nav-item:focus{box-shadow:var(--tcrn-focus-ring)!important}'},
  G18:{css:'.tcrn-shell-sheet [data-shell-row]{height:32px!important;min-height:32px!important;block-size:32px!important}'}
 });
 export async function installShellFixture(page,id){
@@ -146,20 +163,21 @@ export async function installIntroRecorder(page,{forgetSession=false}={}){
   };
  },{forgetSession});
 }
-export async function readIntro(page,url){
- const start=async()=>{const button=page.locator('[data-formal-intro] > .tcrn-button');await button.click();await page.waitForFunction(()=>!document.querySelector('[data-shell-intro]'));return page.evaluate(()=>window.__publishedIntro);};
- await page.goto(url);await page.evaluate(()=>{sessionStorage.removeItem('tcrn-approved-source-intro');return document.fonts.ready;});
- await page.locator('[data-formal-intro] > .tcrn-button').scrollIntoViewIfNeeded();
- const landing=await page.locator('[data-formal-intro] [data-shell-brand] svg[data-logo]').evaluate(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};});
+export async function readIntro(page,url,{theme="light"}={}){
+ const scope=()=>page.locator(`[data-formal-intro][data-intro-theme="${theme}"]`);
+ const start=async()=>{const button=scope().locator(':scope > .tcrn-button');await button.click();await page.waitForFunction(()=>!document.querySelector('[data-shell-intro]'));return page.evaluate(()=>window.__publishedIntro);};
+ await page.goto(url);await page.locator('[data-docs-ready="true"]').waitFor();await page.evaluate(()=>{sessionStorage.removeItem('tcrn-approved-source-intro');return document.fonts.ready;});
+ await scope().locator(':scope > .tcrn-button').scrollIntoViewIfNeeded();
+ const landing=await scope().locator('[data-shell-brand] svg[data-logo]').evaluate(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};});
  const first=await start();await page.reload();const refresh=await start();await page.emulateMedia({reducedMotion:'reduce'});await page.reload();const reduced=await start();await page.emulateMedia({reducedMotion:'no-preference'});
  const markFrames=first.frames.filter(f=>String(f.target).includes('tcrn-shell-intro__mark')),last=markFrames.at(-1)?.rect;const duration=target=>first.animations.find(a=>String(a.target).includes(target))?.timing.duration;
  return {first:first.animations.length,refresh:refresh.animations.length,reduced:reduced.animations.length,plan:{card:duration('tcrn-shell-intro__card'),mark:duration('tcrn-shell-intro__mark'),paper:duration('tcrn-product-shell__paper')},landing,last,landingMatches:!!last&&['x','y','width','height'].every(k=>close(last[k],landing[k])),markOpaque:markFrames.length>1&&markFrames.every(f=>Number(f.opacity)===1),frames:first.frames,assets:first.assets,total:Math.max(0,...first.animations.map(a=>(a.timing.delay??0)+a.timing.duration)),properties:[...new Set(first.animations.flatMap(a=>a.keyframes.flatMap(f=>Object.keys(f))))],animations:first.animations};
 }
-export async function collectShellG18(page,source,{matrix,intro,fixture}={}){
- const scope=scene=>page.locator(`[data-formal-shell-scene="${scene}"][data-shell-theme="light"]`).first();
+export async function collectShellG18(page,source,{matrix,intro,fixture,locale="en",theme="light"}={}){
+ const scope=scene=>page.locator(`[data-formal-shell-scene="${scene}"][data-shell-theme="${theme}"]`).first();
  const band=scope('band'),menu=scope('menu'),drop=scope('drop'),phone=scope('phone');
  if(fixture)await installShellFixture(page,fixture);
- const facts={locale:'en',matrix,intro};
+ const facts={locale,theme,matrix,intro};
  facts.band=await readShellGeometry(band);facts.menu=await readShellGeometry(menu);facts.drop=await readShellGeometry(drop);facts.phone=await readShellGeometry(phone);
  // Pin jitter compares the same actual text box, before and during pointer hover.
  facts.jitter=[];
@@ -186,7 +204,7 @@ export async function collectShellG18(page,source,{matrix,intro,fixture}={}){
  // The document's owning shell handles the shortcut. Its target is measured separately from
  // the specimen instance, which intentionally disables a duplicate global listener.
  const owner=page.locator('.tcrn-product-shell').first();await page.keyboard.press('Control+k');const shortcutSearch=await owner.locator(':scope > .tcrn-shell-menu input[type="search"]').first().evaluate(el=>el===document.activeElement).catch(()=>false);await page.keyboard.press('Escape');
- facts.focus={escapeRestored,shortcutSearch,rightEntered,leftReturned};
+ facts.focus={escapeRestored,shortcutSearch,rightEntered,leftReturned,rows:await readPinnableFocus(page,menu)};
  const phoneTrigger=phone.locator('[data-shell-brand]');if(await phoneTrigger.getAttribute('aria-expanded')==='true')await phoneTrigger.click();await phoneTrigger.click();facts.touchClickable=await phone.locator('[data-panel="sheet"]').count()===1;facts.phone=await readShellGeometry(phone);
  return facts;
 }
