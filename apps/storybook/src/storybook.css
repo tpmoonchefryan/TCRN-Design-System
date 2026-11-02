@@ -575,9 +575,11 @@
 .tcrn-input.tcrn-search-input__control::placeholder {
   color: var(--tcrn-color-ink-2);
 }
-/* Current ink-2 follows published07. Published06 .sw>kbd says ink-3; S03-C01
-   remains an undecided source clarification. Keeping this value does not certify
-   unchanged06, and its nominal night wash failure does not waive text >=4.5. */
+/* Current ink-2 already follows published07. C01 direction is decided by
+   TCRN-DS-MIN-20261103-SHORTCUT-INK D1-D4: only shortcut text uses shared ink-2
+   (day #4f4c43 / night #a9a69c). Formal06/pins are still unamended; amendment,
+   publication and consumer alignment remain pending. No geometry/other ink/icon
+   change or text >=4.5 waiver follows from retaining these preexisting bytes. */
 .tcrn-search-input__shortcut {
   position: absolute;
   inset-block-start: 50%;
@@ -790,7 +792,7 @@
 .tcrn-radio-group__control:where(:disabled) {
   cursor: not-allowed;
 }.tcrn-checkbox,.tcrn-radio-group__control{--tcrn-pair-fill:var(--tcrn-pair-fill-d);--tcrn-pair-edge:var(--tcrn-pair-edge-d);--tcrn-pair-mark:var(--tcrn-pair-mark-d);--tcrn-pair-fill-d:var(--tcrn-color-panel);--tcrn-pair-edge-d:inset 0 0 0 1px var(--tcrn-color-line-ctl);--tcrn-pair-mark-d:transparent;--tcrn-pair-fill-h:var(--tcrn-color-panel);--tcrn-pair-edge-h:inset 0 0 0 1px var(--tcrn-color-ink-2);--tcrn-pair-mark-h:transparent;--tcrn-pair-fill-c:var(--tcrn-color-acc);--tcrn-pair-edge-c:0 0 #0000;--tcrn-pair-mark-c:var(--tcrn-color-on-acc);--tcrn-pair-fill-f:var(--tcrn-color-panel);--tcrn-pair-edge-f:inset 0 0 0 1px var(--tcrn-color-acc),var(--tcrn-focus-ring);--tcrn-pair-mark-f:transparent;--tcrn-pair-fill-cf:var(--tcrn-color-acc);--tcrn-pair-edge-cf:var(--tcrn-focus-ring);--tcrn-pair-mark-cf:var(--tcrn-color-on-acc);--tcrn-pair-fill-x:var(--tcrn-color-dis);--tcrn-pair-edge-x:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-mark-x:transparent;--tcrn-pair-fill-cx:var(--tcrn-color-dis);--tcrn-pair-edge-cx:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-mark-cx:var(--tcrn-color-ink-3);--tcrn-pair-fill-e:var(--tcrn-color-panel);--tcrn-pair-edge-e:inset 0 0 0 1px var(--tcrn-color-bad);--tcrn-pair-mark-e:transparent}
-.tcrn-radio-group__control{}
+.tcrn-radio-group__control{--tcrn-pair-fill-c:var(--tcrn-color-panel);--tcrn-pair-edge-c:0 0 #0000;--tcrn-pair-mark-c:var(--tcrn-color-acc);--tcrn-pair-fill-cf:var(--tcrn-color-panel);--tcrn-pair-edge-cf:var(--tcrn-focus-ring);--tcrn-pair-mark-cf:var(--tcrn-color-acc);--tcrn-pair-fill-cx:var(--tcrn-color-dis);--tcrn-pair-edge-cx:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-mark-cx:var(--tcrn-color-ink-3)}
 .tcrn-checkbox:where(:hover,[data-tcrn-preview-state="hover"]),.tcrn-radio-group__control:where(:hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h);--tcrn-pair-edge:var(--tcrn-pair-edge-h);--tcrn-pair-mark:var(--tcrn-pair-mark-h)}
 .tcrn-checkbox:where(:checked,:indeterminate,[data-tcrn-preview-state="indeterminate"]),.tcrn-radio-group__control:where(:checked,:indeterminate,[data-tcrn-preview-state="indeterminate"]){--tcrn-pair-fill:var(--tcrn-pair-fill-c);--tcrn-pair-edge:var(--tcrn-pair-edge-c);--tcrn-pair-mark:var(--tcrn-pair-mark-c)}
 .tcrn-checkbox:where(:focus-visible,[data-tcrn-preview-state="focus"]),.tcrn-radio-group__control:where(:focus-visible,[data-tcrn-preview-state="focus"]){--tcrn-pair-fill:var(--tcrn-pair-fill-f);--tcrn-pair-edge:var(--tcrn-pair-edge-f);--tcrn-pair-mark:var(--tcrn-pair-mark-f)}
