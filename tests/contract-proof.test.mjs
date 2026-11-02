@@ -34,3 +34,9 @@ test("V1 package/source commit agreement cannot hide a wrong project, version, d
  const {sourceIdentityIssues}=await import('../scripts/lib/published-standard-proof.mjs');assert.deepEqual(sourceIdentityIssues(APPROVED_SITE),[]);
  for(const [key,value]of Object.entries({projectId:'wrong',versionId:'wrong',versionNumber:2,deploymentId:'wrong',deploymentStatus:'pending',sourceCommit:'wrong'}))assert.ok(sourceIdentityIssues({...APPROVED_SITE,[key]:value}).some(issue=>issue.includes(key)));
 });
+
+test("V4 source scene, state and literal icon carriers survive extraction independently",()=>{
+ const cells=extractMatrixOccurrences(readApprovedSource());assert.equal(cells.length,455);
+ for(const [id,color] of [['ink-panel-l','#f1f1f1'],['ink-panel-n','#282724']]){const cell=cells.find(c=>c.board==='03-icons'&&c.cellId===id);assert.equal(cell.carrierBackground,color);assert.ok(cell.carrier.some(c=>c.style.includes(color)));}
+ const same=cells.filter(c=>c.board==='07a-shell-upper'&&c.cellId==='brand-suffix-l');assert.equal(new Set(same.map(c=>c.sourceScene)).size,same.length);assert.ok(same.some(c=>c.expect==='4.85')&&same.some(c=>c.expect==='4.53'));
+});

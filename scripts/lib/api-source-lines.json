@@ -1,0 +1,210 @@
+{
+  "Heading": {
+    "board": "02-typography",
+    "lines": [
+      220
+    ]
+  },
+  "Text": {
+    "board": "02-typography",
+    "lines": [
+      221,
+      223,
+      224
+    ]
+  },
+  "Highlight": {
+    "board": "02-typography",
+    "lines": [
+      222
+    ]
+  },
+  "Icon": {
+    "board": "03-icons",
+    "lines": [
+      131
+    ]
+  },
+  "ProductLogo": {
+    "board": "04-brand",
+    "lines": [
+      22
+    ]
+  },
+  "ProductLockup": {
+    "board": "04-brand",
+    "lines": [
+      35,
+      60
+    ]
+  },
+  "Button": {
+    "board": "05-actions",
+    "lines": [
+      112
+    ]
+  },
+  "IconButton": {
+    "board": "05-actions",
+    "lines": [
+      113
+    ]
+  },
+  "LinkButton": {
+    "board": "05-actions",
+    "lines": [
+      114
+    ]
+  },
+  "ClipboardCopyButton": {
+    "board": "05-actions",
+    "lines": [
+      115
+    ]
+  },
+  "ButtonGroup": {
+    "board": "05-actions",
+    "lines": [
+      116
+    ]
+  },
+  "Input": {
+    "board": "06-inputs",
+    "lines": [
+      124
+    ]
+  },
+  "Textarea": {
+    "board": "06-inputs",
+    "lines": [
+      124
+    ]
+  },
+  "SearchInput": {
+    "board": "06-inputs",
+    "lines": [
+      125
+    ]
+  },
+  "SuggestInput": {
+    "board": "06-inputs",
+    "lines": [
+      126
+    ]
+  },
+  "Select": {
+    "board": "06-inputs",
+    "lines": [
+      127
+    ]
+  },
+  "MultiSelect": {
+    "board": "06-inputs",
+    "lines": [
+      128
+    ]
+  },
+  "NumberInput": {
+    "board": "06-inputs",
+    "lines": [
+      129
+    ]
+  },
+  "DatePicker": {
+    "board": "06-inputs",
+    "lines": [
+      130
+    ]
+  },
+  "Checkbox": {
+    "board": "06-inputs",
+    "lines": [
+      131
+    ]
+  },
+  "RadioGroup": {
+    "board": "06-inputs",
+    "lines": [
+      132
+    ]
+  },
+  "Switch": {
+    "board": "06-inputs",
+    "lines": [
+      133
+    ]
+  },
+  "ProductShell": {
+    "board": "07b-shell-lower",
+    "lines": [
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78
+    ]
+  },
+  "ShellBrandButton": {
+    "board": "07a-shell-upper",
+    "lines": [
+      22
+    ]
+  },
+  "ShellMenu": {
+    "board": "07b-shell-lower",
+    "lines": [
+      61,
+      68,
+      69,
+      71,
+      74,
+      75,
+      76,
+      77
+    ]
+  },
+  "ShellPins": {
+    "board": "07b-shell-lower",
+    "lines": [
+      60,
+      69,
+      75,
+      78
+    ]
+  },
+  "ShellDropdown": {
+    "board": "07b-shell-lower",
+    "lines": [
+      61,
+      69,
+      70,
+      74,
+      75
+    ]
+  },
+  "ShellIntro": {
+    "board": "07a-shell-upper",
+    "lines": [
+      179,
+      180,
+      181,
+      182
+    ]
+  }
+}

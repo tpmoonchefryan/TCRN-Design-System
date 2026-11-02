@@ -416,12 +416,15 @@ export const inputsSizesCss = `
 .tcrn-input--sm,.tcrn-select--sm{block-size:var(--tcrn-control-height-sm);font-size:var(--tcrn-type-size-control-sm);padding:0 8px}
 .tcrn-input--lg,.tcrn-select--lg{block-size:var(--tcrn-control-height-lg);font-size:var(--tcrn-type-size-control-lg);padding:0 12px}
 .tcrn-input,.tcrn-select{width:100%;min-width:0}
+/* 06 .in.search.sm: the actual control owns the size override, after the wrapper rule. */
+.tcrn-search-input .tcrn-search-input__control.tcrn-input--sm{--tcrn-search-input-block-size:var(--tcrn-control-height-sm);font-size:var(--tcrn-type-size-control-sm);padding-inline-start:28px}
+.tcrn-search-input .tcrn-search-input__control.tcrn-input--lg{--tcrn-search-input-block-size:var(--tcrn-control-height-lg);font-size:var(--tcrn-type-size-control-lg)}
 `;
 
 // Published 06 .tg.sm; the class selects the documented small rendition without changing semantics.
 export const inputsSmallSwitchCss = `
 .tcrn-switch--sm{grid-template-columns:28px minmax(0,1fr)}
 .tcrn-switch--sm .tcrn-switch__control{inline-size:28px;block-size:16px}
-.tcrn-switch--sm .tcrn-switch__control::after{inline-size:12px;block-size:12px}
-.tcrn-switch--sm .tcrn-switch__control:where(:checked)::after{transform:translateX(12px)}
+.tcrn-switch--sm .tcrn-switch__control::before{inline-size:12px;block-size:12px}
+.tcrn-switch--sm .tcrn-switch__control:where(:checked)::before{transform:translateX(12px)}
 `;

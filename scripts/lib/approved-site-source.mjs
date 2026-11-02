@@ -138,14 +138,31 @@ export function extractMarks(source) {
     return { id, productId, name: names[id], word: id === "tms" || id === "ds" ? "TCRN" : names[id], ...(id === "tms" ? { suffix: "TMS" } : id === "ds" ? { suffix: "Design System" } : {}), font: id === "tms" || id === "ds" ? "sans" : "serif", palette: { deep: deepColor, bright: rest[0], tint: tintColor, ...(rest[1] ? { c3: rest[1], c4: rest[2] } : {}) }, colorBody: normalizeSvgBody(color.body), inkBody: normalizeSvgBody(mono.body), tileTintBody: normalizeSvgBody(tint.body), tileDeepBody: normalizeSvgBody(deep.body), taglines: Object.fromEntries(["zh-CN", "en", "ja", "ko", "fr"].map((l, i) => [l, row[i + 1]])), source: `04-brand/index.dc.html:${color.sourceLine}` };
   });
 }
+// A small structural reader retains the actual source ancestry, rather than deduplicating
+// repeated cell IDs or assuming that the last .gp opening still owns a later element.
+export function sourceElements(html) {
+  const nodes=[], stack=[], voids=new Set(["input","img","br","hr","meta","link","wbr","area","source"]);
+  for (const match of html.matchAll(/<\/?[a-zA-Z][^>]*>/g)) {
+    const tag=/^<\/?([\w-]+)/.exec(match[0])[1];
+    if(match[0].startsWith("</")){const i=stack.findLastIndex(n=>n.tag===tag);if(i>=0)stack.length=i;continue;}
+    const attrs=attributes(match[0].slice(tag.length+1,-1)), parent=stack.at(-1);
+    const node={tag,attrs,parent,children:[],offset:match.index,sourceLine:html.slice(0,match.index).split("\n").length};
+    if(parent)parent.children.push(node);nodes.push(node);
+    if(!voids.has(tag.replace(/^sc-raw-/,""))&&!match[0].endsWith("/>"))stack.push(node);
+  }
+  return nodes;
+}
 export function extractMatrixOccurrences(source) {
-  return source.boards.flatMap((board) => {
-    let theme = "light", ordinal = 0;
-    return [...board.html.matchAll(/<[^>]+>/g)].flatMap((m) => {
-      const a = attributes(m[0].slice(1, -1));
-      if (a.class?.split(/\s+/).includes("gp")) theme = a.class.split(/\s+/).includes("night") ? "night" : "light";
-      if (!a["data-cell"]) return [];
-      return [{ key: `${board.slug}:${++ordinal}`, board: board.slug, cellId: a["data-cell"], theme, kind: a["data-kind"], expect: a["data-expect"], exempt: "data-exempt" in a, probe: a["data-probe"] ?? "ink", tag: /^<([\w-]+)/.exec(m[0])[1], classes: a.class ?? "", sourceLine: board.html.slice(0, m.index).split("\n").length }];
+  return source.boards.flatMap(board=>{
+    let ordinal=0;
+    return sourceElements(board.html).filter(node=>node.attrs["data-cell"]).map(node=>{
+      const ancestry=[];for(let n=node;n;n=n.parent)ancestry.unshift(n);
+      const has=(n,c)=>(n.attrs.class??"").split(/\s+/).includes(c);
+      const themeNode=ancestry.findLast(n=>has(n,"gp")),screen=ancestry.findLast(n=>n.attrs["data-shell"]);
+      const a=node.attrs,backgroundNode=[...ancestry].reverse().find(n=>declarations(n.attrs.style??"").background);
+      const carrier=ancestry.filter(n=>n.attrs.class||n.attrs.style).map(n=>({tag:n.tag,classes:n.attrs.class??"",style:n.attrs.style??""}));
+      return {key:`${board.slug}:${++ordinal}`,board:board.slug,cellId:a["data-cell"],theme:themeNode&&has(themeNode,"night")?"night":"light",kind:a["data-kind"],expect:a["data-expect"],exempt:"data-exempt" in a,probe:a["data-probe"]??"ink",tag:node.tag,classes:a.class??"",sourceLine:node.sourceLine,
+        sourceScene:screen?.attrs["data-shell"]??board.slug,sourceState:screen?.attrs["data-state"]??(["checked","disabled","readonly"].filter(key=>key in a).concat(a.class??[],a["aria-invalid"]==="true"?"invalid":[],a["aria-pressed"]==="true"?"pressed":[]).join(" ")||"default"),sourceAttributes:a,mobile:screen?has(screen,"m"):false,carrier,carrierBackground:backgroundNode?packageValue(declarations(backgroundNode.attrs.style).background):"",sourceStyle:a.style??""};
     });
   });
 }

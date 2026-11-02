@@ -418,7 +418,8 @@ test("STORY-126 the text-control base reads the live pair and paints nothing its
 
 test("STORY-126 GWT1 and GWT2: line-ctl edge by default, red edge and red ring when invalid and focused", () => {
   for (const target of ["tcrn-input", "tcrn-select"]) {
-    const declarations = new RegExp(`^\\.${target}\\{([^}]*)\\}`, "m").exec(inputsTextPairsCss)?.[1] ?? "";
+    assert.ok(inputsTextPairsCss.includes(`.${target}:where(`));
+    const declarations = new RegExp(`^\\.tcrn-input,\\.tcrn-select\\{([^}]*)\\}`, "m").exec(inputsTextPairsCss)?.[1] ?? "";
     assert.match(declarations, /--tcrn-pair-edge-d:inset 0 0 0 1px var\(--tcrn-color-line-ctl\)/);
     assert.match(declarations, /--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-ink-2\)/);
     assert.match(declarations, /--tcrn-pair-edge-f:inset 0 0 0 1px var\(--tcrn-color-acc\),var\(--tcrn-focus-ring\)/);
@@ -431,59 +432,27 @@ test("STORY-126 GWT1 and GWT2: line-ctl edge by default, red edge and red ring w
     }
   }
   const focusRule = tcrnComponentCss.indexOf(".tcrn-input:where(:focus-visible,");
-  const invalidRule = tcrnComponentCss.indexOf('.tcrn-input:where([aria-invalid="true"]),');
+  const invalidRule = tcrnComponentCss.indexOf('.tcrn-input:where([aria-invalid="true"],');
   const invalidFocusRule = tcrnComponentCss.indexOf('.tcrn-input:where([aria-invalid="true"]:focus-visible,');
   assert.ok(focusRule !== -1 && focusRule < invalidRule && invalidRule < invalidFocusRule, "the invalid rules follow the focus rule, so they win");
   assert.doesNotMatch(tcrnComponentCss, /aria-invalid[^{}]*\{[^}]*--tcrn-color-acc/);
 });
 
-test("STORY-126 GWT5: a read-only field that takes focus shows the focus ring over its read-only surface (WCAG 2.4.7)", () => {
-  // The read-only rule comes after the focus rule (the Inputs board order), so on its own it hid
-  // the ring of a focused read-only field. The readonly-focus tuple rf follows it: the read-only
-  // fill and ink stay, the edge becomes the focus ring (TCRN-DS-SUB-058).
-  for (const target of ["tcrn-input", "tcrn-select"]) {
-    const declarations = new RegExp(`^\\.${target}\\{([^}]*)\\}`, "m").exec(inputsTextPairsCss)?.[1] ?? "";
-    assert.match(declarations, /--tcrn-pair-edge-rf:inset 0 0 0 1px var\(--tcrn-color-acc\),var\(--tcrn-focus-ring\)/);
-  }
-  const focusRule = inputsTextPairsCss.indexOf(".tcrn-input:where(:focus-visible,");
-  const readonlyRule = inputsTextPairsCss.indexOf(".tcrn-input:where([readonly],");
-  const readonlyFocusRule = inputsTextPairsCss.indexOf(".tcrn-input:where([readonly]:focus-visible,");
-  const invalidRule = inputsTextPairsCss.indexOf('.tcrn-input:where([aria-invalid="true"]),');
-  assert.ok(focusRule !== -1 && focusRule < readonlyRule && readonlyRule < readonlyFocusRule && readonlyFocusRule < invalidRule, "rf follows r and precedes the invalid rules");
-  const readonlyFocus = /(\.tcrn-input:where\(\[readonly\]:focus-visible,[^{]*)\{([^}]*)\}/.exec(inputsTextPairsCss);
-  assert.ok(readonlyFocus, "the generated segment has the readonly-focus rule");
-  assert.match(readonlyFocus[1], /\[aria-readonly="true"\]\[data-tcrn-preview-state="focus"\]/);
-  assert.equal(readonlyFocus[2], "--tcrn-pair-edge:var(--tcrn-pair-edge-rf)", "rf only switches the edge");
-
-  // The live pair of rendered fields, cascaded by jsdom over the whole sheet.
-  const markup = renderToStaticMarkup(
-    <>
-      <Input aria-label="Project key" readOnly defaultValue="PRJ-2026-0412" data-tcrn-preview-state="focus" data-probe="readonly-focus" />
-      <Input aria-label="Project key" readOnly defaultValue="PRJ-2026-0412" data-probe="readonly" />
-      <Input aria-label="Project name" defaultValue="季度复盘" data-tcrn-preview-state="focus" data-probe="focus" />
-    </>
-  );
-  const livePairs = (css: string) => {
-    const dom = new JSDOM(`<!doctype html><html><head></head><body>${markup}</body></html>`);
-    const style = dom.window.document.createElement("style");
-    style.textContent = css;
-    dom.window.document.head.append(style);
-    const pair = (probe: string) => {
-      const element = dom.window.document.querySelector(`[data-probe="${probe}"]`);
-      assert.ok(element, `rendered ${probe}`);
-      const computed = dom.window.getComputedStyle(element);
-      return { fill: computed.getPropertyValue("--tcrn-pair-fill").trim(), edge: computed.getPropertyValue("--tcrn-pair-edge").trim() };
-    };
-    return { readonlyFocus: pair("readonly-focus"), readonly: pair("readonly"), focus: pair("focus") };
-  };
-  const live = livePairs(tcrnComponentCss);
-  assert.deepEqual(live.readonlyFocus, { fill: "var(--tcrn-pair-fill-r)", edge: "var(--tcrn-pair-edge-rf)" }, "focused read-only: read-only surface, focus-ring edge");
-  assert.deepEqual(live.readonly, { fill: "var(--tcrn-pair-fill-r)", edge: "var(--tcrn-pair-edge-r)" });
-  assert.deepEqual(live.focus, { fill: "var(--tcrn-pair-fill-f)", edge: "var(--tcrn-pair-edge-f)" });
-  // Without the rf rule the read-only edge covers the ring again.
-  const rfRule = /\.tcrn-input:where\(\[readonly\]:focus-visible,[^{]*\{[^}]*\}/g;
-  assert.equal(tcrnComponentCss.match(rfRule)?.length, 1);
-  assert.equal(livePairs(tcrnComponentCss.replace(rfRule, "")).readonlyFocus.edge, "var(--tcrn-pair-edge-r)");
+test("published 06 readonly follows focus, with no invented rf tuple", () => {
+  const focus = inputsTextPairsCss.indexOf('.tcrn-input:where(:focus-visible,');
+  const readonly = inputsTextPairsCss.indexOf('.tcrn-input:where([readonly],');
+  const error = inputsTextPairsCss.indexOf('.tcrn-input:where([aria-invalid="true"],');
+  assert.ok(focus >= 0 && readonly > focus && error > readonly);
+  assert.doesNotMatch(inputsTextPairsCss, /--tcrn-pair-edge-rf|\[readonly\]:focus-visible/);
+  // Both controls share the published .in table. A readonly/focus combination retains r;
+  // ordinary focus retains f, and error focus replaces the edge with ef.
+  const markup = renderToStaticMarkup(<><Input readOnly aria-label="Key" data-tcrn-preview-state="focus"/><Select aria-label="Mode" aria-readonly="true" data-tcrn-preview-state="focus" options={[{value:"a",label:"A"}]}/></>);
+  const dom = new JSDOM(`<style>${inputsTextPairsCss}</style>${markup}`);
+  try { for (const element of dom.window.document.querySelectorAll('input,select')) {
+    const live = dom.window.getComputedStyle(element);
+    assert.equal(live.getPropertyValue('--tcrn-pair-fill').trim(), 'var(--tcrn-pair-fill-r)');
+    assert.equal(live.getPropertyValue('--tcrn-pair-edge').trim(), 'var(--tcrn-pair-edge-r)');
+  } } finally { dom.window.close(); }
 });
 
 test("STORY-126 number, date, placeholder and collection details follow the Inputs board", () => {
@@ -546,7 +515,7 @@ test("STORY-126 checkbox and radio draw a 16px box from the pair table with a bo
   assert.match(cssRule(".tcrn-radio-group__control::after"), /box-shadow: inset 0 0 0 5px var\(--tcrn-pair-mark\);/);
   assert.doesNotMatch(tcrnComponentCss, /url\(\s*["']?data:/);
   assert.ok(tcrnComponentCss.includes(inputsCheckPairsCss.trim()), "the generated check pair segment is joined into the sheet");
-  assert.match(inputsCheckPairsCss, /^\.tcrn-checkbox\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-acc\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-on-acc\)/m);
+  assert.match(inputsCheckPairsCss, /^\.tcrn-checkbox,\.tcrn-radio-group__control\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-acc\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-on-acc\)/m);
   assert.match(inputsCheckPairsCss, /^\.tcrn-radio-group__control\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-panel\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-acc\)/m);
 });
 
@@ -643,4 +612,13 @@ test("STORY-126 Select and DatePicker draw their end icon in the 30px the contro
   const wrapper = cssRule(".tcrn-select-wrap,\n.tcrn-date-picker-wrap");
   assert.match(wrapper, /position: relative;[\s\S]*display: inline-flex;/);
   assert.doesNotMatch(wrapper, /(?:background|border|box-shadow|outline|color)\s*:/);
+});
+
+test("published 06 small Switch paints its actual before knob and SearchInput owns the cascade", () => {
+  assert.match(cssRule('.tcrn-switch--sm .tcrn-switch__control::before'), /inline-size:12px;block-size:12px/);
+  assert.match(cssRule('.tcrn-switch--sm .tcrn-switch__control:where(:checked)::before'), /translateX\(12px\)/);
+  assert.doesNotMatch(tcrnComponentCss, /\.tcrn-switch--sm[^{}]*::after/);
+  assert.match(cssRule('.tcrn-search-input .tcrn-search-input__control.tcrn-input--sm'), /--tcrn-search-input-block-size:var\(--tcrn-control-height-sm\)/);
+  const html=renderToStaticMarkup(<SearchInput aria-label="Find" className="tcrn-input--sm"/>);
+  assert.match(html, /class="tcrn-input tcrn-search-input__control tcrn-input--sm"/);
 });

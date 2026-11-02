@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,extractMarks,extractIcons,extractFontFaces,extractMatrixOccurrences,normalizeSvgBody,sha256 } from "./approved-site-source.mjs";
+import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,extractMarks,extractIcons,extractFontFaces,extractMatrixOccurrences,normalizeSvgBody,decodeHtml,sha256 } from "./approved-site-source.mjs";
 import { APPROVED_SITE,APPROVED_BOARD_IDS } from "./approved-site-pins.mjs";
 import { listFiles } from "./generated-output.mjs";
 
@@ -14,11 +14,26 @@ export function sourceIdentityIssues(actual,label="source"){return Object.entrie
 const read=(root,rel)=>fs.readFileSync(path.join(root,rel),"utf8");
 export async function compiled(root,rel){return import(`${pathToFileURL(path.join(root,rel)).href}?published-proof=${Date.now()}`);}
 export function checkSource(root=ROOT){const s=readApprovedSource(root);return {site:s.manifest.site,boardCount:s.boards.length,sourceFiles:s.manifest.files.length,fontFiles:s.manifest.fontFiles.length,sourceManifestSha256:sha256(read(root,"docs/design/approved-site-v1/source-manifest.json"))};}
-export function checkProjection(registry,apis){
-  const issues=[],ids=Object.keys(APPROVED_BOARD_IDS);
+export function formalApiContracts(source=readApprovedSource()){
+ const locations=JSON.parse(fs.readFileSync(new URL('./api-source-lines.json',import.meta.url),'utf8'));
+ return Object.fromEntries(Object.entries(locations).map(([name,{board,lines}])=>{
+  if(publishedApiBoards[name]!==board)throw new Error(`Wrong formal API source ${name}`);
+  const html=source.board(board).html.split('\n');
+  const formal=lines.map(line=>decodeHtml(html[line-1].replace(/<[^>]+>/g,' ')).replace(/\s+/g,' ').trim()).join('\n');
+  return [name,{board,line:lines[0],lines,formal}];
+ }));
+}
+export function checkProjection(registry,apis,{source=readApprovedSource()}={}){
+  const issues=[],ids=Object.keys(APPROVED_BOARD_IDS),formal=formalApiContracts(source);
   if(registry.length!==8||registry.some((r,i)=>r.id!==ids[i]||r.sourceId!==APPROVED_BOARD_IDS[r.id]))issues.push("Registry is not the fixed eight published board identities in source order");
   if(apis.length!==Object.keys(publishedApiBoards).length)issues.push("API reference membership differs from explicit published contracts");
-  for(const api of apis){if(publishedApiBoards[api.name]!==api.board||!Array.isArray(api.props)||!api.props.length)issues.push(`Unpublished API contract ${api.name}`);}
+  for(const api of apis){
+    const expected=formal[api.name];
+    if(publishedApiBoards[api.name]!==api.board||!expected||api.formal!==expected.formal||api.line!==expected.line)issues.push(`Unpublished or incomplete normative API contract ${api.name}`);
+    if(!LOCALES.every(locale=>typeof api.summary?.[locale]==='string'&&api.summary[locale].length>20)||new Set(Object.values(api.summary??{})).size!==5)issues.push(`API reader-language summaries missing ${api.name}`);
+    if(!api.example?.includes(`<${api.name}`)||!Array.isArray(api.props)||!api.props.length)issues.push(`Missing concrete API usage ${api.name}`);
+    if(api.name==='IconButton'&&(!api.props.some(p=>p.includes('children'))||!api.example.includes('</IconButton>')))issues.push('IconButton visible-label contract missing');
+  }
   if(new Set(apis.map(a=>a.name)).size!==apis.length)issues.push("Duplicate API contracts");
   return issues;
 }
@@ -101,3 +116,39 @@ export function checkOutput(root=ROOT,output=path.join(root,"apps/storybook/stor
 }
 export async function checkRoutes(root=ROOT){const registry=await compiled(root,"apps/storybook/dist/contract-stories/kernel.js"),api=await compiled(root,"apps/storybook/dist/approved-api.js"),metadata=await compiled(root,"apps/storybook/dist/approved-source.js");return {issues:[...checkSourceClosure(root),...sourceIdentityIssues(metadata.approvedSource.site,"compiled documentation"),...checkProjection(registry.contractStories,api.approvedApi)],stories:registry.contractStories.length,apis:api.approvedApi.length};}
 export function finish(label,result){const issues=result.issues??[];console.log(JSON.stringify({proof:label,...result},null,2));if(issues.length)process.exitCode=1;return result;}
+
+export const MANAGER_STORY_IDS=Object.freeze(['tokens','typography','icons','brand','actions','inputs','shell-upper','shell-lower'].map(name=>`published-standards--${name}`));
+export function managerIndexIssues(index){
+ const entries=Object.values(index.entries??{}),stories=entries.filter(e=>e.type==='story'),issues=[];
+ if(JSON.stringify(stories.map(e=>e.id).sort())!==JSON.stringify([...MANAGER_STORY_IDS].sort())||entries.length!==8)issues.push('Manager output is not exactly the eight approved CSF stories');
+ for(const story of stories)if(story.title!=='Published standards'||!story.importPath?.endsWith('/src/standards.stories.tsx'))issues.push(`Unapproved manager CSF module ${story.id}`);
+ return issues;
+}
+export function checkManagerOutput(root=ROOT){
+ const output=path.join(root,'apps/storybook/storybook-preview-static'),indexPath=path.join(output,'index.json');
+ if(!fs.existsSync(indexPath)||!fs.existsSync(path.join(output,'iframe.html'))||!fs.existsSync(path.join(output,'index.html')))return {issues:['Actual manager output is missing; its declared pnpm build prerequisite and manager build have not produced this entry'],entry:'manager',files:0};
+ const actual=listFiles(output),index=JSON.parse(fs.readFileSync(indexPath,'utf8')),issues=managerIndexIssues(index),source=readApprovedSource(root);
+ for(const rel of actual){
+  const bytes=fs.readFileSync(path.join(output,rel));
+  if(sha256(bytes)===OLD_MOTHER_SHA256)issues.push(`Manager rejected mother bytes: ${rel}`);
+  if(rel.endsWith('.html')&&!['index.html','iframe.html'].includes(rel))issues.push(`Manager unregistered HTML entry: ${rel}`);
+  if(/\.(?:html|js|css|svg|json|txt)$/.test(rel)){
+   const text=bytes.toString('utf8');if(rejectedSvgGeometry(text)||/tcrn-brand-mark\.svg|tcrn-aos-two-line|tcrnRetiredComponentCss|\/reference-components-/.test(text))issues.push(`Manager rejected inline, renamed or unlinked source: ${rel}`);
+  }
+ }
+ const expectedFonts=[...source.manifest.fontFiles.map(f=>f.file),'fonts.css','manifest.json'];
+ issues.push(...validateOutputMembers(listFiles(path.join(output,'fonts')),expectedFonts).map(i=>`Manager font closure: ${i}`));
+ for(const font of source.manifest.fontFiles){const file=path.join(output,'fonts',font.file);if(!fs.existsSync(file)||sha256(fs.readFileSync(file))!==font.sha256)issues.push(`Manager formal font bytes drift: ${font.file}`);}
+ for(const file of ['fonts.css','manifest.json']){const emitted=path.join(output,'fonts',file),current=path.join(root,'packages/ui-tokens/fonts',file);if(!fs.existsSync(emitted)||sha256(fs.readFileSync(emitted))!==sha256(fs.readFileSync(current)))issues.push(`Manager font ${file} not from current generated set`);}
+ const legal=['hanken-grotesk-OFL.txt','source-serif-4-OFL.txt','ibm-plex-mono-OFL.txt','noto-sans-sc-OFL.txt','noto-serif-sc-OFL.txt','approved-site-original-notice.txt'];
+ issues.push(...validateOutputMembers(listFiles(path.join(output,'licenses')),legal).map(i=>`Manager license closure: ${i}`));
+ for(const name of legal){const file=path.join(output,'licenses',name);if(!fs.existsSync(file)||sha256(fs.readFileSync(file))!==sha256(fs.readFileSync(path.join(root,'packages/ui-tokens/licenses',name))))issues.push(`Manager license drift ${name}`);}
+ const favicon=path.join(output,'assets/ds-tile-deep.svg'),formal=extractMarks(source).find(m=>m.id==='ds').tileDeepBody;
+ if(!fs.existsSync(favicon)||normalizeSvgBody(fs.readFileSync(favicon,'utf8').replace(/^<svg[^>]*>/,'').replace(/<\/svg>\s*$/,''))!==normalizeSvgBody(formal))issues.push('Manager favicon is not the formal DS deep tile');
+ return {issues,entry:'manager',stories:Object.values(index.entries??{}).map(e=>e.id),sourceCommit:source.manifest.site.sourceCommit,files:actual.length,inventory:actual.map(rel=>{const bytes=fs.readFileSync(path.join(output,rel));return {path:rel,bytes:bytes.length,sha256:sha256(bytes)};})};
+}
+
+export function checkPairReferences(css){
+ const text=css.replace(/\/\*[\s\S]*?\*\//g,''),declared=new Set([...text.matchAll(/(--tcrn-pair-[a-z0-9-]+)\s*:/g)].map(m=>m[1]));
+ return [...new Set([...text.matchAll(/var\((--tcrn-pair-[a-z0-9-]+)/g)].map(m=>m[1]))].filter(name=>!declared.has(name)).map(name=>`Undeclared current state pair ${name}`);
+}

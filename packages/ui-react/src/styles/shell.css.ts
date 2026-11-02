@@ -981,24 +981,12 @@ export const shellCss05 = `
   outline: 2px solid transparent;
   outline-offset: -2px;
 }
-/* Inside the product shell an element with no focus treatment of its own takes the G+ focus
-   ring (--tcrn-focus-ring: a surface gap, then the accent ring) through the shell's focus edge
-   pair, which base.css.ts declares with the theme, with a transparent outline behind it for
-   forced colours, which paint no box-shadow. The pair-driven controls are left out: buttons
-   and link buttons, links, text controls (the search control is one), selects and the
-   multi-select trigger, checkboxes, radios and switches draw the same ring from their own pair
-   tables together with their edge, and a shell rule must not wipe either. The shell parts that
-   switch their own focus edge pair are left out too (TCRN-DS-SUB-182): the brand button, the
-   pinned items, the full menu's rows and search results, the bell, the avatar (whose edge keeps
-   its inset 1px line under the ring) and the paper's scrolling region (its ring is inset). They
-   are listed inside :where(), so leaving them out adds no weight. It is a state rule at the
-   variant's specificity that reads the pair and writes no colour (C2, TCRN-DS-SUB-156), and it
-   comes after the shell parts' rules, so it still follows every rule of the same weight it wins
-   over: the families' own focus outlines. */
+/* The published 01/07 --focus is the surface gap plus accent ring. Generic focus
+   consumes that actual token; controls and shell parts keep their own state tables. */
 .tcrn-product-shell :where(:focus-visible):not(.tcrn-button, .tcrn-link-button, .tcrn-link, .tcrn-input, .tcrn-select, .tcrn-checkbox, .tcrn-radio-group__control, .tcrn-switch__control):not(:where(.tcrn-shell-brand, .tcrn-shell-pins__item, .tcrn-shell-menu .tcrn-nav-item, .tcrn-shell-menu .tcrn-product-shell-search__result, .tcrn-shell-bell, .tcrn-shell-avatar, .tcrn-product-shell__paper > .tcrn-product-shell__main)) {
   outline: 2px solid transparent;
   outline-offset: 2px;
-  box-shadow: var(--tcrn-pair-shell-edge-f);
+  box-shadow: var(--tcrn-focus-ring);
 }
 /* The Sheet's scroll region stays reachable even when it has no navigation rows. Its
    inset focus edge remains inside the scrolling box, including in a standalone Sheet. */

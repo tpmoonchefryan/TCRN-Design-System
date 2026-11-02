@@ -10,3 +10,9 @@ test("V4 action/input states switch pairs and cannot paint a color literal or co
  for(const value of ['#0b6b65','rgba(0,0,0,.1)','var(--tcrn-color-acc)'])assert.ok(checkPairStateRules(`.tcrn-button:hover{background:${value}}`).length);
  assert.deepEqual(checkPairStateRules('.tcrn-nav-item-row:hover{background:var(--tcrn-color-hover)}'),[],"shell rows retain their own published role");
 });
+
+import { checkPairReferences } from '../scripts/lib/published-standard-proof.mjs';
+test('V4 no rf or obsolete shell alias can become an unresolved live CSS dependency',()=>{
+ assert.deepEqual(checkPairReferences('.in{--tcrn-pair-edge-f:var(--tcrn-focus-ring);--tcrn-pair-edge:var(--tcrn-pair-edge-f)}'),[]);
+ for(const name of ['--tcrn-pair-edge-rf','--tcrn-pair-shell-edge-f'])assert.ok(checkPairReferences(`.field{box-shadow:var(${name})}`).some(issue=>issue.includes(name)));
+});

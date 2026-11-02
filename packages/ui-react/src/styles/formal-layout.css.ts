@@ -37,11 +37,13 @@ export const formalLayoutCss = `
 .tcrn-nav-group__items{display:flex;flex-direction:column;gap:2px;min-width:0}
 .tcrn-nav-group__label{display:grid;grid-template-columns:minmax(0,1fr) 24px;column-gap:10px;align-items:center;min-width:0;height:28px;padding:0 4px 0 8px;margin-top:6px;color:var(--tcrn-color-ink-3)}
 .tcrn-nav-group__label-text{margin:0;font:500 10px/16px var(--tcrn-type-family-ui);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tcrn-nav-item-row{display:grid;grid-template-columns:minmax(0,1fr) 24px;align-items:center;column-gap:0;min-width:0;border-radius:8px;color:var(--tcrn-color-ink-2)}
+/* 07 .ts-it paints once across the text and reserved pin slot. Its accessible
+   package rendition uses sibling link/button nodes, so the wrapper owns that carrier. */
+.tcrn-nav-item-row{--tcrn-pair-fill-d:transparent;--tcrn-pair-fill-h:var(--tcrn-color-hover);--tcrn-pair-fill-s:var(--tcrn-color-wash);--tcrn-pair-fill:var(--tcrn-pair-fill-d);display:grid;grid-template-columns:minmax(0,1fr) 24px;align-items:center;column-gap:0;min-width:0;border-radius:8px;color:var(--tcrn-color-ink-2);background:var(--tcrn-pair-fill)}
 .tcrn-nav-item{display:flex;align-items:center;gap:10px;min-width:0;height:var(--tcrn-shell-row-h);padding:0 4px 0 8px;border:0;border-radius:8px;background:transparent;color:inherit;text-decoration:none;text-align:left;font:500 12.5px/20px var(--tcrn-type-family-ui);white-space:nowrap}
 .tcrn-nav-item__content,.tcrn-nav-item__label{display:inline-flex;align-items:center;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tcrn-nav-item-row:hover{background:var(--tcrn-color-hover);color:var(--tcrn-color-ink)}
-.tcrn-nav-item-row:has([aria-current="page"]),.tcrn-nav-item-row:has([aria-expanded="true"]){background:var(--tcrn-color-wash);color:var(--tcrn-color-ink);font-weight:600}
+.tcrn-nav-item-row:where(:hover,:has(>.tcrn-nav-item[data-tcrn-preview-state="hover"])){--tcrn-pair-fill:var(--tcrn-pair-fill-h)}
+.tcrn-nav-item-row:where(:has(>[aria-current="page"]),:has(>[aria-expanded="true"])){--tcrn-pair-fill:var(--tcrn-pair-fill-s);font-weight:600}
 .tcrn-nav-pin{display:inline-flex;align-items:center;justify-content:center;justify-self:end;width:24px;height:24px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--tcrn-color-ink-3);opacity:0;cursor:pointer}
 .tcrn-nav-pin>.tcrn-icon{width:16px;height:16px}
 .tcrn-nav-item-row:hover .tcrn-nav-pin,.tcrn-nav-item-row:focus-within .tcrn-nav-pin,.tcrn-nav-group__label:hover .tcrn-nav-pin,.tcrn-nav-group__label:focus-within .tcrn-nav-pin,.tcrn-nav-pin[aria-pressed="true"],.tcrn-nav-pin:focus-visible{opacity:1}
@@ -60,6 +62,7 @@ export const formalLayoutCss = `
 
 // Documentation is a 07 top-band shell; examples are package components, never copied Site runtime.
 export const formalDocsCss = `
+.tcrn-shell-menu .tcrn-nav-item-row>.tcrn-nav-item{background:transparent}
 .tcrn-doc-content{width:min(100%,1040px);margin-inline:auto;display:flex;flex-direction:column;gap:22px;min-width:0}
 .tcrn-doc-section{display:flex;flex-direction:column;gap:14px;min-width:0}
 .tcrn-doc-themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;align-items:start}
@@ -76,7 +79,10 @@ export const formalDocsCss = `
 .tcrn-doc-code{font:400 11.5px/16px var(--tcrn-type-family-mono);color:var(--tcrn-color-ink-2);overflow-wrap:anywhere}
 .tcrn-doc-swatch{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-right:6px;box-shadow:inset 0 0 0 1px var(--tcrn-color-line-2)}
 .tcrn-doc-shell-frame{position:relative;min-width:0;height:640px;overflow:auto;background:var(--tcrn-color-bg);border-radius:14px;box-shadow:var(--tcrn-elevation-s1)}
-.tcrn-doc-shell-frame>.tcrn-product-shell{height:640px;min-height:0}
+/* Formal 07 .scr desktop scenes are1240 wide, with scrolling in the specimen host.
+   The normal document content keeps its published1040 limit; phone scenes stay390. */
+.tcrn-doc-shell-frame>.tcrn-product-shell{width:1240px;min-width:1240px;height:640px;min-height:0}
+.tcrn-doc-shell-frame[data-phone]>.tcrn-product-shell{width:390px;min-width:390px}
 .tcrn-doc-shell-frame[data-phone]{width:390px;max-width:100%}
 .tcrn-doc-source{font:400 11px/16px var(--tcrn-type-family-mono);color:var(--tcrn-color-ink-3);overflow-wrap:anywhere}
  .tcrn-product-shell__paper{--tcrn-color-surface:var(--tcrn-color-panel)}
@@ -96,5 +102,6 @@ export const formalDocsCss = `
 .tcrn-doc-selected-row{display:flex;align-items:center;height:36px;padding:0 10px;background:var(--tcrn-color-wash);color:var(--tcrn-color-ink);font-weight:600;border-radius:6px}
 .tcrn-doc-error{display:flex;align-items:center;gap:5px;font:400 11.5px/16px var(--tcrn-type-family-ui);color:var(--tcrn-color-bad)}
 .tcrn-doc-intro-lockup>.tcrn-brand-mark{width:128px;height:128px}
+.tcrn-doc-api pre{white-space:pre-wrap;max-width:100%;margin:0}
 .tcrn-doc-api{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;border-bottom:1px solid var(--tcrn-color-line);padding-block:12px}
 `;

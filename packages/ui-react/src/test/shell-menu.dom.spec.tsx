@@ -3,7 +3,7 @@
 // choice closes it, a pin does not; ↑↓ walk a column, → opens and enters a row's next level, ←
 // returns; the search keeps only the related entries; the ⌘K key is registered once and removed
 // on unmount.
-// The Sheet (TCRN-DS-SUB-126; 144-GWT2, GWT3): 760 wide and narrower the brand button opens the Sheet,
+// The Sheet (TCRN-DS-SUB-126; 144-GWT2, GWT3): 390 wide and narrower the brand button opens the Sheet,
 // which takes focus itself; the scrim, Esc and a choice close it; a group opens its items after the
 // lists; the presentation follows the viewport while the menu is open.
 import test from "node:test";
@@ -280,10 +280,10 @@ test("the pinned group lists every pinned item; the ⌘K key is registered once 
   }
 });
 
-// The Sheet (TCRN-DS-SUB-126): jsdom has no matchMedia, so the viewport is the test's — 760 wide or
+// The Sheet (TCRN-DS-SUB-126): jsdom has no matchMedia, so the viewport is the test's — 390 wide or
 // narrower while `narrow` — and a resize tells the listeners the query's answer changed.
 function stubViewport(harness: DomInteractionHarness, narrow: boolean) {
-  Object.defineProperty(harness.window, "innerWidth", { configurable: true, writable: true, value: narrow ? 760 : 1024 });
+  Object.defineProperty(harness.window, "innerWidth", { configurable: true, writable: true, value: narrow ? 390 : 1024 });
   // JSDOM has no layout; the owning shell's box models the same container width.
   const original = harness.window.HTMLElement.prototype.getBoundingClientRect;
   harness.window.HTMLElement.prototype.getBoundingClientRect = function () {
@@ -292,7 +292,7 @@ function stubViewport(harness: DomInteractionHarness, narrow: boolean) {
   };
   return { async resize(next: boolean) {
     await act(async () => {
-      Object.defineProperty(harness.window, "innerWidth", { configurable: true, writable: true, value: next ? 760 : 1024 });
+      Object.defineProperty(harness.window, "innerWidth", { configurable: true, writable: true, value: next ? 390 : 1024 });
       harness.window.dispatchEvent(new harness.window.Event("resize"));
     });
   } };
@@ -301,7 +301,7 @@ function stubViewport(harness: DomInteractionHarness, narrow: boolean) {
 const sheet = (harness: DomInteractionHarness) => harness.document.querySelector<HTMLElement>('[data-panel="sheet"]');
 const scrim = (harness: DomInteractionHarness) => harness.document.querySelector<HTMLElement>("[data-shell-scrim]");
 
-test("760 wide a press on the brand button opens the Sheet with focus on it; the scrim and Esc close it; ⌘K focuses the search", async () => {
+test("390 wide a press on the brand button opens the Sheet with focus on it; the scrim and Esc close it; ⌘K focuses the search", async () => {
   const harness = createDomInteractionHarness();
   try {
     stubViewport(harness, true);
@@ -373,7 +373,7 @@ test("in the Sheet a group opens its items after the lists; → enters a level, 
   }
 });
 
-test("the presentation follows the viewport: across 760 the open menu turns from the panel to the Sheet and back", async () => {
+test("the presentation follows the viewport: across 390 the open menu turns from the panel to the Sheet and back", async () => {
   const harness = createDomInteractionHarness();
   try {
     const viewport = stubViewport(harness, false);
@@ -423,7 +423,7 @@ test("ProductShell's root says data-state=\"sheet\" while the Sheet is open and 
     await harness.render(<ProductShellFixture open={false} />);
     assert.equal(root()?.getAttribute("data-state"), "closed");
     await harness.render(<ProductShellFixture open />);
-    assert.ok(sheet(harness), "760 wide the open menu is the Sheet");
+    assert.ok(sheet(harness), "390 wide the open menu is the Sheet");
     assert.equal(root()?.getAttribute("data-state"), "sheet");
     await viewport.resize(false);
     assert.ok(panel(harness), "wider, it is the panel");
@@ -610,4 +610,16 @@ test("a shell with menuShortcut={false} registers no keydown listener on the doc
   } finally {
     await harness.cleanup();
   }
+});
+
+test("760 remains a desktop panel width; only the published390 auto boundary selects Sheet", async () => {
+  const harness=createDomInteractionHarness();
+  try {
+    stubViewport(harness,false);
+    Object.defineProperty(harness.window,"innerWidth",{configurable:true,writable:true,value:760});
+    await harness.render(<Shell requests={[]}/>);
+    await harness.dispatchClick(brand(harness) as Element);
+    assert.ok(panel(harness));
+    assert.equal(sheet(harness),null);
+  } finally { await harness.cleanup(); }
 });

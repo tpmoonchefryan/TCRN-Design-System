@@ -330,3 +330,16 @@ test("the loader is shown only while the button is busy", () => {
   assert.match(hidden?.body ?? "", /display:\s*none/);
   assert.match(bodiesFor('.tcrn-button:where([aria-busy="true"])'), /pointer-events:\s*none/);
 });
+
+test("published 05 IconButton optional visible children preserve the pure icon and labelled renditions", () => {
+  for (const children of ["Settings", 0, <strong key="label">Settings</strong>]) {
+    const html=renderToStaticMarkup(<IconButton ariaLabel="Settings" iconName="settings">{children}</IconButton>);
+    assert.match(html, /tcrn-icon-button--labelled/);
+    assert.match(html, /tcrn-icon-button__label/);
+    assert.match(html, /aria-label="Settings"/);
+  }
+  for (const children of [undefined, null, false, ""]) {
+    const html=renderToStaticMarkup(<IconButton ariaLabel="Settings" iconName="settings">{children}</IconButton>);
+    assert.doesNotMatch(html, /tcrn-icon-button--labelled|tcrn-icon-button__label/);
+  }
+});
