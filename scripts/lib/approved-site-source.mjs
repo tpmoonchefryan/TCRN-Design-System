@@ -17,10 +17,13 @@ export function declarations(s) {
 export function cssRules(css) {
   return [...css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => ({ selector: m[1].trim(), declarations: declarations(m[2]), body: m[2] }));
 }
-export function cssRule(css, selector) {
-  const result = cssRules(css).find((x) => x.selector === selector);
-  if (!result) throw new Error(`Missing published selector ${selector}`);
-  return result.declarations;
+export function cssRule(css, selector, { composeRepeated = false } = {}) {
+  const matches = cssRules(css).filter((x) => x.selector === selector);
+  if (!matches.length) throw new Error(`Missing published selector ${selector}`);
+  // Opt in only for an audited, repeated selector in the same source context.
+  // This reader does not resolve selector lists, specificity or media queries.
+  // Later declarations of the exact selector win; earlier distinct slots survive.
+  return composeRepeated ? Object.assign({}, ...matches.map((x) => x.declarations)) : matches[0].declarations;
 }
 export function readApprovedSource(root = ROOT, options = {}) {
   const readSource = options.readFile ?? fs.readFileSync;

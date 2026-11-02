@@ -58,9 +58,11 @@ export const inputsCss02 = `
 .tcrn-input.tcrn-search-input__control::placeholder {
   color: var(--tcrn-color-ink-2);
 }
-/* Current ink-2 follows published07. Published06 .sw>kbd says ink-3; S03-C01
-   remains an undecided source clarification. Keeping this value does not certify
-   unchanged06, and its nominal night wash failure does not waive text >=4.5. */
+/* Current ink-2 already follows published07. C01 direction is decided by
+   TCRN-DS-MIN-20261103-SHORTCUT-INK D1-D4: only shortcut text uses shared ink-2
+   (day #4f4c43 / night #a9a69c). Formal06/pins are still unamended; amendment,
+   publication and consumer alignment remain pending. No geometry/other ink/icon
+   change or text >=4.5 waiver follows from retaining these preexisting bytes. */
 .tcrn-search-input__shortcut {
   position: absolute;
   inset-block-start: 50%;

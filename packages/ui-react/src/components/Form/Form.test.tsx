@@ -456,7 +456,9 @@ test("published 06 readonly follows focus, with no invented rf tuple", () => {
 });
 
 test("STORY-126 number, date, placeholder and collection details follow the Inputs board", () => {
-  assert.match(cssRule(".tcrn-number-input"), /appearance:textfield/);
+  // The two-class selector preserves the formal12ch minimum against the later input base.
+  const number = cssRule(".tcrn-input.tcrn-number-input");
+  for (const declaration of ["appearance:textfield", "min-inline-size:12ch", "font-variant-numeric:tabular-nums"]) assert.ok(number.includes(declaration), declaration);
   assert.match(tcrnComponentCss, /\.tcrn-number-input::-webkit-inner-spin-button,\.tcrn-number-input::-webkit-outer-spin-button\{-webkit-appearance:none;margin:0\}/);
   // GWT4: the native indicator stays the click target, transparent over the end 30px.
   const indicator = cssRule(".tcrn-date-picker::-webkit-calendar-picker-indicator");
@@ -517,6 +519,17 @@ test("STORY-126 checkbox and radio draw a 16px box from the pair table with a bo
   assert.ok(tcrnComponentCss.includes(inputsCheckPairsCss.trim()), "the generated check pair segment is joined into the sheet");
   assert.match(inputsCheckPairsCss, /^\.tcrn-checkbox,\.tcrn-radio-group__control\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-acc\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-on-acc\)/m);
   assert.match(inputsCheckPairsCss, /^\.tcrn-radio-group__control\{[^}]*--tcrn-pair-fill-c:var\(--tcrn-color-panel\);[^}]*--tcrn-pair-mark-c:var\(--tcrn-color-acc\)/m);
+  const pairs = (selector: string) => Object.fromEntries((new RegExp(`^${escapeRegExp(selector)}\\{([^}]*)\\}`, "m").exec(inputsCheckPairsCss)?.[1] ?? "").split(";").filter(Boolean).map(declaration => { const at = declaration.indexOf(":"); return [declaration.slice(0, at), declaration.slice(at + 1)]; }));
+  const checkbox = pairs(".tcrn-checkbox,.tcrn-radio-group__control"), radio = pairs(".tcrn-radio-group__control");
+  for (const state of ["c", "cf", "cx"]) {
+    assert.equal(checkbox[`--tcrn-pair-fill-${state}`], `var(--tcrn-color-${state === "cx" ? "dis" : "acc"})`);
+    assert.equal(checkbox[`--tcrn-pair-mark-${state}`], `var(--tcrn-color-${state === "cx" ? "ink-3" : "on-acc"})`);
+    assert.equal(radio[`--tcrn-pair-fill-${state}`], `var(--tcrn-color-${state === "cx" ? "dis" : "panel"})`);
+    assert.equal(radio[`--tcrn-pair-mark-${state}`], `var(--tcrn-color-${state === "cx" ? "ink-3" : "acc"})`);
+    assert.equal(radio[`--tcrn-pair-edge-${state}`], state === "cx" ? "inset 0 0 0 1px var(--tcrn-color-line-2)" : state === "cf" ? "var(--tcrn-focus-ring)" : "0 0 #0000");
+  }
+  assert.match(cssRule(".tcrn-checkbox:where(:indeterminate)::after"), /border-width: 0 0 1\.5px;[\s\S]*transform: none;/);
+  for (const state of ["cf", "cx"]) assert.match(inputsCheckPairsCss, new RegExp(`:where\\([^{}]*\\)\\{--tcrn-pair-fill:var\\(--tcrn-pair-fill-${state}\\);--tcrn-pair-edge:var\\(--tcrn-pair-edge-${state}\\);--tcrn-pair-mark:var\\(--tcrn-pair-mark-${state}\\)\\}`));
 });
 
 test("STORY-126 the switch is a 34 by 20 track whose 16px knob travels 14px and turns on-acc when on", () => {
@@ -563,12 +576,19 @@ test("STORY-126 GWT3 SearchInput is a quiet tool: wash without an edge, ink-2 pl
 
 test("STORY-126 the field no longer washes on focus, and every ring keeps a forced-colours outline", () => {
   assert.doesNotMatch(tcrnComponentCss, /\.tcrn-field:focus-within/);
-  // An error neither washes nor rings the field (TCRN-DS-SUB-060): the message is set in
-  // bad on the surface the field sits on, and only forced colours outline the field.
+  // Formal06 publishes scoped error text; the full Field family/field-wide outline is
+  // explicitly later work. Keep native error associations and the actual message role.
   assert.doesNotMatch(tcrnComponentCss, /(?:^|\}|\*\/)\s*\.tcrn-field--error\s*\{/);
   assert.doesNotMatch(tcrnComponentCss, /state-blocked-bg\) 62%/);
-  assert.match(cssRule(".tcrn-field__error"), /^\s*color: var\(--tcrn-color-bad\);\s*$/);
-  assert.match(tcrnComponentCss, /@media \(forced-colors: active\) \{\s*\.tcrn-field--error \{\s*outline: 2px solid Highlight;\s*outline-offset: 2px;\s*\}/);
+  const error = cssRule(".tcrn-doc-error");
+  for (const declaration of ["color:var(--tcrn-color-bad)", "font:400 11.5px/16px", "gap:5px"]) assert.ok(error.includes(declaration), declaration);
+  const dom = new JSDOM(renderToStaticMarkup(<><Input aria-label="Name" aria-invalid="true" aria-describedby="name-error" /><p id="name-error" className="tcrn-doc-error">Name is required</p></>));
+  try {
+    const input = dom.window.document.querySelector("input");
+    assert.equal(input?.getAttribute("aria-invalid"), "true");
+    const message = dom.window.document.getElementById(input?.getAttribute("aria-describedby") ?? "");
+    assert.equal(message?.textContent, "Name is required");assert.ok(message?.classList.contains("tcrn-doc-error"));
+  } finally { dom.window.close(); }
   for (const control of [".tcrn-input", ".tcrn-select", ".tcrn-checkbox", ".tcrn-radio-group__control", ".tcrn-switch__control"]) {
     assert.match(tcrnComponentCss, new RegExp(`${escapeRegExp(control)}:where\\(:focus-visible\\)[^{]*\\{\\s*outline: 2px solid transparent;\\s*outline-offset: 2px;`));
   }

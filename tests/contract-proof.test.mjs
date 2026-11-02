@@ -5,7 +5,31 @@ import path from "node:path";
 import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,assertTokenGraph,resolveSourceLocals,cssRule,extractIcons,extractMarks,extractMatrixOccurrences } from "../scripts/lib/approved-site-source.mjs";
 import { APPROVED_SITE,APPROVED_BOARD_IDS } from "../scripts/lib/approved-site-pins.mjs";
 import * as approvedSourceModule from "../scripts/lib/approved-site-source.mjs";
+import { generate } from "../scripts/contract-generate.mjs";
 const read=fs.readFileSync;
+test('V1 exact repeated declarations compose in source order only when requested',()=>{
+ const css='.radio{border-radius:50%;--fill-c:old}.radio::after{--fill-c:wrong}.radio,.other{--fill-c:also-wrong}.radio{--fill-c:panel;--mark-c:acc}';
+ assert.deepEqual(cssRule(css,'.radio'),{'border-radius':'50%','--fill-c':'old'});
+ assert.deepEqual(cssRule(css,'.radio',{composeRepeated:true}),{'border-radius':'50%','--fill-c':'panel','--mark-c':'acc'});
+ assert.throws(()=>cssRule(css,'.missing',{composeRepeated:true}),/Missing published selector/);
+});
+test('V1 formal06 radio c/cf/cx tuples and radius survive repeated-selector projection independently of checkbox',()=>{
+ const source=readApprovedSource(),css=source.board('06-inputs').css;
+ const radio=cssRule(css,'.ck.rd>input',{composeRepeated:true}),check=cssRule(css,'.ck>input');
+ assert.equal(radio['border-radius'],'50%');
+ const edges={c:'0 0 #0000',cf:'var(--focus)',cx:'inset 0 0 0 1px var(--line-2)'};
+ for(const state of ['c','cf','cx']){
+  assert.equal(radio[`--fill-${state}`],state==='cx'?'var(--dis)':'var(--panel)');
+  assert.equal(radio[`--mk-${state}`],state==='cx'?'var(--ink-3)':'var(--acc)');
+  assert.equal(check[`--fill-${state}`],state==='cx'?'var(--dis)':'var(--acc)');
+  assert.equal(check[`--mk-${state}`],state==='cx'?'var(--ink-3)':'var(--on-acc)');
+  assert.equal(radio[`--edge-${state}`],edges[state]);assert.equal(check[`--edge-${state}`],edges[state]);
+ }
+ const generated=generate().get('packages/ui-react/src/styles/generated/inputs.pairs.ts');
+ assert.ok(generated.includes('.tcrn-radio-group__control{--tcrn-pair-fill-c:var(--tcrn-color-panel)'));
+ for(const state of ['c','cf','cx'])assert.ok(generated.includes(`--tcrn-pair-mark-${state}:var(--tcrn-color-${state==='cx'?'ink-3':'acc'})`));
+ assert.ok(!generated.includes('.tcrn-radio-group__control{}'));
+});
 test("V1 published identity is the actual eight sourceIds and immutable source commit",()=>{
  const s=readApprovedSource();assert.equal(APPROVED_SITE.sourceCommit,"a643d4cfcd239f6f81b1715ded6a63caead9d619");assert.equal(Object.keys(APPROVED_BOARD_IDS).length,8);assert.equal(APPROVED_BOARD_IDS["04-brand"],"ee0f582f-d81c-47f4-8a5b-d16631584d81");assert.equal(s.manifest.site.versionNumber,1);assert.equal(s.manifest.site.deploymentStatus,"succeeded");
  assert.equal(extractTokens(s).themed.length,39);assert.equal(extractTokens(s).fixed.length,27);assert.equal(extractIcons(s).length,38);assert.equal(extractMarks(s).length,4);
@@ -83,4 +107,7 @@ test('C01 retains the exact source contradiction and nominal06 text threshold wi
  assert.ok(Math.abs(reading.ratio-3.876921784985055)<1e-10);
  assert.equal(reading.min,4.5);assert.ok(result.issues.some(i=>i.includes('cannot certify unchanged06')));
  assert.equal(result.formalAmendmentState,'direction decided; pending formal-standard amendment/publication and consumer-version alignment');
+ assert.deepEqual(result.pendingFormalAmendments,['K1','K5','S03-C01']);
+ assert.deepEqual(result.undecidedStandardClarifications,[]);
+ assert.equal(result.formalDecisionMinutes.C01,'minutes:3d37207504a1caf4af9aca05#D1-D4');
 });

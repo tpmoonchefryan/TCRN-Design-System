@@ -45,7 +45,7 @@ export async function readShellGeometry(frame){return frame.evaluate(frame=>{
     closeControls:all('.tcrn-shell-menu button,.tcrn-shell-dropdown button').filter(el=>el.matches('[data-shell-close],.tcrn-shell-close')||el.querySelector('[data-icon-name="x"]')).length,sidebars:all('.tcrn-side-nav,[data-permanent-sidebar]').length,
     pinButtons:all('[data-pin-button]').filter(visible).map(box),rows,
     navRows:all('.tcrn-nav-item-row').filter(visible).map(row=>{const link=row.querySelector(':scope > .tcrn-nav-item'),pin=row.querySelector(':scope > [data-pin-button]');return {row:box(row),link:box(link),pin:box(pin),pinInset:pin?row.getBoundingClientRect().right-pin.getBoundingClientRect().right:null};}),
-    shadows:all('.tcrn-shell-menu__panel,.tcrn-shell-dropdown__panel,.tcrn-shell-dropdown__col,[data-paper]').filter(visible).map(el=>({className:el.className,value:getComputedStyle(el).boxShadow})),
+    shadows:all('.tcrn-shell-menu__panel,.tcrn-shell-dropdown__panel,.tcrn-shell-dropdown__col,.tcrn-shell-sheet__panel,[data-paper]').filter(visible).map(el=>({className:el.className,value:getComputedStyle(el).boxShadow})),
     assets:all('svg[data-logo]').filter(visible).map(el=>({id:el.getAttribute('data-logo'),body:el.innerHTML})),
     sheet:box(q('[data-panel="sheet"]')),sheetRows:all('.tcrn-shell-sheet [data-shell-row]').filter(visible).map(box),sheetSearch:box(q('.tcrn-shell-sheet input[type="search"]')),sheetPins:all('.tcrn-shell-sheet [data-pin-button]').filter(visible).map(el=>{const s=getComputedStyle(el,'::after');return {...box(el),hitWidth:Math.max(el.getBoundingClientRect().width,parseFloat(s.width)||0),hitHeight:Math.max(el.getBoundingClientRect().height,parseFloat(s.height)||0)};})
   };
@@ -106,7 +106,8 @@ export function judgeShellG18(facts,source){
   fail('G13',facts.matrix?.sourceOccurrences===225&&facts.matrix?.observations.length===225,'all225 shell occurrences retain independent readings');
   for(const reading of facts.matrix?.observations??[])fail('G13',reading.ok,`source occurrence ${reading.key}: ${reading.reason??'contrast/source mismatch'}`);
   for(const row of [...b.rows,...m.rows,...d.rows,...p.rows])fail('G14',row.lineCount<=1&&row.whiteSpace==='nowrap'&&!row.clips.length,`single line/clip: ${row.text}`);
-  for(const row of [...b.shadows,...m.shadows,...d.shadows])fail('G15',shadowBlurs(row.value).every(v=>v<=e.maxBlur),`shadow blur >3: ${row.className}`);
+  for(const row of [...b.shadows,...m.shadows,...d.shadows,...p.shadows])fail('G15',shadowBlurs(row.value).every(v=>v<=e.maxBlur),`shadow blur >3: ${row.className}`);
+  fail('G15',p.shadows.some(row=>row.className.split(/\s+/).includes('tcrn-shell-sheet__panel')&&row.value===p.sheet.shadow)&&shadowBlurs(p.sheet.shadow).length>0&&shadowBlurs(p.sheet.shadow).every(v=>v<=e.maxBlur),'actual phone Sheet shadow carrier missing or blur >3');
   const intro=facts.intro;fail('G16',!!intro&&intro.first>0&&intro.refresh===0&&intro.reduced===0&&intro.total===460&&intro.total<=700&&intro.plan?.card===120&&intro.plan?.mark===240&&intro.plan?.paper===100&&intro.landingMatches===true&&intro.markOpaque===true&&intro.properties.every(p=>['opacity','transform'].includes(p))&&intro.frames.length>1,'intro once/session, refresh0, reduced0, <=700, actual frames/transform+opacity');
   fail('G17',rowFocusValid(facts.focus?.rows),'actual keyboard focus paints the whole row including its sibling pin slot');
   fail('G17',facts.focus?.escapeRestored===true&&facts.focus?.shortcutSearch===true&&facts.focus?.rightEntered===true&&facts.focus?.leftReturned===true,'Esc/shortcut and real cascade arrow focus loop');
@@ -129,7 +130,7 @@ export const SHELL_G18_FIXTURES=Object.freeze({
  G12:{mutate:'lockup'},
  G13:{css:'.tcrn-shell-brand__word{color:transparent!important}'},
  G14:{mutate:'long-label',css:'.tcrn-shell-menu__text{white-space:normal!important;overflow:visible!important;max-width:6ch!important}'},
- G15:{css:'.tcrn-shell-menu__panel{box-shadow:0 0 12px black!important}'},
+ G15:{css:'.tcrn-shell-sheet__panel{box-shadow:0 0 12px black!important}'},
  G16:{mutate:'session'}, G17:{mutate:'focus',css:'.tcrn-nav-item-row{box-shadow:none!important}.tcrn-nav-item:focus{box-shadow:var(--tcrn-focus-ring)!important}'},
  G18:{css:'.tcrn-shell-sheet [data-shell-row]{height:32px!important;min-height:32px!important;block-size:32px!important}'}
 });

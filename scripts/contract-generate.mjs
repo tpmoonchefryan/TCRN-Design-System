@@ -43,7 +43,13 @@ function inputs(source) {
   const text = [`${textBases.join(",")}{${decl(custom(cssRule(css, ".in")))}}`, `.tcrn-input.tcrn-search-input__control{${decl(custom(cssRule(css, ".in.search")))}}`];
   for (const [when, state, slots] of [[":hover,[data-tcrn-preview-state=\"hover\"]", "h"], [":focus-visible,[data-tcrn-preview-state=\"focus\"]", "f"], ["[readonly],[aria-readonly=\"true\"]", "r"], ["[aria-invalid=\"true\"],[data-tcrn-preview-state=\"error\"]", "e"], ["[aria-invalid=\"true\"]:focus-visible,[data-tcrn-preview-state=\"error-focus\"]", "ef", ["edge"]], [":disabled", "x"]]) text.push(switchRule(textBases, when, slots ?? ["fill", "ink", "edge"], state));
   const checkBases = [".tcrn-checkbox", ".tcrn-radio-group__control"];
-  const check = [`${checkBases.join(",")}{${decl(custom(cssRule(css, ".ck>input")))}}`, `.tcrn-radio-group__control{${decl(custom(cssRule(css, ".ck.rd>input")))}}`];
+  // 06 declares the radio radius first, then its c/cf/cx overrides separately.
+  // Compose only that audited exact selector; the checkbox table stays independent.
+  const radio = custom(cssRule(css, ".ck.rd>input", { composeRepeated: true }));
+  for (const state of ["c", "cf", "cx"]) for (const slot of ["fill", "edge", "mk"]) {
+    if (!radio[`--${slot}-${state}`]) throw new Error(`Missing published radio ${slot}/${state}`);
+  }
+  const check = [`${checkBases.join(",")}{${decl(custom(cssRule(css, ".ck>input")))}}`, `.tcrn-radio-group__control{${decl(radio)}}`];
   const switchBases = [".tcrn-switch__control"];
   const sw = [`${switchBases.join(",")}{${decl(custom(cssRule(css, ".tg>input")))}}`];
   for (const [when, st] of [[":hover,[data-tcrn-preview-state=\"hover\"]", "h"], [":checked,:indeterminate,[data-tcrn-preview-state=\"indeterminate\"]", "c"], [":focus-visible,[data-tcrn-preview-state=\"focus\"]", "f"], [":checked:focus-visible,:checked[data-tcrn-preview-state=\"focus\"],[data-tcrn-preview-state=\"indeterminate\"][data-focus=\"true\"]", "cf"], ["[aria-invalid=\"true\"]", "e"], [":disabled", "x"], [":disabled:checked,:disabled:indeterminate", "cx"]]) {

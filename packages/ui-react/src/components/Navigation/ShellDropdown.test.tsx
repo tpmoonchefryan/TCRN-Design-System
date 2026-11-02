@@ -92,7 +92,7 @@ test("it hangs 6 under the pinned item at its start edge, 240 wide, inset 6, sea
   const panel = ruleBody(".tcrn-shell-dropdown__panel", shellCss04);
   assert.equal(declaration(panel, "padding"), "var(--tcrn-space-1h)");
   assert.equal(declaration(panel, "border-radius"), "var(--tcrn-radius-panel)");
-  assert.equal(declaration(panel, "box-shadow"), "var(--tcrn-shadow-s3)");
+  assert.equal(declaration(panel, "box-shadow"), "var(--tcrn-elevation-s3)");
   const search = ruleBody(".tcrn-shell-dropdown__search .tcrn-search-input", shellCss04);
   assert.equal(declaration(search, "--tcrn-search-input-block-size"), "var(--tcrn-shell-drop-srch-h)");
   assert.equal(declaration(search, "--tcrn-search-input-padding-inline"), "var(--tcrn-space-2)");

@@ -23,6 +23,19 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
 
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
 import { readApprovedSource } from '../scripts/lib/approved-site-source.mjs';
+import { provenanceActivationIssues } from '../scripts/lib/published-docs-browser.mjs';
+test('provenance activation rejects a prevented click even with a correct href and already rendered source text',()=>{
+ const source=readApprovedSource(),base='http://127.0.0.1:1234',board='07a-shell-upper';
+ for(const entry of ['static','manager'])for(const locale of ['zh-CN','en','ja','ko','fr']){
+  const before=entry==='static'?`${base}/${locale}/api.html#api-ShellIntro`:`${base}/iframe.html?id=published-standards--shell-upper&viewMode=story&globals=locale:${locale}#api-ShellIntro`;
+  const href=entry==='static'?`/${locale}/source.html`:'#source',activated=new URL(href,entry==='static'?base:before).href;
+  const reading={before,href,activated,visible:true,text:[source.manifest.site.sourceCommit,source.manifest.site.url,...source.manifest.boards.map(b=>b.sourceId)].join(' ')};
+  assert.deepEqual(provenanceActivationIssues(reading,{base,entry,locale,source,board}),[]);
+  assert.ok(provenanceActivationIssues({...reading,activated:before},{base,entry,locale,source,board}).some(i=>i.includes('did not arrive')),'preventDefault leaves the original URL: pre-click href/content cannot pass');
+  assert.ok(provenanceActivationIssues({...reading,text:'Source'},{base,entry,locale,source,board}).some(i=>i.includes('render')));
+  assert.ok(provenanceActivationIssues({...reading,visible:false},{base,entry,locale,source,board}).length);
+ }
+});
 test('actual04 full and rail roles reject an extra byline or wrong words instead of testing class presence',()=>{
  const expected=formalLockupExpectations(readApprovedSource(),'en');
  assert.equal(expected.length,16);assert.ok(expected.filter(e=>e.scale==='rail').every(e=>e.byline===null));

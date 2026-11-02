@@ -89,7 +89,7 @@ export async function proveFamilyMatrices({root=ROOT}={}){
    return {entry,issues,sourceCommit:source.manifest.site.sourceCommit,sourceOccurrences:cells.length,observations};
   },{root,entry}));}catch(error){results.push({entry,issues:[`${entry}: ${error.message}`],observations:[]});}
  }
- return {issues:results.flatMap(r=>r.issues),sourceOccurrences:230,expectedComparisons:230*proofContexts().length,observed:results.reduce((n,r)=>n+r.observations.length,0),observations:results.flatMap(r=>r.observations),entries:results.map(({observations,...r})=>r),pendingFormalAmendments:['K5'],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:['S03-C01']};
+ return {issues:results.flatMap(r=>r.issues),sourceOccurrences:230,expectedComparisons:230*proofContexts().length,observed:results.reduce((n,r)=>n+r.observations.length,0),observations:results.flatMap(r=>r.observations),entries:results.map(({observations,...r})=>r),pendingFormalAmendments:['K1','K5','S03-C01'],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:[],formalDecisionMinutes:{K1K5:'minutes:876fc874ed2380b3daddb0aa#D1-D4',C01:'minutes:3d37207504a1caf4af9aca05#D1-D4'}};
 }
 
 const shellRoles={
@@ -154,5 +154,5 @@ export async function proveShell({root=ROOT,fixtures=false}={}){
    return {entry,issues,observations,contexts,fixtureResults,sourceCommit:source.manifest.site.sourceCommit};
   },{root,entry}));}catch(error){entries.push({entry,issues:[`${entry}: ${error.message}`],observations:[],contexts:[],fixtureResults:[]});}
  }
- return {issues:entries.flatMap(e=>e.issues),sourceOccurrences:225,expectedComparisons:225*proofContexts().length,observations:entries.flatMap(e=>e.observations),contexts:entries.flatMap(e=>e.contexts),expectedG18Contexts:proofContexts({themes:true}).length,fixtureResults:entries.flatMap(e=>e.fixtureResults),expectedFixtures:fixtures?18*proofContexts({themes:true}).length:0,mode:fixtures?'local-negative-fixtures':'candidate-measurement',pendingFormalAmendments:['K1','K5'],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:['S03-C01']};
+ return {issues:entries.flatMap(e=>e.issues),sourceOccurrences:225,expectedComparisons:225*proofContexts().length,observations:entries.flatMap(e=>e.observations),contexts:entries.flatMap(e=>e.contexts),expectedG18Contexts:proofContexts({themes:true}).length,fixtureResults:entries.flatMap(e=>e.fixtureResults),expectedFixtures:fixtures?18*proofContexts({themes:true}).length:0,mode:fixtures?'local-negative-fixtures':'candidate-measurement',pendingFormalAmendments:['K1','K5','S03-C01'],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:[],formalDecisionMinutes:{K1K5:'minutes:876fc874ed2380b3daddb0aa#D1-D4',C01:'minutes:3d37207504a1caf4af9aca05#D1-D4'}};
 }

@@ -196,31 +196,38 @@ const storyTaglines = {
 
 
 test("Einzbern and Mana Orchestrate are whole serif names with the byline and no host name", () => {
-  // STORY-127 GWT1.
-  const jaHtml = renderToStaticMarkup(<ProductLockup productId="mana-orchestrate" locale="ja" />);
-  assert.match(jaHtml, /class="tcrn-product-logo__line-two">プロジェクト記憶アシスタント</);
-  assert.match(jaHtml, /aria-label="Mana Orchestrate プロジェクト記憶アシスタント"/);
-  assert.doesNotMatch(jaHtml, /Claude|Codex/i);
-
-  for (const productId of ["einzbern", "mana-orchestrate"] as const) {
-    const entry = tcrnProductLogoRegistry[productId];
-    assert.equal(entry.wordmark, "serif");
-    assert.equal(entry.byline, "by TCRN");
-    assert.equal(entry.lineOneSuffix, null);
-    const html = renderToStaticMarkup(<ProductLockup productId={productId} locale="en" />);
-    assert.match(html, new RegExp(`class="tcrn-product-logo tcrn-product-logo--serif"[^>]*data-product-id="${productId}"[^>]*data-product-wordmark="serif"`));
-    assert.match(html, new RegExp(`class="tcrn-product-logo__line-one-base">${entry.lineOne}<`));
-    assert.match(html, /class="tcrn-product-logo__byline">by TCRN</);
-    assert.doesNotMatch(html, /tcrn-product-logo__line-one-suffix/);
-    assert.match(html, new RegExp(`<svg class="tcrn-brand-mark"[^>]*data-product-mark="${productId}"`));
-    assert.match(html, new RegExp(`<b class="tcrn-product-logo__line-one" aria-label="${entry.lineOne}"><span class="tcrn-product-logo__line-one-base">${entry.lineOne}</span></b><small class="tcrn-product-logo__line-two">`));
-  }
   assert.equal(tcrnProductLogoRegistry.einzbern.lineOne, "Einzbern");
   assert.equal(tcrnProductLogoRegistry["mana-orchestrate"].lineOne, "Mana Orchestrate");
-  // No product name or tagline mentions a host (Owner 2026-10-11).
+  for (const productId of ["tms", "einzbern", "mana-orchestrate", "design-system"] as const) {
+    const entry = tcrnProductLogoRegistry[productId], serif = productId === "einzbern" || productId === "mana-orchestrate";
+    assert.equal(entry.wordmark, serif ? "serif" : "sans");
+    if (serif) { assert.equal(entry.byline, "by TCRN");assert.equal(entry.lineOneSuffix, null); }
+    for (const locale of ["zh-CN", "en", "ja", "ko", "fr"] as const) for (const scale of ["lockup", "rail"] as const) {
+      const html = renderToStaticMarkup(<ProductLockup productId={productId} locale={locale} scale={scale} />), dom = new JSDOM(html);
+      try {
+        const root = dom.window.document.querySelector('.tcrn-product-logo'), tagline = tcrnProductTagline(productId, locale);
+        assert.ok(root?.classList.contains("tcrn-brand-lockup"));
+        assert.equal(root?.classList.contains("tcrn-product-logo--serif"), serif);
+        assert.equal(root?.classList.contains("tcrn-product-logo--rail"), scale === "rail");
+        assert.equal(root?.getAttribute("data-product-id"), productId);
+        assert.equal(root?.getAttribute("data-product-wordmark"), entry.wordmark);
+        assert.equal(root?.getAttribute("role"), "img");
+        assert.equal(root?.getAttribute("aria-label"), `${entry.lineOne} ${tagline}`);
+        const line = root?.querySelector('.tcrn-product-logo__line-one');
+        assert.equal(line?.textContent, entry.lineOne);assert.equal(line?.getAttribute("title"), entry.lineOne);
+        assert.equal(root?.querySelector('.tcrn-product-logo__line-one-base')?.textContent, entry.lineOneBase);
+        assert.equal(root?.querySelector('.tcrn-product-logo__line-one-suffix')?.textContent ?? null, entry.lineOneSuffix);
+        assert.equal(root?.querySelector('.tcrn-product-logo__line-two')?.textContent, tagline);
+        assert.equal(root?.querySelector('.tcrn-product-logo__line-two')?.getAttribute("title"), tagline);
+        assert.equal(root?.querySelector('.tcrn-product-logo__byline')?.textContent ?? null, scale === "lockup" ? entry.byline : null);
+        assert.ok(root?.querySelector(`svg.tcrn-brand-mark[data-product-mark="${productId}"]`));
+        assert.doesNotMatch(html, /Claude|Codex/i);
+        if (productId === "mana-orchestrate" && locale === "ja") assert.equal(tagline, "プロジェクト記憶アシスタント");
+      } finally { dom.window.close(); }
+    }
+  }
   assert.doesNotMatch(JSON.stringify(tcrnProductLogoRegistry), /Claude|Codex/i);
 });
-
 
 
 const shellLocales = [
@@ -323,21 +330,24 @@ test("STORY-146 GWT1 the page header is required and is the paper's first row", 
       <section>Fixture-safe roster content</section>
     </ProductShell>
   );
-  // The paper holds the content region, and the page header opens it, before the page.
-  assert.match(
-    html,
-    /<div class="tcrn-product-shell__paper" data-paper="" data-product-shell-region="paper"><section id="product-shell-content" class="tcrn-product-shell__main" data-product-shell-region="content" aria-label="Product shell workspace" tabindex="0"><header class="tcrn-page-header tcrn-page-header--compact" data-pattern="page-header"/
-  );
-  assert.equal(html.match(/data-pattern="page-header"/g)?.length, 1, "one page header");
-  assert.ok(html.indexOf('data-pattern="page-header"') < html.indexOf("Fixture-safe roster content"), "the header comes before the page");
-  // The paper's title is the page's h1 in the level-2 type (TCRN-DS-SUB-163).
-  // The title role is the heading itself and the description its own element (TCRN-DS-SUB-156).
-  assert.match(html, /<h1 title="Roster" class="tcrn-heading tcrn-heading--2 tcrn-page-header__title">Roster<\/h1><p class="tcrn-text tcrn-page-header__description">24 people · 3 to invite<\/p>/);
-  // An omitted trail is the current position in the menu model: the group, then the page, which is no link.
-  assert.match(
-    html,
-    /<nav class="tcrn-breadcrumb" aria-label="Breadcrumbs"><span class="tcrn-breadcrumb__item"><span class="tcrn-breadcrumb__crumb" title="Talent">Talent<\/span><\/span><span class="tcrn-breadcrumb__item"><svg [^>]*data-icon-name="chevron-right" class="tcrn-icon tcrn-breadcrumb__separator"[^>]*>[\s\S]*?<\/svg><b class="tcrn-breadcrumb__crumb" title="Roster" aria-current="page">Roster<\/b><\/span><\/nav>/
-  );
+  // Inspect element membership/attributes instead of class or SVG serialization order.
+  const dom = new JSDOM(html);
+  try {
+    const content = dom.window.document.querySelector('[data-paper] > [data-product-shell-region="content"]');
+    const header = content?.firstElementChild;
+    assert.ok(header?.matches('header.tcrn-page-header[data-pattern="page-header"][data-density="compact"]'));
+    assert.equal(content?.querySelectorAll('[data-pattern="page-header"]').length, 1);
+    assert.equal(header?.nextElementSibling?.textContent, "Fixture-safe roster content");
+    const title = header?.querySelector('h1.tcrn-page-header__title');
+    assert.equal(title?.textContent, "Roster");assert.equal(title?.getAttribute("title"), "Roster");
+    assert.ok(title?.classList.contains("tcrn-heading--2"));
+    assert.equal(header?.querySelector('.tcrn-page-header__description')?.textContent, "24 people · 3 to invite");
+    const trail = header?.querySelector('nav.tcrn-breadcrumb[aria-label="Breadcrumbs"]');
+    assert.ok(trail);assert.deepEqual([...trail.querySelectorAll('.tcrn-breadcrumb__crumb')].map(el => [el.textContent, el.getAttribute('title')]), [["Talent", "Talent"], ["Roster", "Roster"]]);
+    assert.equal(trail.querySelector('[aria-current="page"]')?.tagName, "B");
+    assert.equal(trail.querySelector('[aria-current="page"] a'), null);
+    assert.ok(trail.querySelector('svg[data-icon-name="chevron-right"]'));
+  } finally { dom.window.close(); }
   // The consumer's own trail and language win over the shell's.
   const own = renderToStaticMarkup(
     <ProductShell
@@ -783,10 +793,11 @@ test("shell chrome says its own words in the reader's language", () => {
   );
   for (const name of [
     "切换到夜间模式", "语言", "收起侧边导航", "面包屑导航", "检索产品外壳", "检索结果",
-    "产品启动器", "产品切换器", "模块分区", "分区导航", "TCRN 品牌标识"
+    "产品启动器", "产品切换器", "模块分区", "分区导航", "TCRN TMS"
   ]) {
     assert.match(zh, new RegExp(`(aria-label|title|alt)="${name}"`), `${name} is the zh-CN name`);
   }
+  assert.match(zh, /aria-label="TCRN TMS 艺人管理系统"/);
   assert.match(zh, /placeholder="检索"/);
   assert.match(zh, />没有结果</);
   assert.match(zh, />该导航项在此路由下不可用</);

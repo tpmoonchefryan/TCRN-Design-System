@@ -1,10 +1,24 @@
-import { readApprovedSource,extractMarks,sourceElements,decodeHtml } from "./approved-site-source.mjs";
+import { readApprovedSource,extractMarks,sourceElements,decodeHtml,cssRule } from "./approved-site-source.mjs";
 import { readPinnableFocus,rowFocusValid } from "./published-shell-gates.mjs";
 // Runtime assertions are separate from the normative API text and from engineering exports.
 export const API_BEHAVIOR_REQUIREMENTS=Object.freeze({
  Heading:['semanticLevels','visualFamilies','singleLineTitle'],Text:['bodyScale','numeralCaps','strongSample'],Highlight:['markOnlyPaint','emptyQuery'],Icon:['rosterGeometry','namesAndDecoration'],ProductLogo:['registeredGraphicOnly','renditions'],ProductLockup:['registeredWording','railAndFirstLine','exactLineRoles'],Button:['disabledDescription','loadingFeedback','dangerInk'],IconButton:['named','squareAndLabelled','allPublishedSizes'],LinkButton:['nativeAnchor','noBusyOrDisabled'],ClipboardCopyButton:['secretOutsideDom','fiveStatesAndReset'],ButtonGroup:['namedGroup','twoToFive','allPublishedSizes','childSelection'],Input:['nativeNamed','errorsAndReasons'],Textarea:['nativeNamed','widthAndMultiline'],SearchInput:['namedTool','shortcutAndFill'],SuggestInput:['openDomain','deduplicatedDatalist'],Select:['nativeClosedSingle','placeholderDisabled'],MultiSelect:['closedSetPresentations','bodyListbox','selectionAndLabels'],NumberInput:['nativeNumber','rangeAndKeyboard','twelveChMinimum'],DatePicker:['nativeIso','calendarIndicator'],Checkbox:['nativeNamed','mixedAndError'],RadioGroup:['nativeLegendAndName','oneChoicePerGroup'],Switch:['namedImmediateBinary','descriptionAssociated'],ProductShell:['oneTopBand','headerAndPreferences','contextualHeader'],ShellBrandButton:['onePressFullDialog','namedRegisteredVersions','localizedNames'],ShellMenu:['nonModalAndDismiss','globalSearchAndKeys','rowCarrierStates'],ShellPins:['orderedReorder','sixAndResponsive'],ShellDropdown:['subtreeSearch','clickAndKeys'],ShellIntro:['mountedAfterSignIn','sessionMotionContract']
 });
 export function apiBehaviorIssues(name,facts){return (API_BEHAVIOR_REQUIREMENTS[name]??['unknownAPI']).filter(key=>facts?.[key]!==true).map(key=>`${name}: published API behavior ${key} not established`);}
+// The actual described messages, including the primary specimen, must carry 06's
+// scoped error role. A correct source-matrix probe cannot replace these observations.
+export function describedErrorRoleIssues(rows,{source=readApprovedSource()}={}){
+ const issues=[],role=cssRule(source.board('06-inputs').css,'.fld>.err'),tokenCss=source.board('01-tokens').css;
+ if(!rows?.length)return ['Missing actual described error messages'];
+ for(const theme of ['light','dark'])for(const state of ['error','error-focus'])if(!rows.some(r=>r.primary&&r.theme===theme&&r.state===state))issues.push(`Missing primary described error ${theme}/${state}`);
+ for(const row of rows){
+  const tokens=cssRule(tokenCss,row.theme==='dark'?'.gp.night':'.gp'),raw=tokens[/var\((--[a-z0-9-]+)\)/.exec(role.color)?.[1]],hex=/^#([a-f0-9]{6})$/i.exec(raw??'');
+  const ink=hex?`rgb(${[0,2,4].map(at=>parseInt(hex[1].slice(at,at+2),16)).join(', ')})`:null;
+  const valid=row.invalid===true&&row.messages?.some(message=>message.text?.trim()&&message.id&&message.unique&&row.describedIds?.includes(message.id)&&(!row.primary||message.primary)&&ink!==null&&message.color===ink&&message.fontSize===role['font-size']&&message.lineHeight===role['line-height']&&message.gap===role.gap&&message.display===role.display&&message.alignItems===role['align-items']);
+  if(!valid)issues.push(`Input actual described error role ${row.theme}/${row.state??'matrix'}: bad ink/11.5px/16px/gap5 or native association missing`);
+ }
+ return issues;
+}
 // Counts come from native direct action controls. Decorative separators never
 // contribute to the formal two-to-five action boundary.
 export function buttonGroupIssues(rows){
@@ -95,7 +109,8 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
  }
  if(root.dataset.approvedBoard==='06-inputs'){
   const inputs=all('input.tcrn-input:not([type="search"])'),invalid=inputs.filter(el=>el.getAttribute('aria-invalid')==='true'),ta=one('textarea'),suggest=one('input[list]'),list=suggest&&document.getElementById(suggest.getAttribute('list')),select=one('select:not([multiple])'),number=one('input[type="number"]'),date=one('input[type="date"]');
-  facts.Input={nativeNamed:inputs.length>0&&inputs.every(named),errorsAndReasons:invalid.length>0&&invalid.every(el=>descriptions(el).some(d=>d?.textContent.trim()))&&reasons('input.tcrn-input')};
+  const errorReadings=invalid.map(el=>({primary:el.hasAttribute('data-primary-input-state'),state:el.getAttribute('data-primary-input-state'),theme:el.closest('[data-tcrn-theme]')?.getAttribute('data-tcrn-theme'),invalid:el.getAttribute('aria-invalid')==='true',describedIds:(el.getAttribute('aria-describedby')??'').split(/\s+/).filter(Boolean),messages:descriptions(el).filter(Boolean).map(message=>{const s=style(message);return {id:message.id,unique:all('[id]').filter(other=>other.id===message.id).length===1,text:message.textContent,primary:message.hasAttribute('data-primary-input-error'),color:s.color,fontSize:s.fontSize,lineHeight:s.lineHeight,gap:s.gap,display:s.display,alignItems:s.alignItems};})}));
+  facts.Input={nativeNamed:inputs.length>0&&inputs.every(named),errorReadings,errorsAndReasons:invalid.length>0&&invalid.every(el=>descriptions(el).some(d=>d?.textContent.trim()))&&reasons('input.tcrn-input')};
   facts.Textarea={nativeNamed:!!ta&&named(ta),widthAndMultiline:!!ta&&ta.tagName==='TEXTAREA'&&parseFloat(style(ta).minHeight)>=76};
   const search=one('input[type="search"][aria-keyshortcuts]');facts.SearchInput={namedTool:!!search&&named(search),shortcutAndFill:!!search?.closest('.tcrn-search-input--fill')&&!!search?.closest('.tcrn-search-input')?.querySelector('kbd')&&search.getAttribute('aria-keyshortcuts').includes('Control+K')};
   facts.SuggestInput={openDomain:suggest?.getAttribute('data-choice-value-mode')==='open'&&!!list,deduplicatedDatalist:!!list&&new Set([...list.children].map(o=>o.value)).size===list.children.length};
@@ -128,6 +143,7 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
  if(facts.ShellMenu)facts.ShellMenu.rowCarrierStates=rowCarrierIssues(facts.ShellMenu.rowReadings).length===0;
  if(facts.ProductLockup){facts.ProductLockup.exactLineRoles=lockupRoleIssues(facts.ProductLockup.readings,formalLockupExpectations(source,locale)).length===0;}
  if(facts.ShellBrandButton){facts.ShellBrandButton.localizedNames=shellBrandNameIssues(facts.ShellBrandButton.readings,locale).length===0;}
+ if(facts.Input){facts.Input.errorRoleIssues=describedErrorRoleIssues(facts.Input.errorReadings,{source});facts.Input.errorsAndReasons&&=facts.Input.errorRoleIssues.length===0;}
  return facts;
 }
 

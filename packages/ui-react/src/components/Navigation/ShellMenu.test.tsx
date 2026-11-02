@@ -12,7 +12,8 @@ import { tcrnSupportedLocales } from "@tcrn/ui-copy-state";
 import { createTokenMap } from "@tcrn/ui-tokens";
 import { brandCss02 } from "../../styles/brand.css.js";
 import { tcrnComponentCss } from "../../styles/index.js";
-import { shellCss03 } from "../../styles/shell.css.js";
+import { shellCss03, shellReducedMotionCss } from "../../styles/shell.css.js";
+import { formalLayoutCss, formalDocsCss } from "../../styles/formal-layout.css.js";
 import { shellIntroCss01 } from "../../styles/shell-intro.css.js";
 import { shellSheetCss01 } from "../../styles/shell-sheet.css.js";
 import {
@@ -169,13 +170,16 @@ test("the bottom bar holds the current position and the lockup, which is a pictu
   const lockupMarkup = bar[1].slice(lockup.index);
   assert.match(lockupMarkup, /^<div [^>]*data-lockup="lkr"[^>]*><svg [^>]*data-logo="tms"[^>]*data-product-mark-variant="color"/);
   assert.match(lockupMarkup, /<b class="tcrn-product-logo__line-one"[^>]*><span class="tcrn-product-logo__line-one-base">TCRN<\/span> <em class="tcrn-product-logo__line-one-suffix tcrn-brand-wordmark__suffix--tms">TMS<\/em><\/b>/);
-  assert.match(lockupMarkup, /<\/b><small class="tcrn-product-logo__line-two">艺人管理系统<\/small>/);
+  assert.match(lockupMarkup, /<\/b><small class="tcrn-product-logo__line-two"[^>]*>艺人管理系统<\/small>/);
   const { document } = new JSDOM(`<!doctype html><body>${html}</body>`).window;
   const node = document.querySelector('[data-lockup="lkr"]');
   assert.equal(node?.querySelector("svg[data-logo]")?.getAttribute("data-logo"), "tms", "[data-lockup] svg[data-logo]");
   assert.equal(node?.querySelector("b")?.textContent, "TCRN TMS", "[data-lockup] b");
   assert.equal(node?.querySelector("b > em")?.textContent, "TMS", "[data-lockup] b > em");
   assert.equal(node?.querySelector("small")?.textContent, "艺人管理系统", "[data-lockup] small");
+  assert.equal(node?.querySelector("small")?.getAttribute("title"), "艺人管理系统");
+  assert.ok(node?.classList.contains("tcrn-product-logo--rail"));
+  assert.equal(node?.querySelector(".tcrn-product-logo__byline"), null, "rail omits the full-scale byline");
   assert.equal(node?.querySelectorAll("button, a, [tabindex]").length, 0, "nothing in the lockup takes focus");
   // The lockup has no hover rule, so it never answers the pointer.
   assert.doesNotMatch(tcrnComponentCss, /tcrn-shell-menu__lockup[^{,]*:hover/);
@@ -206,11 +210,11 @@ test("the menu hangs 6 under the brand button at the paper's edge and is the exp
 
 test("the panel is paper with the s3 shadow, whose largest blur is 3", () => {
   const panel = ruleBody(".tcrn-shell-menu__panel");
-  assert.equal(declaration(panel, "box-shadow"), "var(--tcrn-shadow-s3)");
+  assert.equal(declaration(panel, "box-shadow"), "var(--tcrn-elevation-s3)");
   assert.equal(declaration(panel, "background"), "var(--tcrn-color-panel)");
   assert.equal(declaration(panel, "border-radius"), "var(--tcrn-radius-panel)");
   assert.equal(declaration(panel, "padding"), "var(--tcrn-space-2) var(--tcrn-space-2) 0");
-  const shadow = createTokenMap()["--tcrn-shadow-s3"];
+  const shadow = createTokenMap()["--tcrn-elevation-s3"];
   const blurs = shadow.split(/,(?![^(]*\))/).map((layer) => Number.parseFloat(layer.trim().split(/\s+/)[2]));
   assert.ok(blurs.length > 0 && blurs.every((blur) => blur <= 3), `s3 blurs ${blurs.join(", ")}`);
   assert.doesNotMatch(shellCss03, /backdrop-filter|blur\(|gradient/);
@@ -245,17 +249,25 @@ test("the bottom bar is pbar-h plus the panel's bottom inset, its rule a 1px lin
   assert.equal(declaration(bar, "margin"), "var(--tcrn-space-1h) 0 0");
   const lockup = ruleBody(".tcrn-shell-menu__lockup");
   assert.equal(declaration(lockup, "margin-inline-start"), "auto");
-  // The side-rail sizes are written once, in the brand tier of brand.css.ts, which the lockup takes
-  // through its data-lockup="lkr" hook; the bar's rule only places it (C13, TCRN-DS-SUB-144).
+  assert.equal(declaration(lockup, "padding"), "var(--tcrn-space-1h) var(--tcrn-space-1)", "actual footer lockup padding6/4");
+  // Registered brand tier owns sizes; the shell places its rail composition.
   assert.doesNotMatch(lockup, /--tcrn-brand-|gap:/);
   assert.doesNotMatch(shellCss03, /tcrn-product-logo__byline/);
-  const tier = ruleBody('.tcrn-shell-brand-lockup[data-lockup="lkr"]', brandCss02);
-  assert.equal(declaration(tier, "--tcrn-brand-mark-size"), "var(--tcrn-shell-mark)");
+  const tierRule = (selector: string) => {
+    const match = new RegExp(`${escapeRegExp(selector)}\\{([^}]*)\\}`).exec(brandCss02);assert.ok(match, selector);
+    return Object.fromEntries(match[1].split(";").filter(Boolean).map(item => { const at = item.indexOf(":");return [item.slice(0, at), item.slice(at + 1)]; }));
+  };
+  const tier = tierRule('.tcrn-shell-brand-lockup');
+  assert.equal(tier['grid-template-columns'], "22px minmax(0,1fr)");
+  assert.equal(tierRule('.tcrn-shell-brand-lockup .tcrn-brand-mark').width, "22px");
+  assert.equal(tierRule('.tcrn-shell-brand-lockup .tcrn-brand-mark').height, "22px");
   assert.equal(createTokenMap()["--tcrn-shell-mark"], "22px", "the mark is shell.mark, 22 (TCRN-DS-SUB-178)");
-  assert.equal(declaration(tier, "--tcrn-brand-line-one-size"), "12.5px");
-  assert.equal(declaration(tier, "--tcrn-brand-line-two-size"), "10.5px");
-  assert.equal(declaration(tier, "gap"), "var(--tcrn-space-2h)");
-  assert.match(brandCss02, /\.tcrn-shell-brand-lockup\[data-lockup="lkr"\] \.tcrn-product-logo__byline \{\n {2}display: none;/);
+  assert.equal(tierRule('.tcrn-shell-brand-lockup .tcrn-product-logo__line-one')['font-size'], "12.5px");
+  assert.equal(tierRule('.tcrn-shell-brand-lockup .tcrn-product-logo__line-two')['font-size'], "10.5px");
+  assert.equal(tier['column-gap'], "10px");
+  const dom = new JSDOM(renderBoardMenu());
+  try { assert.equal(dom.window.document.querySelector('[data-lockup="lkr"] .tcrn-product-logo__byline'), null); } finally { dom.window.close(); }
+  assert.match(tcrnComponentCss, /\.tcrn-product-logo--rail\{[^}]*padding:6px 4px/);
   assert.doesNotMatch(shellCss03, /--tcrn-brand-line-|--tcrn-brand-mark-size/, "no copy of the side-rail sizes in the menu segment");
   const tokens = createTokenMap();
   const px = (variable: string) => Number.parseFloat(tokens[variable]);
@@ -281,15 +293,32 @@ test("rows paint with the pair grammar, group titles are ink-3 without a hover f
   }
   assert.equal(declaration(ruleBody(".tcrn-shell-menu .tcrn-nav-group__label"), "color"), "var(--tcrn-color-ink-3)");
   assert.doesNotMatch(shellCss03, /tcrn-nav-group__label[^{]*:hover/);
-  // Every state rule (hover, selected or open, focus, previews) declares pair variables and nothing else.
+  // Pair switches remain narrow. Visibility and the exact focus carriers are separate
+  // known rules, each checked explicitly rather than admitting arbitrary exceptions.
+  let pairRules = 0;
   for (const match of shellCss03.matchAll(/\n([^\n{}]*:where\([^{]*)\{\n([^}]*)\}/g)) {
     const [, selector, body] = match;
-    if (/opacity/.test(body)) continue;
-    // The forced-colours outline of a focused row or result paints nothing elsewhere: transparent,
-    // as contract-static C2 and the contract proof let it through (TCRN-DS-SUB-155).
-    if (/:where\(:focus-visible\)/.test(selector) && body.trim().split("\n").every((line) => /^(?:outline: 2px solid transparent|outline-offset: 2px);$/.test(line.trim()))) continue;
+    const text = body.trim().replace(/\s+/g, " "), key = selector.trim();
+    if (key === '.tcrn-shell-menu .tcrn-nav-item-row > :where(.tcrn-nav-item,.tcrn-nav-pin):focus-visible') {
+      assert.equal(text, 'outline: none; box-shadow: none;');continue;
+    }
+    if (key.startsWith(':where(') && key.endsWith('> .tcrn-nav-pin')) { assert.equal(text, 'opacity: 1;');continue; }
+    if (text === 'outline: 2px solid transparent; outline-offset: 2px;') {
+      assert.ok(['.tcrn-shell-menu .tcrn-nav-item:where(:focus-visible)', '.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible)'].includes(key));continue;
+    }
+    assert.match(key, /^\.tcrn-shell-menu \.(?:tcrn-nav-item|tcrn-product-shell-search__result):where\(/);
     for (const line of body.trim().split("\n")) assert.match(line.trim(), /^--tcrn-pair-[a-z-]+: var\(--tcrn-pair-[a-z-]+\);$/, selector);
+    pairRules++;
   }
+  assert.equal(pairRules, 5, "all actual hover/selected/focus pair rules");
+  assert.match(formalLayoutCss, /\.tcrn-nav-item-row\{[^}]*grid-template-columns:minmax\(0,1fr\) 24px;[^}]*padding-inline-end:4px;[^}]*box-shadow:var\(--tcrn-pair-row-edge\)/);
+  assert.match(formalLayoutCss, /\.tcrn-nav-item-row:where\(:has\(>\.tcrn-nav-item:focus-visible\),:has\(>\.tcrn-nav-pin:focus-visible\),[^}]*\{--tcrn-pair-row-edge:var\(--tcrn-pair-row-edge-f\);outline:2px solid transparent;outline-offset:2px\}/);
+  assert.match(formalLayoutCss, /--tcrn-pair-row-edge-f:var\(--tcrn-focus-ring\)/);
+  const dom = new JSDOM(renderBoardMenu());
+  try { for (const wrapper of dom.window.document.querySelectorAll('.tcrn-nav-item-row')) {
+    assert.equal(wrapper.querySelectorAll(':scope > .tcrn-nav-item').length, 1);
+    assert.equal(wrapper.querySelectorAll(':scope > .tcrn-nav-pin').length, 1);
+  } } finally { dom.window.close(); }
   // One property set by day and at night.
   assert.doesNotMatch(shellCss03, /data-tcrn-theme/);
   assert.ok(tcrnComponentCss.includes(shellCss03), "the segment ships in tcrnComponentCss");
@@ -327,7 +356,7 @@ test("cascade columns follow the panel at the cascade gap, drop-down wide, as ta
   const column = ruleBody(".tcrn-shell-menu .tcrn-shell-menu__cascade");
   assert.equal(declaration(column, "contain"), "size", "its content does not size the row");
   assert.equal(declaration(column, "overflow-y"), "auto");
-  assert.equal(declaration(column, "box-shadow"), "var(--tcrn-shadow-s3)");
+  assert.equal(declaration(column, "box-shadow"), "var(--tcrn-elevation-s3)");
   assert.equal(declaration(column, "padding"), "var(--tcrn-space-1h)");
   // The panel's own height comes from its content; nothing in the menu syncs heights by script.
   assert.doesNotMatch(renderBoardMenu(), /style="[^"]*height/);
@@ -426,7 +455,7 @@ test("the Sheet sits on the bottom edge below the top band, at most 84% high, ov
   assert.equal(declaration(panel, "padding"), "var(--tcrn-space-2) var(--tcrn-space-2) var(--tcrn-space-3)");
   assert.equal(declaration(panel, "border-radius"), "var(--tcrn-radius-paper) var(--tcrn-radius-paper) 0 0");
   assert.equal(declaration(panel, "background"), "var(--tcrn-color-panel)");
-  assert.equal(declaration(panel, "box-shadow"), "var(--tcrn-shadow-s3)");
+  assert.equal(declaration(panel, "box-shadow"), "var(--tcrn-elevation-s3)");
   assert.equal(declaration(panel, "z-index"), "var(--tcrn-z-overlay)");
   assert.equal(declaration(scrim, "z-index"), "var(--tcrn-z-overlay)");
   const tokens = createTokenMap();
@@ -568,7 +597,7 @@ test("a row's icon is the board's .ic box: 22 square, inset 3, border-box, on th
   }
 });
 
-test("the light and the night Sheet share their rules; it fades, opacity only, and comes last in the stylesheet", () => {
+test("the light and the night Sheet share rules; opacity-only entry follows the intro with effective reduced motion", () => {
   assert.doesNotMatch(shellSheetCss01, /data-tcrn-theme/, "no rule names a theme");
   assert.doesNotMatch(shellSheetCss01, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i, "colours only through tokens");
   assert.doesNotMatch(shellSheetCss01, /transform|translate|scale\(/, "nothing moves");
@@ -576,7 +605,13 @@ test("the light and the night Sheet share their rules; it fades, opacity only, a
   const reduced = /@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/.exec(shellSheetCss01);
   assert.ok(reduced);
   assert.match(reduced[1], /\.tcrn-shell-sheet__scrim,\n {2}\.tcrn-shell-sheet__panel \{\n {4}animation: none;/);
-  assert.ok(tcrnComponentCss.endsWith(shellIntroCss01 + shellSheetCss01), "after the sign-in intro, last");
+  const intro = tcrnComponentCss.indexOf(shellIntroCss01), sheet = tcrnComponentCss.indexOf(shellSheetCss01);
+  const reducedTail = tcrnComponentCss.indexOf(shellReducedMotionCss), docs = tcrnComponentCss.indexOf(formalDocsCss);
+  assert.ok(intro >= 0 && sheet > intro && reducedTail > sheet && docs > reducedTail, "declared relative assembly order");
+  // The later broad shell reduced-motion rule reinforces zero motion; docs add no
+  // conflicting Sheet geometry/animation rule after the actual Sheet segment.
+  assert.match(shellReducedMotionCss, /prefers-reduced-motion:reduce[^}]*\.tcrn-shell-menu \*[^}]*transition-duration:0s;animation-duration:0s;animation-iteration-count:0/);
+  assert.doesNotMatch(tcrnComponentCss.slice(sheet + shellSheetCss01.length), /\.tcrn-shell-sheet[^{}]*\{/);
 });
 
 test("the Sheet's copy is written in all five locales", () => {

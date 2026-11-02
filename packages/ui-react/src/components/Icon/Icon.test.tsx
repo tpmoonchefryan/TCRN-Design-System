@@ -145,7 +145,10 @@ test("decorative and accessible-name behaviour is unchanged", () => {
 });
 
 test("published 03 retains its visible 900ms loading loop under reduced motion", () => {
-  assert.equal(tokenValue("--tcrn-motion-loading-loop"), "900ms linear");
+  const resolvedLoop = tokenValue("--tcrn-motion-loading-loop")?.replace(/var\((--[a-z0-9-]+)\)/g, (_reference, name: string) => {
+    const value = tokenValue(name);assert.ok(value, `${name} resolves`);return value;
+  });
+  assert.equal(resolvedLoop, "900ms linear");
   assert.match(
     tcrnComponentCss,
     /\.tcrn-icon\[data-icon-name="loader-circle"\] \{[^}]*animation: tcrn-icon-spin var\(--tcrn-motion-loading-loop\) infinite;/

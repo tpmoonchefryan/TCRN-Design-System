@@ -87,7 +87,7 @@ export function checkContrast(root=ROOT){
     measurements.push({conflict:'S03-C01',board:'06-inputs',theme,role:'shortcut text',state:'idle',carrier:'wash on panel',ink,fill:values.wash,surface:values.panel,ratio,min:4.5,method:'source-only nominal sRGB composition; not browser/grain measurement'});
     if(ratio<4.5)issues.push(`S03-C01 nominal06 ${theme}/idle shortcut ${ratio.toFixed(6)} < 4.5`);
   }
-  return {issues,measurements,thresholds:{text:4.5,icon:3,edge:3},pendingFormalAmendments:["K1","K5"],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:["S03-C01"]};
+  return {issues,measurements,thresholds:{text:4.5,icon:3,edge:3},pendingFormalAmendments:["K1","K5","S03-C01"],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:[],formalDecisionMinutes:{K1K5:"minutes:876fc874ed2380b3daddb0aa#D1-D4",C01:"minutes:3d37207504a1caf4af9aca05#D1-D4"}};
 }
 export async function checkBrand(root=ROOT){const source=readApprovedSource(root),marks=extractMarks(source),icons=extractIcons(source),ui=await compiled(root,"packages/ui-react/dist/approved.js"),nav=await compiled(root,"packages/ui-react/dist/components/Navigation/Navigation.js"),issues=[];
   if(JSON.stringify(Object.keys(nav.tcrnProductLogoRegistry).sort())!==JSON.stringify(marks.map(m=>m.productId).sort()))issues.push("Product registry has an unapproved identity or misses a formal mark");
