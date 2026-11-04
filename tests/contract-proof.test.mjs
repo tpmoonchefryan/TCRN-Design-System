@@ -113,14 +113,30 @@ test('V5 both entry documents link formal font resources outside the generated c
  assert.match(writer,/<link rel="stylesheet" href="\/fonts\/fonts\.css">/);
 });
 
-test('C01 retains the exact source contradiction and nominal06 text threshold without silently certifying ink-2',async()=>{
- const {checkContrast}=await import('../scripts/lib/published-standard-proof.mjs'),result=checkContrast();
- const reading=result.measurements.find(r=>r.conflict==='S03-C01'&&r.theme==='dark');
+test('C01 evaluates each published shortcut context and retains the nominal06 threshold conflict',async()=>{
+ const {checkContrast,compiled}=await import('../scripts/lib/published-standard-proof.mjs'),result=checkContrast();
+ const shortcuts=result.measurements.filter(r=>r.conflict==='S03-C01');
+ assert.equal(shortcuts.length,6);
+ assert.deepEqual(result.shortcutContexts,[{board:'06-inputs',selector:'.sw>kbd',color:'var(--ink-3)'},{board:'07a-shell-upper',selector:'.ts-srch kbd',color:'var(--ink-2)'},{board:'07b-shell-lower',selector:'.ts-srch kbd',color:'var(--ink-2)'}]);
+ for(const board of ['06-inputs','07a-shell-upper','07b-shell-lower'])assert.deepEqual(shortcuts.filter(r=>r.board===board).map(r=>r.theme),['light','dark']);
+ const reading=shortcuts.find(r=>r.board==='06-inputs'&&r.theme==='dark');
  assert.equal(reading.ink,'#85827a');assert.equal(reading.surface,'#191916');
  assert.ok(Math.abs(reading.ratio-3.876921784985055)<1e-10);
- assert.equal(reading.min,4.5);assert.ok(result.issues.some(i=>i.includes('cannot certify unchanged06')));
- assert.equal(result.formalAmendmentState,'direction decided; pending formal-standard amendment/publication and consumer-version alignment');
- assert.deepEqual(result.pendingFormalAmendments,['K1','K5','S03-C01']);
- assert.deepEqual(result.undecidedStandardClarifications,[]);
- assert.equal(result.formalDecisionMinutes.C01,'minutes:3d37207504a1caf4af9aca05#D1-D4');
+ assert.equal(reading.min,4.5);assert.ok(result.issues.some(i=>i.includes('06-inputs dark/idle shortcut 3.876922 < 4.5')));
+ assert.ok(result.issues.some(i=>i.startsWith('K1 text contrast ')));
+ assert.ok(!result.issues.some(i=>i.includes('roles differ')||i.includes('cannot certify unchanged06')),'a difference between published contexts is not an implementation failure');
+ assert.deepEqual(result.sourceThresholdConflicts,['K1','S03-C01']);assert.deepEqual(result.sourceWordingAmbiguities,['K5']);
+ assert.equal(result.proposalState,'selected directions only; visually unconfirmed and unapplied');
+ assert.deepEqual(result.unconfirmedProposals,['K1','K5','S03-C01']);
+ assert.equal(result.proposalMinutes.C01,'minutes:3d37207504a1caf4af9aca05#D1-D4');
+ assert.equal(result.ownerClarificationMinute,'minutes:3244c7ac6adef4fc078d413e#D1-D4');
+ assert.equal(result.publicationRequest,'withdrawn');assert.equal(result.ownerVisualAcceptance,'not-performed');
+ assert.equal(result.pendingFormalAmendments,undefined);
+ const {createAiConsumptionContract}=await compiled(ROOT,'apps/storybook/dist/build/ai-consumption-contract.js');
+ const metadata=createAiConsumptionContract({version:'source-check',commit:'candidate',dirty:false},[]);
+ assert.equal(metadata.standardSource.sourceCommit,APPROVED_SITE.sourceCommit);
+ assert.equal(metadata.implementationFidelity.formShortcut.role,'ink-3');assert.equal(metadata.implementationFidelity.shellShortcut.role,'ink-2');
+ assert.equal(metadata.unconfirmedProposals.state,result.proposalState);assert.equal(metadata.publicationRequest,'withdrawn');
+ assert.equal(metadata.ownerVisualAcceptance,'not-performed');assert.equal(metadata.formalAmendments,undefined);
+ assert.ok(metadata.publishedStandardConflicts.some(i=>i.includes('3.876922 below4.5')));
 });

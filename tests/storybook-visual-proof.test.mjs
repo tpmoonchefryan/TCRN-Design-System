@@ -24,9 +24,23 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
 import { readApprovedSource,sourceElements,decodeHtml } from '../scripts/lib/approved-site-source.mjs';
 import { provenanceActivationIssues,activateProvenanceResult,exerciseDocsNavigation } from '../scripts/lib/published-docs-browser.mjs';
-import { publishedBoardUrl } from '../scripts/lib/published-browser-proof.mjs';
+import { publishedBoardUrl,proofContexts,publishedTextRoleIssues } from '../scripts/lib/published-browser-proof.mjs';
+import { publishedShortcutContexts } from '../scripts/lib/published-standard-proof.mjs';
+import { extractTokens } from '../scripts/lib/approved-site-source.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
+test('published form and shell role comparison rejects wrong-form ink-2 and wrong-shell ink-3 in every entry/locale/theme',()=>{
+ const source=readApprovedSource(),tokens=extractTokens(source),roles=publishedShortcutContexts(source);
+ for(const context of proofContexts({themes:true}))for(const role of roles){
+  const values=Object.fromEntries(tokens.themed.map(row=>[row.key,row[context.theme]]));
+  const color=values[/var\(--([\w-]+)\)/.exec(role.color)[1]],reference={color,ink:color},actual={...reference};
+  assert.deepEqual(publishedTextRoleIssues(actual,reference),[],`${context.entry}/${context.locale}/${context.theme}/${role.board}`);
+  const wrong=values[role.board==='06-inputs'?'ink-2':'ink-3'];
+  assert.notEqual(wrong,color);
+  assert.deepEqual(publishedTextRoleIssues({color:wrong,ink:wrong},reference),['published text role color']);
+  assert.deepEqual(publishedTextRoleIssues({color:wrong,ink:wrong},reference,{probe:'ph'}),['source placeholder ink']);
+ }
+});
 test('the real navigation caller accepts only the two registered dialog-role destinations and reaches every later assertion',async()=>{
  const source=readApprovedSource(),base='http://127.0.0.1:1234',formal=Object.fromEntries(apis.map(api=>[api.name,{board:api.board}]));
  for(const entry of ['static','manager'])for(const locale of ['zh-CN','en','ja','ko','fr']){

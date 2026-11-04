@@ -58,11 +58,10 @@ export const inputsCss02 = `
 .tcrn-input.tcrn-search-input__control::placeholder {
   color: var(--tcrn-color-ink-2);
 }
-/* Current ink-2 already follows published07. C01 direction is decided by
-   TCRN-DS-MIN-20261103-SHORTCUT-INK D1-D4: only shortcut text uses shared ink-2
-   (day #4f4c43 / night #a9a69c). Formal06/pins are still unamended; amendment,
-   publication and consumer alignment remain pending. No geometry/other ink/icon
-   change or text >=4.5 waiver follows from retaining these preexisting bytes. */
+/* Published06 .sw>kbd uses ink-3. Published07 .ts-srch kbd is a separate shell
+   context, selected by ProductShellSearch's existing carrier in shell.css.ts.
+   The future C01 ink-2 direction is visually unconfirmed and unapplied
+   (TCRN-DS-MIN-20261104-VISUAL-BEFORE-STANDARD D1-D4). */
 .tcrn-search-input__shortcut {
   position: absolute;
   inset-block-start: 50%;
@@ -73,7 +72,7 @@ export const inputsCss02 = `
   padding: 0 var(--tcrn-space-1);
   border: 1px solid var(--tcrn-color-line-2);
   border-radius: 4px;
-  color: var(--tcrn-color-ink-2);
+  color: var(--tcrn-color-ink-3);
   font-family: var(--tcrn-type-family-mono);
   font-size: 10px;
   line-height: 14px;

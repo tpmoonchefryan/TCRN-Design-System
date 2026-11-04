@@ -1250,6 +1250,22 @@ function cssRules(sheet: string) {
   }));
 }
 
+test("published07 shell search keeps its own ink-2 shortcut through the actual ProductShellSearch carrier", () => {
+  const html = renderToStaticMarkup(<ProductShellSearch label="Find docs" shortcut="⌘ K" />);
+  const dom = new JSDOM(html);
+  try {
+    const selector = ".tcrn-product-shell-search .tcrn-search-input__shortcut";
+    const shortcut = dom.window.document.querySelector(selector);
+    assert.equal(shortcut?.textContent, "⌘ K");
+    assert.equal(shortcut?.closest(".tcrn-product-shell-search")?.getAttribute("data-shell-control"), "product-shell-search");
+    const rules = cssRules(Object.values(shellSegments).join("\n")).filter(rule => rule.selector === selector);
+    assert.equal(rules.length, 1);
+    assert.equal(rules[0].body.trim(), "color: var(--tcrn-color-ink-2);", "the shell carrier only selects the published07 shortcut role");
+  } finally {
+    dom.window.close();
+  }
+});
+
 
 
 // The sheet split at its @media (pointer: coarse) blocks: their insides, and the rest of the sheet.

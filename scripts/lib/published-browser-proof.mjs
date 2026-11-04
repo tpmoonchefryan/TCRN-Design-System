@@ -3,7 +3,7 @@ import path from "node:path";
 import http from "node:http";
 import { chromium } from "@playwright/test";
 import { ROOT,readApprovedSource,extractMatrixOccurrences } from "./approved-site-source.mjs";
-import { contrast,FORMAL_AMENDMENT_STATE,LOCALES } from "./published-standard-proof.mjs";
+import { contrast,FORMAL_REVIEW_STATUS,LOCALES } from "./published-standard-proof.mjs";
 import { SHELL_G18, SHELL_G18_FIXTURES, collectShellG18, installIntroRecorder, readIntro, judgeShellG18, installShellFixture } from "./published-shell-gates.mjs";
 
 export const PROOF_ENTRIES=Object.freeze(['static','manager']);
@@ -51,6 +51,11 @@ export async function measureElement(locator,{probe="ink",kind="text"}={}){
     return {ink,background:s.backgroundColor,chain,color:s.color,font:s.fontFamily,fontSize:s.fontSize,lineHeight:s.lineHeight,weight:s.fontWeight,stroke:s.strokeWidth,shadow:s.boxShadow,width:rect.width,height:rect.height,visible:!!element.getClientRects().length&&rect.width>0,tag:element.tagName,pseudo};
   },{probe,kind});
 }
+export function publishedTextRoleIssues(actual,reference,{kind="text",probe="ink"}={}){
+  if(probe==="ph")return actual.ink===reference.ink?[]:["source placeholder ink"];
+  if(kind!=="text")return [];
+  return actual.color===reference.color?[]:["published text role color"];
+}
 function solidBackground(chain){
   // Each layer is composited from the document canvas toward the actual painted element.
   const parse=c=>{const n=c.match(/[\d.]+/g)?.map(Number)??[255,255,255];return [n[0],n[1],n[2],n[3]??1];};let result=[255,255,255,1];
@@ -78,7 +83,7 @@ export async function proveFamilyMatrices({root=ROOT}={}){
        if(!reading.visible||!referenceReading.visible)failures.push('source/candidate painted carrier is not visible');
        if(!cell.exempt&&measured<(cell.kind==='text'?4.5:3))failures.push(`threshold ${cell.kind==='text'?4.5:3}`);
        if(Number.isFinite(Number(cell.expect))&&Number(measured.toFixed(2))!==Number(cell.expect))failures.push(`ratio ${measured.toFixed(2)} != ${cell.expect}`);
-       if(reading.color!==referenceReading.color&&cell.kind==='text')failures.push('published text role color');
+       failures.push(...publishedTextRoleIssues(reading,referenceReading,cell));
        Object.assign(observation,{measured,reading,referenceReading,ok:!failures.length,reason:failures.join('; ')});
       }catch(error){observation.reason=error.message;}finally{if(openSelector)await candidate.keyboard.press('Escape');}
       if(!observation.ok)issues.push(`${entry}/${locale}/${cell.key}: ${observation.reason}`);observations.push(observation);
@@ -89,7 +94,7 @@ export async function proveFamilyMatrices({root=ROOT}={}){
    return {entry,issues,sourceCommit:source.manifest.site.sourceCommit,sourceOccurrences:cells.length,observations};
   },{root,entry}));}catch(error){results.push({entry,issues:[`${entry}: ${error.message}`],observations:[]});}
  }
- return {issues:results.flatMap(r=>r.issues),sourceOccurrences:230,expectedComparisons:230*proofContexts().length,observed:results.reduce((n,r)=>n+r.observations.length,0),observations:results.flatMap(r=>r.observations),entries:results.map(({observations,...r})=>r),pendingFormalAmendments:['K1','K5','S03-C01'],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:[],formalDecisionMinutes:{K1K5:'minutes:876fc874ed2380b3daddb0aa#D1-D4',C01:'minutes:3d37207504a1caf4af9aca05#D1-D4'}};
+ return {issues:results.flatMap(r=>r.issues),sourceOccurrences:230,expectedComparisons:230*proofContexts().length,observed:results.reduce((n,r)=>n+r.observations.length,0),observations:results.flatMap(r=>r.observations),entries:results.map(({observations,...r})=>r),...FORMAL_REVIEW_STATUS};
 }
 
 const shellRoles={
@@ -110,7 +115,7 @@ export async function readShellMatrices({browser,base,source,page,fixture,entry=
     try{if(!selector)throw new Error(`Unmapped source shell role ${role}`);const element=page.locator(`[data-formal-shell-scene="${scene}"][data-shell-theme="${theme}"]`).first().locator(selector).first();if(await element.count()!==1)throw new Error('Missing actual package probe');
      await page.mouse.move(0,0);if(['pin-hover','grp-hover','it-hover','pinb-outline'].includes(role)&&await element.isVisible()){if(role==='pinb-outline')await element.locator('..').hover();else await element.hover();}
      const candidateProbe=role==='srch-ph'||role==='drop-srch'?'ph':cell.probe,actual=await measureElement(element,{...cell,probe:candidateProbe}),reference=await measureElement(sourceElement,cell),ratio=contrast(actual.ink,solidBackground(actual.chain));
-     const failures=[];if(!actual.visible||!reference.visible)failures.push('source/candidate carrier not visible');if(!cell.exempt&&ratio<(cell.kind==='text'?4.5:3))failures.push(`threshold ${cell.kind==='text'?4.5:3}`);if(Number(ratio.toFixed(2))!==Number(cell.expect))failures.push(`ratio ${ratio.toFixed(2)} != ${cell.expect}`);if(cell.kind==='text'&&actual.color!==reference.color&&candidateProbe!=='ph')failures.push('source ink color');if(candidateProbe==='ph'&&actual.ink!==reference.ink)failures.push('source placeholder ink');
+     const failures=[];if(!actual.visible||!reference.visible)failures.push('source/candidate carrier not visible');if(!cell.exempt&&ratio<(cell.kind==='text'?4.5:3))failures.push(`threshold ${cell.kind==='text'?4.5:3}`);if(Number(ratio.toFixed(2))!==Number(cell.expect))failures.push(`ratio ${ratio.toFixed(2)} != ${cell.expect}`);failures.push(...publishedTextRoleIssues(actual,reference,{kind:cell.kind,probe:candidateProbe}));
      Object.assign(observation,{actual,reference,ratio,expected:cell.expect,exempt:cell.exempt,probe:cell.probe,candidateProbe,ok:!failures.length,reason:failures.join('; ')});
     }catch(error){observation.reason=error.message;}
     if(!observation.ok)issues.push(`${cell.key}: ${observation.reason}`);observations.push(observation);
@@ -154,5 +159,5 @@ export async function proveShell({root=ROOT,fixtures=false}={}){
    return {entry,issues,observations,contexts,fixtureResults,sourceCommit:source.manifest.site.sourceCommit};
   },{root,entry}));}catch(error){entries.push({entry,issues:[`${entry}: ${error.message}`],observations:[],contexts:[],fixtureResults:[]});}
  }
- return {issues:entries.flatMap(e=>e.issues),sourceOccurrences:225,expectedComparisons:225*proofContexts().length,observations:entries.flatMap(e=>e.observations),contexts:entries.flatMap(e=>e.contexts),expectedG18Contexts:proofContexts({themes:true}).length,fixtureResults:entries.flatMap(e=>e.fixtureResults),expectedFixtures:fixtures?18*proofContexts({themes:true}).length:0,mode:fixtures?'local-negative-fixtures':'candidate-measurement',pendingFormalAmendments:['K1','K5','S03-C01'],formalAmendmentState:FORMAL_AMENDMENT_STATE,undecidedStandardClarifications:[],formalDecisionMinutes:{K1K5:'minutes:876fc874ed2380b3daddb0aa#D1-D4',C01:'minutes:3d37207504a1caf4af9aca05#D1-D4'}};
+ return {issues:entries.flatMap(e=>e.issues),sourceOccurrences:225,expectedComparisons:225*proofContexts().length,observations:entries.flatMap(e=>e.observations),contexts:entries.flatMap(e=>e.contexts),expectedG18Contexts:proofContexts({themes:true}).length,fixtureResults:entries.flatMap(e=>e.fixtureResults),expectedFixtures:fixtures?18*proofContexts({themes:true}).length:0,mode:fixtures?'local-negative-fixtures':'candidate-measurement',...FORMAL_REVIEW_STATUS};
 }

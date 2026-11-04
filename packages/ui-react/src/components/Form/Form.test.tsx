@@ -564,8 +564,9 @@ test("STORY-126 GWT3 SearchInput is a quiet tool: wash without an edge, ink-2 pl
   assert.match(search, /--tcrn-pair-edge-h:inset 0 0 0 1px var\(--tcrn-color-line-2\)/);
   assert.match(search, /--tcrn-pair-fill-f:var\(--tcrn-color-panel\)/);
   assert.match(cssRule(".tcrn-input.tcrn-search-input__control::placeholder"), /color: var\(--tcrn-color-ink-2\);/);
-  // The shortcut label is text on the same wash: ink-2, as the placeholder (TCRN-DS-SUB-062).
-  assert.match(cssRule(".tcrn-search-input__shortcut"), /\bcolor: var\(--tcrn-color-ink-2\);/);
+  // Published06 .sw>kbd and .in.search::placeholder deliberately have distinct roles.
+  assert.match(cssRule(".tcrn-search-input__shortcut"), /\bcolor: var\(--tcrn-color-ink-3\);/);
+  assert.match(cssRule(".tcrn-search-input__icon"), /\bcolor: var\(--tcrn-color-ink-3\);/);
   assert.doesNotMatch(cssRule(".tcrn-search-input .tcrn-search-input__control"), /background|box-shadow|border|color:/);
   assert.doesNotMatch(cssRule(".tcrn-search-input"), /background|border|box-shadow|outline/);
   // The wrapper paints nothing, so no state rule on it is left to clear (TCRN-DS-SUB-059).

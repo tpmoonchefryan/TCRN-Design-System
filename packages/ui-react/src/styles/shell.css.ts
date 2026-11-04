@@ -526,6 +526,11 @@ export const shellCss03 = `
   flex: 0 0 auto;
   color: var(--tcrn-color-ink-3);
 }
+/* Published07a/07b .ts-srch kbd uses ink-2. The existing shell search carrier
+   preserves this role independently of published06's form shortcut ink-3. */
+.tcrn-product-shell-search .tcrn-search-input__shortcut {
+  color: var(--tcrn-color-ink-2);
+}
 .tcrn-shell-menu .tcrn-product-shell-search__results {
   position: static;
   display: flex;
