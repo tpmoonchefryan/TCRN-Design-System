@@ -1471,10 +1471,36 @@ mark.tcrn-highlight__mark{background:var(--tcrn-color-acc-bg);color:inherit;font
   flex: 0 0 auto;
   color: var(--tcrn-color-ink-3);
 }
-/* Published07a/07b .ts-srch kbd uses ink-2. The existing shell search carrier
-   preserves this role independently of published06's form shortcut ink-3. */
+/* Published07 .ts-srch puts its undecorated mono hint in the final grid column.
+   Keep the input's existing full search/focus carrier and reserve, while the real
+   kbd participates in that row. Published06's absolute 10px capsule is unchanged. */
+.tcrn-product-shell-search .tcrn-search-input {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.tcrn-product-shell-search .tcrn-search-input__control {
+  grid-area: 1 / 1 / 2 / 3;
+}
 .tcrn-product-shell-search .tcrn-search-input__shortcut {
+  position: static;
+  inset: auto;
+  grid-area: 1 / 2;
+  display: block;
+  margin-inline-end: var(--tcrn-search-input-padding-inline);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
   color: var(--tcrn-color-ink-2);
+  font-family: var(--tcrn-type-family-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  white-space: nowrap;
+  transform: none;
+}
+.tcrn-shell-dropdown__search .tcrn-search-input__shortcut {
+  font-size: 10px;
+  font-weight: 500;
 }
 .tcrn-shell-menu .tcrn-product-shell-search__results {
   position: static;
