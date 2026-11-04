@@ -40,6 +40,9 @@ export function checkProjection(registry,apis,{source=readApprovedSource()}={}){
 }
 export const CURRENT_STORY_SOURCE_FILES=Object.freeze(["api-reference.tsx","app.tsx","approved-api.ts","approved-source.ts","build.tsx","build/ai-consumption-contract.ts","build/design-authority.ts","build/write-static.tsx","client.tsx","contract-stories/gplus/generated/matrices.generated.ts","contract-stories/kernel.ts","locales.ts","smoke.test.ts","source-matrices.tsx","specimens.tsx","standards.stories.tsx","storybook.css"]);
 export function checkStorySourceMembers(actual){return validateOutputMembers(actual,CURRENT_STORY_SOURCE_FILES);}
+export function retiredLockupLabelIssues(text,label="source"){
+ return ["productSuffix","productShellCaption"].filter(key=>new RegExp(`\\b${key}\\b`).test(text)).map(key=>`${label}: retired unregistered lockup label ${key}`);
+}
 export function checkSourceClosure(root=ROOT){
   const issues=checkStorySourceMembers(listFiles(path.join(root,"apps/storybook/src")));
   for(const rel of ["docs/design/gplus-2026-10","docs/design/visual-standard","docs/contract/clauses.md","docs/contract/families.json","docs/contract/exemptions.json","docs/contract/roles.json","scripts/lib/story-budget.mjs","scripts/lib/visual-signature.mjs","apps/storybook/assets/tcrn-brand-mark.svg","apps/storybook/src/internal-dev","apps/storybook/src/contract-stories/groups","apps/storybook/src/contract-stories/content","apps/storybook/src/contract-stories/visual-instances","apps/storybook/src/contract-stories/gplus/samples"]){if(fs.existsSync(path.join(root,rel)))issues.push(`Retired executable source remains: ${rel}`);}
@@ -52,6 +55,7 @@ export function checkSourceClosure(root=ROOT){
   for(const rel of ["scripts/contract-generate.mjs","apps/storybook/src/build.tsx","apps/storybook/src/build/write-static.tsx","apps/storybook/.storybook/main.ts","apps/storybook/.storybook/preview.ts"]){const text=read(root,rel);if(/gplus-2026-10|visual-standard\/boards|tcrn-brand-mark\.svg|tcrnRetiredComponentCss/.test(text))issues.push(`Retired input reaches current build: ${rel}`);}
   const defaultSheet=read(root,"packages/ui-react/src/styles/index.ts");if(/base\.css|retiredNavigation|RetiredComponent|typography\.css/.test(defaultSheet))issues.push("Current stylesheet assembles unapproved legacy modules");
   const nav=read(root,"packages/ui-react/src/components/Navigation/Navigation.tsx");if(/src\s*=\s*"tcrn-brand|aos:\s*\{|<TcrnBrandMark\s+src=|suffix\?:\s*string/.test(nav))issues.push("Unregistered brand fallback or free-suffix API returned");
+  issues.push(...retiredLockupLabelIssues(nav,"Navigation source"));
   return issues;
 }
 export async function checkTokens(root=ROOT){
@@ -113,7 +117,7 @@ export function checkOutput(root=ROOT,output=path.join(root,"apps/storybook/stor
   const manifest=JSON.parse(fs.readFileSync(path.join(output,"output-manifest.json"),"utf8"));if(manifest.standardSource?.sourceCommit!==APPROVED_SITE.sourceCommit)issues.push("Output inventory has wrong source commit");
   if(JSON.stringify(manifest.files.map(f=>f.path).sort())!==JSON.stringify(expected.filter(f=>f!=="output-manifest.json")))issues.push("Output inventory omits or invents a file");
   for(const row of manifest.files){const p=path.join(output,row.path);if(!fs.existsSync(p)||sha256(fs.readFileSync(p))!==row.sha256)issues.push(`Output bytes differ from candidate inventory ${row.path}`);}
-  for(const rel of actual){const bytes=fs.readFileSync(path.join(output,rel));if(sha256(bytes)===OLD_MOTHER_SHA256)issues.push(`Rejected mother asset bytes returned under ${rel}`);if(/\.(?:html|js|css|svg|json|txt)$/.test(rel)){const text=bytes.toString("utf8");if(rejectedSvgGeometry(text))issues.push(`Rejected inline SVG geometry returned under ${rel}`);if(/tcrn-brand-mark\.svg|tcrn-aos-two-line|data-brand-asset="tcrn-brand-mark"|tcrnRetiredComponentCss|\/reference-components-|Style Guide/.test(text))issues.push(`Rejected asset/standard route returned under ${rel}`);if(rel.endsWith(".html")&&(!text.includes(APPROVED_SITE.sourceCommit)||!text.includes('/assets/ds-tile-deep.svg')))issues.push(`HTML lacks published source or formal favicon ${rel}`);}}
+  for(const rel of actual){const bytes=fs.readFileSync(path.join(output,rel));if(sha256(bytes)===OLD_MOTHER_SHA256)issues.push(`Rejected mother asset bytes returned under ${rel}`);if(/\.(?:html|js|css|svg|json|txt)$/.test(rel)){const text=bytes.toString("utf8");issues.push(...retiredLockupLabelIssues(text,`Static output ${rel}`));if(rejectedSvgGeometry(text))issues.push(`Rejected inline SVG geometry returned under ${rel}`);if(/tcrn-brand-mark\.svg|tcrn-aos-two-line|data-brand-asset="tcrn-brand-mark"|tcrnRetiredComponentCss|\/reference-components-|Style Guide/.test(text))issues.push(`Rejected asset/standard route returned under ${rel}`);if(rel.endsWith(".html")&&(!text.includes(APPROVED_SITE.sourceCommit)||!text.includes('/assets/ds-tile-deep.svg')))issues.push(`HTML lacks published source or formal favicon ${rel}`);}}
   const source=readApprovedSource(root),formalFavicon=extractMarks(source).find(m=>m.id==="ds").tileDeepBody;
   const favicon=fs.readFileSync(path.join(output,"assets/ds-tile-deep.svg"),"utf8").replace(/^<svg[^>]*>/,"").replace(/<\/svg>\s*$/,"");
   if(normalizeSvgBody(favicon)!==normalizeSvgBody(formalFavicon))issues.push("Favicon changed independently of the published DS deep tile");
@@ -141,7 +145,7 @@ export function checkManagerOutput(root=ROOT){
   if(sha256(bytes)===OLD_MOTHER_SHA256)issues.push(`Manager rejected mother bytes: ${rel}`);
   if(rel.endsWith('.html')&&!['index.html','iframe.html'].includes(rel))issues.push(`Manager unregistered HTML entry: ${rel}`);
   if(/\.(?:html|js|css|svg|json|txt)$/.test(rel)){
-   const text=bytes.toString('utf8');if(rejectedSvgGeometry(text)||/tcrn-brand-mark\.svg|tcrn-aos-two-line|tcrnRetiredComponentCss|\/reference-components-/.test(text))issues.push(`Manager rejected inline, renamed or unlinked source: ${rel}`);
+   const text=bytes.toString('utf8');issues.push(...retiredLockupLabelIssues(text,`Manager output ${rel}`));if(rejectedSvgGeometry(text)||/tcrn-brand-mark\.svg|tcrn-aos-two-line|tcrnRetiredComponentCss|\/reference-components-/.test(text))issues.push(`Manager rejected inline, renamed or unlinked source: ${rel}`);
   }
  }
  const expectedFonts=[...source.manifest.fontFiles.map(f=>f.file),'fonts.css','manifest.json'];

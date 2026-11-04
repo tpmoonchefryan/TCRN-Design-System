@@ -23,9 +23,59 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
 
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
 import { readApprovedSource,sourceElements,decodeHtml } from '../scripts/lib/approved-site-source.mjs';
-import { provenanceActivationIssues,activateProvenanceResult } from '../scripts/lib/published-docs-browser.mjs';
+import { provenanceActivationIssues,activateProvenanceResult,exerciseDocsNavigation } from '../scripts/lib/published-docs-browser.mjs';
+import { publishedBoardUrl } from '../scripts/lib/published-browser-proof.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
+test('the real navigation caller accepts only the two registered dialog-role destinations and reaches every later assertion',async()=>{
+ const source=readApprovedSource(),base='http://127.0.0.1:1234',formal=Object.fromEntries(apis.map(api=>[api.name,{board:api.board}]));
+ for(const entry of ['static','manager'])for(const locale of ['zh-CN','en','ja','ko','fr']){
+  function caller(alter=rows=>rows){
+   let url='',query='',board='01-tokens';const emptyWaits=[],activations=[];
+   const apiHref=name=>entry==='static'?`/${locale}/api.html#api-${name}`:`${publishedBoardUrl(base,entry,locale,formal[name].board).slice(base.length)}#api-${name}`;
+   const roleRows=()=>alter(['ShellBrandButton','ShellMenu'].map(name=>({id:`api-${name}`,name,href:apiHref(name)})));
+   const roleQuery=()=>query.trim().normalize('NFKC').toLowerCase()==='dialog';
+   const destination=href=>new URL(href,url||base).href;
+   const result=name=>({waitFor:async()=>{},getAttribute:async key=>{assert.equal(key,'href');return apiHref(name);},click:async()=>{url=destination(apiHref(name));board=formal[name].board;activations.push(name);}});
+   const sourceResult={waitFor:async()=>{},getAttribute:async key=>{assert.equal(key,'href');return entry==='static'?`/${locale}/source.html`:'#source';},click:async()=>{url=destination(entry==='static'?`/${locale}/source.html`:'#source');}};
+   const links={
+    first:()=>({waitFor:async options=>{assert.deepEqual(options,{state:'visible'});assert.ok(roleQuery());}}),
+    evaluateAll:async()=>{assert.ok(roleQuery());return roleRows();},
+    count:async()=>roleQuery()?roleRows().length:0,
+    filter:({has})=>{const name=Object.keys(formal).find(name=>has.options.hasText.test(name));assert.equal(query,name);return result(name);},
+    waitFor:async()=>{assert.equal(query,source.manifest.site.sourceCommit);},
+    getAttribute:sourceResult.getAttribute,click:sourceResult.click
+   };
+   const menu={locator:selector=>{
+    if(selector==='[data-shell-search] input[type="search"]')return {fill:async value=>{query=value;}};
+    if(selector==='[data-search-result]')return links;
+    if(selector==='[data-product-shell-search-empty]:not([hidden])')return {waitFor:async()=>{emptyWaits.push(query);assert.ok(['StateView','brand-identity','tcrn-brand-mark.svg'].includes(query),'Dialog must never await an impossible empty state');}};
+    const href=/^a\[data-shell-row\]\[href="([^"]+)"\]$/.exec(selector)?.[1];assert.ok(href,selector);
+    return {count:async()=>1,click:async()=>{board=Object.keys(APPROVED_BOARD_IDS).find(id=>publishedBoardUrl(base,entry,locale,id).slice(base.length)===href);assert.ok(board);url=destination(href);}};
+   }};
+   const shell={first(){return this;},locator:selector=>{
+    if(selector==='[data-shell-brand]')return {first:()=>({getAttribute:async()=> 'true'})};
+    assert.equal(selector,':scope > .tcrn-shell-menu');return menu;
+   }};
+   const page={url:()=>url,goto:async value=>{url=value;return {status:()=>200};},evaluate:async()=>{},waitForURL:async value=>{assert.equal(url,value);},locator:(selector,options)=>{
+    if(selector==='.tcrn-product-shell')return shell;
+    if(selector==='strong')return {options};
+    if(selector==='[data-approved-board]')return {first:()=>({getAttribute:async()=>board})};
+    if(selector==='main .tcrn-doc-content'||selector==='section#source')return {waitFor:async()=>{},isVisible:async()=>true,textContent:async()=>[source.manifest.site.sourceCommit,source.manifest.site.url,...source.manifest.boards.map(b=>b.sourceId)].join(' ')};
+    return {waitFor:async()=>{const name=/^\[data-approved-api="([^"]+)"\]$/.exec(selector)?.[1];if(name)assert.equal(new URL(url).hash,`#api-${name}`);else assert.ok(selector==='[data-docs-ready="true"]'||selector===`[data-approved-board="${board}"]`,selector);}};
+   }};
+   return {run:()=>exerciseDocsNavigation(page,{base,entry,locale,source,formal}),state:()=>({emptyWaits,activations})};
+  }
+  const good=caller(),reading=await good.run();assert.deepEqual(reading.issues,[]);
+  assert.deepEqual(reading.observations.filter(o=>o.kind==='document-navigation').map(o=>o.board),Object.keys(APPROVED_BOARD_IDS));
+  assert.deepEqual(reading.observations.filter(o=>o.kind==='dialog-role-search').map(o=>o.query),['Dialog','  ＤｉＡｌＯｇ  ']);
+  assert.deepEqual(good.state(),{emptyWaits:['StateView','brand-identity','tcrn-brand-mark.svg'],activations:apis.map(api=>api.name)});
+  assert.ok(reading.observations.some(o=>o.kind==='source-search-activation'));
+  for(const alter of [rows=>rows.slice(0,1),rows=>[...rows,{id:'api-Dialog',name:'Dialog',href:entry==='static'?`/${locale}/api.html#api-Dialog`:`${publishedBoardUrl(base,entry,locale,'07b-shell-lower').slice(base.length)}#api-Dialog`}],rows=>rows.map((row,i)=>i?row:{...row,id:'api-Dialog'}),rows=>rows.map((row,i)=>i?row:{...row,href:`/en/api.html#api-ShellBrandButton-wrong`})]){
+   assert.ok((await caller(alter).run()).issues.some(issue=>issue.includes('dialog role search')),'missing, extra, unsupported or misrouted role hits must fail the actual caller');
+  }
+ }
+});
 test('the real provenance caller clicks from each emitted static API page without a board-only precondition',async()=>{
  const source=readApprovedSource(),base='http://127.0.0.1:1234';
  for(const locale of ['zh-CN','en','ja','ko','fr']){

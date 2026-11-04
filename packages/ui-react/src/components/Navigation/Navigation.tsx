@@ -95,9 +95,6 @@ interface ShellChromeLabels {
   sectionNavigation: string;
   productLauncher: string;
   productSwitcher: string;
-  /** The visible fallbacks in the two lockups that have no `productId`. */
-  productSuffix: string;
-  productShellCaption: string;
   /**
    * Two names composed from a value the consumer supplied. Concatenating an
    * English word onto a translated product or module name yields a string in
@@ -136,8 +133,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     sectionNavigation: "分区导航",
     productLauncher: "产品启动器",
     productSwitcher: "产品切换器",
-    productSuffix: "产品",
-    productShellCaption: "产品外壳",
     brandHomeOf: (productName) => `${productName}首页`,
     shellControlsOf: (moduleName) => `${moduleName}外壳控件`,
     pinToStrip: (label) => `固定到顶带：${label}`,
@@ -164,8 +159,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     sectionNavigation: "Section navigation",
     productLauncher: "Product launcher",
     productSwitcher: "Product switcher",
-    productSuffix: "Product",
-    productShellCaption: "Product shell",
     brandHomeOf: (productName) => `${productName} home`,
     shellControlsOf: (moduleName) => `${moduleName} shell controls`,
     pinToStrip: (label) => `Pin to top bar: ${label}`,
@@ -192,8 +185,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     sectionNavigation: "セクションのナビゲーション",
     productLauncher: "製品ランチャー",
     productSwitcher: "製品の切り替え",
-    productSuffix: "製品",
-    productShellCaption: "製品シェル",
     brandHomeOf: (productName) => `${productName}のホーム`,
     shellControlsOf: (moduleName) => `${moduleName}のシェル操作`,
     pinToStrip: (label) => `トップバーに固定：${label}`,
@@ -220,8 +211,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     sectionNavigation: "섹션 내비게이션",
     productLauncher: "제품 실행기",
     productSwitcher: "제품 전환기",
-    productSuffix: "제품",
-    productShellCaption: "제품 셸",
     brandHomeOf: (productName) => `${productName} 홈`,
     shellControlsOf: (moduleName) => `${moduleName} 셸 컨트롤`,
     pinToStrip: (label) => `상단 바에 고정: ${label}`,
@@ -248,8 +237,6 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
     sectionNavigation: "Navigation des sections",
     productLauncher: "Lanceur de produits",
     productSwitcher: "Sélecteur de produit",
-    productSuffix: "Produit",
-    productShellCaption: "Coque produit",
     brandHomeOf: (productName) => `Accueil : ${productName}`,
     shellControlsOf: (moduleName) => `Commandes de la coque : ${moduleName}`,
     pinToStrip: (label) => `Épingler à la barre supérieure : ${label}`,

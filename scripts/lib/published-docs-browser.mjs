@@ -123,7 +123,19 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
    observations.push({kind:'document-navigation',entry,locale,board,href,activated:page.url()});
   }catch(error){issues.push(`${entry}/${locale}/${board}: navigation ${error.message}`);}
  }
- for(const query of ['Dialog','StateView','brand-identity','tcrn-brand-mark.svg']){
+ // Dialog is a role keyword of two registered shell APIs, not a standalone API.
+ for(const query of ['Dialog','  ＤｉＡｌＯｇ  ']){
+  try{
+   const menu=await open(),search=menu.locator('[data-shell-search] input[type="search"]');await search.fill(query);
+   const links=menu.locator('[data-search-result]');await links.first().waitFor({state:'visible'});
+   const results=await links.evaluateAll(els=>els.map(el=>({id:new URL(el.href).hash.slice(1),name:el.querySelector('strong')?.textContent,href:el.getAttribute('href')})));
+   const expected=[['ShellBrandButton','07a-shell-upper'],['ShellMenu','07b-shell-lower']].map(([name,board])=>({id:`api-${name}`,name,href:entry==='static'?`/${locale}/api.html#api-${name}`:`${publishedBoardUrl(base,entry,locale,board).slice(base.length)}#api-${name}`}));
+   if(JSON.stringify(results)!==JSON.stringify(expected))issues.push(`${entry}/${locale}: dialog role search must return exactly the registered shell API identities and destinations`);
+   if(results.some(r=>r.id==='api-Dialog'||r.href?.endsWith('#api-Dialog')))issues.push(`${entry}/${locale}: unsupported api-Dialog identity returned`);
+   observations.push({kind:'dialog-role-search',entry,locale,query,results});
+  }catch(error){issues.push(`${entry}/${locale}: dialog role search ${query}: ${error.message}`);}
+ }
+ for(const query of ['StateView','brand-identity','tcrn-brand-mark.svg']){
   try{const menu=await open(),search=menu.locator('[data-shell-search] input[type="search"]');await search.fill(query);await menu.locator('[data-product-shell-search-empty]:not([hidden])').waitFor();const results=await menu.locator('[data-search-result]').count();if(results)issues.push(`${entry}/${locale}: unsupported search result ${query}`);observations.push({kind:'unsupported-search',entry,locale,query,results});}catch(error){issues.push(`${entry}/${locale}: unsupported search ${query}: ${error.message}`);}
  }
  for(const [name,contract]of Object.entries(formal)){

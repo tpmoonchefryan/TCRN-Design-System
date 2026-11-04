@@ -6,7 +6,20 @@ import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,assertToke
 import { APPROVED_SITE,APPROVED_BOARD_IDS } from "../scripts/lib/approved-site-pins.mjs";
 import * as approvedSourceModule from "../scripts/lib/approved-site-source.mjs";
 import { generate } from "../scripts/contract-generate.mjs";
+import { retiredLockupLabelIssues } from "../scripts/lib/published-standard-proof.mjs";
 const read=fs.readFileSync;
+test('source and emitted closure reject only the exact retired lockup fallback keys and retain neighboring product copy',()=>{
+ const nav=read(path.join(ROOT,'packages/ui-react/src/components/Navigation/Navigation.tsx'),'utf8');
+ assert.deepEqual(retiredLockupLabelIssues(nav,'Navigation source'),[]);
+ for(const key of ['shellWorkspace','productLauncher','productSwitcher','brandHomeOf','shellControlsOf'])assert.match(nav,new RegExp(`\\b${key}\\b`));
+ const valid='shellWorkspace:"Product shell workspace",productLauncher:"Product launcher",productSwitcher:"Product switcher",productSuffixExtra:"Product",productShellCaptionExtra:"Product shell"';
+ for(const label of ['Navigation source','Static output storybook.js','Manager output assets/standards.stories.js']){
+  assert.deepEqual(retiredLockupLabelIssues(valid,label),[]);
+  for(const key of ['productSuffix','productShellCaption'])for(const payload of [`${key}:"Product"`,`"${key}":"Product shell"`,`${key}:\`产品外壳\``]){
+   const issues=retiredLockupLabelIssues(`${valid},${payload}`,label);assert.equal(issues.length,1);assert.ok(issues[0].includes(label)&&issues[0].endsWith(key));
+  }
+ }
+});
 test('V1 exact repeated declarations compose in source order only when requested',()=>{
  const css='.radio{border-radius:50%;--fill-c:old}.radio::after{--fill-c:wrong}.radio,.other{--fill-c:also-wrong}.radio{--fill-c:panel;--mark-c:acc}';
  assert.deepEqual(cssRule(css,'.radio'),{'border-radius':'50%','--fill-c':'old'});
