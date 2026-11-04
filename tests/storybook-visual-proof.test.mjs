@@ -24,22 +24,52 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
 import { readApprovedSource,sourceElements,decodeHtml } from '../scripts/lib/approved-site-source.mjs';
 import { provenanceActivationIssues,activateProvenanceResult,exerciseDocsNavigation } from '../scripts/lib/published-docs-browser.mjs';
-import { publishedBoardUrl,proofContexts,publishedTextRoleIssues } from '../scripts/lib/published-browser-proof.mjs';
+import { publishedBoardUrl,proofContexts,publishedTextRoleIssues,withPublishedBrowser,openPublishedBoard,publishedShortcutOccurrences,publishedShortcutLocator,collectPublishedShortcuts } from '../scripts/lib/published-browser-proof.mjs';
 import { publishedShortcutContexts } from '../scripts/lib/published-standard-proof.mjs';
 import { extractTokens } from '../scripts/lib/approved-site-source.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-test('published form and shell role comparison rejects wrong-form ink-2 and wrong-shell ink-3 in every entry/locale/theme',()=>{
- const source=readApprovedSource(),tokens=extractTokens(source),roles=publishedShortcutContexts(source);
- for(const context of proofContexts({themes:true}))for(const role of roles){
-  const values=Object.fromEntries(tokens.themed.map(row=>[row.key,row[context.theme]]));
-  const color=values[/var\(--([\w-]+)\)/.exec(role.color)[1]],reference={color,ink:color},actual={...reference};
-  assert.deepEqual(publishedTextRoleIssues(actual,reference),[],`${context.entry}/${context.locale}/${context.theme}/${role.board}`);
-  const wrong=values[role.board==='06-inputs'?'ink-2':'ink-3'];
-  assert.notEqual(wrong,color);
-  assert.deepEqual(publishedTextRoleIssues({color:wrong,ink:wrong},reference),['published text role color']);
-  assert.deepEqual(publishedTextRoleIssues({color:wrong,ink:wrong},reference,{probe:'ph'}),['source placeholder ink']);
- }
+test('published form and shell role comparison rejects wrong-form ink-2 and wrong-shell ink-3 in every entry/locale/theme',async()=>{
+ const source=readApprovedSource(),tokens=extractTokens(source),roles=publishedShortcutOccurrences(source);
+ assert.equal(roles.length,14);assert.equal(roles.filter(role=>role.annotatedCell).length,3);
+ assert.equal(roles.filter(role=>role.board==='06-inputs').length,8);
+ for(const theme of ['light','dark'])assert.deepEqual(roles.filter(role=>role.scene==='form'&&role.theme===theme).map(role=>role.state),['default','hover','focus','sm']);
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  for(const locale of ['zh-CN','en','ja','ko','fr'])for(const board of ['06-inputs','07a-shell-upper','07b-shell-lower']){
+   const page=await browser.newPage({viewport:{width:1440,height:1000}}),reference=await browser.newPage({viewport:{width:2640,height:1000}});
+   try{
+    await reference.goto(`${base}/__formal/${board}`);await reference.evaluate(()=>document.fonts.ready);
+    await openPublishedBoard(page,{base,entry,locale,board});
+    const collect=()=>collectPublishedShortcuts({source,board,reference,page,entry,locale}),baseline=await collect(),localRoles=roles.filter(role=>role.board===board);
+    assert.equal(baseline.observed,localRoles.length);assert.deepEqual(baseline.fidelityIssues,[],`${entry}/${locale}/${board}`);
+    // Baseline contrast issues are retained by the production proof. They cannot
+    // turn a source-faithful reading into a color exception or a visual pass.
+    for(const role of localRoles){
+     const actual=publishedShortcutLocator(page,role),values=Object.fromEntries(tokens.themed.map(row=>[row.key,row[role.theme]]));
+     const changes=[{label:'wrong role ink',style:{color:values[role.scene==='form'?'ink-2':'ink-3']}}];
+     if(role.scene!=='form')changes.push({label:'wrong context typography',style:{fontSize:role.scene==='menu'?'10px':'10.5px'}},{label:'form capsule in shell',style:{border:'1px solid currentColor',padding:'0 4px',borderRadius:'4px'}});
+     for(const change of changes){
+      const previous=await actual.getAttribute('style');
+      try{
+       await actual.evaluate((element,style)=>Object.assign(element.style,style),change.style);
+       const changed=await collect(),reading=changed.observations.find(row=>row.key===role.key);
+       assert.ok(reading.fidelityIssues.length,`${entry}/${locale}/${role.key}: ${change.label} must reach the production collector`);
+       if(change.label==='wrong role ink')assert.ok(reading.fidelityIssues.includes('published text role color'));
+       if(change.label==='wrong context typography')assert.ok(reading.fidelityIssues.includes('published shortcut fontSize'));
+       if(change.label==='form capsule in shell')assert.ok(reading.fidelityIssues.includes('published shortcut borderWidths'));
+       assert.deepEqual(reading.reference,baseline.observations.find(row=>row.key===role.key).reference,'independent published reference is unchanged by candidate mutations');
+      }finally{await actual.evaluate((element,style)=>{if(style===null)element.removeAttribute('style');else element.setAttribute('style',style);},previous);}
+     }
+     if(role.scene==='drop'){
+      const parent=actual.locator('..'),original=await actual.evaluate(element=>{const html=element.outerHTML;element.remove();return html;});
+      try{assert.ok((await collect()).observations.find(row=>row.key===role.key).fidelityIssues.some(issue=>issue.includes('Missing or duplicate')),'actual missing dropdown kbd is observable');}
+      finally{await parent.evaluate((element,html)=>element.insertAdjacentHTML('beforeend',html),original);}
+     }
+    }
+    assert.deepEqual((await collect()).fidelityIssues,[],'all actual nodes/styles restored');
+   }finally{await page.close();await reference.close();}
+  }
+ },{entry});
 });
 test('the real navigation caller accepts only the two registered dialog-role destinations and reaches every later assertion',async()=>{
  const source=readApprovedSource(),base='http://127.0.0.1:1234',formal=Object.fromEntries(apis.map(api=>[api.name,{board:api.board}]));

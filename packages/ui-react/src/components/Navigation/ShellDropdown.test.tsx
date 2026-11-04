@@ -63,7 +63,7 @@ test("the drop-down is a non-modal dialog with the shell hooks, rows without an 
   assert.equal((html.match(/role="dialog"/g) ?? []).length, 1);
   assert.match(html, /<div data-shell-search="" class="tcrn-product-shell-search tcrn-shell-menu__search tcrn-shell-dropdown__search"/);
   assert.match(html, /<input(?=[^>]*type="search")(?=[^>]*placeholder="搜索合约")[^>]*>/);
-  assert.doesNotMatch(html, /<kbd/, "the drop-down's search shows no ⌘K: that key opens the full menu");
+  assert.match(html, /<kbd class="tcrn-search-input__shortcut" data-shortcut-auto="search" aria-hidden="true">Ctrl K<\/kbd>/, "published07 retains the decorative hint; Ctrl+K still opens the full menu");
   assert.equal((html.match(/data-shell-row=""/g) ?? []).length, 4);
   assert.equal((html.match(/data-shell-level="3"/g) ?? []).length, 4);
   assert.equal((html.match(/data-nav-item-has-icon="false"/g) ?? []).length, 4, "no icon column");

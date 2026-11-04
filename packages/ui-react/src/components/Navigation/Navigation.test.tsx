@@ -1260,7 +1260,13 @@ test("published07 shell search keeps its own ink-2 shortcut through the actual P
     assert.equal(shortcut?.closest(".tcrn-product-shell-search")?.getAttribute("data-shell-control"), "product-shell-search");
     const rules = cssRules(Object.values(shellSegments).join("\n")).filter(rule => rule.selector === selector);
     assert.equal(rules.length, 1);
-    assert.equal(rules[0].body.trim(), "color: var(--tcrn-color-ink-2);", "the shell carrier only selects the published07 shortcut role");
+    assert.match(rules[0].body, /color: var\(--tcrn-color-ink-2\);/);
+    for (const declaration of ["position: static;", "padding: 0;", "border: 0;", "border-radius: 0;", "font-size: 10.5px;", "line-height: 1.5;", "white-space: nowrap;", "transform: none;"]) {
+      assert.ok(rules[0].body.includes(declaration), declaration);
+    }
+    const dropdown = cssRules(Object.values(shellSegments).join("\n")).find(rule => rule.selector === ".tcrn-shell-dropdown__search .tcrn-search-input__shortcut");
+    assert.match(dropdown?.body ?? "", /font-size: 10px;/);
+    assert.match(dropdown?.body ?? "", /font-weight: 500;/, "published ts-drop supplies the inherited weight");
   } finally {
     dom.window.close();
   }

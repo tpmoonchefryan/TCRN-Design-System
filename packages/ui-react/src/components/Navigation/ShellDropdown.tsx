@@ -295,7 +295,7 @@ export function ShellDropdown({
           className="tcrn-shell-menu__search tcrn-shell-dropdown__search"
           locale={locale}
           placeholder={searchPlaceholder ?? copy.searchWithin(source.label)}
-          shortcut={false}
+          shortcut="auto"
           query={query}
           expanded={searching}
           results={results}

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import http from "node:http";
 import { chromium } from "@playwright/test";
-import { ROOT,readApprovedSource,extractMatrixOccurrences } from "./approved-site-source.mjs";
+import { ROOT,readApprovedSource,extractMatrixOccurrences,sourceElements } from "./approved-site-source.mjs";
 import { contrast,FORMAL_REVIEW_STATUS,LOCALES } from "./published-standard-proof.mjs";
 import { SHELL_G18, SHELL_G18_FIXTURES, collectShellG18, installIntroRecorder, readIntro, judgeShellG18, installShellFixture } from "./published-shell-gates.mjs";
 
@@ -56,6 +56,67 @@ export function publishedTextRoleIssues(actual,reference,{kind="text",probe="ink
   if(kind!=="text")return [];
   return actual.color===reference.color?[]:["published text role color"];
 }
+// Supplemental roles retain their raw ordinal/ancestry. They are not new data-cells:
+// the original 455 source-cell identities and 4550 entry/locale contexts stay separate.
+export function publishedShortcutOccurrences(source=readApprovedSource()){
+ return source.boards.filter(b=>['06-inputs','07a-shell-upper','07b-shell-lower'].includes(b.slug)).flatMap(board=>{
+  const has=(node,name)=>(node.attrs.class??'').split(/\s+/).includes(name);
+  return sourceElements(board.html).filter(node=>node.tag==='kbd').map((node,index)=>{
+   const ancestors=[];for(let n=node.parent;n;n=n.parent)ancestors.push(n);
+   const carrier=ancestors.find(n=>has(n,'sw')||has(n,'ts-srch')),screen=ancestors.find(n=>n.attrs['data-shell']),themeNode=ancestors.find(n=>has(n,'gp'));
+   if(!carrier)throw new Error(`Unmapped published shortcut ${board.slug}/${index+1}`);
+   const input=carrier.children.find(n=>n.tag==='input'),scene=board.slug==='06-inputs'?'form':screen?.attrs['data-state']==='drop'?'drop':'menu';
+   const state=scene==='form'?(has(input,'is-focus')?'focus':has(input,'is-hover')?'hover':has(input,'sm')?'sm':'default'):screen.attrs['data-state'];
+   return {key:`${board.slug}:shortcut:${index+1}`,board:board.slug,ordinal:index+1,theme:themeNode&&has(themeNode,'night')?'dark':'light',scene,state,sourceScene:screen?.attrs['data-shell']??board.slug,sourceLine:node.sourceLine,sourceOffset:node.offset,carrier:{tag:carrier.tag,classes:carrier.attrs.class??'',style:carrier.attrs.style??''},annotatedCell:node.attrs['data-cell']??null};
+  });
+ });
+}
+export function publishedShortcutLocator(page,role){
+ if(role.scene==='form')return page.locator(`[data-published-shortcut-key="${role.key}"]`).locator('..').locator(':scope > kbd');
+ const scene=page.locator(`[data-formal-shell-scene="${role.scene}"][data-shell-theme="${role.theme}"]`).first();
+ return scene.locator(`${role.scene==='drop'?'.tcrn-shell-dropdown__search':'.tcrn-shell-menu__search'} .tcrn-search-input__shortcut`);
+}
+export async function measurePublishedShortcut(locator){
+ const reading=await measureElement(locator);
+ return {...reading,...await locator.evaluate(element=>{
+  const s=getComputedStyle(element),r=element.getBoundingClientRect(),carrier=element.closest('.sw,.ts-srch,.tcrn-search-input'),c=carrier.getBoundingClientRect();
+  return {position:s.position,letterSpacing:s.letterSpacing,whiteSpace:s.whiteSpace,borderWidths:[s.borderTopWidth,s.borderRightWidth,s.borderBottomWidth,s.borderLeftWidth],borderStyles:[s.borderTopStyle,s.borderRightStyle,s.borderBottomStyle,s.borderLeftStyle],borderColors:[s.borderTopColor,s.borderRightColor,s.borderBottomColor,s.borderLeftColor],borderRadius:s.borderRadius,padding:[s.paddingTop,s.paddingRight,s.paddingBottom,s.paddingLeft],rightInset:c.right-r.right,centerOffset:(r.top+r.bottom-c.top-c.bottom)/2,ariaHidden:element.getAttribute('aria-hidden'),tabIndex:element.tabIndex,role:element.getAttribute('role')};
+ }),chain:await locator.evaluate(element=>{
+  // SearchInput's painted input is a sibling beneath the hint, not an ancestor.
+  // The raw06 sw has the same arrangement; raw07 paints its ts-srch ancestor.
+  const chain=[getComputedStyle(element).backgroundColor],carrier=element.closest('.sw,.ts-srch,.tcrn-search-input'),control=carrier.querySelector('input');
+  if(control)chain.push(getComputedStyle(control).backgroundColor);
+  for(let p=element.parentElement;p;p=p.parentElement)chain.push(getComputedStyle(p).backgroundColor);
+  return chain;
+ })};
+}
+export function publishedShortcutIssues(actual,reference){
+ const failures=publishedTextRoleIssues(actual,reference);
+ if(actual.tag!=='KBD'||!actual.visible||!reference.visible)failures.push('published shortcut node/visibility');
+ for(const key of ['font','fontSize','lineHeight','weight','position','whiteSpace','borderWidths','borderStyles','borderColors','borderRadius','padding','background','shadow'])if(JSON.stringify(actual[key])!==JSON.stringify(reference[key]))failures.push(`published shortcut ${key}`);
+ const spacing=value=>value==='normal'?0:parseFloat(value);
+ if(spacing(actual.letterSpacing)!==spacing(reference.letterSpacing))failures.push('published shortcut letterSpacing');
+ if(!Number.isFinite(actual.rightInset)||Math.abs(actual.rightInset-reference.rightInset)>.5)failures.push('published shortcut trailing inset');
+ if(!Number.isFinite(actual.centerOffset)||Math.abs(actual.centerOffset-reference.centerOffset)>.5)failures.push('published shortcut vertical alignment');
+ // The package hint is decorative; it must not create a focus stop or a new action.
+ if(actual.ariaHidden!=='true'||actual.tabIndex>=0||actual.role!==null)failures.push('decorative shortcut semantics');
+ return failures;
+}
+export async function collectPublishedShortcuts({source,board,reference,page,entry,locale}){
+ const roles=publishedShortcutOccurrences(source).filter(role=>role.board===board),observations=[],fidelityIssues=[],contrastIssues=[];
+ for(const role of roles){
+  const observation={...role,entry,locale,ok:false};
+  try{
+   const actualNode=publishedShortcutLocator(page,role),referenceNode=reference.locator('kbd').nth(role.ordinal-1);
+   if(await actualNode.count()!==1||await referenceNode.count()!==1)throw new Error('Missing or duplicate actual/published shortcut node');
+   const actual=await measurePublishedShortcut(actualNode),expected=await measurePublishedShortcut(referenceNode),failures=publishedShortcutIssues(actual,expected),ratio=contrast(actual.ink,solidBackground(actual.chain));
+   const threshold=ratio<4.5?['shortcut text threshold 4.5']:[];
+   Object.assign(observation,{actual,reference:expected,ratio,fidelityIssues:failures,contrastIssues:threshold,ok:!failures.length&&!threshold.length});
+  }catch(error){observation.fidelityIssues=[error.message];observation.contrastIssues=[];}
+  fidelityIssues.push(...observation.fidelityIssues.map(reason=>`${entry}/${locale}/${role.key}: ${reason}`));contrastIssues.push(...observation.contrastIssues.map(reason=>`${entry}/${locale}/${role.key}: ${reason}`));observations.push(observation);
+ }
+ return {sourceOccurrences:roles.length,observed:observations.length,observations,fidelityIssues,contrastIssues,issues:[...fidelityIssues,...contrastIssues]};
+}
 function solidBackground(chain){
   // Each layer is composited from the document canvas toward the actual painted element.
   const parse=c=>{const n=c.match(/[\d.]+/g)?.map(Number)??[255,255,255];return [n[0],n[1],n[2],n[3]??1];};let result=[255,255,255,1];
@@ -66,7 +127,7 @@ export async function proveFamilyMatrices({root=ROOT}={}){
  const results=[];
  for(const entry of PROOF_ENTRIES){
   try{results.push(await withPublishedBrowser(async({browser,base,source})=>{
-   const issues=[],observations=[],cells=extractMatrixOccurrences(source).filter(c=>!c.board.startsWith("07"));
+   const issues=[],observations=[],shortcutObservations=[],cells=extractMatrixOccurrences(source).filter(c=>!c.board.startsWith("07"));
    for(const locale of LOCALES)for(const board of [...new Set(cells.map(c=>c.board))]){
     const reference=await browser.newPage({viewport:{width:2640,height:1000}}),candidate=await browser.newPage({viewport:{width:1440,height:1000}});
     try{
@@ -88,13 +149,14 @@ export async function proveFamilyMatrices({root=ROOT}={}){
       }catch(error){observation.reason=error.message;}finally{if(openSelector)await candidate.keyboard.press('Escape');}
       if(!observation.ok)issues.push(`${entry}/${locale}/${cell.key}: ${observation.reason}`);observations.push(observation);
      }
+     if(board==='06-inputs'){const shortcuts=await collectPublishedShortcuts({source,board,reference,page:candidate,entry,locale});issues.push(...shortcuts.issues);shortcutObservations.push(...shortcuts.observations);}
     }catch(error){issues.push(`${entry}/${locale}/${board}: incomplete family collection: ${error.message}`);}finally{await reference.close();await candidate.close();}
    }
    if(observations.length!==cells.length*LOCALES.length)issues.push(`${entry}: incomplete family occurrence coverage ${observations.length}/${cells.length*LOCALES.length}`);
-   return {entry,issues,sourceCommit:source.manifest.site.sourceCommit,sourceOccurrences:cells.length,observations};
+   return {entry,issues,sourceCommit:source.manifest.site.sourceCommit,sourceOccurrences:cells.length,observations,supplementalShortcuts:{sourceOccurrences:8,expectedComparisons:8*LOCALES.length,observations:shortcutObservations}};
   },{root,entry}));}catch(error){results.push({entry,issues:[`${entry}: ${error.message}`],observations:[]});}
  }
- return {issues:results.flatMap(r=>r.issues),sourceOccurrences:230,expectedComparisons:230*proofContexts().length,observed:results.reduce((n,r)=>n+r.observations.length,0),observations:results.flatMap(r=>r.observations),entries:results.map(({observations,...r})=>r),...FORMAL_REVIEW_STATUS};
+ return {issues:results.flatMap(r=>r.issues),sourceOccurrences:230,expectedComparisons:230*proofContexts().length,observed:results.reduce((n,r)=>n+r.observations.length,0),observations:results.flatMap(r=>r.observations),supplementalShortcuts:{sourceOccurrences:8,expectedComparisons:8*proofContexts().length,observations:results.flatMap(r=>r.supplementalShortcuts?.observations??[])},entries:results.map(({observations,...r})=>r),...FORMAL_REVIEW_STATUS};
 }
 
 const shellRoles={
@@ -105,7 +167,7 @@ const shellRoles={
 };
 export function shellSceneFor(cell){return cell.mobile?(cell.sourceState==="sheet"?"phone":"phone-closed"):cell.sourceState==="expanded"?"menu":cell.sourceState==="drop"?"drop":"band";}
 export async function readShellMatrices({browser,base,source,page,fixture,entry="static",locale="en"}){
- const observations=[],issues=[],cells=extractMatrixOccurrences(source).filter(c=>c.board.startsWith("07"));
+ const observations=[],issues=[],shortcutObservations=[],cells=extractMatrixOccurrences(source).filter(c=>c.board.startsWith("07"));
  for(const board of source.boards.filter(b=>b.slug.startsWith("07"))){
   const ref=await browser.newPage({viewport:{width:2640,height:1000}});
   try{await ref.goto(`${base}/__formal/${board.slug}`);await openPublishedBoard(page,{base,entry,locale,board:board.slug});await Promise.all([ref.evaluate(()=>document.fonts.ready),page.evaluate(()=>document.fonts.ready)]);if(fixture)await installShellFixture(page,fixture);
@@ -120,19 +182,20 @@ export async function readShellMatrices({browser,base,source,page,fixture,entry=
     }catch(error){observation.reason=error.message;}
     if(!observation.ok)issues.push(`${cell.key}: ${observation.reason}`);observations.push(observation);
    }
+   const shortcuts=await collectPublishedShortcuts({source,board:board.slug,reference:ref,page,entry,locale});issues.push(...shortcuts.issues);shortcutObservations.push(...shortcuts.observations);
   }catch(error){issues.push(`${entry}/${locale}/${board.slug}: incomplete shell collection: ${error.message}`);}finally{await ref.close();}
  }
  if(observations.length!==cells.length)issues.push(`${entry}/${locale}: incomplete shell occurrence coverage ${observations.length}/${cells.length}`);
- return {entry,locale,sourceOccurrences:cells.length,observations,issues};
+ return {entry,locale,sourceOccurrences:cells.length,observations,issues,supplementalShortcuts:{sourceOccurrences:6,observations:shortcutObservations}};
 }
 export async function proveShell({root=ROOT,fixtures=false}={}){
  const entries=[];
  for(const entry of PROOF_ENTRIES){
   try{entries.push(await withPublishedBrowser(async({browser,base,source})=>{
-   const issues=[],observations=[],contexts=[],fixtureResults=[];
+   const issues=[],observations=[],shortcutObservations=[],contexts=[],fixtureResults=[];
    for(const locale of LOCALES){
     const matrixPage=await browser.newPage({viewport:{width:1440,height:1000}});let matrix;
-    try{matrix=await readShellMatrices({browser,base,source,page:matrixPage,entry,locale});issues.push(...matrix.issues.map(i=>`${entry}/${locale}: ${i}`));observations.push(...matrix.observations);}catch(error){issues.push(`${entry}/${locale}: incomplete matrix ${error.message}`);matrix={sourceOccurrences:225,observations:[],issues:[error.message]};}finally{await matrixPage.close();}
+    try{matrix=await readShellMatrices({browser,base,source,page:matrixPage,entry,locale});issues.push(...matrix.issues.map(i=>`${entry}/${locale}: ${i}`));observations.push(...matrix.observations);shortcutObservations.push(...matrix.supplementalShortcuts.observations);}catch(error){issues.push(`${entry}/${locale}: incomplete matrix ${error.message}`);matrix={sourceOccurrences:225,observations:[],issues:[error.message]};}finally{await matrixPage.close();}
     for(const theme of ['light','dark']){
      const context={entry,locale,theme},page=await browser.newPage({viewport:{width:1440,height:1000}}),url=publishedBoardUrl(base,entry,locale,'07a-shell-upper');let intro,gates;
      try{
@@ -156,8 +219,8 @@ export async function proveShell({root=ROOT,fixtures=false}={}){
      }
     }
    }
-   return {entry,issues,observations,contexts,fixtureResults,sourceCommit:source.manifest.site.sourceCommit};
+   return {entry,issues,observations,shortcutObservations,contexts,fixtureResults,sourceCommit:source.manifest.site.sourceCommit};
   },{root,entry}));}catch(error){entries.push({entry,issues:[`${entry}: ${error.message}`],observations:[],contexts:[],fixtureResults:[]});}
  }
- return {issues:entries.flatMap(e=>e.issues),sourceOccurrences:225,expectedComparisons:225*proofContexts().length,observations:entries.flatMap(e=>e.observations),contexts:entries.flatMap(e=>e.contexts),expectedG18Contexts:proofContexts({themes:true}).length,fixtureResults:entries.flatMap(e=>e.fixtureResults),expectedFixtures:fixtures?18*proofContexts({themes:true}).length:0,mode:fixtures?'local-negative-fixtures':'candidate-measurement',...FORMAL_REVIEW_STATUS};
+ return {issues:entries.flatMap(e=>e.issues),sourceOccurrences:225,expectedComparisons:225*proofContexts().length,observations:entries.flatMap(e=>e.observations),supplementalShortcuts:{sourceOccurrences:6,expectedComparisons:6*proofContexts().length,observations:entries.flatMap(e=>e.shortcutObservations??[])},contexts:entries.flatMap(e=>e.contexts),expectedG18Contexts:proofContexts({themes:true}).length,fixtureResults:entries.flatMap(e=>e.fixtureResults),expectedFixtures:fixtures?18*proofContexts({themes:true}).length:0,mode:fixtures?'local-negative-fixtures':'candidate-measurement',...FORMAL_REVIEW_STATUS};
 }
