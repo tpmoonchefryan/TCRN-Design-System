@@ -295,22 +295,58 @@ test("rows paint with the pair grammar, group titles are ink-3 without a hover f
   assert.doesNotMatch(shellCss03, /tcrn-nav-group__label[^{]*:hover/);
   // Pair switches remain narrow. Visibility and the exact focus carriers are separate
   // known rules, each checked explicitly rather than admitting arbitrary exceptions.
-  let pairRules = 0;
-  for (const match of shellCss03.matchAll(/\n([^\n{}]*:where\([^{]*)\{\n([^}]*)\}/g)) {
-    const [, selector, body] = match;
-    const text = body.trim().replace(/\s+/g, " "), key = selector.trim();
-    if (key === '.tcrn-shell-menu .tcrn-nav-item-row > :where(.tcrn-nav-item,.tcrn-nav-pin):focus-visible') {
-      assert.equal(text, 'outline: none; box-shadow: none;');continue;
+  const pairSwitches = new Map([
+    ['.tcrn-shell-menu .tcrn-nav-item:where(:hover, [data-tcrn-preview-state~="hover"])', '--tcrn-pair-fill: var(--tcrn-pair-fill-h); --tcrn-pair-ink: var(--tcrn-pair-ink-h);'],
+    ['.tcrn-shell-menu .tcrn-nav-item:where([aria-current="page"], [aria-expanded="true"])', '--tcrn-pair-fill: var(--tcrn-pair-fill-s); --tcrn-pair-ink: var(--tcrn-pair-ink-s); --tcrn-pair-icon: var(--tcrn-pair-icon-s); --tcrn-pair-weight: var(--tcrn-pair-weight-s);'],
+    ['.tcrn-shell-menu .tcrn-nav-item:where(:focus-visible, [data-tcrn-preview-state~="focus"])', '--tcrn-pair-edge: var(--tcrn-pair-edge-f);'],
+    ['.tcrn-shell-menu .tcrn-product-shell-search__result:where(:hover, [data-tcrn-preview-state~="hover"])', '--tcrn-pair-fill: var(--tcrn-pair-fill-h); --tcrn-pair-ink: var(--tcrn-pair-ink-h);'],
+    ['.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible)', '--tcrn-pair-edge: var(--tcrn-pair-edge-f);']
+  ]);
+  const separateRules = [
+    ['.tcrn-shell-menu .tcrn-nav-item-row > :where(.tcrn-nav-item,.tcrn-nav-pin):focus-visible', 'outline: none; box-shadow: none;'],
+    [':where(.tcrn-shell-menu .tcrn-nav-item-row:has(> [data-tcrn-preview-state~="hover"]), .tcrn-shell-menu .tcrn-nav-group[data-tcrn-preview-state~="hover"] > .tcrn-nav-group__label) > .tcrn-nav-pin', 'opacity: 1;'],
+    ['.tcrn-shell-menu .tcrn-nav-item:where(:focus-visible)', 'outline: 2px solid transparent; outline-offset: 2px;'],
+    ['.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible)', 'outline: 2px solid transparent; outline-offset: 2px;']
+  ];
+  // Published07 .ts-srch.is-focus is a whole-search role, independent of row
+  // pairs. Native focus-within and the authored preview state share its panel
+  // fill/ring; the transparent outline keeps the forced-colour focus carrier.
+  const searchFocusSelector = '.tcrn-product-shell-search .tcrn-search-input:where(:focus-within, :has([data-tcrn-preview-state~="focus"]))';
+  const searchFocusBody = 'background: var(--tcrn-color-panel); box-shadow: var(--tcrn-focus-ring); outline: 2px solid transparent; outline-offset: 2px;';
+  const stateRulePattern = /\n([^\n{}]*:where\([^{]*)\{\n([^}]*)\}/g;
+  const assertStateRules = (css: string) => {
+    const seenPairs = new Set<string>(), separateCounts = separateRules.map(() => 0);
+    let pairRules = 0, searchFocusRules = 0;
+    for (const [, selector, body] of css.matchAll(stateRulePattern)) {
+      const text = body.trim().replace(/\s+/g, " "), key = selector.trim();
+      if (key === searchFocusSelector) {
+        assert.equal(text, searchFocusBody, "complete independent search carrier focus contract");
+        searchFocusRules++;continue;
+      }
+      const separate = separateRules.findIndex(([knownSelector, knownBody]) => key === knownSelector && text === knownBody);
+      if (separate !== -1) { separateCounts[separate]++;continue; }
+      assert.match(key, /^\.tcrn-shell-menu \.(?:tcrn-nav-item|tcrn-product-shell-search__result):where\(/);
+      assert.ok(pairSwitches.has(key), `unsupported row selector: ${key}`);
+      assert.equal(text, pairSwitches.get(key), key);
+      for (const line of body.trim().split("\n")) assert.match(line.trim(), /^--tcrn-pair-[a-z-]+: var\(--tcrn-pair-[a-z-]+\);$/, selector);
+      assert.equal(seenPairs.has(key), false, `duplicate row pair: ${key}`);
+      seenPairs.add(key);pairRules++;
     }
-    if (key.startsWith(':where(') && key.endsWith('> .tcrn-nav-pin')) { assert.equal(text, 'opacity: 1;');continue; }
-    if (text === 'outline: 2px solid transparent; outline-offset: 2px;') {
-      assert.ok(['.tcrn-shell-menu .tcrn-nav-item:where(:focus-visible)', '.tcrn-shell-menu .tcrn-product-shell-search__result:where(:focus-visible)'].includes(key));continue;
-    }
-    assert.match(key, /^\.tcrn-shell-menu \.(?:tcrn-nav-item|tcrn-product-shell-search__result):where\(/);
-    for (const line of body.trim().split("\n")) assert.match(line.trim(), /^--tcrn-pair-[a-z-]+: var\(--tcrn-pair-[a-z-]+\);$/, selector);
-    pairRules++;
-  }
-  assert.equal(pairRules, 5, "all actual hover/selected/focus pair rules");
+    assert.equal(pairRules, 5, "all actual hover/selected/focus pair rules");
+    assert.deepEqual([...seenPairs].sort(), [...pairSwitches.keys()].sort(), "each required row pair occurs once");
+    assert.deepEqual(separateCounts, [1, 1, 1, 1], "each exact visibility/child-reset/outline rule occurs once");
+    assert.equal(searchFocusRules, 1, "one native/preview whole-search focus rule");
+  };
+  assertStateRules(shellCss03);
+  // Sensitivities mutate the real segment, retaining its other rules. Neither
+  // a missing/duplicate pair nor a wrong carrier selector/fill may be waived.
+  const firstPair = [...shellCss03.matchAll(stateRulePattern)].find(([, selector]) => selector.trim() === pairSwitches.keys().next().value);
+  assert.ok(firstPair);
+  assert.throws(() => assertStateRules(shellCss03.replace(firstPair[0], "")));
+  assert.throws(() => assertStateRules(shellCss03 + firstPair[0]));
+  assert.throws(() => assertStateRules(shellCss03.replace(firstPair[0], firstPair[0].replace('--tcrn-pair-fill-h', '--tcrn-pair-fill-s'))));
+  assert.throws(() => assertStateRules(shellCss03.replace(searchFocusSelector, `${searchFocusSelector}:hover`)));
+  assert.throws(() => assertStateRules(shellCss03.replace(`${searchFocusSelector} {\n  background: var(--tcrn-color-panel);`, `${searchFocusSelector} {\n  background: var(--tcrn-color-wash);`)));
   assert.match(formalLayoutCss, /\.tcrn-nav-item-row\{[^}]*grid-template-columns:minmax\(0,1fr\) 24px;[^}]*padding-inline-end:4px;[^}]*box-shadow:var\(--tcrn-pair-row-edge\)/);
   assert.match(formalLayoutCss, /\.tcrn-nav-item-row:where\(:has\(>\.tcrn-nav-item:focus-visible\),:has\(>\.tcrn-nav-pin:focus-visible\),[^}]*\{--tcrn-pair-row-edge:var\(--tcrn-pair-row-edge-f\);outline:2px solid transparent;outline-offset:2px\}/);
   assert.match(formalLayoutCss, /--tcrn-pair-row-edge-f:var\(--tcrn-focus-ring\)/);

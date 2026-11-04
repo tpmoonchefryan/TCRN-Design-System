@@ -203,11 +203,35 @@ test('real adjacent shell searches reject wrong icon/track/origin/type/reserve a
    const page=await browser.newPage({viewport:{width:1440,height:1000}}),reference=await browser.newPage({viewport:{width:2640,height:1000}});
    try{
     await reference.goto(`${base}/__formal/${board}`);await reference.evaluate(()=>document.fonts.ready);
-    await openPublishedBoard(page,{base,entry,locale,board});
-    const collect=()=>collectPublishedSearchAssemblies({source,board,reference,page,entry,locale}),baseline=await collect(),localRoles=roles.filter(role=>role.board===board);
+    const localRoles=roles.filter(role=>role.board===board);
+    const liveSearch=role=>{
+     const carrier=publishedSearchLocator(page,role);
+     return {carrier,control:carrier.locator('input'),icon:carrier.locator('svg')};
+    };
+    const restoreBoard=async()=>{
+     // A real navigation remounts ShellExample's independent menu/openPin/Sheet
+     // owners. Restoring styles or disabled alone cannot reopen dismissed peers.
+     await openPublishedBoard(page,{base,entry,locale,board});
+     for(const role of localRoles){
+      const scene=page.locator(`[data-formal-shell-scene="${role.scene}"][data-shell-theme="${role.theme}"]`);
+      assert.equal(await scene.count(),1,`${role.key}: matching real source scene`);
+      const {carrier,control}=liveSearch(role);
+      await carrier.waitFor({state:'visible'});await control.waitFor({state:'visible'});
+      assert.equal(await carrier.count(),1,`${role.key}: one mounted carrier`);
+      assert.equal(await control.count(),1,`${role.key}: one native input`);
+      const layer=carrier.locator('xpath=ancestor::*[@role="dialog"][1]');
+      await layer.waitFor({state:'visible'});
+      const layerId=await layer.getAttribute('id');assert.ok(layerId,`${role.key}: actual open layer identity`);
+      assert.equal(await scene.locator('[aria-controls]').evaluateAll((nodes,id)=>nodes.filter(node=>node.getAttribute('aria-controls')===id&&node.getAttribute('aria-expanded')==='true').length,layerId),1,`${role.key}: real owner is open`);
+      assert.equal(await control.isEnabled(),true);assert.equal(await control.inputValue(),'');
+     }
+    };
+    const collect=()=>collectPublishedSearchAssemblies({source,board,reference,page,entry,locale});
+    await restoreBoard();const baseline=await collect();
     assert.equal(baseline.observations.length,localRoles.length*3);assert.deepEqual(baseline.issues,[],`${entry}/${locale}/${board}`);
     for(const role of localRoles){
-     const carrier=publishedSearchLocator(page,role),control=carrier.locator('input'),icon=carrier.locator('svg');
+     await restoreBoard();
+     const {carrier,control,icon}=liveSearch(role);
      const changes=[
       {node:carrier,style:{gridTemplateColumns:role.hasShortcut?'24px minmax(0,1fr) auto':'24px minmax(0,1fr)'},failure:'published search leadingTrack'},
       {node:control,style:{paddingLeft:'4px'},failure:'published search textOrigin'},
@@ -230,20 +254,32 @@ test('real adjacent shell searches reject wrong icon/track/origin/type/reserve a
      }
      // All carrier regions still focus the same native input; editing/selection
      // stay on that input. The hint creates no extra tab stop or action.
-     for(const region of [carrier,icon,...(role.hasShortcut?[carrier.locator('kbd')]:[])]){
-      await control.blur();
-      if(region===carrier)await region.click({position:{x:2,y:2}});else await region.click({force:true});
-      assert.equal(await control.evaluate(element=>element===document.activeElement),true,'whole search hit region retains focus');
+     for(const regionName of ['carrier','icon',...(role.hasShortcut?['hint']:[])]){
+      // Each pointer phase may correctly close every sibling transient layer.
+      // Reconstruct first, then acquire nodes from that newly mounted scene.
+      await restoreBoard();
+      const live=liveSearch(role),region=regionName==='carrier'?live.carrier:regionName==='icon'?live.icon:live.carrier.locator('kbd');
+      await live.control.blur();
+      if(regionName==='carrier')await region.click({position:{x:2,y:2}});else await region.click({force:true});
+      assert.equal(await live.control.evaluate(element=>element===document.activeElement),true,'whole search hit region retains focus');
+      for(const sibling of localRoles.filter(candidate=>candidate.key!==role.key)){
+       await publishedSearchLocator(page,sibling).waitFor({state:'detached'});
+      }
      }
-     await control.fill('abcdef');await control.evaluate(element=>element.select());
-     assert.equal(await control.inputValue(),'abcdef');
-     await page.keyboard.press('Backspace');assert.equal(await control.inputValue(),'');
+     await restoreBoard();const native=liveSearch(role);
+     await native.control.fill('abcdef');await native.control.evaluate(element=>element.select());
+     assert.equal(await native.control.inputValue(),'abcdef');
+     await page.keyboard.press('Backspace');assert.equal(await native.control.inputValue(),'');
      // Disabled native semantics also apply when the pointer hits the carrier.
-     await control.evaluate(element=>{element.blur();element.disabled=true;});
-     try{await carrier.click({position:{x:2,y:2},force:true});assert.equal(await control.evaluate(element=>element===document.activeElement),false);}
-     finally{await control.evaluate(element=>element.disabled=false);}
+     await native.control.evaluate(element=>{element.blur();element.disabled=true;});
+     try{await native.carrier.click({position:{x:2,y:2},force:true});assert.equal(await native.control.evaluate(element=>element===document.activeElement),false);}
+     finally{await native.control.evaluate(element=>element.disabled=false);}
+     await page.mouse.click(0,0);await native.carrier.waitFor({state:'detached'});
     }
-    assert.deepEqual((await collect()).issues,[],'actual nodes/styles and native values restored');
+    await restoreBoard();const restored=await collect();
+    assert.equal(restored.observations.length,localRoles.length*3,'final pristine whole-board matrix is complete');
+    assert.deepEqual(restored.observations.map(row=>[row.key,row.state]),baseline.observations.map(row=>[row.key,row.state]),'all original source-role/state identities remain reachable');
+    assert.deepEqual(restored.issues,[],'actual nodes/styles, React open state and native values restored');
    }finally{await page.close();await reference.close();}
   }
  },{entry});
