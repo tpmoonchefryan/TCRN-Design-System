@@ -1,4 +1,4 @@
-import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard } from "./published-browser-proof.mjs";
+import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard,publishedSearchGeometry } from "./published-browser-proof.mjs";
 import { LOCALES,formalApiContracts,checkManagerOutput } from "./published-standard-proof.mjs";
 import { ROOT,readApprovedSource,cssRule } from "./approved-site-source.mjs";
 import { readApiFacts,exerciseApiBoard,apiBehaviorIssues } from "./published-api-browser.mjs";
@@ -12,8 +12,17 @@ export function geometryIssues(readings,{source=readApprovedSource()}={}){
    const track=cssRule(css,r.small?'.tg.sm>input':'.tg>input'),knob=cssRule(css,r.small?'.tg.sm>input::after':'.tg>input::after'),travel=r.checked?(r.small?12:14):0;
    if(r.width!==n(track.width)||r.height!==n(track.height)||r.knobWidth!==n(knob.width)||r.knobHeight!==n(knob.height)||r.travel!==travel)issues.push(`Switch actual track/knob/travel mismatch ${r.small?'sm':'md'}/${r.checked}`);
   }else if(r.kind==='control'){
-   const key=r.size==='sm'?'--h-sm':r.size==='lg'?'--h-lg':'--h-md',height=n(cssRule(source.board('01-tokens').css,'.gp')[key]);
-   if(!Number.isFinite(r.height)||Math.abs(r.height-height)>.5)issues.push(`Control variant ${r.size} height ${r.height} != ${height}: ${r.className}`);
+   const key=r.size==='sm'?'--h-sm':r.size==='lg'?'--h-lg':'--h-md';
+   let height=n(cssRule(source.board('01-tokens').css,'.gp')[key]);
+   if(r.shellSearch){
+    try{height=publishedSearchGeometry(source,r.searchContext?.board,r.searchContext?.kind).height;}
+    catch{issues.push(`Shell search context missing/unknown: ${r.searchContext?.kind??'lost'}`);}
+   }
+   if(!Number.isFinite(r.height)||Math.abs(r.height-height)>.5)issues.push(`Control variant ${r.shellSearch?r.searchContext?.kind:r.size} height ${r.height} != ${height}: ${r.className}`);
+   // Context selects the correct oracle; it never exempts the actual control or
+   // skips subsequent geometry/semantics checks on that same native node.
+   if(r.shellSearch&&(!r.searchCarrier||!Number.isFinite(r.carrierHeight)||Math.abs(r.carrierHeight-r.height)>.5||!Number.isFinite(r.width)||r.width<=0))issues.push('Shell search native/carrier geometry');
+   if(r.shellSearch&&(r.tag!=='INPUT'||r.inputType!=='search'||r.role!=='combobox'))issues.push('Shell search native semantics after context');
    if(r.className.includes('tcrn-button')&&r.transform!=='none')issues.push('Action transform contradicts published 05');
    if(r.iconButton){
     const token=cssRule(source.board('01-tokens').css,'.gp'),pad=n(token[`--pad-${r.size}`]);
@@ -31,14 +40,9 @@ export function geometryIssues(readings,{source=readApprovedSource()}={}){
  }
  return issues;
 }
-async function proveGeometryEntry({root,entry}){return withPublishedBrowser(async({browser,base,source})=>{
- const issues=[],observations=[],page=await browser.newPage({viewport:{width:1440,height:1000}});
- try{for(const locale of LOCALES)for(const board of ['05-actions','06-inputs','07a-shell-upper','07b-shell-lower']){
-  try{await openPublishedBoard(page,{base,entry,locale,board});
-  // Read both actual knob positions and restore their initial state by closing the page.
-  for(const position of (board==='06-inputs'?['initial','toggled']:['initial'])){
-   if(position==='toggled')await page.locator('[data-approved-board] .tcrn-switch__control').evaluateAll(async els=>{for(const el of els){el.checked=!el.checked;getComputedStyle(el,'::before').transform;}await Promise.all(els.flatMap(el=>el.getAnimations({subtree:true}).map(animation=>animation.finished.catch(()=>{}))));});
-   const readings=await page.locator('[data-approved-board] .tcrn-button,[data-approved-board] input.tcrn-input,[data-approved-board] select.tcrn-select:not([multiple]),[data-approved-board] .tcrn-checkbox,[data-approved-board] .tcrn-switch__control,[data-approved-board] .tcrn-page-header__title').evaluateAll(els=>els.filter(el=>el.getBoundingClientRect().width>0).map(el=>{
+// Production collection and sensitivity tests share this exact real-node path.
+export async function collectGeometryReadings(page){
+ const readings=await page.locator('[data-approved-board] .tcrn-button,[data-approved-board] input.tcrn-input,[data-approved-board] select.tcrn-select:not([multiple]),[data-approved-board] .tcrn-checkbox,[data-approved-board] .tcrn-switch__control,[data-approved-board] .tcrn-page-header__title').evaluateAll(els=>els.filter(el=>el.getBoundingClientRect().width>0).map(el=>{
     const s=getComputedStyle(el),r=el.getBoundingClientRect(),small=!!el.closest('.tcrn-switch--sm'),kind=el.matches('.tcrn-page-header__title')?'page-header':el.matches('.tcrn-switch__control')?'switch':el.matches('.tcrn-checkbox')?'checkbox':'control';
     const knob=getComputedStyle(el,'::before'),matrix=knob.transform==='none'?null:new DOMMatrixReadOnly(knob.transform),number=el.matches('.tcrn-number-input');
     let twelveCh=null,squeezedWidth=null;
@@ -46,9 +50,22 @@ async function proveGeometryEntry({root,entry}){return withPublishedBrowser(asyn
      const probe=document.createElement('span');probe.style.cssText=`position:absolute;display:block;width:12ch;height:0;padding:0;border:0;box-sizing:content-box;font:${s.font};`;el.parentElement.append(probe);
      const original=el.getAttribute('style');try{twelveCh=probe.getBoundingClientRect().width;el.style.inlineSize='1px';squeezedWidth=el.getBoundingClientRect().width;}finally{probe.remove();if(original===null)el.removeAttribute('style');else el.setAttribute('style',original);}
     }
-    return {className:el.className,kind,small,size:/--sm\b/.test(el.className)?'sm':/--lg\b/.test(el.className)?'lg':'md',checked:el.checked,width:r.width,height:r.height,transform:s.transform,knobWidth:parseFloat(knob.width),knobHeight:parseFloat(knob.height),travel:matrix?.m41??0,iconButton:el.matches('.tcrn-icon-button'),labelled:el.matches('.tcrn-icon-button--labelled'),paddingLeft:parseFloat(s.paddingLeft),paddingRight:parseFloat(s.paddingRight),gap:parseFloat(s.columnGap),labelWidth:el.querySelector('.tcrn-icon-button__label')?.getBoundingClientRect().width,iconWidth:el.querySelector('svg')?.getBoundingClientRect().width,number,minimum:parseFloat(s.minInlineSize),twelveCh,squeezedWidth,fontSize:parseFloat(s.fontSize),lineHeight:parseFloat(s.lineHeight)};
+    const shellSearch=el.matches('input.tcrn-search-input__control')&&!!el.closest('.tcrn-product-shell-search');
+    const owner=shellSearch?el.closest('.tcrn-product-shell-search'):null,carrier=owner?.querySelector(':scope > .tcrn-search-input'),board=el.closest('[data-approved-board]')?.getAttribute('data-approved-board');
+    const context=owner?.matches('.tcrn-shell-dropdown__search')&&owner.closest('.tcrn-shell-dropdown__panel')?'drop':owner?.matches('.tcrn-shell-menu__search')&&owner.closest('.tcrn-shell-sheet__panel')?'sheet':owner?.matches('.tcrn-shell-menu__search')&&owner.closest('.tcrn-shell-menu__panel')?'menu':'unknown';
+    return {shellSearch,searchContext:shellSearch?{kind:context,board,scene:el.closest('[data-formal-shell-scene]')?.getAttribute('data-formal-shell-scene'),theme:el.closest('[data-shell-theme]')?.getAttribute('data-shell-theme'),ownerClassName:owner.className,carrierClassName:carrier?.className}:null,searchCarrier:!!carrier,carrierHeight:carrier?.getBoundingClientRect().height,tag:el.tagName,inputType:el.type,role:el.getAttribute('role'),className:el.className,kind,small,size:/--sm\b/.test(el.className)?'sm':/--lg\b/.test(el.className)?'lg':'md',checked:el.checked,width:r.width,height:r.height,transform:s.transform,knobWidth:parseFloat(knob.width),knobHeight:parseFloat(knob.height),travel:matrix?.m41??0,iconButton:el.matches('.tcrn-icon-button'),labelled:el.matches('.tcrn-icon-button--labelled'),paddingLeft:parseFloat(s.paddingLeft),paddingRight:parseFloat(s.paddingRight),gap:parseFloat(s.columnGap),labelWidth:el.querySelector('.tcrn-icon-button__label')?.getBoundingClientRect().width,iconWidth:el.querySelector('svg')?.getBoundingClientRect().width,number,minimum:parseFloat(s.minInlineSize),twelveCh,squeezedWidth,fontSize:parseFloat(s.fontSize),lineHeight:parseFloat(s.lineHeight)};
    }));
-   if(board==='05-actions')readings.push(...await page.locator('[data-approved-board] .tcrn-button-group').evaluateAll(groups=>groups.map(group=>{const actions=[...group.querySelectorAll(':scope > button.tcrn-button')];return {kind:'button-group',size:group.dataset.buttonGroupSize,actionCount:actions.length,separators:group.querySelectorAll(':scope > .tcrn-button-group__separator').length,heights:actions.map(el=>el.getBoundingClientRect().height)};})));
+ readings.push(...await page.locator('[data-approved-board="05-actions"] .tcrn-button-group').evaluateAll(groups=>groups.map(group=>{const actions=[...group.querySelectorAll(':scope > button.tcrn-button')];return {kind:'button-group',size:group.dataset.buttonGroupSize,actionCount:actions.length,separators:group.querySelectorAll(':scope > .tcrn-button-group__separator').length,heights:actions.map(el=>el.getBoundingClientRect().height)};})));
+ return readings;
+}
+async function proveGeometryEntry({root,entry}){return withPublishedBrowser(async({browser,base,source})=>{
+ const issues=[],observations=[],page=await browser.newPage({viewport:{width:1440,height:1000}});
+ try{for(const locale of LOCALES)for(const board of ['05-actions','06-inputs','07a-shell-upper','07b-shell-lower']){
+  try{await openPublishedBoard(page,{base,entry,locale,board});
+  // Read both actual knob positions and restore their initial state by closing the page.
+  for(const position of (board==='06-inputs'?['initial','toggled']:['initial'])){
+   if(position==='toggled')await page.locator('[data-approved-board] .tcrn-switch__control').evaluateAll(async els=>{for(const el of els){el.checked=!el.checked;getComputedStyle(el,'::before').transform;}await Promise.all(els.flatMap(el=>el.getAnimations({subtree:true}).map(animation=>animation.finished.catch(()=>{}))));});
+   const readings=await collectGeometryReadings(page);
    issues.push(...geometryIssues(readings,{source}).map(issue=>`${entry}/${locale}/${board}: ${issue}`));observations.push({entry,locale,board,position,readings});
   }
   }catch(error){issues.push(`${entry}/${locale}/${board}: incomplete geometry: ${error.message}`);}

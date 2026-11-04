@@ -708,6 +708,7 @@ export function ShellMenu({
       className="tcrn-shell-menu__search"
       locale={locale}
       placeholder={searchPlaceholder ?? copy.searchNavigation}
+      shortcut={sheet ? false : "auto"}
       query={query}
       expanded={searching}
       results={results}

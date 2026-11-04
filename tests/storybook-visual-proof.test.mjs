@@ -193,3 +193,58 @@ test('row focus and end-inset checks reject the former link-only focus and zero-
  assert.deepEqual(rowCarrierIssues([row]),[]);
  for(const change of [{pinInset:0},{shadow:'none',childShadow:'formal ring'},{pin:{...row.pin,width:20}},{childFill:'wash'},{ink:'ink-2'}])assert.ok(rowCarrierIssues([{...row,...change}]).length);
 });
+
+import { publishedSearchOccurrences,publishedSearchLocator,collectPublishedSearchAssemblies } from '../scripts/lib/published-browser-proof.mjs';
+test('real adjacent shell searches reject wrong icon/track/origin/type/reserve against unchanged published carriers',async()=>{
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  const roles=publishedSearchOccurrences(source);
+  assert.equal(roles.length,7);assert.equal(roles.filter(role=>role.context==='sheet').length,1);
+  for(const locale of ['zh-CN','en','ja','ko','fr'])for(const board of ['07a-shell-upper','07b-shell-lower']){
+   const page=await browser.newPage({viewport:{width:1440,height:1000}}),reference=await browser.newPage({viewport:{width:2640,height:1000}});
+   try{
+    await reference.goto(`${base}/__formal/${board}`);await reference.evaluate(()=>document.fonts.ready);
+    await openPublishedBoard(page,{base,entry,locale,board});
+    const collect=()=>collectPublishedSearchAssemblies({source,board,reference,page,entry,locale}),baseline=await collect(),localRoles=roles.filter(role=>role.board===board);
+    assert.equal(baseline.observations.length,localRoles.length*3);assert.deepEqual(baseline.issues,[],`${entry}/${locale}/${board}`);
+    for(const role of localRoles){
+     const carrier=publishedSearchLocator(page,role),control=carrier.locator('input'),icon=carrier.locator('svg');
+     const changes=[
+      {node:carrier,style:{gridTemplateColumns:role.hasShortcut?'24px minmax(0,1fr) auto':'24px minmax(0,1fr)'},failure:'published search leadingTrack'},
+      {node:control,style:{paddingLeft:'4px'},failure:'published search textOrigin'},
+      {node:icon,style:{width:'12px',height:'12px'},failure:'published search iconWidth'},
+      {node:control,style:{paddingRight:'7ch'},failure:'published search flexible text capacity/reserve'},
+      {node:carrier,style:{height:'36px'},failure:'published search height'},
+      ...(role.context==='drop'?[{node:control,style:{fontSize:'13px'},failure:'published search fontSize'}]:[])
+     ];
+     for(const change of changes){
+      const original=await change.node.getAttribute('style');
+      try{
+       await change.node.evaluate((element,style)=>Object.assign(element.style,style),change.style);
+       const changed=await collect(),rows=changed.observations.filter(row=>row.key===role.key);
+       assert.equal(rows.length,3);
+       for(const reading of rows){
+        assert.ok(reading.failures.includes(change.failure),`${entry}/${locale}/${role.key}/${reading.state}: ${change.failure} reaches the real collector`);
+        assert.deepEqual(reading.reference,baseline.observations.find(row=>row.key===role.key&&row.state===reading.state).reference,'candidate mutations cannot rewrite the independent published reference');
+       }
+      }finally{await change.node.evaluate((element,value)=>value===null?element.removeAttribute('style'):element.setAttribute('style',value),original);}
+     }
+     // All carrier regions still focus the same native input; editing/selection
+     // stay on that input. The hint creates no extra tab stop or action.
+     for(const region of [carrier,icon,...(role.hasShortcut?[carrier.locator('kbd')]:[])]){
+      await control.blur();
+      if(region===carrier)await region.click({position:{x:2,y:2}});else await region.click({force:true});
+      assert.equal(await control.evaluate(element=>element===document.activeElement),true,'whole search hit region retains focus');
+     }
+     await control.fill('abcdef');await control.evaluate(element=>element.select());
+     assert.equal(await control.inputValue(),'abcdef');
+     await page.keyboard.press('Backspace');assert.equal(await control.inputValue(),'');
+     // Disabled native semantics also apply when the pointer hits the carrier.
+     await control.evaluate(element=>{element.blur();element.disabled=true;});
+     try{await carrier.click({position:{x:2,y:2},force:true});assert.equal(await control.evaluate(element=>element===document.activeElement),false);}
+     finally{await control.evaluate(element=>element.disabled=false);}
+    }
+    assert.deepEqual((await collect()).issues,[],'actual nodes/styles and native values restored');
+   }finally{await page.close();await reference.close();}
+  }
+ },{entry});
+});

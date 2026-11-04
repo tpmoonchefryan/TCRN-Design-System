@@ -96,6 +96,11 @@ test("it hangs 6 under the pinned item at its start edge, 240 wide, inset 6, sea
   const search = ruleBody(".tcrn-shell-dropdown__search .tcrn-search-input", shellCss04);
   assert.equal(declaration(search, "--tcrn-search-input-block-size"), "var(--tcrn-shell-drop-srch-h)");
   assert.equal(declaration(search, "--tcrn-search-input-padding-inline"), "var(--tcrn-space-2)");
+  assert.equal(declaration(search, "--tcrn-search-input-leading-track"), "var(--tcrn-icon-size-sm)");
+  assert.equal(declaration(search, "--tcrn-search-input-column-gap"), "var(--tcrn-space-1h)");
+  const contextualText = ruleBody(".tcrn-shell-dropdown__search .tcrn-search-input .tcrn-search-input__control", shellCss03);
+  assert.equal(declaration(contextualText, "font-size"), "12.5px");
+  assert.equal(declaration(contextualText, "font-weight"), "500");
   // The rows are the full menu's: no icon column outside its group columns, start inset space-2h.
   assert.equal(declaration(ruleBody(".tcrn-shell-menu .tcrn-nav-item", shellCss03), "padding"), "0 var(--tcrn-space-1) 0 var(--tcrn-space-2h)");
   const tokens = createTokenMap();

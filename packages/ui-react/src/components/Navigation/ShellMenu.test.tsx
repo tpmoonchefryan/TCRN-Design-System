@@ -401,6 +401,8 @@ function renderBoardSheet(extra: Partial<Parameters<typeof ShellMenu>[0]> = {}) 
 test("390 wide and narrower the menu is the Sheet: the scrim, one non-modal dialog, the grab line, the search and the two lists", () => {
   assert.equal(shellMenuSheetMediaQuery, "(max-width: 390px)");
   const html = renderBoardSheet();
+  assert.doesNotMatch(html, /<kbd/, "published07 touch Sheet has no keyboard hint; desktop auto semantics remain separate");
+  assert.match(html, /<input(?=[^>]*type="search")(?=[^>]*role="combobox")[^>]*>/);
   assert.match(
     html,
     /^<div class="tcrn-shell-sheet__scrim" data-shell-scrim="" aria-hidden="true"><\/div><div class="tcrn-shell-menu tcrn-shell-sheet" data-shell-menu=""><section id="menu" class="tcrn-shell-sheet__panel" role="dialog" aria-modal="false" aria-label="导航" tabindex="-1" data-panel="sheet"><span class="tcrn-shell-sheet__grab" aria-hidden="true"><\/span><div data-shell-search=""/

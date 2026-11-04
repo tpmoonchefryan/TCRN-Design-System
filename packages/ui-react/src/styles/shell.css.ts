@@ -526,21 +526,67 @@ export const shellCss03 = `
   flex: 0 0 auto;
   color: var(--tcrn-color-ink-3);
 }
-/* Published07 .ts-srch puts its undecorated mono hint in the final grid column.
-   Keep the input's existing full search/focus carrier and reserve, while the real
-   kbd participates in that row. Published06's absolute 10px capsule is unchanged. */
+/* Published07 search is a complete carrier: icon track, flexible native text
+   track, and independent intrinsic shortcut track. The carrier owns its wash and
+   full focus ring; ProductShellSearch forwards clicks in its padding/icon/hint
+   to the same native input. Published06 retains its separate full-width input. */
 .tcrn-product-shell-search .tcrn-search-input {
-  grid-template-columns: minmax(0, 1fr) auto;
+  --tcrn-search-input-block-size: var(--tcrn-shell-srch-h);
+  --tcrn-search-input-leading-track: var(--tcrn-icon-size-lg);
+  --tcrn-search-input-icon-size: var(--tcrn-icon-size-md);
+  --tcrn-search-input-column-gap: var(--tcrn-space-2);
+  grid-template-columns: var(--tcrn-search-input-leading-track) minmax(0, 1fr) auto;
+  box-sizing: border-box;
+  column-gap: var(--tcrn-search-input-column-gap);
+  block-size: var(--tcrn-search-input-block-size);
+  padding: 0 var(--tcrn-search-input-padding-inline);
+  border-radius: var(--tcrn-radius-control);
+  background: var(--tcrn-color-wash);
+  color: var(--tcrn-color-ink-3);
+  cursor: text;
 }
-.tcrn-product-shell-search .tcrn-search-input__control {
-  grid-area: 1 / 1 / 2 / 3;
+.tcrn-product-shell-search .tcrn-search-input:where(:focus-within, :has([data-tcrn-preview-state~="focus"])) {
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-focus-ring);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.tcrn-product-shell-search .tcrn-search-input:has(input:disabled) {
+  background: var(--tcrn-color-dis);
+  box-shadow: inset 0 0 0 1px var(--tcrn-color-line-2);
+  cursor: not-allowed;
+}
+.tcrn-product-shell-search .tcrn-search-input__icon {
+  position: static;
+  grid-area: 1 / 1;
+  transform: none;
+}
+.tcrn-product-shell-search .tcrn-search-input .tcrn-search-input__control {
+  grid-area: 1 / 2;
+  min-inline-size: 0;
+  block-size: 100%;
+  padding: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--tcrn-color-ink-2);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-product-shell-search .tcrn-search-input .tcrn-search-input__control:disabled {
+  color: var(--tcrn-color-ink-3);
 }
 .tcrn-product-shell-search .tcrn-search-input__shortcut {
   position: static;
   inset: auto;
-  grid-area: 1 / 2;
+  grid-area: 1 / 3;
   display: block;
-  margin-inline-end: var(--tcrn-search-input-padding-inline);
+  margin: 0;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -555,6 +601,10 @@ export const shellCss03 = `
 }
 .tcrn-shell-dropdown__search .tcrn-search-input__shortcut {
   font-size: 10px;
+  font-weight: 500;
+}
+.tcrn-shell-dropdown__search .tcrn-search-input .tcrn-search-input__control {
+  font-size: 12.5px;
   font-weight: 500;
 }
 .tcrn-shell-menu .tcrn-product-shell-search__results {
@@ -746,6 +796,8 @@ export const shellCss04 = `
   --tcrn-search-input-block-size: var(--tcrn-shell-drop-srch-h);
   --tcrn-search-input-padding-inline: var(--tcrn-space-2);
   --tcrn-search-input-icon-size: var(--tcrn-icon-size-sm);
+  --tcrn-search-input-leading-track: var(--tcrn-icon-size-sm);
+  --tcrn-search-input-column-gap: var(--tcrn-space-1h);
 }
 .tcrn-shell-dropdown__list {
   display: flex;

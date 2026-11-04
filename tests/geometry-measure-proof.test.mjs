@@ -29,3 +29,56 @@ test('ButtonGroup geometry measures actions independently of its decorative sepa
   for(const change of [{actionCount:2*count-1},{separators:count},{heights:[...row.heights.slice(1),32===height?28:32]}])assert.ok(geometryIssues([{...row,...change}]).length);
  }
 });
+
+import { collectGeometryReadings } from '../scripts/lib/published-docs-browser.mjs';
+import { withPublishedBrowser,openPublishedBoard,publishedSearchOccurrences,publishedSearchLocator,publishedSearchGeometry } from '../scripts/lib/published-browser-proof.mjs';
+test('the real geometry collector keeps menu/drop/Sheet context and valid context reaches later native checks',async()=>{
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  for(const locale of ['zh-CN','en','ja','ko','fr'])for(const board of ['07a-shell-upper','07b-shell-lower']){
+   const page=await browser.newPage({viewport:{width:1440,height:1000}});
+   try{
+    await openPublishedBoard(page,{base,entry,locale,board});
+    for(const role of publishedSearchOccurrences(source).filter(row=>row.board===board)){
+     const carrier=publishedSearchLocator(page,role),control=carrier.locator('input'),owner=carrier.locator('..');
+     const collect=async()=>{
+      const readings=await collectGeometryReadings(page),rows=readings.filter(row=>row.shellSearch&&row.searchContext?.scene===role.scene&&row.searchContext?.theme===role.theme);
+      assert.equal(rows.length,1,`${entry}/${locale}/${role.key}: actual native control`);return rows;
+     };
+     const baseline=await collect(),expected=publishedSearchGeometry(source,board,role.context);
+     assert.equal(baseline[0].searchContext.kind,role.context);
+     assert.equal(baseline[0].height,expected.height);
+     assert.deepEqual(geometryIssues(baseline,{source}),[]);
+     const originalStyle=await control.getAttribute('style');
+     try{
+      await control.evaluate((element,height)=>element.style.height=`${height+4}px`,expected.height);
+      assert.ok(geometryIssues(await collect(),{source}).some(issue=>issue.includes(`Control variant ${role.context} height`)),'wrong actual contextual height reaches the production oracle');
+     }finally{await control.evaluate((element,value)=>value===null?element.removeAttribute('style'):element.setAttribute('style',value),originalStyle);}
+     const ownerClass=await owner.getAttribute('class');
+     try{
+      await owner.evaluate(element=>element.classList.remove('tcrn-shell-menu__search','tcrn-shell-dropdown__search'));
+      const lost=await collect();assert.equal(lost[0].searchContext.kind,'unknown');
+      assert.ok(geometryIssues(lost,{source}).some(issue=>issue.includes('Shell search context missing/unknown')),'real ancestry/context loss is not exempted');
+     }finally{await owner.evaluate((element,value)=>element.setAttribute('class',value),ownerClass);}
+     try{
+      await control.evaluate(element=>element.setAttribute('role','textbox'));
+      const changed=await collect(),failures=geometryIssues(changed,{source});
+      assert.equal(changed[0].searchContext.kind,role.context);
+      assert.ok(!failures.some(issue=>issue.includes('Control variant')),'correct contextual height remains accepted');
+      assert.ok(failures.includes('Shell search native semantics after context'),'valid context must reach the later native predicate');
+     }finally{await control.evaluate(element=>element.setAttribute('role','combobox'));}
+     assert.deepEqual(geometryIssues(await collect(),{source}),[],'real native control and ancestry restored');
+    }
+    // A genuine ordinary form field on the same shell page keeps its own size.
+    const form=page.locator('[data-approved-board]').first();
+    try{
+     await form.evaluate(element=>element.insertAdjacentHTML('beforeend','<input data-geometry-ordinary="" class="tcrn-input tcrn-input--sm" style="height:28px">'));
+     const ordinary=(await collectGeometryReadings(page)).find(row=>row.className==='tcrn-input tcrn-input--sm');
+     assert.equal(ordinary.shellSearch,false);assert.equal(ordinary.size,'sm');assert.deepEqual(geometryIssues([ordinary],{source}),[]);
+     await page.locator('[data-geometry-ordinary]').evaluate(element=>element.style.height='32px');
+     const wrong=(await collectGeometryReadings(page)).find(row=>row.className==='tcrn-input tcrn-input--sm');
+     assert.ok(geometryIssues([wrong],{source}).some(issue=>issue.includes('Control variant sm height')));
+    }finally{await page.locator('[data-geometry-ordinary]').evaluateAll(elements=>elements.forEach(element=>element.remove()));}
+   }finally{await page.close();}
+  }
+ },{entry});
+});

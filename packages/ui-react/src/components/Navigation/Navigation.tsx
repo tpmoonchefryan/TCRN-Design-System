@@ -1502,6 +1502,18 @@ export function ProductShellSearch({
       data-search-results-visible={isExpanded && hasResults ? "true" : "false"}
       data-search-dismissal-contract="blur-outside-pointer-tab-escape"
       data-search-semantic-api="onQueryChange-onExpandedChange-onDismiss-onResultActivate"
+      onPointerDown={(event) => {
+        props.onPointerDown?.(event);
+        if (event.defaultPrevented || event.button !== 0) return;
+        const target = event.target instanceof Element ? event.target : null;
+        const carrier = target?.closest(".tcrn-search-input");
+        const input = carrier?.querySelector("input");
+        // Padding, icon and decorative hint keep the whole search operable. A
+        // pointer on the native input keeps its own caret/selection/editing path.
+        if (carrier?.parentElement !== event.currentTarget || !input || input.disabled || target === input) return;
+        event.preventDefault();
+        input.focus();
+      }}
     >
       <SearchInput
         {...inputProps}

@@ -1264,6 +1264,18 @@ test("published07 shell search keeps its own ink-2 shortcut through the actual P
     for (const declaration of ["position: static;", "padding: 0;", "border: 0;", "border-radius: 0;", "font-size: 10.5px;", "line-height: 1.5;", "white-space: nowrap;", "transform: none;"]) {
       assert.ok(rules[0].body.includes(declaration), declaration);
     }
+    const input = dom.window.document.querySelector("input");
+    assert.equal(input?.parentElement, shortcut?.parentElement, "native text and hint share the actual carrier");
+    assert.equal(input?.getAttribute("type"), "search");
+    assert.equal(input?.getAttribute("role"), "combobox");
+    assert.equal(shortcut?.getAttribute("aria-hidden"), "true");
+    const sheet = Object.values(shellSegments).join("\n");
+    const carrier = cssRules(sheet).find(rule => rule.selector === ".tcrn-product-shell-search .tcrn-search-input");
+    assert.match(carrier?.body ?? "", /grid-template-columns: var\(--tcrn-search-input-leading-track\) minmax\(0, 1fr\) auto;/);
+    assert.match(carrier?.body ?? "", /--tcrn-search-input-leading-track: var\(--tcrn-icon-size-lg\);/);
+    assert.match(carrier?.body ?? "", /--tcrn-search-input-icon-size: var\(--tcrn-icon-size-md\);/);
+    const control = cssRules(sheet).find(rule => rule.selector === ".tcrn-product-shell-search .tcrn-search-input .tcrn-search-input__control");
+    for (const declaration of ["grid-area: 1 / 2;", "min-inline-size: 0;", "padding: 0;", "font-size: 13px;", "font-weight: 400;", "line-height: 1.5;"]) assert.ok(control?.body.includes(declaration), declaration);
     const dropdown = cssRules(Object.values(shellSegments).join("\n")).find(rule => rule.selector === ".tcrn-shell-dropdown__search .tcrn-search-input__shortcut");
     assert.match(dropdown?.body ?? "", /font-size: 10px;/);
     assert.match(dropdown?.body ?? "", /font-weight: 500;/, "published ts-drop supplies the inherited weight");
