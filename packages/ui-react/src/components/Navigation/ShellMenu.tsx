@@ -523,6 +523,8 @@ export interface ShellMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
   animateExit?: boolean;
   /** Show the same position bar in the phone Sheet. */
   showSheetPosition?: boolean;
+  /** Whether an open menu takes focus automatically, including when its presentation changes. Defaults to true. */
+  focusOnOpen?: boolean;
   /** On a pointer opening of the Sheet, focus its search instead of the Sheet itself. */
   focusSearchOnOpen?: boolean;
   /** Asks to open the menu (⌘K or Ctrl+K) or to close it (Esc, a press outside, a choice). */
@@ -578,6 +580,7 @@ export function ShellMenu({
   open,
   animateExit = false,
   showSheetPosition = false,
+  focusOnOpen = true,
   focusSearchOnOpen = false,
   onOpenChange,
   triggerRef,
@@ -650,6 +653,7 @@ export function ShellMenu({
   const { setOpenPath } = cascade;
   const openRef = useRef(open);
   const onOpenChangeRef = useRef(onOpenChange);
+  const focusOnOpenRef = useRef(focusOnOpen);
   const sheetShownRef = useRef(sheet);
   const openedByShortcut = useRef(false);
   const queryRef = useRef(query);
@@ -660,6 +664,7 @@ export function ShellMenu({
   useEffect(() => {
     openRef.current = open;
     onOpenChangeRef.current = onOpenChange;
+    focusOnOpenRef.current = focusOnOpen;
     sheetShownRef.current = sheet;
     queryRef.current = query;
     onQueryChangeRef.current = onQueryChange;
@@ -700,8 +705,10 @@ export function ShellMenu({
   useEffect(() => {
     if (open) {
       wasOpenRef.current = true;
-      const search = rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]');
-      (sheetShownRef.current && !openedByShortcut.current && !focusSearchOnOpen ? sheetRef.current : search)?.focus();
+      if (focusOnOpen) {
+        const search = rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]');
+        (sheetShownRef.current && !openedByShortcut.current && !focusSearchOnOpen ? sheetRef.current : search)?.focus();
+      }
       openedByShortcut.current = false;
       return;
     }
@@ -711,14 +718,14 @@ export function ShellMenu({
     wasOpenRef.current = false;
     if (!queryControlledRef.current) setOwnQuery("");
     if (queryRef.current !== "") onQueryChangeRef.current?.("");
-  }, [open, closing, focusSearchOnOpen, setOpenPath]);
+  }, [open, closing, focusOnOpen, focusSearchOnOpen, setOpenPath]);
 
   // The open path's levels mean different rows in the two presentations: switching forgets it.
   // Focus that was in the presentation that left went with it; it moves into the one that came.
   useEffect(() => {
     setOpenPath((path) => (path.length > 0 ? [] : path));
     const root = rootRef.current;
-    if (!openRef.current || !root) return;
+    if (!openRef.current || !focusOnOpenRef.current || !root) return;
     const active = root.ownerDocument.activeElement;
     if (active && active !== root.ownerDocument.body) return;
     (sheet ? sheetRef.current : root.querySelector<HTMLElement>('[data-shell-search] input[type="search"]'))?.focus();

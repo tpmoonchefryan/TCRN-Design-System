@@ -397,7 +397,7 @@ test("the presentation follows the viewport: across 390 the open menu turns from
 // ProductShell reports the open Sheet (TCRN-DS-SUB-159; 144, C-5): it reads the menu's presentation
 // with useShellMenuPresentation, so its root says data-state="sheet" while the Sheet is open,
 // "expanded" while the panel is, and "closed" with the menu shut. No prop is added for it.
-function ProductShellFixture({ open }: { open: boolean }) {
+function ProductShellFixture({ open, focusNavigationOnOpen }: { open: boolean; focusNavigationOnOpen?: boolean }) {
   return (
     <ProductShell
       productName="TCRN TMS"
@@ -409,6 +409,7 @@ function ProductShellFixture({ open }: { open: boolean }) {
       currentLocale="zh-CN"
       pageHeader={{ title: "名册" }}
       menuOpen={open}
+      focusNavigationOnOpen={focusNavigationOnOpen}
     >
       <p>名册</p>
     </ProductShell>
@@ -420,10 +421,18 @@ test("ProductShell's root says data-state=\"sheet\" while the Sheet is open and 
   try {
     const viewport = stubViewport(harness, true);
     const root = () => harness.document.querySelector<HTMLElement>(".tcrn-product-shell");
+    await harness.render(<ProductShellFixture open focusNavigationOnOpen={false} />);
+    assert.ok(sheet(harness), "the preview still starts open");
+    assert.equal(harness.document.activeElement, harness.document.body, "mounting an open preview leaves focus alone");
+    await viewport.resize(false);
+    assert.ok(panel(harness));
+    assert.equal(harness.document.activeElement, harness.document.body, "changing the preview's presentation leaves focus alone");
     await harness.render(<ProductShellFixture open={false} />);
     assert.equal(root()?.getAttribute("data-state"), "closed");
+    await viewport.resize(true);
     await harness.render(<ProductShellFixture open />);
     assert.ok(sheet(harness), "390 wide the open menu is the Sheet");
+    assert.equal(harness.document.activeElement, sheet(harness), "a regular opening still focuses the Sheet");
     assert.equal(root()?.getAttribute("data-state"), "sheet");
     await viewport.resize(false);
     assert.ok(panel(harness), "wider, it is the panel");

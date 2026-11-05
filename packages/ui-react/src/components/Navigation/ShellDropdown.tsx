@@ -58,10 +58,14 @@ export interface ShellDropdownProps extends Omit<HTMLAttributes<HTMLDivElement>,
   level?: number;
   /** Whether the drop-down is open; closed, nothing is rendered. */
   open: boolean;
+  /** Whether opening the drop-down moves focus to its search. Defaults to true. */
+  focusOnOpen?: boolean;
   /** Asks to close the drop-down (Esc, a press outside, a choice). */
   onOpenChange?: (open: boolean, reason: ShellLayerCloseReason) => void;
   /** The pinned item; found through its aria-controls when omitted. */
   triggerRef?: RefObject<HTMLElement | null>;
+  /** A clipping scroll frame for the cascades. Without it the side follows the viewport. */
+  cascadeBoundaryRef?: RefObject<HTMLElement | null>;
   /** The row of the current page. */
   selectedId?: string | null;
   /** Ids of the pinned groups, items and children. */
@@ -145,11 +149,11 @@ type CascadeSide = "end" | "start";
  * unless there they would pass the viewport's right edge and before it they would pass the
  * viewport's left edge by less. How far the cascades reach beyond the first column is read on
  * whichever side they stand and is the same on both, so the answer does not depend on the side
- * they are read on (and does not swing when no style turns them). The viewport is the layout
- * viewport, without its scroll bar; with no layout (no width), and with no open cascade, the side
- * is the end.
+ * they are read on (and does not swing when no style turns them). A scroll frame uses its visible
+ * area when both the first column and cascade fit there, or its full scrollable width to keep
+ * the cascade reachable while panning.
  */
-function cascadeSideOf(root: HTMLElement | null): CascadeSide {
+function cascadeSideOf(root: HTMLElement | null, boundary?: HTMLElement | null): CascadeSide {
   const view = root?.ownerDocument.documentElement.clientWidth || root?.ownerDocument.defaultView?.innerWidth || 0;
   const children = root ? [...root.children] : [];
   const panel = children.find((child) => child.matches('[data-panel="drop"]'));
@@ -157,8 +161,20 @@ function cascadeSideOf(root: HTMLElement | null): CascadeSide {
   if (!panel || columns.length === 0 || !(view > 0)) return "end";
   const first = panel.getBoundingClientRect();
   const reach = Math.max(...columns.map((column) => column.getBoundingClientRect()).map((box) => Math.max(box.right - first.right, first.left - box.left)));
-  const pastEnd = first.right + reach - view;
-  const pastStart = reach - first.left;
+  let left = 0;
+  let right = view;
+  if (boundary && boundary.clientWidth > 0) {
+    left = boundary.getBoundingClientRect().left + boundary.clientLeft;
+    right = left + boundary.clientWidth;
+    if (first.left >= left && first.right <= right) {
+      if (first.right + reach <= right) return "end";
+      if (first.left - reach >= left) return "start";
+    }
+    left -= boundary.scrollLeft;
+    right = left + boundary.scrollWidth;
+  }
+  const pastEnd = first.right + reach - right;
+  const pastStart = left + reach - first.left;
   return pastEnd > 0 && pastStart < pastEnd ? "start" : "end";
 }
 
@@ -167,8 +183,10 @@ export function ShellDropdown({
   source,
   level,
   open,
+  focusOnOpen = true,
   onOpenChange,
   triggerRef,
+  cascadeBoundaryRef,
   selectedId = null,
   pinnedIds = [],
   onPinnedChange,
@@ -217,7 +235,7 @@ export function ShellDropdown({
       const left = box.left - origin.left;
       const top = box.bottom - origin.top;
       setAnchor((previous) => (previous && previous.left === left && previous.top === top ? previous : { left, top }));
-      setCascadeSide(cascadeSideOf(rootRef.current));
+      setCascadeSide(cascadeSideOf(rootRef.current, cascadeBoundaryRef?.current));
     };
     placeRef.current = place;
     place();
@@ -232,7 +250,7 @@ export function ShellDropdown({
       window.removeEventListener("scroll", place, true);
       resized?.disconnect();
     };
-  }, [open, id, triggerRef]);
+  }, [open, id, triggerRef, cascadeBoundaryRef]);
   // The pinned item moves when the band's words change (another language, a renamed item), and a
   // cascade opens or closes: read again after every render, before it paints; an unchanged place
   // and side render nothing new.
@@ -243,13 +261,13 @@ export function ShellDropdown({
   // Opening puts focus in the search; closing forgets the query, the open cascades and their side.
   useEffect(() => {
     if (open) {
-      rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]')?.focus();
+      if (focusOnOpen) rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]')?.focus();
       return;
     }
     setQuery("");
     setOpenPath([]);
     setCascadeSide("end");
-  }, [open, setOpenPath]);
+  }, [open, focusOnOpen, setOpenPath]);
 
   if (!open) return null;
   const copy = tcrnShellCopyFor(locale);

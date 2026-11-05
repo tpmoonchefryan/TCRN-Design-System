@@ -7,7 +7,7 @@
 // column where they would pass the viewport's right edge, as before where they fit.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { act, useState } from "react";
+import { act, useState, type RefObject } from "react";
 import { createTokenMap } from "@tcrn/ui-tokens";
 import { ShellDropdown, ShellPins, tcrnComponentCss, type ShellLayerCloseReason, type ShellMenuGroup, type ShellMenuItem } from "../index.js";
 import { createDomInteractionHarness, type DomInteractionHarness } from "./dom-harness.js";
@@ -29,8 +29,10 @@ const contracts: ShellMenuItem = {
   ]
 };
 
-function Band({ closes }: { closes: ShellLayerCloseReason[] }) {
-  const [openId, setOpenId] = useState<string | null>(null);
+function Band({ closes, preview = false }: { closes: ShellLayerCloseReason[]; preview?: boolean }) {
+  const [openId, setOpenId] = useState<string | null>();
+  const previewOpen = preview && openId === undefined;
+  const shownOpenId = previewOpen ? "contracts" : openId ?? null;
   return (
     <div>
       <ShellPins
@@ -38,7 +40,7 @@ function Band({ closes }: { closes: ShellLayerCloseReason[] }) {
           { id: "roster", label: "名册", href: "#roster" },
           { id: "contracts", label: "合约", hasMenu: true }
         ]}
-        openId={openId}
+        openId={shownOpenId}
         onOpenChange={setOpenId}
         menuIdOf={(id) => `drop-${id}`}
         locale="zh-CN"
@@ -46,7 +48,8 @@ function Band({ closes }: { closes: ShellLayerCloseReason[] }) {
       <ShellDropdown
         id="drop-contracts"
         source={contracts}
-        open={openId === "contracts"}
+        open={shownOpenId === "contracts"}
+        focusOnOpen={!previewOpen}
         onOpenChange={(next, reason) => {
           closes.push(reason);
           if (!next) setOpenId(null);
@@ -77,10 +80,14 @@ async function openFromThePin(harness: DomInteractionHarness) {
   await harness.dispatchClick(button);
 }
 
-test("the pinned item opens the drop-down at its start edge and bottom; the token gap is the margin above", async () => {
+test("the pinned item opens and focuses its drop-down at the pin; a pre-opened preview leaves focus alone", async () => {
   const harness = createDomInteractionHarness();
   try {
-    await harness.render(<Band closes={[]} />);
+    await harness.render(<Band closes={[]} preview />);
+    assert.ok(drop(harness), "the preview still starts open");
+    assert.equal(harness.document.activeElement, harness.document.body);
+    await harness.dispatchClick(pinButton(harness) as Element);
+    assert.equal(drop(harness), null);
     await openFromThePin(harness);
     const panel = drop(harness);
     assert.ok(panel, "the drop-down is open");
@@ -199,7 +206,14 @@ test("a press outside and a choice close it; pressing the pinned item again clos
 // fixed descendants (a transform), as a documentation page's framed screen does.
 const talent: ShellMenuGroup = { id: "talent", label: "艺人", items: [{ id: "roster", label: "名册", href: "#roster" }, contracts] };
 
-function FramedBand({ pin = contracts, firstLabel = "名册", framed = false }: { pin?: ShellMenuItem | ShellMenuGroup; firstLabel?: string; framed?: boolean }) {
+function FramedBand({
+  pin = contracts, firstLabel = "名册", framed = false, cascadeBoundaryRef
+}: {
+  pin?: ShellMenuItem | ShellMenuGroup;
+  firstLabel?: string;
+  framed?: boolean;
+  cascadeBoundaryRef?: RefObject<HTMLElement | null>;
+}) {
   const [openId, setOpenId] = useState<string | null>(null);
   const band = (
     <div>
@@ -217,6 +231,7 @@ function FramedBand({ pin = contracts, firstLabel = "名册", framed = false }: 
         id={`drop-${pin.id}`}
         source={pin}
         open={openId === pin.id}
+        cascadeBoundaryRef={cascadeBoundaryRef}
         onOpenChange={(next) => {
           if (!next) setOpenId(null);
         }}
@@ -486,8 +501,10 @@ test("where the cascade fits it opens after the first column as before, its left
   const harness = createDomInteractionHarness();
   const viewport = { current: 1240 };
   const layout = layOutTheDropDown(harness, viewport);
+  const frameRef: RefObject<HTMLDivElement | null> = { current: null };
+  const band = (contained: boolean) => <div ref={frameRef}><FramedBand cascadeBoundaryRef={contained ? frameRef : undefined} /></div>;
   try {
-    await harness.render(<FramedBand />);
+    await harness.render(band(false));
     const button = pinOf(harness, "contracts");
     assert.ok(button);
     // The pinned item 合约 of the 07a board: start edge 207.
@@ -537,6 +554,32 @@ test("where the cascade fits it opens after the first column as before, its left
     assert.equal(root.style.left, "20px");
     assert.equal(root.getAttribute("data-cascade-side"), null);
     assert.equal(column().left - boxOf(panel).right, 4);
+
+    const frame = frameRef.current;
+    assert.ok(frame);
+    let frameWidth = 600;
+    frame.getBoundingClientRect = () => rectAt(80, 0, frameWidth, 640);
+    Object.defineProperties(frame, {
+      clientWidth: { get: () => frameWidth },
+      scrollWidth: { value: 1240 }
+    });
+    itemLeft = 360;
+    await resize(1240);
+    await harness.render(band(true));
+    assert.equal(root.getAttribute("data-cascade-side"), "start", "the cascade fits on the frame's left");
+    assert.equal(boxOf(panel).left - column().right, 4);
+
+    frameWidth = 356;
+    await resize(440);
+    assert.equal(root.getAttribute("data-cascade-side"), null, "both columns need the frame's scrollable width");
+    frame.scrollLeft = 410;
+    itemLeft -= frame.scrollLeft;
+    await act(async () => {
+      frame.dispatchEvent(new harness.window.Event("scroll"));
+    });
+    second = column();
+    assert.equal(second.left - boxOf(panel).right, 4);
+    assert.ok(second.left >= 80 && second.right <= 80 + frameWidth, "panning reveals the whole cascade");
   } finally {
     layout.restore();
     await harness.cleanup();

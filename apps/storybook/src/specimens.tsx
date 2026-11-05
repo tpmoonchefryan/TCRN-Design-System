@@ -72,11 +72,87 @@ function Roster({locale}:{locale:DocsLocale}) {const c=docsCopy(locale);const [s
     {name:"Aria Vance",group:`B ${c.group}`,status:c.signed,expiry:"2026-11-30",updated:c.twoWeeks}
   ].map((row,i)=><tr key={row.name} aria-selected={i===7}><td title={row.name}><b className="tcrn-doc-roster-name">{row.name}</b> <span className="tcrn-doc-handle">{["hoshino","shiraishi","mika","chen","takanashi","lea","kim","aria"][i]}</span></td><td>{row.group}</td><td><span className={row.status===c.signed?"tcrn-doc-status tcrn-doc-status--ok":row.status===c.trial?"tcrn-doc-status tcrn-doc-status--warn":"tcrn-doc-status"}><i/>{row.status}</span></td><td className="tcrn-doc-date">{row.expiry}</td><td>{row.updated}</td></tr>)}</tbody></table>
   </Tabs>;}
-export function ShellExample({locale,mode,theme="light",shortcut=false,glimpse=false}:{locale:DocsLocale;shortcut?:boolean;mode:"band"|"menu"|"drop"|"phone"|"phone-closed";theme?:"light"|"dark";glimpse?:boolean}) {const [shownLocale,setShownLocale]=useState(locale),[shownTheme,setShownTheme]=useState(theme),[localeMenuOpen,setLocaleMenuOpen]=useState(false);useEffect(()=>setShownLocale(locale),[locale]);useEffect(()=>setShownTheme(theme),[theme]);const c=docsCopy(shownLocale);const [menuOpen,setMenuOpen]=useState(mode==="menu"||mode==="phone");const [openPin,setOpenPin]=useState<string|null>(mode==="drop"?"contracts":null);const [pins,setPins]=useState<readonly string[]>(["roster","contracts","settlements","schedule"]);return <shellMenuPresentationContext.Provider value={mode.startsWith("phone")?"sheet":"panel"}><div className={glimpse?"portal-shell-fragment":"tcrn-doc-shell-frame"} data-phone={mode.startsWith("phone")?"":undefined} data-formal-shell-scene={glimpse?undefined:mode} data-shell-theme={glimpse?theme:shownTheme}>
-  <ProductShell productName="TCRN TMS" moduleName={c.roster} brandProductId="tms" currentRouteLabel={c.roster} navGroups={rosterGroups(shownLocale)} locales={tcrnLocaleMetadata} currentLocale={shownLocale} currentTheme={glimpse?theme:shownTheme} localeMenuOpen={localeMenuOpen} onLocaleMenuOpenChange={setLocaleMenuOpen} onThemeChange={setShownTheme} onLocaleChange={next=>{const allowed=supportedLocales.find(l=>l===next);if(allowed)setShownLocale(allowed);}} previewStates={{teams:"hover",settlements:"hover",templates:"open"}} pageHeader={{title:c.roster,breadcrumbs:[{id:"people",label:c.people,href:"#people"},{id:"roster",label:c.roster}],actions:<><Button size="sm">{c.export}</Button><Button variant="primary" size="sm"><Icon name="plus" size="sm"/>{c.invite}</Button></>,headingLevel:2,meta:<span className="tcrn-doc-shell-sub">24 · 3 {c.pending}</span>}} account={{name:"林晓",initials:"林"}} notifications={{unread:3}} products={[{id:"tms",label:"TCRN TMS",href:`#roster-${locale}-${mode}-${theme}`,current:true}]} pinnedIds={pins} onPinnedChange={(id,pinned)=>setPins(pinned?[...pins,id]:pins.filter(p=>p!==id))} onPinsReorder={setPins} menuOpen={menuOpen} onMenuOpenChange={setMenuOpen} openPinId={openPin} onOpenPinChange={setOpenPin} menuShortcut={shortcut} landmarkLabel={`${c.roster} ${mode} ${theme}`} contentId={`roster-${locale}-${mode}-${theme}`}>
-    <Roster locale={shownLocale}/>
-  </ProductShell>
-  </div></shellMenuPresentationContext.Provider>;}
+export function ShellExample({
+  locale, mode, theme = "light", shortcut = false, glimpse = false
+}: {
+  locale: DocsLocale;
+  mode: "band" | "menu" | "drop" | "phone" | "phone-closed";
+  theme?: "light" | "dark";
+  shortcut?: boolean;
+  glimpse?: boolean;
+}) {
+  const [shownLocale, setShownLocale] = useState(locale);
+  const [shownTheme, setShownTheme] = useState(theme);
+  const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
+  useEffect(() => setShownLocale(locale), [locale]);
+  useEffect(() => setShownTheme(theme), [theme]);
+  const c = docsCopy(shownLocale);
+  const [menuOpen, setMenuOpen] = useState<boolean>();
+  const [openPin, setOpenPin] = useState<string | null>();
+  const [pins, setPins] = useState<readonly string[]>(["roster", "contracts", "settlements", "schedule"]);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const phone = mode.startsWith("phone");
+  const shellTheme = glimpse ? theme : shownTheme;
+  const contentId = `roster-${locale}-${mode}-${theme}`;
+  // Until the first open/close request, show the authored scene without moving the reader's focus.
+  const previewMenu = menuOpen === undefined && (mode === "menu" || mode === "phone");
+  const previewDrop = openPin === undefined && mode === "drop";
+
+  return (
+    <shellMenuPresentationContext.Provider value={phone ? "sheet" : "panel"}>
+      <div
+        ref={frameRef}
+        className={glimpse ? "portal-shell-fragment" : "tcrn-doc-shell-frame"}
+        data-phone={phone ? "" : undefined}
+        data-formal-shell-scene={glimpse ? undefined : mode}
+        data-shell-theme={shellTheme}
+      >
+        <ProductShell
+          productName="TCRN TMS"
+          moduleName={c.roster}
+          brandProductId="tms"
+          currentRouteLabel={c.roster}
+          navGroups={rosterGroups(shownLocale)}
+          locales={tcrnLocaleMetadata}
+          currentLocale={shownLocale}
+          currentTheme={shellTheme}
+          localeMenuOpen={localeMenuOpen}
+          onLocaleMenuOpenChange={setLocaleMenuOpen}
+          onThemeChange={setShownTheme}
+          onLocaleChange={next => {
+            const allowed = supportedLocales.find(l => l === next);
+            if (allowed) setShownLocale(allowed);
+          }}
+          previewStates={{teams: "hover", settlements: "hover", templates: "open"}}
+          pageHeader={{
+            title: c.roster,
+            breadcrumbs: [{id: "people", label: c.people, href: "#people"}, {id: "roster", label: c.roster}],
+            actions: <><Button size="sm">{c.export}</Button><Button variant="primary" size="sm"><Icon name="plus" size="sm"/>{c.invite}</Button></>,
+            headingLevel: 2,
+            meta: <span className="tcrn-doc-shell-sub">24 · 3 {c.pending}</span>
+          }}
+          account={{name: "林晓", initials: "林"}}
+          notifications={{unread: 3}}
+          products={[{id: "tms", label: "TCRN TMS", href: `#${contentId}`, current: true}]}
+          pinnedIds={pins}
+          onPinnedChange={(id, pinned) => setPins(pinned ? [...pins, id] : pins.filter(p => p !== id))}
+          onPinsReorder={setPins}
+          menuOpen={menuOpen ?? previewMenu}
+          onMenuOpenChange={setMenuOpen}
+          openPinId={previewDrop ? "contracts" : openPin ?? null}
+          onOpenPinChange={setOpenPin}
+          focusNavigationOnOpen={!previewMenu && !previewDrop}
+          dropdownBoundaryRef={glimpse || phone ? undefined : frameRef}
+          menuShortcut={shortcut}
+          landmarkLabel={`${c.roster} ${mode} ${theme}`}
+          contentId={contentId}
+        >
+          <Roster locale={shownLocale}/>
+        </ProductShell>
+      </div>
+    </shellMenuPresentationContext.Provider>
+  );
+}
 function Intro({locale,theme}:{locale:DocsLocale;theme:"light"|"dark"}) {const c=docsCopy(locale);const ref=useRef<HTMLDivElement>(null);const [start,setStart]=useState(false);return <div ref={ref} data-formal-intro="" data-intro-theme={theme} data-tcrn-theme={theme}><Text>{c.intro}</Text><Button variant="quiet" onClick={()=>setStart(true)}>{c.login}</Button><ShellExample locale={locale} mode="band" theme={theme}/>{start?<ShellIntro productId="tms" locale={locale} shellRef={ref} card={<ProductLockup productId="tms" locale={locale} className="tcrn-doc-intro-lockup"/>} sessionMarker="tcrn-approved-source-intro"/>:null}</div>;}
 function ShellUpper({locale,shortcutOwner=false}:{locale:DocsLocale;shortcutOwner?:boolean}) {return <>{(["light","dark"] as const).map(theme=><section key={theme} data-tcrn-theme={theme} className="tcrn-doc-section"><Text variant="caps">{theme}</Text><Row>{(["v1","v2"] as const).map(version=><ShellBrandButton key={version} productId="tms" version={version} locale={locale} data-standalone-brand=""/>)}<ProductLockup productId="tms" locale={locale}/><ProductLockup productId="tms" locale={locale} scale="rail"/></Row>{(["band","menu","drop","phone-closed","phone"] as const).map(mode=><Section key={mode} name={mode}><ShellExample locale={locale} mode={mode} theme={theme} shortcut={shortcutOwner&&mode==="band"&&theme==="light"}/></Section>)}</section>)}{(["light","dark"] as const).map(theme=><Intro key={theme} locale={locale} theme={theme}/>)}</>;}
 function ShellLower({locale,shortcutOwner=false}:{locale:DocsLocale;shortcutOwner?:boolean}) {const c=docsCopy(locale);return <><Text>52 · (12, 6) · 134 × 40 · 22 + 20 / 16 · 32 · 8 · 952 · 240 + 4 · 6 · 1024</Text><Text>global Y = 26 · pins local Y = 20</Text>{(["light","dark"] as const).map(theme=><section key={theme} data-tcrn-theme={theme}><ShellExample locale={locale} mode="band" theme={theme} shortcut={shortcutOwner&&theme==="light"}/><ShellExample locale={locale} mode="menu" theme={theme}/><ShellExample locale={locale} mode="drop" theme={theme}/></section>)}<Text>{c.summaries[7]}</Text></>;}

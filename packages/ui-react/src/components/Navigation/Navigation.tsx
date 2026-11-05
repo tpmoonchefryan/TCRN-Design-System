@@ -7,6 +7,7 @@ import type {
   MouseEvent as ReactMouseEvent,
   CSSProperties,
   ReactNode,
+  RefObject,
   SVGAttributes
 } from "react";
 import { isValidElement, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
@@ -1691,6 +1692,10 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   /** The pinned item whose drop-down is open; the shell keeps its own state when omitted. */
   openPinId?: string | null;
   onOpenPinChange?: (id: string | null) => void;
+  /** Whether the open full menu or pin drop-down takes focus. Defaults to true. */
+  focusNavigationOnOpen?: boolean;
+  /** The scroll frame that clips pin drop-down cascades, when the shell is embedded. */
+  dropdownBoundaryRef?: RefObject<HTMLElement | null>;
   /**
    * Static states for documentation, by menu row or group id (data-tcrn-preview-state), passed to
    * the full menu and the drop-downs; a drop-down row marked "open" starts with its next level open.
@@ -1830,6 +1835,8 @@ export function ProductShell({
   onMenuOpenChange,
   openPinId,
   onOpenPinChange,
+  focusNavigationOnOpen,
+  dropdownBoundaryRef,
   previewStates,
   accountMenuOpen,
   onAccountMenuOpenChange,
@@ -2060,6 +2067,7 @@ export function ProductShell({
         presentation={menuPresentation}
         id={menuId}
         open={shownMenuOpen}
+        focusOnOpen={focusNavigationOnOpen}
         onOpenChange={changeMenu}
         triggerRef={brandRef}
         productId={brandProductId}
@@ -2087,6 +2095,8 @@ export function ProductShell({
             source={target.source}
             level={target.level}
             open={openTarget === target}
+            focusOnOpen={focusNavigationOnOpen}
+            cascadeBoundaryRef={dropdownBoundaryRef}
             onOpenChange={(open) => {
               if (!open) changeOpenPin(null);
             }}
