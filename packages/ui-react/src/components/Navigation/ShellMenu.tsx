@@ -122,6 +122,8 @@ export interface ShellMenuGroup {
 export interface ShellMenuCrumb {
   label: string;
   href?: string;
+  /** Keep this step linked when it is the current page and has an href. */
+  linkWhenCurrent?: boolean;
 }
 
 /** The deepest level the menu model reaches: group, item, child, child of a child. */
@@ -784,24 +786,28 @@ export function ShellMenu({
         <span className="tcrn-shell-menu__crumbs-label" aria-hidden="true" title={copy.currentPosition}>
           {copy.currentPosition}
         </span>
-        {currentPath.map((crumb, index) => (
-          <Fragment key={`${index}-${crumb.label}`}>
-            {index > 0 ? <Icon name="chevron-right" size={shellChevronSize} className="tcrn-shell-menu__crumb-sep" /> : null}
-            {index === last ? (
-              <b className="tcrn-shell-menu__crumb tcrn-shell-menu__crumb--current" aria-current="page" title={crumb.label}>
-                {crumb.label}
-              </b>
-            ) : crumb.href ? (
-              <a className="tcrn-shell-menu__crumb" href={crumb.href} title={crumb.label}>
-                {crumb.label}
-              </a>
-            ) : (
-              <span className="tcrn-shell-menu__crumb" title={crumb.label}>
-                {crumb.label}
-              </span>
-            )}
-          </Fragment>
-        ))}
+        {currentPath.map((crumb, index) => {
+          const current = index === last;
+          const crumbClassName = cx("tcrn-shell-menu__crumb", current && "tcrn-shell-menu__crumb--current");
+          return (
+            <Fragment key={`${index}-${crumb.label}`}>
+              {index > 0 ? <Icon name="chevron-right" size={shellChevronSize} className="tcrn-shell-menu__crumb-sep" /> : null}
+              {crumb.href && (!current || crumb.linkWhenCurrent) ? (
+                <a className={crumbClassName} href={crumb.href} aria-current={current ? "page" : undefined} title={crumb.label}>
+                  {crumb.label}
+                </a>
+              ) : current ? (
+                <b className={crumbClassName} aria-current="page" title={crumb.label}>
+                  {crumb.label}
+                </b>
+              ) : (
+                <span className={crumbClassName} title={crumb.label}>
+                  {crumb.label}
+                </span>
+              )}
+            </Fragment>
+          );
+        })}
       </nav>
       <ShellBrandLockup productId={productId} locale={locale} role="img" className="tcrn-shell-menu__lockup" data-lockup="lkr" />
     </div>

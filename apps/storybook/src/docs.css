@@ -54,6 +54,11 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   flex: none;
 }
 
+/* Keep the fixed Sheet and scrim inside the scrolling phone specimen. */
+.tcrn-doc-shell-frame[data-phone] > .tcrn-product-shell {
+  contain: paint;
+}
+
 .docs-source-list {
   margin: 0;
   padding-inline-start: 1.25em;

@@ -185,6 +185,17 @@ test("the bottom bar holds the current position and the lockup, which is a pictu
   assert.doesNotMatch(tcrnComponentCss, /tcrn-shell-menu__lockup[^{,]*:hover/);
 });
 
+test("the current crumb links only when opted in, in the panel and the Sheet position bar", () => {
+  const home = { label: "首页", href: "/zh-CN/index.html" };
+  for (const presentation of ["panel", "sheet"] as const) {
+    const props = { presentation, showSheetPosition: true };
+    const linked = renderBoardMenu({ ...props, currentPath: [{ ...home, linkWhenCurrent: true }] });
+    const plain = renderBoardMenu({ ...props, currentPath: [home] });
+    assert.match(linked, /<a class="tcrn-shell-menu__crumb tcrn-shell-menu__crumb--current" href="\/zh-CN\/index\.html" aria-current="page" title="首页">首页<\/a>/, presentation);
+    assert.match(plain, /<b class="tcrn-shell-menu__crumb tcrn-shell-menu__crumb--current" aria-current="page" title="首页">首页<\/b>/, presentation);
+  }
+});
+
 test("the menu hangs 6 under the brand button at the paper's edge and is the expanded panel token wide", () => {
   const root = ruleBody(".tcrn-shell-menu");
   assert.equal(declaration(root, "position"), "absolute");

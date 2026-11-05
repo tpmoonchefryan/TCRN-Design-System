@@ -93,9 +93,31 @@ export const shellSheetCss01 = `
   position: absolute;
   inset: calc(-1 * var(--tcrn-space-2h));
 }
+@media (prefers-reduced-motion: no-preference) {
+  .tcrn-shell-menu[data-shell-fade] > .tcrn-shell-sheet__panel,
+  .tcrn-shell-sheet__scrim[data-shell-fade] {
+    animation: none;
+    opacity: 1;
+    transition: opacity var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+  }
+  @starting-style {
+    .tcrn-shell-menu[data-shell-fade] > .tcrn-shell-sheet__panel,
+    .tcrn-shell-sheet__scrim[data-shell-fade] {
+      opacity: 0;
+    }
+  }
+  .tcrn-shell-menu[data-shell-closing] > .tcrn-shell-sheet__panel,
+  .tcrn-shell-sheet__scrim[data-shell-closing] {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .tcrn-shell-sheet__scrim,
   .tcrn-shell-sheet__panel {
     animation: none;
+  }
+  .tcrn-shell-sheet__scrim[data-shell-closing] {
+    display: none;
   }
 }`;

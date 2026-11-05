@@ -72,7 +72,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
   const apiHref = entry === "manager" ? "#api" : pageHref(locale, "api", entry);
   const topic = navigation.cards.find(card => card.chapters.some(chapter => chapter.id === page));
   const trail = page === "index"
-    ? [{ id: current.id, label: current.label }]
+    ? [{ ...navigation.home, linkWhenCurrent: true }]
     : [
       navigation.home,
       ...(topic && topic.id !== page ? [topic] : []),

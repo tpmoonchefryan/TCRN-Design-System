@@ -1093,27 +1093,24 @@ export const shellCss05 = `
 
 export const shellReducedMotionCss = `
 @media (prefers-reduced-motion: no-preference) {
-  .tcrn-shell-menu[data-shell-fade] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade, .tcrn-shell-sheet__panel),
-  .tcrn-shell-sheet__scrim[data-shell-fade] {
+  .tcrn-shell-menu[data-shell-fade] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade) {
     animation: none;
     opacity: 1;
     transition: opacity var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
   }
   @starting-style {
-    .tcrn-shell-menu[data-shell-fade] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade, .tcrn-shell-sheet__panel),
-    .tcrn-shell-sheet__scrim[data-shell-fade] {
+    .tcrn-shell-menu[data-shell-fade] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade) {
       opacity: 0;
     }
   }
-  .tcrn-shell-menu[data-shell-closing] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade, .tcrn-shell-sheet__panel),
-  .tcrn-shell-sheet__scrim[data-shell-closing] {
+  .tcrn-shell-menu[data-shell-closing] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade) {
     opacity: 0;
     pointer-events: none;
   }
 }
 @media (prefers-reduced-motion:reduce){.tcrn-shell-brand,.tcrn-shell-pins__item,.tcrn-shell-menu,.tcrn-shell-menu *,.tcrn-shell-dropdown,.tcrn-shell-dropdown *,.tcrn-shell-bell,.tcrn-shell-avatar{transition-duration:0s;animation-duration:0s;animation-iteration-count:0}}
 @media (prefers-reduced-motion: reduce) {
-  .tcrn-shell-menu[data-shell-closing], .tcrn-shell-sheet__scrim[data-shell-closing] {
+  .tcrn-shell-menu[data-shell-closing] {
     display: none;
   }
 }
