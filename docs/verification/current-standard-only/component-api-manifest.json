@@ -4971,6 +4971,12 @@
       "kind": "function",
       "props": [
         {
+          "name": "animateExit",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
           "name": "currentPath",
           "type": "readonly ShellMenuCrumb[]",
           "required": false,
@@ -4981,6 +4987,12 @@
           "type": "string",
           "required": false,
           "default": "\"\""
+        },
+        {
+          "name": "focusSearchOnOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
         },
         {
           "name": "groups",
@@ -5087,6 +5099,12 @@
           "type": "boolean",
           "required": false,
           "default": "true"
+        },
+        {
+          "name": "showSheetPosition",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
         },
         {
           "name": "triggerRef",
