@@ -1,3 +1,4 @@
+import { useEffect, useGlobals } from "storybook/preview-api";
 import { App } from "./app.js";
 import { approvedSource, resolveDocsLocale, type ApprovedBoardId } from "./approved-source.js";
 import type { DocsPage } from "./portal-navigation.js";
@@ -10,9 +11,35 @@ export default {
 
 const pageStory = (page: DocsPage, name: string) => ({
   name,
-  render: (_args: unknown, { globals }: { globals: Record<string, unknown> }) => (
-    <App key={page} page={page} locale={resolveDocsLocale(String(globals.locale))} entry="manager" />
-  ),
+  render: (_args: unknown, { initialGlobals }: { initialGlobals: Record<string, unknown> }) => {
+    const [globals, updateGlobals] = useGlobals();
+    // frameElement is available only for same-origin embeds. The Manager owns this named canvas.
+    const frame = globalThis.window?.frameElement;
+    const manager = frame?.id === "storybook-preview-iframe" && frame.getAttribute("data-is-storybook") === "true"
+      ? frame.ownerDocument.location
+      : null;
+    useEffect(() => {
+      if (!manager || globals.locale !== initialGlobals.locale) return;
+      // Manager removes default globals from its URL. Preview 10.4.6 merges that query update and retains stale keys.
+      const url = new URL(window.location.href);
+      const serialized = url.searchParams.get("globals");
+      if (!serialized) return;
+      const remaining = serialized.split(";").filter(value => !value.startsWith("locale:")).join(";");
+      if (remaining === serialized) return;
+      if (remaining) url.searchParams.set("globals", remaining);
+      else url.searchParams.delete("globals");
+      window.history.replaceState(window.history.state, "", url);
+    }, [manager, globals.locale, initialGlobals.locale]);
+    return (
+      <App
+        key={page}
+        page={page}
+        locale={resolveDocsLocale(String(globals.locale))}
+        entry={manager ? { managerPath: manager.pathname } : "canvas"}
+        onLocaleChange={manager ? locale => updateGlobals({ locale }) : undefined}
+      />
+    );
+  },
 });
 
 const boardStory = (id: ApprovedBoardId) => {

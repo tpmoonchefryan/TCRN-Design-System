@@ -3,10 +3,11 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import { App } from "./app.js";
-import { docsNavigation, pageHref, sourceSearch } from "./portal-navigation.js";
+import { docsNavigation, managerFragment, pageHref, sourceSearch } from "./portal-navigation.js";
 import { approvedApi } from "./approved-api.js";
 import { approvedSource,supportedLocales } from "./approved-source.js";
 import { contractStories } from "./contract-stories/kernel.js";
+const manager = { managerPath: "/docs/index.html" };
 const expected=["01-tokens","02-typography","03-icons","04-brand","05-actions","06-inputs","07a-shell-upper","07b-shell-lower"];
 test("V3 static registry is the fixed published eight-board set, not an independent old story/API catalogue",()=>{assert.deepEqual(contractStories.map(s=>s.id),expected);assert.equal(approvedApi.length,28);for(const name of ["TcrnBrandMark","StateView","Badge","Field","LineNumberedEditor","Tooltip","Dialog"])assert.ok(!approvedApi.some(a=>a.name===name));assert.equal(approvedSource.site.sourceCommit,"a643d4cfcd239f6f81b1715ded6a63caead9d619");});
 test("V2/V3 every current locale renders only the current provenance and supported board entrypoints",()=>{for(const locale of supportedLocales){const html=renderToStaticMarkup(createElement(App,{page:"index",locale}));assert.ok(html.includes(approvedSource.site.sourceCommit));assert.ok(html.includes(`/${locale}/01-tokens.html`));assert.doesNotMatch(html,/tcrn-brand-mark\.svg|tcrn-aos-two-line|Style Guide|data-brand-asset="tcrn-brand-mark"/);}});
@@ -17,17 +18,17 @@ test("the five-language search uses only source boards and the same explicit API
 }});
 
 
-test("manager documents reuse the real shell and activate only registered board/API/source destinations in all locales",()=>{
+test("direct canvas documents retain the published board, API and source destinations in all locales",()=>{
  for(const locale of supportedLocales){
-  const { directory } = docsNavigation(locale, "manager");
+  const { directory } = docsNavigation(locale, "canvas");
   const destinations = directory.flatMap(group => group.items.map(item => item.href));
   for (const board of approvedSource.boards) {
-   assert.equal(destinations.filter(href => href === pageHref(locale, board.slug, "manager")).length, 1);
+   assert.equal(destinations.filter(href => href === pageHref(locale, board.slug, "canvas")).length, 1);
   }
-  for(const api of approvedApi){const hit=sourceSearch(locale,api.name,"manager").find(r=>r.id===`api-${api.name}`);assert.equal(hit?.href,`${pageHref(locale,api.board,"manager")}#api-${api.name}`);}
-  for(const query of ["Dialog","  ＤｉＡｌＯｇ  "]){const roles=sourceSearch(locale,query,"manager");assert.deepEqual(roles.map(({id,href})=>({id,href})),[{id:"api-ShellBrandButton",href:`${pageHref(locale,"07a-shell-upper","manager")}#api-ShellBrandButton`},{id:"api-ShellMenu",href:`${pageHref(locale,"07b-shell-lower","manager")}#api-ShellMenu`}]);assert.ok(!roles.some(r=>r.id==="api-Dialog"||r.href.endsWith("#api-Dialog")));}
-  for(const query of ["StateView","brand-identity","tcrn-brand-mark.svg",""," "])assert.deepEqual(sourceSearch(locale,query,"manager"),[]);
-  const html=renderToStaticMarkup(createElement(App,{page:"06-inputs",locale,entry:"manager"}));
+  for(const api of approvedApi){const hit=sourceSearch(locale,api.name,"canvas").find(r=>r.id===`api-${api.name}`);assert.equal(hit?.href,`${pageHref(locale,api.board,"canvas")}#api-${api.name}`);}
+  for(const query of ["Dialog","  ＤｉＡｌＯｇ  "]){const roles=sourceSearch(locale,query,"canvas");assert.deepEqual(roles.map(({id,href})=>({id,href})),[{id:"api-ShellBrandButton",href:`${pageHref(locale,"07a-shell-upper","canvas")}#api-ShellBrandButton`},{id:"api-ShellMenu",href:`${pageHref(locale,"07b-shell-lower","canvas")}#api-ShellMenu`}]);assert.ok(!roles.some(r=>r.id==="api-Dialog"||r.href.endsWith("#api-Dialog")));}
+  for(const query of ["StateView","brand-identity","tcrn-brand-mark.svg",""," "])assert.deepEqual(sourceSearch(locale,query,"canvas"),[]);
+  const html=renderToStaticMarkup(createElement(App,{page:"06-inputs",locale,entry:"canvas"}));
   assert.equal((html.match(/<main\b/g)??[]).length,1);
   assert.ok(html.includes(`lang="${locale}" data-approved-board="06-inputs"`));
   assert.ok(html.includes('data-published-api-reference')&&html.includes('id="api-MultiSelect"')&&html.includes('id="source"'));
@@ -35,7 +36,7 @@ test("manager documents reuse the real shell and activate only registered board/
  }
 });
 
-test("portal routes, topic membership and document paths agree in both entrypoints and all languages", () => {
+test("portal routes, topic membership and document paths agree in all three entrypoints and five languages", () => {
   const primary = ["index", "01-tokens", "04-brand", "05-actions", "07a-shell-upper"] as const;
   const chapters = [
     ["01-tokens", "02-typography", "03-icons"],
@@ -45,13 +46,15 @@ test("portal routes, topic membership and document paths agree in both entrypoin
   ];
   const htmlHref = (href: string) => href.replaceAll("&", "&amp;");
   for (const locale of supportedLocales) {
-    for (const entry of ["static", "manager"] as const) {
+    for (const entry of ["static", "canvas", manager] as const) {
       const nav = docsNavigation(locale, entry);
       const destinations = primary.map(page => pageHref(locale, page, entry));
       assert.deepEqual(nav.primary.map(item => item.id), primary);
       assert.deepEqual(nav.cards.map(card => card.chapters.map(chapter => chapter.id)), chapters);
       assert.deepEqual(nav.cards.map(card => card.href), destinations.slice(1));
       const portal = renderToString(createElement(App, { page: "index", locale, entry }));
+      assert.match(portal, /href="#standards-content"/);
+      assert.match(portal, /href="#standards"/);
       const top = /<nav class="tcrn-shell-pins docs-topics"[^>]*>(.*?)<\/nav>/.exec(portal)?.[1] ?? "";
       assert.deepEqual([...top.matchAll(/href="([^"]+)"/g)].map(match => match[1]), destinations.map(htmlHref));
       assert.equal((top.match(/aria-current="page"/g) ?? []).length, 1);
@@ -71,4 +74,31 @@ test("portal routes, topic membership and document paths agree in both entrypoin
       assert.match(trail, /<b [^>]*aria-current="page"/);
     }
   }
+});
+
+test("Manager links address the registered story and keep routed fragments scoped to that story", () => {
+  const locale = "fr";
+  assert.equal(pageHref(locale, "06-inputs", "static"), "/fr/06-inputs.html");
+  assert.equal(pageHref(locale, "06-inputs", "canvas", "api-MultiSelect"),
+    "/iframe.html?id=published-standards--inputs&viewMode=story&globals=locale:fr#api-MultiSelect");
+
+  const crossStory = sourceSearch(locale, "MultiSelect", manager, "index").find(hit => hit.id === "api-MultiSelect");
+  assert.equal(crossStory?.href,
+    "/docs/index.html?path=/story/published-standards--inputs&globals=locale:fr&docsAnchor=published-standards--inputs:api-MultiSelect");
+  const { search } = new URL(crossStory!.href, "https://example.test");
+  assert.equal(managerFragment("06-inputs", search), "api-MultiSelect");
+  assert.equal(managerFragment("07a-shell-upper", search), "");
+  const localApi = sourceSearch(locale, "MultiSelect", manager, "06-inputs").find(hit => hit.id === "api-MultiSelect");
+  assert.equal(localApi?.href, "#api-MultiSelect");
+  const localSource = sourceSearch(locale, approvedSource.site.sourceCommit, manager, "06-inputs");
+  assert.equal(localSource[0]?.href, "#source");
+  const source = sourceSearch(locale, approvedSource.site.sourceCommit, manager, "index");
+  assert.equal(source[0]?.href, "/docs/index.html?path=/story/published-standards--source&globals=locale:fr");
+
+  const board = renderToStaticMarkup(createElement(App, { page: "06-inputs", locale, entry: manager }));
+  assert.match(board, /id="api-MultiSelect"/);
+  assert.match(board, /id="source"/);
+  assert.ok(board.includes(`href="${approvedSource.site.url}">06-inputs / L`));
+  const api = renderToStaticMarkup(createElement(App, { page: "api", locale, entry: manager }));
+  assert.ok(api.includes('href="/docs/index.html?path=/story/published-standards--inputs&amp;globals=locale:fr">06-inputs / L'));
 });

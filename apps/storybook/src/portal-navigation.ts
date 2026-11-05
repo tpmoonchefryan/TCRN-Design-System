@@ -5,7 +5,7 @@ import { docsCopy } from "./locales.js";
 import { portalCopy } from "./portal-copy.js";
 
 export type DocsPage = ApprovedBoardId | "index" | "api" | "source";
-export type DocsEntry = "static" | "manager";
+export type DocsEntry = "static" | "canvas" | { managerPath: string };
 
 const managerStories = {
   index: "home",
@@ -21,10 +21,22 @@ const managerStories = {
   source: "source",
 } satisfies Record<DocsPage, string>;
 
-export function pageHref(locale: DocsLocale, page: DocsPage, entry: DocsEntry = "static"): string {
-  return entry === "static"
-    ? `/${locale}/${page}.html`
-    : `/iframe.html?id=published-standards--${managerStories[page]}&viewMode=story&globals=locale:${locale}`;
+const storyId = (page: DocsPage) => `published-standards--${managerStories[page]}`;
+
+export function pageHref(locale: DocsLocale, page: DocsPage, entry: DocsEntry = "static", fragment = ""): string {
+  const hash = fragment ? `#${fragment}` : "";
+  if (entry === "static") return `/${locale}/${page}.html${hash}`;
+  const id = storyId(page);
+  if (entry === "canvas") return `/iframe.html?id=${id}&viewMode=story&globals=locale:${locale}${hash}`;
+  // Manager 10.4.6 appends globals after the route hash. Forward the fragment as a story-scoped query instead.
+  const anchor = fragment ? `&docsAnchor=${id}:${encodeURIComponent(fragment)}` : "";
+  return `${entry.managerPath}?path=/story/${id}&globals=locale:${locale}${anchor}`;
+}
+
+export function managerFragment(page: DocsPage, search: string): string {
+  const value = new URLSearchParams(search).get("docsAnchor");
+  const prefix = `${storyId(page)}:`;
+  return value?.startsWith(prefix) ? value.slice(prefix.length) : "";
 }
 
 const topics = [
@@ -61,6 +73,7 @@ export function sourceSearch(locale: DocsLocale, query: string, entry: DocsEntry
   const labels = docsCopy(locale);
   const term = query.trim().normalize("NFKC").toLocaleLowerCase(locale);
   if (!term) return [];
+  const inManager = typeof entry === "object";
   const records = [
     ...approvedSource.boards.map((board, index) => ({
       id: board.slug, title: labels.boardTitles[index], meta: labels.summaries[index],
@@ -68,12 +81,14 @@ export function sourceSearch(locale: DocsLocale, query: string, entry: DocsEntry
     })),
     ...approvedApi.map(api => ({
       id: `api-${api.name}`, title: api.name, meta: labels.api,
-      href: `${pageHref(locale, entry === "manager" ? api.board : "api", entry)}#api-${api.name}`,
+      href: inManager && page === api.board
+        ? `#api-${api.name}`
+        : pageHref(locale, entry === "static" ? "api" : api.board, entry, `api-${api.name}`),
       keywords: api.props.join(" "),
     })),
     {
       id: "source", title: labels.source, meta: labels.provenance,
-      href: entry === "manager" && approvedSource.boards.some(board => board.slug === page)
+      href: entry !== "static" && approvedSource.boards.some(board => board.slug === page)
         ? "#source"
         : pageHref(locale, "source", entry),
       keywords: approvedSource.site.sourceCommit,

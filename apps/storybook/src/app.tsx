@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import {
   Icon, LinkButton, PageHeader, ShellBrandButton, ShellLocaleMenu, ShellMenu, ShellThemeToggle,
@@ -9,7 +9,7 @@ import { approvedSource, type ApprovedBoardId, type DocsLocale } from "./approve
 import { docsCopy } from "./locales.js";
 import { Portal } from "./portal.js";
 import { portalCopy } from "./portal-copy.js";
-import { docsNavigation, pageHref, sourceSearch, type DocsEntry, type DocsPage } from "./portal-navigation.js";
+import { docsNavigation, managerFragment, pageHref, sourceSearch, type DocsEntry, type DocsPage } from "./portal-navigation.js";
 import { SourceMatrices } from "./source-matrices.js";
 import { BoardSpecimens } from "./specimens.js";
 
@@ -18,6 +18,7 @@ export interface PageProps {
   locale: DocsLocale;
   theme?: ShellThemeMode;
   entry?: DocsEntry;
+  onLocaleChange?: (locale: DocsLocale) => void;
 }
 
 export const docsPreferenceKey = "tcrn-published-docs:anonymous:design-system";
@@ -63,13 +64,23 @@ function PublishedSource({ locale, board }: { locale: DocsLocale; board?: Approv
   );
 }
 
-export function App({ page, locale, theme: initialTheme = "light", entry = "static" }: PageProps) {
+function targetCanvasFragment(event: MouseEvent<HTMLDivElement>) {
+  const link = event.target instanceof Element
+    ? event.target.closest<HTMLAnchorElement>('a[href^="#"]:not([target])')
+    : null;
+  // Keep native fragment navigation in the iframe despite Storybook's base target="_parent".
+  if (link) link.target = "_self";
+}
+
+export function App({ page, locale, theme: initialTheme = "light", entry = "static", onLocaleChange }: PageProps) {
+  const inStorybook = entry !== "static";
+  const inManager = typeof entry === "object";
   const labels = docsCopy(locale);
   const navigation = docsNavigation(locale, entry);
   const index = approvedSource.boards.findIndex(board => board.slug === page);
   const board = approvedSource.boards[index];
   const current = navigation.byPage.get(page)!;
-  const apiHref = entry === "manager" ? "#api" : pageHref(locale, "api", entry);
+  const apiHref = inStorybook ? "#api" : pageHref(locale, "api", entry);
   const topic = navigation.cards.find(card => card.chapters.some(chapter => chapter.id === page));
   const trail = page === "index"
     ? [{ ...navigation.home, linkWhenCurrent: true }]
@@ -79,22 +90,38 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
       { id: current.id, label: current.label },
     ];
 
-  const [theme, setTheme] = useState(() => entry === "manager" ? savedTheme(initialTheme) : initialTheme);
+  const [theme, setTheme] = useState(() => inStorybook ? savedTheme(initialTheme) : initialTheme);
   const [preferencesReady, setPreferencesReady] = useState(false);
   const [searchKey, setSearchKey] = useState("Ctrl K");
   useEffect(() => {
-    if (entry === "static") setTheme(savedTheme(initialTheme));
+    if (!inStorybook) setTheme(savedTheme(initialTheme));
     if (/Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)) setSearchKey("⌘K");
     setPreferencesReady(true);
-  }, [entry, initialTheme]);
+  }, [inStorybook, initialTheme]);
   useEffect(() => {
     document.documentElement.lang = locale;
     if (preferencesReady) document.documentElement.dataset.tcrnTheme = theme;
   }, [locale, preferencesReady, theme]);
   useEffect(() => {
-    // The preview iframe may mount after the browser's initial fragment lookup.
-    if (entry === "manager") document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
-  }, [entry, locale, page]);
+    if (!inManager) return;
+    const story = new URLSearchParams(window.location.search).get("id");
+    return () => {
+      const { pathname, search, hash } = window.location;
+      // The native sidebar reuses the iframe and changes its story ID before unmounting this page.
+      if (hash && new URLSearchParams(search).get("id") !== story) {
+        window.history.replaceState(window.history.state, "", pathname + search);
+      }
+    };
+  }, [inManager, page]);
+  useEffect(() => {
+    if (!inStorybook) return;
+    const { hash, search } = window.location;
+    const fragment = hash.slice(1) || (inManager ? managerFragment(page, search) : "");
+    const target = document.getElementById(fragment);
+    // Manager forwards cross-story fragments in the iframe query. Activate the native hash once the target exists.
+    if (target && !hash) window.location.replace(`#${encodeURIComponent(fragment)}`);
+    else target?.scrollIntoView();
+  }, [inManager, inStorybook, locale, page]);
 
   function changeTheme(next: ShellThemeMode) {
     setTheme(next);
@@ -122,9 +149,10 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
       data-docs-page={page}
       data-docs-ready={preferencesReady ? "true" : "false"}
       data-tcrn-root=""
-      data-tcrn-theme={entry === "manager" || preferencesReady ? theme : undefined}
+      data-tcrn-theme={inStorybook || preferencesReady ? theme : undefined}
       data-published-source={approvedSource.site.sourceCommit}
       lang={locale}
+      onClickCapture={inManager ? targetCanvasFragment : undefined}
     >
       <SkipLink href={`#${contentId}`}>{portalCopy[locale].skip}</SkipLink>
       <header className="tcrn-shell-strip" data-shell-strip="">
@@ -163,7 +191,8 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
             onLocaleChange={next => {
               const selected = tcrnLocaleMetadata.find(option => option.locale === next);
               if (selected && selected.locale !== locale) {
-                window.location.assign(pageHref(selected.locale, page, entry) + window.location.hash);
+                if (onLocaleChange) onLocaleChange(selected.locale);
+                else window.location.assign(pageHref(selected.locale, page, entry) + window.location.hash);
               }
             }}
           />
@@ -231,7 +260,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
                       <BoardSpecimens board={board.slug} locale={locale} apiHref={apiHref} />
                       <SourceMatrices board={board.slug} locale={locale} apiHref={apiHref} />
                     </article>
-                    {entry === "manager" && <>
+                    {inStorybook && <>
                       <section id="api"><ApiReference board={board.slug} locale={locale} entry={entry} /></section>
                       <section id="source"><PublishedSource locale={locale} board={board.slug} /></section>
                     </>}
