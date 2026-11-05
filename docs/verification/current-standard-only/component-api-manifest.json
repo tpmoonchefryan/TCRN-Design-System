@@ -3374,6 +3374,16 @@
           "required": false
         },
         {
+          "name": "dropdownBoundaryRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        },
+        {
+          "name": "focusNavigationOnOpen",
+          "type": "boolean",
+          "required": false
+        },
+        {
           "name": "headerActions",
           "type": "ReactNode",
           "required": false,
@@ -4783,6 +4793,17 @@
       "kind": "function",
       "props": [
         {
+          "name": "cascadeBoundaryRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false
+        },
+        {
+          "name": "focusOnOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "true"
+        },
+        {
           "name": "id",
           "type": "string",
           "required": true
@@ -4987,6 +5008,12 @@
           "type": "string",
           "required": false,
           "default": "\"\""
+        },
+        {
+          "name": "focusOnOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "true"
         },
         {
           "name": "focusSearchOnOpen",
