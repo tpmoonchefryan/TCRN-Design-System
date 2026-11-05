@@ -83,6 +83,7 @@ function shellChevronPixels(): number {
 }
 
 const shellChevronSize = shellChevronPixels();
+const menuFillMs = Number.parseFloat(tcrnTokens.find(token => token.variable === "--tcrn-motion-duration-fill")?.value ?? "0");
 
 /** An entry of the menu model below the groups: an item (second level) or a child (third, fourth). */
 export interface ShellMenuItem {
@@ -516,6 +517,12 @@ export interface ShellMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
   groups: readonly ShellMenuGroup[];
   /** Whether the menu is open; closed, nothing is rendered (the ⌘K key stays registered). */
   open: boolean;
+  /** Keep the closing surface visible during its opacity transition, inert until it leaves. */
+  animateExit?: boolean;
+  /** Show the same position bar in the phone Sheet. */
+  showSheetPosition?: boolean;
+  /** On a pointer opening of the Sheet, focus its search instead of the Sheet itself. */
+  focusSearchOnOpen?: boolean;
   /** Asks to open the menu (⌘K or Ctrl+K) or to close it (Esc, a press outside, a choice). */
   onOpenChange?: (open: boolean, reason: ShellMenuOpenChangeReason) => void;
   /** The brand button: presses on it are not outside the menu, and focus returns to it. */
@@ -567,6 +574,9 @@ export interface ShellMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
 export function ShellMenu({
   groups,
   open,
+  animateExit = false,
+  showSheetPosition = false,
+  focusSearchOnOpen = false,
   onOpenChange,
   triggerRef,
   productId,
@@ -599,6 +609,38 @@ export function ShellMenu({
   const query = controlledQuery ?? ownQuery;
   const shown = useShellMenuPresentation(presentation, rootRef);
   const sheet = shown === "sheet";
+  const [retained, setRetained] = useState(false);
+  const closing = animateExit && !open && retained;
+
+  useEffect(() => {
+    if (!animateExit) return undefined;
+    const root = rootRef.current;
+    const panel = root?.querySelector("[data-panel]");
+    const view = root?.ownerDocument.defaultView;
+    const motion = view?.matchMedia?.("(prefers-reduced-motion: reduce)");
+    if (open) {
+      setRetained(Boolean(view) && !motion?.matches);
+      return undefined;
+    }
+    if (!closing) return undefined;
+    if (!view || !panel || motion?.matches) {
+      setRetained(false);
+      return undefined;
+    }
+    const finish = () => setRetained(false);
+    const onEnd = (event: Event) => {
+      if (event.target === panel && (event as TransitionEvent).propertyName === "opacity") finish();
+    };
+    panel.addEventListener("transitionend", onEnd);
+    motion?.addEventListener?.("change", finish);
+    // The event can be skipped if opening and closing land in the same paint.
+    const timer = view.setTimeout(finish, 2 * menuFillMs);
+    return () => {
+      panel.removeEventListener("transitionend", onEnd);
+      motion?.removeEventListener?.("change", finish);
+      view.clearTimeout(timer);
+    };
+  }, [open, animateExit, closing, shown]);
   // The Sheet's first list holds the groups themselves (level 1); the panel's columns are groups,
   // so its first rows are items (level 2).
   const firstLevel = sheet ? 1 : 2;
@@ -657,16 +699,17 @@ export function ShellMenu({
     if (open) {
       wasOpenRef.current = true;
       const search = rootRef.current?.querySelector<HTMLElement>('[data-shell-search] input[type="search"]');
-      (sheetShownRef.current && !openedByShortcut.current ? sheetRef.current : search)?.focus();
+      (sheetShownRef.current && !openedByShortcut.current && !focusSearchOnOpen ? sheetRef.current : search)?.focus();
       openedByShortcut.current = false;
       return;
     }
+    if (closing) return;
     setOpenPath([]);
     if (!wasOpenRef.current) return;
     wasOpenRef.current = false;
     if (!queryControlledRef.current) setOwnQuery("");
     if (queryRef.current !== "") onQueryChangeRef.current?.("");
-  }, [open, setOpenPath]);
+  }, [open, closing, focusSearchOnOpen, setOpenPath]);
 
   // The open path's levels mean different rows in the two presentations: switching forgets it.
   // Focus that was in the presentation that left went with it; it moves into the one that came.
@@ -686,7 +729,7 @@ export function ShellMenu({
     rootRef.current?.ownerDocument.getElementById(`${generatedId}-col-${lastOpen}`)?.scrollIntoView?.({ block: "nearest" });
   }, [sheet, lastOpen, generatedId]);
 
-  if (!open) return null;
+  if (!open && !closing) return null;
   const copy = tcrnShellCopyFor(locale);
   const landmarkName = (name: string) => tcrnShellLandmarkName(locale, landmarkLabel, name);
   const columnIdOf = (entryId: string) => `${generatedId}-col-${entryId}`;
@@ -734,6 +777,41 @@ export function ShellMenu({
   // items as a cascade); an id the model does not hold is a plain link to the pin's destination.
   const levelTwo: ShellMenuItem[] = groups.flatMap((group) => group.items);
 
+  const last = currentPath.length - 1;
+  const positionBar = (
+    <div className="tcrn-shell-menu__pbar" data-shell-pbar="">
+      <nav className="tcrn-shell-menu__crumbs" aria-label={landmarkName(copy.currentPosition)}>
+        <span className="tcrn-shell-menu__crumbs-label" aria-hidden="true" title={copy.currentPosition}>
+          {copy.currentPosition}
+        </span>
+        {currentPath.map((crumb, index) => (
+          <Fragment key={`${index}-${crumb.label}`}>
+            {index > 0 ? <Icon name="chevron-right" size={shellChevronSize} className="tcrn-shell-menu__crumb-sep" /> : null}
+            {index === last ? (
+              <b className="tcrn-shell-menu__crumb tcrn-shell-menu__crumb--current" aria-current="page" title={crumb.label}>
+                {crumb.label}
+              </b>
+            ) : crumb.href ? (
+              <a className="tcrn-shell-menu__crumb" href={crumb.href} title={crumb.label}>
+                {crumb.label}
+              </a>
+            ) : (
+              <span className="tcrn-shell-menu__crumb" title={crumb.label}>
+                {crumb.label}
+              </span>
+            )}
+          </Fragment>
+        ))}
+      </nav>
+      <ShellBrandLockup productId={productId} locale={locale} role="img" className="tcrn-shell-menu__lockup" data-lockup="lkr" />
+    </div>
+  );
+  const fadeState = {
+    "data-shell-fade": animateExit ? "" : undefined,
+    "data-shell-closing": closing ? "" : undefined,
+  };
+  const closingProps = closing ? { ...fadeState, inert: true, "aria-hidden": true } : fadeState;
+
   if (sheet) {
     // The Sheet's lists: the pinned entries, then every group as a row that opens its items. The
     // levels of the open path follow the lists, one titled column each.
@@ -744,8 +822,8 @@ export function ShellMenu({
     const levels = shellMenuCascades([...groupRows, ...pinnedSheetRows.filter((row) => !groupRows.includes(row))], context, "tcrn-shell-sheet__group");
     return (
       <>
-        <div className="tcrn-shell-sheet__scrim" data-shell-scrim="" aria-hidden="true" />
-        <div {...props} ref={rootRef} className={cx("tcrn-shell-menu", "tcrn-shell-sheet", className)} data-shell-menu="" onKeyDown={onRootKeyDown}>
+        <div className="tcrn-shell-sheet__scrim" data-shell-scrim="" aria-hidden="true" {...fadeState} />
+        <div {...props} {...closingProps} ref={rootRef} className={cx("tcrn-shell-menu", "tcrn-shell-sheet", className)} data-shell-menu="" onKeyDown={onRootKeyDown}>
           <section ref={sheetRef} id={dialogId} className="tcrn-shell-sheet__panel" role="dialog" aria-modal="false" aria-label={landmarkName(copy.navigation)} tabIndex={-1} data-panel="sheet">
             <span className="tcrn-shell-sheet__grab" aria-hidden="true" />
             {searchField}
@@ -769,6 +847,7 @@ export function ShellMenu({
                 {levels}
               </div>
             )}
+            {showSheetPosition && positionBar}
           </section>
         </div>
       </>
@@ -782,11 +861,11 @@ export function ShellMenu({
   });
   const cascadeFirst = [...levelTwo, ...pinnedRows.filter((row) => !levelTwo.includes(row))];
   const cascades = shellMenuCascades(cascadeFirst, context, "tcrn-shell-menu__cascade");
-  const last = currentPath.length - 1;
   const ownedColumns = cascade.openPath.map(columnIdOf).join(" ");
   return (
     <div
       {...props}
+      {...closingProps}
       ref={rootRef}
       className={cx("tcrn-shell-menu", className)}
       data-shell-menu=""
@@ -832,32 +911,7 @@ export function ShellMenu({
             ) : null}
           </div>
         )}
-        <div className="tcrn-shell-menu__pbar" data-shell-pbar="">
-          <nav className="tcrn-shell-menu__crumbs" aria-label={landmarkName(copy.currentPosition)}>
-            <span className="tcrn-shell-menu__crumbs-label" aria-hidden="true" title={copy.currentPosition}>
-              {copy.currentPosition}
-            </span>
-            {currentPath.map((crumb, index) => (
-              <Fragment key={`${index}-${crumb.label}`}>
-                {index > 0 ? <Icon name="chevron-right" size={shellChevronSize} className="tcrn-shell-menu__crumb-sep" /> : null}
-                {index === last ? (
-                  <b className="tcrn-shell-menu__crumb tcrn-shell-menu__crumb--current" aria-current="page" title={crumb.label}>
-                    {crumb.label}
-                  </b>
-                ) : crumb.href ? (
-                  <a className="tcrn-shell-menu__crumb" href={crumb.href} title={crumb.label}>
-                    {crumb.label}
-                  </a>
-                ) : (
-                  <span className="tcrn-shell-menu__crumb" title={crumb.label}>
-                    {crumb.label}
-                  </span>
-                )}
-              </Fragment>
-            ))}
-          </nav>
-          <ShellBrandLockup productId={productId} locale={locale} role="img" className="tcrn-shell-menu__lockup" data-lockup="lkr" />
-        </div>
+        {positionBar}
       </section>
       {cascades}
     </div>

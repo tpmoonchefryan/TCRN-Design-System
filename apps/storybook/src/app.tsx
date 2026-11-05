@@ -1,50 +1,247 @@
-import { useEffect,useState } from "react";
-import { ProductShell,LinkButton,Text,Heading,type ProductShellNavGroup } from "@tcrn/ui-react/approved";
-import { approvedSource,supportedLocales,type ApprovedBoardId,type DocsLocale } from "./approved-source.js";
-import { approvedApi } from "./approved-api.js";
+import { useEffect, useId, useRef, useState } from "react";
+import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
+import {
+  Icon, LinkButton, PageHeader, ShellBrandButton, ShellLocaleMenu, ShellMenu, ShellThemeToggle,
+  SkipLink, Text, useShellMenuPresentation, type ShellThemeMode,
+} from "@tcrn/ui-react/approved";
 import { ApiReference } from "./api-reference.js";
+import { approvedSource, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
+import { docsCopy } from "./locales.js";
+import { Portal } from "./portal.js";
+import { portalCopy } from "./portal-copy.js";
+import { docsNavigation, pageHref, sourceSearch, type DocsEntry, type DocsPage } from "./portal-navigation.js";
 import { SourceMatrices } from "./source-matrices.js";
 import { BoardSpecimens } from "./specimens.js";
-import { docsCopy } from "./locales.js";
-export type DocsPage=ApprovedBoardId|"index"|"api"|"source";
-export type DocsEntry="static"|"manager";
-export interface PageProps{page:DocsPage;locale:DocsLocale;theme?:"light"|"dark";entry?:DocsEntry}
-const managerExports={"01-tokens":"tokens","02-typography":"typography","03-icons":"icons","04-brand":"brand","05-actions":"actions","06-inputs":"inputs","07a-shell-upper":"shell-upper","07b-shell-lower":"shell-lower"};
-export function boardHref(locale:DocsLocale,board:ApprovedBoardId,entry:DocsEntry="static") {
- if(!Object.hasOwn(managerExports,board))throw new Error(`Unsupported published board ${board}`);
- return entry==="static"?`/${locale}/${board}.html`:`/iframe.html?id=published-standards--${managerExports[board]}&viewMode=story&globals=locale:${locale}`;
+
+export interface PageProps {
+  page: DocsPage;
+  locale: DocsLocale;
+  theme?: ShellThemeMode;
+  entry?: DocsEntry;
 }
-export function navGroups(locale:DocsLocale,page?:DocsPage,entry:DocsEntry="static"):ProductShellNavGroup[]{const c=docsCopy(locale);return [
- {id:"published",label:c.title,items:approvedSource.boards.map((b,i)=>({id:b.slug,label:c.boardTitles[i],href:boardHref(locale,b.slug,entry),selected:b.slug===page,iconName:"book-open" as const}))},
- {id:"contracts",label:c.api,items:[{id:"api",label:c.api,href:entry==="manager"?"#api":`/${locale}/api.html`,iconName:"package"}]},
- {id:"source",label:c.source,items:[{id:"source",label:c.source,href:entry==="manager"?"#source":`/${locale}/source.html`,iconName:"info"}]}
- ];}
-export function sourceSearch(locale:DocsLocale,query:string,entry:DocsEntry="static"){const c=docsCopy(locale);const term=query.trim().normalize("NFKC").toLocaleLowerCase(locale);if(!term)return [];
- const records=[...approvedSource.boards.map((b,i)=>({id:b.slug,title:c.boardTitles[i],meta:c.summaries[i],href:boardHref(locale,b.slug,entry),keywords:b.slug})),...approvedApi.map(api=>({id:`api-${api.name}`,title:api.name,meta:c.api,href:entry==="manager"?`${boardHref(locale,api.board,entry)}#api-${api.name}`:`/${locale}/api.html#api-${api.name}`,keywords:api.props.join(" ")})),{id:"source",title:c.source,meta:c.provenance,href:entry==="manager"?"#source":`/${locale}/source.html`,keywords:approvedSource.site.sourceCommit}];
- return records.filter(r=>`${r.title} ${r.meta} ${r.keywords}`.normalize("NFKC").toLocaleLowerCase(locale).includes(term)).map(({keywords:_keywords,...r})=>r);
+
+export const docsPreferenceKey = "tcrn-published-docs:anonymous:design-system";
+const contentId = "standards-content";
+
+function readPreferences(): Record<string, unknown> {
+  const stored = localStorage.getItem(docsPreferenceKey);
+  try {
+    const saved: unknown = JSON.parse(stored ?? "null");
+    return saved && typeof saved === "object" && !Array.isArray(saved) ? saved as Record<string, unknown> : {};
+  } catch {
+    return {};
+  }
 }
-export function App({page,locale,theme:initialTheme="light",entry="static"}:PageProps){
- const c=docsCopy(locale),[theme,setTheme]=useState(initialTheme),[pins,setPins]=useState<readonly string[]>(["01-tokens","02-typography","04-brand"]),[preferencesReady,setPreferencesReady]=useState(false);
- const index=approvedSource.boards.findIndex(b=>b.slug===page),title=index>=0?c.boardTitles[index]:page==="api"?c.api:page==="source"?c.source:c.title;
- // Static documentation has a local anonymous preference store. Real products bind the existing
- // per-user/per-product server adapter from 07b E; this preview does not claim cross-device storage.
- useEffect(()=>{
-  try{const key="tcrn-published-docs:anonymous:design-system";const saved=JSON.parse(localStorage.getItem(key)??"null") as {theme?:unknown;pins?:unknown}|null;
-   if(saved?.theme==="light"||saved?.theme==="dark")setTheme(saved.theme);
-   if(Array.isArray(saved?.pins)){const allowed=new Set(navGroups(locale,undefined,entry).flatMap(g=>[g.id,...g.items.map(i=>i.id)]));setPins([...new Set(saved.pins.filter((id):id is string=>typeof id==="string"&&allowed.has(id)))]);}
-  }catch{/* Unavailable browser storage does not prevent navigation. */}finally{setPreferencesReady(true);}
- },[locale]);
- useEffect(()=>{document.documentElement.dataset.tcrnTheme=theme;document.documentElement.lang=locale;if(preferencesReady)try{localStorage.setItem("tcrn-published-docs:anonymous:design-system",JSON.stringify({theme,pins}));}catch{/* Preferences remain usable for this visit. */}},[theme,locale,pins,preferencesReady]);
- return <div data-docs-ready={preferencesReady?"true":"false"} data-tcrn-root="" data-tcrn-theme={theme} data-published-source={approvedSource.site.sourceCommit}>
-  <ProductShell productName="TCRN Design System" moduleName={c.title} brandProductId="design-system" currentRouteLabel={title} navGroups={navGroups(locale,page,entry)} searchProvider={query=>sourceSearch(locale,query,entry)} currentLocale={locale} locales={supportedLocales.map(l=>({locale:l,nativeName:l}))} currentTheme={theme} onThemeChange={setTheme} onLocaleChange={l=>{location.href=entry==="manager"?boardHref(l as DocsLocale,page as ApprovedBoardId,entry):`/${l}/${page}.html`;}} pinnedIds={pins} onPinnedChange={(id,pinned)=>setPins(pinned?[...pins.filter(p=>p!==id),id]:pins.filter(p=>p!==id))} onPinsReorder={setPins} account={{name:"TCRN",initials:"T"}} products={[{id:"design-system",label:"TCRN Design System",href:entry==="manager"?boardHref(locale,"01-tokens",entry):`/${locale}/index.html`,current:true}]} pageHeader={{title,description:index>=0?c.summaries[index]:c.provenance,actions:<LinkButton variant="quiet" size="sm" href={entry==="manager"?"#source":`/${locale}/source.html`}>{c.source}</LinkButton>}} contentRole="main" contentId="standards-content">
-   <div className="tcrn-doc-content">
-    <Text size="meta" data-unresolved-standard="K1 K5">{c.conflict}</Text>
-    {index>=0?<article lang={locale} data-approved-board={page} data-source-id={approvedSource.boards[index].sourceId}><BoardSpecimens board={page as ApprovedBoardId} locale={locale}/><SourceMatrices board={page as ApprovedBoardId} locale={locale}/></article>
-     :page==="api"?<ApiReference locale={locale}/>
-     :page==="source"?<><Text>{c.provenance}</Text><a className="tcrn-link" href={approvedSource.site.url}>{approvedSource.site.url}</a><dl className="tcrn-doc-code">{Object.entries(approvedSource.site).map(([key,value])=><div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl>{approvedSource.boards.map(board=><p key={board.slug} className="tcrn-doc-source">{board.slug} · {board.sourceId}</p>)}</>
-     :<div className="tcrn-doc-grid">{approvedSource.boards.map((board,i)=><section key={board.slug}><Heading level={2} visualLevel={3}><a className="tcrn-link" href={`/${locale}/${board.slug}.html`}>{c.boardTitles[i]}</a></Heading><Text>{c.summaries[i]}</Text></section>)}</div>}
-    {entry==="manager"&&index>=0?<><section id="api"><ApiReference board={page as ApprovedBoardId} locale={locale} linkMode="formal"/></section><section id="source"><Text>{c.provenance}</Text><Text className="tcrn-doc-source">{approvedSource.site.sourceCommit} · {approvedSource.boards[index].sourceId}</Text></section></>:null}
-   </div>
-  </ProductShell>
- </div>;
+
+function savedTheme(fallback: ShellThemeMode): ShellThemeMode {
+  try {
+    const { theme } = readPreferences();
+    if (theme === "light" || theme === "dark") return theme;
+  } catch { /* Storage may be unavailable. */ }
+  return fallback;
+}
+
+function PublishedSource({ locale, board }: { locale: DocsLocale; board?: ApprovedBoardId }) {
+  const labels = docsCopy(locale);
+  const { site, boards } = approvedSource;
+  return (
+    <>
+      <Text>{labels.provenance}</Text>
+      <p>
+        <a className="tcrn-link" href={site.url}>{labels.source} · Sites v{site.versionNumber}</a>
+        {" · "}<code className="tcrn-doc-code">{site.sourceCommit}</code>
+      </p>
+      <ul className="docs-source-list">
+        {boards.map((item, index) => (!board || item.slug === board) && (
+          <li key={item.slug}>
+            <a className="tcrn-link" href={`${site.url}/boards/${item.slug}/index.html`}>{labels.boardTitles[index]}</a>
+            {" · "}<code className="tcrn-doc-source">{item.sourceId}</code>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export function App({ page, locale, theme: initialTheme = "light", entry = "static" }: PageProps) {
+  const labels = docsCopy(locale);
+  const navigation = docsNavigation(locale, entry);
+  const index = approvedSource.boards.findIndex(board => board.slug === page);
+  const board = approvedSource.boards[index];
+  const current = navigation.byPage.get(page)!;
+  const apiHref = entry === "manager" ? "#api" : pageHref(locale, "api", entry);
+  const topic = navigation.cards.find(card => card.chapters.some(chapter => chapter.id === page));
+  const trail = page === "index"
+    ? [{ id: current.id, label: current.label }]
+    : [
+      navigation.home,
+      ...(topic && topic.id !== page ? [topic] : []),
+      { id: current.id, label: current.label },
+    ];
+
+  const [theme, setTheme] = useState(() => entry === "manager" ? savedTheme(initialTheme) : initialTheme);
+  const [preferencesReady, setPreferencesReady] = useState(false);
+  const [searchKey, setSearchKey] = useState("Ctrl K");
+  useEffect(() => {
+    if (entry === "static") setTheme(savedTheme(initialTheme));
+    if (/Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)) setSearchKey("⌘K");
+    setPreferencesReady(true);
+  }, [entry, initialTheme]);
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    if (preferencesReady) document.documentElement.dataset.tcrnTheme = theme;
+  }, [locale, preferencesReady, theme]);
+  useEffect(() => {
+    // The preview iframe may mount after the browser's initial fragment lookup.
+    if (entry === "manager") document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
+  }, [entry, locale, page]);
+
+  function changeTheme(next: ShellThemeMode) {
+    setTheme(next);
+    try {
+      // Keep earlier keys in the anonymous record while this shell uses fixed destinations.
+      localStorage.setItem(docsPreferenceKey, JSON.stringify({ ...readPreferences(), theme: next }));
+    } catch { /* The theme can still change for this visit. */ }
+  }
+
+  const [layer, setLayer] = useState<"directory" | "search" | "locale" | null>(null);
+  const menuOpen = layer === "directory" || layer === "search";
+  const shellRef = useRef<HTMLDivElement>(null);
+  const brandRef = useRef<HTMLButtonElement>(null);
+  const menuOwnerRef = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
+  const menuPresentation = useShellMenuPresentation(undefined, shellRef);
+  const menuState = menuOpen ? (menuPresentation === "sheet" ? "sheet" : "expanded") : "closed";
+
+  return (
+    <div
+      ref={shellRef}
+      className="tcrn-product-shell docs-shell"
+      data-shell=""
+      data-state={menuState}
+      data-docs-page={page}
+      data-docs-ready={preferencesReady ? "true" : "false"}
+      data-tcrn-root=""
+      data-tcrn-theme={entry === "manager" || preferencesReady ? theme : undefined}
+      data-published-source={approvedSource.site.sourceCommit}
+      lang={locale}
+    >
+      <SkipLink href={`#${contentId}`}>{portalCopy[locale].skip}</SkipLink>
+      <header className="tcrn-shell-strip" data-shell-strip="">
+        <ShellBrandButton
+          ref={brandRef}
+          productId="design-system"
+          locale={locale}
+          expanded={menuOpen}
+          aria-controls={menuId}
+          onClick={event => {
+            menuOwnerRef.current = event.currentTarget;
+            setLayer(menuOpen ? null : "directory");
+          }}
+        />
+        <nav className="tcrn-shell-pins docs-topics" aria-label={labels.title}>
+          {navigation.primary.map(item => (
+            <span key={item.id} className="tcrn-shell-pins__pin">
+              <a
+                href={item.href}
+                className="tcrn-shell-pins__item"
+                aria-current={item.id === page ? "page" : undefined}
+                data-current-topic={item.id === topic?.id ? "" : undefined}
+              >
+                <span className="tcrn-shell-pins__label" title={item.label}>{item.label}</span>
+              </a>
+            </span>
+          ))}
+        </nav>
+        <div className="tcrn-shell-cluster docs-preferences" data-cluster="">
+          <ShellThemeToggle currentTheme={theme} onThemeChange={changeTheme} locale={locale} variant="quiet" />
+          <ShellLocaleMenu
+            currentLocale={locale}
+            locales={tcrnLocaleMetadata}
+            open={layer === "locale"}
+            onOpenChange={open => setLayer(previous => open ? "locale" : previous === "locale" ? null : previous)}
+            onLocaleChange={next => {
+              const selected = tcrnLocaleMetadata.find(option => option.locale === next);
+              if (selected && selected.locale !== locale) {
+                window.location.assign(pageHref(selected.locale, page, entry) + window.location.hash);
+              }
+            }}
+          />
+        </div>
+      </header>
+      <ShellMenu
+        id={menuId}
+        productId="design-system"
+        locale={locale}
+        groups={navigation.directory}
+        selectedId={page}
+        currentPath={trail}
+        open={menuOpen}
+        presentation={menuPresentation}
+        animateExit
+        showSheetPosition
+        focusSearchOnOpen={layer === "search"}
+        triggerRef={menuOwnerRef}
+        onOpenChange={open => {
+          if (open) {
+            menuOwnerRef.current = brandRef.current;
+            setLayer("directory");
+          } else {
+            setLayer(previous => previous === "locale" ? previous : null);
+          }
+        }}
+        searchPlaceholder={labels.search}
+        searchProvider={query => sourceSearch(locale, query, entry, page)}
+      />
+      <div className="tcrn-product-shell__paper docs-paper" data-paper="">
+        <main id={contentId} className="tcrn-product-shell__main" tabIndex={0}>
+          {page === "index" ? (
+            <Portal locale={locale} theme={theme} navigation={navigation} search={
+              <button
+                className="portal-search"
+                type="button"
+                aria-haspopup="dialog"
+                aria-controls={menuId}
+                aria-expanded={layer === "search"}
+                aria-keyshortcuts="Control+K Meta+K"
+                onClick={event => {
+                  menuOwnerRef.current = event.currentTarget;
+                  setLayer(layer === "search" ? null : "search");
+                }}
+              >
+                <Icon name="search" />
+                {labels.search}
+                <kbd aria-hidden="true">{searchKey}</kbd>
+              </button>
+            } />
+          ) : (
+            <div className="docs-frame">
+              <PageHeader
+                title={current.label}
+                description={board ? labels.summaries[index] : undefined}
+                breadcrumbs={trail}
+                locale={locale}
+                headingLevel={1}
+                actions={page !== "source" ? <LinkButton variant="quiet" size="sm" href={navigation.source.href}>{labels.source}</LinkButton> : null}
+              />
+              <div className="tcrn-doc-content">
+                {board ? (
+                  <>
+                    <article lang={locale} data-approved-board={board.slug} data-source-id={board.sourceId}>
+                      <BoardSpecimens board={board.slug} locale={locale} apiHref={apiHref} />
+                      <SourceMatrices board={board.slug} locale={locale} apiHref={apiHref} />
+                    </article>
+                    {entry === "manager" && <>
+                      <section id="api"><ApiReference board={board.slug} locale={locale} entry={entry} /></section>
+                      <section id="source"><PublishedSource locale={locale} board={board.slug} /></section>
+                    </>}
+                  </>
+                ) : page === "api" ? <ApiReference locale={locale} entry={entry} /> : <PublishedSource locale={locale} />}
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
 }

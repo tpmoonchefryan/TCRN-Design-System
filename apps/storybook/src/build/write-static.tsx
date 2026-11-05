@@ -3,10 +3,11 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderToString } from "react-dom/server";
 import { tcrnComponentCss,tcrnProductMarkSvg } from "@tcrn/ui-react/approved";
 import { tcrnTokenCss } from "@tcrn/ui-tokens";
-import { App,type DocsPage } from "../app.js";
+import { App, docsPreferenceKey } from "../app.js";
+import { docsNavigation, type DocsPage } from "../portal-navigation.js";
 import { approvedSource,supportedLocales,type DocsLocale } from "../approved-source.js";
 import { docsCopy } from "../locales.js";
 import { createAiConsumptionContract } from "./ai-consumption-contract.js";
@@ -14,7 +15,10 @@ import { designAuthority } from "./design-authority.js";
 const root=fileURLToPath(new URL("../../../../",import.meta.url));
 const hash=(bytes:Uint8Array|string)=>createHash("sha256").update(bytes).digest("hex");
 const escape=(value:string)=>value.replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;");
-function pageHtml(page:DocsPage,locale:DocsLocale){const c=docsCopy(locale);const state={page,locale};return `<!doctype html><html lang="${locale}" data-tcrn-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="standard-source-commit" content="${approvedSource.site.sourceCommit}"><title>${escape(c.title)}</title><link rel="icon" type="image/svg+xml" href="/assets/ds-tile-deep.svg"><link rel="stylesheet" href="/fonts/fonts.css"><link rel="stylesheet" href="/storybook.css"></head><body style="margin:0"><div id="app">${renderToStaticMarkup(<App {...state}/>)}</div><script id="page-state" type="application/json">${JSON.stringify(state).replaceAll("<","\\u003c")}</script><script type="module" src="/storybook.js"></script></body></html>`;}
+// Apply the saved token set before CSS paints. React hydrates the stable tree under #app.
+const themeBootstrap = `try{const saved=JSON.parse(localStorage.getItem(${JSON.stringify(docsPreferenceKey)})??"null");if(saved?.theme==="light"||saved?.theme==="dark")document.documentElement.dataset.tcrnTheme=saved.theme;}catch{}`;
+
+function pageHtml(page:DocsPage,locale:DocsLocale){const c=docsCopy(locale);const state={page,locale};const title=page==="index"?c.title:`${docsNavigation(locale,"static").byPage.get(page)!.label} · ${c.title}`;return `<!doctype html><html lang="${locale}" data-tcrn-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="standard-source-commit" content="${approvedSource.site.sourceCommit}"><title>${escape(title)}</title><script>${themeBootstrap}</script><link rel="icon" type="image/svg+xml" href="/assets/ds-tile-deep.svg"><link rel="stylesheet" href="/fonts/fonts.css"><link rel="stylesheet" href="/storybook.css"></head><body style="margin:0"><div id="app">${renderToString(<App {...state}/>)}</div><script id="page-state" type="application/json">${JSON.stringify(state).replaceAll("<","\\u003c")}</script><script type="module" src="/storybook.js"></script></body></html>`;}
 export async function writeStorybookStaticBuild(bundle:Uint8Array){
   const output=path.join(root,"apps/storybook/storybook-static"),fontRoot=path.join(root,"packages/ui-tokens/fonts"),licenseRoot=path.join(root,"packages/ui-tokens/licenses");
   const fonts=JSON.parse(fs.readFileSync(path.join(fontRoot,"manifest.json"),"utf8"));
@@ -22,7 +26,7 @@ export async function writeStorybookStaticBuild(bundle:Uint8Array){
   const candidate={version:JSON.parse(fs.readFileSync(path.join(root,"packages/ui-react/package.json"),"utf8")).version,commit:execFileSync("git",["-C",root,"rev-parse","HEAD"],{encoding:"utf8"}).trim(),dirty:execFileSync("git",["-C",root,"status","--porcelain=v1"],{encoding:"utf8"}).trim().length>0};
   const files=new Map<string,Uint8Array|string>();
   for(const locale of supportedLocales)for(const page of ["index",...approvedSource.boards.map(b=>b.slug),"api","source"] as DocsPage[])files.set(`${locale}/${page}.html`,pageHtml(page,locale));
-  files.set("index.html",pageHtml("index","en"));files.set("storybook.js",bundle);files.set("storybook.css",tcrnTokenCss+"\n"+tcrnComponentCss);
+  files.set("index.html",pageHtml("index","en"));files.set("storybook.js",bundle);files.set("storybook.css",tcrnTokenCss+"\n"+tcrnComponentCss+"\n"+fs.readFileSync(path.join(root,"apps/storybook/src/docs.css"),"utf8"));
   files.set("assets/ds-tile-deep.svg",tcrnProductMarkSvg("design-system","tile-deep",{size:48}));
   for(const file of fonts.files){const bytes=fs.readFileSync(path.join(fontRoot,file.file));if(hash(bytes)!==file.sha256)throw new Error(`Font digest mismatch ${file.file}`);files.set(`fonts/${file.file}`,bytes);}
   files.set("fonts/fonts.css",fs.readFileSync(path.join(fontRoot,"fonts.css")));files.set("fonts/manifest.json",JSON.stringify(fonts,null,2)+"\n");

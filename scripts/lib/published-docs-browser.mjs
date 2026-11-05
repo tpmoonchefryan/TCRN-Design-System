@@ -175,6 +175,16 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
  }catch(error){issues.push(`${entry}/${locale}: provenance search ${error.message}`);}
  return {issues,observations};
 }
+const docsPages = ['index', ...Object.keys(APPROVED_BOARD_IDS), 'api', 'source'];
+const primaryPages = ['index', '01-tokens', '04-brand', '05-actions', '07a-shell-upper'];
+const wrapperStories = { index: 'home', api: 'api', source: 'source' };
+const docsStoryId = page => Object.hasOwn(wrapperStories, page)
+  ? `published-standards--${wrapperStories[page]}`
+  : managerStoryId(page);
+const docsHref = (entry, locale, page) => entry === 'static'
+  ? `/${locale}/${page}.html`
+  : `/iframe.html?id=${docsStoryId(page)}&viewMode=story&globals=locale:${locale}`;
+
 export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return withPublishedBrowser(async({browser,base,source})=>{
  const issues=[],observations=[],page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],requests=[],failures=[],formal=formalApiContracts(source);
  page.on('pageerror',error=>errors.push(error.message));page.on('request',r=>requests.push(r.url()));page.on('requestfailed',r=>failures.push({url:r.url(),error:r.failure()?.errorText}));page.on('response',r=>{if(r.status()>=400)failures.push({url:r.url(),status:r.status()});});
@@ -182,22 +192,62 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
   if(entry==='manager'){
    issues.push(...checkManagerOutput(root).issues);
    for(const locale of LOCALES)try{
-    const response=await page.goto(`${base}/index.html?path=/story/${managerStoryId('01-tokens')}&globals=locale:${locale}`);if(response.status()!==200)issues.push('Actual manager HTML unreadable');await page.locator('iframe#storybook-preview-iframe').waitFor();
-    for(const board of Object.keys(APPROVED_BOARD_IDS)){
-     const id=managerStoryId(board),link=page.locator(`a[data-item-id="${id}"],a[id="${id}"]`).first();
-     try{await link.click();const frame=page.frameLocator('#storybook-preview-iframe');await frame.locator(`[data-approved-board="${board}"][lang="${locale}"]`).waitFor();await frame.locator('[data-docs-ready="true"]').waitFor();observations.push({entry:'manager-ui',locale,board,id,iframe:await page.locator('iframe#storybook-preview-iframe').getAttribute('src')});}catch(error){issues.push(`manager-ui/${locale}/${board}: ${error.message}`);}
+    const response=await page.goto(`${base}/index.html?path=/story/${docsStoryId('index')}&globals=locale:${locale}`);if(response.status()!==200)issues.push('Actual manager HTML unreadable');await page.locator('iframe#storybook-preview-iframe').waitFor();
+    for (const docsPage of docsPages) {
+      const id = docsStoryId(docsPage);
+      const link = page.locator(`a[data-item-id="${id}"],a[id="${id}"]`).first();
+      try {
+        await link.click();
+        const frame = page.frameLocator('#storybook-preview-iframe');
+        await frame.locator(`[data-docs-page="${docsPage}"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
+        if (Object.hasOwn(APPROVED_BOARD_IDS, docsPage)) {
+          await frame.locator(`[data-approved-board="${docsPage}"][lang="${locale}"]`).waitFor();
+        }
+        observations.push({ entry: 'manager-ui', locale, page: docsPage, id, iframe: await page.locator('iframe#storybook-preview-iframe').getAttribute('src') });
+      } catch (error) {
+        issues.push(`manager-ui/${locale}/${docsPage}: ${error.message}`);
+      }
     }
    }catch(error){issues.push(`manager-ui/${locale}: ${error.message}`);}
   }
-  const pages=entry==='static'?['index',...Object.keys(APPROVED_BOARD_IDS),'api','source']:Object.keys(APPROVED_BOARD_IDS);
   for(const locale of LOCALES){
-   for(const id of pages){
+   for(const id of docsPages){
     try{
-     const url=entry==='static'?`${base}/${locale}/${id}.html`:publishedBoardUrl(base,entry,locale,id);
+     const url=base+docsHref(entry,locale,id);
      const response=await page.goto(url);if(response.status()!==200)issues.push(`${entry}/${locale}/${id} is not readable`);if(APPROVED_BOARD_IDS[id])await page.locator(`[data-approved-board="${id}"]`).waitFor();await page.locator('[data-docs-ready="true"]').waitFor();await page.evaluate(()=>document.fonts.ready);
      const facts=await page.evaluate(()=>({lang:document.querySelector('[data-approved-board]')?.getAttribute('lang')??document.documentElement.lang,source:document.querySelector('[data-published-source]')?.getAttribute('data-published-source'),boards:[...document.querySelectorAll('[data-approved-board]')].map(el=>el.getAttribute('data-approved-board')),apis:[...document.querySelectorAll('[data-approved-api]')].map(el=>({name:el.getAttribute('data-approved-api'),formal:el.querySelector('[data-api-formal]')?.textContent,summary:el.querySelector('[data-api-summary]')?.textContent,summaryLang:el.querySelector('[data-api-summary]')?.lang,example:el.querySelector('[data-api-example]')?.textContent})),main:document.querySelectorAll('main').length,brokenNames:[...document.querySelectorAll('button')].filter(el=>!el.textContent.trim()&&!el.getAttribute('aria-label')).length}));
      if(facts.lang!==locale||facts.source!==source.manifest.site.sourceCommit||facts.main!==1||facts.brokenNames)issues.push(`${entry}/${locale}/${id}: locale/source/main/named-controls drift`);
-     const expectedApis=entry==='manager'?Object.keys(formal).filter(name=>formal[name].board===id):id==='api'?Object.keys(formal):[];
+     const chrome = await page.locator('.docs-shell').evaluate(shell => {
+       const strip = shell.querySelector(':scope > [data-shell-strip]');
+       const primary = [...strip.querySelectorAll('.docs-topics a')];
+       const mark = strip.querySelector('[data-shell-brand] svg[data-logo]');
+       const rect = mark.getBoundingClientRect();
+       const cards = [...shell.querySelectorAll('.portal-card__primary')];
+       const homeTrail = shell.querySelector(':scope > [data-paper] .docs-frame > .tcrn-page-header .tcrn-breadcrumb a');
+       return {
+         primary: primary.map(link => link.getAttribute('href')),
+         current: primary.filter(link => link.getAttribute('aria-current') === 'page').map(link => link.getAttribute('href')),
+         homeTrail: homeTrail?.getAttribute('href'),
+         cards: cards.map(link => link.getAttribute('href')),
+         readOnly: shell.querySelectorAll('.portal-glimpse[inert][aria-hidden="true"]').length,
+         mark: [rect.width, rect.height],
+         hasAccount: !!strip.querySelector('[data-shell-account]'),
+       };
+     });
+     const primaryHrefs = primaryPages.map(page => docsHref(entry, locale, page));
+     const currentHrefs = primaryPages.includes(id) ? [docsHref(entry, locale, id)] : [];
+     if (JSON.stringify(chrome.primary) !== JSON.stringify(primaryHrefs) ||
+         JSON.stringify(chrome.current) !== JSON.stringify(currentHrefs) ||
+         chrome.hasAccount || chrome.mark.some(size => size !== 22)) {
+       issues.push(`${entry}/${locale}/${id}: actual top band routes, current page, mark or preferences differ`);
+     }
+     if (id === 'index'
+       ? JSON.stringify(chrome.cards) !== JSON.stringify(primaryHrefs.slice(1)) || chrome.readOnly !== 4
+       : chrome.homeTrail !== primaryHrefs[0]) {
+       issues.push(`${entry}/${locale}/${id}: actual portal cards or home breadcrumb differ`);
+     }
+     facts.chrome = chrome;
+     const expectedApis=id==='api'?Object.keys(formal):entry==='manager'?Object.keys(formal).filter(name=>formal[name].board===id):[];
      if(JSON.stringify(facts.apis.map(a=>a.name).sort())!==JSON.stringify(expectedApis.sort()))issues.push(`${entry}/${locale}/${id}: emitted API membership differs`);
      for(const api of facts.apis)if(api.formal!==formal[api.name]?.formal||api.summaryLang!==locale||!api.example?.includes(`<${api.name}`))issues.push(`${entry}/${locale}/${api.name}: required/use/forbidden/behavior text or concrete example missing`);
      if(APPROVED_BOARD_IDS[id])try{const apiFacts=await apiRuntime(page,id,{browser,url,source,locale});for(const name of Object.keys(formal).filter(name=>formal[name].board===id))issues.push(...apiBehaviorIssues(name,apiFacts[name]).map(issue=>`${entry}/${locale}: ${issue}`));facts.apiRuntime=apiFacts;}catch(error){issues.push(`${entry}/${locale}/${id}: actual API interaction incomplete: ${error.message}`);}

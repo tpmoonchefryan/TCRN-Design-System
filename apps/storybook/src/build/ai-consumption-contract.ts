@@ -8,6 +8,6 @@ export function createAiConsumptionContract(candidate:{version:string;commit:str
   sourceWordingAmbiguities:["K5: strong prose says no color change; explicit specimen and CSS use ink/600; implementation retains the actual sample"],
   unconfirmedProposals:{state:"selected directions only; visually unconfirmed and unapplied",K1:"suffix text contrast direction retained",K5:"strong wording direction retained",C01:{minute:"TCRN-DS-MIN-20261103-SHORTCUT-INK D1-D4",proposedRole:"only06 shortcut text shares ink-2",day:"#4f4c43",night:"#a9a69c",textMinimum:4.5},minute:"TCRN-DS-MIN-20261102-STANDARD-AMENDMENTS D1-D4"},
   ownerClarificationMinute:"TCRN-DS-MIN-20261104-VISUAL-BEFORE-STANDARD D1-D4",publicationRequest:"withdrawn",
-  preferenceStorage:{documentation:"local anonymous per-product preview preferences",consumerObligation:"supply per-user per-product server preference adapter (07b L60)"},
+  preferenceStorage:{documentation:"local anonymous documentation theme; locale is part of the page URL",consumerObligation:"supply per-user per-product server preference adapter (07b L60)"},
   ownerVisualAcceptance:"not-performed",publication:"local-candidate-only"
 };}

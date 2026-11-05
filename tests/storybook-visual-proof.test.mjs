@@ -19,6 +19,11 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
  const entries=Object.fromEntries(MANAGER_STORY_IDS.map(id=>[id,{id,type:'story',title:'Published standards',importPath:'./src/standards.stories.tsx'}]));assert.deepEqual(managerIndexIssues({entries}),[]);
  assert.ok(managerIndexIssues({entries:{...entries,legacy:{id:'legacy',type:'story',title:'Style Guide',importPath:'./src/legacy.stories.tsx'}}}).length);
  const changed=structuredClone(entries);changed[MANAGER_STORY_IDS[0]].importPath='./src/renamed-legacy.stories.tsx';assert.ok(managerIndexIssues({entries:changed}).length);
+ for (const name of ['home', 'api', 'source']) {
+   const missing = { ...entries };
+   delete missing[`published-standards--${name}`];
+   assert.ok(managerIndexIssues({ entries: missing }).length);
+ }
 });
 
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';

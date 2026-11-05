@@ -1,0 +1,84 @@
+import type { IconName, ShellMenuGroup } from "@tcrn/ui-react/approved";
+import { approvedApi } from "./approved-api.js";
+import { approvedSource, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
+import { docsCopy } from "./locales.js";
+import { portalCopy } from "./portal-copy.js";
+
+export type DocsPage = ApprovedBoardId | "index" | "api" | "source";
+export type DocsEntry = "static" | "manager";
+
+const managerStories = {
+  index: "home",
+  "01-tokens": "tokens",
+  "02-typography": "typography",
+  "03-icons": "icons",
+  "04-brand": "brand",
+  "05-actions": "actions",
+  "06-inputs": "inputs",
+  "07a-shell-upper": "shell-upper",
+  "07b-shell-lower": "shell-lower",
+  api: "api",
+  source: "source",
+} satisfies Record<DocsPage, string>;
+
+export function pageHref(locale: DocsLocale, page: DocsPage, entry: DocsEntry = "static"): string {
+  return entry === "static"
+    ? `/${locale}/${page}.html`
+    : `/iframe.html?id=published-standards--${managerStories[page]}&viewMode=story&globals=locale:${locale}`;
+}
+
+const topics = [
+  { id: "foundations", iconName: "palette", chapters: ["01-tokens", "02-typography", "03-icons"] },
+  { id: "brand", iconName: "layout-grid", chapters: ["04-brand"] },
+  { id: "components", iconName: "check", chapters: ["05-actions", "06-inputs", "api"] },
+  { id: "shell", iconName: "layers", chapters: ["07a-shell-upper", "07b-shell-lower"] },
+] as const satisfies readonly { id: string; iconName: IconName; chapters: readonly [ApprovedBoardId, ...DocsPage[]] }[];
+
+export function docsNavigation(locale: DocsLocale, entry: DocsEntry) {
+  const labels = docsCopy(locale);
+  const copy = portalCopy[locale];
+  const link = (page: DocsPage, label: string, iconName: IconName) => ({ id: page, label, iconName, href: pageHref(locale, page, entry) });
+  const home = link("index", copy.home, "home");
+  const api = link("api", labels.api, "package");
+  const source = link("source", labels.source, "info");
+  const chapters = approvedSource.boards.map((board, index) => link(board.slug, labels.boardTitles[index], "book-open"));
+  const byPage = new Map([...chapters, api, source, home].map(chapter => [chapter.id, chapter]));
+  const cards = topics.map(({ id, iconName, chapters }) => {
+    const [label, description] = copy.topics[id];
+    return { topic: id, ...link(chapters[0], label, iconName), description, chapters: chapters.map(page => byPage.get(page)!) };
+  });
+  const primary = [home, ...cards];
+  const primaryPages = new Set(primary.map(item => item.id));
+  const directory: ShellMenuGroup[] = [
+    { id: "portal", label: labels.title, items: primary },
+    { id: "chapters", label: copy.chapters, items: chapters.filter(chapter => !primaryPages.has(chapter.id)) },
+    { id: "references", label: copy.references, items: [api, source] },
+  ];
+  return { home, source, cards, primary, directory, byPage };
+}
+
+export function sourceSearch(locale: DocsLocale, query: string, entry: DocsEntry = "static", page?: DocsPage) {
+  const labels = docsCopy(locale);
+  const term = query.trim().normalize("NFKC").toLocaleLowerCase(locale);
+  if (!term) return [];
+  const records = [
+    ...approvedSource.boards.map((board, index) => ({
+      id: board.slug, title: labels.boardTitles[index], meta: labels.summaries[index],
+      href: pageHref(locale, board.slug, entry), keywords: board.slug,
+    })),
+    ...approvedApi.map(api => ({
+      id: `api-${api.name}`, title: api.name, meta: labels.api,
+      href: `${pageHref(locale, entry === "manager" ? api.board : "api", entry)}#api-${api.name}`,
+      keywords: api.props.join(" "),
+    })),
+    {
+      id: "source", title: labels.source, meta: labels.provenance,
+      href: entry === "manager" && approvedSource.boards.some(board => board.slug === page)
+        ? "#source"
+        : pageHref(locale, "source", entry),
+      keywords: approvedSource.site.sourceCommit,
+    },
+  ];
+  return records.filter(record => `${record.title} ${record.meta} ${record.keywords}`.normalize("NFKC").toLocaleLowerCase(locale).includes(term))
+    .map(({ keywords: _keywords, ...record }) => record);
+}

@@ -11,14 +11,16 @@ export const formalLayoutCss = `
 .tcrn-shell-grain{position:absolute;inset:0;width:100%;height:100%;opacity:var(--tcrn-texture-grain-opacity);mix-blend-mode:var(--tcrn-texture-grain-blend);pointer-events:none;z-index:0}
 .tcrn-skip-link{position:absolute;left:12px;top:6px;padding:4px 10px;border-radius:8px;background:var(--tcrn-color-panel);color:var(--tcrn-color-ink);transform:translateY(-200%);z-index:4}
 .tcrn-skip-link:focus{transform:none;box-shadow:var(--tcrn-focus-ring)}
-.tcrn-shell-theme-toggle{position:relative;display:inline-grid;place-items:center}
+.tcrn-button.tcrn-shell-theme-toggle{position:relative;display:inline-grid;place-items:center}
 .tcrn-shell-theme-toggle__icon{grid-area:1/1;display:flex;align-items:center;justify-content:center;transition:opacity var(--tcrn-motion-duration-move) var(--tcrn-motion-ease)}
 .tcrn-shell-theme-toggle[data-current-theme="light"] [data-theme-icon="dark"],.tcrn-shell-theme-toggle[data-current-theme="dark"] [data-theme-icon="light"]{opacity:0}
 .tcrn-shell-locale-menu{position:relative;min-width:0}
 .tcrn-shell-locale-menu__trigger,.tcrn-shell-locale-menu__option{display:flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:var(--tcrn-color-ink-2);font:500 12.5px/20px var(--tcrn-type-family-ui);cursor:pointer;white-space:nowrap}
 .tcrn-shell-locale-menu__trigger:hover,.tcrn-shell-locale-menu__option:hover{background:var(--tcrn-color-hover);color:var(--tcrn-color-ink)}
-.tcrn-shell-locale-menu__option[aria-checked="true"]{background:var(--tcrn-color-wash);color:var(--tcrn-color-ink);font-weight:600}
+.tcrn-shell-locale-menu__option[aria-selected="true"]{background:var(--tcrn-color-wash);color:var(--tcrn-color-ink);font-weight:600}
 .tcrn-shell-locale-menu__panel{position:absolute;right:0;top:calc(100% + 6px);width:240px;padding:6px;background:var(--tcrn-color-panel);border-radius:12px;box-shadow:var(--tcrn-elevation-s3);display:flex;flex-direction:column;gap:2px;z-index:3}
+.tcrn-shell-locale-menu__panel[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.tcrn-shell-theme-toggle__icon{transition:none}}
 .tcrn-page-header{display:flex;flex-direction:column;gap:10px;min-width:0}
 .tcrn-page-header__body{display:flex;align-items:flex-end;gap:14px;min-width:0;border-bottom:1px solid var(--tcrn-color-line-2);padding-bottom:12px}
 .tcrn-page-header__description{margin:0}

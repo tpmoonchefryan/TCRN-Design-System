@@ -605,16 +605,18 @@ export function ShellLocaleMenu({
       }
     };
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        requestOpenChange(false, "escape", true);
-      }
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      const focused = ownerDocument.activeElement;
+      if (focused && focused !== ownerDocument.body && !rootRef.current?.contains(focused)) return;
+      event.preventDefault();
+      requestOpenChange(false, "escape", true);
     };
     ownerDocument.addEventListener("mousedown", handleMouseDown);
-    ownerDocument.addEventListener("keydown", handleKeyDown);
+    // The locale list can sit inside the product account dialog. It owns the first Escape.
+    ownerDocument.addEventListener("keydown", handleKeyDown, true);
     return () => {
       ownerDocument.removeEventListener("mousedown", handleMouseDown);
-      ownerDocument.removeEventListener("keydown", handleKeyDown);
+      ownerDocument.removeEventListener("keydown", handleKeyDown, true);
     };
   }, [open, requestOpenChange]);
 
@@ -653,15 +655,17 @@ export function ShellLocaleMenu({
         title={resolvedLabel}
       >
         <Icon name="globe-2" />
-        <span className="tcrn-shell-locale-menu__current" data-locale-current data-locale-current-name>{currentName}</span>
+        <span className="tcrn-shell-locale-menu__current" data-locale-current data-locale-current-name lang={current?.locale}>{currentName}</span>
         <Icon name="chevron-down" className="tcrn-shell-locale-menu__chevron" />
       </button>
-      <div id={resolvedMenuId} className="tcrn-shell-locale-menu__panel" role="listbox" data-locale-menu hidden={!open}>
+      <div id={resolvedMenuId} className="tcrn-shell-locale-menu__panel" role="listbox" aria-label={resolvedLabel} data-locale-menu hidden={!open} aria-hidden={!open || undefined}>
         {locales.map((entry) => (
           <button key={entry.locale}
             className="tcrn-shell-locale-menu__option"
             type="button"
             role="option"
+            disabled={!open}
+            lang={entry.locale}
             onClick={() => handleLocaleSelect(entry.locale)}
             data-locale={entry.locale}
             data-locale-name={entry.nativeName}

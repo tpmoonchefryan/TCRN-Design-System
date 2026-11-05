@@ -86,8 +86,13 @@ export const shellCss01 = `
   column-gap: var(--tcrn-space-2h);
   min-inline-size: 0;
 }
+.tcrn-shell-brand__line > .tcrn-shell-brand__mark {
+  inline-size: var(--tcrn-brand-mark-size);
+  block-size: var(--tcrn-brand-mark-size);
+}
 .tcrn-shell-brand__word {
   display: block;
+  padding-block: var(--tcrn-space-0h);
   flex: none;
   min-inline-size: 0;
   overflow: hidden;
@@ -206,7 +211,7 @@ export const shellCss02 = `
   font-family: var(--tcrn-type-family-ui);
   font-size: 12.5px;
   font-weight: var(--tcrn-pair-weight);
-  line-height: 1;
+  line-height: var(--tcrn-type-line-control);
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -441,7 +446,7 @@ export const shellCss03 = `
   box-shadow: var(--tcrn-pair-edge);
   font-size: 12.5px;
   font-weight: var(--tcrn-pair-weight);
-  line-height: 1.2;
+  line-height: var(--tcrn-type-line-control);
   text-decoration: none;
   white-space: nowrap;
   transition:
@@ -694,7 +699,7 @@ export const shellCss03 = `
   overflow: hidden;
   color: var(--tcrn-color-ink-2);
   font-size: 11.5px;
-  line-height: 1.2;
+  line-height: var(--tcrn-type-line-control);
   white-space: nowrap;
 }
 .tcrn-shell-menu__crumbs-label {
@@ -1087,5 +1092,29 @@ export const shellCss05 = `
 }`;
 
 export const shellReducedMotionCss = `
+@media (prefers-reduced-motion: no-preference) {
+  .tcrn-shell-menu[data-shell-fade] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade, .tcrn-shell-sheet__panel),
+  .tcrn-shell-sheet__scrim[data-shell-fade] {
+    animation: none;
+    opacity: 1;
+    transition: opacity var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+  }
+  @starting-style {
+    .tcrn-shell-menu[data-shell-fade] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade, .tcrn-shell-sheet__panel),
+    .tcrn-shell-sheet__scrim[data-shell-fade] {
+      opacity: 0;
+    }
+  }
+  .tcrn-shell-menu[data-shell-closing] > :is(.tcrn-shell-menu__panel, .tcrn-shell-menu__cascade, .tcrn-shell-sheet__panel),
+  .tcrn-shell-sheet__scrim[data-shell-closing] {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
 @media (prefers-reduced-motion:reduce){.tcrn-shell-brand,.tcrn-shell-pins__item,.tcrn-shell-menu,.tcrn-shell-menu *,.tcrn-shell-dropdown,.tcrn-shell-dropdown *,.tcrn-shell-bell,.tcrn-shell-avatar{transition-duration:0s;animation-duration:0s;animation-iteration-count:0}}
+@media (prefers-reduced-motion: reduce) {
+  .tcrn-shell-menu[data-shell-closing], .tcrn-shell-sheet__scrim[data-shell-closing] {
+    display: none;
+  }
+}
 `;

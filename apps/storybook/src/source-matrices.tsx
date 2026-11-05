@@ -5,7 +5,7 @@ import { docsCopy } from "./locales.js";
 
 // Every first-family source occurrence is represented by the actual package control.
 // Source identifiers are discovery hooks, never a candidate-provided contrast oracle.
-function Probe({cell,locale}:{cell:ApprovedMatrixOccurrence;locale:DocsLocale}){
+function Probe({cell,locale,apiHref}:{cell:ApprovedMatrixOccurrence;locale:DocsLocale;apiHref:string}){
   const c=docsCopy(locale),id=cell.cellId.replace(/-[ln]$/,""),p={"data-source-cell-key":cell.key,"data-source-cell-id":cell.cellId,"data-source-probe":cell.probe,"data-source-scene":cell.sourceScene,"data-source-state":cell.sourceState};
   if(cell.board==="02-typography"){
     if(/^h[1-4]$/.test(id))return <Heading {...p} level={Number(id[1]) as 1|2|3|4}>{c.project}</Heading>;
@@ -15,7 +15,7 @@ function Probe({cell,locale}:{cell:ApprovedMatrixOccurrence;locale:DocsLocale}){
     if(id==="num"||id==="num-inl")return <Text {...p} variant="numeral" className={id==="num-inl"?"tcrn-text--numeral-inline":undefined}>4,280.00</Text>;
     if(id==="caps")return <Text {...p} variant="caps"><b>01</b>{c.name}</Text>;
     if(id==="id")return <Text {...p} className="tcrn-text--mono">PRJ-2026-0412</Text>;
-    if(id.startsWith("link"))return <a {...p} className={`tcrn-link${id==="link-hover"?" is-hover":""}`} href="#api">{c.invoice}</a>;
+    if(id.startsWith("link"))return <a {...p} className={`tcrn-link${id==="link-hover"?" is-hover":""}`} href={apiHref}>{c.invoice}</a>;
     return <Text {...p} tone={id.startsWith("strong")?"strong":undefined} size={id.startsWith("meta")?"meta":id==="cap"?"caption":id==="read"?"reading":undefined} data-standard-conflict={id.startsWith("strong")?"K5":undefined}>{id.startsWith("strong")?c.strong:c.body}</Text>;
   }
   if(cell.board==="03-icons"){
@@ -44,8 +44,8 @@ function Probe({cell,locale}:{cell:ApprovedMatrixOccurrence;locale:DocsLocale}){
   }
   return null;
 }
-export function SourceMatrices({board,locale}:{board:ApprovedBoardId;locale:DocsLocale}){
+export function SourceMatrices({board,locale,apiHref}:{board:ApprovedBoardId;locale:DocsLocale;apiHref:string}){
   const cells=approvedMatrixOccurrences.filter(c=>c.board===board);
   if(!cells.length||board.startsWith("07"))return null;
-  return <section className="tcrn-doc-section" data-published-matrix={board}><Heading level={2} visualLevel={3}>B · {board}</Heading><div className="tcrn-doc-grid">{cells.map(cell=><div key={cell.key} className="tcrn-doc-pane" data-tcrn-theme={cell.theme==="night"?"dark":"light"}><code>{cell.cellId}</code><div className={cell.cellId.includes("canvas")||cell.cellId.endsWith("-bg-l")||cell.cellId.endsWith("-bg-n")?undefined:"tcrn-doc-paper"}><Probe cell={cell} locale={locale}/></div></div>)}</div></section>;
+  return <section className="tcrn-doc-section" data-published-matrix={board}><Heading level={2} visualLevel={3}>B · {board}</Heading><div className="tcrn-doc-grid">{cells.map(cell=><div key={cell.key} className="tcrn-doc-pane" data-tcrn-theme={cell.theme==="night"?"dark":"light"}><code>{cell.cellId}</code><div className={cell.cellId.includes("canvas")||cell.cellId.endsWith("-bg-l")||cell.cellId.endsWith("-bg-n")?undefined:"tcrn-doc-paper"}><Probe cell={cell} locale={locale} apiHref={apiHref}/></div></div>)}</div></section>;
 }

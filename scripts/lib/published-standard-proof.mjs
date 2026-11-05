@@ -38,7 +38,7 @@ export function checkProjection(registry,apis,{source=readApprovedSource()}={}){
   if(new Set(apis.map(a=>a.name)).size!==apis.length)issues.push("Duplicate API contracts");
   return issues;
 }
-export const CURRENT_STORY_SOURCE_FILES=Object.freeze(["api-reference.tsx","app.tsx","approved-api.ts","approved-source.ts","build.tsx","build/ai-consumption-contract.ts","build/design-authority.ts","build/write-static.tsx","client.tsx","contract-stories/gplus/generated/matrices.generated.ts","contract-stories/kernel.ts","locales.ts","smoke.test.ts","source-matrices.tsx","specimens.tsx","standards.stories.tsx","storybook.css"]);
+export const CURRENT_STORY_SOURCE_FILES=Object.freeze(["api-reference.tsx","app.tsx","approved-api.ts","approved-source.ts","build.tsx","build/ai-consumption-contract.ts","build/design-authority.ts","build/write-static.tsx","client.tsx","contract-stories/gplus/generated/matrices.generated.ts","contract-stories/kernel.ts","docs.css","locales.ts","portal-copy.ts","portal-navigation.ts","portal.tsx","smoke.test.ts","source-matrices.tsx","specimens.tsx","standards.stories.tsx","storybook.css"]);
 export function checkStorySourceMembers(actual){return validateOutputMembers(actual,CURRENT_STORY_SOURCE_FILES);}
 export function retiredLockupLabelIssues(text,label="source"){
  return ["productSuffix","productShellCaption"].filter(key=>new RegExp(`\\b${key}\\b`).test(text)).map(key=>`${label}: retired unregistered lockup label ${key}`);
@@ -131,10 +131,10 @@ export function checkOutput(root=ROOT,output=path.join(root,"apps/storybook/stor
 export async function checkRoutes(root=ROOT){const registry=await compiled(root,"apps/storybook/dist/contract-stories/kernel.js"),api=await compiled(root,"apps/storybook/dist/approved-api.js"),metadata=await compiled(root,"apps/storybook/dist/approved-source.js");return {issues:[...checkSourceClosure(root),...sourceIdentityIssues(metadata.approvedSource.site,"compiled documentation"),...checkProjection(registry.contractStories,api.approvedApi)],stories:registry.contractStories.length,apis:api.approvedApi.length};}
 export function finish(label,result){const issues=result.issues??[];console.log(JSON.stringify({proof:label,...result},null,2));if(issues.length)process.exitCode=1;return result;}
 
-export const MANAGER_STORY_IDS=Object.freeze(['tokens','typography','icons','brand','actions','inputs','shell-upper','shell-lower'].map(name=>`published-standards--${name}`));
+export const MANAGER_STORY_IDS=Object.freeze(['home','tokens','typography','icons','brand','actions','inputs','shell-upper','shell-lower','api','source'].map(name=>`published-standards--${name}`));
 export function managerIndexIssues(index){
  const entries=Object.values(index.entries??{}),stories=entries.filter(e=>e.type==='story'),issues=[];
- if(JSON.stringify(stories.map(e=>e.id).sort())!==JSON.stringify([...MANAGER_STORY_IDS].sort())||entries.length!==8)issues.push('Manager output is not exactly the eight approved CSF stories');
+ if(JSON.stringify(stories.map(e=>e.id).sort())!==JSON.stringify([...MANAGER_STORY_IDS].sort())||entries.length!==MANAGER_STORY_IDS.length)issues.push('Manager output must contain the eight published boards and the home, API and source pages');
  for(const story of stories)if(story.title!=='Published standards'||!story.importPath?.endsWith('/src/standards.stories.tsx'))issues.push(`Unapproved manager CSF module ${story.id}`);
  return issues;
 }

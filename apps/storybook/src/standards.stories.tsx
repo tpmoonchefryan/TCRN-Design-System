@@ -1,15 +1,33 @@
 import { App } from "./app.js";
-import { approvedSource,supportedLocales,type DocsLocale } from "./approved-source.js";
-export default {title:"Published standards",parameters:{layout:"fullscreen",publishedSource:approvedSource.site},tags:[]};
-const of=(id:(typeof approvedSource.boards)[number]["slug"])=>({name:approvedSource.boards.find(b=>b.slug===id)!.title,parameters:{sourceBoard:id,sourceId:approvedSource.boards.find(b=>b.slug===id)!.sourceId},render:(_args:unknown,{globals}:{globals:Record<string,unknown>})=>{
- const locale=supportedLocales.includes(globals.locale as DocsLocale)?globals.locale as DocsLocale:"en";
- return <App page={id} locale={locale} entry="manager"/>;
-}});
-export const Tokens=of("01-tokens");
-export const Typography=of("02-typography");
-export const Icons=of("03-icons");
-export const Brand=of("04-brand");
-export const Actions=of("05-actions");
-export const Inputs=of("06-inputs");
-export const ShellUpper=of("07a-shell-upper");
-export const ShellLower=of("07b-shell-lower");
+import { approvedSource, resolveDocsLocale, type ApprovedBoardId } from "./approved-source.js";
+import type { DocsPage } from "./portal-navigation.js";
+
+export default {
+  title: "Published standards",
+  parameters: { layout: "fullscreen", publishedSource: approvedSource.site },
+  tags: [],
+};
+
+const pageStory = (page: DocsPage, name: string) => ({
+  name,
+  render: (_args: unknown, { globals }: { globals: Record<string, unknown> }) => (
+    <App key={page} page={page} locale={resolveDocsLocale(String(globals.locale))} entry="manager" />
+  ),
+});
+
+const boardStory = (id: ApprovedBoardId) => {
+  const board = approvedSource.boards.find(board => board.slug === id)!;
+  return { ...pageStory(id, board.title), parameters: { sourceBoard: id, sourceId: board.sourceId } };
+};
+
+export const Home = pageStory("index", "Home");
+export const Tokens = boardStory("01-tokens");
+export const Typography = boardStory("02-typography");
+export const Icons = boardStory("03-icons");
+export const Brand = boardStory("04-brand");
+export const Actions = boardStory("05-actions");
+export const Inputs = boardStory("06-inputs");
+export const ShellUpper = boardStory("07a-shell-upper");
+export const ShellLower = boardStory("07b-shell-lower");
+export const Api = pageStory("api", "Component contracts");
+export const Source = pageStory("source", "Published source");
