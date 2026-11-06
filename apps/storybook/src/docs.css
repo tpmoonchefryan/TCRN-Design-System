@@ -5,13 +5,15 @@
 
 html[data-tcrn-theme="light"],
 .docs-shell[data-tcrn-theme="light"],
-.docs-shell [data-tcrn-theme="light"] {
+.docs-shell [data-tcrn-theme="light"],
+.tcrn-multi-select-dropdown__list[data-tcrn-theme="light"] {
   color-scheme: light;
 }
 
 html[data-tcrn-theme="dark"],
 .docs-shell[data-tcrn-theme="dark"],
-.docs-shell [data-tcrn-theme="dark"] {
+.docs-shell [data-tcrn-theme="dark"],
+.tcrn-multi-select-dropdown__list[data-tcrn-theme="dark"] {
   color-scheme: dark;
 }
 
@@ -52,6 +54,17 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 
 .docs-frame > .tcrn-page-header .tcrn-breadcrumb__item:first-child {
   flex: none;
+}
+
+.tcrn-doc-shell-frame > .tcrn-product-shell > .tcrn-product-shell__paper > .tcrn-product-shell__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-2h);
+  padding: var(--tcrn-space-3h) calc(2 * var(--tcrn-space-3h)) var(--tcrn-space-3);
+}
+
+.tcrn-doc-shell-frame[data-phone] > .tcrn-product-shell > .tcrn-product-shell__paper > .tcrn-product-shell__main {
+  padding: var(--tcrn-space-3) var(--tcrn-space-4);
 }
 
 /* Keep the fixed Sheet and scrim, and open pin drop-downs, inside their specimens. */

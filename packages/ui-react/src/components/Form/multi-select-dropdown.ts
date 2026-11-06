@@ -32,8 +32,26 @@ export function mountStaticMultiSelect({ root, getValue, onChange, onReset }: St
   const boundary = mountStaticOverlayBoundary({ trigger, layer, kind: "popover", placement: "bottom-start" });
   // A listbox is a value selector. The shared boundary only owns placement and dismissal.
   layer.setAttribute("role", "listbox");
+  const themeAttribute = "data-tcrn-theme";
+  const authoredTheme = layer.hasAttribute(themeAttribute);
+  // The body-mounted listbox loses token scope from ancestors of the inline control.
+  // Observe only that ancestry so a local theme switch also updates an open listbox.
+  const syncTheme = () => {
+    if (authoredTheme) return;
+    const owner = root.closest('[data-tcrn-theme="light"], [data-tcrn-theme="dark"]');
+    const theme = owner && !owner.contains(layer) ? owner.getAttribute(themeAttribute) : null;
+    if (theme === null) layer.removeAttribute(themeAttribute);
+    else layer.setAttribute(themeAttribute, theme);
+  };
+  const themeChanges = new MutationObserver(syncTheme);
+  if (!authoredTheme) {
+    for (let ancestor: HTMLElement | null = root; ancestor && ancestor !== document.body; ancestor = ancestor.parentElement) {
+      themeChanges.observe(ancestor, { attributes: true, attributeFilter: [themeAttribute] });
+    }
+  }
   const sync = () => {
     if (disposed) return;
+    syncTheme();
     const current = value();
     for (const option of select.options) option.selected = current.includes(option.value);
     if (validation) validation.checked = Array.from(select.options).some((option) => option.selected && !option.disabled);
@@ -143,6 +161,8 @@ export function mountStaticMultiSelect({ root, getValue, onChange, onReset }: St
       disposed = true;
       if (resetTimer !== undefined) window.clearTimeout(resetTimer);
       labels.disconnect();
+      themeChanges.disconnect();
+      if (!authoredTheme) layer.removeAttribute(themeAttribute);
       trigger.removeEventListener("click", clickTrigger);
       trigger.removeEventListener("keydown", triggerKey);
       layer.removeEventListener("click", clickOption);

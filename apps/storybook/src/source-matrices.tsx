@@ -3,10 +3,35 @@ import { approvedMatrixOccurrences,type ApprovedMatrixOccurrence } from "./contr
 import type { ApprovedBoardId,DocsLocale } from "./approved-source.js";
 import { docsCopy } from "./locales.js";
 
+function probeAttributes(cell: ApprovedMatrixOccurrence) {
+  return {
+    "data-source-cell-key": cell.key,
+    "data-source-cell-id": cell.cellId,
+    "data-source-probe": cell.probe,
+    "data-source-scene": cell.sourceScene,
+    "data-source-state": cell.sourceState,
+  };
+}
+
+function RadioProbe({ edge, selected, locale }: {
+  edge: ApprovedMatrixOccurrence;
+  selected: ApprovedMatrixOccurrence;
+  locale: DocsLocale;
+}) {
+  const c = docsCopy(locale);
+  return (
+    <RadioGroup legend={c.status} name={edge.key} defaultValue="team" options={[
+      {value: "public", label: <span {...probeAttributes(edge)} data-source-probe-control="">{c.public}</span>},
+      {value: "team", label: <span {...probeAttributes(selected)} data-source-probe-control="">{c.team}</span>},
+      {value: "private", label: c.private},
+    ]} />
+  );
+}
+
 // Every first-family source occurrence is represented by the actual package control.
 // Source identifiers are discovery hooks, never a candidate-provided contrast oracle.
 function Probe({cell,locale,apiHref}:{cell:ApprovedMatrixOccurrence;locale:DocsLocale;apiHref:string}){
-  const c=docsCopy(locale),id=cell.cellId.replace(/-[ln]$/,""),p={"data-source-cell-key":cell.key,"data-source-cell-id":cell.cellId,"data-source-probe":cell.probe,"data-source-scene":cell.sourceScene,"data-source-state":cell.sourceState};
+  const c=docsCopy(locale),id=cell.cellId.replace(/-[ln]$/,""),p=probeAttributes(cell);
   if(cell.board==="02-typography"){
     if(/^h[1-4]$/.test(id))return <Heading {...p} level={Number(id[1]) as 1|2|3|4}>{c.project}</Heading>;
     if(id==="mark")return <Text><span {...p} data-source-probe-target=".tcrn-highlight__mark"><Highlight text="PRJ-2026-0412" query="2026"/></span></Text>;
@@ -35,11 +60,10 @@ function Probe({cell,locale,apiHref}:{cell:ApprovedMatrixOccurrence;locale:DocsL
     if(id.startsWith("in-"))return <><Input {...p} aria-describedby={id==="in-err"?`source-error-${cell.key}`:undefined} aria-label={`${c.name} ${cell.key}`} placeholder={id==="in-ph"?c.project:undefined} defaultValue={id==="in-ph"?undefined:c.project} readOnly={id==="in-ro"} disabled={id==="in-dis"} disabledReason={c.unavailable} aria-invalid={id==="in-err"?true:undefined} data-tcrn-preview-state={id==="in-focus"?"focus":undefined}/>{id==="in-err"?<span id={`source-error-${cell.key}`} className="tcrn-doc-error"><span className="tcrn-doc-error__text">{c.error}</span></span>:null}</>;
     if(id.startsWith("search-"))return <SearchInput {...p} aria-label={c.search} placeholder={c.search} defaultValue={id==="search-focus"?c.project:undefined} className={id==="search-ph"?"tcrn-input--sm":undefined} shortcut="auto" data-tcrn-preview-state={id==="search-focus"?"focus":undefined}/>;
     if(id==="chev")return <span {...p} data-source-probe-target=".tcrn-select-wrap__icon"><Select aria-label={c.status} options={[{value:"team",label:c.team}]}/></span>;
-    if(id==="opt-sel")return <div {...p} data-source-open-control=".tcrn-multi-select-dropdown__trigger" data-source-probe-target="body .tcrn-multi-select-dropdown__option[aria-selected=true]"><MultiSelect aria-label={`${c.project} ${cell.key}`} presentation="dropdown" options={[{value:"review",label:c.project}]} defaultValue={["review"]} emptySelectionLabel={c.empty}/></div>;
+    if(id==="opt-sel")return <div {...p} data-source-open-control=".tcrn-multi-select-dropdown__trigger"><MultiSelect aria-label={`${c.project} ${cell.key}`} presentation="dropdown" options={[{value:"review",label:c.project}]} defaultValue={["review"]} emptySelectionLabel={c.empty}/></div>;
     if(id==="num")return <NumberInput {...p} aria-label={c.seat} defaultValue={24}/>;
     if(id==="date"||id==="cal")return <span {...p} data-source-probe-target={id==="cal"?".tcrn-date-picker-wrap__icon":".tcrn-date-picker"}><DatePicker aria-label={c.day} defaultValue="2026-10-20"/></span>;
     if(id.startsWith("ck-"))return <Checkbox {...p} aria-label={c.notify} defaultChecked={id==="ck-on"||id==="ck-dis"} disabled={id==="ck-dis"} disabledReason={c.unavailable}/>;
-    if(id.startsWith("rd-"))return <div {...p} data-source-probe-target=".tcrn-radio-group__control"><RadioGroup legend={c.status} name={cell.key} defaultValue={id==="rd-on"?"team":undefined} options={[{value:"team",label:c.team}]}/></div>;
     return <Switch {...p} label={c.notify} defaultChecked={id==="sw-on"}/>;
   }
   return null;
@@ -47,5 +71,27 @@ function Probe({cell,locale,apiHref}:{cell:ApprovedMatrixOccurrence;locale:DocsL
 export function SourceMatrices({board,locale,apiHref}:{board:ApprovedBoardId;locale:DocsLocale;apiHref:string}){
   const cells=approvedMatrixOccurrences.filter(c=>c.board===board);
   if(!cells.length||board.startsWith("07"))return null;
-  return <section className="tcrn-doc-section" data-published-matrix={board}><Heading level={2} visualLevel={3}>B · {board}</Heading><div className="tcrn-doc-grid">{cells.map(cell=><div key={cell.key} className="tcrn-doc-pane" data-tcrn-theme={cell.theme==="night"?"dark":"light"}><code>{cell.cellId}</code><div className={cell.cellId.includes("canvas")||cell.cellId.endsWith("-bg-l")||cell.cellId.endsWith("-bg-n")?undefined:"tcrn-doc-paper"}><Probe cell={cell} locale={locale} apiHref={apiHref}/></div></div>)}</div></section>;
+  return (
+    <section className="tcrn-doc-section" data-published-matrix={board}>
+      <Heading level={2} visualLevel={3}>B · {board}</Heading>
+      <div className="tcrn-doc-grid">
+        {cells.map(cell => {
+          if (cell.cellId.startsWith("rd-on-")) return null;
+          const selected = cell.cellId.startsWith("rd-edge-")
+            ? cells.find(other => other.theme === cell.theme && other.cellId.startsWith("rd-on-"))
+            : undefined;
+          const canvas = cell.cellId.includes("canvas") || cell.cellId.endsWith("-bg-l") || cell.cellId.endsWith("-bg-n");
+          return (
+            <div key={cell.key} className="tcrn-doc-pane" data-tcrn-theme={cell.theme === "night" ? "dark" : "light"}>
+              <code>{cell.cellId}{selected && ` · ${selected.cellId}`}</code>
+              <div className={canvas ? undefined : "tcrn-doc-paper"}>
+                {selected ? <RadioProbe edge={cell} selected={selected} locale={locale} />
+                  : <Probe cell={cell} locale={locale} apiHref={apiHref} />}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
 }

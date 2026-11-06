@@ -6,9 +6,9 @@ import path from "node:path";
 test("V6 published shell geometry and coordinates preserve distinct layers",()=>{const s=readApprovedSource(),b=s.board("07b-shell-lower");assert.equal(cssRule(b.css,".scr.ts")["--strip-h"],"52px");assert.equal(cssRule(b.css,".ts-brand").width,"134px");assert.equal(cssRule(b.css,".scr.ts")["--panel-wx"],"952px");assert.equal(cssRule(b.css,".scr.ts")["--drop-w"],"240px");assert.equal(cssRule(b.css,".scr.ts")["--cascade-gap"],"4px");assert.equal(6+40/2,26);assert.equal(40/2,20);});
 test("V6 pin stays a pure SVG button with an item-specific accessible name",()=>{const code=fs.readFileSync(path.join(ROOT,"packages/ui-react/src/components/Navigation/Navigation.tsx"),"utf8");const pin=code.slice(code.indexOf("function NavPinButton"),code.indexOf("function navItemText"));assert.match(pin,/aria-label=\{pinned \? chrome\.unpinFromStrip\(label\)/);assert.match(pin,/<Icon name="pin"/);assert.doesNotMatch(pin,/<(?:span|p)|title=/);assert.ok(readApprovedSource().board("07b-shell-lower").html.includes("可见名"),"formal prose remains unedited");});
 
-import { SHELL_G18,SHELL_G18_FIXTURES,judgeShellG18,shadowBlurs } from '../scripts/lib/published-shell-gates.mjs';
+import { SHELL_G18,SHELL_G18_FIXTURES,judgeShellG18,shadowBlurs,readShellSpecimenContent,shellSpecimenContentIssues } from '../scripts/lib/published-shell-gates.mjs';
 import { extractMarks,extractMatrixOccurrences } from '../scripts/lib/approved-site-source.mjs';
-import { shellSceneFor } from '../scripts/lib/published-browser-proof.mjs';
+import { shellSceneFor,withPublishedBrowser,openPublishedBoard } from '../scripts/lib/published-browser-proof.mjs';
 test('published 07b G rows have one existing-runner local DOM/behavior fixture each',()=>{
  const html=readApprovedSource().board('07b-shell-lower').html.split('\n')[83].replace(/sc-raw-/g,'');
  const titles=[...html.matchAll(/<tr[^>]*>\s*<td[^>]*>([\s\S]*?)<\/td>/g)].map(m=>m[1].replace(/<[^>]*>/g,''));
@@ -84,4 +84,37 @@ test('the existing family/shell runners route every entry/locale and G18 theme t
   else assert.equal(url.pathname,`/${locale}/${board}.html`);
  }
  for(const [entry,locale,board]of [['legacy','en','01-tokens'],['manager','de','01-tokens'],['static','en','brand-identity']])assert.throws(()=>publishedBoardUrl('http://localhost',entry,locale,board),/Unsupported/);
+});
+
+test('07 inner specimens and outer docs fail independently in both builds at wide and narrow widths',async()=>{
+ const inner='.tcrn-doc-shell-frame > .tcrn-product-shell > .tcrn-product-shell__paper > .tcrn-product-shell__main';
+ const outer='.docs-shell > .docs-paper > main';
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  const page=await browser.newPage();
+  try{
+   for(const board of ['07a-shell-upper','07b-shell-lower'])for(const width of [1440,390]){
+    await page.setViewportSize({width,height:1000});
+    await openPublishedBoard(page,{base,entry,locale:'zh-CN',board});
+    const label=`${entry}/${board}/${width}`,judge=reading=>shellSpecimenContentIssues(reading,{source,board});
+    const baseline=await readShellSpecimenContent(page);
+    assert.deepEqual(judge(baseline),{outer:[],specimens:[]},label);
+    assert.ok(baseline.scenes.some(scene=>!scene.phone&&scene.width===1240&&scene.padding[3]===28&&scene.maxFrameScroll>0),label);
+    if(board==='07a-shell-upper')assert.ok(baseline.scenes.some(scene=>scene.phone&&scene.width===390&&scene.padding[3]===16),label);
+
+    for(const [selector,declaration,scope,expected] of [
+     [inner,'padding:0!important','specimens','product content padding'],
+     [inner,'gap:0!important','specimens','product content vertical gap'],
+     [outer,'padding-inline:0!important','outer','Outer docs content padding'],
+    ]){
+     const override=await page.addStyleTag({content:`${selector}{${declaration}}`});
+     try{
+      const result=judge(await readShellSpecimenContent(page));
+      assert.ok(result[scope].some(issue=>issue.includes(expected)),`${label}: ${declaration}`);
+      assert.deepEqual(result[scope==='outer'?'specimens':'outer'],[],`${label}: independent layers`);
+     }finally{await override.evaluate(node=>node.remove());}
+    }
+    assert.deepEqual(judge(await readShellSpecimenContent(page)),{outer:[],specimens:[]},label);
+   }
+  }finally{await page.close();}
+ },{entry});
 });

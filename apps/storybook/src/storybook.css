@@ -931,7 +931,7 @@
 .tcrn-multi-select-dropdown__trigger [data-multi-select-summary]{min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tcrn-multi-select-dropdown__caret{position:absolute;inset-block:0;inset-inline-end:calc((30px - var(--tcrn-icon-size-sm)) / 2);margin-block:auto;inline-size:var(--tcrn-icon-size-sm);block-size:var(--tcrn-icon-size-sm);color:var(--tcrn-color-ink-3);pointer-events:none}
 .tcrn-multi-select-dropdown__trigger:disabled{cursor:not-allowed}
-.tcrn-multi-select-dropdown__list{z-index:var(--tcrn-z-popover);min-inline-size:0;max-inline-size:calc(100vw - var(--tcrn-space-4));max-block-size:calc(100vh - var(--tcrn-space-4));overflow:auto;box-sizing:border-box}
+.tcrn-multi-select-dropdown__list{z-index:var(--tcrn-z-popover);min-inline-size:0;max-inline-size:calc(100vw - var(--tcrn-space-4));max-block-size:calc(100vh - var(--tcrn-space-4));overflow:auto;box-sizing:border-box;background-color:var(--tcrn-color-panel)}
 .tcrn-multi-select-dropdown__list[hidden]{display:none}
 /* An option draws its fill and weight from a pair kept on the option itself (Inputs board
    .opt): no fill and the regular weight by default, the hover fill on hover, the wash and

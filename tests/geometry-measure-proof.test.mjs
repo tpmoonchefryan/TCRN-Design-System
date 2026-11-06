@@ -16,7 +16,7 @@ test('all labelled IconButton sizes, NumberInput12ch and actual header context r
   assert.ok(geometryIssues([{...row,width:height}]).some(i=>i.includes('Labelled IconButton')));
   assert.ok(geometryIssues([{...row,paddingLeft:0}]).length);
  }
- const number={kind:'control',className:'tcrn-input tcrn-number-input',size:'md',height:32,number:true,minimum:90,twelveCh:90,squeezedWidth:90};
+ const number={kind:'control',className:'tcrn-input tcrn-number-input',size:'md',height:32,number:true,minimum:90,twelveCh:90,squeezedWidth:90,fontSize:13,fontVariantNumeric:'tabular-nums'};
  assert.deepEqual(geometryIssues([number]),[]);
  for(const change of [{minimum:0},{minimum:undefined},{squeezedWidth:1}])assert.ok(geometryIssues([{...number,...change}]).some(i=>i.includes('12ch')));
  const header={kind:'page-header',fontSize:26,lineHeight:28.6};assert.deepEqual(geometryIssues([header]),[]);assert.ok(geometryIssues([{...header,lineHeight:30}]).some(i=>i.includes('PageHeader')));
@@ -32,6 +32,39 @@ test('ButtonGroup geometry measures actions independently of its decorative sepa
 
 import { collectGeometryReadings } from '../scripts/lib/published-docs-browser.mjs';
 import { withPublishedBrowser,openPublishedBoard,publishedSearchOccurrences,publishedSearchLocator,publishedSearchGeometry } from '../scripts/lib/published-browser-proof.mjs';
+import { readApiFacts } from '../scripts/lib/published-api-browser.mjs';
+
+test('NumberInput samples the real tabular font and rejects a changed CSS minimum under squeeze',async()=>{
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  try{
+   await openPublishedBoard(page,{base,entry,locale:'zh-CN',board:'06-inputs'});
+   const controls=page.locator('[data-approved-board] input.tcrn-number-input');
+   const collect=async()=>(await collectGeometryReadings(page)).filter(row=>row.number);
+   const original=await collect();
+   assert.equal(original.length,4);
+   assert.deepEqual(geometryIssues(original,{source}),[]);
+   assert.ok(original.every(row=>row.fontSize===13&&row.fontVariantNumeric==='tabular-nums'&&row.squeezedWidth===row.twelveCh));
+   assert.equal((await readApiFacts(page,{source,locale:'zh-CN'})).NumberInput.twelveChMinimum,true);
+
+   const control=controls.first(),style=await control.getAttribute('style');
+   try{
+    await control.evaluate(el=>el.style.minInlineSize='11ch');
+    const changed=await collect();
+    assert.equal(changed[0].twelveCh,original[0].twelveCh);
+    assert.ok(changed[0].squeezedWidth<changed[0].twelveCh-.5);
+    assert.equal(geometryIssues(changed,{source}).filter(issue=>issue.includes('12ch')).length,1);
+    assert.equal((await readApiFacts(page,{source,locale:'zh-CN'})).NumberInput.twelveChMinimum,false);
+    await control.evaluate(el=>{el.style.minInlineSize='12ch';el.style.fontVariantNumeric='normal';});
+    assert.equal(geometryIssues(await collect(),{source}).filter(issue=>issue.includes('12ch')).length,1);
+   }finally{
+    await control.evaluate((el,value)=>value===null?el.removeAttribute('style'):el.setAttribute('style',value),style);
+   }
+   assert.deepEqual(geometryIssues(await collect(),{source}),[]);
+  }finally{await page.close();}
+ },{entry});
+});
+
 test('the real geometry collector keeps menu/drop/Sheet context and valid context reaches later native checks',async()=>{
  for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
   for(const locale of ['zh-CN','en','ja','ko','fr'])for(const board of ['07a-shell-upper','07b-shell-lower']){

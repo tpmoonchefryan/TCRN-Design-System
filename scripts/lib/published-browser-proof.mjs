@@ -40,7 +40,8 @@ export async function withPublishedBrowser(run,{root=ROOT,entry="static"}={}){
 }
 export async function measureElement(locator,{probe="ink",kind="text"}={}){
   return locator.evaluate((input,{probe,kind})=>{
-    const target=input.getAttribute("data-source-probe-target");let element=target?(target.startsWith("body ")?document.querySelector(target.slice(5)):input.querySelector(target)):input;
+    const target=input.getAttribute("data-source-probe-target");
+    let element=input.hasAttribute("data-source-probe-control")?input.closest("label")?.control:target?input.querySelector(target):input;
     if(!element)throw new Error(`Missing actual component probe target ${target}`);
     if(element.tagName==="SPAN"&&element.classList.contains("tcrn-select-wrap__icon"))element=element.querySelector("svg")??element;
     const pseudo=probe==="ph"?"::placeholder":probe.startsWith("after")?(element.classList.contains("tcrn-switch__control")?"::before":"::after"):null;
@@ -48,8 +49,53 @@ export async function measureElement(locator,{probe="ink",kind="text"}={}){
     const chain=[];for(let p=element;p;p=p.parentElement)chain.push(getComputedStyle(p).backgroundColor);
     const shadows=[...s.boxShadow.matchAll(/rgba?\([^)]+\)/g)].map(m=>m[0]);
     let ink=s.color;if((kind==="edge"||probe==="after-shadow")&&shadows.length)ink=shadows[0];if(probe==="after-border")ink=s.borderRightColor;if(probe==="after-bg")ink=s.backgroundColor;
-    return {ink,background:s.backgroundColor,chain,color:s.color,font:s.fontFamily,fontSize:s.fontSize,lineHeight:s.lineHeight,weight:s.fontWeight,stroke:s.strokeWidth,shadow:s.boxShadow,width:rect.width,height:rect.height,visible:!!element.getClientRects().length&&rect.width>0,tag:element.tagName,pseudo};
+    const group=element.matches('input[type="radio"]')
+      ? [...(element.closest('fieldset')?.querySelectorAll('input[type="radio"]')??[])].filter(input=>input.name===element.name&&input.form===element.form)
+      : [];
+    const radio=group.length?{checked:element.checked,indeterminate:element.matches(':indeterminate'),groupSize:group.length,checkedCount:group.filter(input=>input.checked).length,named:!!element.labels?.[0]?.textContent.trim()}:null;
+    return {ink,background:s.backgroundColor,chain,color:s.color,font:s.fontFamily,fontSize:s.fontSize,lineHeight:s.lineHeight,weight:s.fontWeight,stroke:s.strokeWidth,shadow:s.boxShadow,width:rect.width,height:rect.height,visible:!!element.getClientRects().length&&rect.width>0,tag:element.tagName,pseudo,radio};
   },{probe,kind});
+}
+
+export async function ownedVisibleListbox(page,trigger){
+ const id=await trigger.getAttribute('aria-controls');
+ if(!id)throw new Error('MultiSelect trigger missing aria-controls');
+ const listbox=page.locator(`[id=${JSON.stringify(id)}][role="listbox"]:visible`);
+ if(await listbox.count()!==1)throw new Error('MultiSelect aria-controls must identify one visible listbox');
+ return listbox;
+}
+
+export async function measureNumberMinimums(locator){
+ return locator.evaluateAll(inputs=>inputs.filter(input=>input.getBoundingClientRect().width>0).map(input=>{
+  const style=getComputedStyle(input);
+  const probe=document.createElement('span');
+  Object.assign(probe.style,{position:'absolute',display:'block',width:'12ch',height:'0',padding:'0',border:'0',boxSizing:'content-box'});
+  // Computed font shorthand can be empty with font-variant-numeric: tabular-nums.
+  for(const property of ['fontFamily','fontSize','fontStyle','fontWeight','fontStretch','fontVariantNumeric',
+   'fontFeatureSettings','fontKerning','fontVariationSettings','fontOpticalSizing','fontSizeAdjust']){
+   probe.style[property]=style[property];
+  }
+  const original=input.getAttribute('style');
+  input.parentElement.append(probe);
+  try{
+   const twelveCh=probe.getBoundingClientRect().width,minimum=parseFloat(style.minInlineSize);
+   input.style.setProperty('inline-size','1px','important');
+   return {twelveCh,minimum,squeezedWidth:input.getBoundingClientRect().width,fontSize:parseFloat(style.fontSize),fontVariantNumeric:style.fontVariantNumeric};
+  }finally{
+   probe.remove();
+   if(original===null)input.removeAttribute('style');
+   else input.setAttribute('style',original);
+  }
+ }));
+}
+
+export function numberMinimumValid(reading,source){
+ const css=source.board('06-inputs').css;
+ const size=parseFloat(cssRule(css,'.gp')['--fs-md']);
+ const numeric=cssRule(css,'.in')['font-variant-numeric'];
+ return !!reading&&reading.fontSize===size&&reading.fontVariantNumeric===numeric&&
+  [reading.minimum,reading.twelveCh,reading.squeezedWidth].every(Number.isFinite)&&
+  Math.abs(reading.minimum-reading.twelveCh)<=.5&&Math.abs(reading.squeezedWidth-reading.twelveCh)<=.5;
 }
 export function publishedTextRoleIssues(actual,reference,{kind="text",probe="ink"}={}){
   if(probe==="ph")return actual.ink===reference.ink?[]:["source placeholder ink"];
@@ -193,6 +239,31 @@ function solidBackground(chain){
   for(const value of [...chain].reverse()){const c=parse(value);result=[0,1,2].map(i=>c[i]*c[3]+result[i]*(1-c[3])).concat(1);}
   return `rgb(${result.slice(0,3).join(",")})`;
 }
+
+export async function readFamilyCell({page,actual,reference,cell}){
+ if(await actual.count()!==1)throw new Error('Missing or duplicate package source probe');
+ const openSelector=await actual.getAttribute('data-source-open-control');
+ try{
+  let target=actual;
+  if(openSelector){
+   const trigger=actual.locator(openSelector);
+   await trigger.click();
+   const listbox=await ownedVisibleListbox(page,trigger);
+   target=listbox.locator('[role="option"][aria-selected="true"]:visible');
+   if(await target.count()!==1)throw new Error('MultiSelect owned listbox must contain one visible selected sample option');
+  }
+  const referenceReading=await measureElement(reference,cell),reading=await measureElement(target,cell);
+  const measured=contrast(reading.ink,solidBackground(reading.chain)),failures=[];
+  if(!reading.visible||!referenceReading.visible)failures.push('source/candidate painted carrier is not visible');
+  if(!cell.exempt&&measured<(cell.kind==='text'?4.5:3))failures.push(`threshold ${cell.kind==='text'?4.5:3}`);
+  if(Number.isFinite(Number(cell.expect))&&Number(measured.toFixed(2))!==Number(cell.expect))failures.push(`ratio ${measured.toFixed(2)} != ${cell.expect}`);
+  failures.push(...publishedTextRoleIssues(reading,referenceReading,cell));
+  if(openSelector&&reading.background!==referenceReading.background)failures.push('MultiSelect owned option wash differs from source');
+  if(referenceReading.radio&&JSON.stringify(reading.radio)!==JSON.stringify(referenceReading.radio))failures.push('RadioGroup native option state or group differs from source');
+  return {measured,reading,referenceReading,ok:!failures.length,reason:failures.join('; ')};
+ }finally{if(openSelector)await page.keyboard.press('Escape');}
+}
+
 export async function proveFamilyMatrices({root=ROOT}={}){
  const results=[];
  for(const entry of PROOF_ENTRIES){
@@ -206,17 +277,9 @@ export async function proveFamilyMatrices({root=ROOT}={}){
      const allReference=reference.locator('[data-cell]');let occurrence=0;
      for(const cell of cells.filter(c=>c.board===board)){
       const ref=allReference.nth(occurrence++),actual=candidate.locator(`[data-source-cell-key="${cell.key}"]`),observation={entry,locale,key:cell.key,cellId:cell.cellId,theme:cell.theme,sourceLine:cell.sourceLine,sourceScene:cell.sourceScene,sourceState:cell.sourceState,carrier:cell.carrier,kind:cell.kind,exempt:cell.exempt,expected:cell.expect,ok:false};
-      let openSelector;
       try{
-       if(await actual.count()!==1)throw new Error('Missing or duplicate package source probe');
-       openSelector=await actual.getAttribute('data-source-open-control');if(openSelector)await actual.locator(openSelector).click();
-       const referenceReading=await measureElement(ref,cell),reading=await measureElement(actual,cell),measured=contrast(reading.ink,solidBackground(reading.chain)),failures=[];
-       if(!reading.visible||!referenceReading.visible)failures.push('source/candidate painted carrier is not visible');
-       if(!cell.exempt&&measured<(cell.kind==='text'?4.5:3))failures.push(`threshold ${cell.kind==='text'?4.5:3}`);
-       if(Number.isFinite(Number(cell.expect))&&Number(measured.toFixed(2))!==Number(cell.expect))failures.push(`ratio ${measured.toFixed(2)} != ${cell.expect}`);
-       failures.push(...publishedTextRoleIssues(reading,referenceReading,cell));
-       Object.assign(observation,{measured,reading,referenceReading,ok:!failures.length,reason:failures.join('; ')});
-      }catch(error){observation.reason=error.message;}finally{if(openSelector)await candidate.keyboard.press('Escape');}
+       Object.assign(observation,await readFamilyCell({page:candidate,actual,reference:ref,cell}));
+      }catch(error){observation.reason=error.message;}
       if(!observation.ok)issues.push(`${entry}/${locale}/${cell.key}: ${observation.reason}`);observations.push(observation);
      }
      if(board==='06-inputs'){const shortcuts=await collectPublishedShortcuts({source,board,reference,page:candidate,entry,locale});issues.push(...shortcuts.issues);shortcutObservations.push(...shortcuts.observations);}

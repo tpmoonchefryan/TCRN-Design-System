@@ -14,6 +14,110 @@ export const SHELL_G18 = Object.freeze([
 ].map(([id,key,title])=>Object.freeze({id,key,title,board:"07b-shell-lower",line:84,fixture:id})));
 const close=(a,b,tolerance=.5)=>Number.isFinite(a)&&Math.abs(a-b)<=tolerance;
 const center=r=>r.y+r.height/2;
+
+export async function readShellSpecimenContent(page){
+ return page.locator('.docs-shell').evaluate(docs=>{
+  const padding=s=>[s.paddingTop,s.paddingRight,s.paddingBottom,s.paddingLeft].map(parseFloat);
+  const outer=docs.querySelector(':scope > .docs-paper > main');
+  const scenes=[...docs.querySelectorAll('[data-formal-shell-scene]')].map(frame=>{
+   const shell=frame.querySelector(':scope > .tcrn-product-shell');
+   const strip=shell?.querySelector(':scope > [data-shell-strip]');
+   const paper=shell?.querySelector(':scope > .tcrn-product-shell__paper');
+   const main=paper?.querySelector(':scope > .tcrn-product-shell__main');
+   const header=main?.querySelector(':scope > .tcrn-page-header');
+   const roster=main?.querySelector(':scope > .tcrn-tabs');
+   const tail=roster?.querySelector('tbody tr:last-child');
+   const mode=frame.dataset.formalShellScene,theme=frame.dataset.shellTheme;
+   if(!strip||!main||!header||!roster||!tail)return {mode,theme,missing:true};
+
+   const shellBox=shell.getBoundingClientRect(),paperBox=paper.getBoundingClientRect();
+   const mainBox=main.getBoundingClientRect(),headerBox=header.getBoundingClientRect(),style=getComputedStyle(main);
+   const textInset=selector=>{
+    const el=main.querySelector(selector);
+    if(!el)return null;
+    const range=document.createRange();
+    range.selectNodeContents(el);
+    const box=range.getBoundingClientRect();
+    return box.width>0?box.left-paperBox.left:null;
+   };
+   const textInsets={
+    breadcrumb:textInset('.tcrn-breadcrumb__crumb'),
+    title:textInset('.tcrn-page-header__title'),
+    tab:textInset('.tcrn-tabs__label'),
+    column:textInset('.tcrn-doc-roster-table th'),
+    name:textInset('.tcrn-doc-roster-name'),
+   };
+   const headerInset=headerBox.top-mainBox.top,actualGap=roster.getBoundingClientRect().top-headerBox.bottom;
+   const scrollTop=main.scrollTop,scrollLeft=frame.scrollLeft;
+   let tailInset,tailHeight,maxFrameScroll;
+   try{
+    main.scrollTop=main.scrollHeight;
+    const tailBox=tail.getBoundingClientRect();
+    tailInset=mainBox.bottom-tailBox.bottom;
+    tailHeight=tailBox.height;
+    frame.scrollLeft=frame.scrollWidth;
+    maxFrameScroll=frame.scrollLeft;
+   }finally{
+    main.scrollTop=scrollTop;
+    frame.scrollLeft=scrollLeft;
+   }
+   return {mode,theme,phone:frame.hasAttribute('data-phone'),width:shellBox.width,height:shellBox.height,
+    stripHeight:strip.getBoundingClientRect().height,paperInset:paperBox.left-shellBox.left,
+    paperWidth:paperBox.width,paperHeight:paperBox.height,mainWidth:mainBox.width,mainHeight:mainBox.height,
+    paperBackground:getComputedStyle(paper).backgroundColor,mainBackground:style.backgroundColor,
+    padding:padding(style),display:style.display,direction:style.flexDirection,gap:parseFloat(style.rowGap),
+    headerInset,actualGap,textInsets,tailInset,tailHeight,overflowY:style.overflowY,
+    frameWidth:frame.clientWidth,frameScrollWidth:frame.scrollWidth,maxFrameScroll,
+    frameOverflow:getComputedStyle(frame).overflowX};
+  });
+  return {viewport:window.innerWidth,outerPadding:outer?padding(getComputedStyle(outer)):null,scenes};
+ });
+}
+
+export function shellSpecimenContentIssues(reading,{source,board}){
+ const css=source.board(board).css,content=cssRule(css,'.ts-content');
+ const desktop=cssRule(css,'.scr'),mobile=cssRule(css,'.scr.ts.m'),shell=cssRule(css,'.scr.ts');
+ const height=parseFloat(desktop.height),strip=parseFloat(shell['--strip-h']),edge=parseFloat(shell['--gap']);
+ const readPadding=value=>{
+  const [top,right=top,bottom=top,left=right]=value.split(/\s+/).map(parseFloat);
+  return [top,right,bottom,left];
+ };
+ const samePadding=(actual,expected)=>actual?.length===4&&expected.every((value,index)=>close(actual[index],value));
+ const outer=[],specimens=[];
+ const outerExpected=reading.viewport<=750?[12,16,12,16]:[14,28,12,28];
+ if(!samePadding(reading.outerPadding,outerExpected))outer.push('Outer docs content padding');
+
+ const modes=board==='07a-shell-upper'?['band','band','menu','drop','phone-closed','phone']:['band','menu','drop'];
+ for(const theme of ['light','dark']){
+  const actual=reading.scenes.filter(scene=>scene.theme===theme).map(scene=>scene.mode).sort();
+  if(JSON.stringify(actual)!==JSON.stringify([...modes].sort()))specimens.push(`Incomplete product specimens ${theme}`);
+ }
+ for(const scene of reading.scenes){
+  const label=`${scene.mode}/${scene.theme}`,phone=scene.mode==='phone'||scene.mode==='phone-closed';
+  if(scene.missing){specimens.push(`${label}: missing product content`);continue;}
+  const width=parseFloat(phone?mobile.width:desktop.width);
+  const padding=readPadding(phone?cssRule(css,'.scr.ts.m .ts-content').padding:content.padding);
+  const gap=parseFloat(content.gap);
+  const panel=cssRule(css,scene.theme==='dark'?'.gp.night':'.gp')['--panel'];
+  const panelRgb=`rgb(${[1,3,5].map(index=>parseInt(panel.slice(index,index+2),16)).join(', ')})`;
+  if(scene.phone!==phone||!close(scene.width,width)||!close(scene.height,height)||
+    !close(scene.stripHeight,strip)||!close(scene.paperInset,edge)||!close(scene.paperWidth,width-2*edge)||
+    !close(scene.paperHeight,height-strip-edge)||!close(scene.mainWidth,scene.paperWidth)||!close(scene.mainHeight,scene.paperHeight)){
+   specimens.push(`${label}: product specimen, strip or paper geometry`);
+  }
+  if(!samePadding(scene.padding,padding)||!close(scene.headerInset,padding[0]))specimens.push(`${label}: product content padding`);
+  if(scene.display!==content.display||scene.direction!==content['flex-direction']||!close(scene.gap,gap)||!close(scene.actualGap,gap))specimens.push(`${label}: product content vertical gap`);
+  if(Object.values(scene.textInsets).some(inset=>!close(inset,padding[3])))specimens.push(`${label}: product content text alignment`);
+  if(scene.paperBackground!==panelRgb||![panelRgb,'rgba(0, 0, 0, 0)'].includes(scene.mainBackground))specimens.push(`${label}: product content local panel theme`);
+  if(!['auto','scroll'].includes(scene.overflowY)||!(scene.tailHeight>0&&scene.tailInset>=padding[2]-.5))specimens.push(`${label}: product content tail is unreachable`);
+  if(!close(scene.frameScrollWidth,width)||(scene.frameWidth<width-.5&&
+    (!['auto','scroll'].includes(scene.frameOverflow)||!close(scene.maxFrameScroll,scene.frameScrollWidth-scene.frameWidth)))){
+   specimens.push(`${label}: product specimen horizontal scrolling`);
+  }
+ }
+ return {outer,specimens};
+}
+
 export function shellExpected(source){
   const css=source.board("07b-shell-lower").css,root=cssRule(css,".scr.ts"),brand=cssRule(css,".ts-brand");
   const n=value=>parseFloat(value);

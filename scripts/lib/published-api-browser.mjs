@@ -1,5 +1,6 @@
 import { readApprovedSource,extractMarks,sourceElements,decodeHtml,cssRule } from "./approved-site-source.mjs";
 import { readPinnableFocus,rowFocusValid } from "./published-shell-gates.mjs";
+import { measureNumberMinimums,numberMinimumValid,ownedVisibleListbox } from "./published-browser-proof.mjs";
 // Runtime assertions are separate from the normative API text and from engineering exports.
 export const API_BEHAVIOR_REQUIREMENTS=Object.freeze({
  Heading:['semanticLevels','visualFamilies','singleLineTitle'],Text:['bodyScale','numeralCaps','strongSample'],Highlight:['markOnlyPaint','emptyQuery'],Icon:['rosterGeometry','namesAndDecoration'],ProductLogo:['registeredGraphicOnly','renditions'],ProductLockup:['registeredWording','railAndFirstLine','exactLineRoles'],Button:['disabledDescription','loadingFeedback','dangerInk'],IconButton:['named','squareAndLabelled','allPublishedSizes'],LinkButton:['nativeAnchor','noBusyOrDisabled'],ClipboardCopyButton:['secretOutsideDom','fiveStatesAndReset'],ButtonGroup:['namedGroup','twoToFive','allPublishedSizes','childSelection'],Input:['nativeNamed','errorsAndReasons'],Textarea:['nativeNamed','widthAndMultiline'],SearchInput:['namedTool','shortcutAndFill'],SuggestInput:['openDomain','deduplicatedDatalist'],Select:['nativeClosedSingle','placeholderDisabled'],MultiSelect:['closedSetPresentations','bodyListbox','selectionAndLabels'],NumberInput:['nativeNumber','rangeAndKeyboard','twelveChMinimum'],DatePicker:['nativeIso','calendarIndicator'],Checkbox:['nativeNamed','mixedAndError'],RadioGroup:['nativeLegendAndName','oneChoicePerGroup'],Switch:['namedImmediateBinary','descriptionAssociated'],ProductShell:['oneTopBand','headerAndPreferences','contextualHeader'],ShellBrandButton:['onePressFullDialog','namedRegisteredVersions','localizedNames'],ShellMenu:['nonModalAndDismiss','globalSearchAndKeys','rowCarrierStates'],ShellPins:['orderedReorder','sixAndResponsive'],ShellDropdown:['subtreeSearch','clickAndKeys'],ShellIntro:['mountedAfterSignIn','sessionMotionContract']
@@ -134,9 +135,7 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
   facts.SuggestInput={openDomain:suggest?.getAttribute('data-choice-value-mode')==='open'&&!!list,deduplicatedDatalist:!!list&&new Set([...list.children].map(o=>o.value)).size===list.children.length};
   facts.Select={nativeClosedSingle:!!select&&!select.multiple&&select.options.length>1,placeholderDisabled:!!select?.options[0].disabled};
   facts.MultiSelect={closedSetPresentations:!!one('select[multiple]')&&!!one('.tcrn-multi-select-dropdown__trigger')&&!!one('[data-choice-presentation="checkboxes"]'),selectionAndLabels:!!one('[data-multi-select-summary]')?.textContent.trim()&&!!one('.tcrn-multi-select-dropdown__trigger')?.getAttribute('aria-label')};
-  let minimumObservation=null;
-  if(number){const probe=document.createElement('span');probe.style.cssText=`position:absolute;display:block;width:12ch;padding:0;border:0;box-sizing:content-box;font:${style(number).font};`;number.parentElement.append(probe);const original=number.getAttribute('style');try{const twelveCh=probe.getBoundingClientRect().width,minimum=parseFloat(style(number).minInlineSize);number.style.inlineSize='1px';minimumObservation={twelveCh,minimum,squeezed:number.getBoundingClientRect().width};}finally{probe.remove();if(original===null)number.removeAttribute('style');else number.setAttribute('style',original);}}
-  facts.NumberInput={nativeNumber:!!number&&number.type==='number'&&number.min==='1'&&number.max==='120',minimumObservation,twelveChMinimum:!!minimumObservation&&Math.abs(minimumObservation.minimum-minimumObservation.twelveCh)<.5&&Math.abs(minimumObservation.squeezed-minimumObservation.twelveCh)<.5};
+  facts.NumberInput={nativeNumber:!!number&&number.type==='number'&&number.min==='1'&&number.max==='120'};
   facts.DatePicker={nativeIso:!!date&&/^\d{4}-\d{2}-\d{2}$/.test(date.value)&&named(date),calendarIndicator:!!one('.tcrn-date-picker-wrap [data-icon-name="calendar"]')&&getComputedStyle(date,'::-webkit-calendar-picker-indicator').opacity==='0'};
   const checks=all('input.tcrn-checkbox');facts.Checkbox={nativeNamed:checks.length>0&&checks.every(named),mixedAndError:checks.some(el=>el.getAttribute('aria-invalid')==='true')&&checks.some(el=>el.disabled)};
   const radios=all('fieldset.tcrn-radio-group');facts.RadioGroup={nativeLegendAndName:radios.length>0&&radios.every(el=>el.querySelector('legend')?.textContent.trim()&&[...el.querySelectorAll('input[type="radio"]')].every(input=>input.name)),oneChoicePerGroup:radios.some(el=>el.querySelectorAll('input[type="radio"]:checked').length===1)&&radios.every(el=>el.querySelectorAll('input[type="radio"]:checked').length<=1)};
@@ -162,6 +161,11 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
  if(facts.ProductLockup){facts.ProductLockup.exactLineRoles=lockupRoleIssues(facts.ProductLockup.readings,formalLockupExpectations(source,locale)).length===0;}
  if(facts.ShellBrandButton){facts.ShellBrandButton.localizedNames=shellBrandNameIssues(facts.ShellBrandButton.readings,locale).length===0;}
  if(facts.Input){facts.Input.errorRoleIssues=[...describedErrorRoleIssues(facts.Input.errorReadings,{source}),...hintRoleIssues(facts.Input.hintReadings,{source})];facts.Input.errorsAndReasons&&=facts.Input.errorRoleIssues.length===0;}
+ if(facts.NumberInput){
+  const [minimum]=await measureNumberMinimums(page.locator('[data-approved-board] input[type="number"]').first());
+  facts.NumberInput.minimumObservation=minimum??null;
+  facts.NumberInput.twelveChMinimum=numberMinimumValid(minimum,source);
+ }
  return facts;
 }
 
@@ -192,7 +196,11 @@ export async function exerciseApiBoard(page,board,facts){
  if(board==='06-inputs'){
   const number=root.locator('input[type="number"]').first();await number.fill('121');const overflow=await number.evaluate(el=>el.validity.rangeOverflow);await number.fill('24');await number.press('ArrowUp');facts.NumberInput.rangeAndKeyboard=overflow&&await number.inputValue()==='25';
   const toggle=root.locator('input[role="switch"]').first(),before=await toggle.isChecked();await toggle.check({force:true});if(before)await toggle.uncheck({force:true});facts.Switch.namedImmediateBinary=await toggle.isChecked()!==before;
-  const trigger=root.locator('.tcrn-multi-select-dropdown__trigger').first();await trigger.click();facts.MultiSelect.bodyListbox=await page.locator('body > [role="listbox"][data-overlay-boundary="document-body"][data-overlay-open="true"]').count()>0;await page.keyboard.press('Escape');
+  const trigger=root.locator('.tcrn-multi-select-dropdown__trigger').first();await trigger.click();
+  try{
+   const listbox=await ownedVisibleListbox(page,trigger);
+   facts.MultiSelect.bodyListbox=await listbox.evaluate(el=>el.matches('body > [data-overlay-boundary="document-body"][data-overlay-open="true"]'));
+  }finally{await page.keyboard.press('Escape');}
   const checkbox=root.locator('input.tcrn-checkbox').first();await checkbox.evaluate(el=>{el.indeterminate=true;});facts.Checkbox.mixedAndError&&=await checkbox.evaluate(el=>el.matches(':indeterminate'));await checkbox.evaluate(el=>{el.indeterminate=false;});
  }
  if(board.startsWith('07')){

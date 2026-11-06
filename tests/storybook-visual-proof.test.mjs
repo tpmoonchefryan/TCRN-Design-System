@@ -27,9 +27,124 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
 });
 
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
-import { readApprovedSource,sourceElements,decodeHtml } from '../scripts/lib/approved-site-source.mjs';
+import { readApprovedSource,sourceElements,decodeHtml,extractMatrixOccurrences } from '../scripts/lib/approved-site-source.mjs';
 import { provenanceActivationIssues,activateProvenanceResult,exerciseDocsNavigation } from '../scripts/lib/published-docs-browser.mjs';
-import { publishedBoardUrl,proofContexts,publishedTextRoleIssues,withPublishedBrowser,openPublishedBoard,publishedShortcutOccurrences,publishedShortcutLocator,collectPublishedShortcuts } from '../scripts/lib/published-browser-proof.mjs';
+import { publishedBoardUrl,proofContexts,publishedTextRoleIssues,withPublishedBrowser,openPublishedBoard,publishedShortcutOccurrences,publishedShortcutLocator,collectPublishedShortcuts,configureProofPage,readFamilyCell,ownedVisibleListbox } from '../scripts/lib/published-browser-proof.mjs';
+
+test('06 measures the labelled native radios in one selectable group and detects wrong state',async()=>{
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  const reference=await browser.newPage({viewport:{width:2640,height:1000}});
+  const cells=extractMatrixOccurrences(source).filter(cell=>cell.board==='06-inputs');
+  try{
+   await openPublishedBoard(page,{base,entry,locale:'en',board:'06-inputs'});
+   await reference.goto(`${base}/__formal/06-inputs`);
+   const marker=id=>page.locator(`[data-source-cell-id="${id}"]`);
+   const read=id=>{
+    const index=cells.findIndex(cell=>cell.cellId===id);
+    return readFamilyCell({page,actual:marker(id),reference:reference.locator('[data-cell]').nth(index),cell:cells[index]});
+   };
+   for(const suffix of ['l','n']){
+    const edgeId=`rd-edge-${suffix}`,selectedId=`rd-on-${suffix}`;
+    const group=marker(edgeId).locator('xpath=ancestor::fieldset[1]');
+    const edge=group.getByRole('radio',{name:'Public',exact:true}),selected=group.getByRole('radio',{name:'Team only',exact:true});
+    assert.equal(await group.getByRole('radio').count(),3);
+    for(const id of [edgeId,selectedId]){
+     const result=await read(id);
+     assert.ok(result.ok,`${entry}/${id}: ${result.reason}`);
+     assert.equal(result.reading.radio.indeterminate,false);
+    }
+    await selected.press('ArrowUp');
+    assert.equal(await edge.isChecked(),true);
+    assert.equal(await selected.isChecked(),false);
+    assert.match((await read(edgeId)).reason,/RadioGroup native option state or group/);
+    await edge.press('ArrowDown');
+    assert.equal(await selected.isChecked(),true);
+    // Reproduce the original native selector state by separating the checked option.
+    const originalName=await selected.getAttribute('name');
+    try{
+     await selected.evaluate(el=>el.name+='-independent');
+     const changed=await read(edgeId);
+     assert.equal(changed.reading.radio.indeterminate,true);
+     assert.match(changed.reason,/RadioGroup native option state or group/);
+    }finally{await selected.evaluate((el,name)=>el.name=name,originalName);}
+    assert.ok((await read(edgeId)).ok);
+   }
+  }finally{await page.close();await reference.close();}
+ },{entry});
+});
+
+test('06 measures only the owned visible listbox and retains its local theme across reopen',async()=>{
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  const reference=await browser.newPage({viewport:{width:2640,height:1000}});
+  const cells=extractMatrixOccurrences(source).filter(cell=>cell.board==='06-inputs');
+  try{
+   await reference.goto(`${base}/__formal/06-inputs`);
+   for(const outerTheme of ['light','dark']){
+    const page=await browser.newPage({viewport:{width:1440,height:1000}});
+    try{
+     await configureProofPage(page,outerTheme);
+     await openPublishedBoard(page,{base,entry,locale:'zh-CN',board:'06-inputs'});
+     assert.equal(await page.locator('.docs-shell').getAttribute('data-tcrn-theme'),outerTheme);
+     const localTheme=outerTheme==='light'?'dark':'light';
+     const index=cells.findIndex(cell=>cell.cellId===`opt-sel-${localTheme==='light'?'l':'n'}`);
+     const cell=cells[index],actual=page.locator(`[data-source-cell-key="${cell.key}"]`);
+     const pane=actual.locator('xpath=ancestor::*[@data-tcrn-theme][1]');
+     const trigger=actual.getByRole('button');
+     const read=()=>readFamilyCell({page,actual,reference:reference.locator('[data-cell]').nth(index),cell});
+     const baseline=await read();
+     assert.ok(baseline.ok,`${entry}/${outerTheme}: ${baseline.reason}`);
+     assert.equal(baseline.reading.background,baseline.referenceReading.background);
+     assert.equal(baseline.reading.color,baseline.referenceReading.color);
+
+     const id=await trigger.getAttribute('aria-controls');
+     const hiddenId=await page.locator('body > .tcrn-multi-select-dropdown__list[hidden]').evaluateAll((lists,id)=>{
+      const own=document.getElementById(id),text=own.querySelector('[data-multi-select-label]').textContent;
+      return lists.find(list=>list!==own&&list.getBoundingClientRect().width===0&&list.querySelector('[data-multi-select-label]').textContent===text)?.id;
+     },id);
+     assert.ok(hiddenId,'a hidden instance has the same option text');
+     try{
+      await trigger.evaluate((el,wrong)=>el.setAttribute('aria-controls',wrong),hiddenId);
+      await assert.rejects(read(),/aria-controls must identify one visible listbox/);
+     }finally{await trigger.evaluate((el,id)=>el.setAttribute('aria-controls',id),id);}
+
+     try{
+      await pane.evaluate(el=>el.removeAttribute('data-tcrn-theme'));
+      const lost=await read();
+      assert.equal(lost.ok,false);
+      assert.match(lost.reason,/MultiSelect owned option wash/);
+     }finally{await pane.evaluate((el,theme)=>el.setAttribute('data-tcrn-theme',theme),localTheme);}
+     assert.ok((await read()).ok);
+
+     await trigger.click();
+     const list=await ownedVisibleListbox(page,trigger),option=list.getByRole('option');
+     assert.equal(await list.evaluate(el=>el.parentElement===document.body&&getComputedStyle(el).position==='fixed'),true);
+     assert.equal(await list.getAttribute('data-tcrn-theme'),localTheme);
+     assert.equal(await list.evaluate(el=>getComputedStyle(el).colorScheme),localTheme);
+     assert.equal(await option.evaluate(el=>el===document.activeElement),true);
+     await pane.evaluate((el,theme)=>el.setAttribute('data-tcrn-theme',theme),outerTheme);
+     assert.equal(await list.getAttribute('data-tcrn-theme'),outerTheme,'theme changes while the list is open');
+     await pane.evaluate((el,theme)=>el.setAttribute('data-tcrn-theme',theme),localTheme);
+     assert.equal(await list.getAttribute('data-tcrn-theme'),localTheme);
+
+     await page.keyboard.press('Space');
+     assert.equal(await option.getAttribute('aria-selected'),'false');
+     await page.keyboard.press('Escape');
+     assert.equal(await list.count(),0);
+     assert.equal(await trigger.evaluate(el=>el===document.activeElement),true);
+     await trigger.press('ArrowDown');
+     assert.equal(await option.evaluate(el=>el===document.activeElement),true);
+     assert.equal(await option.getAttribute('aria-selected'),'false');
+     await option.click();
+     assert.equal(await option.getAttribute('aria-selected'),'true');
+     await page.keyboard.press('Escape');
+     assert.equal(await trigger.getAttribute('aria-expanded'),'false');
+     assert.ok((await read()).ok);
+    }finally{await page.close();}
+   }
+  }finally{await reference.close();}
+ },{entry});
+});
 import { publishedShortcutContexts } from '../scripts/lib/published-standard-proof.mjs';
 import { extractTokens } from '../scripts/lib/approved-site-source.mjs';
 import fs from 'node:fs';
