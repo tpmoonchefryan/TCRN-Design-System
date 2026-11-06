@@ -38,7 +38,7 @@ export function checkProjection(registry,apis,{source=readApprovedSource()}={}){
   if(new Set(apis.map(a=>a.name)).size!==apis.length)issues.push("Duplicate API contracts");
   return issues;
 }
-export const CURRENT_STORY_SOURCE_FILES=Object.freeze(["api-reference.tsx","app.tsx","approved-api.ts","approved-source.ts","build.tsx","build/ai-consumption-contract.ts","build/design-authority.ts","build/write-static.tsx","client.tsx","contract-stories/gplus/generated/matrices.generated.ts","contract-stories/kernel.ts","docs.css","DocsTopicNav.tsx","locales.ts","portal-copy.ts","portal-navigation.ts","portal.tsx","smoke.test.ts","source-matrices.tsx","specimens.tsx","standards.stories.tsx","storybook.css"]);
+export const CURRENT_STORY_SOURCE_FILES=Object.freeze(["api-reference.tsx","app.tsx","approved-api.ts","approved-source.ts","build.tsx","build/ai-consumption-contract.ts","build/design-authority.ts","build/write-static.tsx","client.tsx","contract-stories/gplus/generated/matrices.generated.ts","contract-stories/kernel.ts","docs.css","DocsTopicNav.tsx","locales.ts","portal-copy.ts","portal-navigation.ts","portal.tsx","smoke.test.ts","source-matrices.tsx","specimen-copy.ts","specimens.tsx","standards.stories.tsx","storybook.css"]);
 export function checkStorySourceMembers(actual){return validateOutputMembers(actual,CURRENT_STORY_SOURCE_FILES);}
 export function retiredLockupLabelIssues(text,label="source"){
  return ["productSuffix","productShellCaption"].filter(key=>new RegExp(`\\b${key}\\b`).test(text)).map(key=>`${label}: retired unregistered lockup label ${key}`);

@@ -4,7 +4,7 @@ import http from "node:http";
 import { chromium } from "@playwright/test";
 import { ROOT,readApprovedSource,extractMatrixOccurrences,sourceElements,cssRule } from "./approved-site-source.mjs";
 import { contrast,FORMAL_REVIEW_STATUS,LOCALES } from "./published-standard-proof.mjs";
-import { SHELL_G18, SHELL_G18_FIXTURES, collectShellG18, installIntroRecorder, readIntro, judgeShellG18, installShellFixture } from "./published-shell-gates.mjs";
+import { SHELL_G18, SHELL_G18_FIXTURES, collectShellG18, installIntroRecorder, readIntro, judgeShellG18, installShellFixture, showOriginalShellSpecimens } from "./published-shell-gates.mjs";
 
 export const PROOF_ENTRIES=Object.freeze(['static','manager']);
 const managerExports={"01-tokens":"tokens","02-typography":"typography","03-icons":"icons","04-brand":"brand","05-actions":"actions","06-inputs":"inputs","07a-shell-upper":"shell-upper","07b-shell-lower":"shell-lower"};
@@ -14,12 +14,13 @@ export function publishedBoardUrl(base,entry,locale,board){
  return entry==='static'?`${base}/${locale}/${board}.html`:`${base}/iframe.html?id=${managerStoryId(board)}&viewMode=story&globals=locale:${locale}`;
 }
 export function proofContexts({themes=false}={}){return PROOF_ENTRIES.flatMap(entry=>LOCALES.flatMap(locale=>themes?['light','dark'].map(theme=>({entry,locale,theme})):[{entry,locale}]));}
-export async function openPublishedBoard(page,{base,entry,locale,board}){
+export async function openPublishedBoard(page,{base,entry,locale,board,originalSpecimens=false}){
  const response=await page.goto(publishedBoardUrl(base,entry,locale,board));
  if(!response||response.status()!==200)throw new Error(`Unreadable ${entry}/${locale}/${board}`);
  await page.locator(`[data-approved-board="${board}"]`).waitFor();
  await page.locator('[data-docs-ready="true"]').waitFor();
  await page.evaluate(()=>document.fonts.ready);
+ if(originalSpecimens)await showOriginalShellSpecimens(page);
 }
 export async function configureProofPage(page,theme='light'){
  await page.addInitScript(theme=>localStorage.setItem('tcrn-published-docs:anonymous:design-system',JSON.stringify({theme,pins:['01-tokens','02-typography','04-brand']})),theme);
@@ -305,7 +306,7 @@ export async function readShellMatrices({browser,base,source,page,fixture,entry=
  const observations=[],issues=[],shortcutObservations=[],searchObservations=[],cells=extractMatrixOccurrences(source).filter(c=>c.board.startsWith("07"));
  for(const board of source.boards.filter(b=>b.slug.startsWith("07"))){
   const ref=await browser.newPage({viewport:{width:2640,height:1000}});
-  try{await ref.goto(`${base}/__formal/${board.slug}`);await openPublishedBoard(page,{base,entry,locale,board:board.slug});await Promise.all([ref.evaluate(()=>document.fonts.ready),page.evaluate(()=>document.fonts.ready)]);if(fixture)await installShellFixture(page,fixture);
+  try{await ref.goto(`${base}/__formal/${board.slug}`);await openPublishedBoard(page,{base,entry,locale,board:board.slug,originalSpecimens:true});await Promise.all([ref.evaluate(()=>document.fonts.ready),page.evaluate(()=>document.fonts.ready)]);if(fixture)await installShellFixture(page,fixture);
    let nth=0;for(const cell of cells.filter(c=>c.board===board.slug)){
     const sourceElement=ref.locator('[data-cell]').nth(nth++),role=cell.cellId.replace(/-[ln]$/,''),selector=shellRoles[role],scene=shellSceneFor(cell),theme=cell.theme==='night'?'dark':'light';
     const observation={entry,locale,key:cell.key,cellId:cell.cellId,sourceLine:cell.sourceLine,sourceScene:cell.sourceScene,sourceState:cell.sourceState,carrier:cell.carrier,scene,theme,selector,ok:false};
@@ -336,7 +337,7 @@ export async function proveShell({root=ROOT,fixtures=false}={}){
      const context={entry,locale,theme},page=await browser.newPage({viewport:{width:1440,height:1000}}),url=publishedBoardUrl(base,entry,locale,'07a-shell-upper');let intro,gates;
      try{
       await configureProofPage(page,theme);await installIntroRecorder(page);intro=await readIntro(page,url,{theme});
-      await openPublishedBoard(page,{base,entry,locale,board:'07a-shell-upper'});
+      await openPublishedBoard(page,{base,entry,locale,board:'07a-shell-upper',originalSpecimens:true});
       const facts=await collectShellG18(page,source,{matrix,intro,locale,theme});gates=judgeShellG18(facts,source);contexts.push({...context,facts,g18:gates});
       // Baseline issues remain visible even when this same command exercises fixtures.
       for(const [id,failures]of Object.entries(gates))issues.push(...failures.map(message=>`${entry}/${locale}/${theme}/${id}: ${message}`));
@@ -347,7 +348,7 @@ export async function proveShell({root=ROOT,fixtures=false}={}){
        await configureProofPage(mutated,theme);await installIntroRecorder(mutated,{forgetSession:definition.id==='G16'});
        const localIntro=definition.id==='G16'?await readIntro(mutated,url,{theme}):intro;
        const localMatrix=definition.id==='G13'?await readShellMatrices({browser,base,source,page:mutated,fixture:definition.id,entry,locale}):matrix;
-       await openPublishedBoard(mutated,{base,entry,locale,board:'07a-shell-upper'});
+       await openPublishedBoard(mutated,{base,entry,locale,board:'07a-shell-upper',originalSpecimens:true});
        const localFacts=await collectShellG18(mutated,source,{matrix:localMatrix,intro:localIntro,fixture:definition.id,locale,theme}),failures=judgeShellG18(localFacts,source)[definition.id],baseline=gates?.[definition.id],newFailures=failures.filter(f=>!baseline?.includes(f)),caught=!!baseline&&failures.length>0&&newFailures.length>0;
        if(!caught)issues.push(`${entry}/${locale}/${theme}/${definition.id}: local DOM/behavior fixture did not expose a new failure against a complete baseline`);
        fixtureResults.push({...context,id:definition.id,mutation:SHELL_G18_FIXTURES[definition.id],baseline,failures,newFailures,caught});

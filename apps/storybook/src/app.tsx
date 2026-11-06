@@ -263,7 +263,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
               <div className="tcrn-doc-content">
                 {board ? (
                   <>
-                    <article lang={locale} data-approved-board={board.slug} data-source-id={board.sourceId}>
+                    <article lang={locale} data-approved-board={board.slug} data-source-id={board.sourceId} className="tcrn-doc-board">
                       <BoardSpecimens board={board.slug} locale={locale} apiHref={apiHref} />
                       <SourceMatrices board={board.slug} locale={locale} apiHref={apiHref} />
                     </article>

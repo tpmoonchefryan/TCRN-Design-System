@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { expect } from "@playwright/test";
 import { APPROVED_BOARD_IDS } from "../scripts/lib/approved-site-pins.mjs";
 import { APPROVED_API_BOARDS,checkProjection,validateOutputMembers,compiled,managerIndexIssues,MANAGER_STORY_IDS } from "../scripts/lib/published-standard-proof.mjs";
 const registry=Object.entries(APPROVED_BOARD_IDS).map(([id,sourceId])=>({id,sourceId}));
@@ -27,9 +28,9 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
 });
 
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
-import { readApprovedSource,sourceElements,decodeHtml,extractMatrixOccurrences } from '../scripts/lib/approved-site-source.mjs';
+import { readApprovedSource,sourceElements,decodeHtml,extractMatrixOccurrences,extractIcons,extractMarks } from '../scripts/lib/approved-site-source.mjs';
 import { provenanceActivationIssues,activateProvenanceResult,exerciseDocsNavigation } from '../scripts/lib/published-docs-browser.mjs';
-import { publishedBoardUrl,proofContexts,publishedTextRoleIssues,withPublishedBrowser,openPublishedBoard,publishedShortcutOccurrences,publishedShortcutLocator,collectPublishedShortcuts,configureProofPage,readFamilyCell,ownedVisibleListbox } from '../scripts/lib/published-browser-proof.mjs';
+import { managerStoryId,publishedBoardUrl,proofContexts,publishedTextRoleIssues,withPublishedBrowser,openPublishedBoard,publishedShortcutOccurrences,publishedShortcutLocator,collectPublishedShortcuts,configureProofPage,readFamilyCell,ownedVisibleListbox } from '../scripts/lib/published-browser-proof.mjs';
 
 test('06 measures the labelled native radios in one selectable group and detects wrong state',async()=>{
  for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
@@ -159,7 +160,7 @@ test('published form and shell role comparison rejects wrong-form ink-2 and wron
    const page=await browser.newPage({viewport:{width:1440,height:1000}}),reference=await browser.newPage({viewport:{width:2640,height:1000}});
    try{
     await reference.goto(`${base}/__formal/${board}`);await reference.evaluate(()=>document.fonts.ready);
-    await openPublishedBoard(page,{base,entry,locale,board});
+    await openPublishedBoard(page,{base,entry,locale,board,originalSpecimens:board.startsWith("07")});
     const collect=()=>collectPublishedShortcuts({source,board,reference,page,entry,locale}),baseline=await collect(),localRoles=roles.filter(role=>role.board===board);
     assert.equal(baseline.observed,localRoles.length);assert.deepEqual(baseline.fidelityIssues,[],`${entry}/${locale}/${board}`);
     // Baseline contrast issues are retained by the production proof. They cannot
@@ -181,9 +182,13 @@ test('published form and shell role comparison rejects wrong-form ink-2 and wron
       }finally{await actual.evaluate((element,style)=>{if(style===null)element.removeAttribute('style');else element.setAttribute('style',style);},previous);}
      }
      if(role.scene==='drop'){
-      const parent=actual.locator('..'),original=await actual.evaluate(element=>{const html=element.outerHTML;element.remove();return html;});
+      const parent=await actual.locator('..').elementHandle();
+      const original=await actual.evaluate(element=>{const html=element.outerHTML;element.remove();return html;});
       try{assert.ok((await collect()).observations.find(row=>row.key===role.key).fidelityIssues.some(issue=>issue.includes('Missing or duplicate')),'actual missing dropdown kbd is observable');}
-      finally{await parent.evaluate((element,html)=>element.insertAdjacentHTML('beforeend',html),original);}
+      finally{
+       await parent.evaluate((element,html)=>element.insertAdjacentHTML('beforeend',html),original);
+       await parent.dispose();
+      }
      }
     }
     assert.deepEqual((await collect()).fidelityIssues,[],'all actual nodes/styles restored');
@@ -331,7 +336,7 @@ test('real adjacent shell searches reject wrong icon/track/origin/type/reserve a
     const restoreBoard=async()=>{
      // A real navigation remounts ShellExample's independent menu/openPin/Sheet
      // owners. Restoring styles or disabled alone cannot reopen dismissed peers.
-     await openPublishedBoard(page,{base,entry,locale,board});
+     await openPublishedBoard(page,{base,entry,locale,board,originalSpecimens:board.startsWith("07")});
      for(const role of localRoles){
       const scene=page.locator(`[data-formal-shell-scene="${role.scene}"][data-shell-theme="${role.theme}"]`);
       assert.equal(await scene.count(),1,`${role.key}: matching real source scene`);
@@ -403,4 +408,330 @@ test('real adjacent shell searches reject wrong icon/track/origin/type/reserve a
    }finally{await page.close();await reference.close();}
   }
  },{entry});
+});
+
+async function openContentBoard(page, {base, entry, board, locale = 'zh-CN', width}) {
+ await page.setViewportSize({width:entry==='native-manager'?width+350:width,height:900});
+ if(entry!=='native-manager'){
+  await openPublishedBoard(page,{base,entry,locale,board});
+  return page.locator('[data-approved-board]');
+ }
+ const id=managerStoryId(board);
+ const response=await page.goto(`${base}/index.html?path=/story/${id}&globals=locale:${locale}`);
+ assert.equal(response.status(),200);
+ const iframe=page.locator('#storybook-preview-iframe');
+ await iframe.waitFor();
+ // Test the named Manager's actual Canvas at the same content widths as the direct routes.
+ await iframe.evaluate((el,width)=>{el.style.width=`${width}px`;el.style.maxWidth='none';},width);
+ const surface=page.frameLocator('#storybook-preview-iframe');
+ await surface.locator('.docs-shell[data-docs-ready="true"]').waitFor();
+ const article=surface.locator(`[data-approved-board="${board}"][lang="${locale}"]`);
+ await article.evaluate(async el=>{
+  await el.ownerDocument.fonts.ready;
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+ });
+ assert.equal(await iframe.evaluate(el=>el.contentWindow.innerWidth),width);
+ return article;
+}
+
+async function assertTokenSpacing(article){
+ const result=await article.evaluate(root=>{
+  const themed=root.querySelector('[data-doc-token-section="themed"]'),fixed=root.querySelector('[data-doc-token-section="fixed"]');
+  const table=themed.querySelector('table'),heading=fixed.querySelector('h2');
+  return {
+   gaps:[fixed.getBoundingClientRect().top-table.getBoundingClientRect().bottom,
+    fixed.querySelector('.tcrn-doc-grid').getBoundingClientRect().top-heading.getBoundingClientRect().bottom],
+   headings:[themed.querySelector('h2').textContent,heading.textContent],
+   rows:table.tBodies[0].rows.length,
+   wraps:[...table.querySelectorAll('th,td')].every(cell=>getComputedStyle(cell).whiteSpace==='normal'&&cell.scrollWidth<=cell.clientWidth+1),
+   spacing:[...root.querySelectorAll('[data-doc-spacing-role]')].map(el=>el.querySelector('dd').textContent.trim()),
+  };
+ });
+ assert.deepEqual(result.gaps,[28,14],'theme table and fixed values retain section and heading gaps');
+ assert.ok(result.headings.every(Boolean)&&result.headings[0]!==result.headings[1]);
+ assert.equal(result.rows,39);
+ assert.ok(result.wraps);
+ assert.deepEqual(result.spacing,['--tcrn-space-2h · 10 px','--tcrn-space-3h · 14 px','2 × --tcrn-space-3h · 28 px']);
+}
+
+async function assertIconCatalog(article,source){
+ const expected=extractIcons(source).map(icon=>icon.name).sort();
+ const themes=await article.locator('[data-formal-theme]').evaluateAll(panes=>panes.map(pane=>({
+  theme:pane.dataset.formalTheme,
+  groups:[...pane.querySelectorAll('[data-doc-icon-group]')].map(group=>({
+   id:group.dataset.docIconGroup, title:group.querySelector('h3')?.textContent.trim(),
+   icons:[...group.querySelectorAll('[data-formal-icon]')].map(item=>({
+    name:item.dataset.formalIcon, label:item.querySelector('code')?.textContent,
+    icons:[...item.querySelectorAll('svg')].map(svg=>({
+     name:svg.dataset.iconName,title:svg.querySelector('title')?.textContent??svg.getAttribute('aria-label'),
+     size:svg.getBoundingClientRect().width,
+    })),
+   })),
+  })),
+  sizes:[...pane.querySelectorAll('[data-doc-icon-size]')].map(item=>({
+   key:item.dataset.docIconSize,text:item.querySelector('strong')?.textContent,use:item.querySelector('p')?.textContent,
+   hit:item.querySelector('button').getBoundingClientRect().width,
+   hitHeight:item.querySelector('button').getBoundingClientRect().height,
+  })),
+ })));
+ assert.deepEqual(themes.map(pane=>pane.theme),['light','dark']);
+ for(const {groups,sizes} of themes){
+  assert.deepEqual(groups.map(group=>group.id),['navigation','find','actions','appearance','status','shell'],'each use group occurs once');
+  assert.ok(groups.every(group=>group.title&&group.icons.length)&&new Set(groups.map(group=>group.title)).size===6,'visible use group headings');
+  assert.deepEqual(groups.at(-1).icons.map(icon=>icon.name),['pin']);
+  const icons=groups.flatMap(group=>group.icons);
+  assert.deepEqual(icons.map(icon=>icon.name).sort(),expected,'complete names without duplicates');
+  for(const item of icons){
+   assert.equal(item.label,item.name,'visible catalog name');
+   assert.deepEqual(item.icons.map(icon=>icon.size),[14,16,20],`all glyph sizes for ${item.name}`);
+   assert.ok(item.icons.every(icon=>icon.name===item.name&&icon.title?.includes(item.name)),'named real icon instances');
+  }
+  assert.deepEqual(sizes.map(({key,hit,hitHeight})=>[key,hit,hitHeight]),[['sm',28,28],['md',32,32],['lg',40,40]]);
+  assert.ok(sizes.every(({text,use},index)=>text?.includes(`${[14,16,20][index]} px`)&&use?.trim()),'visible glyph size and use');
+ }
+}
+
+async function assertBrandCatalog(article,source){
+ const proseGap=await article.locator('[data-doc-brand-guide] .tcrn-doc-prose').evaluate(el=>
+  el.children[1].getBoundingClientRect().top-el.firstElementChild.getBoundingClientRect().bottom);
+ assert.equal(proseGap,10,'paragraphs retain the existing 10 px spacing');
+ const expected=extractMarks(source).map(({productId,name})=>[productId,name]);
+ const themes=await article.locator('[data-formal-theme]').evaluateAll(panes=>panes.map(pane=>
+  [...pane.querySelectorAll('[data-formal-section]')].map(product=>{
+   const read=figure=>{
+    const caption=figure.querySelector('figcaption'),svg=figure.querySelector('svg');
+    const range=document.createRange();
+    if(caption)range.selectNodeContents(caption);
+    const rect=svg.getBoundingClientRect();
+    return {caption:caption?.textContent.trim(),lines:caption?new Set([...range.getClientRects()].map(box=>box.top)).size:0,
+     square:rect.width===rect.height,size:rect.width,mark:svg.dataset.productMark,variant:svg.dataset.productMarkVariant};
+   };
+   return {
+    id:product.dataset.formalSection,name:product.querySelector('h3').textContent.trim(),
+    ladder:[...product.querySelectorAll('[data-doc-brand-ladder] figure')].map(read),
+    renditions:[...product.querySelectorAll(':scope > .tcrn-doc-row figure')].map(read),
+    lockups:[...product.querySelectorAll('[data-doc-brand-lockups] figure')].map(read),
+   };
+  })));
+ assert.equal(themes.length,2);
+ for(const products of themes){
+  assert.deepEqual(products.map(({id,name})=>[id,name]),expected);
+  for(const {id,ladder,renditions,lockups} of products){
+   assert.deepEqual(ladder.map(sample=>sample.size),[128,64,48,32,24,16]);
+   assert.deepEqual(renditions.map(({variant,size})=>[variant,size]),[['color',44],['mono',56],['tile-tint',64],['tile-tint',32],['tile-deep',64],['tile-deep',32]]);
+   assert.deepEqual(lockups.map(sample=>sample.size),[44,22,44,22]);
+   assert.ok([...ladder,...renditions,...lockups].every(sample=>sample.square&&sample.mark===id&&sample.caption?.endsWith(`${sample.size} px`)&&sample.lines===1),'unclipped labeled rendition and size');
+   assert.equal(new Set(lockups.map(sample=>sample.caption)).size,4);
+  }
+ }
+}
+
+const contentEntries=['static','manager','native-manager'];
+const formalBoards=Object.keys(APPROVED_BOARD_IDS);
+
+test('content layout, icon groups and mark renditions render in all three entries',async()=>{
+ for(const entry of contentEntries)await withPublishedBrowser(async({browser,base,source})=>{
+  const page=await browser.newPage();
+  try{
+   for(const board of formalBoards){
+    const article=await openContentBoard(page,{base,entry,board,width:390});
+    const layout=await article.evaluate(root=>{
+     const main=root.closest('.docs-paper > main'),doc=root.ownerDocument;
+     return [getComputedStyle(root).rowGap,doc.documentElement.scrollWidth,doc.documentElement.clientWidth,main.scrollWidth,main.clientWidth];
+    });
+    assert.equal(layout[0],'28px',`${entry}/${board} document hierarchy`);
+    assert.ok(layout[1]<=layout[2]+1&&layout[3]<=layout[4]+1,`${entry}/${board} outer overflow ${layout}`);
+    if(board==='01-tokens')await assertTokenSpacing(article);
+    if(board==='03-icons')await assertIconCatalog(article,source);
+    if(board==='04-brand')await assertBrandCatalog(article,source);
+   }
+   for(const locale of ['en','ja','ko','fr']){
+    const article=await openContentBoard(page,{base,entry,board:'04-brand',locale,width:390});
+    await assertBrandCatalog(article,source);
+   }
+  }finally{await page.close();}
+ },{entry:entry==='static'?'static':'manager'});
+});
+
+test('content regressions reject collapsed spacing and missing or repeated catalog information',async()=>{
+ await withPublishedBrowser(async({browser,base,source})=>{
+  const page=await browser.newPage({viewport:{width:390,height:900}});
+  const open=async board=>openContentBoard(page,{base,entry:'static',board,width:390});
+  try{
+   const tokens=await open('01-tokens');
+   await assertTokenSpacing(tokens);
+   await tokens.evaluate(el=>el.style.setProperty('row-gap','0','important'));
+   await assert.rejects(assertTokenSpacing(tokens),/section and heading gaps/);
+   for(const [selector,mutation] of [
+    ['[data-doc-icon-group] h3','remove'],
+    ['[data-doc-icon-group="status"]','duplicate'],
+    ['[data-formal-icon="search"] code','remove'],
+    ['[data-formal-icon="search"] svg','remove'],
+    ['[data-formal-icon="search"] svg','duplicate'],
+    ['[data-doc-icon-size="sm"] strong','remove'],
+   ]){
+    const article=await open('03-icons');
+    await article.locator(selector).first().evaluate((el,mutation)=>{
+     if(mutation==='duplicate')el.after(el.cloneNode(true));
+     else el.remove();
+    },mutation);
+    await assert.rejects(assertIconCatalog(article,source));
+   }
+   const brand=await open('04-brand');
+   await assertBrandCatalog(brand,source);
+   await brand.locator('[data-doc-brand-ladder] figcaption').first().evaluate(el=>el.remove());
+   await assert.rejects(assertBrandCatalog(brand,source),/unclipped labeled rendition and size/);
+  }finally{await page.close();}
+ });
+});
+
+async function readCompleteShells(article){
+ return article.evaluate(root=>{
+  const doc=root.ownerDocument,main=root.closest('.docs-paper > main');
+  const box=el=>el.getBoundingClientRect().toJSON();
+  const scenes=[...root.querySelectorAll('[data-formal-shell-scene]')].map(frame=>{
+   const shell=frame.querySelector(':scope > .tcrn-product-shell');
+   const observed=['[data-paper]','[data-cluster]','.tcrn-page-header__meta',
+    '.tcrn-doc-roster-table th:last-child','.tcrn-doc-roster-table tr:last-child td:last-child',
+    '[data-panel="expanded"]','[data-panel="drop"]','[data-drop-col]','[data-panel="sheet"]'];
+   const targets=observed.flatMap(selector=>[...shell.querySelectorAll(selector)].map(el=>({selector,rect:box(el)})));
+   const drop=shell.querySelector('[data-shell-dropdown]');
+   const anchor=shell.querySelector('.tcrn-shell-pins__item[aria-expanded="true"]');
+   return {
+    view:frame.dataset.specimenView,mode:frame.dataset.formalShellScene,theme:frame.dataset.shellTheme,
+    frame:box(frame),shell:box(shell),targets,scrollLeft:frame.scrollLeft,
+    logical:[shell.offsetWidth,shell.offsetHeight],active:frame.contains(doc.activeElement),
+    anchorOffset:drop&&anchor?box(drop).left-box(anchor).left:null,
+   };
+  });
+  return {width:doc.defaultView.innerWidth,overflow:Math.max(doc.documentElement.scrollWidth-doc.documentElement.clientWidth,main.scrollWidth-main.clientWidth),scenes};
+ });
+}
+
+function assertCompleteShells(reading,board,{initial=true}={}){
+ const modes=['band','menu','drop','phone-closed','phone',...(board.startsWith('07a')?['band']:[])];
+ const close=(a,b)=>Math.abs(a-b)<.6;
+ const contains=(outer,inner)=>inner.width>0&&inner.height>0&&inner.left>=outer.left-.6&&
+  inner.right<=outer.right+.6&&inner.top>=outer.top-.6&&inner.bottom<=outer.bottom+.6;
+ assert.ok(reading.overflow<=1,'no document-wide horizontal overflow');
+ for(const theme of ['light','dark'])assert.deepEqual(reading.scenes.filter(scene=>scene.theme===theme).map(scene=>scene.mode),modes);
+ for(const scene of reading.scenes){
+  const {mode,theme,frame,shell,targets}=scene,label=`${board}/${reading.width}/${mode}/${theme}`;
+  assert.equal(scene.view,'fit',label);
+  assert.equal(scene.scrollLeft,0,label);
+  const authored=mode.startsWith('phone')?390:1240;
+  assert.deepEqual(scene.logical,[authored,640],label);
+  assert.ok(contains(frame,shell)&&['left','right','top','bottom'].every(edge=>close(frame[edge],shell[edge])),`complete scene edges ${label}`);
+  assert.ok(frame.left>=-.6&&frame.right<=reading.width+.6,`complete viewport edges ${label}`);
+  const required=['[data-paper]','[data-cluster]','.tcrn-page-header__meta','.tcrn-doc-roster-table th:last-child','.tcrn-doc-roster-table tr:last-child td:last-child'];
+  if(initial){
+   if(mode==='menu')required.push('[data-panel="expanded"]');
+   if(mode==='drop')required.push('[data-panel="drop"]','[data-drop-col]');
+   if(mode==='phone')required.push('[data-panel="sheet"]');
+   assert.equal(scene.active,false,`initial focus remains outside ${label}`);
+  }
+  for(const selector of required)assert.ok(targets.some(target=>target.selector===selector),`missing ${selector} ${label}`);
+  for(const {selector,rect} of targets)assert.ok(contains(frame,rect),`cropped ${selector} ${label}`);
+  if(scene.anchorOffset!==null)assert.ok(close(scene.anchorOffset,0),`drop aligns with its pin ${label}, offset ${scene.anchorOffset}`);
+ }
+}
+
+test('complete shell previews contain all four edges and content at 1462, 1024 and 390',async()=>{
+ for(const entry of contentEntries)await withPublishedBrowser(async({browser,base})=>{
+  const page=await browser.newPage();
+  try{
+   for(const width of [1462,1024,390])for(const board of ['07a-shell-upper','07b-shell-lower']){
+    const article=await openContentBoard(page,{base,entry,board,width});
+    assertCompleteShells(await readCompleteShells(article),board);
+   }
+   if(entry==='static'){
+    const board='07a-shell-upper',article=await openContentBoard(page,{base,entry,board,width:1462});
+    const shell=article.locator('[data-formal-shell-scene="band"] > .tcrn-product-shell').first();
+    for(const [axis,value] of [['left',20],['left',-20],['top',20],['top',-20]]){
+     await shell.evaluate((el,{axis,value})=>el.style[axis]=`${value}px`,{axis,value});
+     const reading=await readCompleteShells(article);
+     assert.equal(reading.scenes[0].shell.width,1240,'fixture does not resize the scene');
+     assert.throws(()=>assertCompleteShells(reading,board),/complete scene edges/);
+     await shell.evaluate((el,axis)=>el.style.removeProperty(axis),axis);
+    }
+    assertCompleteShells(await readCompleteShells(article),board);
+   }
+  }finally{await page.close();}
+ },{entry:entry==='static'?'static':'manager'});
+});
+
+test('shell preview inspection preserves one live scene, open layers and focus on resize',async()=>{
+ for(const entry of contentEntries)await withPublishedBrowser(async({browser,base})=>{
+  const page=await browser.newPage({hasTouch:true});
+  try{
+   for(const board of ['07a-shell-upper','07b-shell-lower']){
+    const article=await openContentBoard(page,{base,entry,board,width:390});
+    const drop=article.locator('[data-formal-shell-scene="drop"][data-shell-theme="light"]');
+    const toggle=frame=>frame.locator('..').locator('[data-doc-shell-view-toggle]');
+    const original=frame=>frame.evaluate(el=>{
+     const r=el.firstElementChild.getBoundingClientRect();
+     return [el.dataset.specimenView,r.width,r.height,el.querySelectorAll(':scope > .tcrn-product-shell').length];
+    });
+    await toggle(drop).press('Enter');
+    assert.deepEqual(await original(drop),['original',1240,640,1]);
+    assert.equal(await toggle(drop).evaluate(el=>el===el.ownerDocument.activeElement),true);
+    assert.equal(await drop.locator('[data-drop-col]').count(),1,'authored open cascade survives inspection');
+    await drop.press('ArrowRight');
+    await expect.poll(()=>drop.evaluate(el=>el.scrollLeft),{message:'keyboard can pan at original size'}).toBeGreaterThan(0);
+    await toggle(drop).click();
+    assert.equal(await drop.getAttribute('data-specimen-view'),'fit');
+    assert.equal(await drop.evaluate(el=>el.scrollLeft),0);
+    const band=article.locator('[data-formal-shell-scene="band"][data-shell-theme="light"]').first();
+    const brand=band.locator('[data-shell-brand]');
+    await brand.click();
+    const menu=band.locator('[data-panel="expanded"]');
+    await menu.waitFor();
+    assert.equal(await menu.locator('input[type="search"]').evaluate(el=>el===el.ownerDocument.activeElement),true);
+    await page.keyboard.press('Escape');
+    await menu.waitFor({state:'detached'});
+    assert.equal(await brand.evaluate(el=>el===el.ownerDocument.activeElement),true);
+    const pin=band.locator('[data-pin="contracts"] .tcrn-shell-pins__item');
+    await pin.click();
+    const dropPanel=band.locator('[data-panel="drop"]');
+    await dropPanel.waitFor();
+    assertCompleteShells(await readCompleteShells(article),board,{initial:false});
+    await page.keyboard.press('Escape');
+    await dropPanel.waitFor({state:'detached'});
+    const phone=article.locator('[data-formal-shell-scene="phone-closed"][data-shell-theme="dark"]');
+    await toggle(phone).tap();
+    assert.deepEqual(await original(phone),['original',390,640,1]);
+    const trigger=phone.locator('[data-shell-brand]');
+    await trigger.tap();
+    const sheet=phone.locator('[data-panel="sheet"]');
+    await sheet.waitFor();
+    assert.equal(await sheet.evaluate(el=>el===el.ownerDocument.activeElement),true);
+    const search=sheet.locator('input[type="search"]');
+    const searchReceivesPointer=()=>search.evaluate(el=>{
+     el.scrollIntoView({block:'center',inline:'nearest'});
+     const rect=el.getBoundingClientRect();
+     return el.ownerDocument.elementFromPoint((rect.left+rect.right)/2,(rect.top+rect.bottom)/2)===el;
+    });
+    assert.ok(await searchReceivesPointer(),'Sheet search is clear of pin hit areas');
+    if(entry==='static'&&board==='07a-shell-upper'){
+     const pins=sheet.locator('[data-pin-button]');
+     await pins.evaluateAll(elements=>elements.forEach(el=>el.style.position='static'));
+     assert.equal(await searchReceivesPointer(),false,'unanchored pin hit areas obscure the search');
+     await pins.evaluateAll(elements=>elements.forEach(el=>el.style.removeProperty('position')));
+    }
+    await search.tap();
+    assert.equal(await search.evaluate(el=>el===el.ownerDocument.activeElement&&el.getBoundingClientRect().height===44),true);
+    await page.keyboard.press('Escape');
+    await sheet.waitFor({state:'detached'});
+    assert.equal(await trigger.evaluate(el=>el===el.ownerDocument.activeElement),true);
+    await toggle(phone).tap();
+    await trigger.tap();
+    await sheet.waitFor();
+    if(entry==='native-manager')await page.locator('#storybook-preview-iframe').evaluate(el=>el.style.width='1024px');
+    else await page.setViewportSize({width:1024,height:900});
+    assertCompleteShells(await readCompleteShells(article),board,{initial:false});
+    assert.equal(await sheet.count(),1,'open Sheet remains in its specimen on resize');
+    assert.equal(await article.evaluate(el=>el.closest('.docs-shell').dataset.docsPage),board,'specimen interaction stays in the document');
+   }
+  }finally{await page.close();}
+ },{entry:entry==='static'?'static':'manager'});
 });

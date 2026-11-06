@@ -2,7 +2,7 @@ import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoar
 import { LOCALES,formalApiContracts,checkManagerOutput } from "./published-standard-proof.mjs";
 import { ROOT,readApprovedSource,cssRule } from "./approved-site-source.mjs";
 import { readApiFacts,exerciseApiBoard,apiBehaviorIssues } from "./published-api-browser.mjs";
-import { installIntroRecorder,readIntro,readShellSpecimenContent,shellSpecimenContentIssues } from "./published-shell-gates.mjs";
+import { installIntroRecorder,readIntro,readShellSpecimenContent,shellSpecimenContentIssues,showOriginalShellSpecimens } from "./published-shell-gates.mjs";
 import { APPROVED_BOARD_IDS } from "./approved-site-pins.mjs";
 
 export function geometryIssues(readings,{source=readApprovedSource()}={}){
@@ -61,7 +61,7 @@ export async function collectGeometryReadings(page){
 async function proveGeometryEntry({root,entry}){return withPublishedBrowser(async({browser,base,source})=>{
  const issues=[],observations=[],page=await browser.newPage({viewport:{width:1440,height:1000}});
  try{for(const locale of LOCALES)for(const board of ['05-actions','06-inputs','07a-shell-upper','07b-shell-lower']){
-  try{await openPublishedBoard(page,{base,entry,locale,board});
+  try{await openPublishedBoard(page,{base,entry,locale,board,originalSpecimens:board.startsWith("07")});
   // Read both actual knob positions and restore their initial state by closing the page.
   for(const position of (board==='06-inputs'?['initial','toggled']:['initial'])){
    if(position==='toggled')await page.locator('[data-approved-board] .tcrn-switch__control').evaluateAll(async els=>{for(const el of els){el.checked=!el.checked;getComputedStyle(el,'::before').transform;}await Promise.all(els.flatMap(el=>el.getAnimations({subtree:true}).map(animation=>animation.finished.catch(()=>{}))));});
@@ -73,7 +73,7 @@ async function proveGeometryEntry({root,entry}){return withPublishedBrowser(asyn
     for(const width of [1440,390]){
      if(width===390){
       await page.setViewportSize({width,height:1000});
-      await openPublishedBoard(page,{base,entry,locale,board});
+      await openPublishedBoard(page,{base,entry,locale,board,originalSpecimens:board.startsWith("07")});
      }
      const reading=await readShellSpecimenContent(page),result=shellSpecimenContentIssues(reading,{source,board});
      issues.push(...[...result.outer,...result.specimens].map(issue=>`${entry}/${locale}/${board}/${width}: ${issue}`));
@@ -111,6 +111,7 @@ export async function proveFontsInBrowser({root=ROOT,entry="static"}={}){return 
 },{root,entry});}
 export { managerStoryId };
 async function apiRuntime(page,board,{browser,url,source,locale}){
+ if(board.startsWith("07"))await showOriginalShellSpecimens(page);
  let facts=await readApiFacts(page,{source,locale});facts=await exerciseApiBoard(page,board,facts);
  if(facts.IconButton){facts.IconButton.geometryIssues=geometryIssues(facts.IconButton.sizeReadings,{source});facts.IconButton.allPublishedSizes&&=facts.IconButton.geometryIssues.length===0;}
  if(facts.ButtonGroup){facts.ButtonGroup.geometryIssues=geometryIssues(facts.ButtonGroup.groupReadings.map(r=>({kind:'button-group',size:r.size,actionCount:r.actions.length,separators:r.separators,heights:r.actions.map(a=>a.height)})),{source});facts.ButtonGroup.allPublishedSizes&&=facts.ButtonGroup.geometryIssues.length===0;}

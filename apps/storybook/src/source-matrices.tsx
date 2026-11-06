@@ -2,6 +2,7 @@ import { Heading,Text,Highlight,Icon,Button,IconButton,Input,SearchInput,NumberI
 import { approvedMatrixOccurrences,type ApprovedMatrixOccurrence } from "./contract-stories/gplus/generated/matrices.generated.js";
 import type { ApprovedBoardId,DocsLocale } from "./approved-source.js";
 import { docsCopy } from "./locales.js";
+import { specimenCopy } from "./specimen-copy.js";
 
 function probeAttributes(cell: ApprovedMatrixOccurrence) {
   return {
@@ -73,7 +74,7 @@ export function SourceMatrices({board,locale,apiHref}:{board:ApprovedBoardId;loc
   if(!cells.length||board.startsWith("07"))return null;
   return (
     <section className="tcrn-doc-section" data-published-matrix={board}>
-      <Heading level={2} visualLevel={3}>B · {board}</Heading>
+      <Heading level={2} visualLevel={3}>{specimenCopy[locale].matrix}</Heading>
       <div className="tcrn-doc-grid">
         {cells.map(cell => {
           if (cell.cellId.startsWith("rd-on-")) return null;

@@ -94,12 +94,14 @@ test('07 inner specimens and outer docs fail independently in both builds at wid
   try{
    for(const board of ['07a-shell-upper','07b-shell-lower'])for(const width of [1440,390]){
     await page.setViewportSize({width,height:1000});
-    await openPublishedBoard(page,{base,entry,locale:'zh-CN',board});
+    await openPublishedBoard(page,{base,entry,locale:'zh-CN',board,originalSpecimens:true});
     const label=`${entry}/${board}/${width}`,judge=reading=>shellSpecimenContentIssues(reading,{source,board});
     const baseline=await readShellSpecimenContent(page);
     assert.deepEqual(judge(baseline),{outer:[],specimens:[]},label);
-    assert.ok(baseline.scenes.some(scene=>!scene.phone&&scene.width===1240&&scene.padding[3]===28&&scene.maxFrameScroll>0),label);
-    if(board==='07a-shell-upper')assert.ok(baseline.scenes.some(scene=>scene.phone&&scene.width===390&&scene.padding[3]===16),label);
+    assert.ok(baseline.scenes.some(scene=>!scene.phone&&scene.width===1240&&scene.padding[3]===28),label);
+    assert.ok(baseline.scenes.some(scene=>scene.phone&&scene.width===390&&scene.padding[3]===16),label);
+    assert.ok(baseline.scenes.every(scene=>scene.maxFrameScroll===scene.width-scene.frameWidth),label);
+    if(width===390)assert.ok(baseline.scenes.every(scene=>scene.maxFrameScroll>0),label);
 
     for(const [selector,declaration,scope,expected] of [
      [inner,'padding:0!important','specimens','product content padding'],

@@ -15,6 +15,15 @@ export const SHELL_G18 = Object.freeze([
 const close=(a,b,tolerance=.5)=>Number.isFinite(a)&&Math.abs(a-b)<=tolerance;
 const center=r=>r.y+r.height/2;
 
+// Formal geometry is measured in the same original-size view available to readers.
+export async function showOriginalShellSpecimens(surface) {
+ const fitted=surface.locator('[data-specimen-view="fit"]');
+ await fitted.evaluateAll(frames=>{
+  for(const frame of frames)frame.parentElement.querySelector('[data-doc-shell-view-toggle]').click();
+ });
+ await fitted.first().waitFor({state:'detached'});
+}
+
 export async function readShellSpecimenContent(page){
  return page.locator('.docs-shell').evaluate(docs=>{
   const padding=s=>[s.paddingTop,s.paddingRight,s.paddingBottom,s.paddingLeft].map(parseFloat);
@@ -61,7 +70,7 @@ export async function readShellSpecimenContent(page){
     main.scrollTop=scrollTop;
     frame.scrollLeft=scrollLeft;
    }
-   return {mode,theme,phone:frame.hasAttribute('data-phone'),width:shellBox.width,height:shellBox.height,
+   return {mode,theme,view:frame.dataset.specimenView,phone:frame.hasAttribute('data-phone'),width:shellBox.width,height:shellBox.height,
     stripHeight:strip.getBoundingClientRect().height,paperInset:paperBox.left-shellBox.left,
     paperWidth:paperBox.width,paperHeight:paperBox.height,mainWidth:mainBox.width,mainHeight:mainBox.height,
     paperBackground:getComputedStyle(paper).backgroundColor,mainBackground:style.backgroundColor,
@@ -87,7 +96,7 @@ export function shellSpecimenContentIssues(reading,{source,board}){
  const outerExpected=reading.viewport<=750?[12,16,12,16]:[14,28,12,28];
  if(!samePadding(reading.outerPadding,outerExpected))outer.push('Outer docs content padding');
 
- const modes=board==='07a-shell-upper'?['band','band','menu','drop','phone-closed','phone']:['band','menu','drop'];
+ const modes=board==='07a-shell-upper'?['band','band','menu','drop','phone-closed','phone']:['band','menu','drop','phone-closed','phone'];
  for(const theme of ['light','dark']){
   const actual=reading.scenes.filter(scene=>scene.theme===theme).map(scene=>scene.mode).sort();
   if(JSON.stringify(actual)!==JSON.stringify([...modes].sort()))specimens.push(`Incomplete product specimens ${theme}`);
@@ -100,7 +109,7 @@ export function shellSpecimenContentIssues(reading,{source,board}){
   const gap=parseFloat(content.gap);
   const panel=cssRule(css,scene.theme==='dark'?'.gp.night':'.gp')['--panel'];
   const panelRgb=`rgb(${[1,3,5].map(index=>parseInt(panel.slice(index,index+2),16)).join(', ')})`;
-  if(scene.phone!==phone||!close(scene.width,width)||!close(scene.height,height)||
+  if(scene.view!=='original'||scene.phone!==phone||!close(scene.width,width)||!close(scene.height,height)||
     !close(scene.stripHeight,strip)||!close(scene.paperInset,edge)||!close(scene.paperWidth,width-2*edge)||
     !close(scene.paperHeight,height-strip-edge)||!close(scene.mainWidth,scene.paperWidth)||!close(scene.mainHeight,scene.paperHeight)){
    specimens.push(`${label}: product specimen, strip or paper geometry`);
@@ -268,10 +277,14 @@ export async function installIntroRecorder(page,{forgetSession=false}={}){
   };
  },{forgetSession});
 }
-export async function readIntro(page,url,{theme="light"}={}){
+export async function readIntro(page,url,{theme="light",original=true}={}){
  const scope=()=>page.locator(`[data-formal-intro][data-intro-theme="${theme}"]`);
- const start=async()=>{const button=scope().locator(':scope > .tcrn-button');await button.click();await page.waitForFunction(()=>!document.querySelector('[data-shell-intro]'));return page.evaluate(()=>window.__publishedIntro);};
- await page.goto(url);await page.locator('[data-docs-ready="true"]').waitFor();await page.evaluate(()=>{sessionStorage.removeItem('tcrn-approved-source-intro');return document.fonts.ready;});
+ const ready=async()=>{
+  await page.locator('[data-docs-ready="true"]').waitFor();
+  if(original)await showOriginalShellSpecimens(scope());
+ };
+ const start=async()=>{await ready();const button=scope().locator(':scope > .tcrn-button');await button.click();await page.waitForFunction(()=>!document.querySelector('[data-shell-intro]'));return page.evaluate(()=>window.__publishedIntro);};
+ await page.goto(url);await ready();await page.evaluate(()=>{sessionStorage.removeItem('tcrn-approved-source-intro');return document.fonts.ready;});
  await scope().locator(':scope > .tcrn-button').scrollIntoViewIfNeeded();
  const landing=await scope().locator('[data-shell-brand] svg[data-logo]').evaluate(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};});
  const first=await start();await page.reload();const refresh=await start();await page.emulateMedia({reducedMotion:'reduce'});await page.reload();const reduced=await start();await page.emulateMedia({reducedMotion:'no-preference'});

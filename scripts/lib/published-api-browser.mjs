@@ -1,4 +1,4 @@
-import { readApprovedSource,extractMarks,sourceElements,decodeHtml,cssRule } from "./approved-site-source.mjs";
+import { readApprovedSource,extractIcons,extractMarks,sourceElements,decodeHtml,cssRule } from "./approved-site-source.mjs";
 import { readPinnableFocus,rowFocusValid } from "./published-shell-gates.mjs";
 import { measureNumberMinimums,numberMinimumValid,ownedVisibleListbox } from "./published-browser-proof.mjs";
 // Runtime assertions are separate from the normative API text and from engineering exports.
@@ -104,8 +104,20 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
   facts.Highlight={markOnlyPaint,emptyQuery:!!one('[data-highlight-empty]')&&!one('[data-highlight-empty] mark')};
  }
  if(root.dataset.approvedBoard==='03-icons'){
-  const icons=all('[data-formal-icon] svg'),namedIcons=icons.filter(el=>el.getAttribute('role')==='img'),decorative=one('.tcrn-icon-button svg');
-  facts.Icon={rosterGeometry:all('[data-formal-theme]').every(theme=>theme.querySelectorAll('[data-formal-icon] svg').length===38*3)&&icons.length>0&&icons.every(el=>el.getAttribute('viewBox')==='0 0 20 20'&&el.getAttribute('stroke-width')==='1.25'&&[14,16,20].includes(Number(el.getAttribute('width')))&&[...el.querySelectorAll('path,circle,rect,ellipse')].every(p=>p.getAttribute('vector-effect')==='non-scaling-stroke')),namesAndDecoration:namedIcons.length>0&&namedIcons.every(el=>el.querySelector('title')||el.getAttribute('aria-label'))&&decorative?.getAttribute('aria-hidden')==='true'};
+  const panes=all('[data-formal-theme]');
+  const roster=panes.map(theme=>({
+   theme:theme.dataset.formalTheme,
+   entries:[...theme.querySelectorAll('[data-formal-icon]')].map(item=>({
+    name:item.dataset.formalIcon,
+    sizes:[...item.querySelectorAll('svg')].map(el=>Number(el.getAttribute('width'))),
+   })),
+  }));
+  const icons=all('[data-formal-icon] svg'),decorative=one('.tcrn-icon-button svg');
+  facts.Icon={
+   roster,
+   rosterGeometry:icons.length>0&&icons.every(el=>el.getAttribute('viewBox')==='0 0 20 20'&&el.getAttribute('stroke-width')==='1.25'&&el.getAttribute('width')===el.getAttribute('height')&&[...el.querySelectorAll('path,circle,rect,ellipse')].every(p=>p.getAttribute('vector-effect')==='non-scaling-stroke')),
+   namesAndDecoration:icons.length>0&&icons.every(el=>el.getAttribute('role')==='img'&&(el.querySelector('title')?.textContent.trim()||el.getAttribute('aria-label')?.trim()))&&decorative?.getAttribute('aria-hidden')==='true',
+  };
  }
  if(root.dataset.approvedBoard==='04-brand'){
   const products=['tms','einzbern','mana-orchestrate','design-system'],graphics=all('.tcrn-product-symbol');
@@ -156,6 +168,13 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
  }
  return facts;
 });
+ if(facts.Icon){
+  const names=extractIcons(source).map(icon=>icon.name).sort();
+  const {roster}=facts.Icon;
+  facts.Icon.rosterGeometry&&=roster.length===2&&['light','dark'].every(theme=>roster.some(pane=>
+   pane.theme===theme&&JSON.stringify(pane.entries.map(entry=>entry.name).sort())===JSON.stringify(names)&&
+   pane.entries.every(entry=>JSON.stringify([...entry.sizes].sort((a,b)=>a-b))==='[14,16,20]')));
+ }
  if(facts.ButtonGroup){const rows=facts.ButtonGroup.groupReadings;facts.ButtonGroup.twoToFive=buttonGroupIssues(rows).length===0;facts.ButtonGroup.allPublishedSizes=['light','dark'].every(theme=>['sm','md','lg'].every(size=>['secondary','quiet'].every(variant=>[2,4,5].every(count=>rows.some(row=>row.theme===theme&&row.size===size&&row.variant===variant&&row.actions.length===count)))));}
  if(facts.ShellMenu)facts.ShellMenu.rowCarrierStates=rowCarrierIssues(facts.ShellMenu.rowReadings).length===0;
  if(facts.ProductLockup){facts.ProductLockup.exactLineRoles=lockupRoleIssues(facts.ProductLockup.readings,formalLockupExpectations(source,locale)).length===0;}

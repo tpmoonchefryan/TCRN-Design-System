@@ -115,7 +115,7 @@ function previewOpenPath(entries: readonly ShellMenuItem[], previewStates: Reado
  * nearest ancestor that contains fixed descendants (a transform, a perspective, a filter, layout
  * or paint containment, a size container), as a documentation page's framed screen does.
  */
-function fixedLayerOrigin(layer: HTMLElement | null): { left: number; top: number } {
+function fixedLayerOrigin(layer: HTMLElement | null) {
   const view = layer?.ownerDocument.defaultView;
   for (let node = layer?.parentElement ?? null; node && view; node = node.parentElement) {
     const style = view.getComputedStyle(node);
@@ -135,10 +135,12 @@ function fixedLayerOrigin(layer: HTMLElement | null): { left: number; top: numbe
       /\b(transform|perspective|filter)\b/.test(willChange)
     ) {
       const box = node.getBoundingClientRect();
-      return { left: box.left + node.clientLeft, top: box.top + node.clientTop };
+      // Rects are visual pixels, while the fixed inset is written in the containing box's CSS pixels.
+      const scale = set("transform") && node.offsetWidth && box.width > 0 ? box.width / node.offsetWidth : 1;
+      return { left: box.left + node.clientLeft * scale, top: box.top + node.clientTop * scale, scale };
     }
   }
-  return { left: 0, top: 0 };
+  return { left: 0, top: 0, scale: 1 };
 }
 
 /** The side of the first column the open cascades stand on: after it (end) or before it (start). */
@@ -170,8 +172,10 @@ function cascadeSideOf(root: HTMLElement | null, boundary?: HTMLElement | null):
       if (first.right + reach <= right) return "end";
       if (first.left - reach >= left) return "start";
     }
-    left -= boundary.scrollLeft;
-    right = left + boundary.scrollWidth;
+    if (getComputedStyle(boundary).overflowX !== "clip") {
+      left -= boundary.scrollLeft;
+      right = left + boundary.scrollWidth;
+    }
   }
   const pastEnd = first.right + reach - right;
   const pastStart = left + reach - first.left;
@@ -232,8 +236,8 @@ export function ShellDropdown({
       const box = trigger()?.getBoundingClientRect();
       if (!box) return;
       const origin = fixedLayerOrigin(rootRef.current);
-      const left = box.left - origin.left;
-      const top = box.bottom - origin.top;
+      const left = (box.left - origin.left) / origin.scale;
+      const top = (box.bottom - origin.top) / origin.scale;
       setAnchor((previous) => (previous && previous.left === left && previous.top === top ? previous : { left, top }));
       setCascadeSide(cascadeSideOf(rootRef.current, cascadeBoundaryRef?.current));
     };
@@ -241,13 +245,19 @@ export function ShellDropdown({
     place();
     window.addEventListener("resize", place);
     window.addEventListener("scroll", place, true);
+    // A font can move an earlier pin while this trigger keeps the same dimensions.
+    const fonts = document.fonts;
+    fonts?.addEventListener("loadingdone", place);
     const band = trigger()?.parentElement;
     const resized = band && typeof ResizeObserver === "function" ? new ResizeObserver(place) : null;
     if (band) resized?.observe(band);
+    const boundary = cascadeBoundaryRef?.current;
+    if (boundary) resized?.observe(boundary);
     return () => {
       placeRef.current = () => undefined;
       window.removeEventListener("resize", place);
       window.removeEventListener("scroll", place, true);
+      fonts?.removeEventListener("loadingdone", place);
       resized?.disconnect();
     };
   }, [open, id, triggerRef, cascadeBoundaryRef]);
