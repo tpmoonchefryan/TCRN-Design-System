@@ -190,6 +190,12 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
 }
 const docsPages = ['index', ...Object.keys(APPROVED_BOARD_IDS), 'api', 'source'];
 const primaryPages = ['index', '01-tokens', '04-brand', '05-actions', '07a-shell-upper'];
+const topicPages = {
+  foundations: ['01-tokens', '02-typography', '03-icons'],
+  brand: ['04-brand'],
+  components: ['05-actions', '06-inputs', 'api'],
+  shell: ['07a-shell-upper', '07b-shell-lower'],
+};
 const wrapperStories = { index: 'home', api: 'api', source: 'source' };
 const docsStoryId = page => Object.hasOwn(wrapperStories, page)
   ? `published-standards--${wrapperStories[page]}`
@@ -197,6 +203,343 @@ const docsStoryId = page => Object.hasOwn(wrapperStories, page)
 const docsHref = (entry, locale, page) => entry === 'static'
   ? `/${locale}/${page}.html`
   : `/iframe.html?id=${docsStoryId(page)}&viewMode=story&globals=locale:${locale}`;
+
+function managerMenuHref(managerPath,locale,page,fragment=''){
+ const id=docsStoryId(page),anchor=fragment?`&docsAnchor=${id}:${encodeURIComponent(fragment)}`:'';
+ return `${managerPath}?path=/story/${id}&globals=locale:${locale}${anchor}`;
+}
+function headerHref({base,entry,locale,managerUi,managerPath},page,fragment=''){
+ if(managerUi)return managerMenuHref(managerPath,locale,page,fragment);
+ const suffix=fragment?`#${fragment}`:'';
+ return entry==='static'?`/${locale}/${page}.html${suffix}`:`/iframe.html?id=${docsStoryId(page)}&viewMode=story&globals=locale:${locale}${suffix}`;
+}
+const docsTopicPages={
+ foundations:['01-tokens','02-typography','03-icons'],
+ brand:['04-brand'],
+ components:['05-actions','06-inputs','api'],
+ shell:['07a-shell-upper','07b-shell-lower'],
+};
+
+// Exercise the actual docs-only hover cascade and keyboard path. This is deliberately separate
+// from ShellMenu/ProductShell proofs: the published product menu remains click-driven.
+export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false,formal,negative=locale==='en'}={}){
+ const issues=[],observations=[];
+ try{
+  await page.emulateMedia({reducedMotion:'reduce'});
+  const indexPath=managerUi
+   ?`${base}/index.html?path=/story/${docsStoryId('index')}&globals=locale:${locale}`
+   :`${base}${docsHref(entry,locale,'index')}`;
+  const response=await page.goto(indexPath);if(!response||response.status()!==200)throw new Error('topbar home route unreadable');
+  const managerPath=managerUi?new URL(page.url()).pathname:'';
+  const surface=managerUi?page.frameLocator('#storybook-preview-iframe'):page;
+  await surface.locator(`.docs-shell[data-docs-page="index"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
+  const shell=surface.locator('.docs-shell');
+  const nav=shell.locator('.docs-topics');if(!(await nav.isVisible()))throw new Error('desktop docs topic strip is not visible');
+  if(!(await page.evaluate(()=>matchMedia('(prefers-reduced-motion: reduce)').matches)))issues.push(`${entry}/${locale}: reduced-motion preference was not applied`);
+  const initialTheme=await shell.getAttribute('data-tcrn-theme'),toggle=shell.locator('.docs-preferences .tcrn-shell-theme-toggle');
+  const themeBackgrounds=[];
+  for(const theme of [initialTheme,initialTheme==='dark'?'light':'dark']){
+   if(await shell.getAttribute('data-tcrn-theme')!==theme)await toggle.click();
+   await shell.waitFor({state:'visible'});
+   const trigger=nav.locator('button[data-docs-topic="foundations"]');await trigger.hover();
+   const panel=trigger.locator('xpath=..').locator('.docs-topic-menu').first();await panel.waitFor({state:'visible'});
+   themeBackgrounds.push(await panel.evaluate(el=>getComputedStyle(el).backgroundColor));
+   const duration=await panel.locator('.docs-topic-menu__row').first().evaluate(el=>getComputedStyle(el).transitionDuration);
+   if(!duration.split(',').every(value=>parseFloat(value.trim())===0))issues.push(`${entry}/${locale}: reduced-motion still animates topic rows`);
+   await shell.locator('.docs-paper').hover({position:{x:20,y:20}});
+  }
+  if(themeBackgrounds[0]===themeBackgrounds[1])issues.push(`${entry}/${locale}: topic panel does not respond to both light and dark themes`);
+  if(await shell.getAttribute('data-tcrn-theme')!==initialTheme)await toggle.click();
+  const home=nav.locator(':scope > .tcrn-shell-pins__pin > a');
+  const homeHref=headerHref({base,entry,locale,managerUi,managerPath},'index');
+  if(await home.getAttribute('href')!==homeHref)issues.push(`${entry}/${locale}: topbar home destination differs`);
+  const topicButtons=nav.locator('button[data-docs-topic]');
+  const topicIds=await topicButtons.evaluateAll(els=>els.map(el=>el.getAttribute('data-docs-topic')));
+  if(JSON.stringify(topicIds)!==JSON.stringify(Object.keys(docsTopicPages)))issues.push(`${entry}/${locale}: topic groups differ from the four portal categories`);
+  const opened=[];
+  for(const topic of Object.keys(docsTopicPages)){
+   try{
+    const trigger=nav.locator(`button[data-docs-topic="${topic}"]`),wrapped=trigger.locator('xpath=..');
+    const focusBefore=await surface.locator('body').evaluate(el=>{const active=el.ownerDocument.activeElement;return `${active?.tagName}|${active?.id}|${typeof active?.className==='string'?active.className:''}`;});
+    await trigger.hover();
+    if(await trigger.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}/${topic}: hover did not open category`);
+    const layer=wrapped.locator('.docs-topics__layer'),menu=layer.locator(':scope > .docs-topic-menu').first();await menu.waitFor({state:'visible'});
+    const expectedPages=docsTopicPages[topic].filter(pageId=>pageId!=='api');
+    const expectedHrefs=expectedPages.map(pageId=>headerHref({base,entry,locale,managerUi,managerPath},pageId));
+    const chapterLinks=menu.locator('a.docs-topic-menu__row'),actualHrefs=await chapterLinks.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
+    if(JSON.stringify(actualHrefs)!==JSON.stringify(expectedHrefs))issues.push(`${entry}/${locale}/${topic}: group links, order or language differ`);
+    if(expectedHrefs[0]!==await shell.locator(`.portal-card[data-portal-card="${topic}"] .portal-card__primary`).getAttribute('href'))issues.push(`${entry}/${locale}/${topic}: first group link differs from its home card`);
+    const branches=menu.locator('button.docs-topic-menu__row'),expectedBranches=topic==='components'?1:0;
+    if(await branches.count()!==expectedBranches||await menu.locator('[data-icon-name="chevron-right"]').count()!==expectedBranches)issues.push(`${entry}/${locale}/${topic}: branch row or chevron differs`);
+    if(await chapterLinks.count()){
+     await chapterLinks.first().hover();
+     if(await trigger.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}/${topic}: pointer handoff into level one closed the menu`);
+    }
+    if(negative&&topic==='foundations'){
+     const first=chapterLinks.first(),good=await first.getAttribute('href'),wrong=headerHref({base,entry,locale,managerUi,managerPath},'07b-shell-lower');
+     await first.evaluate((el,value)=>el.setAttribute('href',value),wrong);
+     const corrupted=await chapterLinks.evaluateAll(els=>els.map(el=>el.getAttribute('href'))),detected=JSON.stringify(corrupted)!==JSON.stringify(expectedHrefs);
+     await first.evaluate((el,value)=>el.setAttribute('href',value),good);
+     if(!detected)issues.push(`${entry}/${locale}: negative category-membership mutation escaped its route/order check`);
+     observations.push({kind:'negative-group-mutation',entry,locale,detected});
+    }
+    const focusAfter=await surface.locator('body').evaluate(el=>{const active=el.ownerDocument.activeElement;return `${active?.tagName}|${active?.id}|${typeof active?.className==='string'?active.className:''}`;});
+    if(focusAfter!==focusBefore)issues.push(`${entry}/${locale}/${topic}: hover took keyboard focus`);
+    if(topic==='components'){
+     const branch=branches.first();await branch.hover();
+     if(await branch.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: API branch did not open on hover`);
+     const submenu=wrapped.locator('.docs-topics__submenu-wrap');await submenu.waitFor({state:'visible'});
+     const apiLinks=submenu.locator('a.docs-topic-menu__row'),apiNames=Object.keys(formal??formalApiContracts(readApprovedSource()));
+     const expectedApiHrefs=[headerHref({base,entry,locale,managerUi,managerPath},'api'),...apiNames.map(name=>headerHref({base,entry,locale,managerUi,managerPath},'api',`api-${name}`))];
+     const actualApiHrefs=await apiLinks.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
+     if(JSON.stringify(actualApiHrefs)!==JSON.stringify(expectedApiHrefs))issues.push(`${entry}/${locale}: API overview/anchor routes differ`);
+     if(await apiLinks.count()!==29)issues.push(`${entry}/${locale}: API branch must hold one overview and 28 real anchors`);
+     await apiLinks.first().hover();
+     if(!(await submenu.isVisible())||await trigger.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: pointer handoff into level two closed the menu`);
+     if(negative){
+      const overview=apiLinks.first(),good=await overview.getAttribute('href'),wrong=good.replace(locale,locale==='en'?'fr':'en').replace('api','wrong-api');
+      await overview.evaluate((el,value)=>el.setAttribute('href',value),wrong);
+      const corrupted=await overview.getAttribute('href');
+      if(corrupted===good)issues.push(`${entry}/${locale}: negative wrong-language/anchor mutation was not applied`);
+      if(corrupted===expectedApiHrefs[0])issues.push(`${entry}/${locale}: route check missed a wrong-language/anchor mutation`);
+      await overview.evaluate((el,value)=>el.setAttribute('href',value),good);
+      observations.push({kind:'negative-route-mutation',entry,locale,detected:corrupted!==expectedApiHrefs[0]});
+     }
+    }
+    opened.push(topic);
+   }catch(error){issues.push(`${entry}/${locale}/${topic}: topbar interaction ${error.message}`);}
+  }
+  await shell.locator('.docs-paper').hover({position:{x:20,y:20}});
+  if(await nav.locator('button[data-docs-topic][aria-expanded="true"]').count())issues.push(`${entry}/${locale}: leaving the category navigation did not close it`);
+  const components=nav.locator('button[data-docs-topic="components"]'),componentLayer=components.locator('xpath=..').locator('.docs-topics__layer');
+  await components.focus();
+  if(await components.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: keyboard focus did not open category`);
+  if(negative){
+   await components.evaluate(el=>{el.__portalTabBlocker=event=>{if(event.key==='Tab')event.preventDefault();};el.addEventListener('keydown',el.__portalTabBlocker);});
+   await page.keyboard.press('Tab');
+   const swallowed=await components.evaluate(el=>el===el.ownerDocument.activeElement);
+   await components.evaluate(el=>{el.removeEventListener('keydown',el.__portalTabBlocker);delete el.__portalTabBlocker;});
+   if(!swallowed)issues.push(`${entry}/${locale}: parent-focus mutation did not suppress Tab as expected`);
+   observations.push({kind:'negative-parent-focus-mutation',entry,locale,detected:swallowed});
+   await components.focus();
+  }
+  const firstChapter=componentLayer.locator('.docs-topic-menu__row[href]').first(),branch=componentLayer.locator('button.docs-topic-menu__row');
+  if(negative){
+   const original=await firstChapter.getAttribute('tabindex');await firstChapter.evaluate(el=>el.setAttribute('tabindex','-1'));
+   await page.keyboard.press('Tab');
+   const skipped=!(await firstChapter.evaluate(el=>el===el.ownerDocument.activeElement));
+   await firstChapter.evaluate((el,value)=>{if(value===null)el.removeAttribute('tabindex');else el.setAttribute('tabindex',value);},original);
+   if(!skipped)issues.push(`${entry}/${locale}: negative keyboard-focus mutation did not remove the chapter from Tab order`);
+   observations.push({kind:'negative-keyboard-mutation',entry,locale,detected:skipped});
+   await components.focus();
+  }
+  await page.keyboard.press('Tab');
+  if(!(await firstChapter.evaluate(el=>el===el.ownerDocument.activeElement)))issues.push(`${entry}/${locale}: Tab from category did not reach a real chapter link`);
+  await page.keyboard.press('Tab');await page.keyboard.press('Tab');
+  if(!(await branch.evaluate(el=>el===el.ownerDocument.activeElement))||await branch.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: Tab did not reach/open the API branch`);
+  await page.keyboard.press('Tab');
+  const overview=componentLayer.locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').first();
+  if(!(await overview.evaluate(el=>el===el.ownerDocument.activeElement)))issues.push(`${entry}/${locale}: Tab did not enter the API submenu`);
+  await page.keyboard.press('Escape');
+  if(!(await branch.evaluate(el=>el===el.ownerDocument.activeElement))||await branch.getAttribute('aria-expanded')!=='false')issues.push(`${entry}/${locale}: Escape did not collapse level two and return to its branch`);
+  await page.keyboard.press('Space');
+  if(await branch.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: Space did not open level two`);
+  await page.keyboard.press('Escape');await page.keyboard.press('Escape');
+  if(!(await components.evaluate(el=>el===el.ownerDocument.activeElement))||await components.getAttribute('aria-expanded')!=='false')issues.push(`${entry}/${locale}: Escape did not close the category and return focus`);
+  const localeTrigger=shell.locator('.docs-preferences .tcrn-shell-locale-menu__trigger');
+  await localeTrigger.click();
+  if(await localeTrigger.getAttribute('aria-expanded')!=='true'||await nav.locator('button[data-docs-topic][aria-expanded="true"]').count())issues.push(`${entry}/${locale}: locale layer did not exclude the topic cascade`);
+  await components.hover();
+  if(await localeTrigger.getAttribute('aria-expanded')!=='false'||await components.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: topic cascade did not exclude the locale layer`);
+  const brand=shell.locator(':scope > header [data-shell-brand]').first();await brand.click();
+  if(await brand.getAttribute('aria-expanded')!=='true'||await components.getAttribute('aria-expanded')!=='false')issues.push(`${entry}/${locale}: ShellMenu did not exclude the topic cascade`);
+  await brand.click();
+  if(negative){
+   await components.hover();
+   const triggerBox=await components.boundingBox();await components.hover();
+   const first=components.locator('xpath=..').locator('.docs-topic-menu__row[href]').first(),layer=components.locator('xpath=..').locator('.docs-topics__layer');
+   const original=await layer.getAttribute('style');await layer.evaluate(el=>{el.style.transform='translateY(14px)';});
+   const box=await layer.locator('.docs-topic-menu').first().boundingBox();let gapDetected=false;
+   if(triggerBox&&box){const x=triggerBox.x+Math.min(triggerBox.width/2,120),y=triggerBox.y+triggerBox.height+(box.y-triggerBox.y-triggerBox.height)/2;await page.mouse.move(x,y);await page.waitForTimeout(30);gapDetected=await components.getAttribute('aria-expanded')==='false';}
+   await layer.evaluate((el,value)=>{if(value===null)el.removeAttribute('style');else el.setAttribute('style',value);},original);
+   if(!gapDetected)issues.push(`${entry}/${locale}: hover-gap mutation failed to close the category`);
+   observations.push({kind:'negative-hover-gap-mutation',entry,locale,detected:gapDetected});
+  }
+  await components.hover();
+  const liveBranch=components.locator('xpath=..').locator('button.docs-topic-menu__row');await liveBranch.hover();
+  const overviewLink=components.locator('xpath=..').locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').first();
+  const overviewHref=headerHref({base,entry,locale,managerUi,managerPath},'api');
+  if(await overviewLink.getAttribute('href')!==overviewHref)issues.push(`${entry}/${locale}: API overview click route differs from its expected destination`);
+  await overviewLink.click();
+  if(managerUi){
+   await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`&&url.searchParams.get('globals')===`locale:${locale}`,{timeout:10000});
+  }else await page.waitForURL(new URL(overviewHref,base).href,{timeout:10000});
+  await surface.locator(`.docs-shell[data-docs-page="api"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
+  const apiNav=surface.locator('.docs-topics'),apiCategory=apiNav.locator('button[data-docs-topic="components"]');await apiCategory.hover();
+  const apiBranch=apiCategory.locator('xpath=..').locator('button.docs-topic-menu__row');await apiBranch.hover();
+  const anchorLink=apiCategory.locator('xpath=..').locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').nth(1);
+  const anchorHref=headerHref({base,entry,locale,managerUi,managerPath},'api','api-Heading');
+  if(await anchorLink.getAttribute('href')!==anchorHref)issues.push(`${entry}/${locale}: real API anchor href differs from its Story/language route`);
+  await anchorLink.click();
+  if(managerUi){
+   await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`&&url.searchParams.get('docsAnchor')===`${docsStoryId('api')}:api-Heading`,{timeout:10000});
+  }else await page.waitForURL(new URL(anchorHref,base).href,{timeout:10000});
+  await surface.locator('#api-Heading').waitFor({state:'visible'});
+  observations.push({kind:'topbar-route-activation',entry,locale,overviewHref,anchorHref,anchorVisible:true});
+  observations.push({kind:'docs-topbar',entry,locale,opened,keyboard:true,focusRestored:true});
+ }catch(error){issues.push(`${entry}/${locale}: topbar proof incomplete: ${error.message}`);}
+ return {issues,observations};
+}
+
+// Exercise the existing ShellMenu primitive as a real 390px touch Sheet. The docs topbar is
+// intentionally hidden at this width; the complete category tree remains reachable here.
+export async function exerciseDocsSheet(page,{base,locale,formal,negative=locale==='zh-CN'}={}){
+ const issues=[],observations=[];
+ const expected={
+  foundations:['01-tokens','02-typography','03-icons'].map(page=>`/${locale}/${page}.html`),
+  brand:[`/${locale}/04-brand.html`],
+  components:[`/${locale}/05-actions.html`,`/${locale}/06-inputs.html`,'#'],
+  shell:[`/${locale}/07a-shell-upper.html`,`/${locale}/07b-shell-lower.html`],
+ };
+ const pages=Object.keys(docsTopicPages);
+ const groupRow=(panel,id)=>panel.locator(`[data-shell-row][aria-controls$="-col-${id}"]`).first();
+ const openMenu=async()=>{
+  const root=page.locator('.docs-shell').first(),button=root.locator(':scope > header [data-shell-brand]').first();
+  if(await button.getAttribute('aria-expanded')!=='true')await button.tap();
+  const panel=root.locator('.tcrn-shell-sheet__panel');await panel.waitFor({state:'visible'});return {root,panel};
+ };
+ try{
+  const response=await page.goto(`${base}/${locale}/index.html`);if(!response||response.status()!==200)throw new Error('mobile home route unreadable');
+  const root=page.locator('.docs-shell').first();await root.waitFor({state:'visible'});await page.locator(`.docs-shell[data-docs-page="index"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
+  if(await root.locator('.docs-topics').isVisible())issues.push(`${locale}: desktop topic strip remains visible at 390px`);
+  const {panel}=await openMenu();
+  if(!(await panel.locator('input[type="search"]').isVisible()))issues.push(`${locale}: ShellMenu search is missing from the Sheet`);
+  const current=panel.locator('.tcrn-shell-menu__crumb--current');
+  if(await current.getAttribute('href')!==`/${locale}/index.html`||await current.getAttribute('aria-current')!=='page')issues.push(`${locale}: current location is missing or wrong in the Sheet`);
+  const visibleRows=panel.locator('[data-shell-row]:visible');
+  const actualGroups=await visibleRows.evaluateAll(els=>els.filter(el=>el.dataset.shellLevel==='1').map(el=>el.getAttribute('aria-controls')?.split('-col-').at(-1)));
+  if(JSON.stringify(actualGroups)!==JSON.stringify(['portal',...pages,'references']))issues.push(`${locale}: Sheet does not expose home, all four topic groups and references`);
+  for(const topic of pages){
+   try{
+    const trigger=groupRow(panel,topic);await trigger.tap();
+    if(await trigger.getAttribute('aria-expanded')!=='true')issues.push(`${locale}/${topic}: touch did not expand its group`);
+    const links=panel.locator('[data-shell-row][data-shell-level="2"]:visible');
+    const hrefs=await links.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
+    if(JSON.stringify(hrefs)!==JSON.stringify(expected[topic]))issues.push(`${locale}/${topic}: Sheet child membership or destination differs`);
+    if(negative&&topic==='foundations'){
+     const first=links.first(),good=await first.getAttribute('href');await first.evaluate((el,value)=>el.setAttribute('href',value),`/${locale}/07b-shell-lower.html`);
+     const corrupted=await links.evaluateAll(els=>els.map(el=>el.getAttribute('href'))),detected=JSON.stringify(corrupted)!==JSON.stringify(expected[topic]);
+     await first.evaluate((el,value)=>el.setAttribute('href',value),good);
+     if(!detected)issues.push(`${locale}: negative Sheet group mutation escaped its destination check`);
+     observations.push({kind:'negative-sheet-group-mutation',locale,detected});
+    }
+   }catch(error){issues.push(`${locale}/${topic}: touch group ${error.message}`);}
+  }
+  const home=groupRow(panel,'portal');await home.tap();
+  const homeLink=panel.locator(`[data-shell-row][data-shell-level="2"][href="/${locale}/index.html"]`).first();
+  if(!(await homeLink.isVisible()))issues.push(`${locale}: the topic collection home is not a real Sheet link`);
+  await homeLink.tap();await page.waitForURL(`**/${locale}/index.html`);
+  let state=await openMenu();
+  const search=state.panel.locator('input[type="search"]');await search.fill('MultiSelect');
+  const searchResult=state.panel.locator('[data-search-result]').first();await searchResult.waitFor({state:'visible'});
+  if(await searchResult.getAttribute('href')!==`/${locale}/api.html#api-MultiSelect`)issues.push(`${locale}: Sheet search API route/anchor differs`);
+  await search.fill('');
+  const components=groupRow(state.panel,'components');await components.tap();
+  const apiBranch=state.panel.locator('[data-shell-row][data-shell-level="2"][aria-controls$="-col-api-branch"]').first();
+  if(negative){
+   await apiBranch.evaluate(el=>{el.__touchBlocker=event=>event.preventDefault();el.addEventListener('click',el.__touchBlocker);el.style.pointerEvents='none';});
+   try{await apiBranch.tap({timeout:1200});}catch{}
+   const blocked=await apiBranch.getAttribute('aria-expanded')!=='true';
+   await apiBranch.evaluate(el=>{el.removeEventListener('click',el.__touchBlocker);delete el.__touchBlocker;el.style.removeProperty('pointer-events');});
+   if(!blocked)issues.push(`${locale}: negative disabled-touch mutation did not block the API branch`);
+   observations.push({kind:'negative-sheet-touch-mutation',locale,detected:blocked});
+  }
+  await apiBranch.tap();
+  if(await apiBranch.getAttribute('aria-expanded')!=='true')issues.push(`${locale}: touch did not open the API submenu`);
+  const apiLinks=state.panel.locator('[data-shell-row][data-shell-level="3"]:visible');
+  const apiNames=Object.keys(formal??formalApiContracts(readApprovedSource()));
+  const expectedApi=[`/${locale}/api.html`,...apiNames.map(name=>`/${locale}/api.html#api-${name}`)];
+  const apiHrefs=await apiLinks.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
+  if(JSON.stringify(apiHrefs)!==JSON.stringify(expectedApi))issues.push(`${locale}: Sheet API overview/anchor list differs from 28 real contracts`);
+  if(apiHrefs.length!==29)issues.push(`${locale}: Sheet API branch should expose overview plus 28 anchors`);
+  await apiLinks.first().tap();await page.waitForURL(`**/${locale}/api.html`);
+  await page.locator('[data-approved-api]').first().waitFor({state:'visible'});
+  if(await page.locator('[data-approved-api]').count()!==28)issues.push(`${locale}: API overview did not render the 28 approved contracts`);
+  state=await openMenu();await groupRow(state.panel,'components').tap();
+  const branch=state.panel.locator('[data-shell-row][data-shell-level="2"][aria-controls$="-col-api-branch"]').first();await branch.tap();
+  const heading=state.panel.locator(`[data-shell-row][data-shell-level="3"][href="/${locale}/api.html#api-Heading"]`).first();
+  if(!(await heading.isVisible()))issues.push(`${locale}: Sheet Heading anchor is not reachable`);
+  await heading.tap();await page.waitForURL(`**/${locale}/api.html#api-Heading`);
+  if(!await page.locator('#api-Heading').isVisible())issues.push(`${locale}: Sheet Heading click did not reach the real API anchor`);
+  state=await openMenu();await groupRow(state.panel,'references').tap();
+  const provenance=state.panel.locator(`[data-shell-row][href="/${locale}/source.html"]`).first();
+  if(!(await provenance.isVisible()))issues.push(`${locale}: formal source link is missing from the Sheet`);
+  await provenance.tap();await page.waitForURL(`**/${locale}/source.html`);
+  if(!await page.locator('[data-published-source]').isVisible())issues.push(`${locale}: formal source destination did not render`);
+  observations.push({kind:'docs-sheet',locale,width:390,touch:true,topics:pages,groupHome:true,search:true,apiLinks:apiHrefs.length,anchor:'#api-Heading',provenance:true});
+ }catch(error){issues.push(`${locale}: Sheet proof incomplete: ${error.message}`);}
+ return {issues,observations};
+}
+
+// Storybook Manager reserves its own outer chrome, so exercise the actual preview iframe
+// after narrowing its viewport to the same 390px Sheet breakpoint as the static document.
+export async function exerciseManagerNarrowSheet(page,{base,locale,formal,negative=locale==='zh-CN'}={}){
+ const issues=[],observations=[],managerPath='/index.html';
+ const waitManagerRoute=async(target,fragment='')=>page.waitForURL(url=>{
+  const apiId=docsStoryId(target),expectedAnchor=fragment?`${apiId}:${fragment}`:null;
+  return url.searchParams.get('path')===`/story/${apiId}`&&url.searchParams.get('globals')===`locale:${locale}`&&url.searchParams.get('docsAnchor')===expectedAnchor;
+ },{timeout:10000});
+ const panel=()=>page.frameLocator('#storybook-preview-iframe').locator('.tcrn-shell-sheet__panel');
+ const group=(id)=>panel().locator(`[data-shell-row][aria-controls$="-col-${id}"]`).first();
+ try{
+  const response=await page.goto(`${base}${managerPath}?path=/story/${docsStoryId('index')}&globals=locale:${locale}`);
+  if(!response||response.status()!==200)throw new Error('actual Manager home unreadable');
+  const iframe=page.locator('#storybook-preview-iframe');await iframe.waitFor();
+  await iframe.evaluate(el=>{el.style.width='390px';el.style.maxWidth='390px';});
+  const surface=page.frameLocator('#storybook-preview-iframe');
+  await surface.locator(`.docs-shell[data-docs-page="index"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
+  const frameWidth=await iframe.evaluate(el=>el.contentWindow.innerWidth);
+  if(frameWidth!==390)issues.push(`${locale}: Manager preview iframe width is ${frameWidth}, expected 390px`);
+  if(await surface.locator('.docs-topics').isVisible())issues.push(`${locale}: Manager desktop topic strip remains visible in narrow preview`);
+  const root=surface.locator('.docs-shell').first(),brand=root.locator(':scope > header [data-shell-brand]').first();await brand.tap();
+  if(!(await panel().isVisible()))issues.push(`${locale}: real Manager brand tap did not open the mobile Sheet`);
+  if(!(await panel().locator('input[type="search"]').isVisible()))issues.push(`${locale}: Manager Sheet lost search at narrow width`);
+  if(await panel().locator('.tcrn-shell-menu__crumb--current').getAttribute('href')!==managerMenuHref(managerPath,locale,'index')||await panel().locator('.tcrn-shell-menu__crumb--current').getAttribute('aria-current')!=='page')issues.push(`${locale}: Manager Sheet current page crumb differs`);
+  await group('components').tap();
+  const rows=panel().locator('[data-shell-row][data-shell-level="2"]:visible');
+  const expected=[managerMenuHref(managerPath,locale,'05-actions'),managerMenuHref(managerPath,locale,'06-inputs'),'#'];
+  const actual=await rows.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
+  if(JSON.stringify(actual)!==JSON.stringify(expected))issues.push(`${locale}: narrow Manager component group routes differ`);
+  const branch=panel().locator('[data-shell-row][data-shell-level="2"][aria-controls$="-col-api-branch"]').first();
+  if(negative){
+   await branch.evaluate(el=>{el.style.pointerEvents='none';});
+   try{await branch.tap({timeout:1200});}catch{}
+   const blocked=await branch.getAttribute('aria-expanded')!=='true';
+   await branch.evaluate(el=>el.style.removeProperty('pointer-events'));
+   if(!blocked)issues.push(`${locale}: narrow Manager negative touch mutation did not block API branch`);
+   observations.push({kind:'negative-manager-touch-mutation',locale,detected:blocked});
+  }
+  await branch.tap();
+  const heading=panel().locator(`[data-shell-row][data-shell-level="3"][href="${managerMenuHref(managerPath,locale,'api','api-Heading')}"]`).first();
+  if(!(await heading.isVisible()))issues.push(`${locale}: narrow Manager API anchor is not reachable`);
+  await heading.tap();await waitManagerRoute('api','api-Heading');
+  await surface.locator(`.docs-shell[data-docs-page="api"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
+  // Manager replaces/reconfigures its preview iframe on story changes; restore the
+  // constrained width before reopening the Sheet on the API page.
+  await iframe.evaluate(el=>{el.style.width='390px';el.style.maxWidth='390px';});
+  await page.waitForFunction(()=>document.querySelector('#storybook-preview-iframe')?.contentWindow?.innerWidth===390);
+  if(!(await surface.locator('#api-Heading').isVisible()))issues.push(`${locale}: narrow Manager anchor did not reach the real API section`);
+  await surface.locator('.docs-shell > header [data-shell-brand]').first().tap();
+  await group('references').tap();
+  const source=panel().locator(`[data-shell-row][href="${managerMenuHref(managerPath,locale,'source')}"]`).first();
+  if(!(await source.isVisible()))issues.push(`${locale}: narrow Manager formal source link is missing`);
+  await source.tap();await waitManagerRoute('source');
+  await surface.locator(`.docs-shell[data-docs-page="source"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
+  if(!(await surface.locator('[data-published-source]').isVisible()))issues.push(`${locale}: narrow Manager formal source route did not render`);
+  observations.push({kind:'manager-narrow-sheet',locale,iframeWidth:frameWidth,touch:true,apiAnchor:'#api-Heading',provenance:true});
+ }catch(error){issues.push(`${locale}: Manager narrow Sheet proof incomplete: ${error.message}`);}
+ return {issues,observations};
+}
 
 export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return withPublishedBrowser(async({browser,base,source})=>{
  const issues=[],observations=[],page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],requests=[],failures=[],formal=formalApiContracts(source);
@@ -232,14 +575,25 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
      if(facts.lang!==locale||facts.source!==source.manifest.site.sourceCommit||facts.main!==1||facts.brokenNames)issues.push(`${entry}/${locale}/${id}: locale/source/main/named-controls drift`);
      const chrome = await page.locator('.docs-shell').evaluate(shell => {
        const strip = shell.querySelector(':scope > [data-shell-strip]');
-       const primary = [...strip.querySelectorAll('.docs-topics a')];
+       const nav = strip.querySelector('.docs-topics');
+       const home = nav?.querySelector(':scope > .tcrn-shell-pins__pin > a');
+       const topics = [...(nav?.querySelectorAll('button[data-docs-topic]') ?? [])];
+       const menus = [...(nav?.querySelectorAll('.docs-topics__layer') ?? [])];
        const mark = strip.querySelector('[data-shell-brand] svg[data-logo]');
        const rect = mark.getBoundingClientRect();
        const cards = [...shell.querySelectorAll('.portal-card__primary')];
        const homeTrail = shell.querySelector(':scope > [data-paper] .docs-frame > .tcrn-page-header .tcrn-breadcrumb a');
        return {
-         primary: primary.map(link => link.getAttribute('href')),
-         current: primary.filter(link => link.getAttribute('aria-current') === 'page').map(link => link.getAttribute('href')),
+         home: home?.getAttribute('href'),
+         current: home?.getAttribute('aria-current') === 'page' ? [home.getAttribute('href')] : [],
+         topicIds: topics.map(button => button.getAttribute('data-docs-topic')),
+         topicCurrent: topics.filter(button => button.hasAttribute('data-current-topic')).map(button => button.getAttribute('data-docs-topic')),
+         triggerSemantics: topics.every(button => button.tagName === 'BUTTON' && !!button.getAttribute('aria-controls') && button.getAttribute('aria-expanded') === 'false' && !button.hasAttribute('href')),
+         controlsVisible: topics.every(button => {
+           const target = document.getElementById(button.getAttribute('aria-controls'));
+           return !!target && nav.contains(target) && target.classList.contains('docs-topics__layer');
+         }),
+         menuHidden: menus.length === 4 && menus.every(menu => menu.hasAttribute('hidden')),
          homeTrail: homeTrail?.getAttribute('href'),
          cards: cards.map(link => link.getAttribute('href')),
          readOnly: shell.querySelectorAll('.portal-glimpse[inert][aria-hidden="true"]').length,
@@ -248,11 +602,15 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
        };
      });
      const primaryHrefs = primaryPages.map(page => docsHref(entry, locale, page));
-     const currentHrefs = primaryPages.includes(id) ? [docsHref(entry, locale, id)] : [];
-     if (JSON.stringify(chrome.primary) !== JSON.stringify(primaryHrefs) ||
+     const currentHrefs = id === 'index' ? [docsHref(entry, locale, 'index')] : [];
+     const expectedTopic = Object.keys(topicPages).find(topic => topicPages[topic].includes(id));
+     if (chrome.home !== docsHref(entry, locale, 'index') ||
          JSON.stringify(chrome.current) !== JSON.stringify(currentHrefs) ||
+         JSON.stringify(chrome.topicIds) !== JSON.stringify(Object.keys(topicPages)) ||
+         JSON.stringify(chrome.topicCurrent) !== JSON.stringify(expectedTopic ? [expectedTopic] : []) ||
+         !chrome.triggerSemantics || !chrome.controlsVisible || !chrome.menuHidden ||
          chrome.hasAccount || chrome.mark.some(size => size !== 22)) {
-       issues.push(`${entry}/${locale}/${id}: actual top band routes, current page, mark or preferences differ`);
+       issues.push(`${entry}/${locale}/${id}: actual top band home route, category disclosure, current page, mark or preferences differ`);
      }
      if (id === 'index'
        ? JSON.stringify(chrome.cards) !== JSON.stringify(primaryHrefs.slice(1)) || chrome.readOnly !== 4
@@ -268,6 +626,30 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
     }catch(error){issues.push(`${entry}/${locale}/${id}: route incomplete: ${error.message}`);}
    }
    const navigation=await exerciseDocsNavigation(page,{base,entry,locale,source,formal});issues.push(...navigation.issues);observations.push(...navigation.observations);
+   if(entry==='static'||entry==='manager'){
+    const desktop=await exerciseDocsTopbar(page,{base,entry:entry==='manager'?'manager':entry,locale,managerUi:entry==='manager',formal});
+    issues.push(...desktop.issues);observations.push(...desktop.observations);
+   }
+   if(entry==='manager'){
+    const canvas=await exerciseDocsTopbar(page,{base,entry:'canvas',locale,formal});
+    issues.push(...canvas.issues);observations.push(...canvas.observations);
+    if(locale==='zh-CN'){
+     const context=await browser.newContext({viewport:{width:1440,height:1000},hasTouch:true,reducedMotion:'reduce'});
+     const narrowPage=await context.newPage();
+     try{
+      const narrow=await exerciseManagerNarrowSheet(narrowPage,{base,locale,formal});
+      issues.push(...narrow.issues);observations.push(...narrow.observations);
+     }finally{await context.close();}
+    }
+   }
+   if(entry==='static'){
+    const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+    const touchPage=await context.newPage();
+    try{
+     const touch=await exerciseDocsSheet(touchPage,{base,locale,formal});
+     issues.push(...touch.issues);observations.push(...touch.observations);
+    }finally{await context.close();}
+   }
   }
   if(requests.some(url=>!url.startsWith(base)))issues.push(`${entry}: resource request escaped actual local output closure`);
   issues.push(...failures.map(f=>`${entry}: resource failure ${JSON.stringify(f)}`),...errors.map(e=>`${entry}: browser error ${e}`));

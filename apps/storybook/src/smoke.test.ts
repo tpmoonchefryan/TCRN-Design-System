@@ -38,6 +38,7 @@ test("direct canvas documents retain the published board, API and source destina
 
 test("portal routes, topic membership and document paths agree in all three entrypoints and five languages", () => {
   const primary = ["index", "01-tokens", "04-brand", "05-actions", "07a-shell-upper"] as const;
+  const categoryIds = ["foundations", "brand", "components", "shell"] as const;
   const chapters = [
     ["01-tokens", "02-typography", "03-icons"],
     ["04-brand"],
@@ -49,14 +50,36 @@ test("portal routes, topic membership and document paths agree in all three entr
     for (const entry of ["static", "canvas", manager] as const) {
       const nav = docsNavigation(locale, entry);
       const destinations = primary.map(page => pageHref(locale, page, entry));
-      assert.deepEqual(nav.primary.map(item => item.id), primary);
+      assert.deepEqual(nav.categories.map(category => category.id), categoryIds);
+      assert.deepEqual(nav.categories.map(category => category.pageId), primary.slice(1));
       assert.deepEqual(nav.cards.map(card => card.chapters.map(chapter => chapter.id)), chapters);
       assert.deepEqual(nav.cards.map(card => card.href), destinations.slice(1));
+      assert.deepEqual(nav.directory.map(group => group.id), ["portal", ...categoryIds, "references"]);
+      assert.deepEqual(nav.directory.map(group => group.items.map(item => item.id)), [
+        ["index"],
+        ["01-tokens", "02-typography", "03-icons"],
+        ["04-brand"],
+        ["05-actions", "06-inputs", "api-branch"],
+        ["07a-shell-upper", "07b-shell-lower"],
+        ["source"],
+      ]);
+      const apiBranch = nav.categories.find(category => category.id === "components")!.items.find(item => item.id === "api-branch")!;
+      const apiChildren = (apiBranch as { children?: readonly { id: string; label: string; href?: string }[] }).children;
+      assert.deepEqual(apiChildren?.map(item => item.id), ["api", ...approvedApi.map(component => `api-${component.name}`)]);
+      assert.equal(apiChildren?.[0]?.label, locale === "zh-CN" ? "概览" : locale === "ja" ? "概要" : locale === "ko" ? "개요" : locale === "fr" ? "Aperçu" : "Overview");
+      assert.equal(apiChildren?.[0]?.href, pageHref(locale, "api", entry));
+      for (const component of approvedApi) {
+        assert.equal(apiChildren?.find(item => item.id === `api-${component.name}`)?.href,
+          pageHref(locale, "api", entry, `api-${component.name}`));
+      }
       const portal = renderToString(createElement(App, { page: "index", locale, entry }));
       assert.match(portal, /href="#standards-content"/);
       assert.match(portal, /href="#standards"/);
       const top = /<nav class="tcrn-shell-pins docs-topics"[^>]*>(.*?)<\/nav>/.exec(portal)?.[1] ?? "";
-      assert.deepEqual([...top.matchAll(/href="([^"]+)"/g)].map(match => match[1]), destinations.map(htmlHref));
+      assert.deepEqual([...top.matchAll(/class="tcrn-shell-pins__item" href="([^"]+)"/g)].map(match => match[1]), [destinations[0]].map(htmlHref));
+      assert.deepEqual([...top.matchAll(/data-docs-topic="([^"]+)"/g)].map(match => match[1]), categoryIds);
+      assert.equal((top.match(/aria-expanded="false"/g) ?? []).length, 5);
+      assert.equal((top.match(/aria-controls=/g) ?? []).length, 5);
       assert.equal((top.match(/aria-current="page"/g) ?? []).length, 1);
       assert.deepEqual(
         [...portal.matchAll(/class="portal-card__primary" href="([^"]+)"/g)].map(match => match[1]),
@@ -66,8 +89,9 @@ test("portal routes, topic membership and document paths agree in all three entr
       assert.doesNotMatch(portal.split("</header>", 1)[0], /data-shell-account|data-shell-product=/);
       const subpage = renderToString(createElement(App, { page: "02-typography", locale, entry }));
       const subpageTop = /<nav class="tcrn-shell-pins docs-topics"[^>]*>(.*?)<\/nav>/.exec(subpage)?.[1] ?? "";
-      assert.doesNotMatch(subpageTop, /aria-current="page"/);
-      assert.ok(subpageTop.includes(`href="${htmlHref(destinations[1])}" class="tcrn-shell-pins__item" data-current-topic=""`));
+      assert.equal((subpageTop.match(/aria-current="page"/g) ?? []).length, 1);
+      assert.ok(subpageTop.includes(`href="${htmlHref(pageHref(locale, "02-typography", entry))}" aria-current="page"`));
+      assert.ok(subpageTop.includes('data-docs-topic="foundations" data-current-topic=""'));
       const trail = /<nav class="tcrn-breadcrumb"[^>]*>(.*?)<\/nav>/.exec(subpage)?.[1] ?? "";
       assert.ok(trail.includes(`href="${htmlHref(destinations[0])}"`));
       assert.ok(trail.includes(`href="${htmlHref(destinations[1])}"`));

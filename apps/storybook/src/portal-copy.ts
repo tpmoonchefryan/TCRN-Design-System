@@ -2,7 +2,7 @@ import type { DocsLocale } from "./approved-source.js";
 
 export const portalCopy = {
   "zh-CN": {
-    home: "首页", chapters: "章节", references: "参考资料", skip: "跳到正文", footer: "Sites v1 · 规范内容",
+    home: "首页", overview: "概览", chapters: "章节", references: "参考资料", skip: "跳到正文", footer: "Sites v1 · 规范内容",
     title: ['从设计基础', '到产品界面'],
     lead: '查阅 TCRN 的色彩、排版、品牌与组件用法，以及产品工作台的布局和交互规范。',
     browse: '浏览设计规范', source: '正式来源与版本信息',
@@ -15,7 +15,7 @@ export const portalCopy = {
     captions: ['排版与色彩', '产品锁定块', '表单与动作'],
   },
   "en": {
-    home: "Home", chapters: "Chapters", references: "References", skip: "Skip to content", footer: "Sites v1 · Standard specimens",
+    home: "Home", overview: "Overview", chapters: "Chapters", references: "References", skip: "Skip to content", footer: "Sites v1 · Standard specimens",
     title: ['Design standards', 'for TCRN products'],
     lead: 'Explore the foundations, brand marks, interactive components, and workspace patterns used across TCRN products.',
     browse: 'Browse the standards', source: 'Published source and version',
@@ -28,7 +28,7 @@ export const portalCopy = {
     captions: ['Typography and color', 'Product lockups', 'Forms and actions'],
   },
   "ja": {
-    home: "ホーム", chapters: "章", references: "参考資料", skip: "本文へ移動", footer: "Sites v1 · 仕様のサンプル",
+    home: "ホーム", overview: "概要", chapters: "章", references: "参考資料", skip: "本文へ移動", footer: "Sites v1 · 仕様のサンプル",
     title: ['デザインの基礎から', 'プロダクトの画面へ'],
     lead: 'TCRN の配色、タイポグラフィ、ブランド、コンポーネント、作業画面の仕様を確認できます。',
     browse: 'デザイン仕様を見る', source: '公開ソースとバージョン',
@@ -41,7 +41,7 @@ export const portalCopy = {
     captions: ['タイポグラフィと配色', 'ブランドの組み合わせ', 'フォームと操作'],
   },
   "ko": {
-    home: "홈", chapters: "장", references: "참고 자료", skip: "본문으로 이동", footer: "Sites v1 · 규격 예제",
+    home: "홈", overview: "개요", chapters: "장", references: "참고 자료", skip: "본문으로 이동", footer: "Sites v1 · 규격 예제",
     title: ['디자인 기초부터', '제품 화면까지'],
     lead: 'TCRN 제품의 색상, 타이포그래피, 브랜드, 컴포넌트, 작업 화면 규격을 살펴보세요.',
     browse: '디자인 규격 보기', source: '공개 소스 및 버전',
@@ -54,7 +54,7 @@ export const portalCopy = {
     captions: ['타이포그래피와 색상', '제품 로고 조합', '폼과 동작'],
   },
   "fr": {
-    home: "Accueil", chapters: "Chapitres", references: "Références", skip: "Aller au contenu", footer: "Sites v1 · Exemples des normes",
+    home: "Accueil", overview: "Aperçu", chapters: "Chapitres", references: "Références", skip: "Aller au contenu", footer: "Sites v1 · Exemples des normes",
     title: ['Des fondations', 'aux interfaces produit'],
     lead: 'Retrouvez les couleurs, la typographie, les marques, les composants et les modèles de navigation des produits TCRN.',
     browse: 'Consulter les normes', source: 'Source publiée et version',

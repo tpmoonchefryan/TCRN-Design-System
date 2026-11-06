@@ -5,6 +5,7 @@ import {
   SkipLink, Text, useShellMenuPresentation, type ShellThemeMode,
 } from "@tcrn/ui-react/approved";
 import { ApiReference } from "./api-reference.js";
+import { DocsTopicNav } from "./DocsTopicNav.js";
 import { approvedSource, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
 import { docsCopy } from "./locales.js";
 import { Portal } from "./portal.js";
@@ -131,7 +132,8 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
     } catch { /* The theme can still change for this visit. */ }
   }
 
-  const [layer, setLayer] = useState<"directory" | "search" | "locale" | null>(null);
+  const [layer, setLayer] = useState<"directory" | "search" | "locale" | "topics" | null>(null);
+  const [openTopic, setOpenTopic] = useState<string | null>(null);
   const menuOpen = layer === "directory" || layer === "search";
   const shellRef = useRef<HTMLDivElement>(null);
   const brandRef = useRef<HTMLButtonElement>(null);
@@ -164,30 +166,32 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
           aria-controls={menuId}
           onClick={event => {
             menuOwnerRef.current = event.currentTarget;
+            setOpenTopic(null);
             setLayer(menuOpen ? null : "directory");
           }}
         />
-        <nav className="tcrn-shell-pins docs-topics" aria-label={labels.title}>
-          {navigation.primary.map(item => (
-            <span key={item.id} className="tcrn-shell-pins__pin">
-              <a
-                href={item.href}
-                className="tcrn-shell-pins__item"
-                aria-current={item.id === page ? "page" : undefined}
-                data-current-topic={item.id === topic?.id ? "" : undefined}
-              >
-                <span className="tcrn-shell-pins__label" title={item.label}>{item.label}</span>
-              </a>
-            </span>
-          ))}
-        </nav>
+        <DocsTopicNav
+          home={navigation.home}
+          label={labels.title}
+          categories={navigation.categories}
+          page={page}
+          selectedTopic={topic?.topic}
+          open={layer === "topics" ? openTopic : null}
+          onOpenChange={next => {
+            setOpenTopic(next);
+            setLayer(next ? "topics" : current => current === "topics" ? null : current);
+          }}
+        />
         <div className="tcrn-shell-cluster docs-preferences" data-cluster="">
           <ShellThemeToggle currentTheme={theme} onThemeChange={changeTheme} locale={locale} variant="quiet" />
           <ShellLocaleMenu
             currentLocale={locale}
             locales={tcrnLocaleMetadata}
             open={layer === "locale"}
-            onOpenChange={open => setLayer(previous => open ? "locale" : previous === "locale" ? null : previous)}
+            onOpenChange={open => {
+              if (open) setOpenTopic(null);
+              setLayer(previous => open ? "locale" : previous === "locale" ? null : previous);
+            }}
             onLocaleChange={next => {
               const selected = tcrnLocaleMetadata.find(option => option.locale === next);
               if (selected && selected.locale !== locale) {
@@ -214,9 +218,10 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
         onOpenChange={open => {
           if (open) {
             menuOwnerRef.current = brandRef.current;
+            setOpenTopic(null);
             setLayer("directory");
           } else {
-            setLayer(previous => previous === "locale" ? previous : null);
+            setLayer(previous => previous === "directory" || previous === "search" ? null : previous);
           }
         }}
         searchPlaceholder={labels.search}
@@ -235,6 +240,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
                 aria-keyshortcuts="Control+K Meta+K"
                 onClick={event => {
                   menuOwnerRef.current = event.currentTarget;
+                  setOpenTopic(null);
                   setLayer(layer === "search" ? null : "search");
                 }}
               >

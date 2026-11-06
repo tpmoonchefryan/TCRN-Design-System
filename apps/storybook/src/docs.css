@@ -88,6 +88,150 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   --tcrn-pair-weight: var(--tcrn-type-weight-strong);
 }
 
+/* The documentation top band alone opens these category lists on hover. Shared product
+   menus keep their click driven cascade behavior. The padded bridges keep pointer travel
+   continuous across the published six pixel menu gap and four pixel cascade gap. */
+.docs-topics {
+  position: relative;
+  overflow: visible;
+}
+
+.docs-topics__category {
+  position: relative;
+}
+
+.docs-topics__layer {
+  position: absolute;
+  inset-block-start: 100%;
+  z-index: var(--tcrn-z-popover);
+  display: flex;
+  inline-size: max-content;
+  max-inline-size: calc(100vw - 2 * var(--tcrn-space-3));
+  padding-block-start: var(--tcrn-shell-menu-gap);
+}
+
+.docs-topics__layer[data-side="start"] {
+  inset-inline-start: var(--docs-topic-menu-start, 0px);
+}
+
+.docs-topics__layer[data-side="end"] {
+  inset-inline-end: var(--docs-topic-menu-end, 0px);
+}
+
+.docs-topics__layer[hidden],
+.docs-topics__submenu-wrap[hidden] {
+  display: none;
+}
+
+.docs-topic-menu {
+  position: relative;
+  inline-size: min(var(--tcrn-shell-drop-w), calc(100vw - 2 * var(--tcrn-space-3)));
+  max-block-size: calc(100dvh - var(--tcrn-shell-strip-h) - var(--tcrn-space-3));
+  padding: var(--tcrn-space-1h);
+  overflow: visible;
+  border-radius: var(--tcrn-radius-panel);
+  background: var(--tcrn-color-panel);
+  box-shadow: var(--tcrn-elevation-s3);
+  color: var(--tcrn-color-ink-2);
+  --tcrn-color-surface: var(--tcrn-color-panel);
+}
+
+.docs-topic-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-0h);
+  max-block-size: calc(100dvh - var(--tcrn-shell-strip-h) - 2 * var(--tcrn-space-3));
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  list-style: none;
+  overscroll-behavior: contain;
+}
+
+.docs-topic-menu__item {
+  position: static;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.docs-topic-menu__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tcrn-space-2);
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: var(--tcrn-shell-row-h);
+  padding: 0 var(--tcrn-space-2h);
+  border: 0;
+  border-radius: var(--tcrn-radius-control);
+  background: transparent;
+  color: var(--tcrn-color-ink-2);
+  font: var(--tcrn-type-weight-medium) 12.5px/var(--tcrn-type-line-control) var(--tcrn-type-family-ui);
+  text-align: start;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
+    box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+
+.docs-topic-menu__row:hover {
+  background: var(--tcrn-color-hover);
+  color: var(--tcrn-color-ink);
+}
+
+.docs-topic-menu__row:where([aria-expanded="true"], [aria-current="page"], [aria-current="true"]) {
+  background: var(--tcrn-color-wash);
+  color: var(--tcrn-color-ink);
+  font-weight: var(--tcrn-type-weight-strong);
+}
+
+.docs-topic-menu__row:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: var(--tcrn-focus-ring);
+}
+
+.docs-topic-menu__label {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.docs-topic-menu__chevron {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+
+.docs-topics__submenu-wrap {
+  position: absolute;
+  inset-block-start: var(--docs-topic-submenu-top, 0px);
+  z-index: 1;
+  display: flex;
+  max-inline-size: calc(100vw - 2 * var(--tcrn-space-3));
+}
+
+.docs-topics__submenu-wrap[data-side="end"] {
+  inset-inline-start: 100%;
+  padding-inline-start: var(--tcrn-shell-cascade-gap);
+}
+
+.docs-topics__submenu-wrap[data-side="start"] {
+  inset-inline-end: 100%;
+  padding-inline-end: var(--tcrn-shell-cascade-gap);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-topic-menu__row {
+    transition: none;
+  }
+}
+
 .docs-preferences .tcrn-shell-locale-menu__panel {
   z-index: var(--tcrn-z-popover);
   inline-size: min(var(--tcrn-shell-drop-w), calc(100vw - 2 * var(--tcrn-space-3)));

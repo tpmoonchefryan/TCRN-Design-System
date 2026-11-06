@@ -45,6 +45,7 @@ const topics = [
   { id: "components", iconName: "check", chapters: ["05-actions", "06-inputs", "api"] },
   { id: "shell", iconName: "layers", chapters: ["07a-shell-upper", "07b-shell-lower"] },
 ] as const satisfies readonly { id: string; iconName: IconName; chapters: readonly [ApprovedBoardId, ...DocsPage[]] }[];
+type DocsMenuItem = ShellMenuGroup["items"][number];
 
 export function docsNavigation(locale: DocsLocale, entry: DocsEntry) {
   const labels = docsCopy(locale);
@@ -54,19 +55,35 @@ export function docsNavigation(locale: DocsLocale, entry: DocsEntry) {
   const api = link("api", labels.api, "package");
   const source = link("source", labels.source, "info");
   const chapters = approvedSource.boards.map((board, index) => link(board.slug, labels.boardTitles[index], "book-open"));
+  const apiOverview = { ...api, id: "api", label: portalCopy[locale].overview };
+  const apiAnchors: DocsMenuItem[] = approvedApi.map(component => ({
+    id: `api-${component.name}`,
+    label: component.name,
+    href: pageHref(locale, "api", entry, `api-${component.name}`),
+  }));
+  const apiBranch: DocsMenuItem = {
+    ...api,
+    id: "api-branch",
+    children: [apiOverview, ...apiAnchors],
+  };
   const byPage = new Map([...chapters, api, source, home].map(chapter => [chapter.id, chapter]));
   const cards = topics.map(({ id, iconName, chapters }) => {
     const [label, description] = copy.topics[id];
     return { topic: id, ...link(chapters[0], label, iconName), description, chapters: chapters.map(page => byPage.get(page)!) };
   });
-  const primary = [home, ...cards];
-  const primaryPages = new Set(primary.map(item => item.id));
+  const categories = cards.map(card => ({
+    id: card.topic,
+    label: card.label,
+    href: card.href,
+    pageId: card.id,
+    items: card.chapters.map(chapter => chapter.id === "api" ? apiBranch : chapter),
+  }));
   const directory: ShellMenuGroup[] = [
-    { id: "portal", label: labels.title, items: primary },
-    { id: "chapters", label: copy.chapters, items: chapters.filter(chapter => !primaryPages.has(chapter.id)) },
-    { id: "references", label: copy.references, items: [api, source] },
+    { id: "portal", label: labels.title, items: [home] },
+    ...categories.map(category => ({ id: category.id, label: category.label, items: category.items })),
+    { id: "references", label: copy.references, items: [source] },
   ];
-  return { home, source, cards, primary, directory, byPage };
+  return { home, source, cards, categories, directory, byPage };
 }
 
 export function sourceSearch(locale: DocsLocale, query: string, entry: DocsEntry = "static", page?: DocsPage) {
