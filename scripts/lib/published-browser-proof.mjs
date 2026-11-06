@@ -89,13 +89,15 @@ export async function measureNumberMinimums(locator){
  }));
 }
 
-export function numberMinimumValid(reading,source){
+export function numberMinimumValid(reading,source,{includeBoundary=true}={}){
  const css=source.board('06-inputs').css;
  const size=parseFloat(cssRule(css,'.gp')['--fs-md']);
  const numeric=cssRule(css,'.in')['font-variant-numeric'];
+ const withinTolerance=difference=>includeBoundary ? difference<=.5 : difference<.5;
  return !!reading&&reading.fontSize===size&&reading.fontVariantNumeric===numeric&&
   [reading.minimum,reading.twelveCh,reading.squeezedWidth].every(Number.isFinite)&&
-  Math.abs(reading.minimum-reading.twelveCh)<=.5&&Math.abs(reading.squeezedWidth-reading.twelveCh)<=.5;
+  withinTolerance(Math.abs(reading.minimum-reading.twelveCh))&&
+  withinTolerance(Math.abs(reading.squeezedWidth-reading.twelveCh));
 }
 export function publishedTextRoleIssues(actual,reference,{kind="text",probe="ink"}={}){
   if(probe==="ph")return actual.ink===reference.ink?[]:["source placeholder ink"];

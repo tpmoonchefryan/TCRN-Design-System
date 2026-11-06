@@ -34,33 +34,53 @@ import { collectGeometryReadings } from '../scripts/lib/published-docs-browser.m
 import { withPublishedBrowser,openPublishedBoard,publishedSearchOccurrences,publishedSearchLocator,publishedSearchGeometry } from '../scripts/lib/published-browser-proof.mjs';
 import { readApiFacts } from '../scripts/lib/published-api-browser.mjs';
 
-test('NumberInput samples the real tabular font and rejects a changed CSS minimum under squeeze',async()=>{
+test('NumberInput samples the real tabular font and preserves the API boundary under squeeze',async t=>{
  for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   try{
    await openPublishedBoard(page,{base,entry,locale:'zh-CN',board:'06-inputs'});
    const controls=page.locator('[data-approved-board] input.tcrn-number-input');
    const collect=async()=>(await collectGeometryReadings(page)).filter(row=>row.number);
-   const original=await collect();
+   const readApi=async()=>(await readApiFacts(page,{source,locale:'zh-CN'})).NumberInput;
+   const expectMinimum=async(phase,expectedDelta,expectedApi)=>{
+    const readings=await collect();
+    const {twelveCh,minimum,squeezedWidth,fontSize,fontVariantNumeric}=readings[0];
+    const geometry=geometryIssues(readings,{source}),api=await readApi();
+    t.diagnostic(`${entry}/${phase} ${JSON.stringify({twelveCh,minimum,squeezedWidth,fontSize,fontVariantNumeric,geometry:geometry.length===0,api:api.twelveChMinimum})}`);
+    assert.deepEqual(geometry,[]);
+    assert.deepEqual(api.minimumObservation,{twelveCh,minimum,squeezedWidth,fontSize,fontVariantNumeric});
+    assert.equal(squeezedWidth-twelveCh,expectedDelta);
+    assert.equal(api.twelveChMinimum,expectedApi,`${entry}/${phase} NumberInput API minimum`);
+    return readings;
+   };
+   const original=await expectMinimum('normal',0,true);
    assert.equal(original.length,4);
-   assert.deepEqual(geometryIssues(original,{source}),[]);
    assert.ok(original.every(row=>row.fontSize===13&&row.fontVariantNumeric==='tabular-nums'&&row.squeezedWidth===row.twelveCh));
-   assert.equal((await readApiFacts(page,{source,locale:'zh-CN'})).NumberInput.twelveChMinimum,true);
 
    const control=controls.first(),style=await control.getAttribute('style');
+   const restoreStyle=()=>control.evaluate((el,value)=>value===null?el.removeAttribute('style'):el.setAttribute('style',value),style);
    try{
     await control.evaluate(el=>el.style.minInlineSize='11ch');
     const changed=await collect();
     assert.equal(changed[0].twelveCh,original[0].twelveCh);
     assert.ok(changed[0].squeezedWidth<changed[0].twelveCh-.5);
     assert.equal(geometryIssues(changed,{source}).filter(issue=>issue.includes('12ch')).length,1);
-    assert.equal((await readApiFacts(page,{source,locale:'zh-CN'})).NumberInput.twelveChMinimum,false);
+    assert.equal((await readApi()).twelveChMinimum,false);
     await control.evaluate(el=>{el.style.minInlineSize='12ch';el.style.fontVariantNumeric='normal';});
     assert.equal(geometryIssues(await collect(),{source}).filter(issue=>issue.includes('12ch')).length,1);
    }finally{
-    await control.evaluate((el,value)=>value===null?el.removeAttribute('style'):el.setAttribute('style',value),style);
+    await restoreStyle();
    }
-   assert.deepEqual(geometryIssues(await collect(),{source}),[]);
+   try{
+    await control.evaluate((el,padding)=>el.style.setProperty('padding-inline',`${padding}px 0`,'important'),original[0].twelveCh+.5);
+    const [boundary]=await expectMinimum('boundary',.5,false);
+    assert.equal(boundary.twelveCh,original[0].twelveCh);
+    assert.equal(boundary.minimum,original[0].minimum);
+   }finally{
+    await restoreStyle();
+   }
+   await expectMinimum('restored',0,true);
+   assert.equal(await control.getAttribute('style'),style);
   }finally{await page.close();}
  },{entry});
 });

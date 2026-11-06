@@ -164,7 +164,7 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
  if(facts.NumberInput){
   const [minimum]=await measureNumberMinimums(page.locator('[data-approved-board] input[type="number"]').first());
   facts.NumberInput.minimumObservation=minimum??null;
-  facts.NumberInput.twelveChMinimum=numberMinimumValid(minimum,source);
+  facts.NumberInput.twelveChMinimum=numberMinimumValid(minimum,source,{includeBoundary:false});
  }
  return facts;
 }
