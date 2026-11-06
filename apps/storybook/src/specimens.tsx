@@ -30,6 +30,11 @@ const spacingRoles = [
   { role: "sections", variable: "--tcrn-space-3h", factor: 2 },
 ] as const;
 
+function SpacingTokenValue({variable, factor = 1}: {variable: string; factor?: number}) {
+  const token = tcrnTokens.find(t => t.variable === variable)!;
+  return <><code className="tcrn-doc-code">{factor > 1 && `${factor} × `}{variable}</code>{` · ${parseFloat(token.value) * factor} px`}</>;
+}
+
 function TokenValue({value}: {value: string}) {
   return value.split(",").map((part, index) => (
     <Fragment key={index}>{index > 0 && <>,<wbr/></>}{part}</Fragment>
@@ -37,7 +42,7 @@ function TokenValue({value}: {value: string}) {
 }
 
 function Tokens({locale}: {locale: DocsLocale}) {
-  const { tokens, themes: themeNames } = specimenCopy[locale];
+  const { tokens, themes: themeNames, layout } = specimenCopy[locale];
   return <>
     <section className="tcrn-doc-section" data-doc-token-section="themed">
       <Heading level={2} visualLevel={3}>{tokens.themed}</Heading>
@@ -60,13 +65,32 @@ function Tokens({locale}: {locale: DocsLocale}) {
       <Heading level={2} visualLevel={3}>{tokens.spacing}</Heading>
       <Text>{tokens.spacingIntro}</Text>
       <dl className="tcrn-doc-spacing-roles">
-        {spacingRoles.map(({role, variable, factor}) => {
-          const token = tcrnTokens.find(t => t.variable === variable)!;
-          return <div key={role} data-doc-spacing-role={role}>
-            <dt>{tokens[role]}</dt>
-            <dd><code className="tcrn-doc-code">{factor > 1 && `${factor} × `}{variable}</code>{` · ${parseFloat(token.value) * factor} px`}</dd>
-          </div>;
-        })}
+        {spacingRoles.map(({role, variable, factor}) => <div key={role} data-doc-spacing-role={role}>
+          <dt>{tokens[role]}</dt>
+          <dd><SpacingTokenValue variable={variable} factor={factor}/></dd>
+        </div>)}
+      </dl>
+    </section>
+    <section className="tcrn-doc-section" data-doc-layout-guide="">
+      <Heading level={2} visualLevel={3}>{layout.title}</Heading>
+      <Text>{layout.intro}</Text>
+      <dl className="tcrn-doc-spacing-roles">
+        <div data-doc-layout-role="standard">
+          <dt>{layout.standard}</dt>
+          <dd><code className="tcrn-doc-code">--docs-column-standard</code> · 1040 px</dd>
+        </div>
+        <div data-doc-layout-role="wide">
+          <dt>{layout.wide}</dt>
+          <dd><code className="tcrn-doc-code">--docs-column-wide</code> · 1240 px</dd>
+        </div>
+        <div data-doc-layout-role="wide-inset">
+          <dt>{layout.wideInset}</dt>
+          <dd><SpacingTokenValue variable="--tcrn-space-3h" factor={2}/></dd>
+        </div>
+        <div data-doc-layout-role="narrow-inset">
+          <dt>{layout.narrowInset}</dt>
+          <dd><SpacingTokenValue variable="--tcrn-space-4"/></dd>
+        </div>
       </dl>
     </section>
   </>;
@@ -159,7 +183,8 @@ function Brand({locale}: {locale: DocsLocale}) {
       <div className="tcrn-doc-prose">
         <Text>{labels.tileUse}</Text>
         <Text>{labels.monoUse}</Text>
-        <Text>{labels.shellUse}</Text>
+        <Text data-doc-brand-shell-use="">{labels.shellUse}</Text>
+        <Text>{labels.shellScale}</Text>
       </div>
     </section>
     <Themes locale={locale}>{() => tcrnProductMarkIds.map(productId => (

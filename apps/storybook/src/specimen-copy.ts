@@ -6,6 +6,9 @@ type SpecimenCopy = {
     token: string; themed: string; fixed: string; spacing: string;
     spacingIntro: string; paragraphs: string; groups: string; sections: string;
   };
+  layout: {
+    title: string; intro: string; standard: string; wide: string; wideInset: string; narrowInset: string;
+  };
   matrix: string;
   icons: {
     sizes: string; geometry: string; glyph: string; hitArea: string;
@@ -14,7 +17,7 @@ type SpecimenCopy = {
   };
   brand: {
     guide: string; ladder: string; color: string; mono: string; tint: string; deep: string;
-    tileUse: string; monoUse: string; lockups: string; shellUse: string;
+    tileUse: string; monoUse: string; lockups: string; shellUse: string; shellScale: string;
     full: string; compact: string; fullLine: string; compactLine: string;
   };
   shell: {
@@ -32,6 +35,12 @@ export const specimenCopy = {
       spacing: "文档中的间距",
       spacingIntro: "本页用已有间距值组织文字、样例和章节。",
       paragraphs: "段落间距", groups: "标题到内容、样例组间距", sections: "章节间距",
+    },
+    layout: {
+      title: "Storybook 文档版式",
+      intro: "文档栏居中，占满两侧留白之间的可用宽度，直至达到上限。07a 和 07b 的页头、正文、预览控件与桌面样张共用宽栏。手机样张从同一侧对齐，宽度最多 390 px。样张的原始尺寸由正式发布的 07 定义。",
+      standard: "常规文档栏上限", wide: "宽栏上限（07a 和 07b）",
+      wideInset: "视口宽于 750 px 时的单侧留白", narrowInset: "视口宽 750 px 及以下时的单侧留白",
     },
     matrix: "来源对比度矩阵",
     icons: {
@@ -51,7 +60,8 @@ export const specimenCopy = {
       tileUse: "淡底贴片用于应用图标与产品切换菜单，深底贴片用于 favicon 和深色场合。",
       monoUse: "单色标用于打印、水印和限制用色的场合。",
       lockups: "锁定块与首行",
-      shellUse: "07a 的完整锁定块用 44 px 标，紧凑尺度用 22 px 标，登入动效以 128 px 标起步。这些数字是标的大小。例如 TMS 的完整与紧凑字标分别为 16 和 12.5 px，描述行分别为 11.5 和 10.5 px。",
+      shellUse: "07a 的桌面顶带使用 22 px 紧凑首行。展开的完整菜单在右下角用带描述的 22 px 紧凑锁定块作装饰。登入页使用带描述的 44 px 完整锁定块，44 px 首行用作完整尺度对照。",
+      shellScale: "登入动效将标从 128 px 收至 22 px。这里的尺寸指图形标的大小。例如 TMS 的完整与紧凑字标分别为 16 和 12.5 px，描述行分别为 11.5 和 10.5 px。",
       full: "完整锁定块", compact: "紧凑锁定块", fullLine: "完整尺度首行", compactLine: "紧凑尺度首行",
     },
     shell: {
@@ -68,6 +78,12 @@ export const specimenCopy = {
       spacing: "Spacing in these docs",
       spacingIntro: "These pages use existing spacing values to separate prose, samples and sections.",
       paragraphs: "Between paragraphs", groups: "Between headings and content or sample groups", sections: "Between sections",
+    },
+    layout: {
+      title: "Storybook document layout",
+      intro: "The centered document column fills the space between the page insets up to its cap. In 07a and 07b, the header, text, preview controls and desktop specimens share the wide column. Phone previews share its start edge and are at most 390 px wide. Published 07 defines the original scene sizes.",
+      standard: "Standard column cap", wide: "Wide column cap (07a and 07b)",
+      wideInset: "Inset per side above 750 px viewport width", narrowInset: "Inset per side at viewport widths up to 750 px",
     },
     matrix: "Source contrast matrix",
     icons: {
@@ -87,7 +103,8 @@ export const specimenCopy = {
       tileUse: "Use tint tiles for app icons and product switchers. Use deep tiles for favicons and dark contexts.",
       monoUse: "Use mono marks for print, watermarks and restricted-color contexts.",
       lockups: "Lockups and first lines",
-      shellUse: "In 07a the full lockup uses a 44 px mark and the compact lockup uses a 22 px mark. The sign-in intro starts with a 128 px mark. For example, the full and compact TMS wordmarks use 16 and 12.5 px type, and the taglines use 11.5 and 10.5 px type.",
+      shellUse: "In 07a, the desktop top band uses the 22 px compact first line. The expanded menu uses a decorative 22 px compact lockup with its description in the bottom-right corner. The sign-in screen uses the 44 px full lockup with its description. The 44 px first line shows the full size for comparison.",
+      shellScale: "The sign-in intro scales the mark from 128 to 22 px. These sizes refer to the mark. For example, the full and compact TMS wordmarks use 16 and 12.5 px type, and the descriptions use 11.5 and 10.5 px type.",
       full: "Full lockup", compact: "Compact lockup", fullLine: "Full first line", compactLine: "Compact first line",
     },
     shell: {
@@ -104,6 +121,12 @@ export const specimenCopy = {
       spacing: "このドキュメントの余白",
       spacingIntro: "既存の余白値で、本文、サンプル、セクションを区切ります。",
       paragraphs: "段落間", groups: "見出しと内容の間、サンプル群の間", sections: "セクション間",
+    },
+    layout: {
+      title: "Storybook のドキュメントレイアウト",
+      intro: "ドキュメントのカラムは中央に配置し、両側の余白を除いた幅いっぱいに、上限まで広がります。07a と 07b のページヘッダー、本文、プレビュー操作部、デスクトップの見本には幅広のカラムを使います。モバイルの見本は同じ側に揃え、最大幅は 390 px です。見本の原寸は公開済みの 07 で定義されています。",
+      standard: "標準カラムの最大幅", wide: "幅広カラムの最大幅（07a と 07b）",
+      wideInset: "表示幅が 750 px を超える場合の片側の余白", narrowInset: "表示幅が 750 px 以下の場合の片側の余白",
     },
     matrix: "公開元のコントラスト表",
     icons: {
@@ -123,7 +146,8 @@ export const specimenCopy = {
       tileUse: "淡色タイルはアプリアイコンと製品切り替えに、濃色タイルは favicon と暗色の場面に使います。",
       monoUse: "単色マークは印刷、透かし、使用色に制約がある場面に使います。",
       lockups: "ロックアップと先頭行",
-      shellUse: "07a のフル版は 44 px、コンパクト版は 22 px のマークを使用します。サインイン演出は 128 px のマークから始まります。たとえば TMS のフル版とコンパクト版のワードマークは 16 と 12.5 px、説明文は 11.5 と 10.5 px です。",
+      shellUse: "07a のデスクトップ頂帯には 22 px のコンパクト版の先頭行を使います。展開した全体メニューの右下には、説明文付きの 22 px コンパクト版を装飾として配置します。サインイン画面には説明文付きの 44 px フル版を使い、44 px の先頭行はフルサイズの比較用に示します。",
+      shellScale: "サインイン演出ではマークが 128 px から 22 px に縮小します。これらの寸法はマークの大きさです。たとえば TMS のフル版とコンパクト版のワードマークは 16 と 12.5 px、説明文は 11.5 と 10.5 px です。",
       full: "フル版", compact: "コンパクト版", fullLine: "フル版の先頭行", compactLine: "コンパクト版の先頭行",
     },
     shell: {
@@ -140,6 +164,12 @@ export const specimenCopy = {
       spacing: "이 문서의 간격",
       spacingIntro: "기존 간격 값을 사용해 본문, 예시, 섹션을 구분합니다.",
       paragraphs: "문단 사이", groups: "제목과 내용 사이, 예시 그룹 사이", sections: "섹션 사이",
+    },
+    layout: {
+      title: "Storybook 문서 레이아웃",
+      intro: "문서 열은 가운데 정렬되며 양쪽 여백 안의 공간을 최대 너비까지 채웁니다. 07a와 07b의 페이지 머리글, 본문, 미리보기 컨트롤, 데스크톱 예시는 같은 넓은 열을 사용합니다. 모바일 예시도 같은 시작선에 맞추며 최대 너비는 390 px입니다. 예시의 원본 크기는 게시된 07에서 정합니다.",
+      standard: "기본 열 최대 너비", wide: "넓은 열 최대 너비(07a와 07b)",
+      wideInset: "뷰포트가 750 px를 초과할 때 한쪽 여백", narrowInset: "뷰포트가 750 px 이하일 때 한쪽 여백",
     },
     matrix: "게시 원본 대비 표",
     icons: {
@@ -159,7 +189,8 @@ export const specimenCopy = {
       tileUse: "밝은 타일은 앱 아이콘과 제품 전환 메뉴에, 짙은 타일은 favicon과 어두운 환경에 사용합니다.",
       monoUse: "단색 마크는 인쇄, 워터마크, 색상 사용이 제한된 환경에 사용합니다.",
       lockups: "로고 조합과 첫 줄",
-      shellUse: "07a에서 전체 조합은 44 px 마크, 소형 조합은 22 px 마크를 사용합니다. 로그인 동작은 128 px 마크에서 시작합니다. 예를 들어 TMS의 전체 및 소형 워드마크 글자는 16 및 12.5 px, 설명 줄은 11.5 및 10.5 px입니다.",
+      shellUse: "07a에서 데스크톱 상단 바는 22 px 소형 첫 줄을 사용합니다. 펼친 전체 메뉴의 오른쪽 아래에는 설명을 포함한 22 px 소형 조합을 장식으로 배치합니다. 로그인 화면에는 설명을 포함한 44 px 전체 조합을 사용하며, 44 px 첫 줄은 전체 크기를 비교하기 위한 예시입니다.",
+      shellScale: "로그인 동작에서는 마크가 128 px에서 22 px로 줄어듭니다. 이 치수는 마크의 크기입니다. 예를 들어 TMS의 전체 및 소형 워드마크 글자는 16 및 12.5 px, 설명 줄은 11.5 및 10.5 px입니다.",
       full: "전체 조합", compact: "소형 조합", fullLine: "전체 크기 첫 줄", compactLine: "소형 첫 줄",
     },
     shell: {
@@ -176,6 +207,12 @@ export const specimenCopy = {
       spacing: "Espacement dans cette documentation",
       spacingIntro: "Les valeurs d’espacement existantes séparent les textes, les exemples et les sections.",
       paragraphs: "Entre les paragraphes", groups: "Entre titres et contenus ou groupes d’exemples", sections: "Entre les sections",
+    },
+    layout: {
+      title: "Mise en page des documents Storybook",
+      intro: "La colonne centrée occupe l’espace entre les marges de page jusqu’à sa largeur maximale. Dans 07a et 07b, l’en-tête, le texte, les commandes d’aperçu et les exemples sur ordinateur partagent la colonne large. Les aperçus mobiles partent du même bord et mesurent au plus 390 px de large. Les planches 07 publiées définissent les dimensions d’origine des scènes.",
+      standard: "Largeur maximale de la colonne standard", wide: "Largeur maximale de la colonne large (07a et 07b)",
+      wideInset: "Marge par côté au-delà de 750 px de largeur d’affichage", narrowInset: "Marge par côté à 750 px de largeur d’affichage ou moins",
     },
     matrix: "Matrice de contraste publiée",
     icons: {
@@ -195,7 +232,8 @@ export const specimenCopy = {
       tileUse: "Les tuiles claires servent aux icônes d’application et au sélecteur de produits. Les tuiles foncées servent aux favicons et aux contextes sombres.",
       monoUse: "Le monochrome convient à l’impression, aux filigranes et aux contextes à couleurs limitées.",
       lockups: "Blocs de marque et premières lignes",
-      shellUse: "Dans 07a, le bloc complet utilise un symbole de 44 px et le bloc compact, un de 22 px. L’animation de connexion démarre avec un symbole de 128 px. Par exemple, les noms TMS complet et compact sont composés en 16 et 12,5 px, et les signatures en 11,5 et 10,5 px.",
+      shellUse: "Dans 07a, le bandeau sur ordinateur utilise la première ligne compacte de 22 px. Le menu déployé présente en bas à droite un bloc compact décoratif de 22 px avec son descriptif. L’écran de connexion utilise le bloc complet de 44 px avec son descriptif. La première ligne de 44 px sert de repère à la taille complète.",
+      shellScale: "L’animation de connexion réduit le symbole de 128 à 22 px. Ces tailles désignent le symbole. Par exemple, les noms TMS complet et compact sont composés en 16 et 12,5 px, et les signatures en 11,5 et 10,5 px.",
       full: "Bloc complet", compact: "Bloc compact", fullLine: "Ligne complète", compactLine: "Ligne compacte",
     },
     shell: {

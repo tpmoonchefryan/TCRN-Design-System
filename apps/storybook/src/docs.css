@@ -1,5 +1,8 @@
 /* Shared by the static site and Manager preview. Product specimen shells keep their own layout. */
 .docs-shell {
+  --docs-column-standard: 1040px;
+  --docs-column-wide: 1240px;
+  --docs-inset-inline: calc(2 * var(--tcrn-space-3h));
   min-block-size: 0;
 }
 
@@ -30,7 +33,8 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 .docs-shell > .docs-paper > main {
-  padding: 14px 28px 12px;
+  padding-block: 14px 12px;
+  padding-inline: var(--docs-inset-inline);
   scroll-padding-block: 12px;
 }
 
@@ -39,8 +43,19 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 .docs-frame {
-  max-inline-size: 1040px;
+  --docs-column-cap: var(--docs-column-standard);
+  inline-size: min(100%, var(--docs-column-cap));
   margin-inline: auto;
+}
+
+.docs-shell[data-docs-page^="07"] .docs-frame {
+  --docs-column-cap: var(--docs-column-wide);
+}
+
+/* The frame sizes the Storybook document column. */
+.docs-frame > .tcrn-doc-content {
+  inline-size: auto;
+  margin-inline: 0;
 }
 
 .docs-frame > .tcrn-page-header {
@@ -50,6 +65,10 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 .docs-frame > .tcrn-page-header .tcrn-page-header__title {
   margin-block: 0 var(--tcrn-space-1);
   overflow-wrap: anywhere;
+}
+
+.docs-shell[data-docs-page^="07"] .docs-frame > .tcrn-page-header .tcrn-page-header__title {
+  white-space: normal;
 }
 
 .docs-frame > .tcrn-page-header .tcrn-breadcrumb__item:first-child {
@@ -83,7 +102,7 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   gap: var(--tcrn-space-2h);
 }
 
-.tcrn-doc-board :is([data-doc-token-section], [data-doc-icon-guide], [data-doc-icon-group],
+.tcrn-doc-board :is([data-doc-token-section], [data-doc-layout-guide], [data-doc-icon-guide], [data-doc-icon-group],
   [data-doc-brand-guide], [data-doc-brand-ladder], [data-doc-brand-lockups],
   [data-doc-shell-theme], [data-doc-shell-geometry], [data-formal-intro]) > .tcrn-heading,
 .tcrn-doc-board [data-formal-section="icon-states"] > .tcrn-heading,
@@ -178,23 +197,6 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   gap: calc(2 * var(--tcrn-space-3h));
 }
 
-.docs-frame:has(.tcrn-doc-board[data-approved-board^="07"]) {
-  max-inline-size: 1240px;
-}
-
-.tcrn-doc-content:has(> .tcrn-doc-board[data-approved-board^="07"]) {
-  inline-size: 100%;
-}
-
-.docs-frame:has(.tcrn-doc-board[data-approved-board^="07"]) > .tcrn-page-header,
-.tcrn-doc-content:has(> .tcrn-doc-board[data-approved-board^="07"]) > section,
-.tcrn-doc-board[data-approved-board^="07"] :is([data-doc-shell-geometry], [data-formal-section="shell-marks"]),
-.tcrn-doc-board[data-approved-board^="07"] > p,
-.tcrn-doc-board[data-approved-board^="07"] :is([data-formal-intro], [data-doc-shell-theme], [data-formal-section]) > :is(h2, h3, p) {
-  inline-size: min(100%, 1040px);
-  margin-inline: auto;
-}
-
 .tcrn-doc-intro-start {
   align-self: start;
 }
@@ -202,11 +204,9 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 .tcrn-doc-shell-example {
   --docs-scene-width: 1240px;
   --docs-scene-ratio: 1240 / 640;
-  container-type: inline-size;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--tcrn-space-2h);
-  inline-size: min(100%, var(--docs-scene-width));
   min-inline-size: 0;
 }
 
@@ -229,7 +229,7 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 .tcrn-doc-shell-frame[data-specimen-view] {
-  inline-size: 100%;
+  container-type: inline-size;
   block-size: auto;
 }
 
@@ -249,6 +249,12 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 .tcrn-doc-shell-frame[data-specimen-view="original"] {
   overflow: auto;
   overscroll-behavior-inline: contain;
+}
+
+/* Chain horizontal gestures to the original-size frame, keeping inner vertical containment. */
+.tcrn-doc-shell-frame[data-specimen-view="original"] > .tcrn-product-shell > .tcrn-product-shell__paper > .tcrn-product-shell__main,
+.tcrn-doc-shell-frame[data-specimen-view="original"][data-phone] > .tcrn-product-shell > .tcrn-shell-sheet .tcrn-shell-sheet__list {
+  overscroll-behavior-inline: auto;
 }
 
 .tcrn-doc-shell-frame:focus-visible {
@@ -524,8 +530,12 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 @media (max-width: 750px) {
+  .docs-shell {
+    --docs-inset-inline: var(--tcrn-space-4);
+  }
+
   .docs-shell > .docs-paper > main {
-    padding: 12px 16px;
+    padding-block: 12px;
   }
 
   .docs-frame > .tcrn-page-header .tcrn-page-header__body {

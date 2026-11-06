@@ -454,6 +454,28 @@ async function assertTokenSpacing(article){
  assert.deepEqual(result.spacing,['--tcrn-space-2h · 10 px','--tcrn-space-3h · 14 px','2 × --tcrn-space-3h · 28 px']);
 }
 
+async function assertDocumentLayoutGuide(article) {
+ const reading = await article.locator('[data-doc-layout-guide]').evaluate(guide => {
+  const style = getComputedStyle(guide.closest('.docs-frame'));
+  return {
+   heading: guide.querySelector('h2').textContent,
+   intro: guide.querySelector('p').textContent,
+   roles: [...guide.querySelectorAll('[data-doc-layout-role] dd')].map(el => el.textContent.trim()),
+   css: ['--docs-column-standard', '--docs-column-wide', '--tcrn-space-3h', '--tcrn-space-4']
+    .map(name => parseFloat(style.getPropertyValue(name))),
+  };
+ });
+ const [standard, wide, space3h, space4] = reading.css;
+ assert.match(reading.heading, /Storybook/);
+ assert.match(reading.intro, /07a.*07b.*390 px/);
+ assert.deepEqual(reading.roles, [
+  `--docs-column-standard · ${standard} px`,
+  `--docs-column-wide · ${wide} px`,
+  `2 × --tcrn-space-3h · ${2 * space3h} px`,
+  `--tcrn-space-4 · ${space4} px`,
+ ]);
+}
+
 async function assertIconCatalog(article,source){
  const expected=extractIcons(source).map(icon=>icon.name).sort();
  const themes=await article.locator('[data-formal-theme]').evaluateAll(panes=>panes.map(pane=>({
@@ -495,6 +517,19 @@ async function assertBrandCatalog(article,source){
  const proseGap=await article.locator('[data-doc-brand-guide] .tcrn-doc-prose').evaluate(el=>
   el.children[1].getBoundingClientRect().top-el.firstElementChild.getBoundingClientRect().bottom);
  assert.equal(proseGap,10,'paragraphs retain the existing 10 px spacing');
+ const locale = await article.getAttribute('lang');
+ // The use cases are the 07a size comparisons, expanded menu and sign-in scene.
+ const uses = {
+  'zh-CN': [/桌面顶带.*22 px 紧凑首行/, /完整菜单.*右下角.*带描述.*22 px.*装饰/, /登入页.*带描述.*44 px 完整锁定块/, /44 px 首行.*尺度对照/],
+  en: [/desktop top band.*22 px compact first line/, /expanded menu.*decorative 22 px compact lockup with its description.*bottom-right/, /sign-in screen.*44 px full lockup with its description/, /44 px first line.*comparison/],
+  ja: [/デスクトップ頂帯.*22 px.*コンパクト版の先頭行/, /全体メニューの右下.*説明文付きの 22 px.*装飾/, /サインイン画面.*説明文付きの 44 px フル版/, /44 px の先頭行.*比較/],
+  ko: [/데스크톱 상단 바.*22 px 소형 첫 줄/, /전체 메뉴의 오른쪽 아래.*설명을 포함한 22 px.*장식/, /로그인 화면.*설명을 포함한 44 px 전체 조합/, /44 px 첫 줄.*비교/],
+  fr: [/bandeau sur ordinateur.*première ligne compacte de 22 px/, /menu déployé.*en bas à droite.*bloc compact décoratif de 22 px avec son descriptif/, /écran de connexion.*bloc complet de 44 px avec son descriptif/, /première ligne de 44 px sert de repère/],
+ };
+ const guide = article.locator('[data-doc-brand-shell-use]');
+ const usage = await guide.textContent();
+ for (const use of uses[locale]) assert.match(usage, use, locale);
+ assert.match(await guide.evaluate(el => el.nextElementSibling.textContent), /128.*22 px/, locale);
  const expected=extractMarks(source).map(({productId,name})=>[productId,name]);
  const themes=await article.locator('[data-formal-theme]').evaluateAll(panes=>panes.map(pane=>
   [...pane.querySelectorAll('[data-formal-section]')].map(product=>{
@@ -541,11 +576,15 @@ test('content layout, icon groups and mark renditions render in all three entrie
     });
     assert.equal(layout[0],'28px',`${entry}/${board} document hierarchy`);
     assert.ok(layout[1]<=layout[2]+1&&layout[3]<=layout[4]+1,`${entry}/${board} outer overflow ${layout}`);
-    if(board==='01-tokens')await assertTokenSpacing(article);
+    if(board==='01-tokens'){
+     await assertTokenSpacing(article);
+     await assertDocumentLayoutGuide(article);
+    }
     if(board==='03-icons')await assertIconCatalog(article,source);
     if(board==='04-brand')await assertBrandCatalog(article,source);
    }
    for(const locale of ['en','ja','ko','fr']){
+    await assertDocumentLayoutGuide(await openContentBoard(page,{base,entry,board:'01-tokens',locale,width:390}));
     const article=await openContentBoard(page,{base,entry,board:'04-brand',locale,width:390});
     await assertBrandCatalog(article,source);
    }
@@ -583,6 +622,129 @@ test('content regressions reject collapsed spacing and missing or repeated catal
    await assert.rejects(assertBrandCatalog(brand,source),/unclipped labeled rendition and size/);
   }finally{await page.close();}
  });
+});
+
+async function readDocumentColumn(article) {
+ return article.evaluate(async root => {
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  const doc = root.ownerDocument;
+  const frame = root.closest('.docs-frame');
+  const main = frame.closest('.docs-paper > main');
+  const header = frame.querySelector('.tcrn-page-header');
+  const styles = getComputedStyle(main);
+  const edges = element => {
+   const {left, right} = element.getBoundingClientRect();
+   return [left, right];
+  };
+  const heading = header.querySelector('h1');
+  const titleRange = doc.createRange();
+  titleRange.selectNodeContents(heading);
+  const titleLines = Array.from(titleRange.getClientRects(), rect => [rect.left, rect.right, rect.top]);
+  const groups = {
+   header: [header],
+   divider: [header.querySelector('.tcrn-page-header__body')],
+   breadcrumbs: [header.querySelector('.tcrn-breadcrumb')],
+   content: [root.parentElement, root, ...root.parentElement.querySelectorAll(':scope > section')],
+   geometry: [...root.querySelectorAll('[data-doc-shell-geometry] :is(h2, .tcrn-doc-prose, p)')],
+   headings: [...root.querySelectorAll('[data-doc-shell-theme] > h2, [data-doc-shell-theme] [data-formal-section] > h3')],
+   prose: [...root.querySelectorAll('[data-formal-intro] > :is(h2, p), :scope > p')],
+   controls: [...root.querySelectorAll('.tcrn-doc-shell-tools')],
+   desktop: [...root.querySelectorAll('.tcrn-doc-shell-frame:not([data-phone])')],
+  };
+  return {
+   viewport: doc.defaultView.innerWidth,
+   mainWidth: main.clientWidth,
+   insets: [parseFloat(styles.paddingInlineStart), parseFloat(styles.paddingInlineEnd)],
+   column: edges(frame),
+   groups: Object.fromEntries(Object.entries(groups).map(([key, elements]) => [key, elements.map(edges)])),
+   lead: edges(header.querySelector('.tcrn-page-header__lead')),
+   title: edges(heading),
+   description: edges(header.querySelector('.tcrn-page-header__description')),
+   actions: edges(header.querySelector('.tcrn-page-header__actions')),
+   titleLines,
+   phones: [...root.querySelectorAll('.tcrn-doc-shell-frame[data-phone]')].map(edges),
+   overflow: Math.max(main.scrollWidth - main.clientWidth, doc.documentElement.scrollWidth - doc.documentElement.clientWidth),
+  };
+ });
+}
+
+function assertDocumentColumn(reading, width, cap) {
+ const close = (a, b) => Math.abs(a - b) <= 0.6;
+ assert.equal(reading.viewport, width);
+ const inset = width > 750 ? 28 : 16;
+ assert.deepEqual(reading.insets, [inset, inset]);
+ const columnWidth = Math.min(cap, reading.mainWidth - 2 * inset);
+ const [left, right] = reading.column;
+ assert.ok(close(right - left, columnWidth), `available column width at ${width}: ${reading.column}`);
+ for (const [name, boxes] of Object.entries(reading.groups)) {
+  for (const [start, end] of boxes) {
+   assert.ok(close(start, left) && close(end, right), `common column edges for ${name}: ${start},${end} vs ${left},${right}`);
+  }
+ }
+ for (const box of [reading.lead, reading.title, reading.description]) {
+  assert.ok(close(box[0], left) && box[1] <= right + 0.6, 'the header text starts at the column edge');
+ }
+ assert.ok(width > 750 ? close(reading.actions[1], right) : close(reading.actions[0], left), 'actions stay inside the header column');
+ for (const [start, end] of reading.phones) {
+  assert.ok(close(start, left) && close(end - start, Math.min(columnWidth, 390)), 'phone preview keeps its own width at the same start edge');
+ }
+ assert.ok(reading.titleLines.every(([start, end]) => start >= left - 1 && end <= reading.title[1] + 1), 'title lines fit without clipping');
+ assert.ok(reading.overflow <= 1, 'no document-wide horizontal overflow');
+}
+
+test('responsive document columns align 07 content and previews through resize', async t => {
+ for (const entry of contentEntries) await withPublishedBrowser(async ({browser, base}) => {
+  const page = await browser.newPage();
+  const resize = async width => {
+   await page.setViewportSize({width: entry === 'native-manager' ? width + 350 : width, height: 900});
+   if (entry === 'native-manager') {
+    await page.locator('#storybook-preview-iframe').evaluate((el, width) => { el.style.width = `${width}px`; }, width);
+   }
+  };
+  try {
+   for (const board of ['07a-shell-upper', '07b-shell-lower']) {
+    const article = await openContentBoard(page, {base, entry, board, width: 1462});
+    for (const width of [1462, 1280, 1200, 1120, 1024, 751, 750, 390, 1462]) {
+     await resize(width);
+     const reading = await readDocumentColumn(article);
+     assertDocumentColumn(reading, width, 1240);
+     t.diagnostic(JSON.stringify({entry, board, width, column: reading.column, insets: reading.insets,
+      measured: Object.fromEntries(Object.entries(reading.groups).map(([name, boxes]) => [name, boxes[0]]))}));
+    }
+    const header = article.locator('xpath=../../header');
+    try {
+     await header.evaluate(el => {
+      el.style.inlineSize = 'min(100%, 1040px)';
+      el.style.marginInline = 'auto';
+     });
+     const capped = await readDocumentColumn(article);
+     assert.throws(() => assertDocumentColumn(capped, 1462, 1240), /common column edges for header/);
+     t.diagnostic(JSON.stringify({entry, board, oldInnerCap: capped.groups.header[0], preview: capped.groups.desktop[0]}));
+    } finally {
+     await header.evaluate(el => { el.style.removeProperty('inline-size'); el.style.removeProperty('margin-inline'); });
+    }
+    assertDocumentColumn(await readDocumentColumn(article), 1462, 1240);
+
+    for (const locale of ['zh-CN', 'en', 'ja', 'ko', 'fr']) {
+     const localized = await openContentBoard(page, {base, entry, board, locale, width: 390});
+     const reading = await readDocumentColumn(localized);
+     assertDocumentColumn(reading, 390, 1240);
+     const lineCount = reading => new Set(reading.titleLines.map(([, , top]) => top)).size;
+     if (locale === 'zh-CN') assert.equal(lineCount(reading), 1, 'short title stays on one line');
+     if (locale === 'fr') {
+      assert.ok(lineCount(reading) > 1, 'long title wraps at the narrow width');
+      await resize(1462);
+      const wider = await readDocumentColumn(localized);
+      assertDocumentColumn(wider, 1462, 1240);
+      assert.equal(lineCount(wider), 1, 'wrapped title reflows after resizing');
+     }
+     t.diagnostic(JSON.stringify({entry, board, locale, width: 390, titleLines: reading.titleLines}));
+    }
+   }
+   const normal = await openContentBoard(page, {base, entry, board: '01-tokens', width: 1462});
+   assertDocumentColumn(await readDocumentColumn(normal), 1462, 1040);
+  } finally { await page.close(); }
+ }, {entry: entry === 'static' ? 'static' : 'manager'});
 });
 
 async function readCompleteShells(article){
@@ -734,4 +896,181 @@ test('shell preview inspection preserves one live scene, open layers and focus o
    }
   }finally{await page.close();}
  },{entry:entry==='static'?'static':'manager'});
+});
+
+async function innerPanOrigin(frame, inner, isSheet, eventType) {
+ const origin = await inner.evaluate((el, {isSheet, eventType}) => {
+  const frame = el.closest('[data-specimen-view]');
+  const bounds = frame.getBoundingClientRect();
+  const doc = el.ownerDocument;
+  const surface = isSheet ? el : el.querySelector('.tcrn-doc-roster-table tbody');
+  const area = surface.getBoundingClientRect();
+  const x = Math.floor(Math.min(bounds.right, area.right, doc.documentElement.clientWidth)) - 16;
+  const top = Math.ceil(Math.max(0, bounds.top, area.top));
+  const bottom = Math.min(bounds.bottom, area.bottom, doc.documentElement.clientHeight);
+  for (let y = top + 12; y < bottom; y += 8) {
+   const hit = doc.elementFromPoint(x, y);
+   const cell = isSheet ? hit : hit?.closest('td');
+   if (cell && surface.contains(cell)) {
+    delete el.dataset.docPanInput;
+    el.addEventListener(eventType, event => {
+     el.dataset.docPanInput = JSON.stringify({
+      trusted: event.isTrusted,
+      inScroller: el.contains(event.target),
+      inSurface: surface.contains(event.target),
+      target: event.target.tagName,
+      client: [event.clientX ?? event.touches[0].clientX, event.clientY ?? event.touches[0].clientY],
+     });
+    }, {capture: true, once: true, passive: true});
+    return {x: x - bounds.left, y: y - bounds.top, tag: cell.tagName};
+   }
+  }
+  return null;
+ }, {isSheet, eventType});
+ assert.ok(origin, 'gesture starts on the visible roster cells or inside the visible Sheet list');
+ const box = await frame.boundingBox();
+ return {x: box.x + origin.x, y: box.y + origin.y, tag: origin.tag};
+}
+
+async function readTrustedPanEvent(inner, point, method) {
+ await expect(inner).toHaveAttribute('data-doc-pan-input', /./);
+ const event = JSON.parse(await inner.getAttribute('data-doc-pan-input'));
+ assert.ok(event.trusted && event.inScroller && (method !== 'touch' || event.inSurface), JSON.stringify({method, point, event}));
+ return event;
+}
+
+async function sendInnerPan(page, session, frame, inner, isSheet, method) {
+ const point = await innerPanOrigin(frame, inner, isSheet, method === 'touch' ? 'touchstart' : 'wheel');
+ const {x, y} = point;
+ if (method === 'wheel') {
+  await page.mouse.move(x, y);
+  await page.mouse.wheel(250, 0);
+ } else {
+  await session.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x, y}]});
+  for (let distance = 20; distance <= 200; distance += 20) {
+   await session.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: x - distance, y}]});
+  }
+  await session.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
+ }
+ return {point, event: await readTrustedPanEvent(inner, point, method)};
+}
+
+async function readInnerPan(frame, isSheet) {
+ return frame.evaluate(async (el, isSheet) => {
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  const doc = el.ownerDocument;
+  const main = el.closest('.docs-paper > main');
+  const bounds = el.getBoundingClientRect();
+  const selectors = isSheet ? ['[data-panel="sheet"]', '.tcrn-shell-sheet__list']
+   : ['[data-cluster]', '.tcrn-doc-roster-table th:last-child'];
+  return {
+   viewport: doc.defaultView.innerWidth,
+   scroll: el.scrollLeft,
+   extent: el.scrollWidth - el.clientWidth,
+   shellRight: el.firstElementChild.getBoundingClientRect().right,
+   frameRight: bounds.right,
+   pageInlineScroll: [doc.scrollingElement.scrollLeft, main.scrollLeft],
+   pageBlockScroll: main.scrollTop,
+   visible: selectors.map(selector => {
+    const target = el.querySelector(selector);
+    if (!target) return false;
+    const {right, top, bottom} = target.getBoundingClientRect();
+    const hit = doc.elementFromPoint(right - 6, (top + bottom) / 2);
+    return right - 6 >= bounds.left && right <= bounds.right + 1 && target.contains(hit);
+   }),
+  };
+ }, isSheet);
+}
+
+function assertInnerPanMoved(before, after) {
+ assert.ok(after > before, 'the gesture moved the original-size frame');
+}
+
+test('original-size shell frames pan from real roster and open Sheet input', async t => {
+ for (const entry of contentEntries) await withPublishedBrowser(async ({browser, base}) => {
+  const page = await browser.newPage({hasTouch: true, reducedMotion: 'reduce'});
+  const session = await page.context().newCDPSession(page);
+  try {
+   for (const board of ['07a-shell-upper', '07b-shell-lower']) {
+    for (const target of ['desktop roster', 'phone roster', 'open Sheet']) {
+     const isSheet = target === 'open Sheet';
+     const desktop = target === 'desktop roster';
+     const mode = desktop ? 'band' : 'phone-closed';
+     const theme = desktop ? 'light' : 'dark';
+     for (const method of ['wheel', 'touch']) {
+      for (const oldContainment of entry === 'static' ? [false, true] : [false]) {
+       const article = await openContentBoard(page, {base, entry, board, width: 390});
+       const frame = article.locator(`[data-formal-shell-scene="${mode}"][data-shell-theme="${theme}"]`).first();
+       const inner = frame.locator(isSheet ? '.tcrn-shell-sheet__list' : '.tcrn-product-shell__main');
+       const toggle = frame.locator('..').locator('[data-doc-shell-view-toggle]');
+       const sheet = frame.locator('[data-panel="sheet"]');
+       await toggle.click();
+       assert.equal(await frame.getAttribute('data-specimen-view'), 'original');
+       if (isSheet) {
+        await frame.locator('[data-shell-brand]').click();
+        await expect(sheet).toBeFocused();
+       }
+       await frame.scrollIntoViewIfNeeded();
+       await frame.evaluate(el => {
+        // Put the specimen's top below the document chrome in the Manager as well.
+        const main = el.closest('.docs-paper > main');
+        main.scrollTop += el.getBoundingClientRect().top - main.getBoundingClientRect().top - 12;
+       });
+       if (oldContainment) await inner.evaluate(el => el.style.setProperty('overscroll-behavior-inline', 'contain'));
+       assert.deepEqual(await inner.evaluate(el => {
+        const style = getComputedStyle(el);
+        return [style.overscrollBehaviorX, style.overscrollBehaviorY];
+       }), [oldContainment ? 'contain' : 'auto', 'contain']);
+
+       const start = await readInnerPan(frame, isSheet);
+       assert.equal(start.viewport, 390);
+       assert.equal(start.scroll, 0);
+       assert.ok(start.extent > 0 && start.shellRight > start.frameRight);
+       const origins = [];
+       const scrolls = [];
+       let end = start;
+       for (let attempt = 0; attempt < 10; attempt++) {
+        origins.push(await sendInnerPan(page, session, frame, inner, isSheet, method));
+        if (!oldContainment) {
+         await expect.poll(() => frame.evaluate(el => el.scrollLeft)).toBeGreaterThan(end.scroll);
+        }
+        const next = await readInnerPan(frame, isSheet);
+        scrolls.push(next.scroll);
+        if (oldContainment) {
+         assert.throws(() => assertInnerPanMoved(start.scroll, next.scroll), /gesture moved the original-size frame/);
+         assert.equal(next.scroll, 0);
+        } else {
+         assertInnerPanMoved(end.scroll, next.scroll);
+        }
+        end = next;
+        if (oldContainment || end.extent - end.scroll <= 1) break;
+       }
+       assert.deepEqual(end.pageInlineScroll, [0, 0]);
+       let afterVerticalInput;
+       if (!oldContainment) {
+        assert.ok(end.extent - end.scroll <= 1 && Math.abs(end.shellRight - end.frameRight) <= 1, 'the gesture reaches the visible right edge');
+        assert.ok(end.visible.every(Boolean), `the right side of ${target} is visible and hit-testable: ${JSON.stringify(end)}`);
+        const point = await innerPanOrigin(frame, inner, isSheet, 'wheel');
+        await page.mouse.move(point.x, point.y);
+        await page.mouse.wheel(0, -250);
+        await readTrustedPanEvent(inner, point, 'wheel');
+        afterVerticalInput = (await readInnerPan(frame, isSheet)).pageBlockScroll;
+        assert.equal(afterVerticalInput, end.pageBlockScroll, 'vertical input stays in the inner scroller');
+       }
+       if (isSheet) await expect(sheet).toBeFocused();
+       t.diagnostic(JSON.stringify({entry, board, target, method, oldContainment, origins, scrolls, start, end, afterVerticalInput}));
+       if (oldContainment) await inner.evaluate(el => el.style.removeProperty('overscroll-behavior-inline'));
+       if (isSheet) {
+        await sheet.press('Escape');
+        await sheet.waitFor({state: 'detached'});
+       }
+       await toggle.click();
+       assert.equal(await frame.getAttribute('data-specimen-view'), 'fit');
+       assert.equal(await frame.evaluate(el => el.scrollLeft), 0);
+      }
+     }
+    }
+   }
+  } finally { await page.close(); }
+ }, {entry: entry === 'static' ? 'static' : 'manager'});
 });
