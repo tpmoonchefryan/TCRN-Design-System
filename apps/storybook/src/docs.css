@@ -481,6 +481,7 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 .portal-card {
   position: relative;
+  isolation: isolate;
   min-width: 0;
   overflow: hidden;
   border-radius: var(--tcrn-radius-panel);

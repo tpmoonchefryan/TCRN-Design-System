@@ -581,6 +581,40 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
   await page.mouse.move(panelBox.x+panelBox.width+cascadeGap/2,branchBox.y+branchBox.height/2,{steps:4});
   await page.mouse.move(subBox.x+subBox.width/2,branchBox.y+branchBox.height/2,{steps:4});
   check(menuGap===6&&cascadeGap===4&&await open(trigger)&&await open(branch),'real pointer could not cross the 6px and 4px bridges to the right cascade');
+  if(entry==='static'&&locale==='zh-CN'){
+   await page.setViewportSize({...shortViewport,height:900});
+   const overlap=await submenuPanel.evaluate((menu,mutate)=>{
+    const doc=menu.ownerDocument;
+    const card=doc.querySelector('.portal-card[data-portal-card="brand"]');
+    const chapter=card?.querySelector('.portal-card__chapters a');
+    if(!chapter)return null;
+    const chip=chapter.getBoundingClientRect(),visible=menu.querySelector('ul').getBoundingClientRect();
+    for(const link of menu.querySelectorAll('a')){
+     const row=link.getBoundingClientRect();
+     const left=Math.max(chip.left,visible.left,row.left),right=Math.min(chip.right,visible.right,row.right);
+     const top=Math.max(chip.top,visible.top,row.top),bottom=Math.min(chip.bottom,visible.bottom,row.bottom);
+     if(right-left<4||bottom-top<4)continue;
+     const x=(left+right)/2,y=(top+bottom)/2;
+     const hit=link.contains(doc.elementFromPoint(x,y));
+     let mutationDetected=null;
+     if(mutate){
+      const original=card.getAttribute('style');
+      try{
+       card.style.isolation='auto';
+       mutationDetected=chapter.contains(doc.elementFromPoint(x,y));
+      }finally{
+       if(original===null)card.removeAttribute('style');else card.setAttribute('style',original);
+      }
+     }
+     return {x,y,chapter:chapter.getAttribute('href'),menuLink:link.getAttribute('href'),hit,mutationDetected};
+    }
+    return null;
+   },negative);
+   check(overlap?.hit,'a homepage chapter link intercepted the visible topic cascade');
+   if(negative)check(overlap?.mutationDetected,'the overlay proof missed a homepage card escaping its stacking context');
+   observations.push({kind:'topbar-overlapping-chapter',entry,locale,...overlap});
+   await page.setViewportSize(shortViewport);
+  }
   const reach=()=>reachTopicListEnd(page,list,last);
   const reachable=reading=>reading.hit&&reading.scrollMax>0&&Math.abs(reading.scrollTop-reading.scrollMax)<=1
    &&Math.abs(reading.bottom-reading.viewport[1]+12)<1&&reading.rowTop>=reading.top
