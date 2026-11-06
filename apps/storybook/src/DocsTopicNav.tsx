@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { Icon } from "@tcrn/ui-react/approved";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 
@@ -23,6 +23,7 @@ export interface DocsTopicNavProps {
   categories: readonly DocsTopicCategory[];
   page: string;
   selectedTopic: string | undefined;
+  inManager: boolean;
   open: string | null;
   onOpenChange: (topic: string | null) => void;
 }
@@ -33,7 +34,7 @@ const chevronToken = tcrnTokens.find(token => token.variable === "--tcrn-shell-c
 const chevronSize = /^\d+(?:\.\d+)?px$/.test(chevronToken) ? Number.parseFloat(chevronToken) : Number.NaN;
 if (!Number.isFinite(chevronSize)) throw new Error("DocsTopicNav: --tcrn-shell-chevron is missing from @tcrn/ui-tokens or is not a pixel length.");
 
-export function DocsTopicNav({ home, label, categories, page, selectedTopic, open, onOpenChange }: DocsTopicNavProps) {
+export function DocsTopicNav({ home, label, categories, page, selectedTopic, inManager, open, onOpenChange }: DocsTopicNavProps) {
   const navRef = useRef<HTMLElement>(null);
   const triggerRefs = useRef(new Map<string, HTMLButtonElement>());
   const layerRefs = useRef(new Map<string, HTMLDivElement>());
@@ -43,27 +44,26 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
   const idPrefix = useId();
   const [openBranch, setOpenBranch] = useState<string | null>(null);
   const [categorySide, setCategorySide] = useState<"start" | "end">("start");
+  const [categoryTop, setCategoryTop] = useState(0);
   const [submenuSide, setSubmenuSide] = useState<"start" | "end">("end");
   const [submenuTop, setSubmenuTop] = useState(0);
 
   const menuId = (topic: string) => `${idPrefix}-${topic}-menu`;
   const submenuId = (topic: string) => `${idPrefix}-${topic}-submenu`;
-  const categoryOfBranch = categories.find(category => category.id === open && category.items.some(item => item.id === openBranch && item.children?.length));
-  const activeBranch = categoryOfBranch?.items.find(item => item.id === openBranch && item.children?.length);
-
   const positionCategory = (button: HTMLButtonElement) => {
     const rect = button.getBoundingClientRect();
-    setCategorySide(rect.right + dropWidth > window.innerWidth - edgeInset ? "end" : "start");
+    setCategoryTop(rect.bottom);
+    setCategorySide(rect.left + dropWidth > window.innerWidth - edgeInset ? "end" : "start");
   };
 
   const positionSubmenu = (topic: string, branchId: string) => {
     const button = branchRefs.current.get(branchId);
     const layer = layerRefs.current.get(topic);
     if (!button || !layer) return;
-    const row = button.getBoundingClientRect();
     const layerBox = layer.getBoundingClientRect();
-    setSubmenuTop(Math.max(0, row.top - layerBox.top));
-    setSubmenuSide(row.right + dropWidth > window.innerWidth - edgeInset ? "start" : "end");
+    const gap = Number.parseFloat(getComputedStyle(layer).getPropertyValue("--tcrn-shell-cascade-gap"));
+    setSubmenuTop(Math.max(0, button.getBoundingClientRect().top - layerBox.top));
+    setSubmenuSide(layerBox.right + gap + layerBox.width > window.innerWidth - edgeInset ? "start" : "end");
   };
 
   const openCategory = (category: DocsTopicCategory, button?: HTMLButtonElement) => {
@@ -72,9 +72,9 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
     onOpenChange(category.id);
   };
 
-  const openSubmenu = (topic: string, item: DocsTopicLink) => {
-    setOpenBranch(item.id);
-    positionSubmenu(topic, item.id);
+  const menuHasFocus = () => {
+    const layer = open ? layerRefs.current.get(open) : undefined;
+    return layer?.contains(layer.ownerDocument.activeElement);
   };
 
   useEffect(() => {
@@ -84,12 +84,23 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
     }
     const nav = navRef.current;
     if (!nav) return;
+    const doc = nav.ownerDocument;
+    // Hover can open the preview menu while the same-origin Manager still owns keyboard input.
+    const managerDoc = inManager ? doc.defaultView?.frameElement?.ownerDocument : undefined;
+    const documents = [doc, managerDoc];
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target;
-      if (target instanceof Node && !nav.contains(target)) onOpenChange(null);
+      if (event.currentTarget === managerDoc || (target instanceof Node && !nav.contains(target))) onOpenChange(null);
     };
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape" || !nav.contains(nav.ownerDocument.activeElement)) return;
+      if (event.key !== "Escape") return;
+      const trigger = triggerRefs.current.get(open);
+      const active = doc.activeElement;
+      const layer = layerRefs.current.get(open);
+      if (event.currentTarget === managerDoc || (active !== trigger && !layer?.contains(active))) {
+        onOpenChange(null);
+        return;
+      }
       event.preventDefault();
       event.stopPropagation();
       if (openBranch) {
@@ -99,24 +110,27 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
         branch?.focus();
         skipFocusOpenRef.current = false;
       } else {
-        const trigger = triggerRefs.current.get(open);
         onOpenChange(null);
         skipFocusOpenRef.current = true;
         trigger?.focus();
         skipFocusOpenRef.current = false;
       }
     };
-    nav.ownerDocument.addEventListener("pointerdown", onPointerDown);
-    nav.ownerDocument.addEventListener("keydown", onKeyDown, true);
+    for (const target of documents) {
+      target?.addEventListener("pointerdown", onPointerDown, true);
+      target?.addEventListener("keydown", onKeyDown, true);
+    }
     return () => {
-      nav.ownerDocument.removeEventListener("pointerdown", onPointerDown);
-      nav.ownerDocument.removeEventListener("keydown", onKeyDown, true);
+      for (const target of documents) {
+        target?.removeEventListener("pointerdown", onPointerDown, true);
+        target?.removeEventListener("keydown", onKeyDown, true);
+      }
     };
-  }, [open, openBranch, onOpenChange]);
+  }, [inManager, open, openBranch, onOpenChange]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (open && openBranch) positionSubmenu(open, openBranch);
-  }, [open, openBranch]);
+  }, [open, openBranch, categorySide]);
 
   useEffect(() => {
     const onResize = () => {
@@ -131,7 +145,7 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
   }, [open, openBranch]);
 
   const handlePointerLeave = (event: ReactPointerEvent<HTMLElement>) => {
-    if (event.pointerType !== "touch" && open) onOpenChange(null);
+    if (event.pointerType !== "touch" && open && !menuHasFocus()) onOpenChange(null);
   };
 
   const row = (topic: string, item: DocsTopicLink, isCurrent: boolean) => {
@@ -152,12 +166,12 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
         aria-controls={submenuId(topic)}
         aria-current={isCurrent ? "true" : undefined}
         onPointerDown={() => { pointerDownRef.current = true; }}
-        onPointerEnter={event => { if (event.pointerType !== "touch") openSubmenu(topic, item); }}
-        onFocus={() => { if (!pointerDownRef.current && !skipFocusOpenRef.current) openSubmenu(topic, item); }}
+        onPointerEnter={event => { if (event.pointerType !== "touch") setOpenBranch(item.id); }}
+        onFocus={() => { if (!pointerDownRef.current && !skipFocusOpenRef.current) setOpenBranch(item.id); }}
         onClick={event => {
           pointerDownRef.current = false;
           if (expanded && event.detail > 0) setOpenBranch(null);
-          else openSubmenu(topic, item);
+          else setOpenBranch(item.id);
         }}
       >
         <span className="docs-topic-menu__label" title={item.label}>{item.label}</span>
@@ -173,7 +187,7 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
       aria-label={label}
       onPointerLeave={handlePointerLeave}
       onBlurCapture={event => {
-        if (open && event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) onOpenChange(null);
+        if (open && !event.currentTarget.contains(event.relatedTarget)) onOpenChange(null);
       }}
     >
       <span className="tcrn-shell-pins__pin">
@@ -184,6 +198,7 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
       {categories.map(category => {
         const expanded = category.id === open;
         const branch = category.items.find(item => item.children?.length);
+        const submenuExpanded = expanded && branch?.id === openBranch;
         return (
           <span key={category.id} className="tcrn-shell-pins__pin docs-topics__category">
             <button
@@ -195,7 +210,9 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
               data-docs-topic={category.id}
               data-current-topic={category.id === selectedTopic ? "" : undefined}
               onPointerDown={() => { pointerDownRef.current = true; }}
-              onPointerEnter={event => { if (event.pointerType !== "touch") openCategory(category, event.currentTarget); }}
+              onPointerEnter={event => {
+                if (event.pointerType !== "touch" && !menuHasFocus()) openCategory(category, event.currentTarget);
+              }}
               onFocus={event => { if (!pointerDownRef.current && !skipFocusOpenRef.current) openCategory(category, event.currentTarget); }}
               onClick={event => {
                 pointerDownRef.current = false;
@@ -207,11 +224,14 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
             </button>
             <div
               className="docs-topics__layer"
+              id={menuId(category.id)}
               ref={node => { if (node) layerRefs.current.set(category.id, node); else layerRefs.current.delete(category.id); }}
               data-side={categorySide}
+              style={{ "--docs-topic-layer-top": `${categoryTop}px` } as CSSProperties}
               hidden={!expanded}
+              inert={!expanded}
             >
-              <div className="docs-topic-menu" id={menuId(category.id)} aria-label={category.label}>
+              <div className="docs-topic-menu" aria-label={category.label}>
                 <ul className="docs-topic-menu__list" onScroll={() => { if (expanded && branch && openBranch) positionSubmenu(category.id, openBranch); }}>
                   {category.items.map(item => (
                     <li key={item.id} className="docs-topic-menu__item">
@@ -222,11 +242,13 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, ope
               </div>
               <div
                 className="docs-topics__submenu-wrap"
+                id={submenuId(category.id)}
                 data-side={submenuSide}
                 style={{ "--docs-topic-submenu-top": `${submenuTop}px` } as CSSProperties}
-                hidden={!expanded || !branch || openBranch !== branch.id}
+                hidden={!submenuExpanded}
+                inert={!submenuExpanded}
               >
-                <div className="docs-topic-menu docs-topic-menu--submenu" id={submenuId(category.id)} aria-label={branch?.label ?? ""}>
+                <div className="docs-topic-menu docs-topic-menu--submenu" aria-label={branch?.label ?? ""}>
                   <ul className="docs-topic-menu__list">
                     {branch?.children?.map(item => (
                       <li key={item.id} className="docs-topic-menu__item">

@@ -391,6 +391,247 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
  return {issues,observations};
 }
 
+async function recordTopicMotion(layer){
+ return layer.evaluateHandle(element=>{
+  const view=element.ownerDocument.defaultView;
+  const phases={category:[],submenu:[]};
+  const wrappers={category:element,submenu:element.querySelector('.docs-topics__submenu-wrap')};
+  for(const [level,wrapper] of Object.entries(wrappers)){
+   const panel=wrapper.querySelector(':scope > .docs-topic-menu');
+   panel.addEventListener('transitionrun',event=>{
+    if(event.target!==panel||event.propertyName!=='opacity')return;
+    const effect=panel.getAnimations().find(animation=>animation.transitionProperty==='opacity')?.effect;
+    const box=panel.getBoundingClientRect(),bridge=wrapper.getBoundingClientRect();
+    const hits=(x,y)=>wrapper.contains(element.ownerDocument.elementFromPoint(x,y));
+    const bridgeX=level==='category'?box.left+box.width/2
+     :wrapper.dataset.side==='start'?(box.right+bridge.right)/2:(box.left+bridge.left)/2;
+    const bridgeY=level==='category'?(box.top+bridge.top)/2:box.top+box.height/2;
+    const reading={
+     closed:wrapper.hidden,inert:wrapper.inert,display:view.getComputedStyle(wrapper).display,
+     frames:effect?.getKeyframes().map(frame=>Number(frame.opacity)),
+     duration:effect?.getTiming().duration,
+     panelHit:hits(box.left+box.width/2,box.top+box.height/2),bridgeHit:hits(bridgeX,bridgeY),
+    };
+    phases[level].push(reading);
+    view.requestAnimationFrame(()=>{reading.opacity=Number(view.getComputedStyle(panel).opacity);});
+   });
+  }
+  return phases;
+ });
+}
+
+// The previous height cap hid the final link below the short Canvas, even at the
+// bottom of its own scroller. Wheel and click coordinates must stay in the viewport.
+async function reachTopicListEnd(page,list,last){
+ await list.evaluate(element=>{element.scrollTop=0;});
+ const box=await list.boundingBox();
+ if(!box)throw new Error('API list lost its visible box');
+ await page.mouse.move(box.x+box.width/2,box.y+Math.min(20,box.height/2));
+ await page.mouse.wheel(0,2000);
+ return last.evaluate(async link=>{
+  const list=link.closest('ul'),doc=link.ownerDocument,view=doc.defaultView;
+  const deadline=view.performance.now()+1000;
+  while(list.scrollTop+list.clientHeight<list.scrollHeight-1&&view.performance.now()<deadline){
+   await new Promise(resolve=>view.requestAnimationFrame(resolve));
+  }
+  const row=link.getBoundingClientRect(),box=list.getBoundingClientRect();
+  return {
+   label:link.textContent.trim(),href:link.getAttribute('href'),viewport:[view.innerWidth,view.innerHeight],
+   top:box.top,bottom:box.bottom,rowTop:row.top,rowBottom:row.bottom,
+   scrollTop:list.scrollTop,scrollMax:list.scrollHeight-list.clientHeight,
+   documentTop:doc.scrollingElement.scrollTop,paperTop:link.closest('.docs-shell').querySelector('main').scrollTop,
+   hit:link.contains(doc.elementFromPoint(row.left+row.width/2,row.top+row.height/2)),
+  };
+ });
+}
+
+export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',managerUi=false,negative=true}={}){
+ const issues=[],observations=[],originalViewport=page.viewportSize();
+ const shortViewport=managerUi?{width:1500,height:950}:{width:1462,height:650};
+ const check=(condition,message)=>{if(!condition)issues.push(`${entry}/${locale}: ${message}`);};
+ try{
+  await page.setViewportSize(shortViewport);
+  await page.emulateMedia({reducedMotion:'reduce'});
+  const home=managerUi?managerMenuHref('/index.html',locale,'index'):docsHref(entry,locale,'index');
+  const response=await page.goto(base+home);if(response?.status()!==200)throw new Error('edge proof home route unreadable');
+  const managerPath=managerUi?new URL(page.url()).pathname:'';
+  const surface=managerUi?page.frameLocator('#storybook-preview-iframe'):page;
+  const shell=surface.locator(`.docs-shell[data-docs-page="index"][lang="${locale}"][data-docs-ready="true"]`);
+  await shell.waitFor();
+  const trigger=shell.locator('[data-docs-topic="components"]'),nextTopic=shell.locator('[data-docs-topic="shell"]');
+  const layer=trigger.locator('xpath=..').locator('.docs-topics__layer');
+  const panel=layer.locator(':scope > .docs-topic-menu'),branch=panel.locator('button.docs-topic-menu__row');
+  const submenu=layer.locator('.docs-topics__submenu-wrap'),submenuPanel=submenu.locator('.docs-topic-menu');
+  const list=submenuPanel.locator('ul'),overview=list.locator('a').first(),firstAnchor=list.locator('a').nth(1),last=list.locator('a').last();
+  const external=shell.locator('.docs-preferences .tcrn-shell-theme-toggle'),paper=shell.locator('.docs-paper');
+  const outside=()=>paper.hover({position:{x:20,y:20}});
+  const focused=locator=>locator.evaluate(el=>el===el.ownerDocument.activeElement);
+  const hoverOpen=async both=>{await trigger.hover();if(both)await branch.hover();};
+  const open=async button=>await button.getAttribute('aria-expanded')==='true';
+  const immediate=async()=>layer.evaluate(el=>{
+   const sub=el.querySelector('.docs-topics__submenu-wrap'),view=el.ownerDocument.defaultView;
+   return [el,sub].map(wrapper=>{
+    const panel=wrapper.querySelector(':scope > .docs-topic-menu');
+    return {hidden:wrapper.hidden,inert:wrapper.inert,display:view.getComputedStyle(wrapper).display,
+     opacity:Number(view.getComputedStyle(panel).opacity),animations:wrapper.getAnimations().length+panel.getAnimations().length};
+   });
+  });
+  const hoverEscape=async(both,mutate=false)=>{
+   await outside();
+   const keyOwner=both?external:page.locator('body');
+   const active=await keyOwner.evaluateHandle(el=>el.ownerDocument.activeElement);
+   const focusTag=await active.evaluate(el=>el.tagName);
+   await hoverOpen(both);
+   const wasOpen=await open(trigger)&&(!both||await open(branch));
+   if(mutate)await keyOwner.evaluate(el=>el.ownerDocument.defaultView.addEventListener('keydown',event=>{
+    if(event.key==='Escape')event.stopImmediatePropagation();
+   },{capture:true,once:true}));
+   await page.keyboard.press('Escape');
+   const sameFocus=await keyOwner.evaluate((el,before)=>el.ownerDocument.activeElement===before,active);
+   await active.dispose();
+   return {wasOpen,focusTag,sameFocus,closed:!(await open(trigger))&&!(await open(branch)),panels:await immediate()};
+  };
+  const bodyDismissal=await hoverEscape(false);
+  check(bodyDismissal.focusTag==='BODY'&&bodyDismissal.wasOpen&&bodyDismissal.sameFocus&&bodyDismissal.closed,
+   'hover-only Escape failed with initial BODY focus');
+  if(negative){
+   const mutation=await hoverEscape(false,true);
+   check(mutation.wasOpen&&mutation.sameFocus&&!mutation.closed,'hover-only Escape proof missed a suppressed Escape');
+   observations.push({kind:'negative-hover-escape-mutation',entry,locale,detected:mutation.wasOpen&&!mutation.closed});
+  }
+  await outside();
+  await external.focus();
+  const twoLevelDismissal=await hoverEscape(true);
+  check(twoLevelDismissal.wasOpen&&twoLevelDismissal.sameFocus&&twoLevelDismissal.closed&&await focused(external),
+   'hover-only Escape did not close both levels or moved external focus');
+  check(twoLevelDismissal.panels.every(p=>p.hidden&&p.inert&&p.display==='none'&&p.opacity===1&&p.animations===0),
+   'reduced-motion close did not immediately remove both panels');
+  await outside();
+  await hoverOpen(true);
+  const reducedOpen=await immediate();
+  check(reducedOpen.every(p=>!p.hidden&&!p.inert&&p.display!=='none'&&p.opacity===1&&p.animations===0),
+   'reduced-motion open did not immediately show both panels');
+  await outside();
+  observations.push({kind:'topbar-hover-dismissal',entry,locale,bodyDismissal,twoLevelDismissal,reducedOpen});
+
+  const focusOverview=async()=>{
+   await trigger.focus();
+   for(let step=0;step<4;step++)await page.keyboard.press('Tab');
+   if(!(await focused(overview)))throw new Error('keyboard did not enter the real API overview');
+  };
+  await focusOverview();
+  await overview.hover();
+  await outside();
+  const retained=await open(trigger)&&await open(branch)&&await focused(overview)&&await submenu.isVisible();
+  await page.keyboard.press('Tab');
+  const tabContinued=await focused(firstAnchor);
+  await page.keyboard.press('Escape');
+  const branchRestored=await focused(branch)&&await open(trigger)&&!(await open(branch));
+  await page.keyboard.press('Escape');
+  const triggerRestored=await focused(trigger)&&!(await open(trigger));
+  check(retained&&tabContinued&&branchRestored&&triggerRestored,'pointer exit lost menu focus, next Tab, or layered Escape restoration');
+  await external.focus();
+  await focusOverview();
+  await page.keyboard.press('Shift+Tab');
+  // Walk back through the real links, category triggers and home into the brand button.
+  const brand=shell.locator(':scope > header [data-shell-brand]');
+  for(let step=0;step<15&&!(await focused(brand));step++)await page.keyboard.press('Shift+Tab');
+  const keyboardExited=await focused(brand)&&!(await shell.locator('.docs-topics button[aria-expanded="true"]').count());
+  await focusOverview();
+  if(managerUi)await page.getByRole('tab',{name:'Controls',exact:true}).click();
+  else await paper.click({position:{x:20,y:20}});
+  const outsideClosed=!(await open(trigger))&&!(await open(branch));
+  check(keyboardExited&&outsideClosed,'native focus exit or outside pointer click did not close the cascade');
+  observations.push({kind:'topbar-focus-retention',entry,locale,retained,tabContinued,branchRestored,triggerRestored,keyboardExited,outsideClosed});
+
+  await outside();
+  await external.focus();
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  const motion=await recordTopicMotion(layer);
+  await hoverOpen(true);
+  for(const visiblePanel of [panel,submenuPanel]){
+   await visiblePanel.evaluate(el=>Promise.all(el.getAnimations().map(animation=>animation.finished)));
+  }
+  await page.keyboard.press('Escape');
+  await layer.waitFor({state:'hidden'});
+  const phases=await motion.jsonValue();await motion.dispose();
+  const terminal=await immediate();
+  for(const [level,[opening,closing]] of Object.entries(phases)){
+   const fades=(phase,from,to)=>phase?.frames?.[0]===from&&phase.frames.at(-1)===to&&phase.duration===120&&phase.opacity>0&&phase.opacity<1;
+   check(fades(opening,0,1)&&fades(closing,1,0)&&!opening.closed&&closing.closed&&closing.display!=='none',
+    `${level} panel did not visibly fade in and out on the approved duration`);
+   check(closing?.inert&&!closing.panelHit&&!closing.bridgeHit,`${level} closing panel or bridge intercepted pointer input`);
+  }
+  check(terminal.every(p=>p.hidden&&p.inert&&p.display==='none'&&p.animations===0),'closed panels did not reach their hidden terminal state');
+  await focusOverview();
+  await page.keyboard.press('Escape');
+  await page.keyboard.press('Tab');
+  const skippedClosing=await focused(nextTopic)&&!(await open(branch));
+  check(skippedClosing,'Tab entered the closing submenu');
+  observations.push({kind:'topbar-panel-motion',entry,locale,phases,terminal,skippedClosing});
+
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await external.focus();await outside();await trigger.hover();
+  const triggerBox=await trigger.boundingBox(),panelBox=await panel.boundingBox(),branchBox=await branch.boundingBox();
+  const menuGap=panelBox.y-triggerBox.y-triggerBox.height;
+  await page.mouse.move(triggerBox.x+triggerBox.width/2,triggerBox.y+triggerBox.height+menuGap/2);
+  await page.mouse.move(branchBox.x+branchBox.width/2,branchBox.y+branchBox.height/2,{steps:4});
+  await submenuPanel.waitFor();
+  const subBox=await submenuPanel.boundingBox(),cascadeGap=subBox.x-panelBox.x-panelBox.width;
+  await page.mouse.move(panelBox.x+panelBox.width+cascadeGap/2,branchBox.y+branchBox.height/2,{steps:4});
+  await page.mouse.move(subBox.x+subBox.width/2,branchBox.y+branchBox.height/2,{steps:4});
+  check(menuGap===6&&cascadeGap===4&&await open(trigger)&&await open(branch),'real pointer could not cross the 6px and 4px bridges to the right cascade');
+  const reach=()=>reachTopicListEnd(page,list,last);
+  const reachable=reading=>reading.hit&&reading.scrollMax>0&&Math.abs(reading.scrollTop-reading.scrollMax)<=1
+   &&Math.abs(reading.bottom-reading.viewport[1]+12)<1&&reading.rowTop>=reading.top
+   &&Math.abs(reading.rowBottom-reading.rowTop-32)<1&&reading.documentTop===0&&reading.paperTop===0;
+  if(negative){
+   await list.evaluate(el=>{el.style.maxBlockSize='calc(100dvh - var(--tcrn-shell-strip-h) - 2 * var(--tcrn-space-3))';});
+   const mutation=await reach();
+   await list.evaluate(el=>el.style.removeProperty('max-block-size'));
+   const detected=!reachable(mutation)&&!mutation.hit&&mutation.rowBottom>mutation.viewport[1];
+   check(detected,'last-row proof missed the old viewport-insensitive list cap');
+   observations.push({kind:'negative-last-row-mutation',entry,locale,detected,...mutation});
+  }
+  const short=await reach();
+  check(short.viewport[1]<700&&reachable(short),'last API row is not genuinely reachable in the short Canvas');
+  await page.setViewportSize({...shortViewport,height:shortViewport.height+350});
+  const regular=await reach();
+  check(regular.viewport[1]>short.viewport[1]&&regular.bottom>short.bottom&&reachable(regular),
+   'open cascade did not adapt and scroll at regular desktop height');
+  await page.setViewportSize(shortViewport);
+  const resized=await reach();
+  const href=headerHref({base,entry,locale,managerUi,managerPath},'api','api-ShellIntro');
+  check(resized.viewport[1]===short.viewport[1]&&resized.href===href&&resized.label==='ShellIntro'&&reachable(resized),
+   'short Canvas did not restore the reachable same-language ShellIntro row after resize');
+  observations.push({kind:'topbar-last-row',entry,locale,menuGap,cascadeGap,short,regular,resized});
+  if(!reachable(resized))throw new Error('refusing to click an unreachable row');
+  const target=await last.boundingBox();
+  await page.mouse.click(target.x+target.width/2,target.y+target.height/2);
+  if(managerUi){
+   await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`
+    &&url.searchParams.get('globals')===`locale:${locale}`&&url.searchParams.get('docsAnchor')===`${docsStoryId('api')}:api-ShellIntro`);
+  }else await page.waitForURL(new URL(href,base).href);
+  const anchor=surface.locator(`.docs-shell[data-docs-page="api"][lang="${locale}"][data-docs-ready="true"] #api-ShellIntro[data-approved-api="ShellIntro"]`);
+  await anchor.waitFor({state:'visible'});
+  const content=await anchor.evaluate(async el=>{
+   const view=el.ownerDocument.defaultView;
+   await new Promise(resolve=>view.requestAnimationFrame(()=>view.requestAnimationFrame(resolve)));
+   const heading=el.querySelector('h2'),box=heading.getBoundingClientRect();
+   return {heading:heading.textContent,hash:view.location.hash,headingInView:box.top>=0&&box.bottom<=view.innerHeight,
+    summaryLanguage:el.querySelector('[data-api-summary]').lang};
+  });
+  check(content.heading==='ShellIntro'&&content.hash==='#api-ShellIntro'&&content.headingInView&&content.summaryLanguage===locale,
+   'real click did not land on the rendered same-language ShellIntro content');
+  observations.push({kind:'topbar-last-row-activation',entry,locale,url:page.url(),...content});
+ }catch(error){issues.push(`${entry}/${locale}: topbar edge proof incomplete: ${error.message}`);}
+ finally{
+  await page.emulateMedia({reducedMotion:'reduce'});
+  if(originalViewport)await page.setViewportSize(originalViewport);
+ }
+ return {issues,observations};
+}
+
 // Exercise the existing ShellMenu primitive as a real 390px touch Sheet. The docs topbar is
 // intentionally hidden at this width; the complete category tree remains reachable here.
 export async function exerciseDocsSheet(page,{base,locale,formal,negative=locale==='zh-CN'}={}){
@@ -640,6 +881,13 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
       const narrow=await exerciseManagerNarrowSheet(narrowPage,{base,locale,formal});
       issues.push(...narrow.issues);observations.push(...narrow.observations);
      }finally{await context.close();}
+    }
+   }
+   if(locale==='zh-CN'){
+    const surfaces=entry==='manager'?[['manager',true],['canvas',false]]:[['static',false]];
+    for(const [surface,managerUi] of surfaces){
+     const edges=await exerciseDocsTopbarEdges(page,{base,entry:surface,locale,managerUi});
+     issues.push(...edges.issues);observations.push(...edges.observations);
     }
    }
    if(entry==='static'){

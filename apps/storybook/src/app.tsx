@@ -176,6 +176,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
           categories={navigation.categories}
           page={page}
           selectedTopic={topic?.topic}
+          inManager={inManager}
           open={layer === "topics" ? openTopic : null}
           onOpenChange={next => {
             setOpenTopic(next);

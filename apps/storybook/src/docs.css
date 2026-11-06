@@ -101,6 +101,7 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 .docs-topics__layer {
+  --docs-topic-menu-offset: var(--tcrn-shell-menu-gap);
   position: absolute;
   inset-block-start: 100%;
   z-index: var(--tcrn-z-popover);
@@ -121,12 +122,16 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 .docs-topics__layer[hidden],
 .docs-topics__submenu-wrap[hidden] {
   display: none;
+  pointer-events: none;
+}
+
+.docs-topics__layer[hidden] {
+  z-index: calc(var(--tcrn-z-popover) - 1);
 }
 
 .docs-topic-menu {
   position: relative;
   inline-size: min(var(--tcrn-shell-drop-w), calc(100vw - 2 * var(--tcrn-space-3)));
-  max-block-size: calc(100dvh - var(--tcrn-shell-strip-h) - var(--tcrn-space-3));
   padding: var(--tcrn-space-1h);
   overflow: visible;
   border-radius: var(--tcrn-radius-panel);
@@ -140,7 +145,8 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   display: flex;
   flex-direction: column;
   gap: var(--tcrn-space-0h);
-  max-block-size: calc(100dvh - var(--tcrn-shell-strip-h) - 2 * var(--tcrn-space-3));
+  max-block-size: max(0px, calc(100dvh - var(--docs-topic-layer-top) - var(--docs-topic-menu-offset)
+    - var(--tcrn-space-1h) - var(--tcrn-space-3)));
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -209,6 +215,7 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 .docs-topics__submenu-wrap {
+  --docs-topic-menu-offset: var(--docs-topic-submenu-top);
   position: absolute;
   inset-block-start: var(--docs-topic-submenu-top, 0px);
   z-index: 1;
@@ -224,6 +231,26 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 .docs-topics__submenu-wrap[data-side="start"] {
   inset-inline-end: 100%;
   padding-inline-end: var(--tcrn-shell-cascade-gap);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :is(.docs-topics__layer, .docs-topics__submenu-wrap) {
+    transition: display var(--tcrn-motion-duration-fill) allow-discrete;
+  }
+
+  :is(.docs-topics__layer, .docs-topics__submenu-wrap) > .docs-topic-menu {
+    transition: opacity var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+  }
+
+  :is(.docs-topics__layer, .docs-topics__submenu-wrap)[hidden] > .docs-topic-menu {
+    opacity: 0;
+  }
+
+  @starting-style {
+    :is(.docs-topics__layer, .docs-topics__submenu-wrap) > .docs-topic-menu {
+      opacity: 0;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
