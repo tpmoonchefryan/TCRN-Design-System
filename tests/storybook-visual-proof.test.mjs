@@ -798,6 +798,14 @@ async function readActionPacking(content) {
    scrollLeft: [main.scrollLeft, doc.scrollingElement.scrollLeft],
    overflow: [main.scrollWidth - main.clientWidth, doc.documentElement.scrollWidth - doc.documentElement.clientWidth],
    clips, controls, groups, panes: panes.map(rect),
+   surfaces: panes.flatMap(pane => [pane, pane.querySelector(':scope > .tcrn-doc-paper')].map(el => {
+    const css = getComputedStyle(el);
+    return {kind: el === pane ? 'pane' : 'paper', theme: pane.dataset.formalTheme, box: rect(el),
+     background: css.backgroundColor, padding: [css.paddingInlineStart, css.paddingInlineEnd],
+     token: parseFloat(css.getPropertyValue('--tcrn-space-4')),
+     headings: [...el.querySelectorAll('h2, h3')].map(heading => ({text: heading.textContent, box: rect(heading)})),
+     controls: allControls.flatMap((control, index) => el.contains(control) ? [index] : [])};
+   })),
    spacing: panes.map(pane => {
     const paper = pane.querySelector(':scope > .tcrn-doc-paper'), section = paper.querySelector('[data-formal-section]');
     return {paneGap: getComputedStyle(pane).rowGap, paperGap: getComputedStyle(paper).rowGap,
@@ -830,6 +838,8 @@ function assertActionPacking(reading, width) {
   'every current group size, count, variant and theme remains inspectable');
  for (const group of reading.groups) {
   const buttons = group.buttons.map(index => reading.controls[index]);
+  assert.ok(group.box.left >= reading.column.left - 0.6 && group.box.right <= reading.column.right + 0.6,
+   `actual action bar ${group.name} escapes column`);
   assert.equal(buttons.length, group.count);
   assert.equal(group.separators.length, group.count - 1);
   assert.ok(close(group.box.left, buttons[0].box.left) && close(group.box.right, buttons.at(-1).box.right),
@@ -850,6 +860,27 @@ function assertActionPacking(reading, width) {
  assert.ok(reading.spacing.every(s => s.paneGap === '14px' && s.paperGap === '14px' && s.headingGap === 14),
   'text and controls retain their token spacing');
  assert.ok(reading.overflow.every(excess => excess <= 1), 'no document horizontal overflow');
+}
+
+function assertActionInsets(reading, width) {
+ assert.deepEqual(reading.surfaces.map(surface => `${surface.theme}/${surface.kind}`),
+  ['light/pane', 'light/paper', 'dark/pane', 'dark/paper'], 'inspect both painted surfaces in each theme');
+ for (const surface of reading.surfaces) {
+  const label = `${surface.theme}/${surface.kind} surface`;
+  assert.equal(surface.token, 16, 'existing space-4 token');
+  assert.notEqual(surface.background, 'rgba(0, 0, 0, 0)', `${label} is visibly painted`);
+  assert.ok(surface.headings.length && surface.controls.length, `${label} carries headings and controls`);
+  assert.ok(surface.padding.every(value => parseFloat(value) >= surface.token), `${label} has token inline insets`);
+  if (width <= 750) {
+   assert.deepEqual(surface.padding, ['16px', '16px'], `${label} uses space-4 without nesting another content reduction`);
+   assert.ok(Math.abs(surface.box.left - (reading.column.left - surface.token)) <= 0.6 &&
+    Math.abs(surface.box.right - (reading.column.right + surface.token)) <= 0.6, `${label} uses the existing main gutter`);
+  }
+  for (const {box} of [...surface.headings, ...surface.controls.map(index => reading.controls[index])]) {
+   assert.ok(box.left - surface.box.left >= surface.token - 0.6 &&
+    surface.box.right - box.right >= surface.token - 0.6, `${label} preserves visible token insets around headings and controls`);
+  }
+ }
 }
 
 function actionGroupGeometry(reading) {
@@ -904,6 +935,7 @@ test('05 natural-size action descendants fit all five locales in static, Canvas 
     const content = await openContentPage(page, {base, entry, board: '05-actions', locale, width: 1462});
     const desktop = await readActionPacking(content);
     assertActionPacking(desktop, 1462);
+    assertActionInsets(desktop, 1462);
     assert.equal(desktop.panes[0].top, desktop.panes[1].top, 'normal desktop retains paired themes');
     t.diagnostic(JSON.stringify({entry, locale, kind: 'desktop', reading: desktop,
      activation: await exerciseNarrowActionGroups(content)}));
@@ -912,15 +944,44 @@ test('05 natural-size action descendants fit all five locales in static, Canvas 
      await resizeContentPage(page, entry, width);
      const reading = await readActionPacking(content);
      assertActionPacking(reading, width);
+     assertActionInsets(reading, width);
      assert.deepEqual(actionGroupGeometry(reading), actionGroupGeometry(desktop), 'labels and every natural button dimension survive reflow');
      t.diagnostic(JSON.stringify({entry, locale, kind: 'corrected', reading,
       activation: width === 390 ? await exerciseNarrowActionGroups(content) : []}));
     }
+    // Source-4's zero insets still fit every control, but leave text on painted edges.
+    const zeroInsetStyles = await content.evaluate(root => {
+     const themes = root.querySelector(':scope > .tcrn-doc-themes');
+     const surfaces = [...themes.querySelectorAll(':scope > .tcrn-doc-pane, :scope > .tcrn-doc-pane > .tcrn-doc-paper')];
+     const styles = [themes, ...surfaces].map(el => el.getAttribute('style'));
+     themes.style.marginInline = '0';
+     for (const surface of surfaces) {
+      surface.style.paddingInline = '0';
+      surface.style.marginInline = '0';
+     }
+     return styles;
+    });
+    try {
+     const zero = await readActionPacking(content);
+     assertActionPacking(zero, 390);
+     assert.throws(() => assertActionInsets(zero, 390), /surface.*insets/);
+     assert.ok(zero.surfaces.every(surface => surface.padding.every(value => value === '0px') &&
+      surface.headings[0].box.left === surface.box.left), 'negative reproduces headings on both visible surface edges');
+     t.diagnostic(JSON.stringify({entry, locale, kind: 'source-4-zero-insets-negative', reading: zero}));
+    } finally {
+     await content.evaluate((root, styles) => {
+      const elements = [...root.querySelectorAll(':scope > .tcrn-doc-themes, :scope > .tcrn-doc-themes > .tcrn-doc-pane, :scope > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper')];
+      elements.forEach((el, index) => styles[index] === null ? el.removeAttribute('style') : el.setAttribute('style', styles[index]));
+     }, zeroInsetStyles);
+    }
     // Restore the frozen 24/28 pane + 16/18 paper packing, without changing any control.
     const originalStyles = await content.evaluate(root => {
-     const elements = [...root.querySelectorAll(':scope > .tcrn-doc-themes > .tcrn-doc-pane, :scope > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper')];
+     const elements = [...root.querySelectorAll(':scope > .tcrn-doc-themes, :scope > .tcrn-doc-themes > .tcrn-doc-pane, :scope > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper')];
      const styles = elements.map(el => el.getAttribute('style'));
-     for (const el of elements) el.style.padding = el.matches('.tcrn-doc-pane') ? '24px 28px 28px' : '16px 18px';
+     for (const el of elements) {
+      el.style.marginInline = '0';
+      if (!el.matches('.tcrn-doc-themes')) el.style.padding = el.matches('.tcrn-doc-pane') ? '24px 28px 28px' : '16px 18px';
+     }
      return styles;
     });
     try {
@@ -938,11 +999,13 @@ test('05 natural-size action descendants fit all five locales in static, Canvas 
      t.diagnostic(JSON.stringify({entry, locale, kind: 'old-nested-packing-negative', reading: old}));
     } finally {
      await content.evaluate((root, styles) => {
-      const elements = [...root.querySelectorAll(':scope > .tcrn-doc-themes > .tcrn-doc-pane, :scope > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper')];
+      const elements = [...root.querySelectorAll(':scope > .tcrn-doc-themes, :scope > .tcrn-doc-themes > .tcrn-doc-pane, :scope > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper')];
       elements.forEach((el, index) => styles[index] === null ? el.removeAttribute('style') : el.setAttribute('style', styles[index]));
      }, originalStyles);
     }
-    assertActionPacking(await readActionPacking(content), 390);
+    const restored = await readActionPacking(content);
+    assertActionPacking(restored, 390);
+    assertActionInsets(restored, 390);
    }
   } finally { await page.close(); }
  }, {entry: entry === 'static' ? 'static' : 'manager'});

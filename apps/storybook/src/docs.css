@@ -540,11 +540,20 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
     --docs-inset-inline: var(--tcrn-space-4);
   }
 
-  /* The shared column already provides the narrow inset. Nested papers must not
-     subtract it again from natural-size action bars; vertical token gaps remain. */
+  /* Extend both specimen backgrounds into the main gutter, then inset their
+     content by the same token so natural-size action bars keep the shared column. */
+  .tcrn-doc-board[data-approved-board="05-actions"] > .tcrn-doc-themes > .tcrn-doc-pane {
+    flex-basis: 100%;
+    margin-inline: calc(-1 * var(--tcrn-space-4));
+  }
+
   .tcrn-doc-board[data-approved-board="05-actions"] > .tcrn-doc-themes > .tcrn-doc-pane,
   .tcrn-doc-board[data-approved-board="05-actions"] > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper {
-    padding-inline: 0;
+    padding-inline: var(--tcrn-space-4);
+  }
+
+  .tcrn-doc-board[data-approved-board="05-actions"] > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper {
+    margin-inline: calc(-1 * var(--tcrn-space-4));
   }
 
   .docs-shell > .docs-paper > main {
