@@ -91,6 +91,16 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   gap: calc(2 * var(--tcrn-space-3h));
 }
 
+/* Keep each action bar whole when the two sample themes can no longer share a row. */
+.tcrn-doc-board[data-approved-board="05-actions"] > .tcrn-doc-themes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tcrn-doc-board[data-approved-board="05-actions"] > .tcrn-doc-themes > .tcrn-doc-pane {
+  flex: 1 1 min-content;
+}
+
 .tcrn-doc-shell-narrow {
   display: flex;
   flex-wrap: wrap;
@@ -528,6 +538,13 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 @media (max-width: 750px) {
   .docs-shell {
     --docs-inset-inline: var(--tcrn-space-4);
+  }
+
+  /* The shared column already provides the narrow inset. Nested papers must not
+     subtract it again from natural-size action bars; vertical token gaps remain. */
+  .tcrn-doc-board[data-approved-board="05-actions"] > .tcrn-doc-themes > .tcrn-doc-pane,
+  .tcrn-doc-board[data-approved-board="05-actions"] > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper {
+    padding-inline: 0;
   }
 
   .docs-shell > .docs-paper > main {

@@ -754,6 +754,200 @@ test('responsive document columns align every board and API page through resize'
  }, {entry: entry === 'static' ? 'static' : 'manager'});
 });
 
+async function readActionPacking(content) {
+ return content.evaluate(async root => {
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  const doc = root.ownerDocument, main = root.closest('main');
+  const rect = el => {
+   const {left, right, top, bottom, width, height} = el.getBoundingClientRect();
+   return {left, right, top, bottom, width, height};
+  };
+  const clips = [], clipElements = [];
+  const controls = [...root.querySelectorAll('button, a.tcrn-button')].map((el, index) => {
+   const style = getComputedStyle(el), clipIds = [];
+   for (let ancestor = el.parentElement; ancestor; ancestor = ancestor.parentElement) {
+    const css = getComputedStyle(ancestor);
+    if (!/hidden|clip|auto|scroll/.test(css.overflowX) && !/paint|strict|content/.test(css.contain)) continue;
+    let id = clipElements.indexOf(ancestor);
+    if (id < 0) {
+     id = clips.length;
+     const box = rect(ancestor);
+     clips.push({className: ancestor.className, overflowX: css.overflowX, contain: css.contain,
+      left: box.left + ancestor.clientLeft, right: box.left + ancestor.clientLeft + ancestor.clientWidth});
+     clipElements.push(ancestor);
+    }
+    clipIds.push(id);
+   }
+   return {index, name: el.getAttribute('aria-label') || el.textContent.trim(), tag: el.tagName,
+    theme: el.closest('[data-tcrn-theme]').dataset.tcrnTheme, box: rect(el), clipIds,
+    size: el.matches('.tcrn-button--sm') ? 'sm' : el.matches('.tcrn-button--lg') ? 'lg' : 'md',
+    variant: el.matches('.tcrn-button--quiet') ? 'quiet' : el.matches('.tcrn-button--secondary') ? 'secondary'
+     : el.matches('.tcrn-button--danger') ? 'danger' : 'primary',
+    fontSize: style.fontSize, padding: [style.paddingInlineStart, style.paddingInlineEnd], transform: style.transform};
+  });
+  const allControls = [...root.querySelectorAll('button, a.tcrn-button')];
+  const groups = [...root.querySelectorAll('.tcrn-button-group')].map(el => ({
+   name: el.getAttribute('aria-label'), theme: el.closest('[data-formal-theme]').dataset.formalTheme,
+   size: el.dataset.buttonGroupSize, variant: el.matches('.tcrn-button-group--quiet') ? 'quiet' : 'secondary',
+   count: Number(el.dataset.groupBoundary), box: rect(el),
+   buttons: [...el.querySelectorAll(':scope > button')].map(button => allControls.indexOf(button)),
+   separators: [...el.querySelectorAll(':scope > .tcrn-button-group__separator')].map(rect),
+  }));
+  const panes = [...root.querySelectorAll(':scope > .tcrn-doc-themes > .tcrn-doc-pane')];
+  return {url: doc.URL, viewport: doc.defaultView.innerWidth, column: rect(root.closest('.docs-frame')),
+   scrollLeft: [main.scrollLeft, doc.scrollingElement.scrollLeft],
+   overflow: [main.scrollWidth - main.clientWidth, doc.documentElement.scrollWidth - doc.documentElement.clientWidth],
+   clips, controls, groups, panes: panes.map(rect),
+   spacing: panes.map(pane => {
+    const paper = pane.querySelector(':scope > .tcrn-doc-paper'), section = paper.querySelector('[data-formal-section]');
+    return {paneGap: getComputedStyle(pane).rowGap, paperGap: getComputedStyle(paper).rowGap,
+     headingGap: section.children[1].getBoundingClientRect().top - section.firstElementChild.getBoundingClientRect().bottom};
+   })};
+ });
+}
+
+function assertActionPacking(reading, width) {
+ const close = (a, b) => Math.abs(a - b) <= 0.6;
+ assert.equal(reading.viewport, width, 'measure the actual content viewport, including the native Manager iframe');
+ assert.deepEqual(reading.scrollLeft, [0, 0], 'inspection needs no horizontal document scroll');
+ if (width === 390) assert.deepEqual([reading.column.left, reading.column.right], [29, 361]);
+ assert.ok(reading.controls.length > 132, 'inspect the other 05 controls and matrix examples too');
+ for (const control of reading.controls) {
+  const {box, name, index} = control;
+  assert.ok(box.width > 0 && box.height > 0, `actual action ${index}/${name} is rendered`);
+  assert.equal(box.height, {sm: 28, md: 32, lg: 40}[control.size], `actual action ${index}/${name} retains its hit height`);
+  assert.ok(box.left >= reading.column.left - 0.6 && box.right <= reading.column.right + 0.6,
+   `actual action ${index}/${name} escapes column: ${box.left}..${box.right} vs ${reading.column.left}..${reading.column.right}`);
+  for (const id of control.clipIds) {
+   const clip = reading.clips[id];
+   assert.ok(box.left >= clip.left - 0.6 && box.right <= clip.right + 0.6,
+    `actual action ${index}/${name} crosses clipping ancestor ${clip.className}: ${box.left}..${box.right} vs ${clip.left}..${clip.right}`);
+  }
+ }
+ const expected = ['light', 'dark'].flatMap(theme => ['secondary', 'quiet'].flatMap(variant =>
+  ['sm', 'md', 'lg'].flatMap(size => [2, 4, 5].map(count => `${theme}/${variant}/${size}/${count}`))));
+ assert.deepEqual(reading.groups.map(g => `${g.theme}/${g.variant}/${g.size}/${g.count}`), expected,
+  'every current group size, count, variant and theme remains inspectable');
+ for (const group of reading.groups) {
+  const buttons = group.buttons.map(index => reading.controls[index]);
+  assert.equal(buttons.length, group.count);
+  assert.equal(group.separators.length, group.count - 1);
+  assert.ok(close(group.box.left, buttons[0].box.left) && close(group.box.right, buttons.at(-1).box.right),
+   `actual action bar ${group.name} contains all its children`);
+  for (const [index, button] of buttons.entries()) {
+   assert.equal(button.variant, group.variant, 'the group preserves every member variant');
+   assert.equal(button.box.height, {sm: 28, md: 32, lg: 40}[group.size], 'formal hit height');
+   assert.ok(close(button.box.top, group.box.top), 'the formal group stays a single bar');
+   assert.equal(button.transform, 'none', 'natural control size');
+   if (index) {
+    assert.ok(close(button.box.left - buttons[index - 1].box.right, 2), 'formal separator and member margin');
+    assert.equal(group.separators[index - 1].width, 1);
+    assert.equal(group.separators[index - 1].height, button.box.height);
+   }
+  }
+ }
+ assert.equal(reading.groups.reduce((count, group) => count + group.buttons.length, 0), 132);
+ assert.ok(reading.spacing.every(s => s.paneGap === '14px' && s.paperGap === '14px' && s.headingGap === 14),
+  'text and controls retain their token spacing');
+ assert.ok(reading.overflow.every(excess => excess <= 1), 'no document horizontal overflow');
+}
+
+function actionGroupGeometry(reading) {
+ return reading.groups.map(group => ({name: group.name, theme: group.theme, size: group.size, variant: group.variant,
+  buttons: group.buttons.map(index => {
+   const {name, tag, box, size, fontSize, padding, transform} = reading.controls[index];
+   return {name, tag, width: box.width, height: box.height, size, fontSize, padding, transform};
+  })}));
+}
+
+async function exerciseNarrowActionGroups(content) {
+ const groups = content.locator('.tcrn-button-group[data-button-group-size="lg"][data-group-boundary="5"]');
+ const observations = [];
+ for (const group of await groups.all()) {
+  const buttons = group.locator(':scope > button'), last = buttons.last();
+  await last.click();
+  const read = () => group.evaluate(el => ({name: el.ariaLabel,
+   pressed: [...el.querySelectorAll(':scope > button')].map(b => b.getAttribute('aria-pressed')),
+   focused: [...el.querySelectorAll(':scope > button')].indexOf(el.ownerDocument.activeElement)}));
+  assert.deepEqual((await read()).pressed, ['false', 'false', 'false', 'false', 'true']);
+  const hits = await last.evaluate(el => {
+   const r = el.getBoundingClientRect(), doc = el.ownerDocument;
+   return [r.left + 0.5, r.right - 0.5].map(x => el.contains(doc.elementFromPoint(x, r.top + r.height / 2)));
+  });
+  assert.deepEqual(hits, [true, true], 'both edges of the formerly clipped button accept pointer input');
+  await last.press('Shift+Tab');
+  assert.equal((await read()).focused, 3, 'native backwards tab order');
+  await buttons.nth(3).press('Space');
+  assert.deepEqual((await read()).pressed, ['false', 'false', 'false', 'true', 'false']);
+  for (let index = 3; index > 0; index--) {
+   await buttons.nth(index).press('Shift+Tab');
+   assert.equal((await read()).focused, index - 1, 'every member remains in native tab order');
+  }
+  await buttons.first().press('Enter');
+  assert.deepEqual((await read()).pressed, ['true', 'false', 'false', 'false', 'false']);
+  assert.notEqual(await buttons.first().evaluate(el => getComputedStyle(el).boxShadow), 'none', 'keyboard focus ring');
+  const independent = await content.locator('.tcrn-button-group').evaluateAll(elements => elements.every(el =>
+   !el.hasAttribute('aria-pressed') && el.querySelectorAll(':scope > button[aria-pressed="true"]').length === 1 &&
+   el.querySelector(':scope > button').getAttribute('aria-pressed') === 'true'));
+  assert.equal(independent, true, 'activation is local to each example and does not change sibling selection');
+  observations.push({...await read(), hits});
+ }
+ assert.equal(observations.length, 4);
+ return observations;
+}
+
+test('05 natural-size action descendants fit all five locales in static, Canvas and native Manager', async t => {
+ for (const entry of contentEntries) await withPublishedBrowser(async ({browser, base}) => {
+  const page = await browser.newPage();
+  try {
+   for (const locale of ['zh-CN', 'en', 'ja', 'ko', 'fr']) {
+    const content = await openContentPage(page, {base, entry, board: '05-actions', locale, width: 1462});
+    const desktop = await readActionPacking(content);
+    assertActionPacking(desktop, 1462);
+    assert.equal(desktop.panes[0].top, desktop.panes[1].top, 'normal desktop retains paired themes');
+    t.diagnostic(JSON.stringify({entry, locale, kind: 'desktop', reading: desktop,
+     activation: await exerciseNarrowActionGroups(content)}));
+    // Intermediate widths exercise the intrinsic theme wrap and existing narrow breakpoint.
+    for (const width of locale === 'ja' ? [1024, 942, 808, 751, 750, 390] : [390]) {
+     await resizeContentPage(page, entry, width);
+     const reading = await readActionPacking(content);
+     assertActionPacking(reading, width);
+     assert.deepEqual(actionGroupGeometry(reading), actionGroupGeometry(desktop), 'labels and every natural button dimension survive reflow');
+     t.diagnostic(JSON.stringify({entry, locale, kind: 'corrected', reading,
+      activation: width === 390 ? await exerciseNarrowActionGroups(content) : []}));
+    }
+    // Restore the frozen 24/28 pane + 16/18 paper packing, without changing any control.
+    const originalStyles = await content.evaluate(root => {
+     const elements = [...root.querySelectorAll(':scope > .tcrn-doc-themes > .tcrn-doc-pane, :scope > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper')];
+     const styles = elements.map(el => el.getAttribute('style'));
+     for (const el of elements) el.style.padding = el.matches('.tcrn-doc-pane') ? '24px 28px 28px' : '16px 18px';
+     return styles;
+    });
+    try {
+     const old = await readActionPacking(content);
+     assert.throws(() => assertActionPacking(old, 390), /actual action.*(column|clipping|bar)/);
+     if (locale === 'ja') {
+      for (const group of old.groups.filter(g => g.size === 'lg' && g.count === 5)) {
+       const last = old.controls[group.buttons.at(-1)];
+       assert.deepEqual([group.box.left, group.box.width, last.box.left, last.box.right], [75, 240, 363.46875, 403.46875]);
+       const nearest = old.clips[last.clipIds[0]];
+       assert.equal(nearest.right, 377);
+       assert.equal(nearest.right - last.box.left, 13.53125, 'negative case reproduces the reported partial hit area');
+      }
+     }
+     t.diagnostic(JSON.stringify({entry, locale, kind: 'old-nested-packing-negative', reading: old}));
+    } finally {
+     await content.evaluate((root, styles) => {
+      const elements = [...root.querySelectorAll(':scope > .tcrn-doc-themes > .tcrn-doc-pane, :scope > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper')];
+      elements.forEach((el, index) => styles[index] === null ? el.removeAttribute('style') : el.setAttribute('style', styles[index]));
+     }, originalStyles);
+    }
+    assertActionPacking(await readActionPacking(content), 390);
+   }
+  } finally { await page.close(); }
+ }, {entry: entry === 'static' ? 'static' : 'manager'});
+});
+
 async function readPhonePair(theme) {
  return theme.evaluate(async root => {
   await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
