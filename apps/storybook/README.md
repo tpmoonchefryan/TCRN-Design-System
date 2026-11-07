@@ -1,6 +1,6 @@
 # Published-standard Storybook
 
-Both entrypoints use the same eight published source boards. The static entry emits one board page per locale, an explicit API-obligation page and a provenance page. The manager glob admits only `src/standards.stories.tsx`; it cannot rediscover internal experiments or retired CSF files.
+Both entrypoints use the same eight published source boards. The static entry emits one board page per locale and an explicit API-obligation page. The manager glob admits only `src/standards.stories.tsx`; it cannot rediscover internal experiments or retired CSF files.
 
 `@tcrn/ui-react/approved` is the rendering boundary. `source-matrices.tsx` projects every one of the 230 original Typography/Icon/Actions/Inputs occurrences onto actual package components. The shell scenes cover both themes, full menus, dropdowns, cascades, phone Sheet and the login intro; browser proofs read the formal source role occurrences independently, including repeated ids. No expected color is taken from the current registry or a candidate-provided frame.
 
