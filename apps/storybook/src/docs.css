@@ -1019,3 +1019,28 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 @media (max-width: 1023px) {
   .docs-topic-nav { display: none; }
 }
+
+/* Component canvases and the portal API use the same executable examples. */
+[data-component-example] {
+  min-inline-size: 0;
+  display: grid;
+  gap: var(--tcrn-space-2h);
+}
+[data-component-example] > form {
+  display: grid;
+  gap: var(--tcrn-space-2h);
+  justify-items: start;
+}
+[data-component-example] > output {
+  overflow-wrap: anywhere;
+  font: var(--tcrn-type-weight-regular) 12px/20px var(--tcrn-type-family-mono);
+  color: var(--tcrn-color-ink-2);
+}
+
+.component-story-canvas {
+  min-block-size: 100vh;
+  padding: var(--tcrn-space-4);
+  background: var(--tcrn-color-bg);
+}
+.component-story-canvas[data-tcrn-theme="dark"] { color-scheme: dark; }
+.component-story-canvas[data-tcrn-theme="light"] { color-scheme: light; }

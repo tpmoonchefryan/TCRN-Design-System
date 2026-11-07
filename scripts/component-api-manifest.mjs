@@ -20,7 +20,7 @@
 //   node scripts/component-api-manifest.mjs           # regenerate + semantic gate
 //   node scripts/component-api-manifest.mjs --check    # fail on drift, do not write
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import ts from "typescript";
 
@@ -39,14 +39,10 @@ function stableJson(value) {
 }
 
 function typescriptVersion() {
-  try {
-    return JSON.parse(readFileSync(join(root, "package.json"), "utf8")).devDependencies?.typescript ?? ts.version;
-  } catch {
-    return ts.version;
-  }
+  return ts.version;
 }
 
-function buildProgram() {
+function buildProgram(entryPath = entrySourcePath) {
   const configPath = join(root, "packages/ui-react/tsconfig.json");
   const parsed = ts.getParsedCommandLineOfConfigFile(configPath, {}, {
     ...ts.sys,
@@ -63,10 +59,10 @@ function buildProgram() {
     projectReferences: parsed.projectReferences
   });
   const checker = program.getTypeChecker();
-  const entry = program.getSourceFile(join(root, entrySourcePath))
-    ?? program.getSourceFiles().find((file) => normalizePath(file.fileName).endsWith(entrySourcePath));
+  const entry = program.getSourceFile(join(root, entryPath))
+    ?? program.getSourceFiles().find((file) => normalizePath(file.fileName).endsWith(entryPath));
   if (!entry) {
-    throw new Error(`entry_module_not_found:${entrySourcePath}`);
+    throw new Error(`entry_module_not_found:${entryPath}`);
   }
   const moduleSymbol = checker.getSymbolAtLocation(entry);
   if (!moduleSymbol) {
@@ -206,10 +202,36 @@ function describeProp(checker, symbol, contextNode, defaults) {
   return entry;
 }
 
+function typeDefinitionClosure(checker, declarations) {
+  const definitions = new Map();
+  const visit = (node) => {
+    if (ts.isTypeReferenceNode(node)) {
+      const symbol = checker.getSymbolAtLocation(node.typeName);
+      const resolved = symbol && resolveAlias(checker, symbol);
+      for (const declaration of resolved?.getDeclarations() ?? []) {
+        const file = declaration.getSourceFile();
+        if (!/\/packages\/ui-(?:react|copy-state|tokens)\/src\//.test(normalizePath(file.fileName))) continue;
+        if (!ts.isInterfaceDeclaration(declaration) && !ts.isTypeAliasDeclaration(declaration) && !ts.isEnumDeclaration(declaration)) continue;
+        const key = `${file.fileName}:${declaration.pos}`;
+        if (definitions.has(key)) continue;
+        definitions.set(key, { name: declaration.name.text, path: normalizePath(relative(root, file.fileName)), line: file.getLineAndCharacterOfPosition(declaration.getStart()).line + 1, declaration: declaration.getText() });
+        ts.forEachChild(declaration, visit);
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  declarations.forEach(visit);
+  return [...definitions.values()].sort((a, b) => a.path.localeCompare(b.path) || a.line - b.line);
+}
+
 function describeComponent(checker, name, symbol) {
   const resolved = resolveAlias(checker, symbol);
   const valueDeclaration = resolved.valueDeclaration ?? resolved.getDeclarations()?.[0] ?? null;
   const entry = { name, kind: "function", props: [], variants: {}, slots: [] };
+  if (valueDeclaration) {
+    const source = valueDeclaration.getSourceFile();
+    entry.source = { path: normalizePath(relative(root, source.fileName)), line: source.getLineAndCharacterOfPosition(valueDeclaration.getStart()).line + 1 };
+  }
   if (!valueDeclaration) {
     entry.extractionError = "no_value_declaration";
     return entry;
@@ -240,6 +262,10 @@ function describeComponent(checker, name, symbol) {
   }
   const propsType = checker.getTypeOfSymbolAtLocation(propsParam, propsParam.valueDeclaration ?? valueDeclaration);
   const defaults = bindingDefaults(valueDeclaration);
+  const propTypeRoots = [...checker.getPropertiesOfType(propsType).flatMap(prop => prop.getDeclarations() ?? [])];
+  if (ts.isFunctionDeclaration(valueDeclaration) && valueDeclaration.parameters[0]?.type) propTypeRoots.push(valueDeclaration.parameters[0].type);
+  if (ts.isVariableDeclaration(valueDeclaration) && valueDeclaration.initializer && ts.isCallExpression(valueDeclaration.initializer)) propTypeRoots.push(...(valueDeclaration.initializer.typeArguments ?? []));
+  entry.typeDefinitions = typeDefinitionClosure(checker, propTypeRoots);
 
   const props = [];
   for (const propSymbol of checker.getPropertiesOfType(propsType)) {
@@ -266,13 +292,13 @@ function describeComponent(checker, name, symbol) {
   return entry;
 }
 
-function buildManifest() {
-  const { checker, moduleSymbol } = buildProgram();
+function buildManifest({ entryPath = entrySourcePath, componentNames } = {}) {
+  const { checker, moduleSymbol } = buildProgram(entryPath);
   const exportsByName = new Map(
     checker.getExportsOfModule(moduleSymbol).map((symbol) => [symbol.getName(), symbol])
   );
 
-  const registryNames = registryComponentNames(checker, exportsByName);
+  const registryNames = componentNames ?? registryComponentNames(checker, exportsByName);
   const components = {};
   const missingFromManifest = [];
   for (const name of registryNames) {
@@ -326,9 +352,9 @@ function buildManifest() {
   const componentsWithExtractionErrors = manifestNames.filter((name) => sortedComponents[name].extractionError);
 
   const manifest = {
-    ok: missingFromManifest.length === 0,
+    ok: missingFromManifest.length === 0 && componentsWithExtractionErrors.length === 0,
     route: "route_tcrn_design_system_component_api_machine_manifest",
-    generatedFrom: entrySourcePath,
+    generatedFrom: entryPath,
     typescriptVersion: typescriptVersion(),
     componentCount: manifestNames.length,
     coverage: {
@@ -347,6 +373,31 @@ function buildManifest() {
     components: sortedComponents
   };
   return manifest;
+}
+
+export function extractComponentExamples() {
+  const sourcePath = "apps/storybook/src/component-examples.tsx";
+  const source = ts.createSourceFile(sourcePath, readFileSync(join(root, sourcePath), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  if (source.parseDiagnostics.length) throw new Error("component_examples_source_unparseable");
+  const examples = {};
+  const visit = node => {
+    if (ts.isSwitchStatement(node) && node.expression.getText() === "name") {
+      const cases = node.caseBlock.clauses;
+      for (let index = 0; index < cases.length; index++) {
+        const clause = cases[index];
+        if (!ts.isCaseClause(clause) || !ts.isStringLiteral(clause.expression)) continue;
+        const parts = [clause.getText()];
+        for (let following = index + 1; clause.statements.length === 0 && following < cases.length; following++) {
+          parts.push(cases[following].getText());
+          if (cases[following].statements.length) break;
+        }
+        examples[clause.expression.text] = { path: sourcePath, line: source.getLineAndCharacterOfPosition(clause.getStart()).line + 1, snippet: parts.join("\n") };
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  return examples;
 }
 
 function run() {
@@ -390,7 +441,7 @@ function run() {
 // pathToFileURL, not string concatenation: this repository lives under a path with a
 // space in it, so `file://${argv[1]}` never matches the percent-encoded import.meta.url
 // and the entry point silently does nothing.
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   run();
 }
 

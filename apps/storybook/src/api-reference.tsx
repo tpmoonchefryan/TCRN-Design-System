@@ -1,6 +1,8 @@
 import { Heading, Text } from "@tcrn/ui-react/approved";
 import { apiReaderDetails, apiReaderProps, apiReaderSummary, approvedApi } from "./approved-api.js";
 import { approvedSource, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
+import { ComponentExample } from "./component-examples.js";
+import type { FormalComponentName } from "./component-catalog.js";
 import { docsCopy } from "./locales.js";
 import { pageHref, type DocsEntry } from "./portal-navigation.js";
 
@@ -29,6 +31,10 @@ export function ApiReference({ locale, board, entry = "static" }: {
           <code className="tcrn-doc-code">{apiReaderProps(api).join(" · ")}</code>
           <p>{copy.usage}</p>
           <pre className="tcrn-doc-code" data-api-example="">{api.example}</pre>
+          <details data-shared-component-example="">
+            <summary>{copy.examples}</summary>
+            <ComponentExample name={api.name as FormalComponentName} locale={locale} />
+          </details>
           <details>
             <summary>{copy.details}</summary>
             <p lang="zh-CN" data-api-formal="">{apiReaderDetails(api.name, api.formal)}</p>

@@ -47,22 +47,12 @@ incorrect.
 | `fr` | `fr` | `fr` |
 | `zh_HANT` | No complete built-in mapping | `zh_HANT` must remain available; no implicit English or Simplified Chinese substitution |
 
-The current `ShellLocaleMenu` accepts arbitrary product locale identifiers and
-native names and reports the selected identifier unchanged. That control alone
-does not translate the rest of `ProductShell`: shell chrome, pin verbs, search
-labels, breadcrumb names, account/notifications and the registered brand tagline
-still use five-locale dictionaries. The shell controller's `setLocale` narrows to
-the DS set, so the product locale remains owned by TMS's existing provider and is
-not persisted through that setter.
+The local producer candidate now implements complete explicit product locale
+copy through `ProductShellLocaleDefinition`, the generic controller and the actual
+nested shell family. See [the product locale contract](product-shell-locales.md).
+An explicit catalogue keeps `zh_HANT` as its real product identity and supplies
+complete product-owned copy; it does not create a sixth built-in DS locale.
 
-The remaining upstream copy capability is a **complete explicit copy input** for
-the shell composition, including its descendant search, pins, breadcrumb and
-brand tagline. This is a candidate requirement, not an implemented `copy` prop.
-A partial dictionary with a silent fallback cannot preserve the product's sixth
-language. The candidate includes concrete Traditional Chinese labels for review;
-their adoption and production implementation remain a declared dependency.
-
-Until that dependency is resolved, package B can document and exercise the
-existing five-locale catalogue, and package D can implement authenticated pins
-storage against the frozen callbacks. Package E cannot claim the full six-locale
-shell migration complete.
+B can exercise this actual candidate API. E still requires the matching formal
+producer delivery, applicable visual authority adoption for customer compositions
+and real TMS integration checks before claiming the migration complete.

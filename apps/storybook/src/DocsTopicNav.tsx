@@ -154,12 +154,7 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
         const trigger = triggerOf(open);
         if (trigger) positionCategory(trigger);
       }
-      if (open) {
-      const trigger = triggerOf(open);
-      if (trigger) positionCategory(trigger);
-      else onOpenChange(null);
-    }
-    if (open && openBranch) positionSubmenu(open, openBranch);
+      if (open && openBranch) positionSubmenu(open, openBranch);
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);

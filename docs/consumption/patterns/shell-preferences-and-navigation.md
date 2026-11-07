@@ -70,8 +70,8 @@ const pins = useProductShellController({
 ```
 
 Do not spread the controller's five-locale setter over a six-locale TMS provider.
-The complete `zh_HANT` copy input remains the explicit upstream dependency
-described in `customer-list-support.md`.
+The implemented complete product locale input is described in
+`product-shell-locales.md`; matching production delivery remains a dependency.
 
 ## Native links at the Next boundary
 

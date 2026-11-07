@@ -141,3 +141,19 @@ test("pin preferences resolve groups, branches and leaves by stable ID across lo
     assert.equal(pins[3].href, pageHref(locale, "02-typography", entry));
   }
 });
+
+
+test("formal component states use the same executable examples in portal and CSF", async () => {
+  const { componentStates } = await import("./component-catalog.js");
+  const { ComponentExample } = await import("./component-examples.js");
+  assert.deepEqual(Object.keys(componentStates), approvedApi.map(api => api.name));
+  for (const [name, states] of Object.entries(componentStates)) {
+    for (const state of states) {
+      const html = renderToStaticMarkup(createElement(ComponentExample, { name: name as keyof typeof componentStates, state, locale: "en" }));
+      assert.ok(html.includes(`data-component-example="${name}"`), `${name}/${state}`);
+      assert.ok(html.includes(`data-example-state="${state}"`), `${name}/${state}`);
+    }
+  }
+  const api = renderToStaticMarkup(createElement(App, { page: "api", locale: "en" }));
+  for (const name of Object.keys(componentStates)) assert.ok(api.includes(`data-component-example="${name}"`));
+});

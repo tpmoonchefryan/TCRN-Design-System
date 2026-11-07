@@ -267,7 +267,7 @@ const phoneShellModes = ["phone-closed", "phone"] as const;
 type ShellMode = (typeof desktopShellModes)[number] | (typeof phoneShellModes)[number];
 
 export function ShellExample({
-  locale, mode, theme = "light", shortcut = false, glimpse = false, intro = false, pairedPress
+  locale, mode, theme = "light", shortcut = false, glimpse = false, intro = false, initialPinCount = 4, pairedPress
 }: {
   locale: DocsLocale;
   mode: ShellMode;
@@ -275,6 +275,7 @@ export function ShellExample({
   shortcut?: boolean;
   glimpse?: boolean;
   intro?: boolean;
+  initialPinCount?: number;
   pairedPress?: RefObject<PointerEvent | null>;
 }) {
   const [shownLocale, setShownLocale] = useState(locale);
@@ -285,7 +286,7 @@ export function ShellExample({
   const c = docsCopy(shownLocale);
   const [menuOpen, setMenuOpen] = useState<boolean>();
   const [openPin, setOpenPin] = useState<string | null>();
-  const [pins, setPins] = useState<readonly string[]>(["roster", "contracts", "settlements", "schedule"]);
+  const [pins, setPins] = useState<readonly string[]>(["roster", "contracts", "settlements", "schedule", "teams", "live", "events", "reports"].slice(0, initialPinCount));
   const frameRef = useRef<HTMLDivElement>(null);
   const frameId = useId();
   const [original, setOriginal] = useState(false);
@@ -359,7 +360,7 @@ export function ShellExample({
 
   if (glimpse) return <div className="portal-shell-fragment" data-phone={phone ? "" : undefined} data-shell-theme={theme}>{shell}</div>;
 
-  return <div className="tcrn-doc-shell-example" data-phone={phone ? "" : undefined}>
+  return <div className="tcrn-doc-shell-example" data-shell-pin-order={JSON.stringify(pins)} data-phone={phone ? "" : undefined}>
     <div className="tcrn-doc-shell-tools">
       <span>{dimensions}</span>
       <Button

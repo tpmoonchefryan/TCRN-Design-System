@@ -174,7 +174,7 @@ function canonicalEvidenceValue(value: unknown, seen = new Set<unknown>()): unkn
     seen.delete(value);
     return undefined;
   }
-  const object: Record<string, unknown> = {};
+  const object: Record<string, unknown> = Object.create(null);
   for (const key of Object.keys(value).sort()) {
     const item = canonicalEvidenceValue((value as Record<string, unknown>)[key], seen);
     if (item === undefined) {

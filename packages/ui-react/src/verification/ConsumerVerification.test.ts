@@ -114,3 +114,15 @@ test("STORY-118 a genuinely absent not-applicable control needs evidence and rem
   input.observed[0].applicabilityEvidence = { source: "dom", actualControlCount: 0, reason: "The required control inventory is empty." };
   assert.equal(evaluateConsumerEvidence(input).ok, true);
 });
+
+
+test("JSON evidence preserves an own __proto__ key instead of dropping mismatched values", () => {
+  const input = positiveEvidence();
+  const expected = JSON.parse('{"__proto__":{"value":"expected"}}');
+  const changed = JSON.parse('{"__proto__":{"value":"changed"}}');
+  input.expectedInventory[0].expectedValues![1]!.value = expected;
+  Object.assign(input.observed[0].values![1]!, { submittedValue: expected, serializedValue: JSON.stringify(expected), readbackValue: expected });
+  assert.equal(evaluateConsumerEvidence(input).ok, true);
+  input.observed[0].values![1]!.readbackValue = changed;
+  assert.ok(evaluateConsumerEvidence(input).findings.includes("operation-1:readback_value_mismatch:operation.result"));
+});
