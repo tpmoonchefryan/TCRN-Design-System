@@ -106,3 +106,9 @@ test("resolver detects real dependency cycles and respects fallbacks", () => {
   assert.deepEqual(createResolvedTokenMap("light",[t("--tcrn-a","var(--tcrn-missing, #123456)")]),{"--tcrn-a":"#123456"});
   assert.equal(createThemeCssVariables("dark").includes('[data-tcrn-theme="dark"]'),true);
 });
+
+test("published overlay levels are discoverable as z-index tokens rather than container lengths", () => {
+  assert.deepEqual(tcrnTokens.filter((token) => token.group === "zIndex").map((token) => token.variable), [
+    "--tcrn-z-overlay", "--tcrn-z-popover"
+  ]);
+});

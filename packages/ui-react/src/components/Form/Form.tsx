@@ -1,4 +1,4 @@
-import type { ChangeEvent as ReactChangeEvent, HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import type { ChangeEvent as ReactChangeEvent, HTMLAttributes, InputHTMLAttributes, ReactElement, ReactNode, RefObject, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { Children, cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
 import { Icon } from "../Icon/index.js";
 import { mountStaticMultiSelect, type StaticMultiSelectHandle } from "./multi-select-dropdown.js";
@@ -192,6 +192,28 @@ function normalizeChoiceValues(values: readonly string[] | undefined, options: r
 
 function sameChoiceValues(first: readonly string[], second: readonly string[]) {
   return first.length === second.length && first.every((value, index) => value === second[index]);
+}
+
+/** A cancelled native reset keeps the current value; a completed reset changes no user callback. */
+function useUncontrolledFormReset(rootRef: RefObject<HTMLElement | null>, enabled: boolean, resetValue: () => void) {
+  const resetRef = useRef(resetValue);
+  resetRef.current = resetValue;
+  useEffect(() => {
+    if (!enabled) return;
+    const form = rootRef.current?.closest("form");
+    if (!form) return;
+    let active = true;
+    const onReset = (event: Event) => {
+      queueMicrotask(() => {
+        if (active && !event.defaultPrevented) resetRef.current();
+      });
+    };
+    form.addEventListener("reset", onReset);
+    return () => {
+      active = false;
+      form.removeEventListener("reset", onReset);
+    };
+  }, [enabled, rootRef]);
 }
 
 export interface MultiSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "multiple" | "value" | "defaultValue" | "onChange"> {
@@ -607,8 +629,10 @@ export interface RadioGroupProps extends Omit<HTMLAttributes<HTMLFieldSetElement
 
 export function RadioGroup({ legend, name, options, value, defaultValue, onChange, disabled, className, ...props }: RadioGroupProps) {
   const groupId = useId();
+  const groupRef = useRef<HTMLFieldSetElement>(null);
   const isControlled = value !== undefined;
   const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
+  useUncontrolledFormReset(groupRef, !isControlled, () => setUncontrolledValue(defaultValue));
   const selectedValue = isControlled ? value : uncontrolledValue;
   const handleChange = (nextValue: string) => {
     if (nextValue === selectedValue) {
@@ -620,7 +644,7 @@ export function RadioGroup({ legend, name, options, value, defaultValue, onChang
     onChange?.(nextValue);
   };
   return (
-    <fieldset {...props} className={cx("tcrn-radio-group", className)} data-radio-group="true" data-choice-cardinality="single" data-choice-value-mode="closed" disabled={disabled}>
+    <fieldset {...props} ref={groupRef} className={cx("tcrn-radio-group", className)} data-radio-group="true" data-choice-cardinality="single" data-choice-value-mode="closed" disabled={disabled}>
       <legend className="tcrn-radio-group__legend">{legend}</legend>
       {options.map((option) => {
         const descriptionId = `${groupId}-${option.value}`;
@@ -631,6 +655,9 @@ export function RadioGroup({ legend, name, options, value, defaultValue, onChang
             style={option.minInlineSize ? { minInlineSize: `${option.minInlineSize}px` } : undefined}
           >
             <input type="radio" className="tcrn-radio-group__control"
+              ref={(input) => {
+                if (input) input.defaultChecked = (isControlled ? value : defaultValue) === option.value;
+              }}
               name={name}
               value={option.value}
               disabled={option.disabled}
@@ -794,7 +821,9 @@ export function SettingChoice({
   const hintId = useId();
   const errorId = useId();
   const isControlled = value !== undefined;
+  const rootRef = useRef<HTMLDivElement>(null);
   const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
+  useUncontrolledFormReset(rootRef, !isControlled, () => setUncontrolledValue(defaultValue));
   const describedBy = mergeIds(hint ? hintId : undefined, error ? errorId : undefined);
   const selectedValue = isControlled ? value : uncontrolledValue;
   const handleChange = (nextValue: string) => {
@@ -818,6 +847,7 @@ export function SettingChoice({
   return (
     <div
       {...props}
+      ref={rootRef}
       className={cx("tcrn-setting-choice", className)}
       data-setting-choice="true"
       data-setting-choice-semantic="value-selection"
@@ -835,8 +865,7 @@ export function SettingChoice({
           legend={label}
           name={name}
           options={radioOptions}
-          value={isControlled ? selectedValue : undefined}
-          defaultValue={isControlled ? undefined : selectedValue}
+          value={selectedValue ?? ""}
           onChange={handleChange}
           disabled={disabled}
           aria-describedby={describedBy}
@@ -850,8 +879,7 @@ export function SettingChoice({
             id={controlId}
             name={name}
             options={selectOptions}
-            value={isControlled ? selectedValue : undefined}
-            defaultValue={isControlled ? undefined : selectedValue}
+            value={selectedValue ?? ""}
             disabled={disabled}
             aria-describedby={describedBy}
             aria-invalid={error ? true : undefined}

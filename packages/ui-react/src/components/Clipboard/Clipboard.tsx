@@ -70,11 +70,16 @@ export const ClipboardCopyButton = forwardRef<HTMLButtonElement, ClipboardCopyBu
   const [state, setState] = useState<ClipboardCopyState>("idle");
   const liveRegionId = useId();
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mountedRef = useRef(true);
+  const copyingRef = useRef(false);
 
   useEffect(() => {
+    mountedRef.current = true;
     return () => {
-      if (resetTimerRef.current) {
+      mountedRef.current = false;
+      if (resetTimerRef.current !== null) {
         clearTimeout(resetTimerRef.current);
+        resetTimerRef.current = null;
       }
     };
   }, []);
@@ -88,20 +93,26 @@ export const ClipboardCopyButton = forwardRef<HTMLButtonElement, ClipboardCopyBu
   );
 
   const scheduleReset = useCallback(() => {
-    if (resetTimerRef.current) {
+    if (resetTimerRef.current !== null) {
       clearTimeout(resetTimerRef.current);
     }
 
     resetTimerRef.current = setTimeout(() => {
-      emitState("idle");
+      resetTimerRef.current = null;
+      if (mountedRef.current) emitState("idle");
     }, resetDelayMs);
   }, [emitState, resetDelayMs]);
 
   const handleCopy = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
       const button = event.currentTarget;
-      if (disabled || disabledReason || state === "copying") {
+      if (disabled || disabledReason || copyingRef.current) {
         return;
+      }
+      // The previous settled result must not reset this new asynchronous copy.
+      if (resetTimerRef.current !== null) {
+        clearTimeout(resetTimerRef.current);
+        resetTimerRef.current = null;
       }
 
       const writeText = clipboardWriteText();
@@ -111,19 +122,23 @@ export const ClipboardCopyButton = forwardRef<HTMLButtonElement, ClipboardCopyBu
         return;
       }
 
+      copyingRef.current = true;
+      emitState("copying");
+      let result: "copied" | "failed";
       try {
-        emitState("copying");
         await writeText(text);
-        emitState("copied");
+        result = "copied";
       } catch {
-        emitState("failed");
-      } finally {
-        scheduleReset();
+        result = "failed";
       }
-
-      button.focus({ preventScroll: true });
+      copyingRef.current = false;
+      if (!mountedRef.current) return;
+      emitState(result);
+      scheduleReset();
+      // Completion must not take focus back from a field chosen while copying.
+      if (button.ownerDocument.activeElement === button) button.focus({ preventScroll: true });
     },
-    [disabled, disabledReason, emitState, scheduleReset, state, text]
+    [disabled, disabledReason, emitState, scheduleReset, text]
   );
 
   const labels = clipboardLabelsFor(locale);

@@ -310,11 +310,12 @@ export interface TreeProps extends Omit<HTMLAttributes<HTMLUListElement>, "onSel
   onSelect?: (id: string) => void;
 }
 
-function TreeLevel({ nodes, level, expandedIds, selectedId, onToggle, onSelect }: {
+function TreeLevel({ nodes, level, expandedIds, selectedId, focusedId, onToggle, onSelect }: {
   nodes: TreeNode[];
   level: number;
   expandedIds: readonly string[];
   selectedId?: string;
+  focusedId?: string;
   onToggle?: (id: string) => void;
   onSelect?: (id: string) => void;
 }) {
@@ -332,6 +333,8 @@ function TreeLevel({ nodes, level, expandedIds, selectedId, onToggle, onSelect }
             aria-expanded={hasChildren ? expanded : undefined}
             aria-selected={node.id === selectedId ? true : undefined}
             data-tree-level={level}
+            data-tree-id={node.id}
+            tabIndex={node.id === focusedId ? 0 : -1}
           >
             <span className="tcrn-tree__row">
               {hasChildren ? (
@@ -341,11 +344,11 @@ function TreeLevel({ nodes, level, expandedIds, selectedId, onToggle, onSelect }
               ) : (
                 <span className="tcrn-tree__toggle tcrn-tree__toggle--leaf" aria-hidden="true" />
               )}
-              <button type="button" className="tcrn-tree__label" onClick={() => onSelect?.(node.id)}>{node.label}</button>
+              <button type="button" tabIndex={-1} className="tcrn-tree__label" onClick={() => onSelect?.(node.id)}>{node.label}</button>
             </span>
             {hasChildren && expanded ? (
               <ul role="group" className="tcrn-tree__group">
-                <TreeLevel nodes={node.children as TreeNode[]} level={level + 1} expandedIds={expandedIds} selectedId={selectedId} onToggle={onToggle} onSelect={onSelect} />
+                <TreeLevel nodes={node.children as TreeNode[]} level={level + 1} expandedIds={expandedIds} selectedId={selectedId} focusedId={focusedId} onToggle={onToggle} onSelect={onSelect} />
               </ul>
             ) : null}
           </li>
@@ -355,10 +358,55 @@ function TreeLevel({ nodes, level, expandedIds, selectedId, onToggle, onSelect }
   );
 }
 
-export function Tree({ nodes, label, expandedIds = [], selectedId, onToggle, onSelect, className, ...props }: TreeProps) {
+export function Tree({ nodes, label, expandedIds = [], selectedId, onToggle, onSelect, className, onKeyDown, onFocus, ...props }: TreeProps) {
+  const [focusedId, setFocusedId] = useState(selectedId);
+  const visibleIds: string[] = [];
+  const visit = (entries: TreeNode[]) => {
+    for (const entry of entries) {
+      visibleIds.push(entry.id);
+      if (entry.children && expandedIds.includes(entry.id)) visit(entry.children);
+    }
+  };
+  visit(nodes);
+  const currentId = focusedId && visibleIds.includes(focusedId) ? focusedId : visibleIds[0];
   return (
-    <ul {...props} role="tree" aria-label={label} className={cx("tcrn-tree", className)} data-tree="true">
-      <TreeLevel nodes={nodes} level={1} expandedIds={expandedIds} selectedId={selectedId} onToggle={onToggle} onSelect={onSelect} />
+    <ul {...props} role="tree" aria-label={label} className={cx("tcrn-tree", className)} data-tree="true"
+      onFocus={(event) => {
+        onFocus?.(event);
+        const row = (event.target as Element).closest<HTMLElement>('[role="treeitem"]');
+        if (row) setFocusedId(row.dataset.treeId);
+      }}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented) return;
+        const row = (event.target as Element).closest<HTMLElement>('[role="treeitem"]');
+        const id = row?.dataset.treeId;
+        if (!row || id === undefined) return;
+        const rows = [...event.currentTarget.querySelectorAll<HTMLElement>('[role="treeitem"]')];
+        const at = rows.indexOf(row);
+        let next: HTMLElement | undefined;
+        switch (event.key) {
+          case "ArrowDown": next = rows[Math.min(at + 1, rows.length - 1)]; break;
+          case "ArrowUp": next = rows[Math.max(at - 1, 0)]; break;
+          case "Home": next = rows[0]; break;
+          case "End": next = rows[rows.length - 1]; break;
+          case "ArrowRight":
+            if (row.getAttribute("aria-expanded") === "false") onToggle?.(id);
+            else if (row.getAttribute("aria-expanded") === "true") next = rows[at + 1];
+            break;
+          case "ArrowLeft":
+            if (row.getAttribute("aria-expanded") === "true") onToggle?.(id);
+            else next = row.parentElement?.closest<HTMLElement>('[role="treeitem"]') ?? undefined;
+            break;
+          case "Enter":
+          case " ": onSelect?.(id); break;
+          default: return;
+        }
+        event.preventDefault();
+        next?.focus();
+      }}
+    >
+      <TreeLevel nodes={nodes} level={1} expandedIds={expandedIds} selectedId={selectedId} focusedId={currentId} onToggle={onToggle} onSelect={onSelect} />
     </ul>
   );
 }
@@ -394,6 +442,9 @@ export interface DataGridProps extends HTMLAttributes<HTMLTableElement> {
 }
 
 export function DataGrid({ columns, rows, label, sortColumnId, sortDirection, onSort, className, ...props }: DataGridProps) {
+  const [focusedCell, setFocusedCell] = useState<{ rowId: string; column: number } | null>(null);
+  const activeRow = rows.find((row) => row.id === focusedCell?.rowId) ?? rows[0];
+  const activeColumn = Math.min(focusedCell?.column ?? 0, Math.max((activeRow?.cells.length ?? 1) - 1, 0));
   return (
     <table {...props} role="grid"
       aria-label={label}
@@ -418,10 +469,31 @@ export function DataGrid({ columns, rows, label, sortColumnId, sortDirection, on
         </tr>
       </thead>
       <tbody>
-        {rows.map((row) => (
+        {rows.map((row, rowIndex) => (
           <tr key={row.id} role="row">
             {row.cells.map((cell, index) => (
-              <td key={columns[index]?.id ?? index} role="gridcell">{cell}</td>
+              <td key={columns[index]?.id ?? index} role="gridcell"
+                tabIndex={row === activeRow && index === activeColumn ? 0 : -1}
+                onFocus={() => setFocusedCell({ rowId: row.id, column: index })}
+                onKeyDown={(event) => {
+                  // An embedded form control owns its editing keys.
+                  if (event.defaultPrevented || event.target !== event.currentTarget) return;
+                  let targetRow = rowIndex;
+                  let targetColumn = index;
+                  switch (event.key) {
+                    case "ArrowRight": targetColumn += 1; break;
+                    case "ArrowLeft": targetColumn -= 1; break;
+                    case "ArrowDown": targetRow += 1; break;
+                    case "ArrowUp": targetRow -= 1; break;
+                    case "Home": targetColumn = 0; break;
+                    case "End": targetColumn = row.cells.length - 1; break;
+                    default: return;
+                  }
+                  event.preventDefault();
+                  const tableRows = event.currentTarget.closest("tbody")?.rows;
+                  tableRows?.[targetRow]?.cells[targetColumn]?.focus();
+                }}
+              >{cell}</td>
             ))}
           </tr>
         ))}

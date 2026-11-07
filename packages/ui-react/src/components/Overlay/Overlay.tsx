@@ -421,6 +421,8 @@ export function Popover({ title, open, children, className, placement = "bottom-
   const floating = useFloatingLayer({ enabled: open, placement, triggerRef, layerRef: popoverRef });
   const supportsEscapeClose = Boolean(onOpenChange);
   const supportsFocusReturn = Boolean(triggerRef);
+  const onOpenChangeRef = useRef(onOpenChange);
+  onOpenChangeRef.current = onOpenChange;
 
   useEffect(() => {
     if (!open) {
@@ -430,16 +432,15 @@ export function Popover({ title, open, children, className, placement = "bottom-
     const focusTarget = initialFocusRef?.current ?? popoverRef.current;
     focusTarget?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && !event.defaultPrevented && onOpenChangeRef.current) {
         event.preventDefault();
-        onOpenChange?.(false);
-        window.setTimeout(() => triggerRef?.current?.focus(), 0);
+        onOpenChangeRef.current(false);
       }
     };
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target;
       if (!(target instanceof Node) || popoverRef.current?.contains(target) || triggerRef?.current?.contains(target)) return;
-      onOpenChange?.(false);
+      onOpenChangeRef.current?.(false);
     };
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("pointerdown", onPointerDown);
@@ -447,14 +448,14 @@ export function Popover({ title, open, children, className, placement = "bottom-
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
     };
-  }, [initialFocusRef, onOpenChange, open, triggerRef]);
+  }, [initialFocusRef, open, triggerRef, floating.shouldPortal]);
 
   useEffect(() => {
     if (open || !wasOpenRef.current) {
       return;
     }
     wasOpenRef.current = false;
-    window.setTimeout(() => triggerRef?.current?.focus(), 0);
+    triggerRef?.current?.focus();
   }, [open, triggerRef]);
 
   if (!open) {
@@ -515,6 +516,8 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
   const wasOpenRef = useRef(false);
   const supportsEscapeClose = Boolean(onOpenChange);
   const supportsFocusReturn = Boolean(triggerRef);
+  const onOpenChangeRef = useRef(onOpenChange);
+  onOpenChangeRef.current = onOpenChange;
 
   useEffect(() => {
     if (!open) {
@@ -524,9 +527,15 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
     const focusTarget = initialFocusRef?.current ?? dialogRef.current;
     focusTarget?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented) return;
+      const target = event.target as Element | null;
+      const owner = typeof target?.closest === "function" ? target.closest('[role="dialog"]') : null;
+      if (owner && owner !== dialogRef.current) return;
       if (event.key === "Escape") {
-        onOpenChange?.(false);
-        window.setTimeout(() => triggerRef?.current?.focus(), 0);
+        if (onOpenChangeRef.current) {
+          event.preventDefault();
+          onOpenChangeRef.current(false);
+        }
         return;
       }
       // Tab containment. `aria-modal` tells assistive technology the rest of the page
@@ -538,7 +547,7 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
       const root = dialogRef.current;
       if (!root) return;
       const focusable = [...root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)]
-        .filter((node) => !node.hasAttribute("disabled") && node.getAttribute("aria-hidden") !== "true");
+        .filter((node) => node.tabIndex >= 0 && !node.matches(":disabled, input[type=hidden]") && !node.closest('[hidden], [inert], [aria-hidden="true"]'));
       if (focusable.length === 0) {
         event.preventDefault();
         root.focus();
@@ -562,14 +571,14 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [initialFocusRef, onOpenChange, open, triggerRef]);
+  }, [initialFocusRef, open, triggerRef]);
 
   useEffect(() => {
     if (open || !wasOpenRef.current) {
       return;
     }
     wasOpenRef.current = false;
-    window.setTimeout(() => triggerRef?.current?.focus(), 0);
+    triggerRef?.current?.focus();
   }, [open, triggerRef]);
 
   if (!open) {
@@ -629,37 +638,38 @@ export function Menu({ items, open, label, onOpenChange, triggerRef }: MenuProps
   const listRef = useRef<HTMLDivElement>(null);
   const enabled = items.filter((item) => !item.disabled);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const current = activeId ?? enabled[0]?.id ?? null;
+  const current = enabled.some((item) => item.id === activeId) ? activeId : enabled[0]?.id ?? null;
 
   useEffect(() => {
     if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onOpenChange?.(false);
-        window.setTimeout(() => triggerRef?.current?.focus(), 0);
-        return;
-      }
-      if (enabled.length === 0) return;
-      const at = enabled.findIndex((item) => item.id === current);
-      const step = (delta: number) => {
-        event.preventDefault();
-        const next = enabled[(((at < 0 ? 0 : at) + delta) % enabled.length + enabled.length) % enabled.length];
-        if (next) setActiveId(next.id);
-      };
-      if (event.key === "ArrowDown") step(1);
-      else if (event.key === "ArrowUp") step(-1);
-      else if (event.key === "Home") { event.preventDefault(); setActiveId(enabled[0]?.id ?? null); }
-      else if (event.key === "End") { event.preventDefault(); setActiveId(enabled[enabled.length - 1]?.id ?? null); }
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [current, enabled, onOpenChange, open, triggerRef]);
+    const root = listRef.current;
+    (root?.querySelector<HTMLElement>('[role="menuitem"][tabindex="0"]') ?? root)?.focus();
+  }, [open]);
 
   if (!open) return null;
 
   return (
-    <div ref={listRef} role="menu" aria-label={label} className="tcrn-menu" data-menu="true">
+    <div ref={listRef} role="menu" aria-label={label} className="tcrn-menu" data-menu="true" tabIndex={enabled.length === 0 ? -1 : undefined}
+      onKeyDown={(event) => {
+        if (event.defaultPrevented) return;
+        if (event.key === "Escape") {
+          if (!onOpenChange) return;
+          event.preventDefault();
+          onOpenChange(false);
+          triggerRef?.current?.focus();
+          return;
+        }
+        if (enabled.length === 0 || !["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        const at = enabled.findIndex((item) => item.id === current);
+        const index = event.key === "Home" ? 0 : event.key === "End" ? enabled.length - 1
+          : (at + (event.key === "ArrowDown" ? 1 : -1) + enabled.length) % enabled.length;
+        const next = enabled[index];
+        if (!next) return;
+        setActiveId(next.id);
+        listRef.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')[items.indexOf(next)]?.focus();
+      }}
+    >
       {items.map((item) => (
         <button key={item.id} type="button"
           role="menuitem"
@@ -667,6 +677,7 @@ export function Menu({ items, open, label, onOpenChange, triggerRef }: MenuProps
           disabled={item.disabled}
           tabIndex={item.id === current ? 0 : -1}
           data-menu-item-active={item.id === current ? "true" : undefined}
+          onFocus={() => setActiveId(item.id)}
           onClick={() => {
             item.onSelect?.();
             // A command menu closes on activation: leaving it open after the command

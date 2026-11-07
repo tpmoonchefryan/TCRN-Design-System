@@ -19,3 +19,13 @@ The implementation package does not run these commands. The existing integration
 The static writer reconciles exact current output membership. Removed HTML/API pages, old bundles, fonts and copied assets are moved to the owned trash before fresh output is written. `pnpm clean` is now restricted to declared rebuildable output roots and never clears `docs/verification`.
 
 K1/K5/C01 remain selected directions, visually unconfirmed and unapplied; the publication request is withdrawn (TCRN-DS-MIN-20261104-VISUAL-BEFORE-STANDARD D1–D4). Published v1 remains the sole baseline:06 form shortcut ink-3,07 menu/shell shortcut ink-2, published brand colors and actual strong ink/600. The form placeholder ink-2 and icon ink-3 keep their separate roles. Compare each implementation context with its own published selector; a06/07 difference alone is not a fidelity defect. K1 brand text and06 dark shortcut nominal contrast (3.876922 on wash/panel) remain unresolved conflicts with text ≥4.5. Correcting local fidelity does not waive that threshold or require importing an unconfirmed proposal into the formal standard. Machine verification, visual confirmation and publication permission remain separate. K4 retains pure-icon pins and item-specific accessible names without visible labels or tooltips. The 20px toggle slot and16px glyph are distinct; pin center coordinates remain global Y26/local Y20.
+
+## Consumer support boundary
+
+The current 28-entry catalogue remains the published component scope. The
+[actual TMS customer-list mapping](../consumption/patterns/customer-list-support.md)
+distinguishes those capabilities from the table/cards, business-state,
+confirmation and complete Traditional Chinese copy additions still requiring an
+upstream contract. The [shell interface description](../consumption/patterns/shell-preferences-and-navigation.md)
+documents the existing pins callbacks and native Next navigation boundary;
+engineering root exports do not become formal designs through that description.

@@ -168,6 +168,18 @@ export function ShellPins({
   const detachRef = useRef<(() => void) | null>(null);
   const suppressClickRef = useRef(false);
   const focusAfterMoveRef = useRef<string | null>(null);
+  const itemsKey = JSON.stringify(items.map((item) => item.id));
+  const movable = onPinsReorder !== undefined;
+
+  // A route or permission update can retire pins while a pointer is still held.
+  // Its release belongs to that old list and must not publish a stale order.
+  useEffect(() => {
+    detachRef.current?.();
+    dragRef.current = null;
+    setDraggingId(null);
+    setDragOrder(null);
+    suppressClickRef.current = false;
+  }, [itemsKey, movable]);
 
   // A moved item is rendered in its new place; focus stays on it.
   useEffect(() => {
@@ -189,7 +201,6 @@ export function ShellPins({
   const order = dragOrder ?? shownIds;
   const copy = tcrnShellCopyFor(locale);
   const prefix = landmarkLabel?.trim();
-  const movable = onPinsReorder !== undefined;
 
   const pinOf = (target: EventTarget | null): { id: string; nav: HTMLElement } | null => {
     const nav = navRef.current;

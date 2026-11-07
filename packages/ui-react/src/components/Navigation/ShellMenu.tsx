@@ -225,6 +225,9 @@ export function useShellTransientLayer({ open, layerRef, triggerRef, controlsId,
       close("outside-pointer", false);
     };
     const onClick = (event: MouseEvent) => {
+      // Opening a destination in another tab leaves this page's navigation in place.
+      // A router may prevent the ordinary click's default and still make a selection.
+      if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       // An element node, read without the Element global (absent from some test environments).
       const target = event.target instanceof Node && event.target.nodeType === 1 ? (event.target as Element) : null;
       if (!target || target.closest("[data-pin-button]")) return;

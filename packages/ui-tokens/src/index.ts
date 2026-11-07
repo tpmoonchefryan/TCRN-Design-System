@@ -12,7 +12,20 @@ export type ThemeMode="light"|"dark";
 export interface ThemeTokenOverride { variable:TokenVariable;value:string;description:string }
 export const tcrnThemeModes=["light","dark"] as const;
 interface TokenEntry { token:DesignToken; dark?:string }
-const tokenGroup=(variable:string):TokenGroup => variable.includes("-color-") ? "color" : variable.includes("-type-") ? "typography" : variable.includes("-space-") ? "space" : variable.includes("-radius-") ? "radius" : variable.includes("-motion-") ? "motion" : variable.includes("-elevation-")||variable.includes("-focus-") ? "elevation" : variable.includes("-icon-") ? "icon" : variable.includes("-brand-") ? "brand" : variable.includes("-control-") ? "control" : variable.includes("-texture-") ? "texture" : "container";
+function tokenGroup(variable: string): TokenGroup {
+  if (variable.includes("-color-")) return "color";
+  if (variable.includes("-type-")) return "typography";
+  if (variable.includes("-space-")) return "space";
+  if (variable.includes("-radius-")) return "radius";
+  if (variable.includes("-motion-")) return "motion";
+  if (variable.includes("-elevation-") || variable.includes("-focus-")) return "elevation";
+  if (variable.includes("-icon-")) return "icon";
+  if (variable.includes("-brand-")) return "brand";
+  if (variable.includes("-control-")) return "control";
+  if (variable.includes("-texture-")) return "texture";
+  if (variable.includes("-z-")) return "zIndex";
+  return "container";
+}
 function asVariable(value:string):TokenVariable { if(!value.startsWith("--tcrn-")) throw new Error(`Invalid package variable ${value}`);return value as TokenVariable; }
 const gplusThemedEntries:TokenEntry[]=tcrnGplusThemedTokens.map(t=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.light,group:tokenGroup(t.cssVar),description:t.source??"Published 01 token table"},dark:t.dark}));
 const gplusFixedEntries:TokenEntry[]=[...tcrnGplusFixedTokens,...tcrnGplusBrandTokens,...tcrnGplusTypeTokens].map(t=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.value,group:tokenGroup(t.cssVar),description:t.source??"Published board value"}}));

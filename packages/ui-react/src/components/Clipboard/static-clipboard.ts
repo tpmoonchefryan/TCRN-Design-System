@@ -138,6 +138,10 @@ export function mountStaticClipboardCopyButton({ root, locale }: StaticClipboard
 
   const copy = async () => {
     if (disposed || isDisabled() || state === "copying") return;
+    if (resetTimer !== undefined) {
+      clearTimeout(resetTimer);
+      resetTimer = undefined;
+    }
     if (state === "idle") idleLabel = overrideFor("idle") || labelNode().data.trim() || clipboardLabelsFor(locale).idle;
     const writeText = clipboardWriteText();
     if (!writeText) {
@@ -154,7 +158,7 @@ export function mountStaticClipboardCopyButton({ root, locale }: StaticClipboard
     } finally {
       if (!disposed) scheduleReset();
     }
-    if (!disposed) button.focus({ preventScroll: true });
+    if (!disposed && button.ownerDocument.activeElement === button) button.focus({ preventScroll: true });
   };
   const onClick = () => {
     void copy();
