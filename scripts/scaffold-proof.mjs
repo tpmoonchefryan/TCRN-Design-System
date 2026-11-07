@@ -15,7 +15,7 @@ const requiredFiles = [
   "packages/ui-tokens/src/index.ts",
   "packages/ui-copy-state/src/index.ts",
   "packages/ui-react/src/index.tsx",
-  "apps/storybook/src/stories.tsx",
+  "apps/storybook/src/standards.stories.tsx",
   "examples/tms-react-pilot/src/index.tsx",
   "examples/aos-token-copy-state-pilot/src/index.ts"
 ];
@@ -147,7 +147,7 @@ const receipt = {
     releaseReadinessClaimed: false,
     ownerIntentActionExecuted: false
   },
-  currentStateNoOverclaim: {
+  baselineStateNoOverclaim: {
     npmPackagePublished: false,
     hostedDocsDeploymentSucceeded: false,
     hostedDocsUrlReachable: true,
@@ -210,7 +210,7 @@ Status: ${ok ? "passed" : "failed"}
 - Required files present: ${files.filter((file) => file.exists).length}/${files.length}
 - Required directories present: ${directories.filter((directory) => directory.exists).length}/${directories.length}
 
-## Current State Claims And Non-Claims
+## Frozen Baseline Claims And Non-Claims
 
 - npm package published: false
 - Hosted docs deployment succeeded: false

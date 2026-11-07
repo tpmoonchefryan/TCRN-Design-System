@@ -52,7 +52,9 @@
     "fonts:vendor": "node scripts/fonts-vendor.mjs",
     "stamp:proof": "node scripts/stamp-whitelist-proof.mjs",
     "shell:fidelity": "node scripts/shell-fidelity-proof.mjs",
-    "selection:proof": "node scripts/selection-grammar-proof.mjs"
+    "selection:proof": "node scripts/selection-grammar-proof.mjs",
+    "pack:consumer-tools": "node scripts/pack-consumer-tools.mjs",
+    "pack:install-proof": "node scripts/independent-install-proof.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.61.0",

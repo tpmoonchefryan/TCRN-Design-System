@@ -1,5 +1,8 @@
 # TCRN Design System v1.0.0 Release Preparation
 
+This is a frozen 1.0.0 record. Current candidate preparation is in
+[the 4.0.0 release guide](releases/4.0.0/README.md).
+
 ## Scope
 
 This document records the accepted TCRN Design System public baseline as

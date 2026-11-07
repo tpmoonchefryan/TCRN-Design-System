@@ -6,7 +6,10 @@
   "license": "Apache-2.0",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*",
+    "!dist/test/**"
   ],
   "exports": {
     ".": {
@@ -16,6 +19,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --test dist/index.test.js"
+    "test": "node --test dist/index.test.js",
+    "prepack": "node ../../scripts/prepare-package.mjs --package ui-copy-state"
   }
 }

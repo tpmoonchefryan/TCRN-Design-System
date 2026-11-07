@@ -109,7 +109,7 @@ test('V5 both entry documents link formal font resources outside the generated c
  const sync=read(path.join(ROOT,'scripts/demo-styles-sync.mjs'),'utf8'),manager=read(path.join(ROOT,'apps/storybook/.storybook/main.ts'),'utf8'),writer=read(path.join(ROOT,'apps/storybook/src/build/write-static.tsx'),'utf8');
  assert.doesNotMatch(sync,/@import[^;]*fonts\/fonts\.css/);
  assert.match(manager,/previewHead:[\s\S]*<link rel="stylesheet" href="\/fonts\/fonts\.css">/);
- assert.match(manager,/from:"\.\.\/storybook-static\/fonts",to:"\/fonts"/);
+ assert.match(manager,/from:\s*"\.\.\/storybook-static\/fonts",\s*to:\s*"\/fonts"/);
  assert.match(writer,/<link rel="stylesheet" href="\/fonts\/fonts\.css">/);
 });
 
@@ -132,8 +132,7 @@ test('C01 evaluates each published shortcut context and retains the nominal06 th
  assert.equal(result.ownerClarificationMinute,'minutes:3244c7ac6adef4fc078d413e#D1-D4');
  assert.equal(result.publicationRequest,'withdrawn');assert.equal(result.ownerVisualAcceptance,'not-performed');
  assert.equal(result.pendingFormalAmendments,undefined);
- const {createAiConsumptionContract}=await compiled(ROOT,'apps/storybook/dist/build/ai-consumption-contract.js');
- const metadata=createAiConsumptionContract({version:'source-check',commit:'candidate',dirty:false},[]);
+ const metadata=JSON.parse(read(path.join(ROOT,'apps/storybook/storybook-static/ai-consumption-contract.json'),'utf8'));
  assert.equal(metadata.standardSource.sourceCommit,APPROVED_SITE.sourceCommit);
  assert.equal(metadata.implementationFidelity.formShortcut.role,'ink-3');assert.equal(metadata.implementationFidelity.shellShortcut.role,'ink-2');
  assert.equal(metadata.unconfirmedProposals.state,result.proposalState);assert.equal(metadata.publicationRequest,'withdrawn');

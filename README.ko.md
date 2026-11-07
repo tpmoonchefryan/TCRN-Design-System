@@ -24,3 +24,8 @@ The static docs and manager consume the same eight-board registry. The docs prod
 ## Licensing
 
 Repository code: Apache-2.0, see [LICENSE](LICENSE). Font software retains SIL OFL 1.1 and its copyright notices. Product marks are TCRN assets; source lineage is recorded independently from code licensing.
+
+Packaged 4.0.0 candidate tools, independent installation, and upgrade/rollback:
+[release candidate guide](docs/releases/4.0.0/README.md). The installed tool entry
+in that guide supersedes the source-only checker invocation for this packaged
+candidate. All artifacts remain local and unpublished.

@@ -121,7 +121,7 @@ export function runDeprecationNotice({ paths, label = "consumer", table = deprec
     for (const usage of usages.filter((entry) => entry.overriddenIn.length)) {
       lines.push(`  note: ${usage.variable} is set in ${listFiles(usage.overriddenIn)}; ${usage.replacement ? `set ${usage.replacement} instead` : "it has no G+ successor"}`);
     }
-    lines.push("Old names still resolve through the aliases in @tcrn/ui-tokens/tokens.css; move to the new names before the aliases are removed.");
+    lines.push("This notice uses the supplied migration table. Check the installed package for alias availability; the current published registry emits no legacy aliases.");
   }
   return { problems, files: files.map((entry) => entry.shown), usages, lines };
 }

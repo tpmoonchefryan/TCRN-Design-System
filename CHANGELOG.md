@@ -6,6 +6,18 @@ K1/K5 remain unresolved source conflicts; this entry does not record a successfu
 
 # Changelog
 
+## Unreleased
+
+### Independent 4.0.0 package and consumer-tool candidate
+
+Retain the three real archives with exact internal dependencies, license notices,
+export declarations and an external React installation matrix. Package the unchanged
+AI checker and pure observation validator as a separate versioned tool with its
+TypeScript runtime dependency. Register the supporting preference validator, keep
+the 28 formal families, and reconcile the explicit component-story/AI closure.
+These are local candidate changes; integration, visual adoption and publication
+remain pending. See docs/releases/4.0.0/README.md.
+
 ## 4.0.0
 
 ### One release for two batches: the G+ renewal and the top-band shell (TCRN-DS-INIT-015, TCRN-DS-INIT-016)

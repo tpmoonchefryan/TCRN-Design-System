@@ -91,27 +91,17 @@ if (tags.length === 0) {
   // A clone fetched without tags cannot answer any of these questions. Say that,
   // rather than reporting the silence as a pass.
   process.stdout.write(
-    `${JSON.stringify({ ok: true, proof: "ds_changelog_release_sections", skipped: "no-tags-visible", note: "this clone has no version tags, so nothing here could be measured" }, null, 2)}\n`
+    `${JSON.stringify({ ok: false, proof: "ds_changelog_release_sections", skipped: "no-tags-visible", note: "this clone has no version tags, so nothing here could be measured" }, null, 2)}\n`
   );
-  process.exit(0);
+  process.exit(1);
 }
 
 // shipped-not-unreleased
 for (const entry of unreleasedEntries) {
-  let addedBy = "";
-  try {
-    const history = git(["log", "--format=%H", "-S", entry.heading, "--", CHANGELOG]);
-    addedBy = history ? history.split("\n").filter(Boolean).pop() : "";
-  } catch {
-    addedBy = "";
-  }
+  const history = git(["log", "--format=%H", "-S", entry.heading, "--", CHANGELOG]);
+  const addedBy = history ? history.split("\n").filter(Boolean).pop() : "";
   if (!addedBy) continue;
-  let containing = [];
-  try {
-    containing = git(["tag", "--contains", addedBy]).split("\n").map((tag) => tag.trim()).filter(Boolean);
-  } catch {
-    containing = [];
-  }
+  const containing = git(["tag", "--contains", addedBy]).split("\n").map((tag) => tag.trim()).filter(Boolean);
   if (containing.length > 0) {
     findings.push(
       `${CHANGELOG}:${entry.line} "${entry.title}" sits under Unreleased, but the commit that added it (${addedBy.slice(0, 8)}) is already carried by ${containing.join(", ")} — it shipped, and belongs under that version's section`
@@ -132,12 +122,7 @@ for (const entry of covered) {
 
 // ahead-has-somewhere
 const newest = tags.slice().sort((a, b) => compareVersion(a.version, b.version)).pop();
-let aheadCount = 0;
-try {
-  aheadCount = Number(git(["rev-list", "--count", `${newest.tag}..HEAD`]) || "0");
-} catch {
-  aheadCount = 0;
-}
+const aheadCount = Number(git(["rev-list", "--count", `${newest.tag}..HEAD`]));
 const taggedVersions = new Set(tags.map((entry) => entry.version.join(".")));
 const pendingSections = sections
   .filter((section) => parseVersion(section.title) && !taggedVersions.has(section.title))

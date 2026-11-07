@@ -148,6 +148,7 @@ export const componentLibraryPublicUtilityNames = [
   "useProductShellController",
   "validateContentScope",
   "evaluateConsumerEvidence",
+  "evaluateShellPreferenceEvidence",
   "serializeConsumerEvidenceValue",
   "presentOperationFeedbackPhase"
 ] as const;

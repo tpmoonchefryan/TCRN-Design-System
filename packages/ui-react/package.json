@@ -6,7 +6,10 @@
   "license": "Apache-2.0",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*",
+    "!dist/test/**"
   ],
   "exports": {
     ".": {
@@ -38,6 +41,7 @@
     "build": "node ../../scripts/prepare-output.mjs --root packages/ui-react/dist && tsc -p tsconfig.json",
     "test": "pnpm test:ssr",
     "test:dom": "pnpm build && node --test \"dist/test/**/*.dom.spec.js\"",
-    "test:ssr": "node --test \"dist/**/*.test.js\""
+    "test:ssr": "node --test \"dist/**/*.test.js\"",
+    "prepack": "node ../../scripts/prepare-package.mjs --package ui-react"
   }
 }

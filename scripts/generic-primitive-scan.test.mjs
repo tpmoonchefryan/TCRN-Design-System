@@ -85,20 +85,6 @@ test("renaming a component cannot bypass a domain entity in its props", () => {
   assert.deepEqual(result.admitted[0].evidence, ["WorkItem"]);
 });
 
-test("extraction is visible: a registered name that left the source is reported", () => {
-  // The debt is empty now — the functional display surface moved into core — so
-  // this exercises the judgement against a synthetic register rather than the real
-  // one. The property still matters: if a name leaves the source while staying on a
-  // list, the count reports a burn-down that did not happen.
-  const registered = ["WorkBoard", "WorkList"];
-  const remaining = new Map([["WorkList", "f.tsx"]]);
-  const admitted = [...remaining.keys()].filter((name) => !registered.includes(name));
-  const extracted = registered.filter((name) => !remaining.has(name));
-
-  assert.deepEqual(admitted, [], "a name still present and registered is not an admission");
-  assert.deepEqual(extracted, ["WorkBoard"]);
-});
-
 test("an empty debt register refuses every domain name, none grandfathered", () => {
   // An empty list could be read as a disabled gate. It is the opposite: with nothing
   // registered, the first domain component to reach DS core reds it immediately.

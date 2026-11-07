@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -10,8 +10,9 @@ import { exitCodeForReceipt } from "./no-private-input-scan.mjs";
 
 const scanScript = fileURLToPath(new URL("./no-private-input-scan.mjs", import.meta.url));
 
-test("scan command fails closed when a file is skipped", () => {
+test("scan command fails closed when a file is skipped", t => {
   const root = mkdtempSync(join(tmpdir(), "tcrn-scan-skip-"));
+  t.after(() => rmSync(root, { recursive: true }));
   writeFileSync(join(root, "large-fixture.txt"), "x".repeat(1_000_001));
 
   const result = spawnSync(process.execPath, [scanScript], {
@@ -26,8 +27,9 @@ test("scan command fails closed when a file is skipped", () => {
   assert.equal(receipt.skippedFiles.length, 1);
 });
 
-test("scan command records binary visual receipts without failing text scan", () => {
+test("scan command records binary visual receipts without failing text scan", t => {
   const root = mkdtempSync(join(tmpdir(), "tcrn-scan-visual-receipt-"));
+  t.after(() => rmSync(root, { recursive: true }));
   const screenshotDir = join(root, "docs/verification/internal-alpha/screenshots");
   mkdirSync(screenshotDir, { recursive: true });
   writeFileSync(join(screenshotDir, "large-proof.png"), "x".repeat(1_000_001));
@@ -45,8 +47,9 @@ test("scan command records binary visual receipts without failing text scan", ()
   assert.equal(receipt.binaryVisualReceiptExclusions.length, 1);
 });
 
-test("scan command records Storybook visual proof binary receipts without failing text scan", () => {
+test("scan command records Storybook visual proof binary receipts without failing text scan", t => {
   const root = mkdtempSync(join(tmpdir(), "tcrn-scan-storybook-visual-receipt-"));
+  t.after(() => rmSync(root, { recursive: true }));
   const screenshotDir = join(root, "docs/verification/storybook-visual-proof/screenshots/baseline");
   mkdirSync(screenshotDir, { recursive: true });
   writeFileSync(join(screenshotDir, "docs-shell-overview__desktop-1440x900.png"), "x".repeat(1_000_001));
@@ -64,8 +67,9 @@ test("scan command records Storybook visual proof binary receipts without failin
   assert.equal(receipt.binaryVisualReceiptExclusions.length, 1);
 });
 
-test("scan command ignores local Gemini candidate scratch space", () => {
+test("scan command ignores local Gemini candidate scratch space", t => {
   const root = mkdtempSync(join(tmpdir(), "tcrn-scan-gemini-scratch-"));
+  t.after(() => rmSync(root, { recursive: true }));
   const snippetDir = join(root, "gemini_chats/02-highlight-effect/snippets");
   mkdirSync(snippetDir, { recursive: true });
   writeFileSync(join(snippetDir, "Highlight.tsx"), "const API_TOKEN = 'local-candidate-placeholder';\n");

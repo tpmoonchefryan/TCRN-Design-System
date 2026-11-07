@@ -24,7 +24,7 @@ test('all28 API semantics require complete formal text and actual behavior, not 
  const icon=apis.find(a=>a.name==='IconButton');assert.ok(checkProjection(registry,apis.map(a=>a===icon?{...a,props:a.props.filter(p=>!p.includes('children'))}:a)).length);
 });
 test('manager emitted CSF closure rejects hidden, extra or wrong-module stories',()=>{
- const entries=Object.fromEntries(MANAGER_STORY_IDS.map(id=>[id,{id,type:'story',title:'Published standards',importPath:'./src/standards.stories.tsx'}]));assert.deepEqual(managerIndexIssues({entries}),[]);
+ const entries=JSON.parse(fs.readFileSync(path.join(ROOT,'apps/storybook/storybook-preview-static/index.json'),'utf8')).entries;assert.deepEqual(managerIndexIssues({entries}),[]);
  assert.ok(managerIndexIssues({entries:{...entries,legacy:{id:'legacy',type:'story',title:'Style Guide',importPath:'./src/legacy.stories.tsx'}}}).length);
  const changed=structuredClone(entries);changed[MANAGER_STORY_IDS[0]].importPath='./src/renamed-legacy.stories.tsx';assert.ok(managerIndexIssues({entries:changed}).length);
  const sourceId = 'published-standards--source';
