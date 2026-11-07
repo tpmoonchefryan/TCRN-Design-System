@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Button, ButtonGroup, IconButton, LinkButton, ClipboardCopyButton, Heading, Text, Highlight, Icon, TcrnBrandMark, ProductLogo, ProductLockup, tcrnProductMarkIds, Input, Textarea, SearchInput, SuggestInput, Select, MultiSelect, NumberInput, DatePicker, Checkbox, RadioGroup, Switch, ProductShell, ShellBrandButton, ShellIntro, Tabs, shellMenuPresentationContext, type IconName, type ProductShellNavGroup, type TcrnProductMarkId } from "@tcrn/ui-react/approved";
 import { getTcrnProductLogoAsset } from "@tcrn/ui-react";
 import { tcrnGplusThemedTokens, tcrnGplusFixedTokens, tcrnTokens } from "@tcrn/ui-tokens";
@@ -75,13 +75,9 @@ function Tokens({locale}: {locale: DocsLocale}) {
       <Heading level={2} visualLevel={3}>{layout.title}</Heading>
       <Text>{layout.intro}</Text>
       <dl className="tcrn-doc-spacing-roles">
-        <div data-doc-layout-role="standard">
-          <dt>{layout.standard}</dt>
-          <dd><code className="tcrn-doc-code">--docs-column-standard</code> · 1040 px</dd>
-        </div>
-        <div data-doc-layout-role="wide">
-          <dt>{layout.wide}</dt>
-          <dd><code className="tcrn-doc-code">--docs-column-wide</code> · 1240 px</dd>
+        <div data-doc-layout-role="column">
+          <dt>{layout.column}</dt>
+          <dd><code className="tcrn-doc-code">--docs-column-cap</code> · 1240 px</dd>
         </div>
         <div data-doc-layout-role="wide-inset">
           <dt>{layout.wideInset}</dt>
@@ -266,17 +262,20 @@ function Roster({locale}:{locale:DocsLocale}) {const c=docsCopy(locale);const [s
     {name:"Aria Vance",group:`B ${c.group}`,status:c.signed,expiry:"2026-11-30",updated:c.twoWeeks}
   ].map((row,i)=><tr key={row.name} aria-selected={i===7}><td title={row.name}><b className="tcrn-doc-roster-name">{row.name}</b> <span className="tcrn-doc-handle">{["hoshino","shiraishi","mika","chen","takanashi","lea","kim","aria"][i]}</span></td><td>{row.group}</td><td><span className={row.status===c.signed?"tcrn-doc-status tcrn-doc-status--ok":row.status===c.trial?"tcrn-doc-status tcrn-doc-status--warn":"tcrn-doc-status"}><i/>{row.status}</span></td><td className="tcrn-doc-date">{row.expiry}</td><td>{row.updated}</td></tr>)}</tbody></table>
   </Tabs>;}
-const shellModes = ["band", "menu", "drop", "phone-closed", "phone"] as const;
+const desktopShellModes = ["band", "menu", "drop"] as const;
+const phoneShellModes = ["phone-closed", "phone"] as const;
+type ShellMode = (typeof desktopShellModes)[number] | (typeof phoneShellModes)[number];
 
 export function ShellExample({
-  locale, mode, theme = "light", shortcut = false, glimpse = false, intro = false
+  locale, mode, theme = "light", shortcut = false, glimpse = false, intro = false, pairedPress
 }: {
   locale: DocsLocale;
-  mode: (typeof shellModes)[number];
+  mode: ShellMode;
   theme?: "light" | "dark";
   shortcut?: boolean;
   glimpse?: boolean;
   intro?: boolean;
+  pairedPress?: RefObject<PointerEvent | null>;
 }) {
   const [shownLocale, setShownLocale] = useState(locale);
   const [shownTheme, setShownTheme] = useState(theme);
@@ -333,7 +332,18 @@ export function ShellExample({
         onPinnedChange={(id, pinned) => setPins(pinned ? [...pins, id] : pins.filter(p => p !== id))}
         onPinsReorder={setPins}
         menuOpen={menuOpen ?? previewMenu}
-        onMenuOpenChange={setMenuOpen}
+        onMenuOpenChange={(open, reason) => {
+          const press = pairedPress?.current;
+          const frame = frameRef.current;
+          // Keep a paired specimen's Sheet open during a press in its sibling. The
+          // native event's currentTarget is cleared once document dispatch finishes.
+          if (!open && reason === "outside-pointer" && frame && press?.currentTarget === frame.ownerDocument) {
+            const ownSection = frame.closest("[data-formal-section]");
+            const pressedSection = press.target instanceof Element ? press.target.closest("[data-formal-section]") : null;
+            if (pressedSection && pressedSection !== ownSection && pressedSection.parentElement === ownSection?.parentElement) return;
+          }
+          setMenuOpen(open);
+        }}
         openPinId={previewDrop ? "contracts" : openPin ?? null}
         onOpenPinChange={setOpenPin}
         focusNavigationOnOpen={!previewMenu && !previewDrop}
@@ -398,6 +408,13 @@ function ShellScenes({locale, showMarks = false, shortcutOwner = false}: {
   locale: DocsLocale; showMarks?: boolean; shortcutOwner?: boolean;
 }) {
   const labels = specimenCopy[locale];
+  const pairedPress = useRef<PointerEvent>(null);
+  const scene = (mode: ShellMode, theme: typeof themes[number], grouped = false) => (
+    <Section key={mode} name={mode} title={labels.shell[mode]}>
+      <ShellExample locale={locale} mode={mode} theme={theme}
+        shortcut={shortcutOwner && mode === "band" && theme === "light"} pairedPress={grouped ? pairedPress : undefined}/>
+    </Section>
+  );
   return <>{themes.map(theme => <section key={theme} data-tcrn-theme={theme} className="tcrn-doc-section" data-doc-shell-theme={theme}>
     <Heading level={2} visualLevel={3}>{labels.themes[theme]}</Heading>
     {showMarks && <Section name="shell-marks" title={labels.shell.marks}>
@@ -407,9 +424,10 @@ function ShellScenes({locale, showMarks = false, shortcutOwner = false}: {
         <ProductLockup productId="tms" locale={locale} scale="rail"/>
       </Row>
     </Section>}
-    {shellModes.map(mode => <Section key={mode} name={mode} title={labels.shell[mode]}>
-      <ShellExample locale={locale} mode={mode} theme={theme} shortcut={shortcutOwner && mode === "band" && theme === "light"}/>
-    </Section>)}
+    {desktopShellModes.map(mode => scene(mode, theme))}
+    <div className="tcrn-doc-shell-narrow" onPointerDownCapture={event => { pairedPress.current = event.nativeEvent; }}>
+      {phoneShellModes.map(mode => scene(mode, theme, true))}
+    </div>
   </section>)}</>;
 }
 

@@ -1,9 +1,9 @@
 import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard,publishedSearchGeometry,measureNumberMinimums,numberMinimumValid } from "./published-browser-proof.mjs";
-import { LOCALES,formalApiContracts,checkManagerOutput } from "./published-standard-proof.mjs";
+import { LOCALES,formalApiContracts,checkManagerOutput,compiled } from "./published-standard-proof.mjs";
 import { ROOT,readApprovedSource,cssRule } from "./approved-site-source.mjs";
 import { readApiFacts,exerciseApiBoard,apiBehaviorIssues } from "./published-api-browser.mjs";
 import { installIntroRecorder,readIntro,readShellSpecimenContent,shellSpecimenContentIssues,showOriginalShellSpecimens } from "./published-shell-gates.mjs";
-import { APPROVED_BOARD_IDS } from "./approved-site-pins.mjs";
+import { APPROVED_BOARD_IDS,APPROVED_SITE } from "./approved-site-pins.mjs";
 
 export function geometryIssues(readings,{source=readApprovedSource()}={}){
  const issues=[],css=source.board('06-inputs').css,n=value=>parseFloat(value);
@@ -120,26 +120,51 @@ async function apiRuntime(page,board,{browser,url,source,locale}){
  }
  return facts;
 }
-// Exercise the document shell itself. Direct URLs remain useful for independent
-// fidelity collection, but do not establish that readers can reach these documents.
-export function provenanceActivationIssues(reading,{base,entry,locale,source,board}={}){
- const issues=[],href=entry==='static'?`/${locale}/source.html`:'#source',expected=new URL(href,entry==='static'?base:reading.before).href;
- if(reading.href!==href)issues.push('provenance search destination');
- if(reading.activated!==expected)issues.push('provenance activation did not arrive at the actual source route/anchor');
- const sourceIds=entry==='static'?source.manifest.boards.map(b=>b.sourceId):[source.manifest.boards.find(b=>b.slug===board)?.sourceId];
- if(!reading.visible||!reading.text?.includes(source.manifest.site.sourceCommit)||sourceIds.some(id=>!id||!reading.text.includes(id))||(entry==='static'&&!reading.text?.includes(source.manifest.site.url)))issues.push('provenance activation did not render the expected published source content');
- return issues;
+const retiredSourceLabels = {
+ 'zh-CN': ['正式来源', '来源对比度矩阵', '正式原文'],
+ en: ['Published source', 'Source contrast matrix', 'Normative original'],
+ ja: ['公開済みソース', '公開ソースとバージョン', '公開元のコントラスト表', '規範原文'],
+ ko: ['게시된 원본', '공개 소스 및 버전', '게시 원본 대비 표', '규범 원문'],
+ fr: ['Source publiée', 'Matrice de contraste publiée', 'Original normatif'],
+};
+const retiredSourceLinks = 'a[href*="/source.html"], a[href="#source"], a[href*="published-standards--source"]';
+
+export async function readDocsSourceUi(surface, locale) {
+ return surface.locator('.docs-shell').evaluate((shell, {terms, links, sourceUrl}) => {
+  const sourceCells = [...shell.querySelectorAll('[data-source-cell-id]')];
+  const cellIds = new Set(sourceCells.map(el => el.dataset.sourceCellId));
+  const text = shell.textContent;
+  return {
+   terms: terms.filter(term => text.includes(term)),
+   links: shell.querySelectorAll(links + `, a[href^="${sourceUrl}"]`).length,
+   sections: shell.querySelectorAll('#source, .portal-footer, .docs-source-list').length,
+   lineMarkers: (text.match(/\/ L\d+\b/g) ?? []).length,
+   captions: [...shell.querySelectorAll('[data-published-matrix] code')]
+    .filter(el => el.textContent.split(' · ').some(id => cellIds.has(id))).length,
+   accessibleNames: sourceCells.filter(el => el.getAttribute('aria-label')?.includes(el.dataset.sourceCellKey)).length,
+  };
+ }, {
+  terms: ['Sites v1', 'Owner 2026-10-11', APPROVED_SITE.url, APPROVED_SITE.sourceCommit,
+   ...Object.values(APPROVED_BOARD_IDS), ...retiredSourceLabels[locale]],
+  links: retiredSourceLinks,
+  sourceUrl: APPROVED_SITE.url,
+ });
 }
-// Static API results leave readers on api.html, which has no board marker.
-// Only manager source sections need the current board's source ID.
-export async function activateProvenanceResult(page,result,{base,entry,locale,source}){
- const before=page.url(),board=entry==='manager'?await page.locator('[data-approved-board]').first().getAttribute('data-approved-board'):null,href=await result.getAttribute('href');
- const expected=new URL(entry==='static'?`/${locale}/source.html`:'#source',entry==='static'?base:before).href;
- await result.click();await page.waitForURL(expected);await page.locator('[data-docs-ready="true"]').waitFor();
- const content=page.locator(entry==='static'?'main .tcrn-doc-content':'section#source');await content.waitFor({state:'visible'});
- const reading={before,href,activated:page.url(),visible:await content.isVisible(),text:await content.textContent()};
- return {board,...reading,issues:provenanceActivationIssues(reading,{base,entry,locale,source,board})};
+
+async function readRetiredSourceMenu(menu, locale) {
+ const links = await menu.locator(retiredSourceLinks).count();
+ const groups = await menu.locator('[data-shell-row][aria-controls$="-col-references"]').count();
+ const search = menu.locator('input[type="search"]');
+ const results = [];
+ for (const query of [retiredSourceLabels[locale][0], APPROVED_SITE.sourceCommit]) {
+  await search.fill(query);
+  await menu.locator('[data-product-shell-search-empty]:not([hidden])').waitFor();
+  results.push(await menu.locator('[data-search-result]').count());
+ }
+ return {links,groups,results};
 }
+
+// Direct URLs collect fidelity evidence. Activate the actual menu links to check reader navigation.
 export async function exerciseDocsNavigation(page,{base,entry,locale,source,formal}){
  const issues=[],observations=[];
  const owner=()=>page.locator('.tcrn-product-shell').first();
@@ -166,7 +191,7 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
    observations.push({kind:'dialog-role-search',entry,locale,query,results});
   }catch(error){issues.push(`${entry}/${locale}: dialog role search ${query}: ${error.message}`);}
  }
- for(const query of ['StateView','brand-identity','tcrn-brand-mark.svg']){
+ for(const query of ['StateView','brand-identity','tcrn-brand-mark.svg',retiredSourceLabels[locale][0],source.manifest.site.sourceCommit]){
   try{const menu=await open(),search=menu.locator('[data-shell-search] input[type="search"]');await search.fill(query);await menu.locator('[data-product-shell-search-empty]:not([hidden])').waitFor();const results=await menu.locator('[data-search-result]').count();if(results)issues.push(`${entry}/${locale}: unsupported search result ${query}`);observations.push({kind:'unsupported-search',entry,locale,query,results});}catch(error){issues.push(`${entry}/${locale}: unsupported search ${query}: ${error.message}`);}
  }
  for(const [name,contract]of Object.entries(formal)){
@@ -180,16 +205,9 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
    observations.push({kind:'api-search-activation',entry,locale,name,href,activated:page.url()});
   }catch(error){issues.push(`${entry}/${locale}/${name}: search activation ${error.message}`);}
  }
- try{
-  const menu=await open();await menu.locator('[data-shell-search] input[type="search"]').fill(source.manifest.site.sourceCommit);
-  const result=menu.locator('[data-search-result]');await result.waitFor({state:'visible'});
-  const {issues:activationIssues,...reading}=await activateProvenanceResult(page,result,{base,entry,locale,source});
-  issues.push(...activationIssues.map(issue=>`${entry}/${locale}: ${issue}`));
-  observations.push({kind:'source-search-activation',entry,locale,...reading});
- }catch(error){issues.push(`${entry}/${locale}: provenance search ${error.message}`);}
  return {issues,observations};
 }
-const docsPages = ['index', ...Object.keys(APPROVED_BOARD_IDS), 'api', 'source'];
+const docsPages = ['index', ...Object.keys(APPROVED_BOARD_IDS), 'api'];
 const primaryPages = ['index', '01-tokens', '04-brand', '05-actions', '07a-shell-upper'];
 const topicPages = {
   foundations: ['01-tokens', '02-typography', '03-icons'],
@@ -197,7 +215,7 @@ const topicPages = {
   components: ['05-actions', '06-inputs', 'api'],
   shell: ['07a-shell-upper', '07b-shell-lower'],
 };
-const wrapperStories = { index: 'home', api: 'api', source: 'source' };
+const wrapperStories = { index: 'home', api: 'api' };
 const docsStoryId = page => Object.hasOwn(wrapperStories, page)
   ? `published-standards--${wrapperStories[page]}`
   : managerStoryId(page);
@@ -694,7 +712,7 @@ export async function exerciseDocsSheet(page,{base,locale,formal,negative=locale
   if(await current.getAttribute('href')!==`/${locale}/index.html`||await current.getAttribute('aria-current')!=='page')issues.push(`${locale}: current location is missing or wrong in the Sheet`);
   const visibleRows=panel.locator('[data-shell-row]:visible');
   const actualGroups=await visibleRows.evaluateAll(els=>els.filter(el=>el.dataset.shellLevel==='1').map(el=>el.getAttribute('aria-controls')?.split('-col-').at(-1)));
-  if(JSON.stringify(actualGroups)!==JSON.stringify(['portal',...pages,'references']))issues.push(`${locale}: Sheet does not expose home, all four topic groups and references`);
+  if(JSON.stringify(actualGroups)!==JSON.stringify(['portal',...pages]))issues.push(`${locale}: Sheet does not expose home and all four topic groups`);
   for(const topic of pages){
    try{
     const trigger=groupRow(panel,topic);await trigger.tap();
@@ -747,12 +765,10 @@ export async function exerciseDocsSheet(page,{base,locale,formal,negative=locale
   if(!(await heading.isVisible()))issues.push(`${locale}: Sheet Heading anchor is not reachable`);
   await heading.tap();await page.waitForURL(`**/${locale}/api.html#api-Heading`);
   if(!await page.locator('#api-Heading').isVisible())issues.push(`${locale}: Sheet Heading click did not reach the real API anchor`);
-  state=await openMenu();await groupRow(state.panel,'references').tap();
-  const provenance=state.panel.locator(`[data-shell-row][href="/${locale}/source.html"]`).first();
-  if(!(await provenance.isVisible()))issues.push(`${locale}: formal source link is missing from the Sheet`);
-  await provenance.tap();await page.waitForURL(`**/${locale}/source.html`);
-  if(!await page.locator('[data-published-source]').isVisible())issues.push(`${locale}: formal source destination did not render`);
-  observations.push({kind:'docs-sheet',locale,width:390,touch:true,topics:pages,groupHome:true,search:true,apiLinks:apiHrefs.length,anchor:'#api-Heading',provenance:true});
+  state=await openMenu();
+  const retiredSource=await readRetiredSourceMenu(state.panel,locale);
+  if(retiredSource.links||retiredSource.groups||retiredSource.results.some(Boolean))issues.push(`${locale}: retired source appeared in the Sheet`);
+  observations.push({kind:'docs-sheet',locale,width:390,touch:true,topics:pages,groupHome:true,search:true,apiLinks:apiHrefs.length,anchor:'#api-Heading',retiredSource});
  }catch(error){issues.push(`${locale}: Sheet proof incomplete: ${error.message}`);}
  return {issues,observations};
 }
@@ -806,19 +822,16 @@ export async function exerciseManagerNarrowSheet(page,{base,locale,formal,negati
   await page.waitForFunction(()=>document.querySelector('#storybook-preview-iframe')?.contentWindow?.innerWidth===390);
   if(!(await surface.locator('#api-Heading').isVisible()))issues.push(`${locale}: narrow Manager anchor did not reach the real API section`);
   await surface.locator('.docs-shell > header [data-shell-brand]').first().tap();
-  await group('references').tap();
-  const source=panel().locator(`[data-shell-row][href="${managerMenuHref(managerPath,locale,'source')}"]`).first();
-  if(!(await source.isVisible()))issues.push(`${locale}: narrow Manager formal source link is missing`);
-  await source.tap();await waitManagerRoute('source');
-  await surface.locator(`.docs-shell[data-docs-page="source"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
-  if(!(await surface.locator('[data-published-source]').isVisible()))issues.push(`${locale}: narrow Manager formal source route did not render`);
-  observations.push({kind:'manager-narrow-sheet',locale,iframeWidth:frameWidth,touch:true,apiAnchor:'#api-Heading',provenance:true});
+  const retiredSource=await readRetiredSourceMenu(panel(),locale);
+  if(retiredSource.links||retiredSource.groups||retiredSource.results.some(Boolean))issues.push(`${locale}: retired source appeared in the Manager Sheet`);
+  observations.push({kind:'manager-narrow-sheet',locale,iframeWidth:frameWidth,touch:true,apiAnchor:'#api-Heading',retiredSource});
  }catch(error){issues.push(`${locale}: Manager narrow Sheet proof incomplete: ${error.message}`);}
  return {issues,observations};
 }
 
 export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return withPublishedBrowser(async({browser,base,source})=>{
  const issues=[],observations=[],page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],requests=[],failures=[],formal=formalApiContracts(source);
+ const {apiReaderDetails}=await compiled(root,'apps/storybook/dist/approved-api.js');
  page.on('pageerror',error=>errors.push(error.message));page.on('request',r=>requests.push(r.url()));page.on('requestfailed',r=>failures.push({url:r.url(),error:r.failure()?.errorText}));page.on('response',r=>{if(r.status()>=400)failures.push({url:r.url(),status:r.status()});});
  try{
   if(entry==='manager'){
@@ -833,7 +846,12 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
         const frame = page.frameLocator('#storybook-preview-iframe');
         await frame.locator(`[data-docs-page="${docsPage}"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
         if (Object.hasOwn(APPROVED_BOARD_IDS, docsPage)) {
-          await frame.locator(`[data-approved-board="${docsPage}"][lang="${locale}"]`).waitFor();
+          await frame.locator(`[data-approved-board="${docsPage}"][lang="${locale}"][data-source-id="${APPROVED_BOARD_IDS[docsPage]}"]`).waitFor();
+        }
+        const sourceUi = await readDocsSourceUi(frame, locale);
+        const {terms, ...counts} = sourceUi;
+        if (terms.length || Object.values(counts).some(Boolean)) {
+          issues.push(`manager-ui/${locale}/${docsPage}: retired source UI ${JSON.stringify(sourceUi)}`);
         }
         observations.push({ entry: 'manager-ui', locale, page: docsPage, id, iframe: await page.locator('iframe#storybook-preview-iframe').getAttribute('src') });
       } catch (error) {
@@ -847,8 +865,8 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
     try{
      const url=base+docsHref(entry,locale,id);
      const response=await page.goto(url);if(response.status()!==200)issues.push(`${entry}/${locale}/${id} is not readable`);if(APPROVED_BOARD_IDS[id])await page.locator(`[data-approved-board="${id}"]`).waitFor();await page.locator('[data-docs-ready="true"]').waitFor();await page.evaluate(()=>document.fonts.ready);
-     const facts=await page.evaluate(()=>({lang:document.querySelector('[data-approved-board]')?.getAttribute('lang')??document.documentElement.lang,source:document.querySelector('[data-published-source]')?.getAttribute('data-published-source'),boards:[...document.querySelectorAll('[data-approved-board]')].map(el=>el.getAttribute('data-approved-board')),apis:[...document.querySelectorAll('[data-approved-api]')].map(el=>({name:el.getAttribute('data-approved-api'),formal:el.querySelector('[data-api-formal]')?.textContent,summary:el.querySelector('[data-api-summary]')?.textContent,summaryLang:el.querySelector('[data-api-summary]')?.lang,example:el.querySelector('[data-api-example]')?.textContent})),main:document.querySelectorAll('main').length,brokenNames:[...document.querySelectorAll('button')].filter(el=>!el.textContent.trim()&&!el.getAttribute('aria-label')).length}));
-     if(facts.lang!==locale||facts.source!==source.manifest.site.sourceCommit||facts.main!==1||facts.brokenNames)issues.push(`${entry}/${locale}/${id}: locale/source/main/named-controls drift`);
+     const facts=await page.evaluate(()=>({lang:document.querySelector('[data-approved-board]')?.getAttribute('lang')??document.documentElement.lang,source:document.querySelector('[data-published-source]')?.getAttribute('data-published-source'),boards:[...document.querySelectorAll('[data-approved-board]')].map(el=>el.getAttribute('data-approved-board')),boardSource:document.querySelector('[data-approved-board]')?.getAttribute('data-source-id'),apis:[...document.querySelectorAll('[data-approved-api]')].map(el=>({name:el.getAttribute('data-approved-api'),formal:el.querySelector('[data-api-formal]')?.textContent,summary:el.querySelector('[data-api-summary]')?.textContent,summaryLang:el.querySelector('[data-api-summary]')?.lang,example:el.querySelector('[data-api-example]')?.textContent})),main:document.querySelectorAll('main').length,brokenNames:[...document.querySelectorAll('button')].filter(el=>!el.textContent.trim()&&!el.getAttribute('aria-label')).length}));
+     if(facts.lang!==locale||facts.source!==source.manifest.site.sourceCommit||facts.boardSource!==APPROVED_BOARD_IDS[id]||facts.main!==1||facts.brokenNames)issues.push(`${entry}/${locale}/${id}: locale/source/main/named-controls drift`);
      const chrome = await page.locator('.docs-shell').evaluate(shell => {
        const strip = shell.querySelector(':scope > [data-shell-strip]');
        const nav = strip.querySelector('.docs-topics');
@@ -894,9 +912,20 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
        issues.push(`${entry}/${locale}/${id}: actual portal cards or home breadcrumb differ`);
      }
      facts.chrome = chrome;
+     facts.sourceUi = await readDocsSourceUi(page, locale);
+     const {terms, ...counts} = facts.sourceUi;
+     if (terms.length || Object.values(counts).some(Boolean)) {
+       issues.push(`${entry}/${locale}/${id}: retired source UI ${JSON.stringify(facts.sourceUi)}`);
+     }
      const expectedApis=id==='api'?Object.keys(formal):entry==='manager'?Object.keys(formal).filter(name=>formal[name].board===id):[];
      if(JSON.stringify(facts.apis.map(a=>a.name).sort())!==JSON.stringify(expectedApis.sort()))issues.push(`${entry}/${locale}/${id}: emitted API membership differs`);
-     for(const api of facts.apis)if(api.formal!==formal[api.name]?.formal||api.summaryLang!==locale||!api.example?.includes(`<${api.name}`))issues.push(`${entry}/${locale}/${api.name}: required/use/forbidden/behavior text or concrete example missing`);
+     for (const api of facts.apis) {
+       const contract = formal[api.name];
+       if (!contract || api.formal !== apiReaderDetails(api.name, contract.formal) ||
+           api.summaryLang !== locale || !api.example?.includes(`<${api.name}`)) {
+         issues.push(`${entry}/${locale}/${api.name}: required/use/forbidden/behavior text or concrete example missing`);
+       }
+     }
      if(APPROVED_BOARD_IDS[id])try{const apiFacts=await apiRuntime(page,id,{browser,url,source,locale});for(const name of Object.keys(formal).filter(name=>formal[name].board===id))issues.push(...apiBehaviorIssues(name,apiFacts[name]).map(issue=>`${entry}/${locale}: ${issue}`));facts.apiRuntime=apiFacts;}catch(error){issues.push(`${entry}/${locale}/${id}: actual API interaction incomplete: ${error.message}`);}
      observations.push({entry,locale,id,...facts});
     }catch(error){issues.push(`${entry}/${locale}/${id}: route incomplete: ${error.message}`);}

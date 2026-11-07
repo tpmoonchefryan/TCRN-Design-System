@@ -7,7 +7,7 @@ type SpecimenCopy = {
     spacingIntro: string; paragraphs: string; groups: string; sections: string;
   };
   layout: {
-    title: string; intro: string; standard: string; wide: string; wideInset: string; narrowInset: string;
+    title: string; intro: string; column: string; wideInset: string; narrowInset: string;
   };
   matrix: string;
   icons: {
@@ -38,11 +38,11 @@ export const specimenCopy = {
     },
     layout: {
       title: "Storybook 文档版式",
-      intro: "文档栏居中，占满两侧留白之间的可用宽度，直至达到上限。07a 和 07b 的页头、正文、预览控件与桌面样张共用宽栏。手机样张从同一侧对齐，宽度最多 390 px。样张的原始尺寸由正式发布的 07 定义。",
-      standard: "常规文档栏上限", wide: "宽栏上限（07a 和 07b）",
+      intro: "所有标准内页与组件契约共用一条居中的内容栏。页头、正文、表格和桌面样张同边，栏宽随两侧留白之间的可用空间变化，直至达到上限。相邻的 390 px 手机样张在空间足够时并排。",
+      column: "文档栏上限",
       wideInset: "视口宽于 750 px 时的单侧留白", narrowInset: "视口宽 750 px 及以下时的单侧留白",
     },
-    matrix: "来源对比度矩阵",
+    matrix: "对比度示例",
     icons: {
       sizes: "图形尺寸与使用场景",
       geometry: "绘制坐标为 20 × 20，活动区为 16 × 16 单位，四边各留 2 格。三档描边恒为 1.25 px，颜色继承宿主。",
@@ -81,11 +81,11 @@ export const specimenCopy = {
     },
     layout: {
       title: "Storybook document layout",
-      intro: "The centered document column fills the space between the page insets up to its cap. In 07a and 07b, the header, text, preview controls and desktop specimens share the wide column. Phone previews share its start edge and are at most 390 px wide. Published 07 defines the original scene sizes.",
-      standard: "Standard column cap", wide: "Wide column cap (07a and 07b)",
+      intro: "All standards pages and component contracts share one centered column. Headers, text, tables and desktop specimens align to its edges. The column fills the space between the page insets up to its cap. Consecutive 390 px phone specimens sit side by side when both fit.",
+      column: "Maximum document column width",
       wideInset: "Inset per side above 750 px viewport width", narrowInset: "Inset per side at viewport widths up to 750 px",
     },
-    matrix: "Source contrast matrix",
+    matrix: "Contrast examples",
     icons: {
       sizes: "Glyph sizes and uses",
       geometry: "The drawing uses a 20 × 20 viewBox with a 16 × 16 active area and 2 units of inset on each side. All three sizes keep a 1.25 px stroke and inherit color.",
@@ -124,11 +124,11 @@ export const specimenCopy = {
     },
     layout: {
       title: "Storybook のドキュメントレイアウト",
-      intro: "ドキュメントのカラムは中央に配置し、両側の余白を除いた幅いっぱいに、上限まで広がります。07a と 07b のページヘッダー、本文、プレビュー操作部、デスクトップの見本には幅広のカラムを使います。モバイルの見本は同じ側に揃え、最大幅は 390 px です。見本の原寸は公開済みの 07 で定義されています。",
-      standard: "標準カラムの最大幅", wide: "幅広カラムの最大幅（07a と 07b）",
+      intro: "すべての標準ページとコンポーネント契約で、中央揃えのカラムを共用します。ページヘッダー、本文、表、デスクトップの見本は同じ左右の端に揃えます。カラムは両側の余白を除いた範囲で最大幅まで広がります。幅 390 px のモバイル見本が続く場合、両方が収まれば横に並びます。",
+      column: "ドキュメントのカラムの最大幅",
       wideInset: "表示幅が 750 px を超える場合の片側の余白", narrowInset: "表示幅が 750 px 以下の場合の片側の余白",
     },
-    matrix: "公開元のコントラスト表",
+    matrix: "コントラストの例",
     icons: {
       sizes: "アイコンの寸法と用途",
       geometry: "描画は 20 × 20 の viewBox を使い、描画領域は 16 × 16、周囲の余白は各 2 単位です。3 サイズとも線幅は 1.25 px で、色は親要素から継承します。",
@@ -167,11 +167,11 @@ export const specimenCopy = {
     },
     layout: {
       title: "Storybook 문서 레이아웃",
-      intro: "문서 열은 가운데 정렬되며 양쪽 여백 안의 공간을 최대 너비까지 채웁니다. 07a와 07b의 페이지 머리글, 본문, 미리보기 컨트롤, 데스크톱 예시는 같은 넓은 열을 사용합니다. 모바일 예시도 같은 시작선에 맞추며 최대 너비는 390 px입니다. 예시의 원본 크기는 게시된 07에서 정합니다.",
-      standard: "기본 열 최대 너비", wide: "넓은 열 최대 너비(07a와 07b)",
+      intro: "모든 표준 페이지와 컴포넌트 계약은 가운데 정렬된 열 하나를 공유합니다. 머리글, 본문, 표, 데스크톱 예시는 열의 양쪽에 맞춥니다. 열은 양쪽 여백 안에서 최대 너비까지 넓어집니다. 390 px 모바일 예시가 연속되면 두 예시가 들어갈 때 나란히 배치합니다.",
+      column: "문서 열의 최대 너비",
       wideInset: "뷰포트가 750 px를 초과할 때 한쪽 여백", narrowInset: "뷰포트가 750 px 이하일 때 한쪽 여백",
     },
-    matrix: "게시 원본 대비 표",
+    matrix: "대비 예시",
     icons: {
       sizes: "아이콘 크기와 용도",
       geometry: "20 × 20 viewBox의 실제 그리기 영역은 16 × 16이며 네 변에 2단위 여백을 둡니다. 세 크기 모두 선 굵기는 1.25 px이고 색상은 상속됩니다.",
@@ -210,11 +210,11 @@ export const specimenCopy = {
     },
     layout: {
       title: "Mise en page des documents Storybook",
-      intro: "La colonne centrée occupe l’espace entre les marges de page jusqu’à sa largeur maximale. Dans 07a et 07b, l’en-tête, le texte, les commandes d’aperçu et les exemples sur ordinateur partagent la colonne large. Les aperçus mobiles partent du même bord et mesurent au plus 390 px de large. Les planches 07 publiées définissent les dimensions d’origine des scènes.",
-      standard: "Largeur maximale de la colonne standard", wide: "Largeur maximale de la colonne large (07a et 07b)",
+      intro: "Les pages de normes et les contrats des composants partagent une colonne centrée. Les en-têtes, les textes, les tableaux et les exemples pour ordinateur s’alignent sur ses bords. La colonne occupe l’espace entre les marges jusqu’à sa largeur maximale. Deux exemples mobiles consécutifs de 390 px se placent côte à côte si l’espace le permet.",
+      column: "Largeur maximale de la colonne",
       wideInset: "Marge par côté au-delà de 750 px de largeur d’affichage", narrowInset: "Marge par côté à 750 px de largeur d’affichage ou moins",
     },
-    matrix: "Matrice de contraste publiée",
+    matrix: "Exemples de contraste",
     icons: {
       sizes: "Tailles et usages des icônes",
       geometry: "Le dessin utilise un viewBox de 20 × 20, avec une zone active de 16 × 16 et un retrait de 2 unités par côté. Le trait reste à 1,25 px pour les trois tailles. La couleur est héritée.",

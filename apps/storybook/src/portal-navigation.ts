@@ -1,10 +1,10 @@
 import type { IconName, ShellMenuGroup } from "@tcrn/ui-react/approved";
-import { approvedApi } from "./approved-api.js";
+import { apiReaderProps, approvedApi } from "./approved-api.js";
 import { approvedSource, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
 import { docsCopy } from "./locales.js";
 import { portalCopy } from "./portal-copy.js";
 
-export type DocsPage = ApprovedBoardId | "index" | "api" | "source";
+export type DocsPage = ApprovedBoardId | "index" | "api";
 export type DocsEntry = "static" | "canvas" | { managerPath: string };
 
 const managerStories = {
@@ -18,7 +18,6 @@ const managerStories = {
   "07a-shell-upper": "shell-upper",
   "07b-shell-lower": "shell-lower",
   api: "api",
-  source: "source",
 } satisfies Record<DocsPage, string>;
 
 const storyId = (page: DocsPage) => `published-standards--${managerStories[page]}`;
@@ -53,7 +52,6 @@ export function docsNavigation(locale: DocsLocale, entry: DocsEntry) {
   const link = (page: DocsPage, label: string, iconName: IconName) => ({ id: page, label, iconName, href: pageHref(locale, page, entry) });
   const home = link("index", copy.home, "home");
   const api = link("api", labels.api, "package");
-  const source = link("source", labels.source, "info");
   const chapters = approvedSource.boards.map((board, index) => link(board.slug, labels.boardTitles[index], "book-open"));
   const apiOverview = { ...api, id: "api", label: portalCopy[locale].overview };
   const apiAnchors: DocsMenuItem[] = approvedApi.map(component => ({
@@ -66,7 +64,7 @@ export function docsNavigation(locale: DocsLocale, entry: DocsEntry) {
     id: "api-branch",
     children: [apiOverview, ...apiAnchors],
   };
-  const byPage = new Map([...chapters, api, source, home].map(chapter => [chapter.id, chapter]));
+  const byPage = new Map([...chapters, api, home].map(chapter => [chapter.id, chapter]));
   const cards = topics.map(({ id, iconName, chapters }) => {
     const [label, description] = copy.topics[id];
     return { topic: id, ...link(chapters[0], label, iconName), description, chapters: chapters.map(page => byPage.get(page)!) };
@@ -81,12 +79,11 @@ export function docsNavigation(locale: DocsLocale, entry: DocsEntry) {
   const directory: ShellMenuGroup[] = [
     { id: "portal", label: labels.title, items: [home] },
     ...categories.map(category => ({ id: category.id, label: category.label, items: category.items })),
-    { id: "references", label: copy.references, items: [source] },
   ];
-  return { home, source, cards, categories, directory, byPage };
+  return { home, cards, categories, directory, byPage };
 }
 
-export function sourceSearch(locale: DocsLocale, query: string, entry: DocsEntry = "static", page?: DocsPage) {
+export function searchDocs(locale: DocsLocale, query: string, entry: DocsEntry = "static", page?: DocsPage) {
   const labels = docsCopy(locale);
   const term = query.trim().normalize("NFKC").toLocaleLowerCase(locale);
   if (!term) return [];
@@ -101,15 +98,8 @@ export function sourceSearch(locale: DocsLocale, query: string, entry: DocsEntry
       href: inManager && page === api.board
         ? `#api-${api.name}`
         : pageHref(locale, entry === "static" ? "api" : api.board, entry, `api-${api.name}`),
-      keywords: api.props.join(" "),
+      keywords: apiReaderProps(api).join(" "),
     })),
-    {
-      id: "source", title: labels.source, meta: labels.provenance,
-      href: entry !== "static" && approvedSource.boards.some(board => board.slug === page)
-        ? "#source"
-        : pageHref(locale, "source", entry),
-      keywords: approvedSource.site.sourceCommit,
-    },
   ];
   return records.filter(record => `${record.title} ${record.meta} ${record.keywords}`.normalize("NFKC").toLocaleLowerCase(locale).includes(term))
     .map(({ keywords: _keywords, ...record }) => record);

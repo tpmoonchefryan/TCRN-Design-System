@@ -119,10 +119,6 @@ export function Portal({ locale, theme, navigation, search }: {
           </article>
         ))}
       </section>
-      <footer className="portal-footer">
-        <span>{copy.footer}</span>
-        <a className="tcrn-link" href={navigation.source.href}>{copy.source}<Icon name="arrow-right" size="sm" /></a>
-      </footer>
     </div>
   );
 }

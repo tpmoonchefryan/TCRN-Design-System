@@ -57,4 +57,3 @@ export const Inputs = boardStory("06-inputs");
 export const ShellUpper = boardStory("07a-shell-upper");
 export const ShellLower = boardStory("07b-shell-lower");
 export const Api = pageStory("api", "Component contracts");
-export const Source = pageStory("source", "Published source");

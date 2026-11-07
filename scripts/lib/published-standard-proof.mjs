@@ -110,16 +110,17 @@ export function checkFonts(root=ROOT){const source=readApprovedSource(root),face
   for(const name of ["hanken-grotesk-OFL.txt","source-serif-4-OFL.txt","ibm-plex-mono-OFL.txt","noto-sans-sc-OFL.txt","noto-serif-sc-OFL.txt","approved-site-original-notice.txt"]){const p=path.join(root,"packages/ui-tokens/licenses",name);if(!fs.existsSync(p)||!fs.readFileSync(p,"utf8").includes("OPEN FONT LICENSE"))issues.push(`Missing SIL OFL notice ${name}`);}
   return {issues,files:expected.length,faces:faces.length,families:[...new Set(faces.map(f=>f.family))]};
 }
-export function expectedOutputPaths(root=ROOT){const source=readApprovedSource(root),faces=extractFontFaces(source),fonts=[...new Set(faces.map(f=>f.file))];return ["index.html","storybook.js","storybook.css","assets/ds-tile-deep.svg","fonts/fonts.css","fonts/manifest.json","ai-consumption-contract.json","design-authority.json","llms.txt","robots.txt","output-manifest.json",...LOCALES.flatMap(l=>["index",...Object.keys(APPROVED_BOARD_IDS),"api","source"].map(p=>`${l}/${p}.html`)),...fonts.map(f=>`fonts/${f}`),...["hanken-grotesk-OFL.txt","source-serif-4-OFL.txt","ibm-plex-mono-OFL.txt","noto-sans-sc-OFL.txt","noto-serif-sc-OFL.txt","approved-site-original-notice.txt"].map(f=>`licenses/${f}`)].sort();}
+export function expectedOutputPaths(root=ROOT){const source=readApprovedSource(root),faces=extractFontFaces(source),fonts=[...new Set(faces.map(f=>f.file))];return ["index.html","storybook.js","storybook.css","assets/ds-tile-deep.svg","fonts/fonts.css","fonts/manifest.json","ai-consumption-contract.json","design-authority.json","llms.txt","robots.txt","output-manifest.json",...LOCALES.flatMap(l=>["index",...Object.keys(APPROVED_BOARD_IDS),"api"].map(p=>`${l}/${p}.html`)),...fonts.map(f=>`fonts/${f}`),...["hanken-grotesk-OFL.txt","source-serif-4-OFL.txt","ibm-plex-mono-OFL.txt","noto-sans-sc-OFL.txt","noto-serif-sc-OFL.txt","approved-site-original-notice.txt"].map(f=>`licenses/${f}`)].sort();}
 export function validateOutputMembers(actual,expected){return [...actual.filter(f=>!expected.includes(f)).map(f=>`Stale or unpublished output file: ${f}`),...expected.filter(f=>!actual.includes(f)).map(f=>`Missing current output file: ${f}`)];}
 export function rejectedSvgGeometry(text){return [...text.replace(/\\"/g,'"').matchAll(/<svg\b[^>]*>([\s\S]*?)<\/svg>/g)].some(svg=>sha256([...svg[1].matchAll(/<path[^>]*\bd="([^"]+)"/g)].map(m=>m[1].replace(/[\s,]/g,"")).sort().join("|"))===OLD_MOTHER_GEOMETRY_SHA256);}
+const retiredSourceDestination = /\/(?:zh-CN|en|ja|ko|fr)\/source\.html\b|published-standards--source\b/;
 export function checkOutput(root=ROOT,output=path.join(root,"apps/storybook/storybook-static")){
   const issues=[],actual=listFiles(output),expected=expectedOutputPaths(root);
   issues.push(...validateOutputMembers(actual,expected));
   const manifest=JSON.parse(fs.readFileSync(path.join(output,"output-manifest.json"),"utf8"));if(manifest.standardSource?.sourceCommit!==APPROVED_SITE.sourceCommit)issues.push("Output inventory has wrong source commit");
   if(JSON.stringify(manifest.files.map(f=>f.path).sort())!==JSON.stringify(expected.filter(f=>f!=="output-manifest.json")))issues.push("Output inventory omits or invents a file");
   for(const row of manifest.files){const p=path.join(output,row.path);if(!fs.existsSync(p)||sha256(fs.readFileSync(p))!==row.sha256)issues.push(`Output bytes differ from candidate inventory ${row.path}`);}
-  for(const rel of actual){const bytes=fs.readFileSync(path.join(output,rel));if(sha256(bytes)===OLD_MOTHER_SHA256)issues.push(`Rejected mother asset bytes returned under ${rel}`);if(/\.(?:html|js|css|svg|json|txt)$/.test(rel)){const text=bytes.toString("utf8");issues.push(...retiredLockupLabelIssues(text,`Static output ${rel}`));if(rejectedSvgGeometry(text))issues.push(`Rejected inline SVG geometry returned under ${rel}`);if(/tcrn-brand-mark\.svg|tcrn-aos-two-line|data-brand-asset="tcrn-brand-mark"|tcrnRetiredComponentCss|\/reference-components-|Style Guide/.test(text))issues.push(`Rejected asset/standard route returned under ${rel}`);if(rel.endsWith(".html")&&(!text.includes(APPROVED_SITE.sourceCommit)||!text.includes('/assets/ds-tile-deep.svg')))issues.push(`HTML lacks published source or formal favicon ${rel}`);}}
+  for(const rel of actual){const bytes=fs.readFileSync(path.join(output,rel));if(sha256(bytes)===OLD_MOTHER_SHA256)issues.push(`Rejected mother asset bytes returned under ${rel}`);if(/\.(?:html|js|css|svg|json|txt)$/.test(rel)){const text=bytes.toString("utf8");if(retiredSourceDestination.test(text))issues.push(`Retired source destination returned in static output ${rel}`);issues.push(...retiredLockupLabelIssues(text,`Static output ${rel}`));if(rejectedSvgGeometry(text))issues.push(`Rejected inline SVG geometry returned under ${rel}`);if(/tcrn-brand-mark\.svg|tcrn-aos-two-line|data-brand-asset="tcrn-brand-mark"|tcrnRetiredComponentCss|\/reference-components-|Style Guide/.test(text))issues.push(`Rejected asset/standard route returned under ${rel}`);if(rel.endsWith(".html")&&(!text.includes(APPROVED_SITE.sourceCommit)||!text.includes('/assets/ds-tile-deep.svg')))issues.push(`HTML lacks published source or formal favicon ${rel}`);}}
   const source=readApprovedSource(root),formalFavicon=extractMarks(source).find(m=>m.id==="ds").tileDeepBody;
   const favicon=fs.readFileSync(path.join(output,"assets/ds-tile-deep.svg"),"utf8").replace(/^<svg[^>]*>/,"").replace(/<\/svg>\s*$/,"");
   if(normalizeSvgBody(favicon)!==normalizeSvgBody(formalFavicon))issues.push("Favicon changed independently of the published DS deep tile");
@@ -131,11 +132,18 @@ export function checkOutput(root=ROOT,output=path.join(root,"apps/storybook/stor
 export async function checkRoutes(root=ROOT){const registry=await compiled(root,"apps/storybook/dist/contract-stories/kernel.js"),api=await compiled(root,"apps/storybook/dist/approved-api.js"),metadata=await compiled(root,"apps/storybook/dist/approved-source.js");return {issues:[...checkSourceClosure(root),...sourceIdentityIssues(metadata.approvedSource.site,"compiled documentation"),...checkProjection(registry.contractStories,api.approvedApi)],stories:registry.contractStories.length,apis:api.approvedApi.length};}
 export function finish(label,result){const issues=result.issues??[];console.log(JSON.stringify({proof:label,...result},null,2));if(issues.length)process.exitCode=1;return result;}
 
-export const MANAGER_STORY_IDS=Object.freeze(['home','tokens','typography','icons','brand','actions','inputs','shell-upper','shell-lower','api','source'].map(name=>`published-standards--${name}`));
+export const MANAGER_STORY_IDS=Object.freeze(['home','tokens','typography','icons','brand','actions','inputs','shell-upper','shell-lower','api'].map(name=>`published-standards--${name}`));
 export function managerIndexIssues(index){
- const entries=Object.values(index.entries??{}),stories=entries.filter(e=>e.type==='story'),issues=[];
- if(JSON.stringify(stories.map(e=>e.id).sort())!==JSON.stringify([...MANAGER_STORY_IDS].sort())||entries.length!==MANAGER_STORY_IDS.length)issues.push('Manager output must contain the eight published boards and the home, API and source pages');
- for(const story of stories)if(story.title!=='Published standards'||!story.importPath?.endsWith('/src/standards.stories.tsx'))issues.push(`Unapproved manager CSF module ${story.id}`);
+ const entries = Object.entries(index.entries ?? {}), issues = [];
+ if (entries.length !== MANAGER_STORY_IDS.length ||
+     entries.some(([id, story]) => !MANAGER_STORY_IDS.includes(id) || story.id !== id || story.type !== 'story')) {
+  issues.push('Manager output must contain the eight boards, home and component contracts');
+ }
+ for (const [, story] of entries) {
+  if (story.title !== 'Published standards' || !story.importPath?.endsWith('/src/standards.stories.tsx')) {
+   issues.push(`Unapproved manager CSF module ${story.id}`);
+  }
+ }
  return issues;
 }
 export function checkManagerOutput(root=ROOT){
@@ -147,7 +155,7 @@ export function checkManagerOutput(root=ROOT){
   if(sha256(bytes)===OLD_MOTHER_SHA256)issues.push(`Manager rejected mother bytes: ${rel}`);
   if(rel.endsWith('.html')&&!['index.html','iframe.html'].includes(rel))issues.push(`Manager unregistered HTML entry: ${rel}`);
   if(/\.(?:html|js|css|svg|json|txt)$/.test(rel)){
-   const text=bytes.toString('utf8');issues.push(...retiredLockupLabelIssues(text,`Manager output ${rel}`));if(rejectedSvgGeometry(text)||/tcrn-brand-mark\.svg|tcrn-aos-two-line|tcrnRetiredComponentCss|\/reference-components-/.test(text))issues.push(`Manager rejected inline, renamed or unlinked source: ${rel}`);
+   const text=bytes.toString('utf8');if(retiredSourceDestination.test(text))issues.push(`Retired source destination returned in Manager output ${rel}`);issues.push(...retiredLockupLabelIssues(text,`Manager output ${rel}`));if(rejectedSvgGeometry(text)||/tcrn-brand-mark\.svg|tcrn-aos-two-line|tcrnRetiredComponentCss|\/reference-components-/.test(text))issues.push(`Manager rejected inline, renamed or unlinked source: ${rel}`);
   }
  }
  const expectedFonts=[...source.manifest.fontFiles.map(f=>f.file),'fonts.css','manifest.json'];

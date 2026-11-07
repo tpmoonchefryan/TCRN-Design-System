@@ -3,35 +3,36 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import { App } from "./app.js";
-import { docsNavigation, managerFragment, pageHref, sourceSearch } from "./portal-navigation.js";
+import { docsNavigation, managerFragment, pageHref, searchDocs } from "./portal-navigation.js";
 import { approvedApi } from "./approved-api.js";
 import { approvedSource,supportedLocales } from "./approved-source.js";
 import { contractStories } from "./contract-stories/kernel.js";
 const manager = { managerPath: "/docs/index.html" };
 const expected=["01-tokens","02-typography","03-icons","04-brand","05-actions","06-inputs","07a-shell-upper","07b-shell-lower"];
 test("V3 static registry is the fixed published eight-board set, not an independent old story/API catalogue",()=>{assert.deepEqual(contractStories.map(s=>s.id),expected);assert.equal(approvedApi.length,28);for(const name of ["TcrnBrandMark","StateView","Badge","Field","LineNumberedEditor","Tooltip","Dialog"])assert.ok(!approvedApi.some(a=>a.name===name));assert.equal(approvedSource.site.sourceCommit,"a643d4cfcd239f6f81b1715ded6a63caead9d619");});
-test("V2/V3 every current locale renders only the current provenance and supported board entrypoints",()=>{for(const locale of supportedLocales){const html=renderToStaticMarkup(createElement(App,{page:"index",locale}));assert.ok(html.includes(approvedSource.site.sourceCommit));assert.ok(html.includes(`/${locale}/01-tokens.html`));assert.doesNotMatch(html,/tcrn-brand-mark\.svg|tcrn-aos-two-line|Style Guide|data-brand-asset="tcrn-brand-mark"/);}});
+test("all five home pages retain machine source identity and current destinations",()=>{for(const locale of supportedLocales){const html=renderToStaticMarkup(createElement(App,{page:"index",locale}));assert.ok(html.includes(`data-published-source="${approvedSource.site.sourceCommit}"`));assert.ok(html.includes(`/${locale}/01-tokens.html`));assert.doesNotMatch(html,/tcrn-brand-mark\.svg|tcrn-aos-two-line|Style Guide|data-brand-asset="tcrn-brand-mark"|portal-footer|Sites v1|source\.html/);}});
 
-test("the five-language search uses only source boards and the same explicit API projection",()=>{for(const locale of supportedLocales){const hits=sourceSearch(locale,"MultiSelect");assert.ok(hits.some(r=>r.id==="api-MultiSelect"&&r.href===`/${locale}/api.html#api-MultiSelect`));
- for(const query of ["Dialog","  ＤｉＡｌＯｇ  "]){const roles=sourceSearch(locale,query);assert.deepEqual(roles.map(({id,href})=>({id,href})),["ShellBrandButton","ShellMenu"].map(name=>({id:`api-${name}`,href:`/${locale}/api.html#api-${name}`})));assert.ok(!roles.some(r=>r.id==="api-Dialog"||r.href.endsWith("#api-Dialog")));}
- for(const query of ["StateView","brand-identity","tcrn-brand-mark.svg",""," "])assert.deepEqual(sourceSearch(locale,query),[]);
+test("the five-language search uses current boards and component contracts",()=>{for(const locale of supportedLocales){const hits=searchDocs(locale,"MultiSelect");assert.ok(hits.some(r=>r.id==="api-MultiSelect"&&r.href===`/${locale}/api.html#api-MultiSelect`));
+ for(const query of ["Dialog","  ＤｉＡｌＯｇ  "]){const roles=searchDocs(locale,query);assert.deepEqual(roles.map(({id,href})=>({id,href})),["ShellBrandButton","ShellMenu"].map(name=>({id:`api-${name}`,href:`/${locale}/api.html#api-${name}`})));assert.ok(!roles.some(r=>r.id==="api-Dialog"||r.href.endsWith("#api-Dialog")));}
+ for(const query of ["StateView","brand-identity","tcrn-brand-mark.svg",approvedSource.site.sourceCommit,""," "])assert.deepEqual(searchDocs(locale,query),[]);
 }});
 
 
-test("direct canvas documents retain the published board, API and source destinations in all locales",()=>{
+test("direct canvas documents retain current board and API destinations in all locales",()=>{
  for(const locale of supportedLocales){
   const { directory } = docsNavigation(locale, "canvas");
   const destinations = directory.flatMap(group => group.items.map(item => item.href));
   for (const board of approvedSource.boards) {
    assert.equal(destinations.filter(href => href === pageHref(locale, board.slug, "canvas")).length, 1);
   }
-  for(const api of approvedApi){const hit=sourceSearch(locale,api.name,"canvas").find(r=>r.id===`api-${api.name}`);assert.equal(hit?.href,`${pageHref(locale,api.board,"canvas")}#api-${api.name}`);}
-  for(const query of ["Dialog","  ＤｉＡｌＯｇ  "]){const roles=sourceSearch(locale,query,"canvas");assert.deepEqual(roles.map(({id,href})=>({id,href})),[{id:"api-ShellBrandButton",href:`${pageHref(locale,"07a-shell-upper","canvas")}#api-ShellBrandButton`},{id:"api-ShellMenu",href:`${pageHref(locale,"07b-shell-lower","canvas")}#api-ShellMenu`}]);assert.ok(!roles.some(r=>r.id==="api-Dialog"||r.href.endsWith("#api-Dialog")));}
-  for(const query of ["StateView","brand-identity","tcrn-brand-mark.svg",""," "])assert.deepEqual(sourceSearch(locale,query,"canvas"),[]);
+  for(const api of approvedApi){const hit=searchDocs(locale,api.name,"canvas").find(r=>r.id===`api-${api.name}`);assert.equal(hit?.href,`${pageHref(locale,api.board,"canvas")}#api-${api.name}`);}
+  for(const query of ["Dialog","  ＤｉＡｌＯｇ  "]){const roles=searchDocs(locale,query,"canvas");assert.deepEqual(roles.map(({id,href})=>({id,href})),[{id:"api-ShellBrandButton",href:`${pageHref(locale,"07a-shell-upper","canvas")}#api-ShellBrandButton`},{id:"api-ShellMenu",href:`${pageHref(locale,"07b-shell-lower","canvas")}#api-ShellMenu`}]);assert.ok(!roles.some(r=>r.id==="api-Dialog"||r.href.endsWith("#api-Dialog")));}
+  for(const query of ["StateView","brand-identity","tcrn-brand-mark.svg",approvedSource.site.sourceCommit,""," "])assert.deepEqual(searchDocs(locale,query,"canvas"),[]);
   const html=renderToStaticMarkup(createElement(App,{page:"06-inputs",locale,entry:"canvas"}));
   assert.equal((html.match(/<main\b/g)??[]).length,1);
   assert.ok(html.includes(`lang="${locale}" data-approved-board="06-inputs"`));
-  assert.ok(html.includes('data-published-api-reference')&&html.includes('id="api-MultiSelect"')&&html.includes('id="source"'));
+  assert.ok(html.includes('data-published-api-reference')&&html.includes('id="api-MultiSelect"'));
+  assert.doesNotMatch(html, /id="source"|published-standards--source/);
   assert.doesNotMatch(html,/data-approved-api="Button"/);
  }
 });
@@ -54,14 +55,13 @@ test("portal routes, topic membership and document paths agree in all three entr
       assert.deepEqual(nav.categories.map(category => category.pageId), primary.slice(1));
       assert.deepEqual(nav.cards.map(card => card.chapters.map(chapter => chapter.id)), chapters);
       assert.deepEqual(nav.cards.map(card => card.href), destinations.slice(1));
-      assert.deepEqual(nav.directory.map(group => group.id), ["portal", ...categoryIds, "references"]);
+      assert.deepEqual(nav.directory.map(group => group.id), ["portal", ...categoryIds]);
       assert.deepEqual(nav.directory.map(group => group.items.map(item => item.id)), [
         ["index"],
         ["01-tokens", "02-typography", "03-icons"],
         ["04-brand"],
         ["05-actions", "06-inputs", "api-branch"],
         ["07a-shell-upper", "07b-shell-lower"],
-        ["source"],
       ]);
       const apiBranch = nav.categories.find(category => category.id === "components")!.items.find(item => item.id === "api-branch")!;
       const apiChildren = (apiBranch as { children?: readonly { id: string; label: string; href?: string }[] }).children;
@@ -106,23 +106,23 @@ test("Manager links address the registered story and keep routed fragments scope
   assert.equal(pageHref(locale, "06-inputs", "canvas", "api-MultiSelect"),
     "/iframe.html?id=published-standards--inputs&viewMode=story&globals=locale:fr#api-MultiSelect");
 
-  const crossStory = sourceSearch(locale, "MultiSelect", manager, "index").find(hit => hit.id === "api-MultiSelect");
+  const crossStory = searchDocs(locale, "MultiSelect", manager, "index").find(hit => hit.id === "api-MultiSelect");
   assert.equal(crossStory?.href,
     "/docs/index.html?path=/story/published-standards--inputs&globals=locale:fr&docsAnchor=published-standards--inputs:api-MultiSelect");
   const { search } = new URL(crossStory!.href, "https://example.test");
   assert.equal(managerFragment("06-inputs", search), "api-MultiSelect");
   assert.equal(managerFragment("07a-shell-upper", search), "");
-  const localApi = sourceSearch(locale, "MultiSelect", manager, "06-inputs").find(hit => hit.id === "api-MultiSelect");
+  const localApi = searchDocs(locale, "MultiSelect", manager, "06-inputs").find(hit => hit.id === "api-MultiSelect");
   assert.equal(localApi?.href, "#api-MultiSelect");
-  const localSource = sourceSearch(locale, approvedSource.site.sourceCommit, manager, "06-inputs");
-  assert.equal(localSource[0]?.href, "#source");
-  const source = sourceSearch(locale, approvedSource.site.sourceCommit, manager, "index");
-  assert.equal(source[0]?.href, "/docs/index.html?path=/story/published-standards--source&globals=locale:fr");
+  const localSource = searchDocs(locale, approvedSource.site.sourceCommit, manager, "06-inputs");
+  assert.deepEqual(localSource, []);
+  const source = searchDocs(locale, approvedSource.site.sourceCommit, manager, "index");
+  assert.deepEqual(source, []);
 
   const board = renderToStaticMarkup(createElement(App, { page: "06-inputs", locale, entry: manager }));
   assert.match(board, /id="api-MultiSelect"/);
-  assert.match(board, /id="source"/);
-  assert.ok(board.includes(`href="${approvedSource.site.url}">06-inputs / L`));
+  assert.doesNotMatch(board, /id="source"|06-inputs \/ L\d+/);
+  assert.ok(!board.includes(`href="${approvedSource.site.url}`));
   const api = renderToStaticMarkup(createElement(App, { page: "api", locale, entry: manager }));
-  assert.ok(api.includes('href="/docs/index.html?path=/story/published-standards--inputs&amp;globals=locale:fr">06-inputs / L'));
+  assert.ok(api.includes('href="/docs/index.html?path=/story/published-standards--inputs&amp;globals=locale:fr">Exemples interactifs · Champs de saisie</a>'));
 });

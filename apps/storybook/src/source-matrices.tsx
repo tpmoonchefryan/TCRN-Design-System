@@ -58,10 +58,10 @@ function Probe({cell,locale,apiHref}:{cell:ApprovedMatrixOccurrence;locale:DocsL
   }
   if(cell.board==="06-inputs"){
     if(id==="err-msg")return <span {...p} className="tcrn-doc-error"><Icon name="alert-triangle" size="sm"/><span className="tcrn-doc-error__text">{c.error}</span></span>;
-    if(id.startsWith("in-"))return <><Input {...p} aria-describedby={id==="in-err"?`source-error-${cell.key}`:undefined} aria-label={`${c.name} ${cell.key}`} placeholder={id==="in-ph"?c.project:undefined} defaultValue={id==="in-ph"?undefined:c.project} readOnly={id==="in-ro"} disabled={id==="in-dis"} disabledReason={c.unavailable} aria-invalid={id==="in-err"?true:undefined} data-tcrn-preview-state={id==="in-focus"?"focus":undefined}/>{id==="in-err"?<span id={`source-error-${cell.key}`} className="tcrn-doc-error"><span className="tcrn-doc-error__text">{c.error}</span></span>:null}</>;
+    if(id.startsWith("in-"))return <><Input {...p} aria-describedby={id==="in-err"?`source-error-${cell.key}`:undefined} aria-label={c.name} placeholder={id==="in-ph"?c.project:undefined} defaultValue={id==="in-ph"?undefined:c.project} readOnly={id==="in-ro"} disabled={id==="in-dis"} disabledReason={c.unavailable} aria-invalid={id==="in-err"?true:undefined} data-tcrn-preview-state={id==="in-focus"?"focus":undefined}/>{id==="in-err"?<span id={`source-error-${cell.key}`} className="tcrn-doc-error"><span className="tcrn-doc-error__text">{c.error}</span></span>:null}</>;
     if(id.startsWith("search-"))return <SearchInput {...p} aria-label={c.search} placeholder={c.search} defaultValue={id==="search-focus"?c.project:undefined} className={id==="search-ph"?"tcrn-input--sm":undefined} shortcut="auto" data-tcrn-preview-state={id==="search-focus"?"focus":undefined}/>;
     if(id==="chev")return <span {...p} data-source-probe-target=".tcrn-select-wrap__icon"><Select aria-label={c.status} options={[{value:"team",label:c.team}]}/></span>;
-    if(id==="opt-sel")return <div {...p} data-source-open-control=".tcrn-multi-select-dropdown__trigger"><MultiSelect aria-label={`${c.project} ${cell.key}`} presentation="dropdown" options={[{value:"review",label:c.project}]} defaultValue={["review"]} emptySelectionLabel={c.empty}/></div>;
+    if(id==="opt-sel")return <div {...p} data-source-open-control=".tcrn-multi-select-dropdown__trigger"><MultiSelect aria-label={c.project} presentation="dropdown" options={[{value:"review",label:c.project}]} defaultValue={["review"]} emptySelectionLabel={c.empty}/></div>;
     if(id==="num")return <NumberInput {...p} aria-label={c.seat} defaultValue={24}/>;
     if(id==="date"||id==="cal")return <span {...p} data-source-probe-target={id==="cal"?".tcrn-date-picker-wrap__icon":".tcrn-date-picker"}><DatePicker aria-label={c.day} defaultValue="2026-10-20"/></span>;
     if(id.startsWith("ck-"))return <Checkbox {...p} aria-label={c.notify} defaultChecked={id==="ck-on"||id==="ck-dis"} disabled={id==="ck-dis"} disabledReason={c.unavailable}/>;
@@ -84,7 +84,6 @@ export function SourceMatrices({board,locale,apiHref}:{board:ApprovedBoardId;loc
           const canvas = cell.cellId.includes("canvas") || cell.cellId.endsWith("-bg-l") || cell.cellId.endsWith("-bg-n");
           return (
             <div key={cell.key} className="tcrn-doc-pane" data-tcrn-theme={cell.theme === "night" ? "dark" : "light"}>
-              <code>{cell.cellId}{selected && ` · ${selected.cellId}`}</code>
               <div className={canvas ? undefined : "tcrn-doc-paper"}>
                 {selected ? <RadioProbe edge={cell} selected={selected} locale={locale} />
                   : <Probe cell={cell} locale={locale} apiHref={apiHref} />}

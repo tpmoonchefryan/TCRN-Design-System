@@ -1,16 +1,16 @@
 import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import {
-  Icon, LinkButton, PageHeader, ShellBrandButton, ShellLocaleMenu, ShellMenu, ShellThemeToggle,
-  SkipLink, Text, useShellMenuPresentation, type ShellThemeMode,
+  Icon, PageHeader, ShellBrandButton, ShellLocaleMenu, ShellMenu, ShellThemeToggle,
+  SkipLink, useShellMenuPresentation, type ShellThemeMode,
 } from "@tcrn/ui-react/approved";
 import { ApiReference } from "./api-reference.js";
 import { DocsTopicNav } from "./DocsTopicNav.js";
-import { approvedSource, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
+import { approvedSource, type DocsLocale } from "./approved-source.js";
 import { docsCopy } from "./locales.js";
 import { Portal } from "./portal.js";
 import { portalCopy } from "./portal-copy.js";
-import { docsNavigation, managerFragment, pageHref, sourceSearch, type DocsEntry, type DocsPage } from "./portal-navigation.js";
+import { docsNavigation, managerFragment, pageHref, searchDocs, type DocsEntry, type DocsPage } from "./portal-navigation.js";
 import { SourceMatrices } from "./source-matrices.js";
 import { BoardSpecimens } from "./specimens.js";
 
@@ -41,28 +41,6 @@ function savedTheme(fallback: ShellThemeMode): ShellThemeMode {
     if (theme === "light" || theme === "dark") return theme;
   } catch { /* Storage may be unavailable. */ }
   return fallback;
-}
-
-function PublishedSource({ locale, board }: { locale: DocsLocale; board?: ApprovedBoardId }) {
-  const labels = docsCopy(locale);
-  const { site, boards } = approvedSource;
-  return (
-    <>
-      <Text>{labels.provenance}</Text>
-      <p>
-        <a className="tcrn-link" href={site.url}>{labels.source} · Sites v{site.versionNumber}</a>
-        {" · "}<code className="tcrn-doc-code">{site.sourceCommit}</code>
-      </p>
-      <ul className="docs-source-list">
-        {boards.map((item, index) => (!board || item.slug === board) && (
-          <li key={item.slug}>
-            <a className="tcrn-link" href={`${site.url}/boards/${item.slug}/index.html`}>{labels.boardTitles[index]}</a>
-            {" · "}<code className="tcrn-doc-source">{item.sourceId}</code>
-          </li>
-        ))}
-      </ul>
-    </>
-  );
 }
 
 function targetCanvasFragment(event: MouseEvent<HTMLDivElement>) {
@@ -226,7 +204,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
           }
         }}
         searchPlaceholder={labels.search}
-        searchProvider={query => sourceSearch(locale, query, entry, page)}
+        searchProvider={query => searchDocs(locale, query, entry, page)}
       />
       <div className="tcrn-product-shell__paper docs-paper" data-paper="">
         <main id={contentId} className="tcrn-product-shell__main" tabIndex={0}>
@@ -258,7 +236,6 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
                 breadcrumbs={trail}
                 locale={locale}
                 headingLevel={1}
-                actions={page !== "source" ? <LinkButton variant="quiet" size="sm" href={navigation.source.href}>{labels.source}</LinkButton> : null}
               />
               <div className="tcrn-doc-content">
                 {board ? (
@@ -267,12 +244,11 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
                       <BoardSpecimens board={board.slug} locale={locale} apiHref={apiHref} />
                       <SourceMatrices board={board.slug} locale={locale} apiHref={apiHref} />
                     </article>
-                    {inStorybook && <>
+                    {inStorybook && (
                       <section id="api"><ApiReference board={board.slug} locale={locale} entry={entry} /></section>
-                      <section id="source"><PublishedSource locale={locale} board={board.slug} /></section>
-                    </>}
+                    )}
                   </>
-                ) : page === "api" ? <ApiReference locale={locale} entry={entry} /> : <PublishedSource locale={locale} />}
+                ) : <ApiReference locale={locale} entry={entry} />}
               </div>
             </div>
           )}

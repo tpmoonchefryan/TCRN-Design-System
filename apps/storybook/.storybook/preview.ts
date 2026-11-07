@@ -4,7 +4,7 @@ import "../src/docs.css";
 
 export const parameters = {
   layout: "fullscreen",
-  options: { storySort: { order: ["Published standards", ["Home", "*", "Component contracts", "Published source"]] } },
+  options: { storySort: { order: ["Published standards", ["Home", "*", "Component contracts"]] } },
 };
 export const initialGlobals = { locale: "en" };
 export const globalTypes = {

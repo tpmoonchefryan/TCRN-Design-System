@@ -1,4 +1,4 @@
-import type { ApprovedBoardId } from "./approved-source.js";
+import type { ApprovedBoardId, DocsLocale } from "./approved-source.js";
 export interface ApprovedApi { name:string; board:ApprovedBoardId; line:number; props:readonly string[]; formal:string; summary:Readonly<Record<"zh-CN"|"en"|"ja"|"ko"|"fr",string>>; example:string }
 // Explicit published component and role obligations, never the engineering export manifest.
 export const approvedApi:readonly ApprovedApi[]=[
@@ -31,3 +31,82 @@ export const approvedApi:readonly ApprovedApi[]=[
   {name:"ShellDropdown",board:"07b-shell-lower",line:61,props:["pinned subtree","search within subtree","click-driven level 3/4 cascades"],formal:"搜索提供者 ：完整菜单搜全站目标；下拉里的搜索只搜该子树；复用 ProductShellSearch。\n完整菜单与下拉都是临时浮层：选中、Esc、点外部即收；没有收起钮；与键之间留 6px。\n固定的二级菜单从顶带纵向下拉；三、四级按 点击 向右级联，不按悬停。\n⌘K / Ctrl+K 打开完整菜单并聚焦搜索； Esc 关闭，焦点回标按钮；菜单内 ↑↓ 走项，→ 进入子项列，← 回左列。\n标按钮 aria-expanded 、 aria-haspopup=\"dialog\" ；固定的二级菜单同样；浮层 role=\"dialog\" 非模态。",summary:{"en": "Supply the pinned subtree. Search only that subtree; click opens equal-width/equal-height level 3/4 columns with a 4px gap. Selection, Esc or outside closes it.", "zh-CN": "提供固定子树；仅搜索该子树。点击展开同宽等高的三四级列，间距 4px。选中、Esc、点外部关闭。", "ja": "固定された部分木を指定し、その内部だけ検索します。クリックで同幅同高の3・4階層を4px間隔で開き、選択・Esc・外側で閉じます。", "ko": "고정된 하위 트리를 제공하고 그 안에서만 검색합니다. 클릭으로 같은 너비·높이의 3·4단계를 4px 간격으로 열고 선택·Esc·외부 클릭으로 닫습니다.", "fr": "Fournir le sous-arbre épinglé et le chercher seul. Un clic ouvre les niveaux 3/4 de même largeur et hauteur, écart4px. Sélection, Esc ou extérieur ferment."},example:"<ShellDropdown id=\"contracts\" source={subtree} open={open} onOpenChange={setOpen}/>"},
   {name:"ShellIntro",board:"07a-shell-upper",line:179,props:["sign-in success event","registered color mark","once-per-session marker","reduced-motion preference"],formal:"C 登入动画 登入卡上是通过稿锁定块（标 128），收敛为顶带的第二版（标 22）；只用 transform 与 opacity t = 0 · 登入成功，登入卡上是第三版（标 128） t = 120 · 表单淡出 --t-fill 120ms t = 240 · 标飞向左上 --t-move 240ms --ease t = 360 · 纸升起；字标首行、固定项、右上簇淡入 t = 460 · 终态 = A1：第二版（标 22 + TCRN TMS）\n播放条件 只在 登入成功 这一刻播一次；刷新、会话恢复、SSO 回跳、切换产品都不播。 一个会话内不重复；服务端渲染首屏时顶带直接在终态。 总时长 460ms ：120 淡出 + 240 位移 + 100 纸升起与字标淡入，上限 700。\n实现约束 只用 transform 与 opacity ；登入卡上的锁定块与顶带的首行共用同一份标 SVG（128 → 22），描述行淡出、字标保留。 终点坐标就是顶带标的几何，结束后无跳变；标全程彩色。 动画期间不挡交互：120ms 后指针事件穿透，键盘可直接 Tab 到标按钮。\n减少动画偏好 prefers-reduced-motion: reduce 时不播，直接呈现终态。 菜单开合、下拉、级联、图钉出现同样尊重该偏好：时长归零。 门：带偏好的渲染里 transition 时长读数为 0，动画次数计数为 0。",summary:{"en": "Mount only after successful sign-in with the registered color mark and session marker. Transform/opacity only, 460ms≤700; refresh/session reuse/reduced motion never replay.", "zh-CN": "仅登入成功后挂载注册彩标与会话标记。只动 transform/opacity，460ms≤700；刷新、复用会话、减弱动效均不重播。", "ja": "ログイン成功時だけ登録カラー記号とセッション印で起動します。transform/opacity のみ460ms≤700。更新・既存セッション・動き軽減時は再生しません。", "ko": "로그인 성공 시 등록 컬러 마크와 세션 표식으로만 시작합니다. transform/opacity만 460ms≤700입니다. 새로 고침·세션 재사용·동작 줄이기에서는 재생하지 않습니다.", "fr": "Monter après connexion réussie avec symbole couleur et marqueur de session. transform/opacity seulement, 460ms≤700 ; aucun rejeu sur actualisation, session existante ou mouvement réduit."},example:"<ShellIntro productId=\"tms\" card={loginCard} shellRef={shellRef} sessionMarker=\"signed-in\"/>"}
 ];
+
+// The machine contract keeps the exact source records. Reader copy describes the component itself.
+const readerSummaries: Readonly<Record<string, ApprovedApi["summary"]>> = {
+  Text: {
+    "zh-CN": "提供 children 与可选的 size、tone、variant。Text 用于正文，标题和表格单元使用各自的样式。strong 使用一级墨和 600 字重。",
+    en: "Supply children and optional size, tone or variant. Use Text for prose. Headings and table cells use their own styles. Strong uses primary ink at weight 600.",
+    ja: "children と任意の size、tone、variant を指定します。Text は本文用で、見出しと表のセルは専用のスタイルを使います。strong は主要インク色とウェイト 600 を使います。",
+    ko: "children과 선택 항목인 size, tone, variant를 제공합니다. Text는 본문에 사용하며 제목과 표 셀은 자체 스타일을 사용합니다. strong은 기본 잉크와 굵기 600을 사용합니다.",
+    fr: "Fournir children et, au besoin, size, tone ou variant. Text sert au corps du texte. Les titres et les cellules ont leurs propres styles. Strong utilise l’encre principale et une graisse de 600.",
+  },
+  ProductLogo: {
+    "zh-CN": "用已注册产品键选择图形，可用彩色标、单色标、淡底贴片和深底贴片。",
+    en: "Pass one registered product key. Choose a color mark, mono mark, tint tile or deep tile.",
+    ja: "登録済みの製品キーを指定し、カラーマーク、単色マーク、淡色タイル、濃色タイルから選びます。",
+    ko: "등록 제품 키를 지정하고 컬러 마크, 단색 마크, 밝은 타일, 짙은 타일 중에서 선택합니다.",
+    fr: "Fournir une clé produit enregistrée. Choisir le symbole couleur, le monochrome, la tuile claire ou la tuile foncée.",
+  },
+  ProductLockup: {
+    "zh-CN": "以 productId、locale 取得注册文案和标语。完整、紧凑和首行共用产品图形，TCRN 产品字标的后缀使用各自的深色。",
+    en: "Pass productId and locale for registered wording and taglines. Full, rail and first-line lockups share the mark. TCRN wordmark suffixes use their product’s deep color.",
+    ja: "productId と locale で登録文言を選びます。フル版・レール版・先頭行は同じマークを使います。TCRN のワードマークの接尾部には各製品の濃色を使います。",
+    ko: "productId와 locale로 등록 문구와 태그라인을 선택합니다. 전체·레일·첫 줄은 같은 마크를 사용합니다. TCRN 워드마크의 접미부에는 해당 제품의 짙은 색을 사용합니다.",
+    fr: "Fournir productId et locale pour les textes et slogans enregistrés. Les blocs complet, rail et première ligne partagent le symbole. Les suffixes TCRN utilisent la couleur foncée de leur produit.",
+  },
+};
+
+const readerProps: Readonly<Record<string, string>> = {
+  "name (published roster)": "name (icon catalog)",
+  "locale (published tagline)": "locale (registered tagline)",
+};
+
+const readerDetailEdits: Readonly<Record<string, readonly (readonly [string, string])[]>> = {
+  Heading: [["（C7）", ""]],
+  Text: [
+    ["强调只加字重不换色", "strong 用一级墨、字重 600"],
+    [" （现包只有一个 Text 类；三个 prop 为本批新增，Owner 2026-10-11 定，默认值不变）", ""],
+    ["numeral 新样式 · Text 的 variant 值（已定）", "numeral · Text 的 variant 值"],
+    ["caps 新样式 · Text 的 variant 值（已定）", "caps · Text 的 variant 值"],
+  ],
+  Icon: [["strokeWidth 覆盖建议移除（现包允许），否则名册规则失效。", "保持默认 strokeWidth。"]],
+  ProductLogo: [
+    ["标（A 段）给 ProductLogo，锁定块与侧栏写法（E 段）给 ProductLockup", "ProductLogo 提供图形标，ProductLockup 提供锁定块和侧栏写法"],
+    ["TCRN 母标另行重设计，重设计前不进标准。Owner 2026-10-11 通过本稿（两处修订：TCRN 产品后缀用产品色；Mana Orchestrate 的名称与标语不提宿主）。", "使用这四枚注册图形及其自带的配色。"],
+    ["，颜色从 TCRN 母标现有的蓝、藏青、黄绿与四色里取", ""],
+  ],
+  ProductLockup: [
+    ["E · 锁定块与侧栏尺度", "锁定块与侧栏尺度"],
+    ["I 标语", "标语"],
+    ["（Owner 2026-10-11）", ""],
+  ],
+  Button: [[" size 的 lg 为本批新增值。", ""], ["（C8）", ""]],
+  ButtonGroup: [["ButtonGroup 新增 ·", "ButtonGroup ·"]],
+  Input: [["Field（第五批）", "Field"]],
+  Textarea: [["Field（第五批）", "Field"]],
+  ProductShell: [
+    ["三版都出自 Logos 板：标（A 段）、侧栏尺度（E 段侧栏）、锁定块（E 段）", "使用产品标、侧栏尺度首行与完整锁定块"],
+    ["所有可见字符串五语同源", "所有可见字符串共用同一套五语文案"],
+  ],
+  ShellBrandButton: [
+    ["通过稿锁定块", "锁定块"],
+    ["文档与设置页的内容居中 1040", "设置页的内容居中 1040"],
+  ],
+  ShellMenu: [["所有可见字符串五语同源", "所有可见字符串共用同一套五语文案"]],
+  ShellIntro: [["C 登入动画", "登入动画"], ["通过稿锁定块", "锁定块"], ["终态 = A1：", "终态："]],
+};
+
+export function apiReaderSummary(api: ApprovedApi, locale: DocsLocale) {
+  return (readerSummaries[api.name] ?? api.summary)[locale];
+}
+
+export function apiReaderProps(api: ApprovedApi) {
+  return api.props.map(prop => readerProps[prop] ?? prop);
+}
+
+export function apiReaderDetails(name: string, formal: string) {
+  return (readerDetailEdits[name] ?? []).reduce(
+    (details, [sourcePhrase, readerPhrase]) => details.replace(sourcePhrase, readerPhrase), formal,
+  );
+}

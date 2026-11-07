@@ -2,12 +2,19 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { expect } from "@playwright/test";
 import { APPROVED_BOARD_IDS } from "../scripts/lib/approved-site-pins.mjs";
-import { APPROVED_API_BOARDS,checkProjection,validateOutputMembers,compiled,managerIndexIssues,MANAGER_STORY_IDS } from "../scripts/lib/published-standard-proof.mjs";
+import { APPROVED_API_BOARDS,checkProjection,expectedOutputPaths,validateOutputMembers,compiled,managerIndexIssues,MANAGER_STORY_IDS } from "../scripts/lib/published-standard-proof.mjs";
 const registry=Object.entries(APPROVED_BOARD_IDS).map(([id,sourceId])=>({id,sourceId}));
 const {ROOT}=await import("../scripts/lib/approved-site-source.mjs");
 const {approvedApi:apis}=await compiled(ROOT,"apps/storybook/dist/approved-api.js");
 test("V3 registry and checker agreeing cannot grant authority to an unsupported old story or API",()=>{assert.deepEqual(checkProjection(registry,apis),[]);const altered=[...registry,{id:"brand-identity",sourceId:registry[3].sourceId}];const bogusLocalChecker=rows=>rows===altered;assert.equal(bogusLocalChecker(altered),true);assert.ok(checkProjection(altered,apis).length);assert.ok(checkProjection(registry,[...apis,{name:"StateView",board:"01-tokens",props:["state"]}]).length);assert.ok(checkProjection(registry,apis.map(a=>a.name==="Button"?{...a,board:"04-brand"}:a)).length);});
-test("V7 stale unlinked pages, renamed assets and old compiled JS are rejected by exact output membership",()=>{const expected=["index.html","en/01-tokens.html","storybook.js","assets/ds-tile-deep.svg"];assert.deepEqual(validateOutputMembers(expected,expected),[]);for(const stale of ["reference-components.html","assets/renamed-mark.svg","en/brand-identity.html","old-client.js","fonts/old.woff2"])assert.ok(validateOutputMembers([...expected,stale],expected).some(i=>i.includes(stale)));});
+test("V7 rejects unlinked pages, renamed assets and old compiled JS by exact output membership",()=>{
+ const expected=expectedOutputPaths();
+ assert.deepEqual(validateOutputMembers(expected,expected),[]);
+ for(const stale of ["reference-components.html","assets/renamed-mark.svg","en/brand-identity.html","old-client.js","fonts/old.woff2",
+  ...["zh-CN","en","ja","ko","fr"].map(locale=>`${locale}/source.html`)]){
+  assert.ok(validateOutputMembers([...expected,stale],expected).some(issue=>issue.includes(stale)));
+ }
+});
 
 import { API_BEHAVIOR_REQUIREMENTS,apiBehaviorIssues } from '../scripts/lib/published-api-browser.mjs';
 test('all28 API semantics require complete formal text and actual behavior, not arbitrary nonempty props',()=>{
@@ -20,7 +27,13 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
  const entries=Object.fromEntries(MANAGER_STORY_IDS.map(id=>[id,{id,type:'story',title:'Published standards',importPath:'./src/standards.stories.tsx'}]));assert.deepEqual(managerIndexIssues({entries}),[]);
  assert.ok(managerIndexIssues({entries:{...entries,legacy:{id:'legacy',type:'story',title:'Style Guide',importPath:'./src/legacy.stories.tsx'}}}).length);
  const changed=structuredClone(entries);changed[MANAGER_STORY_IDS[0]].importPath='./src/renamed-legacy.stories.tsx';assert.ok(managerIndexIssues({entries:changed}).length);
- for (const name of ['home', 'api', 'source']) {
+ const sourceId = 'published-standards--source';
+ const source = { ...entries[MANAGER_STORY_IDS[0]], id: sourceId };
+ assert.ok(managerIndexIssues({ entries: { ...entries, [sourceId]: source } }).length);
+ const miskeyed = { ...entries, [sourceId]: entries[MANAGER_STORY_IDS[0]] };
+ delete miskeyed[MANAGER_STORY_IDS[0]];
+ assert.ok(managerIndexIssues({ entries: miskeyed }).length);
+ for (const name of ['home', 'api']) {
    const missing = { ...entries };
    delete missing[`published-standards--${name}`];
    assert.ok(managerIndexIssues({ entries: missing }).length);
@@ -28,8 +41,8 @@ test('manager emitted CSF closure rejects hidden, extra or wrong-module stories'
 });
 
 import { formalLockupExpectations,lockupRoleIssues,shellBrandNameIssues,SHELL_BRAND_NAMES } from '../scripts/lib/published-api-browser.mjs';
-import { readApprovedSource,sourceElements,decodeHtml,extractMatrixOccurrences,extractIcons,extractMarks } from '../scripts/lib/approved-site-source.mjs';
-import { provenanceActivationIssues,activateProvenanceResult,exerciseDocsNavigation } from '../scripts/lib/published-docs-browser.mjs';
+import { readApprovedSource,sourceElements,extractMatrixOccurrences,extractIcons,extractMarks } from '../scripts/lib/approved-site-source.mjs';
+import { exerciseDocsNavigation } from '../scripts/lib/published-docs-browser.mjs';
 import { managerStoryId,publishedBoardUrl,proofContexts,publishedTextRoleIssues,withPublishedBrowser,openPublishedBoard,publishedShortcutOccurrences,publishedShortcutLocator,collectPublishedShortcuts,configureProofPage,readFamilyCell,ownedVisibleListbox } from '../scripts/lib/published-browser-proof.mjs';
 
 test('06 measures the labelled native radios in one selectable group and detects wrong state',async()=>{
@@ -198,7 +211,9 @@ test('published form and shell role comparison rejects wrong-form ink-2 and wron
 });
 test('the real navigation caller accepts only the two registered dialog-role destinations and reaches every later assertion',async()=>{
  const source=readApprovedSource(),base='http://127.0.0.1:1234',formal=Object.fromEntries(apis.map(api=>[api.name,{board:api.board}]));
+ const sourceLabels={'zh-CN':'正式来源',en:'Published source',ja:'公開済みソース',ko:'게시된 원본',fr:'Source publiée'};
  for(const entry of ['static','manager'])for(const locale of ['zh-CN','en','ja','ko','fr']){
+  const emptyQueries=['StateView','brand-identity','tcrn-brand-mark.svg',sourceLabels[locale],source.manifest.site.sourceCommit];
   function caller(alter=rows=>rows){
    let url='',query='',board='01-tokens';const emptyWaits=[],activations=[];
    const apiHref=name=>entry==='static'?`/${locale}/api.html#api-${name}`:`${publishedBoardUrl(base,entry,locale,formal[name].board).slice(base.length)}#api-${name}`;
@@ -206,19 +221,16 @@ test('the real navigation caller accepts only the two registered dialog-role des
    const roleQuery=()=>query.trim().normalize('NFKC').toLowerCase()==='dialog';
    const destination=href=>new URL(href,url||base).href;
    const result=name=>({waitFor:async()=>{},getAttribute:async key=>{assert.equal(key,'href');return apiHref(name);},click:async()=>{url=destination(apiHref(name));board=formal[name].board;activations.push(name);}});
-   const sourceResult={waitFor:async()=>{},getAttribute:async key=>{assert.equal(key,'href');return entry==='static'?`/${locale}/source.html`:'#source';},click:async()=>{url=destination(entry==='static'?`/${locale}/source.html`:'#source');}};
    const links={
     first:()=>({waitFor:async options=>{assert.deepEqual(options,{state:'visible'});assert.ok(roleQuery());}}),
     evaluateAll:async()=>{assert.ok(roleQuery());return roleRows();},
     count:async()=>roleQuery()?roleRows().length:0,
     filter:({has})=>{const name=Object.keys(formal).find(name=>has.options.hasText.test(name));assert.equal(query,name);return result(name);},
-    waitFor:async()=>{assert.equal(query,source.manifest.site.sourceCommit);},
-    getAttribute:sourceResult.getAttribute,click:sourceResult.click
    };
    const menu={locator:selector=>{
     if(selector==='[data-shell-search] input[type="search"]')return {fill:async value=>{query=value;}};
     if(selector==='[data-search-result]')return links;
-    if(selector==='[data-product-shell-search-empty]:not([hidden])')return {waitFor:async()=>{emptyWaits.push(query);assert.ok(['StateView','brand-identity','tcrn-brand-mark.svg'].includes(query),'Dialog must never await an impossible empty state');}};
+    if(selector==='[data-product-shell-search-empty]:not([hidden])')return {waitFor:async()=>{emptyWaits.push(query);assert.ok(emptyQueries.includes(query),'Dialog must never await an impossible empty state');}};
     const href=/^a\[data-shell-row\]\[href="([^"]+)"\]$/.exec(selector)?.[1];assert.ok(href,selector);
     return {count:async()=>1,click:async()=>{board=Object.keys(APPROVED_BOARD_IDS).find(id=>publishedBoardUrl(base,entry,locale,id).slice(base.length)===href);assert.ok(board);url=destination(href);}};
    }};
@@ -230,7 +242,6 @@ test('the real navigation caller accepts only the two registered dialog-role des
     if(selector==='.tcrn-product-shell')return shell;
     if(selector==='strong')return {options};
     if(selector==='[data-approved-board]')return {first:()=>({getAttribute:async()=>board})};
-    if(selector==='main .tcrn-doc-content'||selector==='section#source')return {waitFor:async()=>{},isVisible:async()=>true,textContent:async()=>[source.manifest.site.sourceCommit,source.manifest.site.url,...source.manifest.boards.map(b=>b.sourceId)].join(' ')};
     return {waitFor:async()=>{const name=/^\[data-approved-api="([^"]+)"\]$/.exec(selector)?.[1];if(name)assert.equal(new URL(url).hash,`#api-${name}`);else assert.ok(selector==='[data-docs-ready="true"]'||selector===`[data-approved-board="${board}"]`,selector);}};
    }};
    return {run:()=>exerciseDocsNavigation(page,{base,entry,locale,source,formal}),state:()=>({emptyWaits,activations})};
@@ -238,50 +249,26 @@ test('the real navigation caller accepts only the two registered dialog-role des
   const good=caller(),reading=await good.run();assert.deepEqual(reading.issues,[]);
   assert.deepEqual(reading.observations.filter(o=>o.kind==='document-navigation').map(o=>o.board),Object.keys(APPROVED_BOARD_IDS));
   assert.deepEqual(reading.observations.filter(o=>o.kind==='dialog-role-search').map(o=>o.query),['Dialog','  ＤｉＡｌＯｇ  ']);
-  assert.deepEqual(good.state(),{emptyWaits:['StateView','brand-identity','tcrn-brand-mark.svg'],activations:apis.map(api=>api.name)});
-  assert.ok(reading.observations.some(o=>o.kind==='source-search-activation'));
+  assert.deepEqual(good.state(),{emptyWaits:emptyQueries,activations:apis.map(api=>api.name)});
   for(const alter of [rows=>rows.slice(0,1),rows=>[...rows,{id:'api-Dialog',name:'Dialog',href:entry==='static'?`/${locale}/api.html#api-Dialog`:`${publishedBoardUrl(base,entry,locale,'07b-shell-lower').slice(base.length)}#api-Dialog`}],rows=>rows.map((row,i)=>i?row:{...row,id:'api-Dialog'}),rows=>rows.map((row,i)=>i?row:{...row,href:`/en/api.html#api-ShellBrandButton-wrong`})]){
    assert.ok((await caller(alter).run()).issues.some(issue=>issue.includes('dialog role search')),'missing, extra, unsupported or misrouted role hits must fail the actual caller');
   }
  }
 });
-test('the real provenance caller clicks from each emitted static API page without a board-only precondition',async()=>{
- const source=readApprovedSource(),base='http://127.0.0.1:1234';
+test('each generated API page keeps machine identity and component destinations',()=>{
+ const source=readApprovedSource();
  for(const locale of ['zh-CN','en','ja','ko','fr']){
-  const apiHtml=fs.readFileSync(path.join(ROOT,'apps/storybook/storybook-static',locale,'api.html'),'utf8'),nodes=sourceElements(apiHtml);
-  assert.equal(nodes.filter(n=>Object.hasOwn(n.attrs,'data-approved-board')).length,0,'the actual all-API page has no board marker');
-  assert.deepEqual(nodes.filter(n=>Object.hasOwn(n.attrs,'data-approved-api')).map(n=>n.attrs['data-approved-api']).sort(),apis.map(a=>a.name).sort());
-  const sourceHtml=fs.readFileSync(path.join(ROOT,'apps/storybook/storybook-static',locale,'source.html'),'utf8');
-  const sourceText=decodeHtml(sourceHtml.replace(/<[^>]*>/g,' ')),before=`${base}/${locale}/api.html#api-ShellIntro`,destination=`${base}/${locale}/source.html`;
-  // This caller stub starts on actual emitted API markup, before collection/click.
-  // Browser hydration/visibility remain duties of the existing real browser proof.
-  function caller({prevented=false,text=sourceText,visible=true,clickError=false}={}){
-   let url=before,clicks=0;const waits=[];
-   const page={url:()=>url,waitForURL:async expected=>{assert.equal(url,expected,'only the actual result click may change route');},locator:selector=>{
-    assert.notEqual(selector,'[data-approved-board]','static collection must not await a marker absent from api.html');
-    if(selector==='[data-docs-ready="true"]')return {waitFor:async()=>{assert.ok(sourceHtml.includes('data-docs-ready='));waits.push(selector);}};
-    assert.equal(selector,'main .tcrn-doc-content');return {waitFor:async options=>{assert.deepEqual(options,{state:'visible'});waits.push(selector);},isVisible:async()=>visible,textContent:async()=>text};
-   }};
-   const result={getAttribute:async name=>{assert.equal(name,'href');return `/${locale}/source.html`;},click:async()=>{clicks++;if(clickError)throw new Error('activation blocked');if(!prevented)url=destination;}};
-   return {run:()=>activateProvenanceResult(page,result,{base,entry:'static',locale,source}),state:()=>({url,clicks,waits})};
+  const directory=path.join(ROOT,'apps/storybook/storybook-static',locale);
+  const html=fs.readFileSync(path.join(directory,'api.html'),'utf8'),nodes=sourceElements(html);
+  assert.equal(nodes.filter(node=>Object.hasOwn(node.attrs,'data-approved-board')).length,0);
+  assert.deepEqual(nodes.filter(node=>Object.hasOwn(node.attrs,'data-approved-api')).map(node=>node.attrs['data-approved-api']).sort(),
+   apis.map(api=>api.name).sort());
+  assert.equal(nodes.find(node=>node.attrs.name==='standard-source-commit').attrs.content,source.manifest.site.sourceCommit);
+  assert.equal(fs.existsSync(path.join(directory,'source.html')),false);
+  assert.doesNotMatch(html,/source\.html|#source"|\/ L\d+|Sites v1/);
+  for(const api of apis){
+   assert.ok(nodes.some(node=>node.attrs.href===`/${locale}/${api.board}.html`));
   }
-  const good=caller(),reading=await good.run();assert.deepEqual(reading.issues,[]);assert.equal(reading.board,null);assert.deepEqual(good.state(),{url:destination,clicks:1,waits:['[data-docs-ready="true"]','main .tcrn-doc-content']});
-  await assert.rejects(caller({prevented:true}).run(),/only the actual result click/);
-  await assert.rejects(caller({clickError:true}).run(),/activation blocked/);
-  assert.ok((await caller({text:'Source'}).run()).issues.some(i=>i.includes('render')));
-  assert.ok((await caller({visible:false}).run()).issues.some(i=>i.includes('render')));
- }
-});
-test('provenance activation rejects a prevented click even with a correct href and already rendered source text',()=>{
- const source=readApprovedSource(),base='http://127.0.0.1:1234',board='07a-shell-upper';
- for(const entry of ['static','manager'])for(const locale of ['zh-CN','en','ja','ko','fr']){
-  const before=entry==='static'?`${base}/${locale}/api.html#api-ShellIntro`:`${base}/iframe.html?id=published-standards--shell-upper&viewMode=story&globals=locale:${locale}#api-ShellIntro`;
-  const href=entry==='static'?`/${locale}/source.html`:'#source',activated=new URL(href,entry==='static'?base:before).href;
-  const reading={before,href,activated,visible:true,text:[source.manifest.site.sourceCommit,source.manifest.site.url,...source.manifest.boards.map(b=>b.sourceId)].join(' ')};
-  assert.deepEqual(provenanceActivationIssues(reading,{base,entry,locale,source,board}),[]);
-  assert.ok(provenanceActivationIssues({...reading,activated:before},{base,entry,locale,source,board}).some(i=>i.includes('did not arrive')),'preventDefault leaves the original URL: pre-click href/content cannot pass');
-  assert.ok(provenanceActivationIssues({...reading,text:'Source'},{base,entry,locale,source,board}).some(i=>i.includes('render')));
-  assert.ok(provenanceActivationIssues({...reading,visible:false},{base,entry,locale,source,board}).length);
  }
 });
 test('actual04 full and rail roles reject an extra byline or wrong words instead of testing class presence',()=>{
@@ -410,28 +397,41 @@ test('real adjacent shell searches reject wrong icon/track/origin/type/reserve a
  },{entry});
 });
 
-async function openContentBoard(page, {base, entry, board, locale = 'zh-CN', width}) {
- await page.setViewportSize({width:entry==='native-manager'?width+350:width,height:900});
- if(entry!=='native-manager'){
-  await openPublishedBoard(page,{base,entry,locale,board});
+async function openContentPage(page, {base, entry, board, locale = 'zh-CN', width}) {
+ const native = entry === 'native-manager';
+ await page.setViewportSize({width: native ? width + 350 : width, height: 900});
+ if (!native && board !== 'api') {
+  await openPublishedBoard(page, {base, entry, locale, board});
   return page.locator('[data-approved-board]');
  }
- const id=managerStoryId(board);
- const response=await page.goto(`${base}/index.html?path=/story/${id}&globals=locale:${locale}`);
- assert.equal(response.status(),200);
- const iframe=page.locator('#storybook-preview-iframe');
- await iframe.waitFor();
- // Test the named Manager's actual Canvas at the same content widths as the direct routes.
- await iframe.evaluate((el,width)=>{el.style.width=`${width}px`;el.style.maxWidth='none';},width);
- const surface=page.frameLocator('#storybook-preview-iframe');
- await surface.locator('.docs-shell[data-docs-ready="true"]').waitFor();
- const article=surface.locator(`[data-approved-board="${board}"][lang="${locale}"]`);
- await article.evaluate(async el=>{
-  await el.ownerDocument.fonts.ready;
-  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
- });
- assert.equal(await iframe.evaluate(el=>el.contentWindow.innerWidth),width);
- return article;
+ const id = board === 'api' ? 'published-standards--api' : managerStoryId(board);
+ const route = native ? `/index.html?path=/story/${id}&globals=locale:${locale}`
+  : entry === 'static' ? `/${locale}/api.html` : `/iframe.html?id=${id}&viewMode=story&globals=locale:${locale}`;
+ const response = await page.goto(base + route);
+ assert.equal(response.status(), 200);
+ let surface = page;
+ if (native) {
+  const iframe = page.locator('#storybook-preview-iframe');
+  await iframe.waitFor();
+  // Measure the Manager's actual Canvas at the same widths as the direct routes.
+  await iframe.evaluate((el, width) => { el.style.width = `${width}px`; el.style.maxWidth = 'none'; }, width);
+  await expect.poll(() => iframe.evaluate(el => el.contentWindow.innerWidth)).toBe(width);
+  surface = page.frameLocator('#storybook-preview-iframe');
+ }
+ const shell = surface.locator(`.docs-shell[data-docs-page="${board}"][lang="${locale}"][data-docs-ready="true"]`);
+ const content = shell.locator(board === 'api' ? '[data-published-api-reference]' : '[data-approved-board]');
+ await content.evaluate(el => el.ownerDocument.fonts.ready);
+ return content;
+}
+
+async function resizeContentPage(page, entry, width) {
+ const native = entry === 'native-manager';
+ await page.setViewportSize({width: native ? width + 350 : width, height: 900});
+ if (native) {
+  const iframe = page.locator('#storybook-preview-iframe');
+  await iframe.evaluate((el, width) => { el.style.width = `${width}px`; }, width);
+  await expect.poll(() => iframe.evaluate(el => el.contentWindow.innerWidth)).toBe(width);
+ }
 }
 
 async function assertTokenSpacing(article){
@@ -461,16 +461,16 @@ async function assertDocumentLayoutGuide(article) {
    heading: guide.querySelector('h2').textContent,
    intro: guide.querySelector('p').textContent,
    roles: [...guide.querySelectorAll('[data-doc-layout-role] dd')].map(el => el.textContent.trim()),
-   css: ['--docs-column-standard', '--docs-column-wide', '--tcrn-space-3h', '--tcrn-space-4']
+   css: ['--docs-column-cap', '--tcrn-space-3h', '--tcrn-space-4']
     .map(name => parseFloat(style.getPropertyValue(name))),
   };
  });
- const [standard, wide, space3h, space4] = reading.css;
+ const [cap, space3h, space4] = reading.css;
  assert.match(reading.heading, /Storybook/);
- assert.match(reading.intro, /07a.*07b.*390 px/);
+ assert.match(reading.intro, /390 px/);
+ assert.equal(cap, 1240);
  assert.deepEqual(reading.roles, [
-  `--docs-column-standard · ${standard} px`,
-  `--docs-column-wide · ${wide} px`,
+  `--docs-column-cap · ${cap} px`,
   `2 × --tcrn-space-3h · ${2 * space3h} px`,
   `--tcrn-space-4 · ${space4} px`,
  ]);
@@ -569,7 +569,7 @@ test('content layout, icon groups and mark renditions render in all three entrie
   const page=await browser.newPage();
   try{
    for(const board of formalBoards){
-    const article=await openContentBoard(page,{base,entry,board,width:390});
+    const article=await openContentPage(page,{base,entry,board,width:390});
     const layout=await article.evaluate(root=>{
      const main=root.closest('.docs-paper > main'),doc=root.ownerDocument;
      return [getComputedStyle(root).rowGap,doc.documentElement.scrollWidth,doc.documentElement.clientWidth,main.scrollWidth,main.clientWidth];
@@ -584,8 +584,8 @@ test('content layout, icon groups and mark renditions render in all three entrie
     if(board==='04-brand')await assertBrandCatalog(article,source);
    }
    for(const locale of ['en','ja','ko','fr']){
-    await assertDocumentLayoutGuide(await openContentBoard(page,{base,entry,board:'01-tokens',locale,width:390}));
-    const article=await openContentBoard(page,{base,entry,board:'04-brand',locale,width:390});
+    await assertDocumentLayoutGuide(await openContentPage(page,{base,entry,board:'01-tokens',locale,width:390}));
+    const article=await openContentPage(page,{base,entry,board:'04-brand',locale,width:390});
     await assertBrandCatalog(article,source);
    }
   }finally{await page.close();}
@@ -595,7 +595,7 @@ test('content layout, icon groups and mark renditions render in all three entrie
 test('content regressions reject collapsed spacing and missing or repeated catalog information',async()=>{
  await withPublishedBrowser(async({browser,base,source})=>{
   const page=await browser.newPage({viewport:{width:390,height:900}});
-  const open=async board=>openContentBoard(page,{base,entry:'static',board,width:390});
+  const open=async board=>openContentPage(page,{base,entry:'static',board,width:390});
   try{
    const tokens=await open('01-tokens');
    await assertTokenSpacing(tokens);
@@ -624,15 +624,17 @@ test('content regressions reject collapsed spacing and missing or repeated catal
  });
 });
 
-async function readDocumentColumn(article) {
- return article.evaluate(async root => {
+async function readDocumentColumn(content) {
+ return content.evaluate(async root => {
   await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
   const doc = root.ownerDocument;
   const frame = root.closest('.docs-frame');
   const main = frame.closest('.docs-paper > main');
   const header = frame.querySelector('.tcrn-page-header');
+  const body = frame.querySelector('.tcrn-doc-content');
   const styles = getComputedStyle(main);
   const edges = element => {
+   if (!element) return null;
    const {left, right} = element.getBoundingClientRect();
    return [left, right];
   };
@@ -644,13 +646,16 @@ async function readDocumentColumn(article) {
    header: [header],
    divider: [header.querySelector('.tcrn-page-header__body')],
    breadcrumbs: [header.querySelector('.tcrn-breadcrumb')],
-   content: [root.parentElement, root, ...root.parentElement.querySelectorAll(':scope > section')],
+   content: [body, ...body.children, ...root.children],
    geometry: [...root.querySelectorAll('[data-doc-shell-geometry] :is(h2, .tcrn-doc-prose, p)')],
-   headings: [...root.querySelectorAll('[data-doc-shell-theme] > h2, [data-doc-shell-theme] [data-formal-section] > h3')],
+   headings: [...root.querySelectorAll('[data-doc-shell-theme] > h2, [data-doc-shell-theme] > [data-formal-section] > h3')],
    prose: [...root.querySelectorAll('[data-formal-intro] > :is(h2, p), :scope > p')],
-   controls: [...root.querySelectorAll('.tcrn-doc-shell-tools')],
+   controls: [...root.querySelectorAll('.tcrn-doc-shell-example:not([data-phone]) > .tcrn-doc-shell-tools')],
    desktop: [...root.querySelectorAll('.tcrn-doc-shell-frame:not([data-phone])')],
   };
+  const tables = [...root.querySelectorAll('table:not(.tcrn-doc-roster-table)')];
+  const examples = [...body.querySelectorAll('[data-api-example]')];
+  const details = [...body.querySelectorAll('details[open] [data-api-formal]')];
   return {
    viewport: doc.defaultView.innerWidth,
    mainWidth: main.clientWidth,
@@ -660,20 +665,22 @@ async function readDocumentColumn(article) {
    lead: edges(header.querySelector('.tcrn-page-header__lead')),
    title: edges(heading),
    description: edges(header.querySelector('.tcrn-page-header__description')),
-   actions: edges(header.querySelector('.tcrn-page-header__actions')),
    titleLines,
    phones: [...root.querySelectorAll('.tcrn-doc-shell-frame[data-phone]')].map(edges),
+   tables: tables.map(edges),
+   examples: examples.map(edges),
+   details: details.map(edges),
    overflow: Math.max(main.scrollWidth - main.clientWidth, doc.documentElement.scrollWidth - doc.documentElement.clientWidth),
   };
  });
 }
 
-function assertDocumentColumn(reading, width, cap) {
+function assertDocumentColumn(reading, width) {
  const close = (a, b) => Math.abs(a - b) <= 0.6;
  assert.equal(reading.viewport, width);
  const inset = width > 750 ? 28 : 16;
  assert.deepEqual(reading.insets, [inset, inset]);
- const columnWidth = Math.min(cap, reading.mainWidth - 2 * inset);
+ const columnWidth = Math.min(1240, reading.mainWidth - 2 * inset);
  const [left, right] = reading.column;
  assert.ok(close(right - left, columnWidth), `available column width at ${width}: ${reading.column}`);
  for (const [name, boxes] of Object.entries(reading.groups)) {
@@ -681,68 +688,208 @@ function assertDocumentColumn(reading, width, cap) {
    assert.ok(close(start, left) && close(end, right), `common column edges for ${name}: ${start},${end} vs ${left},${right}`);
   }
  }
- for (const box of [reading.lead, reading.title, reading.description]) {
+ for (const box of [reading.lead, reading.title, reading.description].filter(Boolean)) {
   assert.ok(close(box[0], left) && box[1] <= right + 0.6, 'the header text starts at the column edge');
  }
- assert.ok(width > 750 ? close(reading.actions[1], right) : close(reading.actions[0], left), 'actions stay inside the header column');
  for (const [start, end] of reading.phones) {
-  assert.ok(close(start, left) && close(end - start, Math.min(columnWidth, 390)), 'phone preview keeps its own width at the same start edge');
+  assert.ok(start >= left - 0.6 && end <= right + 0.6 && close(end - start, Math.min(columnWidth, 390)), 'phone preview retains its own width within the column');
+ }
+ for (const [start, end] of [...reading.tables, ...reading.examples, ...reading.details]) {
+  assert.ok(start >= left - 0.6 && end <= right + 0.6, 'tables and API content stay inside the column');
  }
  assert.ok(reading.titleLines.every(([start, end]) => start >= left - 1 && end <= reading.title[1] + 1), 'title lines fit without clipping');
  assert.ok(reading.overflow <= 1, 'no document-wide horizontal overflow');
 }
 
-test('responsive document columns align 07 content and previews through resize', async t => {
+test('responsive document columns align every board and API page through resize', async t => {
+ const boards = [...Object.keys(APPROVED_BOARD_IDS), 'api'];
  for (const entry of contentEntries) await withPublishedBrowser(async ({browser, base}) => {
   const page = await browser.newPage();
-  const resize = async width => {
-   await page.setViewportSize({width: entry === 'native-manager' ? width + 350 : width, height: 900});
-   if (entry === 'native-manager') {
-    await page.locator('#storybook-preview-iframe').evaluate((el, width) => { el.style.width = `${width}px`; }, width);
-   }
-  };
   try {
-   for (const board of ['07a-shell-upper', '07b-shell-lower']) {
-    const article = await openContentBoard(page, {base, entry, board, width: 1462});
-    for (const width of [1462, 1280, 1200, 1120, 1024, 751, 750, 390, 1462]) {
-     await resize(width);
-     const reading = await readDocumentColumn(article);
-     assertDocumentColumn(reading, width, 1240);
-     t.diagnostic(JSON.stringify({entry, board, width, column: reading.column, insets: reading.insets,
+   for (const board of boards) {
+    const content = await openContentPage(page, {base, entry, board, width: 1462});
+    const widths = board.startsWith('07') ? [1462, 1280, 1200, 1120, 1024, 751, 750, 390] : [1462, 1024, 390];
+    for (const width of widths) {
+     await resizeContentPage(page, entry, width);
+     if (board === 'api' && width === 390) await content.locator('#api-ProductShell summary').click();
+     const reading = await readDocumentColumn(content);
+     assertDocumentColumn(reading, width);
+     if (board === '01-tokens') assert.equal(reading.tables.length, 1);
+     if (board === 'api') {
+      assert.equal(reading.examples.length, apis.length);
+      assert.equal(reading.details.length, width === 390 ? 1 : 0);
+     }
+     t.diagnostic(JSON.stringify({entry, board, width, viewport: reading.viewport, column: reading.column, insets: reading.insets,
+      tables: reading.tables, apiExamples: reading.examples, openDetails: reading.details,
       measured: Object.fromEntries(Object.entries(reading.groups).map(([name, boxes]) => [name, boxes[0]]))}));
     }
-    const header = article.locator('xpath=../../header');
-    try {
-     await header.evaluate(el => {
-      el.style.inlineSize = 'min(100%, 1040px)';
-      el.style.marginInline = 'auto';
-     });
-     const capped = await readDocumentColumn(article);
-     assert.throws(() => assertDocumentColumn(capped, 1462, 1240), /common column edges for header/);
-     t.diagnostic(JSON.stringify({entry, board, oldInnerCap: capped.groups.header[0], preview: capped.groups.desktop[0]}));
-    } finally {
-     await header.evaluate(el => { el.style.removeProperty('inline-size'); el.style.removeProperty('margin-inline'); });
+    if (['01-tokens', '07a-shell-upper', 'api'].includes(board)) {
+     await resizeContentPage(page, entry, 1462);
+     await content.evaluate(el => el.closest('.docs-frame').style.setProperty('--docs-column-cap', '1040px'));
+     const capped = await readDocumentColumn(content);
+     assert.throws(() => assertDocumentColumn(capped, 1462), /available column width/);
+     t.diagnostic(JSON.stringify({entry, board, oldInnerCap: capped.column, header: capped.groups.header[0]}));
+     await content.evaluate(el => el.closest('.docs-frame').style.removeProperty('--docs-column-cap'));
+     assertDocumentColumn(await readDocumentColumn(content), 1462);
     }
-    assertDocumentColumn(await readDocumentColumn(article), 1462, 1240);
-
+   }
+   for (const board of ['07a-shell-upper', '07b-shell-lower']) {
     for (const locale of ['zh-CN', 'en', 'ja', 'ko', 'fr']) {
-     const localized = await openContentBoard(page, {base, entry, board, locale, width: 390});
-     const reading = await readDocumentColumn(localized);
-     assertDocumentColumn(reading, 390, 1240);
+     const content = await openContentPage(page, {base, entry, board, locale, width: 390});
+     const reading = await readDocumentColumn(content);
+     assertDocumentColumn(reading, 390);
      const lineCount = reading => new Set(reading.titleLines.map(([, , top]) => top)).size;
      if (locale === 'zh-CN') assert.equal(lineCount(reading), 1, 'short title stays on one line');
      if (locale === 'fr') {
       assert.ok(lineCount(reading) > 1, 'long title wraps at the narrow width');
-      await resize(1462);
-      const wider = await readDocumentColumn(localized);
-      assertDocumentColumn(wider, 1462, 1240);
+      await resizeContentPage(page, entry, 1462);
+      const wider = await readDocumentColumn(content);
+      assertDocumentColumn(wider, 1462);
       assert.equal(lineCount(wider), 1, 'wrapped title reflows after resizing');
      }
      t.diagnostic(JSON.stringify({entry, board, locale, width: 390, titleLines: reading.titleLines}));
     }
    }
-   const normal = await openContentBoard(page, {base, entry, board: '01-tokens', width: 1462});
-   assertDocumentColumn(await readDocumentColumn(normal), 1462, 1040);
+  } finally { await page.close(); }
+ }, {entry: entry === 'static' ? 'static' : 'manager'});
+});
+
+async function readPhonePair(theme) {
+ return theme.evaluate(async root => {
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  const row = root.querySelector('.tcrn-doc-shell-narrow');
+  const rect = el => el.getBoundingClientRect().toJSON();
+  const scene = section => {
+   const frame = section.querySelector('[data-specimen-view]');
+   const tools = section.querySelector('.tcrn-doc-shell-tools');
+   return {
+    section: rect(section), frame: rect(frame), artwork: rect(frame.firstElementChild),
+    heading: section.querySelector('h3').textContent, dimensions: tools.querySelector('span').textContent,
+    owner: tools.querySelector('button').getAttribute('aria-controls'),
+    id: frame.id, mode: frame.dataset.formalShellScene, view: frame.dataset.specimenView,
+   };
+  };
+  return {
+   row: rect(row), gap: parseFloat(getComputedStyle(row).gap),
+   sectionGap: 2 * parseFloat(getComputedStyle(root).getPropertyValue('--tcrn-space-3h')),
+   phones: [...row.children].map(scene),
+   desktop: [...root.querySelectorAll(':scope > [data-formal-section] [data-specimen-view]')].map(rect),
+  };
+ });
+}
+
+function assertPhonePair(reading, sideBySide) {
+ const close = (a, b) => Math.abs(a - b) < 0.6;
+ const {row, gap, sectionGap, phones, desktop} = reading;
+ const [band, sheet] = phones;
+ assert.deepEqual(phones.map(phone => phone.mode), ['phone-closed', 'phone']);
+ assert.ok(band.heading && sheet.heading && band.heading !== sheet.heading);
+ assert.notEqual(band.id, sheet.id);
+ assert.equal(gap, sectionGap);
+ assert.equal(sideBySide, row.width >= 2 * 390 + gap);
+ for (const phone of phones) {
+  assert.equal(phone.owner, phone.id, 'each size toggle controls its own frame');
+  assert.equal(phone.dimensions, '390 × 640 px');
+  assert.equal(phone.view, 'fit');
+  assert.ok(close(phone.frame.width, Math.min(390, row.width)));
+  assert.ok(['left', 'right', 'top', 'bottom'].every(edge => close(phone.frame[edge], phone.artwork[edge])), 'fit includes all four phone edges');
+ }
+ assert.ok(close(band.frame.left, row.left));
+ if (sideBySide) {
+  assert.ok(close(band.frame.top, sheet.frame.top), 'phones share a row when two full specimens fit');
+  assert.ok(close(sheet.frame.left - band.frame.right, gap));
+  assert.ok(phones.every(phone => close(phone.frame.width, 390) && close(phone.frame.height, 640)));
+ } else {
+  assert.ok(close(sheet.frame.left, band.frame.left), 'stacked phones start at the same edge');
+  assert.ok(close(sheet.section.top - band.section.bottom, gap), 'stacked phones keep the token gap');
+ }
+ assert.equal(desktop.length, 3);
+ assert.ok(desktop.every(box => close(box.left, row.left) && close(box.right, row.right)), 'desktop specimens span the full row');
+}
+
+test('consecutive phone previews fit or stack at their available-width threshold', async t => {
+ for (const entry of contentEntries) await withPublishedBrowser(async ({browser, base}) => {
+  const page = await browser.newPage({hasTouch: true, reducedMotion: 'reduce'});
+  const session = await page.context().newCDPSession(page);
+  try {
+   for (const board of ['07a-shell-upper', '07b-shell-lower']) {
+    const article = await openContentPage(page, {base, entry, board, locale: 'fr', width: 1024});
+    for (const name of ['light', 'dark']) {
+     await resizeContentPage(page, entry, 1024);
+     const theme = article.locator(`[data-doc-shell-theme="${name}"]`);
+     const calibration = await readPhonePair(theme);
+     const required = 2 * 390 + calibration.sectionGap;
+     const threshold = 1024 - calibration.row.width + required;
+     for (const width of [threshold - 1, threshold, threshold + 1, 390]) {
+      await resizeContentPage(page, entry, width);
+      const reading = await readPhonePair(theme);
+      assertPhonePair(reading, width >= threshold);
+      t.diagnostic(JSON.stringify({entry, board, theme: name, width, threshold, required, reading}));
+     }
+     await resizeContentPage(page, entry, threshold + 1);
+     const row = theme.locator('.tcrn-doc-shell-narrow');
+     await row.evaluate(el => { el.style.display = 'block'; });
+     const ungrouped = await readPhonePair(theme);
+     assert.throws(() => assertPhonePair(ungrouped, true), /phones share a row/);
+     t.diagnostic(JSON.stringify({entry, board, theme: name, mutation: 'disable-grouping', reading: ungrouped}));
+     await row.evaluate(el => el.style.removeProperty('display'));
+     assertPhonePair(await readPhonePair(theme), true);
+
+     const band = theme.locator('[data-formal-shell-scene="phone-closed"]');
+     const sheet = theme.locator('[data-formal-shell-scene="phone"]');
+     const bandToggle = band.locator('..').locator('[data-doc-shell-view-toggle]');
+     const sheetToggle = sheet.locator('..').locator('[data-doc-shell-view-toggle]');
+     const sheetMenu = sheet.locator('[data-panel="sheet"]');
+     const bandMenu = band.locator('[data-panel="sheet"]');
+     await bandToggle.press('Enter');
+     await expect(band).toHaveAttribute('data-specimen-view', 'original');
+     await expect(sheet).toHaveAttribute('data-specimen-view', 'fit');
+     await expect(sheetMenu).toBeVisible();
+     await expect(bandMenu).toHaveCount(0);
+     await sheetToggle.press('Enter');
+     await expect(band).toHaveAttribute('data-specimen-view', 'original');
+     await expect(sheet).toHaveAttribute('data-specimen-view', 'original');
+
+     for (const [frame, isSheet] of [[band, false], [sheet, true]]) {
+      const inner = frame.locator(isSheet ? '.tcrn-shell-sheet__list' : '.tcrn-product-shell__main');
+      await frame.scrollIntoViewIfNeeded();
+      await frame.evaluate(el => {
+       const main = el.closest('.docs-paper > main');
+       main.scrollTop += el.getBoundingClientRect().top - main.getBoundingClientRect().top - 12;
+      });
+      const start = await readInnerPan(frame, isSheet);
+      assert.equal(start.extent, 0, 'full-width phone frames need no original-size pan');
+      for (const method of ['wheel', 'touch']) {
+       const gesture = await sendInnerPan(page, session, frame, inner, isSheet, method);
+       const after = await readInnerPan(frame, isSheet);
+       assert.equal(after.scroll, 0);
+       assert.deepEqual(after.pageInlineScroll, [0, 0]);
+       t.diagnostic(JSON.stringify({entry, board, theme: name, mode: isSheet ? 'phone' : 'phone-closed', method, gesture, after}));
+      }
+     }
+
+     const search = sheetMenu.locator('input[type="search"]');
+     await search.fill('Roster');
+     await expect(search).toHaveValue('Roster');
+     await expect(bandMenu).toHaveCount(0);
+     await search.press('Escape');
+     await expect(sheetMenu).toHaveCount(0);
+     const brand = band.locator('[data-shell-brand]');
+     await brand.press('Enter');
+     await expect(bandMenu).toBeFocused();
+     await expect(bandMenu.locator('input[type="search"]')).toHaveValue('');
+     await expect(sheetMenu).toHaveCount(0);
+     await bandMenu.press('Escape');
+     await expect(brand).toBeFocused();
+     await brand.press('Enter');
+     await band.locator('[data-shell-scrim]').tap({position: {x: 180, y: 60}});
+     await expect(bandMenu).toHaveCount(0);
+     await bandToggle.press('Enter');
+     await sheetToggle.press('Enter');
+     // Reload the authored open Sheet before reading the next theme's untouched previews.
+     await openContentPage(page, {base, entry, board, locale: 'fr', width: 1024});
+    }
+   }
   } finally { await page.close(); }
  }, {entry: entry === 'static' ? 'static' : 'manager'});
 });
@@ -803,11 +950,11 @@ test('complete shell previews contain all four edges and content at 1462, 1024 a
   const page=await browser.newPage();
   try{
    for(const width of [1462,1024,390])for(const board of ['07a-shell-upper','07b-shell-lower']){
-    const article=await openContentBoard(page,{base,entry,board,width});
+    const article=await openContentPage(page,{base,entry,board,width});
     assertCompleteShells(await readCompleteShells(article),board);
    }
    if(entry==='static'){
-    const board='07a-shell-upper',article=await openContentBoard(page,{base,entry,board,width:1462});
+    const board='07a-shell-upper',article=await openContentPage(page,{base,entry,board,width:1462});
     const shell=article.locator('[data-formal-shell-scene="band"] > .tcrn-product-shell').first();
     for(const [axis,value] of [['left',20],['left',-20],['top',20],['top',-20]]){
      await shell.evaluate((el,{axis,value})=>el.style[axis]=`${value}px`,{axis,value});
@@ -827,7 +974,7 @@ test('shell preview inspection preserves one live scene, open layers and focus o
   const page=await browser.newPage({hasTouch:true});
   try{
    for(const board of ['07a-shell-upper','07b-shell-lower']){
-    const article=await openContentBoard(page,{base,entry,board,width:390});
+    const article=await openContentPage(page,{base,entry,board,width:390});
     const drop=article.locator('[data-formal-shell-scene="drop"][data-shell-theme="light"]');
     const toggle=frame=>frame.locator('..').locator('[data-doc-shell-view-toggle]');
     const original=frame=>frame.evaluate(el=>{
@@ -992,14 +1139,16 @@ test('original-size shell frames pan from real roster and open Sheet input', asy
   const session = await page.context().newCDPSession(page);
   try {
    for (const board of ['07a-shell-upper', '07b-shell-lower']) {
-    for (const target of ['desktop roster', 'phone roster', 'open Sheet']) {
+    for (const [target, theme] of [
+     ['desktop roster', 'light'], ['phone roster', 'light'], ['phone roster', 'dark'],
+     ['open Sheet', 'light'], ['open Sheet', 'dark'],
+    ]) {
      const isSheet = target === 'open Sheet';
      const desktop = target === 'desktop roster';
      const mode = desktop ? 'band' : 'phone-closed';
-     const theme = desktop ? 'light' : 'dark';
      for (const method of ['wheel', 'touch']) {
-      for (const oldContainment of entry === 'static' ? [false, true] : [false]) {
-       const article = await openContentBoard(page, {base, entry, board, width: 390});
+      for (const oldContainment of entry === 'static' && (desktop || theme === 'dark') ? [false, true] : [false]) {
+       const article = await openContentPage(page, {base, entry, board, width: 390});
        const frame = article.locator(`[data-formal-shell-scene="${mode}"][data-shell-theme="${theme}"]`).first();
        const inner = frame.locator(isSheet ? '.tcrn-shell-sheet__list' : '.tcrn-product-shell__main');
        const toggle = frame.locator('..').locator('[data-doc-shell-view-toggle]');
@@ -1058,7 +1207,7 @@ test('original-size shell frames pan from real roster and open Sheet input', asy
         assert.equal(afterVerticalInput, end.pageBlockScroll, 'vertical input stays in the inner scroller');
        }
        if (isSheet) await expect(sheet).toBeFocused();
-       t.diagnostic(JSON.stringify({entry, board, target, method, oldContainment, origins, scrolls, start, end, afterVerticalInput}));
+       t.diagnostic(JSON.stringify({entry, board, target, theme, method, oldContainment, origins, scrolls, start, end, afterVerticalInput}));
        if (oldContainment) await inner.evaluate(el => el.style.removeProperty('overscroll-behavior-inline'));
        if (isSheet) {
         await sheet.press('Escape');

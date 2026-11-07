@@ -1,7 +1,6 @@
 /* Shared by the static site and Manager preview. Product specimen shells keep their own layout. */
 .docs-shell {
-  --docs-column-standard: 1040px;
-  --docs-column-wide: 1240px;
+  --docs-column-cap: 1240px;
   --docs-inset-inline: calc(2 * var(--tcrn-space-3h));
   min-block-size: 0;
 }
@@ -39,20 +38,18 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 .docs-shell[data-docs-page="index"] > .docs-paper > main {
-  padding-block: 0;
+  padding-block: 0 var(--tcrn-space-4);
 }
 
 .docs-frame {
-  --docs-column-cap: var(--docs-column-standard);
   inline-size: min(100%, var(--docs-column-cap));
   margin-inline: auto;
 }
 
-.docs-shell[data-docs-page^="07"] .docs-frame {
-  --docs-column-cap: var(--docs-column-wide);
+.docs-shell[data-docs-page="index"] .docs-frame {
+  inline-size: min(100%, 1040px);
 }
 
-/* The frame sizes the Storybook document column. */
 .docs-frame > .tcrn-doc-content {
   inline-size: auto;
   margin-inline: 0;
@@ -65,9 +62,6 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 .docs-frame > .tcrn-page-header .tcrn-page-header__title {
   margin-block: 0 var(--tcrn-space-1);
   overflow-wrap: anywhere;
-}
-
-.docs-shell[data-docs-page^="07"] .docs-frame > .tcrn-page-header .tcrn-page-header__title {
   white-space: normal;
 }
 
@@ -95,6 +89,17 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 .tcrn-doc-board .tcrn-doc-themes,
 .tcrn-doc-board [data-doc-shell-theme] {
   gap: calc(2 * var(--tcrn-space-3h));
+}
+
+.tcrn-doc-shell-narrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: inherit;
+}
+
+.tcrn-doc-shell-narrow > .tcrn-doc-section {
+  flex: 0 1 390px;
 }
 
 .tcrn-doc-prose {
@@ -282,15 +287,6 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 .tcrn-doc-shell-frame[data-phone] > .tcrn-product-shell,
 .tcrn-doc-shell-frame > .tcrn-product-shell:has(> [data-shell-dropdown]) {
   contain: paint;
-}
-
-.docs-source-list {
-  margin: 0;
-  padding-inline-start: 1.25em;
-}
-
-.docs-source-list li + li {
-  margin-block-start: var(--tcrn-space-2);
 }
 
 .docs-topics .tcrn-shell-pins__item[data-current-topic] {
@@ -901,24 +897,6 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   background: var(--tcrn-color-hover);
   color: var(--tcrn-color-ink);
 }
-.portal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 36px;
-  padding-block: 20px 26px;
-  border-top: 1px solid var(--tcrn-color-line);
-  color: var(--tcrn-color-ink-3);
-  font-size: 12px;
-}
-.portal-footer a {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--tcrn-space-1);
-  color: var(--tcrn-color-ink-2);
-}
 @media (max-width: 750px) {
   .portal-hero {
     grid-template-columns: minmax(0, 1fr);
@@ -1005,9 +983,6 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   .portal-card__body {
     padding-inline: 15px;
     padding-bottom: 16px;
-  }
-  .portal-footer {
-    margin-top: 26px;
   }
 }
 

@@ -2,10 +2,10 @@ import type { DocsLocale } from "./approved-source.js";
 
 export const portalCopy = {
   "zh-CN": {
-    home: "首页", overview: "概览", chapters: "章节", references: "参考资料", skip: "跳到正文", footer: "Sites v1 · 规范内容",
+    home: "首页", overview: "概览", chapters: "章节", skip: "跳到正文",
     title: ['从设计基础', '到产品界面'],
     lead: '查阅 TCRN 的色彩、排版、品牌与组件用法，以及产品工作台的布局和交互规范。',
-    browse: '浏览设计规范', source: '正式来源与版本信息',
+    browse: '浏览设计规范',
     topics: {
       foundations: ['视觉基础', '查看色彩、排版与图标如何搭配，建立界面一致的视觉层级。'],
       brand: ['品牌标志', '查看四枚产品标及其字标和标语组合，选择适合场景的锁定块。'],
@@ -15,10 +15,10 @@ export const portalCopy = {
     captions: ['排版与色彩', '产品锁定块', '表单与动作'],
   },
   "en": {
-    home: "Home", overview: "Overview", chapters: "Chapters", references: "References", skip: "Skip to content", footer: "Sites v1 · Standard specimens",
+    home: "Home", overview: "Overview", chapters: "Chapters", skip: "Skip to content",
     title: ['Design standards', 'for TCRN products'],
     lead: 'Explore the foundations, brand marks, interactive components, and workspace patterns used across TCRN products.',
-    browse: 'Browse the standards', source: 'Published source and version',
+    browse: 'Browse the standards',
     topics: {
       foundations: ['Visual foundations', 'See how color, type, and icons work together to organize an interface.'],
       brand: ['Brand marks', 'Explore the four product marks and their approved wordmark and tagline lockups.'],
@@ -28,10 +28,10 @@ export const portalCopy = {
     captions: ['Typography and color', 'Product lockups', 'Forms and actions'],
   },
   "ja": {
-    home: "ホーム", overview: "概要", chapters: "章", references: "参考資料", skip: "本文へ移動", footer: "Sites v1 · 仕様のサンプル",
+    home: "ホーム", overview: "概要", chapters: "章", skip: "本文へ移動",
     title: ['デザインの基礎から', 'プロダクトの画面へ'],
     lead: 'TCRN の配色、タイポグラフィ、ブランド、コンポーネント、作業画面の仕様を確認できます。',
-    browse: 'デザイン仕様を見る', source: '公開ソースとバージョン',
+    browse: 'デザイン仕様を見る',
     topics: {
       foundations: ['ビジュアルの基礎', '色、文字、アイコンを組み合わせて、画面の情報に階層をつけます。'],
       brand: ['ブランドマーク', '4 つのプロダクトマークと、ワードマークやタグラインの組み合わせを確認します。'],
@@ -41,10 +41,10 @@ export const portalCopy = {
     captions: ['タイポグラフィと配色', 'ブランドの組み合わせ', 'フォームと操作'],
   },
   "ko": {
-    home: "홈", overview: "개요", chapters: "장", references: "참고 자료", skip: "본문으로 이동", footer: "Sites v1 · 규격 예제",
+    home: "홈", overview: "개요", chapters: "장", skip: "본문으로 이동",
     title: ['디자인 기초부터', '제품 화면까지'],
     lead: 'TCRN 제품의 색상, 타이포그래피, 브랜드, 컴포넌트, 작업 화면 규격을 살펴보세요.',
-    browse: '디자인 규격 보기', source: '공개 소스 및 버전',
+    browse: '디자인 규격 보기',
     topics: {
       foundations: ['시각적 기초', '색상, 글꼴, 아이콘으로 화면의 정보에 일관된 위계를 만듭니다.'],
       brand: ['브랜드 마크', '네 가지 제품 마크와 워드마크, 태그라인 조합을 확인합니다.'],
@@ -54,10 +54,10 @@ export const portalCopy = {
     captions: ['타이포그래피와 색상', '제품 로고 조합', '폼과 동작'],
   },
   "fr": {
-    home: "Accueil", overview: "Aperçu", chapters: "Chapitres", references: "Références", skip: "Aller au contenu", footer: "Sites v1 · Exemples des normes",
+    home: "Accueil", overview: "Aperçu", chapters: "Chapitres", skip: "Aller au contenu",
     title: ['Des fondations', 'aux interfaces produit'],
     lead: 'Retrouvez les couleurs, la typographie, les marques, les composants et les modèles de navigation des produits TCRN.',
-    browse: 'Consulter les normes', source: 'Source publiée et version',
+    browse: 'Consulter les normes',
     topics: {
       foundations: ['Fondations visuelles', 'Associez couleurs, typographie et icônes pour structurer une interface.'],
       brand: ['Marques produit', 'Découvrez les quatre marques produit, leurs signatures et leurs slogans.'],
