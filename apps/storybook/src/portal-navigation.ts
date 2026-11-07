@@ -104,3 +104,23 @@ export function searchDocs(locale: DocsLocale, query: string, entry: DocsEntry =
   return records.filter(record => `${record.title} ${record.meta} ${record.keywords}`.normalize("NFKC").toLocaleLowerCase(locale).includes(term))
     .map(({ keywords: _keywords, ...record }) => record);
 }
+
+/** Resolve stable preference IDs against the current locale/routes, including
+ * groups and descendants. */
+export function docsPinnedNavigation(groups: readonly ShellMenuGroup[], ids: readonly string[]) {
+  const targets = new Map<string, { id: string; label: string; href?: string; items: readonly DocsMenuItem[] }>();
+  const visit = (items: readonly DocsMenuItem[]) => {
+    for (const item of items) {
+      targets.set(item.id, { id: item.id, label: item.label, ...(item.href ? { href: item.href } : {}), items: item.children ?? [] });
+      if (item.children) visit(item.children);
+    }
+  };
+  for (const group of groups) {
+    targets.set(group.id, { id: group.id, label: group.label, items: group.items });
+    visit(group.items);
+  }
+  return [...new Set(ids)].flatMap(id => {
+    const target = targets.get(id);
+    return target ? [target] : [];
+  });
+}

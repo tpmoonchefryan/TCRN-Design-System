@@ -3,7 +3,7 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import { App } from "./app.js";
-import { docsNavigation, managerFragment, pageHref, searchDocs } from "./portal-navigation.js";
+import { docsNavigation, docsPinnedNavigation, managerFragment, pageHref, searchDocs } from "./portal-navigation.js";
 import { approvedApi } from "./approved-api.js";
 import { approvedSource,supportedLocales } from "./approved-source.js";
 import { contractStories } from "./contract-stories/kernel.js";
@@ -75,9 +75,9 @@ test("portal routes, topic membership and document paths agree in all three entr
       const portal = renderToString(createElement(App, { page: "index", locale, entry }));
       assert.match(portal, /href="#standards-content"/);
       assert.match(portal, /href="#standards"/);
-      const top = /<nav class="tcrn-shell-pins docs-topics"[^>]*>(.*?)<\/nav>/.exec(portal)?.[1] ?? "";
+      const top = /<div class="docs-topic-nav"[^>]*>(.*?)<\/header>/.exec(portal)?.[1]?.split('<div class="tcrn-shell-cluster docs-preferences"')[0] ?? "";
       assert.deepEqual([...top.matchAll(/class="tcrn-shell-pins__item" href="([^"]+)"/g)].map(match => match[1]), [destinations[0]].map(htmlHref));
-      assert.deepEqual([...top.matchAll(/data-docs-topic="([^"]+)"/g)].map(match => match[1]), categoryIds);
+      assert.deepEqual([...top.matchAll(/data-pin="([^"]+)"/g)].map(match => match[1]), categoryIds);
       assert.equal((top.match(/aria-expanded="false"/g) ?? []).length, 5);
       assert.equal((top.match(/aria-controls=/g) ?? []).length, 5);
       assert.equal((top.match(/aria-current="page"/g) ?? []).length, 1);
@@ -88,11 +88,11 @@ test("portal routes, topic membership and document paths agree in all three entr
       assert.equal((portal.match(/class="portal-glimpse" inert="" aria-hidden="true"/g) ?? []).length, 4);
       assert.doesNotMatch(portal.split("</header>", 1)[0], /data-shell-account|data-shell-product=/);
       const subpage = renderToString(createElement(App, { page: "02-typography", locale, entry }));
-      const subpageTop = /<nav class="tcrn-shell-pins docs-topics"[^>]*>(.*?)<\/nav>/.exec(subpage)?.[1] ?? "";
+      const subpageTop = /<div class="docs-topic-nav"[^>]*>(.*?)<\/header>/.exec(subpage)?.[1]?.split('<div class="tcrn-shell-cluster docs-preferences"')[0] ?? "";
       assert.equal((subpageTop.match(/aria-current="page"/g) ?? []).length, 1);
       assert.ok(subpageTop.includes(`href="${htmlHref(pageHref(locale, "02-typography", entry))}" aria-current="page"`));
-      assert.ok(subpageTop.includes('data-docs-topic="foundations" data-current-topic=""'));
-      const trail = /<nav class="tcrn-breadcrumb"[^>]*>(.*?)<\/nav>/.exec(subpage)?.[1] ?? "";
+      assert.match(subpageTop, /data-pin="foundations"[^>]*><button[^>]*aria-current="true"/);
+      const trail = /<nav class="tcrn-breadcrumb"[^>]*>(.*?)<\/nav>/.exec(subpage)?.[1]?.split('<div class="tcrn-shell-cluster docs-preferences"')[0] ?? "";
       assert.ok(trail.includes(`href="${htmlHref(destinations[0])}"`));
       assert.ok(trail.includes(`href="${htmlHref(destinations[1])}"`));
       assert.match(trail, /<b [^>]*aria-current="page"/);
@@ -125,4 +125,19 @@ test("Manager links address the registered story and keep routed fragments scope
   assert.ok(!board.includes(`href="${approvedSource.site.url}`));
   const api = renderToStaticMarkup(createElement(App, { page: "api", locale, entry: manager }));
   assert.ok(api.includes('href="/docs/index.html?path=/story/published-standards--inputs&amp;globals=locale:fr">Exemples interactifs · Champs de saisie</a>'));
+});
+
+
+test("pin preferences resolve groups, branches and leaves by stable ID across locale and entry routes", () => {
+  const ids = ["components", "api-branch", "api-Button", "02-typography", "components", "missing"];
+  for (const locale of supportedLocales) for (const entry of ["static", "canvas", manager] as const) {
+    const nav = docsNavigation(locale, entry);
+    const pins = docsPinnedNavigation(nav.directory, ids);
+    assert.deepEqual(pins.map(pin => pin.id), ids.slice(0, 4));
+    assert.equal(pins[0].items.length, 3);
+    assert.equal(pins[1].items.length, 29);
+    assert.deepEqual(pins[2].items, []);
+    assert.equal(pins[2].href, pageHref(locale, "api", entry, "api-Button"));
+    assert.equal(pins[3].href, pageHref(locale, "02-typography", entry));
+  }
 });

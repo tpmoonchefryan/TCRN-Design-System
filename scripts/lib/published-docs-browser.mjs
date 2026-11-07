@@ -253,15 +253,15 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
   const surface=managerUi?page.frameLocator('#storybook-preview-iframe'):page;
   await surface.locator(`.docs-shell[data-docs-page="index"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
   const shell=surface.locator('.docs-shell');
-  const nav=shell.locator('.docs-topics');if(!(await nav.isVisible()))throw new Error('desktop docs topic strip is not visible');
+  const nav=shell.locator('.docs-topic-nav');if(!(await nav.isVisible()))throw new Error('desktop docs topic strip is not visible');
   if(!(await page.evaluate(()=>matchMedia('(prefers-reduced-motion: reduce)').matches)))issues.push(`${entry}/${locale}: reduced-motion preference was not applied`);
   const initialTheme=await shell.getAttribute('data-tcrn-theme'),toggle=shell.locator('.docs-preferences .tcrn-shell-theme-toggle');
   const themeBackgrounds=[];
   for(const theme of [initialTheme,initialTheme==='dark'?'light':'dark']){
    if(await shell.getAttribute('data-tcrn-theme')!==theme)await toggle.click();
    await shell.waitFor({state:'visible'});
-   const trigger=nav.locator('button[data-docs-topic="foundations"]');await trigger.hover();
-   const panel=trigger.locator('xpath=..').locator('.docs-topic-menu').first();await panel.waitFor({state:'visible'});
+   const trigger=nav.locator('[data-pin="foundations"] > button');await trigger.hover();
+   const panel=nav.locator('[data-docs-topic-layer="foundations"] > .docs-topic-menu').first();await panel.waitFor({state:'visible'});
    themeBackgrounds.push(await panel.evaluate(el=>getComputedStyle(el).backgroundColor));
    const duration=await panel.locator('.docs-topic-menu__row').first().evaluate(el=>getComputedStyle(el).transitionDuration);
    if(!duration.split(',').every(value=>parseFloat(value.trim())===0))issues.push(`${entry}/${locale}: reduced-motion still animates topic rows`);
@@ -272,17 +272,17 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
   const home=nav.locator(':scope > .tcrn-shell-pins__pin > a');
   const homeHref=headerHref({base,entry,locale,managerUi,managerPath},'index');
   if(await home.getAttribute('href')!==homeHref)issues.push(`${entry}/${locale}: topbar home destination differs`);
-  const topicButtons=nav.locator('button[data-docs-topic]');
-  const topicIds=await topicButtons.evaluateAll(els=>els.map(el=>el.getAttribute('data-docs-topic')));
+  const topicButtons=nav.locator('.docs-topics [data-pin] > button');
+  const topicIds=await topicButtons.evaluateAll(els=>els.map(el=>el.parentElement.getAttribute('data-pin')));
   if(JSON.stringify(topicIds)!==JSON.stringify(Object.keys(docsTopicPages)))issues.push(`${entry}/${locale}: topic groups differ from the four portal categories`);
   const opened=[];
   for(const topic of Object.keys(docsTopicPages)){
    try{
-    const trigger=nav.locator(`button[data-docs-topic="${topic}"]`),wrapped=trigger.locator('xpath=..');
+    const trigger=nav.locator(`[data-pin="${topic}"] > button`),wrapped=nav.locator(`[data-docs-topic-layer="${topic}"]`);
     const focusBefore=await surface.locator('body').evaluate(el=>{const active=el.ownerDocument.activeElement;return `${active?.tagName}|${active?.id}|${typeof active?.className==='string'?active.className:''}`;});
     await trigger.hover();
     if(await trigger.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}/${topic}: hover did not open category`);
-    const layer=wrapped.locator('.docs-topics__layer'),menu=layer.locator(':scope > .docs-topic-menu').first();await menu.waitFor({state:'visible'});
+    const layer=wrapped,menu=layer.locator(':scope > .docs-topic-menu').first();await menu.waitFor({state:'visible'});
     const expectedPages=docsTopicPages[topic].filter(pageId=>pageId!=='api');
     const expectedHrefs=expectedPages.map(pageId=>headerHref({base,entry,locale,managerUi,managerPath},pageId));
     const chapterLinks=menu.locator('a.docs-topic-menu__row'),actualHrefs=await chapterLinks.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
@@ -329,8 +329,8 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
    }catch(error){issues.push(`${entry}/${locale}/${topic}: topbar interaction ${error.message}`);}
   }
   await shell.locator('.docs-paper').hover({position:{x:20,y:20}});
-  if(await nav.locator('button[data-docs-topic][aria-expanded="true"]').count())issues.push(`${entry}/${locale}: leaving the category navigation did not close it`);
-  const components=nav.locator('button[data-docs-topic="components"]'),componentLayer=components.locator('xpath=..').locator('.docs-topics__layer');
+  if(await nav.locator('.docs-topics [data-pin] > button[aria-expanded="true"]').count())issues.push(`${entry}/${locale}: leaving the category navigation did not close it`);
+  const components=nav.locator('[data-pin="components"] > button'),componentLayer=nav.locator('[data-docs-topic-layer="components"]');
   await components.focus();
   if(await components.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: keyboard focus did not open category`);
   if(negative){
@@ -367,7 +367,7 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
   if(!(await components.evaluate(el=>el===el.ownerDocument.activeElement))||await components.getAttribute('aria-expanded')!=='false')issues.push(`${entry}/${locale}: Escape did not close the category and return focus`);
   const localeTrigger=shell.locator('.docs-preferences .tcrn-shell-locale-menu__trigger');
   await localeTrigger.click();
-  if(await localeTrigger.getAttribute('aria-expanded')!=='true'||await nav.locator('button[data-docs-topic][aria-expanded="true"]').count())issues.push(`${entry}/${locale}: locale layer did not exclude the topic cascade`);
+  if(await localeTrigger.getAttribute('aria-expanded')!=='true'||await nav.locator('.docs-topics [data-pin] > button[aria-expanded="true"]').count())issues.push(`${entry}/${locale}: locale layer did not exclude the topic cascade`);
   await components.hover();
   if(await localeTrigger.getAttribute('aria-expanded')!=='false'||await components.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: topic cascade did not exclude the locale layer`);
   const brand=shell.locator(':scope > header [data-shell-brand]').first();await brand.click();
@@ -376,7 +376,7 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
   if(negative){
    await components.hover();
    const triggerBox=await components.boundingBox();await components.hover();
-   const first=components.locator('xpath=..').locator('.docs-topic-menu__row[href]').first(),layer=components.locator('xpath=..').locator('.docs-topics__layer');
+   const first=nav.locator('[data-docs-topic-layer="components"]').locator('.docs-topic-menu__row[href]').first(),layer=nav.locator('[data-docs-topic-layer="components"]');
    const original=await layer.getAttribute('style');await layer.evaluate(el=>{el.style.transform='translateY(14px)';});
    const box=await layer.locator('.docs-topic-menu').first().boundingBox();let gapDetected=false;
    if(triggerBox&&box){const x=triggerBox.x+Math.min(triggerBox.width/2,120),y=triggerBox.y+triggerBox.height+(box.y-triggerBox.y-triggerBox.height)/2;await page.mouse.move(x,y);await page.waitForTimeout(30);gapDetected=await components.getAttribute('aria-expanded')==='false';}
@@ -385,8 +385,8 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
    observations.push({kind:'negative-hover-gap-mutation',entry,locale,detected:gapDetected});
   }
   await components.hover();
-  const liveBranch=components.locator('xpath=..').locator('button.docs-topic-menu__row');await liveBranch.hover();
-  const overviewLink=components.locator('xpath=..').locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').first();
+  const liveBranch=nav.locator('[data-docs-topic-layer="components"]').locator('button.docs-topic-menu__row');await liveBranch.hover();
+  const overviewLink=nav.locator('[data-docs-topic-layer="components"]').locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').first();
   const overviewHref=headerHref({base,entry,locale,managerUi,managerPath},'api');
   if(await overviewLink.getAttribute('href')!==overviewHref)issues.push(`${entry}/${locale}: API overview click route differs from its expected destination`);
   await overviewLink.click();
@@ -394,9 +394,9 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
    await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`&&url.searchParams.get('globals')===`locale:${locale}`,{timeout:10000});
   }else await page.waitForURL(new URL(overviewHref,base).href,{timeout:10000});
   await surface.locator(`.docs-shell[data-docs-page="api"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
-  const apiNav=surface.locator('.docs-topics'),apiCategory=apiNav.locator('button[data-docs-topic="components"]');await apiCategory.hover();
-  const apiBranch=apiCategory.locator('xpath=..').locator('button.docs-topic-menu__row');await apiBranch.hover();
-  const anchorLink=apiCategory.locator('xpath=..').locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').nth(1);
+  const apiNav=surface.locator('.docs-topic-nav'),apiCategory=apiNav.locator('[data-pin="components"] > button');await apiCategory.hover();
+  const apiBranch=apiNav.locator('[data-docs-topic-layer="components"]').locator('button.docs-topic-menu__row');await apiBranch.hover();
+  const anchorLink=apiNav.locator('[data-docs-topic-layer="components"]').locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').nth(1);
   const anchorHref=headerHref({base,entry,locale,managerUi,managerPath},'api','api-Heading');
   if(await anchorLink.getAttribute('href')!==anchorHref)issues.push(`${entry}/${locale}: real API anchor href differs from its Story/language route`);
   await anchorLink.click();
@@ -477,8 +477,8 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
   const surface=managerUi?page.frameLocator('#storybook-preview-iframe'):page;
   const shell=surface.locator(`.docs-shell[data-docs-page="index"][lang="${locale}"][data-docs-ready="true"]`);
   await shell.waitFor();
-  const trigger=shell.locator('[data-docs-topic="components"]'),nextTopic=shell.locator('[data-docs-topic="shell"]');
-  const layer=trigger.locator('xpath=..').locator('.docs-topics__layer');
+  const trigger=shell.locator('[data-pin="components"] > button'),nextTopic=shell.locator('[data-pin="shell"] > button');
+  const layer=shell.locator('[data-docs-topic-layer="components"]');
   const panel=layer.locator(':scope > .docs-topic-menu'),branch=panel.locator('button.docs-topic-menu__row');
   const submenu=layer.locator('.docs-topics__submenu-wrap'),submenuPanel=submenu.locator('.docs-topic-menu');
   const list=submenuPanel.locator('ul'),overview=list.locator('a').first(),firstAnchor=list.locator('a').nth(1),last=list.locator('a').last();
@@ -596,8 +596,8 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
   await page.mouse.move(triggerBox.x+triggerBox.width/2,triggerBox.y+triggerBox.height+menuGap/2);
   await page.mouse.move(branchBox.x+branchBox.width/2,branchBox.y+branchBox.height/2,{steps:4});
   await submenuPanel.waitFor();
-  const subBox=await submenuPanel.boundingBox(),cascadeGap=subBox.x-panelBox.x-panelBox.width;
-  await page.mouse.move(panelBox.x+panelBox.width+cascadeGap/2,branchBox.y+branchBox.height/2,{steps:4});
+  const subBox=await submenuPanel.boundingBox(),cascadeGap=subBox.x-branchBox.x-branchBox.width;
+  await page.mouse.move(branchBox.x+branchBox.width+cascadeGap/2,branchBox.y+branchBox.height/2,{steps:4});
   await page.mouse.move(subBox.x+subBox.width/2,branchBox.y+branchBox.height/2,{steps:4});
   check(menuGap===6&&cascadeGap===4&&await open(trigger)&&await open(branch),'real pointer could not cross the 6px and 4px bridges to the right cascade');
   if(entry==='static'&&locale==='zh-CN'){
@@ -869,9 +869,9 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
      if(facts.lang!==locale||facts.source!==source.manifest.site.sourceCommit||facts.boardSource!==APPROVED_BOARD_IDS[id]||facts.main!==1||facts.brokenNames)issues.push(`${entry}/${locale}/${id}: locale/source/main/named-controls drift`);
      const chrome = await page.locator('.docs-shell').evaluate(shell => {
        const strip = shell.querySelector(':scope > [data-shell-strip]');
-       const nav = strip.querySelector('.docs-topics');
+       const nav = strip.querySelector('.docs-topic-nav');
        const home = nav?.querySelector(':scope > .tcrn-shell-pins__pin > a');
-       const topics = [...(nav?.querySelectorAll('button[data-docs-topic]') ?? [])];
+       const topics = [...(nav?.querySelectorAll('.docs-topics [data-pin] > button') ?? [])];
        const menus = [...(nav?.querySelectorAll('.docs-topics__layer') ?? [])];
        const mark = strip.querySelector('[data-shell-brand] svg[data-logo]');
        const rect = mark.getBoundingClientRect();
@@ -880,9 +880,9 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
        return {
          home: home?.getAttribute('href'),
          current: home?.getAttribute('aria-current') === 'page' ? [home.getAttribute('href')] : [],
-         topicIds: topics.map(button => button.getAttribute('data-docs-topic')),
-         topicCurrent: topics.filter(button => button.hasAttribute('data-current-topic')).map(button => button.getAttribute('data-docs-topic')),
-         triggerSemantics: topics.every(button => button.tagName === 'BUTTON' && !!button.getAttribute('aria-controls') && button.getAttribute('aria-expanded') === 'false' && !button.hasAttribute('href')),
+         topicIds: topics.map(button => button.parentElement.getAttribute('data-pin')),
+         topicCurrent: topics.filter(button => button.getAttribute('aria-current') === 'true').map(button => button.parentElement.getAttribute('data-pin')),
+         triggerSemantics: topics.every(button => button.tagName === 'BUTTON' && !!button.getAttribute('aria-controls') && button.getAttribute('aria-expanded') === 'false' && button.getAttribute('aria-haspopup') === 'dialog' && !!button.querySelector('[data-icon-name="chevron-down"]') && !button.hasAttribute('href')),
          controlsVisible: topics.every(button => {
            const target = document.getElementById(button.getAttribute('aria-controls'));
            return !!target && nav.contains(target) && target.classList.contains('docs-topics__layer');

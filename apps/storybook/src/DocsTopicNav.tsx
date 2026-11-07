@@ -1,5 +1,6 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
-import { Icon } from "@tcrn/ui-react/approved";
+import { Fragment, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
+import { Icon, ShellPins } from "@tcrn/ui-react/approved";
+import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 
 export interface DocsTopicLink {
@@ -12,8 +13,8 @@ export interface DocsTopicLink {
 export interface DocsTopicCategory {
   id: string;
   label: string;
-  href: string;
-  pageId: string;
+  href?: string;
+  pageId?: string;
   items: readonly DocsTopicLink[];
 }
 
@@ -26,6 +27,8 @@ export interface DocsTopicNavProps {
   inManager: boolean;
   open: string | null;
   onOpenChange: (topic: string | null) => void;
+  onPinsReorder: (ids: readonly string[]) => void;
+  locale: TcrnLocale;
 }
 
 const dropWidth = 240;
@@ -34,26 +37,31 @@ const chevronToken = tcrnTokens.find(token => token.variable === "--tcrn-shell-c
 const chevronSize = /^\d+(?:\.\d+)?px$/.test(chevronToken) ? Number.parseFloat(chevronToken) : Number.NaN;
 if (!Number.isFinite(chevronSize)) throw new Error("DocsTopicNav: --tcrn-shell-chevron is missing from @tcrn/ui-tokens or is not a pixel length.");
 
-export function DocsTopicNav({ home, label, categories, page, selectedTopic, inManager, open, onOpenChange }: DocsTopicNavProps) {
-  const navRef = useRef<HTMLElement>(null);
-  const triggerRefs = useRef(new Map<string, HTMLButtonElement>());
+export function DocsTopicNav({ home, label, categories, page, selectedTopic, inManager, open, onOpenChange, onPinsReorder, locale }: DocsTopicNavProps) {
+  const navRef = useRef<HTMLDivElement>(null);
+  const triggerOf = (id: string) => [...(navRef.current?.querySelectorAll<HTMLButtonElement>("[data-pin] > button") ?? [])]
+    .find(button => button.parentElement?.getAttribute("data-pin") === id);
   const layerRefs = useRef(new Map<string, HTMLDivElement>());
   const branchRefs = useRef(new Map<string, HTMLButtonElement>());
   const pointerDownRef = useRef(false);
   const skipFocusOpenRef = useRef(false);
   const idPrefix = useId();
   const [openBranch, setOpenBranch] = useState<string | null>(null);
-  const [categorySide, setCategorySide] = useState<"start" | "end">("start");
   const [categoryTop, setCategoryTop] = useState(0);
+  const [categoryLeft, setCategoryLeft] = useState(0);
   const [submenuSide, setSubmenuSide] = useState<"start" | "end">("end");
   const [submenuTop, setSubmenuTop] = useState(0);
+  const [submenuLeft, setSubmenuLeft] = useState(0);
 
+  const holdsPage = (items: readonly DocsTopicLink[]): boolean => items.some(item => item.id === page || holdsPage(item.children ?? []));
+  const selectedPin = categories.find(category => category.id === page) ?? categories.find(category => holdsPage(category.items));
   const menuId = (topic: string) => `${idPrefix}-${topic}-menu`;
   const submenuId = (topic: string) => `${idPrefix}-${topic}-submenu`;
   const positionCategory = (button: HTMLButtonElement) => {
     const rect = button.getBoundingClientRect();
     setCategoryTop(rect.bottom);
-    setCategorySide(rect.left + dropWidth > window.innerWidth - edgeInset ? "end" : "start");
+    const origin = navRef.current?.getBoundingClientRect().left ?? 0;
+    setCategoryLeft(Math.max(edgeInset, Math.min(rect.left, window.innerWidth - edgeInset - dropWidth)) - origin);
   };
 
   const positionSubmenu = (topic: string, branchId: string) => {
@@ -62,8 +70,11 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
     if (!button || !layer) return;
     const layerBox = layer.getBoundingClientRect();
     const gap = Number.parseFloat(getComputedStyle(layer).getPropertyValue("--tcrn-shell-cascade-gap"));
-    setSubmenuTop(Math.max(0, button.getBoundingClientRect().top - layerBox.top));
-    setSubmenuSide(layerBox.right + gap + layerBox.width > window.innerWidth - edgeInset ? "start" : "end");
+    const row = button.getBoundingClientRect();
+    const side = row.right + gap + dropWidth > window.innerWidth - edgeInset ? "start" : "end";
+    setSubmenuTop(Math.max(0, row.top - layerBox.top));
+    setSubmenuSide(side);
+    setSubmenuLeft((side === "end" ? row.right : row.left - gap - dropWidth) - layerBox.left);
   };
 
   const openCategory = (category: DocsTopicCategory, button?: HTMLButtonElement) => {
@@ -94,7 +105,7 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
     };
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      const trigger = triggerRefs.current.get(open);
+      const trigger = triggerOf(open);
       const active = doc.activeElement;
       const layer = layerRefs.current.get(open);
       if (event.currentTarget === managerDoc || (active !== trigger && !layer?.contains(active))) {
@@ -129,16 +140,26 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
   }, [inManager, open, openBranch, onOpenChange]);
 
   useLayoutEffect(() => {
+    if (open) {
+      const trigger = triggerOf(open);
+      if (trigger) positionCategory(trigger);
+      else onOpenChange(null);
+    }
     if (open && openBranch) positionSubmenu(open, openBranch);
-  }, [open, openBranch, categorySide]);
+  }, [open, openBranch, categories]);
 
   useEffect(() => {
     const onResize = () => {
       if (open) {
-        const trigger = triggerRefs.current.get(open);
+        const trigger = triggerOf(open);
         if (trigger) positionCategory(trigger);
       }
-      if (open && openBranch) positionSubmenu(open, openBranch);
+      if (open) {
+      const trigger = triggerOf(open);
+      if (trigger) positionCategory(trigger);
+      else onOpenChange(null);
+    }
+    if (open && openBranch) positionSubmenu(open, openBranch);
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
@@ -162,6 +183,7 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
         ref={node => { if (node) branchRefs.current.set(item.id, node); else branchRefs.current.delete(item.id); }}
         type="button"
         className="docs-topic-menu__row"
+        aria-haspopup="dialog"
         aria-expanded={expanded}
         aria-controls={submenuId(topic)}
         aria-current={isCurrent ? "true" : undefined}
@@ -181,11 +203,56 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
   };
 
   return (
-    <nav
+    <div
       ref={navRef}
-      className="tcrn-shell-pins docs-topics"
-      aria-label={label}
+      className="docs-topic-nav"
       onPointerLeave={handlePointerLeave}
+      onKeyDown={event => {
+        // Storybook forwards unhandled preview keys to Manager navigation. The
+        // existing ShellPins reorder must remain local to its focused control.
+        if (event.defaultPrevented && event.altKey && ["ArrowLeft", "ArrowRight"].includes(event.key)) event.stopPropagation();
+        if (event.defaultPrevented || event.altKey) return;
+        const focused = event.target as HTMLElement;
+        if (event.key === "Tab" && open) {
+          const layer = layerRefs.current.get(open);
+          const first = [...(layer?.querySelectorAll<HTMLElement>(".docs-topic-menu__row") ?? [])]
+            .find(row => row.tabIndex >= 0 && row.getClientRects().length > 0 && !row.closest("[inert]"));
+          const trigger = triggerOf(open);
+          if (!event.shiftKey && focused === trigger && first) { event.preventDefault(); first.focus(); }
+          else if (event.shiftKey && focused === first) { event.preventDefault(); trigger?.focus(); }
+          else if (!event.shiftKey && layer?.contains(focused)) {
+            const rows = [...layer.querySelectorAll<HTMLElement>(".docs-topic-menu__row")].filter(row => row.tabIndex >= 0 && row.getClientRects().length > 0 && !row.closest("[inert]"));
+            if (focused === rows.at(-1)) {
+              const triggers = [...(navRef.current?.querySelectorAll<HTMLElement>(".docs-topics .tcrn-shell-pins__item") ?? [])];
+              const next = trigger && triggers[triggers.indexOf(trigger) + 1];
+              if (next) { event.preventDefault(); onOpenChange(null); next.focus(); }
+            }
+          }
+          return;
+        }
+        if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(event.key)) return;
+        const target = event.target as HTMLElement;
+        if (!open) return;
+        const layer = layerRefs.current.get(open);
+        const list = target.closest(".docs-topic-menu__list");
+        const rows = [...(list?.querySelectorAll<HTMLElement>(".docs-topic-menu__row") ?? [])];
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          const next = rows.length ? rows[(rows.indexOf(target) + (event.key === "ArrowDown" ? 1 : rows.length - 1)) % rows.length]
+            : layer?.querySelector<HTMLElement>(".docs-topic-menu__row");
+          if (next) { event.preventDefault(); next.focus(); }
+        } else if (event.key === "ArrowRight" && target.hasAttribute("aria-expanded")) {
+          event.preventDefault();
+          if (target.getAttribute("aria-expanded") !== "true") target.click();
+          requestAnimationFrame(() => layer?.querySelector<HTMLElement>(".docs-topics__submenu-wrap:not([hidden]) .docs-topic-menu__row")?.focus());
+        } else if (event.key === "ArrowLeft" && target.closest(".docs-topics__submenu-wrap")) {
+          event.preventDefault();
+          const branch = openBranch && branchRefs.current.get(openBranch);
+          setOpenBranch(null);
+          skipFocusOpenRef.current = true;
+          if (branch) branch.focus();
+          skipFocusOpenRef.current = false;
+        }
+      }}
       onBlurCapture={event => {
         if (open && !event.currentTarget.contains(event.relatedTarget)) onOpenChange(null);
       }}
@@ -195,39 +262,53 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
           <span className="tcrn-shell-pins__label" title={home.label}>{home.label}</span>
         </a>
       </span>
-      {categories.map(category => {
+      <ShellPins
+        className="docs-topics"
+        aria-label={label}
+        locale={locale}
+        items={categories.map(category => ({ ...category, hasMenu: category.items.length > 0 }))}
+        selectedId={selectedPin?.id ?? selectedTopic}
+        openId={open}
+        menuIdOf={menuId}
+        onPinsReorder={onPinsReorder}
+        onOpenChange={id => {
+          const category = categories.find(category => category.id === id);
+          if (category) openCategory(category, triggerOf(category.id));
+          else onOpenChange(null);
+          pointerDownRef.current = false;
+        }}
+        onPointerDown={() => { pointerDownRef.current = true; }}
+        onPointerUp={() => { pointerDownRef.current = false; }}
+        onPointerCancel={() => { pointerDownRef.current = false; }}
+        onPointerOver={event => {
+          if (event.pointerType === "touch" || menuHasFocus() || event.buttons) return;
+          const button = (event.target as Element).closest<HTMLButtonElement>("[data-pin] > button");
+          const category = categories.find(category => category.id === button?.parentElement?.getAttribute("data-pin"));
+          if (category && button && category.id !== open) openCategory(category, button);
+        }}
+        onFocusCapture={event => {
+          if (pointerDownRef.current || skipFocusOpenRef.current) return;
+          const button = (event.target as Element).closest<HTMLButtonElement>("[data-pin] > button");
+          const category = categories.find(category => category.id === button?.parentElement?.getAttribute("data-pin"));
+          if (category && button) openCategory(category, button);
+        }}
+      />
+      {categories.filter(category => category.items.length > 0).map(category => {
         const expanded = category.id === open;
         const branch = category.items.find(item => item.children?.length);
         const submenuExpanded = expanded && branch?.id === openBranch;
         return (
-          <span key={category.id} className="tcrn-shell-pins__pin docs-topics__category">
-            <button
-              ref={node => { if (node) triggerRefs.current.set(category.id, node); else triggerRefs.current.delete(category.id); }}
-              type="button"
-              className="tcrn-shell-pins__item"
-              aria-expanded={expanded}
-              aria-controls={menuId(category.id)}
-              data-docs-topic={category.id}
-              data-current-topic={category.id === selectedTopic ? "" : undefined}
-              onPointerDown={() => { pointerDownRef.current = true; }}
-              onPointerEnter={event => {
-                if (event.pointerType !== "touch" && !menuHasFocus()) openCategory(category, event.currentTarget);
-              }}
-              onFocus={event => { if (!pointerDownRef.current && !skipFocusOpenRef.current) openCategory(category, event.currentTarget); }}
-              onClick={event => {
-                pointerDownRef.current = false;
-                if (expanded && event.detail > 0) onOpenChange(null);
-                else openCategory(category, event.currentTarget);
-              }}
-            >
-              <span className="tcrn-shell-pins__label" title={category.label}>{category.label}</span>
-            </button>
+          <Fragment key={category.id}>
             <div
               className="docs-topics__layer"
+              data-docs-topic-layer={category.id}
               id={menuId(category.id)}
+              role="dialog"
+              aria-modal="false"
+              aria-label={category.label}
               ref={node => { if (node) layerRefs.current.set(category.id, node); else layerRefs.current.delete(category.id); }}
-              data-side={categorySide}
-              style={{ "--docs-topic-layer-top": `${categoryTop}px` } as CSSProperties}
+              data-side="start"
+              style={{ "--docs-topic-layer-top": `${categoryTop}px`, left: `${categoryLeft}px` } as CSSProperties}
               hidden={!expanded}
               inert={!expanded}
             >
@@ -243,8 +324,10 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
               <div
                 className="docs-topics__submenu-wrap"
                 id={submenuId(category.id)}
+                role="dialog"
+                aria-label={branch?.label}
                 data-side={submenuSide}
-                style={{ "--docs-topic-submenu-top": `${submenuTop}px` } as CSSProperties}
+                style={{ "--docs-topic-submenu-top": `${submenuTop}px`, left: `${submenuLeft}px` } as CSSProperties}
                 hidden={!submenuExpanded}
                 inert={!submenuExpanded}
               >
@@ -261,9 +344,9 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
                 </div>
               </div>
             </div>
-          </span>
+          </Fragment>
         );
       })}
-    </nav>
+    </div>
   );
 }

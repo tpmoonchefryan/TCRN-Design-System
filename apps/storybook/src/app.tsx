@@ -1,8 +1,8 @@
-import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type MouseEvent, type RefObject } from "react";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import {
   Icon, PageHeader, ShellBrandButton, ShellLocaleMenu, ShellMenu, ShellThemeToggle,
-  SkipLink, useShellMenuPresentation, type ShellThemeMode,
+  SkipLink, useProductShellController, useShellMenuPresentation, type ShellThemeMode,
 } from "@tcrn/ui-react/approved";
 import { ApiReference } from "./api-reference.js";
 import { DocsTopicNav } from "./DocsTopicNav.js";
@@ -10,7 +10,7 @@ import { approvedSource, type DocsLocale } from "./approved-source.js";
 import { docsCopy } from "./locales.js";
 import { Portal } from "./portal.js";
 import { portalCopy } from "./portal-copy.js";
-import { docsNavigation, managerFragment, pageHref, searchDocs, type DocsEntry, type DocsPage } from "./portal-navigation.js";
+import { docsNavigation, docsPinnedNavigation, managerFragment, pageHref, searchDocs, type DocsEntry, type DocsPage } from "./portal-navigation.js";
 import { SourceMatrices } from "./source-matrices.js";
 import { BoardSpecimens } from "./specimens.js";
 
@@ -51,6 +51,68 @@ function targetCanvasFragment(event: MouseEvent<HTMLDivElement>) {
   if (link) link.target = "_self";
 }
 
+/** The docs directory is a wide, multi-group panel. Its existing cascades belong to
+ * the initiating option, rather than to the far edge of that whole directory. The
+ * shared menu still owns activation, rows, pins, keyboard and focus restoration. */
+function useDocsMenuPlacement(shellRef: RefObject<HTMLDivElement | null>, open: boolean, presentation: "panel" | "sheet") {
+  useLayoutEffect(() => {
+    const shell = shellRef.current;
+    if (!open || presentation !== "panel" || !shell) return;
+    const root = shell.querySelector<HTMLElement>(":scope > [data-shell-menu]");
+    const panel = root?.querySelector<HTMLElement>(":scope > [data-panel='expanded']");
+    if (!root || !panel) return;
+    const initiatingRows = new Map<string, HTMLElement>();
+    const rememberRow = (event: Event) => {
+      const target = event.target as Element | null;
+      const row = target?.closest<HTMLElement>("[data-shell-row][aria-controls]");
+      const column = row?.getAttribute("aria-controls");
+      if (row && column) initiatingRows.set(column, row);
+    };
+    root.addEventListener("click", rememberRow, true);
+    root.addEventListener("keydown", rememberRow, true);
+    const place = () => {
+      const origin = root.getBoundingClientRect();
+      const view = shell.ownerDocument.documentElement;
+      const inset = Number.parseFloat(getComputedStyle(shell).getPropertyValue("--tcrn-space-3"));
+      const gap = Number.parseFloat(getComputedStyle(root).getPropertyValue("--tcrn-shell-cascade-gap"));
+      for (const column of root.querySelectorAll<HTMLElement>(":scope > .tcrn-shell-menu__cascade")) {
+        const initiating = initiatingRows.get(column.id);
+        const opener = initiating?.isConnected && initiating.getAttribute("aria-expanded") === "true" ? initiating
+          : [...root.querySelectorAll<HTMLElement>("[data-shell-row][aria-expanded='true']")]
+            .find(row => row.getAttribute("aria-controls") === column.id && row.getClientRects().length > 0);
+        if (!opener) continue;
+        const row = (opener.closest(".tcrn-nav-item-row") ?? opener).getBoundingClientRect();
+        const width = column.getBoundingClientRect().width;
+        const end = row.right + gap;
+        const start = row.left - gap - width;
+        const left = end + width <= view.clientWidth - inset || start < inset ? end : start;
+        const height = Math.min(panel.getBoundingClientRect().height, view.clientHeight - 2 * inset);
+        const top = Math.max(inset, Math.min(row.top, view.clientHeight - inset - height));
+        column.style.left = `${Math.max(inset, Math.min(left, view.clientWidth - inset - width)) - origin.left}px`;
+        column.style.top = `${top - origin.top}px`;
+        column.style.blockSize = `${height}px`;
+      }
+    };
+    place();
+    // The public menu owns its open path; observe that actual path instead of
+    // copying its state or replacing its click/keyboard handlers in the consumer.
+    const mutations = new MutationObserver(place);
+    mutations.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ["aria-expanded"] });
+    const resized = new ResizeObserver(place);
+    resized.observe(panel);
+    window.addEventListener("resize", place);
+    window.addEventListener("scroll", place, true);
+    return () => {
+      root.removeEventListener("click", rememberRow, true);
+      root.removeEventListener("keydown", rememberRow, true);
+      mutations.disconnect();
+      resized.disconnect();
+      window.removeEventListener("resize", place);
+      window.removeEventListener("scroll", place, true);
+    };
+  }, [shellRef, open, presentation]);
+}
+
 export function App({ page, locale, theme: initialTheme = "light", entry = "static", onLocaleChange }: PageProps) {
   const inStorybook = entry !== "static";
   const inManager = typeof entry === "object";
@@ -70,10 +132,24 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
     ];
 
   const [theme, setTheme] = useState(() => inStorybook ? savedTheme(initialTheme) : initialTheme);
+  const pins = useProductShellController({
+    initialPins: navigation.categories.map(category => category.id),
+    onPinsChange: next => {
+      try {
+        localStorage.setItem(docsPreferenceKey, JSON.stringify({ ...readPreferences(), pins: next }));
+      } catch { /* Keep the current visit usable when storage is unavailable. */ }
+    },
+  });
+  const pinnedNavigation = docsPinnedNavigation(navigation.directory, pins.pins);
+  const pinnedItems = pinnedNavigation.map(item => ({ ...item, hasMenu: item.items.length > 0 }));
   const [preferencesReady, setPreferencesReady] = useState(false);
   const [searchKey, setSearchKey] = useState("Ctrl K");
   useEffect(() => {
     if (!inStorybook) setTheme(savedTheme(initialTheme));
+    try {
+      const saved = readPreferences().pins;
+      if (Array.isArray(saved) && saved.every(id => typeof id === "string")) pins.setPins(saved);
+    } catch { /* Use the default categories when storage is unavailable. */ }
     if (/Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)) setSearchKey("⌘K");
     setPreferencesReady(true);
   }, [inStorybook, initialTheme]);
@@ -105,7 +181,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
   function changeTheme(next: ShellThemeMode) {
     setTheme(next);
     try {
-      // Keep earlier keys in the anonymous record while this shell uses fixed destinations.
+      // Theme and pins share the existing anonymous preference record.
       localStorage.setItem(docsPreferenceKey, JSON.stringify({ ...readPreferences(), theme: next }));
     } catch { /* The theme can still change for this visit. */ }
   }
@@ -118,6 +194,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
   const menuOwnerRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   const menuPresentation = useShellMenuPresentation(undefined, shellRef);
+  useDocsMenuPlacement(shellRef, menuOpen, menuPresentation);
   const menuState = menuOpen ? (menuPresentation === "sheet" ? "sheet" : "expanded") : "closed";
 
   return (
@@ -151,7 +228,9 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
         <DocsTopicNav
           home={navigation.home}
           label={labels.title}
-          categories={navigation.categories}
+          categories={pinnedNavigation.filter(pin => pin.id !== "index")}
+          onPinsReorder={pins.reorderPins}
+          locale={locale}
           page={page}
           selectedTopic={topic?.topic}
           inManager={inManager}
@@ -187,6 +266,9 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
         locale={locale}
         groups={navigation.directory}
         selectedId={page}
+        pinnedIds={pins.pins}
+        pinnedItems={pinnedItems}
+        onPinnedChange={pins.setPinned}
         currentPath={trail}
         open={menuOpen}
         presentation={menuPresentation}

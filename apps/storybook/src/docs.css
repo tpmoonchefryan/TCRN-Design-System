@@ -239,10 +239,6 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   color: var(--tcrn-color-ink-2);
 }
 
-.tcrn-doc-shell-tools > .tcrn-button {
-  min-block-size: var(--tcrn-shell-touch);
-}
-
 .tcrn-doc-shell-frame[data-specimen-view] {
   container-type: inline-size;
   block-size: auto;
@@ -289,7 +285,8 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 /* Anchor the existing 44px hit area to its pin so it cannot cover the Sheet search. */
-.tcrn-doc-shell-frame[data-phone] .tcrn-shell-sheet .tcrn-nav-pin {
+.tcrn-doc-shell-frame[data-phone] .tcrn-shell-sheet .tcrn-nav-pin,
+.docs-shell > .tcrn-shell-sheet .tcrn-nav-pin {
   position: relative;
 }
 
@@ -299,22 +296,12 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   contain: paint;
 }
 
-.docs-topics .tcrn-shell-pins__item[data-current-topic] {
-  --tcrn-pair-fill: var(--tcrn-pair-fill-s);
-  --tcrn-pair-ink: var(--tcrn-pair-ink-s);
-  --tcrn-pair-weight: var(--tcrn-type-weight-strong);
-}
-
 /* The documentation top band alone opens these category lists on hover. Shared product
    menus keep their click driven cascade behavior. The padded bridges keep pointer travel
    continuous across the published six pixel menu gap and four pixel cascade gap. */
 .docs-topics {
   position: relative;
   overflow: visible;
-}
-
-.docs-topics__category {
-  position: relative;
 }
 
 .docs-topics__layer {
@@ -441,12 +428,10 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 
 .docs-topics__submenu-wrap[data-side="end"] {
-  inset-inline-start: 100%;
   padding-inline-start: var(--tcrn-shell-cascade-gap);
 }
 
 .docs-topics__submenu-wrap[data-side="start"] {
-  inset-inline-end: 100%;
   padding-inline-end: var(--tcrn-shell-cascade-gap);
 }
 
@@ -1016,4 +1001,21 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   .portal-card {
     transition: none;
   }
+}
+
+/* Keep the published ShellMenu rows/columns; only this wide docs directory needs
+   option anchoring. The Sheet retains its existing sequential touch lists. */
+.docs-shell > [data-shell-menu]:not(.tcrn-shell-sheet) > .tcrn-shell-menu__cascade {
+  position: absolute;
+  inline-size: var(--tcrn-shell-drop-w);
+}
+.docs-topic-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--tcrn-shell-pin-gap);
+  min-inline-size: 0;
+}
+@media (max-width: 1023px) {
+  .docs-topic-nav { display: none; }
 }
