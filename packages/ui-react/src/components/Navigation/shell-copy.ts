@@ -22,6 +22,8 @@
 // TCRN-DS-SUB-184: the instance's name reaches every named landmark of the shell (the band, the
 // pinned items, the full menu and its bottom bar, the Sheet, the drop-downs, the avatar menu and its
 // product switcher, the content region and the trail), always through landmarkOf.
+import { createContext, useContext } from "react";
+import type { TcrnProductLogoId } from "./Navigation.js";
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { resolveDocumentLocale } from "../../utils.js";
 
@@ -163,7 +165,90 @@ export function tcrnShellCopyFor(locale?: TcrnLocale | string): TcrnShellCopy {
  * shell's name (landmarkLabel) it is "{shell} · {name}" in the reader's language, through
  * landmarkOf; without one, or with a blank one, it is the landmark's own name, unchanged.
  */
-export function tcrnShellLandmarkName(locale: TcrnLocale | string | undefined, prefix: string | undefined, name: string): string {
+export function tcrnShellLandmarkName(locale: TcrnLocale | string | undefined, prefix: string | undefined, name: string, copy = tcrnShellCopyFor(locale)): string {
   const shell = prefix?.trim();
-  return shell ? tcrnShellCopyFor(locale).landmarkOf(shell, name) : name;
+  return shell ? copy.landmarkOf(shell, name) : name;
+}
+
+export interface ProductShellChromeCopy {
+  switchToLight: string;
+  switchToDark: string;
+  language: string;
+  collapseSideNav: string;
+  expandSideNav: string;
+  /**
+   * The mobile navigation control, which is a different control from the two
+   * above and says a different thing.
+   *
+   * `collapseSideNav`/`expandSideNav` narrow the desktop rail to icons — the
+   * destinations stay on screen. Below the mobile breakpoint the rail is not a
+   * rail, and the same control would be a no-op, so it is hidden there; this
+   * one shows and hides the navigation itself. Reusing either label would tell
+   * a screen-reader user the rail is about to narrow when it is about to
+   * disappear.
+   */
+  showNavigation: string;
+  hideNavigation: string;
+  breadcrumb: string;
+  searchShell: string;
+  searchPlaceholder: string;
+  searchResults: string;
+  searchEmpty: string;
+  currentLocation: string;
+  shellWorkspace: string;
+  skipToContent: string;
+  /**
+   * The five with no prop behind them at all.
+   *
+   * A bad default at least lets a consumer pass the right string; these were
+   * literals inline in the JSX, so a product shipping a ja route had no way to
+   * reach them short of forking the component. Two are the only accessible name
+   * their nav has.
+   */
+  navItemUnavailable: string;
+  moduleSections: string;
+  sectionNavigation: string;
+  productLauncher: string;
+  productSwitcher: string;
+  /**
+   * Two names composed from a value the consumer supplied. Concatenating an
+   * English word onto a translated product or module name yields a string in
+   * neither language, so the composition is per locale.
+   */
+  brandHomeOf: (productName: string) => string;
+  shellControlsOf: (moduleName: string) => string;
+  /**
+   * The pin control of a NavItem or NavGroup row (TCRN-DS-SUB-123). It is icon-only,
+   * so this is its whole accessible name; it says the action and the row it acts on,
+   * and the action flips with the pinned state.
+   */
+  pinToStrip: (label: string) => string;
+  unpinFromStrip: (label: string) => string;
+}
+
+/** Complete shell copy for a product locale; no partial dictionary or implicit fallback. */
+export interface ProductShellCopy {
+  shell: TcrnShellCopy;
+  chrome: ProductShellChromeCopy;
+  productTagline: (productId: TcrnProductLogoId) => string;
+}
+
+export interface ProductShellLocaleDefinition<Locale extends string = string> {
+  /** Product identifier, preserved in state, preferences and callbacks (for example zh_HANT). */
+  locale: Locale;
+  /** BCP 47 tag for the rendered subtree (for example zh-Hant). */
+  lang: string;
+  copy: ProductShellCopy;
+}
+
+export const productShellLocaleContext = createContext<ProductShellLocaleDefinition | undefined>(undefined);
+
+/** A component with an explicit different locale keeps its own language. */
+export function useProductShellLocale(locale?: string): ProductShellLocaleDefinition | undefined {
+  const definition = useContext(productShellLocaleContext);
+  return locale === undefined || locale === definition?.locale || locale === definition?.lang ? definition : undefined;
+}
+
+export function useTcrnShellCopy(locale?: string): TcrnShellCopy {
+  return useProductShellLocale(locale)?.copy.shell ?? tcrnShellCopyFor(locale);
 }

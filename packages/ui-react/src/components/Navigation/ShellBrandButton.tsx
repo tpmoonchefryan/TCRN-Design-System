@@ -27,7 +27,7 @@ import { cx } from "../../utils.js";
 import { TcrnBrandMark, type TcrnProductMarkId } from "./Navigation.js";
 import { productMarkIdOf } from "./product-mark-id.js";
 import { tcrnProductMarks } from "./product-marks.generated.js";
-import { tcrnShellCopyFor } from "./shell-copy.js";
+import { useTcrnShellCopy } from "./shell-copy.js";
 
 /** "auto" follows the shell container; "v1" is the mark alone, "v2" the mark with its wordmark. */
 export type ShellBrandButtonVersion = "auto" | "v1" | "v2";
@@ -70,7 +70,7 @@ export const ShellBrandButton = forwardRef<HTMLButtonElement, ShellBrandButtonPr
   const buttonRef = useRef<HTMLButtonElement>(null);
   const narrow = useShellNarrow(buttonRef, version === "auto");
   const shown = version === "auto" ? (narrow ? "v1" : "v2") : version;
-  const copy = tcrnShellCopyFor(locale);
+  const copy = useTcrnShellCopy(locale);
   const name = expanded ? copy.closeNavigationOf(mark.name) : copy.openNavigationOf(mark.name);
   return (
     <button

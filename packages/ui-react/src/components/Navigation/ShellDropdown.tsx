@@ -41,7 +41,7 @@ import {
   type ShellMenuRowContext,
   type ShellMenuSearchProvider
 } from "./ShellMenu.js";
-import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
+import { useTcrnShellCopy, tcrnShellLandmarkName } from "./shell-copy.js";
 
 // Layout effects place the drop-down before it paints; there is no layout on the server.
 const useClientLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -279,8 +279,8 @@ export function ShellDropdown({
     setCascadeSide("end");
   }, [open, focusOnOpen, setOpenPath]);
 
+  const copy = useTcrnShellCopy(locale);
   if (!open) return null;
-  const copy = tcrnShellCopyFor(locale);
   const entries = entriesOf(source);
   const columnIdOf = (entryId: string) => `${id}-col-${entryId}`;
   const context: ShellMenuRowContext = {
@@ -315,7 +315,7 @@ export function ShellDropdown({
         className="tcrn-shell-dropdown__panel"
         role="dialog"
         aria-modal="false"
-        aria-label={tcrnShellLandmarkName(locale, landmarkLabel, source.label)}
+        aria-label={tcrnShellLandmarkName(locale, landmarkLabel, source.label, copy)}
         aria-owns={cascades.length > 0 ? cascade.openPath.map(columnIdOf).join(" ") : undefined}
         data-panel="drop"
       >

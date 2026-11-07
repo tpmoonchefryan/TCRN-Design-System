@@ -13,7 +13,7 @@ import { cx } from "../../utils.js";
 // PageHeader from here in turn; each side uses the other only inside a function body, never while the
 // module is being evaluated, so the cycle is safe (C-4).
 import { Breadcrumb } from "../Navigation/Navigation.js";
-import { tcrnShellCopyFor } from "../Navigation/shell-copy.js";
+import { useProductShellLocale, useTcrnShellCopy } from "../Navigation/shell-copy.js";
 import { resolveDocumentLocale } from "../../utils.js";
 import { DetailInspector, FilterBar, TableShell, type AttachmentTableLabels, type Density, type KeyValueItem } from "./DataDisplay.js";
 
@@ -264,7 +264,9 @@ export interface PageHeaderProps {
  * every width: a crumb that does not fit ends in an ellipsis and carries its label as a title.
  */
 export function PageHeader({ title, description, breadcrumbs = [], meta, actions = [], density = "compact", locale, headingLevel, landmarkLabel }: PageHeaderProps) {
-  const trailName = patternLabels(locale).breadcrumbs;
+  const shellLocale = useProductShellLocale(locale);
+  const shellCopy = useTcrnShellCopy(locale);
+  const trailName = shellLocale?.copy.chrome.breadcrumb ?? patternLabels(locale).breadcrumbs;
   const prefix = landmarkLabel?.trim();
   return (
     <header className="tcrn-page-header" data-pattern="page-header" data-density={density}>
@@ -272,7 +274,7 @@ export function PageHeader({ title, description, breadcrumbs = [], meta, actions
         // The trail is the Breadcrumb component (TCRN-DS-SUB-124): one line, truncating crumbs with
         // titles, the board's chevron between them. The last crumb without an href is the page itself.
         <Breadcrumb
-          label={prefix ? tcrnShellCopyFor(locale).landmarkOf(prefix, trailName) : trailName}
+          label={prefix ? shellCopy.landmarkOf(prefix, trailName) : trailName}
           locale={locale}
           items={breadcrumbs.map((breadcrumb, index) => ({
             id: breadcrumb.id,

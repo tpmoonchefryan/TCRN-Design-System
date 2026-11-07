@@ -70,7 +70,7 @@ import { Icon, type IconName } from "../Icon/index.js";
 import { cx } from "../../utils.js";
 import { NavGroup, NavItem, ProductShellSearch, ShellBrandLockup, type ProductShellSearchResult, type TcrnProductLogoId } from "./Navigation.js";
 import type { ShellPinItem } from "./ShellPins.js";
-import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
+import { useTcrnShellCopy, tcrnShellLandmarkName } from "./shell-copy.js";
 
 // A row's next-level chevron and the bottom bar's position separator are the shell.chevron token,
 // 12 on the board (TCRN-DS-SUB-178). Icon takes its size as a number, so the number is read from
@@ -741,9 +741,9 @@ export function ShellMenu({
     rootRef.current?.ownerDocument.getElementById(`${generatedId}-col-${lastOpen}`)?.scrollIntoView?.({ block: "nearest" });
   }, [sheet, lastOpen, generatedId]);
 
+  const copy = useTcrnShellCopy(locale);
   if (!open && !closing) return null;
-  const copy = tcrnShellCopyFor(locale);
-  const landmarkName = (name: string) => tcrnShellLandmarkName(locale, landmarkLabel, name);
+  const landmarkName = (name: string) => tcrnShellLandmarkName(locale, landmarkLabel, name, copy);
   const columnIdOf = (entryId: string) => `${generatedId}-col-${entryId}`;
   const context: ShellMenuRowContext = {
     selectedId,

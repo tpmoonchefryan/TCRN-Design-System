@@ -41,7 +41,17 @@ import {
   type ShellMenuSearchProvider
 } from "./ShellMenu.js";
 import { ShellPins, shellPinsMax, type ShellPinItem } from "./ShellPins.js";
-import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
+import {
+  productShellLocaleContext,
+  tcrnShellCopyFor,
+  tcrnShellLandmarkName,
+  useProductShellLocale,
+  useTcrnShellCopy,
+  type ProductShellChromeCopy,
+  type ProductShellCopy,
+  type ProductShellLocaleDefinition
+} from "./shell-copy.js";
+export type { ProductShellChromeCopy, ProductShellCopy, ProductShellLocaleDefinition, TcrnShellCopy } from "./shell-copy.js";
 
 /**
  * The shell's own words about itself, in every supported locale.
@@ -56,63 +66,8 @@ import { tcrnShellCopyFor, tcrnShellLandmarkName } from "./shell-copy.js";
  * job is to change language was the control that could not say so in the reader's
  * language.
  */
-interface ShellChromeLabels {
-  switchToLight: string;
-  switchToDark: string;
-  language: string;
-  collapseSideNav: string;
-  expandSideNav: string;
-  /**
-   * The mobile navigation control, which is a different control from the two
-   * above and says a different thing.
-   *
-   * `collapseSideNav`/`expandSideNav` narrow the desktop rail to icons — the
-   * destinations stay on screen. Below the mobile breakpoint the rail is not a
-   * rail, and the same control would be a no-op, so it is hidden there; this
-   * one shows and hides the navigation itself. Reusing either label would tell
-   * a screen-reader user the rail is about to narrow when it is about to
-   * disappear.
-   */
-  showNavigation: string;
-  hideNavigation: string;
-  breadcrumb: string;
-  searchShell: string;
-  searchPlaceholder: string;
-  searchResults: string;
-  searchEmpty: string;
-  currentLocation: string;
-  shellWorkspace: string;
-  skipToContent: string;
-  /**
-   * The five with no prop behind them at all.
-   *
-   * A bad default at least lets a consumer pass the right string; these were
-   * literals inline in the JSX, so a product shipping a ja route had no way to
-   * reach them short of forking the component. Two are the only accessible name
-   * their nav has.
-   */
-  navItemUnavailable: string;
-  moduleSections: string;
-  sectionNavigation: string;
-  productLauncher: string;
-  productSwitcher: string;
-  /**
-   * Two names composed from a value the consumer supplied. Concatenating an
-   * English word onto a translated product or module name yields a string in
-   * neither language, so the composition is per locale.
-   */
-  brandHomeOf: (productName: string) => string;
-  shellControlsOf: (moduleName: string) => string;
-  /**
-   * The pin control of a NavItem or NavGroup row (TCRN-DS-SUB-123). It is icon-only,
-   * so this is its whole accessible name; it says the action and the row it acts on,
-   * and the action flips with the pinned state.
-   */
-  pinToStrip: (label: string) => string;
-  unpinFromStrip: (label: string) => string;
-}
 
-const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
+const shellChromeLabels: Record<TcrnLocale, ProductShellChromeCopy> = {
   "zh-CN": {
     switchToLight: "切换到日间模式",
     switchToDark: "切换到夜间模式",
@@ -246,8 +201,24 @@ const shellChromeLabels: Record<TcrnLocale, ShellChromeLabels> = {
 };
 
 /** The shell chrome labels for the reader's language. */
-function chromeLabels(locale: TcrnLocale | string | undefined): ShellChromeLabels {
+function chromeLabels(locale: TcrnLocale | string | undefined): ProductShellChromeCopy {
   return shellChromeLabels[resolveDocumentLocale(locale)];
+}
+
+/** The complete built-in shell copy; products can reuse it for an explicit locale mapping. */
+export function productShellCopyFor(locale: TcrnLocale): ProductShellCopy {
+  if (!(tcrnSupportedLocales as readonly string[]).includes(locale)) {
+    throw new RangeError(`ProductShell: "${locale}" requires an explicit complete product copy.`);
+  }
+  return {
+    shell: { ...tcrnShellCopyFor(locale) },
+    chrome: { ...chromeLabels(locale) },
+    productTagline: (productId) => tcrnProductTagline(productId, locale)
+  };
+}
+
+function useShellChromeCopy(locale?: string): ProductShellChromeCopy {
+  return useProductShellLocale(locale)?.copy.chrome ?? chromeLabels(locale);
 }
 
 export interface NavItem {
@@ -462,7 +433,8 @@ export function ProductLogo({productId,markVariant="color",locale:_locale,classN
 function RegisteredProductLockup({productId,markVariant="color",scale="lockup",locale,className,...props}:ProductLockupProps) {
   const asset=getTcrnProductLogoAsset(productId);
   if(!asset) throw new Error(`Unregistered product logo ${productId}`);
-  const tagline=tcrnProductTagline(productId,locale);
+  const shellLocale = useProductShellLocale(locale);
+  const tagline = shellLocale ? shellLocale.copy.productTagline(productId) : tcrnProductTagline(productId, locale);
   return <div {...props} className={cx("tcrn-product-logo",scale==="rail"&&"tcrn-product-logo--rail",asset.wordmark==="serif"&&"tcrn-product-logo--serif",className)} role="img" aria-label={`${asset.lineOne} ${tagline}`} data-component-source="@tcrn/ui-react" data-registered-product-logo="@tcrn/ui-react/ProductLogo" data-product-id={asset.productId} data-product-logo-asset-id={asset.assetId} data-product-wordmark={asset.wordmark}>
     <TcrnBrandMark productId={asset.markId} variant={markVariant} aria-hidden="true" data-logo={productMarkIdOf(asset.markId)} />
     <span className="tcrn-product-logo__copy" aria-hidden="true"><b className="tcrn-product-logo__line-one" title={asset.lineOne}><span className="tcrn-product-logo__line-one-base">{asset.lineOneBase}</span>{asset.lineOneSuffix ? <> <em className={cx("tcrn-product-logo__line-one-suffix",asset.suffixClassName??undefined)}>{asset.lineOneSuffix}</em></> : null}</b><small className="tcrn-product-logo__line-two" title={tagline}>{tagline}</small>{scale==="lockup"&&asset.byline?<span className="tcrn-product-logo__byline">{asset.byline}</span>:null}</span>
@@ -511,7 +483,7 @@ export function ShellThemeToggle({
 }: ShellThemeToggleProps) {
   // Icon-only, so this label is the entire accessible name — there is no visible
   // text a reader could fall back on when it is in the wrong language.
-  const labels = chromeLabels(locale);
+  const labels = useShellChromeCopy(locale);
   const resolvedLightLabel = lightLabel ?? labels.switchToLight;
   const resolvedDarkLabel = darkLabel ?? labels.switchToDark;
   const normalizedTheme = currentTheme === "dark" ? "dark" : "light";
@@ -552,6 +524,8 @@ export function ShellThemeToggle({
 
 export interface ShellLocaleOption {
   locale: string;
+  /** BCP 47 language tag when the product locale id uses another vocabulary. */
+  lang?: string;
   nativeName: string;
 }
 
@@ -582,9 +556,11 @@ export function ShellLocaleMenu({
   className,
   ...props
 }: ShellLocaleMenuProps) {
-  const current = locales.find((entry) => entry.locale === currentLocale) ?? locales[0];
+  const shellLocale = useProductShellLocale(currentLocale);
+  const current = locales.find((entry) => entry.locale === currentLocale) ?? (shellLocale ? undefined : locales[0]);
   const currentName = requiredText(current?.nativeName, currentLocale);
-  const resolvedLabel = label ?? chromeLabels(currentLocale).language;
+  const chrome = useShellChromeCopy(currentLocale);
+  const resolvedLabel = label ?? chrome.language;
   const generatedMenuId = useId();
   const resolvedMenuId = menuId ?? generatedMenuId;
   const rootRef = useRef<HTMLDivElement>(null);
@@ -656,7 +632,7 @@ export function ShellLocaleMenu({
         title={resolvedLabel}
       >
         <Icon name="globe-2" />
-        <span className="tcrn-shell-locale-menu__current" data-locale-current data-locale-current-name lang={current?.locale}>{currentName}</span>
+        <span className="tcrn-shell-locale-menu__current" data-locale-current data-locale-current-name lang={current?.lang ?? shellLocale?.lang ?? current?.locale}>{currentName}</span>
         <Icon name="chevron-down" className="tcrn-shell-locale-menu__chevron" />
       </button>
       <div id={resolvedMenuId} className="tcrn-shell-locale-menu__panel" role="listbox" aria-label={resolvedLabel} data-locale-menu hidden={!open} aria-hidden={!open || undefined}>
@@ -666,7 +642,7 @@ export function ShellLocaleMenu({
             type="button"
             role="option"
             disabled={!open}
-            lang={entry.locale}
+            lang={entry.lang ?? (entry.locale === shellLocale?.locale ? shellLocale.lang : entry.locale)}
             onClick={() => handleLocaleSelect(entry.locale)}
             data-locale={entry.locale}
             data-locale-name={entry.nativeName}
@@ -715,7 +691,7 @@ export function SideNavCollapseButton({
 }: SideNavCollapseButtonProps) {
   const disabled = props.disabled ?? Boolean(disabledReason);
   // Icon-only, like the theme toggle: the label is the whole accessible name.
-  const chrome = chromeLabels(locale);
+  const chrome = useShellChromeCopy(locale);
   const label = disabledReason
     ?? (collapsed ? collapsedLabel ?? chrome.expandSideNav : expandedLabel ?? chrome.collapseSideNav);
   const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
@@ -808,7 +784,8 @@ export function MobileNavToggle({
   ...props
 }: MobileNavToggleProps) {
   // Icon-only, so this label is the whole accessible name.
-  const label = expanded ? chromeLabels(locale).hideNavigation : chromeLabels(locale).showNavigation;
+  const chrome = useShellChromeCopy(locale);
+  const label = expanded ? chrome.hideNavigation : chrome.showNavigation;
   const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
     onClick?.(event);
     if (!event.defaultPrevented) onExpandedChange?.(!expanded);
@@ -861,8 +838,9 @@ function LauncherItems({ items }: ProductLauncherProps) {
  * ProductShell its products. Its visual rules are outside the published stylesheet; removed in 4.1.
  */
 export function ProductLauncher({ items, locale }: ProductLauncherProps) {
+  const chrome = useShellChromeCopy(locale);
   return (
-    <nav className="tcrn-product-launcher" aria-label={chromeLabels(locale).productLauncher}>
+    <nav className="tcrn-product-launcher" aria-label={chrome.productLauncher}>
       <LauncherItems items={items} />
     </nav>
   );
@@ -873,8 +851,9 @@ export function ProductLauncher({ items, locale }: ProductLauncherProps) {
  * ProductShell its products. Its visual rules are outside the published stylesheet; removed in 4.1.
  */
 export function ProductSwitcher({ items, locale }: ProductLauncherProps) {
+  const chrome = useShellChromeCopy(locale);
   return (
-    <nav className="tcrn-product-switcher" aria-label={chromeLabels(locale).productSwitcher}>
+    <nav className="tcrn-product-switcher" aria-label={chrome.productSwitcher}>
       <LauncherItems items={items} />
     </nav>
   );
@@ -941,8 +920,9 @@ export interface BreadcrumbProps {
  * ellipsis, and every crumb carries its label as a title.
  */
 export function Breadcrumb({ items, label, locale }: BreadcrumbProps) {
+  const chrome = useShellChromeCopy(locale);
   return (
-    <nav className="tcrn-breadcrumb" aria-label={label ?? chromeLabels(locale).breadcrumb}>
+    <nav className="tcrn-breadcrumb" aria-label={label ?? chrome.breadcrumb}>
       {items.map((item, index) => (
         <span key={item.id} className="tcrn-breadcrumb__item">
           {index > 0 ? <Icon name="chevron-right" size={breadcrumbSeparatorSize} className="tcrn-breadcrumb__separator" /> : null}
@@ -1065,17 +1045,20 @@ export function Tabs({ items, selectedId, onSelect, label, children }: TabsProps
 
 /** The Tabs family's nav variant for a module's sections (root hook `tcrn-module-tabs` through 4.0.x). */
 export function ModuleTabs({ items, locale, label, onSelect }: SelectableNavProps) {
-  return <TabList items={items} label={label ?? chromeLabels(locale).moduleSections} onSelect={onSelect} variant="nav" legacyClassName="tcrn-module-tabs" />;
+  const chrome = useShellChromeCopy(locale);
+  return <TabList items={items} label={label ?? chrome.moduleSections} onSelect={onSelect} variant="nav" legacyClassName="tcrn-module-tabs" />;
 }
 
 /** The Tabs family's nav variant for a page's sections (root hook `tcrn-section-tabs` through 4.0.x). */
 export function SectionTabs({ items, locale, label, onSelect }: SelectableNavProps) {
-  return <TabList items={items} label={label ?? chromeLabels(locale).sectionNavigation} onSelect={onSelect} variant="nav" legacyClassName="tcrn-section-tabs" />;
+  const chrome = useShellChromeCopy(locale);
+  return <TabList items={items} label={label ?? chrome.sectionNavigation} onSelect={onSelect} variant="nav" legacyClassName="tcrn-section-tabs" />;
 }
 
 /** The Tabs family's segmented variant (root hook `tcrn-segmented-nav` through 4.0.x). */
 export function SegmentedNav({ items, locale, label, onSelect }: SelectableNavProps) {
-  return <TabList items={items} label={label ?? chromeLabels(locale).sectionNavigation} onSelect={onSelect} variant="segmented" legacyClassName="tcrn-segmented-nav" />;
+  const chrome = useShellChromeCopy(locale);
+  return <TabList items={items} label={label ?? chrome.sectionNavigation} onSelect={onSelect} variant="segmented" legacyClassName="tcrn-segmented-nav" />;
 }
 
 /**
@@ -1167,7 +1150,7 @@ interface NavPinButtonProps {
 }
 
 function NavPinButton({ pinned, label, locale, onPinnedChange }: NavPinButtonProps) {
-  const chrome = chromeLabels(locale);
+  const chrome = useShellChromeCopy(locale);
   return (
     <button
       type="button"
@@ -1303,7 +1286,8 @@ export function NavItem({
 }: NavItemProps) {
   // Rendered visibly, in the `title`, and as the item's description — so when it
   // falls back it says one English sentence in three places at once.
-  const normalizedReason = disabled ? requiredText(disabledReason, chromeLabels(locale).navItemUnavailable) : undefined;
+  const chrome = useShellChromeCopy(locale);
+  const normalizedReason = disabled ? requiredText(disabledReason, chrome.navItemUnavailable) : undefined;
   const disabledReasonId = useId();
   const ariaDescribedBy = mergeIds(props["aria-describedby"], normalizedReason ? disabledReasonId : undefined);
   const resolvedDepth = Number.isInteger(depth) && depth >= 0 ? depth : 0;
@@ -1432,7 +1416,7 @@ export function ProductShellSearch({
   // The placeholder and the empty-state line are the two visible ones here; the
   // other two are the names a screen-reader user hears for the field and its
   // result list.
-  const chrome = chromeLabels(locale);
+  const chrome = useShellChromeCopy(locale);
   const resolvedLabel = label ?? chrome.searchShell;
   const resolvedPlaceholder = placeholder ?? chrome.searchPlaceholder;
   const resolvedResultsLabel = resultsLabel ?? chrome.searchResults;
@@ -1645,6 +1629,8 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   navGroups: readonly ProductShellNavGroup[];
   locales: readonly ShellLocaleOption[];
   currentLocale: string;
+  /** Complete product-owned copy and BCP 47 tag for currentLocale; scoped to this shell. */
+  localeDefinition?: ProductShellLocaleDefinition;
   /**
    * The page's header, the paper's first row: the trail, the title and the page's actions (07b
    * board, section E, "PageHeader 必有"). Required, so a shell page without one does not type-check.
@@ -1810,7 +1796,20 @@ function productShellInitials(account: ProductShellAccount): string {
  * at a time: opening the full menu, a drop-down or the avatar menu closes the other two. The phone
  * presentation is the full menu's own (C-7); the shell has no branch for it.
  */
-export function ProductShell({
+export function ProductShell(props: ProductShellProps) {
+  const definition = props.localeDefinition;
+  if (definition && definition.locale !== props.currentLocale) {
+    throw new Error(`ProductShell: copy for "${definition.locale}" cannot render locale "${props.currentLocale}".`);
+  }
+  // Every shell owns its scope, including a legacy shell nested inside a custom product locale.
+  return (
+    <productShellLocaleContext.Provider value={definition}>
+      <ProductShellContent {...props} />
+    </productShellLocaleContext.Provider>
+  );
+}
+
+function ProductShellContent({
   productName,
   moduleName,
   brandProductId,
@@ -1819,6 +1818,7 @@ export function ProductShell({
   navGroups,
   locales,
   currentLocale,
+  localeDefinition,
   pageHeader,
   children,
   currentTheme = "light",
@@ -1860,10 +1860,10 @@ export function ProductShell({
   const ContentElement = contentRole === "main" ? "main" : "section";
   // Like `ShellLocaleMenu`, this needs no `locale` prop: `currentLocale` is required here, so the
   // shell already knows the reader's language and a second way to say it could only disagree.
-  const chrome = chromeLabels(currentLocale);
-  const copy = tcrnShellCopyFor(currentLocale);
+  const chrome = useShellChromeCopy(currentLocale);
+  const copy = useTcrnShellCopy(currentLocale);
   // Every named landmark goes through one composition: the shell's name, then the landmark's own.
-  const landmarkName = (name: string) => tcrnShellLandmarkName(currentLocale, landmarkLabel, name);
+  const landmarkName = (name: string) => tcrnShellLandmarkName(currentLocale, landmarkLabel, name, copy);
   const resolvedContentLabel = contentLabel ?? landmarkName(chrome.shellWorkspace);
   const resolvedSkipLinkLabel = skipLinkLabel ?? chrome.skipToContent;
   const baseId = useId();
@@ -1957,6 +1957,8 @@ export function ProductShell({
       ref={shellRef}
       className={cx("tcrn-product-shell", className)}
       data-state={state}
+      lang={localeDefinition?.lang ?? props.lang ?? resolveTcrnLocale(currentLocale)}
+      data-current-locale={currentLocale}
       data-package-backed-product-shell-boundary="top-band-shell-v2"
       data-product-shell-pattern="top-band"
       data-product-shell-theme={currentTheme}
@@ -2146,15 +2148,17 @@ export function ProductShell({
  * and submenus can be pinned, the band shows the first --tcrn-shell-pins-max (6) and
  * the full menu marks the rest as pinned.
  */
-export interface ProductShellRequestPreferences {
+export interface ProductShellRequestPreferences<Locale extends string = TcrnLocale> {
   theme?: ShellThemeMode | undefined;
-  locale?: TcrnLocale | undefined;
+  locale?: Locale | undefined;
   pins?: readonly string[] | undefined;
 }
 
-export interface ProductShellControllerConfig {
+export interface ProductShellControllerConfig<Locale extends string = TcrnLocale> {
   initialTheme?: ShellThemeMode;
   initialLocale?: string;
+  /** Exact product locale ids and complete copy. Omitted, the original five-locale resolver is used. */
+  localeDefinitions?: readonly ProductShellLocaleDefinition<Locale>[];
   /** Pinned ids when neither the request nor the local fallback has any. */
   initialPins?: readonly string[];
   /** The product the pins belong to: the local fallback keeps each product's pins under its own key. */
@@ -2188,7 +2192,7 @@ export interface ProductShellControllerConfig {
   // first-visit case, not a caller who forgot the argument. A consumer compiled
   // with `exactOptionalPropertyTypes` would otherwise have to spread the prop
   // conditionally to say the one thing it most often needs to say.
-  requestPreferences?: ProductShellRequestPreferences | undefined;
+  requestPreferences?: ProductShellRequestPreferences<NoInfer<Locale>> | undefined;
   searchRecords?: readonly ProductShellSearchResult[];
   searchLimit?: number;
   /** Told the pins after every change, in order, for the product's backend to keep. */
@@ -2202,9 +2206,10 @@ export interface ProductShellControllerConfig {
   onSearchResultActivate?: (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void;
 }
 
-export function useProductShellController({
+export function useProductShellController<Locale extends string = TcrnLocale>({
   initialTheme = "light",
   initialLocale = "en",
+  localeDefinitions,
   initialPins,
   productId,
   themeStorageKey,
@@ -2221,7 +2226,7 @@ export function useProductShellController({
   onSearchExpandedChange,
   onSearchDismiss,
   onSearchResultActivate
-}: ProductShellControllerConfig = {}) {
+}: ProductShellControllerConfig<Locale> = {}) {
   // The product's backend is the store of record for the pins; the local copy, kept per product,
   // answers only when the request carries none.
   const pinsKey = pinsStorageKey ?? (productId ? `tcrn-shell-pins:${productId}` : undefined);
@@ -2230,8 +2235,10 @@ export function useProductShellController({
   const pinsRef = useRef(pins);
   const [theme, setThemeState] = useState<ShellThemeMode>(
     () => readStoredTheme(themeStorageKey, initialTheme, requestPreferences?.theme));
-  const [locale, setLocaleState] = useState(
-    () => readStoredLocale(localeStorageKey, initialLocale, requestPreferences?.locale));
+  const [locale, setLocaleState] = useState<Locale>(
+    () => readStoredLocale(localeStorageKey, initialLocale, requestPreferences?.locale, localeDefinitions));
+  const localeDefinition = localeDefinitions?.find((definition) => definition.locale === locale);
+  if (localeDefinitions && !localeDefinition) throw new RangeError(`ProductShell: no copy is defined for locale "${locale}".`);
   const [localeMenuOpen, setLocaleMenuOpenState] = useState(false);
   const [searchQuery, setSearchQueryState] = useState("");
   const [searchExpanded, setSearchExpandedState] = useState(false);
@@ -2307,16 +2314,14 @@ export function useProductShellController({
     update();
   }, [onThemeChange, themeStorageKey]);
 
-  // The setter narrows too, not only the reader. A locale reaches this function
-  // from a menu today, but the signature is public and the value ends up in
-  // `<html lang>` and the dictionary index either way, so the boundary is the
-  // function rather than any one of its callers.
+  // Stored and selected values cross the same boundary: a product catalogue uses exact ids;
+  // without one the original five-language resolver keeps its existing behaviour.
   const setLocale = useCallback((nextLocale: string) => {
-    const resolvedLocale = resolveTcrnLocale(nextLocale);
+    const resolvedLocale = resolveProductShellLocale(nextLocale, localeDefinitions);
     setLocaleState(resolvedLocale);
     writeStoredString(localeStorageKey, resolvedLocale);
     onLocaleChange?.(resolvedLocale);
-  }, [localeStorageKey, onLocaleChange]);
+  }, [localeDefinitions, localeStorageKey, onLocaleChange]);
 
   const setLocaleMenuOpen = useCallback((nextOpen: boolean, reason: ProductShellLocaleMenuChangeReason = "controller") => {
     setLocaleMenuOpenState(nextOpen);
@@ -2367,6 +2372,12 @@ export function useProductShellController({
   }, [onSearchResultActivate]);
 
   const productShellSearchProps: ProductShellSearchProps = {
+    ...(localeDefinition ? {
+      label: localeDefinition.copy.chrome.searchShell,
+      placeholder: localeDefinition.copy.chrome.searchPlaceholder,
+      resultsLabel: localeDefinition.copy.chrome.searchResults,
+      emptyLabel: localeDefinition.copy.chrome.searchEmpty
+    } : {}),
     query: searchQuery,
     expanded: searchExpanded,
     results: searchResults,
@@ -2377,6 +2388,7 @@ export function useProductShellController({
   };
 
   const shellLocaleMenuProps = {
+    ...(localeDefinition ? { label: localeDefinition.copy.chrome.language } : {}),
     currentLocale: locale,
     open: localeMenuOpen,
     onOpenChange: setLocaleMenuOpen,
@@ -2384,6 +2396,10 @@ export function useProductShellController({
   };
 
   const shellThemeToggleProps = {
+    ...(localeDefinition ? {
+      lightLabel: localeDefinition.copy.chrome.switchToLight,
+      darkLabel: localeDefinition.copy.chrome.switchToDark
+    } : {}),
     currentTheme: theme,
     onThemeChange: setTheme
   };
@@ -2393,6 +2409,7 @@ export function useProductShellController({
   const productShellControlProps = {
     currentTheme: theme,
     currentLocale: locale,
+    localeDefinition,
     localeMenuOpen,
     onThemeChange: setTheme,
     onLocaleMenuOpenChange: setLocaleMenuOpen,
@@ -2432,6 +2449,7 @@ export function useProductShellController({
     productShellStateProps: {
       currentTheme: theme,
       currentLocale: locale,
+      localeDefinition,
       localeMenuOpen,
       pinnedIds: pins
     }
@@ -2515,10 +2533,27 @@ function readStoredTheme(
  * that does not re-resolve it downstream inherits a supported locale regardless
  * of what the store said.
  */
-function readStoredLocale(key: string | undefined, fallback: string, requestValue?: TcrnLocale): TcrnLocale {
+function resolveProductShellLocale<Locale extends string>(value: string, definitions?: readonly ProductShellLocaleDefinition<Locale>[]): Locale {
+  if (!definitions) return resolveTcrnLocale(value) as Locale;
+  const definition = definitions.find((entry) => entry.locale === value);
+  if (!definition) throw new RangeError(`ProductShell: no copy is defined for locale "${value}".`);
+  return definition.locale;
+}
+
+function readStoredLocale<Locale extends string>(
+  key: string | undefined,
+  fallback: string,
+  requestValue?: Locale,
+  definitions?: readonly ProductShellLocaleDefinition<Locale>[]
+): Locale {
   const value = readStoredPreference(key);
-  if (value !== null) return resolveTcrnLocale(value);
-  return requestValue ?? resolveTcrnLocale(fallback);
+  if (definitions) {
+    // A stale browser preference cannot replace the product's valid request or initial locale.
+    const stored = definitions.find((entry) => entry.locale === value);
+    return stored?.locale ?? resolveProductShellLocale(requestValue ?? fallback, definitions);
+  }
+  if (value !== null) return resolveTcrnLocale(value) as Locale;
+  return requestValue ?? resolveTcrnLocale(fallback) as Locale;
 }
 
 /**
@@ -2534,20 +2569,22 @@ function readStoredLocale(key: string | undefined, fallback: string, requestValu
  * instead. A consumer calls this once in its request handler and passes the
  * result as `requestPreferences`.
  */
-export function readPreferenceCookieValues(
+export function readPreferenceCookieValues<Locale extends string = TcrnLocale>(
   cookieHeader: string | undefined,
   keys: {
     themeKey?: string | undefined;
     localeKey?: string | undefined;
+    localeDefinitions?: readonly ProductShellLocaleDefinition<Locale>[];
   }
-): ProductShellRequestPreferences {
+): ProductShellRequestPreferences<Locale> {
   const header = cookieHeader ?? "";
   const themeValue = keys.themeKey ? readCookiePreference(keys.themeKey, header) : null;
   const localeValue = keys.localeKey ? readCookiePreference(keys.localeKey, header) : null;
+  const supportedLocales: readonly string[] = keys.localeDefinitions?.map((definition) => definition.locale) ?? tcrnSupportedLocales;
   return {
     theme: themeValue === "dark" || themeValue === "light" ? themeValue : undefined,
-    locale: localeValue !== null && (tcrnSupportedLocales as readonly string[]).includes(localeValue)
-      ? (localeValue as TcrnLocale)
+    locale: localeValue !== null && supportedLocales.includes(localeValue)
+      ? (localeValue as Locale)
       : undefined
   };
 }

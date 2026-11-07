@@ -34,7 +34,7 @@ import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 import { Icon } from "../Icon/index.js";
 import { cx } from "../../utils.js";
-import { tcrnShellCopyFor } from "./shell-copy.js";
+import { useTcrnShellCopy } from "./shell-copy.js";
 
 export interface ShellPinItem {
   /** Stable id: the key of the item in the pin preferences and in data-pin. */
@@ -193,13 +193,13 @@ export function ShellPins({
   // A drag still on when the band goes lets go of the document.
   useEffect(() => () => detachRef.current?.(), []);
 
+  const copy = useTcrnShellCopy(locale);
   if (items.length === 0) return null;
   const max = shellPinsMax();
   const shownIds = items.slice(0, max).map((item) => item.id);
   const overflowIds = items.slice(max).map((item) => item.id);
   const byId = new Map(items.map((item) => [item.id, item] as const));
   const order = dragOrder ?? shownIds;
-  const copy = tcrnShellCopyFor(locale);
   const prefix = landmarkLabel?.trim();
 
   const pinOf = (target: EventTarget | null): { id: string; nav: HTMLElement } | null => {
