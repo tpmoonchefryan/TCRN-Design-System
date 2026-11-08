@@ -26,7 +26,7 @@
     "storybook:build": "pnpm --filter @tcrn/design-system-storybook build",
     "storybook:manager-build": "pnpm --filter @tcrn/design-system-storybook manager:build",
     "storybook:vercel-build": "pnpm public-docs:vercel-build",
-    "public-docs:vercel-build": "pnpm --filter @tcrn/ui-tokens build && pnpm --filter @tcrn/ui-copy-state build && pnpm --filter @tcrn/ui-react build && pnpm --filter @tcrn/design-system-storybook static-docs:build && pnpm public-output:scan",
+    "public-docs:vercel-build": "pnpm --filter @tcrn/ui-tokens build && pnpm --filter @tcrn/ui-copy-state build && pnpm --filter @tcrn/ui-react build && pnpm storybook:manager-build && pnpm public-output:scan && node scripts/assemble-public-docs.mjs",
     "readme:proof": "node --test scripts/readme-public-contract.test.mjs",
     "storybook:smoke": "node scripts/storybook-smoke.mjs",
     "storybook:visual-proof": "node --test tests/storybook-visual-proof.test.mjs && node scripts/storybook-visual-proof.mjs",
@@ -54,6 +54,7 @@
     "shell:fidelity": "node scripts/shell-fidelity-proof.mjs",
     "selection:proof": "node scripts/selection-grammar-proof.mjs",
     "pack:consumer-tools": "node scripts/pack-consumer-tools.mjs",
+    "pack:release-candidate": "node scripts/pack-release-candidate.mjs",
     "pack:install-proof": "node scripts/independent-install-proof.mjs"
   },
   "devDependencies": {

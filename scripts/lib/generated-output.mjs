@@ -3,7 +3,7 @@ import path from "node:path";
 import { ROOT, sha256 } from "./approved-site-source.mjs";
 
 // Only explicitly generated roots are eligible. Evidence directories are never outputs.
-const allowed = ["apps/storybook/dist", "apps/storybook/storybook-static", "apps/storybook/storybook-preview-static", "packages/ui-react/dist", "packages/ui-tokens/dist", "packages/ui-copy-state/dist", "packages/ui-tokens/fonts"];
+const allowed = ["apps/storybook/dist", "apps/storybook/storybook-static", "apps/storybook/storybook-preview-static", "apps/storybook/distribution-static", "packages/ui-react/dist", "packages/ui-tokens/dist", "packages/ui-copy-state/dist", "packages/ui-tokens/fonts"];
 export function listFiles(root) {
   if (!fs.existsSync(root)) return [];
   const files=[];
