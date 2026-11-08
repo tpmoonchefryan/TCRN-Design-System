@@ -156,7 +156,15 @@ for (const output of ['static', 'manager']) test(`Storybook shell reuse: ${outpu
           const topicRow = await box(topicBranch), topicPopup = await box(sub);
           assert.ok(adjacency(topicRow, topicPopup));
           assert.equal(topicRow.y, topicPopup.y);
-          assert.equal(await sub.locator('a').count(), 29);
+          const destinations = await sub.locator('a').evaluateAll(links => links.map(link => link.getAttribute('href')));
+          const fragments = destinations.map(destination => {
+            const route = new URL(destination, base);
+            return route.hash.slice(1) || (route.searchParams.get('docsAnchor') ?? '').split(':').at(-1);
+          });
+          assert.equal(destinations.length, 30, 'overview, 28 formal contracts and adopted support');
+          assert.equal(destinations[0], href(surface, locale, 'api'));
+          assert.equal(new Set(fragments.filter(fragment => fragment.startsWith('api-'))).size, 28);
+          assert.equal(fragments.filter(fragment => fragment === 'adopted-support').length, 1);
           await sub.locator('a').first().hover();
           await expect(components).toHaveAttribute('aria-expanded', 'true');
           await topicBranch.focus();
@@ -327,6 +335,8 @@ test('docs cascades use actual row collision and keep real coarse-pointer contro
     await family.hover();
     const familyMenu = pinnedLayer.locator('.docs-topics__submenu-wrap');
     await expect(familyMenu).toBeVisible();
+    const familyEntries = await familyMenu.locator('a').count();
+    assert.equal(familyEntries, 3, 'the typography family retains Heading, Text and Highlight');
     await familyMenu.locator('a[href="/en/api.html#api-Heading"]').click();
     const apiPage = await ready(page, 'static', 'en', 'api');
     assert.equal(new URL(page.url()).hash, '#api-Heading');
@@ -335,7 +345,7 @@ test('docs cascades use actual row collision and keep real coarse-pointer contro
     const unpinBranch = menu.locator('[data-shell-row][aria-controls$="-col-api-branch"]').first().locator('xpath=..').locator('[data-pin-button]');
     await unpinBranch.click();
     await expect(apiPage.locator('.docs-topics [data-pin="api-branch"]')).toHaveCount(0);
-    await record('pinned-submenu', { dropdownChevron: true, entries: 29, activated: page.url(), unpinned: (await saved(apiPage)).pins });
+    await record('pinned-submenu', { dropdownChevron: true, family: '02-typography', entries: familyEntries, activated: page.url(), unpinned: (await saved(apiPage)).pins });
     await page.close();
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, reducedMotion: 'reduce' });
     const touch = await context.newPage();
