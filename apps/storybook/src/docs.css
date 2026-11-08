@@ -1071,3 +1071,7 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   align-items: center;
   margin-inline: var(--tcrn-space-2);
 }
+
+@media (max-width: 360px) {
+  .docs-storybook-nav { margin-inline: var(--tcrn-space-1); }
+}
