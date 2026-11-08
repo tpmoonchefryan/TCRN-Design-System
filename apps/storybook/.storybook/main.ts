@@ -8,9 +8,9 @@ const config: StorybookConfig = {
     { from: "../storybook-static/fonts", to: "/fonts" },
     { from: "../storybook-static/licenses", to: "/licenses" },
     { from: "../storybook-static/assets", to: "/assets" },
-    { from: "../storybook-static/ai", to: "/ai" },
   ],
-  previewHead: head => `${head}\n<link rel="stylesheet" href="/fonts/fonts.css">`,
+  previewHead: head => `${head}\n<link rel="stylesheet" href="./fonts/fonts.css">`,
+  viteFinal: config => ({ ...config, base: "./" }),
   core: { disableTelemetry: true },
 };
 export default config;

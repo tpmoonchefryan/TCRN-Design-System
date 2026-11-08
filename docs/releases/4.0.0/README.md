@@ -3,8 +3,11 @@
 The three library packages and the companion `@tcrn/ds-consumer-tools` are 4.0.0
 local candidates. The visual standard remains the pinned published Site v1,
 commit `a643d4cfcd239f6f81b1715ded6a63caead9d619`. The formal catalogue remains 28
-families; root engineering and verification exports are supporting APIs. K1, K5,
-S03-C01 and the customer-list composition have no new visual adoption here.
+families; root engineering and verification exports are supporting APIs. The Owner
+adopted the K1/K5/S03-C01 revision and customer-list support candidate under
+`minutes:6f3e0a9a1e07e3980867d82e` D1–D2. Their new author source still requires
+actual publication and producer integration; this distribution preparation keeps
+the existing source pin and does not claim that integration has happened.
 The library declares React/ReactDOM `^18.3.0 || ^19.0.0`. The installation probe
 pins 18.3.1, 19.1.0 and the current TMS runtime baseline 19.2.6; it does not prove
 all versions in that range or adoption by the actual TMS application.
@@ -105,21 +108,14 @@ published npm package. TMS preference schema/data rollback is separate: retire t
 consumer/API feature while retaining the new table and user data; deleting
 production data requires its own authorization and recovery plan.
 
-## Remaining delivery decisions
+## Selected public distribution and remaining release work
 
-Local tarballs, source commit, portal build, official Manager build and offline AI
-rules are reviewable targets. They are not production readbacks. Choose the target
-registry and actual publisher account/organization, public/private audience and
-access, final availability of 4.0.0 at that target, docs/Manager/AI audience and
-hosting projects, and the explicit publish/deploy authorization. The current
-Vercel source config selects the portal output only; it creates no hosting-account
-binding and publishes no official Manager automatically. Its authority response
-header now matches the emitted `/design-authority.json` path.
-
-An unauthenticated npm 404 is only the observed response; it proves neither name
-ownership nor permission to publish a private package. A version already occupied
-at the selected target must be referred for a version decision. No candidate
-version is silently changed. The project engine's repository/build binding and
-producer deployment evidence must be supplied at their actual dependency point.
-Formal integration, unresolved source failures, independent acceptance, Owner visual
-adoption, production authorization and actual release readback remain separate.
+Owner decision `minutes:6f3e0a9a1e07e3980867d82e` D3 selects four versioned tarballs
+in the existing public GitHub repository's Releases and the existing connected
+Vercel project. No npm registry or GitHub Pages project is required. See
+[the public delivery procedure](public-distribution.md) for the combined build,
+pnpm 11.3.0 verified-download installation, exact internal dependency overrides, release order,
+readback and rollback. Local artifacts remain unpublished candidates. Actual
+source publication, producer integration, required final checks, publication
+authorization, remote release/deployment readback, real TMS integration and the
+original final independent acceptance remain pending.

@@ -86,6 +86,7 @@ export function Portal({ locale, theme, navigation, search }: {
           <p>{copy.lead}</p>
           <div className="portal-hero__actions">
             <LinkButton variant="primary" size="lg" href="#standards">{copy.browse}<Icon name="arrow-right" /></LinkButton>
+            <LinkButton variant="quiet" size="lg" href="/storybook/">Storybook<Icon name="arrow-right" /></LinkButton>
             {search}
           </div>
         </div>

@@ -1,0 +1,44 @@
+name: prepare release candidate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Enable the declared package manager
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.12.1 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Run the final source's required repository checks
+        env:
+          TCRN_BUILD_TRASH: ${{ runner.temp }}/trash-release-candidate
+        run: pnpm verify
+      - name: Build the portal and official Storybook together
+        env:
+          TCRN_BUILD_TRASH: ${{ runner.temp }}/trash-release-candidate
+        run: pnpm public-docs:vercel-build
+      - name: Prepare four archives and checksums without publishing
+        run: pnpm pack:release-candidate --destination "$RUNNER_TEMP/release-candidate"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-candidate-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/release-candidate/*.tgz
+            ${{ runner.temp }}/release-candidate/SHA256SUMS
+            ${{ runner.temp }}/release-candidate/release-manifest.json
+            apps/storybook/distribution-static/
