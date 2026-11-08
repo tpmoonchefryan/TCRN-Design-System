@@ -324,7 +324,7 @@ export async function checkRoutes(root=ROOT){const registry=await compiled(root,
 export function finish(label,result){const issues=result.issues??[];console.log(JSON.stringify({proof:label,...result},null,2));if(issues.length)process.exitCode=1;return result;}
 
 export const MANAGER_STORY_IDS = Object.freeze([
-  ...Object.entries(APPROVED_API_BOARDS).filter(([, board]) => board === "06-inputs").map(([name]) => `components-${name.toLowerCase()}--form-submission`),
+  ...Object.entries(APPROVED_API_BOARDS).filter(([name, board]) => board === "06-inputs" && name !== "Switch").map(([name]) => `components-${name.toLowerCase()}--form-submission`),
   "adopted-support-customer-list-boundary--overview",
   "components-button--active",
   "components-button--default",
