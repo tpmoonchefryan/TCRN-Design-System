@@ -90,7 +90,7 @@ test('the real geometry collector keeps menu/drop/Sheet context and valid contex
   for(const locale of ['zh-CN','en','ja','ko','fr'])for(const board of ['07a-shell-upper','07b-shell-lower']){
    const page=await browser.newPage({viewport:{width:1440,height:1000}});
    try{
-    await openPublishedBoard(page,{base,entry,locale,board});
+    await openPublishedBoard(page,{base,entry,locale,board,originalSpecimens:true});
     for(const role of publishedSearchOccurrences(source).filter(row=>row.board===board)){
      const carrier=publishedSearchLocator(page,role),control=carrier.locator('input'),owner=carrier.locator('..');
      const collect=async()=>{
@@ -106,12 +106,15 @@ test('the real geometry collector keeps menu/drop/Sheet context and valid contex
       await control.evaluate((element,height)=>element.style.height=`${height+4}px`,expected.height);
       assert.ok(geometryIssues(await collect(),{source}).some(issue=>issue.includes(`Control variant ${role.context} height`)),'wrong actual contextual height reaches the production oracle');
      }finally{await control.evaluate((element,value)=>value===null?element.removeAttribute('style'):element.setAttribute('style',value),originalStyle);}
-     const ownerClass=await owner.getAttribute('class');
+     const ownerHandle=await owner.elementHandle(),ownerClass=await ownerHandle.getAttribute('class');
      try{
-      await owner.evaluate(element=>element.classList.remove('tcrn-shell-menu__search','tcrn-shell-dropdown__search'));
+      await ownerHandle.evaluate(element=>element.classList.remove('tcrn-shell-menu__search','tcrn-shell-dropdown__search'));
       const lost=await collect();assert.equal(lost[0].searchContext.kind,'unknown');
       assert.ok(geometryIssues(lost,{source}).some(issue=>issue.includes('Shell search context missing/unknown')),'real ancestry/context loss is not exempted');
-     }finally{await owner.evaluate((element,value)=>element.setAttribute('class',value),ownerClass);}
+     }finally{
+      try{await ownerHandle.evaluate((element,value)=>element.setAttribute('class',value),ownerClass);}
+      finally{await ownerHandle.dispose();}
+     }
      try{
       await control.evaluate(element=>element.setAttribute('role','textbox'));
       const changed=await collect(),failures=geometryIssues(changed,{source});

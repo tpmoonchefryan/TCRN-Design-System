@@ -231,6 +231,7 @@
     "useProductShellController",
     "validateContentScope",
     "evaluateConsumerEvidence",
+    "evaluateShellPreferenceEvidence",
     "serializeConsumerEvidenceValue",
     "presentOperationFeedbackPhase"
   ],
@@ -427,5 +428,148 @@
     }
   ],
   "publishedDocumentationEntry": "@tcrn/ui-react/approved",
+  "formalComponents": [
+    {
+      "name": "Heading",
+      "board": "02-typography",
+      "line": 220
+    },
+    {
+      "name": "Text",
+      "board": "02-typography",
+      "line": 221
+    },
+    {
+      "name": "Highlight",
+      "board": "02-typography",
+      "line": 222
+    },
+    {
+      "name": "Icon",
+      "board": "03-icons",
+      "line": 131
+    },
+    {
+      "name": "ProductLogo",
+      "board": "04-brand",
+      "line": 22
+    },
+    {
+      "name": "ProductLockup",
+      "board": "04-brand",
+      "line": 35
+    },
+    {
+      "name": "Button",
+      "board": "05-actions",
+      "line": 112
+    },
+    {
+      "name": "IconButton",
+      "board": "05-actions",
+      "line": 113
+    },
+    {
+      "name": "LinkButton",
+      "board": "05-actions",
+      "line": 114
+    },
+    {
+      "name": "ClipboardCopyButton",
+      "board": "05-actions",
+      "line": 115
+    },
+    {
+      "name": "ButtonGroup",
+      "board": "05-actions",
+      "line": 116
+    },
+    {
+      "name": "Input",
+      "board": "06-inputs",
+      "line": 124
+    },
+    {
+      "name": "Textarea",
+      "board": "06-inputs",
+      "line": 124
+    },
+    {
+      "name": "SearchInput",
+      "board": "06-inputs",
+      "line": 125
+    },
+    {
+      "name": "SuggestInput",
+      "board": "06-inputs",
+      "line": 126
+    },
+    {
+      "name": "Select",
+      "board": "06-inputs",
+      "line": 127
+    },
+    {
+      "name": "MultiSelect",
+      "board": "06-inputs",
+      "line": 128
+    },
+    {
+      "name": "NumberInput",
+      "board": "06-inputs",
+      "line": 129
+    },
+    {
+      "name": "DatePicker",
+      "board": "06-inputs",
+      "line": 130
+    },
+    {
+      "name": "Checkbox",
+      "board": "06-inputs",
+      "line": 131
+    },
+    {
+      "name": "RadioGroup",
+      "board": "06-inputs",
+      "line": 132
+    },
+    {
+      "name": "Switch",
+      "board": "06-inputs",
+      "line": 133
+    },
+    {
+      "name": "ProductShell",
+      "board": "07b-shell-lower",
+      "line": 58
+    },
+    {
+      "name": "ShellBrandButton",
+      "board": "07a-shell-upper",
+      "line": 22
+    },
+    {
+      "name": "ShellMenu",
+      "board": "07b-shell-lower",
+      "line": 61
+    },
+    {
+      "name": "ShellPins",
+      "board": "07b-shell-lower",
+      "line": 60
+    },
+    {
+      "name": "ShellDropdown",
+      "board": "07b-shell-lower",
+      "line": 61
+    },
+    {
+      "name": "ShellIntro",
+      "board": "07a-shell-upper",
+      "line": 179
+    }
+  ],
+  "aiIndex": "ai/index.json",
   "note": "Engineering exports are not a published design catalogue. Storybook API obligations come only from the explicit published E sections."
 }

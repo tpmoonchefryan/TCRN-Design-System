@@ -66,6 +66,8 @@ test("V1 prose bindings derive their number from the actual source anchor, not a
  assert.equal(extractPackageBindings(source,[binding])[0].value,'6');
  assert.throws(()=>extractPackageBindings(source,[{...binding,value:'8'}]),/Unbacked numeric value/);
  assert.throws(()=>extractPackageBindings(source,[{...binding,text:'上限8'}]),/Missing published text anchor/);
+ assert.equal(extractPackageBindings(source,[{...binding,text:'标128→22',unit:'px'}])[0].value,'128px');
+ assert.throws(()=>extractPackageBindings(source,[{...binding,text:'标128→2',unit:'px'}]),/Missing published text anchor/);
 });
 
 test("V1 package/source commit agreement cannot hide a wrong project, version, deployment or publication state",async()=>{

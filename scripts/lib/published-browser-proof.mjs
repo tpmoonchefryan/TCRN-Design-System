@@ -190,7 +190,7 @@ export function publishedSearchGeometry(source,board,context){
  return {board,context,height,sourceCommit:source.manifest.site.sourceCommit,carrier:context==='sheet'?'.ts-sheet .ts-srch':context==='drop'?'.ts-drop .ts-srch':'.ts-panel .ts-srch'};
 }
 export function publishedSearchLocator(page,role){
- const scene=page.locator(`[data-formal-shell-scene="${role.scene}"][data-shell-theme="${role.theme}"]`).first();
+ const scene=page.locator(`[data-doc-shell-theme] [data-formal-shell-scene="${role.scene}"][data-shell-theme="${role.theme}"]`).first();
  return scene.locator(`${role.context==='drop'?'.tcrn-shell-dropdown__search':'.tcrn-shell-menu__search'} > .tcrn-search-input`);
 }
 export async function measurePublishedSearch(locator){
@@ -311,9 +311,22 @@ export async function readShellMatrices({browser,base,source,page,fixture,entry=
     const sourceElement=ref.locator('[data-cell]').nth(nth++),role=cell.cellId.replace(/-[ln]$/,''),selector=shellRoles[role],scene=shellSceneFor(cell),theme=cell.theme==='night'?'dark':'light';
     const observation={entry,locale,key:cell.key,cellId:cell.cellId,sourceLine:cell.sourceLine,sourceScene:cell.sourceScene,sourceState:cell.sourceState,carrier:cell.carrier,scene,theme,selector,ok:false};
     try{if(!selector)throw new Error(`Unmapped source shell role ${role}`);const element=page.locator(`[data-formal-shell-scene="${scene}"][data-shell-theme="${theme}"]`).first().locator(selector).first();if(await element.count()!==1)throw new Error('Missing actual package probe');
-     await page.mouse.move(0,0);if(['pin-hover','grp-hover','it-hover','pinb-outline'].includes(role)&&await element.isVisible()){if(role==='pinb-outline')await element.locator('..').hover();else await element.hover();}
-     const candidateProbe=role==='srch-ph'||role==='drop-srch'?'ph':cell.probe,actual=await measureElement(element,{...cell,probe:candidateProbe}),reference=await measureElement(sourceElement,cell),ratio=contrast(actual.ink,solidBackground(actual.chain));
-     const failures=[];if(!actual.visible||!reference.visible)failures.push('source/candidate carrier not visible');if(!cell.exempt&&ratio<(cell.kind==='text'?4.5:3))failures.push(`threshold ${cell.kind==='text'?4.5:3}`);if(Number(ratio.toFixed(2))!==Number(cell.expect))failures.push(`ratio ${ratio.toFixed(2)} != ${cell.expect}`);failures.push(...publishedTextRoleIssues(actual,reference,{kind:cell.kind,probe:candidateProbe}));
+     await page.mouse.move(0,0);if(['pin-hover','grp-hover','it-hover','pinb-outline'].includes(role)&&await element.isVisible()){
+      if(role==='pinb-outline')await element.locator('..').hover();else await element.hover();
+      await element.evaluate(async el=>{getComputedStyle(el).color;await Promise.all(el.getAnimations({subtree:true}).map(animation=>animation.finished.catch(()=>{})));});
+     }
+     // The published phone itself hides its top pins. Retain each occurrence and
+     // its style/contrast checks, while requiring that both real carriers are hidden.
+     const publishedHiddenPins=cell.mobile&&role.startsWith('pin-')&&await sourceElement.evaluate(el=>{const pins=el.closest('.scr.ts.m .ts-pins');return !!pins&&getComputedStyle(pins).display==='none';});
+     const matchingHiddenPins=publishedHiddenPins&&await element.evaluate(el=>{const pins=el.closest('.tcrn-shell-pins');return !!pins&&getComputedStyle(pins).display==='none';});
+     const poseHiddenHover=matchingHiddenPins&&role==='pin-hover',preview=poseHiddenHover?await element.getAttribute('data-tcrn-preview-state'):null;
+     if(poseHiddenHover)await element.evaluate(el=>el.setAttribute('data-tcrn-preview-state','hover'));
+     const candidateProbe=role==='srch-ph'||role==='drop-srch'?'ph':cell.probe;let actual;
+     try{actual=await measureElement(element,{...cell,probe:candidateProbe});}
+     finally{if(poseHiddenHover)await element.evaluate((el,previous)=>previous===null?el.removeAttribute('data-tcrn-preview-state'):el.setAttribute('data-tcrn-preview-state',previous),preview);}
+     const reference=await measureElement(sourceElement,cell),ratio=contrast(actual.ink,solidBackground(actual.chain)),visibility=actual.visible&&reference.visible?'visible':matchingHiddenPins&&!actual.visible&&!reference.visible?'published-hidden-pins':'mismatch';
+     observation.visibility=visibility;
+     const failures=[];if(visibility==='mismatch')failures.push('source/candidate carrier visibility differs from the published scene');if(!cell.exempt&&ratio<(cell.kind==='text'?4.5:3))failures.push(`threshold ${cell.kind==='text'?4.5:3}`);if(Number(ratio.toFixed(2))!==Number(cell.expect))failures.push(`ratio ${ratio.toFixed(2)} != ${cell.expect}`);failures.push(...publishedTextRoleIssues(actual,reference,{kind:cell.kind,probe:candidateProbe}));
      Object.assign(observation,{actual,reference,ratio,expected:cell.expect,exempt:cell.exempt,probe:cell.probe,candidateProbe,ok:!failures.length,reason:failures.join('; ')});
     }catch(error){observation.reason=error.message;}
     if(!observation.ok)issues.push(`${cell.key}: ${observation.reason}`);observations.push(observation);

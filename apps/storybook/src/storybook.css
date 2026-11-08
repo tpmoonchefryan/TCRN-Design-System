@@ -1970,6 +1970,11 @@ mark.tcrn-highlight__mark{background:var(--tcrn-color-acc-bg);color:inherit;font
   --tcrn-pair-edge-f: inset 0 0 0 var(--tcrn-space-0h) var(--tcrn-color-surface), inset 0 0 0 var(--tcrn-space-1) var(--tcrn-color-acc);
   --tcrn-pair-edge: var(--tcrn-pair-edge-d);
   flex: 1 1 auto;
+  /* 07b .ts-content: the paper owns the page inset, including its PageHeader. */
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-2h);
+  padding: var(--tcrn-space-3h) calc(2 * var(--tcrn-space-3h)) var(--tcrn-space-3);
   min-block-size: 0;
   overflow: auto;
   overscroll-behavior: contain;
@@ -1978,6 +1983,12 @@ mark.tcrn-highlight__mark{background:var(--tcrn-color-acc-bg);color:inherit;font
 }
 .tcrn-product-shell__paper > .tcrn-product-shell__main:where(:focus-visible) {
   --tcrn-pair-edge: var(--tcrn-pair-edge-f);
+}
+@container tcrn-shell (max-width: 390px) {
+  /* 07b .scr.ts.m .ts-content keeps the phone paper at 12px / 16px. */
+  .tcrn-product-shell__paper > .tcrn-product-shell__main {
+    padding: var(--tcrn-space-3) var(--tcrn-space-4);
+  }
 }
 .tcrn-product-shell__paper > .tcrn-product-shell__main:where(:focus-visible) {
   outline: 2px solid transparent;

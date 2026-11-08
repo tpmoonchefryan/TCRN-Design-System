@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { extname, join } from "node:path";
 import { pathToFileURL } from "node:url";
+import ts from "typescript";
 
 const ignoredDirectories = new Set([
   ".codegraph",
@@ -104,12 +105,25 @@ function findRuleMatches(body, pattern) {
   const matches = [];
   let match;
   while ((match = regex.exec(body)) !== null) {
-    matches.push(match[0]);
+    matches.push({ text: match[0], offset: match.index });
     if (match[0].length === 0) {
       regex.lastIndex += 1;
     }
   }
   return matches;
+}
+
+function jsxKeyExpressionOffsets(file, body) {
+  const offsets = new Set();
+  if (![".tsx", ".jsx"].includes(extname(file))) return offsets;
+  const source = ts.createSourceFile(file, body, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  function visit(node) {
+    if (ts.isJsxAttribute(node) && ts.isIdentifier(node.name) && node.name.text === "key"
+      && node.initializer && ts.isJsxExpression(node.initializer)) offsets.add(node.name.getStart(source));
+    ts.forEachChild(node, visit);
+  }
+  visit(source);
+  return offsets;
 }
 
 const negativeFixtureChecks = [
@@ -140,6 +154,7 @@ export function buildScanReceipt() {
   };
   const hits = [];
   const policyOrNegativeFixtureHits = [];
+  const sourceSyntaxExclusions = [];
 
   walk(".", context);
 
@@ -147,9 +162,15 @@ export function buildScanReceipt() {
     const body = readFileSync(file, "utf8");
     for (const rule of patterns) {
       const matches = findRuleMatches(body, rule.pattern);
+      const jsxKeys = rule.id === "env-assignment" && matches.length ? jsxKeyExpressionOffsets(file, body) : new Set();
       for (const matched of matches) {
-        const hit = redactedHit(file, rule.id, matched.replace(/\s+/g, " ").trim());
-        if (isAllowedPolicyFixture(file, rule.id)) {
+        const hit = redactedHit(file, rule.id, matched.text.replace(/\s+/g, " ").trim());
+        // A real JSX key={expression} is an attribute, not a dotenv assignment.
+        // Keep identical text outside that AST node subject to the original rule.
+        if (rule.id === "env-assignment" && /^\s*key\s*=$/.test(matched.text)
+          && jsxKeys.has(matched.offset + matched.text.lastIndexOf("key"))) {
+          sourceSyntaxExclusions.push({ ...hit, reason: "jsx_key_expression_attribute" });
+        } else if (isAllowedPolicyFixture(file, rule.id)) {
           policyOrNegativeFixtureHits.push(hit);
         } else {
           hits.push(hit);
@@ -168,6 +189,7 @@ export function buildScanReceipt() {
     patterns: patterns.map((rule) => rule.id),
     claim: "policy_and_negative_fixture_hits_are_classified_separately_from_real_payload_leakage",
     policyOrNegativeFixtureHits,
+    sourceSyntaxExclusions,
     hits
   };
 }

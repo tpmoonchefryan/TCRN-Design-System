@@ -99,10 +99,12 @@ export async function proveFontsInBrowser({root=ROOT,entry="static"}={}){return 
   await reference.goto(`${base}/__formal/02-typography`);
   for(const locale of LOCALES){
    await page.goto(entry==="static"?`${base}/${locale}/02-typography.html`:`${base}/iframe.html?id=published-standards--typography&viewMode=story&globals=locale:${locale}`);await page.locator('[data-approved-board="02-typography"]').waitFor();
-   const result=await page.evaluate(async()=>{await document.fonts.ready;const families=["Hanken Grotesk","Source Serif 4","IBM Plex Mono","Noto Sans SC","Noto Serif SC"];return {faces:await Promise.all(families.map(async family=>({family,loaded:(await document.fonts.load(`16px "${family}"`,family.startsWith("Noto")?"季度复盘":"Q3 Review 128")).length}))),text:Object.fromEntries(["body","h1","id"].map(role=>[role,document.querySelector(`[data-formal-role="${role}"]`)?.textContent??""]))};});
+   const result=await page.evaluate(async()=>{await document.fonts.ready;const families=["Hanken Grotesk","Source Serif 4","IBM Plex Mono","Noto Sans SC","Noto Serif SC"];return {faces:await Promise.all(families.map(async family=>({family,loaded:(await document.fonts.load(`16px "${family}"`,family.startsWith("Noto")?"季度复盘":"Q3 Review 128")).length}))),text:Object.fromEntries(["body","h1","id"].map(role=>[role,document.querySelector(`[data-formal-role="${role}"]`)?.textContent??""])),widths:Object.fromEntries(["body","h1","id"].map(role=>[role,document.querySelector(`[data-formal-role="${role}"]`)?.getBoundingClientRect().width]))};});
    for(const face of result.faces)if(!face.loaded)issues.push(`${locale}: formal family did not load ${face.family}`);
-   await reference.evaluate(({text,locale})=>{document.documentElement.lang=locale;document.getElementById("font-role-reference")?.remove();const container=document.createElement("div");container.id="font-role-reference";container.className="pane gp";for(const [role,value]of Object.entries(text)){const el=document.createElement(role==="h1"?"h1":"p");el.className=role==="body"?"tx":role;el.id=`font-ref-${role}`;el.textContent=value;container.append(el);}document.body.append(container);return document.fonts.ready;},{text:result.text,locale});
-   const roles=[];for(const role of ["body","h1","id"]){const actual=await renderedFonts(page,`[data-formal-role="${role}"]`),expected=await renderedFonts(reference,`#font-ref-${role}`);if(!actual.length||JSON.stringify(actual)!==JSON.stringify(expected))issues.push(`${locale}/${role}: actual rendered font families/glyph counts differ from the independent published-font reference`);roles.push({role,text:result.text[role],actual,expected});}
+   // Equal line widths preserve wrapping spaces in glyph counts. Font roles and
+   // faces still come independently from the published reference stylesheet.
+   await reference.evaluate(({text,widths,locale})=>{document.documentElement.lang=locale;document.getElementById("font-role-reference")?.remove();const container=document.createElement("div");container.id="font-role-reference";container.className="pane gp";for(const [role,value]of Object.entries(text)){const el=document.createElement(role==="h1"?"h1":"p");el.className=role==="body"?"tx":role;el.id=`font-ref-${role}`;el.textContent=value;el.style.width=`${widths[role]}px`;container.append(el);}document.body.append(container);return document.fonts.ready;},{text:result.text,widths:result.widths,locale});
+   const roles=[];for(const role of ["body","h1","id"]){const actual=await renderedFonts(page,`[data-formal-role="${role}"]`),expected=await renderedFonts(reference,`#font-ref-${role}`);if(!actual.length||JSON.stringify(actual)!==JSON.stringify(expected))issues.push(`${locale}/${role}: actual rendered font families/glyph counts differ from the independent published-font reference`);roles.push({role,text:result.text[role],width:result.widths[role],actual,expected});}
    observations.push({locale,faces:result.faces,roles});
   }
   if(requests.some(url=>!url.startsWith(base)))issues.push("Font/browser resource request escaped the local published-asset closure");
@@ -175,7 +177,8 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
    const menu=await open(),expected=publishedBoardUrl(base,entry,locale,board),href=expected.slice(base.length),link=menu.locator(`a[data-shell-row][href="${href}"]`);
    if(await link.count()!==1)throw new Error(`Missing unique actual document navigation link ${board}`);
    await link.click();await page.locator(`[data-approved-board="${board}"]`).waitFor();await page.locator('[data-docs-ready="true"]').waitFor();
-   if(page.url()!==expected)issues.push(`${entry}/${locale}: document navigation activation ${board}`);
+   const activatedUrl=new URL(page.url()),expectedUrl=new URL(expected);activatedUrl.searchParams.sort();expectedUrl.searchParams.sort();
+   if(activatedUrl.href!==expectedUrl.href)issues.push(`${entry}/${locale}: document navigation activation ${board}`);
    observations.push({kind:'document-navigation',entry,locale,board,href,activated:page.url()});
   }catch(error){issues.push(`${entry}/${locale}/${board}: navigation ${error.message}`);}
  }
@@ -711,7 +714,7 @@ export async function exerciseDocsSheet(page,{base,locale,formal,negative=locale
   const current=panel.locator('.tcrn-shell-menu__crumb--current');
   if(await current.getAttribute('href')!==`/${locale}/index.html`||await current.getAttribute('aria-current')!=='page')issues.push(`${locale}: current location is missing or wrong in the Sheet`);
   const visibleRows=panel.locator('[data-shell-row]:visible');
-  const actualGroups=await visibleRows.evaluateAll(els=>els.filter(el=>el.dataset.shellLevel==='1').map(el=>el.getAttribute('aria-controls')?.split('-col-').at(-1)));
+  const actualGroups=await visibleRows.evaluateAll(els=>els.filter(el=>el.dataset.shellLevel==='1'&&!el.closest('[data-shell-pinned-group]')).map(el=>el.getAttribute('aria-controls')?.split('-col-').at(-1)));
   if(JSON.stringify(actualGroups)!==JSON.stringify(['portal',...pages]))issues.push(`${locale}: Sheet does not expose home and all four topic groups`);
   for(const topic of pages){
    try{

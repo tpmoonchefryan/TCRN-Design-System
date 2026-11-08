@@ -28,7 +28,7 @@ export async function readShellSpecimenContent(page){
  return page.locator('.docs-shell').evaluate(docs=>{
   const padding=s=>[s.paddingTop,s.paddingRight,s.paddingBottom,s.paddingLeft].map(parseFloat);
   const outer=docs.querySelector(':scope > .docs-paper > main');
-  const scenes=[...docs.querySelectorAll('[data-formal-shell-scene]')].map(frame=>{
+  const scenes=[...docs.querySelectorAll('[data-doc-shell-theme] [data-formal-shell-scene], [data-formal-intro] [data-formal-shell-scene]')].filter(frame=>!frame.closest('[data-shared-component-example]')).map(frame=>{
    const shell=frame.querySelector(':scope > .tcrn-product-shell');
    const strip=shell?.querySelector(':scope > [data-shell-strip]');
    const paper=shell?.querySelector(':scope > .tcrn-product-shell__paper');
@@ -141,7 +141,17 @@ export async function readShellGeometry(frame){return frame.evaluate(frame=>{
   // Canvas ink metrics locate the actual glyph top/baseline, not the word's CSS line-box centre.
   let ink=null;if(word&&visible(word)){const r=word.getBoundingClientRect(),s=getComputedStyle(word),ctx=document.createElement('canvas').getContext('2d');ctx.font=`${s.fontStyle} ${s.fontWeight} ${s.fontSize} ${s.fontFamily}`;const m=ctx.measureText(word.textContent),lh=parseFloat(s.lineHeight)||r.height,baseline=r.y+parseFloat(s.paddingTop)+(lh-m.fontBoundingBoxAscent-m.fontBoundingBoxDescent)/2+m.fontBoundingBoxAscent;ink={center:baseline+(m.actualBoundingBoxDescent-m.actualBoundingBoxAscent)/2,baseline,ascent:m.actualBoundingBoxAscent,descent:m.actualBoundingBoxDescent,box:box(word)};}
   const rows=all('.tcrn-shell-menu__text,.tcrn-shell-pins__label,.tcrn-page-header__title,.tcrn-breadcrumb__label,.tcrn-shell-menu__crumb,.tcrn-nav-item__label').filter(visible).map(el=>{
-    const s=getComputedStyle(el),r=el.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(el);const lines=[...range.getClientRects()].map(r=>Math.round(r.y*10)/10);const lineCount=new Set(lines).size;
+    const s=getComputedStyle(el),r=el.getBoundingClientRect(),walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),fragments=[];
+    // A range over the whole label also returns nested inline element boxes,
+    // whose tops differ from the glyph run on that same line. Read text runs.
+    while(walker.nextNode())if(walker.currentNode.textContent.trim()){
+      const range=document.createRange();range.selectNodeContents(walker.currentNode);fragments.push(...[...range.getClientRects()].filter(rect=>rect.width>0&&rect.height>0).map(rect=>({top:rect.top,bottom:rect.bottom})));
+    }
+    const lines=[];for(const fragment of fragments.sort((a,b)=>a.top-b.top)){
+      const line=lines.find(line=>Math.min(line.bottom,fragment.bottom)>Math.max(line.top,fragment.top));
+      if(line){line.top=Math.min(line.top,fragment.top);line.bottom=Math.max(line.bottom,fragment.bottom);}else lines.push({...fragment});
+    }
+    const lineCount=lines.length;
     const clips=[];for(let p=el.parentElement;p&&p!==shell.parentElement;p=p.parentElement){const ps=getComputedStyle(p);if(/hidden|clip|auto|scroll/.test(`${ps.overflowX} ${ps.overflowY}`)){const pr=p.getBoundingClientRect();if(r.left<pr.left-.5||r.right>pr.right+.5||(/hidden|clip/.test(ps.overflowY)&&(r.top<pr.top-.5||r.bottom>pr.bottom+.5)))clips.push({className:p.className,rect:box(p)});}}
     return {text:el.textContent,title:el.title,whiteSpace:s.whiteSpace,overflow:s.overflow,textOverflow:s.textOverflow,lineCount,clips,rect:box(el)};
   });
@@ -167,12 +177,15 @@ export async function readShellGeometry(frame){return frame.evaluate(frame=>{
 // boundaries. CSS declaration/pair presence alone cannot establish row focus.
 export async function readPinnableFocus(page,scope){
  const readings=[];await page.keyboard.press('Tab');
- for(const row of await scope.locator('.tcrn-nav-item-row').all())for(const target of ['.tcrn-nav-item','[data-pin-button]']){
+ for(const row of await scope.locator('.tcrn-nav-item-row').all()){
+  if(!await row.evaluate(el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=='hidden'))continue;
+  for(const target of ['.tcrn-nav-item','[data-pin-button]']){
   await row.locator(`:scope > ${target}`).focus();
   readings.push(await row.evaluate(row=>{
    const link=row.querySelector(':scope > .tcrn-nav-item'),pin=row.querySelector(':scope > [data-pin-button]'),s=getComputedStyle(row),rect=el=>{const r=el.getBoundingClientRect();return {x:r.x,right:r.right,width:r.width,height:r.height};},probe=document.createElement('span');probe.style.boxShadow='var(--tcrn-focus-ring)';row.append(probe);const expectedFocus=getComputedStyle(probe).boxShadow;probe.remove();
    return {row:rect(row),link:rect(link),pin:rect(pin),pinInset:rect(row).right-rect(pin).right,columns:s.gridTemplateColumns,focused:row.contains(document.activeElement),target:document.activeElement===pin?'pin':'link',shadow:s.boxShadow,expectedFocus,childShadow:getComputedStyle(link).boxShadow,pinShadow:getComputedStyle(pin).boxShadow};
   }));
+  }
  }
  return readings;
 }
@@ -180,7 +193,7 @@ export function rowFocusValid(rows){return rows?.length>0&&rows.every(r=>r.focus
 export function shadowBlurs(value){
   if(value==='none')return [];
   // Drop the colour before parsing lengths: colour-channel numbers are not shadow geometry.
-  return value.replace(/rgba?\([^)]*\)|#[0-9a-f]+/gi,'').split(',').map(layer=>[...layer.matchAll(/(-?\d+(?:\.\d+)?)px/g)].map(m=>Number(m[1]))).filter(lengths=>lengths.length>=2).map(lengths=>lengths[2]??0);
+  return value.replace(/rgba?\([^)]*\)|#[0-9a-f]+/gi,'').split(',').map(layer=>[...layer.matchAll(/(?:^|\s)(-?\d+(?:\.\d+)?px|-?0)(?=\s|$)/g)].map(m=>parseFloat(m[1]))).filter(lengths=>lengths.length>=2).map(lengths=>lengths[2]??0);
 }
 export function judgeShellG18(facts,source){
   const e=shellExpected(source),{band:b,menu:m,drop:d,phone:p}=facts;
@@ -205,7 +218,10 @@ export function judgeShellG18(facts,source){
   fail('G06',d.drop.padding?.every(v=>close(v,6))&&d.dropRows?.length>0&&d.dropRows.every(r=>close(r.height,32))&&close(d.dropText?.x-d.drop.x,16),'drop padding6, row32, text start16');
   if(d.drop&&d.dropTrigger)fail('G06',d.drop.width/d.dropTrigger.width>=3&&d.drop.width/d.dropTrigger.width<=4,'drop width is 3–4 times trigger width');
   fail('G07',close(m.panel.bottom-m.pbar.y,52),'footer extent52 including bottom padding');
-  for(const r of [m.lockup,m.crumbs])fail('G07',!!r&&close(r.y-m.pbar.y,m.panel.bottom-r.bottom,e.footerTolerance),'footer contents centred across divider→panel bottom');
+  // The painted divider is centred in its top border. Its outer border-box edge
+  // is half a pixel away for the actual 1px rule; the ±0.5 contract stays intact.
+  const dividerY=m.pbar.y+m.pbar.borders[0]/2;
+  for(const r of [m.lockup,m.crumbs])fail('G07',!!r&&close(r.y-dividerY,m.panel.bottom-r.bottom,e.footerTolerance),'footer contents centred across divider→panel bottom');
   fail('G07',!!m.lockup&&close(m.panel.right-m.lockup.right,16),'lockup right inset16');
   fail('G08',!!b.ink&&close(b.ink.center,center(b.mark),e.inkTolerance),'actual word glyph ink centre matches mark ±1');
   fail('G08',close(b.brand.y+ b.brand.height/2,center(b.mark)),'mark/text assembly centred within brand band');
@@ -305,24 +321,34 @@ export async function collectShellG18(page,source,{matrix,intro,fixture,locale="
   await page.mouse.move(0,0);const rest=(await label.boundingBox()).width;await row.hover();const hover=(await label.boundingBox()).width;
   facts.jitter.push({rest,hover,button:await pin.evaluate(el=>el.getBoundingClientRect().width)});
  }
+ // Later clicks/Escape deliberately dismiss independent transient specimens.
+ // Measure this menu's real row focus while that actual menu is still open.
+ const focusRows=await readPinnableFocus(page,menu);
  const lockup=menu.locator('.tcrn-shell-menu__lockup');
  const paint=()=>lockup.evaluate(el=>{const s=getComputedStyle(el);return {background:s.backgroundColor,color:s.color,shadow:s.boxShadow,cursor:s.cursor};});
- await page.mouse.move(0,0);const resting=await paint();await lockup.hover();facts.lockupHoverSame=JSON.stringify(await paint())===JSON.stringify(resting);
+ await lockup.scrollIntoViewIfNeeded();await page.mouse.move(0,0);const resting=await paint(),lockupBox=await lockup.boundingBox();
+ if(!lockupBox)throw new Error('Missing rendered decorative lockup region');
+ // The decorative lockup deliberately has pointer-events:none. Place the real
+ // pointer over its region without requiring it to become an interactive hit target.
+ await page.mouse.move(lockupBox.x+lockupBox.width/2,lockupBox.y+lockupBox.height/2);
+ facts.lockupHoverSame=JSON.stringify(await paint())===JSON.stringify(resting);
  const search=menu.locator('input[type="search"]').first();await search.focus();let exited=false,visited=false;
  for(let i=0;i<100;i++){await page.keyboard.press('Tab');const state=await menu.evaluate(el=>({inside:el.contains(document.activeElement),lockup:!!document.activeElement?.closest('.tcrn-shell-menu__lockup')}));visited||=state.lockup;if(!state.inside){exited=true;break;}}
  facts.lockupTabSkipped=!visited&&exited;
  facts.brandWords=await lockup.evaluate(el=>({word:el.querySelector('.tcrn-product-logo__line-one-base')?.textContent,suffix:el.querySelector('.tcrn-product-logo__line-one-suffix')?.textContent,tagline:el.querySelector('.tcrn-product-logo__line-two')?.textContent}));
+ if(await drop.locator('.tcrn-shell-dropdown__panel').count()===0)await drop.locator('[data-pin="contracts"] .tcrn-shell-pins__item').click();
  const opener=drop.locator('.tcrn-shell-dropdown__panel [data-shell-row][aria-expanded]').first();
  if(await opener.getAttribute('aria-expanded')==='true')await opener.click();
  const columns=()=>drop.locator('.tcrn-shell-dropdown__col').count();const closed=await columns();await opener.hover();facts.cascadeHover=(await columns())>closed;
- await opener.click();facts.cascadeClick=(await columns())>closed;await opener.focus();await page.keyboard.press('ArrowRight');const rightEntered=await drop.locator('.tcrn-shell-dropdown__col').first().evaluate(el=>el.contains(document.activeElement));await page.keyboard.press('ArrowLeft');const leftReturned=await opener.evaluate(el=>el===document.activeElement);
+ await opener.click();facts.cascadeClick=(await columns())>closed;await opener.focus();await page.keyboard.press('ArrowRight');const rightEntered=await drop.locator('.tcrn-shell-dropdown__col').first().evaluate(el=>el.contains(document.activeElement));
  facts.drop=await readShellGeometry(drop);
+ await page.keyboard.press('ArrowLeft');const leftReturned=await opener.evaluate(el=>el===document.activeElement);
  const trigger=band.locator('[data-shell-brand]');await trigger.click();await page.keyboard.press('Escape');const escapeRestored=await trigger.evaluate(el=>el===document.activeElement);
  await trigger.click();await band.locator('[data-paper]').click({position:{x:40,y:500}});facts.outsideClosed=await band.locator('[data-panel="expanded"]').count()===0;
  // The document's owning shell handles the shortcut. Its target is measured separately from
  // the specimen instance, which intentionally disables a duplicate global listener.
  const owner=page.locator('.tcrn-product-shell').first();await page.keyboard.press('Control+k');const shortcutSearch=await owner.locator(':scope > .tcrn-shell-menu input[type="search"]').first().evaluate(el=>el===document.activeElement).catch(()=>false);await page.keyboard.press('Escape');
- facts.focus={escapeRestored,shortcutSearch,rightEntered,leftReturned,rows:await readPinnableFocus(page,menu)};
+ facts.focus={escapeRestored,shortcutSearch,rightEntered,leftReturned,rows:focusRows};
  const phoneTrigger=phone.locator('[data-shell-brand]');if(await phoneTrigger.getAttribute('aria-expanded')==='true')await phoneTrigger.click();await phoneTrigger.click();facts.touchClickable=await phone.locator('[data-panel="sheet"]').count()===1;facts.phone=await readShellGeometry(phone);
  return facts;
 }

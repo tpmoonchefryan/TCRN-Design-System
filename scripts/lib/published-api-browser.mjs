@@ -80,6 +80,25 @@ export function lockupRoleIssues(readings,expected){
 // reader locale. It must also hold when the manager's document-root language is different.
 export const SHELL_BRAND_NAMES=Object.freeze({'zh-CN':['展开导航','收起导航'],en:['Open navigation','Close navigation'],ja:['ナビゲーションを開く','ナビゲーションを閉じる'],ko:['내비게이션 열기','내비게이션 닫기'],fr:['Ouvrir la navigation','Fermer la navigation']});
 export function shellBrandNameIssues(readings,locale){return readings.filter(r=>r.label!==`${SHELL_BRAND_NAMES[locale]?.[r.expanded?1:0]} · ${r.product}`).map(r=>`ShellBrandButton locale ${locale}/${r.version}/${r.expanded}: ${r.label}`);}
+async function readNativeDateIndicator(page){
+ const session=await page.context().newCDPSession(page);
+ try{
+  await session.send('DOM.enable');await session.send('CSS.enable');
+  const {root}=await session.send('DOM.getDocument',{depth:-1,pierce:true});
+  const {nodeId}=await session.send('DOM.querySelector',{nodeId:root.nodeId,selector:'[data-approved-board] input[type="date"]'});
+  if(!nodeId)throw new Error('Missing actual native DatePicker input');
+  const {node}=await session.send('DOM.describeNode',{nodeId,depth:-1,pierce:true});
+  const findIndicator=node=>{
+   const attrs=node.attributes??[];
+   if(attrs.some((name,index)=>index%2===0&&name==='pseudo'&&attrs[index+1]==='-webkit-calendar-picker-indicator'))return node;
+   for(const child of [...(node.children??[]),...(node.shadowRoots??[]),...(node.pseudoElements??[])]){const found=findIndicator(child);if(found)return found;}
+  };
+  const indicator=findIndicator(node);
+  if(!indicator?.nodeId)throw new Error('Missing observable native DatePicker indicator');
+  const {computedStyle}=await session.send('CSS.getComputedStyleForNode',{nodeId:indicator.nodeId});
+  return Object.fromEntries(computedStyle.filter(item=>['opacity','display','width','height','pointer-events'].includes(item.name)).map(item=>[item.name,item.value]));
+ }finally{await session.detach();}
+}
 export async function readApiFacts(page,{source=readApprovedSource(),locale='en'}={}){const facts=await page.locator('[data-approved-board]').first().evaluate(root=>{
  const one=s=>root.querySelector(s),all=s=>[...root.querySelectorAll(s)],style=el=>el?getComputedStyle(el):null;
  const named=el=>!!(el.getAttribute('aria-label')?.trim()||el.labels?.length);
@@ -148,7 +167,7 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
   facts.Select={nativeClosedSingle:!!select&&!select.multiple&&select.options.length>1,placeholderDisabled:!!select?.options[0].disabled};
   facts.MultiSelect={closedSetPresentations:!!one('select[multiple]')&&!!one('.tcrn-multi-select-dropdown__trigger')&&!!one('[data-choice-presentation="checkboxes"]'),selectionAndLabels:!!one('[data-multi-select-summary]')?.textContent.trim()&&!!one('.tcrn-multi-select-dropdown__trigger')?.getAttribute('aria-label')};
   facts.NumberInput={nativeNumber:!!number&&number.type==='number'&&number.min==='1'&&number.max==='120'};
-  facts.DatePicker={nativeIso:!!date&&/^\d{4}-\d{2}-\d{2}$/.test(date.value)&&named(date),calendarIndicator:!!one('.tcrn-date-picker-wrap [data-icon-name="calendar"]')&&getComputedStyle(date,'::-webkit-calendar-picker-indicator').opacity==='0'};
+  facts.DatePicker={nativeIso:!!date&&/^\d{4}-\d{2}-\d{2}$/.test(date.value)&&named(date),calendarIcon:!!one('.tcrn-date-picker-wrap [data-icon-name="calendar"]'),pseudoOpacity:getComputedStyle(date,'::-webkit-calendar-picker-indicator').opacity,calendarIndicator:false};
   const checks=all('input.tcrn-checkbox');facts.Checkbox={nativeNamed:checks.length>0&&checks.every(named),mixedAndError:checks.some(el=>el.getAttribute('aria-invalid')==='true')&&checks.some(el=>el.disabled)};
   const radios=all('fieldset.tcrn-radio-group');facts.RadioGroup={nativeLegendAndName:radios.length>0&&radios.every(el=>el.querySelector('legend')?.textContent.trim()&&[...el.querySelectorAll('input[type="radio"]')].every(input=>input.name)),oneChoicePerGroup:radios.some(el=>el.querySelectorAll('input[type="radio"]:checked').length===1)&&radios.every(el=>el.querySelectorAll('input[type="radio"]:checked').length<=1)};
   const toggle=one('input[role="switch"]');facts.Switch={descriptionAssociated:!!toggle&&descriptions(toggle).some(d=>d?.classList.contains('tcrn-switch__description'))};
@@ -157,7 +176,7 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
   const frame=one('[data-formal-shell-scene="band"]'),shell=frame?.querySelector('.tcrn-product-shell'),trigger=frame?.querySelector('[data-shell-brand]'),menu=one('[data-formal-shell-scene="menu"] [role="dialog"]'),pins=frame?.querySelector('.tcrn-shell-pins'),drop=one('[data-formal-shell-scene="drop"] [data-panel="drop"]');
   facts.ProductShell={oneTopBand:!!shell&&shell.querySelectorAll(':scope > [data-shell-strip]').length===1&&!shell.querySelector('.tcrn-side-nav'),headerAndPreferences:!!shell?.querySelector('.tcrn-page-header')&&!!shell?.querySelector('[data-shell-account]'),contextualHeader:all('.tcrn-page-header__title').length>0&&all('.tcrn-page-header__title').every(el=>Math.abs(parseFloat(style(el).lineHeight)-26*1.1)<.1)};
   facts.ShellBrandButton={readings:all('[data-shell-brand]').map(el=>({label:el.getAttribute('aria-label'),expanded:el.getAttribute('aria-expanded')==='true',version:el.dataset.shellBrand,product:'TCRN TMS',standalone:el.hasAttribute('data-standalone-brand')})),namedRegisteredVersions:!!trigger?.getAttribute('aria-label')&&trigger.getAttribute('aria-haspopup')==='dialog'&&!!trigger.querySelector('svg[data-logo="tms"]')&&!!one('[data-shell-brand="v1"]')&&!!one('[data-shell-brand="v2"]')};
-  const rowReadings=all('.tcrn-shell-menu .tcrn-nav-item-row').map(row=>{
+  const rowReadings=all('.tcrn-shell-menu .tcrn-nav-item-row').filter(row=>row.getClientRects().length>0&&style(row).visibility!=='hidden').map(row=>{
    const child=row.querySelector(':scope > .tcrn-nav-item'),pin=row.querySelector(':scope > [data-pin-button]'),selected=child?.matches('[aria-current="page"],[aria-expanded="true"]'),hover=row.matches(':hover')||child?.getAttribute('data-tcrn-preview-state')?.split(/\s+/).includes('hover'),state=selected?'selected':hover?'hover':'default',rect=el=>{const r=el?.getBoundingClientRect();return r?{x:r.x,right:r.right,width:r.width,height:r.height}:null;};
    return {state,ink:child&&style(child).color,fill:style(row).backgroundColor,childFill:child&&style(child).backgroundColor,weight:child&&style(child).fontWeight,expectedInk:color(row,`var(--tcrn-color-${selected||hover?'ink':'ink-2'})`),expectedFill:state==='default'?'rgba(0, 0, 0, 0)':color(row,`var(--tcrn-color-${selected?'wash':'hover'})`),row:rect(row),link:rect(child),pin:rect(pin),pinInset:row.getBoundingClientRect().right-pin?.getBoundingClientRect().right,columns:style(row).gridTemplateColumns};
   });
@@ -168,6 +187,13 @@ export async function readApiFacts(page,{source=readApprovedSource(),locale='en'
  }
  return facts;
 });
+ if(facts.DatePicker){
+  // Chromium's getComputedStyle pseudo argument reports the input's opacity for
+  // this UA shadow control. Read the actual native indicator, as the font proof
+  // likewise reads real rendered nodes through CDP.
+  facts.DatePicker.nativeIndicator=await readNativeDateIndicator(page);
+  facts.DatePicker.calendarIndicator=facts.DatePicker.calendarIcon&&facts.DatePicker.nativeIndicator.opacity==='0';
+ }
  if(facts.Icon){
   const names=extractIcons(source).map(icon=>icon.name).sort();
   const {roster}=facts.Icon;

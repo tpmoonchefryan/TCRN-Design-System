@@ -8,7 +8,7 @@ test("V6 pin stays a pure SVG button with an item-specific accessible name",()=>
 
 import { SHELL_G18,SHELL_G18_FIXTURES,judgeShellG18,shadowBlurs,readShellSpecimenContent,shellSpecimenContentIssues } from '../scripts/lib/published-shell-gates.mjs';
 import { extractMarks,extractMatrixOccurrences } from '../scripts/lib/approved-site-source.mjs';
-import { shellSceneFor,withPublishedBrowser,openPublishedBoard } from '../scripts/lib/published-browser-proof.mjs';
+import { shellSceneFor,withPublishedBrowser,openPublishedBoard,readShellMatrices } from '../scripts/lib/published-browser-proof.mjs';
 test('published 07b G rows have one existing-runner local DOM/behavior fixture each',()=>{
  const html=readApprovedSource().board('07b-shell-lower').html.split('\n')[83].replace(/sc-raw-/g,'');
  const titles=[...html.matchAll(/<tr[^>]*>\s*<td[^>]*>([\s\S]*?)<\/td>/g)].map(m=>m[1].replace(/<[^>]*>/g,''));
@@ -117,6 +117,33 @@ test('07 inner specimens and outer docs fail independently in both builds at wid
     }
     assert.deepEqual(judge(await readShellSpecimenContent(page)),{outer:[],specimens:[]},label);
    }
+  }finally{await page.close();}
+ },{entry});
+});
+
+test('real shell matrix settles hover and preserves the published hidden phone pins without masking mutations',async()=>{
+ const sourceConflictKeys=['07a-shell-upper:20','07a-shell-upper:69','07a-shell-upper:97','07a-shell-upper:122'];
+ const hiddenKeys=['07a-shell-upper:144','07a-shell-upper:145','07a-shell-upper:146','07a-shell-upper:150','07a-shell-upper:151','07a-shell-upper:152'];
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  const collect=()=>readShellMatrices({browser,base,source,page,entry,locale:'en'});
+  const assertBaseline=reading=>{
+   assert.equal(reading.observations.length,225);
+   assert.deepEqual(reading.issues,sourceConflictKeys.map(key=>`${key}: threshold 4.5`));
+   assert.deepEqual(reading.observations.filter(row=>row.visibility==='published-hidden-pins').map(row=>row.key),hiddenKeys);
+   assert.ok(reading.observations.filter(row=>hiddenKeys.includes(row.key)).every(row=>row.ok&&!row.actual.visible&&!row.reference.visible));
+  };
+  try{
+   assertBaseline(await collect());
+   for(const [css,assertChanged] of [
+    ['[data-formal-shell-scene^="phone"] .tcrn-shell-pins{display:flex!important;min-inline-size:100px!important}',reading=>assert.ok(reading.observations.some(row=>hiddenKeys.includes(row.key)&&!row.ok&&row.reason.includes('visibility differs')))],
+    ['[data-formal-shell-scene="band"] [data-pin="settlements"] .tcrn-shell-pins__item{color:var(--tcrn-color-ink-2)!important}',reading=>assert.ok(reading.observations.some(row=>row.key==='07a-shell-upper:6'&&!row.ok&&row.reason.includes('published text role color')))],
+   ]){
+    const mutate=async route=>{const response=await route.fetch();await route.fulfill({response,body:`${await response.text()}\n${css}`});};
+    await page.route('**/*.css',mutate);
+    try{assertChanged(await collect());}finally{await page.unroute('**/*.css',mutate);}
+   }
+   assertBaseline(await collect());
   }finally{await page.close();}
  },{entry});
 });

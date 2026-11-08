@@ -16,7 +16,7 @@ test("V7 rejects unlinked pages, renamed assets and old compiled JS by exact out
  }
 });
 
-import { API_BEHAVIOR_REQUIREMENTS,apiBehaviorIssues } from '../scripts/lib/published-api-browser.mjs';
+import { API_BEHAVIOR_REQUIREMENTS,apiBehaviorIssues,readApiFacts,exerciseApiBoard } from '../scripts/lib/published-api-browser.mjs';
 test('all28 API semantics require complete formal text and actual behavior, not arbitrary nonempty props',()=>{
  assert.equal(Object.keys(API_BEHAVIOR_REQUIREMENTS).length,28);
  assert.ok(checkProjection(registry,apis.map(a=>({...a,props:['formal obligation'],formal:'formal obligation'}))).length);
@@ -214,12 +214,12 @@ test('the real navigation caller accepts only the two registered dialog-role des
  const sourceLabels={'zh-CN':'正式来源',en:'Published source',ja:'公開済みソース',ko:'게시된 원본',fr:'Source publiée'};
  for(const entry of ['static','manager'])for(const locale of ['zh-CN','en','ja','ko','fr']){
   const emptyQueries=['StateView','brand-identity','tcrn-brand-mark.svg',sourceLabels[locale],source.manifest.site.sourceCommit];
-  function caller(alter=rows=>rows){
+  function caller(alter=rows=>rows,activate=target=>target){
    let url='',query='',board='01-tokens';const emptyWaits=[],activations=[];
    const apiHref=name=>entry==='static'?`/${locale}/api.html#api-${name}`:`${publishedBoardUrl(base,entry,locale,formal[name].board).slice(base.length)}#api-${name}`;
    const roleRows=()=>alter(['ShellBrandButton','ShellMenu'].map(name=>({id:`api-${name}`,name,href:apiHref(name)})));
    const roleQuery=()=>query.trim().normalize('NFKC').toLowerCase()==='dialog';
-   const destination=href=>new URL(href,url||base).href;
+   const destination=href=>{const target=new URL(href,url||base);target.searchParams.sort();return activate(target).href;};
    const result=name=>({waitFor:async()=>{},getAttribute:async key=>{assert.equal(key,'href');return apiHref(name);},click:async()=>{url=destination(apiHref(name));board=formal[name].board;activations.push(name);}});
    const links={
     first:()=>({waitFor:async options=>{assert.deepEqual(options,{state:'visible'});assert.ok(roleQuery());}}),
@@ -250,10 +250,31 @@ test('the real navigation caller accepts only the two registered dialog-role des
   assert.deepEqual(reading.observations.filter(o=>o.kind==='document-navigation').map(o=>o.board),Object.keys(APPROVED_BOARD_IDS));
   assert.deepEqual(reading.observations.filter(o=>o.kind==='dialog-role-search').map(o=>o.query),['Dialog','  ＤｉＡｌＯｇ  ']);
   assert.deepEqual(good.state(),{emptyWaits:emptyQueries,activations:apis.map(api=>api.name)});
+  for(const activate of [
+   target=>{if(entry==='manager')target.searchParams.set('globals',`locale:${locale==='en'?'fr':'en'}`);else target.pathname=target.pathname.replace(`/${locale}/`,`/${locale==='en'?'fr':'en'}/`);return target;},
+   target=>{if(entry==='manager')target.searchParams.set('id','published-standards--unsupported');else target.pathname=target.pathname.replace('/01-tokens.html','/06-inputs.html');return target;},
+  ])assert.ok((await caller(rows=>rows,activate).run()).issues.some(issue=>issue.includes('document navigation activation')),'canonical query encoding must still reject the wrong locale or document');
   for(const alter of [rows=>rows.slice(0,1),rows=>[...rows,{id:'api-Dialog',name:'Dialog',href:entry==='static'?`/${locale}/api.html#api-Dialog`:`${publishedBoardUrl(base,entry,locale,'07b-shell-lower').slice(base.length)}#api-Dialog`}],rows=>rows.map((row,i)=>i?row:{...row,id:'api-Dialog'}),rows=>rows.map((row,i)=>i?row:{...row,href:`/en/api.html#api-ShellBrandButton-wrong`})]){
    assert.ok((await caller(alter).run()).issues.some(issue=>issue.includes('dialog role search')),'missing, extra, unsupported or misrouted role hits must fail the actual caller');
   }
  }
+});
+
+test('native DatePicker indicator measurement rejects a visible UA glyph and accepts the restored real control',async()=>{
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
+  const page=await browser.newPage();
+  try{
+   await openPublishedBoard(page,{base,entry,locale:'en',board:'06-inputs'});
+   const read=async()=>(await exerciseApiBoard(page,'06-inputs',await readApiFacts(page,{source,locale:'en'}))).DatePicker;
+   const baseline=await read();assert.equal(baseline.nativeIso,true);assert.equal(baseline.calendarIcon,true);assert.equal(baseline.nativeIndicator.opacity,'0');assert.deepEqual(apiBehaviorIssues('DatePicker',baseline),[]);
+   const override=await page.addStyleTag({content:'[data-approved-board] input[type="date"]::-webkit-calendar-picker-indicator{opacity:1!important}'});
+   try{
+    const changed=await read();assert.equal(changed.nativeIso,true);assert.equal(changed.calendarIcon,true);assert.equal(changed.nativeIndicator.opacity,'1');
+    assert.ok(apiBehaviorIssues('DatePicker',changed).some(issue=>issue.includes('calendarIndicator')));
+   }finally{await override.evaluate(element=>element.remove());}
+   assert.deepEqual(apiBehaviorIssues('DatePicker',await read()),[]);
+  }finally{await page.close();}
+ },{entry});
 });
 test('each generated API page keeps machine identity and component destinations',()=>{
  const source=readApprovedSource();
@@ -325,7 +346,7 @@ test('real adjacent shell searches reject wrong icon/track/origin/type/reserve a
      // owners. Restoring styles or disabled alone cannot reopen dismissed peers.
      await openPublishedBoard(page,{base,entry,locale,board,originalSpecimens:board.startsWith("07")});
      for(const role of localRoles){
-      const scene=page.locator(`[data-formal-shell-scene="${role.scene}"][data-shell-theme="${role.theme}"]`);
+      const scene=page.locator(`[data-doc-shell-theme] [data-formal-shell-scene="${role.scene}"][data-shell-theme="${role.theme}"]`);
       assert.equal(await scene.count(),1,`${role.key}: matching real source scene`);
       const {carrier,control}=liveSearch(role);
       await carrier.waitFor({state:'visible'});await control.waitFor({state:'visible'});
@@ -711,7 +732,7 @@ test('responsive document columns align every board and API page through resize'
     const widths = board.startsWith('07') ? [1462, 1280, 1200, 1120, 1024, 751, 750, 390] : [1462, 1024, 390];
     for (const width of widths) {
      await resizeContentPage(page, entry, width);
-     if (board === 'api' && width === 390) await content.locator('#api-ProductShell summary').click();
+     if (board === 'api' && width === 390) await content.locator('#api-ProductShell > details:not([data-shared-component-example]) > summary').click();
      const reading = await readDocumentColumn(content);
      assertDocumentColumn(reading, width);
      if (board === '01-tokens') assert.equal(reading.tables.length, 1);

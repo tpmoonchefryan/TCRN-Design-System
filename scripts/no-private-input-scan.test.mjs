@@ -100,3 +100,28 @@ test("receipt exit helper fails closed when negative fixture checks fail", () =>
 test("receipt exit helper exits zero only for ok receipts", () => {
   assert.equal(exitCodeForReceipt({ ok: true }), 0);
 });
+
+test("scan records a real JSX key expression separately from environment assignments", t => {
+  const root = mkdtempSync(join(tmpdir(), "tcrn-scan-jsx-key-"));
+  t.after(() => rmSync(root, { recursive: true }));
+  writeFileSync(join(root, "component.tsx"), "export const Example = () => <App\n  key={page}\n/>;\n");
+  const result = spawnSync(process.execPath, [scanScript], { cwd: root, encoding: "utf8" });
+  assert.equal(result.status, 0);
+  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  assert.equal(receipt.hits.length, 0);
+  assert.equal(receipt.sourceSyntaxExclusions.length, 1);
+  assert.equal(receipt.sourceSyntaxExclusions[0].reason, "jsx_key_expression_attribute");
+});
+
+test("JSX classification still rejects lowercase, braced and neighboring real environment assignments", t => {
+  const root = mkdtempSync(join(tmpdir(), "tcrn-scan-jsx-env-"));
+  t.after(() => rmSync(root, { recursive: true }));
+  writeFileSync(join(root, ".env"), "api_token=redacted\nKEY={redacted}\n");
+  writeFileSync(join(root, "component.tsx"), "export const Example = () => <App\n  key={page}\n/>;\nKEY=redacted\nkey=redacted\n");
+  const result = spawnSync(process.execPath, [scanScript], { cwd: root, encoding: "utf8" });
+  assert.equal(result.status, 1);
+  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  assert.equal(receipt.hits.filter(hit => hit.rule === "env-assignment").length, 4);
+  assert.equal(receipt.sourceSyntaxExclusions.length, 1);
+  assert.ok(receipt.negativeFixtureChecks.every(check => check.passed));
+});

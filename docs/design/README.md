@@ -14,7 +14,8 @@ The implementation package does not run these commands. The existing integration
 2. `node scripts/fonts-vendor.mjs` — original source font files, face/weight/Unicode mappings, CSS and the retained notices. No npm font bytes are substituted.
 3. Compile the current `@tcrn/ui-tokens` and `@tcrn/ui-copy-state` dependencies, then `@tcrn/ui-react` in the existing dependency order. Retire stale generated `dist` files and incremental metadata through `scripts/prepare-output.mjs` before a dependency compilation; the helper accepts only declared generated roots and moves files into the owned trash directory.
 4. `node scripts/tokens-sync.mjs` then `node scripts/demo-styles-sync.mjs` — `tokens.css` and `storybook.css`, using this batch's compiled modules.
-5. Generate current engineering manifests through `pnpm internal-alpha:contracts`, then use the unchanged configured commands for the same candidate. No old 37-image or 119-obligation admission is reused or automatically accepted.
+5. Run `pnpm storybook:build` to compile the portal modules and write the static portal. The package-contract manifest imports `apps/storybook/dist/approved-api.js`, so package compilation alone is insufficient on a clean checkout.
+6. Generate current engineering manifests through `pnpm internal-alpha:contracts`, then use the unchanged configured commands for the same candidate and build the official Manager through `pnpm storybook:manager-build`. No old 37-image or 119-obligation admission is reused or automatically accepted.
 
 The static writer reconciles exact current output membership. Removed HTML/API pages, old bundles, fonts and copied assets are moved to the owned trash before fresh output is written. `pnpm clean` is now restricted to declared rebuildable output roots and never clears `docs/verification`.
 
@@ -24,8 +25,11 @@ K1/K5/C01 remain selected directions, visually unconfirmed and unapplied; the pu
 
 The current 28-entry catalogue remains the published component scope. The
 [actual TMS customer-list mapping](../consumption/patterns/customer-list-support.md)
-distinguishes those capabilities from the table/cards, business-state,
-confirmation and complete Traditional Chinese copy additions still requiring an
-upstream contract. The [shell interface description](../consumption/patterns/shell-preferences-and-navigation.md)
+distinguishes those capabilities from the table/cards, business-state and
+confirmation additions still requiring an upstream contract. The current candidate
+supports an explicit product locale with complete product-owned shell copy,
+including Traditional Chinese; the five built-in locales remain unchanged. That
+engineering support does not record visual adoption, a sixth built-in locale or
+production TMS consumption. The [shell interface description](../consumption/patterns/shell-preferences-and-navigation.md)
 documents the existing pins callbacks and native Next navigation boundary;
 engineering root exports do not become formal designs through that description.

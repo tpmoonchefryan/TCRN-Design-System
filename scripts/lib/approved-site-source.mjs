@@ -30,7 +30,7 @@ export function readApprovedSource(root = ROOT, options = {}) {
   const base = path.join(root, SOURCE_REL);
   const manifest = JSON.parse(readSource(path.join(base, "source-manifest.json"), "utf8"));
   for (const [key, expected] of Object.entries(APPROVED_SITE)) if (manifest.site?.[key] !== expected) throw new Error(`Unapproved Site identity: ${key}`);
-  if (JSON.stringify(Object.fromEntries(manifest.boards.map((b) => [b.slug, b.sourceId]))) !== JSON.stringify(APPROVED_BOARD_IDS)) throw new Error("Published eight-board identities/order changed");
+  if (JSON.stringify(manifest.boards.map((b) => [b.slug, b.sourceId])) !== JSON.stringify(Object.entries(APPROVED_BOARD_IDS))) throw new Error("Published eight-board identities/order changed");
   const actualFiles = new Map(manifest.files.map((entry) => [entry.path, entry]));
   if (actualFiles.size !== manifest.files.length) throw new Error("Duplicate published source file claim");
   for (const [rel, expected] of Object.entries(APPROVED_SOURCE_PINS)) {
@@ -101,8 +101,14 @@ export function extractPackageBindings(source, bindings = JSON.parse(fs.readFile
     let value;
     if (binding.text) {
       const text = decodeHtml(board.html.replace(/<[^>]+>/g, "")).replace(/\s+/g, "");
-      if (!text.includes(binding.text)) throw new Error(`Missing published text anchor: ${binding.text}`);
-      const number = /[0-9]+(?:\.[0-9]+)?/.exec(binding.text)?.[0];
+      const anchorNumbers = [...binding.text.matchAll(/[0-9]+(?:\.[0-9]+)?/g)];
+      const sourceNumbers = new Map([...text.matchAll(/[0-9]+(?:\.[0-9]+)?/g)].map((match) => [match.index, match[0]]));
+      // Every number in the anchor must be a complete source literal, including
+      // later numbers in anchors such as 标128→22. A prefix of 8000 is not 8.
+      let anchor = text.indexOf(binding.text);
+      while (anchor !== -1 && !anchorNumbers.every((match) => sourceNumbers.get(anchor + match.index) === match[0])) anchor = text.indexOf(binding.text, anchor + 1);
+      if (anchor === -1) throw new Error(`Missing published text anchor: ${binding.text}`);
+      const number = anchorNumbers[0]?.[0];
       if (!number || !["", "px", "ms"].includes(binding.unit ?? "")) throw new Error(`Invalid published numeric binding ${binding.cssVar}`);
       value = `${number}${binding.unit ?? ""}`;
       if (binding.value !== undefined && binding.value !== value) throw new Error(`Unbacked numeric value ${binding.cssVar}`);
