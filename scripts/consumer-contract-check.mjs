@@ -5,6 +5,8 @@ import { createHash } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { createRequire } from "node:module";
 import ts from "typescript";
+export { checkConsumerPage } from "./consumer-layout-check.mjs";
+import { checkConsumerPage } from "./consumer-layout-check.mjs";
 import { evaluateShellPreferenceEvidence } from "../packages/ui-react/dist/verification/ShellPreferenceEvidence.js";
 
 const hash = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -155,6 +157,19 @@ export function checkConsumerSources(files, declaration, closure) {
             if (!direct && !spread) report(file, "SHELL_PIN_CALLBACKS_MISSING");
           }
           for (const attribute of attributes) if (attribute.name.getText() === "style") report(file, "COMPONENT_STYLE_OVERRIDE");
+          if (["Button", "LinkButton", "IconButton", "ClipboardCopyButton", "ButtonGroup"].includes(component)) {
+            const parent = ts.isJsxOpeningElement(node) ? node.parent.parent : node.parent;
+            if (ts.isJsxElement(parent)) {
+              const style = parent.openingElement.attributes.properties.find(attribute => ts.isJsxAttribute(attribute) && attribute.name.getText() === "style");
+              const expression = style?.initializer && ts.isJsxExpression(style.initializer) ? style.initializer.expression : undefined;
+              if (expression && ts.isObjectLiteralExpression(expression)) {
+                const literals = new Map(expression.properties.filter(ts.isPropertyAssignment).map(property => [property.name.getText().replace(/["']/g, ""), ts.isStringLiteral(property.initializer) ? property.initializer.text : undefined]));
+                const gridStretch = literals.get("display") === "grid" && !["start", "flex-start"].includes(literals.get("justifyItems"));
+                const flexStretch = literals.get("display") === "flex" && ["column", "column-reverse"].includes(literals.get("flexDirection")) && !["start", "flex-start"].includes(literals.get("alignItems"));
+                if (gridStretch || flexStretch) report(file, "ACTION_PARENT_STRETCH: align action children to start; fields retain their fill contract");
+              }
+            }
+          }
         }
         // Published root markers identify ShellPins even beside a valid ProductShell.
         let classExpression = attributes.find(attribute => attribute.name.getText() === "className")?.initializer;
@@ -219,19 +234,23 @@ export function checkConsumerContract({ projectRoot, indexPath, declarationPath 
     ok: findings.length === 0, findings, identity: closure.index.identity,
     requiredRules: [...closure.rules.keys()], files: files.map(file => path.relative(root, file)),
     usedComponents: scanned.usedComponents,
-    limits: ["Selected source roots and explicit imports/JSX only; run TypeScript for types and indirect/dynamic wiring.", "Native ShellPins markers are explicit data-pins attributes and literal className tokens, including unused JSX; computed values, spreads and runtime reachability are not resolved.", "Adapter observations are caller-supplied, not authenticated by this checker; retain raw HTTP/session evidence.", "This check does not measure visuals, keyboard/focus, business permissions, publication or future model behavior."],
+    limits: ["Selected source roots and explicit imports/JSX only; run TypeScript for types and indirect/dynamic wiring.", "Native ShellPins markers are explicit data-pins attributes and literal className tokens, including unused JSX; computed values, spreads and runtime reachability are not resolved.", "Adapter observations are caller-supplied, not authenticated by this checker; retain raw HTTP/session evidence.", "Static pass does not measure layout. Use --layout-url for real action geometry. CSS cascade, external/computed parent classes and indirect wiring need the consumer browser check; keyboard/focus, permissions, publication and future model behavior remain outside this check."],
   };
 }
 
-function run() {
+async function run() {
   const args = process.argv.slice(2);
-  const allowed = ["--project", "--index", "--declaration"];
-  if (args.length !== 6 || args.filter((arg, index) => index % 2 === 0).some(arg => !allowed.includes(arg)) || new Set(args.filter((_, index) => index % 2 === 0)).size !== 3) throw new Error("Usage: node scripts/consumer-contract-check.mjs --project <consumer> --index <producer>/ai/index.json --declaration <relative.json>");
-  const values = Object.fromEntries(allowed.map(flag => [flag, args[args.indexOf(flag) + 1]]));
+  const allowed = ["--project", "--index", "--declaration", "--layout-url"];
+  if (![6, 8].includes(args.length) || !["--project", "--index", "--declaration"].every(flag => args.includes(flag)) || args.filter((arg, index) => index % 2 === 0).some(arg => !allowed.includes(arg)) || new Set(args.filter((_, index) => index % 2 === 0)).size !== args.length / 2) throw new Error("Usage: node scripts/consumer-contract-check.mjs --project <consumer> --index <producer>/ai/index.json --declaration <relative.json> [--layout-url <consumer-page>]");
+  const values = Object.fromEntries(allowed.map(flag => [flag, args.includes(flag) ? args[args.indexOf(flag) + 1] : undefined]));
   const result = checkConsumerContract({ projectRoot: values["--project"], indexPath: values["--index"], declarationPath: values["--declaration"] });
+  if (values["--layout-url"]) {
+    result.layout = await checkConsumerPage(values["--layout-url"]);
+    result.ok = result.ok && result.layout.ok;
+  }
   console.log(JSON.stringify(result, null, 2));
   if (!result.ok) process.exitCode = 1;
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
-  try { run(); } catch (error) { console.error(JSON.stringify({ ok: false, error: error.message })); process.exitCode = 1; }
+  try { await run(); } catch (error) { console.error(JSON.stringify({ ok: false, error: error.message })); process.exitCode = 1; }
 }

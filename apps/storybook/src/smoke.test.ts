@@ -64,12 +64,15 @@ test("portal routes, topic membership and document paths agree in all three entr
         ["07a-shell-upper", "07b-shell-lower"],
       ]);
       const apiBranch = nav.categories.find(category => category.id === "components")!.items.find(item => item.id === "api-branch")!;
-      const apiChildren = (apiBranch as { children?: readonly { id: string; label: string; href?: string }[] }).children;
-      assert.deepEqual(apiChildren?.map(item => item.id), ["api", ...approvedApi.map(component => `api-${component.name}`)]);
+      type MenuNode = { id: string; label: string; href?: string; children?: readonly MenuNode[] };
+      const apiChildren = (apiBranch as MenuNode).children;
+      const flatten = (items: readonly MenuNode[]): readonly MenuNode[] => items.flatMap(item => [item, ...flatten(item.children ?? [])]);
+      const allApiChildren = flatten(apiChildren ?? []);
+      assert.deepEqual(apiChildren?.map(item => item.id), ["api", ...approvedSource.boards.filter(board => approvedApi.some(component => component.board === board.slug)).map(board => `api-family-${board.slug}`), "api-adopted-support"]);
       assert.equal(apiChildren?.[0]?.label, locale === "zh-CN" ? "概览" : locale === "ja" ? "概要" : locale === "ko" ? "개요" : locale === "fr" ? "Aperçu" : "Overview");
       assert.equal(apiChildren?.[0]?.href, pageHref(locale, "api", entry));
       for (const component of approvedApi) {
-        assert.equal(apiChildren?.find(item => item.id === `api-${component.name}`)?.href,
+        assert.equal(allApiChildren.find(item => item.id === `api-${component.name}`)?.href,
           pageHref(locale, "api", entry, `api-${component.name}`));
       }
       const portal = renderToString(createElement(App, { page: "index", locale, entry }));
@@ -135,7 +138,7 @@ test("pin preferences resolve groups, branches and leaves by stable ID across lo
     const pins = docsPinnedNavigation(nav.directory, ids);
     assert.deepEqual(pins.map(pin => pin.id), ids.slice(0, 4));
     assert.equal(pins[0].items.length, 3);
-    assert.equal(pins[1].items.length, 29);
+    assert.equal(pins[1].items.length, new Set(approvedApi.map(component => component.board)).size + 2);
     assert.deepEqual(pins[2].items, []);
     assert.equal(pins[2].href, pageHref(locale, "api", entry, "api-Button"));
     assert.equal(pins[3].href, pageHref(locale, "02-typography", entry));

@@ -51,7 +51,7 @@ The executable checker uses the source release's TypeScript dependency and built
 pure verification module. It does not require the consumer to be in this monorepo.
 It checks exact declared and installed versions, required rule bytes and dependency
 identities, direct DS imports/JSX, registered token references, bare design values,
-component style overrides, shell callback wiring and supplied adapter observations.
+component style overrides, literal direct grid/column-flex action stretch, shell callback wiring and supplied adapter observations.
 A nonzero exit means failure; unreadable/malformed rules never become empty success.
 Pin package versions exactly; run the consumer's TypeScript and browser checks too.
 The matching `@tcrn/ds-consumer-tools` archive supplies the normal installed
@@ -78,3 +78,11 @@ old cached rules or change a version field to conceal stale content. See
 [the new-session task](new-session-task.md) for the separately required product
 validation. Its recorded candidate exercise and later checker correction are
 separate from this build; self-tests are not a new-session or real TMS result.
+
+For actual action geometry, add `--layout-url http://127.0.0.1:PORT/page` to the
+normal source checker or installed `tcrn-ds-check` command. Install the matching
+Playwright Chromium browser (`npx playwright install chromium`) when absent. The
+CLI launches the browser itself, waits for fonts and returns measured widths,
+heights, insets and group enclosure. It never accepts a hand-filled layout JSON.
+See the required [layout rule](rules/layout.md) for coverage and limits. Retain
+static and browser results separately; choose the real running consumer URL.

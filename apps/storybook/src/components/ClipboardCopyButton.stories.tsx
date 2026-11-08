@@ -1,6 +1,6 @@
 import { componentParameters, componentStory } from "./story.js";
 
-export default { title: "Components/ClipboardCopyButton", parameters: componentParameters("ClipboardCopyButton") };
+export default { id: "components-clipboardcopybutton", title: "Components/Actions/ClipboardCopyButton", parameters: componentParameters("ClipboardCopyButton") };
 export const Default = componentStory("ClipboardCopyButton", "default");
 export const Interaction = componentStory("ClipboardCopyButton", "interaction");
 export const Copying = componentStory("ClipboardCopyButton", "copying");

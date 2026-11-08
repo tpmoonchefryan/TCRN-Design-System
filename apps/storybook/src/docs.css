@@ -1029,7 +1029,6 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 [data-component-example] > form {
   display: grid;
   gap: var(--tcrn-space-2h);
-  justify-items: start;
 }
 [data-component-example] > output {
   overflow-wrap: anywhere;
@@ -1044,3 +1043,17 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 }
 .component-story-canvas[data-tcrn-theme="dark"] { color-scheme: dark; }
 .component-story-canvas[data-tcrn-theme="light"] { color-scheme: light; }
+
+/* Fields keep their fill contract; content/fixed samples align only their own roots. */
+[data-component-example] > :is(.tcrn-icon, .tcrn-product-logo, label) { justify-self: start; }
+.component-overview { display: grid; gap: var(--tcrn-space-4); min-inline-size: 0; }
+.component-overview > header { display: grid; gap: var(--tcrn-space-2); }
+.component-overview > header > .tcrn-heading, .component-overview > .tcrn-heading, .component-comparison > .tcrn-heading { margin: 0; white-space: normal; overflow-wrap: anywhere; }
+.component-layout-note { display: grid; gap: var(--tcrn-space-2); padding: var(--tcrn-space-3); border: 1px solid var(--tcrn-color-line); border-radius: var(--tcrn-radius-control); }
+.component-state-links { display: flex; flex-wrap: wrap; gap: var(--tcrn-space-2) var(--tcrn-space-4); }
+.component-comparisons { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--tcrn-space-4); align-items: start; }
+.component-comparisons--shell { grid-template-columns: minmax(0, 1fr); }
+.component-comparison { display: grid; gap: var(--tcrn-space-3); min-inline-size: 0; padding: var(--tcrn-space-3); border: 1px solid var(--tcrn-color-line); border-radius: var(--tcrn-radius-control); }
+
+.component-choice-label { display: inline-flex; align-items: center; gap: var(--tcrn-space-2); max-inline-size: 100%; }
+.component-choice-label > .tcrn-checkbox { flex: none; }

@@ -21,6 +21,8 @@ rosters. Load package CSS and vendored fonts and retain their licenses. A CSS
 variable or class scanner cannot establish contrast, clipping, keyboard or focus
 behavior: run the applicable browser checks as well.
 
+Read the required `pattern/component-layout` rule and each component shard’s layout responsibility. Actions follow content width with token insets; fields fill their containers, while icons and unlabelled icon actions remain fixed squares. Parent grid/flex layout must preserve those differences. Run the normal browser layout check for the rendered action geometry; a source/identity check is not that measurement.
+
 Supply visible labels, accessible names and disabled reasons where the API requires
 them. Preserve native form values, controlled state and required/error feedback.
 Supply the selected complete product locale definition for a product with different

@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { componentLayouts } from "../component-layout.js";
+import { componentUsage } from "../component-usage.js";
 import { approvedApi } from "../approved-api.js";
 import { approvedSource } from "../approved-source.js";
 import { componentStates, componentStoryId, componentExamplesSource } from "../component-catalog.js";
@@ -39,6 +41,7 @@ export function createAiRuleBundle(input: {
     return source;
   };
   const patterns = [
+    { id: "component-layout", file: "docs/consumption/rules/layout.md", required: [] },
     {
       id: "shell-preferences", file: "docs/consumption/patterns/shell-preferences-and-navigation.md",
       required: ["tokens/shell", "assets/brand", "standard/07a-shell-upper", "pattern/product-locales"],
@@ -47,7 +50,7 @@ export function createAiRuleBundle(input: {
     { id: "customer-list-boundary", file: "docs/consumption/patterns/customer-list-support.md", required: ["pattern/product-locales"] },
   ];
   const rules: Rule[] = [{
-    id: "global", kind: "global", required: ["tokens/core", "assets/fonts", "standard/01-tokens"], optional: ["pattern/customer-list-boundary"],
+    id: "global", kind: "global", required: ["tokens/core", "assets/fonts", "standard/01-tokens", "pattern/component-layout"], optional: ["pattern/customer-list-boundary"],
     content: requireSource("docs/consumption/rules/global.md"),
   }];
   for (const board of approvedSource.boards) rules.push({
@@ -95,8 +98,16 @@ export function createAiRuleBundle(input: {
       content: {
         name: api.name, board: api.board, source: { path: board.path, sha256: board.sha256, line: api.line },
         normativeText: api.formal, readerSummary: api.summary, types,
+        layout: componentLayouts[api.name as keyof typeof componentLayouts],
         implementationSource: { path: types.source.path, sha256: requireSource(types.source.path).sha256 },
-        example: { ...example, sha256: requireSource(componentExamplesSource).sha256, usage: api.example },
+        example: {
+          ...example, sha256: requireSource(componentExamplesSource).sha256,
+          snippetKind: "producer scenario excerpt; helpers and imports are in the source module",
+          usage: componentUsage(api.name as keyof typeof componentStates),
+          usageSource: { path: "apps/storybook/src/component-usage.ts", sha256: requireSource("apps/storybook/src/component-usage.ts").sha256 },
+          contextSources: ["apps/storybook/src/docs.css", "apps/storybook/src/component-layout.ts", `packages/ui-react/src/styles/${componentLayouts[api.name as keyof typeof componentLayouts].implementation}`].map(path => ({ path, sha256: requireSource(path).sha256 })),
+          productInputs: shell ? "Supply the typed component props and read pattern/shell-preferences; the snippet does not invent product data or a backend adapter." : null,
+        },
         stories: states.map(state => ({ state, id: componentStoryId(api.name, state) })),
       },
     });

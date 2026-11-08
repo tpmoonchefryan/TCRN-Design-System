@@ -64,12 +64,13 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
     if (!expected || contract.formal !== expected.formal || contract.board !== expected.board || contract.line !== expected.line) throw new Error(`AI normative source drift: ${contract.name}`);
   }
   const sourcePaths = new Set([
+    "package.json", "pnpm-lock.yaml",
     ...sourceFiles("apps/storybook/src"), ...sourceFiles("packages/ui-react/src/components"), ...sourceFiles("packages/ui-react/src/styles"),
-    "apps/storybook/.storybook/main.ts", "apps/storybook/.storybook/preview.ts", "packages/ui-tokens/fonts/manifest.json",
+    "apps/storybook/.storybook/main.ts", "apps/storybook/.storybook/preview.ts", "packages/ui-tokens/fonts/manifest.json", "packages/ui-tokens/fonts/fonts.css", "packages/ui-react/src/utils.ts",
     ...sourceFiles("packages/ui-copy-state/src"), ...sourceFiles("packages/ui-tokens/src"),
     ...sourceFiles("docs/consumption"), ...approvedSource.boards.map(board => `docs/design/approved-site-v1/src/boards/${board.slug}/index.dc.html`),
     "docs/design/approved-site-v1/source-manifest.json", "scripts/component-api-manifest.mjs",
-    "scripts/consumer-contract-check.mjs", "scripts/package-contract-manifest.mjs", "scripts/lib/published-style-closure.mjs", "scripts/lib/published-standard-proof.mjs",
+    "scripts/consumer-contract-check.mjs", "scripts/consumer-layout-check.mjs", "scripts/demo-styles-sync.mjs", "scripts/pack-consumer-tools.mjs", "scripts/package-contract-manifest.mjs", "scripts/lib/published-style-closure.mjs", "scripts/lib/published-standard-proof.mjs",
     "packages/ui-react/src/approved.tsx", ...sourceFiles("packages/ui-react/src/verification"),
     ...["ui-react", "ui-tokens", "ui-copy-state"].map(name => `packages/${name}/package.json`),
     "packages/ui-tokens/src/index.ts", "packages/ui-tokens/src/gplus-tokens.generated.ts",

@@ -1,6 +1,6 @@
 import { componentParameters, componentStory } from "./story.js";
 
-export default { title: "Components/Button", parameters: componentParameters("Button") };
+export default { id: "components-button", title: "Components/Actions/Button", parameters: componentParameters("Button") };
 export const Default = componentStory("Button", "default");
 export const Variants = componentStory("Button", "variants");
 export const Sizes = componentStory("Button", "sizes");

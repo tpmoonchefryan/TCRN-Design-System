@@ -323,6 +323,8 @@
   box-sizing: border-box;
   display: inline-flex;
   flex: 0 0 auto;
+  inline-size: fit-content;
+  min-inline-size: 0;
   align-items: center;
   justify-content: center;
   gap: var(--tcrn-space-1h);
@@ -452,6 +454,9 @@
    same (0,2,0). */
 .tcrn-button-group {
   display: inline-flex;
+  flex: 0 0 auto;
+  inline-size: fit-content;
+  min-inline-size: 0;
   align-items: stretch;
   max-inline-size: 100%;
   border-radius: var(--tcrn-radius-control);
@@ -470,6 +475,8 @@
   background: var(--tcrn-color-line-2);
 }
 .tcrn-button-group > .tcrn-button {
+  flex: 0 1 auto;
+  min-inline-size: 0;
   --tcrn-pair-edge-d: 0 0 #0000;
   --tcrn-pair-edge-h: 0 0 #0000;
   --tcrn-pair-edge-a: 0 0 #0000;
@@ -514,8 +521,8 @@
 }
 
 .tcrn-button:where(:active,[data-tcrn-preview-state="active"]),.tcrn-link-button:where(:active,[data-tcrn-preview-state="active"]){transition-duration:var(--tcrn-motion-duration-press)}
-.tcrn-icon-button--labelled{inline-size:auto}
-.tcrn-icon-button--labelled .tcrn-icon-button__label{position:static;inline-size:auto;block-size:auto;overflow:visible;clip-path:none}
+.tcrn-icon-button--labelled{inline-size:fit-content}
+.tcrn-icon-button--labelled .tcrn-icon-button__label{position:static;inline-size:auto;min-inline-size:0;block-size:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;clip-path:none}
 
 
 
@@ -579,7 +586,7 @@
 }
 /* Published06 .sw>kbd uses ink-3. Published07 .ts-srch kbd is a separate shell
    context, selected by ProductShellSearch's existing carrier in shell.css.ts.
-   The future C01 ink-2 direction is visually unconfirmed and unapplied
+   The C01 ink-2 direction is Owner-adopted in minutes:6f3e0a9a1e07e3980867d82e#D1; its author source remains unpublished and the v1 pin stays unchanged
    (TCRN-DS-MIN-20261104-VISUAL-BEFORE-STANDARD D1-D4). */
 .tcrn-search-input__shortcut {
   position: absolute;

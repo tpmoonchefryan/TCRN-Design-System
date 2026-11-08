@@ -1,6 +1,6 @@
 import { componentParameters, componentStory } from "./story.js";
 
-export default { title: "Components/ProductShell", parameters: componentParameters("ProductShell") };
+export default { id: "components-productshell", title: "Components/Application shell/ProductShell", parameters: componentParameters("ProductShell") };
 export const Default = componentStory("ProductShell", "default");
 export const Menu = componentStory("ProductShell", "menu");
 export const Dropdown = componentStory("ProductShell", "dropdown");

@@ -9,7 +9,7 @@ test("actual component stories, both emitted AI trees and Manager retain the exa
   assert.deepEqual(checkSourceClosure(), []);
   assert.deepEqual(checkOutput().issues, []);
   assert.deepEqual(checkManagerOutput().issues, []);
-  assert.equal(AI_OUTPUT_FILES.length, 48);
+  assert.equal(AI_OUTPUT_FILES.length, 49);
 });
 
 test("only byte-identical pinned normative quotations are inert during executable-asset scanning", () => {

@@ -77,6 +77,9 @@ export const CURRENT_STORY_SOURCE_FILES = Object.freeze([
   "client.tsx",
   "component-catalog.ts",
   "component-examples.tsx",
+  "component-layout.ts",
+  "component-overview.tsx",
+  "component-usage.ts",
   "components/Button.stories.tsx",
   "components/ButtonGroup.stories.tsx",
   "components/Checkbox.stories.tsx",
@@ -118,6 +121,7 @@ export const CURRENT_STORY_SOURCE_FILES = Object.freeze([
   "specimen-copy.ts",
   "specimens.tsx",
   "standards.stories.tsx",
+  "support.stories.tsx",
   "storybook.css"
 ]);
 export const CURRENT_CSF_FILES = Object.freeze([
@@ -149,7 +153,8 @@ export const CURRENT_CSF_FILES = Object.freeze([
   "components/Switch.stories.tsx",
   "components/Text.stories.tsx",
   "components/Textarea.stories.tsx",
-  "standards.stories.tsx"
+  "standards.stories.tsx",
+  "support.stories.tsx"
 ]);
 export const AI_OUTPUT_FILES = Object.freeze([
   "ai/4.0.0/assets/brand.json",
@@ -186,6 +191,7 @@ export const AI_OUTPUT_FILES = Object.freeze([
   "ai/4.0.0/global.json",
   "ai/4.0.0/index.json",
   "ai/4.0.0/pattern/customer-list-boundary.json",
+  "ai/4.0.0/pattern/component-layout.json",
   "ai/4.0.0/pattern/product-locales.json",
   "ai/4.0.0/pattern/shell-preferences.json",
   "ai/4.0.0/sources.json",
@@ -213,7 +219,7 @@ export function checkSourceClosure(root=ROOT){
   const main=read(root,"apps/storybook/.storybook/main.ts");
   const storyDeclaration = /stories:\s*\[([^\]]*)\]/.exec(main)?.[1];
   const declaredStories = storyDeclaration ? [...storyDeclaration.matchAll(/"([^"\n]+)"/g)].map(match => match[1]) : [];
-  const managerEntries = ["../src/standards.stories.tsx", "../src/components/*.stories.tsx"];
+  const managerEntries = ["../src/standards.stories.tsx", "../src/support.stories.tsx", "../src/components/*.stories.tsx"];
   if (JSON.stringify(declaredStories) !== JSON.stringify(managerEntries) || /tcrn-brand-mark|staticDirs[^\n]*assets\//.test(main)) issues.push("Manager CSF/asset closure is not the explicit approved entrypoint");
   const csf = listFiles(path.join(root, "apps/storybook/src")).filter(file => file.endsWith(".stories.tsx"));
   issues.push(...validateOutputMembers(csf, CURRENT_CSF_FILES).map(issue => `CSF source closure: ${issue}`));
@@ -318,6 +324,8 @@ export async function checkRoutes(root=ROOT){const registry=await compiled(root,
 export function finish(label,result){const issues=result.issues??[];console.log(JSON.stringify({proof:label,...result},null,2));if(issues.length)process.exitCode=1;return result;}
 
 export const MANAGER_STORY_IDS = Object.freeze([
+  ...Object.entries(APPROVED_API_BOARDS).filter(([, board]) => board === "06-inputs").map(([name]) => `components-${name.toLowerCase()}--form-submission`),
+  "adopted-support-customer-list-boundary--overview",
   "components-button--active",
   "components-button--default",
   "components-button--disabled",
@@ -469,8 +477,11 @@ export function managerIndexIssues(index) {
   for (const [id, story] of entries) {
     if (story.id !== id || story.type !== "story") issues.push(`Invalid Manager story ${id}`);
     const family = Object.keys(APPROVED_API_BOARDS).find(name => id.startsWith(`components-${name.toLowerCase()}--`));
-    const expectedPath = family ? `./src/components/${family}.stories.tsx` : "./src/standards.stories.tsx";
-    const expectedTitle = family ? `Components/${family}` : "Published standards";
+    const support = id === "adopted-support-customer-list-boundary--overview";
+    const expectedPath = family ? `./src/components/${family}.stories.tsx` : support ? "./src/support.stories.tsx" : "./src/standards.stories.tsx";
+    const board = APPROVED_API_BOARDS[family];
+    const group = board === "05-actions" ? "Actions" : board === "06-inputs" ? "Inputs and selection" : board?.startsWith("07") ? "Application shell" : "Foundations";
+    const expectedTitle = family ? `Components/${group}/${family}` : support ? "Adopted support/Customer list boundary" : "Published standards";
     if (story.title !== expectedTitle || story.importPath !== expectedPath) issues.push(`Unapproved manager CSF module ${id}`);
   }
   return issues;

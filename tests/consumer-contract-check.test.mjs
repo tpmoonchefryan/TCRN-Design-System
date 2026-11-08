@@ -247,3 +247,19 @@ test("the generator extracts executable example branches and fails missing forma
   assert.equal(missing.ok, false);
   assert.deepEqual(missing.coverage.missingFromManifest, ["NoSuchFormalComponent"]);
 });
+
+test("direct literal action parent layout is checked without shrinking field containers", t => {
+  const body = parent => `import { Button as Action, Input } from "@tcrn/ui-react/approved";
+export const Example = () => ${parent};`;
+  const cases = [
+    ['<div style={{display:"grid"}}><Action>Save</Action></div>', true],
+    ['<div style={{display:"grid",justifyItems:"stretch"}}><Action>Save</Action></div>', true],
+    ['<div style={{display:"flex",flexDirection:"column"}}><Action>Save</Action></div>', true],
+    ['<div style={{display:"grid",justifyItems:"start"}}><Action>Save</Action></div>', false],
+    ['<div style={{display:"grid"}}><Input aria-label="Name" /></div>', false],
+  ];
+  for (const [parent, failure] of cases) {
+    const input = fixture(t, body(parent));
+    assert.equal(input.run().findings.some(item => item.includes("ACTION_PARENT_STRETCH")), failure, parent);
+  }
+});

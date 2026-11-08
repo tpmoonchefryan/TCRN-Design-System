@@ -1,6 +1,6 @@
 import { componentParameters, componentStory } from "./story.js";
 
-export default { title: "Components/IconButton", parameters: componentParameters("IconButton") };
+export default { id: "components-iconbutton", title: "Components/Actions/IconButton", parameters: componentParameters("IconButton") };
 export const Default = componentStory("IconButton", "default");
 export const Labelled = componentStory("IconButton", "labelled");
 export const Sizes = componentStory("IconButton", "sizes");

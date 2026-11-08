@@ -1,6 +1,8 @@
 import type { IconName, ShellMenuGroup } from "@tcrn/ui-react/approved";
 import { apiReaderProps, approvedApi } from "./approved-api.js";
 import { approvedSource, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
+import { componentFamily } from "./component-layout.js";
+import type { FormalComponentName } from "./component-catalog.js";
 import { docsCopy } from "./locales.js";
 import { portalCopy } from "./portal-copy.js";
 
@@ -62,7 +64,13 @@ export function docsNavigation(locale: DocsLocale, entry: DocsEntry) {
   const apiBranch: DocsMenuItem = {
     ...api,
     id: "api-branch",
-    children: [apiOverview, ...apiAnchors],
+    children: [apiOverview, ...approvedSource.boards.flatMap(board => {
+      const members = approvedApi.filter(component => component.board === board.slug);
+      return members.length ? [{
+        id: `api-family-${board.slug}`, label: `${componentFamily(members[0].name as FormalComponentName)} · ${board.title}`,
+        children: apiAnchors.filter(anchor => members.some(member => anchor.id === `api-${member.name}`)),
+      }] : [];
+    }), { id: "api-adopted-support", label: "Adopted support · awaiting publication", href: pageHref(locale, "api", entry, "adopted-support") }],
   };
   const byPage = new Map([...chapters, api, home].map(chapter => [chapter.id, chapter]));
   const cards = topics.map(({ id, iconName, chapters }) => {

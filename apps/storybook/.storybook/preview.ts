@@ -5,14 +5,14 @@ import "../src/docs.css";
 
 export const parameters = {
   layout: "fullscreen",
-  options: { storySort: { order: ["Published standards", ["Home", "*", "Component contracts"], "Components"] } },
+  options: { storySort: { order: ["Published standards", ["Home", "*", "Component contracts"], "Components", ["Foundations", "Actions", "Inputs and selection", "Application shell"], "Adopted support"] } },
 };
 export const initialGlobals = { locale: "en", theme: "light" };
 export const decorators = [(
   Story: () => ReturnType<typeof createElement>,
   context: { globals: Record<string, unknown>; parameters: Record<string, unknown> },
 ) => {
-  if (!context.parameters.formalComponent) return createElement(Story);
+  if (!context.parameters.formalComponent && !context.parameters.adoptedSupport) return createElement(Story);
   return createElement("div", {
     className: "component-story-canvas",
     "data-tcrn-root": "",

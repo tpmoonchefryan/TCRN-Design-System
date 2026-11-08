@@ -29,6 +29,8 @@ export const actionsCss02 = `
   box-sizing: border-box;
   display: inline-flex;
   flex: 0 0 auto;
+  inline-size: fit-content;
+  min-inline-size: 0;
   align-items: center;
   justify-content: center;
   gap: var(--tcrn-space-1h);
@@ -146,6 +148,9 @@ export const actionsCss03 = actionsPairsCss + `
    same (0,2,0). */
 .tcrn-button-group {
   display: inline-flex;
+  flex: 0 0 auto;
+  inline-size: fit-content;
+  min-inline-size: 0;
   align-items: stretch;
   max-inline-size: 100%;
   border-radius: var(--tcrn-radius-control);
@@ -164,6 +169,8 @@ export const actionsCss03 = actionsPairsCss + `
   background: var(--tcrn-color-line-2);
 }
 .tcrn-button-group > .tcrn-button {
+  flex: 0 1 auto;
+  min-inline-size: 0;
   --tcrn-pair-edge-d: 0 0 #0000;
   --tcrn-pair-edge-h: 0 0 #0000;
   --tcrn-pair-edge-a: 0 0 #0000;
@@ -212,8 +219,8 @@ export const actionsCss05 = `
 // 05 C preserves the 120ms color transition and the 900ms loader under reduced motion.
 export const actionsCss06 = `
 .tcrn-button:where(:active,[data-tcrn-preview-state="active"]),.tcrn-link-button:where(:active,[data-tcrn-preview-state="active"]){transition-duration:var(--tcrn-motion-duration-press)}
-.tcrn-icon-button--labelled{inline-size:auto}
-.tcrn-icon-button--labelled .tcrn-icon-button__label{position:static;inline-size:auto;block-size:auto;overflow:visible;clip-path:none}
+.tcrn-icon-button--labelled{inline-size:fit-content}
+.tcrn-icon-button--labelled .tcrn-icon-button__label{position:static;inline-size:auto;min-inline-size:0;block-size:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;clip-path:none}
 `;
 
 // Former landing places of the press-scale overrides. Buttons no longer transform, so there

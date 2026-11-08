@@ -23,21 +23,21 @@ function IntroExample({ locale }: { locale: DocsLocale }) {
   const c = docsCopy(locale);
   const shellRef = useRef<HTMLDivElement>(null);
   const [run, setRun] = useState(false);
-  const [result, setResult] = useState("idle");
+  const [result, setResult] = useState<string | null>(null);
   return <div ref={shellRef}>
     <Button onClick={() => { sessionStorage.removeItem("tcrn-component-example-intro"); setResult("playing"); setRun(true); }}>{c.login}</Button>
     <ShellExample locale={locale} mode="band" />
     {run && <ShellIntro productId="tms" locale={locale} shellRef={shellRef}
       sessionMarker="tcrn-component-example-intro" card={<ProductLockup productId="tms" locale={locale} className="tcrn-doc-intro-lockup" />}
       onFinish={played => { setResult(played ? "played" : "not-played"); setRun(false); }} />}
-    <output aria-live="polite">{result}</output>
+    {result !== null && <output aria-live="polite">{result}</output>}
   </div>;
 }
 
 function ClipboardScenario({ locale, state }: { locale: DocsLocale; state: ComponentState }) {
   const c = docsCopy(locale);
   const root = useRef<HTMLDivElement>(null);
-  const [observed, setObserved] = useState("idle");
+  const [observed, setObserved] = useState<string | null>(null);
   const deterministic = ["copying", "copied", "failed", "unsupported"].includes(state);
   useEffect(() => {
     if (!deterministic) return;
@@ -57,7 +57,7 @@ function ClipboardScenario({ locale, state }: { locale: DocsLocale; state: Compo
   return <div ref={root} data-clipboard-boundary={deterministic ? "controlled-browser-api-fixture" : "native-browser-api"}>
     {deterministic && <Text size="meta">Clipboard API boundary fixture: {state}</Text>}
     <ClipboardCopyButton text="PRJ-2026-0412" ariaLabel={c.copy} locale={locale} onCopyStateChange={setObserved} />
-    <output data-clipboard-observed="" aria-live="polite">{observed}</output>
+    {observed !== null && <output data-clipboard-observed="" aria-live="polite">{observed}</output>}
   </div>;
 }
 
@@ -81,23 +81,17 @@ function ProductLocaleExample() {
   </div>;
 }
 
-function shellMode(name: FormalComponentName, state: ComponentState) {
-  if (state === "phone" || state === "sheet") return "phone";
-  if (name === "ShellDropdown" || state === "dropdown" || state === "cascade") return "drop";
-  if (name === "ShellMenu" || ["menu", "panel", "search"].includes(state)) return "menu";
-  return "band";
-}
-
-export function ComponentExample({ name, state = "default", locale = "en" }: {
+export function ComponentExample({ name, state = "default", locale = "en", interaction = false }: {
   name: FormalComponentName;
   state?: ComponentState;
   locale?: DocsLocale;
+  interaction?: boolean;
 }) {
   if (!(componentStates[name] as readonly string[]).includes(state)) throw new Error(`Unsupported ${name} state: ${state}`);
   const c = docsCopy(locale);
   const id = useId();
   const [value, setValue] = useState<string[]>(["review"]);
-  const [feedback, setFeedback] = useState("idle");
+  const [feedback, setFeedback] = useState<string | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (name !== "Checkbox") return;
@@ -123,7 +117,7 @@ export function ComponentExample({ name, state = "default", locale = "en" }: {
 
       case "Text": return state === "sizes"
         ? (["body", "reading", "meta", "caption"] as const).map(size => <Text key={size} size={size}>{c.body}</Text>)
-        : <Text tone={state === "strong" ? "strong" : undefined} variant={state === "numeral" || state === "caps" ? state : undefined}>{state === "numeral" ? <>128<small>{c.seat}</small></> : c.body}</Text>;
+        : <Text tone={state === "strong" ? "strong" : undefined} variant={state === "numeral" || state === "caps" ? state : undefined}>{state === "numeral" ? <>128<small>{c.seat}</small></> : state === "caps" ? c.status : c.body}</Text>;
 
       case "Highlight": return <Highlight text={`${c.project} · PRJ-2026`} query={state === "empty" ? "" : state === "case-sensitive" ? "prj" : "2026"} caseSensitive={state === "case-sensitive"} />;
 
@@ -165,7 +159,7 @@ export function ComponentExample({ name, state = "default", locale = "en" }: {
 
       case "DatePicker": return <DatePicker {...nativeProps} title={disabled ? c.unavailable : undefined} name="date" aria-label={c.day} min="2026-01-01" max="2027-12-31" defaultValue="2026-10-20" />;
 
-      case "Checkbox": return <label><Checkbox {...props} name="notify" defaultChecked={state === "checked"} data-tcrn-preview-state={state === "indeterminate" ? "indeterminate" : props["data-tcrn-preview-state"]} />{c.notify}</label>;
+      case "Checkbox": return <label className="component-choice-label"><Checkbox {...props} name="notify" defaultChecked={state === "checked"} data-tcrn-preview-state={state === "indeterminate" ? "indeterminate" : props["data-tcrn-preview-state"]} />{c.notify}</label>;
 
       case "RadioGroup": return <RadioGroup legend={c.status} name={id} options={options} defaultValue={state === "selected" ? "release" : "review"} disabled={disabled} aria-invalid={invalid || undefined} aria-describedby={invalid ? `${id}-error` : undefined} />;
 
@@ -181,7 +175,7 @@ export function ComponentExample({ name, state = "default", locale = "en" }: {
     }
   };
   return <div ref={rootRef} data-component-example={name} data-example-state={state} lang={locale}>
-    {["Input", "Textarea", "SearchInput", "SuggestInput", "Select", "MultiSelect", "NumberInput", "DatePicker", "Checkbox", "RadioGroup", "Switch"].includes(name) ? <form onSubmit={event => {
+    {interaction ? <form onSubmit={event => {
       event.preventDefault();
       setFeedback(JSON.stringify([...new FormData(event.currentTarget)]));
     }}>
@@ -189,6 +183,6 @@ export function ComponentExample({ name, state = "default", locale = "en" }: {
       <Button type="submit">{c.save}</Button>
     </form> : example()}
     {invalid && <p id={`${id}-error`} className="tcrn-doc-error">{c.error}</p>}
-    <output id={`${id}-result`} data-example-result="" aria-live="polite">{feedback}</output>
+    {feedback !== null && <output id={`${id}-result`} data-example-result="" aria-live="polite">{feedback}</output>}
   </div>;
 }
