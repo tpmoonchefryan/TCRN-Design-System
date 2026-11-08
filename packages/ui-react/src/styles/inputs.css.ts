@@ -116,6 +116,7 @@ export const inputsCss05 = `
 /* Forced colours drop box-shadow, so the ring keeps a transparent outline behind it for
    the system to paint; everywhere else the outline is invisible. */
 .tcrn-input:where(:focus-visible),
+.tcrn-date-picker:where(:focus-within),
 .tcrn-select:where(:focus-visible) {
   outline: 2px solid transparent;
   outline-offset: 2px;

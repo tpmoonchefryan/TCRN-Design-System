@@ -41,7 +41,14 @@ function inputs(source) {
   const css = source.board("06-inputs").css;
   const textBases = [".tcrn-input", ".tcrn-select"];
   const text = [`${textBases.join(",")}{${decl(custom(cssRule(css, ".in")))}}`, `.tcrn-input.tcrn-search-input__control{${decl(custom(cssRule(css, ".in.search")))}}`];
-  for (const [when, state, slots] of [[":hover,[data-tcrn-preview-state=\"hover\"]", "h"], [":focus-visible,[data-tcrn-preview-state=\"focus\"]", "f"], ["[readonly],[aria-readonly=\"true\"]", "r"], ["[aria-invalid=\"true\"],[data-tcrn-preview-state=\"error\"]", "e"], ["[aria-invalid=\"true\"]:focus-visible,[data-tcrn-preview-state=\"error-focus\"]", "ef", ["edge"]], [":disabled", "x"]]) text.push(switchRule(textBases, when, slots ?? ["fill", "ink", "edge"], state));
+  for (const [when, state, slots] of [[":hover,[data-tcrn-preview-state=\"hover\"]", "h"], [":focus-visible,[data-tcrn-preview-state=\"focus\"]", "f"], ["[readonly],[aria-readonly=\"true\"]", "r"], ["[aria-invalid=\"true\"],[data-tcrn-preview-state=\"error\"]", "e"], ["[aria-invalid=\"true\"]:focus-visible,[data-tcrn-preview-state=\"error-focus\"]", "ef", ["edge"]], [":disabled", "x"]]) {
+    const activeSlots = slots ?? ["fill", "ink", "edge"];
+    text.push(switchRule(textBases, when, activeSlots, state));
+    // Chromium's native calendar button retains :focus-within on its date input,
+    // but not :focus-visible. Keep that stop in the same pair and cascade order.
+    if (state === "f") text.push(switchRule([".tcrn-date-picker"], ":focus-within", activeSlots, state));
+    if (state === "ef") text.push(switchRule([".tcrn-date-picker"], '[aria-invalid="true"]:focus-within', activeSlots, state));
+  }
   const checkBases = [".tcrn-checkbox", ".tcrn-radio-group__control"];
   // 06 declares the radio radius first, then its c/cf/cx overrides separately.
   // Compose only that audited exact selector; the checkbox table stays independent.

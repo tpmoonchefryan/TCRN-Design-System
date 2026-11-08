@@ -276,6 +276,181 @@ test('native DatePicker indicator measurement rejects a visible UA glyph and acc
   }finally{await page.close();}
  },{entry});
 });
+
+test('native DatePicker retains its settled ring through every segment and calendar stop', async () => {
+  const { createElement: h } = await import('react');
+  const { renderToStaticMarkup } = await import('react-dom/server');
+  const { Input, DatePicker, Button, tcrnComponentCss } = await compiled(ROOT, 'packages/ui-react/dist/approved.js');
+  const { tcrnTokenCss } = await compiled(ROOT, 'packages/ui-tokens/dist/index.js');
+  const segments = ['-webkit-datetime-edit-month-field', '-webkit-datetime-edit-day-field', '-webkit-datetime-edit-year-field'];
+  const observations = [];
+  await withPublishedBrowser(async ({ browser }) => {
+    const contexts = ['light', 'dark'].flatMap(theme => [1280, 390, 320].flatMap(width =>
+      ['none', 'active'].map(forcedColors => ({ theme, width, forcedColors }))));
+    for (const { theme, width, forcedColors } of contexts) {
+      const page = await browser.newPage({ viewport: { width, height: 800 } });
+      await page.emulateMedia({ forcedColors });
+      try {
+        for (const state of ['default', 'error', 'readonly', 'disabled']) {
+          const label = `${theme}/${width}/${forcedColors}/${state}`;
+          const invalid = state === 'error';
+          const markup = renderToStaticMarkup(h('form', null,
+            h(Input, { id: 'before-date', 'aria-label': 'Before date' }),
+            h('label', { htmlFor: 'native-date' }, 'Review date'),
+            h(DatePicker, {
+              id: 'native-date', name: 'reviewDate', defaultValue: '2026-10-20',
+              min: '2026-01-01', max: '2027-12-31',
+              readOnly: state === 'readonly', disabled: state === 'disabled',
+              'aria-invalid': invalid || undefined,
+              'aria-describedby': invalid ? 'date-error' : undefined,
+            }),
+            invalid ? h('p', { id: 'date-error' }, 'Choose an allowed date.') : null,
+            h(Button, { id: 'after-date', type: 'button' }, 'After date')));
+          // Only the fixture owns the form column; all control paint is the public CSS.
+          await page.setContent(`<!doctype html><html lang="en" data-tcrn-root data-tcrn-theme="${theme}"><head><style>${tcrnTokenCss}${tcrnComponentCss}
+      body{margin:16px}form{display:grid;gap:var(--tcrn-space-2);inline-size:100%;max-inline-size:26rem}</style></head><body>${markup}</body></html>`);
+          const date = page.locator('#native-date');
+          const before = page.locator('#before-date');
+          const after = page.locator('#after-date');
+          const read = async () => {
+            // The package animates box-shadow for 120ms. Inspect the settled result.
+            await page.waitForTimeout(180);
+            return date.evaluate((input, state) => {
+              const style = getComputedStyle(input), rect = input.getBoundingClientRect();
+              const probe = document.createElement('span');
+              input.parentElement.append(probe);
+              probe.style.boxShadow = style.getPropertyValue(`--tcrn-pair-edge-${state === 'error' ? 'ef' : state === 'readonly' ? 'r' : 'f'}`);
+              const expected = getComputedStyle(probe).boxShadow;
+              probe.remove();
+              return {
+                active: document.activeElement === input,
+                within: input.matches(':focus-within'), visible: input.matches(':focus-visible'),
+                shadow: style.boxShadow, expected, outline: style.outlineWidth,
+                outlineStyle: style.outlineStyle, outlineColor: style.outlineColor,
+                value: input.value, geometry: [rect.x, rect.y, rect.width, rect.height],
+              };
+            }, state);
+          };
+          const baseline = await read();
+          const session = await page.context().newCDPSession(page);
+          try {
+            await session.send('DOM.enable');
+            const { root } = await session.send('DOM.getDocument', { depth: -1, pierce: true });
+            const { nodeId } = await session.send('DOM.querySelector', { nodeId: root.nodeId, selector: '#native-date' });
+            const { node } = await session.send('DOM.describeNode', { nodeId, depth: -1, pierce: true });
+            const shadow = node.shadowRoots?.find(root => root.shadowRootType === 'user-agent');
+            assert.ok(shadow, `${label}: Chromium native date shadow root is observable`);
+            const { object } = await session.send('DOM.resolveNode', { nodeId: shadow.nodeId });
+            const nativeFocus = async () => (await session.send('Runtime.callFunctionOn', {
+              objectId: object.objectId,
+              functionDeclaration: 'function(){return this.activeElement?.getAttribute("pseudo")??null}',
+              returnByValue: true,
+            })).result.value;
+            const expectedStops = state === 'disabled' ? [] : state === 'readonly' ? segments : [...segments, '-webkit-calendar-picker-indicator'];
+            const forward = [], backward = [];
+            const assertFocus = async (expected) => {
+              const actual = await read();
+              assert.equal(actual.active, true, `${label}/${expected}: native owner stays active`);
+              assert.equal(actual.within, true, `${label}/${expected}: descendant focus belongs to the date`);
+              assert.equal(await nativeFocus(), expected, `${label}: real native tab order`);
+              assert.deepEqual(actual.geometry, baseline.geometry, `${label}: focus never changes layout`);
+              assert.equal(actual.value, '2026-10-20', `${label}: Tab never changes the ISO value`);
+              assert.equal(actual.outline, '2px', `${label}/${expected}: forced-colors outline survives`);
+              assert.equal(actual.outlineStyle, 'solid');
+              if (forcedColors === 'active') {
+                assert.equal(actual.shadow, 'none');
+                assert.doesNotMatch(actual.outlineColor, /transparent|rgba\([^)]*,\s*0\)/, `${label}: the system paints the outline`);
+              } else {
+                assert.equal(actual.shadow, actual.expected, `${label}/${expected}: published pair ring is visible after settling`);
+              }
+              return { pseudo: expected, ...actual };
+            };
+            await before.focus();
+            for (const expected of expectedStops) {
+              await page.keyboard.press('Tab');
+              forward.push(await assertFocus(expected));
+            }
+            await page.keyboard.press('Tab');
+            await expect(after).toBeFocused();
+            const departed = await read();
+            assert.equal(departed.within, false);
+            assert.equal(departed.outline, '0px');
+            assert.equal(departed.shadow, baseline.shadow, `${label}: leaving restores the original pair`);
+            for (const expected of [...expectedStops].reverse()) {
+              await page.keyboard.press('Shift+Tab');
+              backward.push(await assertFocus(expected));
+            }
+            await page.keyboard.press('Shift+Tab');
+            await expect(before).toBeFocused();
+            assert.equal((await read()).shadow, baseline.shadow, `${label}: backwards departure removes focus paint`);
+            if (state !== 'disabled') {
+              await date.focus();
+              await assertFocus(segments[0]);
+              if (state === 'readonly') {
+                await page.keyboard.press('ArrowUp');
+                await page.keyboard.press('Space');
+                await page.keyboard.press('Enter');
+                assert.equal(await date.inputValue(), '2026-10-20', 'readonly native segments cannot edit or open the picker');
+              }
+              await date.blur();
+              assert.equal((await read()).outline, '0px');
+              assert.equal((await read()).shadow, baseline.shadow, 'blur removes the ring after focus restoration');
+            }
+            else {
+              await date.evaluate(input => input.focus());
+              await expect(before).toBeFocused();
+              assert.equal(await date.inputValue(), '2026-10-20', 'disabled date is skipped without changing its value');
+            }
+            if (state === 'default' && forcedColors === 'none') {
+              await date.focus();
+                for (let index = 0; index < 3; index++) {
+                  await page.keyboard.press('Tab');
+                }
+              assert.equal(await nativeFocus(), '-webkit-calendar-picker-indicator');
+              await page.keyboard.press('Space');
+              await page.keyboard.press('ArrowDown');
+              await page.keyboard.press('Enter');
+              assert.equal(await date.inputValue(), '2026-10-27', 'the actual keyboard picker still selects a native date');
+              await date.fill('2026-10-20');
+              const box = await date.boundingBox();
+              await page.mouse.click(box.x + box.width - 15, box.y + box.height / 2);
+              await page.keyboard.press('ArrowDown');
+              await page.keyboard.press('Enter');
+              assert.equal(await date.inputValue(), '2026-10-27', 'the transparent native indicator remains the pointer activation target');
+              for (const [value, flag] of [['2025-12-31', 'rangeUnderflow'], ['2028-01-01', 'rangeOverflow']]) {
+                await date.fill(value);
+                assert.equal(await date.evaluate((input, flag) => input.validity[flag], flag), true);
+              }
+              await date.fill('2026-10-20');
+            }
+            const semantics = await date.evaluate(input => ({
+              type: input.type, min: input.min, max: input.max, name: input.name,
+              invalid: input.getAttribute('aria-invalid'), description: input.getAttribute('aria-describedby'),
+              submitted: new FormData(input.form).get(input.name),
+            }));
+            assert.deepEqual(semantics, {
+              type: 'date', min: '2026-01-01', max: '2027-12-31', name: 'reviewDate',
+              invalid: invalid ? 'true' : null, description: invalid ? 'date-error' : null,
+              submitted: state === 'disabled' ? null : '2026-10-20',
+            }, `${label}: native form and ARIA semantics remain intact`);
+            observations.push({ theme, width, forcedColors, state, forward, backward });
+          }
+          finally {
+            await session.detach();
+          }
+        }
+      }
+      finally {
+        await page.close();
+      }
+    }
+    // This test intentionally reports its real engine/sequence rather than claiming
+    // that Chromium's month/day/year/picker sequence represents every browser/OS.
+    console.log(JSON.stringify({ kind: 'native-date-focus', browserVersion: browser.version(), scenarios: observations.length, observations }));
+  });
+});
+
+
 test('each generated API page keeps machine identity and component destinations',()=>{
  const source=readApprovedSource();
  for(const locale of ['zh-CN','en','ja','ko','fr']){

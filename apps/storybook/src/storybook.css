@@ -641,6 +641,7 @@
 /* Forced colours drop box-shadow, so the ring keeps a transparent outline behind it for
    the system to paint; everywhere else the outline is invisible. */
 .tcrn-input:where(:focus-visible),
+.tcrn-date-picker:where(:focus-within),
 .tcrn-select:where(:focus-visible) {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -660,9 +661,11 @@
 .tcrn-input.tcrn-search-input__control{--tcrn-pair-fill-d:var(--tcrn-color-wash);--tcrn-pair-edge-d:0 0 #0000;--tcrn-pair-fill-h:var(--tcrn-color-wash);--tcrn-pair-edge-h:inset 0 0 0 1px var(--tcrn-color-line-2);--tcrn-pair-fill-f:var(--tcrn-color-panel)}
 .tcrn-input:where(:hover,[data-tcrn-preview-state="hover"]),.tcrn-select:where(:hover,[data-tcrn-preview-state="hover"]){--tcrn-pair-fill:var(--tcrn-pair-fill-h);--tcrn-pair-ink:var(--tcrn-pair-ink-h);--tcrn-pair-edge:var(--tcrn-pair-edge-h)}
 .tcrn-input:where(:focus-visible,[data-tcrn-preview-state="focus"]),.tcrn-select:where(:focus-visible,[data-tcrn-preview-state="focus"]){--tcrn-pair-fill:var(--tcrn-pair-fill-f);--tcrn-pair-ink:var(--tcrn-pair-ink-f);--tcrn-pair-edge:var(--tcrn-pair-edge-f)}
+.tcrn-date-picker:where(:focus-within){--tcrn-pair-fill:var(--tcrn-pair-fill-f);--tcrn-pair-ink:var(--tcrn-pair-ink-f);--tcrn-pair-edge:var(--tcrn-pair-edge-f)}
 .tcrn-input:where([readonly],[aria-readonly="true"]),.tcrn-select:where([readonly],[aria-readonly="true"]){--tcrn-pair-fill:var(--tcrn-pair-fill-r);--tcrn-pair-ink:var(--tcrn-pair-ink-r);--tcrn-pair-edge:var(--tcrn-pair-edge-r)}
 .tcrn-input:where([aria-invalid="true"],[data-tcrn-preview-state="error"]),.tcrn-select:where([aria-invalid="true"],[data-tcrn-preview-state="error"]){--tcrn-pair-fill:var(--tcrn-pair-fill-e);--tcrn-pair-ink:var(--tcrn-pair-ink-e);--tcrn-pair-edge:var(--tcrn-pair-edge-e)}
 .tcrn-input:where([aria-invalid="true"]:focus-visible,[data-tcrn-preview-state="error-focus"]),.tcrn-select:where([aria-invalid="true"]:focus-visible,[data-tcrn-preview-state="error-focus"]){--tcrn-pair-edge:var(--tcrn-pair-edge-ef)}
+.tcrn-date-picker:where([aria-invalid="true"]:focus-within){--tcrn-pair-edge:var(--tcrn-pair-edge-ef)}
 .tcrn-input:where(:disabled),.tcrn-select:where(:disabled){--tcrn-pair-fill:var(--tcrn-pair-fill-x);--tcrn-pair-ink:var(--tcrn-pair-ink-x);--tcrn-pair-edge:var(--tcrn-pair-edge-x)}
 
 
