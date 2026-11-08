@@ -144,7 +144,7 @@ test("required closure has no cycles, every formal component has source types an
   assert.equal(complete.publicationRequest, "deferred-by-owner");
   assert.equal(complete.adoptedSupport.formalComponents, 28);
   assert.equal(complete.adoptedSupport.builtInLocales, 5);
-  const customer = loadRuleClosure(indexPath, { schemaVersion: "tcrn.consumer-contract.v1", identity: index.identity, components: [], patterns: ["customer-list-boundary"] });
+  const customer = loadRuleClosure(indexPath, { schemaVersion: "tcrn.consumer-contract.v1", identity: index.identity, components: ["Heading"], patterns: ["customer-list-boundary"] });
   assert.ok(customer.rules.has("pattern/product-locales"));
   assert.ok(customer.rules.has("global"));
   assert.deepEqual(complete.rules, [...index.rules].map(entry => JSON.parse(fs.readFileSync(path.join(producer, entry.path), "utf8"))).map(({ schemaVersion, identity, ...rule }) => rule));
