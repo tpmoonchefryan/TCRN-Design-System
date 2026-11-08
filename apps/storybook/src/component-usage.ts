@@ -4,7 +4,7 @@ import { componentContract, type FormalComponentName } from "./component-catalog
 export function componentUsage(name: FormalComponentName) {
   const contract = componentContract(name);
   const shell = contract.board.startsWith("07");
-  const actions = contract.board === "05-actions";
+  const contentAligned = contract.board === "05-actions" || name === "ProductLogo" || name === "ShellBrandButton";
   const imports = [name, ...(name === "ButtonGroup" ? ["Button"] : []), "tcrnComponentCss"];
   const declarations = [
     ...(shell ? ['import type { ComponentProps } from "react";'] : []),
@@ -19,7 +19,7 @@ export function componentUsage(name: FormalComponentName) {
     ? '  const options = [{ value: "review", label: "Review" }, { value: "release", label: "Release" }];\n'
     : "";
   const error = name === "Input" ? '      <p id="error">Name is required.</p>\n' : "";
-  const alignment = actions ? ' justifyItems: "start",' : "";
+  const alignment = contentAligned ? ' justifyItems: "start",' : "";
   return `${declarations.join("\n")}
 
 export function Example(${signature}) {
