@@ -35,10 +35,15 @@ network operation. Anonymous localStorage is not account synchronization. Follow
 the required shell preference pattern when any shell component is used.
 
 The pinned Site v1 remains the normative visual source. Its K1 suffix contrast,
-K5 wording and 06 dark shortcut contrast conflicts remain declared and unresolved.
-Do not silently adopt proposals, lower thresholds or claim that a local candidate
-is production. Customer table/state/confirmation compositions remain candidates
-until the required authority adoption and producer delivery occur.
+K5 wording and 06 dark shortcut contrast conflicts remain declared in that
+published version. Owner adopted the K1/K5/C01 source revision under
+`minutes:6f3e0a9a1e07e3980867d82e#D1` and the customer table/cards, pagination,
+five business states, confirmation and explicit product Traditional Chinese shell
+copy under D2. The support contract is `pattern/customer-list-boundary` with
+`pattern/product-locales`; these are adopted producer specifications awaiting
+formal publication. Keep the pinned v1 identity until the revised source is
+actually published. Preserve thresholds, the 28 formal entries and five built-in
+locales; local source preparation does not establish production delivery.
 
 Invalidate the local rule cache when any package version, standard identity,
 source digest, shard digest or required dependency differs. Missing, malformed or

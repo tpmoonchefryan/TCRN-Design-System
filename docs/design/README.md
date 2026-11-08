@@ -19,17 +19,17 @@ The implementation package does not run these commands. The existing integration
 
 The static writer reconciles exact current output membership. Removed HTML/API pages, old bundles, fonts and copied assets are moved to the owned trash before fresh output is written. `pnpm clean` is now restricted to declared rebuildable output roots and never clears `docs/verification`.
 
-K1/K5/C01 remain selected directions, visually unconfirmed and unapplied; the publication request is withdrawn (TCRN-DS-MIN-20261104-VISUAL-BEFORE-STANDARD D1–D4). Published v1 remains the sole baseline:06 form shortcut ink-3,07 menu/shell shortcut ink-2, published brand colors and actual strong ink/600. The form placeholder ink-2 and icon ink-3 keep their separate roles. Compare each implementation context with its own published selector; a06/07 difference alone is not a fidelity defect. K1 brand text and06 dark shortcut nominal contrast (3.876922 on wash/panel) remain unresolved conflicts with text ≥4.5. Correcting local fidelity does not waive that threshold or require importing an unconfirmed proposal into the formal standard. Machine verification, visual confirmation and publication permission remain separate. K4 retains pure-icon pins and item-specific accessible names without visible labels or tooltips. The 20px toggle slot and16px glyph are distinct; pin center coordinates remain global Y26/local Y20.
+Owner adopted K1/K5/C01 under `minutes:6f3e0a9a1e07e3980867d82e#D1`: DS light suffix `#4b59be`, TMS dark suffix `#7aa0f5`, form shortcut ink-2 and K5 wording matching the existing ink/600 CSS. The real Sites author-source revision is a local publication candidate; no revised source version has been published. Published v1 therefore remains the pinned baseline, including its 06 form shortcut ink-3, 07 menu/shell shortcut ink-2 and original brand suffix values. Its six K1 failures and one dark form-shortcut failure remain historical/current-v1 evidence; local correction does not turn the published-v1 gates green. Preserve text ≥4.5 and icon/edge ≥3. Refresh pinned identities and generated input only after actual source publication. The form placeholder ink-2 and icon ink-3 retain their separate roles. Machine verification, Owner visual adoption and publication permission remain separate. K4 retains pure-icon pins and item-specific accessible names without visible labels or tooltips. The 20px toggle slot and16px glyph are distinct; pin center coordinates remain global Y26/local Y20.
 
 ## Consumer support boundary
 
 The current 28-entry catalogue remains the published component scope. The
 [actual TMS customer-list mapping](../consumption/patterns/customer-list-support.md)
-distinguishes those capabilities from the table/cards, business-state and
-confirmation additions still requiring an upstream contract. The current candidate
-supports an explicit product locale with complete product-owned shell copy,
-including Traditional Chinese; the five built-in locales remain unchanged. That
-engineering support does not record visual adoption, a sixth built-in locale or
-production TMS consumption. The [shell interface description](../consumption/patterns/shell-preferences-and-navigation.md)
+records the Owner-adopted table/cards, pagination, five business states and
+confirmation support under `minutes:6f3e0a9a1e07e3980867d82e#D2`, awaiting formal
+producer publication. The same decision adopts complete explicit product-owned
+Traditional Chinese shell copy. This extends support for the existing shell;
+the 28 formal entries and five built-in locales remain unchanged. Owner adoption
+and the local implementation do not establish production TMS consumption. The [shell interface description](../consumption/patterns/shell-preferences-and-navigation.md)
 documents the existing pins callbacks and native Next navigation boundary;
 engineering root exports do not become formal designs through that description.

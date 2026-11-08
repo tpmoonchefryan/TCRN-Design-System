@@ -4,8 +4,11 @@ This is the local producer candidate API for a product whose locale identifiers 
 languages differ from the five built-in DS locales. The pinned standard and the
 five built-in dictionaries remain unchanged. A product locale definition supplies
 complete shell copy; it does not add a sixth built-in language to every DS component.
-Real consumers use this capability after the applicable authority and producer
-publication dependencies are satisfied.
+Owner adopted the explicit product Traditional Chinese shell wording in
+`minutes:6f3e0a9a1e07e3980867d82e#D2`; its retained samples and the customer-list
+support contract are linked from `customer-list-support.md`. The API remains a
+local producer candidate awaiting formal publication. Real consumers use the
+matching published capability before completing their integration checks.
 
 `@tcrn/ui-react/approved` exports `ProductShellLocaleDefinition`,
 `ProductShellCopy`, `ProductShellChromeCopy`, `TcrnShellCopy`,
@@ -121,4 +124,6 @@ font CSS as usual; the BCP 47 subtree tag is semantic language metadata, not a f
 override. Browser evidence must identify the actual fonts/glyphs used for the
 consumer's visible text. The local fixture verifies the supplied Traditional
 Chinese text with the existing packaged fonts; it does not claim a new font
-family, locale-specific typeface standard, Owner visual acceptance or publication.
+family or locale-specific typeface standard. Owner adoption is recorded by the
+D2 decision above; the fixture does not establish publication or real TMS
+integration acceptance.
