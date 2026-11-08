@@ -55,3 +55,44 @@ the action box, enforces token height/insets, squares, parent bounds and group
 frame/member enclosure. Preserve the raw measurements and process exit. These
 measurements do not establish keyboard behavior, production identity, publication,
 Owner visual acceptance or future model compliance.
+
+## Fill fields require the host product’s form column
+
+Input, Textarea, SearchInput, SuggestInput, Select, MultiSelect, NumberInput and
+DatePicker fill their assigned **form column**, not the viewport. Before generating
+any of these fields, inspect the target project's existing form-column token,
+layout rule or container component and reuse that actual rule. Record the source
+file and the class used by the column in the consumer declaration's `fieldColumns`.
+If the host has no applicable rule, surface `HOST_FORM_COLUMN_DECISION_REQUIRED`
+and stop dependent layout generation for that host decision. Do not invent a DS
+width token, substitute a generic numeric product rule or treat an unconstrained
+viewport root as a valid default.
+
+The generated field usage module requires `formColumnClassName` and has no default.
+Bind it to the inspected host class; for the literal static path, replace the
+parameterized class with that actual literal class in the final consumer module.
+A host container component may own the same rule; inspect its implementation and
+verify its actual rendered column. Dynamic classes, grid tracks and indirect
+container components remain outside the literal static proof and need the host's
+browser verification. A declaration is a trace to source, not proof of host approval.
+
+The normal checker reads a binding such as this (names are illustrative and must
+come from the actual target project):
+
+```json
+{ "fieldColumns": [{ "className": "customer-form-column", "source": "src/layout.css" }] }
+```
+
+The bound source must be in `sourceRoots`. The supported static path finds that
+literal class with a bounded `max-inline-size` or `max-width` rule in the selected
+host CSS, and requires the field to be inside it. That rule may use the host's own
+token. Static matching does not resolve its value or the cascade; `--layout-url`
+measures both desktop and narrow layouts with the real checker. It verifies
+control = control-wrapper = assigned column, a resolved column bound, and no
+parent/viewport overflow. Preserve raw geometry, including the canvas width.
+
+Storybook supplies a fluid column capped at **28rem solely as documentation
+context**, labelled beside each field example. This cap is not a published token
+or a product rule. Never copy it into a consumer in place of inspecting the host.
+The source metadata, generated usage/host requirements and real static/browser
+checkers are hashed in the same AI dependency closure.

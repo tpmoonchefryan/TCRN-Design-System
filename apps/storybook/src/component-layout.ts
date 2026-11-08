@@ -2,6 +2,7 @@ import { componentContract, type FormalComponentName } from "./component-catalog
 
 export interface ComponentLayout {
   sizing: "content" | "fill" | "fixed" | "mixed";
+  parent?: "host-form-column";
   constraint: string;
   implementation: string;
 }
@@ -20,14 +21,14 @@ export const componentLayouts = {
   LinkButton: { sizing: "content", constraint: "Navigation text and optional icon determine width with token insets. Long labels ellipsize at the parent limit; do not fill a grid track.", implementation: "actions.css.ts" },
   ClipboardCopyButton: { sizing: "content", constraint: "Uses the real Button geometry. Copy feedback changes state/label, never a parent-imposed full width; test the browser clipboard separately.", implementation: "actions.css.ts" },
   ButtonGroup: { sizing: "content", constraint: "The frame encloses members plus their 1px joins, in secondary and quiet variants. On a narrow parent, members may shrink and ellipsize; keep the joined row and token insets.", implementation: "actions.css.ts" },
-  Input: { sizing: "fill", constraint: "The field container supplies the available width; the control fills it. A short value does not shrink the field. Labels/help/errors wrap outside the control.", implementation: "inputs.css.ts" },
-  Textarea: { sizing: "fill", constraint: "The parent sets width, content wraps and native vertical resize remains available. It does not use action content-width rules.", implementation: "inputs.css.ts" },
-  SearchInput: { sizing: "fill", constraint: "The wrapper fills its field; internal grid reserves icon, token insets and shortcut. Narrow fields must retain a usable text area and shortcut behavior.", implementation: "inputs.css.ts" },
-  SuggestInput: { sizing: "fill", constraint: "The open-value input fills its field. Native suggestion presentation is browser-owned; verify long suggestions in the target browser.", implementation: "inputs.css.ts" },
-  Select: { sizing: "fill", constraint: "The closed-value control fills its field. Selected text and native popup are browser-owned; the parent supplies enough width for translated labels.", implementation: "inputs.css.ts" },
-  MultiSelect: { sizing: "fill", constraint: "Dropdown/native/checkbox presentations fill their parent; summaries ellipsize, option labels wrap and the popup stays in the viewport.", implementation: "inputs.css.ts" },
-  NumberInput: { sizing: "fill", constraint: "The control fills the field with its existing 12ch minimum. The parent must provide that minimum; verify the committed min/max value independently of width.", implementation: "inputs.css.ts" },
-  DatePicker: { sizing: "fill", constraint: "The field sets width; retain the native date segments and reserved picker area. Native locale rendering and very narrow fields need browser checks.", implementation: "inputs.css.ts" },
+  Input: { sizing: "fill", parent: "host-form-column", constraint: "The field container supplies the available width; the control fills it. A short value does not shrink the field. Labels/help/errors wrap outside the control.", implementation: "inputs.css.ts" },
+  Textarea: { sizing: "fill", parent: "host-form-column", constraint: "The parent sets width, content wraps and native vertical resize remains available. It does not use action content-width rules.", implementation: "inputs.css.ts" },
+  SearchInput: { sizing: "fill", parent: "host-form-column", constraint: "The wrapper fills its field; internal grid reserves icon, token insets and shortcut. Narrow fields must retain a usable text area and shortcut behavior.", implementation: "inputs.css.ts" },
+  SuggestInput: { sizing: "fill", parent: "host-form-column", constraint: "The open-value input fills its field. Native suggestion presentation is browser-owned; verify long suggestions in the target browser.", implementation: "inputs.css.ts" },
+  Select: { sizing: "fill", parent: "host-form-column", constraint: "The closed-value control fills its field. Selected text and native popup are browser-owned; the parent supplies enough width for translated labels.", implementation: "inputs.css.ts" },
+  MultiSelect: { sizing: "fill", parent: "host-form-column", constraint: "Dropdown/native/checkbox presentations fill their parent; summaries ellipsize, option labels wrap and the popup stays in the viewport.", implementation: "inputs.css.ts" },
+  NumberInput: { sizing: "fill", parent: "host-form-column", constraint: "The control fills the field with its existing 12ch minimum. The parent must provide that minimum; verify the committed min/max value independently of width.", implementation: "inputs.css.ts" },
+  DatePicker: { sizing: "fill", parent: "host-form-column", constraint: "The field sets width; retain the native date segments and reserved picker area. Native locale rendering and very narrow fields need browser checks.", implementation: "inputs.css.ts" },
   Checkbox: { sizing: "fixed", constraint: "The control remains a 16px square; its external label owns wrapping. Checked, indeterminate, focus and error never change the square.", implementation: "inputs.css.ts" },
   RadioGroup: { sizing: "mixed", constraint: "The group fills its parent, while each radio remains a 16px square. Legend and option labels wrap; long translations do not stretch the radio.", implementation: "inputs.css.ts" },
   Switch: { sizing: "mixed", constraint: "Track stays 34×20, or 28×16 in small; label and description use the parent space. Immediate settings do not require a Save action.", implementation: "inputs.css.ts" },
@@ -45,4 +46,9 @@ export function componentFamily(name: FormalComponentName) {
   if (board === "06-inputs") return "Inputs and selection";
   if (board.startsWith("07")) return "Application shell";
   return "Foundations";
+}
+
+export function needsHostFormColumn(name: FormalComponentName) {
+  const layout: ComponentLayout = componentLayouts[name];
+  return layout.parent === "host-form-column";
 }

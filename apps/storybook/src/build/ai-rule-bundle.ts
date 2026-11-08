@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { componentLayouts } from "../component-layout.js";
+import { componentLayouts, needsHostFormColumn } from "../component-layout.js";
 import { componentUsage } from "../component-usage.js";
 import { approvedApi } from "../approved-api.js";
 import { approvedSource } from "../approved-source.js";
@@ -106,6 +106,14 @@ export function createAiRuleBundle(input: {
           usage: componentUsage(api.name as keyof typeof componentStates),
           usageSource: { path: "apps/storybook/src/component-usage.ts", sha256: requireSource("apps/storybook/src/component-usage.ts").sha256 },
           contextSources: ["apps/storybook/src/docs.css", "apps/storybook/src/component-layout.ts", `packages/ui-react/src/styles/${componentLayouts[api.name as keyof typeof componentLayouts].implementation}`].map(path => ({ path, sha256: requireSource(path).sha256 })),
+          hostLayout: needsHostFormColumn(api.name as keyof typeof componentStates) ? {
+            required: true,
+            owner: "target consumer project",
+            inspectBeforeGeneration: "Read the target project's existing form-column token, layout rule or container component. Reuse it and record the source in declaration.fieldColumns; do not copy the documentation cap or invent a DS width token.",
+            missing: "HOST_FORM_COLUMN_DECISION_REQUIRED: surface the missing host decision before generating the field layout.",
+            templateInput: "formColumnClassName has no default. Bind it to the inspected host class; literal class/source bindings are checked statically, computed or indirect layouts also require the real browser check.",
+            checks: ["scripts/consumer-contract-check.mjs", "scripts/consumer-layout-check.mjs"].map(path => ({ path, sha256: requireSource(path).sha256 })),
+          } : null,
           productInputs: shell ? "Supply the typed component props and read pattern/shell-preferences; the snippet does not invent product data or a backend adapter." : null,
         },
         stories: states.map(state => ({ state, id: componentStoryId(api.name, state) })),

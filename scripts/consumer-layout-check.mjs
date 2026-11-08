@@ -6,6 +6,7 @@ export async function measureConsumerLayout(page) {
     const findings = [];
     const actions = [];
     const groups = [];
+    const fields = [];
     const close = (a, b) => Math.abs(a - b) <= tolerance;
     const number = value => Number.parseFloat(value) || 0;
     const availableWidth = element => {
@@ -78,9 +79,34 @@ export async function measureConsumerLayout(page) {
         findings.push({ reason: "GROUP_MEMBER_ENCLOSURE", group: groups.length - 1 });
       }
     }
-    if (!actions.length) findings.push({ reason: "ACTION_LAYOUT_INPUT_EMPTY" });
-    return { ok: !findings.length, findings, actions, groups, viewport: { width: innerWidth, height: innerHeight },
-      scope: "Rendered action geometry after fonts; no keyboard, publication, or model compliance claim" };
+    for (const element of document.querySelectorAll(".tcrn-input, .tcrn-select")) {
+      const box = element.getBoundingClientRect();
+      if (!box.width || !box.height || getComputedStyle(element).visibility === "hidden") continue;
+      const fieldRoot = element.closest(".tcrn-select-wrap, .tcrn-date-picker-wrap, .tcrn-search-input, .tcrn-multi-select-dropdown") ?? element;
+      let column = fieldRoot.parentElement;
+      while (column && column !== document.body && column !== document.documentElement) {
+        const style = getComputedStyle(column);
+        if (column.matches("[data-tcrn-field-column], [data-doc-field-column]") || (/^[\d.]+px$/.test(style.maxWidth) && number(style.maxWidth) > 0)) break;
+        column = column.parentElement;
+      }
+      const canvas = element.closest(".component-story-canvas") ?? document.documentElement;
+      const canvasStyle = getComputedStyle(canvas);
+      const canvasWidth = canvas.clientWidth - number(canvasStyle.paddingLeft) - number(canvasStyle.paddingRight);
+      const style = column ? getComputedStyle(column) : null;
+      const bound = style && /^[\d.]+px$/.test(style.maxWidth) ? number(style.maxWidth) : null;
+      const columnWidth = column ? column.clientWidth - number(style.paddingLeft) - number(style.paddingRight) : null;
+      const rootWidth = fieldRoot.getBoundingClientRect().width;
+      fields.push({ name: element.getAttribute("aria-label") ?? element.getAttribute("name"), type: element.getAttribute("type") ?? element.tagName.toLowerCase(),
+        width: box.width, height: box.height, fieldRootWidth: rootWidth, parentWidth: availableWidth(element), columnWidth, columnMaxWidth: bound,
+        columnClass: column?.className ?? null, canvasWidth, viewportWidth: innerWidth });
+      const fail = reason => findings.push({ reason, field: fields.length - 1 });
+      if (!bound || column === document.body || column === document.documentElement) fail("HOST_FIELD_COLUMN_BOUND_MISSING");
+      if (!close(box.width, availableWidth(element)) || !close(rootWidth, columnWidth)) fail("FIELD_DOES_NOT_FILL_ASSIGNED_COLUMN");
+      if (box.width > canvasWidth + tolerance || rootWidth > columnWidth + tolerance) fail("FIELD_PARENT_OVERFLOW");
+    }
+    if (!actions.length && !fields.length) findings.push({ reason: "LAYOUT_INPUT_EMPTY" });
+    return { ok: !findings.length, findings, actions, groups, fields, viewport: { width: innerWidth, height: innerHeight },
+      scope: "Rendered action and fill-field geometry after fonts; no keyboard, publication, or model compliance claim" };
   });
 }
 
@@ -93,7 +119,9 @@ export async function checkConsumerPage(url) {
     const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
     await page.goto(target.href, { waitUntil: "networkidle" });
     const result = await measureConsumerLayout(page);
-    return { url: target.href, ...result };
+    await page.setViewportSize({ width: 390, height: 720 });
+    const narrow = await measureConsumerLayout(page);
+    return { url: target.href, ...result, ok: result.ok && narrow.ok, narrow };
   } finally {
     await browser.close();
   }

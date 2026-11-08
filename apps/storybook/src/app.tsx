@@ -1,7 +1,7 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type MouseEvent, type RefObject } from "react";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import {
-  Icon, PageHeader, ShellBrandButton, ShellLocaleMenu, ShellMenu, ShellThemeToggle,
+  Icon, LinkButton, PageHeader, ShellBrandButton, ShellLocaleMenu, ShellMenu, ShellThemeToggle,
   SkipLink, useProductShellController, useShellMenuPresentation, type ShellThemeMode,
 } from "@tcrn/ui-react/approved";
 import { ApiReference } from "./api-reference.js";
@@ -240,6 +240,9 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
             setLayer(next ? "topics" : current => current === "topics" ? null : current);
           }}
         />
+        {!inStorybook && <nav className="docs-storybook-nav" aria-label={portalCopy[locale].storybookNavigation}>
+          <LinkButton href="/storybook/" variant="quiet" size="sm">Storybook</LinkButton>
+        </nav>}
         <div className="tcrn-shell-cluster docs-preferences" data-cluster="">
           <ShellThemeToggle currentTheme={theme} onThemeChange={changeTheme} locale={locale} variant="quiet" />
           <ShellLocaleMenu

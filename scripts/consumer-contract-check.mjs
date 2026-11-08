@@ -87,7 +87,7 @@ function projectInputs(root, sourceRoots) {
 
 const designProperty = /^(?:color|background(?:Color|Image)?|border(?:Color|Width|Radius)?|boxShadow|font(?:Family|Size|Weight)?|lineHeight|letterSpacing|fill|stroke)$/;
 const bareColor = /#[a-f0-9]{3,8}\b|\b(?:rgba?|hsla?|oklch|lab|color)\s*\(/i;
-export function checkConsumerSources(files, declaration, closure) {
+export function checkConsumerSources(files, declaration, closure, projectRoot) {
   const findings = [];
   const usedComponents = new Set();
   const knownTokens = new Set([...closure.rules.values()].filter(rule => rule.kind === "tokens").flatMap(rule => rule.content.map(token => token.variable)));
@@ -95,6 +95,28 @@ export function checkConsumerSources(files, declaration, closure) {
   let shellInstances = 0;
   let controllers = 0;
   const report = (file, message) => findings.push(`${file}: ${message}`);
+  const fieldColumns = new Set();
+  for (const binding of declaration.fieldColumns ?? []) {
+    if (!projectRoot || typeof binding?.className !== "string" || !/^[a-zA-Z_][\w-]*$/.test(binding.className) || typeof binding.source !== "string") {
+      findings.push("HOST_FIELD_COLUMN_BINDING_INVALID");
+      continue;
+    }
+    const sourceFile = within(projectRoot, binding.source);
+    if (!files.includes(sourceFile) || !sourceFile.endsWith(".css")) {
+      findings.push(`HOST_FIELD_COLUMN_SOURCE_NOT_SELECTED:${binding.source}`);
+      continue;
+    }
+    // A traceable literal class is the supported static boundary. The browser
+    // check resolves its tokens/cascade and measures the actual assigned column.
+    const source = fs.readFileSync(sourceFile, "utf8");
+    const rule = new RegExp(`\\.${binding.className}(?![\\w-])[^{}]*\\{([^{}]+)\\}`, "g");
+    const bounded = [...source.matchAll(rule)].some(match => {
+      const limit = /(?:^|;)\s*max-(?:inline-size|width)\s*:\s*([^;]+)/.exec(match[1])?.[1].trim();
+      return limit && !/^(?:none|initial|unset|inherit|100%|100(?:d|s|l)?vw)$/.test(limit);
+    });
+    if (!bounded) findings.push(`HOST_FIELD_COLUMN_BOUND_UNRESOLVED:${binding.source}:${binding.className}`);
+    else fieldColumns.add(binding.className);
+  }
   for (const file of files) {
     const source = fs.readFileSync(file, "utf8");
     for (const match of source.matchAll(/--tcrn-[\w-]+/g)) if (!knownTokens.has(match[0])) report(file, `UNREGISTERED_TOKEN:${match[0]}`);
@@ -150,6 +172,22 @@ export function checkConsumerSources(files, declaration, closure) {
           if (!formalNames.has(component)) report(file, `UNPUBLISHED_COMPONENT_FAMILY:${component}`);
           else usedComponents.add(component);
           if (!declaration.components.includes(component)) report(file, `TASK_RULE_NOT_SELECTED:${component}`);
+          if (closure.rules.get(`component/${component}`)?.content.layout?.parent === "host-form-column") {
+            let ancestor = ts.isJsxOpeningElement(node) ? node.parent.parent : node.parent;
+            let hostColumn = false;
+            while (ancestor) {
+              if (ts.isJsxElement(ancestor)) {
+                const attribute = ancestor.openingElement.attributes.properties.find(attribute => ts.isJsxAttribute(attribute) && attribute.name.getText() === "className");
+                let value = attribute?.initializer;
+                if (value && ts.isJsxExpression(value)) value = value.expression;
+                if (value && (ts.isStringLiteral(value) || ts.isNoSubstitutionTemplateLiteral(value))) {
+                  hostColumn ||= value.text.split(/\s+/).some(name => fieldColumns.has(name));
+                }
+              }
+              ancestor = ancestor.parent;
+            }
+            if (!hostColumn) report(file, "HOST_FIELD_COLUMN_MISSING: inspect and use the target project's existing bounded form-column rule; record its class/source in fieldColumns. Missing host decisions block generation; an unconstrained viewport root is not a field column.");
+          }
           if (component === "ProductShell") {
             shellInstances++;
             const direct = ["pinnedIds", "onPinnedChange", "onPinsReorder"].every(name => names.includes(name));
@@ -221,7 +259,7 @@ export function checkConsumerContract({ projectRoot, indexPath, declarationPath 
       if (actual !== version) findings.push(`INSTALLED_PACKAGE_VERSION_MISMATCH:${name}:${actual ?? "unresolved"}:${version}`);
     } catch (error) { findings.push(`INSTALLED_PACKAGE_UNREADABLE:${name}:${error.message}`); }
   }
-  const scanned = checkConsumerSources(files, declaration, closure);
+  const scanned = checkConsumerSources(files, declaration, closure, root);
   findings.push(...scanned.findings);
   if (scanned.shellUsed) {
     if (!declaration.adapterEvidence) findings.push("SHELL_ADAPTER_EVIDENCE_MISSING");
@@ -234,7 +272,7 @@ export function checkConsumerContract({ projectRoot, indexPath, declarationPath 
     ok: findings.length === 0, findings, identity: closure.index.identity,
     requiredRules: [...closure.rules.keys()], files: files.map(file => path.relative(root, file)),
     usedComponents: scanned.usedComponents,
-    limits: ["Selected source roots and explicit imports/JSX only; run TypeScript for types and indirect/dynamic wiring.", "Native ShellPins markers are explicit data-pins attributes and literal className tokens, including unused JSX; computed values, spreads and runtime reachability are not resolved.", "Adapter observations are caller-supplied, not authenticated by this checker; retain raw HTTP/session evidence.", "Static pass does not measure layout. Use --layout-url for real action geometry. CSS cascade, external/computed parent classes and indirect wiring need the consumer browser check; keyboard/focus, permissions, publication and future model behavior remain outside this check."],
+    limits: ["Selected source roots and explicit imports/JSX only; run TypeScript for types and indirect/dynamic wiring.", "Native ShellPins markers are explicit data-pins attributes and literal className tokens, including unused JSX; computed values, spreads and runtime reachability are not resolved.", "Adapter observations are caller-supplied, not authenticated by this checker; retain raw HTTP/session evidence.", "Static field checks trace literal ancestor classes to selected host CSS max-width/max-inline-size rules; they do not prove prior host approval or resolve tokens, grids, container components or the CSS cascade. Bind indirect layouts to their actual host rule and measure them. Static pass does not measure layout. Use --layout-url for real action and fill-field geometry at desktop/narrow sizes; keyboard/focus, permissions, publication and future model behavior remain outside this check."],
   };
 }
 

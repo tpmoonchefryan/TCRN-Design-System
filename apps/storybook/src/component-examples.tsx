@@ -1,3 +1,4 @@
+import { needsHostFormColumn } from "./component-layout.js";
 import { useEffect, useId, useRef, useState } from "react";
 import {
   Button, ButtonGroup, Checkbox, ClipboardCopyButton, DatePicker, Heading, Highlight,
@@ -80,6 +81,14 @@ function ProductLocaleExample() {
     <output data-product-locale="">{controller.locale}</output>
   </div>;
 }
+
+const fieldColumnContext = {
+  en: "Documentation context: a fluid form column capped at 28rem, not a Design System token. Products use their existing form-column rule.",
+  "zh-CN": "文档示例上下文：表单列随可用空间收缩，上限为 28rem；这不是设计系统令牌。产品应使用自身已有的表单列规则。",
+  ja: "ドキュメント用の例：フォーム列は利用可能な幅に追従し、上限は 28rem です。Design System のトークンではありません。製品では既存のフォーム列ルールを使います。",
+  ko: "문서 예제 환경: 폼 열은 가용 너비에 맞춰 줄어들며 최대 28rem입니다. Design System 토큰이 아닙니다. 제품의 기존 폼 열 규칙을 사용하세요.",
+  fr: "Contexte documentaire : colonne de formulaire fluide, plafonnée à 28rem. Ce n’est pas un jeton du Design System. Utilisez la règle de colonne existante du produit.",
+};
 
 export function ComponentExample({ name, state = "default", locale = "en", interaction = false }: {
   name: FormalComponentName;
@@ -174,15 +183,18 @@ export function ComponentExample({ name, state = "default", locale = "en", inter
       case "ShellMenu": case "ShellPins": case "ShellDropdown": return <ShellExample locale={locale} mode={state === "phone" || state === "sheet" ? "phone" : name === "ShellDropdown" || state === "dropdown" || state === "cascade" ? "drop" : name === "ShellMenu" || state === "menu" || state === "panel" || state === "search" ? "menu" : "band"} initialPinCount={state === "overflow" ? 8 : 4} />;
     }
   };
-  return <div ref={rootRef} data-component-example={name} data-example-state={state} lang={locale}>
-    {interaction ? <form onSubmit={event => {
-      event.preventDefault();
-      setFeedback(JSON.stringify([...new FormData(event.currentTarget)]));
-    }}>
-      {example()}
-      <Button type="submit">{c.save}</Button>
-    </form> : example()}
-    {invalid && <p id={`${id}-error`} className="tcrn-doc-error">{c.error}</p>}
-    {feedback !== null && <output id={`${id}-result`} data-example-result="" aria-live="polite">{feedback}</output>}
-  </div>;
+  return <>
+    {needsHostFormColumn(name) && <Text size="meta" data-doc-field-context="">{fieldColumnContext[locale]}</Text>}
+    <div ref={rootRef} className={needsHostFormColumn(name) ? "component-example-field-column" : undefined} data-doc-field-column={needsHostFormColumn(name) ? "" : undefined} data-component-example={name} data-example-state={state} lang={locale}>
+      {interaction ? <form onSubmit={event => {
+        event.preventDefault();
+        setFeedback(JSON.stringify([...new FormData(event.currentTarget)]));
+      }}>
+        {example()}
+        <Button type="submit">{c.save}</Button>
+      </form> : example()}
+      {invalid && <p id={`${id}-error`} className="tcrn-doc-error">{c.error}</p>}
+      {feedback !== null && <output id={`${id}-result`} data-example-result="" aria-live="polite">{feedback}</output>}
+    </div>
+  </>;
 }

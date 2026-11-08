@@ -1057,3 +1057,17 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 
 .component-choice-label { display: inline-flex; align-items: center; gap: var(--tcrn-space-2); max-inline-size: 100%; }
 .component-choice-label > .tcrn-checkbox { flex: none; }
+
+/* Presentation context only: this is not a DS token or a product layout default.
+   Fields keep width:100% of this fluid documentation form column. */
+.component-example-field-column {
+  inline-size: 100%;
+  max-inline-size: 28rem;
+  justify-self: start;
+}
+.docs-storybook-nav {
+  display: flex;
+  flex: none;
+  align-items: center;
+  margin-inline: var(--tcrn-space-2);
+}

@@ -21,7 +21,7 @@ rosters. Load package CSS and vendored fonts and retain their licenses. A CSS
 variable or class scanner cannot establish contrast, clipping, keyboard or focus
 behavior: run the applicable browser checks as well.
 
-Read the required `pattern/component-layout` rule and each component shard’s layout responsibility. Actions follow content width with token insets; fields fill their containers, while icons and unlabelled icon actions remain fixed squares. Parent grid/flex layout must preserve those differences. Run the normal browser layout check for the rendered action geometry; a source/identity check is not that measurement.
+Read the required `pattern/component-layout` rule and each component shard’s layout responsibility. Actions follow content width with token insets; fields fill their containers, while icons and unlabelled icon actions remain fixed squares. Parent grid/flex layout must preserve those differences. Before generating a fill field, inspect and reuse the target project’s existing form-column token, layout rule or container component. Read `pattern/component-layout` for the source binding and missing-host-decision contract. Do not invent a DS width token or a numeric product default. Run the normal browser layout check for the rendered action and fill-field geometry; a source/identity check is not that measurement.
 
 Supply visible labels, accessible names and disabled reasons where the API requires
 them. Preserve native form values, controlled state and required/error feedback.

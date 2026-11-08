@@ -160,3 +160,18 @@ test("formal component states use the same executable examples in portal and CSF
   const api = renderToStaticMarkup(createElement(App, { page: "api", locale: "en" }));
   for (const name of Object.keys(componentStates)) assert.ok(api.includes(`data-component-example="${name}"`));
 });
+
+
+test("static portal pages expose a named persistent Storybook route in every language", () => {
+  for (const locale of supportedLocales) {
+    for (const page of ["index", "06-inputs"] as const) {
+      const html = renderToStaticMarkup(createElement(App, { page, locale }));
+      const header = html.split("</header>", 1)[0];
+      assert.match(header, /<nav class="docs-storybook-nav" aria-label="[^"]+">/);
+      const entry = /<nav class="docs-storybook-nav"[^>]*>(.*?)<\/nav>/.exec(header)?.[1] ?? "";
+      assert.match(entry, /href="\/storybook\/"/);
+      assert.match(entry, />Storybook</);
+      assert.match(html, /data-docs-page=/);
+    }
+  }
+});

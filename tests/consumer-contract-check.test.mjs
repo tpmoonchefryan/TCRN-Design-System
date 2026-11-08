@@ -12,17 +12,19 @@ const producer = path.join(root, "apps/storybook/storybook-static");
 const indexPath = path.join(producer, "ai/index.json");
 const index = JSON.parse(fs.readFileSync(indexPath, "utf8"));
 const positive = `import { Button, Input } from "@tcrn/ui-react/approved";
-export function CustomerFilter() { return <form><Input name="query" aria-label="Customer" /><Button type="submit">Search</Button></form>; }`;
+export function CustomerFilter() { return <form className="customer-form-column"><Input name="query" aria-label="Customer" /><Button type="submit">Search</Button></form>; }`;
 
 function fixture(t, source = positive, components = ["Button", "Input"]) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "tcrn-consumer-contract-"));
   t.after(() => fs.rmSync(directory, { recursive: true }));
   fs.mkdirSync(path.join(directory, "src"));
   fs.writeFileSync(path.join(directory, "src/customer.tsx"), source);
+  // Synthetic host context, deliberately outside the DS token contract.
+  fs.writeFileSync(path.join(directory, "src/layout.css"), ':root{--customer-form-column:26rem}.customer-form-column{width:100%;max-inline-size:var(--customer-form-column)}');
   fs.writeFileSync(path.join(directory, "package.json"), JSON.stringify({ dependencies: index.identity.packageVersions }));
   fs.mkdirSync(path.join(directory, "node_modules/@tcrn"), { recursive: true });
   for (const name of ["ui-react", "ui-tokens", "ui-copy-state"]) fs.symlinkSync(path.join(root, "packages", name), path.join(directory, "node_modules/@tcrn", name));
-  const declaration = { schemaVersion: "tcrn.consumer-contract.v1", identity: index.identity, components, patterns: [], sourceRoots: ["src"] };
+  const declaration = { schemaVersion: "tcrn.consumer-contract.v1", identity: index.identity, components, patterns: [], sourceRoots: ["src"], fieldColumns: [{ className: "customer-form-column", source: "src/layout.css" }] };
   const declarationPath = path.join(directory, ".tcrn-ds.json");
   const write = () => fs.writeFileSync(declarationPath, JSON.stringify(declaration));
   write();
@@ -108,7 +110,7 @@ function savePins(pins: readonly string[]) { return fetch("/preferences/tms", {m
   for (const [label, source, substituted] of cases) {
     const input = fixture(t, source, ["ProductShell", "ShellPins"]);
     const closure = loadRuleClosure(indexPath, input.declaration);
-    const result = checkConsumerSources([path.join(input.directory, "src/customer.tsx")], input.declaration, closure);
+    const result = checkConsumerSources([path.join(input.directory, "src/customer.tsx"), path.join(input.directory, "src/layout.css")], input.declaration, closure, input.directory);
     if (substituted) {
       assert.equal(result.findings.length, 1, label);
       assert.match(result.findings[0], /SHELL_PINS_SUBSTITUTED$/, label);
@@ -261,5 +263,43 @@ export const Example = () => ${parent};`;
   for (const [parent, failure] of cases) {
     const input = fixture(t, body(parent));
     assert.equal(input.run().findings.some(item => item.includes("ACTION_PARENT_STRETCH")), failure, parent);
+  }
+});
+
+
+test("fill-field generation uses the selected host column and blocks the viewport-root regression", t => {
+  const source = `import { Select, DatePicker } from "@tcrn/ui-react/approved";
+export function Fields() { return <div className="customer-form-column"><Select aria-label="Status" options={[]} /><DatePicker aria-label="Date" /></div>; }`;
+  const input = fixture(t, source, ["Select", "DatePicker"]);
+  const positive = input.run();
+  assert.equal(positive.ok, true, JSON.stringify(positive.findings));
+  fs.writeFileSync(path.join(input.directory, "src/customer.tsx"), source.replace(' className="customer-form-column"', ' style={{display:"grid"}}'));
+  const regression = input.run();
+  assert.equal(regression.ok, false);
+  assert.equal(regression.findings.filter(finding => finding.includes("HOST_FIELD_COLUMN_MISSING")).length, 2);
+  fs.writeFileSync(path.join(input.directory, "src/customer.tsx"), source);
+  input.declaration.fieldColumns = [];
+  input.write();
+  assert.ok(input.run().findings.some(finding => finding.includes("HOST_FIELD_COLUMN_MISSING")));
+  input.declaration.fieldColumns = [{ className: "customer-form-column", source: "src/layout.css" }];
+  input.write();
+  fs.writeFileSync(path.join(input.directory, "src/layout.css"), '.customer-form-column{width:100%}');
+  assert.ok(input.run().findings.some(finding => finding.includes("HOST_FIELD_COLUMN_BOUND_UNRESOLVED")));
+});
+
+test("generated field usage and checker requirements share the actual AI closure", () => {
+  const closure = loadRuleClosure(indexPath, { schemaVersion: "tcrn.consumer-contract.v1", identity: index.identity, components: ["Select", "DatePicker"], patterns: [] });
+  assert.ok(closure.rules.has("pattern/component-layout"));
+  for (const name of ["Select", "DatePicker"]) {
+    const rule = closure.rules.get(`component/${name}`);
+    assert.equal(rule.content.layout.parent, "host-form-column");
+    assert.equal(rule.content.example.hostLayout.owner, "target consumer project");
+    assert.match(rule.content.example.usage, /formColumnClassName: string/);
+    assert.match(rule.content.example.usage, /HOST_FORM_COLUMN_DECISION_REQUIRED/);
+    assert.doesNotMatch(rule.content.example.usage, /maxInlineSize:|maxWidth:|28rem["']/);
+    for (const checker of rule.content.example.hostLayout.checks) {
+      const bytes = fs.readFileSync(path.join(root, checker.path));
+      assert.equal(createHash("sha256").update(bytes).digest("hex"), checker.sha256);
+    }
   }
 });
