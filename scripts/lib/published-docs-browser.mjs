@@ -311,11 +311,17 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
      const branch=branches.first();await branch.hover();
      if(await branch.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: API branch did not open on hover`);
      const submenu=wrapped.locator('.docs-topics__submenu-wrap');await submenu.waitFor({state:'visible'});
-     const apiLinks=submenu.locator('a.docs-topic-menu__row'),apiNames=Object.keys(formal??formalApiContracts(readApprovedSource()));
-     const expectedApiHrefs=[headerHref({base,entry,locale,managerUi,managerPath},'api'),...apiNames.map(name=>headerHref({base,entry,locale,managerUi,managerPath},'api',`api-${name}`))];
+     const contracts=formal??formalApiContracts(readApprovedSource());
+     const boards=Object.keys(APPROVED_BOARD_IDS).filter(board=>Object.values(contracts).some(api=>api.board===board));
+     const apiNames=boards.flatMap(board=>Object.keys(contracts).filter(name=>contracts[name].board===board));
+     const apiLinks=submenu.locator('a.docs-topic-menu__row');
+     const expectedApiHrefs=[headerHref({base,entry,locale,managerUi,managerPath},'api'),...apiNames.map(name=>headerHref({base,entry,locale,managerUi,managerPath},'api',`api-${name}`)),headerHref({base,entry,locale,managerUi,managerPath},'api','adopted-support')];
      const actualApiHrefs=await apiLinks.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
      if(JSON.stringify(actualApiHrefs)!==JSON.stringify(expectedApiHrefs))issues.push(`${entry}/${locale}: API overview/anchor routes differ`);
-     if(await apiLinks.count()!==29)issues.push(`${entry}/${locale}: API branch must hold one overview and 28 real anchors`);
+     if(await apiLinks.count()!==30)issues.push(`${entry}/${locale}: API branch must hold one overview, 28 real anchors and adopted support`);
+     const families=await submenu.locator('.docs-topic-menu__group').evaluateAll(groups=>groups.map(group=>({label:group.getAttribute('aria-label'),links:[...group.querySelectorAll('a')].map(a=>a.getAttribute('href'))})));
+     if(families.length!==boards.length||families.some((family,index)=>!family.label||JSON.stringify(family.links)!==JSON.stringify(
+      Object.keys(contracts).filter(name=>contracts[name].board===boards[index]).map(name=>headerHref({base,entry,locale,managerUi,managerPath},'api',`api-${name}`)))))issues.push(`${entry}/${locale}: API family membership differs from the formal boards`);
      await apiLinks.first().hover();
      if(!(await submenu.isVisible())||await trigger.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: pointer handoff into level two closed the menu`);
      if(negative){
@@ -484,7 +490,7 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
   const layer=shell.locator('[data-docs-topic-layer="components"]');
   const panel=layer.locator(':scope > .docs-topic-menu'),branch=panel.locator('button.docs-topic-menu__row');
   const submenu=layer.locator('.docs-topics__submenu-wrap'),submenuPanel=submenu.locator('.docs-topic-menu');
-  const list=submenuPanel.locator('ul'),overview=list.locator('a').first(),firstAnchor=list.locator('a').nth(1),last=list.locator('a').last();
+  const list=submenuPanel.locator(':scope > .docs-topic-menu__list'),overview=list.locator('a').first(),firstAnchor=list.locator('a').nth(1),last=list.locator('a').last();
   const external=shell.locator('.docs-preferences .tcrn-shell-theme-toggle'),paper=shell.locator('.docs-paper');
   const outside=()=>paper.hover({position:{x:20,y:20}});
   const focused=locator=>locator.evaluate(el=>el===el.ownerDocument.activeElement);
@@ -607,12 +613,18 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
    await page.setViewportSize({...shortViewport,height:900});
    const overlap=await submenuPanel.evaluate((menu,mutate)=>{
     const doc=menu.ownerDocument;
-    const card=doc.querySelector('.portal-card[data-portal-card="brand"]');
-    const chapter=card?.querySelector('.portal-card__chapters a');
-    if(!chapter)return null;
-    const chip=chapter.getBoundingClientRect(),visible=menu.querySelector('ul').getBoundingClientRect();
-    for(const link of menu.querySelectorAll('a')){
-     const row=link.getBoundingClientRect();
+    const scroller=menu.querySelector(':scope > .docs-topic-menu__list');
+    const visible=scroller.getBoundingClientRect();
+    for(const chapter of doc.querySelectorAll('.portal-card__chapters a')){
+     const card=chapter.closest('.portal-card'),chip=chapter.getBoundingClientRect();
+     for(const link of menu.querySelectorAll('a')){
+     let row=link.getBoundingClientRect();
+     if(Math.min(chip.right,visible.right,row.right)-Math.max(chip.left,visible.left,row.left)>=4){
+      // Family headings can occupy the overlap initially. Scroll the real list
+      // until an actual destination, rather than a heading, crosses the card.
+      scroller.scrollTop+=row.top-chip.top;
+      row=link.getBoundingClientRect();
+     }
      const left=Math.max(chip.left,visible.left,row.left),right=Math.min(chip.right,visible.right,row.right);
      const top=Math.max(chip.top,visible.top,row.top),bottom=Math.min(chip.bottom,visible.bottom,row.bottom);
      if(right-left<4||bottom-top<4)continue;
@@ -629,6 +641,7 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
       }
      }
      return {x,y,chapter:chapter.getAttribute('href'),menuLink:link.getAttribute('href'),hit,mutationDetected};
+     }
     }
     return null;
    },negative);
@@ -657,12 +670,15 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
    'open cascade did not adapt and scroll at regular desktop height');
   await page.setViewportSize(shortViewport);
   const resized=await reach();
-  const href=headerHref({base,entry,locale,managerUi,managerPath},'api','api-ShellIntro');
-  check(resized.viewport[1]===short.viewport[1]&&resized.href===href&&resized.label==='ShellIntro'&&reachable(resized),
-   'short Canvas did not restore the reachable same-language ShellIntro row after resize');
+  const supportHref=headerHref({base,entry,locale,managerUi,managerPath},'api','adopted-support');
+  check(resized.viewport[1]===short.viewport[1]&&resized.href===supportHref&&reachable(resized),
+   'short Canvas did not restore the reachable same-language final support row after resize');
   observations.push({kind:'topbar-last-row',entry,locale,menuGap,cascadeGap,short,regular,resized});
   if(!reachable(resized))throw new Error('refusing to click an unreachable row');
-  const target=await last.boundingBox();
+  const href=headerHref({base,entry,locale,managerUi,managerPath},'api','api-ShellIntro');
+  const lastFormal=list.locator(`a[href="${href}"]`);
+  await lastFormal.scrollIntoViewIfNeeded();
+  const target=await lastFormal.boundingBox();
   await page.mouse.click(target.x+target.width/2,target.y+target.height/2);
   if(managerUi){
    await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`
@@ -690,6 +706,19 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
 
 // Exercise the existing ShellMenu primitive as a real 390px touch Sheet. The docs topbar is
 // intentionally hidden at this width; the complete category tree remains reachable here.
+async function readSheetApiRoutes(panel, formal) {
+ const boards=Object.keys(APPROVED_BOARD_IDS).filter(board=>Object.values(formal).some(api=>api.board===board));
+ const direct=await panel.locator('[data-shell-row][data-shell-level="3"]:visible').evaluateAll(rows=>rows.map(row=>row.getAttribute('href')));
+ const families=[];
+ for(const board of boards){
+  const trigger=panel.locator(`[data-shell-row][data-shell-level="3"][aria-controls$="-col-api-family-${board}"]`).first();
+  await trigger.tap();
+  const links=await panel.locator('[data-shell-row][data-shell-level="4"]:visible').evaluateAll(rows=>rows.map(row=>row.getAttribute('href')));
+  families.push({board,expanded:await trigger.getAttribute('aria-expanded')==='true',links});
+ }
+ return {direct,families,leaves:families.flatMap(family=>family.links)};
+}
+
 export async function exerciseDocsSheet(page,{base,locale,formal,negative=locale==='zh-CN'}={}){
  const issues=[],observations=[];
  const expected={
@@ -753,25 +782,26 @@ export async function exerciseDocsSheet(page,{base,locale,formal,negative=locale
   }
   await apiBranch.tap();
   if(await apiBranch.getAttribute('aria-expanded')!=='true')issues.push(`${locale}: touch did not open the API submenu`);
-  const apiLinks=state.panel.locator('[data-shell-row][data-shell-level="3"]:visible');
-  const apiNames=Object.keys(formal??formalApiContracts(readApprovedSource()));
-  const expectedApi=[`/${locale}/api.html`,...apiNames.map(name=>`/${locale}/api.html#api-${name}`)];
-  const apiHrefs=await apiLinks.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
-  if(JSON.stringify(apiHrefs)!==JSON.stringify(expectedApi))issues.push(`${locale}: Sheet API overview/anchor list differs from 28 real contracts`);
-  if(apiHrefs.length!==29)issues.push(`${locale}: Sheet API branch should expose overview plus 28 anchors`);
-  await apiLinks.first().tap();await page.waitForURL(`**/${locale}/api.html`);
+  const contracts=formal??formalApiContracts(readApprovedSource());
+  const routes=await readSheetApiRoutes(state.panel,contracts);
+  const expectedApi=routes.families.flatMap(family=>Object.keys(contracts).filter(name=>contracts[name].board===family.board).map(name=>`/${locale}/api.html#api-${name}`));
+  const expectedDirect=[`/${locale}/api.html`,...routes.families.map(()=>'#'),`/${locale}/api.html#adopted-support`];
+  if(JSON.stringify(routes.leaves)!==JSON.stringify(expectedApi)||JSON.stringify(routes.direct)!==JSON.stringify(expectedDirect)||routes.families.some(family=>!family.expanded))issues.push(`${locale}: Sheet API family routes differ from 28 real contracts`);
+  if(routes.leaves.length!==28)issues.push(`${locale}: Sheet API families should expose all 28 anchors`);
+  await state.panel.locator(`[data-shell-row][data-shell-level="3"][href="/${locale}/api.html"]`).first().tap();await page.waitForURL(`**/${locale}/api.html`);
   await page.locator('[data-approved-api]').first().waitFor({state:'visible'});
   if(await page.locator('[data-approved-api]').count()!==28)issues.push(`${locale}: API overview did not render the 28 approved contracts`);
   state=await openMenu();await groupRow(state.panel,'components').tap();
   const branch=state.panel.locator('[data-shell-row][data-shell-level="2"][aria-controls$="-col-api-branch"]').first();await branch.tap();
-  const heading=state.panel.locator(`[data-shell-row][data-shell-level="3"][href="/${locale}/api.html#api-Heading"]`).first();
+  await state.panel.locator(`[data-shell-row][data-shell-level="3"][aria-controls$="-col-api-family-${contracts.Heading.board}"]`).first().tap();
+  const heading=state.panel.locator(`[data-shell-row][data-shell-level="4"][href="/${locale}/api.html#api-Heading"]`).first();
   if(!(await heading.isVisible()))issues.push(`${locale}: Sheet Heading anchor is not reachable`);
   await heading.tap();await page.waitForURL(`**/${locale}/api.html#api-Heading`);
   if(!await page.locator('#api-Heading').isVisible())issues.push(`${locale}: Sheet Heading click did not reach the real API anchor`);
   state=await openMenu();
   const retiredSource=await readRetiredSourceMenu(state.panel,locale);
   if(retiredSource.links||retiredSource.groups||retiredSource.results.some(Boolean))issues.push(`${locale}: retired source appeared in the Sheet`);
-  observations.push({kind:'docs-sheet',locale,width:390,touch:true,topics:pages,groupHome:true,search:true,apiLinks:apiHrefs.length,anchor:'#api-Heading',retiredSource});
+  observations.push({kind:'docs-sheet',locale,width:390,touch:true,topics:pages,groupHome:true,search:true,apiRoutes:routes,anchor:'#api-Heading',retiredSource});
  }catch(error){issues.push(`${locale}: Sheet proof incomplete: ${error.message}`);}
  return {issues,observations};
 }
@@ -815,7 +845,12 @@ export async function exerciseManagerNarrowSheet(page,{base,locale,formal,negati
    observations.push({kind:'negative-manager-touch-mutation',locale,detected:blocked});
   }
   await branch.tap();
-  const heading=panel().locator(`[data-shell-row][data-shell-level="3"][href="${managerMenuHref(managerPath,locale,'api','api-Heading')}"]`).first();
+  const contracts=formal??formalApiContracts(readApprovedSource()),routes=await readSheetApiRoutes(panel(),contracts);
+  const expectedLeaves=routes.families.flatMap(family=>Object.keys(contracts).filter(name=>contracts[name].board===family.board).map(name=>managerMenuHref(managerPath,locale,'api',`api-${name}`)));
+  const expectedDirect=[managerMenuHref(managerPath,locale,'api'),...routes.families.map(()=>'#'),managerMenuHref(managerPath,locale,'api','adopted-support')];
+  if(JSON.stringify(routes.leaves)!==JSON.stringify(expectedLeaves)||JSON.stringify(routes.direct)!==JSON.stringify(expectedDirect)||routes.families.some(family=>!family.expanded))issues.push(`${locale}: narrow Manager API family routes differ`);
+  await panel().locator(`[data-shell-row][data-shell-level="3"][aria-controls$="-col-api-family-${contracts.Heading.board}"]`).first().tap();
+  const heading=panel().locator(`[data-shell-row][data-shell-level="4"][href="${managerMenuHref(managerPath,locale,'api','api-Heading')}"]`).first();
   if(!(await heading.isVisible()))issues.push(`${locale}: narrow Manager API anchor is not reachable`);
   await heading.tap();await waitManagerRoute('api','api-Heading');
   await surface.locator(`.docs-shell[data-docs-page="api"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
@@ -827,7 +862,7 @@ export async function exerciseManagerNarrowSheet(page,{base,locale,formal,negati
   await surface.locator('.docs-shell > header [data-shell-brand]').first().tap();
   const retiredSource=await readRetiredSourceMenu(panel(),locale);
   if(retiredSource.links||retiredSource.groups||retiredSource.results.some(Boolean))issues.push(`${locale}: retired source appeared in the Manager Sheet`);
-  observations.push({kind:'manager-narrow-sheet',locale,iframeWidth:frameWidth,touch:true,apiAnchor:'#api-Heading',retiredSource});
+  observations.push({kind:'manager-narrow-sheet',locale,iframeWidth:frameWidth,touch:true,apiAnchor:'#api-Heading',apiRoutes:routes,retiredSource});
  }catch(error){issues.push(`${locale}: Manager narrow Sheet proof incomplete: ${error.message}`);}
  return {issues,observations};
 }

@@ -161,6 +161,20 @@ test("formal component states use the same executable examples in portal and CSF
   for (const name of Object.keys(componentStates)) assert.ok(api.includes(`data-component-example="${name}"`));
 });
 
+test("Select and DatePicker errors keep their field copy and accessible association in every language", async () => {
+  const { ComponentExample } = await import("./component-examples.js");
+  const { docsCopy } = await import("./locales.js");
+  for (const locale of supportedLocales) for (const name of ["Select", "DatePicker"] as const) {
+    const html = renderToStaticMarkup(createElement(ComponentExample, { name, state: "error", locale }));
+    const errorId = /aria-describedby="([^"]+)"/.exec(html)?.[1];
+    assert.ok(errorId, `${locale}/${name} describes its error`);
+    assert.ok(html.includes(`id="${errorId}" class="tcrn-doc-error"`));
+    assert.ok(html.includes('aria-invalid="true"'));
+    assert.ok(html.includes(name === "DatePicker" ? docsCopy(locale).dateError : docsCopy(locale).selectionError));
+    assert.ok(!html.includes(docsCopy(locale).error));
+  }
+});
+
 
 test("static portal pages expose a named persistent Storybook route in every language", () => {
   for (const locale of supportedLocales) {

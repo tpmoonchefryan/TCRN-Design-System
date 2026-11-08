@@ -671,8 +671,8 @@ async function readDocumentColumn(content) {
    geometry: [...root.querySelectorAll('[data-doc-shell-geometry] :is(h2, .tcrn-doc-prose, p)')],
    headings: [...root.querySelectorAll('[data-doc-shell-theme] > h2, [data-doc-shell-theme] > [data-formal-section] > h3')],
    prose: [...root.querySelectorAll('[data-formal-intro] > :is(h2, p), :scope > p')],
-   controls: [...root.querySelectorAll('.tcrn-doc-shell-example:not([data-phone]) > .tcrn-doc-shell-tools')],
-   desktop: [...root.querySelectorAll('.tcrn-doc-shell-frame:not([data-phone])')],
+   controls: root.matches('[data-approved-board]') ? [...root.querySelectorAll('.tcrn-doc-shell-example:not([data-phone]) > .tcrn-doc-shell-tools')] : [],
+   desktop: root.matches('[data-approved-board]') ? [...root.querySelectorAll('.tcrn-doc-shell-frame:not([data-phone])')] : [],
   };
   const tables = [...root.querySelectorAll('table:not(.tcrn-doc-roster-table)')];
   const examples = [...body.querySelectorAll('[data-api-example]')];
@@ -691,6 +691,8 @@ async function readDocumentColumn(content) {
    tables: tables.map(edges),
    examples: examples.map(edges),
    details: details.map(edges),
+   embeddedShells: [...root.querySelectorAll('[data-shared-component-example] .tcrn-doc-shell-tools, [data-shared-component-example] .tcrn-doc-shell-frame')]
+    .filter(el => el.checkVisibility()).map(el => ({box: edges(el), owner: edges(el.closest('.tcrn-doc-api'))})),
    overflow: Math.max(main.scrollWidth - main.clientWidth, doc.documentElement.scrollWidth - doc.documentElement.clientWidth),
   };
  });
@@ -718,6 +720,9 @@ function assertDocumentColumn(reading, width) {
  for (const [start, end] of [...reading.tables, ...reading.examples, ...reading.details]) {
   assert.ok(start >= left - 0.6 && end <= right + 0.6, 'tables and API content stay inside the column');
  }
+ for (const {box: [start, end], owner: [ownerStart, ownerEnd]} of reading.embeddedShells) {
+  assert.ok(start >= ownerStart - 0.6 && end <= ownerEnd + 0.6, 'embedded Shell examples stay inside their API section');
+ }
  assert.ok(reading.titleLines.every(([start, end]) => start >= left - 1 && end <= reading.title[1] + 1), 'title lines fit without clipping');
  assert.ok(reading.overflow <= 1, 'no document-wide horizontal overflow');
 }
@@ -732,7 +737,7 @@ test('responsive document columns align every board and API page through resize'
     const widths = board.startsWith('07') ? [1462, 1280, 1200, 1120, 1024, 751, 750, 390] : [1462, 1024, 390];
     for (const width of widths) {
      await resizeContentPage(page, entry, width);
-     if (board === 'api' && width === 390) await content.locator('#api-ProductShell > details:not([data-shared-component-example]) > summary').click();
+     if (board === 'api' && width === 390) await content.locator('#api-ProductShell > details:has(> [data-api-formal]) > summary').click();
      const reading = await readDocumentColumn(content);
      assertDocumentColumn(reading, width);
      if (board === '01-tokens') assert.equal(reading.tables.length, 1);
@@ -746,12 +751,30 @@ test('responsive document columns align every board and API page through resize'
     }
     if (['01-tokens', '07a-shell-upper', 'api'].includes(board)) {
      await resizeContentPage(page, entry, 1462);
+     if (board === 'api') {
+      await content.locator('#api-ShellMenu > details[data-shared-component-example] > summary').click();
+      const embedded = await readDocumentColumn(content);
+      assertDocumentColumn(embedded, 1462);
+      assert.ok(embedded.embeddedShells.length > 0, 'measure the visible embedded Shell examples against their API owner');
+      await content.locator('#api-ShellMenu > details[data-shared-component-example] > summary').click();
+     }
      await content.evaluate(el => el.closest('.docs-frame').style.setProperty('--docs-column-cap', '1040px'));
      const capped = await readDocumentColumn(content);
      assert.throws(() => assertDocumentColumn(capped, 1462), /available column width/);
      t.diagnostic(JSON.stringify({entry, board, oldInnerCap: capped.column, header: capped.groups.header[0]}));
      await content.evaluate(el => el.closest('.docs-frame').style.removeProperty('--docs-column-cap'));
      assertDocumentColumn(await readDocumentColumn(content), 1462);
+     if (board === '07a-shell-upper') {
+      const tools = content.locator('.tcrn-doc-shell-example:not([data-phone]) > .tcrn-doc-shell-tools').first();
+      await tools.evaluate(el => el.style.marginInline = '13px');
+      try {
+       const insetTools = await readDocumentColumn(content);
+       assert.throws(() => assertDocumentColumn(insetTools, 1462), /common column edges for controls/);
+       t.diagnostic(JSON.stringify({entry, board, kind: 'misaligned-board-controls-negative', column: insetTools.column, controls: insetTools.groups.controls[0]}));
+      } finally {
+       await tools.evaluate(el => el.style.removeProperty('margin-inline'));
+      }
+     }
     }
    }
    for (const board of ['07a-shell-upper', '07b-shell-lower']) {
@@ -835,8 +858,9 @@ async function readActionPacking(content) {
  });
 }
 
-function assertActionPacking(reading, width) {
+function assertActionPacking(reading, width, natural) {
  const close = (a, b) => Math.abs(a - b) <= 0.6;
+ const naturalMembers = new Set(natural?.groups.flatMap(group => group.buttons) ?? []);
  assert.equal(reading.viewport, width, 'measure the actual content viewport, including the native Manager iframe');
  assert.deepEqual(reading.scrollLeft, [0, 0], 'inspection needs no horizontal document scroll');
  if (width === 390) assert.deepEqual([reading.column.left, reading.column.right], [29, 361]);
@@ -845,6 +869,8 @@ function assertActionPacking(reading, width) {
   const {box, name, index} = control;
   assert.ok(box.width > 0 && box.height > 0, `actual action ${index}/${name} is rendered`);
   assert.equal(box.height, {sm: 28, md: 32, lg: 40}[control.size], `actual action ${index}/${name} retains its hit height`);
+  if (naturalMembers.has(index)) assert.ok(close(box.width, natural.controls[index].box.width),
+   `actual action ${index}/${name} lost its natural width: ${box.width} vs ${natural.controls[index].box.width}`);
   assert.ok(box.left >= reading.column.left - 0.6 && box.right <= reading.column.right + 0.6,
    `actual action ${index}/${name} escapes column: ${box.left}..${box.right} vs ${reading.column.left}..${reading.column.right}`);
   for (const id of control.clipIds) {
@@ -964,7 +990,7 @@ test('05 natural-size action descendants fit all five locales in static, Canvas 
     for (const width of locale === 'ja' ? [1024, 942, 808, 751, 750, 390] : [390]) {
      await resizeContentPage(page, entry, width);
      const reading = await readActionPacking(content);
-     assertActionPacking(reading, width);
+     assertActionPacking(reading, width, desktop);
      assertActionInsets(reading, width);
      assert.deepEqual(actionGroupGeometry(reading), actionGroupGeometry(desktop), 'labels and every natural button dimension survive reflow');
      t.diagnostic(JSON.stringify({entry, locale, kind: 'corrected', reading,
@@ -984,7 +1010,7 @@ test('05 natural-size action descendants fit all five locales in static, Canvas 
     });
     try {
      const zero = await readActionPacking(content);
-     assertActionPacking(zero, 390);
+     assertActionPacking(zero, 390, desktop);
      assert.throws(() => assertActionInsets(zero, 390), /surface.*insets/);
      assert.ok(zero.surfaces.every(surface => surface.padding.every(value => value === '0px') &&
       surface.headings[0].box.left === surface.box.left), 'negative reproduces headings on both visible surface edges');
@@ -1007,17 +1033,27 @@ test('05 natural-size action descendants fit all five locales in static, Canvas 
     });
     try {
      const old = await readActionPacking(content);
-     assert.throws(() => assertActionPacking(old, 390), /actual action.*(column|clipping|bar)/);
-     if (locale === 'ja') {
-      for (const group of old.groups.filter(g => g.size === 'lg' && g.count === 5)) {
-       const last = old.controls[group.buttons.at(-1)];
-       assert.deepEqual([group.box.left, group.box.width, last.box.left, last.box.right], [75, 240, 363.46875, 403.46875]);
-       const nearest = old.clips[last.clipIds[0]];
-       assert.equal(nearest.right, 377);
-       assert.equal(nearest.right - last.box.left, 13.53125, 'negative case reproduces the reported partial hit area');
-      }
-     }
+     assert.throws(() => assertActionPacking(old, 390, desktop), /actual action.*natural width/);
+     assert.ok(old.groups.some(group => group.buttons.some(index => old.controls[index].box.width < desktop.controls[index].box.width - 0.6)),
+      'the old nested width actually compresses native controls');
      t.diagnostic(JSON.stringify({entry, locale, kind: 'old-nested-packing-negative', reading: old}));
+     const groupStyles = await content.locator('.tcrn-button-group').evaluateAll(groups => groups.map(group => {
+      const style = group.getAttribute('style');
+      group.style.minInlineSize = 'max-content';
+      return style;
+     }));
+     try {
+      const clipped = await readActionPacking(content);
+      assert.throws(() => assertActionPacking(clipped, 390), /actual action.*(column|clipping|bar)/);
+      assert.ok(clipped.controls.some(control => control.box.right > clipped.column.right + 0.6),
+       'natural-size controls actually escape the old nested column');
+      if (locale === 'ja') assert.ok(clipped.controls.some(control => control.clipIds.some(id => control.box.right > clipped.clips[id].right + 0.6)),
+       'Japanese natural-size controls reproduce the partial hit area beyond a clipping ancestor');
+      t.diagnostic(JSON.stringify({entry, locale, kind: 'old-nested-clipping-negative', reading: clipped}));
+     } finally {
+      await content.locator('.tcrn-button-group').evaluateAll((groups, styles) => groups.forEach((group, index) =>
+       styles[index] === null ? group.removeAttribute('style') : group.setAttribute('style', styles[index])), groupStyles);
+     }
     } finally {
      await content.evaluate((root, styles) => {
       const elements = [...root.querySelectorAll(':scope > .tcrn-doc-themes, :scope > .tcrn-doc-themes > .tcrn-doc-pane, :scope > .tcrn-doc-themes > .tcrn-doc-pane > .tcrn-doc-paper')];
@@ -1025,7 +1061,7 @@ test('05 natural-size action descendants fit all five locales in static, Canvas 
      }, originalStyles);
     }
     const restored = await readActionPacking(content);
-    assertActionPacking(restored, 390);
+    assertActionPacking(restored, 390, desktop);
     assertActionInsets(restored, 390);
    }
   } finally { await page.close(); }

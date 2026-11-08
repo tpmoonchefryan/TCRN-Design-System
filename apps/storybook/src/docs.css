@@ -366,6 +366,21 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   padding: 0;
 }
 
+.docs-topic-menu__group {
+  display: grid;
+  gap: var(--tcrn-space-0h);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.docs-topic-menu__group-label {
+  display: block;
+  padding: var(--tcrn-space-2) var(--tcrn-space-2h) var(--tcrn-space-1);
+  color: var(--tcrn-color-ink-3);
+  font-size: var(--tcrn-type-size-caption);
+}
+
 .docs-topic-menu__row {
   display: flex;
   align-items: center;

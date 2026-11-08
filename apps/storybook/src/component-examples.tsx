@@ -193,7 +193,7 @@ export function ComponentExample({ name, state = "default", locale = "en", inter
         {example()}
         <Button type="submit">{c.save}</Button>
       </form> : example()}
-      {invalid && <p id={`${id}-error`} className="tcrn-doc-error">{c.error}</p>}
+      {invalid && <p id={`${id}-error`} className="tcrn-doc-error">{name === "DatePicker" ? c.dateError : name === "Select" ? c.selectionError : c.error}</p>}
       {feedback !== null && <output id={`${id}-result`} data-example-result="" aria-live="polite">{feedback}</output>}
     </div>
   </>;

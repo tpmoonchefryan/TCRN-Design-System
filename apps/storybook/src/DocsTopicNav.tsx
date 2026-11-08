@@ -290,7 +290,7 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
       />
       {categories.filter(category => category.items.length > 0).map(category => {
         const expanded = category.id === open;
-        const branch = category.items.find(item => item.children?.length);
+        const branch = category.items.find(item => item.id === openBranch && item.children?.length);
         const submenuExpanded = expanded && branch?.id === openBranch;
         return (
           <Fragment key={category.id}>
@@ -330,9 +330,14 @@ export function DocsTopicNav({ home, label, categories, page, selectedTopic, inM
                   <ul className="docs-topic-menu__list">
                     {branch?.children?.map(item => (
                       <li key={item.id} className="docs-topic-menu__item">
-                        <a className="docs-topic-menu__row" href={item.href} aria-current={item.id === page ? "page" : undefined}>
-                          <span className="docs-topic-menu__label" title={item.label}>{item.label}</span>
-                        </a>
+                        {item.children?.length ? <>
+                          <span className="docs-topic-menu__group-label">{item.label}</span>
+                          <ul className="docs-topic-menu__group" aria-label={item.label}>
+                            {item.children.map(child => <li key={child.id} className="docs-topic-menu__item">
+                              {row(category.id, child, child.id === page)}
+                            </li>)}
+                          </ul>
+                        </> : row(category.id, item, item.id === page)}
                       </li>
                     ))}
                   </ul>

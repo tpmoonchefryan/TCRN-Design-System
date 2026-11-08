@@ -322,8 +322,12 @@ test('docs cascades use actual row collision and keep real coarse-pointer contro
     await pinnedBranch.hover();
     const pinnedLayer = shell.locator('[data-docs-topic-layer="api-branch"]');
     await expect(pinnedBranch).toHaveAttribute('aria-expanded', 'true');
-    assert.equal(await pinnedLayer.locator('a').count(), 29);
-    await pinnedLayer.locator('a').nth(1).click();
+    assert.equal(await pinnedLayer.locator(':scope > .docs-topic-menu a').count(), 2, 'overview and adopted support keep their routes');
+    const family = pinnedLayer.locator(':scope > .docs-topic-menu button.docs-topic-menu__row').first();
+    await family.hover();
+    const familyMenu = pinnedLayer.locator('.docs-topics__submenu-wrap');
+    await expect(familyMenu).toBeVisible();
+    await familyMenu.locator('a[href="/en/api.html#api-Heading"]').click();
     const apiPage = await ready(page, 'static', 'en', 'api');
     assert.equal(new URL(page.url()).hash, '#api-Heading');
     assert.ok((await saved(apiPage)).pins.includes('api-branch'));
