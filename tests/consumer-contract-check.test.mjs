@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
-import { checkConsumerContract, loadRuleClosure } from "../scripts/consumer-contract-check.mjs";
+import { checkConsumerContract, checkConsumerSources, loadRuleClosure } from "../scripts/consumer-contract-check.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const producer = path.join(root, "apps/storybook/storybook-static");
@@ -76,6 +76,45 @@ test("same normal checker rejects actual token, family, style and adapter violat
     const result = input.run();
     assert.equal(result.ok, false);
     assert.match(result.findings.join("\n"), failure);
+  }
+});
+
+test("published ShellPins markers reject native imitations without banning business navigation or formal aliases", t => {
+  const shell = child => `import { ProductShell as Shell, ShellPins as Pins, useProductShellController as useShell } from "@tcrn/ui-react/approved";
+export function CustomerShell() {
+  const controller = useShell({requestPreferences:{pins:[]},onPinsChange: savePins});
+  return <Shell productName="TMS" brandProductId="tms" navGroups={[]} pageHeader={{title:"Customers"}} {...controller.productShellControlProps}>${child}</Shell>;
+}
+function savePins(pins: readonly string[]) { return fetch("/preferences/tms", {method:"PUT",body:JSON.stringify({pins})}); }`;
+  const nativePins = '<nav className="tcrn-shell-pins" data-pins><a href="/">Fake shell pin</a></nav>';
+  const namespaceShell = `import * as DS from "@tcrn/ui-react/approved";
+export function CustomerShell() {
+  const controller = DS.useProductShellController({requestPreferences:{pins:[]},onPinsChange: savePins});
+  return <DS.ProductShell productName="TMS" brandProductId="tms" navGroups={[]} pageHeader={{title:"Customers"}} {...controller.productShellControlProps}><DS.ShellPins items={[]} data-pins /></DS.ProductShell>;
+}
+function savePins(pins: readonly string[]) { return fetch("/preferences/tms", {method:"PUT",body:JSON.stringify({pins})}); }`;
+  const cases = [
+    ["rendered child beside a lawful shell", shell(nativePins), true],
+    ["unused export in the selected source roots", shell("") + `\nexport const Bad = () => ${nativePins};`, true],
+    ["published class without the data marker", shell('<nav className="business tcrn-shell-pins"><a href="/">Fake shell pin</a></nav>'), true],
+    ["published data marker without a class", shell('<nav data-pins><a href="/">Fake shell pin</a></nav>'), true],
+    ["literal class in a JSX expression", shell('<nav className={"tcrn-shell-pins"}><a href="/">Fake shell pin</a></nav>'), true],
+    ["literal template class in a JSX expression", shell('<nav className={`tcrn-shell-pins`}><a href="/">Fake shell pin</a></nav>'), true],
+    ["ordinary semantic business navigation", shell('<nav className="customer-pins" data-pinned aria-label="Pinned customers"><a href="/">Customer</a></nav>'), false],
+    ["class names must match complete tokens", shell('<nav className="customer-tcrn-shell-pins tcrn-shell-pins-extra"><a href="/">Customer</a></nav>'), false],
+    ["formal named import alias", shell('<Pins items={[]} className="tcrn-shell-pins" data-pins data-ds-shell-pins />'), false],
+    ["formal namespace import", namespaceShell, false],
+  ];
+  for (const [label, source, substituted] of cases) {
+    const input = fixture(t, source, ["ProductShell", "ShellPins"]);
+    const closure = loadRuleClosure(indexPath, input.declaration);
+    const result = checkConsumerSources([path.join(input.directory, "src/customer.tsx")], input.declaration, closure);
+    if (substituted) {
+      assert.equal(result.findings.length, 1, label);
+      assert.match(result.findings[0], /SHELL_PINS_SUBSTITUTED$/, label);
+    } else {
+      assert.deepEqual(result.findings, [], label);
+    }
   }
 });
 

@@ -142,12 +142,12 @@ export function checkConsumerSources(files, declaration, closure) {
       }
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
         const component = imported(node.tagName);
+        const attributes = node.attributes.properties.filter(ts.isJsxAttribute);
+        const names = attributes.map(attribute => attribute.name.getText());
         if (component) {
           if (!formalNames.has(component)) report(file, `UNPUBLISHED_COMPONENT_FAMILY:${component}`);
           else usedComponents.add(component);
           if (!declaration.components.includes(component)) report(file, `TASK_RULE_NOT_SELECTED:${component}`);
-          const attributes = node.attributes.properties.filter(ts.isJsxAttribute);
-          const names = attributes.map(attribute => attribute.name.getText());
           if (component === "ProductShell") {
             shellInstances++;
             const direct = ["pinnedIds", "onPinnedChange", "onPinsReorder"].every(name => names.includes(name));
@@ -156,8 +156,14 @@ export function checkConsumerSources(files, declaration, closure) {
           }
           for (const attribute of attributes) if (attribute.name.getText() === "style") report(file, "COMPONENT_STYLE_OVERRIDE");
         }
-        const role = node.attributes.properties.find(attribute => ts.isJsxAttribute(attribute) && attribute.name.getText() === "data-ds-shell-pins");
-        if (role && component !== "ShellPins") report(file, "SHELL_PINS_SUBSTITUTED");
+        // Published root markers identify ShellPins even beside a valid ProductShell.
+        let classExpression = attributes.find(attribute => attribute.name.getText() === "className")?.initializer;
+        if (classExpression && ts.isJsxExpression(classExpression)) classExpression = classExpression.expression;
+        const pinsClass = classExpression && (ts.isStringLiteral(classExpression) || ts.isNoSubstitutionTemplateLiteral(classExpression))
+          && classExpression.text.split(/\s+/).includes("tcrn-shell-pins");
+        const nativePins = ts.isIdentifier(node.tagName) && /^[a-z]/.test(node.tagName.text)
+          && (names.includes("data-pins") || pinsClass);
+        if (component !== "ShellPins" && (names.includes("data-ds-shell-pins") || nativePins)) report(file, "SHELL_PINS_SUBSTITUTED");
       }
       if (ts.isPropertyAssignment(node) && designProperty.test(node.name.getText().replace(/["']/g, ""))) {
         const value = node.initializer.getText();
@@ -213,7 +219,7 @@ export function checkConsumerContract({ projectRoot, indexPath, declarationPath 
     ok: findings.length === 0, findings, identity: closure.index.identity,
     requiredRules: [...closure.rules.keys()], files: files.map(file => path.relative(root, file)),
     usedComponents: scanned.usedComponents,
-    limits: ["Selected source roots and explicit imports/JSX only; run TypeScript for types and indirect/dynamic wiring.", "Adapter observations are caller-supplied, not authenticated by this checker; retain raw HTTP/session evidence.", "This check does not measure visuals, keyboard/focus, business permissions, publication or future model behavior."],
+    limits: ["Selected source roots and explicit imports/JSX only; run TypeScript for types and indirect/dynamic wiring.", "Native ShellPins markers are explicit data-pins attributes and literal className tokens, including unused JSX; computed values, spreads and runtime reachability are not resolved.", "Adapter observations are caller-supplied, not authenticated by this checker; retain raw HTTP/session evidence.", "This check does not measure visuals, keyboard/focus, business permissions, publication or future model behavior."],
   };
 }
 
