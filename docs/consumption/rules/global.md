@@ -43,7 +43,9 @@ copy under D2. The support contract is `pattern/customer-list-boundary` with
 `pattern/product-locales`; these are adopted producer specifications awaiting
 formal publication. Keep the pinned v1 identity until the revised source is
 actually published. Preserve thresholds, the 28 formal entries and five built-in
-locales; local source preparation does not establish production delivery.
+locales; local source preparation does not establish production delivery. Owner deferred the actual revised source publication
+under `minutes:00710c786ec8423e5dce0186#D1-D2`. The pinned 03 icon panel labels
+and 07b menu width wording also retain the known v1 discrepancies.
 
 Invalidate the local rule cache when any package version, standard identity,
 source digest, shard digest or required dependency differs. Missing, malformed or

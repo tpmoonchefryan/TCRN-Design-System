@@ -110,7 +110,7 @@ test('V1 local resolution leaves adjacent source readers and graph guards as ind
 test('V5 both entry documents link formal font resources outside the generated component CSS',()=>{
  const sync=read(path.join(ROOT,'scripts/demo-styles-sync.mjs'),'utf8'),manager=read(path.join(ROOT,'apps/storybook/.storybook/main.ts'),'utf8'),writer=read(path.join(ROOT,'apps/storybook/src/build/write-static.tsx'),'utf8');
  assert.doesNotMatch(sync,/@import[^;]*fonts\/fonts\.css/);
- assert.match(manager,/previewHead:[\s\S]*<link rel="stylesheet" href="\/fonts\/fonts\.css">/);
+ assert.match(manager,/previewHead:[\s\S]*<link rel="stylesheet" href="\.\/fonts\/fonts\.css">/);
  assert.match(manager,/from:\s*"\.\.\/storybook-static\/fonts",\s*to:\s*"\/fonts"/);
  assert.match(writer,/<link rel="stylesheet" href="\/fonts\/fonts\.css">/);
 });
@@ -128,16 +128,20 @@ test('C01 evaluates each published shortcut context and retains the nominal06 th
  assert.ok(result.issues.some(i=>i.startsWith('K1 text contrast ')));
  assert.ok(!result.issues.some(i=>i.includes('roles differ')||i.includes('cannot certify unchanged06')),'a difference between published contexts is not an implementation failure');
  assert.deepEqual(result.sourceThresholdConflicts,['K1','S03-C01']);assert.deepEqual(result.sourceWordingAmbiguities,['K5']);
- assert.equal(result.proposalState,'selected directions only; visually unconfirmed and unapplied');
- assert.deepEqual(result.unconfirmedProposals,['K1','K5','S03-C01']);
+ assert.equal(result.proposalState,'owner-adopted; author source and producer remain unpublished');
+ assert.deepEqual(result.unconfirmedProposals,[]);
+ assert.deepEqual(result.adoptedAmendments.ids,['K1','K5','S03-C01']);
+ assert.equal(result.adoptedAmendments.minute,'minutes:6f3e0a9a1e07e3980867d82e#D1');
+ assert.equal(result.adoptedAmendments.sourcePublication,'deferred-by-owner; local-candidate-only');
  assert.equal(result.proposalMinutes.C01,'minutes:3d37207504a1caf4af9aca05#D1-D4');
  assert.equal(result.ownerClarificationMinute,'minutes:3244c7ac6adef4fc078d413e#D1-D4');
- assert.equal(result.publicationRequest,'withdrawn');assert.equal(result.ownerVisualAcceptance,'not-performed');
+ assert.equal(result.publicationRequest,'deferred-by-owner');assert.equal(result.ownerVisualAcceptance,'not-performed');
  assert.equal(result.pendingFormalAmendments,undefined);
  const metadata=JSON.parse(read(path.join(ROOT,'apps/storybook/storybook-static/ai-consumption-contract.json'),'utf8'));
  assert.equal(metadata.standardSource.sourceCommit,APPROVED_SITE.sourceCommit);
  assert.equal(metadata.implementationFidelity.formShortcut.role,'ink-3');assert.equal(metadata.implementationFidelity.shellShortcut.role,'ink-2');
- assert.equal(metadata.unconfirmedProposals.state,result.proposalState);assert.equal(metadata.publicationRequest,'withdrawn');
+ assert.equal(metadata.proposalState,result.proposalState);assert.equal(metadata.publicationRequest,'deferred-by-owner');
+ assert.deepEqual(metadata.adoptedAmendments,result.adoptedAmendments);
  assert.equal(metadata.ownerVisualAcceptance,'not-performed');assert.equal(metadata.formalAmendments,undefined);
  assert.ok(metadata.publishedStandardConflicts.some(i=>i.includes('3.876922 below4.5')));
 });

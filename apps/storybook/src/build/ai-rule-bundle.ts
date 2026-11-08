@@ -38,11 +38,14 @@ export function createAiRuleBundle(input: {
     if (!source || aiHash(source.content) !== source.sha256) throw new Error(`Required AI source missing or corrupt: ${file}`);
     return source;
   };
-  const patternFiles = {
-    "shell-preferences": "docs/consumption/patterns/shell-preferences-and-navigation.md",
-    "product-locales": "docs/consumption/patterns/product-shell-locales.md",
-    "customer-list-boundary": "docs/consumption/patterns/customer-list-support.md",
-  };
+  const patterns = [
+    {
+      id: "shell-preferences", file: "docs/consumption/patterns/shell-preferences-and-navigation.md",
+      required: ["tokens/shell", "assets/brand", "standard/07a-shell-upper", "pattern/product-locales"],
+    },
+    { id: "product-locales", file: "docs/consumption/patterns/product-shell-locales.md", required: [] },
+    { id: "customer-list-boundary", file: "docs/consumption/patterns/customer-list-support.md", required: ["pattern/product-locales"] },
+  ];
   const rules: Rule[] = [{
     id: "global", kind: "global", required: ["tokens/core", "assets/fonts", "standard/01-tokens"], optional: ["pattern/customer-list-boundary"],
     content: requireSource("docs/consumption/rules/global.md"),
@@ -72,9 +75,9 @@ export function createAiRuleBundle(input: {
     { id: "assets/icons", kind: "assets", required: ["standard/03-icons"], optional: [], content: { names: input.icons, viewBox: "0 0 20 20", strokeWidth: 1.25 } },
     { id: "assets/brand", kind: "assets", required: ["standard/04-brand"], optional: [], content: { products: input.products, variants: ["color", "mono", "tile-tint", "tile-deep"] } },
   );
-  for (const [id, file] of Object.entries(patternFiles)) rules.push({
+  for (const { id, file, required } of patterns) rules.push({
     id: `pattern/${id}`, kind: "pattern",
-    required: id === "shell-preferences" ? ["tokens/shell", "assets/brand", "standard/07a-shell-upper", "pattern/product-locales"] : [], optional: [], content: requireSource(file),
+    required, optional: [], content: requireSource(file),
   });
   for (const api of approvedApi) {
     const types = input.api.components[api.name];

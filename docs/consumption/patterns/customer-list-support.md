@@ -36,7 +36,8 @@ Owner decision above records adoption. Static sample buttons do not implement
 the business API or prove focus and confirmation behavior.
 
 The existing AI `pattern/customer-list-boundary` shard reads this file directly;
-`pattern/product-locales` reads the locale contract linked below. Keep those
+`pattern/product-locales` is a required dependency and reads the locale contract
+linked below. Keep those
 rules and the shared executable examples on the same producer build. Do not
 create another standard board or a separate copy of this contract. The real TMS
 route may consume the adopted support only after the matching formal producer

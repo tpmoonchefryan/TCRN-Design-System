@@ -8,6 +8,13 @@ complete dashboard settings and final candidate deployment are unverified.
 Historical Vercel success does not verify this build. No account or project is
 created by the scripts or workflow in this change.
 
+Owner adopted the visual amendments and customer-list/product-locale support in
+`minutes:6f3e0a9a1e07e3980867d82e#D1-D2`, then deferred the actual author-source
+publication in `minutes:00710c786ec8423e5dce0186#D1-D2`. The local A+C combination
+therefore retains published v1, including the seven contrast failures and original
+icon panel labels/menu width wording. It is an unpublished review candidate; the
+publication sequence below remains dependent on resuming source publication.
+
 ## Build one documentation output
 
 Run the repository's pnpm 10.12.1 on Node 24. Resolve the temporary trash directory

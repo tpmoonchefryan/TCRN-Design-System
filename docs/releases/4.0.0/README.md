@@ -7,7 +7,13 @@ families; root engineering and verification exports are supporting APIs. The Own
 adopted the K1/K5/S03-C01 revision and customer-list support candidate under
 `minutes:6f3e0a9a1e07e3980867d82e` D1–D2. Their new author source still requires
 actual publication and producer integration; this distribution preparation keeps
-the existing source pin and does not claim that integration has happened.
+the existing source pin. The A+C local combination is prepared, while final
+source refresh and production integration remain pending. Owner deferred the
+actual author-source publication under
+`minutes:00710c786ec8423e5dce0186#D1-D2`; retain the local candidate. The v1 pin
+still has its seven contrast failures, icon panel contrast labels and menu width
+wording. The adopted support preserves all six product locale ids through complete
+explicit copy and does not add a sixth DS built-in locale.
 The library declares React/ReactDOM `^18.3.0 || ^19.0.0`. The installation probe
 pins 18.3.1, 19.1.0 and the current TMS runtime baseline 19.2.6; it does not prove
 all versions in that range or adoption by the actual TMS application.
@@ -85,8 +91,10 @@ browser behavior, authentication, business permissions, visuals and publication
 require their corresponding checks. The source-level documentation under
 `docs/consumption/` describes those contracts; this packaged entry supersedes its
 source-checkout invocation. No local absolute producer path is a consumer contract.
-The separate [fixed new-session task](../../consumption/new-session-task.md)
-remains required and unperformed by the packaging author.
+The [fixed new-session task](../../consumption/new-session-task.md) defines a
+separate candidate exercise. Its prior recorded result and the later checker
+correction are retained in the INIT evidence; this build/pack flow does not rerun
+that session or establish real TMS adoption.
 
 ## Upgrade and rollback
 

@@ -138,6 +138,15 @@ test("required closure has no cycles, every formal component has source types an
   assert.equal(complete.ownerVisualAcceptance, "not-performed");
   assert.equal(complete.ownerVisualAcceptanceScope, "current package candidate");
   assert.equal(complete.priorOwnerVisualAcceptance.minute, "minutes:d8848542e0a64a1e26d07aaf");
+  assert.deepEqual(complete.unconfirmedProposals, []);
+  assert.equal(complete.adoptedAmendments.minute, "minutes:6f3e0a9a1e07e3980867d82e#D1");
+  assert.equal(complete.adoptedAmendments.publicationHoldMinute, "minutes:00710c786ec8423e5dce0186#D1-D2");
+  assert.equal(complete.publicationRequest, "deferred-by-owner");
+  assert.equal(complete.adoptedSupport.formalComponents, 28);
+  assert.equal(complete.adoptedSupport.builtInLocales, 5);
+  const customer = loadRuleClosure(indexPath, { schemaVersion: "tcrn.consumer-contract.v1", identity: index.identity, components: [], patterns: ["customer-list-boundary"] });
+  assert.ok(customer.rules.has("pattern/product-locales"));
+  assert.ok(customer.rules.has("global"));
   assert.deepEqual(complete.rules, [...index.rules].map(entry => JSON.parse(fs.readFileSync(path.join(producer, entry.path), "utf8"))).map(({ schemaVersion, identity, ...rule }) => rule));
 });
 

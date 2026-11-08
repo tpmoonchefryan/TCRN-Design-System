@@ -10,7 +10,7 @@ import { docsNavigation, type DocsPage } from "../portal-navigation.js";
 import { approvedSource, supportedLocales, type DocsLocale } from "../approved-source.js";
 import { approvedApi } from "../approved-api.js";
 import { docsCopy } from "../locales.js";
-import { createAiConsumptionContract } from "./ai-consumption-contract.js";
+import { createAiConsumptionContract, type AiReviewStatus } from "./ai-consumption-contract.js";
 import { createAiRuleBundle, aiHash, aiJson, type AiApiEntry } from "./ai-rule-bundle.js";
 import { designAuthority } from "./design-authority.js";
 
@@ -53,7 +53,11 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
     buildManifest: (options: { entryPath: string; componentNames: string[] }) => { ok: boolean; components: Record<string, AiApiEntry> };
   };
   const api = manifestBuilder.buildManifest({ entryPath: "packages/ui-react/src/approved.tsx", componentNames: approvedApi.map(api => api.name) });
-  const standardReader = await import(pathToFileURL(path.join(root, "scripts/lib/published-standard-proof.mjs")).href) as { formalApiContracts: () => Record<string, { formal: string; board: string; line: number }> };
+  const standardReader = await import(pathToFileURL(path.join(root, "scripts/lib/published-standard-proof.mjs")).href) as {
+    formalApiContracts: () => Record<string, { formal: string; board: string; line: number }>;
+    FORMAL_REVIEW_STATUS: AiReviewStatus;
+  };
+  const reviewStatus = standardReader.FORMAL_REVIEW_STATUS;
   const normative = standardReader.formalApiContracts();
   for (const contract of approvedApi) {
     const expected = normative[contract.name];
@@ -65,7 +69,7 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
     ...sourceFiles("packages/ui-copy-state/src"), ...sourceFiles("packages/ui-tokens/src"),
     ...sourceFiles("docs/consumption"), ...approvedSource.boards.map(board => `docs/design/approved-site-v1/src/boards/${board.slug}/index.dc.html`),
     "docs/design/approved-site-v1/source-manifest.json", "scripts/component-api-manifest.mjs",
-    "scripts/consumer-contract-check.mjs", "scripts/package-contract-manifest.mjs", "scripts/lib/published-style-closure.mjs",
+    "scripts/consumer-contract-check.mjs", "scripts/package-contract-manifest.mjs", "scripts/lib/published-style-closure.mjs", "scripts/lib/published-standard-proof.mjs",
     "packages/ui-react/src/approved.tsx", ...sourceFiles("packages/ui-react/src/verification"),
     ...["ui-react", "ui-tokens", "ui-copy-state"].map(name => `packages/${name}/package.json`),
     "packages/ui-tokens/src/index.ts", "packages/ui-tokens/src/gplus-tokens.generated.ts",
@@ -92,9 +96,9 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
   files.set("fonts/manifest.json", aiJson(fonts));
   for (const name of fonts.licenses) files.set(`licenses/${name}`, fs.readFileSync(path.join(root, "packages/ui-tokens/licenses", name)));
   for (const [file, bytes] of ai.files) files.set(file, bytes);
-  files.set("ai-consumption-contract.json", aiJson(createAiConsumptionContract(candidate, fonts.files, ai)));
-  files.set("design-authority.json", aiJson({ ...designAuthority, candidate, identity: ai.identity }));
-  files.set("llms.txt", `# TCRN Design System candidate ${candidate.version}\n\nStart: /ai/index.json\nVersioned index: /ai/${candidate.version}/index.json\nRead global and the transitive required closure for your task. Optional links are further reading. Full compatibility entry: /ai-consumption-contract.json.\nCandidate commit: ${candidate.commit}\nPublished standard: ${approvedSource.site.url}\nPublished Site version: ${approvedSource.site.versionNumber}\nPublished source commit: ${approvedSource.site.sourceCommit}\nPackage candidate publication: local only. The prior portal visual acceptance does not approve this revision. This build retains its published source pin; adopted author-source amendments still require publication and producer integration. Refresh on any identity or required shard change; missing sources fail.\nConsumer setup: docs/consumption/README.md in the matching source release.\n`);
+  files.set("ai-consumption-contract.json", aiJson(createAiConsumptionContract(candidate, fonts.files, ai, reviewStatus)));
+  files.set("design-authority.json", aiJson({ ...designAuthority, candidate, identity: ai.identity, adoptedAmendments: reviewStatus.adoptedAmendments, adoptedSupport: reviewStatus.adoptedSupport }));
+  files.set("llms.txt", `# TCRN Design System candidate ${candidate.version}\n\nStart: /ai/index.json\nVersioned index: /ai/${candidate.version}/index.json\nRead global and the transitive required closure for your task. Optional links are further reading. Full compatibility entry: /ai-consumption-contract.json.\nCandidate commit: ${candidate.commit}\nPublished standard: ${approvedSource.site.url}\nPublished Site version: ${approvedSource.site.versionNumber}\nPublished source commit: ${approvedSource.site.sourceCommit}\nPackage candidate publication: local only. Visual amendments are Owner-adopted under ${reviewStatus.adoptedAmendments.minute}; customer-list and product-locale support is adopted under ${reviewStatus.adoptedSupport.minute}. Author source ${reviewStatus.adoptedAmendments.authorSourceCommit} remains unpublished: ${reviewStatus.adoptedAmendments.publicationHoldMinute}. Published v1 retains its seven contrast failures and original icon panel labels/menu width wording. Final package visual acceptance and production delivery remain pending. Refresh on any identity or required shard change; missing sources fail.\nConsumer setup: docs/consumption/README.md in the matching source release.\n`);
   files.set("robots.txt", "User-agent: *\nAllow: /\n");
   const inventory = [...files].map(([name, bytes]) => ({ path: name, bytes: typeof bytes === "string" ? Buffer.byteLength(bytes) : bytes.length, sha256: aiHash(bytes) }));
   files.set("output-manifest.json", aiJson({ schemaVersion: "tcrn.storybook-output.v1", candidate, standardSource: approvedSource.site, identity: ai.identity, files: inventory }));

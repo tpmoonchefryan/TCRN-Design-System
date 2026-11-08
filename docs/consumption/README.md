@@ -3,6 +3,11 @@
 This source is a local 4.0.0 producer candidate. The pinned visual Site is v1.
 The package, documentation and AI index have separate publication facts. Do not
 point a production consumer at this candidate before its required producer delivery.
+Owner adopted the visual amendments and customer-list/product-locale support under
+`minutes:6f3e0a9a1e07e3980867d82e#D1-D2`. The revised author source and producer
+are unpublished; Owner deferred source publication under
+`minutes:00710c786ec8423e5dce0186#D1-D2`. The current v1 pin retains its seven
+contrast failures and original icon panel labels/menu width wording.
 
 Start with the producer artifact's `llms.txt` and `ai/index.json`. An offline copy
 must retain the `ai/` directory structure. The versioned alias is
@@ -49,8 +54,9 @@ identities, direct DS imports/JSX, registered token references, bare design valu
 component style overrides, shell callback wiring and supplied adapter observations.
 A nonzero exit means failure; unreadable/malformed rules never become empty success.
 Pin package versions exactly; run the consumer's TypeScript and browser checks too.
-C's packaging responsibility must include the checker and its runtime dependencies
-in the delivered source/tool artifact; no npm `bin` export is claimed here.
+The matching `@tcrn/ds-consumer-tools` archive supplies the normal installed
+`tcrn-ds-check` bin and its exact TypeScript dependency. See the matching
+[release guide](../releases/4.0.0/README.md) for verified archive installation.
 
 For shell consumption, retain the raw HTTP test commands and results producing
 `tcrn.shell-preference-evidence.v1`: authenticated synthetic scope, initial ordered pins, successful
@@ -70,5 +76,5 @@ Refresh by replacing index and required shards together from one producer build,
 reviewing the new identity and rerunning the checker and affected tests. Never mix
 old cached rules or change a version field to conceal stale content. See
 [the new-session task](new-session-task.md) for the separately required product
-validation. Its outcome is still pending; this implementation's self-tests are
-not a new-session result.
+validation. Its recorded candidate exercise and later checker correction are
+separate from this build; self-tests are not a new-session or real TMS result.

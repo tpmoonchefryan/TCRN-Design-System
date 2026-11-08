@@ -1,2 +1,2 @@
 import { approvedSource } from "../approved-source.js";
-export const designAuthority={standardSource:approvedSource.site,boards:approvedSource.boards,engineDesignAuthorityBinding:"unconfigured",sourcePublication:"succeeded",candidatePublication:"not-authorized",note:"The published source identity and this package candidate are separate. Package hashes do not certify source conformity."};
+export const designAuthority={standardSource:approvedSource.site,boards:approvedSource.boards,engineDesignAuthorityBinding:"unconfigured",sourcePublication:"succeeded",candidatePublication:"not-authorized",note:"Source publication succeeded only for the pinned v1. Adopted amendments and support remain unpublished; package hashes do not certify source conformity or final acceptance."};

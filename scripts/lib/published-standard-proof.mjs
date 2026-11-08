@@ -7,7 +7,32 @@ import { listFiles } from "./generated-output.mjs";
 
 export const OLD_MOTHER_SHA256="5f28f17c599c63a05a51c81be03f9ef7845299af1940ebe6aef61f7af47fc25b";
 export const OLD_MOTHER_GEOMETRY_SHA256="12704ec78903e1609d0bf0dcfbb833ad3a5f9d2a4827f823608fe9d27b2e2089";
-export const FORMAL_REVIEW_STATUS=Object.freeze({unconfirmedProposals:["K1","K5","S03-C01"],proposalState:"selected directions only; visually unconfirmed and unapplied",proposalMinutes:{K1K5:"minutes:876fc874ed2380b3daddb0aa#D1-D4",C01:"minutes:3d37207504a1caf4af9aca05#D1-D4"},ownerClarificationMinute:"minutes:3244c7ac6adef4fc078d413e#D1-D4",publicationRequest:"withdrawn",ownerVisualAcceptance:"not-performed"});
+export const FORMAL_REVIEW_STATUS = Object.freeze({
+  unconfirmedProposals: [],
+  proposalState: "owner-adopted; author source and producer remain unpublished",
+  proposalMinutes: {
+    K1K5: "minutes:876fc874ed2380b3daddb0aa#D1-D4",
+    C01: "minutes:3d37207504a1caf4af9aca05#D1-D4",
+  },
+  ownerClarificationMinute: "minutes:3244c7ac6adef4fc078d413e#D1-D4",
+  publicationRequest: "deferred-by-owner",
+  ownerVisualAcceptance: "not-performed",
+  adoptedAmendments: {
+    ids: ["K1", "K5", "S03-C01"],
+    minute: "minutes:6f3e0a9a1e07e3980867d82e#D1",
+    authorSourceCommit: "e76b7272d98c0359a57c42d49bf70d64e5b4c2ad",
+    sourcePublication: "deferred-by-owner; local-candidate-only",
+    publicationHoldMinute: "minutes:00710c786ec8423e5dce0186#D1-D2",
+  },
+  adoptedSupport: {
+    minute: "minutes:6f3e0a9a1e07e3980867d82e#D2",
+    state: "owner-adopted; producer-unpublished",
+    patterns: ["pattern/customer-list-boundary", "pattern/product-locales"],
+    formalComponents: 28,
+    builtInLocales: 5,
+    productLocales: ["en", "zh_HANS", "zh_HANT", "ja", "ko", "fr"],
+  },
+});
 export const LOCALES=["zh-CN","en","ja","ko","fr"];
 const publishedApiBoards={Heading:"02-typography",Text:"02-typography",Highlight:"02-typography",Icon:"03-icons",ProductLogo:"04-brand",ProductLockup:"04-brand",Button:"05-actions",IconButton:"05-actions",LinkButton:"05-actions",ClipboardCopyButton:"05-actions",ButtonGroup:"05-actions",Input:"06-inputs",Textarea:"06-inputs",SearchInput:"06-inputs",SuggestInput:"06-inputs",Select:"06-inputs",MultiSelect:"06-inputs",NumberInput:"06-inputs",DatePicker:"06-inputs",Checkbox:"06-inputs",RadioGroup:"06-inputs",Switch:"06-inputs",ProductShell:"07b-shell-lower",ShellBrandButton:"07a-shell-upper",ShellMenu:"07b-shell-lower",ShellPins:"07b-shell-lower",ShellDropdown:"07b-shell-lower",ShellIntro:"07a-shell-upper"};
 export const APPROVED_API_BOARDS=Object.freeze(publishedApiBoards);
