@@ -27,7 +27,7 @@ test("Text preserves native paragraph content and exposes only the formal role m
  assert.match(renderToStaticMarkup(<Text variant="caps">Invoice</Text>),/title="Invoice"/);
  assert.match(renderToStaticMarkup(<Text variant="numeral">128<small>seats</small></Text>),/title="128seats"/);
  for(const [raw,actual]of [['.tx','.tcrn-text'],['.tx.strong','.tcrn-text.tcrn-text--strong'],['.tx.read','.tcrn-text.tcrn-text--reading'],['.tx.meta','.tcrn-text.tcrn-text--meta'],['.tx.cap','.tcrn-text.tcrn-text--caption'],['.num','.tcrn-text.tcrn-text--numeral'],['.num.inl','.tcrn-text.tcrn-text--numeral.tcrn-text--numeral-inline'],['.num.big','.tcrn-text.tcrn-text--numeral.tcrn-text--numeral-large'],['.caps','.tcrn-text.tcrn-text--caps'],['.id','.tcrn-text--mono']])assertPublishedRole(raw,actual);
- // K5 is explicit: actual CSS uses ink/600; the contradictory prose is not declared fixed.
+ // Published K5 prose and the unchanged CSS both specify ink/600.
  assert.equal(declarations(source,'.tx.strong').color,'var(--ink)');assert.equal(declarations(source,'.tx').color,'var(--ink-2)');
 });
 test("Highlight changes only the source wash decoration and preserves every text match",()=>{

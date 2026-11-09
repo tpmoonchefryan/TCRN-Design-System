@@ -1,4 +1,4 @@
-/* Generated after current package compilation; published Site v1 only. Fonts are linked by the entry document. */
+/* Generated after current package compilation; published Site v2 only. Fonts are linked by the entry document. */
 :root, [data-tcrn-theme="light"] {
   /* tcrn-token-block: theme */
   --tcrn-color-bg: #efeeea;
@@ -42,6 +42,8 @@
   --tcrn-color-chrome: rgba(239,238,234,.82);
   --tcrn-color-surface: var(--tcrn-color-bg);
   --tcrn-focus-ring: 0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-acc);
+  --tcrn-brand-suffix-tms: #2c63c8;
+  --tcrn-brand-suffix-design-system: #4b59be;
 }
 :root {
   /* tcrn-token-block: theme-independent */
@@ -127,8 +129,6 @@
   --tcrn-motion-intro-move: 240ms;
   --tcrn-motion-intro-rise: 100ms;
   --tcrn-motion-intro-max: 700ms;
-  --tcrn-brand-suffix-tms: #2c63c8;
-  --tcrn-brand-suffix-design-system: #6577f3;
 }
 @media (pointer: coarse) {
   :root {
@@ -180,6 +180,8 @@
   --tcrn-color-chrome: rgba(18,18,16,.82);
   --tcrn-color-surface: var(--tcrn-color-bg);
   --tcrn-focus-ring: 0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-acc);
+  --tcrn-brand-suffix-tms: #7aa0f5;
+  --tcrn-brand-suffix-design-system: #6577f3;
 }
 
 
@@ -584,10 +586,7 @@
 .tcrn-input.tcrn-search-input__control::placeholder {
   color: var(--tcrn-color-ink-2);
 }
-/* Published06 .sw>kbd uses ink-3. Published07 .ts-srch kbd is a separate shell
-   context, selected by ProductShellSearch's existing carrier in shell.css.ts.
-   The C01 ink-2 direction is Owner-adopted in minutes:6f3e0a9a1e07e3980867d82e#D1; its author source remains unpublished and the v1 pin stays unchanged
-   (TCRN-DS-MIN-20261104-VISUAL-BEFORE-STANDARD D1-D4). */
+/* Published v2 form and shell shortcut text use ink-2; their typography and carriers remain distinct. */
 .tcrn-search-input__shortcut {
   position: absolute;
   inset-block-start: 50%;
@@ -598,7 +597,7 @@
   padding: 0 var(--tcrn-space-1);
   border: 1px solid var(--tcrn-color-line-2);
   border-radius: 4px;
-  color: var(--tcrn-color-ink-3);
+  color: var(--tcrn-color-ink-2);
   font-family: var(--tcrn-type-family-mono);
   font-size: 10px;
   line-height: 14px;

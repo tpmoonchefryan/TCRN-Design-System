@@ -36,18 +36,22 @@ report failures and read back the stored order. A void callback acknowledges no
 network operation. Anonymous localStorage is not account synchronization. Follow
 the required shell preference pattern when any shell component is used.
 
-The pinned Site v1 remains the normative visual source. Its K1 suffix contrast,
-K5 wording and 06 dark shortcut contrast conflicts remain declared in that
-published version. Owner adopted the K1/K5/C01 source revision under
-`minutes:6f3e0a9a1e07e3980867d82e#D1` and the customer table/cards, pagination,
-five business states, confirmation and explicit product Traditional Chinese shell
-copy under D2. The support contract is `pattern/customer-list-boundary` with
-`pattern/product-locales`; these are adopted producer specifications awaiting
-formal publication. Keep the pinned v1 identity until the revised source is
-actually published. Preserve thresholds, the 28 formal entries and five built-in
-locales; local source preparation does not establish production delivery. Owner deferred the actual revised source publication
-under `minutes:00710c786ec8423e5dce0186#D1-D2`. The pinned 03 icon panel labels
-and 07b menu width wording also retain the known v1 discrepancies.
+The pinned published Site v2 is the normative visual source. Its K1/K5/C01
+amendments are public at exact author commit
+`e76b7272d98c0359a57c42d49bf70d64e5b4c2ad`, under
+`minutes:024a8b72088fac0970916091#D2` and publication readback
+`minutes:59b6c4ee489ab487482ca51b#D1`. Form and shell shortcut text use ink-2;
+placeholder ink-2 and icon ink-3 remain separate roles. Suffix text colors are
+bound to each published theme rather than to the SVG palette. The 240px dropdown
+keeps natural trigger widths; the 3–4 ratio describes only the Chinese example.
+Keep text ≥4.5, icon/edge ≥3, the 28 formal entries and five built-in locales.
+
+The customer table/cards, pagination, five business states, confirmation and
+explicit product Traditional Chinese shell copy are adopted under
+`minutes:6f3e0a9a1e07e3980867d82e#D2`. Their support contracts are
+`pattern/customer-list-boundary` and `pattern/product-locales`. DS package and
+documentation artifacts remain unpublished candidates. Author source publication
+does not establish producer delivery, actual TMS use or final independent acceptance.
 
 Invalidate the local rule cache when any package version, standard identity,
 source digest, shard digest or required dependency differs. Missing, malformed or

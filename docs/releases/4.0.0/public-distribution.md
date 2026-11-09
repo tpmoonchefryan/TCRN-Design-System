@@ -8,12 +8,12 @@ complete dashboard settings and final candidate deployment are unverified.
 Historical Vercel success does not verify this build. No account or project is
 created by the scripts or workflow in this change.
 
-Owner adopted the visual amendments and customer-list/product-locale support in
-`minutes:6f3e0a9a1e07e3980867d82e#D1-D2`, then deferred the actual author-source
-publication in `minutes:00710c786ec8423e5dce0186#D1-D2`. The local A+C combination
-therefore retains published v1, including the seven contrast failures and original
-icon panel labels/menu width wording. It is an unpublished review candidate; the
-publication sequence below remains dependent on resuming source publication.
+The exact adopted author source `e76b7272d98c0359a57c42d49bf70d64e5b4c2ad`
+was published as Site v2 under `minutes:024a8b72088fac0970916091#D2` and read
+back under `minutes:59b6c4ee489ab487482ca51b#D1`. Producer inputs now pin that
+identity. The source hold and v1 conflicts remain historical records. DS archives,
+combined documentation and delivery material are local candidates. No push,
+tag, remote Release or Vercel deployment is performed by this preparation.
 
 ## Build one documentation output
 
@@ -47,9 +47,8 @@ missing JSON or assets as a successful HTML response. The combined output keeps:
 The merger copies actual builds into disjoint directories, checks identity and
 required files, and records every output hash. `output-manifest.json` still owns
 the portal's exact inventory; `distribution-manifest.json` owns the combined one.
-Its `publication` remains `local-candidate-only`: deploying a candidate does not
-make the old standard pin conform to the adopted unpublished revision. Production
-identity must be read from the actual final deployed build after source integration.
+Its `publication` remains `local-candidate-only`: local preparation does not establish production delivery. Production identity
+must be read from the actual final deployed build.
 No unobserved deployment URL is written into identity.
 
 Vercel documents that repository `buildCommand` and `outputDirectory` override
@@ -147,10 +146,10 @@ Do not run `npm install @tcrn/ui-react@4.0.0`: no npm publication is selected.
 
 ## Publication sequence and actual readback
 
-1. Publish the adopted author source through its approved source process; read
-   back the real source version, commit and bytes. The existing integration owner
-   then updates the source pin, generates producer outputs and runs the final
-   required checks. The present preparation deliberately does not perform these.
+1. The adopted author source is already published as v2/e76. Retain its native
+   publication and normal browser readback, the independent anonymous HTTP 403
+   limitation, current source pin, producer output and required-check evidence.
+   Confirm the same candidate is being submitted; do not republish the source.
 2. Review that final source diff and release candidate, then obtain the applicable
    push/deployment/publication authorization. Read existing remote tags and
    Releases again. If `v4.0.0` exists, stop that release path for a version decision;

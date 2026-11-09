@@ -1,5 +1,5 @@
-// Generated from published Sites v1, commit a643d4cfcd239f6f81b1715ded6a63caead9d619. Do not edit.
-// docs/design/approved-site-v1/source-manifest.json; input-sha256 6bd927667bd4c5cba1cd8cabc8edab49231e08dc16802500bc1ea74fdd765516
+// Generated from published Sites v2, commit e76b7272d98c0359a57c42d49bf70d64e5b4c2ad. Do not edit.
+// docs/design/approved-site-v2/source-manifest.json; input-sha256 7a7bd2db40cf01e9cffe9eebc7787252ec965c4669e9ab3e861be623476c0df6
 export const tcrnProductMarkViewBox="0 0 48 48";
 export const tcrnProductMarkLocales=["zh-CN","en","ja","ko","fr"] as const;
 export type TcrnProductMarkLocale=(typeof tcrnProductMarkLocales)[number];

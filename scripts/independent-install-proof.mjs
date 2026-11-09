@@ -51,7 +51,7 @@ export const validator: (input: ShellPreferenceEvidence) => { ok: boolean; findi
 export function App() {
   const [saved, setSaved] = useState(0);
   return <main><Heading>Independent package consumer</Heading><Text>React installation fixture</Text>
-    <form onSubmit={event => { event.preventDefault(); setSaved(saved + 1); }}>
+    <form className="fixture-host-form-column" onSubmit={event => { event.preventDefault(); setSaved(saved + 1); }}>
       <Input name="customer" aria-label="Customer" defaultValue="Example" />
       <Button type="submit">Save</Button><output aria-live="polite">Saved {saved}</output>
     </form>
@@ -94,11 +94,12 @@ for (const matrix of matrices) {
     run(consumer, "npm", ["ci", "--offline", "--ignore-scripts", "--no-audit", "--no-fund"]);
     fs.writeFileSync(path.join(consumer, "src/App.tsx"), fixture);
     fs.writeFileSync(path.join(consumer, "src/client.tsx"), client);
-    fs.writeFileSync(path.join(consumer, ".tcrn-ds.json"), JSON.stringify({ schemaVersion: "tcrn.consumer-contract.v1", identity, components: ["Button", "Heading", "Input", "Text"], patterns: [], sourceRoots: ["src"] }, null, 2));
+    fs.writeFileSync(path.join(consumer, ".tcrn-ds.json"), JSON.stringify({ schemaVersion: "tcrn.consumer-contract.v1", identity, components: ["Button", "Heading", "Input", "Text"], patterns: [], sourceRoots: ["src"], fieldColumns: [{ className: "fixture-host-form-column", source: "src/fixture.css" }] }, null, 2));
     fs.writeFileSync(path.join(consumer, "tsconfig.json"), JSON.stringify({ compilerOptions: { target: "ES2022", module: "NodeNext", moduleResolution: "NodeNext", strict: true, skipLibCheck: false, jsx: "react-jsx", noEmit: true }, include: ["src"] }, null, 2));
     run(consumer, path.join(consumer, "node_modules/.bin/tsc"), ["--project", "tsconfig.json", "--pretty", "false"]);
   }
-  fs.writeFileSync(path.join(consumer, "src/fixture.css"), `body{margin:0;background:var(--tcrn-color-bg);color:var(--tcrn-color-ink);font-family:var(--tcrn-type-family-ui)}main{padding:var(--tcrn-space-3);display:grid;gap:var(--tcrn-space-3)}form{display:grid;gap:var(--tcrn-space-3)}.font-ui{font-family:var(--tcrn-type-family-ui)}.font-heading{font-family:var(--tcrn-type-family-heading)}.font-mono{font-family:var(--tcrn-type-family-mono)}.font-sc{font-family:"Noto Sans SC"}.font-serif-sc{font-family:"Noto Serif SC"}\n`);
+  // This test host owns the bounded column; its26rem cap is not a DS token.
+  fs.writeFileSync(path.join(consumer, "src/fixture.css"), `body{margin:0;background:var(--tcrn-color-bg);color:var(--tcrn-color-ink);font-family:var(--tcrn-type-family-ui)}main{padding:var(--tcrn-space-3);display:grid;gap:var(--tcrn-space-3)}form{display:grid;gap:var(--tcrn-space-3)}.fixture-host-form-column{inline-size:100%;max-inline-size:26rem}.font-ui{font-family:var(--tcrn-type-family-ui)}.font-heading{font-family:var(--tcrn-type-family-heading)}.font-mono{font-family:var(--tcrn-type-family-mono)}.font-sc{font-family:"Noto Sans SC"}.font-serif-sc{font-family:"Noto Serif SC"}\n`);
   run(consumer, path.join(consumer, "node_modules/.bin/esbuild"), ["src/client.tsx", "--bundle", "--format=esm", "--outdir=public", "--loader:.woff2=file", "--asset-names=fonts/[name]"]);
   run(consumer, path.join(consumer, "node_modules/.bin/esbuild"), ["src/App.tsx", "--bundle", "--platform=node", "--packages=external", "--format=esm", "--outfile=server.js"]);
   const app = await import(pathToFileURL(path.join(consumer, "server.js")).href);

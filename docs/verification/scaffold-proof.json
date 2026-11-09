@@ -62,7 +62,7 @@
     {
       "path": "package.json",
       "exists": true,
-      "sha256": "fdc57540f6ad20b49e8127df60afb13405a3607a138f1b3e81d1026d20cd84dc"
+      "sha256": "90697d42c20787faeedf4643e34a1c9f1882ffa59e1cb3a0390576a9fb9e1253"
     },
     {
       "path": "pnpm-workspace.yaml",
@@ -72,17 +72,17 @@
     {
       "path": "tsconfig.base.json",
       "exists": true,
-      "sha256": "85c54645fdcc805d11b2fba7d6bb84bb988383e574b24766bed96298a46343f8"
+      "sha256": "ab54fb2ab4b3a172ee11092b80816f47fcb9f58543326523aa6e5819149d5eb4"
     },
     {
       "path": "README.md",
       "exists": true,
-      "sha256": "a04d7c59ad769931fae6e6a1b9b6b0c67eda4098f932d47032acec194598ea8c"
+      "sha256": "4c89157530620b612a0b647432a4284f4386c1b7d442be8aa76b068715d1e468"
     },
     {
       "path": "CHANGELOG.md",
       "exists": true,
-      "sha256": "e8ef69c577fb5f3e6a7a74aab8ed93e2e4b5b684dc180461eab0e56969b1b6cf"
+      "sha256": "3fc89fb60ae5a4b35979a09c6331b84b49baeb4650fabc9582e644f48921eeb8"
     },
     {
       "path": "LICENSE",
@@ -92,12 +92,12 @@
     {
       "path": "vercel.json",
       "exists": true,
-      "sha256": "7afbb8de60ff997cd0b6f1933cc90ab95cedd007f634de0ade37966ff5e9ed5c"
+      "sha256": "f66f48b945bd21ba5c00ae92d5ee97a83e3d2c25a59afb45f4c8c32e5ede9369"
     },
     {
       "path": "docs/release-prep-v1.0.0.md",
       "exists": true,
-      "sha256": "640b89a246386ca72abb2ae8a428a47a98490a83e9ed02aa6a28eba59d8b5632"
+      "sha256": "d412b5d7e9924cd4b211fcb0bc4e4dd0a87e71d7827dfe0108b874c0482d2e12"
     },
     {
       "path": ".github/CODEOWNERS",
@@ -107,7 +107,7 @@
     {
       "path": "packages/ui-tokens/src/index.ts",
       "exists": true,
-      "sha256": "69c4927f19ceb1f4a2d9c83a4803dc3f3f732aa9d2b8411ee87df5cea3c0e576"
+      "sha256": "53da8532a600c4a6768695cc0c21dc6bcc89d1542141c7117fda2762c48db046"
     },
     {
       "path": "packages/ui-copy-state/src/index.ts",
@@ -117,12 +117,12 @@
     {
       "path": "packages/ui-react/src/index.tsx",
       "exists": true,
-      "sha256": "c60bf695dc03c3d8a1181e735f6a254063613a85d6645d9c15225146c191f83c"
+      "sha256": "2679b3e463a8f85329d27f4fd2f6cd9156347084266347b08c0fe7a81f5593e2"
     },
     {
-      "path": "apps/storybook/src/stories.tsx",
+      "path": "apps/storybook/src/standards.stories.tsx",
       "exists": true,
-      "sha256": "df6ae4b8df1ac9b7a102cf1b6c2a316298f91273b99f43bfb3d72944979d0cf3"
+      "sha256": "4d2c85afec9dfe5ce24e62328dd1974e05a596bd3464efd93e60b345b6e0f98e"
     },
     {
       "path": "examples/tms-react-pilot/src/index.tsx",
@@ -174,7 +174,7 @@
     }
   ],
   "lockfileExists": true,
-  "storybookHtmlExists": false,
+  "storybookHtmlExists": true,
   "routeLocalNoOverclaim": {
     "githubPushPerformedByThisRoute": false,
     "githubReleaseCreatedByThisRoute": false,
@@ -187,7 +187,7 @@
     "releaseReadinessClaimed": false,
     "ownerIntentActionExecuted": false
   },
-  "currentStateNoOverclaim": {
+  "baselineStateNoOverclaim": {
     "npmPackagePublished": false,
     "hostedDocsDeploymentSucceeded": false,
     "hostedDocsUrlReachable": true,

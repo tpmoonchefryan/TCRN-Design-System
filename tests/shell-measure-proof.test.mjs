@@ -34,6 +34,20 @@ test('each G18 measured-data predicate rejects its own formal negative condition
  for(const g of SHELL_G18){const facts=greenShellFacts();bad[g.id](facts);assert.ok(judgeShellG18(facts,source)[g.id].length,`${g.id} must reject its own mutation`);}
  assert.deepEqual(shadowBlurs('0 2px 3px rgba(22,21,15,.1),0 0 0 1px rgba(22,21,15,.2)'),[3,0]);
 });
+test('G06 v2 preserves fixed dropdown geometry and scopes the example ratio to Chinese', () => {
+ const source = readApprovedSource();
+ assert.ok(source.board('07b-shell-lower').html.includes('3 至 4 倍仅描述本中文示例'));
+ for (const locale of ['zh-CN','en','ja','ko','fr']) {
+  const facts = greenShellFacts();
+  facts.locale = locale;
+  facts.brandWords.tagline = extractMarks(source).find(mark => mark.id === 'tms').taglines[locale];
+  facts.drop.dropTrigger.width = 100;
+  const failures = judgeShellG18(facts, source).G06;
+  assert.equal(failures.some(failure => failure.includes('3–4')), locale === 'zh-CN');
+  facts.drop.drop.width = 230;
+  assert.ok(judgeShellG18(facts, source).G06.some(failure => failure.includes('width240')));
+ }
+});
 test('repeated shell IDs bind closed/open/drop and both phone states separately',()=>{
  const cells=extractMatrixOccurrences(readApprovedSource()),brand=cells.filter(c=>c.board==='07a-shell-upper'&&c.cellId==='brand-word-l');
  assert.deepEqual(brand.map(c=>[c.sourceState,shellSceneFor(c),c.expect]),[['closed','band','15.75'],['expanded','menu','14.70'],['drop','drop','15.75']]);
@@ -122,14 +136,13 @@ test('07 inner specimens and outer docs fail independently in both builds at wid
 });
 
 test('real shell matrix settles hover and preserves the published hidden phone pins without masking mutations',async()=>{
- const sourceConflictKeys=['07a-shell-upper:20','07a-shell-upper:69','07a-shell-upper:97','07a-shell-upper:122'];
  const hiddenKeys=['07a-shell-upper:144','07a-shell-upper:145','07a-shell-upper:146','07a-shell-upper:150','07a-shell-upper:151','07a-shell-upper:152'];
  for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   const collect=()=>readShellMatrices({browser,base,source,page,entry,locale:'en'});
   const assertBaseline=reading=>{
    assert.equal(reading.observations.length,225);
-   assert.deepEqual(reading.issues,sourceConflictKeys.map(key=>`${key}: threshold 4.5`));
+   assert.deepEqual(reading.issues,[], "published v2 suffixes now meet the unchanged 4.5 threshold");
    assert.deepEqual(reading.observations.filter(row=>row.visibility==='published-hidden-pins').map(row=>row.key),hiddenKeys);
    assert.ok(reading.observations.filter(row=>hiddenKeys.includes(row.key)).every(row=>row.ok&&!row.actual.visible&&!row.reference.visible));
   };

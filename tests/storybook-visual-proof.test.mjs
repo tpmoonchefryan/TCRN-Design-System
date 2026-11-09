@@ -163,7 +163,7 @@ import { publishedShortcutContexts } from '../scripts/lib/published-standard-pro
 import { extractTokens } from '../scripts/lib/approved-site-source.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-test('published form and shell role comparison rejects wrong-form ink-2 and wrong-shell ink-3 in every entry/locale/theme',async()=>{
+test('published form and shell role comparison rejects wrong-form and wrong-shell ink-3 in every entry/locale/theme',async()=>{
  const source=readApprovedSource(),tokens=extractTokens(source),roles=publishedShortcutOccurrences(source);
  assert.equal(roles.length,14);assert.equal(roles.filter(role=>role.annotatedCell).length,3);
  assert.equal(roles.filter(role=>role.board==='06-inputs').length,8);
@@ -180,7 +180,7 @@ test('published form and shell role comparison rejects wrong-form ink-2 and wron
     // turn a source-faithful reading into a color exception or a visual pass.
     for(const role of localRoles){
      const actual=publishedShortcutLocator(page,role),values=Object.fromEntries(tokens.themed.map(row=>[row.key,row[role.theme]]));
-     const changes=[{label:'wrong role ink',style:{color:values[role.scene==='form'?'ink-2':'ink-3']}}];
+     const changes=[{label:'wrong role ink',style:{color:values['ink-3']}}];
      if(role.scene!=='form')changes.push({label:'wrong context typography',style:{fontSize:role.scene==='menu'?'10px':'10.5px'}},{label:'form capsule in shell',style:{border:'1px solid currentColor',padding:'0 4px',borderRadius:'4px'}});
      for(const change of changes){
       const previous=await actual.getAttribute('style');

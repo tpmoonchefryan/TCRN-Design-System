@@ -208,9 +208,9 @@ test("wordmark layout follows 07 CSS; browser measurements use the published sou
  assert.match(ruleBody(".tcrn-shell-brand__word"),/line-height: 1.2/);
  assert.doesNotMatch(ruleBody(".tcrn-shell-brand__word"),/text-overflow/);
 });
-test("unresolved K1 is not hidden by old TMS night or DS hover color assertions",()=>{
- assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-tms"],"#2c63c8");
- assert.ok(suffixOnWash("dark")<4.5,"the formal original really conflicts with the unchanged threshold");
+test("published K1 suffix roles meet the retained threshold without an interactive color override",()=>{
+ assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-tms"],"#7aa0f5");
+ assert.ok(suffixOnWash("dark")>=4.5,"the published v2 suffix passes on its actual hover carrier");
  assert.equal(createResolvedTokenMap("light")["--tcrn-color-shell-brand-suffix-design-system-interactive"],undefined);
  assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-design-system"],"#6577f3");
 });

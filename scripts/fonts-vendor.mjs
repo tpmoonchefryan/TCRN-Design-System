@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copies only the actual font bytes of published Sites v1. No npm/CDN replacement or subsetting.
+// Copies only the actual font bytes of published Sites v2. No npm/CDN replacement or subsetting.
 import fs from "node:fs";
 import path from "node:path";
 import { readApprovedSource, extractFontFaces, ROOT, sha256 } from "./lib/approved-site-source.mjs";

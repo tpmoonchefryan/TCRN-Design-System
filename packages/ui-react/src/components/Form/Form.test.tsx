@@ -565,7 +565,7 @@ test("STORY-126 GWT3 SearchInput is a quiet tool: wash without an edge, ink-2 pl
   assert.match(search, /--tcrn-pair-fill-f:var\(--tcrn-color-panel\)/);
   assert.match(cssRule(".tcrn-input.tcrn-search-input__control::placeholder"), /color: var\(--tcrn-color-ink-2\);/);
   // Published06 .sw>kbd and .in.search::placeholder deliberately have distinct roles.
-  assert.match(cssRule(".tcrn-search-input__shortcut"), /\bcolor: var\(--tcrn-color-ink-3\);/);
+  assert.match(cssRule(".tcrn-search-input__shortcut"), /\bcolor: var\(--tcrn-color-ink-2\);/);
   assert.match(cssRule(".tcrn-search-input__icon"), /\bcolor: var\(--tcrn-color-ink-3\);/);
   assert.doesNotMatch(cssRule(".tcrn-search-input .tcrn-search-input__control"), /background|box-shadow|border|color:/);
   assert.doesNotMatch(cssRule(".tcrn-search-input"), /background|border|box-shadow|outline/);

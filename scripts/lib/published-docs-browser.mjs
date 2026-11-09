@@ -146,7 +146,7 @@ export async function readDocsSourceUi(surface, locale) {
    accessibleNames: sourceCells.filter(el => el.getAttribute('aria-label')?.includes(el.dataset.sourceCellKey)).length,
   };
  }, {
-  terms: ['Sites v1', 'Owner 2026-10-11', APPROVED_SITE.url, APPROVED_SITE.sourceCommit,
+  terms: [`Sites v${APPROVED_SITE.versionNumber}`, 'Owner 2026-10-11', APPROVED_SITE.url, APPROVED_SITE.sourceCommit,
    ...Object.values(APPROVED_BOARD_IDS), ...retiredSourceLabels[locale]],
   links: retiredSourceLinks,
   sourceUrl: APPROVED_SITE.url,

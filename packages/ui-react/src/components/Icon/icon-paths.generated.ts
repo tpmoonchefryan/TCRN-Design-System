@@ -1,5 +1,5 @@
-// Generated from published Sites v1, commit a643d4cfcd239f6f81b1715ded6a63caead9d619. Do not edit.
-// docs/design/approved-site-v1/source-manifest.json; input-sha256 6bd927667bd4c5cba1cd8cabc8edab49231e08dc16802500bc1ea74fdd765516
+// Generated from published Sites v2, commit e76b7272d98c0359a57c42d49bf70d64e5b4c2ad. Do not edit.
+// docs/design/approved-site-v2/source-manifest.json; input-sha256 7a7bd2db40cf01e9cffe9eebc7787252ec965c4669e9ab3e861be623476c0df6
 export const tcrnIconViewBox="0 0 20 20";
 export const tcrnIconStrokeWidth=1.25;
 export const tcrnIconPathNames=["alert-triangle","arrow-left","arrow-right","book-open","check","chevron-down","chevron-left","chevron-right","database","external-link","globe-2","history","home","info","layers","layout-grid","loader-circle","menu","moon","package","palette","panel-left-close","panel-left-open","search","settings","shield-check","sun","x","plus","minus","users","bell","copy","trash","calendar","more-horizontal","chevron-up","pin"] as const;

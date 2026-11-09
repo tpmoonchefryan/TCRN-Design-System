@@ -8,7 +8,7 @@
 // segment says. A backtick ends a segment early, so the CSS comments in it never use one
 // (scripts/css-template-integrity-proof.mjs checks every segment).
 //
-// The stroke width is the icon contract's (docs/design/approved-site-v1/src/boards/03-icons,
+// The stroke width is the icon contract's (docs/design/approved-site-v2/src/boards/03-icons,
 // through the generated path module), so the base class cannot drift from the roster.
 
 import { tcrnIconStrokeWidth } from "../components/Icon/icon-paths.generated.js";

@@ -6,7 +6,7 @@ import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,assertToke
 import { APPROVED_SITE,APPROVED_BOARD_IDS } from "../scripts/lib/approved-site-pins.mjs";
 import * as approvedSourceModule from "../scripts/lib/approved-site-source.mjs";
 import { generate } from "../scripts/contract-generate.mjs";
-import { retiredLockupLabelIssues } from "../scripts/lib/published-standard-proof.mjs";
+import { checkContrast, retiredLockupLabelIssues } from "../scripts/lib/published-standard-proof.mjs";
 const read=fs.readFileSync;
 test('source and emitted closure reject only the exact retired lockup fallback keys and retain neighboring product copy',()=>{
  const nav=read(path.join(ROOT,'packages/ui-react/src/components/Navigation/Navigation.tsx'),'utf8');
@@ -44,15 +44,15 @@ test('V1 formal06 radio c/cf/cx tuples and radius survive repeated-selector proj
  assert.ok(!generated.includes('.tcrn-radio-group__control{}'));
 });
 test("V1 published identity is the actual eight sourceIds and immutable source commit",()=>{
- const s=readApprovedSource();assert.equal(APPROVED_SITE.sourceCommit,"a643d4cfcd239f6f81b1715ded6a63caead9d619");assert.equal(Object.keys(APPROVED_BOARD_IDS).length,8);assert.equal(APPROVED_BOARD_IDS["04-brand"],"ee0f582f-d81c-47f4-8a5b-d16631584d81");assert.equal(s.manifest.site.versionNumber,1);assert.equal(s.manifest.site.deploymentStatus,"succeeded");
+ const s=readApprovedSource();assert.equal(APPROVED_SITE.sourceCommit,"e76b7272d98c0359a57c42d49bf70d64e5b4c2ad");assert.equal(Object.keys(APPROVED_BOARD_IDS).length,8);assert.equal(APPROVED_BOARD_IDS["04-brand"],"ee0f582f-d81c-47f4-8a5b-d16631584d81");assert.equal(s.manifest.site.versionNumber,2);assert.equal(s.manifest.site.deploymentStatus,"succeeded");
  assert.equal(extractTokens(s).themed.length,39);assert.equal(extractTokens(s).fixed.length,27);assert.equal(extractIcons(s).length,38);assert.equal(extractMarks(s).length,4);
 });
 test("V1 same name and candidate manifest hashes do not authorize changed source bytes",()=>{
- const target=path.join(ROOT,"docs/design/approved-site-v1/src/boards/01-tokens/board.css");
+ const target=path.join(ROOT,"docs/design/approved-site-v2/src/boards/01-tokens/board.css");
  assert.throws(()=>readApprovedSource(ROOT,{readFile:(p,encoding)=>p===target?(encoding?read(p,"utf8").replace("#efeeea","#eeeeee"):Buffer.from(read(p,"utf8").replace("#efeeea","#eeeeee"))):read(p,encoding)}),/Published bytes changed/);
 });
 test("V1 changing registry and source-manifest together cannot replace a board or source commit",()=>{
- const manifest=path.join(ROOT,"docs/design/approved-site-v1/source-manifest.json");
+ const manifest=path.join(ROOT,"docs/design/approved-site-v2/source-manifest.json");
  for(const mutate of [m=>m.site.sourceCommit="unpublished",m=>m.boards.pop(),m=>m.boards[0].sourceId="same-name-wrong-source",m=>m.boards.push(m.boards[0])]){
   assert.throws(()=>readApprovedSource(ROOT,{readFile:(p,encoding)=>{if(p!==manifest)return read(p,encoding);const m=JSON.parse(read(p,"utf8"));mutate(m);const s=JSON.stringify(m);return encoding?s:Buffer.from(s);}}));
  }
@@ -72,7 +72,7 @@ test("V1 prose bindings derive their number from the actual source anchor, not a
 
 test("V1 package/source commit agreement cannot hide a wrong project, version, deployment or publication state",async()=>{
  const {sourceIdentityIssues}=await import('../scripts/lib/published-standard-proof.mjs');assert.deepEqual(sourceIdentityIssues(APPROVED_SITE),[]);
- for(const [key,value]of Object.entries({projectId:'wrong',versionId:'wrong',versionNumber:2,deploymentId:'wrong',deploymentStatus:'pending',sourceCommit:'wrong'}))assert.ok(sourceIdentityIssues({...APPROVED_SITE,[key]:value}).some(issue=>issue.includes(key)));
+ for(const [key,value]of Object.entries({projectId:'wrong',versionId:'wrong',versionNumber:1,deploymentId:'wrong',deploymentStatus:'pending',sourceCommit:'wrong'}))assert.ok(sourceIdentityIssues({...APPROVED_SITE,[key]:value}).some(issue=>issue.includes(key)));
 });
 
 test("V4 source scene, state and literal icon carriers survive extraction independently",()=>{
@@ -115,33 +115,35 @@ test('V5 both entry documents link formal font resources outside the generated c
  assert.match(writer,/<link rel="stylesheet" href="\/fonts\/fonts\.css">/);
 });
 
-test('C01 evaluates each published shortcut context and retains the nominal06 threshold conflict',async()=>{
- const {checkContrast,compiled}=await import('../scripts/lib/published-standard-proof.mjs'),result=checkContrast();
- const shortcuts=result.measurements.filter(r=>r.conflict==='S03-C01');
- assert.equal(shortcuts.length,6);
- assert.deepEqual(result.shortcutContexts,[{board:'06-inputs',selector:'.sw>kbd',color:'var(--ink-3)'},{board:'07a-shell-upper',selector:'.ts-srch kbd',color:'var(--ink-2)'},{board:'07b-shell-lower',selector:'.ts-srch kbd',color:'var(--ink-2)'}]);
- for(const board of ['06-inputs','07a-shell-upper','07b-shell-lower'])assert.deepEqual(shortcuts.filter(r=>r.board===board).map(r=>r.theme),['light','dark']);
- const reading=shortcuts.find(r=>r.board==='06-inputs'&&r.theme==='dark');
- assert.equal(reading.ink,'#85827a');assert.equal(reading.surface,'#191916');
- assert.ok(Math.abs(reading.ratio-3.876921784985055)<1e-10);
- assert.equal(reading.min,4.5);assert.ok(result.issues.some(i=>i.includes('06-inputs dark/idle shortcut 3.876922 < 4.5')));
- assert.ok(result.issues.some(i=>i.startsWith('K1 text contrast ')));
- assert.ok(!result.issues.some(i=>i.includes('roles differ')||i.includes('cannot certify unchanged06')),'a difference between published contexts is not an implementation failure');
- assert.deepEqual(result.sourceThresholdConflicts,['K1','S03-C01']);assert.deepEqual(result.sourceWordingAmbiguities,['K5']);
- assert.equal(result.proposalState,'owner-adopted; author source and producer remain unpublished');
- assert.deepEqual(result.unconfirmedProposals,[]);
- assert.deepEqual(result.adoptedAmendments.ids,['K1','K5','S03-C01']);
- assert.equal(result.adoptedAmendments.minute,'minutes:6f3e0a9a1e07e3980867d82e#D1');
- assert.equal(result.adoptedAmendments.sourcePublication,'deferred-by-owner; local-candidate-only');
- assert.equal(result.proposalMinutes.C01,'minutes:3d37207504a1caf4af9aca05#D1-D4');
- assert.equal(result.ownerClarificationMinute,'minutes:3244c7ac6adef4fc078d413e#D1-D4');
- assert.equal(result.publicationRequest,'deferred-by-owner');assert.equal(result.ownerVisualAcceptance,'not-performed');
- assert.equal(result.pendingFormalAmendments,undefined);
- const metadata=JSON.parse(read(path.join(ROOT,'apps/storybook/storybook-static/ai-consumption-contract.json'),'utf8'));
- assert.equal(metadata.standardSource.sourceCommit,APPROVED_SITE.sourceCommit);
- assert.equal(metadata.implementationFidelity.formShortcut.role,'ink-3');assert.equal(metadata.implementationFidelity.shellShortcut.role,'ink-2');
- assert.equal(metadata.proposalState,result.proposalState);assert.equal(metadata.publicationRequest,'deferred-by-owner');
- assert.deepEqual(metadata.adoptedAmendments,result.adoptedAmendments);
- assert.equal(metadata.ownerVisualAcceptance,'not-performed');assert.equal(metadata.formalAmendments,undefined);
- assert.ok(metadata.publishedStandardConflicts.some(i=>i.includes('3.876922 below4.5')));
+test('C01 published v2 and its emitted metadata agree on all shortcut contexts and publication boundaries', () => {
+ const result = checkContrast();
+ const shortcuts = result.measurements.filter(row => row.conflict === 'S03-C01');
+ assert.equal(shortcuts.length, 6);
+ assert.deepEqual(result.shortcutContexts, [
+  {board:'06-inputs',selector:'.sw>kbd',color:'var(--ink-2)'},
+  {board:'07a-shell-upper',selector:'.ts-srch kbd',color:'var(--ink-2)'},
+  {board:'07b-shell-lower',selector:'.ts-srch kbd',color:'var(--ink-2)'}
+ ]);
+ for (const board of ['06-inputs','07a-shell-upper','07b-shell-lower']) assert.deepEqual(shortcuts.filter(row => row.board === board).map(row => row.theme), ['light','dark']);
+ const reading = shortcuts.find(row => row.board === '06-inputs' && row.theme === 'dark');
+ assert.equal(reading.ink, '#a9a69c');
+ assert.equal(reading.surface, '#191916');
+ assert.ok(Math.abs(reading.ratio - 6.109065068146565) < 1e-10);
+ assert.equal(reading.min, 4.5);
+ assert.deepEqual(result.issues, []);
+ assert.deepEqual(result.sourceThresholdConflicts, []);
+ assert.deepEqual(result.sourceWordingAmbiguities, []);
+ assert.deepEqual(result.unconfirmedProposals, []);
+ assert.equal(result.adoptedAmendments.sourcePublication, 'published-v2; deployment-succeeded');
+ assert.equal(result.adoptedAmendments.publicationReadbackMinute, 'minutes:59b6c4ee489ab487482ca51b#D1');
+ assert.equal(result.ownerVisualAcceptance, 'current-integration-not-performed');
+ const metadata = JSON.parse(read(path.join(ROOT, 'apps/storybook/storybook-static/ai-consumption-contract.json'), 'utf8'));
+ assert.equal(metadata.standardSource.sourceCommit, APPROVED_SITE.sourceCommit);
+ assert.equal(metadata.implementationFidelity.formShortcut.role, 'ink-2');
+ assert.equal(metadata.implementationFidelity.shellShortcut.role, 'ink-2');
+ assert.equal(metadata.proposalState, result.proposalState);
+ assert.deepEqual(metadata.adoptedAmendments, result.adoptedAmendments);
+ assert.equal(metadata.ownerVisualAcceptance, result.ownerVisualAcceptance);
+ assert.deepEqual(metadata.publishedStandardConflicts, []);
+ assert.equal(metadata.publication, 'local-candidate-only');
 });

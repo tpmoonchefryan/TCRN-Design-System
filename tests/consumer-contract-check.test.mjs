@@ -137,13 +137,13 @@ test("required closure has no cycles, every formal component has source types an
     assert.match(rule.content.example.sha256, /^[a-f0-9]{64}$/);
   }
   const complete = JSON.parse(fs.readFileSync(path.join(producer, "ai-consumption-contract.json"), "utf8"));
-  assert.equal(complete.ownerVisualAcceptance, "not-performed");
+  assert.equal(complete.ownerVisualAcceptance, "current-integration-not-performed");
   assert.equal(complete.ownerVisualAcceptanceScope, "current package candidate");
-  assert.equal(complete.priorOwnerVisualAcceptance.minute, "minutes:d8848542e0a64a1e26d07aaf");
+  assert.equal(complete.priorOwnerVisualAcceptance.minute, "minutes:024a8b72088fac0970916091#D1");
   assert.deepEqual(complete.unconfirmedProposals, []);
   assert.equal(complete.adoptedAmendments.minute, "minutes:6f3e0a9a1e07e3980867d82e#D1");
-  assert.equal(complete.adoptedAmendments.publicationHoldMinute, "minutes:00710c786ec8423e5dce0186#D1-D2");
-  assert.equal(complete.publicationRequest, "deferred-by-owner");
+  assert.equal(complete.adoptedAmendments.priorPublicationHoldMinute, "minutes:00710c786ec8423e5dce0186#D1-D2");
+  assert.equal(complete.publicationRequest, "author-source-published; producer-authorization-pending");
   assert.equal(complete.adoptedSupport.formalComponents, 28);
   assert.equal(complete.adoptedSupport.builtInLocales, 5);
   const customer = loadRuleClosure(indexPath, { schemaVersion: "tcrn.consumer-contract.v1", identity: index.identity, components: ["Heading"], patterns: ["customer-list-boundary"] });

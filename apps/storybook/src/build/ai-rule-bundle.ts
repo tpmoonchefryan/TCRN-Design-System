@@ -56,7 +56,7 @@ export function createAiRuleBundle(input: {
   for (const board of approvedSource.boards) rules.push({
     id: `standard/${board.slug}`, kind: "standard",
     required: board.slug === "07a-shell-upper" ? ["standard/07b-shell-lower"] : [], optional: [],
-    content: { ...requireSource(`docs/design/approved-site-v1/src/boards/${board.slug}/index.dc.html`), format: "text/html", status: "pinned-published-v1" },
+    content: { ...requireSource(`docs/design/approved-site-v2/src/boards/${board.slug}/index.dc.html`), format: "text/html", status: `pinned-published-v${approvedSource.site.versionNumber}` },
   });
   const tokenClosure = (seeds: readonly AiToken[]) => {
     const selected = new Map(seeds.map(token => [token.variable, token]));
@@ -89,7 +89,7 @@ export function createAiRuleBundle(input: {
     if (!example?.snippet) throw new Error(`Executable component example missing: ${api.name}`);
     const states = componentStates[api.name as keyof typeof componentStates];
     if (!states?.length) throw new Error(`Required component stories missing: ${api.name}`);
-    const board = requireSource(`docs/design/approved-site-v1/src/boards/${api.board}/index.dc.html`);
+    const board = requireSource(`docs/design/approved-site-v2/src/boards/${api.board}/index.dc.html`);
     const shell = api.name === "ProductShell" || api.name.startsWith("Shell");
     rules.push({
       id: `component/${api.name}`, kind: "component",

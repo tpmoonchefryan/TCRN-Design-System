@@ -1,10 +1,10 @@
 # TCRN Design System
 
-当前 Storybook 唯一采用已发布 Sites 视觉标准第 1 版的 8 块画板。草稿与退役 Storybook 示例不作为实施输入。
+当前 Storybook 唯一采用已发布 Sites 视觉标准第 2 版的 8 块画板。草稿与退役 Storybook 示例不作为实施输入。
 
-[Published visual standard](https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site) · [Pinned source and mapping](docs/design/approved-site-v1/source-manifest.json) · [Source contract](docs/design/README.md)
+[Published visual standard](https://tcrn-ds-visual-standards.zbnubhmldz3270.chatgpt.site) · [Pinned source and mapping](docs/design/approved-site-v2/source-manifest.json) · [Source contract](docs/design/README.md)
 
-Source commit: `a643d4cfcd239f6f81b1715ded6a63caead9d619`. The source Site is version 1; `@tcrn/ui-react` and `@tcrn/ui-tokens` are package candidates at 4.0.0. These are distinct version identities. Current06 form shortcut text follows published ink-3;07 menu/shell shortcut text follows its own ink-2. The form placeholder remains ink-2 and its icon ink-3. Published brand colors and actual strong ink/600 remain the implementation baseline. K1 brand text and06 dark shortcut nominal contrast still conflict with the existing ≥4.5 requirement; source fidelity and threshold compliance are separate. Owner adopted the K1/K5/C01 visual revision and the customer-list support composition under `minutes:6f3e0a9a1e07e3980867d82e#D1-D2`. The author-source revision `e76b7272d98c0359a57c42d49bf70d64e5b4c2ad` remains local: Owner deferred its publication under `minutes:00710c786ec8423e5dce0186#D1-D2`. The pinned v1 still contains its seven contrast failures, icon panel contrast labels and menu width wording; local adoption does not refresh that pin or publish the 4.0.0 producer. The formal catalogue remains 28 entries and five built-in locales; complete explicit product copy preserves all six TMS locale ids. Final package verification, independent acceptance and production delivery remain pending.
+Source commit: `e76b7272d98c0359a57c42d49bf70d64e5b4c2ad`. The public author Site is version 2; the four DS packages are unpublished 4.0.0 candidates. Owner adopted K1/K5/C01 under `minutes:6f3e0a9a1e07e3980867d82e#D1`; the exact source was published under `minutes:024a8b72088fac0970916091#D2` and read back under `minutes:59b6c4ee489ab487482ca51b#D1`. The source now carries the DS light suffix `#4b59be`, TMS dark suffix `#7aa0f5`, form shortcut ink-2, K5 ink/600 explanation, corrected solid-panel icon labels and Chinese-only menu-ratio wording. Thresholds remain text ≥4.5 and icon/edge ≥3. Historical v1 failures remain in their original evidence. The 28 formal entries, five built-in locales, native behavior and complete product-owned six-locale copy retain their existing scope. The S11 Owner visual decision covers commit `69e37265`; current integration checks, independent acceptance and DS production delivery are separate. Anonymous HTTP reads of the author Site returned Cloudflare 403; native source publication and the normal in-app browser readback are retained separately.
 
 ## Packages
 
@@ -28,4 +28,4 @@ Repository code: Apache-2.0, see [LICENSE](LICENSE). Font software retains SIL O
 Packaged 4.0.0 candidate tools, independent installation, and upgrade/rollback:
 [release candidate guide](docs/releases/4.0.0/README.md). The installed tool entry
 in that guide supersedes the source-only checker invocation for this packaged
-candidate. All artifacts remain local and unpublished.
+candidate. DS artifacts remain local and unpublished; the pinned author source v2 is public.

@@ -14,7 +14,9 @@ export interface AiReviewStatus {
     minute: string;
     authorSourceCommit: string;
     sourcePublication: string;
-    publicationHoldMinute: string;
+    publicationMinute: string;
+    publicationReadbackMinute: string;
+    priorPublicationHoldMinute: string;
   };
   adoptedSupport: {
     minute: string;
@@ -32,25 +34,22 @@ export function createAiConsumptionContract(candidate: AiCandidate, fontFiles: u
     standardSource: approvedSource.site, boards: approvedSource.boards, components: approvedApi,
     assets: { favicon: { productId: "design-system", variant: "tile-deep", sourceBoard: "04-brand", sourceSection: "C" }, fonts: fontFiles },
     implementationFidelity: {
-      formShortcut: { board: "06-inputs", selector: ".sw>kbd", role: "ink-3" },
+      formShortcut: { board: "06-inputs", selector: ".sw>kbd", role: "ink-2" },
       shellShortcut: { boards: ["07a-shell-upper", "07b-shell-lower"], selector: ".ts-srch kbd", role: "ink-2" },
       validation: "pending original batch-end checks",
     },
-    publishedStandardConflicts: [
-      "K1: published suffix text colors conflict with the 4.5 text threshold",
-      "S03-C01: published06 dark shortcut ink-3 has nominal wash/panel contrast 3.876922 below4.5;07 ink-2 is a separate published role",
-    ],
-    sourceWordingAmbiguities: ["K5: strong prose says no color change; explicit specimen and CSS use ink/600; implementation retains the actual sample"],
+    publishedStandardConflicts: [],
+    sourceWordingAmbiguities: [],
     publishedSourceLimitations: [
-      "Pinned v1 retains six K1 text contrast failures and one S03-C01 dark shortcut failure against the unchanged 4.5 threshold",
-      "03 icon panel contrast labels and 07b menu width wording retain their published-v1 bytes; the adopted author-source corrections are unpublished",
+      "Anonymous HTTP reads of the public Site returned Cloudflare 403; the native saved-source publication and normal in-app browser readback are retained separately",
     ],
     ...reviewStatus,
     preferenceStorage: { documentation: "local anonymous documentation theme; locale is part of the page URL", consumerObligation: "supply per-user per-product server preference adapter (07b L60)" },
     ownerVisualAcceptanceScope: "current package candidate",
     priorOwnerVisualAcceptance: {
-      minute: "minutes:d8848542e0a64a1e26d07aaf",
-      scope: "first Storybook portal layout at the recorded prior candidate",
+      minute: "minutes:024a8b72088fac0970916091#D1",
+      commit: "69e37265d0f5bfa766cb6f97f85aa3d289fb9abc",
+      scope: "S11 local candidate checklist; current source integration is not separately Owner-reviewed",
     },
     publication: "local-candidate-only", identity: bundle.identity,
     aiIndex: "ai/index.json", rules: bundle.rules,

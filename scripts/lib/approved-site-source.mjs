@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { APPROVED_SITE, APPROVED_BOARD_IDS, APPROVED_SOURCE_PINS } from "./approved-site-pins.mjs";
 
-export const SOURCE_REL = "docs/design/approved-site-v1";
+export const SOURCE_REL = "docs/design/approved-site-v2";
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 export const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 export const decodeHtml = (s) => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
@@ -50,7 +50,7 @@ export function readApprovedSource(root = ROOT, options = {}) {
 }
 
 // Engineering spellings for the exact values of the published token table (01 C).
-// There is no compatibility vocabulary and no theme-dependent suffix exception.
+// Brand suffix roles are extracted separately from the published lockup examples.
 export const CSS_VAR = Object.freeze({
   ...Object.fromEntries(["bg", "bg-2", "panel", "panel-2", "line", "line-2", "line-3", "line-ctl", "rule", "ink", "ink-2", "ink-3", "acc", "acc-2", "acc-3", "acc-bg", "acc-ul", "on-acc", "red", "red-bg", "red-bg-2", "ok", "warn", "bad", "bad-bg", "wash", "hover", "dis", "glass", "chrome", "av-bg", "av-ink", "knob"].map((k) => [`--${k}`, `--tcrn-color-${k}`])),
   "--s1": "--tcrn-elevation-s1", "--s2": "--tcrn-elevation-s2", "--s3": "--tcrn-elevation-s3", "--edge": "--tcrn-elevation-glass-edge", "--grain": "--tcrn-texture-grain-opacity", "--blend": "--tcrn-texture-grain-blend",
@@ -172,6 +172,34 @@ export function extractMarks(source) {
     const tintColor = /<rect[^>]*fill="([^"]+)"/.exec(tint.body)?.[1];
     const rest = colors.filter((c) => c !== deepColor);
     return { id, productId, name: names[id], word: id === "tms" || id === "ds" ? "TCRN" : names[id], ...(id === "tms" ? { suffix: "TMS" } : id === "ds" ? { suffix: "Design System" } : {}), font: id === "tms" || id === "ds" ? "sans" : "serif", palette: { deep: deepColor, bright: rest[0], tint: tintColor, ...(rest[1] ? { c3: rest[1], c4: rest[2] } : {}) }, colorBody: normalizeSvgBody(color.body), inkBody: normalizeSvgBody(mono.body), tileTintBody: normalizeSvgBody(tint.body), tileDeepBody: normalizeSvgBody(deep.body), taglines: Object.fromEntries(["zh-CN", "en", "ja", "ko", "fr"].map((l, i) => [l, row[i + 1]])), source: `04-brand/index.dc.html:${color.sourceLine}` };
+  });
+}
+
+export function extractBrandSuffixTokens(source) {
+  const board = source.board("04-brand");
+  const elements = sourceElements(board.html);
+  return extractMarks(source).filter(mark => mark.suffix).map(mark => {
+    const colors = { light: new Set(), dark: new Set() };
+    const lines = [];
+    for (const element of elements) {
+      if (element.tag !== "em") continue;
+      const text = /^<em\b[^>]*>([^<]*)<\/em>/.exec(board.html.slice(element.offset))?.[1];
+      if (text !== mark.suffix) continue;
+      let theme;
+      for (let ancestor = element.parent; ancestor; ancestor = ancestor.parent) {
+        const classes = (ancestor.attrs.class ?? "").split(/\s+/);
+        if (classes.includes("gp")) {
+          theme = classes.includes("night") ? "dark" : "light";
+          break;
+        }
+      }
+      const color = declarations(element.attrs.style ?? "").color;
+      if (!theme || !color) throw new Error(`Missing published suffix color ${mark.productId}`);
+      colors[theme].add(color);
+      lines.push(element.sourceLine);
+    }
+    if (colors.light.size !== 1 || colors.dark.size !== 1) throw new Error(`Ambiguous published suffix colors ${mark.productId}`);
+    return { key: `brand-suffix-${mark.productId}`, cssVar: `--tcrn-brand-suffix-${mark.productId}`, group: "brand", value: [...colors.light][0], dark: [...colors.dark][0], source: `04-brand/index.dc.html:${[...new Set(lines)].join(",")}` };
   });
 }
 // A small structural reader retains the actual source ancestry, rather than deduplicating

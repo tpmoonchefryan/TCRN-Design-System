@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,extractMarks,extractIcons,extractFontFaces,extractMatrixOccurrences,cssRule,normalizeSvgBody,decodeHtml,sha256 } from "./approved-site-source.mjs";
+import { ROOT,readApprovedSource,extractTokens,extractPackageBindings,extractBrandSuffixTokens,extractMarks,extractIcons,extractFontFaces,extractMatrixOccurrences,cssRule,normalizeSvgBody,decodeHtml,sha256 } from "./approved-site-source.mjs";
 import { APPROVED_SITE,APPROVED_BOARD_IDS } from "./approved-site-pins.mjs";
 import { listFiles } from "./generated-output.mjs";
 
@@ -9,20 +9,22 @@ export const OLD_MOTHER_SHA256="5f28f17c599c63a05a51c81be03f9ef7845299af1940ebe6
 export const OLD_MOTHER_GEOMETRY_SHA256="12704ec78903e1609d0bf0dcfbb833ad3a5f9d2a4827f823608fe9d27b2e2089";
 export const FORMAL_REVIEW_STATUS = Object.freeze({
   unconfirmedProposals: [],
-  proposalState: "owner-adopted; author source and producer remain unpublished",
+  proposalState: "owner-adopted; author source v2 published; producer-unpublished",
   proposalMinutes: {
     K1K5: "minutes:876fc874ed2380b3daddb0aa#D1-D4",
     C01: "minutes:3d37207504a1caf4af9aca05#D1-D4",
   },
   ownerClarificationMinute: "minutes:3244c7ac6adef4fc078d413e#D1-D4",
-  publicationRequest: "deferred-by-owner",
-  ownerVisualAcceptance: "not-performed",
+  publicationRequest: "author-source-published; producer-authorization-pending",
+  ownerVisualAcceptance: "current-integration-not-performed",
   adoptedAmendments: {
     ids: ["K1", "K5", "S03-C01"],
     minute: "minutes:6f3e0a9a1e07e3980867d82e#D1",
     authorSourceCommit: "e76b7272d98c0359a57c42d49bf70d64e5b4c2ad",
-    sourcePublication: "deferred-by-owner; local-candidate-only",
-    publicationHoldMinute: "minutes:00710c786ec8423e5dce0186#D1-D2",
+    sourcePublication: "published-v2; deployment-succeeded",
+    publicationMinute: "minutes:024a8b72088fac0970916091#D2",
+    publicationReadbackMinute: "minutes:59b6c4ee489ab487482ca51b#D1",
+    priorPublicationHoldMinute: "minutes:00710c786ec8423e5dce0186#D1-D2",
   },
   adoptedSupport: {
     minute: "minutes:6f3e0a9a1e07e3980867d82e#D2",
@@ -39,7 +41,7 @@ export const APPROVED_API_BOARDS=Object.freeze(publishedApiBoards);
 export function sourceIdentityIssues(actual,label="source"){return Object.entries(APPROVED_SITE).filter(([key,value])=>actual?.[key]!==value).map(([key])=>`${label}: wrong published ${key}`);}
 const read=(root,rel)=>fs.readFileSync(path.join(root,rel),"utf8");
 export async function compiled(root,rel){return import(`${pathToFileURL(path.join(root,rel)).href}?published-proof=${Date.now()}`);}
-export function checkSource(root=ROOT){const s=readApprovedSource(root);return {site:s.manifest.site,boardCount:s.boards.length,sourceFiles:s.manifest.files.length,fontFiles:s.manifest.fontFiles.length,sourceManifestSha256:sha256(read(root,"docs/design/approved-site-v1/source-manifest.json"))};}
+export function checkSource(root=ROOT){const s=readApprovedSource(root);return {site:s.manifest.site,boardCount:s.boards.length,sourceFiles:s.manifest.files.length,fontFiles:s.manifest.fontFiles.length,sourceManifestSha256:sha256(read(root,"docs/design/approved-site-v2/source-manifest.json"))};}
 export function formalApiContracts(source=readApprovedSource()){
  const locations=JSON.parse(fs.readFileSync(new URL('./api-source-lines.json',import.meta.url),'utf8'));
  return Object.fromEntries(Object.entries(locations).map(([name,{board,lines}])=>{
@@ -234,8 +236,11 @@ export async function checkTokens(root=ROOT){
   const token=await compiled(root,"packages/ui-tokens/dist/index.js");
   const light=token.createResolvedTokenMap("light"),dark=token.createResolvedTokenMap("dark");
   for(const row of expected.themed){if(light[row.cssVar]!==row.light||dark[row.cssVar]!==row.dark)issues.push(`Published theme value drift ${row.cssVar}`);}
-  const variables=new Set([...expected.themed,...expected.fixed,...bindings,...extractMarks(source).filter(m=>m.suffix).map(m=>({cssVar:`--tcrn-brand-suffix-${m.productId}`}))].map(t=>t.cssVar));
-  for(const expectedRow of [...expected.fixed,...bindings,...extractMarks(source).filter(m=>m.suffix).map(m=>({cssVar:`--tcrn-brand-suffix-${m.productId}`,value:m.palette.deep}))])if(token.tcrnTokens.find(t=>t.variable===expectedRow.cssVar)?.value!==expectedRow.value)issues.push(`Published fixed or bound value drift ${expectedRow.cssVar}`);
+  const variables=new Set([...expected.themed,...expected.fixed,...bindings,...extractBrandSuffixTokens(source)].map(t=>t.cssVar));
+  for(const expectedRow of [...expected.fixed,...bindings,...extractBrandSuffixTokens(source)])if(token.tcrnTokens.find(t=>t.variable===expectedRow.cssVar)?.value!==expectedRow.value)issues.push(`Published fixed or bound value drift ${expectedRow.cssVar}`);
+  for (const suffix of extractBrandSuffixTokens(source)) {
+    if (light[suffix.cssVar] !== suffix.value || dark[suffix.cssVar] !== suffix.dark) issues.push(`Published suffix theme drift ${suffix.cssVar}`);
+  }
   for(const row of token.tcrnTokens)if(!variables.has(row.variable))issues.push(`Unpublished emitted token ${row.variable}`);
   for(const variable of variables)if(!token.tcrnTokens.some(t=>t.variable===variable))issues.push(`Missing published role token ${variable}`);
   if(token.tcrnDeprecatedTokens.length)issues.push("Retired aliases are emitted by the current token registry");
@@ -257,14 +262,21 @@ export function publishedShortcutContexts(source=readApprovedSource()){
 export function checkContrast(root=ROOT){
   const source=readApprovedSource(root),tokens=extractTokens(source),themes={light:Object.fromEntries(tokens.themed.map(t=>[t.key,t.light])),dark:Object.fromEntries(tokens.themed.map(t=>[t.key,t.dark]))},issues=[],measurements=[];
   for(const [theme,values] of Object.entries(themes))for(const role of ["ink","ink-2","ink-3","acc","red","ok","warn","bad"])for(const carrier of ["bg","panel"]){const ratio=contrast(values[role],values[carrier]);measurements.push({theme,role,carrier,ink:values[role],fill:values[carrier],ratio,min:4.5});if(ratio<4.5)issues.push(`Text contrast ${theme}/${role}/${carrier} ${ratio.toFixed(2)} < 4.5`);}
-  for(const mark of extractMarks(source).filter(m=>m.suffix))for(const [theme,values] of Object.entries(themes))for(const carrier of ["bg","panel","hover"]){const surface=carrier==="hover"?values.bg:values[carrier],ratio=contrast(mark.palette.deep,values[carrier],surface);measurements.push({conflict:"K1",theme,role:`${mark.productId} suffix text`,carrier,ink:mark.palette.deep,fill:values[carrier],surface,ratio,min:4.5});if(ratio<4.5)issues.push(`K1 text contrast ${theme}/${mark.productId}/${carrier} ${ratio.toFixed(2)} < 4.5`);}
+  for (const suffix of extractBrandSuffixTokens(source)) for (const [theme, values] of Object.entries(themes)) for (const carrier of ["bg", "panel", "hover"]) {
+    const ink = theme === "dark" ? suffix.dark : suffix.value;
+    const surface = carrier === "hover" ? values.bg : values[carrier];
+    const ratio = contrast(ink, values[carrier], surface);
+    const productId = suffix.key.slice("brand-suffix-".length);
+    measurements.push({ conflict: "K1", theme, role: `${productId} suffix text`, carrier, ink, fill: values[carrier], surface, ratio, min: 4.5 });
+    if (ratio < 4.5) issues.push(`K1 text contrast ${theme}/${productId}/${carrier} ${ratio.toFixed(2)} < 4.5`);
+  }
   const shortcutContexts=publishedShortcutContexts(source);
   for(const context of shortcutContexts)for(const [theme,values] of Object.entries(themes)){
     const ink=values[/var\(--([\w-]+)\)/.exec(context.color)?.[1]],ratio=contrast(ink,values.wash,values.panel);
     measurements.push({conflict:'S03-C01',...context,theme,role:'shortcut text',state:'idle',carrier:'wash on panel',ink,fill:values.wash,surface:values.panel,ratio,min:4.5,method:'source-only nominal sRGB composition; not browser/grain measurement'});
     if(ratio<4.5)issues.push(`S03-C01 nominal ${context.board} ${theme}/idle shortcut ${ratio.toFixed(6)} < 4.5`);
   }
-  return {issues,measurements,shortcutContexts,thresholds:{text:4.5,icon:3,edge:3},sourceThresholdConflicts:["K1","S03-C01"],sourceWordingAmbiguities:["K5"],...FORMAL_REVIEW_STATUS};
+  return {issues,measurements,shortcutContexts,thresholds:{text:4.5,icon:3,edge:3},sourceThresholdConflicts:[...new Set(measurements.filter(row=>row.conflict&&row.ratio<row.min).map(row=>row.conflict))],sourceWordingAmbiguities:source.board("02-typography").html.includes("强调加字重不换色")?["K5"]:[],...FORMAL_REVIEW_STATUS};
 }
 export async function checkBrand(root=ROOT){const source=readApprovedSource(root),marks=extractMarks(source),icons=extractIcons(source),ui=await compiled(root,"packages/ui-react/dist/approved.js"),nav=await compiled(root,"packages/ui-react/dist/components/Navigation/Navigation.js"),issues=[];
   if(JSON.stringify(Object.keys(nav.tcrnProductLogoRegistry).sort())!==JSON.stringify(marks.map(m=>m.productId).sort()))issues.push("Product registry has an unapproved identity or misses a formal mark");
@@ -297,7 +309,7 @@ export function executableOutputText(text, relative, source) {
     if (!Object.hasOwn(APPROVED_BOARD_IDS, board)) continue;
     const content = rule.content;
     const expected = source.board(board).html;
-    if (content?.path === `docs/design/approved-site-v1/src/boards/${board}/index.dc.html` &&
+    if (content?.path === `docs/design/approved-site-v2/src/boards/${board}/index.dc.html` &&
         content.content === expected && content.sha256 === sha256(expected)) {
       content.content = "[exact pinned published normative quotation]";
     }

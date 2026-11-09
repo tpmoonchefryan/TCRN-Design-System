@@ -1,7 +1,7 @@
 // Test-only independent reading of the pinned, published HTML/CSS. No generated expected values.
 import { readFileSync } from "node:fs";
 export function publishedBoard(slug:string,kind:"index.dc.html"|"board.css"="index.dc.html"):string {
- return readFileSync(new URL(`../../../../docs/design/approved-site-v1/src/boards/${slug}/${kind}`,import.meta.url),"utf8");
+ return readFileSync(new URL(`../../../../docs/design/approved-site-v2/src/boards/${slug}/${kind}`,import.meta.url),"utf8");
 }
 export function normalizePublishedSvg(body:string,geometryOnly=false):string {
  return body.replace(/\s+vector-effect="[^"]*"/g,"").replace(/<(path|circle|ellipse|rect)([^>]*?)(?:\s*\/\s*>|>\s*<\/\1>)/g,(_m,tag:string,attrs:string)=>{

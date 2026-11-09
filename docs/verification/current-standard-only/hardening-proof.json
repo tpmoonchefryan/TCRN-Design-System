@@ -1,0 +1,66 @@
+{
+  "source": {
+    "site": {
+      "projectId": "appgprj_6ad4ec31ec7c8191aa3b577750b37a34",
+      "versionNumber": 2,
+      "versionId": "appgprj_6ad4ec31ec7c8191aa3b577750b37a34~appgver_d2ede1fba6088191ab19e40407436d67",
+      "deploymentId": "appgdep_6af139e94a488191b76843d9bd904deb",
+      "deploymentStatus": "succeeded",
+      "url": "https://tcrn-ds-visual-standards.zbnubhmldz3270.chatgpt.site",
+      "sourceCommit": "e76b7272d98c0359a57c42d49bf70d64e5b4c2ad",
+      "originalDocumentSha256": "6c8a9f442a59632744f4af97ae9ae66223197098e3b87f5506381a771211731d"
+    },
+    "boardCount": 8,
+    "sourceFiles": 28,
+    "fontFiles": 222,
+    "sourceManifestSha256": "995fde916b42255f8cecf5dd8e5bdc93b1e8b48dfc3e5fc5514b0a4e8371b63f"
+  },
+  "issues": [],
+  "candidateOutput": {
+    "issues": [],
+    "files": 338,
+    "manifestSha256": "ae634f6ac9c34fc88ee267bf92961a1dbbd79af11b6ed5118715485310656e8c"
+  },
+  "stories": 8,
+  "apis": 28,
+  "unconfirmedProposals": [],
+  "proposalState": "owner-adopted; author source v2 published; producer-unpublished",
+  "proposalMinutes": {
+    "K1K5": "minutes:876fc874ed2380b3daddb0aa#D1-D4",
+    "C01": "minutes:3d37207504a1caf4af9aca05#D1-D4"
+  },
+  "ownerClarificationMinute": "minutes:3244c7ac6adef4fc078d413e#D1-D4",
+  "publicationRequest": "author-source-published; producer-authorization-pending",
+  "ownerVisualAcceptance": "current-integration-not-performed",
+  "adoptedAmendments": {
+    "ids": [
+      "K1",
+      "K5",
+      "S03-C01"
+    ],
+    "minute": "minutes:6f3e0a9a1e07e3980867d82e#D1",
+    "authorSourceCommit": "e76b7272d98c0359a57c42d49bf70d64e5b4c2ad",
+    "sourcePublication": "published-v2; deployment-succeeded",
+    "publicationMinute": "minutes:024a8b72088fac0970916091#D2",
+    "publicationReadbackMinute": "minutes:59b6c4ee489ab487482ca51b#D1",
+    "priorPublicationHoldMinute": "minutes:00710c786ec8423e5dce0186#D1-D2"
+  },
+  "adoptedSupport": {
+    "minute": "minutes:6f3e0a9a1e07e3980867d82e#D2",
+    "state": "owner-adopted; producer-unpublished",
+    "patterns": [
+      "pattern/customer-list-boundary",
+      "pattern/product-locales"
+    ],
+    "formalComponents": 28,
+    "builtInLocales": 5,
+    "productLocales": [
+      "en",
+      "zh_HANS",
+      "zh_HANT",
+      "ja",
+      "ko",
+      "fr"
+    ]
+  }
+}

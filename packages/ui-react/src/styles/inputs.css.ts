@@ -58,10 +58,7 @@ export const inputsCss02 = `
 .tcrn-input.tcrn-search-input__control::placeholder {
   color: var(--tcrn-color-ink-2);
 }
-/* Published06 .sw>kbd uses ink-3. Published07 .ts-srch kbd is a separate shell
-   context, selected by ProductShellSearch's existing carrier in shell.css.ts.
-   The C01 ink-2 direction is Owner-adopted in minutes:6f3e0a9a1e07e3980867d82e#D1; its author source remains unpublished and the v1 pin stays unchanged
-   (TCRN-DS-MIN-20261104-VISUAL-BEFORE-STANDARD D1-D4). */
+/* Published v2 form and shell shortcut text use ink-2; their typography and carriers remain distinct. */
 .tcrn-search-input__shortcut {
   position: absolute;
   inset-block-start: 50%;
@@ -72,7 +69,7 @@ export const inputsCss02 = `
   padding: 0 var(--tcrn-space-1);
   border: 1px solid var(--tcrn-color-line-2);
   border-radius: 4px;
-  color: var(--tcrn-color-ink-3);
+  color: var(--tcrn-color-ink-2);
   font-family: var(--tcrn-type-family-mono);
   font-size: 10px;
   line-height: 14px;

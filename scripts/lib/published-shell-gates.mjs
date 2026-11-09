@@ -216,7 +216,8 @@ export function judgeShellG18(facts,source){
   fail('G06',close(m.panel.y-m.brand.bottom,e.gap)&&close(m.panel.width,e.panelW),'menu continuation6 and width952');
   fail('G06',!!d.drop&&!!d.dropTrigger&&close(d.drop.y-d.dropTrigger.bottom,e.gap)&&close(d.drop.x,d.dropTrigger.x)&&close(d.drop.width,e.dropW)&&close(d.dropSearch?.height,e.search),'drop aligned with trigger +6, width240/search28');
   fail('G06',d.drop.padding?.every(v=>close(v,6))&&d.dropRows?.length>0&&d.dropRows.every(r=>close(r.height,32))&&close(d.dropText?.x-d.drop.x,16),'drop padding6, row32, text start16');
-  if(d.drop&&d.dropTrigger)fail('G06',d.drop.width/d.dropTrigger.width>=3&&d.drop.width/d.dropTrigger.width<=4,'drop width is 3–4 times trigger width');
+  // Published v2 describes this ratio only for its Chinese specimen; other locales retain natural trigger widths.
+  if(facts.locale==='zh-CN'&&d.drop&&d.dropTrigger)fail('G06',d.drop.width/d.dropTrigger.width>=3&&d.drop.width/d.dropTrigger.width<=4,'Chinese specimen drop width is 3–4 times trigger width');
   fail('G07',close(m.panel.bottom-m.pbar.y,52),'footer extent52 including bottom padding');
   // The painted divider is centred in its top border. Its outer border-box edge
   // is half a pixel away for the actual 1px rule; the ±0.5 contract stays intact.

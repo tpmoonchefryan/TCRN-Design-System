@@ -1,19 +1,16 @@
 # 4.0.0 local release candidate
 
-The three library packages and the companion `@tcrn/ds-consumer-tools` are 4.0.0
-local candidates. The visual standard remains the pinned published Site v1,
-commit `a643d4cfcd239f6f81b1715ded6a63caead9d619`. The formal catalogue remains 28
-families; root engineering and verification exports are supporting APIs. The Owner
-adopted the K1/K5/S03-C01 revision and customer-list support candidate under
-`minutes:6f3e0a9a1e07e3980867d82e` D1–D2. Their new author source still requires
-actual publication and producer integration; this distribution preparation keeps
-the existing source pin. The A+C local combination is prepared, while final
-source refresh and production integration remain pending. Owner deferred the
-actual author-source publication under
-`minutes:00710c786ec8423e5dce0186#D1-D2`; retain the local candidate. The v1 pin
-still has its seven contrast failures, icon panel contrast labels and menu width
-wording. The adopted support preserves all six product locale ids through complete
-explicit copy and does not add a sixth DS built-in locale.
+The three library packages and companion `@tcrn/ds-consumer-tools` are unpublished
+4.0.0 local candidates. The pinned author source is public Site v2, exact commit
+`e76b7272d98c0359a57c42d49bf70d64e5b4c2ad`, published under
+`minutes:024a8b72088fac0970916091#D2` with readback under
+`minutes:59b6c4ee489ab487482ca51b#D1`. Current source inputs, generated packages,
+portal, official Storybook and AI artifacts share that identity. K1/K5/C01,
+solid-panel icon labels and Chinese-only menu-ratio wording come from that source.
+The formal catalogue remains 28 families and five built-in locales. Product-owned
+copy preserves all six existing TMS locale ids. The prior S11 visual acceptance
+covers `69e37265`, and is separate from current integration verification and the
+original final independent acceptance.
 The library declares React/ReactDOM `^18.3.0 || ^19.0.0`. The installation probe
 pins 18.3.1, 19.1.0 and the current TMS runtime baseline 19.2.6; it does not prove
 all versions in that range or adoption by the actual TMS application.
@@ -123,7 +120,6 @@ in the existing public GitHub repository's Releases and the existing connected
 Vercel project. No npm registry or GitHub Pages project is required. See
 [the public delivery procedure](public-distribution.md) for the combined build,
 pnpm 11.3.0 verified-download installation, exact internal dependency overrides, release order,
-readback and rollback. Local artifacts remain unpublished candidates. Actual
-source publication, producer integration, required final checks, publication
-authorization, remote release/deployment readback, real TMS integration and the
-original final independent acceptance remain pending.
+readback and rollback. Local artifacts remain unpublished candidates. Author source publication is complete. DS publication authorization, remote
+release/deployment readback, actual TMS integration and the original final
+independent acceptance remain separate pending work.

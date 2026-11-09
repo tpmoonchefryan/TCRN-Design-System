@@ -1,7 +1,8 @@
-// Current tokens are an engineering projection of the eight published Sites v1 boards.
+// Current tokens are an engineering projection of the eight pinned published Site boards.
 // The source generator validates the fixed published identities and byte pins before extracting values.
 import { tcrnGplusBrandTokens, tcrnGplusFixedTokens, tcrnGplusThemedTokens, tcrnGplusThemeSelectors, tcrnGplusTypeTokens } from "./gplus-tokens.generated.js";
 export { tcrnGplusBrandTokens, tcrnGplusFixedTokens, tcrnGplusThemedTokens, tcrnGplusThemeSelectors } from "./gplus-tokens.generated.js";
+import type { TcrnGplusBrandToken } from "./gplus-tokens.generated.js";
 export type { TcrnGplusFixedToken, TcrnGplusThemedToken } from "./gplus-tokens.generated.js";
 export type TokenGroup = "color"|"selection"|"typography"|"space"|"radius"|"elevation"|"motion"|"zIndex"|"container"|"texture"|"control"|"icon"|"brand";
 export type TokenScope = "theme"|"fixed";
@@ -28,7 +29,7 @@ function tokenGroup(variable: string): TokenGroup {
 }
 function asVariable(value:string):TokenVariable { if(!value.startsWith("--tcrn-")) throw new Error(`Invalid package variable ${value}`);return value as TokenVariable; }
 const gplusThemedEntries:TokenEntry[]=tcrnGplusThemedTokens.map(t=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.light,group:tokenGroup(t.cssVar),description:t.source??"Published 01 token table"},dark:t.dark}));
-const gplusFixedEntries:TokenEntry[]=[...tcrnGplusFixedTokens,...tcrnGplusBrandTokens,...tcrnGplusTypeTokens].map(t=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.value,group:tokenGroup(t.cssVar),description:t.source??"Published board value"}}));
+const gplusFixedEntries:TokenEntry[]=[...tcrnGplusFixedTokens,...tcrnGplusBrandTokens,...tcrnGplusTypeTokens].map((t:TcrnGplusBrandToken)=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.value,group:tokenGroup(t.cssVar),description:t.source??"Published board value"},dark:t.dark}));
 const allEntries:TokenEntry[]=[...gplusThemedEntries,...gplusFixedEntries];
 function referencedVariables(value: string): string[] {
   return [...value.matchAll(/var\(\s*(--[a-z0-9-]+)/g)].map((match) => match[1]);

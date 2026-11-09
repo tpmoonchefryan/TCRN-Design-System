@@ -36,7 +36,7 @@
 <small>h4 · sans 13/20 · 600</small><h4 class="h4" data-cell="h4-l" data-kind="text" data-expect="18.29">通知偏好 Notification preferences</h4>
 </div></div></div>
 
-<div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调加字重不换色；元数据与说明用三级墨；阅读体 14/22</span></h6>
+<div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调采用主墨 ink 与600字重；元数据与说明用三级墨；阅读体 14/22</span></h6>
 <div class="paper"><div class="spec">
 <small>body · 13/20 · ink-2</small><p class="tx" data-cell="body-l" data-kind="text" data-expect="8.58">项目「季度复盘」已有 12 位成员，3 人待邀请。邀请邮件会在 7 天内送达，之后链接失效。</p>
 <small>strong · 13/20 · 600 ink</small><p class="tx strong" data-cell="strong-l" data-kind="text" data-expect="18.29">删除后 30 天内可从回收站恢复，之后永久删除。</p>
@@ -47,7 +47,7 @@
 </div></div>
 <div class="on-canvas"><div class="spec">
 <small>同四种 · 落在画布上</small><p class="tx" data-cell="body-canvas-l" data-kind="text" data-expect="7.39">正文落在画布色上：顶带固定项、页脚与空状态说明会用到。</p>
-<small></small><p class="tx strong" data-cell="strong-canvas-l" data-kind="text" data-expect="15.75">强调仍是同一墨色。</p>
+<small></small><p class="tx strong" data-cell="strong-canvas-l" data-kind="text" data-expect="15.75">强调采用主墨 ink 与600字重。</p>
 <small></small><p class="tx meta" data-cell="meta-canvas-l" data-kind="text" data-expect="4.86">元数据 · 2 分钟前</p>
 <small></small><p class="tx">链接 <a class="lnk" href="#d" data-cell="link-canvas-l" data-kind="text" data-expect="5.47">查看项目</a></p>
 </div></div></div>
@@ -112,7 +112,7 @@
 <small>h4 · sans 13/20 · 600</small><h4 class="h4" data-cell="h4-n" data-kind="text" data-expect="14.38">通知偏好 Notification preferences</h4>
 </div></div></div>
 
-<div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调加字重不换色；元数据与说明用三级墨；阅读体 14/22</span></h6>
+<div class="blk"><h6>Text · 五种 <span>正文 13/20 默认次墨；强调采用主墨 ink 与600字重；元数据与说明用三级墨；阅读体 14/22</span></h6>
 <div class="paper"><div class="spec">
 <small>body · 13/20 · ink-2</small><p class="tx" data-cell="body-n" data-kind="text" data-expect="7.23">项目「季度复盘」已有 12 位成员，3 人待邀请。邀请邮件会在 7 天内送达，之后链接失效。</p>
 <small>strong · 13/20 · 600 ink</small><p class="tx strong" data-cell="strong-n" data-kind="text" data-expect="14.38">删除后 30 天内可从回收站恢复，之后永久删除。</p>
@@ -123,7 +123,7 @@
 </div></div>
 <div class="on-canvas"><div class="spec">
 <small>同四种 · 落在画布上</small><p class="tx" data-cell="body-canvas-n" data-kind="text" data-expect="7.70">正文落在画布色上：顶带固定项、页脚与空状态说明会用到。</p>
-<small></small><p class="tx strong" data-cell="strong-canvas-n" data-kind="text" data-expect="15.31">强调仍是同一墨色。</p>
+<small></small><p class="tx strong" data-cell="strong-canvas-n" data-kind="text" data-expect="15.31">强调采用主墨 ink 与600字重。</p>
 <small></small><p class="tx meta" data-cell="meta-canvas-n" data-kind="text" data-expect="4.89">元数据 · 2 分钟前</p>
 <small></small><p class="tx">链接 <a class="lnk" href="#d" data-cell="link-canvas-n" data-kind="text" data-expect="8.99">查看项目</a></p>
 </div></div></div>
@@ -218,7 +218,7 @@
 
 <div class="sec"><h3><b>E</b>消费方须提供什么 · 何时用与不用 <span>每件一句话摘要在前</span></h3><div class="cols3">
 <div class="box"><h4>Heading <small>level 1–4 · visualLevel 1–4</small></h4><p class="lead">一句话：标签级别由 <code>level</code> 定，外观由 <code>visualLevel</code> 定，1 至 3 级衬线 400、4 级怪诞体 600，一律单行截断。</p><ul><li><b>须提供</b>：文本 children；<code>level</code>（默认 2）；需要和文档结构不同的外观时给 <code>visualLevel</code>。</li><li><b>容器</b>：由页头、区段、卡片提供宽度；标题自己不折行，装不下截断加 title（C7）。</li><li><b>用</b>：页标题 h1/2、区段 h3、卡片与设置行 h4。</li><li><b>不用</b>：表头与指标标签（用 caps 样式）；按钮与导航项文字。</li></ul></div>
-<div class="box"><h4>Text <small>size body | reading | meta | caption · tone default | strong · variant numeral | caps</small></h4><p class="lead">一句话：段落文本，13/20 次墨为默认；强调只加字重不换色，说明文字用三级墨。</p><ul><li><b>须提供</b>：children；可选 <code>size</code>、<code>tone</code>、<code>variant</code>（现包只有一个 <code>Text</code> 类；三个 prop 为本批新增，Owner 2026-10-11 定，默认值不变）。</li><li><b>容器</b>：可折行，由父级定宽；表格单元内不用 Text，用单元自身样式。</li><li><b>用</b>：说明、帮助、空状态、通知正文。</li><li><b>不用</b>：标题、标签、编号。</li></ul></div>
+<div class="box"><h4>Text <small>size body | reading | meta | caption · tone default | strong · variant numeral | caps</small></h4><p class="lead">一句话：段落文本，13/20 次墨为默认；强调采用主墨 ink 与600字重，说明文字用三级墨。</p><ul><li><b>须提供</b>：children；可选 <code>size</code>、<code>tone</code>、<code>variant</code>（现包只有一个 <code>Text</code> 类；三个 prop 为本批新增，Owner 2026-10-11 定，默认值不变）。</li><li><b>容器</b>：可折行，由父级定宽；表格单元内不用 Text，用单元自身样式。</li><li><b>用</b>：说明、帮助、空状态、通知正文。</li><li><b>不用</b>：标题、标签、编号。</li></ul></div>
 <div class="box"><h4>Highlight <small>text · query · caseSensitive · markClassName</small></h4><p class="lead">一句话：把 <code>query</code> 在 <code>text</code> 里的命中包成 mark，只加 8% 青洗底；字重、字距、字号、内距全部不变，命中前后的排版与未命中时逐像素相同。</p><ul><li><b>须提供</b>：<code>text</code> 字符串与 <code>query</code>；query 为空时原样输出。</li><li><b>容器</b>：行内；在选中行与表格单元里同一规则，不另配色。</li><li><b>用</b>：搜索结果、过滤命中、命令面板。</li><li><b>不用</b>：强调语气（用 strong）；状态（用点加字）。</li></ul></div>
 <div class="box"><h4>numeral <small>新样式 · Text 的 variant 值（已定）</small></h4><p class="lead">一句话：数字用 Source Serif 4 300 等宽数字，单位进 <code>small</code> 槽缩小拉距；只给指标与金额。</p><ul><li><b>须提供</b>：数值文本；单位放在 unit 槽；行内用 inl（16/20 400）。</li><li><b>用</b>：指标、金额、席位、计数。</li><li><b>不用</b>：编号与时间（mono）、表格里的普通数字（正文）。</li></ul></div>
 <div class="box"><h4>caps <small>新样式 · Text 的 variant 值（已定）</small></h4><p class="lead">一句话：11/16 500、字距 .14em、三级墨；区段编号前缀用等宽。</p><ul><li><b>须提供</b>：短标签文本；可选编号前缀。</li><li><b>用</b>：区段标题、表头、指标标签、页头副标。</li><li><b>不用</b>：可点击元素的文字；超过四个词的句子。</li></ul></div>

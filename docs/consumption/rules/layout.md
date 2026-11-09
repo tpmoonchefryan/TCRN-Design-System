@@ -2,7 +2,7 @@
 
 This producer rule records the Owner's content-width requirement from
 `minutes:8631ab5a9252dbab2db84fda#D2`. It adds executable consumption guidance;
-it changes neither the pinned Site v1 identity nor any formal token value.
+it changes neither the pinned Site v2 identity nor any formal token value.
 
 Button, LinkButton, ClipboardCopyButton and ButtonGroup use content width. Text,
 icons, existing token gaps and the two token insets determine the width. A parent

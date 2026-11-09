@@ -2,12 +2,12 @@
   "schemaVersion": "tcrn.approved-site-source.v1",
   "site": {
     "projectId": "appgprj_6ad4ec31ec7c8191aa3b577750b37a34",
-    "versionNumber": 1,
-    "versionId": "appgprj_6ad4ec31ec7c8191aa3b577750b37a34~appgver_d33d707bc1308191af0e341e58c29479",
-    "deploymentId": "appgdep_6ad4f5b64a648191b49fa862b3d9e365",
+    "versionNumber": 2,
+    "versionId": "appgprj_6ad4ec31ec7c8191aa3b577750b37a34~appgver_d2ede1fba6088191ab19e40407436d67",
+    "deploymentId": "appgdep_6af139e94a488191b76843d9bd904deb",
     "deploymentStatus": "succeeded",
-    "url": "https://tcrn-ds-visual-standards.honestfawn3.chatgpt.site",
-    "sourceCommit": "a643d4cfcd239f6f81b1715ded6a63caead9d619",
+    "url": "https://tcrn-ds-visual-standards.zbnubhmldz3270.chatgpt.site",
+    "sourceCommit": "e76b7272d98c0359a57c42d49bf70d64e5b4c2ad",
     "originalDocumentSha256": "6c8a9f442a59632744f4af97ae9ae66223197098e3b87f5506381a771211731d"
   },
   "boards": [
@@ -112,8 +112,8 @@
     },
     {
       "path": "src/boards/02-typography/index.dc.html",
-      "bytes": 49991,
-      "sha256": "99d92c0bbe617e49c93b62707d8a3414a746f74064be2af159cfd53a143e6927"
+      "bytes": 50043,
+      "sha256": "6d3b02974d1442634739fba8ae28a27fb16e766f2cc3186cc451875ccf47515d"
     },
     {
       "path": "src/boards/02-typography/board.css",
@@ -128,7 +128,7 @@
     {
       "path": "src/boards/03-icons/index.dc.html",
       "bytes": 113374,
-      "sha256": "da0abde9a671c85f35dcbcb981f016abc6caa26bf3f7aa34b47a749cf731d7e1"
+      "sha256": "97d50b6c9c309db9ce139a9642d0c28c62d884e4fd0e98d63ffceb981bb26674"
     },
     {
       "path": "src/boards/03-icons/board.css",
@@ -142,8 +142,8 @@
     },
     {
       "path": "src/boards/04-brand/index.dc.html",
-      "bytes": 82839,
-      "sha256": "7a3db9d6bb24c80a8f628fee3ccf2af976270b16e4c182a91df884af92b17ae5"
+      "bytes": 82833,
+      "sha256": "40b6b30f8709d8f13cb5f1909911fdf8783d42d99aac1dd05435101b5d52f2af"
     },
     {
       "path": "src/boards/04-brand/board.css",
@@ -178,7 +178,7 @@
     {
       "path": "src/boards/06-inputs/board.css",
       "bytes": 26108,
-      "sha256": "6db576960e1d4c192fb05cbd59d6f1019b39ac222c0f488752a4a1efc84bfcd9"
+      "sha256": "7125626487003667dcf135cac040326a582fb63a8eedbac9cc71100ba4c2bd17"
     },
     {
       "path": "src/boards/06-inputs/component.js",
@@ -187,8 +187,8 @@
     },
     {
       "path": "src/boards/07a-shell-upper/index.dc.html",
-      "bytes": 166890,
-      "sha256": "b8f6cb5a95f2ea742756ecf66cde7262b31a56fd53c737e5942191fb82515265"
+      "bytes": 166889,
+      "sha256": "21b803aa4bf938bc66e956bd487b39fbe76f0e8c8d9c210bfaf6b92483948a6e"
     },
     {
       "path": "src/boards/07a-shell-upper/board.css",
@@ -202,8 +202,8 @@
     },
     {
       "path": "src/boards/07b-shell-lower/index.dc.html",
-      "bytes": 79505,
-      "sha256": "cea64341db6ffaf791190efc42f8f1226a3d369f2ffe66ab4d15c2456fce0946"
+      "bytes": 79625,
+      "sha256": "cad83aab5c53df23e6477e3bc9c4e49f0ec465061e2cc161b3b58cbb282ec26f"
     },
     {
       "path": "src/boards/07b-shell-lower/board.css",

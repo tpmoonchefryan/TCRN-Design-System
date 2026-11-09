@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { compareTokenThemeBlocks, createCssVariables, createResolvedTokenMap, createThemeCssVariables, createTokenMap, findDeprecatedTokenUsages, parseTokenCssBlocks, tcrnCoarsePointerTokens, tcrnDarkThemeTokens, tcrnDeprecatedTokenAliases, tcrnDeprecatedTokens, tcrnGplusFixedTokens, tcrnGplusThemedTokens, tcrnTokenCss, tcrnTokenStylesheet, tcrnTokens, type DesignToken } from "./index.js";
 
 // The independent input is the pinned, published CSS, not another generated registry.
-const rawCss = readFileSync(new URL("../../../docs/design/approved-site-v1/src/boards/01-tokens/board.css", import.meta.url), "utf8");
+const rawCss = readFileSync(new URL("../../../docs/design/approved-site-v2/src/boards/01-tokens/board.css", import.meta.url), "utf8");
 function rawBlock(selector: string) {
   const start = rawCss.indexOf(`${selector}{`);
   assert.ok(start >= 0, selector);
@@ -38,10 +38,10 @@ test("retired compatibility vocabulary cannot enter the current package sheet", 
   assert.deepEqual(findDeprecatedTokenUsages("color:var(--tcrn-color-ink)"),[]);
 });
 
-test("K1 direction is decided but unpublished: formal suffix bytes and contrast threshold remain", () => {
+test("K1 published suffix text colors vary by theme without changing the SVG palette", () => {
   assert.equal(light["--tcrn-brand-suffix-tms"],"#2c63c8");
-  assert.equal(resolvedDark["--tcrn-brand-suffix-tms"],"#2c63c8");
-  assert.equal(light["--tcrn-brand-suffix-design-system"],"#6577f3");
+  assert.equal(resolvedDark["--tcrn-brand-suffix-tms"],"#7aa0f5");
+  assert.equal(light["--tcrn-brand-suffix-design-system"],"#4b59be");
   assert.equal(resolvedDark["--tcrn-brand-suffix-design-system"],"#6577f3");
   assert.equal("--tcrn-brand-suffix-design-system-interactive" in light,false);
 });
@@ -71,7 +71,7 @@ test("light subtrees rebind all theme values and dark blocks have identical name
 
 test("all actual package dependencies resolve in both themes, including the source-local paper radius", () => {
   assert.equal(tcrnTokens.length,125);
-  const shellCss=readFileSync(new URL("../../../docs/design/approved-site-v1/src/boards/07b-shell-lower/board.css",import.meta.url),"utf8");
+  const shellCss=readFileSync(new URL("../../../docs/design/approved-site-v2/src/boards/07b-shell-lower/board.css",import.meta.url),"utf8");
   const localRadius=/\.scr\.ts\{[^}]*--paper-r:([^;}]*)/.exec(shellCss)?.[1];
   assert.ok(localRadius);
   for(const values of [resolvedLight,resolvedDark]) {
