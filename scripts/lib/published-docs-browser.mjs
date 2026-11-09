@@ -1048,6 +1048,9 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
      issues.push(...touch.issues);observations.push(...touch.observations);
     }finally{await context.close();}
    }
+   // Navigation exercises can reveal more font faces after the route's initial
+   // readiness. Finish them before the next locale leaves this document.
+   if(entry==='manager')await page.evaluate(()=>document.fonts.ready);
   }
   if(requests.some(url=>!url.startsWith(base)))issues.push(`${entry}: resource request escaped actual local output closure`);
   issues.push(...failures.map(f=>`${entry}: resource failure ${JSON.stringify(f)}`),...errors.map(e=>`${entry}: browser error ${e}`));
