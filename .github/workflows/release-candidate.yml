@@ -24,6 +24,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - name: Run the final source's required repository checks
+        # Root build supplies static docs and Manager before the browser checks.
         env:
           TCRN_BUILD_TRASH: ${{ runner.temp }}/trash-release-candidate
         run: pnpm verify
@@ -42,3 +43,10 @@ jobs:
             ${{ runner.temp }}/release-candidate/SHA256SUMS
             ${{ runner.temp }}/release-candidate/release-manifest.json
             apps/storybook/distribution-static/
+      - name: Retain executed verification reports even after a failed check
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-reports-${{ github.sha }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          path: docs/verification/generated/

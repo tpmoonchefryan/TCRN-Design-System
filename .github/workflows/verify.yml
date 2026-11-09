@@ -3,7 +3,8 @@
 # (TCRN-DS-STORY-133 GWT3). The steps follow the local run: pnpm 10.12.1 through corepack,
 # a frozen-lockfile install, Playwright's Chromium for the browser gates, then `pnpm verify`.
 # verify itself decides what runs and in which order (root package.json); this file adds no
-# gate, skip switch or report write of its own.
+# gate or skip switch. Root build supplies both static docs and Manager before the
+# browser checks. Executed reports are retained separately from tracked snapshots.
 
 name: verify
 
@@ -61,3 +62,10 @@ jobs:
         # boards with --fixtures, then on the package shell stories), so the shell gate is
         # required on every push and pull request through this step.
         run: pnpm verify
+      - name: Retain executed verification reports even after a failed check
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-reports-${{ github.sha }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          path: docs/verification/generated/

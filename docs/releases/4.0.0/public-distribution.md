@@ -17,7 +17,7 @@ identity. The source hold and v1 conflicts remain historical records. DS archive
 combined documentation and delivery material are local candidates. No push,
 tag, remote Release or Vercel deployment is performed by this preparation.
 
-## Build one documentation output
+## Verify, build and retain one candidate
 
 Run the repository's pnpm 10.12.1 on Node 24. Resolve the temporary trash directory
 from the checkout before running scripts. Existing generated outputs are reconciled
@@ -26,11 +26,30 @@ through that directory under the normal repository contract.
 ```sh
 export TCRN_BUILD_TRASH="$(mktemp -d "${TMPDIR:-/tmp}/trash-ds-build.XXXXXX")"
 corepack pnpm@10.12.1 install --frozen-lockfile
+corepack pnpm@10.12.1 exec playwright install chromium
+corepack pnpm@10.12.1 run verify
 corepack pnpm@10.12.1 public-docs:vercel-build
 corepack pnpm@10.12.1 pack:release-candidate --destination <new-absolute-directory>
 ```
 
-`vercel.json` selects that command and `apps/storybook/distribution-static`.
+Start from the committed source intended for delivery. `verify` performs the full
+existing check chain; its root `build` creates the static portal and official
+Manager before browser proofs consume either output. No prebuilt output is needed.
+On Linux, install Chromium with `--with-deps`, as both checked-in workflows do.
+
+The scan and final hardening proof retain each executed result in a new directory
+under `docs/verification/generated/`. Each `report.json` records its generation
+instant, actual Git commit/dirty state and result. This ignored output directory
+is excluded from the source scan; the two tracked report snapshots remain
+historical and are never rewritten by these commands. Keep the generated reports
+with the raw command output, including failed results. Both workflows upload these
+reports even when a later check fails. No report restoration or Git cleanup is
+part of release preparation. Read `git status --porcelain=v1` before verification
+and after packing; a clean source must stay clean. Other source changes remain
+visible to the normal metadata writers and must be resolved before selecting a
+clean release candidate.
+
+`vercel.json` selects `public-docs:vercel-build` and `apps/storybook/distribution-static`.
 The portal owns `/`; the official Manager owns `/storybook/`, including
 `/storybook/iframe.html` and its own relative assets and fonts. The portal's
 Storybook link opens that route. There is no SPA fallback that would disguise

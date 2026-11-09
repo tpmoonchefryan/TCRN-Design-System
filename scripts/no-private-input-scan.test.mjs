@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
@@ -21,7 +21,7 @@ test("scan command fails closed when a file is skipped", t => {
   });
 
   assert.equal(result.status, 1);
-  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  const receipt = JSON.parse(result.stdout);
   assert.equal(receipt.ok, false);
   assert.equal(receipt.hits.length, 0);
   assert.equal(receipt.skippedFiles.length, 1);
@@ -40,7 +40,7 @@ test("scan command records binary visual receipts without failing text scan", t 
   });
 
   assert.equal(result.status, 0);
-  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  const receipt = JSON.parse(result.stdout);
   assert.equal(receipt.ok, true);
   assert.equal(receipt.hits.length, 0);
   assert.equal(receipt.skippedFiles.length, 0);
@@ -60,7 +60,7 @@ test("scan command records Storybook visual proof binary receipts without failin
   });
 
   assert.equal(result.status, 0);
-  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  const receipt = JSON.parse(result.stdout);
   assert.equal(receipt.ok, true);
   assert.equal(receipt.hits.length, 0);
   assert.equal(receipt.skippedFiles.length, 0);
@@ -80,7 +80,7 @@ test("scan command ignores local Gemini candidate scratch space", t => {
   });
 
   assert.equal(result.status, 0);
-  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  const receipt = JSON.parse(result.stdout);
   assert.equal(receipt.ok, true);
   assert.equal(receipt.hits.length, 0);
   assert.equal(receipt.skippedFiles.length, 0);
@@ -107,7 +107,7 @@ test("scan records a real JSX key expression separately from environment assignm
   writeFileSync(join(root, "component.tsx"), "export const Example = () => <App\n  key={page}\n/>;\n");
   const result = spawnSync(process.execPath, [scanScript], { cwd: root, encoding: "utf8" });
   assert.equal(result.status, 0);
-  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  const receipt = JSON.parse(result.stdout);
   assert.equal(receipt.hits.length, 0);
   assert.equal(receipt.sourceSyntaxExclusions.length, 1);
   assert.equal(receipt.sourceSyntaxExclusions[0].reason, "jsx_key_expression_attribute");
@@ -120,8 +120,49 @@ test("JSX classification still rejects lowercase, braced and neighboring real en
   writeFileSync(join(root, "component.tsx"), "export const Example = () => <App\n  key={page}\n/>;\nKEY=redacted\nkey=redacted\n");
   const result = spawnSync(process.execPath, [scanScript], { cwd: root, encoding: "utf8" });
   assert.equal(result.status, 1);
-  const receipt = JSON.parse(readFileSync(join(root, "docs/verification/internal-alpha/no-overclaim-scan.json"), "utf8"));
+  const receipt = JSON.parse(result.stdout);
   assert.equal(receipt.hits.filter(hit => hit.rule === "env-assignment").length, 4);
   assert.equal(receipt.sourceSyntaxExclusions.length, 1);
   assert.ok(receipt.negativeFixtureChecks.every(check => check.passed));
+});
+
+
+test("executed scans retain distinct source-bound reports without rewriting historical snapshots", t => {
+  const root = mkdtempSync(join(tmpdir(), "tcrn-scan-retention-"));
+  t.after(() => rmSync(root, { recursive: true }));
+  const git = (...args) => execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
+  git("init", "--quiet");
+  writeFileSync(join(root, ".gitignore"), "/docs/verification/generated/\n");
+  writeFileSync(join(root, "input.txt"), "clean input\n");
+  const snapshot = join(root, "docs/verification/internal-alpha/no-overclaim-scan.json");
+  mkdirSync(join(root, "docs/verification/internal-alpha"), { recursive: true });
+  writeFileSync(snapshot, '{"historical":true}\n');
+  git("add", ".");
+  git("-c", "user.name=tpmoonchefryan", "-c", "user.email=253097889+tpmoonchefryan@users.noreply.github.com", "commit", "--quiet", "-m", "Record scan fixture");
+  const commit = git("rev-parse", "HEAD");
+  const run = () => spawnSync(process.execPath, [scanScript], { cwd: root, encoding: "utf8" });
+  const first = run();
+  assert.equal(first.status, 0, first.stderr);
+  const reports = join(root, "docs/verification/generated");
+  const firstPath = join(reports, readdirSync(reports)[0], "report.json");
+  const firstBytes = readFileSync(firstPath);
+  const firstReport = JSON.parse(firstBytes);
+  assert.deepEqual(firstReport.source, { commit, dirty: false });
+  assert.ok(Number.isFinite(Date.parse(firstReport.generatedAt)));
+  assert.deepEqual(firstReport.result, JSON.parse(first.stdout));
+  assert.equal(git("status", "--porcelain=v1"), "");
+
+  writeFileSync(join(root, "input.txt"), "changed input\n");
+  const second = run();
+  assert.equal(second.status, 0, second.stderr);
+  const directories = readdirSync(reports);
+  assert.equal(directories.length, 2);
+  assert.deepEqual(readFileSync(firstPath), firstBytes);
+  const secondPath = directories.map(dir => join(reports, dir, "report.json")).find(file => file !== firstPath);
+  const secondReport = JSON.parse(readFileSync(secondPath, "utf8"));
+  assert.deepEqual(secondReport.source, { commit, dirty: true });
+  assert.deepEqual(secondReport.result, JSON.parse(second.stdout));
+  assert.ok(secondReport.result.generatedReceiptExclusions.some(row => row.file === "docs/verification/generated"));
+  assert.equal(readFileSync(snapshot, "utf8"), '{"historical":true}\n');
+  assert.equal(git("status", "--porcelain=v1"), "M input.txt");
 });

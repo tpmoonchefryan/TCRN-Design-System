@@ -14,6 +14,9 @@ claude_chats
 # Generated visual proof artifacts; regenerate locally with pnpm internal-alpha:browser-proof.
 docs/verification/internal-alpha/screenshots/
 
+# Timestamped executed reports; tracked verification snapshots remain historical.
+/docs/verification/generated/
+
 # Host adapter configuration, installed per machine. Holds local absolute paths.
 .claude/
 .codex/

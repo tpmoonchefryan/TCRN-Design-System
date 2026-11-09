@@ -1,6 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
 import { ROOT } from "./lib/approved-site-source.mjs";
 import { checkSource,checkOutput,checkRoutes,finish,FORMAL_REVIEW_STATUS } from "./lib/published-standard-proof.mjs";
+import { writeVerificationReport } from "./lib/verification-report.mjs";
 const routes=await checkRoutes(),output=checkOutput();const result={source:checkSource(),issues:[...routes.issues,...output.issues],candidateOutput:output,stories:routes.stories,apis:routes.apis,...FORMAL_REVIEW_STATUS};
-const out=path.join(ROOT,"docs/verification/current-standard-only");fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,"hardening-proof.json"),JSON.stringify(result,null,2)+"\n");finish("current-standard-only-hardening",result);
+writeVerificationReport("hardening-proof", result, ROOT);
+finish("current-standard-only-hardening",result);

@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
-import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { extname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import ts from "typescript";
+import { writeVerificationReport } from "./lib/verification-report.mjs";
 
 const ignoredDirectories = new Set([
   ".codegraph",
@@ -18,9 +19,9 @@ const ignoredDirectories = new Set([
 ]);
 
 const maxScanBytes = 1_000_000;
-const outputReceiptPath = "docs/verification/internal-alpha/no-overclaim-scan.json";
+const historicalReceiptPath = "docs/verification/internal-alpha/no-overclaim-scan.json";
 const generatedReceiptPaths = new Set([
-  outputReceiptPath,
+  historicalReceiptPath,
   "docs/verification/storybook-visual-proof/check-receipt.json",
   "docs/verification/storybook-visual-proof/update-receipt.json"
 ]);
@@ -38,8 +39,11 @@ function isBinaryVisualReceipt(path) {
 function walk(directory, context) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     if (entry.isDirectory()) {
-      if (!ignoredDirectories.has(entry.name)) {
-        walk(join(directory, entry.name), context);
+      const directoryPath = join(directory, entry.name);
+      if (directoryPath === "docs/verification/generated") {
+        context.generatedReceiptExclusions.push({ file: directoryPath, reason: "retained_generated_verification_reports" });
+      } else if (!ignoredDirectories.has(entry.name)) {
+        walk(directoryPath, context);
       }
       continue;
     }
@@ -50,7 +54,7 @@ function walk(directory, context) {
     if (generatedReceiptPaths.has(path)) {
       context.generatedReceiptExclusions.push({
         file: path,
-        reason: path === outputReceiptPath ? "regenerated_by_current_scan" : "generated_visual_proof_receipt"
+        reason: path === historicalReceiptPath ? "historical_scan_snapshot" : "generated_visual_proof_receipt"
       });
       continue;
     }
@@ -196,8 +200,7 @@ export function buildScanReceipt() {
 }
 
 export function writeScanReceipt(receipt) {
-  mkdirSync("docs/verification/internal-alpha", { recursive: true });
-  writeFileSync(outputReceiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
+  return writeVerificationReport("no-overclaim-scan", receipt);
 }
 
 export function runScanCli() {
