@@ -1,4 +1,4 @@
-import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard,publishedSearchGeometry,measureNumberMinimums,numberMinimumValid,solidBackground } from "./published-browser-proof.mjs";
+import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard,publishedSearchGeometry,measureNumberMinimums,numberMinimumValid,solidBackground,configureProofPage } from "./published-browser-proof.mjs";
 import { LOCALES,formalApiContracts,checkManagerOutput,compiled,contrast } from "./published-standard-proof.mjs";
 import { ROOT,readApprovedSource,cssRule } from "./approved-site-source.mjs";
 import { readApiFacts,exerciseApiBoard,apiBehaviorIssues } from "./published-api-browser.mjs";
@@ -109,16 +109,19 @@ async function proveGeometryEntry({root,entry}){return withPublishedBrowser(asyn
      observations.push({entry,locale,board,width,kind:'shell-specimen-content',reading});
     }
    }finally{await page.setViewportSize({width:1440,height:1000});}
-   // Exercise both real documentation themes while keeping the light/night
-   // specimens mounted. Restore the starting theme for the remaining checks.
-   for(let step=0;step<2;step++){
-    const theme=await page.locator('.docs-shell').getAttribute('data-tcrn-theme');
-    const readings=await readShellDocumentationText(page);
-    issues.push(...shellDocumentationTextIssues(readings).map(issue=>`${entry}/${locale}/${board}/${theme}: ${issue}`));
-    observations.push({entry,locale,board,theme,kind:'shell-documentation-text',readings});
-    await page.locator('.docs-shell > [data-shell-strip] [data-theme-toggle]').click();
-    await page.locator(`.docs-shell[data-tcrn-theme="${theme==='light'?'dark':'light'}"]`).waitFor();
-    await page.evaluate(async()=>{await Promise.all(document.getAnimations().map(animation=>animation.finished.catch(()=>{})));});
+   // Seed the actual document preference before mounting. Each outer theme owns
+   // its page; unrelated host animations are not a text-contrast prerequisite.
+   for(const theme of ['light','dark']){
+    const docsPage=await browser.newPage({viewport:{width:1440,height:1000}});
+    try{
+     await configureProofPage(docsPage,theme);
+     await openPublishedBoard(docsPage,{base,entry,locale,board});
+     const actualTheme=await docsPage.locator('.docs-shell').getAttribute('data-tcrn-theme');
+     if(actualTheme!==theme)issues.push(`${entry}/${locale}/${board}: documentation theme ${actualTheme} != ${theme}`);
+     const readings=await readShellDocumentationText(docsPage);
+     issues.push(...shellDocumentationTextIssues(readings).map(issue=>`${entry}/${locale}/${board}/${theme}: ${issue}`));
+     observations.push({entry,locale,board,theme,kind:'shell-documentation-text',readings});
+    }finally{await docsPage.close();}
    }
   }
   }catch(error){issues.push(`${entry}/${locale}/${board}: incomplete geometry: ${error.message}`);}
