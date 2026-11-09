@@ -51,7 +51,7 @@ Run from the repository root with the declared pnpm 10.12.1 and a supported Node
 runtime. Resolve `TCRN_BUILD_TRASH` to an absolute runtime path before entering
 package scripts; the environment value is relative to each command's actual cwd.
 The normal full `pnpm build` creates both static docs and Manager; `pnpm verify`
-therefore works without a separately prebuilt Manager. Executed scan/hardening
+therefore works without a separately prebuilt Manager. Executed scaffold/scan/hardening
 reports are retained under ignored `docs/verification/generated/`, with their real
 source and generation time; tracked report snapshots remain historical. The
 [normal verify/build/four-archive sequence](public-distribution.md#verify-build-and-retain-one-candidate)

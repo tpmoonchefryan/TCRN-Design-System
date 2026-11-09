@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { writeVerificationReport } from "./lib/verification-report.mjs";
 
 const requiredFiles = [
   "package.json",
@@ -165,13 +166,14 @@ const receipt = {
   evidenceSelfReference: "release commit SHA is reported by terminal return, not embedded recursively"
 };
 
-mkdirSync("docs/verification", { recursive: true });
-writeFileSync("docs/verification/scaffold-proof.json", `${JSON.stringify(receipt, null, 2)}\n`);
-writeFileSync("docs/verification/scaffold-proof.md", `# Release Baseline Proof Receipt
+const report = writeVerificationReport("scaffold-proof", receipt);
+writeFileSync(join(dirname(report), "report.md"), `# Release Baseline Proof Receipt
 
 Route: \`route_tcrn_design_system_release_baseline_verification\`
 
 Status: ${ok ? "passed" : "failed"}
+
+Execution source and generation time: [report.json](report.json).
 
 ## Readback
 

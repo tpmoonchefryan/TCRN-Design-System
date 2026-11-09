@@ -41,11 +41,13 @@ registered static assets keep `assets/`. These separate output owners prevent a
 cold-build directory-creation race while Storybook copies static files and Vite
 builds the preview concurrently.
 
-The scan and final hardening proof retain each executed result in a new directory
+The scaffold proof, scan and final hardening proof retain each executed result in a new directory
 under `docs/verification/generated/`. Each `report.json` records its generation
 instant, actual Git commit/dirty state and result. This ignored output directory
 is excluded from the source scan; the two tracked report snapshots remain
-historical and are never rewritten by these commands. Keep the generated reports
+historical and are never rewritten by these commands. The scaffold report also
+keeps its readable `report.md` beside the source-bound JSON; its frozen baseline
+observations retain their original scope. Keep the generated reports
 with the raw command output, including failed results. Both workflows upload these
 reports even when a later check fails. No report restoration or Git cleanup is
 part of release preparation. Read `git status --porcelain=v1` before verification
