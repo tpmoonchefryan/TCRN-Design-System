@@ -33,17 +33,23 @@ test('ButtonGroup geometry measures actions independently of its decorative sepa
 import { collectGeometryReadings,readShellDocumentationText,shellDocumentationTextIssues } from '../scripts/lib/published-docs-browser.mjs';
 import { withPublishedBrowser,openPublishedBoard,publishedSearchOccurrences,publishedSearchLocator,publishedSearchGeometry,configureProofPage } from '../scripts/lib/published-browser-proof.mjs';
 import { readApiFacts } from '../scripts/lib/published-api-browser.mjs';
+import { readShellSpecimenContent,shellSpecimenContentIssues } from '../scripts/lib/published-shell-gates.mjs';
 
 test('shell documentation labels use their painted outer carrier in both themes and reject the old specimen scope',async t=>{
- for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base})=>{
+ for(const entry of ['static','manager'])await withPublishedBrowser(async({browser,base,source})=>{
   for(const locale of ['zh-CN','en','ja','ko','fr'])for(const theme of ['light','dark'])for(const board of ['07a-shell-upper','07b-shell-lower']){
    const page=await browser.newPage({viewport:{width:1440,height:1000}});
    try{
     await configureProofPage(page,theme);
-    await openPublishedBoard(page,{base,entry,locale,board});
+    await openPublishedBoard(page,{base,entry,locale,board,originalSpecimens:true});
     const collect=()=>readShellDocumentationText(page);
+    const contentIssues=async()=>{
+     const result=shellSpecimenContentIssues(await readShellSpecimenContent(page),{source,board});
+     return [...result.outer,...result.specimens];
+    };
     const normal=await collect();
     assert.deepEqual(shellDocumentationTextIssues(normal),[],`${entry}/${locale}/${board}/${theme}`);
+    assert.deepEqual(await contentIssues(),[],`${entry}/${locale}/${board}/${theme}: explicit specimen paint and geometry`);
     assert.ok(normal.every(row=>row.chain.length>1&&row.paintedBackground&&row.ratio>=4.5));
     const inverse=theme==='light'?'dark':'light';
     const selectors=[`[data-doc-shell-theme="${inverse}"]`];
@@ -59,6 +65,7 @@ test('shell documentation labels use their painted outer carrier in both themes 
       const changed=await collect(),failures=shellDocumentationTextIssues(changed);
       assert.ok(failures.some(issue=>issue.includes('text contrast')),`${entry}/${locale}/${board}/${theme}: actual wrong theme on transparent documentation section must fail`);
       assert.ok(changed.some(row=>row.ratio<4.5&&normal.some(before=>before.text===row.text&&before.paintedBackground===row.paintedBackground)), 'the actual carrier stays painted by the outer document');
+      assert.deepEqual(await contentIssues(),[],'a wrong documentation scope does not recolor the explicitly themed specimens');
       t.diagnostic(JSON.stringify({entry,locale,board,theme,mutation:selector,failures}));
      }finally{
       await section.evaluate((element,value)=>value===null?element.removeAttribute('data-tcrn-theme'):element.setAttribute('data-tcrn-theme',value),original);
@@ -69,6 +76,20 @@ test('shell documentation labels use their painted outer carrier in both themes 
      }
      assert.deepEqual(shellDocumentationTextIssues(await collect()),[],'restore the real theme boundary');
     }
+    const specimen=page.locator(`[data-doc-shell-theme="${inverse}"] [data-formal-shell-scene="band"] > .tcrn-product-shell`);
+    const owner=await specimen.evaluateHandle(element=>element.closest('[data-tcrn-theme]'));
+    const original=await owner.getAttribute('data-tcrn-theme');
+    try{
+     await owner.evaluate(element=>element.removeAttribute('data-tcrn-theme'));
+     const failures=await contentIssues();
+     assert.ok(failures.some(issue=>issue.includes('product content local panel theme')),'removing the real local owner must expose the wrong painted specimen carrier');
+     assert.deepEqual(shellDocumentationTextIssues(await collect()),[],'the outer documentation keeps its own readable theme');
+     t.diagnostic(JSON.stringify({entry,locale,board,theme,specimenMutation:'local-theme-owner-removal',failures}));
+    }finally{
+     try{await owner.evaluate((element,value)=>value===null?element.removeAttribute('data-tcrn-theme'):element.setAttribute('data-tcrn-theme',value),original);}
+     finally{await owner.dispose();}
+    }
+    assert.deepEqual(await contentIssues(),[],'restore the real specimen owner');
    }finally{await page.close();}
   }
  },{entry});
