@@ -303,6 +303,7 @@ export function ShellExample({
   const shell = (
     <shellMenuPresentationContext.Provider value={phone ? "sheet" : "panel"}>
       <ProductShell
+        data-tcrn-theme={shellTheme}
         productName="TCRN TMS"
         moduleName={c.roster}
         brandProductId="tms"
