@@ -15,6 +15,13 @@ The library declares React/ReactDOM `^18.3.0 || ^19.0.0`. The installation probe
 pins 18.3.1, 19.1.0 and the current TMS runtime baseline 19.2.6; it does not prove
 all versions in that range or adoption by the actual TMS application.
 
+The sign-in intro waits for its native animations to complete before removing
+the decorative layer. A delayed first rendering opportunity therefore preserves
+the complete mark travel and paper rise. The 120/240/100ms motion plan, endpoint
+geometry, once-per-session and reduced-motion contracts are unchanged. This local
+lifecycle correction has separate machine evidence; the recorded S11 visual
+acceptance still covers only `69e37265`.
+
 ## Build and retain an installable candidate
 
 Run from the repository root with the declared pnpm 10.12.1 and a supported Node

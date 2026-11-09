@@ -8,7 +8,7 @@ import test, { mock } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { publishedMarkBody } from "./published-source.js";
-import { act } from "react";
+import { act, StrictMode } from "react";
 import { hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { ProductLockup, ShellBrandButton, ShellIntro, shellIntroSessionMarker, type TcrnProductMarkId } from "../index.js";
@@ -20,6 +20,7 @@ interface AnimateCall {
   readonly element: Element;
   readonly keyframes: Keyframe[];
   readonly options: KeyframeAnimationOptions;
+  readonly events: string[];
 }
 
 const sha256 = (text: string) => createHash("sha256").update(text).digest("hex");
@@ -33,7 +34,7 @@ const brandMark = { left: 18, top: 15, width: 22, height: 22 };
  * two marks are the storyboard's, the reduced-motion preference is the test's, and every
  * animate() call is recorded.
  */
-function instrument(harness: DomInteractionHarness, reducedMotion = false): AnimateCall[] {
+function instrument(harness: DomInteractionHarness, reducedMotion = false, startDelay = 0): AnimateCall[] {
   const calls: AnimateCall[] = [];
   const { window } = harness;
   window.matchMedia = ((query: string) => ({
@@ -43,8 +44,41 @@ function instrument(harness: DomInteractionHarness, reducedMotion = false): Anim
     removeEventListener: () => undefined
   })) as unknown as typeof window.matchMedia;
   window.Element.prototype.animate = function animate(this: Element, keyframes, options) {
-    calls.push({ element: this, keyframes: keyframes as Keyframe[], options: options as KeyframeAnimationOptions });
-    return { finish: () => undefined, cancel: () => undefined } as unknown as Animation;
+    const timing = options as KeyframeAnimationOptions;
+    const events: string[] = [];
+    let resolveFinished: (animation: Animation) => void;
+    let rejectFinished: (reason: Error) => void;
+    const finished = new Promise<Animation>((resolve, reject) => {
+      resolveFinished = resolve;
+      rejectFinished = reject;
+    });
+    let settled = false;
+    const complete = () => {
+      if (settled) return;
+      settled = true;
+      events.push("finished");
+      resolveFinished(animation);
+    };
+    const timer = setTimeout(complete, startDelay + Number(timing.delay ?? 0) + Number(timing.duration));
+    const animation = {
+      finished,
+      finish() {
+        events.push("finish-called");
+        clearTimeout(timer);
+        complete();
+      },
+      cancel() {
+        events.push("cancel-called");
+        clearTimeout(timer);
+        if (settled) return;
+        settled = true;
+        rejectFinished(new window.DOMException("Animation cancelled", "AbortError"));
+      }
+    } as Animation;
+    // A cancelled animation's finished promise rejects even if its consumer never subscribed.
+    void finished.catch(() => undefined);
+    calls.push({ element: this, keyframes: keyframes as Keyframe[], options: timing, events });
+    return animation;
   };
   window.Element.prototype.getBoundingClientRect = function getBoundingClientRect(this: Element) {
     const box = this.closest(".tcrn-shell-intro__card") ? cardMark : this.closest("[data-shell-brand]") ? brandMark : { left: 0, top: 0, width: 0, height: 0 };
@@ -149,6 +183,53 @@ test("the first sign-in of a session plays once: fade, move, rise, then the band
     const end = Math.max(...calls.map((call) => Number(call.options.delay) + Number(call.options.duration)));
     assert.equal(end, 460);
     assert.ok(end <= 700);
+  } finally {
+    mock.timers.reset();
+    await harness.cleanup();
+  }
+});
+
+test("a pending browser animation gets its complete fade, move and rise before the layer leaves", async () => {
+  const harness = createDomInteractionHarness();
+  const calls = instrument(harness, false, 140);
+  const finishes: boolean[] = [];
+  mock.timers.enable({ apis: ["setTimeout"] });
+  try {
+    await harness.render(<Shell onFinish={(played) => finishes.push(played)} />);
+    await act(async () => mock.timers.tick(460));
+    assert.ok(harness.document.querySelector("[data-shell-intro]"), "wall-clock 460 must not remove a still-playing mark");
+    assert.deepEqual(finishes, []);
+    assert.ok(calls.find(call => partOf(call.element) === "mark")?.events.every(event => event !== "finished"));
+    await act(async () => mock.timers.tick(40));
+    assert.equal(harness.document.querySelector("[data-shell-intro]")?.getAttribute("data-intro-phase"), "rise");
+    assert.deepEqual(finishes, [], "landing the mark does not cut short the paper's rise");
+    await act(async () => mock.timers.tick(100));
+    assert.equal(harness.document.querySelector("[data-shell-intro]"), null);
+    assert.deepEqual(finishes, [true]);
+    assert.ok(calls.every(call => call.events.includes("finished") && !call.events.includes("finish-called")));
+  } finally {
+    mock.timers.reset();
+    await harness.cleanup();
+  }
+});
+
+test("StrictMode cleanup cancels an interrupted intro without completing it or replaying its session", async () => {
+  const harness = createDomInteractionHarness();
+  const calls = instrument(harness, false, 140);
+  const finishes: boolean[] = [];
+  mock.timers.enable({ apis: ["setTimeout"] });
+  try {
+    await harness.render(<StrictMode><Shell onFinish={(played) => finishes.push(played)} /></StrictMode>);
+    assert.ok(harness.document.querySelector("[data-shell-intro]"));
+    await harness.render(<div />);
+    assert.ok(calls.length > 0 && calls.every(call => call.events.includes("cancel-called") && !call.events.includes("finish-called")));
+    await act(async () => mock.timers.tick(1000));
+    assert.equal(finishes.length, 0, "an obsolete animation cannot finish the unmounted sign-in");
+    const count = calls.length;
+    await harness.render(<StrictMode><Shell onFinish={(played) => finishes.push(played)} /></StrictMode>);
+    assert.equal(harness.document.querySelector("[data-shell-intro]"), null);
+    assert.equal(calls.length, count, "the first decision's marker survives cleanup");
+    assert.deepEqual(finishes, [false]);
   } finally {
     mock.timers.reset();
     await harness.cleanup();

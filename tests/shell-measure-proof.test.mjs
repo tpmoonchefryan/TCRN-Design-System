@@ -90,6 +90,87 @@ test('G11/G17 reject incorrect actual row boundaries and focus carrier, with loc
  }
 });
 import { proofContexts,publishedBoardUrl } from '../scripts/lib/published-browser-proof.mjs';
+import { configureProofPage } from '../scripts/lib/published-browser-proof.mjs';
+import { installIntroRecorder } from '../scripts/lib/published-shell-gates.mjs';
+
+test('the native intro completes before cleanup after a delayed first frame and still exposes a real landing defect', async () => {
+  for (const entry of ['static', 'manager']) await withPublishedBrowser(async ({ browser, base }) => {
+    for (const [blockingMs, shiftedMark] of [[140, false], [0, false], [140, true]]) {
+      const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+      try {
+        await configureProofPage(page, 'dark');
+        await installIntroRecorder(page);
+        await page.addInitScript(({ blockingMs }) => {
+          window.__nativeIntro = [];
+          const animate = Element.prototype.animate;
+          let blocked = false;
+          Element.prototype.animate = function (keyframes, timing) {
+            const animation = animate.call(this, keyframes, timing);
+            if (!this.closest('[data-formal-intro]')) return animation;
+            const target = this;
+            const snapshot = () => {
+              const r = target.getBoundingClientRect();
+              return {
+                time: performance.now(), currentTime: animation.currentTime, startTime: animation.startTime,
+                pending: animation.pending, playState: animation.playState, connected: target.isConnected,
+                rect: { x: r.x, y: r.y, width: r.width, height: r.height }
+              };
+            };
+            const row = { target: String(target.className?.baseVal ?? target.className), created: snapshot() };
+            window.__nativeIntro.push(row);
+            animation.ready.then(() => {
+              row.ready = snapshot();
+            }, () => undefined);
+            animation.finished.then(() => {
+              row.completed = snapshot();
+            }, () => {
+              row.cancelled = snapshot();
+            });
+            const finish = animation.finish.bind(animation);
+            animation.finish = () => {
+              row.forced = snapshot();
+              return finish();
+            };
+            if (!blocked && blockingMs && target.matches('[data-paper]')) {
+              blocked = true;
+              queueMicrotask(() => {
+                const until = performance.now() + blockingMs;
+                while (performance.now() < until) { /* occupied task before native animation readiness */ }
+              });
+            }
+            return animation;
+          };
+        }, { blockingMs });
+        await openPublishedBoard(page, { base, entry, locale: 'ja', board: '07a-shell-upper', originalSpecimens: true });
+        await page.evaluate(() => sessionStorage.removeItem('tcrn-approved-source-intro'));
+        const scope = page.locator('[data-formal-intro][data-intro-theme="dark"]');
+        await scope.locator(':scope > .tcrn-button').scrollIntoViewIfNeeded();
+        const landing = await scope.locator('[data-shell-brand] svg[data-logo]').evaluate(element => {
+          const r = element.getBoundingClientRect();
+          return { x: r.x, y: r.y, width: r.width, height: r.height };
+        });
+        // This changes the rendered moving mark, leaving the measured landing and animation plan intact.
+        if (shiftedMark) await page.addStyleTag({ content: '.tcrn-shell-intro__mark{translate:8px 0!important}' });
+        await scope.locator(':scope > .tcrn-button').click();
+        await page.waitForFunction(() => !document.querySelector('[data-shell-intro]'));
+        const reading = await page.evaluate(() => ({ native: window.__nativeIntro, recorded: window.__publishedIntro }));
+        const label = `${entry}/ja/dark/block${blockingMs}/shift${shiftedMark}`;
+        assert.equal(reading.native.length, 8, label);
+        assert.ok(reading.native.every(row => row.completed?.connected && !row.forced), `${label}: natural completion before removal`);
+        const mark = reading.native.find(row => row.target.includes('intro__mark'));
+        assert.equal(mark.completed.currentTime, 360, label);
+        const frames = reading.recorded.frames.filter(frame => String(frame.target).includes('intro__mark'));
+        assert.ok(frames.length > 1 && frames.length < 35, `${label}: recorder did not exhaust its cap`);
+        const matches = rect => ['x', 'y', 'width', 'height'].every(key => Math.abs(rect[key] - landing[key]) <= .5);
+        assert.equal(matches(mark.completed.rect), !shiftedMark, `${label}: actual native endpoint geometry`);
+        assert.equal(matches(frames.at(-1).rect), !shiftedMark, `${label}: normal recorder retains the real negative`);
+      } finally {
+        await page.close();
+      }
+    }
+  }, { entry });
+});
+
 test('the existing family/shell runners route every entry/locale and G18 theme to the actual build',()=>{
  const contexts=proofContexts(),g18=proofContexts({themes:true});assert.equal(contexts.length,10);assert.equal(g18.length,20);
  for(const {entry,locale}of contexts)for(const board of Object.keys(readApprovedSource().manifest.boards.reduce((m,b)=>(m[b.slug]=true,m),{}))){

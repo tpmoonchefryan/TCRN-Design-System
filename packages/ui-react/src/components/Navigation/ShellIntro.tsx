@@ -288,24 +288,29 @@ export function ShellIntro({
       paper: scope ? [...scope.querySelectorAll(shellIntroTargets.paper)] : []
     };
     const animations: Animation[] = [];
+    let active = true;
     for (const step of shellIntroPlan(state.from, state.to, timeline)) {
-      for (const element of elements[step.part]) animations.push(element.animate([...step.keyframes], { ...step.timing }));
-    }
-    const timers = [
-      setTimeout(() => setPhase("move"), timeline.fade),
-      setTimeout(() => setPhase("rise"), timeline.fade + timeline.move),
-      setTimeout(() => setState({ status: "done", played: true }), timeline.total)
-    ];
-    return () => {
-      for (const timer of timers) clearTimeout(timer);
-      // Finished, not cancelled: whatever is cut short ends where the intro would have left it.
-      for (const animation of animations) {
-        try {
-          animation.finish();
-        } catch {
-          animation.cancel();
+      for (const element of elements[step.part]) {
+        const animation = element.animate([...step.keyframes], { ...step.timing });
+        animations.push(animation);
+        if (step.part === "card" || step.part === "mark") {
+          const nextPhase = step.part === "card" ? "move" : "rise";
+          void animation.finished.then(() => {
+            if (active) setPhase(nextPhase);
+          }, () => undefined);
         }
       }
+    }
+    // Web Animations can remain pending until a rendering opportunity. Their completion,
+    // rather than an independent wall clock, keeps the entire move and rise on screen.
+    void Promise.all(animations.map((animation) => animation.finished)).then(() => {
+      if (active) setState({ status: "done", played: true });
+    }, () => undefined);
+    return () => {
+      active = false;
+      // Cancellation removes effects on the shell and rejects this obsolete run's finished
+      // promises. The rejection handlers above intentionally leave it without an onFinish.
+      for (const animation of animations) animation.cancel();
     };
   }, [playing]);
 
