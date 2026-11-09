@@ -1,4 +1,4 @@
-import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard,publishedSearchGeometry,measureNumberMinimums,numberMinimumValid,measureElement,solidBackground } from "./published-browser-proof.mjs";
+import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard,publishedSearchGeometry,measureNumberMinimums,numberMinimumValid,solidBackground } from "./published-browser-proof.mjs";
 import { LOCALES,formalApiContracts,checkManagerOutput,compiled,contrast } from "./published-standard-proof.mjs";
 import { ROOT,readApprovedSource,cssRule } from "./approved-site-source.mjs";
 import { readApiFacts,exerciseApiBoard,apiBehaviorIssues } from "./published-api-browser.mjs";
@@ -63,12 +63,19 @@ export async function collectGeometryReadings(page){
 // the outer document. The specimen's explicit theme is not a text/background pair.
 export async function readShellDocumentationText(page){
  const labels=page.locator('[data-doc-shell-theme] > .tcrn-heading, [data-doc-shell-theme] [data-formal-section] > .tcrn-heading, [data-formal-intro] > :is(.tcrn-heading,.tcrn-text,.tcrn-doc-intro-start), :is([data-doc-shell-theme],[data-formal-intro]) .tcrn-doc-shell-tools > :is(span,button)');
- const readings=[];
- for(const label of await labels.all()){
-  const reading=await measureElement(label),background=solidBackground(reading.chain);
-  readings.push({...reading,text:await label.textContent(),paintedBackground:background,ratio:contrast(reading.ink,background)});
- }
- return readings;
+ const readings=await labels.evaluateAll(elements=>elements.map(element=>{
+  const style=getComputedStyle(element),ancestors=[];
+  for(let owner=element;owner;owner=owner.parentElement){
+   ancestors.push({tag:owner.tagName,className:owner.className,theme:owner.getAttribute('data-tcrn-theme'),background:getComputedStyle(owner).backgroundColor});
+  }
+  return {text:element.textContent,ink:style.color,background:style.backgroundColor,
+   visible:!!element.getClientRects().length&&element.getBoundingClientRect().width>0,
+   chain:ancestors.map(owner=>owner.background),ancestors};
+ }));
+ return readings.map(reading=>{
+  const paintedBackground=solidBackground(reading.chain);
+  return {...reading,paintedBackground,ratio:contrast(reading.ink,paintedBackground)};
+ });
 }
 
 export function shellDocumentationTextIssues(readings){
