@@ -919,6 +919,9 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
    issues.push(...checkManagerOutput(root).issues);
    for(const locale of LOCALES)try{
     const response=await page.goto(`${base}/index.html?path=/story/${docsStoryId('index')}&globals=locale:${locale}`);if(response.status()!==200)issues.push('Actual manager HTML unreadable');await page.locator('iframe#storybook-preview-iframe').waitFor();
+    const initialFrame = page.frameLocator('#storybook-preview-iframe');
+    await initialFrame.locator(`[data-docs-page="index"][lang="${locale}"][data-docs-ready="true"]`)
+      .evaluate(() => document.fonts.ready);
     for (const docsPage of docsPages) {
       const id = docsStoryId(docsPage);
       const link = page.locator(`a[data-item-id="${id}"],a[id="${id}"]`).first();
@@ -926,6 +929,8 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
         await link.click();
         const frame = page.frameLocator('#storybook-preview-iframe');
         await frame.locator(`[data-docs-page="${docsPage}"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
+        await frame.locator(`[data-docs-page="${docsPage}"][lang="${locale}"][data-docs-ready="true"]`)
+          .evaluate(() => document.fonts.ready);
         if (Object.hasOwn(APPROVED_BOARD_IDS, docsPage)) {
           await frame.locator(`[data-approved-board="${docsPage}"][lang="${locale}"][data-source-id="${APPROVED_BOARD_IDS[docsPage]}"]`).waitFor();
         }
