@@ -1017,13 +1017,18 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
     }catch(error){issues.push(`${entry}/${locale}/${id}: route incomplete: ${error.message}`);}
    }
    const navigation=await exerciseDocsNavigation(page,{base,entry,locale,source,formal});issues.push(...navigation.issues);observations.push(...navigation.observations);
+   // Interaction scenarios reveal new glyphs after initial route readiness.
+   // Settle the active document before the next scenario navigates away.
+   await page.evaluate(()=>document.fonts.ready);
    if(entry==='static'||entry==='manager'){
     const desktop=await exerciseDocsTopbar(page,{base,entry:entry==='manager'?'manager':entry,locale,managerUi:entry==='manager',formal});
     issues.push(...desktop.issues);observations.push(...desktop.observations);
+    await (entry==='manager'?page.frameLocator('#storybook-preview-iframe').locator('.docs-shell'):page.locator('.docs-shell')).evaluate(()=>document.fonts.ready);
    }
    if(entry==='manager'){
     const canvas=await exerciseDocsTopbar(page,{base,entry:'canvas',locale,formal});
     issues.push(...canvas.issues);observations.push(...canvas.observations);
+    await page.evaluate(()=>document.fonts.ready);
     if(locale==='zh-CN'){
      const context=await browser.newContext({viewport:{width:1440,height:1000},hasTouch:true,reducedMotion:'reduce'});
      const narrowPage=await context.newPage();
@@ -1038,6 +1043,7 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
     for(const [surface,managerUi] of surfaces){
      const edges=await exerciseDocsTopbarEdges(page,{base,entry:surface,locale,managerUi});
      issues.push(...edges.issues);observations.push(...edges.observations);
+     await (managerUi?page.frameLocator('#storybook-preview-iframe').locator('.docs-shell'):page.locator('.docs-shell')).evaluate(()=>document.fonts.ready);
     }
    }
    if(entry==='static'){
@@ -1048,9 +1054,6 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
      issues.push(...touch.issues);observations.push(...touch.observations);
     }finally{await context.close();}
    }
-   // Navigation exercises can reveal more font faces after the route's initial
-   // readiness. Finish them before the next locale leaves this document.
-   if(entry==='manager')await page.evaluate(()=>document.fonts.ready);
   }
   if(requests.some(url=>!url.startsWith(base)))issues.push(`${entry}: resource request escaped actual local output closure`);
   issues.push(...failures.map(f=>`${entry}: resource failure ${JSON.stringify(f)}`),...errors.map(e=>`${entry}: browser error ${e}`));
