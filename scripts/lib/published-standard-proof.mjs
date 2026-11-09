@@ -16,7 +16,10 @@ export const FORMAL_REVIEW_STATUS = Object.freeze({
   },
   ownerClarificationMinute: "minutes:3244c7ac6adef4fc078d413e#D1-D4",
   publicationRequest: "author-source-published; producer-authorization-pending",
-  ownerVisualAcceptance: "current-integration-not-performed",
+  ownerVisualAcceptance: "scoped-to-recorded-source",
+  ownerVisualAcceptanceMinute: "minutes:b34cc50d61d03ab4bb4e2b40#D1",
+  ownerVisualAcceptanceCommit: "ca0c8c199cb394377f1b6328244d0c8d7efe8d8e",
+  ownerVisualAcceptanceScope: "mixed light/dark documentation headings/descriptions, launch/view controls, standalone-mark paper carriers and complete intro animation; only at the recorded commit, not a later candidate HEAD or future visual changes",
   adoptedAmendments: {
     ids: ["K1", "K5", "S03-C01"],
     minute: "minutes:6f3e0a9a1e07e3980867d82e#D1",

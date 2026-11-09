@@ -136,7 +136,9 @@ test('C01 published v2 and its emitted metadata agree on all shortcut contexts a
  assert.deepEqual(result.unconfirmedProposals, []);
  assert.equal(result.adoptedAmendments.sourcePublication, 'published-v2; deployment-succeeded');
  assert.equal(result.adoptedAmendments.publicationReadbackMinute, 'minutes:59b6c4ee489ab487482ca51b#D1');
- assert.equal(result.ownerVisualAcceptance, 'current-integration-not-performed');
+ assert.equal(result.ownerVisualAcceptance, 'scoped-to-recorded-source');
+ assert.equal(result.ownerVisualAcceptanceMinute, 'minutes:b34cc50d61d03ab4bb4e2b40#D1');
+ assert.equal(result.ownerVisualAcceptanceCommit, 'ca0c8c199cb394377f1b6328244d0c8d7efe8d8e');
  const metadata = JSON.parse(read(path.join(ROOT, 'apps/storybook/storybook-static/ai-consumption-contract.json'), 'utf8'));
  assert.equal(metadata.standardSource.sourceCommit, APPROVED_SITE.sourceCommit);
  assert.equal(metadata.implementationFidelity.formShortcut.role, 'ink-2');
@@ -144,6 +146,9 @@ test('C01 published v2 and its emitted metadata agree on all shortcut contexts a
  assert.equal(metadata.proposalState, result.proposalState);
  assert.deepEqual(metadata.adoptedAmendments, result.adoptedAmendments);
  assert.equal(metadata.ownerVisualAcceptance, result.ownerVisualAcceptance);
+ assert.equal(metadata.ownerVisualAcceptanceMinute, result.ownerVisualAcceptanceMinute);
+ assert.equal(metadata.ownerVisualAcceptanceCommit, result.ownerVisualAcceptanceCommit);
+ assert.equal(metadata.ownerVisualAcceptanceScope, result.ownerVisualAcceptanceScope);
  assert.deepEqual(metadata.publishedStandardConflicts, []);
  assert.equal(metadata.publication, 'local-candidate-only');
 });

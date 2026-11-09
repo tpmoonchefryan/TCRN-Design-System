@@ -137,9 +137,19 @@ test("required closure has no cycles, every formal component has source types an
     assert.match(rule.content.example.sha256, /^[a-f0-9]{64}$/);
   }
   const complete = JSON.parse(fs.readFileSync(path.join(producer, "ai-consumption-contract.json"), "utf8"));
-  assert.equal(complete.ownerVisualAcceptance, "current-integration-not-performed");
-  assert.equal(complete.ownerVisualAcceptanceScope, "current package candidate");
+  assert.equal(complete.ownerVisualAcceptance, "scoped-to-recorded-source");
+  assert.equal(complete.ownerVisualAcceptanceMinute, "minutes:b34cc50d61d03ab4bb4e2b40#D1");
+  assert.equal(complete.ownerVisualAcceptanceCommit, "ca0c8c199cb394377f1b6328244d0c8d7efe8d8e");
+  assert.equal(complete.ownerVisualAcceptanceScope, "mixed light/dark documentation headings/descriptions, launch/view controls, standalone-mark paper carriers and complete intro animation; only at the recorded commit, not a later candidate HEAD or future visual changes");
+  assert.notEqual(complete.ownerVisualAcceptanceCommit, complete.candidate.commit);
   assert.equal(complete.priorOwnerVisualAcceptance.minute, "minutes:024a8b72088fac0970916091#D1");
+  assert.equal(complete.priorOwnerVisualAcceptance.commit, "69e37265d0f5bfa766cb6f97f85aa3d289fb9abc");
+  const llms = fs.readFileSync(path.join(producer, "llms.txt"), "utf8");
+  assert.ok(llms.includes(complete.ownerVisualAcceptanceMinute));
+  assert.ok(llms.includes(complete.ownerVisualAcceptanceCommit));
+  assert.ok(llms.includes(complete.ownerVisualAcceptanceScope));
+  assert.ok(llms.includes(complete.priorOwnerVisualAcceptance.minute));
+  assert.ok(llms.includes(complete.priorOwnerVisualAcceptance.commit));
   assert.deepEqual(complete.unconfirmedProposals, []);
   assert.equal(complete.adoptedAmendments.minute, "minutes:6f3e0a9a1e07e3980867d82e#D1");
   assert.equal(complete.adoptedAmendments.priorPublicationHoldMinute, "minutes:00710c786ec8423e5dce0186#D1-D2");

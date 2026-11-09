@@ -9,6 +9,9 @@ export interface AiReviewStatus {
   ownerClarificationMinute: string;
   publicationRequest: string;
   ownerVisualAcceptance: string;
+  ownerVisualAcceptanceMinute: string;
+  ownerVisualAcceptanceCommit: string;
+  ownerVisualAcceptanceScope: string;
   adoptedAmendments: {
     ids: string[];
     minute: string;
@@ -45,11 +48,10 @@ export function createAiConsumptionContract(candidate: AiCandidate, fontFiles: u
     ],
     ...reviewStatus,
     preferenceStorage: { documentation: "local anonymous documentation theme; locale is part of the page URL", consumerObligation: "supply per-user per-product server preference adapter (07b L60)" },
-    ownerVisualAcceptanceScope: "current package candidate",
     priorOwnerVisualAcceptance: {
       minute: "minutes:024a8b72088fac0970916091#D1",
       commit: "69e37265d0f5bfa766cb6f97f85aa3d289fb9abc",
-      scope: "S11 local candidate checklist; current source integration is not separately Owner-reviewed",
+      scope: "S11 local candidate checklist: button/field widths, category/status display, Storybook entry, date focus and new states of the existing 28 components; only at its recorded commit",
     },
     publication: "local-candidate-only", identity: bundle.identity,
     aiIndex: "ai/index.json", rules: bundle.rules,

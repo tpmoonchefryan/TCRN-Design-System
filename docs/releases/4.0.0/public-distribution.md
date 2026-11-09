@@ -3,8 +3,10 @@
 This is a preparation procedure, not a publication receipt. The selected targets
 are the public `tpmoonchefryan/TCRN-Design-System` GitHub repository and existing
 Vercel project `tcrn-platform/tcrn-design-system-storybook`, whose current home is
-<https://tcrn-design-system-storybook.vercel.app/>. The real Vercel project ID,
-complete dashboard settings and final candidate deployment are unverified.
+<https://tcrn-design-system-storybook.vercel.app/>. The real Vercel project ID, production root directory, Git linkage, dashboard
+overrides and final candidate deployment are unverified. Owner decision
+`minutes:4bffbf8919f6acef9103afe5#D1` defers login and dashboard readback during
+local closure; no account/configuration query is part of this preparation.
 Historical Vercel success does not verify this build. No account or project is
 created by the scripts or workflow in this change.
 
@@ -53,7 +55,11 @@ No unobserved deployment URL is written into identity.
 
 Vercel documents that repository `buildCommand` and `outputDirectory` override
 their dashboard values in [static configuration](https://vercel.com/docs/project-configuration/vercel-json).
-The root directory and Git linkage still need real readback before publication.
+The checked-in install command is `pnpm install --frozen-lockfile`; framework is
+`null` and `cleanUrls` is `false`. These file values do not establish the actual
+account/project root, production branch, Git linkage or dashboard overrides.
+After separate authorization, read those settings from the existing project and
+compare them with this checked-in build/output contract before publication.
 Storybook's [asset guidance](https://storybook.js.org/docs/configure/integration/images-and-assets)
 explains relative asset paths when deploying beneath a subpath; this build uses
 relative preview fonts and Vite base, then exercises the real `/storybook/` output.
@@ -150,15 +156,21 @@ Do not run `npm install @tcrn/ui-react@4.0.0`: no npm publication is selected.
    publication and normal browser readback, the independent anonymous HTTP 403
    limitation, current source pin, producer output and required-check evidence.
    Confirm the same candidate is being submitted; do not republish the source.
-2. Review that final source diff and release candidate, then obtain the applicable
+2. Use repository `https://github.com/tpmoonchefryan/TCRN-Design-System` and the
+   exact final source branch/commit recorded in the local release manifest and
+   handoff. The proposed `v4.0.0` tag must peel to that same clean source commit,
+   not merely the Owner-inspected ca0c ancestor. Review that final source diff and release candidate, then obtain the applicable
    push/deployment/publication authorization. Read existing remote tags and
-   Releases again. If `v4.0.0` exists, stop that release path for a version decision;
+   the actual Releases list/tag endpoint again; absence of a tag alone does not
+   prove absence of a Release. Preserve the raw read-only responses. If `v4.0.0` exists, stop that release path for a version decision;
    never force-update a tag, replace assets or invent a new version.
 3. Push the authorized exact source through the existing repository process.
    The connected Vercel project may auto-build on that push. Allow for that
    external deployment before authorizing the push; do not create a second
-   project. CI `verify` must pass on the exact source. The manual
-   `prepare release candidate` workflow also runs `pnpm verify`, builds the
+   project. CI `.github/workflows/verify.yml` runs `pnpm verify` on every pushed branch,
+   pull request or manual invocation. It must pass on the exact source. The manual
+   `prepare release candidate` workflow (`.github/workflows/release-candidate.yml`)
+   also runs `pnpm verify`, builds the
    combined docs and retains candidate artifacts with read-only repository
    permissions. It has no Release or deployment step. No workflow has run here.
 4. Read the actual Vercel build's source SHA, status, output and immutable URL

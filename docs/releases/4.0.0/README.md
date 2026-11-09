@@ -8,9 +8,23 @@ The three library packages and companion `@tcrn/ds-consumer-tools` are unpublish
 portal, official Storybook and AI artifacts share that identity. K1/K5/C01,
 solid-panel icon labels and Chinese-only menu-ratio wording come from that source.
 The formal catalogue remains 28 families and five built-in locales. Product-owned
-copy preserves all six existing TMS locale ids. The prior S11 visual acceptance
-covers `69e37265`, and is separate from current integration verification and the
-original final independent acceptance.
+copy preserves all six existing TMS locale ids.
+
+Owner decision `minutes:b34cc50d61d03ab4bb4e2b40#D1` accepts exact source
+`ca0c8c199cb394377f1b6328244d0c8d7efe8d8e` for mixed light/dark documentation
+headings/descriptions, launch/view controls, standalone-mark paper carriers and
+the complete intro animation. Its scoped checklist is the INIT-086
+`intro-doc-theme-repair-stage/main-review/owner-review.md` record. Prior decision
+`minutes:024a8b72088fac0970916091#D1` remains true for exact source
+`69e37265d0f5bfa766cb6f97f85aa3d289fb9abc`: button/field widths, category/status
+display, Storybook entry, date focus and new states of the existing 28 components,
+under its original `datepicker-focus-repair-stage/main-review/owner-review.md`
+checklist. These decisions do not label a later metadata-only HEAD as visually
+inspected or cover future visual changes. Retaining their visual/runtime evidence
+requires a comparison of the actual relevant source, runtime and dependency
+inputs. Machine checks, formal publication, real TMS acceptance and the original
+final independent SUB-708 remain separate.
+
 The library declares React/ReactDOM `^18.3.0 || ^19.0.0`. The installation probe
 pins 18.3.1, 19.1.0 and the current TMS runtime baseline 19.2.6; it does not prove
 all versions in that range or adoption by the actual TMS application.
@@ -18,17 +32,18 @@ all versions in that range or adoption by the actual TMS application.
 The sign-in intro waits for its native animations to complete before removing
 the decorative layer. A delayed first rendering opportunity therefore preserves
 the complete mark travel and paper rise. The 120/240/100ms motion plan, endpoint
-geometry, once-per-session and reduced-motion contracts are unchanged. This local
-lifecycle correction has separate machine evidence; the recorded S11 visual
-acceptance still covers only `69e37265`.
+geometry, once-per-session and reduced-motion contracts are unchanged. The ca0c Owner decision above includes the complete
+intro; its machine execution
+evidence retains its own candidate, inputs and timestamp.
 
 Shell scene and intro documentation labels follow the outer documentation paper’s
 theme. The embedded shells, standalone mark paper and moving intro layer retain
 their explicit specimen theme. This repairs low-contrast labels in mixed-theme
 documentation without changing component colors or motion. The normal browser
 measurement covers the actual painted label carrier in both documentation themes,
-both entries and five locales, with a real wrong-scope negative case. Open a fresh
-browser session to review the once-per-session intro.
+both entries and five locales, with a real wrong-scope negative case. The ca0c visual
+decision is now recorded
+in the proof, full AI contract and llms output; it is not a new visual review.
 
 ## Build and retain an installable candidate
 
