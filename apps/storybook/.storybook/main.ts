@@ -11,7 +11,9 @@ const config: StorybookConfig = {
     { from: "../storybook-static/assets", to: "/assets" },
   ],
   previewHead: head => `${head}\n<link rel="stylesheet" href="./fonts/fonts.css">`,
-  viteFinal: config => ({ ...config, base: "./" }),
+  // Vite and Storybook copy static files concurrently. Give bundled assets their
+  // own directory so both writers never race to create the static /assets root.
+  viteFinal: config => ({ ...config, base: "./", build: { ...config.build, assetsDir: "sb-vite-assets" } }),
   core: { disableTelemetry: true },
 };
 export default config;

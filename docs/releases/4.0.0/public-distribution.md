@@ -36,6 +36,10 @@ Start from the committed source intended for delivery. `verify` performs the ful
 existing check chain; its root `build` creates the static portal and official
 Manager before browser proofs consume either output. No prebuilt output is needed.
 On Linux, install Chromium with `--with-deps`, as both checked-in workflows do.
+Vite writes its bundled Manager-preview assets under `sb-vite-assets/`; the
+registered static assets keep `assets/`. These separate output owners prevent a
+cold-build directory-creation race while Storybook copies static files and Vite
+builds the preview concurrently.
 
 The scan and final hardening proof retain each executed result in a new directory
 under `docs/verification/generated/`. Each `report.json` records its generation
