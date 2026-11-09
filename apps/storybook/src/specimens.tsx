@@ -394,12 +394,12 @@ function Intro({locale, theme}: {locale: DocsLocale; theme: "light" | "dark"}) {
   const labels = specimenCopy[locale];
   const ref = useRef<HTMLElement>(null);
   const [start, setStart] = useState(false);
-  return <section ref={ref} className="tcrn-doc-section" data-formal-intro="" data-intro-theme={theme} data-tcrn-theme={theme}>
+  return <section ref={ref} className="tcrn-doc-section" data-formal-intro="" data-intro-theme={theme}>
     <Heading level={2} visualLevel={3}>{labels.shell.intro} · {labels.themes[theme]}</Heading>
     <Text>{c.intro}</Text>
     <Button className="tcrn-doc-intro-start" variant="quiet" onClick={() => setStart(true)}>{c.login}</Button>
     <ShellExample locale={locale} mode="band" theme={theme} intro/>
-    {start && <ShellIntro productId="tms" locale={locale} shellRef={ref}
+    {start && <ShellIntro productId="tms" locale={locale} shellRef={ref} data-tcrn-theme={theme}
       card={<ProductLockup productId="tms" locale={locale} className="tcrn-doc-intro-lockup"/>}
       sessionMarker="tcrn-approved-source-intro" onFinish={() => setStart(false)}/>}
   </section>;
@@ -416,14 +416,16 @@ function ShellScenes({locale, showMarks = false, shortcutOwner = false}: {
         shortcut={shortcutOwner && mode === "band" && theme === "light"} pairedPress={grouped ? pairedPress : undefined}/>
     </Section>
   );
-  return <>{themes.map(theme => <section key={theme} data-tcrn-theme={theme} className="tcrn-doc-section" data-doc-shell-theme={theme}>
+  return <>{themes.map(theme => <section key={theme} className="tcrn-doc-section" data-doc-shell-theme={theme}>
     <Heading level={2} visualLevel={3}>{labels.themes[theme]}</Heading>
     {showMarks && <Section name="shell-marks" title={labels.shell.marks}>
-      <Row>
-        {(["v1", "v2"] as const).map(version => <ShellBrandButton key={version} productId="tms" version={version} locale={locale} data-standalone-brand=""/>)}
-        <ProductLockup productId="tms" locale={locale}/>
-        <ProductLockup productId="tms" locale={locale} scale="rail"/>
-      </Row>
+      <div className="tcrn-doc-paper" data-tcrn-theme={theme}>
+        <Row>
+          {(["v1", "v2"] as const).map(version => <ShellBrandButton key={version} productId="tms" version={version} locale={locale} data-standalone-brand=""/>)}
+          <ProductLockup productId="tms" locale={locale}/>
+          <ProductLockup productId="tms" locale={locale} scale="rail"/>
+        </Row>
+      </div>
     </Section>}
     {desktopShellModes.map(mode => scene(mode, theme))}
     <div className="tcrn-doc-shell-narrow" onPointerDownCapture={event => { pairedPress.current = event.nativeEvent; }}>

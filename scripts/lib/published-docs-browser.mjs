@@ -1,5 +1,5 @@
-import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard,publishedSearchGeometry,measureNumberMinimums,numberMinimumValid } from "./published-browser-proof.mjs";
-import { LOCALES,formalApiContracts,checkManagerOutput,compiled } from "./published-standard-proof.mjs";
+import { withPublishedBrowser,managerStoryId,publishedBoardUrl,openPublishedBoard,publishedSearchGeometry,measureNumberMinimums,numberMinimumValid,measureElement,solidBackground } from "./published-browser-proof.mjs";
+import { LOCALES,formalApiContracts,checkManagerOutput,compiled,contrast } from "./published-standard-proof.mjs";
 import { ROOT,readApprovedSource,cssRule } from "./approved-site-source.mjs";
 import { readApiFacts,exerciseApiBoard,apiBehaviorIssues } from "./published-api-browser.mjs";
 import { installIntroRecorder,readIntro,readShellSpecimenContent,shellSpecimenContentIssues,showOriginalShellSpecimens } from "./published-shell-gates.mjs";
@@ -58,6 +58,28 @@ export async function collectGeometryReadings(page){
  readings.push(...await page.locator('[data-approved-board="05-actions"] .tcrn-button-group').evaluateAll(groups=>groups.map(group=>{const actions=[...group.querySelectorAll(':scope > button.tcrn-button')];return {kind:'button-group',size:group.dataset.buttonGroupSize,actionCount:actions.length,separators:group.querySelectorAll(':scope > .tcrn-button-group__separator').length,heights:actions.map(el=>el.getBoundingClientRect().height)};})));
  return readings;
 }
+
+// These labels describe the embedded shells; their painted carrier belongs to
+// the outer document. The specimen's explicit theme is not a text/background pair.
+export async function readShellDocumentationText(page){
+ const labels=page.locator('[data-doc-shell-theme] > .tcrn-heading, [data-doc-shell-theme] [data-formal-section] > .tcrn-heading, [data-formal-intro] > :is(.tcrn-heading,.tcrn-text,.tcrn-doc-intro-start), :is([data-doc-shell-theme],[data-formal-intro]) .tcrn-doc-shell-tools > :is(span,button)');
+ const readings=[];
+ for(const label of await labels.all()){
+  const reading=await measureElement(label),background=solidBackground(reading.chain);
+  readings.push({...reading,text:await label.textContent(),paintedBackground:background,ratio:contrast(reading.ink,background)});
+ }
+ return readings;
+}
+
+export function shellDocumentationTextIssues(readings){
+ if(!readings.length)return ['Missing shell documentation labels'];
+ return readings.flatMap(reading=>{
+  if(!reading.visible)return [`Shell documentation label is not visible: ${reading.text}`];
+  if(!Number.isFinite(reading.ratio)||reading.ratio<4.5)return [`Shell documentation text contrast ${reading.ratio} < 4.5: ${reading.text}`];
+  return [];
+ });
+}
+
 async function proveGeometryEntry({root,entry}){return withPublishedBrowser(async({browser,base,source})=>{
  const issues=[],observations=[],page=await browser.newPage({viewport:{width:1440,height:1000}});
  try{for(const locale of LOCALES)for(const board of ['05-actions','06-inputs','07a-shell-upper','07b-shell-lower']){
@@ -80,6 +102,17 @@ async function proveGeometryEntry({root,entry}){return withPublishedBrowser(asyn
      observations.push({entry,locale,board,width,kind:'shell-specimen-content',reading});
     }
    }finally{await page.setViewportSize({width:1440,height:1000});}
+   // Exercise both real documentation themes while keeping the light/night
+   // specimens mounted. Restore the starting theme for the remaining checks.
+   for(let step=0;step<2;step++){
+    const theme=await page.locator('.docs-shell').getAttribute('data-tcrn-theme');
+    const readings=await readShellDocumentationText(page);
+    issues.push(...shellDocumentationTextIssues(readings).map(issue=>`${entry}/${locale}/${board}/${theme}: ${issue}`));
+    observations.push({entry,locale,board,theme,kind:'shell-documentation-text',readings});
+    await page.locator('.docs-shell > [data-shell-strip] [data-theme-toggle]').click();
+    await page.locator(`.docs-shell[data-tcrn-theme="${theme==='light'?'dark':'light'}"]`).waitFor();
+    await page.evaluate(async()=>{await Promise.all(document.getAnimations().map(animation=>animation.finished.catch(()=>{})));});
+   }
   }
   }catch(error){issues.push(`${entry}/${locale}/${board}: incomplete geometry: ${error.message}`);}
  }}finally{await page.close();}return {issues,observations};

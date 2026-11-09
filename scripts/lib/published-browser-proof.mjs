@@ -236,7 +236,7 @@ export async function collectPublishedSearchAssemblies({source,board,reference,p
  }
  return {sourceOccurrences:roles.length,statesPerOccurrence:3,expectedComparisons:roles.length*3,observations,issues};
 }
-function solidBackground(chain){
+export function solidBackground(chain){
   // Each layer is composited from the document canvas toward the actual painted element.
   const parse=c=>{const n=c.match(/[\d.]+/g)?.map(Number)??[255,255,255];return [n[0],n[1],n[2],n[3]??1];};let result=[255,255,255,1];
   for(const value of [...chain].reverse()){const c=parse(value);result=[0,1,2].map(i=>c[i]*c[3]+result[i]*(1-c[3])).concat(1);}

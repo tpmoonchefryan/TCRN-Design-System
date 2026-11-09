@@ -22,6 +22,14 @@ geometry, once-per-session and reduced-motion contracts are unchanged. This loca
 lifecycle correction has separate machine evidence; the recorded S11 visual
 acceptance still covers only `69e37265`.
 
+Shell scene and intro documentation labels follow the outer documentation paper’s
+theme. The embedded shells, standalone mark paper and moving intro layer retain
+their explicit specimen theme. This repairs low-contrast labels in mixed-theme
+documentation without changing component colors or motion. The normal browser
+measurement covers the actual painted label carrier in both documentation themes,
+both entries and five locales, with a real wrong-scope negative case. Open a fresh
+browser session to review the once-per-session intro.
+
 ## Build and retain an installable candidate
 
 Run from the repository root with the declared pnpm 10.12.1 and a supported Node
