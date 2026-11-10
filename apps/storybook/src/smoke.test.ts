@@ -107,7 +107,7 @@ test("Manager links address the registered story and keep routed fragments scope
   const locale = "fr";
   assert.equal(pageHref(locale, "06-inputs", "static"), "/fr/06-inputs.html");
   assert.equal(pageHref(locale, "06-inputs", "canvas", "api-MultiSelect"),
-    "/iframe.html?id=published-standards--inputs&viewMode=story&globals=locale:fr#api-MultiSelect");
+    "?id=published-standards--inputs&viewMode=story&globals=locale:fr#api-MultiSelect");
 
   const crossStory = searchDocs(locale, "MultiSelect", manager, "index").find(hit => hit.id === "api-MultiSelect");
   assert.equal(crossStory?.href,
@@ -128,6 +128,21 @@ test("Manager links address the registered story and keep routed fragments scope
   assert.ok(!board.includes(`href="${approvedSource.site.url}`));
   const api = renderToStaticMarkup(createElement(App, { page: "api", locale, entry: manager }));
   assert.ok(api.includes('href="/docs/index.html?path=/story/published-standards--inputs&amp;globals=locale:fr">Exemples interactifs · Champs de saisie</a>'));
+});
+
+test("Canvas reader links keep the active iframe path at root and the published Storybook mount", () => {
+  for (const pathname of ["/iframe.html", "/storybook/iframe.html"]) for (const locale of supportedLocales) {
+    const current = `https://docs.example${pathname}?id=published-standards--home&viewMode=story`;
+    const html = renderToStaticMarkup(createElement(App, { page: "index", locale, entry: "canvas" }));
+    const links = [...html.matchAll(/href="([^"]*id=published-standards--[^"]*)"/g)].map(match => match[1].replaceAll("&amp;", "&"));
+    assert.ok(links.length >= 8);
+    for (const href of links) assert.equal(new URL(href, current).pathname, pathname);
+    const hit = searchDocs(locale, "MultiSelect", "canvas", "index").find(result => result.id === "api-MultiSelect")!;
+    const destination = new URL(hit.href, current);
+    assert.equal(destination.pathname, pathname);
+    assert.equal(destination.searchParams.get("id"), "published-standards--inputs");
+    assert.equal(destination.hash, "#api-MultiSelect");
+  }
 });
 
 

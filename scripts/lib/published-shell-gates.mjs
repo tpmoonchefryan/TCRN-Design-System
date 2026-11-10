@@ -299,8 +299,9 @@ export async function readIntro(page,url,{theme="light",original=true}={}){
  const ready=async()=>{
   await page.locator('[data-docs-ready="true"]').waitFor();
   if(original)await showOriginalShellSpecimens(scope());
+  await page.evaluate(async()=>{document.documentElement.getBoundingClientRect();await document.fonts.ready;});
  };
- const start=async()=>{await ready();const button=scope().locator(':scope > .tcrn-button');await button.click();await page.waitForFunction(()=>!document.querySelector('[data-shell-intro]'));return page.evaluate(()=>window.__publishedIntro);};
+ const start=async()=>{await ready();const button=scope().locator(':scope > .tcrn-button');await button.click();await page.waitForFunction(()=>!document.querySelector('[data-shell-intro]'));return page.evaluate(async()=>{document.documentElement.getBoundingClientRect();await document.fonts.ready;return window.__publishedIntro;});};
  await page.goto(url);await ready();await page.evaluate(()=>{sessionStorage.removeItem('tcrn-approved-source-intro');return document.fonts.ready;});
  await scope().locator(':scope > .tcrn-button').scrollIntoViewIfNeeded();
  const landing=await scope().locator('[data-shell-brand] svg[data-logo]').evaluate(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};});

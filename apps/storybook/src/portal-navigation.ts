@@ -28,7 +28,7 @@ export function pageHref(locale: DocsLocale, page: DocsPage, entry: DocsEntry = 
   const hash = fragment ? `#${fragment}` : "";
   if (entry === "static") return `/${locale}/${page}.html${hash}`;
   const id = storyId(page);
-  if (entry === "canvas") return `/iframe.html?id=${id}&viewMode=story&globals=locale:${locale}${hash}`;
+  if (entry === "canvas") return `?id=${id}&viewMode=story&globals=locale:${locale}${hash}`;
   // Manager 10.4.6 appends globals after the route hash. Forward the fragment as a story-scoped query instead.
   const anchor = fragment ? `&docsAnchor=${id}:${encodeURIComponent(fragment)}` : "";
   return `${entry.managerPath}?path=/story/${id}&globals=locale:${locale}${anchor}`;

@@ -13,8 +13,9 @@ const locales = ['zh-CN', 'en', 'ja', 'ko', 'fr'];
 const defaults = ['foundations', 'brand', 'components', 'shell'];
 const story = { index: 'home', '07a-shell-upper': 'shell-upper', '05-actions': 'actions', '03-icons': 'icons', '01-tokens': 'tokens', api: 'api' };
 const href = (surface, locale, page) => surface === 'static' ? `/${locale}/${page}.html`
-  : surface === 'canvas' ? `/iframe.html?id=published-standards--${story[page]}&viewMode=story&globals=locale:${locale}`
+  : surface === 'canvas' ? `?id=published-standards--${story[page]}&viewMode=story&globals=locale:${locale}`
   : `/index.html?path=/story/published-standards--${story[page]}&globals=locale:${locale}`;
+const route = (base, surface, locale, page) => new URL(href(surface, locale, page), base + '/iframe.html').href;
 const surfaceOf = (page, surface) => surface === 'manager' ? page.frameLocator('#storybook-preview-iframe') : page;
 const box = element => element.evaluate(el => {
   const r = el.getBoundingClientRect();
@@ -57,7 +58,7 @@ for (const output of ['static', 'manager']) test(`Storybook shell reuse: ${outpu
         }, { preferenceKey, theme });
         const id = `${surface}-${locale}-${theme}`;
         try {
-          await page.goto(base + href(surface, locale, '07a-shell-upper'));
+          await page.goto(route(base, surface, locale, '07a-shell-upper'));
           let shell = await ready(page, surface, locale);
           await expect(shell).toHaveAttribute('data-tcrn-theme', theme);
           const top = shell.locator('.docs-topics');
@@ -75,7 +76,7 @@ for (const output of ['static', 'manager']) test(`Storybook shell reuse: ${outpu
           assert.equal(control.height, 32);
           assert.match(control.className, /tcrn-button--secondary tcrn-button--md/);
           const specimenPage = await context.newPage();
-          await specimenPage.goto(base + href(surface === 'manager' ? 'canvas' : surface, locale, '05-actions'));
+          await specimenPage.goto(route(base, surface === 'manager' ? 'canvas' : surface, locale, '05-actions'));
           const specimenSurface = surfaceOf(specimenPage, surface === 'manager' ? 'canvas' : surface);
           await specimenSurface.locator('[data-approved-board="05-actions"]').waitFor();
           await specimenPage.evaluate(() => document.fonts.ready);
@@ -229,7 +230,7 @@ for (const output of ['static', 'manager']) test(`Storybook shell reuse: ${outpu
           if (locale === 'zh-CN') await screenshot(page, `${id}-narrow-pins`);
           if (locale === 'en' && theme === 'light') {
             await page.setViewportSize({ width: surface === 'manager' ? 1810 : 1462, height: 1000 });
-            await page.goto(base + href(surface, locale, '07a-shell-upper'));
+            await page.goto(route(base, surface, locale, '07a-shell-upper'));
             shell = await ready(page, surface, locale);
             menu = await openDirectory(shell);
             const targets = ['01-tokens', '05-actions', '07a-shell-upper'];

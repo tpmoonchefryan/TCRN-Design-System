@@ -217,7 +217,7 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
  try{await openPublishedBoard(page,{base,entry,locale,board:'01-tokens'});}catch(error){return {issues:[`${entry}/${locale}: navigation start ${error.message}`],observations};}
  for(const board of Object.keys(APPROVED_BOARD_IDS)){
   try{
-   const menu=await open(),expected=publishedBoardUrl(base,entry,locale,board),href=expected.slice(base.length),link=menu.locator(`a[data-shell-row][href="${href}"]`);
+   const menu=await open(),expected=publishedBoardUrl(base,entry,locale,board),href=entry==='static'?expected.slice(base.length):new URL(expected).search,link=menu.locator(`a[data-shell-row][href="${href}"]`);
    if(await link.count()!==1)throw new Error(`Missing unique actual document navigation link ${board}`);
    // Opening the menu can request new glyph subsets after route readiness.
    // Settle the active document before the next real link navigation cancels them.
@@ -234,7 +234,7 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
    const menu=await open(),search=menu.locator('[data-shell-search] input[type="search"]');await search.fill(query);
    const links=menu.locator('[data-search-result]');await links.first().waitFor({state:'visible'});
    const results=await links.evaluateAll(els=>els.map(el=>({id:new URL(el.href).hash.slice(1),name:el.querySelector('strong')?.textContent,href:el.getAttribute('href')})));
-   const expected=[['ShellBrandButton','07a-shell-upper'],['ShellMenu','07b-shell-lower']].map(([name,board])=>({id:`api-${name}`,name,href:entry==='static'?`/${locale}/api.html#api-${name}`:`${publishedBoardUrl(base,entry,locale,board).slice(base.length)}#api-${name}`}));
+   const expected=[['ShellBrandButton','07a-shell-upper'],['ShellMenu','07b-shell-lower']].map(([name,board])=>({id:`api-${name}`,name,href:entry==='static'?`/${locale}/api.html#api-${name}`:`${new URL(publishedBoardUrl(base,entry,locale,board)).search}#api-${name}`}));
    if(JSON.stringify(results)!==JSON.stringify(expected))issues.push(`${entry}/${locale}: dialog role search must return exactly the registered shell API identities and destinations`);
    if(results.some(r=>r.id==='api-Dialog'||r.href?.endsWith('#api-Dialog')))issues.push(`${entry}/${locale}: unsupported api-Dialog identity returned`);
    observations.push({kind:'dialog-role-search',entry,locale,query,results});
@@ -247,7 +247,7 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
   try{
    const menu=await open(),search=menu.locator('[data-shell-search] input[type="search"]');await search.fill(name);
    const result=menu.locator('[data-search-result]').filter({has:page.locator('strong',{hasText:new RegExp(`^${name}$`)})});await result.waitFor({state:'visible'});
-   const href=await result.getAttribute('href'),expected=entry==='static'?`/${locale}/api.html#api-${name}`:`${publishedBoardUrl(base,entry,locale,contract.board).slice(base.length)}#api-${name}`;
+   const href=await result.getAttribute('href'),expected=entry==='static'?`/${locale}/api.html#api-${name}`:`${new URL(publishedBoardUrl(base,entry,locale,contract.board)).search}#api-${name}`;
    if(href!==expected)issues.push(`${entry}/${locale}/${name}: search result destination differs from approved contract board`);
    await page.evaluate(()=>document.fonts.ready);
    await result.click();await page.locator(`[data-approved-api="${name}"]`).waitFor();await page.locator('[data-docs-ready="true"]').waitFor();
@@ -280,7 +280,7 @@ function managerMenuHref(managerPath,locale,page,fragment=''){
 function headerHref({base,entry,locale,managerUi,managerPath},page,fragment=''){
  if(managerUi)return managerMenuHref(managerPath,locale,page,fragment);
  const suffix=fragment?`#${fragment}`:'';
- return entry==='static'?`/${locale}/${page}.html${suffix}`:`/iframe.html?id=${docsStoryId(page)}&viewMode=story&globals=locale:${locale}${suffix}`;
+ return entry==='static'?`/${locale}/${page}.html${suffix}`:`?id=${docsStoryId(page)}&viewMode=story&globals=locale:${locale}${suffix}`;
 }
 const docsTopicPages={
  foundations:['01-tokens','02-typography','03-icons'],
@@ -445,20 +445,22 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
   const overviewLink=nav.locator('[data-docs-topic-layer="components"]').locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').first();
   const overviewHref=headerHref({base,entry,locale,managerUi,managerPath},'api');
   if(await overviewLink.getAttribute('href')!==overviewHref)issues.push(`${entry}/${locale}: API overview click route differs from its expected destination`);
+  await shell.evaluate(async element=>{element.getBoundingClientRect();await element.ownerDocument.fonts.ready;});
   await overviewLink.click();
   if(managerUi){
    await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`&&url.searchParams.get('globals')===`locale:${locale}`,{timeout:10000});
-  }else await page.waitForURL(new URL(overviewHref,base).href,{timeout:10000});
+  }else await page.waitForURL(new URL(overviewHref,page.url()).href,{timeout:10000});
   await surface.locator(`.docs-shell[data-docs-page="api"][lang="${locale}"][data-docs-ready="true"]`).waitFor();
   const apiNav=surface.locator('.docs-topic-nav'),apiCategory=apiNav.locator('[data-pin="components"] > button');await apiCategory.hover();
   const apiBranch=apiNav.locator('[data-docs-topic-layer="components"]').locator('button.docs-topic-menu__row');await apiBranch.hover();
   const anchorLink=apiNav.locator('[data-docs-topic-layer="components"]').locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').nth(1);
   const anchorHref=headerHref({base,entry,locale,managerUi,managerPath},'api','api-Heading');
   if(await anchorLink.getAttribute('href')!==anchorHref)issues.push(`${entry}/${locale}: real API anchor href differs from its Story/language route`);
+  await surface.locator('.docs-shell').evaluate(async element=>{element.getBoundingClientRect();await element.ownerDocument.fonts.ready;});
   await anchorLink.click();
   if(managerUi){
    await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`&&url.searchParams.get('docsAnchor')===`${docsStoryId('api')}:api-Heading`,{timeout:10000});
-  }else await page.waitForURL(new URL(anchorHref,base).href,{timeout:10000});
+  }else await page.waitForURL(new URL(anchorHref,page.url()).href,{timeout:10000});
   await surface.locator('#api-Heading').waitFor({state:'visible'});
   observations.push({kind:'topbar-route-activation',entry,locale,overviewHref,anchorHref,anchorVisible:true});
   observations.push({kind:'docs-topbar',entry,locale,opened,keyboard:true,focusRestored:true});
@@ -726,11 +728,12 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
   const lastFormal=list.locator(`a[href="${href}"]`);
   await lastFormal.scrollIntoViewIfNeeded();
   const target=await lastFormal.boundingBox();
+  await shell.evaluate(async element=>{element.getBoundingClientRect();await element.ownerDocument.fonts.ready;});
   await page.mouse.click(target.x+target.width/2,target.y+target.height/2);
   if(managerUi){
    await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`
     &&url.searchParams.get('globals')===`locale:${locale}`&&url.searchParams.get('docsAnchor')===`${docsStoryId('api')}:api-ShellIntro`);
-  }else await page.waitForURL(new URL(href,base).href);
+  }else await page.waitForURL(new URL(href,page.url()).href);
   const anchor=surface.locator(`.docs-shell[data-docs-page="api"][lang="${locale}"][data-docs-ready="true"] #api-ShellIntro[data-approved-api="ShellIntro"]`);
   await anchor.waitFor({state:'visible'});
   const content=await anchor.evaluate(async el=>{
@@ -747,6 +750,11 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
  finally{
   await page.emulateMedia({reducedMotion:'reduce'});
   if(originalViewport)await page.setViewportSize(originalViewport);
+  // Restoring the viewport reflows both Manager and Canvas before the next scenario.
+  for(const frame of page.frames())await frame.evaluate(async()=>{
+   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+   document.documentElement.getBoundingClientRect();await document.fonts.ready;
+  });
  }
  return {issues,observations};
 }
@@ -985,10 +993,10 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
          hasAccount: !!strip.querySelector('[data-shell-account]'),
        };
      });
-     const primaryHrefs = primaryPages.map(page => docsHref(entry, locale, page));
-     const currentHrefs = id === 'index' ? [docsHref(entry, locale, 'index')] : [];
+     const primaryHrefs = primaryPages.map(page => headerHref({base,entry,locale},page));
+     const currentHrefs = id === 'index' ? [headerHref({base,entry,locale},'index')] : [];
      const expectedTopic = Object.keys(topicPages).find(topic => topicPages[topic].includes(id));
-     if (chrome.home !== docsHref(entry, locale, 'index') ||
+     if (chrome.home !== headerHref({base,entry,locale},'index') ||
          JSON.stringify(chrome.current) !== JSON.stringify(currentHrefs) ||
          JSON.stringify(chrome.topicIds) !== JSON.stringify(Object.keys(topicPages)) ||
          JSON.stringify(chrome.topicCurrent) !== JSON.stringify(expectedTopic ? [expectedTopic] : []) ||
