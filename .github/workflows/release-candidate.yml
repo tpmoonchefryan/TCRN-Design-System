@@ -27,7 +27,7 @@ jobs:
         # Root build supplies static docs and Manager before the browser checks.
         env:
           TCRN_BUILD_TRASH: .codex-scratch/trash-release-candidate
-        run: pnpm verify
+        run: node scripts/with-build-trash.mjs corepack pnpm@10.12.1 run verify
       - name: Build the portal and official Storybook together
         env:
           TCRN_BUILD_TRASH: .codex-scratch/trash-release-candidate
