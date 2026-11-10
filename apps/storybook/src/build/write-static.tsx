@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { isDeepStrictEqual } from "node:util";
 import { renderToString } from "react-dom/server";
 import { tcrnComponentCss, tcrnProductMarkSvg, tcrnIconNames, tcrnProductMarkIds } from "@tcrn/ui-react/approved";
 import { tcrnTokenCss, tcrnTokens } from "@tcrn/ui-tokens";
@@ -48,6 +49,22 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
     // Keep the actual status/stage visible in host build logs without file contents,
     // environment values or absolute checkout paths. Git quotes unusual path bytes.
     console.log(JSON.stringify({ kind: "candidate-source-status", stage: "storybook-static-candidate", porcelain: sourceStatus.trimEnd().split("\n") }));
+    if (sourceStatus.split("\n").includes(" M vercel.json")) {
+      const trackedConfig = execFileSync("git", ["-C", root, "show", "HEAD:vercel.json"], { encoding: "utf8" });
+      const workingConfig = fs.readFileSync(path.join(root, "vercel.json"), "utf8");
+      let jsonEquivalent: boolean | null = null;
+      try {
+        jsonEquivalent = isDeepStrictEqual(JSON.parse(trackedConfig), JSON.parse(workingConfig));
+      } catch (error) {
+        if (!(error instanceof SyntaxError)) throw error;
+      }
+      console.log(JSON.stringify({
+        kind: "candidate-config-status", stage: "storybook-static-candidate", path: "vercel.json",
+        tracked: { bytes: Buffer.byteLength(trackedConfig), sha256: aiHash(trackedConfig) },
+        working: { bytes: Buffer.byteLength(workingConfig), sha256: aiHash(workingConfig) },
+        jsonEquivalent,
+      }));
+    }
   }
   const candidate = {
     version: packageVersions["@tcrn/ui-react"],
