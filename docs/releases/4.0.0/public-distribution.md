@@ -19,18 +19,31 @@ tag, remote Release or Vercel deployment is performed by this preparation.
 
 ## Verify, build and retain one candidate
 
-Run the repository's pnpm 10.12.1 on Node 24. Resolve the temporary trash directory
-from the checkout before running scripts. Existing generated outputs are reconciled
-through that directory under the normal repository contract.
+Run the repository's pnpm 10.12.1 on Node 24. The automatic verify step and normal
+Vercel build entry establish build-owned trash before workspace child commands.
+The same wrapper can supply that environment for local verification:
 
 ```sh
-export TCRN_BUILD_TRASH="$(mktemp -d "${TMPDIR:-/tmp}/trash-ds-build.XXXXXX")"
 corepack pnpm@10.12.1 install --frozen-lockfile
 corepack pnpm@10.12.1 exec playwright install chromium
-corepack pnpm@10.12.1 run verify
+node scripts/with-build-trash.mjs corepack pnpm@10.12.1 run verify
 corepack pnpm@10.12.1 public-docs:vercel-build
 corepack pnpm@10.12.1 pack:release-candidate --destination <new-absolute-directory>
 ```
+
+`with-build-trash.mjs` runs its command from the repository root. With no
+`TCRN_BUILD_TRASH`, it creates a unique `trash-tcrn-build-*` directory beneath
+`RUNNER_TEMP`, when defined, or the host's normal temporary directory. It logs the
+resolved owner/path and passes the absolute path to every child. A caller-supplied
+value is preserved, resolving relative paths from the repository root; empty,
+misnamed, symlink or file destinations fail instead of selecting another location.
+The existing output allowlist, placement, symlink and collision guards still apply.
+Retired bytes and `reconciliation.jsonl` remain in the logged directory after
+success or failure. Automatic verify uploads its default runner-temp trash with
+the executed reports. Local callers retain it with their evidence until its
+consumer releases it; Vercel's host temporary storage lasts only for that build.
+The low-level `build`, `public-docs:build` and package commands still require
+explicit owned trash when invoked directly.
 
 Start from the committed source intended for delivery. `verify` performs the full
 existing check chain; its root `build` creates the static portal and official

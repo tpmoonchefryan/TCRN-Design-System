@@ -61,11 +61,13 @@ jobs:
         # (scripts/shell-measure-proof.mjs: its tests, the eighteen gates on the two Shell
         # boards with --fixtures, then on the package shell stories), so the shell gate is
         # required on every push and pull request through this step.
-        run: pnpm verify
+        run: node scripts/with-build-trash.mjs corepack pnpm@10.12.1 run verify
       - name: Retain executed verification reports even after a failed check
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: verification-reports-${{ github.sha }}-${{ github.run_attempt }}
           if-no-files-found: warn
-          path: docs/verification/generated/
+          path: |
+            docs/verification/generated/
+            ${{ runner.temp }}/trash-tcrn-build-*/

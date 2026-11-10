@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { ROOT } from "../scripts/lib/approved-site-source.mjs";
 import { reconcileOutput,listFiles } from "../scripts/lib/generated-output.mjs";
 import { CURRENT_STORY_SOURCE_FILES,checkStorySourceMembers } from "../scripts/lib/published-standard-proof.mjs";
@@ -23,4 +24,49 @@ test("V7 precise reconciliation retires incremental stale output and preserves e
 test("V3 unused or unlinked story source cannot survive behind the correct navigation registry",()=>{
  assert.deepEqual(checkStorySourceMembers(CURRENT_STORY_SOURCE_FILES),[]);
  for(const file of ['hidden.tsx','internal-dev/unused.ts','contract-stories/unlinked-old-api.tsx'])assert.ok(checkStorySourceMembers([...CURRENT_STORY_SOURCE_FILES,file]).some(x=>x.includes(file)));
+});
+
+test("automatic build ownership reaches workspace children and rejects invalid caller input", t => {
+  const base = path.resolve(process.env.TCRN_TEST_SCRATCH ?? path.join(ROOT, ".codex-scratch", "build-environment-fixtures"));
+  fs.mkdirSync(base, { recursive: true });
+  const fixture = fs.mkdtempSync(path.join(base, "entry-"));
+  const env = { ...process.env, RUNNER_TEMP: fixture };
+  delete env.TCRN_BUILD_TRASH;
+  const child = "console.log(JSON.stringify({cwd:process.cwd(),trash:process.env.TCRN_BUILD_TRASH}))";
+  const run = supplied => spawnSync(process.execPath, [path.join(ROOT, "scripts/with-build-trash.mjs"), process.execPath, "-e", child], {
+    cwd: path.join(ROOT, "packages/ui-react"), encoding: "utf8",
+    env: supplied === undefined ? env : { ...env, TCRN_BUILD_TRASH: supplied },
+  });
+  const created = run();
+  assert.equal(created.status, 0, created.stderr);
+  const [entry, observed] = created.stdout.trim().split("\n").map(line => JSON.parse(line));
+  assert.equal(entry.ownership, "created");
+  assert.equal(observed.cwd, ROOT);
+  assert.equal(observed.trash, entry.trashRoot);
+  assert.equal(path.dirname(observed.trash), fixture);
+  assert.ok(fs.statSync(observed.trash).isDirectory());
+  const existingTrash = path.join(fixture, "trash-supplied");
+  fs.mkdirSync(existingTrash);
+  fs.writeFileSync(path.join(existingTrash, "retained.txt"), "prior build bytes\n");
+  const relative = path.relative(ROOT, existingTrash);
+  const supplied = run(relative);
+  assert.equal(supplied.status, 0, supplied.stderr);
+  const suppliedRows = supplied.stdout.trim().split("\n").map(line => JSON.parse(line));
+  assert.equal(suppliedRows[0].ownership, "caller-supplied");
+  assert.equal(suppliedRows[1].trash, path.resolve(ROOT, relative));
+  assert.equal(fs.readFileSync(path.join(existingTrash, "retained.txt"), "utf8"), "prior build bytes\n");
+  for (const invalid of ["", path.join(fixture, "unowned")]) {
+    const rejected = run(invalid);
+    assert.notEqual(rejected.status, 0);
+    assert.match(rejected.stderr, /TCRN_BUILD_TRASH must name an explicit owned trash directory/);
+    assert.equal(rejected.stdout, "");
+  }
+  const link = path.join(fixture, "trash-link");
+  fs.symlinkSync(observed.trash, link);
+  const rejectedLink = run(link);
+  assert.notEqual(rejectedLink.status, 0);
+  assert.match(rejectedLink.stderr, /not a symlink or file/);
+  const failedChild = spawnSync(process.execPath, [path.join(ROOT, "scripts/with-build-trash.mjs"), process.execPath, "-e", "process.exit(7)"], { env });
+  assert.equal(failedChild.status, 7);
+  t.diagnostic(JSON.stringify({ owner: "automatic build ownership fixture", retained: fixture, cleanup: "Retain entry observations and owned trash with this test's evidence." }));
 });
