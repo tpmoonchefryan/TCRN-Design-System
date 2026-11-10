@@ -219,6 +219,9 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
   try{
    const menu=await open(),expected=publishedBoardUrl(base,entry,locale,board),href=expected.slice(base.length),link=menu.locator(`a[data-shell-row][href="${href}"]`);
    if(await link.count()!==1)throw new Error(`Missing unique actual document navigation link ${board}`);
+   // Opening the menu can request new glyph subsets after route readiness.
+   // Settle the active document before the next real link navigation cancels them.
+   await page.evaluate(()=>document.fonts.ready);
    await link.click();await page.locator(`[data-approved-board="${board}"]`).waitFor();await page.locator('[data-docs-ready="true"]').waitFor();
    const activatedUrl=new URL(page.url()),expectedUrl=new URL(expected);activatedUrl.searchParams.sort();expectedUrl.searchParams.sort();
    if(activatedUrl.href!==expectedUrl.href)issues.push(`${entry}/${locale}: document navigation activation ${board}`);
@@ -246,6 +249,7 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
    const result=menu.locator('[data-search-result]').filter({has:page.locator('strong',{hasText:new RegExp(`^${name}$`)})});await result.waitFor({state:'visible'});
    const href=await result.getAttribute('href'),expected=entry==='static'?`/${locale}/api.html#api-${name}`:`${publishedBoardUrl(base,entry,locale,contract.board).slice(base.length)}#api-${name}`;
    if(href!==expected)issues.push(`${entry}/${locale}/${name}: search result destination differs from approved contract board`);
+   await page.evaluate(()=>document.fonts.ready);
    await result.click();await page.locator(`[data-approved-api="${name}"]`).waitFor();await page.locator('[data-docs-ready="true"]').waitFor();
    if(new URL(page.url()).hash!==`#api-${name}`)issues.push(`${entry}/${locale}/${name}: search result did not activate its actual API anchor`);
    observations.push({kind:'api-search-activation',entry,locale,name,href,activated:page.url()});
