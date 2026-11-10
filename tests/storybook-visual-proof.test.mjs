@@ -216,7 +216,8 @@ test('the real navigation caller accepts only the two registered dialog-role des
   const emptyQueries=['StateView','brand-identity','tcrn-brand-mark.svg',sourceLabels[locale],source.manifest.site.sourceCommit];
   function caller(alter=rows=>rows,activate=target=>target){
    let url='',query='',board='01-tokens';const emptyWaits=[],activations=[];
-   const apiHref=name=>entry==='static'?`/${locale}/api.html#api-${name}`:`${publishedBoardUrl(base,entry,locale,formal[name].board).slice(base.length)}#api-${name}`;
+   const boardHref=id=>entry==='static'?publishedBoardUrl(base,entry,locale,id).slice(base.length):new URL(publishedBoardUrl(base,entry,locale,id)).search;
+   const apiHref=name=>entry==='static'?`/${locale}/api.html#api-${name}`:`${boardHref(formal[name].board)}#api-${name}`;
    const roleRows=()=>alter(['ShellBrandButton','ShellMenu'].map(name=>({id:`api-${name}`,name,href:apiHref(name)})));
    const roleQuery=()=>query.trim().normalize('NFKC').toLowerCase()==='dialog';
    const destination=href=>{const target=new URL(href,url||base);target.searchParams.sort();return activate(target).href;};
@@ -232,7 +233,7 @@ test('the real navigation caller accepts only the two registered dialog-role des
     if(selector==='[data-search-result]')return links;
     if(selector==='[data-product-shell-search-empty]:not([hidden])')return {waitFor:async()=>{emptyWaits.push(query);assert.ok(emptyQueries.includes(query),'Dialog must never await an impossible empty state');}};
     const href=/^a\[data-shell-row\]\[href="([^"]+)"\]$/.exec(selector)?.[1];assert.ok(href,selector);
-    return {count:async()=>1,click:async()=>{board=Object.keys(APPROVED_BOARD_IDS).find(id=>publishedBoardUrl(base,entry,locale,id).slice(base.length)===href);assert.ok(board);url=destination(href);}};
+    return {count:async()=>1,click:async()=>{board=Object.keys(APPROVED_BOARD_IDS).find(id=>boardHref(id)===href);assert.ok(board);url=destination(href);}};
    }};
    const shell={first(){return this;},locator:selector=>{
     if(selector==='[data-shell-brand]')return {first:()=>({getAttribute:async()=> 'true'})};
