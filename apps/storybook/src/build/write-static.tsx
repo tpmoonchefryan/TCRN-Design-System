@@ -43,10 +43,16 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
     const manifest = JSON.parse(fs.readFileSync(path.join(root, `packages/${name}/package.json`), "utf8"));
     return [manifest.name, manifest.version as string];
   }));
+  const sourceStatus = execFileSync("git", ["-C", root, "status", "--porcelain=v1", "--untracked-files=all"], { encoding: "utf8" });
+  if (sourceStatus.length > 0) {
+    // Keep the actual status/stage visible in host build logs without file contents,
+    // environment values or absolute checkout paths. Git quotes unusual path bytes.
+    console.log(JSON.stringify({ kind: "candidate-source-status", stage: "storybook-static-candidate", porcelain: sourceStatus.trimEnd().split("\n") }));
+  }
   const candidate = {
     version: packageVersions["@tcrn/ui-react"],
     commit: execFileSync("git", ["-C", root, "rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
-    dirty: execFileSync("git", ["-C", root, "status", "--porcelain=v1"], { encoding: "utf8" }).trim().length > 0,
+    dirty: sourceStatus.trim().length > 0,
   };
   const manifestBuilder = await import(pathToFileURL(path.join(root, "scripts/component-api-manifest.mjs")).href) as {
     extractComponentExamples: () => Record<string, { path: string; line: number; snippet: string }>;
