@@ -68,6 +68,7 @@ jobs:
         with:
           name: verification-reports-${{ github.sha }}-${{ github.run_attempt }}
           if-no-files-found: warn
+          include-hidden-files: true
           path: |
             docs/verification/generated/
-            ${{ runner.temp }}/trash-tcrn-build-*/
+            .codex-scratch/trash-tcrn-build-*/

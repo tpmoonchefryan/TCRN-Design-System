@@ -50,8 +50,9 @@ in the proof, full AI contract and llms output; it is not a new visual review.
 Run from the repository root with the declared pnpm 10.12.1 and a supported Node
 runtime. Use `node scripts/with-build-trash.mjs corepack pnpm@10.12.1 run verify`
 for local verification. The automatic verify step and `public-docs:vercel-build`
-use this wrapper to create and log an owned runtime trash path before entering
-package scripts. Supplied `TCRN_BUILD_TRASH` paths resolve from the repository
+use this wrapper to create and log owned trash beneath ignored `.codex-scratch/`
+on the checkout filesystem before entering package scripts. This keeps preserving
+rename independent of separate host temporary mounts. Supplied `TCRN_BUILD_TRASH` paths resolve from the repository
 root and are passed to children as absolute paths; invalid ownership fails.
 Retain the logged trash and its moved-byte receipts with the build evidence.
 The normal full `pnpm build` creates both static docs and Manager; `pnpm verify`

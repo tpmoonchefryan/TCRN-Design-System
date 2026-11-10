@@ -1065,6 +1065,9 @@ mark.tcrn-highlight__mark{background:var(--tcrn-color-acc-bg);color:inherit;font
     color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
     box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
 }
+.tcrn-shell-brand:where(:has([data-logo="tms"])) {
+  inline-size: var(--tcrn-shell-brand-w);
+}
 .tcrn-shell-brand[data-shell-brand="v1"] {
   inline-size: auto;
   min-inline-size: 0;

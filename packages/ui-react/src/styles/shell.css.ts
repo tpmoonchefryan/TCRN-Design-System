@@ -27,11 +27,10 @@
 // Idle it has no fill and no edge; hover and open take the 3.5% ink wash (--tcrn-color-hover).
 // The mark and the wordmark are centred by the flex line alone: no line-height nudge, no
 // optical shift, so the wordmark's ink midline is the mark's midline.
-// The wordmark takes its content width, as the board's 22 auto 20 columns do (TCRN-DS-SUB-143):
-// it does not shrink, and it may run up to 1 (half of space-0h) past the cell the mark and the
-// toggle leave it, so a wordmark that is only a fraction too wide (TCRN TMS reads 60.234 in the
-// 60 cell) is drawn whole; a longer one stops there with an ellipsis, and the title says it in
-// full. The outer box stays 134 by 40 and the toggle does not move. The suffix's line box is
+// The wordmark takes its content width. The published TMS v2 button keeps its token-sized
+// outer box even when text metrics exceed its grid cell; other products retain their complete
+// intrinsic wordmarks. The v1 and narrow automatic variants remain content-sized.
+// The suffix's line box is
 // taller than the 1.2 line (Hanken Grotesk ascends 1 and descends 0.303 em), so the wordmark
 // has space-0h above and below its line: the clipping wordmark holds the suffix, and the room is
 // the same on both sides, so the glyphs stay where the flex line centres them.
@@ -74,6 +73,9 @@ export const shellCss01 = `
     background-color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
     color var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease),
     box-shadow var(--tcrn-motion-duration-fill) var(--tcrn-motion-ease);
+}
+.tcrn-shell-brand:where(:has([data-logo="tms"])) {
+  inline-size: var(--tcrn-shell-brand-w);
 }
 .tcrn-shell-brand[data-shell-brand="v1"] {
   inline-size: auto;

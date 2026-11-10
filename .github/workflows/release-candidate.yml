@@ -26,11 +26,11 @@ jobs:
       - name: Run the final source's required repository checks
         # Root build supplies static docs and Manager before the browser checks.
         env:
-          TCRN_BUILD_TRASH: ${{ runner.temp }}/trash-release-candidate
+          TCRN_BUILD_TRASH: .codex-scratch/trash-release-candidate
         run: pnpm verify
       - name: Build the portal and official Storybook together
         env:
-          TCRN_BUILD_TRASH: ${{ runner.temp }}/trash-release-candidate
+          TCRN_BUILD_TRASH: .codex-scratch/trash-release-candidate
         run: pnpm public-docs:vercel-build
       - name: Prepare four archives and checksums without publishing
         run: pnpm pack:release-candidate --destination "$RUNNER_TEMP/release-candidate"
@@ -49,4 +49,7 @@ jobs:
         with:
           name: verification-reports-${{ github.sha }}-${{ github.run_attempt }}
           if-no-files-found: warn
-          path: docs/verification/generated/
+          include-hidden-files: true
+          path: |
+            docs/verification/generated/
+            .codex-scratch/trash-release-candidate/

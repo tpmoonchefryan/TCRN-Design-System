@@ -93,6 +93,29 @@ import { proofContexts,publishedBoardUrl } from '../scripts/lib/published-browse
 import { configureProofPage } from '../scripts/lib/published-browser-proof.mjs';
 import { installIntroRecorder } from '../scripts/lib/published-shell-gates.mjs';
 
+test('TMS v2 keeps the adopted box when intrinsic word metrics reach the CI width', async () => {
+  for (const entry of ['static', 'manager']) await withPublishedBrowser(async ({ browser, base }) => {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+    try {
+      await configureProofPage(page, 'light');
+      await openPublishedBoard(page, { base, entry, locale: 'en', board: '07b-shell-lower', originalSpecimens: true });
+      const brand = page.locator('[data-formal-shell-scene="band"][data-shell-theme="light"]').first().locator('[data-shell-brand]');
+      const measure = () => brand.evaluate(el => {
+        const box = el.getBoundingClientRect(), strip = el.closest('[data-shell-strip]').getBoundingClientRect();
+        return { width: box.width, height: box.height, x: box.x - strip.x, y: box.y - strip.y };
+      });
+      // Hold the word at62px to isolate intrinsic grid sizing from font selection.
+      // The unchanged remaining cells contribute74px, reproducing the136px CI box.
+      await brand.locator('.tcrn-shell-brand__word').evaluate(el => { el.style.inlineSize = '62px'; });
+      assert.deepEqual(await measure(), { width: 134, height: 40, x: 12, y: 6 });
+      await brand.evaluate(el => { el.style.inlineSize = 'max-content'; });
+      assert.equal((await measure()).width, 136, 'the prior intrinsic behavior still exposes the demonstrated deviation');
+    } finally {
+      await page.close();
+    }
+  }, { entry });
+});
+
 test('the native intro completes before cleanup after a delayed first frame and still exposes a real landing defect', async () => {
   for (const entry of ['static', 'manager']) await withPublishedBrowser(async ({ browser, base }) => {
     for (const [blockingMs, shiftedMark] of [[140, false], [0, false], [140, true]]) {

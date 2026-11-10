@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { ROOT } from "./lib/approved-site-source.mjs";
@@ -22,8 +21,15 @@ if (supplied !== undefined) {
   }
   fs.mkdirSync(trash, { recursive: true });
 } else {
-  const temporaryBase = path.resolve(ROOT, process.env.RUNNER_TEMP ?? os.tmpdir());
-  trash = fs.mkdtempSync(path.join(temporaryBase, "trash-tcrn-build-"));
+  // Retirement uses preserving rename, so the default must share the checkout's
+  // filesystem. Vercel's host temp directory can be a separate mount.
+  const scratch = path.join(ROOT, ".codex-scratch");
+  fs.mkdirSync(scratch, { recursive: true });
+  const entry = fs.lstatSync(scratch);
+  if (entry.isSymbolicLink() || !entry.isDirectory() || entry.dev !== fs.statSync(ROOT).dev) {
+    throw new Error("Default build trash must be a directory on the checkout filesystem");
+  }
+  trash = fs.mkdtempSync(path.join(scratch, "trash-tcrn-build-"));
 }
 
 // Resolve ownership once, before pnpm changes cwd for workspace child commands.

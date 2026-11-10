@@ -33,15 +33,22 @@ corepack pnpm@10.12.1 pack:release-candidate --destination <new-absolute-directo
 
 `with-build-trash.mjs` runs its command from the repository root. With no
 `TCRN_BUILD_TRASH`, it creates a unique `trash-tcrn-build-*` directory beneath
-`RUNNER_TEMP`, when defined, or the host's normal temporary directory. It logs the
+the checkout's ignored `.codex-scratch/`. That parent must be a real directory
+on the checkout's filesystem: preserving rename cannot cross into a separate
+host temporary mount, as Vercel's `/tmp` can be. `RUNNER_TEMP` and the host's
+temporary-directory settings do not select this default. It logs the
 resolved owner/path and passes the absolute path to every child. A caller-supplied
 value is preserved, resolving relative paths from the repository root; empty,
 misnamed, symlink or file destinations fail instead of selecting another location.
+Caller-supplied destinations must also share the generated outputs' filesystem.
 The existing output allowlist, placement, symlink and collision guards still apply.
 Retired bytes and `reconciliation.jsonl` remain in the logged directory after
-success or failure. Automatic verify uploads its default runner-temp trash with
-the executed reports. Local callers retain it with their evidence until its
-consumer releases it; Vercel's host temporary storage lasts only for that build.
+success or failure. Automatic verify uploads `.codex-scratch/trash-tcrn-build-*/`
+with the executed reports, explicitly including hidden paths. The manual release
+workflow uses and retains `.codex-scratch/trash-release-candidate/` for both
+verification and docs generation. Local callers retain these directories with
+their evidence until their consumer releases them; Vercel's checkout storage
+lasts only for that build.
 The low-level `build`, `public-docs:build` and package commands still require
 explicit owned trash when invoked directly.
 
