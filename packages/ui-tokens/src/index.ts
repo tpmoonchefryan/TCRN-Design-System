@@ -10,8 +10,14 @@ export type TokenVariable = `--tcrn-${string}`;
 export interface DeprecatedTokenInfo { replacement:TokenVariable|null; note:string }
 export interface DesignToken { name:string;variable:TokenVariable;value:string;group:TokenGroup;description:string;scope?:TokenScope;deprecated?:DeprecatedTokenInfo }
 export type ThemeMode="light"|"dark";
+export type SeasonalThemeMode="halloween";
+export type AnyThemeMode=ThemeMode|SeasonalThemeMode;
 export interface ThemeTokenOverride { variable:TokenVariable;value:string;description:string }
 export const tcrnThemeModes=["light","dark"] as const;
+export const tcrnSeasonalThemeModes=["halloween"] as const;
+export const tcrnAllThemeModes=["light","dark","halloween"] as const;
+export const tcrnHalloweenThemeSelector='[data-tcrn-theme="halloween"]';
+export const tcrnSeasonalTokenBlockKind="seasonal-theme" as const;
 interface TokenEntry { token:DesignToken; dark?:string }
 function tokenGroup(variable: string): TokenGroup {
   if (variable.includes("-color-")) return "color";
@@ -61,6 +67,66 @@ export const tcrnDarkThemeTokens: readonly ThemeTokenOverride[] = allEntries
     description: dark === undefined ? `Re-declared in the dark block so it resolves against night values: ${token.description}` : `Night value. ${token.description}`
   }));
 
+// Opt-in seasonal Halloween palette overriding only theme-scoped variables while preserving
+// every layout, spacing, radius, type, icon and motion token of the published Site standard.
+const halloweenColorOverrides: Readonly<Partial<Record<TokenVariable, string>>> = {
+  "--tcrn-color-bg": "#131017",
+  "--tcrn-color-bg-2": "#0d0b10",
+  "--tcrn-color-panel": "#1b1622",
+  "--tcrn-color-panel-2": "#231d2c",
+  "--tcrn-color-line": "rgba(245,236,224,.08)",
+  "--tcrn-color-line-2": "rgba(245,236,224,.15)",
+  "--tcrn-color-line-3": "rgba(245,236,224,.28)",
+  "--tcrn-color-line-ctl": "rgba(245,236,224,.40)",
+  "--tcrn-color-rule": "#f3ece0",
+  "--tcrn-color-ink": "#f3ece0",
+  "--tcrn-color-ink-2": "#beb3a4",
+  "--tcrn-color-ink-3": "#968b7e",
+  "--tcrn-color-acc": "#f58a33",
+  "--tcrn-color-acc-2": "#ffa04d",
+  "--tcrn-color-acc-3": "#e0761f",
+  "--tcrn-color-acc-bg": "rgba(245,138,51,.12)",
+  "--tcrn-color-acc-ul": "rgba(245,138,51,.72)",
+  "--tcrn-color-on-acc": "#1b0d02",
+  "--tcrn-color-red": "#f08c80",
+  "--tcrn-color-red-bg": "rgba(240,140,128,.09)",
+  "--tcrn-color-red-bg-2": "rgba(240,140,128,.15)",
+  "--tcrn-color-ok": "#6dd69c",
+  "--tcrn-color-warn": "#ebb552",
+  "--tcrn-color-bad": "#f28779",
+  "--tcrn-color-bad-bg": "rgba(242,135,121,.11)",
+  "--tcrn-color-wash": "rgba(243,236,224,.07)",
+  "--tcrn-color-hover": "rgba(243,236,224,.04)",
+  "--tcrn-color-dis": "rgba(243,236,224,.05)",
+  "--tcrn-elevation-s1": "0 1px 1px rgba(0,0,0,.34),0 0 0 1px rgba(245,236,224,.07)",
+  "--tcrn-elevation-s2": "0 1px 2px rgba(0,0,0,.40),0 2px 3px rgba(0,0,0,.34),0 0 0 1px rgba(245,236,224,.08)",
+  "--tcrn-elevation-s3": "0 2px 3px rgba(0,0,0,.45),0 3px 3px rgba(0,0,0,.42),0 0 0 1px rgba(245,236,224,.10)",
+  "--tcrn-color-glass": "rgba(27,22,34,.76)",
+  "--tcrn-elevation-glass-edge": "inset 0 1px 0 rgba(245,236,224,.07)",
+  "--tcrn-texture-grain-opacity": ".055",
+  "--tcrn-texture-grain-blend": "screen",
+  "--tcrn-color-av-bg": "#2b2336",
+  "--tcrn-color-av-ink": "#f3ece0",
+  "--tcrn-color-knob": "#fff8ee",
+  "--tcrn-color-chrome": "rgba(19,16,23,.84)",
+  "--tcrn-brand-suffix-tms": "#9ab6ff",
+  "--tcrn-brand-suffix-design-system": "#b09cff"
+};
+
+export const tcrnHalloweenThemeTokens: readonly ThemeTokenOverride[] = allEntries
+  .filter(({ token }) => themeScoped.has(token.variable))
+  .map(({ token }) => {
+    const seasonal = halloweenColorOverrides[token.variable];
+    return {
+      variable: token.variable,
+      value: seasonal ?? token.value,
+      description:
+        seasonal === undefined
+          ? `Re-declared in the seasonal Halloween block so it resolves against seasonal values: ${token.description}`
+          : `Seasonal Halloween value. ${token.description}`
+    };
+  });
+
 export interface DeprecatedToken {
   variable: TokenVariable;
   replacement: TokenVariable | null;
@@ -87,9 +153,10 @@ export function createTokenMap(tokens: readonly DesignToken[] = tcrnTokens): Rec
  * Token map with every `var(--…)` reference substituted, as a browser would compute it at
  * the theme root. Contrast and geometry checks read concrete values from here.
  */
-export function createResolvedTokenMap(theme: ThemeMode = "light", tokens: readonly DesignToken[] = tcrnTokens): Record<string, string> {
+export function createResolvedTokenMap(theme: AnyThemeMode = "light", tokens: readonly DesignToken[] = tcrnTokens): Record<string, string> {
   const raw = createTokenMap(tokens);
-  if (theme === "dark") for (const override of tcrnDarkThemeTokens) if (override.variable in raw) raw[override.variable] = override.value;
+  const overrides = theme === "dark" ? tcrnDarkThemeTokens : theme === "halloween" ? tcrnHalloweenThemeTokens : null;
+  if (overrides) for (const override of overrides) if (override.variable in raw) raw[override.variable] = override.value;
   const resolved: Record<string, string> = {};
   const resolve = (variable: string, trail: readonly string[]): string => {
     if (variable in resolved) return resolved[variable];
@@ -161,6 +228,14 @@ export function createThemeCssVariables(theme: ThemeMode): string {
 
 export const tcrnDarkThemeCss = createThemeCssVariables("dark");
 export const tcrnTokenCss = `${createCssVariables()}${tcrnDarkThemeCss}`;
+
+export function createSeasonalThemeCssVariables(_theme: SeasonalThemeMode): string {
+  return declarationBlock(tcrnHalloweenThemeSelector, tcrnSeasonalTokenBlockKind, tcrnHalloweenThemeTokens);
+}
+
+export const tcrnHalloweenThemeCss = createSeasonalThemeCssVariables("halloween");
+export const tcrnHalloweenThemeStylesheet =
+  `/* Opt-in seasonal Halloween theme for @tcrn/ui-tokens. Import after @tcrn/ui-tokens/tokens.css and activate with data-tcrn-theme="halloween". */\n${tcrnHalloweenThemeCss}`;
 
 /** tokens.css loads the bundled faces (packages/ui-tokens/fonts/fonts.css) before the tokens. */
 export const tcrnFontsImport = `@import "../fonts/fonts.css";\n`;
@@ -297,6 +372,53 @@ export function compareTokenThemeBlocks(css: string): ThemeBlockComparison {
   const overlap = fixed.filter((property) => lightSet.has(property) || darkSet.has(property));
   if (overlap.length) problems.push(`declared in both a theme block and the theme-independent block: ${overlap.join(", ")}`);
   return { ok: problems.length === 0, light, dark, lightOnly, darkOnly, problems };
+}
+
+export interface SeasonalThemeBlockComparison {
+  ok: boolean;
+  base: readonly string[];
+  seasonal: readonly string[];
+  baseOnly: readonly string[];
+  seasonalOnly: readonly string[];
+  problems: readonly string[];
+}
+
+/** Verifies an opt-in seasonal theme block declares the exact same theme-scoped property set as base `tcrnTokenCss`. */
+export function compareSeasonalThemeBlock(
+  baseCss: string,
+  seasonalCss: string,
+  selector: string = tcrnHalloweenThemeSelector
+): SeasonalThemeBlockComparison {
+  const baseComparison = compareTokenThemeBlocks(baseCss);
+  const parsedBase = parseTokenCssBlocks(baseCss).filter((block) => block.media === null);
+  const fixedNames = new Set(
+    parsedBase
+      .filter((block) => sameSelectorList(block.selector, ":root") && block.kind !== tcrnTokenBlockKinds.theme)
+      .flatMap((block) => block.declarations.map(([property]) => property))
+  );
+  const parsedSeasonal = parseTokenCssBlocks(seasonalCss).filter((block) => block.media === null);
+  const matching = parsedSeasonal.filter(
+    (block) => sameSelectorList(block.selector, selector) && block.kind === tcrnSeasonalTokenBlockKind
+  );
+  const problems: string[] = [...baseComparison.problems];
+  if (matching.length !== 1) problems.push(`expected one ${selector} ${tcrnSeasonalTokenBlockKind} block, found ${matching.length}`);
+  if (parseTokenCssBlocks(seasonalCss).some((block) => block.media !== null)) problems.push("seasonal theme block must not emit @media rules");
+  const seasonal = matching.flatMap((block) => block.declarations.map(([property]) => property));
+  const seen = new Set<string>();
+  for (const property of seasonal) {
+    if (seen.has(property)) problems.push(`${property} is declared twice in the ${selector} block`);
+    seen.add(property);
+  }
+  const base = baseComparison.light;
+  const baseSet = new Set(base);
+  const seasonalSet = new Set(seasonal);
+  const baseOnly = base.filter((property) => !seasonalSet.has(property));
+  const seasonalOnly = seasonal.filter((property) => !baseSet.has(property));
+  if (baseOnly.length) problems.push(`missing in ${selector}: ${baseOnly.join(", ")}`);
+  if (seasonalOnly.length) problems.push(`only in ${selector}: ${seasonalOnly.join(", ")}`);
+  const overlap = seasonal.filter((property) => fixedNames.has(property));
+  if (overlap.length) problems.push(`declared in both ${selector} and the theme-independent block: ${overlap.join(", ")}`);
+  return { ok: problems.length === 0, base, seasonal, baseOnly, seasonalOnly, problems };
 }
 
 export interface DeprecatedTokenUsage {

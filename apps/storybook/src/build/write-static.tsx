@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
 import { renderToString } from "react-dom/server";
 import { tcrnComponentCss, tcrnProductMarkSvg, tcrnIconNames, tcrnProductMarkIds } from "@tcrn/ui-react/approved";
-import { tcrnTokenCss, tcrnTokens } from "@tcrn/ui-tokens";
+import { tcrnHalloweenThemeCss, tcrnTokenCss, tcrnTokens } from "@tcrn/ui-tokens";
 import { App, docsPreferenceKey } from "../app.js";
 import { docsNavigation, type DocsPage } from "../portal-navigation.js";
 import { approvedSource, supportedLocales, type DocsLocale } from "../approved-source.js";
@@ -109,7 +109,7 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
   }
   files.set("index.html", pageHtml("index", "en"));
   files.set("storybook.js", bundle);
-  files.set("storybook.css", tcrnTokenCss + "\n" + tcrnComponentCss + "\n" + fs.readFileSync(path.join(root, "apps/storybook/src/docs.css"), "utf8"));
+  files.set("storybook.css", tcrnTokenCss + "\n" + tcrnHalloweenThemeCss + "\n" + tcrnComponentCss + "\n" + fs.readFileSync(path.join(root, "apps/storybook/src/docs.css"), "utf8"));
   files.set("assets/ds-tile-deep.svg", tcrnProductMarkSvg("design-system", "tile-deep", { size: 48 }));
   for (const file of fonts.files) {
     const bytes = fs.readFileSync(path.join(fontRoot, file.file));

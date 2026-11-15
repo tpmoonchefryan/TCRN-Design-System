@@ -121,6 +121,7 @@ export const CURRENT_STORY_SOURCE_FILES = Object.freeze([
   "portal-copy.ts",
   "portal-navigation.ts",
   "portal.tsx",
+  "seasonal-halloween.stories.tsx",
   "smoke.test.ts",
   "source-matrices.tsx",
   "specimen-copy.ts",
@@ -158,6 +159,7 @@ export const CURRENT_CSF_FILES = Object.freeze([
   "components/Switch.stories.tsx",
   "components/Text.stories.tsx",
   "components/Textarea.stories.tsx",
+  "seasonal-halloween.stories.tsx",
   "standards.stories.tsx",
   "support.stories.tsx"
 ]);
@@ -198,6 +200,7 @@ export const AI_OUTPUT_FILES = Object.freeze([
   "ai/4.0.0/pattern/customer-list-boundary.json",
   "ai/4.0.0/pattern/component-layout.json",
   "ai/4.0.0/pattern/product-locales.json",
+  "ai/4.0.0/pattern/seasonal-halloween-theme.json",
   "ai/4.0.0/pattern/shell-preferences.json",
   "ai/4.0.0/sources.json",
   "ai/4.0.0/standard/01-tokens.json",
@@ -224,7 +227,7 @@ export function checkSourceClosure(root=ROOT){
   const main=read(root,"apps/storybook/.storybook/main.ts");
   const storyDeclaration = /stories:\s*\[([^\]]*)\]/.exec(main)?.[1];
   const declaredStories = storyDeclaration ? [...storyDeclaration.matchAll(/"([^"\n]+)"/g)].map(match => match[1]) : [];
-  const managerEntries = ["../src/standards.stories.tsx", "../src/support.stories.tsx", "../src/components/*.stories.tsx"];
+  const managerEntries = ["../src/standards.stories.tsx", "../src/support.stories.tsx", "../src/seasonal-halloween.stories.tsx", "../src/components/*.stories.tsx"];
   if (JSON.stringify(declaredStories) !== JSON.stringify(managerEntries) || /tcrn-brand-mark|staticDirs[^\n]*assets\//.test(main)) issues.push("Manager CSF/asset closure is not the explicit approved entrypoint");
   const csf = listFiles(path.join(root, "apps/storybook/src")).filter(file => file.endsWith(".stories.tsx"));
   issues.push(...validateOutputMembers(csf, CURRENT_CSF_FILES).map(issue => `CSF source closure: ${issue}`));
@@ -280,6 +283,39 @@ export function checkContrast(root=ROOT){
     if(ratio<4.5)issues.push(`S03-C01 nominal ${context.board} ${theme}/idle shortcut ${ratio.toFixed(6)} < 4.5`);
   }
   return {issues,measurements,shortcutContexts,thresholds:{text:4.5,icon:3,edge:3},sourceThresholdConflicts:[...new Set(measurements.filter(row=>row.conflict&&row.ratio<row.min).map(row=>row.conflict))],sourceWordingAmbiguities:source.board("02-typography").html.includes("强调加字重不换色")?["K5"]:[],...FORMAL_REVIEW_STATUS};
+}
+export async function checkSeasonalHalloweenContrast(root=ROOT){
+  const token=await compiled(root,"packages/ui-tokens/dist/index.js");
+  const values=token.createResolvedTokenMap("halloween");
+  const get=name=>values[`--tcrn-color-${name}`];
+  const issues=[],measurements=[];
+  for(const role of ["ink","ink-2","ink-3","acc","red","ok","warn","bad"])for(const carrier of ["bg","panel","panel-2"]){
+    const ratio=contrast(get(role),get(carrier));
+    measurements.push({theme:"halloween",role,carrier,ink:get(role),fill:get(carrier),ratio,min:4.5});
+    if(ratio<4.5)issues.push(`Seasonal Halloween text contrast ${role}/${carrier} ${ratio.toFixed(2)} < 4.5`);
+  }
+  for(const fill of ["acc","acc-2","acc-3"]){
+    const ratio=contrast(get("on-acc"),get(fill),get("bg"));
+    measurements.push({theme:"halloween",role:"on-acc",carrier:fill,ink:get("on-acc"),fill:get(fill),ratio,min:4.5});
+    if(ratio<4.5)issues.push(`Seasonal Halloween on-acc contrast ${fill} ${ratio.toFixed(2)} < 4.5`);
+  }
+  for(const [role,fillName,surface] of [["red","red-bg","panel"],["red","red-bg-2","panel"],["bad","bad-bg","panel"],["ink-2","wash","panel"]]){
+    const ratio=contrast(get(role),get(fillName),get(surface));
+    measurements.push({theme:"halloween",role,carrier:`${fillName} on ${surface}`,ink:get(role),fill:get(fillName),surface:get(surface),ratio,min:4.5});
+    if(ratio<4.5)issues.push(`Seasonal Halloween composite contrast ${role}/${fillName}/${surface} ${ratio.toFixed(2)} < 4.5`);
+  }
+  for(const variable of ["--tcrn-brand-suffix-tms","--tcrn-brand-suffix-design-system"])for(const carrier of ["bg","panel","hover"]){
+    const surface=carrier==="hover"?get("bg"):get(carrier);
+    const ratio=contrast(values[variable],get(carrier),surface);
+    measurements.push({theme:"halloween",role:variable,carrier,ink:values[variable],fill:get(carrier),surface,ratio,min:4.5});
+    if(ratio<4.5)issues.push(`Seasonal Halloween brand suffix contrast ${variable}/${carrier} ${ratio.toFixed(2)} < 4.5`);
+  }
+  for(const carrier of ["bg","panel","panel-2"]){
+    const ratio=contrast(get("line-ctl"),get(carrier));
+    measurements.push({theme:"halloween",role:"line-ctl",carrier,ink:get("line-ctl"),fill:get(carrier),ratio,min:3});
+    if(ratio<3)issues.push(`Seasonal Halloween control edge contrast line-ctl/${carrier} ${ratio.toFixed(2)} < 3`);
+  }
+  return {issues,measurements,theme:"halloween",thresholds:{text:4.5,edge:3}};
 }
 export async function checkBrand(root=ROOT){const source=readApprovedSource(root),marks=extractMarks(source),icons=extractIcons(source),ui=await compiled(root,"packages/ui-react/dist/approved.js"),nav=await compiled(root,"packages/ui-react/dist/components/Navigation/Navigation.js"),issues=[];
   if(JSON.stringify(Object.keys(nav.tcrnProductLogoRegistry).sort())!==JSON.stringify(marks.map(m=>m.productId).sort()))issues.push("Product registry has an unapproved identity or misses a formal mark");
@@ -341,6 +377,8 @@ export function finish(label,result){const issues=result.issues??[];console.log(
 export const MANAGER_STORY_IDS = Object.freeze([
   ...Object.entries(APPROVED_API_BOARDS).filter(([name, board]) => board === "06-inputs" && name !== "Switch").map(([name]) => `components-${name.toLowerCase()}--form-submission`),
   "adopted-support-customer-list-boundary--overview",
+  "adopted-support-seasonal-halloween-theme--interactive-workspace",
+  "adopted-support-seasonal-halloween-theme--overview",
   "components-button--active",
   "components-button--default",
   "components-button--disabled",
@@ -493,10 +531,11 @@ export function managerIndexIssues(index) {
     if (story.id !== id || story.type !== "story") issues.push(`Invalid Manager story ${id}`);
     const family = Object.keys(APPROVED_API_BOARDS).find(name => id.startsWith(`components-${name.toLowerCase()}--`));
     const support = id === "adopted-support-customer-list-boundary--overview";
-    const expectedPath = family ? `./src/components/${family}.stories.tsx` : support ? "./src/support.stories.tsx" : "./src/standards.stories.tsx";
+    const seasonalHalloween = id.startsWith("adopted-support-seasonal-halloween-theme--");
+    const expectedPath = family ? `./src/components/${family}.stories.tsx` : support ? "./src/support.stories.tsx" : seasonalHalloween ? "./src/seasonal-halloween.stories.tsx" : "./src/standards.stories.tsx";
     const board = APPROVED_API_BOARDS[family];
     const group = board === "05-actions" ? "Actions" : board === "06-inputs" ? "Inputs and selection" : board?.startsWith("07") ? "Application shell" : "Foundations";
-    const expectedTitle = family ? `Components/${group}/${family}` : support ? "Adopted support/Customer list boundary" : "Published standards";
+    const expectedTitle = family ? `Components/${group}/${family}` : support ? "Adopted support/Customer list boundary" : seasonalHalloween ? "Adopted support/Seasonal Halloween theme" : "Published standards";
     if (story.title !== expectedTitle || story.importPath !== expectedPath) issues.push(`Unapproved manager CSF module ${id}`);
   }
   return issues;

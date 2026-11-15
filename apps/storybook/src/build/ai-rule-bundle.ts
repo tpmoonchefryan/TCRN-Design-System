@@ -48,9 +48,10 @@ export function createAiRuleBundle(input: {
     },
     { id: "product-locales", file: "docs/consumption/patterns/product-shell-locales.md", required: [] },
     { id: "customer-list-boundary", file: "docs/consumption/patterns/customer-list-support.md", required: ["pattern/product-locales"] },
+    { id: "seasonal-halloween-theme", file: "docs/consumption/patterns/seasonal-halloween-theme.md", required: ["tokens/core", "tokens/shell", "standard/01-tokens"] },
   ];
   const rules: Rule[] = [{
-    id: "global", kind: "global", required: ["tokens/core", "assets/fonts", "standard/01-tokens", "pattern/component-layout"], optional: ["pattern/customer-list-boundary"],
+    id: "global", kind: "global", required: ["tokens/core", "assets/fonts", "standard/01-tokens", "pattern/component-layout"], optional: ["pattern/customer-list-boundary", "pattern/seasonal-halloween-theme"],
     content: requireSource("docs/consumption/rules/global.md"),
   }];
   for (const board of approvedSource.boards) rules.push({

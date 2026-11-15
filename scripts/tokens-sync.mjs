@@ -33,12 +33,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  compareSeasonalThemeBlock,
   compareTokenThemeBlocks,
   findDeprecatedTokenUsages,
   formatDeprecatedTokenNotices,
   parseTokenCssBlocks,
   tcrnCoarsePointerMedia,
   tcrnGplusThemeSelectors,
+  tcrnHalloweenThemeStylesheet,
   tcrnTokenBlockKinds,
   tcrnTokenCss,
   tcrnTokenStylesheet
@@ -46,6 +48,7 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const TOKENS_CSS = path.join(root, "packages/ui-tokens/src/tokens.css");
+const HALLOWEEN_CSS = path.join(root, "packages/ui-tokens/src/halloween.css");
 const STORYBOOK_CSS = path.join(root, "apps/storybook/src/storybook.css");
 
 const SHELL_MARKER = "/* Token blocks below are generated from @tcrn/ui-tokens";
@@ -93,6 +96,10 @@ const problems = [];
 
 // 0. the generator itself must emit isomorphic theme blocks
 problems.push(...themeBlockProblems("@tcrn/ui-tokens tcrnTokenCss", tcrnTokenCss));
+const generatedSeasonal = compareSeasonalThemeBlock(tcrnTokenCss, tcrnHalloweenThemeStylesheet);
+if (!generatedSeasonal.ok) {
+  problems.push(...generatedSeasonal.problems.map((problem) => `@tcrn/ui-tokens tcrnHalloweenThemeStylesheet: ${problem}`));
+}
 
 // 1. published tokens.css
 const onDisk = fs.existsSync(TOKENS_CSS) ? fs.readFileSync(TOKENS_CSS, "utf8") : "";
@@ -104,6 +111,22 @@ if (onDisk !== tcrnTokenStylesheet) {
   }
 } else if (!check) console.log("packages/ui-tokens/src/tokens.css already in sync");
 if (check && onDisk) problems.push(...themeBlockProblems("packages/ui-tokens/src/tokens.css", onDisk));
+
+// 1b. opt-in seasonal halloween.css
+const onDiskHalloween = fs.existsSync(HALLOWEEN_CSS) ? fs.readFileSync(HALLOWEEN_CSS, "utf8") : "";
+if (onDiskHalloween !== tcrnHalloweenThemeStylesheet) {
+  if (check) problems.push("packages/ui-tokens/src/halloween.css has drifted from index.ts");
+  else {
+    fs.writeFileSync(HALLOWEEN_CSS, tcrnHalloweenThemeStylesheet);
+    console.log("regenerated packages/ui-tokens/src/halloween.css");
+  }
+} else if (!check) console.log("packages/ui-tokens/src/halloween.css already in sync");
+if (check && onDiskHalloween) {
+  const seasonalOnDisk = compareSeasonalThemeBlock(tcrnTokenCss, onDiskHalloween);
+  if (!seasonalOnDisk.ok) {
+    problems.push(...seasonalOnDisk.problems.map((problem) => `packages/ui-tokens/src/halloween.css: ${problem}`));
+  }
+}
 
 // 2. storybook shell
 const { header, generated, rest } = storybookParts();

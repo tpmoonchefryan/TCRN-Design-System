@@ -6,11 +6,13 @@
   "license": "Apache-2.0",
   "sideEffects": [
     "src/tokens.css",
+    "src/halloween.css",
     "fonts/fonts.css"
   ],
   "files": [
     "dist",
     "src/tokens.css",
+    "src/halloween.css",
     "fonts",
     "licenses",
     "FONT-LICENSES.md",
@@ -25,6 +27,7 @@
       "default": "./dist/index.js"
     },
     "./tokens.css": "./src/tokens.css",
+    "./halloween.css": "./src/halloween.css",
     "./fonts.css": "./fonts/fonts.css",
     "./fonts/*": "./fonts/*"
   },

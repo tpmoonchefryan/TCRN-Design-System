@@ -16,13 +16,13 @@ export const decorators = [(
   return createElement("div", {
     className: "component-story-canvas",
     "data-tcrn-root": "",
-    "data-tcrn-theme": context.globals.theme === "dark" ? "dark" : "light",
+    "data-tcrn-theme": context.globals.theme === "dark" ? "dark" : context.globals.theme === "halloween" ? "halloween" : "light",
   }, createElement(Story));
 }];
 export const globalTypes = {
   theme: {
     description: "Component theme",
-    toolbar: { icon: "circlehollow", items: ["light", "dark"], dynamicTitle: true },
+    toolbar: { icon: "circlehollow", items: ["light", "dark", "halloween"], dynamicTitle: true },
   },
   locale: {
     description: "Documentation language",

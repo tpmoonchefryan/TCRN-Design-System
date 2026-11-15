@@ -38,7 +38,7 @@ export function mountStaticMultiSelect({ root, getValue, onChange, onReset }: St
   // Observe only that ancestry so a local theme switch also updates an open listbox.
   const syncTheme = () => {
     if (authoredTheme) return;
-    const owner = root.closest('[data-tcrn-theme="light"], [data-tcrn-theme="dark"]');
+    const owner = root.closest('[data-tcrn-theme="light"], [data-tcrn-theme="dark"], [data-tcrn-theme="halloween"]');
     const theme = owner && !owner.contains(layer) ? owner.getAttribute(themeAttribute) : null;
     if (theme === null) layer.removeAttribute(themeAttribute);
     else layer.setAttribute(themeAttribute, theme);

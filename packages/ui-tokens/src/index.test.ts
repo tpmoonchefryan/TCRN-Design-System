@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { compareTokenThemeBlocks, createCssVariables, createResolvedTokenMap, createThemeCssVariables, createTokenMap, findDeprecatedTokenUsages, parseTokenCssBlocks, tcrnCoarsePointerTokens, tcrnDarkThemeTokens, tcrnDeprecatedTokenAliases, tcrnDeprecatedTokens, tcrnGplusFixedTokens, tcrnGplusThemedTokens, tcrnTokenCss, tcrnTokenStylesheet, tcrnTokens, type DesignToken } from "./index.js";
+import { compareSeasonalThemeBlock, compareTokenThemeBlocks, createCssVariables, createResolvedTokenMap, createSeasonalThemeCssVariables, createThemeCssVariables, createTokenMap, findDeprecatedTokenUsages, parseTokenCssBlocks, tcrnCoarsePointerTokens, tcrnDarkThemeTokens, tcrnDeprecatedTokenAliases, tcrnDeprecatedTokens, tcrnGplusFixedTokens, tcrnGplusThemedTokens, tcrnHalloweenThemeCss, tcrnHalloweenThemeStylesheet, tcrnHalloweenThemeTokens, tcrnTokenCss, tcrnTokenStylesheet, tcrnTokens, type DesignToken } from "./index.js";
 
 // The independent input is the pinned, published CSS, not another generated registry.
 const rawCss = readFileSync(new URL("../../../docs/design/approved-site-v2/src/boards/01-tokens/board.css", import.meta.url), "utf8");
@@ -111,4 +111,27 @@ test("published overlay levels are discoverable as z-index tokens rather than co
   assert.deepEqual(tcrnTokens.filter((token) => token.group === "zIndex").map((token) => token.variable), [
     "--tcrn-z-overlay", "--tcrn-z-popover"
   ]);
+});
+
+test("seasonal Halloween theme keeps exact theme-scoped parity without altering default light/dark maps", () => {
+  assert.equal(tcrnHalloweenThemeTokens.length, tcrnDarkThemeTokens.length);
+  const seasonal = createResolvedTokenMap("halloween");
+  assert.equal(Object.keys(seasonal).length, tcrnTokens.length);
+  assert.ok(Object.values(seasonal).every((value) => !value.includes("var(")));
+  assert.equal(seasonal["--tcrn-color-surface"], "#131017");
+  assert.equal(seasonal["--tcrn-focus-ring"], "0 0 0 2px #131017,0 0 0 4px #f58a33");
+  assert.equal(seasonal["--tcrn-radius-control"], light["--tcrn-radius-control"]);
+  assert.equal(seasonal["--tcrn-shell-strip-h"], light["--tcrn-shell-strip-h"]);
+  assert.equal(createSeasonalThemeCssVariables("halloween"), tcrnHalloweenThemeCss);
+  assert.equal(tcrnHalloweenThemeStylesheet.includes('[data-tcrn-theme="halloween"]'), true);
+
+  const seasonalCheck = compareSeasonalThemeBlock(tcrnTokenCss, tcrnHalloweenThemeStylesheet);
+  assert.equal(seasonalCheck.ok, true, seasonalCheck.problems.join("; "));
+  assert.deepEqual(seasonalCheck.baseOnly, []);
+  assert.deepEqual(seasonalCheck.seasonalOnly, []);
+
+  // Negative cases: missing declaration, extra declaration or missing selector fails the comparison.
+  const extra = tcrnHalloweenThemeStylesheet.replace('[data-tcrn-theme="halloween"] {\n', '[data-tcrn-theme="halloween"] {\n  --tcrn-extra: red;\n');
+  assert.deepEqual([...compareSeasonalThemeBlock(tcrnTokenCss, extra).seasonalOnly], ["--tcrn-extra"]);
+  assert.equal(compareSeasonalThemeBlock(tcrnTokenCss, tcrnHalloweenThemeStylesheet.replace('[data-tcrn-theme="halloween"]', ".other")).ok, false);
 });

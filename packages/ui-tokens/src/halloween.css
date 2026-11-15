@@ -1,0 +1,47 @@
+/* Opt-in seasonal Halloween theme for @tcrn/ui-tokens. Import after @tcrn/ui-tokens/tokens.css and activate with data-tcrn-theme="halloween". */
+[data-tcrn-theme="halloween"] {
+  /* tcrn-token-block: seasonal-theme */
+  --tcrn-color-bg: #131017;
+  --tcrn-color-bg-2: #0d0b10;
+  --tcrn-color-panel: #1b1622;
+  --tcrn-color-panel-2: #231d2c;
+  --tcrn-color-line: rgba(245,236,224,.08);
+  --tcrn-color-line-2: rgba(245,236,224,.15);
+  --tcrn-color-line-3: rgba(245,236,224,.28);
+  --tcrn-color-line-ctl: rgba(245,236,224,.40);
+  --tcrn-color-rule: #f3ece0;
+  --tcrn-color-ink: #f3ece0;
+  --tcrn-color-ink-2: #beb3a4;
+  --tcrn-color-ink-3: #968b7e;
+  --tcrn-color-acc: #f58a33;
+  --tcrn-color-acc-2: #ffa04d;
+  --tcrn-color-acc-3: #e0761f;
+  --tcrn-color-acc-bg: rgba(245,138,51,.12);
+  --tcrn-color-acc-ul: rgba(245,138,51,.72);
+  --tcrn-color-on-acc: #1b0d02;
+  --tcrn-color-red: #f08c80;
+  --tcrn-color-red-bg: rgba(240,140,128,.09);
+  --tcrn-color-red-bg-2: rgba(240,140,128,.15);
+  --tcrn-color-ok: #6dd69c;
+  --tcrn-color-warn: #ebb552;
+  --tcrn-color-bad: #f28779;
+  --tcrn-color-bad-bg: rgba(242,135,121,.11);
+  --tcrn-color-wash: rgba(243,236,224,.07);
+  --tcrn-color-hover: rgba(243,236,224,.04);
+  --tcrn-color-dis: rgba(243,236,224,.05);
+  --tcrn-elevation-s1: 0 1px 1px rgba(0,0,0,.34),0 0 0 1px rgba(245,236,224,.07);
+  --tcrn-elevation-s2: 0 1px 2px rgba(0,0,0,.40),0 2px 3px rgba(0,0,0,.34),0 0 0 1px rgba(245,236,224,.08);
+  --tcrn-elevation-s3: 0 2px 3px rgba(0,0,0,.45),0 3px 3px rgba(0,0,0,.42),0 0 0 1px rgba(245,236,224,.10);
+  --tcrn-color-glass: rgba(27,22,34,.76);
+  --tcrn-elevation-glass-edge: inset 0 1px 0 rgba(245,236,224,.07);
+  --tcrn-texture-grain-opacity: .055;
+  --tcrn-texture-grain-blend: screen;
+  --tcrn-color-av-bg: #2b2336;
+  --tcrn-color-av-ink: #f3ece0;
+  --tcrn-color-knob: #fff8ee;
+  --tcrn-color-chrome: rgba(19,16,23,.84);
+  --tcrn-color-surface: var(--tcrn-color-bg);
+  --tcrn-focus-ring: 0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-acc);
+  --tcrn-brand-suffix-tms: #9ab6ff;
+  --tcrn-brand-suffix-design-system: #b09cff;
+}

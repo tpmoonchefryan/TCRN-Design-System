@@ -15,7 +15,12 @@ html[data-tcrn-theme="light"],
 html[data-tcrn-theme="dark"],
 .docs-shell[data-tcrn-theme="dark"],
 .docs-shell [data-tcrn-theme="dark"],
-.tcrn-multi-select-dropdown__list[data-tcrn-theme="dark"] {
+.tcrn-multi-select-dropdown__list[data-tcrn-theme="dark"],
+html[data-tcrn-theme="halloween"],
+.docs-shell[data-tcrn-theme="halloween"],
+.docs-shell [data-tcrn-theme="halloween"],
+.tcrn-multi-select-dropdown__list[data-tcrn-theme="halloween"],
+[data-tcrn-theme="halloween"] {
   color-scheme: dark;
 }
 
@@ -1056,7 +1061,8 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
   padding: var(--tcrn-space-4);
   background: var(--tcrn-color-bg);
 }
-.component-story-canvas[data-tcrn-theme="dark"] { color-scheme: dark; }
+.component-story-canvas[data-tcrn-theme="dark"],
+.component-story-canvas[data-tcrn-theme="halloween"] { color-scheme: dark; }
 .component-story-canvas[data-tcrn-theme="light"] { color-scheme: light; }
 
 /* Fields keep their fill contract; content/fixed samples align only their own roots. */
@@ -1089,4 +1095,18 @@ html[data-tcrn-theme="dark"] .docs-shell:not([data-tcrn-theme]) .docs-preference
 
 @media (max-width: 360px) {
   .docs-storybook-nav { margin-inline: var(--tcrn-space-1); }
+}
+
+.tcrn-doc-seasonal-fields {
+  display: grid;
+  gap: var(--tcrn-space-2h);
+  min-inline-size: 0;
+}
+
+.tcrn-doc-seasonal-shell {
+  padding: var(--tcrn-space-3);
+  border-radius: var(--tcrn-radius-panel);
+  border: 1px solid var(--tcrn-color-line);
+  background: var(--tcrn-color-bg);
+  min-inline-size: 0;
 }

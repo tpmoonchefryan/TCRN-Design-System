@@ -54,6 +54,7 @@ export function ApiReference({ locale, board, entry = "static" }: {
         <Heading level={2} visualLevel={3}>Adopted support · awaiting publication</Heading>
         <Text>Customer table/cards, pagination, five business states, confirmation and product locale copy: Owner-adopted under minutes:6f3e0a9a1e07e3980867d82e#D2. Formal source publication is deferred; the 28-component catalogue and five built-in locales remain unchanged.</Text>
         <a className="tcrn-link" href="/ai/4.0.0/pattern/customer-list-boundary.json">Customer list support contract</a>
+        <a className="tcrn-link" href="/ai/4.0.0/pattern/seasonal-halloween-theme.json">Seasonal Halloween theme contract</a>
       </section>}
     </div>
   );

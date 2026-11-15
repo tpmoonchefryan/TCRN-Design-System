@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { contrast, checkContrast } from "../scripts/lib/published-standard-proof.mjs";
+import { contrast, checkContrast, checkSeasonalHalloweenContrast } from "../scripts/lib/published-standard-proof.mjs";
 import { readApprovedSource, cssRule, extractBrandSuffixTokens } from "../scripts/lib/approved-site-source.mjs";
 
 test("V4 published v2 resolves the seven nominal findings at unchanged thresholds", () => {
@@ -25,4 +25,13 @@ test("V4 K5 prose now matches the unchanged strong ink and 600 weight", () => {
   assert.equal(cssRule(board.css, ".tx").color, "var(--ink-2)");
   assert.equal(cssRule(board.css, ".tx.strong").color, "var(--ink)");
   assert.equal(cssRule(board.css, ".tx.strong")["font-weight"], "600");
+});
+
+test("seasonal Halloween theme palette meets text >= 4.5 and control-edge >= 3.0 thresholds", async () => {
+  const result = await checkSeasonalHalloweenContrast();
+  assert.deepEqual(result.issues, []);
+  assert.ok(result.measurements.length > 0);
+  assert.ok(result.measurements.every((row) => row.ratio >= row.min));
+  // Negative check: white ink on amber fill fails AA contrast on the same helper.
+  assert.ok(contrast("#ffffff", "#f58a33") < 4.5);
 });

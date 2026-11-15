@@ -6,14 +6,14 @@ import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
 import { MultiSelect, Select, tcrnComponentCss } from "./packages/ui-react/dist/index.js";
-import { tcrnTokenCss } from "./packages/ui-tokens/dist/index.js";
+import { tcrnHalloweenThemeCss, tcrnTokenCss } from "./packages/ui-tokens/dist/index.js";
 const options = [{ value:"blocked", label:"Blocked", disabled:true },{ value:"one", label:"One" },{ value:"two", label:"Two" },{ value:"two", label:"Two" }];
 window.dropdownChanges=[];
 function Fixture() {
  const [config,setConfig]=useState({ value:[], defaultValue:[], disabled:false, controlled:false, accept:true, ...window.dropdownInitial });
  window.updateDropdown=(patch)=>flushSync(()=>setConfig(current=>({...current,...patch})));
  const changed=(value)=>{window.dropdownChanges.push(value); if(config.controlled&&config.accept)setConfig(current=>({...current,value}));};
- return <section><style>{tcrnTokenCss+tcrnComponentCss}</style><form id="dropdown-form" onSubmit={event=>event.preventDefault()}><button id="before">Before</button><Select id="reference-select" aria-label="Single reference" options={options} /><MultiSelect id="dropdown" form="dropdown-form" name="values" required presentation="dropdown" emptySelectionLabel="Select values" disabled={config.disabled} disabledReason="Unavailable" options={options} defaultValue={config.defaultValue} value={config.controlled?config.value:undefined} onChange={changed} aria-label="Collection"/><button id="after">After</button><button id="reset" type="reset">Reset</button></form></section>;
+ return <section><style>{tcrnTokenCss+tcrnHalloweenThemeCss+tcrnComponentCss}</style><form id="dropdown-form" onSubmit={event=>event.preventDefault()}><button id="before">Before</button><Select id="reference-select" aria-label="Single reference" options={options} /><MultiSelect id="dropdown" form="dropdown-form" name="values" required presentation="dropdown" emptySelectionLabel="Select values" disabled={config.disabled} disabledReason="Unavailable" options={options} defaultValue={config.defaultValue} value={config.controlled?config.value:undefined} onChange={changed} aria-label="Collection"/><button id="after">After</button><button id="reset" type="reset">Reset</button></form></section>;
 }
 const root=createRoot(document.querySelector("#fixture"));
 window.destroyDropdown=()=>root.unmount();
@@ -47,7 +47,7 @@ export async function runMultiSelectDropdownProof(browser) {
  try {
   await mount();let x=await observe();assert('closed-select-family-empty',x.expanded==='false'&&x.hidden&&x.summary==='Select values'&&!x.valid&&x.optionCount===3&&Object.keys(x.referenceStyle).filter(key=>!key.startsWith('outline')).every(key=>x.triggerStyle[key]===x.referenceStyle[key]),x);
   await page.locator('#dropdown').click();x=await observe();assert('ordinary-click-opens-listbox',x.expanded==='true'&&x.bodyBoundary&&!x.hidden&&x.active.endsWith('-option-1'),x);
-  for (const theme of ['light','dark']) {
+  for (const theme of ['light','dark','halloween']) {
     await page.evaluate(theme=>document.documentElement.setAttribute('data-tcrn-theme',theme),theme);
     const settled=await settle();
     x={...await observe(),settled};

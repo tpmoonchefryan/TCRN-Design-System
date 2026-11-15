@@ -8,6 +8,18 @@ K1/K5 remain unresolved source conflicts; this entry does not record a successfu
 
 ## Unreleased
 
+### Seasonal Halloween theme candidate (@tcrn/ui-tokens/halloween.css)
+
+Add an opt-in seasonal Halloween theme (`[data-tcrn-theme="halloween"]`) via
+`@tcrn/ui-tokens/halloween.css`, extend body-mounted `MultiSelect` dropdown theme
+synchronization, add a `halloween` Storybook toolbar option and `Adopted
+support/Seasonal Halloween theme` specimen stories, and register
+`pattern/seasonal-halloween-theme`. Default `light` and `dark` token values,
+28 formal component geometries, spacing, radii, typography, icons, and motion
+remain unchanged; Owner visual acceptance and release remain pending.
+
+## 4.0.0
+
 ### Independent 4.0.0 package and consumer-tool candidate
 
 Retain the three real archives with exact internal dependencies, license notices,
@@ -17,8 +29,6 @@ TypeScript runtime dependency. Register the supporting preference validator, kee
 the 28 formal families, and reconcile the explicit component-story/AI closure.
 These are local candidate changes; integration, visual adoption and publication
 remain pending. See docs/releases/4.0.0/README.md.
-
-## 4.0.0
 
 ### One release for two batches: the G+ renewal and the top-band shell (TCRN-DS-INIT-015, TCRN-DS-INIT-016)
 
