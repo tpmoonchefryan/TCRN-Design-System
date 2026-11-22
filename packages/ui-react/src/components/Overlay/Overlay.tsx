@@ -1,6 +1,6 @@
 import type { CSSProperties, FocusEvent as ReactFocusEvent, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent, ReactElement, ReactNode, RefObject } from "react";
 import { createPortal } from "react-dom";
-import { cloneElement, useEffect, useId, useRef, useState } from "react";
+import { cloneElement, useCallback, useEffect, useId, useRef, useState } from "react";
 import { Heading, Text } from "../Typography/index.js";
 import { Button } from "../Button/index.js";
 import { childPropsOf, cx, mergeIds, requiredText } from "../../utils.js";
@@ -36,13 +36,13 @@ export type TooltipPlacement = "top" | "right" | "bottom" | "left";
 
 type FloatingPlacement = PopoverPlacement | TooltipPlacement;
 
-interface FloatingPosition {
+export interface FloatingPosition {
   left: number;
   top: number;
   placement: FloatingPlacement;
 }
 
-interface FloatingRect {
+export interface FloatingRect {
   left: number;
   top: number;
   right: number;
@@ -65,7 +65,7 @@ function floatingRect(element: HTMLElement): FloatingRect {
   return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height };
 }
 
-function computeFloatingPosition(anchor: FloatingRect, layer: FloatingRect, requestedPlacement: FloatingPlacement, viewportWidth: number, viewportHeight: number, gap: number): FloatingPosition {
+export function computeFloatingPosition(anchor: FloatingRect, layer: FloatingRect, requestedPlacement: FloatingPlacement, viewportWidth: number, viewportHeight: number, gap: number): FloatingPosition {
   const layerWidth = Math.max(layer.width, 0);
   const layerHeight = Math.max(layer.height, 0);
   const edge = Math.max(gap, 0);
@@ -95,18 +95,23 @@ function computeFloatingPosition(anchor: FloatingRect, layer: FloatingRect, requ
     top = anchor.top + ((anchor.height - layerHeight) / 2);
   }
 
-  if (placement === "top-end" || placement === "bottom-end") left = anchor.right - layerWidth;
+  const isEndAligned = placement === "top-end" || placement === "bottom-end";
+  if (isEndAligned) left = anchor.right - layerWidth;
   if (placement === "top" || placement === "bottom") left = anchor.left + ((anchor.width - layerWidth) / 2);
   if (placement === "top-start" || placement === "bottom-start") left = anchor.left;
 
+  const maxLeft = isEndAligned && anchor.right <= viewportWidth
+    ? Math.max(viewportWidth - layerWidth - edge, anchor.right - layerWidth)
+    : viewportWidth - layerWidth - edge;
+
   return {
-    left: clamp(left, edge, viewportWidth - layerWidth - edge),
+    left: clamp(left, edge, maxLeft),
     top: clamp(top, edge, viewportHeight - layerHeight - edge),
     placement
   };
 }
 
-export type StaticOverlayKind = "tooltip" | "popover";
+export type StaticOverlayKind = "tooltip" | "popover" | "menu";
 
 export interface StaticOverlayBoundaryOptions {
   trigger: HTMLElement;
@@ -126,7 +131,7 @@ export interface StaticOverlayBoundaryHandle {
 /**
  * Adds the same body-boundary behavior to server-emitted HTML without requiring
  * a React tree. The consumer owns the trigger/layer markup and imports this
- * small DOM bridge alongside `tcrnComponentCss`.
+ * small DOM bridge alongside tcrnComponentCss.
  */
 export function mountStaticOverlayBoundary({ trigger, layer, kind, placement, gap }: StaticOverlayBoundaryOptions): StaticOverlayBoundaryHandle {
   if (typeof document === "undefined" || typeof window === "undefined" || !(trigger instanceof HTMLElement) || !(layer instanceof HTMLElement)) {
@@ -146,15 +151,35 @@ export function mountStaticOverlayBoundary({ trigger, layer, kind, placement, ga
   const initialOpen = layer.getAttribute("data-overlay-open") === "true"
     || (layer.getAttribute("data-overlay-open") === null && !layer.hidden);
   const resolvedGap = gap ?? 8;
+  const interactivePopup = kind === "popover" || kind === "menu";
   let openState = initialOpen;
   let disposed = false;
+
+  const enabledMenuItems = () =>
+    [...layer.querySelectorAll<HTMLElement>('[role="menuitem"]')].filter(
+      (item) => !item.matches(":disabled, [aria-disabled='true']")
+    );
+
+  const focusActiveMenuItem = (targetItem?: HTMLElement) => {
+    if (kind !== "menu") return;
+    const allItems = [...layer.querySelectorAll<HTMLElement>('[role="menuitem"]')];
+    const enabled = enabledMenuItems();
+    const active = targetItem ?? enabled.find((item) => item.tabIndex === 0) ?? enabled[0];
+    for (const item of allItems) {
+      const isCurrent = item === active;
+      item.tabIndex = isCurrent ? 0 : -1;
+      if (isCurrent) item.setAttribute("data-menu-item-active", "true");
+      else item.removeAttribute("data-menu-item-active");
+    }
+    (active ?? layer).focus();
+  };
 
   const setLayerState = (nextOpen: boolean) => {
     openState = nextOpen;
     layer.hidden = !nextOpen;
     layer.setAttribute("data-overlay-open", nextOpen ? "true" : "false");
     if (kind === "tooltip") layer.setAttribute("data-tooltip-open", nextOpen ? "true" : "false");
-    if (kind === "popover") trigger.setAttribute("aria-expanded", nextOpen ? "true" : "false");
+    if (interactivePopup) trigger.setAttribute("aria-expanded", nextOpen ? "true" : "false");
   };
 
   const reposition = () => {
@@ -179,6 +204,7 @@ export function mountStaticOverlayBoundary({ trigger, layer, kind, placement, ga
     if (disposed) return;
     setLayerState(true);
     reposition();
+    if (kind === "menu") focusActiveMenuItem();
   };
   const close = ({ restoreFocus = false }: { restoreFocus?: boolean } = {}) => {
     if (disposed) return;
@@ -201,16 +227,37 @@ export function mountStaticOverlayBoundary({ trigger, layer, kind, placement, ga
     if (kind === "tooltip") close();
   };
   const onClick = () => {
-    if (kind === "popover") (openState ? close : open)();
+    if (interactivePopup) (openState ? close : open)();
+  };
+  const onLayerClick = (event: MouseEvent) => {
+    if (kind !== "menu" || !openState) return;
+    const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[role="menuitem"]') : null;
+    if (!target || target.matches(":disabled, [aria-disabled='true']")) return;
+    close({ restoreFocus: true });
   };
   const onKeyDown = (event: KeyboardEvent) => {
-    if (event.key !== "Escape" || !openState) return;
+    if (!openState || event.defaultPrevented) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close({ restoreFocus: interactivePopup });
+      return;
+    }
+    if (kind !== "menu" || !(event.target instanceof Node) || !layer.contains(event.target)) return;
+    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+    const enabled = enabledMenuItems();
+    if (enabled.length === 0) return;
     event.preventDefault();
-    close({ restoreFocus: kind === "popover" });
+    const currentIndex = Math.max(enabled.indexOf(document.activeElement as HTMLElement), 0);
+    const nextIndex = event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? enabled.length - 1
+        : (currentIndex + (event.key === "ArrowDown" ? 1 : -1) + enabled.length) % enabled.length;
+    focusActiveMenuItem(enabled[nextIndex]);
   };
   const onPointerDown = (event: PointerEvent) => {
     const target = event.target;
-    if (kind === "popover" && openState && (!(target instanceof Node) || (!trigger.contains(target) && !layer.contains(target)))) {
+    if (interactivePopup && openState && (!(target instanceof Node) || (!trigger.contains(target) && !layer.contains(target)))) {
       close();
     }
   };
@@ -224,6 +271,7 @@ export function mountStaticOverlayBoundary({ trigger, layer, kind, placement, ga
   trigger.addEventListener("mouseenter", onMouseEnter);
   trigger.addEventListener("mouseleave", onMouseLeave);
   trigger.addEventListener("click", onClick);
+  layer.addEventListener("click", onLayerClick);
   document.addEventListener("keydown", onKeyDown);
   document.addEventListener("pointerdown", onPointerDown);
   window.addEventListener("resize", reposition);
@@ -243,6 +291,7 @@ export function mountStaticOverlayBoundary({ trigger, layer, kind, placement, ga
       trigger.removeEventListener("mouseenter", onMouseEnter);
       trigger.removeEventListener("mouseleave", onMouseLeave);
       trigger.removeEventListener("click", onClick);
+      layer.removeEventListener("click", onLayerClick);
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("resize", reposition);
@@ -265,7 +314,7 @@ export function mountStaticOverlayBoundary({ trigger, layer, kind, placement, ga
       else layer.setAttribute("data-overlay-open", previousOpen);
       if (previousTooltipOpen === null) layer.removeAttribute("data-tooltip-open");
       else layer.setAttribute("data-tooltip-open", previousTooltipOpen);
-      if (kind === "popover") {
+      if (interactivePopup) {
         if (previousExpanded === null) trigger.removeAttribute("aria-expanded");
         else trigger.setAttribute("aria-expanded", previousExpanded);
       }
@@ -538,11 +587,10 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
         }
         return;
       }
-      // Tab containment. `aria-modal` tells assistive technology the rest of the page
+      // Tab containment. aria-modal tells assistive technology the rest of the page
       // is inert; it does not stop the browser moving focus there. Without this a
       // keyboard user tabs out of the dialog into a page the screen reader has already
-      // been told to ignore, and has no way to know where they went. This component
-      // declared the gap honestly as `not-implemented` rather than pretend it away.
+      // been told to ignore, and has no way to know where they went.
       if (event.key !== "Tab") return;
       const root = dialogRef.current;
       if (!root) return;
@@ -598,29 +646,29 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
       data-focus-return={supportsFocusReturn ? "implemented" : "requires-trigger-ref"}
       tabIndex={-1}
     >
-      <Heading id={titleId} level={3}>{title}</Heading>
+      <Heading id={titleId} level={3} className="tcrn-dialog__title">{title}</Heading>
       {children}
     </section>
   );
 }
 
+export type MenuItemTone = "neutral" | "danger";
+
 /**
  * A list of commands, opened from a trigger.
  *
  * A menu is not a listbox and not a set of tabs: its items DO something rather
- * than select something, which is why the roles are `menu` and `menuitem` and why
- * activating one closes the menu. Products that render a popover full of buttons
- * get the visuals and lose the announcement — a screen reader says "button" N
- * times with no notion of the group or of how many.
- *
- * Focus roves with the arrow keys and only one item is ever in the tab order, so
- * Tab leaves the menu rather than walking through it. Escape closes and returns
- * focus to the trigger, because a menu that closes and drops focus to the body
- * leaves a keyboard user at the top of the page.
+ * than select something, which is why the roles are menu and menuitem and why
+ * activating one closes the menu. Focus roves with the arrow keys and only one
+ * item is ever in the tab order, so Tab leaves the menu rather than walking
+ * through it. Escape closes and returns focus to the trigger.
  */
 export interface MenuItemDescriptor {
   id: string;
   label: ReactNode;
+  description?: ReactNode;
+  tone?: MenuItemTone;
+  danger?: boolean;
   disabled?: boolean;
   onSelect?: () => void;
 }
@@ -630,31 +678,94 @@ export interface MenuProps {
   open: boolean;
   /** Accessible name for the command list. */
   label: string;
+  className?: string;
+  placement?: PopoverPlacement;
   onOpenChange?: (open: boolean) => void;
   triggerRef?: RefObject<HTMLElement | null>;
 }
 
-export function Menu({ items, open, label, onOpenChange, triggerRef }: MenuProps) {
+export function Menu({ items, open, label, className, placement = "bottom-start", onOpenChange, triggerRef }: MenuProps) {
   const listRef = useRef<HTMLDivElement>(null);
+  const wasOpenRef = useRef(false);
+  const restoreTriggerFocusRef = useRef(true);
+  const onOpenChangeRef = useRef(onOpenChange);
+  onOpenChangeRef.current = onOpenChange;
+  const floating = useFloatingLayer({ enabled: open, placement, triggerRef, layerRef: listRef });
+  const supportsEscapeClose = Boolean(onOpenChange);
+  const supportsFocusReturn = Boolean(triggerRef);
   const enabled = items.filter((item) => !item.disabled);
   const [activeId, setActiveId] = useState<string | null>(null);
   const current = enabled.some((item) => item.id === activeId) ? activeId : enabled[0]?.id ?? null;
 
   useEffect(() => {
     if (!open) return;
+    wasOpenRef.current = true;
+    restoreTriggerFocusRef.current = true;
     const root = listRef.current;
-    (root?.querySelector<HTMLElement>('[role="menuitem"][tabindex="0"]') ?? root)?.focus();
-  }, [open]);
+    if (root && typeof document !== "undefined" && !root.contains(document.activeElement)) {
+      (root.querySelector<HTMLElement>('[role="menuitem"][tabindex="0"]') ?? root)?.focus();
+    }
+    const onDocumentKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented || !onOpenChangeRef.current) return;
+      if (listRef.current?.contains(event.target as Node)) return;
+      event.preventDefault();
+      restoreTriggerFocusRef.current = true;
+      onOpenChangeRef.current(false);
+      triggerRef?.current?.focus();
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node) || listRef.current?.contains(target) || triggerRef?.current?.contains(target)) return;
+      restoreTriggerFocusRef.current = false;
+      onOpenChangeRef.current?.(false);
+    };
+    document.addEventListener("keydown", onDocumentKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onDocumentKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [open, triggerRef, floating.shouldPortal]);
+
+  useEffect(() => {
+    if (open || !wasOpenRef.current) {
+      return;
+    }
+    wasOpenRef.current = false;
+    if (restoreTriggerFocusRef.current) {
+      triggerRef?.current?.focus();
+    }
+  }, [open, triggerRef]);
 
   if (!open) return null;
 
-  return (
-    <div ref={listRef} role="menu" aria-label={label} className="tcrn-menu" data-menu="true" tabIndex={enabled.length === 0 ? -1 : undefined}
+  const menuContent = (
+    <div
+      ref={listRef}
+      role="menu"
+      aria-label={label}
+      className={cx("tcrn-menu", className)}
+      data-menu="true"
+      data-overlay-scope="menu"
+      data-placement={placement}
+      data-escape-close={supportsEscapeClose ? "implemented" : "requires-on-open-change"}
+      data-focus-return={supportsFocusReturn ? "implemented" : "requires-trigger-ref"}
+      data-overlay-boundary={floating.shouldPortal ? "document-body" : "inline-static"}
+      data-overlay-positioning={floating.shouldPortal ? "portal-fixed" : "inline-static"}
+      data-overlay-placement-resolved={floating.position?.placement ?? placement}
+      style={floating.shouldPortal ? {
+        position: "fixed",
+        left: `${floating.position?.left ?? 0}px`,
+        top: `${floating.position?.top ?? 0}px`,
+        visibility: floating.position ? "visible" : "hidden"
+      } : undefined}
+      tabIndex={enabled.length === 0 ? -1 : undefined}
       onKeyDown={(event) => {
         if (event.defaultPrevented) return;
         if (event.key === "Escape") {
           if (!onOpenChange) return;
           event.preventDefault();
+          restoreTriggerFocusRef.current = true;
           onOpenChange(false);
           triggerRef?.current?.focus();
           return;
@@ -670,45 +781,249 @@ export function Menu({ items, open, label, onOpenChange, triggerRef }: MenuProps
         listRef.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')[items.indexOf(next)]?.focus();
       }}
     >
-      {items.map((item) => (
-        <button key={item.id} type="button"
-          role="menuitem"
-          className={cx("tcrn-menu__item", item.id === current && "tcrn-menu__item--active")}
-          disabled={item.disabled}
-          tabIndex={item.id === current ? 0 : -1}
-          data-menu-item-active={item.id === current ? "true" : undefined}
-          onFocus={() => setActiveId(item.id)}
-          onClick={() => {
-            item.onSelect?.();
-            // A command menu closes on activation: leaving it open after the command
-            // ran is what makes readers press the same item twice.
-            onOpenChange?.(false);
-          }}
-        >
-          {item.label}
-        </button>
-      ))}
+      {items.map((item) => {
+        const resolvedTone: MenuItemTone = item.tone ?? (item.danger ? "danger" : "neutral");
+        const hasDescription = item.description !== undefined && item.description !== null;
+        return (
+          <button
+            key={item.id}
+            type="button"
+            role="menuitem"
+            className={cx(
+              "tcrn-menu__item",
+              item.id === current && "tcrn-menu__item--active",
+              resolvedTone === "danger" && "tcrn-menu__item--danger",
+              hasDescription && "tcrn-menu__item--described"
+            )}
+            disabled={item.disabled}
+            tabIndex={item.id === current ? 0 : -1}
+            data-menu-item-active={item.id === current ? "true" : undefined}
+            data-menu-item-tone={resolvedTone === "danger" ? "danger" : undefined}
+            onFocus={() => setActiveId(item.id)}
+            onClick={() => {
+              item.onSelect?.();
+              restoreTriggerFocusRef.current = true;
+              onOpenChange?.(false);
+              triggerRef?.current?.focus();
+            }}
+          >
+            {hasDescription ? (
+              <>
+                <span className="tcrn-menu__item-label">{item.label}</span>
+                <span className="tcrn-menu__item-description">{item.description}</span>
+              </>
+            ) : (
+              item.label
+            )}
+          </button>
+        );
+      })}
     </div>
   );
+
+  return floating.shouldPortal && floating.portalRoot ? createPortal(menuContent, floating.portalRoot) : menuContent;
 }
+
+export type ConfirmTone = "warning" | "danger";
 
 export interface ConfirmActionDialogProps {
   title: string;
-  message: string;
+  message: ReactNode;
   confirmLabel: string;
   cancelLabel: string;
+  open?: boolean;
+  tone?: ConfirmTone;
   disabled?: boolean;
+  disabledReason?: string;
+  className?: string;
+  triggerRef?: RefObject<HTMLElement | null>;
+  onOpenChange?: (open: boolean) => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
-export function ConfirmActionDialog({ title, message, confirmLabel, cancelLabel, disabled }: ConfirmActionDialogProps) {
+export function ConfirmActionDialog({
+  title,
+  message,
+  confirmLabel,
+  cancelLabel,
+  open = true,
+  tone = "danger",
+  disabled,
+  disabledReason,
+  className,
+  triggerRef,
+  onOpenChange,
+  onConfirm,
+  onCancel
+}: ConfirmActionDialogProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const onOpenChangeRef = useRef(onOpenChange);
+  onOpenChangeRef.current = onOpenChange;
+  const onCancelRef = useRef(onCancel);
+  onCancelRef.current = onCancel;
+  const canClose = Boolean(onOpenChange || onCancel);
+
+  const handleDialogOpenChange = useCallback((nextOpen: boolean) => {
+    if (!nextOpen) {
+      onCancelRef.current?.();
+    }
+    onOpenChangeRef.current?.(nextOpen);
+  }, []);
+
+  const handleCancelClick = () => {
+    onCancel?.();
+    onOpenChange?.(false);
+    triggerRef?.current?.focus();
+  };
+
+  const handleConfirmClick = () => {
+    if (disabled) return;
+    onConfirm?.();
+  };
+
   return (
-    <Dialog title={title} open className="tcrn-confirm-dialog" initialFocusRef={cancelRef}>
-      <Text>{message}</Text>
-      <Button disabled={disabled} disabledReason={disabled ? "Action is blocked until an authorized route clears it" : undefined} variant="danger">
-        {confirmLabel}
-      </Button>
-      <Button ref={cancelRef} variant="secondary">{cancelLabel}</Button>
+    <Dialog
+      title={title}
+      open={open}
+      className={cx("tcrn-confirm-dialog", className)}
+      initialFocusRef={cancelRef}
+      triggerRef={triggerRef}
+      onOpenChange={canClose ? handleDialogOpenChange : undefined}
+    >
+      <div className="tcrn-dialog__body">
+        <Text>{message}</Text>
+      </div>
+      <div className="tcrn-dialog__actions">
+        <Button
+          ref={cancelRef}
+          type="button"
+          variant="secondary"
+          onClick={handleCancelClick}
+        >
+          {cancelLabel}
+        </Button>
+        <Button
+          type="button"
+          disabled={disabled}
+          disabledReason={disabled ? (disabledReason ?? "Action is blocked until an authorized route clears it") : undefined}
+          variant={tone === "warning" ? "primary" : "danger"}
+          onClick={handleConfirmClick}
+        >
+          {confirmLabel}
+        </Button>
+      </div>
     </Dialog>
+  );
+}
+
+export interface InlineConfirmBarProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+  title?: string;
+  message: ReactNode;
+  confirmLabel: string;
+  cancelLabel: string;
+  tone?: ConfirmTone;
+  open?: boolean;
+  disabled?: boolean;
+  disabledReason?: string;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  onOpenChange?: (open: boolean) => void;
+  triggerRef?: RefObject<HTMLElement | null>;
+}
+
+export function InlineConfirmBar({
+  title,
+  message,
+  confirmLabel,
+  cancelLabel,
+  tone = "danger",
+  open = true,
+  disabled,
+  disabledReason,
+  onConfirm,
+  onCancel,
+  onOpenChange,
+  triggerRef,
+  className,
+  onKeyDown,
+  ...props
+}: InlineConfirmBarProps) {
+  const titleId = useId();
+  const messageId = useId();
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef(false);
+
+  useEffect(() => {
+    if (!open) {
+      if (wasOpenRef.current) {
+        wasOpenRef.current = false;
+        triggerRef?.current?.focus();
+      }
+      return;
+    }
+    wasOpenRef.current = true;
+    cancelRef.current?.focus();
+  }, [open, triggerRef]);
+
+  if (!open) {
+    return null;
+  }
+
+  const handleCancel = () => {
+    onCancel?.();
+    onOpenChange?.(false);
+    triggerRef?.current?.focus();
+  };
+
+  const handleConfirm = () => {
+    if (disabled) return;
+    onConfirm?.();
+  };
+
+  return (
+    <div
+      {...props}
+      role={props.role ?? "region"}
+      aria-labelledby={props["aria-labelledby"] ?? (title ? titleId : undefined)}
+      aria-label={props["aria-label"] ?? (!title && !props["aria-labelledby"] ? confirmLabel : undefined)}
+      aria-describedby={props["aria-describedby"] ?? messageId}
+      className={cx("tcrn-inline-confirm-bar", `tcrn-inline-confirm-bar--${tone}`, className)}
+      data-inline-confirm-bar="true"
+      data-tone={tone}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented || event.key !== "Escape") return;
+        if (!onCancel && !onOpenChange) return;
+        event.preventDefault();
+        handleCancel();
+      }}
+    >
+      <div className="tcrn-inline-confirm-bar__content">
+        {title ? <p id={titleId} className="tcrn-inline-confirm-bar__title">{title}</p> : null}
+        <div id={messageId} className="tcrn-inline-confirm-bar__message">{message}</div>
+      </div>
+      <div className="tcrn-inline-confirm-bar__actions">
+        <Button
+          ref={cancelRef}
+          type="button"
+          size="sm"
+          variant="secondary"
+          onClick={handleCancel}
+        >
+          {cancelLabel}
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          disabled={disabled}
+          disabledReason={disabled ? (disabledReason ?? "Action is blocked until an authorized route clears it") : undefined}
+          variant={tone === "warning" ? "primary" : "danger"}
+          onClick={handleConfirm}
+        >
+          {confirmLabel}
+        </Button>
+      </div>
+    </div>
   );
 }
