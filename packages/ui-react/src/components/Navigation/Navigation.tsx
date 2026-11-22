@@ -20,13 +20,13 @@ import { Icon, type IconName } from "../Icon/index.js";
 import { resolveTcrnLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/ui-copy-state";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 import { cx, mergeIds, requiredText, resolveDocumentLocale } from "../../utils.js";
-import { tcrnProductMarkViewBox, tcrnProductMarkWordmark, type TcrnProductMark } from "./product-marks.generated.js";
+import { tcrnProductMarks, tcrnProductMarkViewBox, tcrnProductMarkWordmark, type TcrnProductMark } from "./product-marks.generated.js";
 import { tcrnAdoptedProductMarks } from "./adopted-product-marks.js";
 // The lookup of a mark by its product key and the mark's own id, shared with the brand button and
 // the intro (TCRN-DS-SUB-212).
-import { productMark, productMarkIdOf, tcrnProductMarkIds, type TcrnProductMarkId } from "./product-mark-id.js";
-export { tcrnAdoptedProductMarks, tcrnProductMarkIds };
-export type { TcrnProductMarkId };
+import { productMark, productMarkIdOf, tcrnProductMarkIds, tcrnRegisteredProductMarks, type TcrnProductMarkId } from "./product-mark-id.js";
+export { tcrnAdoptedProductMarks, tcrnProductMarkIds, tcrnProductMarks, tcrnRegisteredProductMarks };
+export type { TcrnProductMark, TcrnProductMarkId };
 // The shell parts and Navigation.tsx import each other; what this module takes from them is used
 // inside function bodies only, never evaluated when the module loads (C-4).
 import { ShellBrandButton } from "./ShellBrandButton.js";

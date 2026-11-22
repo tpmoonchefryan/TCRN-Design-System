@@ -46,6 +46,7 @@ const REGISTER = [
   { file: "packages/ui-copy-state/README.md", pattern: /Version `([^`]+)` is prepared/ },
   { file: "packages/ui-react/README.md", pattern: /Version `([^`]+)` is prepared/ },
   { file: "docs/tms-adoption-guide.md", pattern: /Three packages, all at ([0-9]+\.[0-9]+\.[0-9]+):/ },
+  { file: "docs/releases/4.1.0/README.md", pattern: /^# ([0-9]+\.[0-9]+\.[0-9]+) local release candidate/m },
 ];
 
 const findings = [];

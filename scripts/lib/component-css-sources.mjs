@@ -18,10 +18,17 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseCss } from "./css-rules.mjs";
 
 export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 export const COMPONENT_CSS_DIR = "packages/ui-react/src/styles";
 export const COMPONENT_CSS_INDEX = `${COMPONENT_CSS_DIR}/index.ts`;
+export const BATCH3_CSS_MODULES = Object.freeze([
+  `${COMPONENT_CSS_DIR}/feedback.css.ts`,
+  `${COMPONENT_CSS_DIR}/data-display.css.ts`,
+  `${COMPONENT_CSS_DIR}/layout.css.ts`,
+  `${COMPONENT_CSS_DIR}/overlay.css.ts`,
+]);
 
 // Repo-relative paths of every module under styles/, in a stable order.
 export function componentCssSourcePaths(root = REPO_ROOT) {
@@ -110,4 +117,58 @@ export function componentCssModules(root = REPO_ROOT) {
 // All segment text, module by module (not cascade order), for membership and pattern scans.
 export function componentCssText(root = REPO_ROOT) {
   return componentCssModules(root).map(({ css }) => css).join("\n");
+}
+
+const SPACING_RADIUS_PROP = /^(?:padding(?:-(?:top|right|bottom|left|inline(?:-start|-end)?|block(?:-start|-end)?))?|margin(?:-(?:top|right|bottom|left|inline(?:-start|-end)?|block(?:-start|-end)?))?|(?:row-|column-)?gap|border(?:-(?:top|bottom)-(?:left|right)|-(?:start|end)-(?:start|end))?-radius)$/;
+
+export function checkBatch3CssClosure(root = REPO_ROOT) {
+  const issues = [];
+  const sources = readComponentCssSources(root);
+  const byPath = new Map(sources.map((entry) => [entry.path, entry]));
+  const indexText = readFileSync(join(root, COMPONENT_CSS_INDEX), "utf8");
+
+  const formalIdx = indexText.indexOf("formalLayoutCss,");
+  const layoutIdx = indexText.indexOf("layoutCss,");
+  if (formalIdx < 0 || layoutIdx < 0 || layoutIdx < formalIdx) {
+    issues.push("styles/index.ts must wire layoutCss after formalLayoutCss");
+  }
+  for (const symbol of ["feedbackCss", "dataDisplayCss", "layoutCss", "overlayCss"]) {
+    if (!new RegExp(`\\b${symbol}\\b`).test(indexText)) {
+      issues.push(`styles/index.ts is missing Batch 3 stylesheet segment ${symbol}`);
+    }
+  }
+
+  for (const entry of sources) {
+    for (const seg of entry.segments) {
+      if (!seg.terminated) issues.push(`Unterminated or stray backtick in CSS module ${entry.path}`);
+    }
+  }
+
+  for (const modulePath of BATCH3_CSS_MODULES) {
+    const source = byPath.get(modulePath);
+    if (!source || !source.segments.length) {
+      issues.push(`Missing Batch 3 CSS template literal module ${modulePath}`);
+      continue;
+    }
+    const css = source.segments.map((segment) => segment.css).join("\n");
+    if (css.includes("`")) {
+      issues.push(`Backtick found inside CSS body of ${modulePath}`);
+    }
+    const parsed = parseCss(css, { source: modulePath });
+    for (const err of parsed.errors) {
+      issues.push(`CSS syntax error in ${modulePath}:${err.line} (${err.reasonCode})`);
+    }
+    for (const rule of parsed.rules) {
+      if (rule.kind !== "style") continue;
+      for (const decl of rule.declarations) {
+        if (!SPACING_RADIUS_PROP.test(decl.prop)) continue;
+        const stripped = decl.value.replace(/var\(--tcrn-[a-z0-9-]+(?:\s*,\s*[^)]+)?\)/g, "TOKEN");
+        if (/\b[1-9]\d*(?:\.\d+)?px\b|\b0\.\d+px\b/i.test(stripped)) {
+          issues.push(`Bare px spacing/radius in ${modulePath} (${rule.selectorText} -> ${decl.prop}: ${decl.value})`);
+        }
+      }
+    }
+  }
+
+  return issues;
 }

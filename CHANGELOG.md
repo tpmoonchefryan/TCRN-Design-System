@@ -6,17 +6,42 @@ K1/K5 remain unresolved source conflicts; this entry does not record a successfu
 
 # Changelog
 
-## Unreleased
+## 4.1.0
 
-### Seasonal Halloween theme candidate (@tcrn/ui-tokens/halloween.css)
+### Batch 3 component families, VoxWard brand mark, shell extensions, and seasonal Halloween theme (TCRN-DS-INIT-017)
 
-Add an opt-in seasonal Halloween theme (`[data-tcrn-theme="halloween"]`) via
-`@tcrn/ui-tokens/halloween.css`, extend body-mounted `MultiSelect` dropdown theme
-synchronization, add a `halloween` Storybook toolbar option and `Adopted
-support/Seasonal Halloween theme` specimen stories, and register
-`pattern/seasonal-halloween-theme`. Default `light` and `dark` token values,
-28 formal component geometries, spacing, radii, typography, icons, and motion
-remain unchanged; Owner visual acceptance and release remain pending.
+Status: local `4.1.0` minor candidate across `@tcrn/ui-tokens`,
+`@tcrn/ui-copy-state`, and `@tcrn/ui-react`. Owner visual review and formal
+publication remain separate pending decisions. See `docs/releases/4.1.0/README.md`
+and `docs/consumption/patterns/batch3-components-and-shell.md`.
+
+- `@tcrn/ui-tokens`: add `--tcrn-color-warn-bg`, `--tcrn-color-ok-bg`, and
+  `--tcrn-brand-suffix-voxward`, plus the opt-in `[data-tcrn-theme="halloween"]`
+  seasonal theme stylesheet (`@tcrn/ui-tokens/halloween.css`) with full WCAG AA
+  contrast proofs across `light`, `dark`, and `halloween` without altering
+  published Site v2 geometry, typography, spacing, radii, icons, or motion.
+- Brand & `ProductShell`: register the adopted `voxward` Option C mark across all
+  four renditions (`color`, `mono`, `tile-tint`, `tile-deep`) and five localized
+  taglines; add right-hand backoffice navigation (`align: "end"` with `1x16`
+  divider, equal item gap, `external`, and `disabled` items), optional `topBanner`
+  slot beneath the 52 px top strip, and opt-in seasonal theme cycling
+  (`seasonalThemes`).
+- `@tcrn/ui-react/approved` & `tcrnComponentCss`: promote Feedback (`Badge`,
+  `StatusBadge`, `StatusDot`, `InlineAlert`, `EnvironmentBanner`, `StateSurface`,
+  `EmptyState`, `ErrorState`), DataDisplay (`Card`, `Avatar`, `StatCard`,
+  `TableShell`, `RecordTable`, `TableToolbar`, `KeyValueList`, `StagePipeline`,
+  `RawPayloadBox`), Layout (`Surface`, `Divider`, `SettingsLayout`, `SplitView`,
+  `CollapsibleRegion`, `SegmentedNav`), and Overlay (`Menu`, `Popover`,
+  `Tooltip`, `Dialog`, `ConfirmActionDialog`, `InlineConfirmBar`) families into
+  the formal state-pair stylesheet and approved barrel, while retaining existing
+  4.0.x deprecated root exports for compatibility.
+- Storybook, AI contract, and red-first gates: add pure-package 3-theme specimen
+  stories (`Adopted support/Batch 3 components and VoxWard shell` and `Adopted
+  support/Seasonal Halloween theme`), emit `ai/4.1.0/` rule shards, and enforce
+  mutation-proven browser/static gates for `Menu`/`Popover` zero document-flow
+  shift and `bottom-end` 0 px right-edge alignment, `ProductShell` left/right pin
+  spacing and `topBanner` geometry, `voxward` `brandDigest` and zero custom
+  outside-package `tcrn-` classes, and 3-theme semantic contrast.
 
 ## 4.0.0
 

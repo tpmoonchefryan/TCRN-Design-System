@@ -313,3 +313,32 @@ test("generated field usage and checker requirements share the actual AI closure
     }
   }
 });
+
+test("Batch 3 adopted components and pattern/batch3-components-and-shell resolve cleanly from @tcrn/ui-react/approved", t => {
+  const adoptedRules = index.rules.filter(rule => rule.kind === "adopted-component");
+  assert.equal(adoptedRules.length, 29);
+  const source = `import { Badge, Card, InlineConfirmBar, TableShell } from "@tcrn/ui-react/approved";
+export function ModerationPanel() {
+  return (
+    <Card tone="neutral">
+      <Badge tone="warning">Held</Badge>
+      <TableShell columns={[{ key: "author", label: "Author" }]} rows={[]} />
+      <InlineConfirmBar tone="warning" title="Reset?" message="Confirm reset" confirmLabel="Confirm" cancelLabel="Cancel" onConfirm={() => undefined} onCancel={() => undefined} />
+    </Card>
+  );
+}`;
+  const input = fixture(t, source, ["Badge", "Card", "InlineConfirmBar", "TableShell"]);
+  input.declaration.patterns = ["batch3-components-and-shell"];
+  input.write();
+  const result = input.run();
+  assert.equal(result.ok, true, JSON.stringify(result.findings));
+  assert.ok(result.requiredRules.includes("pattern/batch3-components-and-shell"));
+  assert.deepEqual(result.usedComponents, ["Badge", "Card", "InlineConfirmBar", "TableShell"]);
+
+  // Omitting an adopted component from declaration.components fails TASK_RULE_NOT_SELECTED:
+  input.declaration.components = ["Badge", "Card", "TableShell"];
+  input.write();
+  const missingTaskRule = input.run();
+  assert.equal(missingTaskRule.ok, false);
+  assert.ok(missingTaskRule.findings.some(item => item.includes("TASK_RULE_NOT_SELECTED:InlineConfirmBar")));
+});

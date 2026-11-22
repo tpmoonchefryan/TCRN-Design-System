@@ -128,7 +128,8 @@ export const CURRENT_STORY_SOURCE_FILES = Object.freeze([
   "specimens.tsx",
   "standards.stories.tsx",
   "support.stories.tsx",
-  "storybook.css"
+  "storybook.css",
+  "voxward-batch3.stories.tsx"
 ]);
 export const CURRENT_CSF_FILES = Object.freeze([
   "components/Button.stories.tsx",
@@ -161,58 +162,89 @@ export const CURRENT_CSF_FILES = Object.freeze([
   "components/Textarea.stories.tsx",
   "seasonal-halloween.stories.tsx",
   "standards.stories.tsx",
-  "support.stories.tsx"
+  "support.stories.tsx",
+  "voxward-batch3.stories.tsx"
 ]);
 export const AI_OUTPUT_FILES = Object.freeze([
-  "ai/4.0.0/assets/brand.json",
-  "ai/4.0.0/assets/fonts.json",
-  "ai/4.0.0/assets/icons.json",
-  "ai/4.0.0/component/Button.json",
-  "ai/4.0.0/component/ButtonGroup.json",
-  "ai/4.0.0/component/Checkbox.json",
-  "ai/4.0.0/component/ClipboardCopyButton.json",
-  "ai/4.0.0/component/DatePicker.json",
-  "ai/4.0.0/component/Heading.json",
-  "ai/4.0.0/component/Highlight.json",
-  "ai/4.0.0/component/Icon.json",
-  "ai/4.0.0/component/IconButton.json",
-  "ai/4.0.0/component/Input.json",
-  "ai/4.0.0/component/LinkButton.json",
-  "ai/4.0.0/component/MultiSelect.json",
-  "ai/4.0.0/component/NumberInput.json",
-  "ai/4.0.0/component/ProductLockup.json",
-  "ai/4.0.0/component/ProductLogo.json",
-  "ai/4.0.0/component/ProductShell.json",
-  "ai/4.0.0/component/RadioGroup.json",
-  "ai/4.0.0/component/SearchInput.json",
-  "ai/4.0.0/component/Select.json",
-  "ai/4.0.0/component/ShellBrandButton.json",
-  "ai/4.0.0/component/ShellDropdown.json",
-  "ai/4.0.0/component/ShellIntro.json",
-  "ai/4.0.0/component/ShellMenu.json",
-  "ai/4.0.0/component/ShellPins.json",
-  "ai/4.0.0/component/SuggestInput.json",
-  "ai/4.0.0/component/Switch.json",
-  "ai/4.0.0/component/Text.json",
-  "ai/4.0.0/component/Textarea.json",
-  "ai/4.0.0/global.json",
-  "ai/4.0.0/index.json",
-  "ai/4.0.0/pattern/customer-list-boundary.json",
-  "ai/4.0.0/pattern/component-layout.json",
-  "ai/4.0.0/pattern/product-locales.json",
-  "ai/4.0.0/pattern/seasonal-halloween-theme.json",
-  "ai/4.0.0/pattern/shell-preferences.json",
-  "ai/4.0.0/sources.json",
-  "ai/4.0.0/standard/01-tokens.json",
-  "ai/4.0.0/standard/02-typography.json",
-  "ai/4.0.0/standard/03-icons.json",
-  "ai/4.0.0/standard/04-brand.json",
-  "ai/4.0.0/standard/05-actions.json",
-  "ai/4.0.0/standard/06-inputs.json",
-  "ai/4.0.0/standard/07a-shell-upper.json",
-  "ai/4.0.0/standard/07b-shell-lower.json",
-  "ai/4.0.0/tokens/core.json",
-  "ai/4.0.0/tokens/shell.json",
+  "ai/4.1.0/assets/brand.json",
+  "ai/4.1.0/assets/fonts.json",
+  "ai/4.1.0/assets/icons.json",
+  "ai/4.1.0/component/Avatar.json",
+  "ai/4.1.0/component/Badge.json",
+  "ai/4.1.0/component/Button.json",
+  "ai/4.1.0/component/ButtonGroup.json",
+  "ai/4.1.0/component/Card.json",
+  "ai/4.1.0/component/Checkbox.json",
+  "ai/4.1.0/component/ClipboardCopyButton.json",
+  "ai/4.1.0/component/CollapsibleRegion.json",
+  "ai/4.1.0/component/ConfirmActionDialog.json",
+  "ai/4.1.0/component/DatePicker.json",
+  "ai/4.1.0/component/Dialog.json",
+  "ai/4.1.0/component/Divider.json",
+  "ai/4.1.0/component/EmptyState.json",
+  "ai/4.1.0/component/EnvironmentBanner.json",
+  "ai/4.1.0/component/ErrorState.json",
+  "ai/4.1.0/component/Heading.json",
+  "ai/4.1.0/component/Highlight.json",
+  "ai/4.1.0/component/Icon.json",
+  "ai/4.1.0/component/IconButton.json",
+  "ai/4.1.0/component/InlineAlert.json",
+  "ai/4.1.0/component/InlineConfirmBar.json",
+  "ai/4.1.0/component/Input.json",
+  "ai/4.1.0/component/KeyValueList.json",
+  "ai/4.1.0/component/LinkButton.json",
+  "ai/4.1.0/component/Menu.json",
+  "ai/4.1.0/component/MultiSelect.json",
+  "ai/4.1.0/component/NumberInput.json",
+  "ai/4.1.0/component/Popover.json",
+  "ai/4.1.0/component/ProductLockup.json",
+  "ai/4.1.0/component/ProductLogo.json",
+  "ai/4.1.0/component/ProductShell.json",
+  "ai/4.1.0/component/RadioGroup.json",
+  "ai/4.1.0/component/RawPayloadBox.json",
+  "ai/4.1.0/component/RecordTable.json",
+  "ai/4.1.0/component/SearchInput.json",
+  "ai/4.1.0/component/SegmentedNav.json",
+  "ai/4.1.0/component/Select.json",
+  "ai/4.1.0/component/SettingsLayout.json",
+  "ai/4.1.0/component/ShellBrandButton.json",
+  "ai/4.1.0/component/ShellDropdown.json",
+  "ai/4.1.0/component/ShellIntro.json",
+  "ai/4.1.0/component/ShellMenu.json",
+  "ai/4.1.0/component/ShellPins.json",
+  "ai/4.1.0/component/SplitView.json",
+  "ai/4.1.0/component/StagePipeline.json",
+  "ai/4.1.0/component/StatCard.json",
+  "ai/4.1.0/component/StateSurface.json",
+  "ai/4.1.0/component/StatusBadge.json",
+  "ai/4.1.0/component/StatusDot.json",
+  "ai/4.1.0/component/SuggestInput.json",
+  "ai/4.1.0/component/Surface.json",
+  "ai/4.1.0/component/Switch.json",
+  "ai/4.1.0/component/TableShell.json",
+  "ai/4.1.0/component/TableToolbar.json",
+  "ai/4.1.0/component/Text.json",
+  "ai/4.1.0/component/Textarea.json",
+  "ai/4.1.0/component/Tooltip.json",
+  "ai/4.1.0/global.json",
+  "ai/4.1.0/index.json",
+  "ai/4.1.0/pattern/batch3-components-and-shell.json",
+  "ai/4.1.0/pattern/component-layout.json",
+  "ai/4.1.0/pattern/customer-list-boundary.json",
+  "ai/4.1.0/pattern/product-locales.json",
+  "ai/4.1.0/pattern/seasonal-halloween-theme.json",
+  "ai/4.1.0/pattern/shell-preferences.json",
+  "ai/4.1.0/sources.json",
+  "ai/4.1.0/standard/01-tokens.json",
+  "ai/4.1.0/standard/02-typography.json",
+  "ai/4.1.0/standard/03-icons.json",
+  "ai/4.1.0/standard/04-brand.json",
+  "ai/4.1.0/standard/05-actions.json",
+  "ai/4.1.0/standard/06-inputs.json",
+  "ai/4.1.0/standard/07a-shell-upper.json",
+  "ai/4.1.0/standard/07b-shell-lower.json",
+  "ai/4.1.0/tokens/core.json",
+  "ai/4.1.0/tokens/shell.json",
   "ai/index.json"
 ]);
 export function checkStorySourceMembers(actual){return validateOutputMembers(actual,CURRENT_STORY_SOURCE_FILES);}
@@ -227,7 +259,7 @@ export function checkSourceClosure(root=ROOT){
   const main=read(root,"apps/storybook/.storybook/main.ts");
   const storyDeclaration = /stories:\s*\[([^\]]*)\]/.exec(main)?.[1];
   const declaredStories = storyDeclaration ? [...storyDeclaration.matchAll(/"([^"\n]+)"/g)].map(match => match[1]) : [];
-  const managerEntries = ["../src/standards.stories.tsx", "../src/support.stories.tsx", "../src/seasonal-halloween.stories.tsx", "../src/components/*.stories.tsx"];
+  const managerEntries = ["../src/standards.stories.tsx", "../src/support.stories.tsx", "../src/seasonal-halloween.stories.tsx", "../src/voxward-batch3.stories.tsx", "../src/components/*.stories.tsx"];
   if (JSON.stringify(declaredStories) !== JSON.stringify(managerEntries) || /tcrn-brand-mark|staticDirs[^\n]*assets\//.test(main)) issues.push("Manager CSF/asset closure is not the explicit approved entrypoint");
   const csf = listFiles(path.join(root, "apps/storybook/src")).filter(file => file.endsWith(".stories.tsx"));
   issues.push(...validateOutputMembers(csf, CURRENT_CSF_FILES).map(issue => `CSF source closure: ${issue}`));
@@ -347,11 +379,81 @@ export async function checkSeasonalHalloweenContrast(root=ROOT){
   }
   return {issues,measurements,theme:"halloween",thresholds:{text:4.5,edge:3}};
 }
-export async function checkBrand(root=ROOT){const source=readApprovedSource(root),marks=extractMarks(source),icons=extractIcons(source),ui=await compiled(root,"packages/ui-react/dist/approved.js"),nav=await compiled(root,"packages/ui-react/dist/components/Navigation/Navigation.js"),issues=[];
-  if(JSON.stringify(Object.keys(nav.tcrnProductLogoRegistry).sort())!==JSON.stringify(marks.map(m=>m.productId).sort()))issues.push("Product registry has an unapproved identity or misses a formal mark");
-  for(const m of marks)for(const [variant,body] of [["color",m.colorBody],["mono",m.inkBody],["tile-tint",m.tileTintBody],["tile-deep",m.tileDeepBody]]){const svg=ui.tcrnProductMarkSvg(m.productId,variant),actual=svg.replace(/^<svg[^>]*>/,"").replace(/<\/svg>\s*$/,"");if(normalizeSvgBody(actual)!==normalizeSvgBody(body))issues.push(`Formal SVG rendition drift ${m.productId}/${variant}`);}
-  const compiledIcons=await compiled(root,"packages/ui-react/dist/components/Icon/icon-paths.generated.js");for(const icon of icons)if(normalizeSvgBody(compiledIcons.tcrnIconPaths[icon.name]??"",{geometryOnly:true})!==icon.body)issues.push(`Formal icon geometry drift ${icon.name}`);
-  return {issues,marks:marks.map(m=>({id:m.id,productId:m.productId,source:m.source,colorGeometrySha256:sha256(m.colorBody)})),iconCount:icons.length};
+const VOXWARD_WING_PATH = "M10.5 12.75L18 12.75L24 30.75L30 12.75L37.5 12.75L27.375 38.25L20.625 38.25Z";
+const VOXWARD_DIAMOND_PATH = "M24 9.75L27.75 15L24 20.25L20.25 15Z";
+export const ADOPTED_VOXWARD_MARK = Object.freeze({
+  id: "voxward",
+  productId: "voxward",
+  source: "minutes:577fa880f7f1b73b76eb2d0e#D1",
+  colorBody: `<rect fill="var(--tcrn-color-acc, #0b6b65)" height="48" rx="12" width="48"/><path d="${VOXWARD_WING_PATH}" fill="var(--tcrn-color-on-acc, #ffffff)"/><path d="${VOXWARD_DIAMOND_PATH}" fill="var(--tcrn-color-on-acc, #ffffff)"/>`,
+  inkBody: `<rect fill="none" height="45" rx="10.5" stroke="currentColor" stroke-width="3" width="45" x="1.5" y="1.5"/><path d="${VOXWARD_WING_PATH}" fill="currentColor"/><path d="${VOXWARD_DIAMOND_PATH}" fill="currentColor"/>`,
+  tileTintBody: `<rect fill="#e3f3f1" height="48" rx="12" width="48"/><path d="${VOXWARD_WING_PATH}" fill="#0b6b65"/><path d="${VOXWARD_DIAMOND_PATH}" fill="#0b6b65"/>`,
+  tileDeepBody: `<rect fill="#0b6b65" height="48" rx="12" width="48"/><path d="${VOXWARD_WING_PATH}" fill="#ffffff"/><path d="${VOXWARD_DIAMOND_PATH}" fill="#ffffff"/>`,
+  taglines: Object.freeze({
+    "zh-CN": "直播互动审核与结界系统",
+    en: "Live chat moderation and ward system",
+    ja: "配信チャットモデレーション・結界システム",
+    ko: "라이브 채팅 모더레이션 및 결계 시스템",
+    fr: "Système de modération et de garde du chat en direct",
+  }),
+});
+export const VOXWARD_BRAND_DIGEST = sha256(normalizeSvgBody(ADOPTED_VOXWARD_MARK.colorBody));
+
+export async function checkBrand(root = ROOT, overrides = {}) {
+  const source = readApprovedSource(root);
+  const marks = extractMarks(source);
+  const icons = extractIcons(source);
+  const ui = overrides.ui ?? await compiled(root, "packages/ui-react/dist/approved.js");
+  const nav = overrides.nav ?? await compiled(root, "packages/ui-react/dist/components/Navigation/Navigation.js");
+  const issues = [];
+  const expectedProductIds = [...marks.map(m => m.productId), ADOPTED_VOXWARD_MARK.productId].sort();
+  if (JSON.stringify(Object.keys(nav.tcrnProductLogoRegistry ?? {}).sort()) !== JSON.stringify(expectedProductIds)) {
+    issues.push("Product registry has an unapproved identity or misses a formal/adopted mark");
+  }
+  for (const m of marks) {
+    for (const [variant, body] of [["color", m.colorBody], ["mono", m.inkBody], ["tile-tint", m.tileTintBody], ["tile-deep", m.tileDeepBody]]) {
+      const svg = ui.tcrnProductMarkSvg(m.productId, variant);
+      const actual = svg.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+      if (normalizeSvgBody(actual) !== normalizeSvgBody(body)) issues.push(`Formal SVG rendition drift ${m.productId}/${variant}`);
+    }
+  }
+  for (const [variant, body] of [
+    ["color", ADOPTED_VOXWARD_MARK.colorBody],
+    ["mono", ADOPTED_VOXWARD_MARK.inkBody],
+    ["tile-tint", ADOPTED_VOXWARD_MARK.tileTintBody],
+    ["tile-deep", ADOPTED_VOXWARD_MARK.tileDeepBody],
+  ]) {
+    const svg = ui.tcrnProductMarkSvg(ADOPTED_VOXWARD_MARK.productId, variant);
+    const actual = svg.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+    if (normalizeSvgBody(actual) !== normalizeSvgBody(body)) issues.push(`Adopted VoxWard SVG rendition drift voxward/${variant}`);
+    if (variant === "color" && sha256(normalizeSvgBody(actual)) !== VOXWARD_BRAND_DIGEST) {
+      issues.push("Adopted VoxWard brandDigest mismatch");
+    }
+  }
+  const voxwardTaglines = LOCALES.map(locale => ui.tcrnProductTagline(ADOPTED_VOXWARD_MARK.productId, locale));
+  for (const locale of LOCALES) {
+    const actualTagline = ui.tcrnProductTagline(ADOPTED_VOXWARD_MARK.productId, locale);
+    if (actualTagline !== ADOPTED_VOXWARD_MARK.taglines[locale]) {
+      issues.push(`Adopted VoxWard tagline drift ${locale}`);
+    }
+  }
+  if (new Set(voxwardTaglines).size !== LOCALES.length) {
+    issues.push("Adopted VoxWard 5-locale taglines must be distinct across all locales");
+  }
+  const compiledIcons = await compiled(root, "packages/ui-react/dist/components/Icon/icon-paths.generated.js");
+  for (const icon of icons) {
+    if (normalizeSvgBody(compiledIcons.tcrnIconPaths[icon.name] ?? "", { geometryOnly: true }) !== icon.body) {
+      issues.push(`Formal icon geometry drift ${icon.name}`);
+    }
+  }
+  return {
+    issues,
+    marks: [
+      ...marks.map(m => ({ id: m.id, productId: m.productId, source: m.source, colorGeometrySha256: sha256(m.colorBody) })),
+      { id: ADOPTED_VOXWARD_MARK.id, productId: ADOPTED_VOXWARD_MARK.productId, source: ADOPTED_VOXWARD_MARK.source, colorGeometrySha256: VOXWARD_BRAND_DIGEST },
+    ],
+    iconCount: icons.length,
+  };
 }
 export function checkFonts(root=ROOT){const source=readApprovedSource(root),faces=extractFontFaces(source),expected=[...new Map(faces.map(f=>[f.file,f])).values()],issues=[],base=path.join(root,"packages/ui-tokens/fonts");
   const manifest=JSON.parse(fs.readFileSync(path.join(base,"manifest.json"),"utf8"));if(manifest.site?.sourceCommit!==APPROVED_SITE.sourceCommit)issues.push("Font manifest declares the wrong published source");
@@ -406,6 +508,9 @@ export function finish(label,result){const issues=result.issues??[];console.log(
 
 export const MANAGER_STORY_IDS = Object.freeze([
   ...Object.entries(APPROVED_API_BOARDS).filter(([name, board]) => board === "06-inputs" && name !== "Switch").map(([name]) => `components-${name.toLowerCase()}--form-submission`),
+  "adopted-support-batch-3-components-and-voxward-shell--feedback-and-data-display",
+  "adopted-support-batch-3-components-and-voxward-shell--layout-and-overlays",
+  "adopted-support-batch-3-components-and-voxward-shell--shell-and-brand",
   "adopted-support-customer-list-boundary--overview",
   "adopted-support-seasonal-halloween-theme--interactive-workspace",
   "adopted-support-seasonal-halloween-theme--overview",
@@ -562,10 +667,11 @@ export function managerIndexIssues(index) {
     const family = Object.keys(APPROVED_API_BOARDS).find(name => id.startsWith(`components-${name.toLowerCase()}--`));
     const support = id === "adopted-support-customer-list-boundary--overview";
     const seasonalHalloween = id.startsWith("adopted-support-seasonal-halloween-theme--");
-    const expectedPath = family ? `./src/components/${family}.stories.tsx` : support ? "./src/support.stories.tsx" : seasonalHalloween ? "./src/seasonal-halloween.stories.tsx" : "./src/standards.stories.tsx";
+    const voxwardBatch3 = id.startsWith("adopted-support-batch-3-components-and-voxward-shell--");
+    const expectedPath = family ? `./src/components/${family}.stories.tsx` : support ? "./src/support.stories.tsx" : seasonalHalloween ? "./src/seasonal-halloween.stories.tsx" : voxwardBatch3 ? "./src/voxward-batch3.stories.tsx" : "./src/standards.stories.tsx";
     const board = APPROVED_API_BOARDS[family];
     const group = board === "05-actions" ? "Actions" : board === "06-inputs" ? "Inputs and selection" : board?.startsWith("07") ? "Application shell" : "Foundations";
-    const expectedTitle = family ? `Components/${group}/${family}` : support ? "Adopted support/Customer list boundary" : seasonalHalloween ? "Adopted support/Seasonal Halloween theme" : "Published standards";
+    const expectedTitle = family ? `Components/${group}/${family}` : support ? "Adopted support/Customer list boundary" : seasonalHalloween ? "Adopted support/Seasonal Halloween theme" : voxwardBatch3 ? "Adopted support/Batch 3 components and VoxWard shell" : "Published standards";
     if (story.title !== expectedTitle || story.importPath !== expectedPath) issues.push(`Unapproved manager CSF module ${id}`);
   }
   return issues;

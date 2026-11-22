@@ -42,7 +42,7 @@ export const tcrnAdoptedThemedTokens = [
     light: "rgba(138,90,8,.08)",
     dark: "rgba(217,171,82,.10)",
     halloween: "rgba(235,181,82,.11)",
-    source: "TCRN-DS-INIT-017/Batch-3"
+    source: "Adopted Batch 3 token table"
   },
   {
     key: "ok-bg",
@@ -51,7 +51,7 @@ export const tcrnAdoptedThemedTokens = [
     light: "rgba(47,107,58,.08)",
     dark: "rgba(111,207,151,.10)",
     halloween: "rgba(109,214,156,.11)",
-    source: "TCRN-DS-INIT-017/Batch-3"
+    source: "Adopted Batch 3 token table"
   }
 ] as const;
 
@@ -63,7 +63,7 @@ export const tcrnAdoptedBrandTokens = [
     value: "#0b6b65",
     dark: "#3fc7b7",
     halloween: "#f58a33",
-    source: "TCRN-DS-INIT-017/Batch-3"
+    source: "Adopted Batch 3 token table"
   }
 ] as const;
 

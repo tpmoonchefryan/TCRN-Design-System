@@ -12,7 +12,7 @@ import { approvedSource, supportedLocales, type DocsLocale } from "../approved-s
 import { approvedApi } from "../approved-api.js";
 import { docsCopy } from "../locales.js";
 import { createAiConsumptionContract, type AiReviewStatus } from "./ai-consumption-contract.js";
-import { createAiRuleBundle, aiHash, aiJson, type AiApiEntry } from "./ai-rule-bundle.js";
+import { ADOPTED_BATCH3_COMPONENTS, createAiRuleBundle, aiHash, aiJson, type AiApiEntry } from "./ai-rule-bundle.js";
 import { designAuthority } from "./design-authority.js";
 
 const root = fileURLToPath(new URL("../../../../", import.meta.url));
@@ -75,7 +75,7 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
     extractComponentExamples: () => Record<string, { path: string; line: number; snippet: string }>;
     buildManifest: (options: { entryPath: string; componentNames: string[] }) => { ok: boolean; components: Record<string, AiApiEntry> };
   };
-  const api = manifestBuilder.buildManifest({ entryPath: "packages/ui-react/src/approved.tsx", componentNames: approvedApi.map(api => api.name) });
+  const api = manifestBuilder.buildManifest({ entryPath: "packages/ui-react/src/approved.tsx", componentNames: [...approvedApi.map(api => api.name), ...ADOPTED_BATCH3_COMPONENTS] });
   const standardReader = await import(pathToFileURL(path.join(root, "scripts/lib/published-standard-proof.mjs")).href) as {
     formalApiContracts: () => Record<string, { formal: string; board: string; line: number }>;
     FORMAL_REVIEW_STATUS: AiReviewStatus;

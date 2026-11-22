@@ -150,7 +150,7 @@ export const Overview = {
         </table>
       </div>
       <div className="tcrn-doc-row">
-        <a className="tcrn-link" href="/ai/4.0.0/pattern/seasonal-halloween-theme.json">Read the seasonal Halloween theme contract</a>
+        <a className="tcrn-link" href="/ai/4.1.0/pattern/seasonal-halloween-theme.json">Read the seasonal Halloween theme contract</a>
       </div>
     </section>
   ),

@@ -24,6 +24,6 @@ test("style closure resolves exact real carriers and documentation ownership wit
   assert.deepEqual(markupStyleCoverage(markup, css, '.tcrn-doc-prose{display:grid}').missing, []);
   assert.ok(markupStyleCoverage('<span class="tcrn-radio-group__label">Wrong parent</span>', css).missing.length);
   assert.ok(markupStyleCoverage(markup + '<div class="tcrn-not-a-component"></div>', css).missing.includes('tcrn-not-a-component'));
-  assert.ok(checkPublishedStyles('.tcrn-dialog{color:red}').length);
+  assert.ok(checkPublishedStyles('.tcrn-side-nav{color:red}').length);
   assert.ok(checkPublishedStyles('.tcrn-input{color:var(--tcrn-color-text-old)}').length);
 });

@@ -20,6 +20,38 @@ export interface Rule { id: string; kind: string; required: string[]; optional: 
 export const aiJson = (value: unknown) => JSON.stringify(value, null, 2) + "\n";
 export const aiHash = (bytes: string | Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 
+export const ADOPTED_BATCH3_COMPONENTS = Object.freeze([
+  "Avatar",
+  "Badge",
+  "Card",
+  "CollapsibleRegion",
+  "ConfirmActionDialog",
+  "Dialog",
+  "Divider",
+  "EmptyState",
+  "EnvironmentBanner",
+  "ErrorState",
+  "InlineAlert",
+  "InlineConfirmBar",
+  "KeyValueList",
+  "Menu",
+  "Popover",
+  "RawPayloadBox",
+  "RecordTable",
+  "SegmentedNav",
+  "SettingsLayout",
+  "SplitView",
+  "StagePipeline",
+  "StatCard",
+  "StateSurface",
+  "StatusBadge",
+  "StatusDot",
+  "Surface",
+  "TableShell",
+  "TableToolbar",
+  "Tooltip",
+] as const);
+
 export function createAiRuleBundle(input: {
   candidate: AiCandidate;
   packageVersions: Record<string, string>;
@@ -49,9 +81,14 @@ export function createAiRuleBundle(input: {
     { id: "product-locales", file: "docs/consumption/patterns/product-shell-locales.md", required: [] },
     { id: "customer-list-boundary", file: "docs/consumption/patterns/customer-list-support.md", required: ["pattern/product-locales"] },
     { id: "seasonal-halloween-theme", file: "docs/consumption/patterns/seasonal-halloween-theme.md", required: ["tokens/core", "tokens/shell", "standard/01-tokens"] },
+    {
+      id: "batch3-components-and-shell",
+      file: "docs/consumption/patterns/batch3-components-and-shell.md",
+      required: ["tokens/core", "tokens/shell", "assets/brand", "assets/icons", "pattern/shell-preferences"],
+    },
   ];
   const rules: Rule[] = [{
-    id: "global", kind: "global", required: ["tokens/core", "assets/fonts", "standard/01-tokens", "pattern/component-layout"], optional: ["pattern/customer-list-boundary", "pattern/seasonal-halloween-theme"],
+    id: "global", kind: "global", required: ["tokens/core", "assets/fonts", "standard/01-tokens", "pattern/component-layout"], optional: ["pattern/customer-list-boundary", "pattern/seasonal-halloween-theme", "pattern/batch3-components-and-shell"],
     content: requireSource("docs/consumption/rules/global.md"),
   }];
   for (const board of approvedSource.boards) rules.push({
@@ -118,6 +155,24 @@ export function createAiRuleBundle(input: {
           productInputs: shell ? "Supply the typed component props and read pattern/shell-preferences; the snippet does not invent product data or a backend adapter." : null,
         },
         stories: states.map(state => ({ state, id: componentStoryId(api.name, state) })),
+      },
+    });
+  }
+  const batch3Specimen = requireSource("apps/storybook/src/voxward-batch3.stories.tsx");
+  for (const name of ADOPTED_BATCH3_COMPONENTS) {
+    const types = input.api.components[name];
+    if (!types || types.extractionError || !types.source) throw new Error(`Required adopted Batch 3 component type missing: ${name}`);
+    rules.push({
+      id: `component/${name}`,
+      kind: "adopted-component",
+      required: ["global", "pattern/batch3-components-and-shell"],
+      optional: ["pattern/seasonal-halloween-theme"],
+      content: {
+        name,
+        status: "adopted-batch3-candidate",
+        types,
+        implementationSource: { path: types.source.path, sha256: requireSource(types.source.path).sha256 },
+        specimenSource: { path: batch3Specimen.path, sha256: batch3Specimen.sha256 },
       },
     });
   }

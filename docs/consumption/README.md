@@ -1,6 +1,6 @@
 # Consume the matching design-system release
 
-This source is a local 4.0.0 producer candidate. The pinned visual Site is v1.
+This source is a local 4.1.0 producer candidate. The pinned visual Site is v2.
 The package, documentation and AI index have separate publication facts. Do not
 point a production consumer at this candidate before its required producer delivery.
 Owner adopted the visual amendments and customer-list/product-locale support under
@@ -11,7 +11,7 @@ contrast failures and original icon panel labels/menu width wording.
 
 Start with the producer artifact's `llms.txt` and `ai/index.json`. An offline copy
 must retain the `ai/` directory structure. The versioned alias is
-`ai/4.0.0/index.json`. Pin the index's entire `identity` object in the consumer
+`ai/4.1.0/index.json`. Pin the index's entire `identity` object in the consumer
 project's `.tcrn-ds.json`; it contains all three exact package versions, the pinned
 standard identity and the generator's source digest. Changes invalidate the lock.
 Use a trusted release artifact; a hash alone authenticates no publisher.
@@ -56,7 +56,7 @@ A nonzero exit means failure; unreadable/malformed rules never become empty succ
 Pin package versions exactly; run the consumer's TypeScript and browser checks too.
 The matching `@tcrn/ds-consumer-tools` archive supplies the normal installed
 `tcrn-ds-check` bin and its exact TypeScript dependency. See the matching
-[release guide](../releases/4.0.0/README.md) for verified archive installation.
+[release guide](../releases/4.1.0/README.md) for verified archive installation.
 
 For shell consumption, retain the raw HTTP test commands and results producing
 `tcrn.shell-preference-evidence.v1`: authenticated synthetic scope, initial ordered pins, successful

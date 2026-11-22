@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import {
   Button, Heading, Icon, Input, LinkButton, ProductLockup, Switch, TcrnBrandMark, Text,
-  tcrnProductMarkIds, type IconName, type ShellThemeMode,
+  tcrnProductMarks, type IconName, type ShellThemeMode, type TcrnProductMarkId,
 } from "@tcrn/ui-react/approved";
 import type { DocsLocale } from "./approved-source.js";
 import { docsCopy } from "./locales.js";
@@ -54,7 +54,7 @@ export function Portal({ locale, theme, navigation, search }: {
     brand: (
       <SpecimenWindow caption={copy.captions[1]} icon="layout-grid">
         <div className="portal-glimpse__brands">
-          {tcrnProductMarkIds.map(productId => <ProductLockup key={productId} productId={productId} locale={locale} scale="rail" />)}
+          {tcrnProductMarks.map(({ productId }) => <ProductLockup key={productId} productId={productId as TcrnProductMarkId} locale={locale} scale="rail" />)}
         </div>
       </SpecimenWindow>
     ),

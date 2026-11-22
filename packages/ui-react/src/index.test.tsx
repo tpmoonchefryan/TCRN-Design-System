@@ -125,3 +125,32 @@ test("STORY-143 GWT1 each deprecated component is exported, declared and given a
     assert.doesNotMatch(tcrnComponentCss, new RegExp(`\\.${block}\\b`), `${block} left tcrnComponentCss`);
   }
 });
+
+test("approved barrel exports all Batch 3 components and stays consistent with the public component roster", async () => {
+  const approvedExports = await import("./approved.js");
+  const approvedComponentExports = Object.keys(approvedExports)
+    .filter((name) => /^[A-Z]/u.test(name))
+    .sort();
+  for (const name of approvedComponentExports) {
+    assert.ok(declaredComponents.includes(name), `${name} in approved.tsx must be declared in componentLibraryPublicComponentNames`);
+    assert.equal(
+      (approvedExports as Record<string, unknown>)[name],
+      (packageExports as Record<string, unknown>)[name],
+      `${name} in approved.tsx must refer to the identical runtime export as index.tsx`
+    );
+  }
+  const requiredBatch3 = [
+    "Badge", "StatusBadge", "StatusDot", "InlineAlert", "EnvironmentBanner", "EmptyState", "ErrorState", "StateSurface",
+    "Card", "Surface", "Divider", "Avatar", "StatCard", "TableShell", "RecordTable", "TableToolbar", "KeyValueList", "StagePipeline", "RawPayloadBox",
+    "SettingsLayout", "SplitView", "CollapsibleRegion", "SegmentedNav",
+    "Menu", "Popover", "Tooltip", "Dialog", "ConfirmActionDialog", "InlineConfirmBar",
+    "ProductShell"
+  ];
+  for (const name of requiredBatch3) {
+    assert.ok(approvedComponentExports.includes(name), `${name} is exported from @tcrn/ui-react/approved`);
+  }
+  assert.deepEqual([...approvedExports.tcrnProductMarkIds], ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward"]);
+  assert.equal(approvedExports.tcrnProductMarks.length, 4);
+  assert.equal(approvedExports.tcrnAdoptedProductMarks.length, 1);
+  assert.equal(approvedExports.tcrnAdoptedProductMarks[0]?.productId, "voxward");
+});
