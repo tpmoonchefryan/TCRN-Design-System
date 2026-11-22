@@ -34,16 +34,56 @@ function tokenGroup(variable: string): TokenGroup {
   return "container";
 }
 function asVariable(value:string):TokenVariable { if(!value.startsWith("--tcrn-")) throw new Error(`Invalid package variable ${value}`);return value as TokenVariable; }
+export const tcrnAdoptedThemedTokens = [
+  {
+    key: "warn-bg",
+    cssVar: "--tcrn-color-warn-bg",
+    group: "color",
+    light: "rgba(138,90,8,.08)",
+    dark: "rgba(217,171,82,.10)",
+    halloween: "rgba(235,181,82,.11)",
+    source: "TCRN-DS-INIT-017/Batch-3"
+  },
+  {
+    key: "ok-bg",
+    cssVar: "--tcrn-color-ok-bg",
+    group: "color",
+    light: "rgba(47,107,58,.08)",
+    dark: "rgba(111,207,151,.10)",
+    halloween: "rgba(109,214,156,.11)",
+    source: "TCRN-DS-INIT-017/Batch-3"
+  }
+] as const;
+
+export const tcrnAdoptedBrandTokens = [
+  {
+    key: "brand-suffix-voxward",
+    cssVar: "--tcrn-brand-suffix-voxward",
+    group: "brand",
+    value: "#0b6b65",
+    dark: "#3fc7b7",
+    halloween: "#f58a33",
+    source: "TCRN-DS-INIT-017/Batch-3"
+  }
+] as const;
+
 const gplusThemedEntries:TokenEntry[]=tcrnGplusThemedTokens.map(t=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.light,group:tokenGroup(t.cssVar),description:t.source??"Published 01 token table"},dark:t.dark}));
+const adoptedThemedEntries:TokenEntry[]=tcrnAdoptedThemedTokens.map(t=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.light,group:tokenGroup(t.cssVar),description:t.source},dark:t.dark}));
 const gplusFixedEntries:TokenEntry[]=[...tcrnGplusFixedTokens,...tcrnGplusBrandTokens,...tcrnGplusTypeTokens].map((t:TcrnGplusBrandToken)=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.value,group:tokenGroup(t.cssVar),description:t.source??"Published board value"},dark:t.dark}));
-const allEntries:TokenEntry[]=[...gplusThemedEntries,...gplusFixedEntries];
+const adoptedBrandEntries:TokenEntry[]=tcrnAdoptedBrandTokens.map(t=>({token:{name:t.key,variable:asVariable(t.cssVar),value:t.value,group:t.group,description:t.source},dark:t.dark}));
+const allEntries:TokenEntry[]=[...gplusThemedEntries,...adoptedThemedEntries,...gplusFixedEntries,...adoptedBrandEntries];
 function referencedVariables(value: string): string[] {
   return [...value.matchAll(/var\(\s*(--[a-z0-9-]+)/g)].map((match) => match[1]);
 }
 
 // Theme scope is transitive: anything that references a themed token is themed too. A contract
 // engineering binding referencing one starts out themed.
-const themeScoped = new Set<string>([...gplusThemedEntries, ...gplusFixedEntries.filter((entry) => entry.dark !== undefined)].map((entry) => entry.token.variable));
+const themeScoped = new Set<string>([
+  ...gplusThemedEntries,
+  ...adoptedThemedEntries,
+  ...gplusFixedEntries.filter((entry) => entry.dark !== undefined),
+  ...adoptedBrandEntries.filter((entry) => entry.dark !== undefined)
+].map((entry) => entry.token.variable));
 for (let changed = true; changed; ) {
   changed = false;
   for (const { token } of allEntries) {
@@ -110,7 +150,8 @@ const halloweenColorOverrides: Readonly<Partial<Record<TokenVariable, string>>> 
   "--tcrn-color-knob": "#fff8ee",
   "--tcrn-color-chrome": "rgba(19,16,23,.84)",
   "--tcrn-brand-suffix-tms": "#9ab6ff",
-  "--tcrn-brand-suffix-design-system": "#b09cff"
+  "--tcrn-brand-suffix-design-system": "#b09cff",
+  ...Object.fromEntries([...tcrnAdoptedThemedTokens, ...tcrnAdoptedBrandTokens].map((token) => [token.cssVar, token.halloween]))
 };
 
 export const tcrnHalloweenThemeTokens: readonly ThemeTokenOverride[] = allEntries
