@@ -12,7 +12,7 @@ import { cx } from "../../utils.js";
 import { Heading, Text } from "../Typography/index.js";
 import { DisclosurePanel, Surface } from "../Layout/index.js";
 
-type Tone = "neutral" | "positive" | "warning" | "danger";
+export type Tone = "neutral" | "positive" | "warning" | "danger" | "accent";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: Tone;
@@ -87,6 +87,37 @@ export function StatusBadge({ state, locale, children: _children, ...props }: St
     >
       {presentation.label}
     </Badge>
+  );
+}
+
+export interface StatusDotProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+  tone?: Tone;
+  label?: ReactNode;
+}
+
+export function StatusDot({
+  tone = "neutral",
+  label,
+  className,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  ...props
+}: StatusDotProps) {
+  const hasLabel = label !== undefined && label !== null && label !== "";
+  const decorative = !hasLabel && !ariaLabel && !ariaLabelledBy;
+  return (
+    <span
+      {...props}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      aria-hidden={decorative ? true : props["aria-hidden"]}
+      data-status-dot="true"
+      data-tone={tone}
+      className={cx("tcrn-status-dot", `tcrn-status-dot--${tone}`, !hasLabel && "tcrn-status-dot--unlabelled", className)}
+    >
+      <span className="tcrn-status-dot__dot" aria-hidden="true" />
+      {hasLabel ? <span className="tcrn-status-dot__label">{label}</span> : null}
+    </span>
   );
 }
 
@@ -280,7 +311,14 @@ export interface InlineAlertProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function InlineAlert({ tone = "neutral", className, ...props }: InlineAlertProps) {
-  return <div role="status" {...props} className={cx("tcrn-inline-alert", `tcrn-inline-alert--${tone}`, className)} />;
+  return (
+    <div
+      role={tone === "danger" ? "alert" : "status"}
+      data-tone={tone}
+      {...props}
+      className={cx("tcrn-inline-alert", `tcrn-inline-alert--${tone}`, className)}
+    />
+  );
 }
 
 export function LiveRegion({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
@@ -362,16 +400,24 @@ export function Skeleton({ variant = "rectangular", lines = 1, className, ...pro
   );
 }
 
-export interface EnvironmentBannerProps {
+export interface EnvironmentBannerProps extends HTMLAttributes<HTMLDivElement> {
   label: string;
   state?: CopyStateInput;
   locale?: TcrnLocale | string;
+  tone?: Tone;
 }
 
-export function EnvironmentBanner({ label, state = { state: "local_only" }, locale }: EnvironmentBannerProps) {
+export function EnvironmentBanner({ label, state = { state: "local_only" }, locale, tone, className, ...props }: EnvironmentBannerProps) {
   const presentation = presentCopyState(state, locale);
+  const resolvedTone = tone ?? presentation.tone;
   return (
-    <div className="tcrn-environment-banner" data-state={presentation.state}>
+    <div
+      role="status"
+      {...props}
+      className={cx("tcrn-environment-banner", `tcrn-environment-banner--${resolvedTone}`, className)}
+      data-state={presentation.state}
+      data-tone={resolvedTone}
+    >
       <strong>{label}</strong>
       <span>{presentation.label}</span>
     </div>
@@ -432,7 +478,7 @@ export function StateSurface({
 }
 
 export type EmptyStateProps = Omit<StateSurfaceProps, "tone"> & {
-  tone?: "neutral" | "warning";
+  tone?: Tone;
 };
 
 export function EmptyState({ tone = "neutral", ...props }: EmptyStateProps) {
@@ -440,7 +486,7 @@ export function EmptyState({ tone = "neutral", ...props }: EmptyStateProps) {
 }
 
 export type ErrorStateProps = Omit<StateSurfaceProps, "tone"> & {
-  tone?: "danger" | "warning";
+  tone?: Tone;
 };
 
 export function ErrorState({ tone = "danger", ...props }: ErrorStateProps) {

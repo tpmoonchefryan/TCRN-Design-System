@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Badge, EmptyState, EnvironmentBanner, ErrorState, OperationFeedback, presentOperationFeedbackPhase, Skeleton, StateSurface, StatusBadge, StateView, StatusSummaryPanel, Toast } from "./Feedback.js";
+import { Badge, EmptyState, EnvironmentBanner, ErrorState, InlineAlert, OperationFeedback, presentOperationFeedbackPhase, Skeleton, StateSurface, StatusBadge, StatusDot, StateView, StatusSummaryPanel, Toast } from "./Feedback.js";
+import { feedbackCss } from "../../styles/feedback.css.js";
 import { presentCopyState } from "@tcrn/ui-copy-state";
 
 test("stateful components fail closed without product acceptance claims", () => {
@@ -194,4 +195,40 @@ test("STORY-092 a toast renders a dismiss control only when it can actually dism
   assert.doesNotMatch(renderToStaticMarkup(<Toast dismissLabel="Close">m</Toast>), /<button/);
   assert.doesNotMatch(renderToStaticMarkup(<Toast onDismiss={() => {}}>m</Toast>), /<button/);
   assert.match(renderToStaticMarkup(<Toast dismissLabel="Close" onDismiss={() => {}}>m</Toast>), /aria-label="Close"/);
+});
+
+test("STORY-159 StatusDot and multi-tone feedback components expose accessible roles and token-bound CSS", () => {
+  const unlabelled = renderToStaticMarkup(<StatusDot tone="positive" />);
+  assert.match(unlabelled, /class="tcrn-status-dot tcrn-status-dot--positive tcrn-status-dot--unlabelled"/);
+  assert.match(unlabelled, /aria-hidden="true"/);
+  assert.match(unlabelled, /data-tone="positive"/);
+
+  const labelled = renderToStaticMarkup(<StatusDot tone="accent" label="Live" />);
+  assert.match(labelled, /class="tcrn-status-dot tcrn-status-dot--accent"/);
+  assert.doesNotMatch(labelled, /^<span[^>]*aria-hidden="true"/);
+  assert.match(labelled, /class="tcrn-status-dot__label">Live<\/span>/);
+
+  for (const tone of ["neutral", "positive", "warning", "danger", "accent"] as const) {
+    const badge = renderToStaticMarkup(<Badge tone={tone}>{tone}</Badge>);
+    assert.match(badge, new RegExp(`tcrn-badge--${tone}`));
+    const alert = renderToStaticMarkup(<InlineAlert tone={tone}>msg</InlineAlert>);
+    assert.match(alert, new RegExp(`tcrn-inline-alert--${tone}`));
+    assert.match(alert, new RegExp(`role="${tone === "danger" ? "alert" : "status"}"`));
+    const banner = renderToStaticMarkup(<EnvironmentBanner label="Env" tone={tone} />);
+    assert.match(banner, new RegExp(`tcrn-environment-banner--${tone}`));
+    const surface = renderToStaticMarkup(<StateSurface title="T" tone={tone} />);
+    assert.match(surface, new RegExp(`tcrn-state-surface--${tone}`));
+    const empty = renderToStaticMarkup(<EmptyState title="E" tone={tone} />);
+    assert.match(empty, new RegExp(`tcrn-state-surface--${tone}`));
+    const err = renderToStaticMarkup(<ErrorState title="X" tone={tone} />);
+    assert.match(err, new RegExp(`tcrn-state-surface--${tone}`));
+  }
+
+  assert.doesNotMatch(feedbackCss, /`/);
+  assert.match(feedbackCss, /--tcrn-color-warn-bg/);
+  assert.match(feedbackCss, /--tcrn-color-ok-bg/);
+  assert.match(feedbackCss, /--tcrn-color-bad-bg/);
+  assert.match(feedbackCss, /--tcrn-color-acc-bg/);
+  assert.match(feedbackCss, /--tcrn-color-wash/);
+  assert.match(feedbackCss, /\.tcrn-status-dot--accent/);
 });
