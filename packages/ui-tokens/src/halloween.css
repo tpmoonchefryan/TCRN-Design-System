@@ -40,8 +40,11 @@
   --tcrn-color-av-ink: #f3ece0;
   --tcrn-color-knob: #fff8ee;
   --tcrn-color-chrome: rgba(19,16,23,.84);
+  --tcrn-color-warn-bg: rgba(235,181,82,.11);
+  --tcrn-color-ok-bg: rgba(109,214,156,.11);
   --tcrn-color-surface: var(--tcrn-color-bg);
   --tcrn-focus-ring: 0 0 0 2px var(--tcrn-color-surface),0 0 0 4px var(--tcrn-color-acc);
   --tcrn-brand-suffix-tms: #9ab6ff;
   --tcrn-brand-suffix-design-system: #b09cff;
+  --tcrn-brand-suffix-voxward: #f58a33;
 }

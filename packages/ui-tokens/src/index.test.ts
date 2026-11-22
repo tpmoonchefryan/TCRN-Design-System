@@ -70,7 +70,7 @@ test("light subtrees rebind all theme values and dark blocks have identical name
 });
 
 test("all actual package dependencies resolve in both themes, including the source-local paper radius", () => {
-  assert.equal(tcrnTokens.length,125);
+  assert.equal(tcrnTokens.length,128);
   const shellCss=readFileSync(new URL("../../../docs/design/approved-site-v2/src/boards/07b-shell-lower/board.css",import.meta.url),"utf8");
   const localRadius=/\.scr\.ts\{[^}]*--paper-r:([^;}]*)/.exec(shellCss)?.[1];
   assert.ok(localRadius);
@@ -131,7 +131,36 @@ test("seasonal Halloween theme keeps exact theme-scoped parity without altering 
   assert.deepEqual(seasonalCheck.seasonalOnly, []);
 
   // Negative cases: missing declaration, extra declaration or missing selector fails the comparison.
+  const missing = tcrnHalloweenThemeStylesheet.replace("  --tcrn-color-warn-bg: rgba(235,181,82,.11);\n", "");
+  assert.deepEqual([...compareSeasonalThemeBlock(tcrnTokenCss, missing).baseOnly], ["--tcrn-color-warn-bg"]);
+  assert.equal(compareSeasonalThemeBlock(tcrnTokenCss, missing).ok, false);
   const extra = tcrnHalloweenThemeStylesheet.replace('[data-tcrn-theme="halloween"] {\n', '[data-tcrn-theme="halloween"] {\n  --tcrn-extra: red;\n');
   assert.deepEqual([...compareSeasonalThemeBlock(tcrnTokenCss, extra).seasonalOnly], ["--tcrn-extra"]);
+  const geometryOverride = tcrnHalloweenThemeStylesheet.replace('[data-tcrn-theme="halloween"] {\n', '[data-tcrn-theme="halloween"] {\n  --tcrn-radius-control: 99px;\n');
+  assert.deepEqual([...compareSeasonalThemeBlock(tcrnTokenCss, geometryOverride).seasonalOnly], ["--tcrn-radius-control"]);
+  assert.equal(compareSeasonalThemeBlock(tcrnTokenCss, geometryOverride).ok, false);
   assert.equal(compareSeasonalThemeBlock(tcrnTokenCss, tcrnHalloweenThemeStylesheet.replace('[data-tcrn-theme="halloween"]', ".other")).ok, false);
+});
+
+test("Batch 3 adopted tokens layer cleanly across light, dark, and halloween without geometry overrides", () => {
+  const seasonal = createResolvedTokenMap("halloween");
+  assert.equal(resolvedLight["--tcrn-color-warn-bg"], "rgba(138,90,8,.08)");
+  assert.equal(resolvedDark["--tcrn-color-warn-bg"], "rgba(217,171,82,.10)");
+  assert.equal(seasonal["--tcrn-color-warn-bg"], "rgba(235,181,82,.11)");
+
+  assert.equal(resolvedLight["--tcrn-color-ok-bg"], "rgba(47,107,58,.08)");
+  assert.equal(resolvedDark["--tcrn-color-ok-bg"], "rgba(111,207,151,.10)");
+  assert.equal(seasonal["--tcrn-color-ok-bg"], "rgba(109,214,156,.11)");
+
+  assert.equal(resolvedLight["--tcrn-brand-suffix-voxward"], "#0b6b65");
+  assert.equal(resolvedDark["--tcrn-brand-suffix-voxward"], "#3fc7b7");
+  assert.equal(seasonal["--tcrn-brand-suffix-voxward"], "#f58a33");
+  assert.equal(tcrnTokens.find((token) => token.variable === "--tcrn-brand-suffix-voxward")?.group, "brand");
+
+  const nonThemeGroups = new Set(["typography", "space", "radius", "motion", "icon", "control", "zIndex", "container"]);
+  const seasonalGeometryOverrides = tcrnHalloweenThemeTokens.filter((override) => {
+    const token = tcrnTokens.find((entry) => entry.variable === override.variable);
+    return token && nonThemeGroups.has(token.group);
+  });
+  assert.deepEqual(seasonalGeometryOverrides, []);
 });

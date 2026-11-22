@@ -35,3 +35,23 @@ test("seasonal Halloween theme palette meets text >= 4.5 and control-edge >= 3.0
   // Negative check: white ink on amber fill fails AA contrast on the same helper.
   assert.ok(contrast("#ffffff", "#f58a33") < 4.5);
 });
+
+test("Batch 3 warn-bg, ok-bg, av-ink/av-bg, and voxward suffix pass across all 3 themes and fail under red-first mutations", async () => {
+  const standard = checkContrast();
+  const seasonal = await checkSeasonalHalloweenContrast();
+  assert.deepEqual(standard.issues, []);
+  assert.deepEqual(seasonal.issues, []);
+
+  for (const themeResult of [standard, seasonal]) {
+    assert.ok(themeResult.measurements.some((row) => row.role === "warn" && row.carrier.includes("warn-bg")));
+    assert.ok(themeResult.measurements.some((row) => row.role === "ok" && row.carrier.includes("ok-bg")));
+    assert.ok(themeResult.measurements.some((row) => row.role === "av-ink" && row.carrier === "av-bg"));
+    assert.ok(themeResult.measurements.some((row) => String(row.role).includes("voxward")));
+  }
+
+  // Red-first mutations: degraded warn-bg/ok-bg or av-ink/av-bg contrast must fail < 4.5.
+  assert.ok(contrast("#8a5a08", "rgba(138,90,8,.85)", "#ffffff") < 4.5);
+  assert.ok(contrast("#6fcf97", "rgba(111,207,151,.75)", "#191916") < 4.5);
+  assert.ok(contrast("#6b675d", "#2a2a26") < 4.5);
+  assert.ok(contrast("#f3ece0", "#e7e5df") < 4.5);
+});

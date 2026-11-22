@@ -237,21 +237,35 @@ export function checkSourceClosure(root=ROOT){
   issues.push(...retiredLockupLabelIssues(nav,"Navigation source"));
   return issues;
 }
+const BATCH3_ADOPTED_TOKENS = [
+  { cssVar: "--tcrn-color-warn-bg", group: "color", light: "rgba(138,90,8,.08)", dark: "rgba(217,171,82,.10)", halloween: "rgba(235,181,82,.11)" },
+  { cssVar: "--tcrn-color-ok-bg", group: "color", light: "rgba(47,107,58,.08)", dark: "rgba(111,207,151,.10)", halloween: "rgba(109,214,156,.11)" },
+  { cssVar: "--tcrn-brand-suffix-voxward", group: "brand", light: "#0b6b65", dark: "#3fc7b7", halloween: "#f58a33" }
+];
 export async function checkTokens(root=ROOT){
   const source=readApprovedSource(root),expected=extractTokens(source),bindings=extractPackageBindings(source),issues=[];
   const token=await compiled(root,"packages/ui-tokens/dist/index.js");
-  const light=token.createResolvedTokenMap("light"),dark=token.createResolvedTokenMap("dark");
+  const light=token.createResolvedTokenMap("light"),dark=token.createResolvedTokenMap("dark"),halloween=token.createResolvedTokenMap("halloween");
   for(const row of expected.themed){if(light[row.cssVar]!==row.light||dark[row.cssVar]!==row.dark)issues.push(`Published theme value drift ${row.cssVar}`);}
-  const variables=new Set([...expected.themed,...expected.fixed,...bindings,...extractBrandSuffixTokens(source)].map(t=>t.cssVar));
+  const variables=new Set([...expected.themed,...expected.fixed,...bindings,...extractBrandSuffixTokens(source),...BATCH3_ADOPTED_TOKENS].map(t=>t.cssVar));
   for(const expectedRow of [...expected.fixed,...bindings,...extractBrandSuffixTokens(source)])if(token.tcrnTokens.find(t=>t.variable===expectedRow.cssVar)?.value!==expectedRow.value)issues.push(`Published fixed or bound value drift ${expectedRow.cssVar}`);
   for (const suffix of extractBrandSuffixTokens(source)) {
     if (light[suffix.cssVar] !== suffix.value || dark[suffix.cssVar] !== suffix.dark) issues.push(`Published suffix theme drift ${suffix.cssVar}`);
+  }
+  for (const adopted of BATCH3_ADOPTED_TOKENS) {
+    const registered = token.tcrnTokens.find((t) => t.variable === adopted.cssVar);
+    if (!registered) issues.push(`Missing Batch 3 adopted token ${adopted.cssVar}`);
+    else if (registered.group !== adopted.group) issues.push(`Batch 3 adopted token group drift ${adopted.cssVar}`);
+    if (light[adopted.cssVar] !== adopted.light || dark[adopted.cssVar] !== adopted.dark || halloween[adopted.cssVar] !== adopted.halloween) {
+      issues.push(`Batch 3 adopted token value drift ${adopted.cssVar}`);
+    }
   }
   for(const row of token.tcrnTokens)if(!variables.has(row.variable))issues.push(`Unpublished emitted token ${row.variable}`);
   for(const variable of variables)if(!token.tcrnTokens.some(t=>t.variable===variable))issues.push(`Missing published role token ${variable}`);
   if(token.tcrnDeprecatedTokens.length)issues.push("Retired aliases are emitted by the current token registry");
   const comparison=token.compareTokenThemeBlocks(token.tcrnTokenCss);if(!comparison.ok)issues.push("Theme key sets differ");
-  return {issues,themed:expected.themed.length,fixed:expected.fixed.length,bindings:bindings.length};
+  const seasonalComparison=token.compareSeasonalThemeBlock(token.tcrnTokenCss,token.tcrnHalloweenThemeStylesheet);if(!seasonalComparison.ok)issues.push("Halloween seasonal theme key sets differ");
+  return {issues,themed:expected.themed.length,fixed:expected.fixed.length,bindings:bindings.length,adopted:BATCH3_ADOPTED_TOKENS.length};
 }
 export function rgba(value){
   if(/^#[a-f\d]{6}$/i.test(value))return [1,3,5].map(i=>parseInt(value.slice(i,i+2),16)/255).concat(1);
@@ -268,13 +282,26 @@ export function publishedShortcutContexts(source=readApprovedSource()){
 export function checkContrast(root=ROOT){
   const source=readApprovedSource(root),tokens=extractTokens(source),themes={light:Object.fromEntries(tokens.themed.map(t=>[t.key,t.light])),dark:Object.fromEntries(tokens.themed.map(t=>[t.key,t.dark]))},issues=[],measurements=[];
   for(const [theme,values] of Object.entries(themes))for(const role of ["ink","ink-2","ink-3","acc","red","ok","warn","bad"])for(const carrier of ["bg","panel"]){const ratio=contrast(values[role],values[carrier]);measurements.push({theme,role,carrier,ink:values[role],fill:values[carrier],ratio,min:4.5});if(ratio<4.5)issues.push(`Text contrast ${theme}/${role}/${carrier} ${ratio.toFixed(2)} < 4.5`);}
-  for (const suffix of extractBrandSuffixTokens(source)) for (const [theme, values] of Object.entries(themes)) for (const carrier of ["bg", "panel", "hover"]) {
+  for (const suffix of [...extractBrandSuffixTokens(source), { key: "brand-suffix-voxward", ...BATCH3_ADOPTED_TOKENS.find((t) => t.cssVar === "--tcrn-brand-suffix-voxward"), value: BATCH3_ADOPTED_TOKENS.find((t) => t.cssVar === "--tcrn-brand-suffix-voxward").light }]) for (const [theme, values] of Object.entries(themes)) for (const carrier of ["bg", "panel", "hover"]) {
     const ink = theme === "dark" ? suffix.dark : suffix.value;
     const surface = carrier === "hover" ? values.bg : values[carrier];
     const ratio = contrast(ink, values[carrier], surface);
     const productId = suffix.key.slice("brand-suffix-".length);
     measurements.push({ conflict: "K1", theme, role: `${productId} suffix text`, carrier, ink, fill: values[carrier], surface, ratio, min: 4.5 });
     if (ratio < 4.5) issues.push(`K1 text contrast ${theme}/${productId}/${carrier} ${ratio.toFixed(2)} < 4.5`);
+  }
+  for (const [theme, values] of Object.entries(themes)) {
+    for (const [role, fillCssVar] of [["warn", "--tcrn-color-warn-bg"], ["ok", "--tcrn-color-ok-bg"]]) {
+      const fill = BATCH3_ADOPTED_TOKENS.find((t) => t.cssVar === fillCssVar)[theme];
+      for (const surface of ["bg", "panel", "panel-2"]) {
+        const ratio = contrast(values[role], fill, values[surface]);
+        measurements.push({ theme, role, carrier: `${fillCssVar.slice("--tcrn-color-".length)} on ${surface}`, ink: values[role], fill, surface: values[surface], ratio, min: 4.5 });
+        if (ratio < 4.5) issues.push(`Semantic composite contrast ${theme}/${role}/${fillCssVar}/${surface} ${ratio.toFixed(2)} < 4.5`);
+      }
+    }
+    const avRatio = contrast(values["av-ink"], values["av-bg"]);
+    measurements.push({ theme, role: "av-ink", carrier: "av-bg", ink: values["av-ink"], fill: values["av-bg"], ratio: avRatio, min: 4.5 });
+    if (avRatio < 4.5) issues.push(`Avatar contrast ${theme}/av-ink/av-bg ${avRatio.toFixed(2)} < 4.5`);
   }
   const shortcutContexts=publishedShortcutContexts(source);
   for(const context of shortcutContexts)for(const [theme,values] of Object.entries(themes)){
@@ -299,12 +326,15 @@ export async function checkSeasonalHalloweenContrast(root=ROOT){
     measurements.push({theme:"halloween",role:"on-acc",carrier:fill,ink:get("on-acc"),fill:get(fill),ratio,min:4.5});
     if(ratio<4.5)issues.push(`Seasonal Halloween on-acc contrast ${fill} ${ratio.toFixed(2)} < 4.5`);
   }
-  for(const [role,fillName,surface] of [["red","red-bg","panel"],["red","red-bg-2","panel"],["bad","bad-bg","panel"],["ink-2","wash","panel"]]){
+  for(const [role,fillName,surface] of [["red","red-bg","panel"],["red","red-bg-2","panel"],["bad","bad-bg","panel"],["ink-2","wash","panel"],["warn","warn-bg","bg"],["warn","warn-bg","panel"],["warn","warn-bg","panel-2"],["ok","ok-bg","bg"],["ok","ok-bg","panel"],["ok","ok-bg","panel-2"]]){
     const ratio=contrast(get(role),get(fillName),get(surface));
     measurements.push({theme:"halloween",role,carrier:`${fillName} on ${surface}`,ink:get(role),fill:get(fillName),surface:get(surface),ratio,min:4.5});
     if(ratio<4.5)issues.push(`Seasonal Halloween composite contrast ${role}/${fillName}/${surface} ${ratio.toFixed(2)} < 4.5`);
   }
-  for(const variable of ["--tcrn-brand-suffix-tms","--tcrn-brand-suffix-design-system"])for(const carrier of ["bg","panel","hover"]){
+  const avRatio=contrast(get("av-ink"),get("av-bg"));
+  measurements.push({theme:"halloween",role:"av-ink",carrier:"av-bg",ink:get("av-ink"),fill:get("av-bg"),ratio:avRatio,min:4.5});
+  if(avRatio<4.5)issues.push(`Seasonal Halloween avatar contrast av-ink/av-bg ${avRatio.toFixed(2)} < 4.5`);
+  for(const variable of ["--tcrn-brand-suffix-tms","--tcrn-brand-suffix-design-system","--tcrn-brand-suffix-voxward"])for(const carrier of ["bg","panel","hover"]){
     const surface=carrier==="hover"?get("bg"):get(carrier);
     const ratio=contrast(values[variable],get(carrier),surface);
     measurements.push({theme:"halloween",role:variable,carrier,ink:values[variable],fill:get(carrier),surface,ratio,min:4.5});
