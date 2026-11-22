@@ -199,3 +199,106 @@ test('the real geometry collector keeps menu/drop/Sheet context and valid contex
   }
  },{entry});
 });
+
+function judgeFloatingOverlayGeometry(reading) {
+  const issues = [];
+  if (Math.abs(reading.openFlowTop - reading.closedFlowTop) !== 0) {
+    issues.push(`${reading.kind} open shifted following document-flow content by ${reading.openFlowTop - reading.closedFlowTop}px`);
+  }
+  if (Math.abs(reading.reclosedFlowTop - reading.closedFlowTop) !== 0) {
+    issues.push(`${reading.kind} close shifted following document-flow content by ${reading.reclosedFlowTop - reading.closedFlowTop}px`);
+  }
+  if (reading.layerParentTag !== "BODY" || reading.layerPosition !== "fixed") {
+    issues.push(`${reading.kind} did not portal to fixed document.body boundary (${reading.layerParentTag}/${reading.layerPosition})`);
+  }
+  const rightDelta = Math.abs(reading.layerRect.right - reading.triggerRect.right);
+  if (!(rightDelta < 1)) {
+    issues.push(`${reading.kind} bottom-end right-edge delta ${rightDelta.toFixed(2)}px >= 1px`);
+  }
+  return issues;
+}
+
+test("Batch 3 Menu and Popover open/close cause 0px document-flow shift and <1px bottom-end right-edge delta with red-first mutations", async () => {
+  await withPublishedBrowser(async ({ browser, base }) => {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+    try {
+      await page.goto(`${base}/iframe.html?id=adopted-support-batch-3-components-and-voxward-shell--layout-and-overlays&viewMode=story`);
+      await page.locator('[data-batch3-overlay-pane="light"]').waitFor({ state: "visible" });
+      await page.evaluate(() => document.fonts.ready);
+
+      for (const theme of ["light", "dark", "halloween"]) {
+        const flow = page.locator(`[data-batch3-following-flow="${theme}"]`);
+        await flow.scrollIntoViewIfNeeded();
+        for (const [kind, layerSelector] of [["menu", ".tcrn-menu[data-overlay-scope='menu']"], ["popover", ".tcrn-popover[data-overlay-scope='popover']"]]) {
+          const trigger = page.locator(`[data-batch3-${kind}-trigger="${theme}"]`);
+          const closedFlowTop = await flow.evaluate((el) => el.getBoundingClientRect().top);
+          await trigger.click();
+          const layer = page.locator(layerSelector).first();
+          await layer.waitFor({ state: "visible" });
+
+          const readOpenState = async () => {
+            const openFlowTop = await flow.evaluate((el) => el.getBoundingClientRect().top);
+            const triggerRect = await trigger.evaluate((el) => {
+              const r = el.getBoundingClientRect();
+              return { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: r.width, height: r.height };
+            });
+            const layerFacts = await layer.evaluate((el) => {
+              const r = el.getBoundingClientRect();
+              const s = getComputedStyle(el);
+              return {
+                layerParentTag: el.parentElement?.tagName ?? "NONE",
+                layerPosition: s.position,
+                layerRect: { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: r.width, height: r.height },
+              };
+            });
+            return { kind: `${theme}/${kind}`, closedFlowTop, openFlowTop, reclosedFlowTop: closedFlowTop, triggerRect, ...layerFacts };
+          };
+
+          const cleanOpen = await readOpenState();
+          assert.deepEqual(judgeFloatingOverlayGeometry(cleanOpen), [], `${theme}/${kind} clean open`);
+
+          // Red-first mutation 1: misaligned bottom-end horizontal placement fails red.
+          const savedLeft = await layer.evaluate((el) => el.style.left);
+          try {
+            await layer.evaluate((el) => {
+              el.style.left = `${(Number.parseFloat(el.style.left) || 0) + 14}px`;
+            });
+            const misalignedIssues = judgeFloatingOverlayGeometry(await readOpenState());
+            assert.ok(misalignedIssues.some((msg) => msg.includes("bottom-end right-edge delta")), `${theme}/${kind} misaligned mutation must fail red`);
+          } finally {
+            await layer.evaluate((el, left) => { el.style.left = left; }, savedLeft);
+          }
+
+          // Red-first mutation 2: inline document-flow insertion shifts following content and fails red.
+          try {
+            await layer.evaluate((el, t) => {
+              const targetFlow = document.querySelector(`[data-batch3-following-flow="${t}"]`);
+              targetFlow.parentElement.insertBefore(el, targetFlow);
+              el.style.position = "static";
+            }, theme);
+            const inlineState = await readOpenState();
+            assert.notEqual(inlineState.openFlowTop, closedFlowTop, `${theme}/${kind} inline mutation shifts following flow`);
+            const inlineIssues = judgeFloatingOverlayGeometry(inlineState);
+            assert.ok(inlineIssues.some((msg) => msg.includes("shifted following document-flow")), `${theme}/${kind} inline mutation must fail red`);
+          } finally {
+            await layer.evaluate((el) => {
+              document.body.appendChild(el);
+              el.style.removeProperty("position");
+            });
+          }
+
+          await page.keyboard.press("Escape");
+          await layer.waitFor({ state: "detached" });
+          const reclosedFlowTop = await flow.evaluate((el) => el.getBoundingClientRect().top);
+          assert.deepEqual(
+            judgeFloatingOverlayGeometry({ ...cleanOpen, reclosedFlowTop }),
+            [],
+            `${theme}/${kind} restored 0px flow shift after close`
+          );
+        }
+      }
+    } finally {
+      await page.close();
+    }
+  }, { entry: "manager" });
+});

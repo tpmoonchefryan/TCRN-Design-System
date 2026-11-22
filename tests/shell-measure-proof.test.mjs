@@ -264,3 +264,164 @@ test('real shell matrix settles hover and preserves the published hidden phone p
   }finally{await page.close();}
  },{entry});
 });
+
+function judgeExtendedShellReading(reading) {
+  const issues = [];
+  const close = (a, b, tol = 0.5) => Number.isFinite(a) && Math.abs(a - b) <= tol;
+  if (!reading.leftGaps.length || !reading.rightGaps.length) {
+    issues.push("Both left and right pin groups must have >=2 visible pins to measure internal gap");
+  } else {
+    const refGap = reading.leftGaps[0];
+    if (!close(refGap, reading.expectedPinGap) || reading.leftGaps.some((g) => !close(g, refGap)) || reading.rightGaps.some((g) => !close(g, refGap))) {
+      issues.push(`Left/right pin group internal gap mismatch: left=${JSON.stringify(reading.leftGaps)} right=${JSON.stringify(reading.rightGaps)} expected=${reading.expectedPinGap}`);
+    }
+  }
+  if (!reading.divider || !close(reading.divider.width, 1) || !close(reading.divider.height, 16)) {
+    issues.push(`Strip vertical divider must be 1x16px, got ${reading.divider ? `${reading.divider.width}x${reading.divider.height}` : "missing"}`);
+  }
+  if (!close(reading.brandInsetLeft, 12) || !close(reading.paperInsetLeft, 12) || !close(reading.paperInsetRight, 12) || !close(reading.clusterInsetRight, 12)) {
+    issues.push(`12px band/paper edge alignment failed: brandLeft=${reading.brandInsetLeft}, paperLeft=${reading.paperInsetLeft}, paperRight=${reading.paperInsetRight}, clusterRight=${reading.clusterInsetRight}`);
+  }
+  if (reading.disabledPinAria !== "true" || reading.disabledPinActivated !== false) {
+    issues.push(`Disabled pin must expose aria-disabled="true" and block activation (aria=${reading.disabledPinAria}, activated=${reading.disabledPinActivated})`);
+  }
+  if (reading.bannerPresent) {
+    if (!reading.banner || !close(reading.bannerInsetLeft, reading.space3) || !close(reading.bannerInsetRight, reading.space3)) {
+      issues.push(`Present topBanner must align to --tcrn-space-3 (${reading.space3}px) inset: left=${reading.bannerInsetLeft}, right=${reading.bannerInsetRight}`);
+    }
+  } else if (!close(reading.paperTopDeltaFromStrip, 0)) {
+    issues.push(`Omitted topBanner must keep 0px height delta between strip and paper, got ${reading.paperTopDeltaFromStrip}px`);
+  }
+  return issues;
+}
+
+test("Batch 3 ProductShell right pin group, 1x16 divider, 12px band edges, disabled pin, and topBanner pass with red-first mutations", async () => {
+  await withPublishedBrowser(async ({ browser, base }) => {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+    try {
+      await page.goto(`${base}/iframe.html?id=adopted-support-batch-3-components-and-voxward-shell--shell-and-brand&viewMode=story`);
+      await page.locator('[data-batch3-shell-theme="light"] .tcrn-product-shell').waitFor({ state: "visible" });
+      await page.evaluate(() => document.fonts.ready);
+
+      for (const theme of ["light", "dark", "halloween"]) {
+        const container = page.locator(`[data-batch3-shell-theme="${theme}"]`);
+        await container.scrollIntoViewIfNeeded();
+        const shell = container.locator(".tcrn-product-shell").first();
+
+        const measureShell = async () => {
+          const disabledPin = shell.locator('[data-pin="archive-export"] .tcrn-shell-pins__item');
+          const disabledPinAria = await disabledPin.getAttribute("aria-disabled");
+          const activated = await disabledPin.evaluate((el) => {
+            let defaultNotPrevented = false;
+            const onClick = (ev) => {
+              if (!ev.defaultPrevented) defaultNotPrevented = true;
+            };
+            window.addEventListener("click", onClick, false);
+            try {
+              el.click();
+            } finally {
+              window.removeEventListener("click", onClick, false);
+            }
+            return defaultNotPrevented && el.tagName === "A" && Boolean(el.getAttribute("href"));
+          });
+          const geom = await shell.evaluate((root) => {
+            const box = (el) => {
+              if (!el) return null;
+              const r = el.getBoundingClientRect();
+              return { x: r.x, y: r.y, right: r.right, bottom: r.bottom, width: r.width, height: r.height };
+            };
+            const s = getComputedStyle(root);
+            const space3 = Number.parseFloat(s.getPropertyValue("--tcrn-space-3")) || 12;
+            const expectedPinGap = Number.parseFloat(s.getPropertyValue("--tcrn-shell-pin-gap")) || 8;
+            const shellBox = box(root);
+            const stripBox = box(root.querySelector(":scope > [data-shell-strip]"));
+            const brandBox = box(root.querySelector("[data-shell-brand]"));
+            const paperBox = box(root.querySelector(":scope > [data-paper]"));
+            const dividerBox = box(root.querySelector("[data-shell-strip-divider]"));
+            const bannerEl = root.querySelector(":scope > [data-top-banner]");
+            const bannerBox = box(bannerEl ? (bannerEl.firstElementChild ?? bannerEl) : null);
+            const clusterControls = [...root.querySelectorAll("[data-cluster] button, [data-cluster] a")]
+              .filter((el) => el.getBoundingClientRect().width > 0)
+              .map(box);
+            const clusterRight = Math.max(...clusterControls.map((c) => c.right));
+
+            const navs = [...root.querySelectorAll(":scope > [data-shell-strip] .tcrn-shell-pins")];
+            const gapsOf = (nav) => {
+              if (!nav) return [];
+              const items = [...nav.querySelectorAll(".tcrn-shell-pins__item")]
+                .filter((el) => el.getBoundingClientRect().width > 0)
+                .map(box);
+              return items.slice(1).map((item, idx) => item.x - items[idx].right);
+            };
+            return {
+              space3,
+              expectedPinGap,
+              leftGaps: gapsOf(navs[0]),
+              rightGaps: gapsOf(navs[1]),
+              divider: dividerBox,
+              brandInsetLeft: brandBox.x - shellBox.x,
+              paperInsetLeft: paperBox.x - shellBox.x,
+              paperInsetRight: shellBox.right - paperBox.right,
+              clusterInsetRight: shellBox.right - clusterRight,
+              bannerPresent: Boolean(bannerEl),
+              banner: bannerBox,
+              bannerInsetLeft: bannerBox ? bannerBox.x - shellBox.x : null,
+              bannerInsetRight: bannerBox ? shellBox.right - bannerBox.right : null,
+              paperTopDeltaFromStrip: paperBox.y - stripBox.bottom,
+            };
+          });
+          return { ...geom, disabledPinAria, disabledPinActivated: activated };
+        };
+
+        const cleanWithBanner = await measureShell();
+        assert.equal(cleanWithBanner.bannerPresent, true);
+        assert.deepEqual(judgeExtendedShellReading(cleanWithBanner), [], `${theme} clean with topBanner`);
+
+        // Red-first mutations while topBanner is present:
+        for (const [cssMutation, expectedReason] of [
+          [`[data-batch3-shell-theme="${theme}"] .tcrn-shell-pins:nth-of-type(2) { gap: 20px !important; column-gap: 20px !important; }`, "internal gap mismatch"],
+          [`[data-batch3-shell-theme="${theme}"] [data-shell-strip-divider] { width: 4px !important; inline-size: 4px !important; height: 24px !important; block-size: 24px !important; }`, "1x16px"],
+          [`[data-batch3-shell-theme="${theme}"] [data-top-banner] { padding-inline: 32px !important; }`, "topBanner must align"],
+        ]) {
+          const tag = await page.addStyleTag({ content: cssMutation });
+          try {
+            const mutatedIssues = judgeExtendedShellReading(await measureShell());
+            assert.ok(mutatedIssues.some((msg) => msg.includes(expectedReason)), `${theme} mutation (${expectedReason}) must fail red`);
+          } finally {
+            await tag.evaluate((node) => node.remove());
+          }
+        }
+
+        // Red-first mutation on disabled pin:
+        assert.ok(
+          judgeExtendedShellReading({ ...cleanWithBanner, disabledPinAria: "false", disabledPinActivated: true })
+            .some((msg) => msg.includes("Disabled pin")),
+          `${theme} unblocked disabled pin must fail red`
+        );
+
+        // Toggle topBanner off and prove 0px height delta + red-first mutation:
+        const toggleBtn = shell.locator("button", { hasText: /sandbox bar/i });
+        await toggleBtn.click();
+        const cleanWithoutBanner = await measureShell();
+        assert.equal(cleanWithoutBanner.bannerPresent, false);
+        assert.deepEqual(judgeExtendedShellReading(cleanWithoutBanner), [], `${theme} clean without topBanner (0px delta)`);
+
+        const paperShiftTag = await page.addStyleTag({
+          content: `[data-batch3-shell-theme="${theme}"] .tcrn-product-shell > [data-paper] { margin-top: 12px !important; }`,
+        });
+        try {
+          const shiftedIssues = judgeExtendedShellReading(await measureShell());
+          assert.ok(shiftedIssues.some((msg) => msg.includes("0px height delta")), `${theme} omitted topBanner height shift must fail red`);
+        } finally {
+          await paperShiftTag.evaluate((node) => node.remove());
+        }
+
+        // Restore topBanner for symmetry:
+        await toggleBtn.click();
+        assert.deepEqual(judgeExtendedShellReading(await measureShell()), []);
+      }
+    } finally {
+      await page.close();
+    }
+  }, { entry: "manager" });
+});

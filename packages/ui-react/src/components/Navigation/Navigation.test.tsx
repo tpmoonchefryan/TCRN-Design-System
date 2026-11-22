@@ -1784,7 +1784,7 @@ test("published brand identities reject missing keys, AOS and free suffix fallba
 test("published paper Tabs keep ink underline and do not inherit selected-row wash",()=>{
   assert.match(tcrnComponentCss,/tcrn-tabs__tab\[aria-selected="true"\]:after/);
   assert.match(tcrnComponentCss,/height:1px;background:var\(--tcrn-color-rule\)/);
-  assert.doesNotMatch(tcrnComponentCss,/\.tcrn-(?:toast|side-nav|state-surface|record-table|setting-row|badge|stamp)\b/);
+  assert.doesNotMatch(tcrnComponentCss,/\.tcrn-(?:toast|side-nav|setting-row|stamp)\b/);
 });
 
  test("published ProductLogo is the symbol; text belongs to ProductLockup",()=>{

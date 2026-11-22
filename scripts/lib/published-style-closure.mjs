@@ -1,7 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { ROOT, cssRules, sourceElements } from "./approved-site-source.mjs";
 import { compiled, checkSourceClosure, checkRoutes } from "./published-standard-proof.mjs";
+import { checkBatch3CssClosure } from "./component-css-sources.mjs";
+import { classifyHtml } from "../internal-vocabulary-scan.mjs";
 import { listFiles } from "./generated-output.mjs";
 
 export function cssClasses(css) {
@@ -13,7 +17,7 @@ export function markupClasses(html) {
 export function outsidePackageClasses(classes, provided) {
   return [...classes].filter(name => !provided.has(name)).sort();
 }
-const unsupported = /\.tcrn-(?:badge|stamp(?:-rule)?|toast|state-surface|state-view|inline-alert|dialog|popover|side-nav|top-bar|product-launcher|product-switcher|record-table|record-row|lane-board|relation-graph|detail-layout|metadata-rail|setting-row|field-provenance|line-numbered-editor|lock-hint|data-grid|template-gallery|document-canvas|activity-feed|attachment-list|progress|skeleton|disclosure-panel|collapsible-region)(?=\b)/;
+const unsupported = /\.tcrn-(?:side-nav|top-bar|product-launcher|product-switcher|lane-board|relation-graph|detail-layout|metadata-rail|setting-row|field-provenance|line-numbered-editor|lock-hint|data-grid|template-gallery|document-canvas|activity-feed|attachment-list|progress)(?=\b)/;
 export function checkPublishedStyles(css) {
   const issues = [];
   for (const rule of cssRules(css)) if (unsupported.test(rule.selector)) issues.push(`Unsupported current visual family: ${rule.selector}`);
@@ -32,6 +36,17 @@ const carriedHooks = {
   "tcrn-shell-locale-menu__current": { tag: "span", ancestor: "tcrn-shell-locale-menu__trigger" },
   "tcrn-shell-locale-menu__name": { tag: "span", ancestor: "tcrn-shell-locale-menu__option" },
   "tcrn-product-shell-search__empty": { tag: "span", ancestor: "tcrn-product-shell-search__results" },
+  "tcrn-status-dot--unlabelled": { same: "tcrn-status-dot" },
+  "tcrn-avatar__initials": { ancestor: "tcrn-avatar" },
+  "tcrn-table-shell__checkbox": { tag: "input", same: "tcrn-checkbox" },
+  "tcrn-table-shell__empty-row": { ancestor: "tcrn-table-shell" },
+  "tcrn-record-table__checkbox": { tag: "input", same: "tcrn-checkbox" },
+  "tcrn-record-table__select-label": { ancestor: "tcrn-record-table" },
+  "tcrn-record-row__id": { ancestor: "tcrn-record-row" },
+  "tcrn-record-row__field": { ancestor: "tcrn-record-row" },
+  "tcrn-stage-pipeline--comfortable": { same: "tcrn-stage-pipeline" },
+  "tcrn-stage-pipeline--compact": { same: "tcrn-stage-pipeline" },
+  "tcrn-stage-pipeline--dense": { same: "tcrn-stage-pipeline" },
 };
 const classesOf = node => (node.attrs.class ?? "").split(/\s+/);
 export function markupStyleCoverage(html, packageCss, documentationCss = "") {
@@ -55,10 +70,51 @@ export function markupStyleCoverage(html, packageCss, documentationCss = "") {
   return { missing: [...missing].sort(), carried, packageClasses: provided.size, documentationClasses: docs.size };
 }
 
+export async function proveStorybookSpecimensPurePackage(root = ROOT) {
+  const ui = await compiled(root, "packages/ui-react/dist/approved.js");
+  const documentationCss = fs.readFileSync(path.join(root, "apps/storybook/src/docs.css"), "utf8");
+  const issues = [];
+  const unprovided = [];
+  const vocabHits = [];
+  const csfModules = [
+    "apps/storybook/dist/voxward-batch3.stories.js",
+    "apps/storybook/dist/seasonal-halloween.stories.js",
+    "apps/storybook/dist/support.stories.js",
+  ];
+  let renderedStories = 0;
+  for (const rel of csfModules) {
+    const abs = path.join(root, rel);
+    if (!fs.existsSync(abs)) {
+      issues.push(`Compiled Storybook CSF module missing: ${rel}`);
+      continue;
+    }
+    const mod = await compiled(root, rel);
+    for (const [exportName, story] of Object.entries(mod)) {
+      if (exportName === "default" || typeof story?.render !== "function") continue;
+      const html = renderToStaticMarkup(React.createElement(story.render, story.args ?? {}));
+      renderedStories += 1;
+      const label = `${rel}#${exportName}`;
+      const coverage = markupStyleCoverage(html, ui.tcrnComponentCss, documentationCss);
+      for (const className of coverage.missing) {
+        unprovided.push({ path: label, className });
+        issues.push(`Storybook specimen has custom outside-package tcrn- class: ${label} ${className}`);
+      }
+      const vocab = classifyHtml(label, html);
+      for (const hit of vocab.hits) {
+        vocabHits.push(hit);
+        issues.push(`Storybook specimen leaked forbidden internal vocabulary (${hit.rule}) in ${label}`);
+      }
+    }
+  }
+  if (renderedStories === 0) issues.push("No adopted Storybook CSF specimen stories were rendered");
+  return { issues, renderedStories, unprovided, vocabHits };
+}
+
 export async function proveStyleClosure(root = ROOT) {
   const ui = await compiled(root, "packages/ui-react/dist/approved.js");
   const documentationCss = fs.readFileSync(path.join(root, "apps/storybook/src/docs.css"), "utf8");
-  const issues = [...checkPublishedStyles(ui.tcrnComponentCss), ...checkSourceClosure(root)];
+  const specimenClosure = await proveStorybookSpecimensPurePackage(root);
+  const issues = [...checkPublishedStyles(ui.tcrnComponentCss), ...checkBatch3CssClosure(root), ...specimenClosure.issues, ...checkSourceClosure(root)];
   const missing = [];
   const carried = [];
   const output = path.join(root, "apps/storybook/storybook-static");

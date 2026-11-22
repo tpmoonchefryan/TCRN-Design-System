@@ -64,6 +64,7 @@ export function loadRuleClosure(indexPath, declaration) {
     if (["global", "pattern", "standard"].includes(rule.kind) && hash(rule.content.content) !== rule.content.sha256) throw new Error(`AI_SOURCE_CONTENT_DIGEST_MISMATCH:${id}`);
     if (rule.kind === "tokens" && (!Array.isArray(rule.content) || !rule.content.length || rule.content.some(token => typeof token.variable !== "string" || typeof token.value !== "string"))) throw new Error(`AI_RULE_CONTENT_INVALID:${id}`);
     if (rule.kind === "component" && (!rule.content?.name || !rule.content.normativeText || !Array.isArray(rule.content.types?.props) || !rule.content.example?.sha256 || !rule.content.stories?.length)) throw new Error(`AI_RULE_CONTENT_INVALID:${id}`);
+    if (rule.kind === "adopted-component" && (!rule.content?.name || !Array.isArray(rule.content.types?.props) || !rule.content.implementationSource?.sha256 || !rule.content.specimenSource?.sha256 || !rule.required.includes("pattern/batch3-components-and-shell"))) throw new Error(`AI_RULE_CONTENT_INVALID:${id}`);
     for (const dependency of rule.required) visit(dependency, [...trail, id]);
     loaded.set(id, rule);
   };
@@ -91,7 +92,7 @@ export function checkConsumerSources(files, declaration, closure, projectRoot) {
   const findings = [];
   const usedComponents = new Set();
   const knownTokens = new Set([...closure.rules.values()].filter(rule => rule.kind === "tokens").flatMap(rule => rule.content.map(token => token.variable)));
-  const formalNames = new Set(closure.index.rules.filter(rule => rule.kind === "component").map(rule => rule.id.slice("component/".length)));
+  const formalNames = new Set(closure.index.rules.filter(rule => rule.kind === "component" || rule.kind === "adopted-component").map(rule => rule.id.slice("component/".length)));
   let shellInstances = 0;
   let controllers = 0;
   const report = (file, message) => findings.push(`${file}: ${message}`);

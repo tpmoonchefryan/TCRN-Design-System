@@ -4,7 +4,7 @@ The current Storybook adopts only the eight boards of the published Sites visual
 
 [Published visual standard](https://tcrn-ds-visual-standards.zbnubhmldz3270.chatgpt.site) · [Pinned source and mapping](docs/design/approved-site-v2/source-manifest.json) · [Source contract](docs/design/README.md)
 
-Source commit: `e76b7272d98c0359a57c42d49bf70d64e5b4c2ad`. The public author Site is version 2; the four DS packages are unpublished 4.0.0 candidates. Owner adopted K1/K5/C01 under `minutes:6f3e0a9a1e07e3980867d82e#D1`; the exact source was published under `minutes:024a8b72088fac0970916091#D2` and read back under `minutes:59b6c4ee489ab487482ca51b#D1`. The source now carries the DS light suffix `#4b59be`, TMS dark suffix `#7aa0f5`, form shortcut ink-2, K5 ink/600 explanation, corrected solid-panel icon labels and Chinese-only menu-ratio wording. Thresholds remain text ≥4.5 and icon/edge ≥3. Historical v1 failures remain in their original evidence. The 28 formal entries, five built-in locales, native behavior and complete product-owned six-locale copy retain their existing scope. The S11 Owner visual decision covers commit `69e37265`; current integration checks, independent acceptance and DS production delivery are separate. Anonymous HTTP reads of the author Site returned Cloudflare 403; native source publication and the normal in-app browser readback are retained separately.
+Source commit: `e76b7272d98c0359a57c42d49bf70d64e5b4c2ad`. The public author Site is version 2; the four DS packages are unpublished 4.1.0 candidates. Owner adopted K1/K5/C01 under `minutes:6f3e0a9a1e07e3980867d82e#D1`; the exact source was published under `minutes:024a8b72088fac0970916091#D2` and read back under `minutes:59b6c4ee489ab487482ca51b#D1`. The source now carries the DS light suffix `#4b59be`, TMS dark suffix `#7aa0f5`, form shortcut ink-2, K5 ink/600 explanation, corrected solid-panel icon labels and Chinese-only menu-ratio wording. Thresholds remain text ≥4.5 and icon/edge ≥3. Historical v1 failures remain in their original evidence. The 28 formal entries, five built-in locales, native behavior and complete product-owned six-locale copy retain their existing scope. The S11 Owner visual decision covers commit `69e37265`; current integration checks, independent acceptance and DS production delivery are separate. Anonymous HTTP reads of the author Site returned Cloudflare 403; native source publication and the normal in-app browser readback are retained separately.
 
 ## Packages
 
@@ -25,7 +25,7 @@ The static docs and manager consume the same eight-board registry. The docs prod
 
 Repository code: Apache-2.0, see [LICENSE](LICENSE). Font software retains SIL OFL 1.1 and its copyright notices. Product marks are TCRN assets; source lineage is recorded independently from code licensing.
 
-Packaged 4.0.0 candidate tools, independent installation, and upgrade/rollback:
-[release candidate guide](docs/releases/4.0.0/README.md). The installed tool entry
+Packaged 4.1.0 candidate tools, independent installation, and upgrade/rollback:
+[release candidate guide](docs/releases/4.1.0/README.md). The installed tool entry
 in that guide supersedes the source-only checker invocation for this packaged
 candidate. DS artifacts remain local and unpublished; the pinned author source v2 is public.

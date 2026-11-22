@@ -1,4 +1,4 @@
-// Current visual stylesheet: only the published five families and top-band shell.
+// Current visual stylesheet: published Site v2 families, top-band shell, and adopted Batch 3 families.
 // Other package engineering exports do not imply a published design or Storybook route.
 import { typographyScaleCss } from "./generated/typography.scale.js";
 import { iconCss01 } from "./icon.css.js";
@@ -9,4 +9,30 @@ import { shellCss01, shellCss02, shellCss03, shellCss04, shellCss05, shellReduce
 import { shellIntroCss01 } from "./shell-intro.css.js";
 import { shellSheetCss01 } from "./shell-sheet.css.js";
 import { formalLayoutCss, formalDocsCss } from "./formal-layout.css.js";
-export const tcrnComponentCss = [formalLayoutCss,iconCss01,...Object.values(actions),...Object.values(inputs),typographyScaleCss,brandCss01,brandCss02,shellCss01,shellCss02,shellCss03,shellCss04,shellCss05,shellIntroCss01,shellSheetCss01,shellReducedMotionCss,formalDocsCss].join("\n");
+import { layoutCss } from "./layout.css.js";
+import { feedbackCss } from "./feedback.css.js";
+import { dataDisplayCss } from "./data-display.css.js";
+import { overlayCss } from "./overlay.css.js";
+
+export const tcrnComponentCss = [
+  formalLayoutCss,
+  layoutCss,
+  iconCss01,
+  ...Object.values(actions),
+  ...Object.values(inputs),
+  typographyScaleCss,
+  brandCss01,
+  brandCss02,
+  shellCss01,
+  shellCss02,
+  shellCss03,
+  shellCss04,
+  shellCss05,
+  shellIntroCss01,
+  shellSheetCss01,
+  shellReducedMotionCss,
+  feedbackCss,
+  dataDisplayCss,
+  overlayCss,
+  formalDocsCss
+].join("\n");

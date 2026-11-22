@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
-import { Button, ButtonGroup, IconButton, LinkButton, ClipboardCopyButton, Heading, Text, Highlight, Icon, TcrnBrandMark, ProductLogo, ProductLockup, tcrnProductMarkIds, Input, Textarea, SearchInput, SuggestInput, Select, MultiSelect, NumberInput, DatePicker, Checkbox, RadioGroup, Switch, ProductShell, ShellBrandButton, ShellIntro, Tabs, shellMenuPresentationContext, type IconName, type ProductShellNavGroup, type TcrnProductMarkId } from "@tcrn/ui-react/approved";
+import { Button, ButtonGroup, IconButton, LinkButton, ClipboardCopyButton, Heading, Text, Highlight, Icon, TcrnBrandMark, ProductLogo, ProductLockup, tcrnProductMarks, Input, Textarea, SearchInput, SuggestInput, Select, MultiSelect, NumberInput, DatePicker, Checkbox, RadioGroup, Switch, ProductShell, ShellBrandButton, ShellIntro, Tabs, shellMenuPresentationContext, type IconName, type ProductShellNavGroup, type ShellThemeMode, type TcrnProductMarkId } from "@tcrn/ui-react/approved";
 import { getTcrnProductLogoAsset } from "@tcrn/ui-react";
 import { tcrnGplusThemedTokens, tcrnGplusFixedTokens, tcrnTokens } from "@tcrn/ui-tokens";
 import { approvedSource, supportedLocales, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
@@ -183,7 +183,9 @@ function Brand({locale}: {locale: DocsLocale}) {
         <Text>{labels.shellScale}</Text>
       </div>
     </section>
-    <Themes locale={locale}>{() => tcrnProductMarkIds.map(productId => (
+    <Themes locale={locale}>{() => tcrnProductMarks.map(({productId: rawId}) => {
+      const productId = rawId as TcrnProductMarkId;
+      return (
       <Section key={productId} name={productId} title={getTcrnProductLogoAsset(productId).lineOne}>
         <div className="tcrn-doc-section" data-doc-brand-ladder="">
           <Heading level={4}>{labels.ladder}</Heading>
@@ -212,7 +214,8 @@ function Brand({locale}: {locale: DocsLocale}) {
           </figure>)}
         </div>
       </Section>
-    ))}</Themes>
+      );
+    })}</Themes>
   </>;
 }
 
@@ -271,7 +274,7 @@ export function ShellExample({
 }: {
   locale: DocsLocale;
   mode: ShellMode;
-  theme?: "light" | "dark";
+  theme?: ShellThemeMode;
   shortcut?: boolean;
   glimpse?: boolean;
   intro?: boolean;

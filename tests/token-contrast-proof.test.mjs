@@ -54,4 +54,7 @@ test("Batch 3 warn-bg, ok-bg, av-ink/av-bg, and voxward suffix pass across all 3
   assert.ok(contrast("#6fcf97", "rgba(111,207,151,.75)", "#191916") < 4.5);
   assert.ok(contrast("#6b675d", "#2a2a26") < 4.5);
   assert.ok(contrast("#f3ece0", "#e7e5df") < 4.5);
+  // Degraded voxward brand suffix contrast fails < 4.5 across light/dark/halloween surfaces:
+  assert.ok(contrast("#7fe3d8", "#ffffff") < 4.5);
+  assert.ok(contrast("#0b6b65", "#131017") < 4.5);
 });

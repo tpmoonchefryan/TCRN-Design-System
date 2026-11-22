@@ -1580,6 +1580,7 @@ async function sendInnerPan(page, session, frame, inner, isSheet, method) {
  const point = await innerPanOrigin(frame, inner, isSheet, method === 'touch' ? 'touchstart' : 'wheel');
  const {x, y} = point;
  if (method === 'wheel') {
+  await page.mouse.move(0, 0);
   await page.mouse.move(x, y);
   await page.mouse.wheel(250, 0);
  } else {
@@ -1655,7 +1656,13 @@ test('original-size shell frames pan from real roster and open Sheet input', asy
         const main = el.closest('.docs-paper > main');
         main.scrollTop += el.getBoundingClientRect().top - main.getBoundingClientRect().top - 12;
        });
-       if (oldContainment) await inner.evaluate(el => el.style.setProperty('overscroll-behavior-inline', 'contain'));
+       if (oldContainment) {
+        await inner.evaluate(async el => {
+         el.style.setProperty('overscroll-behavior-inline', 'contain');
+         el.getBoundingClientRect();
+         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 50))));
+        });
+       }
        assert.deepEqual(await inner.evaluate(el => {
         const style = getComputedStyle(el);
         return [style.overscrollBehaviorX, style.overscrollBehaviorY];

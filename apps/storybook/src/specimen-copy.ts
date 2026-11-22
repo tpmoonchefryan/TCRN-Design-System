@@ -1,7 +1,7 @@
 import type { DocsLocale } from "./approved-source.js";
 
 type SpecimenCopy = {
-  themes: { light: string; dark: string };
+  themes: { light: string; dark: string; halloween: string };
   tokens: {
     token: string; themed: string; fixed: string; spacing: string;
     spacingIntro: string; paragraphs: string; groups: string; sections: string;
@@ -29,7 +29,7 @@ type SpecimenCopy = {
 
 export const specimenCopy = {
   "zh-CN": {
-    themes: { light: "浅色", dark: "夜间" },
+    themes: { light: "浅色", dark: "夜间", halloween: "万圣节" },
     tokens: {
       token: "令牌", themed: "主题值", fixed: "固定值",
       spacing: "文档中的间距",
@@ -72,7 +72,7 @@ export const specimenCopy = {
     },
   },
   en: {
-    themes: { light: "Light", dark: "Night" },
+    themes: { light: "Light", dark: "Night", halloween: "Halloween" },
     tokens: {
       token: "Token", themed: "Theme values", fixed: "Fixed values",
       spacing: "Spacing in these docs",
@@ -115,7 +115,7 @@ export const specimenCopy = {
     },
   },
   ja: {
-    themes: { light: "ライト", dark: "ナイト" },
+    themes: { light: "ライト", dark: "ナイト", halloween: "ハロウィン" },
     tokens: {
       token: "トークン", themed: "テーマ値", fixed: "固定値",
       spacing: "このドキュメントの余白",
@@ -158,7 +158,7 @@ export const specimenCopy = {
     },
   },
   ko: {
-    themes: { light: "라이트", dark: "나이트" },
+    themes: { light: "라이트", dark: "나이트", halloween: "할로윈" },
     tokens: {
       token: "토큰", themed: "테마 값", fixed: "고정 값",
       spacing: "이 문서의 간격",
@@ -201,7 +201,7 @@ export const specimenCopy = {
     },
   },
   fr: {
-    themes: { light: "Clair", dark: "Nuit" },
+    themes: { light: "Clair", dark: "Nuit", halloween: "Halloween" },
     tokens: {
       token: "Token", themed: "Valeurs par thème", fixed: "Valeurs fixes",
       spacing: "Espacement dans cette documentation",
