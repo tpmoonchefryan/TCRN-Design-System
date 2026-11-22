@@ -1,10 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { act, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { AppStatusBar, CollapsibleRegion, DisclosurePanel, Divider, PageHierarchy, SettingsLayout, Surface } from "./Layout.js";
-import { PageHeader, SubNav } from "../DataDisplay/DomainDisplay.js";
+import { PageHeader, SplitView, SubNav } from "../DataDisplay/DomainDisplay.js";
+import { SegmentedNav } from "../Navigation/Navigation.js";
 import { createTokenMap } from "@tcrn/ui-tokens";
 import { tcrnComponentCss } from "../../styles/index.js";
+import { layoutCss } from "../../styles/layout.css.js";
+import { createDomInteractionHarness } from "../../test/dom-harness.js";
 
 // The body of the top-level rule whose selector is exactly `selector` (a rule nested in an at-rule
 // is indented and not read).
@@ -208,4 +212,91 @@ test("STORY-146 GWT3 a settings page is at most the layout content width, centre
   assert.match(html, /aria-label="Settings sections"/);
   assert.match(html, /aria-label="Settings"/);
   assert.match(html, /<p>Row<\/p>/);
+});
+
+function layoutRule(selector: string): string {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const found = new RegExp(`(?:^|\\n)${escaped} ?\\{([^}]*)\\}`).exec(layoutCss);
+  assert.ok(found, `${selector} has a top-level rule in layoutCss`);
+  return found[1];
+}
+
+test("layoutCss has balanced braces, declared state pairs, and complete composite layout rules", () => {
+  assert.equal(layoutCss.includes("\u0060"), false, "layoutCss contains zero backticks");
+  let depth = 0;
+  for (const ch of layoutCss.replace(/\/\*[\s\S]*?\*\//g, "")) {
+    if (ch === "{") depth += 1;
+    if (ch === "}") depth -= 1;
+    assert.ok(depth >= 0, "layoutCss never closes an unopened block");
+  }
+  assert.equal(depth, 0, "layoutCss braces are balanced");
+
+  const declaredPairs = new Set([...layoutCss.matchAll(/(--tcrn-pair-[a-z0-9-]+)\s*:/g)].map((m) => m[1]));
+  const referencedPairs = [...new Set([...layoutCss.matchAll(/var\((--tcrn-pair-[a-z0-9-]+)/g)].map((m) => m[1]))];
+  assert.deepEqual(referencedPairs.filter((name) => !declaredPairs.has(name)), []);
+
+  assert.match(layoutRule(".tcrn-surface"), /--tcrn-color-panel/);
+  assert.match(layoutRule(".tcrn-surface"), /--tcrn-elevation-s1/);
+  assert.match(layoutRule(".tcrn-divider"), /--tcrn-color-line/);
+
+  assert.match(layoutRule(".tcrn-settings-layout"), /inline-size:\s*min\(100%,\s*1040px\)/);
+  assert.match(layoutRule(".tcrn-settings-layout__frame"), /container-type:\s*inline-size/);
+  assert.match(layoutRule(".tcrn-settings-layout__grid"), /grid-template-columns:\s*220px minmax\(0,\s*1fr\)/);
+  assert.match(layoutRule(".tcrn-settings-layout__host-switcher"), /--tcrn-color-panel-2/);
+  assert.match(layoutCss, /@container tcrn-settings-layout \(max-width:\s*720px\)[\s\S]*?\.tcrn-settings-layout__grid\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)/);
+
+  const splitHtml = renderToStaticMarkup(<SplitView label="Moderation workspace" list={<div>Queue</div>} detail={<div>Inspector</div>} detailPopulated={false} />);
+  assert.match(splitHtml, /class="tcrn-split-view-frame"/);
+  assert.match(splitHtml, /class="tcrn-split-view tcrn-split-view--compact"/);
+  assert.match(layoutRule(".tcrn-split-view-frame"), /container-type:\s*inline-size/);
+  assert.match(layoutRule(".tcrn-split-view"), /display:\s*grid/);
+  assert.match(layoutRule(".tcrn-split-view"), /align-items:\s*stretch/);
+  assert.match(layoutCss, /\.tcrn-split-view__list,\n\.tcrn-split-view__detail\s*\{[\s\S]*?min-block-size:\s*100%/);
+  assert.match(layoutCss, /@container tcrn-split-view \(max-width:\s*720px\)[\s\S]*?\.tcrn-split-view\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)/);
+
+  const segHtml = renderToStaticMarkup(<SegmentedNav label="View mode" items={[{ id: "list", label: "List", selected: true }, { id: "raw", label: "Raw" }]} />);
+  assert.match(segHtml, /class="tcrn-tabs tcrn-tabs--segmented tcrn-segmented-nav"/);
+  assert.match(layoutCss, /\.tcrn-tabs\.tcrn-tabs--segmented,\n\.tcrn-segmented-nav\s*\{[\s\S]*?background-color:\s*var\(--tcrn-color-wash\)/);
+  assert.match(layoutCss, /--tcrn-pair-seg-fill-s:\s*var\(--tcrn-color-panel\)/);
+  assert.match(layoutCss, /--tcrn-pair-seg-edge-s:\s*var\(--tcrn-elevation-s1\)/);
+  assert.match(layoutCss, /\.tcrn-segmented-nav \.tcrn-tabs__tab\[aria-current="page"\]::after\s*\{\s*display:\s*none;\s*content:\s*none;/);
+});
+
+test("collapsible region sets hidden and inert when collapsed and blurs active inner focus", async () => {
+  function CollapsibleFixture() {
+    const [expanded, setExpanded] = useState(true);
+    return (
+      <div>
+        <button type="button" data-toggle="" onClick={() => setExpanded((prev) => !prev)}>
+          Toggle
+        </button>
+        <CollapsibleRegion expanded={expanded}>
+          <button type="button" data-inner="">Inner action</button>
+        </CollapsibleRegion>
+      </div>
+    );
+  }
+
+  const harness = createDomInteractionHarness();
+  try {
+    await harness.render(<CollapsibleFixture />);
+    const region = harness.document.querySelector(".tcrn-collapsible-region") as HTMLElement;
+    const inner = harness.document.querySelector("[data-inner]") as HTMLButtonElement;
+    const toggle = harness.document.querySelector("[data-toggle]") as HTMLButtonElement;
+
+    assert.equal(region.hidden, false);
+    assert.equal(region.hasAttribute("inert"), false);
+    await act(async () => {
+      inner.focus();
+    });
+    assert.equal(harness.document.activeElement, inner);
+
+    await harness.dispatchClick(toggle);
+    assert.equal(region.hidden, true);
+    assert.equal(region.hasAttribute("inert"), true);
+    assert.equal(region.getAttribute("aria-hidden"), "true");
+    assert.notEqual(harness.document.activeElement, inner, "collapsed region releases focus from inner controls");
+  } finally {
+    await harness.cleanup();
+  }
 });

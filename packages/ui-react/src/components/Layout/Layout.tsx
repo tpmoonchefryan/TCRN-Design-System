@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import { cx } from "../../utils.js";
 import { Heading } from "../Typography/index.js";
 
@@ -47,10 +48,22 @@ export interface CollapsibleRegionProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function CollapsibleRegion({ expanded, className, children, ...props }: CollapsibleRegionProps) {
+  const regionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (expanded || typeof document === "undefined") return;
+    const active = document.activeElement;
+    if (active instanceof HTMLElement && regionRef.current?.contains(active)) {
+      active.blur();
+    }
+  }, [expanded]);
+
   return (
     <div
       {...props}
+      ref={regionRef}
       aria-hidden={!expanded}
+      hidden={!expanded}
       inert={expanded ? undefined : true}
       className={cx("tcrn-collapsible-region", className)}
       data-collapsible-region="true"
