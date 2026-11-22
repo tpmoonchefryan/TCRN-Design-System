@@ -799,3 +799,35 @@ test("the empty Sheet scroll region keeps native scrolling keys and the existing
     await harness.cleanup();
   }
 });
+
+test("STORY-157 ShellMenu rows forward external and disabled state without dismissing on disabled clicks", async () => {
+  const groups: readonly ShellMenuGroup[] = [
+    {
+      id: "ops",
+      label: "运营与后台",
+      items: [
+        { id: "stage", label: "纯净副屏", href: "/stage", external: true },
+        { id: "audit", label: "审计配置", href: "/audit", disabled: true, disabledReason: "仅所有者可改" }
+      ]
+    }
+  ];
+  const html = renderToStaticMarkup(<ShellMenu groups={groups} open productId="voxward" locale="zh-CN" shortcut={false} />);
+  assert.match(html, /data-logo="voxward"/);
+  assert.match(html, /href="\/stage"[^>]*target="_blank"[^>]*rel="noopener noreferrer"[^>]*data-external="true"/);
+  assert.match(html, /aria-disabled="true"[^>]*data-disabled-reason="仅所有者可改"/);
+  assert.doesNotMatch(html, /href="\/audit"/);
+
+  const harness = createDomInteractionHarness();
+  const changes: string[] = [];
+  try {
+    await harness.render(
+      <ShellMenu groups={groups} open productId="voxward" locale="zh-CN" shortcut={false} onOpenChange={(open, reason) => changes.push(`${open}:${reason}`)} />
+    );
+    const disabledRow = harness.document.querySelector('[aria-disabled="true"]');
+    assert.ok(disabledRow);
+    await harness.dispatchClick(disabledRow);
+    assert.deepEqual(changes, [], "clicking a disabled row never selects or closes the menu");
+  } finally {
+    await harness.cleanup();
+  }
+});

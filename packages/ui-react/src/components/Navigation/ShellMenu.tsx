@@ -102,6 +102,14 @@ export interface ShellMenuItem {
    * .tcrn-sr-only element); nothing is drawn, and without it the row's markup is unchanged.
    */
   description?: string;
+  /** Top-strip alignment when pinned (STORY-157). */
+  align?: "start" | "end";
+  /** External/secondary window link state (STORY-157). */
+  external?: boolean;
+  /** Role-gated or route-gated disabled state (STORY-157). */
+  disabled?: boolean;
+  /** Accessible explanation when disabled. */
+  disabledReason?: string;
 }
 
 /** The first level of the menu model: a titled group of items, one column of the full menu. */
@@ -115,6 +123,11 @@ export interface ShellMenuGroup {
    */
   description?: string;
   iconName?: IconName;
+  /** Top-strip alignment inherited by pinned group/items unless overridden (STORY-157). */
+  align?: "start" | "end";
+  /** Role-gated or route-gated disabled state (STORY-157). */
+  disabled?: boolean;
+  disabledReason?: string;
   items: readonly ShellMenuItem[];
 }
 
@@ -232,7 +245,7 @@ export function useShellTransientLayer({ open, layerRef, triggerRef, controlsId,
       const target = event.target instanceof Node && event.target.nodeType === 1 ? (event.target as Element) : null;
       if (!target || target.closest("[data-pin-button]")) return;
       const link = target.closest("a[href]");
-      if (!link || !layer.contains(link) || link.hasAttribute("aria-expanded")) return;
+      if (!link || !layer.contains(link) || link.hasAttribute("aria-expanded") || link.getAttribute("aria-disabled") === "true") return;
       close("selection", true);
     };
     doc.addEventListener("keydown", onKeyDown);
@@ -279,9 +292,10 @@ export function shellMenuPinProps(id: string, label: string, context: ShellMenuR
  */
 export function shellMenuRow(item: ShellMenuItem, level: number, context: ShellMenuRowContext, extra: { iconName?: IconName } = {}): ReactNode {
   const hasNext = level < shellMenuMaxDepth && (item.children?.length ?? 0) > 0;
+  const disabled = Boolean(item.disabled);
   const onToggle = context.onToggle;
   const toggles = hasNext && onToggle && context.columnIdOf;
-  const open = toggles ? context.openPath?.[level - (context.firstLevel ?? 2)] === item.id : false;
+  const open = !disabled && toggles ? context.openPath?.[level - (context.firstLevel ?? 2)] === item.id : false;
   const toggleProps = toggles
     ? {
         role: "button",
@@ -289,18 +303,21 @@ export function shellMenuRow(item: ShellMenuItem, level: number, context: ShellM
         "aria-controls": context.columnIdOf?.(item.id),
         onClick: (event: { preventDefault(): void }) => {
           event.preventDefault();
-          onToggle(item.id, level);
+          if (!disabled) onToggle(item.id, level);
         },
         onKeyDown: (event: ReactKeyboardEvent<HTMLAnchorElement>) => {
           if (event.key !== " ") return;
           event.preventDefault();
-          onToggle(item.id, level);
+          if (!disabled) onToggle(item.id, level);
         }
       }
     : { href: item.href };
   const row = (describedBy?: string) => (
     <NavItem key={item.id}
-      selected={item.id === context.selectedId}
+      selected={!disabled && item.id === context.selectedId}
+      disabled={disabled}
+      disabledReason={item.disabledReason}
+      external={item.external && !hasNext}
       iconName={extra.iconName}
       locale={context.locale}
       title={item.label}

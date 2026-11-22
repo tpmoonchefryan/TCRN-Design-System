@@ -34,6 +34,12 @@ export interface TcrnShellCopy {
   closeNavigationOf: (productName: string) => string;
   /** Name of the pinned items group in the top band. */
   pinnedItems: string;
+  /** Name of the right-aligned backoffice pinned items group in the top band (STORY-157). */
+  backofficePinnedItems?: string;
+  /** Screen-reader hint for pinned or menu links that open in a new window (STORY-157). */
+  opensInNewWindow?: string;
+  /** Default disabled reason when a shell pin or nav item is unavailable in the current role/route (STORY-157). */
+  navItemUnavailable?: string;
   /** Name of the full menu (the dialog the brand button opens). */
   navigation: string;
   /** Placeholder of the full menu's search. */
@@ -67,6 +73,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     openNavigationOf: (productName) => `展开导航 · ${productName}`,
     closeNavigationOf: (productName) => `收起导航 · ${productName}`,
     pinnedItems: "固定项",
+    backofficePinnedItems: "后台固定项",
+    opensInNewWindow: "在新窗口打开",
+    navItemUnavailable: "当前角色或路由下无权访问该入口",
     navigation: "导航",
     searchNavigation: "搜索页面与内容",
     currentPosition: "当前位置",
@@ -85,6 +94,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     openNavigationOf: (productName) => `Open navigation · ${productName}`,
     closeNavigationOf: (productName) => `Close navigation · ${productName}`,
     pinnedItems: "Pinned items",
+    backofficePinnedItems: "Backoffice pinned items",
+    opensInNewWindow: "Opens in a new window",
+    navItemUnavailable: "Navigation item unavailable for this role or route",
     navigation: "Navigation",
     searchNavigation: "Search pages and content",
     currentPosition: "Current location",
@@ -103,6 +115,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     openNavigationOf: (productName) => `ナビゲーションを開く · ${productName}`,
     closeNavigationOf: (productName) => `ナビゲーションを閉じる · ${productName}`,
     pinnedItems: "固定した項目",
+    backofficePinnedItems: "管理固定項目",
+    opensInNewWindow: "新しいウィンドウで開く",
+    navItemUnavailable: "現在の権限またはルートではこの項目を利用できません",
     navigation: "ナビゲーション",
     searchNavigation: "ページとコンテンツを検索",
     currentPosition: "現在の位置",
@@ -121,6 +136,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     openNavigationOf: (productName) => `내비게이션 열기 · ${productName}`,
     closeNavigationOf: (productName) => `내비게이션 닫기 · ${productName}`,
     pinnedItems: "고정한 항목",
+    backofficePinnedItems: "관리 고정 항목",
+    opensInNewWindow: "새 창에서 열기",
+    navItemUnavailable: "현재 역할이나 경로에서는 이 항목을 사용할 수 없습니다",
     navigation: "내비게이션",
     searchNavigation: "페이지와 콘텐츠 검색",
     currentPosition: "현재 위치",
@@ -139,6 +157,9 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     openNavigationOf: (productName) => `Ouvrir la navigation · ${productName}`,
     closeNavigationOf: (productName) => `Fermer la navigation · ${productName}`,
     pinnedItems: "Éléments épinglés",
+    backofficePinnedItems: "Éléments d’administration épinglés",
+    opensInNewWindow: "Ouvre dans une nouvelle fenêtre",
+    navItemUnavailable: "Élément indisponible pour ce rôle ou cette route",
     navigation: "Navigation",
     searchNavigation: "Rechercher des pages et des contenus",
     currentPosition: "Emplacement actuel",
@@ -173,6 +194,7 @@ export function tcrnShellLandmarkName(locale: TcrnLocale | string | undefined, p
 export interface ProductShellChromeCopy {
   switchToLight: string;
   switchToDark: string;
+  switchToHalloween?: string;
   language: string;
   collapseSideNav: string;
   expandSideNav: string;

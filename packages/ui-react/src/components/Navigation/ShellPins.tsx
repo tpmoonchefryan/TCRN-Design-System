@@ -33,8 +33,10 @@ import {
 import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { tcrnTokens } from "@tcrn/ui-tokens";
 import { Icon } from "../Icon/index.js";
-import { cx } from "../../utils.js";
-import { useTcrnShellCopy } from "./shell-copy.js";
+import { cx, mergeIds } from "../../utils.js";
+import { tcrnShellCopyFor, useProductShellLocale, useTcrnShellCopy } from "./shell-copy.js";
+
+export type ShellPinPlacement = "start" | "end";
 
 export interface ShellPinItem {
   /** Stable id: the key of the item in the pin preferences and in data-pin. */
@@ -45,6 +47,14 @@ export interface ShellPinItem {
   href?: string;
   /** Whether the item opens a drop-down instead of navigating. */
   hasMenu?: boolean;
+  /** Placement of the pinned group in the top strip (STORY-157). */
+  align?: ShellPinPlacement;
+  /** Whether the link opens an external/secondary window with stroke & external indicator (STORY-157). */
+  external?: boolean;
+  /** Role-gated or route-gated disabled state (STORY-157). */
+  disabled?: boolean;
+  /** Accessible explanation when disabled. */
+  disabledReason?: string;
 }
 
 /** The most pinned items the top band shows: --tcrn-shell-pins-max from @tcrn/ui-tokens. */
@@ -97,6 +107,8 @@ export interface ShellPinsProps extends Omit<HTMLAttributes<HTMLElement>, "child
    * (TCRN-DS-SUB-149). Without it the items do not move.
    */
   onPinsReorder?: (orderedIds: readonly string[]) => void;
+  /** Placement of the group in the top strip ("start" by default; "end" for right backoffice pins). */
+  align?: ShellPinPlacement;
 }
 
 /** How far, in CSS pixels, a press travels before it is a drag and no longer a click. */
@@ -152,6 +164,7 @@ export function ShellPins({
   locale,
   landmarkLabel,
   onPinsReorder,
+  align = "start",
   className,
   onPointerDown,
   onKeyDown,
@@ -193,7 +206,9 @@ export function ShellPins({
   // A drag still on when the band goes lets go of the document.
   useEffect(() => () => detachRef.current?.(), []);
 
+  const shellLocale = useProductShellLocale(locale);
   const copy = useTcrnShellCopy(locale);
+  const builtInCopy = tcrnShellCopyFor(locale);
   if (items.length === 0) return null;
   const max = shellPinsMax();
   const shownIds = items.slice(0, max).map((item) => item.id);
@@ -201,6 +216,9 @@ export function ShellPins({
   const byId = new Map(items.map((item) => [item.id, item] as const));
   const order = dragOrder ?? shownIds;
   const prefix = landmarkLabel?.trim();
+  const groupName = align === "end" ? (copy.backofficePinnedItems ?? builtInCopy.backofficePinnedItems ?? copy.pinnedItems) : copy.pinnedItems;
+  const defaultUnavailable = shellLocale?.copy.chrome.navItemUnavailable ?? copy.navItemUnavailable ?? builtInCopy.navItemUnavailable ?? "";
+  const defaultExternalHint = copy.opensInNewWindow ?? builtInCopy.opensInNewWindow ?? "";
 
   const pinOf = (target: EventTarget | null): { id: string; nav: HTMLElement } | null => {
     const nav = navRef.current;
@@ -299,9 +317,10 @@ export function ShellPins({
     <nav
       {...props}
       ref={navRef}
-      className={cx("tcrn-shell-pins", className)}
-      aria-label={props["aria-label"] ?? (prefix ? copy.landmarkOf(prefix, copy.pinnedItems) : copy.pinnedItems)}
+      className={cx("tcrn-shell-pins", align === "end" && "tcrn-shell-pins--end", className)}
+      aria-label={props["aria-label"] ?? (prefix ? copy.landmarkOf(prefix, groupName) : groupName)}
       data-pins=""
+      data-pins-align={align === "end" ? "end" : undefined}
       onPointerDown={handlePointerDown}
       onKeyDown={handleKeyDown}
       onClickCapture={handleClickCapture}
@@ -311,7 +330,13 @@ export function ShellPins({
         const item = byId.get(id);
         if (!item) return null;
         const index = shownIds.indexOf(id);
-        const selected = item.id === selectedId;
+        const disabled = Boolean(item.disabled);
+        const disabledReason = disabled ? (item.disabledReason?.trim() || defaultUnavailable) : undefined;
+        const disabledReasonId = disabledReason ? `${baseId}-dis-${index}` : undefined;
+        const external = Boolean(item.external) && !item.hasMenu;
+        const externalHintId = external && defaultExternalHint ? `${baseId}-ext-${index}` : undefined;
+        const describedBy = mergeIds(disabledReasonId, externalHintId);
+        const selected = !disabled && item.id === selectedId;
         // Reordering adds no mark of its own: the item takes the pointer's behaviour, the
         // dragged one the grabbing cursor, and the shortcut is said, not drawn.
         const moveProps = movable
@@ -325,13 +350,37 @@ export function ShellPins({
         if (!item.hasMenu) {
           return (
             <span key={item.id} className="tcrn-shell-pins__pin" data-pin={item.id}>
-              <a className="tcrn-shell-pins__item" href={item.href} aria-current={selected ? "page" : undefined} {...moveProps}>
+              <a
+                className="tcrn-shell-pins__item"
+                href={disabled ? undefined : item.href}
+                target={!disabled && external ? "_blank" : undefined}
+                rel={!disabled && external ? "noopener noreferrer" : undefined}
+                aria-current={selected ? "page" : undefined}
+                aria-disabled={disabled ? "true" : undefined}
+                aria-describedby={describedBy}
+                data-external={external ? "true" : undefined}
+                data-disabled-reason={disabledReason}
+                title={disabledReason}
+                onClick={disabled ? (event) => event.preventDefault() : undefined}
+                {...moveProps}
+              >
                 {label}
+                {external ? <Icon name="external-link" size={shellChevronSize} className="tcrn-shell-pins__external" /> : null}
+                {disabledReasonId ? (
+                  <span id={disabledReasonId} className="tcrn-sr-only">
+                    {disabledReason}
+                  </span>
+                ) : null}
+                {externalHintId ? (
+                  <span id={externalHintId} className="tcrn-sr-only">
+                    {defaultExternalHint}
+                  </span>
+                ) : null}
               </a>
             </span>
           );
         }
-        const open = item.id === openId;
+        const open = !disabled && item.id === openId;
         return (
           <span key={item.id} className="tcrn-shell-pins__pin" data-pin={item.id}>
             <button
@@ -341,12 +390,27 @@ export function ShellPins({
               aria-expanded={open}
               aria-controls={menuIdOf ? menuIdOf(item.id) : `${baseId}-menu-${index}`}
               aria-current={selected ? "true" : undefined}
+              aria-disabled={disabled ? "true" : undefined}
+              aria-describedby={describedBy}
               data-open-pin={open ? "" : undefined}
+              data-disabled-reason={disabledReason}
+              title={disabledReason}
               {...moveProps}
-              onClick={() => onOpenChange?.(open ? null : item.id)}
+              onClick={(event) => {
+                if (disabled) {
+                  event.preventDefault();
+                  return;
+                }
+                onOpenChange?.(open ? null : item.id);
+              }}
             >
               {label}
               <Icon name="chevron-down" size={shellChevronSize} className="tcrn-shell-pins__chevron" />
+              {disabledReasonId ? (
+                <span id={disabledReasonId} className="tcrn-sr-only">
+                  {disabledReason}
+                </span>
+              ) : null}
             </button>
           </span>
         );

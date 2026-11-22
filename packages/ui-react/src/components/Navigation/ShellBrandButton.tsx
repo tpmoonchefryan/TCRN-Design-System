@@ -25,8 +25,7 @@ import type { TcrnLocale } from "@tcrn/ui-copy-state";
 import { Icon } from "../Icon/index.js";
 import { cx } from "../../utils.js";
 import { TcrnBrandMark, type TcrnProductMarkId } from "./Navigation.js";
-import { productMarkIdOf } from "./product-mark-id.js";
-import { tcrnProductMarks } from "./product-marks.generated.js";
+import { productMarkIdOf, tcrnRegisteredProductMarks } from "./product-mark-id.js";
 import { useTcrnShellCopy } from "./shell-copy.js";
 
 /** "auto" follows the shell container; "v1" is the mark alone, "v2" the mark with its wordmark. */
@@ -65,7 +64,7 @@ export const ShellBrandButton = forwardRef<HTMLButtonElement, ShellBrandButtonPr
   { productId, expanded = false, version = "auto", locale, className, ...props },
   ref
 ) {
-  const mark = tcrnProductMarks.find((candidate) => candidate.productId === productId);
+  const mark = tcrnRegisteredProductMarks.find((candidate) => candidate.productId === productId);
   if (!mark) throw new Error(`ShellBrandButton: no product mark is generated for "${productId}"`);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const narrow = useShellNarrow(buttonRef, version === "auto");
