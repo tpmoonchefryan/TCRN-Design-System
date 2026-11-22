@@ -10,6 +10,7 @@ import {
   DictionaryTable,
   ContentScope,
   Progress,
+  RawPayloadBox,
   Stepper,
   avatarInitials,
   TemplateGallery,
@@ -19,6 +20,7 @@ import {
   FilterBar,
   validateContentScope
 } from "./DataDisplay.js";
+import { dataDisplayCss } from "../../styles/data-display.css.js";
 import { EmptyState, EnvironmentBanner, ErrorState, StateSurface } from "../Feedback/index.js";
 import { TopBar } from "../Navigation/index.js";
 
@@ -143,8 +145,8 @@ test("table shell records arbitrary column counts for responsive layout", () => 
   );
   assert.match(oneColumn, /aria-label="Single column fixture"/);
   assert.match(oneColumn, /--tcrn-table-column-count:1/);
-  assert.match(oneColumn, /--tcrn-table-shell-columns:repeat\(1, minmax\(var\(--tcrn-table-shell-column-min-width, 160px\), 1fr\)\)/);
-  assert.match(oneColumn, /--tcrn-table-shell-min-width:max\(100%, calc\(1 \* var\(--tcrn-table-shell-column-min-width, 160px\)\)\)/);
+  assert.match(oneColumn, /--tcrn-table-shell-columns:minmax\(0, 1fr\)/);
+  assert.match(oneColumn, /--tcrn-table-shell-min-width:100%/);
   assert.match(oneColumn, /tabindex="0"/);
   assert.match(oneColumn, /role="row" class="tcrn-table-shell__empty-row"/);
   assert.match(oneColumn, /role="cell" aria-colspan="1" class="tcrn-table-shell__empty"/);
@@ -153,17 +155,18 @@ test("table shell records arbitrary column counts for responsive layout", () => 
     <TableShell
       label="Four column fixture"
       columns={[
-        { key: "a", label: "A" },
-        { key: "b", label: "B" },
-        { key: "c", label: "C" },
-        { key: "d", label: "D" }
+        { key: "a", label: "A", width: "96px", align: "start" },
+        { key: "b", label: "B", width: "minmax(180px, 1.6fr)" },
+        { key: "c", label: "C", align: "center" },
+        { key: "d", label: "D", width: "1fr", align: "end" }
       ]}
       rows={[{ a: "A1", b: "B1", c: "C1", d: "D1" }]}
     />
   );
   assert.match(fourColumns, /--tcrn-table-column-count:4/);
-  assert.match(fourColumns, /--tcrn-table-shell-columns:repeat\(4, minmax\(var\(--tcrn-table-shell-column-min-width, 160px\), 1fr\)\)/);
-  assert.match(fourColumns, /--tcrn-table-shell-min-width:max\(100%, calc\(4 \* var\(--tcrn-table-shell-column-min-width, 160px\)\)\)/);
+  assert.match(fourColumns, /--tcrn-table-shell-columns:96px minmax\(180px, 1\.6fr\) minmax\(0, 1fr\) 1fr/);
+  assert.match(fourColumns, /--tcrn-table-shell-min-width:100%/);
+  assert.match(fourColumns, /data-align="end"/);
   assert.match(fourColumns, /data-label="D"/);
 });
 
@@ -402,4 +405,59 @@ test("STORY-092 a data grid declares its sort in aria-sort, not in an arrow glyp
   // would announce it as sortable-but-unsorted.
   assert.equal((html.match(/aria-sort=/g) ?? []).length, 1);
   assert.match(html, /role="gridcell"/);
+});
+
+test("STORY-160 STORY-161 STORY-162 Avatar short sizes, TableShell selection, TableToolbar bulk actions, RawPayloadBox, and dataDisplayCss", () => {
+  const smAvatar = renderToStaticMarkup(<Avatar name="Ada Lovelace" size="sm" />);
+  assert.match(smAvatar, /class="tcrn-avatar tcrn-avatar--sm"/);
+  assert.match(smAvatar, /data-avatar-size="sm"/);
+
+  const selectableTable = renderToStaticMarkup(
+    <TableShell
+      label="Selectable table"
+      selectableRows
+      selectedRowIds={["r1"]}
+      columns={[{ key: "name", label: "Name" }]}
+      rows={[{ id: "r1", name: "First" }, { id: "r2", name: "Second" }]}
+    />
+  );
+  assert.match(selectableTable, /class="tcrn-checkbox tcrn-table-shell__checkbox"/);
+  assert.match(selectableTable, /aria-checked="mixed"/);
+  assert.match(selectableTable, /data-selected="true"/);
+
+  const toolbarBulk = renderToStaticMarkup(
+    <TableToolbar
+      label="Bulk tools"
+      controlsId="tbl"
+      searchLabel="Search"
+      selectedCount={2}
+      bulkActions={<button type="button">Archive</button>}
+      onClearSelection={() => {}}
+    />
+  );
+  assert.match(toolbarBulk, /data-table-toolbar-bulk="true"/);
+  assert.match(toolbarBulk, /data-selected-count="2"/);
+  assert.match(toolbarBulk, /2 selected/);
+  assert.match(toolbarBulk, /Archive/);
+  assert.match(toolbarBulk, /tcrn-table-toolbar__clear-selection/);
+
+  const raw = renderToStaticMarkup(
+    <RawPayloadBox
+      label="Webhook body"
+      payload={'{"token":"very_long_unbroken_string_without_spaces"}\nline2'}
+      maxHeight="240px"
+      copyable
+    />
+  );
+  assert.match(raw, /data-raw-payload="true"/);
+  assert.match(raw, /class="tcrn-raw-payload__pre"/);
+  assert.match(raw, /max-height:240px/);
+  assert.match(raw, /tcrn-button/);
+
+  assert.doesNotMatch(dataDisplayCss, /`/);
+  assert.doesNotMatch(dataDisplayCss, /\.tcrn-surface/);
+  assert.doesNotMatch(dataDisplayCss, /\.tcrn-divider/);
+  assert.match(dataDisplayCss, /--tcrn-color-av-bg/);
+  assert.match(dataDisplayCss, /--tcrn-color-av-ink/);
+  assert.match(dataDisplayCss, /--tcrn-type-family-mono/);
 });

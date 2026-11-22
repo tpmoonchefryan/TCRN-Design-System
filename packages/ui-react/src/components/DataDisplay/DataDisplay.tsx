@@ -13,6 +13,8 @@ import { cx, requiredText, resolveDocumentLocale } from "../../utils.js";
 export interface TableColumn {
   key: string;
   label: string;
+  width?: string;
+  align?: "start" | "center" | "end";
 }
 
 export interface TableShellProps {
@@ -20,6 +22,12 @@ export interface TableShellProps {
   rows: Array<Record<string, ReactNode>>;
   emptyState?: ReactNode;
   label?: string;
+  selectableRows?: boolean;
+  selectedRowIds?: readonly string[];
+  onSelectedRowIdsChange?: (ids: string[]) => void;
+  getRowId?: (row: Record<string, ReactNode>, index: number) => string;
+  selectAllLabel?: string;
+  selectRowLabel?: (row: Record<string, ReactNode>, index: number) => string;
 }
 
 type TableShellStyle = CSSProperties & {
@@ -28,40 +36,137 @@ type TableShellStyle = CSSProperties & {
   "--tcrn-table-shell-min-width"?: string;
 };
 
-export function TableShell({ columns, rows, emptyState, label }: TableShellProps) {
+function defaultTableRowId(row: Record<string, ReactNode>, index: number): string {
+  const candidate = row.id;
+  if (typeof candidate === "string" || typeof candidate === "number") return String(candidate);
+  return String(index);
+}
+
+export function TableShell({
+  columns,
+  rows,
+  emptyState,
+  label,
+  selectableRows = false,
+  selectedRowIds,
+  onSelectedRowIdsChange,
+  getRowId = defaultTableRowId,
+  selectAllLabel = "Select all rows",
+  selectRowLabel
+}: TableShellProps) {
+  const [uncontrolledSelectedIds, setUncontrolledSelectedIds] = useState<string[]>([]);
+  const activeSelectedIds = selectedRowIds ?? uncontrolledSelectedIds;
+  const selectedSet = new Set(activeSelectedIds);
+  const rowIds = rows.map((row, index) => getRowId(row, index));
+  const allSelected = rowIds.length > 0 && rowIds.every((id) => selectedSet.has(id));
+  const someSelected = rowIds.some((id) => selectedSet.has(id));
+  const isIndeterminate = someSelected && !allSelected;
+
+  const updateSelection = (nextIds: string[]) => {
+    if (selectedRowIds === undefined) setUncontrolledSelectedIds(nextIds);
+    onSelectedRowIdsChange?.(nextIds);
+  };
+
   const columnCount = Math.max(columns.length, 1);
-  const columnMinWidth = "var(--tcrn-table-shell-column-min-width, 160px)";
+  const totalColumnCount = selectableRows ? columnCount + 1 : columnCount;
+  const columnTracks = columns.map((column) => column.width ?? "minmax(0, 1fr)");
+  const tableColumnsTemplate = selectableRows
+    ? ["36px", ...columnTracks].join(" ")
+    : columnTracks.join(" ");
   const tableStyle: TableShellStyle = {
     "--tcrn-table-column-count": columnCount,
-    "--tcrn-table-shell-columns": `repeat(${columnCount}, minmax(${columnMinWidth}, 1fr))`,
-    "--tcrn-table-shell-min-width": `max(100%, calc(${columnCount} * ${columnMinWidth}))`
+    "--tcrn-table-shell-columns": tableColumnsTemplate,
+    "--tcrn-table-shell-min-width": "100%"
   };
 
   return (
-    <div className="tcrn-table-shell" role="table" aria-label={label} data-mobile-layout="stacked-cards" style={tableStyle} tabIndex={0}>
+    <div
+      className="tcrn-table-shell"
+      role="table"
+      aria-label={label}
+      data-mobile-layout="stacked-cards"
+      data-selectable-rows={selectableRows ? "true" : undefined}
+      style={tableStyle}
+      tabIndex={0}
+    >
       <div role="row" className="tcrn-table-shell__head">
+        {selectableRows ? (
+          <span role="columnheader" className="tcrn-table-shell__select-header">
+            <input
+              type="checkbox"
+              className="tcrn-checkbox tcrn-table-shell__checkbox"
+              aria-label={selectAllLabel}
+              checked={allSelected}
+              aria-checked={isIndeterminate ? "mixed" : allSelected}
+              ref={(el) => {
+                if (el) el.indeterminate = isIndeterminate;
+              }}
+              onChange={() => {
+                updateSelection(allSelected ? [] : rowIds);
+              }}
+            />
+          </span>
+        ) : null}
         {columns.map((column) => (
-          <span key={column.key} role="columnheader">
+          <span
+            key={column.key}
+            role="columnheader"
+            data-align={column.align}
+            style={column.align ? { textAlign: column.align } : undefined}
+          >
             {column.label}
           </span>
         ))}
       </div>
       {rows.length === 0 ? (
         <div role="row" className="tcrn-table-shell__empty-row">
-          <div role="cell" aria-colspan={columnCount} className="tcrn-table-shell__empty">
+          <div role="cell" aria-colspan={totalColumnCount} className="tcrn-table-shell__empty">
             {emptyState ?? "No rows"}
           </div>
         </div>
       ) : (
-        rows.map((row, rowIndex) => (
-          <div role="row" key={rowIndex} className="tcrn-table-shell__row">
-            {columns.map((column) => (
-              <span key={column.key} role="cell" data-label={column.label} className="tcrn-table-shell__cell">
-                {row[column.key]}
-              </span>
-            ))}
-          </div>
-        ))
+        rows.map((row, rowIndex) => {
+          const rowId = rowIds[rowIndex] ?? String(rowIndex);
+          const isSelected = selectableRows && selectedSet.has(rowId);
+          return (
+            <div
+              role="row"
+              key={rowId}
+              className="tcrn-table-shell__row"
+              data-selected={isSelected || undefined}
+              aria-selected={selectableRows ? isSelected : undefined}
+            >
+              {selectableRows ? (
+                <span role="cell" className="tcrn-table-shell__cell tcrn-table-shell__cell--select">
+                  <input
+                    type="checkbox"
+                    className="tcrn-checkbox tcrn-table-shell__checkbox"
+                    aria-label={selectRowLabel ? selectRowLabel(row, rowIndex) : `Select row ${rowId}`}
+                    checked={isSelected}
+                    onChange={() => {
+                      const next = isSelected
+                        ? activeSelectedIds.filter((id) => id !== rowId)
+                        : [...activeSelectedIds, rowId];
+                      updateSelection(next);
+                    }}
+                  />
+                </span>
+              ) : null}
+              {columns.map((column) => (
+                <span
+                  key={column.key}
+                  role="cell"
+                  data-label={column.label}
+                  data-align={column.align}
+                  className="tcrn-table-shell__cell"
+                  style={column.align ? { textAlign: column.align } : undefined}
+                >
+                  {row[column.key]}
+                </span>
+              ))}
+            </div>
+          );
+        })
       )}
     </div>
   );
@@ -86,7 +191,7 @@ export function KeyValueList({ items }: { items: KeyValueItem[] }) {
   );
 }
 
-export type StatCardTone = "neutral" | "positive" | "warning" | "danger";
+export type StatCardTone = "neutral" | "positive" | "warning" | "danger" | "accent";
 
 export interface StatCardProps extends HTMLAttributes<HTMLElement> {
   label: ReactNode;
@@ -152,7 +257,7 @@ export function Card({ tone = "neutral", interactive = false, className, childre
  * are derived here rather than asked for, because a consumer computing them is a
  * consumer computing them differently.
  */
-export type AvatarSize = "small" | "medium" | "large";
+export type AvatarSize = "sm" | "md" | "lg" | "small" | "medium" | "large";
 
 export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
   /** The name this stands for. Required: it is the accessible name and the initials. */
@@ -895,6 +1000,10 @@ export interface TableToolbarProps {
   matchCountFormat?: string;
   collapseLabel?: string;
   expandLabel?: string;
+  selectedCount?: number;
+  bulkActions?: ReactNode;
+  onClearSelection?: () => void;
+  clearSelectionLabel?: string;
   /** Which language the built-in "all" chip is said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
 }
@@ -917,11 +1026,16 @@ export function TableToolbar({
   matchCountFormat = "{shown} / {total}",
   collapseLabel,
   expandLabel,
+  selectedCount,
+  bulkActions,
+  onClearSelection,
+  clearSelectionLabel = "Clear",
   locale
 }: TableToolbarProps) {
   // Visible chip text sitting beside consumer-supplied filter labels, so an
   // English default put one untranslated word in an otherwise translated row.
   const resolvedAllFilterLabel = allFilterLabel ?? genericLabels(locale).allFilter;
+  const hasSelection = typeof selectedCount === "number" && selectedCount > 0;
   return (
     <div role="group" className="tcrn-table-toolbar" aria-label={label} data-table-toolbar="true" data-table-toolbar-target={controlsId}>
       <SearchInput
@@ -947,6 +1061,17 @@ export function TableToolbar({
           ))}
         </FilterBar>
       ) : null}
+      {hasSelection ? (
+        <div className="tcrn-table-toolbar__bulk" data-table-toolbar-bulk="true" data-selected-count={selectedCount}>
+          <span className="tcrn-table-toolbar__selected-count">{selectedCount} selected</span>
+          {bulkActions}
+          {onClearSelection ? (
+            <button type="button" className="tcrn-table-toolbar__clear-selection" onClick={onClearSelection}>
+              {clearSelectionLabel}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
       <span className="tcrn-table-toolbar__count" data-table-toolbar-count={matchCountFormat} aria-live="polite" />
       {collapseLabel ? (
         <button
@@ -961,6 +1086,57 @@ export function TableToolbar({
         </button>
       ) : null}
     </div>
+  );
+}
+
+export interface RawPayloadBoxProps extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+  payload: string;
+  label?: string;
+  maxHeight?: string;
+  copyable?: boolean;
+  copyLabel?: string;
+  actions?: ReactNode;
+}
+
+export function RawPayloadBox({
+  payload,
+  label,
+  maxHeight,
+  copyable = false,
+  copyLabel,
+  actions,
+  className,
+  ...props
+}: RawPayloadBoxProps) {
+  const hasHeader = Boolean(label || copyable || actions);
+  return (
+    <section
+      {...props}
+      className={cx("tcrn-raw-payload", className)}
+      data-raw-payload="true"
+      aria-label={label}
+    >
+      {hasHeader ? (
+        <div className="tcrn-raw-payload__header">
+          {label ? <span className="tcrn-raw-payload__label">{label}</span> : <span />}
+          <div className="tcrn-raw-payload__actions">
+            {actions}
+            {copyable ? (
+              <ClipboardCopyButton
+                text={payload}
+                ariaLabel={copyLabel ?? "Copy payload"}
+                idleLabel={copyLabel ?? "Copy"}
+                size="sm"
+                variant="quiet"
+              />
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+      <pre className="tcrn-raw-payload__pre" style={maxHeight ? { maxHeight } : undefined}>
+        {payload}
+      </pre>
+    </section>
   );
 }
 

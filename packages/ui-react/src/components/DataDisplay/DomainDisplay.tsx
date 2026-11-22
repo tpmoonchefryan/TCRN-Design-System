@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // TCRN-DS-STORY-102/103/104 — functional data-display patterns now live in core.
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { CopyStateInput, TcrnLocale } from "@tcrn/ui-copy-state";
 import { Badge, InlineAlert, StatusBadge } from "../Feedback/index.js";
 import { Button } from "../Button/index.js";
@@ -476,14 +476,87 @@ export interface RecordTableProps {
   rows: RecordRowProps[];
   density?: Density;
   locale?: TcrnLocale | string;
+  selectableRows?: boolean;
+  selectedRowIds?: readonly string[];
+  onSelectedRowIdsChange?: (ids: string[]) => void;
+  getRowId?: (row: RecordRowProps, index: number) => string;
+  selectAllLabel?: string;
 }
 
-export function RecordTable({ label, rows, density = "compact", locale }: RecordTableProps) {
+export function RecordTable({
+  label,
+  rows,
+  density = "compact",
+  locale,
+  selectableRows = false,
+  selectedRowIds,
+  onSelectedRowIdsChange,
+  getRowId = (row) => row.id,
+  selectAllLabel = "Select all records"
+}: RecordTableProps) {
+  const [uncontrolledSelectedIds, setUncontrolledSelectedIds] = useState<string[]>([]);
+  const activeSelectedIds = selectedRowIds ?? uncontrolledSelectedIds;
+  const selectedSet = new Set(activeSelectedIds);
+  const rowIds = rows.map((row, index) => getRowId(row, index));
+  const allSelected = rowIds.length > 0 && rowIds.every((id) => selectedSet.has(id));
+  const someSelected = rowIds.some((id) => selectedSet.has(id));
+  const isIndeterminate = someSelected && !allSelected;
+
+  const updateSelection = (nextIds: string[]) => {
+    if (selectedRowIds === undefined) setUncontrolledSelectedIds(nextIds);
+    onSelectedRowIdsChange?.(nextIds);
+  };
+
   return (
-    <section className={cx("tcrn-record-table", `tcrn-record-table--${density}`)} aria-label={label ?? patternLabels(locale).recordTable} data-pattern="record-table" data-density={density}>
-      {rows.map((row) => (
-        <RecordRow key={row.id} locale={locale} {...row} density={row.density ?? density} />
-      ))}
+    <section
+      className={cx("tcrn-record-table", `tcrn-record-table--${density}`)}
+      aria-label={label ?? patternLabels(locale).recordTable}
+      data-pattern="record-table"
+      data-density={density}
+      data-selectable-rows={selectableRows ? "true" : undefined}
+    >
+      {selectableRows ? (
+        <div className="tcrn-record-table__head">
+          <input
+            type="checkbox"
+            className="tcrn-checkbox tcrn-record-table__checkbox"
+            aria-label={selectAllLabel}
+            checked={allSelected}
+            aria-checked={isIndeterminate ? "mixed" : allSelected}
+            ref={(el) => {
+              if (el) el.indeterminate = isIndeterminate;
+            }}
+            onChange={() => {
+              updateSelection(allSelected ? [] : rowIds);
+            }}
+          />
+          <span className="tcrn-record-table__select-label">{selectAllLabel}</span>
+        </div>
+      ) : null}
+      {rows.map((row, index) => {
+        const rowId = rowIds[index] ?? row.id;
+        const isSelected = selectableRows ? selectedSet.has(rowId) : Boolean(row.selected);
+        if (!selectableRows) {
+          return <RecordRow key={rowId} locale={locale} {...row} density={row.density ?? density} />;
+        }
+        return (
+          <div key={rowId} className="tcrn-record-table__row-item" data-selected={isSelected || undefined}>
+            <input
+              type="checkbox"
+              className="tcrn-checkbox tcrn-record-table__checkbox"
+              aria-label={`Select ${row.title}`}
+              checked={isSelected}
+              onChange={() => {
+                const next = isSelected
+                  ? activeSelectedIds.filter((id) => id !== rowId)
+                  : [...activeSelectedIds, rowId];
+                updateSelection(next);
+              }}
+            />
+            <RecordRow locale={locale} {...row} selected={isSelected} density={row.density ?? density} />
+          </div>
+        );
+      })}
     </section>
   );
 }

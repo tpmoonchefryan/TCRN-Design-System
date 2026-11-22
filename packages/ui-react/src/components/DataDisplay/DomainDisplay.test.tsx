@@ -205,3 +205,20 @@ test("STORY-143 STORY-146 STORY-147 TocRail's title is an h3 by default and an h
 });
 
 test("published page-header geometry uses the 07 paper role",()=>{const rule=/\.tcrn-page-header__body\{([^}]*)\}/.exec(tcrnComponentCss)?.[1]??"";assert.match(rule,/gap:14px/);assert.match(rule,/border-bottom:1px solid var\(--tcrn-color-line-2\)/);assert.match(rule,/padding-bottom:12px/);const title=renderToStaticMarkup(<PageHeader title="Roster"/>);assert.match(title,/<h2 [^>]*tcrn-heading--2[^>]*>Roster<\/h2>/);});
+
+test("STORY-161 RecordTable supports optional row selection with indeterminate select-all", () => {
+  const html = renderToStaticMarkup(
+    <RecordTable
+      selectableRows
+      selectedRowIds={["r-1"]}
+      rows={[
+        { id: "r-1", title: "Record 1", state, owner: "QA" },
+        { id: "r-2", title: "Record 2", state, owner: "Dev" }
+      ]}
+    />
+  );
+  assert.match(html, /data-selectable-rows="true"/);
+  assert.match(html, /aria-checked="mixed"/);
+  assert.match(html, /class="tcrn-checkbox tcrn-record-table__checkbox"/);
+  assert.match(html, /data-selected="true"/);
+});
