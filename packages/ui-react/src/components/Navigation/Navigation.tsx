@@ -21,10 +21,12 @@ import { resolveTcrnLocale, tcrnSupportedLocales, type TcrnLocale } from "@tcrn/
 import { tcrnTokens } from "@tcrn/ui-tokens";
 import { cx, mergeIds, requiredText, resolveDocumentLocale } from "../../utils.js";
 import { tcrnProductMarkViewBox, tcrnProductMarkWordmark, type TcrnProductMark } from "./product-marks.generated.js";
+import { tcrnAdoptedProductMarks } from "./adopted-product-marks.js";
 // The lookup of a mark by its product key and the mark's own id, shared with the brand button and
-// the intro (TCRN-DS-SUB-212). That module takes only a type from this one, so the calls below that
-// run when this module loads find it loaded.
-import { productMark, productMarkIdOf } from "./product-mark-id.js";
+// the intro (TCRN-DS-SUB-212).
+import { productMark, productMarkIdOf, tcrnProductMarkIds, type TcrnProductMarkId } from "./product-mark-id.js";
+export { tcrnAdoptedProductMarks, tcrnProductMarkIds };
+export type { TcrnProductMarkId };
 // The shell parts and Navigation.tsx import each other; what this module takes from them is used
 // inside function bodies only, never evaluated when the module loads (C-4).
 import { ShellBrandButton } from "./ShellBrandButton.js";
@@ -71,6 +73,7 @@ const shellChromeLabels: Record<TcrnLocale, ProductShellChromeCopy> = {
   "zh-CN": {
     switchToLight: "切换到日间模式",
     switchToDark: "切换到夜间模式",
+    switchToHalloween: "切换到万圣节主题",
     language: "语言",
     collapseSideNav: "收起侧边导航",
     expandSideNav: "展开侧边导航",
@@ -97,6 +100,7 @@ const shellChromeLabels: Record<TcrnLocale, ProductShellChromeCopy> = {
   en: {
     switchToLight: "Switch to light mode",
     switchToDark: "Switch to dark mode",
+    switchToHalloween: "Switch to Halloween mode",
     language: "Language",
     collapseSideNav: "Collapse side navigation",
     expandSideNav: "Expand side navigation",
@@ -123,6 +127,7 @@ const shellChromeLabels: Record<TcrnLocale, ProductShellChromeCopy> = {
   ja: {
     switchToLight: "ライトモードに切り替え",
     switchToDark: "ダークモードに切り替え",
+    switchToHalloween: "ハロウィンモードに切り替え",
     language: "言語",
     collapseSideNav: "サイドナビゲーションを折りたたむ",
     expandSideNav: "サイドナビゲーションを展開する",
@@ -149,6 +154,7 @@ const shellChromeLabels: Record<TcrnLocale, ProductShellChromeCopy> = {
   ko: {
     switchToLight: "라이트 모드로 전환",
     switchToDark: "다크 모드로 전환",
+    switchToHalloween: "할로윈 모드로 전환",
     language: "언어",
     collapseSideNav: "사이드 내비게이션 접기",
     expandSideNav: "사이드 내비게이션 펼치기",
@@ -175,6 +181,7 @@ const shellChromeLabels: Record<TcrnLocale, ProductShellChromeCopy> = {
   fr: {
     switchToLight: "Passer en mode clair",
     switchToDark: "Passer en mode sombre",
+    switchToHalloween: "Passer en mode Halloween",
     language: "Langue",
     collapseSideNav: "Replier la navigation latérale",
     expandSideNav: "Déplier la navigation latérale",
@@ -250,17 +257,6 @@ export function TopBar({ productName, moduleName, actions, brandProps, className
 }
 
 /**
- * The registered product marks.
- *
- * Four solid marks on a 48 grid, each in two flat tones (the design system's in
- * four), approved by the Owner on 2026-10-11. Their SVG bodies, palettes, names and
- * taglines are generated from the design contract into product-marks.generated.ts,
- * so nothing here redraws a shape or restates a colour; unregistered products have no implied asset.
- */
-export const tcrnProductMarkIds = ["tms", "einzbern", "mana-orchestrate", "design-system"] as const;
-export type TcrnProductMarkId = (typeof tcrnProductMarkIds)[number];
-
-/**
  * The four renditions every product mark ships in: `color` (its own tones), `mono`
  * (one ink, currentColor unless another is given), `tile-tint` (the colour mark on
  * its pale tint, for the side rail and application icons) and `tile-deep` (the mark
@@ -333,6 +329,7 @@ const tmsMark = productMark("tms");
 const einzbernMark = productMark("einzbern");
 const manaOrchestrateMark = productMark("mana-orchestrate");
 const designSystemMark = productMark("design-system");
+const voxwardMark = productMark("voxward");
 
 /**
  * The registered product lockups.
@@ -405,6 +402,19 @@ export const tcrnProductLogoRegistry = {
     byline: tcrnProductMarkWordmark.serif.byline,
     lineTwo: manaOrchestrateMark.taglines,
     alt: manaOrchestrateMark.name
+  },
+  voxward: {
+    productId: "voxward",
+    assetId: "tcrn-voxward-two-line",
+    markId: "voxward",
+    wordmark: voxwardMark.font,
+    lineOne: voxwardMark.name,
+    lineOneBase: voxwardMark.word,
+    lineOneSuffix: voxwardMark.suffix ?? null,
+    suffixClassName: "tcrn-brand-wordmark__suffix--voxward",
+    byline: null,
+    lineTwo: voxwardMark.taglines,
+    alt: voxwardMark.name
   }
 } as const;
 
@@ -457,16 +467,46 @@ export function ShellBrandLockup({productId,locale,className,...props}:ShellBran
   return <ProductLockup {...props} productId={productId} locale={locale} scale="rail" markVariant="color" className={cx("tcrn-shell-brand-lockup",className)} />;
 }
 
-export type ShellThemeMode = "light" | "dark";
+export type SeasonalShellThemeMode = "halloween";
+export type ShellThemeMode = "light" | "dark" | SeasonalShellThemeMode;
 export type ProductShellLocaleMenuChangeReason = "trigger" | "selection" | "outside-pointer" | "escape" | "controller";
 export type ProductShellSearchDismissReason = "blur" | "outside-pointer" | "tab" | "escape" | "result-activate" | "controller";
 export type ProductShellSearchExpandedChangeReason = "focus" | "input" | ProductShellSearchDismissReason;
 
-export interface ShellThemeToggleProps extends Omit<IconButtonProps, "ariaLabel" | "icon" | "iconName" | "children"> {
+const defaultShellThemes: readonly ShellThemeMode[] = ["light", "dark"];
+const validShellThemeSet = new Set<string>(["light", "dark", "halloween"]);
+
+export interface ShellSeasonalThemeOptions {
+  /** Opt-in seasonal themes appended after light and dark (for example `["halloween"]`). */
+  seasonalThemes?: readonly SeasonalShellThemeMode[];
+  /** Explicit ordered list of enabled themes; defaults to `["light", "dark"]`. */
+  availableThemes?: readonly ShellThemeMode[];
+}
+
+export function resolveEnabledShellThemes(options?: ShellSeasonalThemeOptions): readonly ShellThemeMode[] {
+  if (options?.availableThemes && options.availableThemes.length > 0) {
+    const filtered = [...new Set(options.availableThemes.filter((mode): mode is ShellThemeMode => validShellThemeSet.has(mode)))];
+    if (filtered.length > 0) return filtered;
+  }
+  if (options?.seasonalThemes && options.seasonalThemes.length > 0) {
+    const seasonal = options.seasonalThemes.filter((mode): mode is SeasonalShellThemeMode => mode === "halloween");
+    if (seasonal.length > 0) return [...new Set<ShellThemeMode>(["light", "dark", ...seasonal])];
+  }
+  return defaultShellThemes;
+}
+
+function normalizeShellTheme(theme: string | undefined, enabledThemes: readonly ShellThemeMode[]): ShellThemeMode {
+  if (theme && (enabledThemes as readonly string[]).includes(theme)) return theme as ShellThemeMode;
+  if (theme === "dark" && enabledThemes.includes("dark")) return "dark";
+  return enabledThemes.includes("light") ? "light" : (enabledThemes[0] ?? "light");
+}
+
+export interface ShellThemeToggleProps extends Omit<IconButtonProps, "ariaLabel" | "icon" | "iconName" | "children">, ShellSeasonalThemeOptions {
   currentTheme: ShellThemeMode;
   lightLabel?: string;
   darkLabel?: string;
-  /** Which language the two built-in labels are said in; defaults to the page's own. */
+  halloweenLabel?: string;
+  /** Which language the built-in labels are said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
   onThemeChange?: (nextTheme: ShellThemeMode) => void;
 }
@@ -475,6 +515,9 @@ export function ShellThemeToggle({
   currentTheme,
   lightLabel,
   darkLabel,
+  halloweenLabel,
+  seasonalThemes,
+  availableThemes,
   locale,
   onThemeChange,
   className,
@@ -484,10 +527,16 @@ export function ShellThemeToggle({
   // Icon-only, so this label is the entire accessible name — there is no visible
   // text a reader could fall back on when it is in the wrong language.
   const labels = useShellChromeCopy(locale);
+  const fallbackLabels = chromeLabels(locale);
+  const enabledThemes = resolveEnabledShellThemes({ seasonalThemes, availableThemes });
+  const hasHalloween = enabledThemes.includes("halloween");
   const resolvedLightLabel = lightLabel ?? labels.switchToLight;
   const resolvedDarkLabel = darkLabel ?? labels.switchToDark;
-  const normalizedTheme = currentTheme === "dark" ? "dark" : "light";
-  const nextTheme: ShellThemeMode = normalizedTheme === "dark" ? "light" : "dark";
+  const resolvedHalloweenLabel = halloweenLabel ?? labels.switchToHalloween ?? fallbackLabels.switchToHalloween ?? "Switch to Halloween mode";
+  const normalizedTheme = normalizeShellTheme(currentTheme, enabledThemes);
+  const currentIndex = enabledThemes.indexOf(normalizedTheme);
+  const nextTheme: ShellThemeMode = enabledThemes[(currentIndex + 1) % enabledThemes.length] ?? "light";
+  const nextLabel = nextTheme === "light" ? resolvedLightLabel : nextTheme === "halloween" ? resolvedHalloweenLabel : resolvedDarkLabel;
   const handleClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
     onClick?.(event);
     if (!event.defaultPrevented) {
@@ -499,8 +548,8 @@ export function ShellThemeToggle({
     <IconButton
       {...props}
       onClick={handleClick}
-      ariaLabel={normalizedTheme === "dark" ? resolvedLightLabel : resolvedDarkLabel}
-      title={normalizedTheme === "dark" ? resolvedLightLabel : resolvedDarkLabel}
+      ariaLabel={nextLabel}
+      title={nextLabel}
       className={cx("tcrn-shell-theme-toggle", className)}
       data-shell-control="theme-toggle"
       data-package-backed-shell-control="theme-toggle"
@@ -516,6 +565,11 @@ export function ShellThemeToggle({
           <span className="tcrn-shell-theme-toggle__icon" data-theme-icon="dark">
             <Icon name="moon" />
           </span>
+          {hasHalloween ? (
+            <span className="tcrn-shell-theme-toggle__icon" data-theme-icon="halloween">
+              <Icon name="palette" />
+            </span>
+          ) : null}
         </>
       }
     />
@@ -1256,10 +1310,18 @@ function NavDescribed({ description, render }: { description: string; render: (d
   );
 }
 
+const navExternalIconSize = (() => {
+  const token = tcrnTokens.find((candidate) => candidate.variable === "--tcrn-shell-chevron");
+  const pixels = token && /^\d+(?:\.\d+)?px$/.test(token.value) ? Number.parseFloat(token.value) : 12;
+  return Number.isFinite(pixels) ? pixels : 12;
+})();
+
 export interface NavItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children">, NavPinProps {
   selected?: boolean;
   disabled?: boolean;
   disabledReason?: string;
+  /** External/secondary window link indicator and target attributes (STORY-157). */
+  external?: boolean;
   /** Which language the built-in disabled reason and pin name are said in; defaults to the page's own. */
   locale?: TcrnLocale | string;
   iconName?: IconName;
@@ -1272,6 +1334,7 @@ export function NavItem({
   selected = false,
   disabled = false,
   disabledReason,
+  external = false,
   locale,
   iconName,
   depth = 0,
@@ -1282,6 +1345,7 @@ export function NavItem({
   style,
   children,
   href = "#",
+  onClick,
   ...props
 }: NavItemProps) {
   // Rendered visibly, in the `title`, and as the item's description — so when it
@@ -1304,13 +1368,23 @@ export function NavItem({
     <a
       {...props}
       href={disabled ? undefined : href}
+      target={!disabled && external ? (props.target ?? "_blank") : props.target}
+      rel={!disabled && external ? (props.rel ?? "noopener noreferrer") : props.rel}
       aria-current={selected ? "page" : undefined}
       aria-disabled={disabled ? true : undefined}
       aria-describedby={ariaDescribedBy}
       data-selected={selected ? "true" : undefined}
+      data-external={external ? "true" : undefined}
       data-disabled-reason={normalizedReason}
       tabIndex={disabled ? -1 : props.tabIndex}
       title={normalizedReason ?? props.title}
+      onClick={(event) => {
+        if (disabled) {
+          event.preventDefault();
+          return;
+        }
+        onClick?.(event);
+      }}
       className={cx("tcrn-nav-item", className)}
       style={navStyle}
       data-navigation-primitive="nav-item"
@@ -1321,6 +1395,7 @@ export function NavItem({
       <span className="tcrn-nav-item__content">
         <span className="tcrn-nav-item__label" title={labelTitle} data-text="prail">
           {children}
+          {external ? <Icon name="external-link" size={navExternalIconSize} className="tcrn-nav-item__external" /> : null}
         </span>
         {normalizedReason ? (
           <span id={disabledReasonId} className="tcrn-nav-item__disabled-reason">
@@ -1617,7 +1692,7 @@ export interface ProductShellNotifications {
   onOpen?: () => void;
 }
 
-export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
+export interface ProductShellProps extends HTMLAttributes<HTMLDivElement>, ShellSeasonalThemeOptions {
   productName: string;
   moduleName: string;
   /** The product key: the brand button's mark and wordmark and the full menu's lockup, from logos2 as they are. */
@@ -1627,6 +1702,19 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement> {
   currentRouteLabelKey?: string;
   /** The menu model: groups → items → children → children (C-7). */
   navGroups: readonly ProductShellNavGroup[];
+  /** Optional right-aligned backoffice nav groups included in the menu model and pinned right group (STORY-157). */
+  rightNavGroups?: readonly ProductShellNavGroup[];
+  /** Explicit right-aligned backoffice pin items rendered before the right account cluster (STORY-157). */
+  rightNavItems?: readonly ShellPinItem[];
+  /** Ids of right-aligned backoffice entries from `navGroups` / `rightNavGroups` (STORY-157). */
+  rightPinnedIds?: readonly string[];
+  /** Reorder handler for the right-aligned backoffice pinned group (STORY-157). */
+  onRightPinsReorder?: (orderedIds: readonly string[]) => void;
+  /**
+   * Optional full-width environment banner mounted between the top strip and `.tcrn-product-shell__paper`
+   * with `var(--tcrn-space-3)` horizontal inset alignment; omitted or null keeps the 2-row shell grid at 0px impact (STORY-158).
+   */
+  topBanner?: ReactNode;
   locales: readonly ShellLocaleOption[];
   currentLocale: string;
   /** Complete product-owned copy and BCP 47 tag for currentLocale; scoped to this shell. */
@@ -1736,25 +1824,54 @@ function productShellEntryIds(entries: readonly ShellMenuItem[], into: Set<strin
   return into;
 }
 
-function productShellFindEntry(groups: readonly ProductShellNavGroup[], id: string): ProductShellPinTarget | null {
+function productShellFindEntry(groups: readonly ProductShellNavGroup[], id: string, forcedAlign?: "start" | "end"): ProductShellPinTarget | null {
   for (const group of groups) {
+    const groupAlign = forcedAlign ?? group.align;
     if (group.id === id) {
       const source = group.items.length > 0 ? group : null;
-      return { pin: { id, label: group.label, hasMenu: source !== null }, source, level: 2, holds: productShellEntryIds(group.items, new Set(), 2) };
+      return {
+        pin: {
+          id,
+          label: group.label,
+          hasMenu: source !== null,
+          align: groupAlign,
+          disabled: group.disabled,
+          disabledReason: group.disabledReason
+        },
+        source,
+        level: 2,
+        holds: productShellEntryIds(group.items, new Set(), 2)
+      };
     }
-    const visit = (entries: readonly ProductShellNavItem[], level: number): ProductShellPinTarget | null => {
+    const visit = (entries: readonly ProductShellNavItem[], level: number, inheritedDisabled?: boolean, inheritedReason?: string): ProductShellPinTarget | null => {
       for (const entry of entries) {
+        const disabled = entry.disabled ?? inheritedDisabled;
+        const disabledReason = entry.disabledReason ?? inheritedReason;
         const next = level < shellMenuMaxDepth && (entry.children?.length ?? 0) > 0 ? (entry.children ?? []) : [];
         if (entry.id === id) {
           const source = next.length > 0 ? entry : null;
-          return { pin: { id, label: entry.label, href: entry.href, hasMenu: source !== null }, source, level: level + 1, holds: productShellEntryIds(next, new Set(), level + 1) };
+          return {
+            pin: {
+              id,
+              label: entry.label,
+              href: entry.href,
+              hasMenu: source !== null,
+              align: forcedAlign ?? entry.align ?? groupAlign,
+              external: entry.external,
+              disabled,
+              disabledReason
+            },
+            source,
+            level: level + 1,
+            holds: productShellEntryIds(next, new Set(), level + 1)
+          };
         }
-        const found = visit(next, level + 1);
+        const found = visit(next, level + 1, disabled, disabledReason);
         if (found) return found;
       }
       return null;
     };
-    const found = visit(group.items, 2);
+    const found = visit(group.items, 2, group.disabled, group.disabledReason);
     if (found) return found;
   }
   return null;
@@ -1816,6 +1933,13 @@ function ProductShellContent({
   currentRouteLabel,
   currentRouteLabelKey,
   navGroups,
+  rightNavGroups,
+  rightNavItems,
+  rightPinnedIds = [],
+  onRightPinsReorder,
+  topBanner,
+  seasonalThemes,
+  availableThemes,
   locales,
   currentLocale,
   localeDefinition,
@@ -1917,10 +2041,45 @@ function ProductShellContent({
     onClose: () => changeAccount(false)
   });
 
-  const pinTargets = pinnedIds
-    .map((id) => productShellFindEntry(navGroups, id))
+  const allNavGroups = useMemo(
+    () => (rightNavGroups && rightNavGroups.length > 0
+      ? [...navGroups, ...rightNavGroups.map((group) => (group.align ? group : { ...group, align: "end" as const }))]
+      : navGroups),
+    [navGroups, rightNavGroups]
+  );
+
+  const rawPinTargets = pinnedIds
+    .map((id) => productShellFindEntry(allNavGroups, id))
     .filter((target): target is ProductShellPinTarget => target !== null);
-  const pinItems = pinTargets.map((target) => target.pin);
+
+  const leftPinTargets = rawPinTargets.filter((target) => target.pin.align !== "end");
+  const rightTargetMap = new Map<string, ProductShellPinTarget>();
+  for (const target of rawPinTargets) {
+    if (target.pin.align === "end") rightTargetMap.set(target.pin.id, target);
+  }
+  for (const id of rightPinnedIds) {
+    if (rightTargetMap.has(id)) continue;
+    const found = productShellFindEntry(allNavGroups, id, "end");
+    if (found) rightTargetMap.set(id, found);
+  }
+  if (rightNavItems) {
+    for (const item of rightNavItems) {
+      if (item.align === "start") continue;
+      const existing = productShellFindEntry(allNavGroups, item.id, "end");
+      rightTargetMap.set(item.id, {
+        pin: { ...existing?.pin, ...item, align: "end" },
+        source: item.hasMenu === false ? null : (existing?.source ?? null),
+        level: existing?.level ?? 2,
+        holds: existing?.holds ?? new Set()
+      });
+    }
+  }
+  const rightPinTargets = [...rightTargetMap.values()];
+
+  const leftPinItems = leftPinTargets.map((target) => target.pin);
+  const rightPinItems = rightPinTargets.map((target) => target.pin);
+  const allPinItems = rightPinItems.length > 0 ? [...leftPinItems, ...rightPinItems] : leftPinItems;
+
   // The band moves the entries the menu model holds; an id it does not hold keeps its place.
   const reorderPins = onPinsReorder
     ? (ordered: readonly string[]) => {
@@ -1929,13 +2088,24 @@ function ProductShellContent({
         onPinsReorder(pinnedIds.map((id) => (moved.has(id) ? (queue.shift() ?? id) : id)));
       }
     : undefined;
-  const shownTargets = pinTargets.slice(0, shellPinsMax());
-  const selection = productShellSelection(navGroups);
+  const reorderRightPins = onRightPinsReorder
+    ? (ordered: readonly string[]) => {
+        const baseOrder = rightPinnedIds.length > 0 ? rightPinnedIds : rightPinItems.map((item) => item.id);
+        const moved = new Set(ordered);
+        const queue = [...ordered];
+        onRightPinsReorder(baseOrder.map((id) => (moved.has(id) ? (queue.shift() ?? id) : id)));
+      }
+    : undefined;
+  const shownLeftTargets = leftPinTargets.slice(0, shellPinsMax());
+  const shownRightTargets = rightPinTargets.slice(0, shellPinsMax());
+  const shownTargets = shownRightTargets.length > 0 ? [...shownLeftTargets, ...shownRightTargets] : shownLeftTargets;
+  const selection = productShellSelection(allNavGroups);
   const selectedId = selection?.id ?? null;
   const selectedPin = selectedId === null
     ? undefined
-    : shownTargets.find((target) => target.pin.id === selectedId) ?? shownTargets.find((target) => target.holds.has(selectedId));
-  const openTarget = shownOpenPin === null ? undefined : shownTargets.find((target) => target.pin.id === shownOpenPin && target.source);
+    : shownTargets.find((target) => !target.pin.disabled && target.pin.id === selectedId)
+      ?? shownTargets.find((target) => !target.pin.disabled && target.holds.has(selectedId));
+  const openTarget = shownOpenPin === null ? undefined : shownTargets.find((target) => !target.pin.disabled && target.pin.id === shownOpenPin && target.source);
   const currentPath: readonly ShellMenuCrumb[] = selection?.path ?? [{ label: currentRouteLabel }];
   // The page header's trail defaults to the current position; its last step, the page, is no link.
   const currentTrail: readonly PageHeaderBreadcrumb[] = currentPath.map((step, index) => (
@@ -1948,6 +2118,10 @@ function ProductShellContent({
   const menuPresentation = useShellMenuPresentation(undefined, shellRef);
   const state = shownMenuOpen ? (menuPresentation === "sheet" ? "sheet" : "expanded") : openTarget ? "drop" : "closed";
   const unread = notifications?.unread ?? 0;
+  const hasTopBanner = topBanner !== undefined && topBanner !== null && topBanner !== false;
+  const enabledThemes = resolveEnabledShellThemes({ seasonalThemes, availableThemes });
+  const explicitDataTheme = (props as Record<string, unknown>)["data-tcrn-theme"] as string | undefined;
+  const rootDataTheme = explicitDataTheme ?? (currentTheme === "halloween" || enabledThemes.includes("halloween") ? currentTheme : undefined);
 
   return (
     <div
@@ -1962,6 +2136,8 @@ function ProductShellContent({
       data-package-backed-product-shell-boundary="top-band-shell-v2"
       data-product-shell-pattern="top-band"
       data-product-shell-theme={currentTheme}
+      data-tcrn-theme={rootDataTheme}
+      data-product-shell-top-banner={hasTopBanner ? "present" : undefined}
       data-product-shell-effect-boundary="ds-owned-tokens-motion-focus"
       data-product-shell-consumer-scope="ia-data-route-labels-content-callbacks"
       data-product-shell-semantic-api="menu-pins-theme-locale"
@@ -1981,7 +2157,7 @@ function ProductShellContent({
           onClick={() => changeMenu(!shownMenuOpen, "trigger")}
         />
         <ShellPins
-          items={pinItems}
+          items={leftPinItems}
           selectedId={selectedPin?.pin.id ?? null}
           openId={openTarget?.pin.id ?? null}
           onOpenChange={changeOpenPin}
@@ -1990,6 +2166,22 @@ function ProductShellContent({
           landmarkLabel={landmarkLabel}
           onPinsReorder={reorderPins}
         />
+        {rightPinItems.length > 0 ? (
+          <>
+            <ShellPins
+              align="end"
+              items={rightPinItems}
+              selectedId={selectedPin?.pin.id ?? null}
+              openId={openTarget?.pin.id ?? null}
+              onOpenChange={changeOpenPin}
+              menuIdOf={dropIdOf}
+              locale={currentLocale}
+              landmarkLabel={landmarkLabel}
+              onPinsReorder={reorderRightPins}
+            />
+            <span className="tcrn-shell-strip__divider" aria-hidden="true" data-shell-strip-divider="" />
+          </>
+        ) : null}
         <div className="tcrn-shell-cluster" data-cluster="">
           {headerActions ? (
             <div className="tcrn-product-shell__header-actions" data-product-shell-region="header-actions">
@@ -2051,7 +2243,13 @@ function ProductShellContent({
                   </nav>
                 ) : null}
                 <div className="tcrn-shell-account__prefs" role="group" aria-label={copy.themeAndLanguage} data-shell-preferences="">
-                  <ShellThemeToggle currentTheme={currentTheme} locale={currentLocale} onThemeChange={onThemeChange} />
+                  <ShellThemeToggle
+                    currentTheme={currentTheme}
+                    seasonalThemes={seasonalThemes}
+                    availableThemes={availableThemes}
+                    locale={currentLocale}
+                    onThemeChange={onThemeChange}
+                  />
                   <ShellLocaleMenu
                     locales={locales}
                     currentLocale={currentLocale}
@@ -2065,6 +2263,11 @@ function ProductShellContent({
           </div>
         </div>
       </header>
+      {hasTopBanner ? (
+        <div className="tcrn-product-shell__top-banner" data-top-banner="" data-product-shell-region="top-banner">
+          {topBanner}
+        </div>
+      ) : null}
       <ShellMenu
         presentation={menuPresentation}
         id={menuId}
@@ -2073,12 +2276,12 @@ function ProductShellContent({
         onOpenChange={changeMenu}
         triggerRef={brandRef}
         productId={brandProductId}
-        groups={navGroups}
+        groups={allNavGroups}
         selectedId={selectedId}
         currentPath={currentPath}
         pinnedIds={pinnedIds}
         onPinnedChange={onPinnedChange}
-        pinnedItems={pinItems}
+        pinnedItems={allPinItems}
         searchPlaceholder={searchPlaceholder}
         searchProvider={searchProvider}
         onSearchQueryChange={onSearchQueryChange}
@@ -2154,7 +2357,7 @@ export interface ProductShellRequestPreferences<Locale extends string = TcrnLoca
   pins?: readonly string[] | undefined;
 }
 
-export interface ProductShellControllerConfig<Locale extends string = TcrnLocale> {
+export interface ProductShellControllerConfig<Locale extends string = TcrnLocale> extends ShellSeasonalThemeOptions {
   initialTheme?: ShellThemeMode;
   initialLocale?: string;
   /** Exact product locale ids and complete copy. Omitted, the original five-locale resolver is used. */
@@ -2208,6 +2411,8 @@ export interface ProductShellControllerConfig<Locale extends string = TcrnLocale
 
 export function useProductShellController<Locale extends string = TcrnLocale>({
   initialTheme = "light",
+  seasonalThemes,
+  availableThemes,
   initialLocale = "en",
   localeDefinitions,
   initialPins,
@@ -2227,6 +2432,10 @@ export function useProductShellController<Locale extends string = TcrnLocale>({
   onSearchDismiss,
   onSearchResultActivate
 }: ProductShellControllerConfig<Locale> = {}) {
+  const enabledThemes = useMemo(
+    () => resolveEnabledShellThemes({ seasonalThemes, availableThemes }),
+    [availableThemes, seasonalThemes]
+  );
   // The product's backend is the store of record for the pins; the local copy, kept per product,
   // answers only when the request carries none.
   const pinsKey = pinsStorageKey ?? (productId ? `tcrn-shell-pins:${productId}` : undefined);
@@ -2234,7 +2443,7 @@ export function useProductShellController<Locale extends string = TcrnLocale>({
     () => requestPreferences?.pins ?? readStoredPins(pinsKey) ?? initialPins ?? []);
   const pinsRef = useRef(pins);
   const [theme, setThemeState] = useState<ShellThemeMode>(
-    () => readStoredTheme(themeStorageKey, initialTheme, requestPreferences?.theme));
+    () => readStoredTheme(themeStorageKey, initialTheme, requestPreferences?.theme, enabledThemes));
   const [locale, setLocaleState] = useState<Locale>(
     () => readStoredLocale(localeStorageKey, initialLocale, requestPreferences?.locale, localeDefinitions));
   const localeDefinition = localeDefinitions?.find((definition) => definition.locale === locale);
@@ -2298,7 +2507,7 @@ export function useProductShellController<Locale extends string = TcrnLocale>({
   }, [movePin, setPins]);
 
   const setTheme = useCallback((nextTheme: ShellThemeMode) => {
-    const resolvedTheme = nextTheme === "dark" ? "dark" : "light";
+    const resolvedTheme = normalizeShellTheme(nextTheme, enabledThemes);
     const update = () => {
       setThemeState(resolvedTheme);
       writeStoredString(themeStorageKey, resolvedTheme);
@@ -2312,7 +2521,7 @@ export function useProductShellController<Locale extends string = TcrnLocale>({
       return;
     }
     update();
-  }, [onThemeChange, themeStorageKey]);
+  }, [enabledThemes, onThemeChange, themeStorageKey]);
 
   // Stored and selected values cross the same boundary: a product catalogue uses exact ids;
   // without one the original five-language resolver keeps its existing behaviour.
@@ -2356,8 +2565,10 @@ export function useProductShellController<Locale extends string = TcrnLocale>({
   const searchResults = useMemo(() => searchProvider(searchQuery, []), [searchProvider, searchQuery]);
 
   const toggleTheme = useCallback(() => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }, [setTheme, theme]);
+    const currentIndex = enabledThemes.indexOf(normalizeShellTheme(theme, enabledThemes));
+    const next = enabledThemes[(currentIndex + 1) % enabledThemes.length] ?? "light";
+    setTheme(next);
+  }, [enabledThemes, setTheme, theme]);
 
   const openLocaleMenu = useCallback(() => {
     setLocaleMenuOpen(true, "controller");
@@ -2398,8 +2609,11 @@ export function useProductShellController<Locale extends string = TcrnLocale>({
   const shellThemeToggleProps = {
     ...(localeDefinition ? {
       lightLabel: localeDefinition.copy.chrome.switchToLight,
-      darkLabel: localeDefinition.copy.chrome.switchToDark
+      darkLabel: localeDefinition.copy.chrome.switchToDark,
+      ...(localeDefinition.copy.chrome.switchToHalloween ? { halloweenLabel: localeDefinition.copy.chrome.switchToHalloween } : {})
     } : {}),
+    ...(seasonalThemes ? { seasonalThemes } : {}),
+    ...(availableThemes ? { availableThemes } : {}),
     currentTheme: theme,
     onThemeChange: setTheme
   };
@@ -2408,6 +2622,8 @@ export function useProductShellController<Locale extends string = TcrnLocale>({
   // provider for the results of the query typed there.
   const productShellControlProps = {
     currentTheme: theme,
+    ...(seasonalThemes ? { seasonalThemes } : {}),
+    ...(availableThemes ? { availableThemes } : {}),
     currentLocale: locale,
     localeDefinition,
     localeMenuOpen,
@@ -2518,11 +2734,15 @@ function writeStoredPins(key: string | undefined, pins: readonly string[]) {
 function readStoredTheme(
   key: string | undefined,
   fallback: ShellThemeMode,
-  requestValue?: ShellThemeMode
+  requestValue?: ShellThemeMode,
+  enabledThemes: readonly ShellThemeMode[] = defaultShellThemes
 ): ShellThemeMode {
   const value = readStoredPreference(key);
-  if (value !== null) return value === "dark" ? "dark" : "light";
-  return requestValue ?? fallback;
+  if (value !== null) {
+    if ((enabledThemes as readonly string[]).includes(value)) return value as ShellThemeMode;
+    return normalizeShellTheme(requestValue ?? fallback, enabledThemes);
+  }
+  return normalizeShellTheme(requestValue ?? fallback, enabledThemes);
 }
 
 /**
@@ -2575,14 +2795,17 @@ export function readPreferenceCookieValues<Locale extends string = TcrnLocale>(
     themeKey?: string | undefined;
     localeKey?: string | undefined;
     localeDefinitions?: readonly ProductShellLocaleDefinition<Locale>[];
+    seasonalThemes?: readonly SeasonalShellThemeMode[];
+    availableThemes?: readonly ShellThemeMode[];
   }
 ): ProductShellRequestPreferences<Locale> {
   const header = cookieHeader ?? "";
   const themeValue = keys.themeKey ? readCookiePreference(keys.themeKey, header) : null;
   const localeValue = keys.localeKey ? readCookiePreference(keys.localeKey, header) : null;
+  const enabledThemes = resolveEnabledShellThemes({ seasonalThemes: keys.seasonalThemes, availableThemes: keys.availableThemes });
   const supportedLocales: readonly string[] = keys.localeDefinitions?.map((definition) => definition.locale) ?? tcrnSupportedLocales;
   return {
-    theme: themeValue === "dark" || themeValue === "light" ? themeValue : undefined,
+    theme: themeValue !== null && (enabledThemes as readonly string[]).includes(themeValue) ? (themeValue as ShellThemeMode) : undefined,
     locale: localeValue !== null && supportedLocales.includes(localeValue)
       ? (localeValue as Locale)
       : undefined

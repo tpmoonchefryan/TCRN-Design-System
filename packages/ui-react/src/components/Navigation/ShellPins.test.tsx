@@ -209,3 +209,52 @@ test("STORY-140 GWT3 a movable band adds no mark of its own: the items say their
   assert.deepEqual(ruleBody(".tcrn-shell-pins__item:where([data-pin-movable])").trim().split("\n").map((line) => line.trim()), ["touch-action: pan-y;", "user-select: none;"]);
   assert.deepEqual(ruleBody(".tcrn-shell-pins__item:where([data-pin-dragging])").trim().split("\n").map((line) => line.trim()), ["cursor: grabbing;"]);
 });
+
+test("STORY-157 ShellPins supports right-aligned backoffice landmark naming, external links, and role-gated disabled items", async () => {
+  const backofficePins: readonly ShellPinItem[] = [
+    { id: "stage", label: "纯净弹幕副屏", href: "/stage", external: true },
+    { id: "users", label: "用户管理", href: "/admin/users", disabled: true, disabledReason: "需要频道管理员权限" },
+    { id: "integrations", label: "集成管理", hasMenu: true, disabled: true, disabledReason: "演示只读角色不可配置" }
+  ];
+
+  for (const locale of tcrnSupportedLocales) {
+    const html = renderToStaticMarkup(<ShellPins align="end" items={backofficePins} locale={locale} landmarkLabel="VoxWard" />);
+    const expectedLabel = tcrnShellCopy[locale].landmarkOf("VoxWard", tcrnShellCopy[locale].backofficePinnedItems ?? tcrnShellCopy[locale].pinnedItems);
+    assert.match(html, new RegExp(`aria-label="${escapeRegExp(expectedLabel)}"`));
+    assert.match(html, /class="tcrn-shell-pins tcrn-shell-pins--end"/);
+    assert.match(html, /data-pins-align="end"/);
+  }
+
+  const zh = renderToStaticMarkup(<ShellPins align="end" items={backofficePins} selectedId="users" locale="zh-CN" />);
+  // External link renders target="_blank", rel="noopener noreferrer", data-external="true" and external-link icon.
+  assert.match(zh, /data-pin="stage"><a[^>]*href="\/stage"[^>]*target="_blank"[^>]*rel="noopener noreferrer"[^>]*data-external="true"/);
+  assert.match(zh, /data-icon-name="external-link" class="tcrn-icon tcrn-shell-pins__external"/);
+  assert.match(zh, /在新窗口打开/);
+  // Disabled link omits href, sets aria-disabled="true" and never marks aria-current="page".
+  assert.match(zh, /data-pin="users"><a class="tcrn-shell-pins__item" aria-disabled="true"[^>]*data-disabled-reason="需要频道管理员权限" title="需要频道管理员权限">/);
+  assert.doesNotMatch(zh, /href="\/admin\/users"/);
+  assert.doesNotMatch(zh, /aria-current=/);
+
+  // CSS pairs for external stroke and disabled --tcrn-color-dis fill.
+  const itemRule = ruleBody(".tcrn-shell-pins__item");
+  assert.match(itemRule, /--tcrn-pair-fill-x: var\(--tcrn-color-dis\);/);
+  assert.match(itemRule, /--tcrn-pair-ink-x: var\(--tcrn-color-ink-3\);/);
+  const externalRule = ruleBody('.tcrn-shell-pins__item[data-external="true"]');
+  assert.match(externalRule, /--tcrn-pair-edge-d: 0 0 0 1px var\(--tcrn-color-line-2\);/);
+  const disabledRule = ruleBody('.tcrn-shell-pins__item:where([aria-disabled="true"], :disabled, [data-tcrn-preview-state="disabled"])');
+  assert.match(disabledRule, /--tcrn-pair-fill: var\(--tcrn-pair-fill-x\);/);
+  assert.match(disabledRule, /cursor: not-allowed;/);
+
+  // Disabled dropdown button blocks onOpenChange activation.
+  const harness = createDomInteractionHarness();
+  try {
+    const opened: Array<string | null> = [];
+    await harness.render(<ShellPins items={backofficePins} onOpenChange={(next) => opened.push(next)} locale="zh-CN" />);
+    const disabledButton = harness.document.querySelector('[data-pin="integrations"] button');
+    assert.ok(disabledButton);
+    await harness.dispatchClick(disabledButton);
+    assert.deepEqual(opened, []);
+  } finally {
+    await harness.cleanup();
+  }
+});

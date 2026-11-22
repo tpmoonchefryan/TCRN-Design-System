@@ -116,6 +116,9 @@ export const shellCss01 = `
 .tcrn-shell-brand__suffix--design-system {
   color: var(--tcrn-brand-suffix-design-system);
 }
+.tcrn-shell-brand__suffix--voxward {
+  color: var(--tcrn-brand-suffix-voxward);
+}
 .tcrn-shell-brand__toggle {
   display: inline-flex;
   align-items: center;
@@ -197,6 +200,9 @@ export const shellCss02 = `
   --tcrn-pair-fill-s: var(--tcrn-color-wash);
   --tcrn-pair-ink-s: var(--tcrn-color-ink);
   --tcrn-pair-edge-s: 0 0 #0000;
+  --tcrn-pair-fill-x: var(--tcrn-color-dis);
+  --tcrn-pair-ink-x: var(--tcrn-color-ink-3);
+  --tcrn-pair-edge-x: 0 0 #0000;
   --tcrn-pair-edge-f: var(--tcrn-focus-ring);
   display: inline-flex;
   align-items: center;
@@ -232,6 +238,15 @@ export const shellCss02 = `
   flex: 0 0 auto;
   color: var(--tcrn-color-ink-3);
 }
+.tcrn-shell-pins__external {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+.tcrn-shell-pins__item[data-external="true"] {
+  --tcrn-pair-edge-d: 0 0 0 1px var(--tcrn-color-line-2);
+  --tcrn-pair-edge-h: 0 0 0 1px var(--tcrn-color-line-3);
+  --tcrn-pair-edge-s: 0 0 0 1px var(--tcrn-color-line-3);
+}
 .tcrn-shell-pins__item:where(:hover, [data-tcrn-preview-state="hover"]) {
   --tcrn-pair-fill: var(--tcrn-pair-fill-h);
   --tcrn-pair-ink: var(--tcrn-pair-ink-h);
@@ -247,6 +262,13 @@ export const shellCss02 = `
   --tcrn-pair-ink: var(--tcrn-pair-ink-s);
   --tcrn-pair-edge: var(--tcrn-pair-edge-s);
   --tcrn-pair-weight: var(--tcrn-type-weight-strong);
+}
+.tcrn-shell-pins__item:where([aria-disabled="true"], :disabled, [data-tcrn-preview-state="disabled"]) {
+  --tcrn-pair-fill: var(--tcrn-pair-fill-x);
+  --tcrn-pair-ink: var(--tcrn-pair-ink-x);
+  --tcrn-pair-edge: var(--tcrn-pair-edge-x);
+  --tcrn-pair-weight: var(--tcrn-type-weight-medium);
+  cursor: not-allowed;
 }
 .tcrn-shell-pins__item:where(:focus-visible, [data-tcrn-preview-state="focus"]) {
   --tcrn-pair-edge: var(--tcrn-pair-edge-f);
@@ -487,6 +509,13 @@ export const shellCss03 = `
 .tcrn-shell-menu .tcrn-nav-item:where(:focus-visible) {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+.tcrn-shell-menu .tcrn-nav-item[aria-disabled="true"] {
+  --tcrn-pair-fill-d: var(--tcrn-color-dis);
+  --tcrn-pair-fill-h: var(--tcrn-color-dis);
+  --tcrn-pair-ink-d: var(--tcrn-color-ink-3);
+  --tcrn-pair-ink-h: var(--tcrn-color-ink-3);
+  cursor: not-allowed;
 }
 .tcrn-shell-menu .tcrn-nav-item-row {
   min-inline-size: 0;
@@ -857,6 +886,13 @@ export const shellCss05 = `
   line-height: var(--tcrn-type-line-ui);
   letter-spacing: 0;
 }
+.tcrn-product-shell[data-product-shell-top-banner="present"] {
+  grid-template-rows: var(--tcrn-shell-strip-h) auto minmax(0, 1fr);
+}
+.tcrn-product-shell__top-banner {
+  min-inline-size: 0;
+  margin: 0 var(--tcrn-space-3) var(--tcrn-space-2);
+}
 .tcrn-shell-strip {
   display: flex;
   align-items: center;
@@ -866,6 +902,49 @@ export const shellCss05 = `
   padding: 0 var(--tcrn-space-3);
   border: 0;
   background: none;
+}
+.tcrn-shell-pins--end {
+  margin-inline-start: auto;
+}
+.tcrn-shell-strip__divider {
+  flex: 0 0 auto;
+  inline-size: 1px;
+  block-size: var(--tcrn-space-4);
+  margin: 0 var(--tcrn-shell-pin-gap);
+  background: var(--tcrn-color-line-2);
+}
+.tcrn-shell-strip__divider + .tcrn-shell-cluster {
+  margin-inline-start: 0;
+}
+@container tcrn-shell (max-width: 1023px) {
+  .tcrn-shell-strip__divider {
+    display: none;
+  }
+  .tcrn-shell-strip__divider + .tcrn-shell-cluster {
+    margin-inline-start: auto;
+  }
+}
+.tcrn-nav-item[aria-disabled="true"] {
+  background: var(--tcrn-color-dis);
+  color: var(--tcrn-color-ink-3);
+  cursor: not-allowed;
+}
+.tcrn-nav-item__disabled-reason {
+  min-inline-size: 0;
+  overflow: hidden;
+  color: var(--tcrn-color-ink-3);
+  font-size: var(--tcrn-type-size-meta);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcrn-nav-item__external {
+  flex: 0 0 auto;
+  color: var(--tcrn-color-ink-3);
+}
+.tcrn-shell-theme-toggle:not([data-current-theme="halloween"]) [data-theme-icon="halloween"],
+.tcrn-shell-theme-toggle[data-current-theme="halloween"] [data-theme-icon="light"],
+.tcrn-shell-theme-toggle[data-current-theme="halloween"] [data-theme-icon="dark"] {
+  opacity: 0;
 }
 .tcrn-shell-cluster {
   display: flex;

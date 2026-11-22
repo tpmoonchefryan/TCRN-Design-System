@@ -26,6 +26,7 @@ import {
   ProductLockup,
   TcrnBrandMark,
   tcrnComponentCss,
+  tcrnAdoptedProductMarks,
   tcrnProductLogoRegistry,
   tcrnProductMarkIds,
   tcrnProductMarkSvg,
@@ -198,7 +199,7 @@ const storyTaglines = {
 test("Einzbern and Mana Orchestrate are whole serif names with the byline and no host name", () => {
   assert.equal(tcrnProductLogoRegistry.einzbern.lineOne, "Einzbern");
   assert.equal(tcrnProductLogoRegistry["mana-orchestrate"].lineOne, "Mana Orchestrate");
-  for (const productId of ["tms", "einzbern", "mana-orchestrate", "design-system"] as const) {
+  for (const productId of ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward"] as const) {
     const entry = tcrnProductLogoRegistry[productId], serif = productId === "einzbern" || productId === "mana-orchestrate";
     assert.equal(entry.wordmark, serif ? "serif" : "sans");
     if (serif) { assert.equal(entry.byline, "by TCRN");assert.equal(entry.lineOneSuffix, null); }
@@ -1771,11 +1772,11 @@ test("STORY-145 STORY-149 a measured lockup's data-logo is its mark's id, the lo
 
 
 test("published brand identities reject missing keys, AOS and free suffix fallbacks",()=>{
-  assert.deepEqual(Object.keys(tcrnProductLogoRegistry).sort(),["design-system","einzbern","mana-orchestrate","tms"]);
+  assert.deepEqual(Object.keys(tcrnProductLogoRegistry).sort(),["design-system","einzbern","mana-orchestrate","tms","voxward"]);
   assert.throws(()=>renderToStaticMarkup(<ProductLogo productId={"aos" as never}/>));
   assert.throws(()=>TcrnBrandMark({} as never));
   assert.throws(()=>ProductLockup({suffix:"TMS"} as never));
-  for(const productId of ["tms","einzbern","mana-orchestrate","design-system"] as const){
+  for(const productId of ["tms","einzbern","mana-orchestrate","design-system","voxward"] as const){
     const html=renderToStaticMarkup(<ProductLockup productId={productId} locale="zh-CN"/>);
     assert.match(html,/<svg/);assert.doesNotMatch(html,/<img|tcrn-brand-mark\.svg/);
   }
@@ -1802,4 +1803,227 @@ test("paper Tabs keyboard selection moves focus and skips disabled choices",asyn
  const harness=createDomInteractionHarness();function Fixture(){const [selected,setSelected]=useState("all");return <Tabs items={[{id:"all",label:"All"},{id:"blocked",label:"Unavailable",disabled:true},{id:"signed",label:"Signed"}]} selectedId={selected} onSelect={setSelected} label="Roster">Table</Tabs>;}
  try{await harness.render(<Fixture/>);const first=harness.document.querySelector('[role="tab"][data-tab-id="all"]') as HTMLButtonElement;await act(async()=>{first.focus();first.dispatchEvent(new harness.window.KeyboardEvent("keydown",{key:"ArrowRight",bubbles:true}));});const selected=harness.document.querySelector('[role="tab"][aria-selected="true"]');assert.ok(selected);assert.equal(selected.getAttribute("data-tab-id"),"signed");assert.equal(harness.document.activeElement,selected);assert.equal(selected.getAttribute("tabindex"),"0");assert.equal(first.getAttribute("tabindex"),"-1");}
  finally{await harness.cleanup();}
+});
+
+test("STORY-156 voxward Option C Acoustic Gate mark, renditions, five-locale taglines and ProductShell registration", () => {
+  assert.ok(tcrnProductMarkIds.includes("voxward"));
+  const voxward = tcrnAdoptedProductMarks.find((mark) => mark.productId === "voxward");
+  assert.ok(voxward);
+  assert.equal(voxward.id, "voxward");
+  assert.equal(voxward.name, "VoxWard");
+  assert.equal(voxward.word, "VoxWard");
+  assert.match(voxward.colorBody, /<rect fill="var\(--tcrn-color-acc, #0b6b65\)" height="48" rx="12" width="48"\/>/);
+  assert.match(voxward.colorBody, /M10\.5 12\.75L18 12\.75L24 30\.75L30 12\.75L37\.5 12\.75L27\.375 38\.25L20\.625 38\.25Z/);
+  assert.match(voxward.colorBody, /M24 9\.75L27\.75 15L24 20\.25L20\.25 15Z/);
+
+  for (const variant of ["color", "mono", "tile-tint", "tile-deep"] as const) {
+    const svg = tcrnProductMarkSvg("voxward", variant);
+    assert.match(svg, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="VoxWard">/);
+    assert.match(svg, /M10\.5 12\.75L18 12\.75L24 30\.75/);
+    assert.match(svg, /M24 9\.75L27\.75 15L24 20\.25L20\.25 15Z/);
+  }
+  const taglines = (["zh-CN", "en", "ja", "ko", "fr"] as const).map((locale) => tcrnProductTagline("voxward", locale));
+  assert.equal(taglines.every((text) => text.trim().length > 0), true);
+  assert.equal(new Set(taglines).size, 5, "all five locales carry distinct taglines");
+
+  const shellHtml = renderToStaticMarkup(
+    <ProductShell
+      productName="VoxWard"
+      moduleName="审核后台"
+      brandProductId="voxward"
+      currentRouteLabel="实时队列"
+      pageHeader={{ title: "实时队列" }}
+      navGroups={[]}
+      locales={shellLocales}
+      currentLocale="zh-CN"
+      menuOpen
+    >
+      <div>队列内容</div>
+    </ProductShell>
+  );
+  assert.deepEqual([...shellHtml.matchAll(/data-logo="([^"]+)"/g)].map((m) => m[1]), ["voxward", "voxward"]);
+});
+
+test("STORY-157 ProductShell renders right-aligned backoffice pins before cluster with 1x16 line-2 divider, symmetric pin-gap, external and disabled states", () => {
+  const voxwardGroups: ProductShellNavGroup[] = [
+    {
+      id: "front",
+      label: "日常业务",
+      items: [
+        { id: "moderation", label: "审核后台", href: "/moderation", selected: true },
+        { id: "blocked", label: "拦截管理", href: "/blocked" },
+        { id: "stage", label: "弹幕副屏", href: "/stage", external: true }
+      ]
+    },
+    {
+      id: "backoffice",
+      label: "后台管理",
+      align: "end",
+      items: [
+        { id: "logs", label: "日志查看器", href: "/logs" },
+        { id: "integrations", label: "集成管理", href: "/integrations" },
+        { id: "users", label: "用户管理", href: "/users", disabled: true, disabledReason: "需要管理员权限" },
+        { id: "settings", label: "系统设置", href: "/settings" }
+      ]
+    }
+  ];
+
+  const html = renderToStaticMarkup(
+    <ProductShell
+      productName="VoxWard"
+      moduleName="审核后台"
+      brandProductId="voxward"
+      currentRouteLabel="审核后台"
+      pageHeader={{ title: "审核后台" }}
+      navGroups={voxwardGroups}
+      pinnedIds={["moderation", "blocked", "stage", "logs", "integrations", "users", "settings"]}
+      account={{ name: "林晓" }}
+      locales={shellLocales}
+      currentLocale="zh-CN"
+    >
+      <div>主工作台</div>
+    </ProductShell>
+  );
+
+  const leftPinsAt = html.indexOf('aria-label="固定项"');
+  const rightPinsAt = html.indexOf('aria-label="后台固定项"');
+  const dividerAt = html.indexOf("data-shell-strip-divider=");
+  const clusterAt = html.indexOf("data-cluster=");
+  assert.ok(leftPinsAt > -1 && rightPinsAt > leftPinsAt && dividerAt > rightPinsAt && clusterAt > dividerAt, "left pins -> right pins -> 1x16 divider -> account cluster");
+  assert.match(html, /class="tcrn-shell-pins tcrn-shell-pins--end"[^>]*aria-label="后台固定项"[^>]*data-pins=""[^>]*data-pins-align="end"/);
+  assert.match(html, /data-pin="stage"><a[^>]*target="_blank"[^>]*rel="noopener noreferrer"[^>]*data-external="true"/);
+  assert.match(html, /data-pin="users"><a[^>]*aria-disabled="true"[^>]*data-disabled-reason="需要管理员权限"/);
+  assert.doesNotMatch(html, /href="\/users"/);
+
+  // Symmetric internal spacing token (--tcrn-shell-pin-gap), 12px outer padding (--tcrn-space-3), and 1x16 divider (--tcrn-space-4, --tcrn-color-line-2).
+  assert.match(shellSegments.shellCss02, /\.tcrn-shell-pins \{\n[^}]*gap: var\(--tcrn-shell-pin-gap\);/);
+  assert.doesNotMatch(shellSegments.shellCss05, /\.tcrn-shell-pins--end \{[^}]*gap:/, "right pins inherit the exact same --tcrn-shell-pin-gap token as left pins");
+  assert.match(shellSegments.shellCss05, /\.tcrn-shell-strip \{\n[^}]*padding: 0 var\(--tcrn-space-3\);/);
+  assert.match(shellSegments.shellCss05, /\.tcrn-shell-strip__divider \{\n {2}flex: 0 0 auto;\n {2}inline-size: 1px;\n {2}block-size: var\(--tcrn-space-4\);\n {2}margin: 0 var\(--tcrn-shell-pin-gap\);\n {2}background: var\(--tcrn-color-line-2\);\n\}/);
+  assert.equal(createTokenMap()["--tcrn-space-4"], "16px");
+  assert.equal(createTokenMap()["--tcrn-space-3"], "12px");
+});
+
+test("STORY-158 topBanner slot preserves 2-row grid when omitted/null and renders between strip and paper with space-3 inset when provided", () => {
+  const renderShell = (topBanner?: ReactNode) =>
+    renderToStaticMarkup(
+      <ProductShell
+        productName="VoxWard"
+        moduleName="沙盒演练"
+        brandProductId="voxward"
+        currentRouteLabel="演练工作台"
+        pageHeader={{ title: "演练工作台" }}
+        navGroups={[]}
+        locales={shellLocales}
+        currentLocale="zh-CN"
+        topBanner={topBanner}
+      >
+        <div>演练面板</div>
+      </ProductShell>
+    );
+
+  const withoutBanner = renderShell();
+  const withNullBanner = renderShell(null);
+  assert.equal(withoutBanner, withNullBanner, "null and undefined topBanner produce identical 2-row shell markup");
+  assert.doesNotMatch(withoutBanner, /tcrn-product-shell__top-banner|data-top-banner|data-product-shell-top-banner/);
+
+  const withBanner = renderShell(<div role="region" aria-label="合成演示环境">沙盒控制栏</div>);
+  assert.match(withBanner, /data-product-shell-top-banner="present"/);
+  const stripEnd = withBanner.indexOf("</header>");
+  const bannerAt = withBanner.indexOf('class="tcrn-product-shell__top-banner"');
+  const paperAt = withBanner.indexOf('class="tcrn-product-shell__paper"');
+  assert.ok(stripEnd > -1 && bannerAt > stripEnd && paperAt > bannerAt, "topBanner sits strictly between strip and paper");
+  assert.match(shellSegments.shellCss05, /\.tcrn-product-shell\[data-product-shell-top-banner="present"\] \{\n {2}grid-template-rows: var\(--tcrn-shell-strip-h\) auto minmax\(0, 1fr\);\n\}/);
+  assert.match(shellSegments.shellCss05, /\.tcrn-product-shell__top-banner \{\n {2}min-inline-size: 0;\n {2}margin: 0 var\(--tcrn-space-3\) var\(--tcrn-space-2\);\n\}/);
+});
+
+test("STORY-158 seasonal theme switching stays strictly 2-state by default and cycles/persists halloween when opted in", async () => {
+  // Default cookie parsing rejects seasonal themes when not opted in, and accepts halloween when opted in.
+  assert.deepEqual(readPreferenceCookieValues("vw-theme=halloween", { themeKey: "vw-theme" }), { theme: undefined, locale: undefined });
+  assert.deepEqual(
+    readPreferenceCookieValues("vw-theme=halloween", { themeKey: "vw-theme", seasonalThemes: ["halloween"] }),
+    { theme: "halloween", locale: undefined }
+  );
+  assert.deepEqual(
+    readPreferenceCookieValues("vw-theme=halloween", { themeKey: "vw-theme", availableThemes: ["light", "dark", "halloween"] }),
+    { theme: "halloween", locale: undefined }
+  );
+
+  // Five-locale accessible labels when switching into Halloween.
+  for (const locale of ["zh-CN", "en", "ja", "ko", "fr"] as const) {
+    const toggleHtml = renderToStaticMarkup(
+      <ShellThemeToggle currentTheme="dark" seasonalThemes={["halloween"]} locale={locale} />
+    );
+    assert.match(toggleHtml, /data-theme-next="halloween"/);
+    assert.match(toggleHtml, /data-theme-icon="halloween"/);
+  }
+  assert.doesNotMatch(renderToStaticMarkup(<ShellThemeToggle currentTheme="dark" locale="en" />), /halloween/);
+
+  const harness = createDomInteractionHarness();
+  try {
+    harness.window.localStorage.clear();
+    const events: string[] = [];
+
+    function DefaultTwoStateFixture() {
+      const controller = useProductShellController({
+        themeStorageKey: "default-theme",
+        onThemeChange: (next) => events.push(`default:${next}`)
+      });
+      return (
+        <div>
+          <button type="button" data-force-halloween="" onClick={() => controller.setTheme("halloween")}>Force</button>
+          <ShellThemeToggle {...controller.shellThemeToggleProps} />
+        </div>
+      );
+    }
+
+    await harness.render(<DefaultTwoStateFixture />);
+    await harness.dispatchClick(harness.document.querySelector("[data-force-halloween]")!);
+    assert.deepEqual(events, ["default:light"], "2-state controller rejects unconfigured seasonal theme");
+    assert.equal(harness.window.localStorage.getItem("default-theme"), "light");
+
+    function SeasonalOptInFixture() {
+      const controller = useProductShellController({
+        seasonalThemes: ["halloween"],
+        themeStorageKey: "vw-theme",
+        onThemeChange: (next) => events.push(`seasonal:${next}`)
+      });
+      return (
+        <ProductShell
+          productName="VoxWard"
+          moduleName="审核后台"
+          brandProductId="voxward"
+          currentRouteLabel="队列"
+          pageHeader={{ title: "队列" }}
+          navGroups={[]}
+          locales={shellLocales}
+          accountMenuOpen
+          {...controller.productShellControlProps}
+        >
+          <div>内容</div>
+        </ProductShell>
+      );
+    }
+
+    await harness.render(<SeasonalOptInFixture />);
+    const shell = () => harness.document.querySelector(".tcrn-product-shell")!;
+    const toggle = () => harness.document.querySelector("button.tcrn-shell-theme-toggle")!;
+    assert.equal(shell().getAttribute("data-tcrn-theme"), "light");
+
+    await harness.dispatchClick(toggle());
+    assert.equal(shell().getAttribute("data-tcrn-theme"), "dark");
+    assert.equal(harness.window.localStorage.getItem("vw-theme"), "dark");
+
+    await harness.dispatchClick(toggle());
+    assert.equal(shell().getAttribute("data-tcrn-theme"), "halloween");
+    assert.equal(shell().getAttribute("data-product-shell-theme"), "halloween");
+    assert.equal(harness.window.localStorage.getItem("vw-theme"), "halloween");
+    assert.match(harness.document.cookie, /vw-theme=halloween/);
+
+    await harness.dispatchClick(toggle());
+    assert.equal(shell().getAttribute("data-tcrn-theme"), "light");
+    assert.deepEqual(events.filter((e) => e.startsWith("seasonal:")), ["seasonal:dark", "seasonal:halloween", "seasonal:light"]);
+  } finally {
+    await harness.cleanup();
+  }
 });

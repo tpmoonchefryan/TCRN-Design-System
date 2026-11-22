@@ -11,19 +11,25 @@
 // The module belongs to the Navigation directory: neither components/Navigation/index.ts nor
 // src/index.tsx exports it. It takes only a type from Navigation.tsx, so nothing in it waits on
 // Navigation.tsx when the modules load, and Navigation.tsx can call it at load time.
-import type { TcrnProductMarkId } from "./Navigation.js";
+import { tcrnAdoptedProductMarks } from "./adopted-product-marks.js";
 import { tcrnProductMarks, type TcrnProductMark } from "./product-marks.generated.js";
 
-/** The generated mark registered under the product key `productId`. */
+export const tcrnProductMarkIds = ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward"] as const;
+export type TcrnProductMarkId = (typeof tcrnProductMarkIds)[number];
+
+/** Formal generated marks and explicitly adopted marks registered in the Design System. */
+export const tcrnRegisteredProductMarks: readonly TcrnProductMark[] = [...tcrnProductMarks, ...tcrnAdoptedProductMarks];
+
+/** The registered mark under the product key `productId`. */
 export function productMark(productId: TcrnProductMarkId): TcrnProductMark {
-  const mark = tcrnProductMarks.find((candidate) => candidate.productId === productId);
+  const mark = tcrnRegisteredProductMarks.find((candidate) => candidate.productId === productId);
   if (!mark) throw new Error(`No product mark is generated for "${productId}"`);
   return mark;
 }
 
 /**
  * The mark's own id, which data-logo carries: tms → tms, design-system → ds,
- * mana-orchestrate → mana, einzbern → einzbern.
+ * mana-orchestrate → mana, einzbern → einzbern, voxward → voxward.
  */
 export function productMarkIdOf(productId: TcrnProductMarkId): string {
   return productMark(productId).id;

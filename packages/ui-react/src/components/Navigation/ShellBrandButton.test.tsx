@@ -214,3 +214,18 @@ test("published K1 suffix roles meet the retained threshold without an interacti
  assert.equal(createResolvedTokenMap("light")["--tcrn-color-shell-brand-suffix-design-system-interactive"],undefined);
  assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-design-system"],"#6577f3");
 });
+
+test("STORY-156 ShellBrandButton supports adopted voxward Option C mark and --tcrn-brand-suffix-voxward", () => {
+  const html = renderToStaticMarkup(<ShellBrandButton productId="voxward" locale="zh-CN" />);
+  assert.match(html, /aria-label="展开导航 · VoxWard"/);
+  assert.match(html, /data-logo="voxward"/);
+  assert.match(html, /<rect fill="var\(--tcrn-color-acc, #0b6b65\)" height="48" rx="12" width="48"\/>/);
+  assert.match(html, /M10\.5 12\.75L18 12\.75L24 30\.75L30 12\.75L37\.5 12\.75L27\.375 38\.25L20\.625 38\.25Z/);
+  assert.match(html, /M24 9\.75L27\.75 15L24 20\.25L20\.25 15Z/);
+  assert.match(html, /<b class="tcrn-shell-brand__word">VoxWard<\/b>/);
+  assert.match(ruleBody(".tcrn-shell-brand__suffix--voxward"), /color: var\(--tcrn-brand-suffix-voxward\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-brand-wordmark__suffix--voxward\{color:var\(--tcrn-brand-suffix-voxward\)\}/);
+  assert.equal(createResolvedTokenMap("light")["--tcrn-brand-suffix-voxward"], "#0b6b65");
+  assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-voxward"], "#3fc7b7");
+  assert.equal(createResolvedTokenMap("halloween")["--tcrn-brand-suffix-voxward"], "#f58a33");
+});
