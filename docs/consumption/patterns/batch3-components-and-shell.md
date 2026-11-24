@@ -1,8 +1,8 @@
-# Batch 3 Components, VoxWard Mark, and Extended Shell Pattern (`4.1.0`)
+# Batch 3 Components, VoxWard Mark, and Extended Shell Pattern (`4.2.0`)
 
-Status: local `4.1.0` candidate · awaiting Owner visual review and formal publication.
+Status: local `4.2.0` candidate · awaiting Owner visual review and formal publication.
 
-This pattern records the cross-product component families, adopted `voxward` product mark, semantic surface tokens, and `ProductShell` extensions promoted into `@tcrn/ui-tokens` and `@tcrn/ui-react/approved` in `4.1.0`. The pinned Site v2 boards (`01` through `07b`), their 28 normative API entries, and the five built-in documentation locales remain unchanged.
+This pattern records the cross-product component families, adopted `voxward` product mark, semantic surface tokens, and `ProductShell` extensions promoted into `@tcrn/ui-tokens` and `@tcrn/ui-react/approved` in `4.2.0`. The pinned Site v2 boards (`01` through `07b`), their 28 normative API entries, and the five built-in documentation locales remain unchanged.
 
 ## Adopted Token and Brand Additions
 

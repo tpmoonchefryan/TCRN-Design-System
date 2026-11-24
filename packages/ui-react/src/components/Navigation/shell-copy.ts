@@ -58,6 +58,18 @@ export interface TcrnShellCopy {
   switchProduct: string;
   /** Name of the avatar menu's theme and language controls. */
   themeAndLanguage: string;
+  /** Heading of the avatar menu's user preferences section. */
+  userPreferences?: string;
+  /** Accessible and visible label for the theme dropdown inside user preferences. */
+  themeLabel?: string;
+  /** Accessible and visible label for the language dropdown inside user preferences. */
+  languageLabel?: string;
+  /** Theme dropdown option label for light mode. */
+  themeOptionLight?: string;
+  /** Theme dropdown option label for dark mode. */
+  themeOptionDark?: string;
+  /** Theme dropdown option label for seasonal halloween mode. */
+  themeOptionHalloween?: string;
   /** Bell name, with the unread count when there is one. */
   notificationsOf: (unread: number) => string;
   /** Title of the Sheet's list of pinned entries, with their count. */
@@ -85,6 +97,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · 账户、切换产品、主题与语言`,
     switchProduct: "切换产品",
     themeAndLanguage: "主题与语言",
+    userPreferences: "用户偏好",
+    themeLabel: "主题",
+    languageLabel: "语言",
+    themeOptionLight: "浅色",
+    themeOptionDark: "深色",
+    themeOptionHalloween: "万圣节",
     notificationsOf: (unread) => (unread > 0 ? `通知 · ${unread} 条未读` : "通知"),
     pinnedItemsOf: (count) => `固定项 · ${count}`,
     allNavigation: "全部",
@@ -106,6 +124,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · Account, switch product, theme and language`,
     switchProduct: "Switch product",
     themeAndLanguage: "Theme and language",
+    userPreferences: "User preferences",
+    themeLabel: "Theme",
+    languageLabel: "Language",
+    themeOptionLight: "Light",
+    themeOptionDark: "Dark",
+    themeOptionHalloween: "Halloween",
     notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} unread` : "Notifications"),
     pinnedItemsOf: (count) => `Pinned items · ${count}`,
     allNavigation: "All",
@@ -127,6 +151,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · アカウント、プロダクトの切り替え、テーマと言語`,
     switchProduct: "プロダクトを切り替え",
     themeAndLanguage: "テーマと言語",
+    userPreferences: "ユーザー設定",
+    themeLabel: "テーマ",
+    languageLabel: "言語",
+    themeOptionLight: "ライト",
+    themeOptionDark: "ダーク",
+    themeOptionHalloween: "ハロウィン",
     notificationsOf: (unread) => (unread > 0 ? `通知 · 未読 ${unread} 件` : "通知"),
     pinnedItemsOf: (count) => `固定した項目 · ${count}`,
     allNavigation: "すべて",
@@ -148,6 +178,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · 계정, 제품 전환, 테마와 언어`,
     switchProduct: "제품 전환",
     themeAndLanguage: "테마와 언어",
+    userPreferences: "사용자 환경설정",
+    themeLabel: "테마",
+    languageLabel: "언어",
+    themeOptionLight: "라이트",
+    themeOptionDark: "다크",
+    themeOptionHalloween: "할로윈",
     notificationsOf: (unread) => (unread > 0 ? `알림 · 읽지 않음 ${unread}개` : "알림"),
     pinnedItemsOf: (count) => `고정한 항목 · ${count}`,
     allNavigation: "전체",
@@ -169,6 +205,12 @@ export const tcrnShellCopy: Readonly<Record<TcrnLocale, TcrnShellCopy>> = {
     accountMenuOf: (name) => `${name} · Compte, changer de produit, thème et langue`,
     switchProduct: "Changer de produit",
     themeAndLanguage: "Thème et langue",
+    userPreferences: "Préférences utilisateur",
+    themeLabel: "Thème",
+    languageLabel: "Langue",
+    themeOptionLight: "Clair",
+    themeOptionDark: "Sombre",
+    themeOptionHalloween: "Halloween",
     notificationsOf: (unread) => (unread > 0 ? `Notifications · ${unread} non lues` : "Notifications"),
     pinnedItemsOf: (count) => `Éléments épinglés · ${count}`,
     allNavigation: "Tout",

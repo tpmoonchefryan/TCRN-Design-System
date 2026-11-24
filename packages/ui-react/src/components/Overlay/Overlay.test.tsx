@@ -245,6 +245,7 @@ test("overlayCss has balanced braces, declared state pairs, and complete overlay
     ".tcrn-popover",
     ".tcrn-tooltip",
     ".tcrn-tooltip__content",
+    ".tcrn-dialog-backdrop",
     ".tcrn-dialog",
     ".tcrn-confirm-dialog",
     ".tcrn-inline-confirm-bar",
@@ -600,6 +601,23 @@ test("InlineConfirmBar focuses Cancel on open, supports warning and danger tones
     await harness.dispatchClick(reopenedConfirm);
     await flushOverlayEffects();
     assert.equal(confirmed, 1);
+  } finally {
+    await harness.cleanup();
+  }
+});
+
+test("Dialog portals into document.body backdrop when running in a browser DOM", async () => {
+  const harness = createDomInteractionHarness();
+  try {
+    await harness.render(
+      <Dialog title="Centered modal" open>
+        <p>Body</p>
+      </Dialog>
+    );
+    await flushOverlayEffects();
+    const backdrop = harness.document.body.querySelector(":scope > .tcrn-dialog-backdrop[data-dialog-backdrop]");
+    assert.ok(backdrop, "Dialog renders inside document.body > .tcrn-dialog-backdrop");
+    assert.ok(backdrop.querySelector(".tcrn-dialog"), "Backdrop contains .tcrn-dialog");
   } finally {
     await harness.cleanup();
   }

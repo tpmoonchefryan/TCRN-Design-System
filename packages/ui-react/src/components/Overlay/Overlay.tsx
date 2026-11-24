@@ -633,7 +633,7 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
     return null;
   }
 
-  return (
+  const dialogContent = (
     <section
       ref={dialogRef}
       role="dialog"
@@ -650,6 +650,15 @@ export function Dialog({ title, open, children, className, triggerRef, initialFo
       {children}
     </section>
   );
+
+  return typeof document !== "undefined"
+    ? createPortal(
+        <div className="tcrn-dialog-backdrop" data-dialog-backdrop="">
+          {dialogContent}
+        </div>,
+        document.body
+      )
+    : dialogContent;
 }
 
 export type MenuItemTone = "neutral" | "danger";

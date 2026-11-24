@@ -217,6 +217,15 @@ export const overlayCss = `
   transform: translateY(-50%);
 }
 /* Dialog, ConfirmActionDialog and Structural Drawers */
+.tcrn-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--tcrn-z-overlay);
+  display: grid;
+  place-items: center;
+  padding: var(--tcrn-space-4);
+  background-color: color-mix(in srgb, var(--tcrn-color-ink) 32%, transparent);
+}
 .tcrn-dialog {
   --tcrn-pair-dialog-fill: var(--tcrn-color-panel);
   --tcrn-pair-dialog-ink: var(--tcrn-color-ink);

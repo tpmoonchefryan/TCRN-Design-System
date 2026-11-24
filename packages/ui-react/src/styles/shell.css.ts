@@ -1106,12 +1106,60 @@ export const shellCss05 = `
 }
 .tcrn-shell-account__prefs {
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--tcrn-space-1h);
+  min-inline-size: 0;
+  padding: var(--tcrn-space-1) var(--tcrn-space-1) 0;
+  border-block-start: 1px solid var(--tcrn-color-line);
+}
+.tcrn-shell-account__prefs-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--tcrn-space-2);
   min-inline-size: 0;
-  padding: var(--tcrn-space-1) var(--tcrn-space-1) 0;
-  border-block-start: 1px solid var(--tcrn-color-line);
+}
+.tcrn-shell-account__prefs-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-1h);
+  min-inline-size: 0;
+}
+.tcrn-shell-account__pref-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tcrn-space-1);
+  min-inline-size: 0;
+}
+.tcrn-shell-account__pref-label {
+  padding: 0 var(--tcrn-space-1h);
+  color: var(--tcrn-color-ink-3);
+  font-size: var(--tcrn-type-size-meta);
+  font-weight: var(--tcrn-type-weight-medium);
+}
+.tcrn-shell-account__prefs-list .tcrn-shell-theme-menu,
+.tcrn-shell-account__prefs-list .tcrn-shell-locale-menu {
+  width: 100%;
+}
+.tcrn-shell-account__prefs-list .tcrn-shell-theme-menu__trigger,
+.tcrn-shell-account__prefs-list .tcrn-shell-locale-menu__trigger {
+  width: 100%;
+  justify-content: flex-start;
+  background: var(--tcrn-color-wash);
+  color: var(--tcrn-color-ink);
+}
+.tcrn-shell-account__prefs-list .tcrn-shell-locale-menu__chevron {
+  margin-inline-start: auto;
+}
+.tcrn-shell-account__prefs-list .tcrn-shell-theme-menu__panel,
+.tcrn-shell-account__prefs-list .tcrn-shell-locale-menu__panel {
+  position: static;
+  width: 100%;
+  box-sizing: border-box;
+  margin-block-start: var(--tcrn-space-1);
+  box-shadow: none;
+  border: 1px solid var(--tcrn-color-line);
 }
 .tcrn-product-shell__paper {
   display: flex;

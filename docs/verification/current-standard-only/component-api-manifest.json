@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 134,
+  "componentCount": 135,
   "coverage": {
-    "registryComponentCount": 134,
+    "registryComponentCount": 135,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -106,6 +106,7 @@
       "ShellLocaleMenu",
       "ShellMenu",
       "ShellPins",
+      "ShellThemeMenu",
       "ShellThemeToggle",
       "SideNav",
       "SideNavCollapseButton",
@@ -242,6 +243,7 @@
       "ShellLocaleMenu",
       "ShellMenu",
       "ShellPins",
+      "ShellThemeMenu",
       "ShellThemeToggle",
       "SideNav",
       "SideNavCollapseButton",
@@ -650,20 +652,20 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 976
+        "line": 1126
       },
       "propsType": "BreadcrumbProps",
       "typeDefinitions": [
         {
           "name": "BreadcrumbItem",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 926,
+          "line": 1076,
           "declaration": "export interface BreadcrumbItem extends NavItem {\n  /**\n   * Where this ancestor lives. Omit for the current page — the last crumb is\n   * where the reader already is, so a link to it is a link to nowhere.\n   */\n  href?: string;\n}"
         },
         {
           "name": "BreadcrumbProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 948,
+          "line": 1098,
           "declaration": "export interface BreadcrumbProps {\n  items: readonly BreadcrumbItem[];\n  /** Accessible name for the trail. Omit it and the reader's language is used. */\n  label?: string;\n  /** Which language the built-in label is said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n}"
         }
       ]
@@ -1161,20 +1163,20 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-        "line": 845
+        "line": 854
       },
       "propsType": "ConfirmActionDialogProps",
       "typeDefinitions": [
         {
           "name": "ConfirmTone",
           "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-          "line": 827,
+          "line": 836,
           "declaration": "export type ConfirmTone = \"warning\" | \"danger\";"
         },
         {
           "name": "ConfirmActionDialogProps",
           "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-          "line": 829,
+          "line": 838,
           "declaration": "export interface ConfirmActionDialogProps {\n  title: string;\n  message: ReactNode;\n  confirmLabel: string;\n  cancelLabel: string;\n  open?: boolean;\n  tone?: ConfirmTone;\n  disabled?: boolean;\n  disabledReason?: string;\n  className?: string;\n  triggerRef?: RefObject<HTMLElement | null>;\n  onOpenChange?: (open: boolean) => void;\n  onConfirm?: () => void;\n  onCancel?: () => void;\n}"
         }
       ]
@@ -2866,20 +2868,20 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-        "line": 935
+        "line": 944
       },
       "propsType": "InlineConfirmBarProps",
       "typeDefinitions": [
         {
           "name": "ConfirmTone",
           "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-          "line": 827,
+          "line": 836,
           "declaration": "export type ConfirmTone = \"warning\" | \"danger\";"
         },
         {
           "name": "InlineConfirmBarProps",
           "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-          "line": 920,
+          "line": 929,
           "declaration": "export interface InlineConfirmBarProps extends Omit<HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: string;\n  message: ReactNode;\n  confirmLabel: string;\n  cancelLabel: string;\n  tone?: ConfirmTone;\n  open?: boolean;\n  disabled?: boolean;\n  disabledReason?: string;\n  onConfirm?: () => void;\n  onCancel?: () => void;\n  onOpenChange?: (open: boolean) => void;\n  triggerRef?: RefObject<HTMLElement | null>;\n}"
         }
       ]
@@ -3536,7 +3538,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-        "line": 687
+        "line": 696
       },
       "propsType": "MenuProps",
       "typeDefinitions": [
@@ -3549,19 +3551,19 @@
         {
           "name": "MenuItemTone",
           "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-          "line": 655,
+          "line": 664,
           "declaration": "export type MenuItemTone = \"neutral\" | \"danger\";"
         },
         {
           "name": "MenuItemDescriptor",
           "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-          "line": 666,
+          "line": 675,
           "declaration": "export interface MenuItemDescriptor {\n  id: string;\n  label: ReactNode;\n  description?: ReactNode;\n  tone?: MenuItemTone;\n  danger?: boolean;\n  disabled?: boolean;\n  onSelect?: () => void;\n}"
         },
         {
           "name": "MenuProps",
           "path": "packages/ui-react/src/components/Overlay/Overlay.tsx",
-          "line": 676,
+          "line": 685,
           "declaration": "export interface MenuProps {\n  items: MenuItemDescriptor[];\n  open: boolean;\n  /** Accessible name for the command list. */\n  label: string;\n  className?: string;\n  placement?: PopoverPlacement;\n  onOpenChange?: (open: boolean) => void;\n  triggerRef?: RefObject<HTMLElement | null>;\n}"
         }
       ]
@@ -3721,7 +3723,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 831
+        "line": 981
       },
       "propsType": "MobileNavToggleProps",
       "typeDefinitions": [
@@ -3752,7 +3754,7 @@
         {
           "name": "MobileNavToggleProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 804,
+          "line": 954,
           "declaration": "export interface MobileNavToggleProps extends Omit<IconButtonProps, \"ariaLabel\" | \"icon\" | \"iconName\" | \"children\"> {\n  expanded: boolean;\n  controls: string;\n  /** Which language the two built-in labels are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  onExpandedChange?: (expanded: boolean) => void;\n}"
         }
       ]
@@ -3786,7 +3788,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1101
+        "line": 1251
       },
       "propsType": "SelectableNavProps",
       "typeDefinitions": [
@@ -3799,7 +3801,7 @@
         {
           "name": "SelectableNavProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1125,
+          "line": 1275,
           "declaration": "export interface SelectableNavProps extends ProductLauncherProps {\n  /** Optional accessible name for a local navigation instance. */\n  label?: string;\n  /** Called with the item's `id`. Omit for a nav the consumer wires another way. */\n  onSelect?: (id: string) => void;\n}"
         }
       ]
@@ -3937,14 +3939,14 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1264
+        "line": 1414
       },
       "propsType": "NavGroupProps",
       "typeDefinitions": [
         {
           "name": "NavGroupProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1244,
+          "line": 1394,
           "declaration": "export interface NavGroupProps extends HTMLAttributes<HTMLDivElement>, NavPinProps {\n  label: string;\n  selected?: boolean;\n  /** Which language the built-in pin name is said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  /**\n   * What the group holds, said to a screen reader with its title row (aria-describedby to a\n   * .tcrn-sr-only element after the row); nothing is drawn, and without it the markup is unchanged\n   * (TCRN-DS-SUB-147).\n   */\n  description?: string;\n  children: ReactNode;\n}"
         }
       ]
@@ -4102,7 +4104,7 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1333
+        "line": 1483
       },
       "propsType": "NavItemProps",
       "typeDefinitions": [
@@ -4121,7 +4123,7 @@
         {
           "name": "NavItemProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1319,
+          "line": 1469,
           "declaration": "export interface NavItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, \"children\">, NavPinProps {\n  selected?: boolean;\n  disabled?: boolean;\n  disabledReason?: string;\n  /** External/secondary window link indicator and target attributes (STORY-157). */\n  external?: boolean;\n  /** Which language the built-in disabled reason and pin name are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  iconName?: IconName;\n  /** Data-owned nesting depth used to derive the item's visual inset. */\n  depth?: number;\n  children: ReactNode;\n}"
         }
       ]
@@ -4500,14 +4502,14 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 2914
+        "line": 3103
       },
       "propsType": "PaginationProps",
       "typeDefinitions": [
         {
           "name": "PaginationProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 2905,
+          "line": 3094,
           "declaration": "export interface PaginationProps {\n  label: string;\n  shown?: number;\n  total?: number;\n  nextHref?: string;\n  prevHref?: string;\n  locale?: TcrnLocale | string;\n}"
         }
       ]
@@ -4615,7 +4617,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 894
+        "line": 1044
       },
       "propsType": "ProductLauncherProps",
       "typeDefinitions": [
@@ -4628,7 +4630,7 @@
         {
           "name": "ProductLauncherProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 866,
+          "line": 1016,
           "declaration": "export interface ProductLauncherProps {\n  items: NavItem[];\n  /**\n   * Which language the built-in nav label is said in; defaults to the page's own.\n   *\n   * These five navs render only their items, so the label is the entire name\n   * their landmark has — and it was a literal in the JSX with no prop behind it,\n   * so a localized consumer could not override it either.\n   */\n  locale?: TcrnLocale | string;\n}"
         }
       ]
@@ -5089,6 +5091,16 @@
           "required": false
         },
         {
+          "name": "themeControl",
+          "type": "\"auto\" | \"toggle\" | \"menu\"",
+          "required": false,
+          "enumValues": [
+            "menu",
+            "auto",
+            "toggle"
+          ]
+        },
+        {
           "name": "topBanner",
           "type": "ReactNode",
           "required": false,
@@ -5111,6 +5123,11 @@
           "light",
           "dark",
           "halloween"
+        ],
+        "themeControl": [
+          "menu",
+          "auto",
+          "toggle"
         ]
       },
       "slots": [
@@ -5120,7 +5137,7 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1916
+        "line": 2068
       },
       "propsType": "ProductShellProps",
       "typeDefinitions": [
@@ -5193,50 +5210,50 @@
         {
           "name": "ProductShellSearchResult",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1437,
+          "line": 1587,
           "declaration": "export interface ProductShellSearchResult {\n  id: string;\n  title: string;\n  titleKey?: string;\n  meta?: string;\n  metaKey?: string;\n  href: string;\n  selected?: boolean;\n}"
         },
         {
           "name": "ProductShellNavItem",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1647,
+          "line": 1797,
           "declaration": "export interface ProductShellNavItem extends ShellMenuItem {\n  labelKey?: string;\n  /** The current page: the shell derives the selected row, the selected pin and the current position from it. */\n  selected?: boolean;\n  children?: readonly ProductShellNavItem[];\n}"
         },
         {
           "name": "ProductShellNavGroup",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1660,
+          "line": 1810,
           "declaration": "export interface ProductShellNavGroup extends ShellMenuGroup {\n  labelKey?: string;\n  descriptionKey?: string;\n  sectionLabel?: string;\n  sectionLabelKey?: string;\n  selected?: boolean;\n  items: readonly ProductShellNavItem[];\n}"
         },
         {
           "name": "ProductShellMenuChangeReason",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1670,
+          "line": 1820,
           "declaration": "export type ProductShellMenuChangeReason = \"trigger\" | ShellMenuOpenChangeReason;"
         },
         {
           "name": "ProductShellAccount",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1673,
+          "line": 1823,
           "declaration": "export interface ProductShellAccount {\n  name: string;\n  /** What the avatar shows; the first character of the name when omitted. */\n  initials?: string;\n}"
         },
         {
           "name": "ProductShellProduct",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1680,
+          "line": 1830,
           "declaration": "export interface ProductShellProduct {\n  id: string;\n  label: string;\n  href: string;\n  /** The product this shell belongs to: aria-current=\"page\", the 6% wash and weight 600. */\n  current?: boolean;\n}"
         },
         {
           "name": "ProductShellNotifications",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1689,
+          "line": 1839,
           "declaration": "export interface ProductShellNotifications {\n  /** Unread notifications: more than none shows the dot and is said in the bell's name. */\n  unread?: number;\n  onOpen?: () => void;\n}"
         },
         {
           "name": "ProductShellProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1695,
-          "declaration": "export interface ProductShellProps extends HTMLAttributes<HTMLDivElement>, ShellSeasonalThemeOptions {\n  productName: string;\n  moduleName: string;\n  /** The product key: the brand button's mark and wordmark and the full menu's lockup, from logos2 as they are. */\n  brandProductId: TcrnProductMarkId;\n  /** Name of the current page, the current position's last step when no menu entry is selected. */\n  currentRouteLabel: string;\n  currentRouteLabelKey?: string;\n  /** The menu model: groups → items → children → children (C-7). */\n  navGroups: readonly ProductShellNavGroup[];\n  /** Optional right-aligned backoffice nav groups included in the menu model and pinned right group (STORY-157). */\n  rightNavGroups?: readonly ProductShellNavGroup[];\n  /** Explicit right-aligned backoffice pin items rendered before the right account cluster (STORY-157). */\n  rightNavItems?: readonly ShellPinItem[];\n  /** Ids of right-aligned backoffice entries from `navGroups` / `rightNavGroups` (STORY-157). */\n  rightPinnedIds?: readonly string[];\n  /** Reorder handler for the right-aligned backoffice pinned group (STORY-157). */\n  onRightPinsReorder?: (orderedIds: readonly string[]) => void;\n  /**\n   * Optional full-width environment banner mounted between the top strip and `.tcrn-product-shell__paper`\n   * with `var(--tcrn-space-3)` horizontal inset alignment; omitted or null keeps the 2-row shell grid at 0px impact (STORY-158).\n   */\n  topBanner?: ReactNode;\n  locales: readonly ShellLocaleOption[];\n  currentLocale: string;\n  /** Complete product-owned copy and BCP 47 tag for currentLocale; scoped to this shell. */\n  localeDefinition?: ProductShellLocaleDefinition;\n  /**\n   * The page's header, the paper's first row: the trail, the title and the page's actions (07b\n   * board, section E, \"PageHeader 必有\"). Required, so a shell page without one does not type-check.\n   * An omitted trail is the current position in `navGroups` (group › … › page); an omitted locale is\n   * `currentLocale`; an omitted heading level is 1, the page's own title (TCRN-DS-SUB-163) — a shell\n   * shown inside another page's paper gives 2.\n   */\n  pageHeader: PageHeaderProps;\n  /** The page below its header. */\n  children: ReactNode;\n  currentTheme?: ShellThemeMode;\n  localeMenuOpen?: boolean;\n  /**\n   * Product-owned controls for the top-right cluster, before the bell and the avatar, which stay\n   * rightmost so their position does not move as products add controls. Omitting it renders the\n   * cluster without them.\n   */\n  headerActions?: ReactNode;\n  /** The signed-in reader; the avatar shows their initials. */\n  account?: ProductShellAccount;\n  /** The products the avatar menu switches between; the full menu and the lockup carry no product list. */\n  products?: readonly ProductShellProduct[];\n  notifications?: ProductShellNotifications;\n  /** Ids of the pinned groups, items and children in the reader's order; the band shows the first six. */\n  pinnedIds?: readonly string[];\n  /** Pins or unpins an entry; without it the menu rows have no pin. */\n  onPinnedChange?: (id: string, pinned: boolean) => void;\n  /**\n   * Takes the pins' new order, every id of `pinnedIds` in it, when the reader moves a pinned item\n   * in the band: a drag that ends with it in a new place, or Alt+← / Alt+→ on it (TCRN-DS-SUB-149).\n   * useProductShellController's productShellControlProps connect it to movePin, which keeps the\n   * order in the pins preference (the product's backend through onPinsChange; never a cookie).\n   * Without it the pinned items do not move.\n   */\n  onPinsReorder?: (orderedIds: readonly string[]) => void;\n  /** Whether the full menu is open; the shell keeps its own state when omitted. */\n  menuOpen?: boolean;\n  /**\n   * Whether ⌘K / Ctrl+K opens this shell's full menu: the key is registered on the document, once\n   * per shell, so a page with several shells lets one of them have it and passes false to the\n   * others. On by default (ShellMenu's `shortcut`; TCRN-DS-SUB-185).\n   */\n  menuShortcut?: boolean;\n  onMenuOpenChange?: (open: boolean, reason: ProductShellMenuChangeReason) => void;\n  /** The pinned item whose drop-down is open; the shell keeps its own state when omitted. */\n  openPinId?: string | null;\n  onOpenPinChange?: (id: string | null) => void;\n  /** Whether the open full menu or pin drop-down takes focus. Defaults to true. */\n  focusNavigationOnOpen?: boolean;\n  /** The scroll frame that clips pin drop-down cascades, when the shell is embedded. */\n  dropdownBoundaryRef?: RefObject<HTMLElement | null>;\n  /**\n   * Static states for documentation, by menu row or group id (data-tcrn-preview-state), passed to\n   * the full menu and the drop-downs; a drop-down row marked \"open\" starts with its next level open.\n   */\n  previewStates?: Readonly<Record<string, string>>;\n  /** Whether the avatar menu is open; the shell keeps its own state when omitted. */\n  accountMenuOpen?: boolean;\n  onAccountMenuOpenChange?: (open: boolean) => void;\n  /** Placeholder of the full menu's search. */\n  searchPlaceholder?: string;\n  /** The full menu's search provider (whole-site targets); the menu model is searched when omitted. */\n  searchProvider?: ShellMenuSearchProvider;\n  onSearchQueryChange?: (query: string) => void;\n  /**\n   * A name for this shell, which tells its landmarks from another shell's on the same page (axe\n   * landmark-unique): every named landmark of the shell — the band, the pinned items, the full menu\n   * (panel or Sheet) and its bottom bar's trail, the drop-downs, the avatar menu and its product\n   * switcher, the content region and the page header's trail — is named \"{landmarkLabel} · {name}\"\n   * in the reader's language. A `contentLabel` or a page header's own `landmarkLabel` is used as it\n   * is given. Omitted, they keep the built-in names (TCRN-DS-SUB-148, TCRN-DS-SUB-184).\n   */\n  landmarkLabel?: string;\n  /** The full menu's query, for a product that holds it; the menu keeps its own when omitted (ShellMenu's `query`). */\n  menuQuery?: string;\n  /** The query the full menu's own starts from, such as a page rendered with a query typed (ShellMenu's `defaultQuery`). */\n  defaultMenuQuery?: string;\n  /** Asks to change the full menu's query: as it is typed, and to empty when the menu closes (ShellMenu's `onQueryChange`). */\n  onMenuQueryChange?: (query: string) => void;\n  onThemeChange?: (theme: ShellThemeMode) => void;\n  onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;\n  onLocaleChange?: (locale: string) => void;\n  contentId?: string;\n  contentRole?: \"main\" | \"region\";\n  contentLabel?: string;\n  skipLinkLabel?: string;\n}"
+          "line": 1845,
+          "declaration": "export interface ProductShellProps extends HTMLAttributes<HTMLDivElement>, ShellSeasonalThemeOptions {\n  productName: string;\n  moduleName: string;\n  /** The product key: the brand button's mark and wordmark and the full menu's lockup, from logos2 as they are. */\n  brandProductId: TcrnProductMarkId;\n  /** Name of the current page, the current position's last step when no menu entry is selected. */\n  currentRouteLabel: string;\n  currentRouteLabelKey?: string;\n  /** The menu model: groups → items → children → children (C-7). */\n  navGroups: readonly ProductShellNavGroup[];\n  /** Optional right-aligned backoffice nav groups included in the menu model and pinned right group (STORY-157). */\n  rightNavGroups?: readonly ProductShellNavGroup[];\n  /** Explicit right-aligned backoffice pin items rendered before the right account cluster (STORY-157). */\n  rightNavItems?: readonly ShellPinItem[];\n  /** Ids of right-aligned backoffice entries from `navGroups` / `rightNavGroups` (STORY-157). */\n  rightPinnedIds?: readonly string[];\n  /** Reorder handler for the right-aligned backoffice pinned group (STORY-157). */\n  onRightPinsReorder?: (orderedIds: readonly string[]) => void;\n  /**\n   * Optional full-width environment banner mounted between the top strip and `.tcrn-product-shell__paper`\n   * with `var(--tcrn-space-3)` horizontal inset alignment; omitted or null keeps the 2-row shell grid at 0px impact (STORY-158).\n   */\n  topBanner?: ReactNode;\n  locales: readonly ShellLocaleOption[];\n  currentLocale: string;\n  /** Complete product-owned copy and BCP 47 tag for currentLocale; scoped to this shell. */\n  localeDefinition?: ProductShellLocaleDefinition;\n  /**\n   * The page's header, the paper's first row: the trail, the title and the page's actions (07b\n   * board, section E, \"PageHeader 必有\"). Required, so a shell page without one does not type-check.\n   * An omitted trail is the current position in `navGroups` (group › … › page); an omitted locale is\n   * `currentLocale`; an omitted heading level is 1, the page's own title (TCRN-DS-SUB-163) — a shell\n   * shown inside another page's paper gives 2.\n   */\n  pageHeader: PageHeaderProps;\n  /** The page below its header. */\n  children: ReactNode;\n  currentTheme?: ShellThemeMode;\n  localeMenuOpen?: boolean;\n  /**\n   * Product-owned controls for the top-right cluster, before the bell and the avatar, which stay\n   * rightmost so their position does not move as products add controls. Omitting it renders the\n   * cluster without them.\n   */\n  headerActions?: ReactNode;\n  /** The signed-in reader; the avatar shows their initials. */\n  account?: ProductShellAccount;\n  /** The products the avatar menu switches between; the full menu and the lockup carry no product list. */\n  products?: readonly ProductShellProduct[];\n  notifications?: ProductShellNotifications;\n  /** Ids of the pinned groups, items and children in the reader's order; the band shows the first six. */\n  pinnedIds?: readonly string[];\n  /** Pins or unpins an entry; without it the menu rows have no pin. */\n  onPinnedChange?: (id: string, pinned: boolean) => void;\n  /**\n   * Takes the pins' new order, every id of `pinnedIds` in it, when the reader moves a pinned item\n   * in the band: a drag that ends with it in a new place, or Alt+← / Alt+→ on it (TCRN-DS-SUB-149).\n   * useProductShellController's productShellControlProps connect it to movePin, which keeps the\n   * order in the pins preference (the product's backend through onPinsChange; never a cookie).\n   * Without it the pinned items do not move.\n   */\n  onPinsReorder?: (orderedIds: readonly string[]) => void;\n  /** Whether the full menu is open; the shell keeps its own state when omitted. */\n  menuOpen?: boolean;\n  /**\n   * Whether ⌘K / Ctrl+K opens this shell's full menu: the key is registered on the document, once\n   * per shell, so a page with several shells lets one of them have it and passes false to the\n   * others. On by default (ShellMenu's `shortcut`; TCRN-DS-SUB-185).\n   */\n  menuShortcut?: boolean;\n  onMenuOpenChange?: (open: boolean, reason: ProductShellMenuChangeReason) => void;\n  /** The pinned item whose drop-down is open; the shell keeps its own state when omitted. */\n  openPinId?: string | null;\n  onOpenPinChange?: (id: string | null) => void;\n  /** Whether the open full menu or pin drop-down takes focus. Defaults to true. */\n  focusNavigationOnOpen?: boolean;\n  /** The scroll frame that clips pin drop-down cascades, when the shell is embedded. */\n  dropdownBoundaryRef?: RefObject<HTMLElement | null>;\n  /**\n   * Static states for documentation, by menu row or group id (data-tcrn-preview-state), passed to\n   * the full menu and the drop-downs; a drop-down row marked \"open\" starts with its next level open.\n   */\n  previewStates?: Readonly<Record<string, string>>;\n  /** Whether the avatar menu is open; the shell keeps its own state when omitted. */\n  accountMenuOpen?: boolean;\n  onAccountMenuOpenChange?: (open: boolean) => void;\n  /** Placeholder of the full menu's search. */\n  searchPlaceholder?: string;\n  /** The full menu's search provider (whole-site targets); the menu model is searched when omitted. */\n  searchProvider?: ShellMenuSearchProvider;\n  onSearchQueryChange?: (query: string) => void;\n  /**\n   * A name for this shell, which tells its landmarks from another shell's on the same page (axe\n   * landmark-unique): every named landmark of the shell — the band, the pinned items, the full menu\n   * (panel or Sheet) and its bottom bar's trail, the drop-downs, the avatar menu and its product\n   * switcher, the content region and the page header's trail — is named \"{landmarkLabel} · {name}\"\n   * in the reader's language. A `contentLabel` or a page header's own `landmarkLabel` is used as it\n   * is given. Omitted, they keep the built-in names (TCRN-DS-SUB-148, TCRN-DS-SUB-184).\n   */\n  landmarkLabel?: string;\n  /** The full menu's query, for a product that holds it; the menu keeps its own when omitted (ShellMenu's `query`). */\n  menuQuery?: string;\n  /** The query the full menu's own starts from, such as a page rendered with a query typed (ShellMenu's `defaultQuery`). */\n  defaultMenuQuery?: string;\n  /** Asks to change the full menu's query: as it is typed, and to empty when the menu closes (ShellMenu's `onQueryChange`). */\n  onMenuQueryChange?: (query: string) => void;\n  /** How theme selection renders inside the avatar menu: dropdown menu when >2 themes or explicitly \"menu\". */\n  themeControl?: \"auto\" | \"toggle\" | \"menu\";\n  onThemeChange?: (theme: ShellThemeMode) => void;\n  onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;\n  onLocaleChange?: (locale: string) => void;\n  contentId?: string;\n  contentRole?: \"main\" | \"region\";\n  contentLabel?: string;\n  skipLinkLabel?: string;\n}"
         },
         {
           "name": "TcrnProductMarkId",
@@ -5248,24 +5265,24 @@
           "name": "TcrnShellCopy",
           "path": "packages/ui-react/src/components/Navigation/shell-copy.ts",
           "line": 30,
-          "declaration": "export interface TcrnShellCopy {\n  /** Brand button name while the full menu is closed: pressing it opens the navigation. */\n  openNavigationOf: (productName: string) => string;\n  /** Brand button name while the full menu is open: pressing it closes the navigation. */\n  closeNavigationOf: (productName: string) => string;\n  /** Name of the pinned items group in the top band. */\n  pinnedItems: string;\n  /** Name of the right-aligned backoffice pinned items group in the top band (STORY-157). */\n  backofficePinnedItems?: string;\n  /** Screen-reader hint for pinned or menu links that open in a new window (STORY-157). */\n  opensInNewWindow?: string;\n  /** Default disabled reason when a shell pin or nav item is unavailable in the current role/route (STORY-157). */\n  navItemUnavailable?: string;\n  /** Name of the full menu (the dialog the brand button opens). */\n  navigation: string;\n  /** Placeholder of the full menu's search. */\n  searchNavigation: string;\n  /** Label of the current position in the full menu's bottom bar; also the name of that trail. */\n  currentPosition: string;\n  /** Title of the full menu's group of pinned items, shown narrower than 1024. */\n  pinnedGroup: string;\n  /** Placeholder of a drop-down's search, which searches the pinned entry's part of the menu. */\n  searchWithin: (name: string) => string;\n  /** Name of the avatar menu, and of the avatar when no account is given. */\n  account: string;\n  /** Avatar name: the reader and what the menu holds. */\n  accountMenuOf: (name: string) => string;\n  /** Name and heading of the avatar menu's product switcher. */\n  switchProduct: string;\n  /** Name of the avatar menu's theme and language controls. */\n  themeAndLanguage: string;\n  /** Bell name, with the unread count when there is one. */\n  notificationsOf: (unread: number) => string;\n  /** Title of the Sheet's list of pinned entries, with their count. */\n  pinnedItemsOf: (count: number) => string;\n  /** Title of the Sheet's list of every group. */\n  allNavigation: string;\n  /** A landmark's name in one shell of several on a page: the shell's name, then the landmark's. */\n  landmarkOf: (prefix: string, name: string) => string;\n}"
+          "declaration": "export interface TcrnShellCopy {\n  /** Brand button name while the full menu is closed: pressing it opens the navigation. */\n  openNavigationOf: (productName: string) => string;\n  /** Brand button name while the full menu is open: pressing it closes the navigation. */\n  closeNavigationOf: (productName: string) => string;\n  /** Name of the pinned items group in the top band. */\n  pinnedItems: string;\n  /** Name of the right-aligned backoffice pinned items group in the top band (STORY-157). */\n  backofficePinnedItems?: string;\n  /** Screen-reader hint for pinned or menu links that open in a new window (STORY-157). */\n  opensInNewWindow?: string;\n  /** Default disabled reason when a shell pin or nav item is unavailable in the current role/route (STORY-157). */\n  navItemUnavailable?: string;\n  /** Name of the full menu (the dialog the brand button opens). */\n  navigation: string;\n  /** Placeholder of the full menu's search. */\n  searchNavigation: string;\n  /** Label of the current position in the full menu's bottom bar; also the name of that trail. */\n  currentPosition: string;\n  /** Title of the full menu's group of pinned items, shown narrower than 1024. */\n  pinnedGroup: string;\n  /** Placeholder of a drop-down's search, which searches the pinned entry's part of the menu. */\n  searchWithin: (name: string) => string;\n  /** Name of the avatar menu, and of the avatar when no account is given. */\n  account: string;\n  /** Avatar name: the reader and what the menu holds. */\n  accountMenuOf: (name: string) => string;\n  /** Name and heading of the avatar menu's product switcher. */\n  switchProduct: string;\n  /** Name of the avatar menu's theme and language controls. */\n  themeAndLanguage: string;\n  /** Heading of the avatar menu's user preferences section. */\n  userPreferences?: string;\n  /** Accessible and visible label for the theme dropdown inside user preferences. */\n  themeLabel?: string;\n  /** Accessible and visible label for the language dropdown inside user preferences. */\n  languageLabel?: string;\n  /** Theme dropdown option label for light mode. */\n  themeOptionLight?: string;\n  /** Theme dropdown option label for dark mode. */\n  themeOptionDark?: string;\n  /** Theme dropdown option label for seasonal halloween mode. */\n  themeOptionHalloween?: string;\n  /** Bell name, with the unread count when there is one. */\n  notificationsOf: (unread: number) => string;\n  /** Title of the Sheet's list of pinned entries, with their count. */\n  pinnedItemsOf: (count: number) => string;\n  /** Title of the Sheet's list of every group. */\n  allNavigation: string;\n  /** A landmark's name in one shell of several on a page: the shell's name, then the landmark's. */\n  landmarkOf: (prefix: string, name: string) => string;\n}"
         },
         {
           "name": "ProductShellChromeCopy",
           "path": "packages/ui-react/src/components/Navigation/shell-copy.ts",
-          "line": 194,
+          "line": 236,
           "declaration": "export interface ProductShellChromeCopy {\n  switchToLight: string;\n  switchToDark: string;\n  switchToHalloween?: string;\n  language: string;\n  collapseSideNav: string;\n  expandSideNav: string;\n  /**\n   * The mobile navigation control, which is a different control from the two\n   * above and says a different thing.\n   *\n   * `collapseSideNav`/`expandSideNav` narrow the desktop rail to icons — the\n   * destinations stay on screen. Below the mobile breakpoint the rail is not a\n   * rail, and the same control would be a no-op, so it is hidden there; this\n   * one shows and hides the navigation itself. Reusing either label would tell\n   * a screen-reader user the rail is about to narrow when it is about to\n   * disappear.\n   */\n  showNavigation: string;\n  hideNavigation: string;\n  breadcrumb: string;\n  searchShell: string;\n  searchPlaceholder: string;\n  searchResults: string;\n  searchEmpty: string;\n  currentLocation: string;\n  shellWorkspace: string;\n  skipToContent: string;\n  /**\n   * The five with no prop behind them at all.\n   *\n   * A bad default at least lets a consumer pass the right string; these were\n   * literals inline in the JSX, so a product shipping a ja route had no way to\n   * reach them short of forking the component. Two are the only accessible name\n   * their nav has.\n   */\n  navItemUnavailable: string;\n  moduleSections: string;\n  sectionNavigation: string;\n  productLauncher: string;\n  productSwitcher: string;\n  /**\n   * Two names composed from a value the consumer supplied. Concatenating an\n   * English word onto a translated product or module name yields a string in\n   * neither language, so the composition is per locale.\n   */\n  brandHomeOf: (productName: string) => string;\n  shellControlsOf: (moduleName: string) => string;\n  /**\n   * The pin control of a NavItem or NavGroup row (TCRN-DS-SUB-123). It is icon-only,\n   * so this is its whole accessible name; it says the action and the row it acts on,\n   * and the action flips with the pinned state.\n   */\n  pinToStrip: (label: string) => string;\n  unpinFromStrip: (label: string) => string;\n}"
         },
         {
           "name": "ProductShellCopy",
           "path": "packages/ui-react/src/components/Navigation/shell-copy.ts",
-          "line": 252,
+          "line": 294,
           "declaration": "export interface ProductShellCopy {\n  shell: TcrnShellCopy;\n  chrome: ProductShellChromeCopy;\n  productTagline: (productId: TcrnProductLogoId) => string;\n}"
         },
         {
           "name": "ProductShellLocaleDefinition",
           "path": "packages/ui-react/src/components/Navigation/shell-copy.ts",
-          "line": 258,
+          "line": 300,
           "declaration": "export interface ProductShellLocaleDefinition<Locale extends string = string> {\n  /** Product identifier, preserved in state, preferences and callbacks (for example zh_HANT). */\n  locale: Locale;\n  /** BCP 47 tag for the rendered subtree (for example zh-Hant). */\n  lang: string;\n  copy: ProductShellCopy;\n}"
         },
         {
@@ -5410,7 +5427,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1468
+        "line": 1618
       },
       "propsType": "ProductShellSearchProps",
       "typeDefinitions": [
@@ -5435,13 +5452,13 @@
         {
           "name": "ProductShellSearchResult",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1437,
+          "line": 1587,
           "declaration": "export interface ProductShellSearchResult {\n  id: string;\n  title: string;\n  titleKey?: string;\n  meta?: string;\n  metaKey?: string;\n  href: string;\n  selected?: boolean;\n}"
         },
         {
           "name": "ProductShellSearchProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1447,
+          "line": 1597,
           "declaration": "export interface ProductShellSearchProps extends Omit<HTMLAttributes<HTMLDivElement>, \"onChange\" | \"results\"> {\n  label?: string;\n  placeholder?: string;\n  /** Which language the four built-in strings are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  shortcut?: SearchInputProps[\"shortcut\"];\n  query?: string;\n  expanded?: boolean;\n  results?: readonly ProductShellSearchResult[];\n  resultsLabel?: string;\n  emptyLabel?: string;\n  onQueryChange?: (query: string) => void;\n  onExpandedChange?: (expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void;\n  onDismiss?: (reason: ProductShellSearchDismissReason) => void;\n  onResultActivate?: (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void;\n  inputProps?: Omit<SearchInputProps, \"type\" | \"placeholder\" | \"shortcut\" | \"value\" | \"defaultValue\" | \"onChange\" | \"onInput\" | \"onFocus\" | \"onBlur\" | \"onKeyDown\">;\n  \"data-product-shell-search-label-key\"?: string;\n  \"data-product-shell-search-results-label-key\"?: string;\n  \"data-product-shell-search-empty-label-key\"?: string;\n}"
         }
       ]
@@ -5465,7 +5482,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 907
+        "line": 1057
       },
       "propsType": "ProductLauncherProps",
       "typeDefinitions": [
@@ -5478,7 +5495,7 @@
         {
           "name": "ProductLauncherProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 866,
+          "line": 1016,
           "declaration": "export interface ProductLauncherProps {\n  items: NavItem[];\n  /**\n   * Which language the built-in nav label is said in; defaults to the page's own.\n   *\n   * These five navs render only their items, so the label is the entire name\n   * their landmark has — and it was a literal in the JSX with no prop behind it,\n   * so a localized consumer could not override it either.\n   */\n  locale?: TcrnLocale | string;\n}"
         }
       ]
@@ -6656,7 +6673,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1107
+        "line": 1257
       },
       "propsType": "SelectableNavProps",
       "typeDefinitions": [
@@ -6669,7 +6686,7 @@
         {
           "name": "SelectableNavProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1125,
+          "line": 1275,
           "declaration": "export interface SelectableNavProps extends ProductLauncherProps {\n  /** Optional accessible name for a local navigation instance. */\n  label?: string;\n  /** Called with the item's `id`. Omit for a nav the consumer wires another way. */\n  onSelect?: (id: string) => void;\n}"
         }
       ]
@@ -6703,7 +6720,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1113
+        "line": 1263
       },
       "propsType": "SelectableNavProps",
       "typeDefinitions": [
@@ -6716,7 +6733,7 @@
         {
           "name": "SelectableNavProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1125,
+          "line": 1275,
           "declaration": "export interface SelectableNavProps extends ProductLauncherProps {\n  /** Optional accessible name for a local navigation instance. */\n  label?: string;\n  /** Called with the item's `id`. Omit for a nav the consumer wires another way. */\n  onSelect?: (id: string) => void;\n}"
         }
       ]
@@ -7373,7 +7390,7 @@
         {
           "name": "ProductShellSearchResult",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1437,
+          "line": 1587,
           "declaration": "export interface ProductShellSearchResult {\n  id: string;\n  title: string;\n  titleKey?: string;\n  meta?: string;\n  metaKey?: string;\n  href: string;\n  selected?: boolean;\n}"
         },
         {
@@ -7753,7 +7770,7 @@
         {
           "name": "ProductShellSearchResult",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1437,
+          "line": 1587,
           "declaration": "export interface ProductShellSearchResult {\n  id: string;\n  title: string;\n  titleKey?: string;\n  meta?: string;\n  metaKey?: string;\n  href: string;\n  selected?: boolean;\n}"
         },
         {
@@ -7905,6 +7922,112 @@
           "path": "packages/ui-react/src/components/Navigation/ShellPins.tsx",
           "line": 85,
           "declaration": "export interface ShellPinsProps extends Omit<HTMLAttributes<HTMLElement>, \"children\"> {\n  /** Pinned items in the reader's order. */\n  items: readonly ShellPinItem[];\n  /** The item of the current page (a link) or of the menu the current page sits in (a button). */\n  selectedId?: string | null;\n  /** The item whose drop-down is open. */\n  openId?: string | null;\n  /** Asks to open the drop-down of an item, or to close it (null). */\n  onOpenChange?: (openId: string | null) => void;\n  /** Id of the drop-down an item opens, for aria-controls; derived from a generated id when omitted. */\n  menuIdOf?: (id: string) => string;\n  /** Language of the group's name; the page's own when omitted. */\n  locale?: TcrnLocale | string;\n  /**\n   * The shell's name, which tells this group from another shell's on the same page: the group is\n   * named \"{landmarkLabel} · {pinned items}\" in the reader's language (TCRN-DS-SUB-148). An\n   * aria-label given outright wins.\n   */\n  landmarkLabel?: string;\n  /**\n   * Takes a new order of the items, every id of `items` in it: when a drag in the band ends with\n   * the dragged item in a new place, or when Alt+← / Alt+→ moves the focused item one place\n   * (TCRN-DS-SUB-149). Without it the items do not move.\n   */\n  onPinsReorder?: (orderedIds: readonly string[]) => void;\n  /** Placement of the group in the top strip (\"start\" by default; \"end\" for right backoffice pins). */\n  align?: ShellPinPlacement;\n}"
+        }
+      ]
+    },
+    "ShellThemeMenu": {
+      "name": "ShellThemeMenu",
+      "kind": "function",
+      "props": [
+        {
+          "name": "availableThemes",
+          "type": "readonly ShellThemeMode[]",
+          "required": false
+        },
+        {
+          "name": "currentTheme",
+          "type": "ShellThemeMode",
+          "required": true,
+          "enumValues": [
+            "light",
+            "dark",
+            "halloween"
+          ]
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "menuId",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean, reason: ProductShellLocaleMenuChangeReason) => void",
+          "required": false
+        },
+        {
+          "name": "onThemeChange",
+          "type": "(nextTheme: ShellThemeMode) => void",
+          "required": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "seasonalThemes",
+          "type": "readonly SeasonalShellThemeMode[]",
+          "required": false
+        },
+        {
+          "name": "triggerId",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "currentTheme": [
+          "light",
+          "dark",
+          "halloween"
+        ]
+      },
+      "slots": [],
+      "source": {
+        "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
+        "line": 732
+      },
+      "propsType": "ShellThemeMenuProps",
+      "typeDefinitions": [
+        {
+          "name": "SeasonalShellThemeMode",
+          "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
+          "line": 470,
+          "declaration": "export type SeasonalShellThemeMode = \"halloween\";"
+        },
+        {
+          "name": "ShellThemeMode",
+          "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
+          "line": 471,
+          "declaration": "export type ShellThemeMode = \"light\" | \"dark\" | SeasonalShellThemeMode;"
+        },
+        {
+          "name": "ProductShellLocaleMenuChangeReason",
+          "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
+          "line": 472,
+          "declaration": "export type ProductShellLocaleMenuChangeReason = \"trigger\" | \"selection\" | \"outside-pointer\" | \"escape\" | \"controller\";"
+        },
+        {
+          "name": "ShellThemeMenuProps",
+          "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
+          "line": 716,
+          "declaration": "export interface ShellThemeMenuProps extends HTMLAttributes<HTMLDivElement>, ShellSeasonalThemeOptions {\n  currentTheme: ShellThemeMode;\n  locale?: TcrnLocale | string;\n  label?: string;\n  open?: boolean;\n  defaultOpen?: boolean;\n  menuId?: string;\n  triggerId?: string;\n  onOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;\n  onThemeChange?: (nextTheme: ShellThemeMode) => void;\n}"
         }
       ]
     },
@@ -8080,14 +8203,14 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1168
+        "line": 1318
       },
       "propsType": "SideNavProps",
       "typeDefinitions": [
         {
           "name": "SideNavProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1158,
+          "line": 1308,
           "declaration": "export interface SideNavProps extends HTMLAttributes<HTMLElement> {\n  label: string;\n  children: ReactNode;\n}"
         }
       ]
@@ -8179,7 +8302,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 732
+        "line": 882
       },
       "propsType": "SideNavCollapseButtonProps",
       "typeDefinitions": [
@@ -8210,7 +8333,7 @@
         {
           "name": "SideNavCollapseButtonProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 716,
+          "line": 866,
           "declaration": "export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, \"ariaLabel\" | \"icon\" | \"iconName\" | \"children\"> {\n  collapsed: boolean;\n  controls: string;\n  expandedLabel?: string;\n  collapsedLabel?: string;\n  /** Which language the two built-in labels are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  disabledReason?: string;\n  persistedKey?: string;\n  onCollapsedChange?: (collapsed: boolean) => void;\n}"
         }
       ]
@@ -8276,14 +8399,14 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1429
+        "line": 1579
       },
       "propsType": "SkipLinkProps",
       "typeDefinitions": [
         {
           "name": "SkipLinkProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1425,
+          "line": 1575,
           "declaration": "export interface SkipLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {\n  children: ReactNode;\n}"
         }
       ]
@@ -9254,20 +9377,20 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1046
+        "line": 1196
       },
       "propsType": "TabsProps",
       "typeDefinitions": [
         {
           "name": "TabItem",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1029,
+          "line": 1179,
           "declaration": "export interface TabItem {\n  id: string;\n  label: ReactNode;\n  disabled?: boolean;\n}"
         },
         {
           "name": "TabsProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1035,
+          "line": 1185,
           "declaration": "export interface TabsProps {\n  items: TabItem[];\n  /** The `id` of the selected tab. */\n  selectedId: string;\n  onSelect: (id: string) => void;\n  /** Accessible name for the tab strip. */\n  label: string;\n  /** Rendered inside the panel for the selected tab. */\n  children?: ReactNode;\n}"
         }
       ]

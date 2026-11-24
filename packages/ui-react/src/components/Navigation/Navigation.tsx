@@ -713,6 +713,156 @@ export function ShellLocaleMenu({
   );
 }
 
+export interface ShellThemeMenuProps extends HTMLAttributes<HTMLDivElement>, ShellSeasonalThemeOptions {
+  currentTheme: ShellThemeMode;
+  locale?: TcrnLocale | string;
+  label?: string;
+  open?: boolean;
+  defaultOpen?: boolean;
+  menuId?: string;
+  triggerId?: string;
+  onOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
+  onThemeChange?: (nextTheme: ShellThemeMode) => void;
+}
+
+/**
+ * Dropdown selector for shell visual themes (light / dark and opted-in seasonal themes),
+ * supporting both controlled (`open`/`onOpenChange`) and uncontrolled state.
+ */
+export function ShellThemeMenu({
+  currentTheme,
+  seasonalThemes,
+  availableThemes,
+  locale,
+  label,
+  open,
+  defaultOpen = false,
+  menuId,
+  triggerId,
+  onOpenChange,
+  onThemeChange,
+  className,
+  ...props
+}: ShellThemeMenuProps) {
+  const [ownOpen, setOwnOpen] = useState(defaultOpen);
+  const isControlled = open !== undefined;
+  const isOpen = isControlled ? open : ownOpen;
+  const copy = useTcrnShellCopy(locale);
+  const baseCopy = tcrnShellCopyFor(locale);
+  const resolvedLabel = label ?? copy.themeLabel ?? baseCopy.themeLabel ?? "Theme";
+  const enabledThemes = resolveEnabledShellThemes({ seasonalThemes, availableThemes });
+  const normalizedTheme = normalizeShellTheme(currentTheme, enabledThemes);
+  const generatedMenuId = useId();
+  const resolvedMenuId = menuId ?? generatedMenuId;
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const labelForTheme = (mode: ShellThemeMode): string => {
+    if (mode === "light") return copy.themeOptionLight ?? baseCopy.themeOptionLight ?? "Light";
+    if (mode === "halloween") return copy.themeOptionHalloween ?? baseCopy.themeOptionHalloween ?? "Halloween";
+    return copy.themeOptionDark ?? baseCopy.themeOptionDark ?? "Dark";
+  };
+
+  const iconName = normalizedTheme === "light" ? "sun" : normalizedTheme === "halloween" ? "palette" : "moon";
+
+  const requestOpenChange = useCallback(
+    (nextOpen: boolean, reason: ProductShellLocaleMenuChangeReason, focusTrigger = false) => {
+      if (!isControlled) setOwnOpen(nextOpen);
+      onOpenChange?.(nextOpen, reason);
+      if (!nextOpen && focusTrigger) {
+        triggerRef.current?.focus();
+      }
+    },
+    [isControlled, onOpenChange]
+  );
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const ownerDocument = rootRef.current?.ownerDocument ?? document;
+    const handleMouseDown = (event: MouseEvent) => {
+      const target = event.target instanceof Node ? event.target : null;
+      if (target && !rootRef.current?.contains(target)) {
+        requestOpenChange(false, "outside-pointer");
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      const focused = ownerDocument.activeElement;
+      if (focused && focused !== ownerDocument.body && !rootRef.current?.contains(focused)) return;
+      event.preventDefault();
+      requestOpenChange(false, "escape", true);
+    };
+    ownerDocument.addEventListener("mousedown", handleMouseDown);
+    ownerDocument.addEventListener("keydown", handleKeyDown, true);
+    return () => {
+      ownerDocument.removeEventListener("mousedown", handleMouseDown);
+      ownerDocument.removeEventListener("keydown", handleKeyDown, true);
+    };
+  }, [isOpen, requestOpenChange]);
+
+  const handleThemeSelect = (mode: ShellThemeMode) => {
+    if (mode !== normalizedTheme) {
+      onThemeChange?.(mode);
+    }
+    requestOpenChange(false, "selection", true);
+  };
+
+  return (
+    <div
+      {...props}
+      ref={rootRef}
+      className={cx("tcrn-shell-theme-menu", className)}
+      data-shell-control="theme-menu"
+      data-theme-menu-open={isOpen ? "true" : "false"}
+      data-current-theme={normalizedTheme}
+    >
+      <button
+        ref={triggerRef}
+        id={triggerId}
+        className="tcrn-shell-theme-menu__trigger"
+        type="button"
+        onClick={() => requestOpenChange(!isOpen, "trigger")}
+        data-theme-menu-toggle
+        aria-haspopup="listbox"
+        aria-expanded={isOpen ? "true" : "false"}
+        aria-controls={resolvedMenuId}
+        aria-label={resolvedLabel}
+        title={resolvedLabel}
+      >
+        <Icon name={iconName} />
+        <span className="tcrn-shell-theme-menu__current" data-theme-current="">{labelForTheme(normalizedTheme)}</span>
+        <Icon name="chevron-down" className="tcrn-shell-theme-menu__chevron" />
+      </button>
+      <div
+        id={resolvedMenuId}
+        className="tcrn-shell-theme-menu__panel"
+        role="listbox"
+        aria-label={resolvedLabel}
+        data-theme-menu=""
+        hidden={!isOpen}
+        aria-hidden={!isOpen || undefined}
+      >
+        {enabledThemes.map((mode) => (
+          <button
+            key={mode}
+            className="tcrn-shell-theme-menu__option"
+            type="button"
+            role="option"
+            disabled={!isOpen}
+            onClick={() => handleThemeSelect(mode)}
+            data-theme-option={mode}
+            data-theme-menu-option=""
+            aria-current={mode === normalizedTheme ? "true" : undefined}
+            aria-selected={mode === normalizedTheme ? "true" : "false"}
+          >
+            <span className="tcrn-shell-theme-menu__name">{labelForTheme(mode)}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, "ariaLabel" | "icon" | "iconName" | "children"> {
   collapsed: boolean;
   controls: string;
@@ -1798,6 +1948,8 @@ export interface ProductShellProps extends HTMLAttributes<HTMLDivElement>, Shell
   defaultMenuQuery?: string;
   /** Asks to change the full menu's query: as it is typed, and to empty when the menu closes (ShellMenu's `onQueryChange`). */
   onMenuQueryChange?: (query: string) => void;
+  /** How theme selection renders inside the avatar menu: dropdown menu when >2 themes or explicitly "menu". */
+  themeControl?: "auto" | "toggle" | "menu";
   onThemeChange?: (theme: ShellThemeMode) => void;
   onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;
   onLocaleChange?: (locale: string) => void;
@@ -1946,6 +2098,7 @@ function ProductShellContent({
   pageHeader,
   children,
   currentTheme = "light",
+  themeControl = "auto",
   localeMenuOpen = false,
   headerActions,
   account,
@@ -1986,6 +2139,10 @@ function ProductShellContent({
   // shell already knows the reader's language and a second way to say it could only disagree.
   const chrome = useShellChromeCopy(currentLocale);
   const copy = useTcrnShellCopy(currentLocale);
+  const baseCopy = tcrnShellCopyFor(currentLocale);
+  const userPreferencesLabel = copy.userPreferences ?? baseCopy.userPreferences ?? copy.themeAndLanguage;
+  const themePrefLabel = copy.themeLabel ?? baseCopy.themeLabel ?? "Theme";
+  const languagePrefLabel = copy.languageLabel ?? chrome.language;
   // Every named landmark goes through one composition: the shell's name, then the landmark's own.
   const landmarkName = (name: string) => tcrnShellLandmarkName(currentLocale, landmarkLabel, name, copy);
   const resolvedContentLabel = contentLabel ?? landmarkName(chrome.shellWorkspace);
@@ -2120,6 +2277,7 @@ function ProductShellContent({
   const unread = notifications?.unread ?? 0;
   const hasTopBanner = topBanner !== undefined && topBanner !== null && topBanner !== false;
   const enabledThemes = resolveEnabledShellThemes({ seasonalThemes, availableThemes });
+  const useThemeMenu = themeControl === "menu" || (themeControl !== "toggle" && enabledThemes.length > 2);
   const explicitDataTheme = (props as Record<string, unknown>)["data-tcrn-theme"] as string | undefined;
   const rootDataTheme = explicitDataTheme ?? (currentTheme === "halloween" || enabledThemes.includes("halloween") ? currentTheme : undefined);
 
@@ -2242,21 +2400,52 @@ function ProductShellContent({
                     ))}
                   </nav>
                 ) : null}
-                <div className="tcrn-shell-account__prefs" role="group" aria-label={copy.themeAndLanguage} data-shell-preferences="">
-                  <ShellThemeToggle
-                    currentTheme={currentTheme}
-                    seasonalThemes={seasonalThemes}
-                    availableThemes={availableThemes}
-                    locale={currentLocale}
-                    onThemeChange={onThemeChange}
-                  />
-                  <ShellLocaleMenu
-                    locales={locales}
-                    currentLocale={currentLocale}
-                    open={localeMenuOpen}
-                    onOpenChange={onLocaleMenuOpenChange}
-                    onLocaleChange={onLocaleChange}
-                  />
+                <div className="tcrn-shell-account__prefs" role="group" aria-label={userPreferencesLabel} data-shell-preferences="">
+                  <span className="tcrn-shell-account__heading" aria-hidden="true">
+                    {userPreferencesLabel}
+                  </span>
+                  {useThemeMenu ? (
+                    <div className="tcrn-shell-account__prefs-list" data-shell-preferences-layout="menu">
+                      <div className="tcrn-shell-account__pref-item">
+                        <span className="tcrn-shell-account__pref-label">{themePrefLabel}</span>
+                        <ShellThemeMenu
+                          currentTheme={currentTheme}
+                          seasonalThemes={seasonalThemes}
+                          availableThemes={availableThemes}
+                          locale={currentLocale}
+                          label={themePrefLabel}
+                          onThemeChange={onThemeChange}
+                        />
+                      </div>
+                      <div className="tcrn-shell-account__pref-item">
+                        <span className="tcrn-shell-account__pref-label">{languagePrefLabel}</span>
+                        <ShellLocaleMenu
+                          locales={locales}
+                          currentLocale={currentLocale}
+                          open={localeMenuOpen}
+                          onOpenChange={onLocaleMenuOpenChange}
+                          onLocaleChange={onLocaleChange}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="tcrn-shell-account__prefs-row" data-shell-preferences-layout="toggle">
+                      <ShellThemeToggle
+                        currentTheme={currentTheme}
+                        seasonalThemes={seasonalThemes}
+                        availableThemes={availableThemes}
+                        locale={currentLocale}
+                        onThemeChange={onThemeChange}
+                      />
+                      <ShellLocaleMenu
+                        locales={locales}
+                        currentLocale={currentLocale}
+                        open={localeMenuOpen}
+                        onOpenChange={onLocaleMenuOpenChange}
+                        onLocaleChange={onLocaleChange}
+                      />
+                    </div>
+                  )}
                 </div>
               </section>
             ) : null}

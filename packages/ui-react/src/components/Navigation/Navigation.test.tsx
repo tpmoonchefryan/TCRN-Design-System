@@ -2007,22 +2007,59 @@ test("STORY-158 seasonal theme switching stays strictly 2-state by default and c
 
     await harness.render(<SeasonalOptInFixture />);
     const shell = () => harness.document.querySelector(".tcrn-product-shell")!;
-    const toggle = () => harness.document.querySelector("button.tcrn-shell-theme-toggle")!;
+    const prefsHeading = harness.document.querySelector(".tcrn-shell-account__prefs .tcrn-shell-account__heading");
+    assert.equal(prefsHeading?.textContent, "User preferences");
+    assert.equal(harness.document.querySelector("button.tcrn-shell-theme-toggle"), null, "3-theme shell uses ShellThemeMenu dropdown by default");
+    const menuTrigger = () => harness.document.querySelector("[data-theme-menu-toggle]")!;
+    assert.ok(menuTrigger(), "ShellThemeMenu trigger renders for 3 themes");
     assert.equal(shell().getAttribute("data-tcrn-theme"), "light");
 
-    await harness.dispatchClick(toggle());
+    await harness.dispatchClick(menuTrigger());
+    await harness.dispatchClick(harness.document.querySelector('[data-theme-option="dark"]')!);
     assert.equal(shell().getAttribute("data-tcrn-theme"), "dark");
     assert.equal(harness.window.localStorage.getItem("vw-theme"), "dark");
 
-    await harness.dispatchClick(toggle());
+    await harness.dispatchClick(menuTrigger());
+    await harness.dispatchClick(harness.document.querySelector('[data-theme-option="halloween"]')!);
     assert.equal(shell().getAttribute("data-tcrn-theme"), "halloween");
     assert.equal(shell().getAttribute("data-product-shell-theme"), "halloween");
     assert.equal(harness.window.localStorage.getItem("vw-theme"), "halloween");
     assert.match(harness.document.cookie, /vw-theme=halloween/);
 
-    await harness.dispatchClick(toggle());
+    await harness.dispatchClick(menuTrigger());
+    await harness.dispatchClick(harness.document.querySelector('[data-theme-option="light"]')!);
     assert.equal(shell().getAttribute("data-tcrn-theme"), "light");
     assert.deepEqual(events.filter((e) => e.startsWith("seasonal:")), ["seasonal:dark", "seasonal:halloween", "seasonal:light"]);
+
+    // Explicit themeControl="toggle" preserves legacy toggle; themeControl="menu" forces dropdown for 2 themes.
+    function ExplicitThemeControlFixture({ themeControl }: { themeControl: "toggle" | "menu" }) {
+      const controller = useProductShellController({ seasonalThemes: ["halloween"] });
+      return (
+        <ProductShell
+          productName="VoxWard"
+          moduleName="直播工作台"
+          brandProductId="voxward"
+          currentRouteLabel="队列"
+          pageHeader={{ title: "队列" }}
+          navGroups={[]}
+          locales={shellLocales}
+          accountMenuOpen
+          themeControl={themeControl}
+          {...(themeControl === "menu" ? { seasonalThemes: [] } : {})}
+          {...controller.productShellControlProps}
+        >
+          <div>内容</div>
+        </ProductShell>
+      );
+    }
+
+    await harness.render(<ExplicitThemeControlFixture themeControl="toggle" />);
+    assert.ok(harness.document.querySelector("button.tcrn-shell-theme-toggle"), "themeControl=toggle keeps button toggle");
+    assert.equal(harness.document.querySelector("[data-theme-menu-toggle]"), null);
+
+    await harness.render(<ExplicitThemeControlFixture themeControl="menu" />);
+    assert.ok(harness.document.querySelector("[data-theme-menu-toggle]"), "themeControl=menu renders dropdown even with 2 themes");
+    assert.equal(harness.document.querySelector("button.tcrn-shell-theme-toggle"), null);
   } finally {
     await harness.cleanup();
   }

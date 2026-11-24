@@ -27,7 +27,7 @@ test("actual component stories, both emitted AI trees and Manager retain the exa
 });
 
 test("only byte-identical pinned normative quotations are inert during executable-asset scanning", () => {
-  const relative = "ai/4.1.0/standard/02-typography.json";
+  const relative = "ai/4.2.0/standard/02-typography.json";
   const source = readApprovedSource();
   const text = fs.readFileSync(path.join(ROOT, "apps/storybook/storybook-static", relative), "utf8");
   assert.match(text, /tcrn-brand-mark\.svg/);
@@ -50,7 +50,7 @@ test("a corrupt, missing or extra AI member cannot pass via its index's own clai
   try {
     fs.cpSync(path.join(ROOT, "apps/storybook/storybook-static/ai"), path.join(fixture, "ai"), { recursive: true });
     assert.deepEqual(checkAIOutput(ROOT, fixture), []);
-    const member = path.join(fixture, "ai/4.1.0/component/Button.json");
+    const member = path.join(fixture, "ai/4.2.0/component/Button.json");
     const bytes = fs.readFileSync(member);
     fs.writeFileSync(member, Buffer.concat([bytes, Buffer.from(" ")]));
     assert.ok(checkAIOutput(ROOT, fixture).some(issue => issue.includes("byte drift component/Button")));
@@ -59,7 +59,7 @@ test("a corrupt, missing or extra AI member cannot pass via its index's own clai
     assert.ok(checkAIOutput(ROOT, fixture).some(issue => issue.includes("Missing current output file")));
     fs.renameSync(parkedMember, member);
     fs.writeFileSync(member, bytes);
-    fs.writeFileSync(path.join(fixture, "ai/4.1.0/component/StateView.json"), "{}");
+    fs.writeFileSync(path.join(fixture, "ai/4.2.0/component/StateView.json"), "{}");
     assert.ok(checkAIOutput(ROOT, fixture).some(issue => issue.includes("StateView")));
   } finally {
     fs.renameSync(fixture, retired);

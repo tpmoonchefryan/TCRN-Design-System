@@ -171,7 +171,7 @@ export const ShellAndBrand = {
         <VoxwardShellCard key={theme} initialTheme={theme} />
       ))}
       <div className="tcrn-doc-row">
-        <a className="tcrn-link" href="/ai/4.1.0/pattern/batch3-components-and-shell.json">
+        <a className="tcrn-link" href="/ai/4.2.0/pattern/batch3-components-and-shell.json">
           Read the Batch 3 components and shell contract
         </a>
       </div>

@@ -9,7 +9,7 @@ each 4.0.0 breaking change with its migration step.
 
 ## What you are adopting
 
-Three packages, all at 4.1.0:
+Three packages, all at 4.2.0:
 
 | Package | What it gives you |
 | --- | --- |

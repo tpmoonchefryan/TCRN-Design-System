@@ -6,6 +6,22 @@ K1/K5 remain unresolved source conflicts; this entry does not record a successfu
 
 # Changelog
 
+## 4.2.0
+
+### ShellThemeMenu preference dropdown, avatar user preferences section, and portaled Dialog backdrop
+
+Status: local `4.2.0` minor candidate across `@tcrn/ui-tokens`,
+`@tcrn/ui-copy-state`, and `@tcrn/ui-react`. Owner visual review and formal
+publication remain separate pending decisions. See `docs/releases/4.2.0/README.md`.
+
+- `@tcrn/ui-react`: add `ShellThemeMenu` dropdown selector for shell themes
+  (exported from `@tcrn/ui-react` and `@tcrn/ui-react/approved`), add
+  `ProductShellProps.themeControl` (`"auto" | "toggle" | "menu"`, defaulting to
+  dropdown when more than two themes are enabled or `"menu"` is requested),
+  group avatar-menu preferences under the explicit `用户偏好` heading, and
+  portal `Dialog` into `document.body > .tcrn-dialog-backdrop` in browser DOM
+  environments while keeping SSR static output intact.
+
 ## 4.1.0
 
 ### Batch 3 component families, VoxWard brand mark, shell extensions, and seasonal Halloween theme (TCRN-DS-INIT-017)

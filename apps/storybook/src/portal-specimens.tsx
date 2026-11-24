@@ -284,7 +284,7 @@ export function SeasonalHalloweenSpecimen({ locale }: { locale: DocsLocale }) {
       </section>
 
       <div className="tcrn-doc-row">
-        <a className="tcrn-link" href="/ai/4.1.0/pattern/seasonal-halloween-theme.json">
+        <a className="tcrn-link" href="/ai/4.2.0/pattern/seasonal-halloween-theme.json">
           Seasonal Halloween theme contract (JSON)
         </a>
       </div>
@@ -492,7 +492,7 @@ export function FeedbackDataSpecimen({ locale }: { locale: DocsLocale }) {
         ))}
       </div>
       <div className="tcrn-doc-row">
-        <a className="tcrn-link" href="/ai/4.1.0/pattern/batch3-components-and-shell.json">
+        <a className="tcrn-link" href="/ai/4.2.0/pattern/batch3-components-and-shell.json">
           Feedback &amp; DataDisplay contract (JSON)
         </a>
       </div>
@@ -709,7 +709,7 @@ export function LayoutOverlaySpecimen({ locale }: { locale: DocsLocale }) {
         ))}
       </div>
       <div className="tcrn-doc-row">
-        <a className="tcrn-link" href="/ai/4.1.0/pattern/batch3-components-and-shell.json">
+        <a className="tcrn-link" href="/ai/4.2.0/pattern/batch3-components-and-shell.json">
           Layout &amp; Overlays contract (JSON)
         </a>
       </div>
@@ -800,7 +800,7 @@ export function ExtendedShellSpecimen({ locale, entry }: { locale: DocsLocale; e
           VoxWard · {specimenCopy[locale].brand.openProduct}
           <Icon name="arrow-right" size="sm" />
         </LinkButton>
-        <a className="tcrn-link" href="/ai/4.1.0/pattern/batch3-components-and-shell.json">
+        <a className="tcrn-link" href="/ai/4.2.0/pattern/batch3-components-and-shell.json">
           Extended ProductShell contract (JSON)
         </a>
       </div>

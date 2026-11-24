@@ -6,7 +6,7 @@ confirmation composition and explicit product Traditional Chinese shell copy in
 contract for the existing TMS route
 `/tenant/[tenantId]/talent/[talentId]/customers`; it adds no formal component
 entry. The business mapping input was DS `0a4df27` and TMS `a4030b1`.
-The package remains a 4.1.0 candidate awaiting formal producer publication;
+The package remains a 4.2.0 candidate awaiting formal producer publication;
 Owner adoption does not establish production delivery or real TMS consumption.
 
 The actual consumer sources are project `project:c496caf54058bdbe17f40ebf`:

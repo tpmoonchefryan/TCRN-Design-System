@@ -61,9 +61,9 @@ export function ApiReference({ locale, board, entry = "static" }: {
           <a className="tcrn-link" href={pageHref(locale, "shell-extended", entry)}>Extended shell · VoxWard</a>
         </div>
         <div className="tcrn-doc-row">
-          <a className="tcrn-link" href="/ai/4.1.0/pattern/customer-list-boundary.json">Customer list support contract</a>
-          <a className="tcrn-link" href="/ai/4.1.0/pattern/seasonal-halloween-theme.json">Seasonal Halloween theme contract</a>
-          <a className="tcrn-link" href="/ai/4.1.0/pattern/batch3-components-and-shell.json">Batch 3 components and VoxWard shell contract</a>
+          <a className="tcrn-link" href="/ai/4.2.0/pattern/customer-list-boundary.json">Customer list support contract</a>
+          <a className="tcrn-link" href="/ai/4.2.0/pattern/seasonal-halloween-theme.json">Seasonal Halloween theme contract</a>
+          <a className="tcrn-link" href="/ai/4.2.0/pattern/batch3-components-and-shell.json">Batch 3 components and VoxWard shell contract</a>
         </div>
       </section>}
     </div>
