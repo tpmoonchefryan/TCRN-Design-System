@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
-import { Button, ButtonGroup, IconButton, LinkButton, ClipboardCopyButton, Heading, Text, Highlight, Icon, TcrnBrandMark, ProductLogo, ProductLockup, tcrnProductMarks, Input, Textarea, SearchInput, SuggestInput, Select, MultiSelect, NumberInput, DatePicker, Checkbox, RadioGroup, Switch, ProductShell, ShellBrandButton, ShellIntro, Tabs, shellMenuPresentationContext, type IconName, type ProductShellNavGroup, type ShellThemeMode, type TcrnProductMarkId } from "@tcrn/ui-react/approved";
-import { getTcrnProductLogoAsset } from "@tcrn/ui-react";
-import { tcrnGplusThemedTokens, tcrnGplusFixedTokens, tcrnTokens } from "@tcrn/ui-tokens";
+import { Button, ButtonGroup, IconButton, LinkButton, ClipboardCopyButton, Heading, Text, Highlight, Icon, TcrnBrandMark, ProductLogo, ProductLockup, tcrnRegisteredProductMarks, getTcrnProductLogoAsset, Input, Textarea, SearchInput, SuggestInput, Select, MultiSelect, NumberInput, DatePicker, Checkbox, RadioGroup, Switch, ProductShell, ShellBrandButton, ShellIntro, Tabs, shellMenuPresentationContext, type IconName, type ProductShellNavGroup, type ShellThemeMode, type TcrnProductMarkId, type TcrnProductMarkVariant } from "@tcrn/ui-react/approved";
+import { tcrnGplusThemedTokens, tcrnGplusFixedTokens, tcrnTokens, type AnyThemeMode } from "@tcrn/ui-tokens";
 import { approvedSource, supportedLocales, type ApprovedBoardId, type DocsLocale } from "./approved-source.js";
 import { tcrnLocaleMetadata } from "@tcrn/ui-copy-state";
 import { docsCopy } from "./locales.js";
+import { pageHref, productToBrandPage, type DocsEntry } from "./portal-navigation.js";
 import { specimenCopy } from "./specimen-copy.js";
 
 export function Section({name, title = name, children}: {name: string; title?: string; children: ReactNode}) {
@@ -161,9 +161,19 @@ function Icons({locale}: {locale: DocsLocale}) {
 }
 
 const brandSizes = [128, 64, 48, 32, 24, 16] as const;
+const brandThreeThemes: readonly AnyThemeMode[] = ["light", "dark", "halloween"];
+const brandVariants: readonly TcrnProductMarkVariant[] = ["color", "mono", "tile-tint", "tile-deep"];
+
+function brandVariantLabel(locale: DocsLocale, variant: TcrnProductMarkVariant) {
+  const labels = specimenCopy[locale].brand;
+  if (variant === "color") return labels.color;
+  if (variant === "mono") return labels.mono;
+  if (variant === "tile-tint") return labels.tint;
+  return labels.deep;
+}
 
 function BrandMarkSample({productId, size, variant = "color", label}: {
-  productId: TcrnProductMarkId; size: number; variant?: "color" | "mono" | "tile-tint" | "tile-deep"; label?: string;
+  productId: TcrnProductMarkId; size: number; variant?: TcrnProductMarkVariant; label?: string;
 }) {
   return <figure className="tcrn-doc-brand-sample" data-doc-brand-rendition={variant} data-doc-brand-size={size}>
     <TcrnBrandMark productId={productId} variant={variant} style={{width: size, height: size}}/>
@@ -171,9 +181,40 @@ function BrandMarkSample({productId, size, variant = "color", label}: {
   </figure>;
 }
 
-function Brand({locale}: {locale: DocsLocale}) {
+function BrandQuickNav({ locale, entry, current }: { locale: DocsLocale; entry: DocsEntry; current: "guide" | TcrnProductMarkId }) {
+  const labels = specimenCopy[locale].brand;
+  return (
+    <nav className="tcrn-doc-brand-nav" aria-label={labels.catalog}>
+      <a
+        href={pageHref(locale, "04-brand", entry)}
+        className="tcrn-doc-brand-nav__link"
+        aria-current={current === "guide" ? "page" : undefined}
+      >
+        {labels.guideLink}
+      </a>
+      {tcrnRegisteredProductMarks.map(({ productId: rawId }) => {
+        const productId = rawId as TcrnProductMarkId;
+        const asset = getTcrnProductLogoAsset(productId);
+        return (
+          <a
+            key={productId}
+            href={pageHref(locale, productToBrandPage[productId], entry)}
+            className="tcrn-doc-brand-nav__link"
+            aria-current={current === productId ? "page" : undefined}
+          >
+            <TcrnBrandMark productId={productId} variant="color" style={{ width: 16, height: 16 }} />
+            <span>{asset.lineOne}</span>
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
+
+function Brand({locale, entry = "static"}: {locale: DocsLocale; entry?: DocsEntry}) {
   const labels = specimenCopy[locale].brand;
   return <>
+    <BrandQuickNav locale={locale} entry={entry} current="guide" />
     <section className="tcrn-doc-section" data-doc-brand-guide="">
       <Heading level={2} visualLevel={3}>{labels.guide}</Heading>
       <div className="tcrn-doc-prose">
@@ -183,40 +224,136 @@ function Brand({locale}: {locale: DocsLocale}) {
         <Text>{labels.shellScale}</Text>
       </div>
     </section>
-    <Themes locale={locale}>{() => tcrnProductMarks.map(({productId: rawId}) => {
-      const productId = rawId as TcrnProductMarkId;
-      return (
-      <Section key={productId} name={productId} title={getTcrnProductLogoAsset(productId).lineOne}>
-        <div className="tcrn-doc-section" data-doc-brand-ladder="">
-          <Heading level={4}>{labels.ladder}</Heading>
-          <Row>{brandSizes.map(size => <BrandMarkSample key={size} productId={productId} size={size}/>)}</Row>
-        </div>
-        <Row>
-          <figure className="tcrn-doc-brand-sample">
-            <ProductLogo productId={productId} locale={locale}/>
-            <figcaption>{labels.color} · 44 px</figcaption>
-          </figure>
-          <BrandMarkSample productId={productId} size={56} variant="mono" label={labels.mono}/>
-          {([["tile-tint", labels.tint], ["tile-deep", labels.deep]] as const).flatMap(([variant, label]) =>
-            [64, 32].map(size => <BrandMarkSample key={`${variant}-${size}`} productId={productId} size={size} variant={variant} label={label}/>))}
-        </Row>
-        <div className="tcrn-doc-section" data-doc-brand-lockups=""
-          data-standard-conflict={productId === "tms" || productId === "design-system" ? "K1" : undefined}>
-          <Heading level={4}>{labels.lockups}</Heading>
-          {([
-            {label: labels.full, size: 44, scale: "lockup"},
-            {label: labels.compact, size: 22, scale: "rail"},
-            {label: labels.fullLine, size: 44, firstLine: "lockup"},
-            {label: labels.compactLine, size: 22, firstLine: "rail"},
-          ] as const).map(({label, size, ...props}) => <figure key={label} className="tcrn-doc-brand-sample">
-            <ProductLockup productId={productId} locale={locale} {...props}/>
-            <figcaption>{label} · {size} px</figcaption>
-          </figure>)}
-        </div>
-      </Section>
-      );
-    })}</Themes>
+    <section className="tcrn-doc-section" data-doc-brand-directory="">
+      <Heading level={2} visualLevel={3}>{labels.catalog}</Heading>
+      <div className="tcrn-doc-brand-directory">
+        {tcrnRegisteredProductMarks.map(({ productId: rawId }) => {
+          const productId = rawId as TcrnProductMarkId;
+          const asset = getTcrnProductLogoAsset(productId);
+          const href = pageHref(locale, productToBrandPage[productId], entry);
+          return (
+            <article key={productId} className="tcrn-doc-brand-card" data-doc-brand-card={productId}>
+              <header className="tcrn-doc-brand-card__head">
+                <Heading level={3}>{asset.lineOne}</Heading>
+                <LinkButton variant="quiet" size="sm" href={href}>
+                  {labels.openProduct}
+                  <Icon name="arrow-right" size="sm" />
+                </LinkButton>
+              </header>
+              <div className="tcrn-doc-brand-renditions" data-doc-brand-renditions="">
+                {brandVariants.map(variant => (
+                  <figure key={variant} className="tcrn-doc-brand-sample" data-doc-brand-rendition={variant} data-doc-brand-size={44}>
+                    <ProductLogo productId={productId} markVariant={variant} locale={locale} />
+                    <figcaption>{brandVariantLabel(locale, variant)}</figcaption>
+                  </figure>
+                ))}
+              </div>
+              <div
+                className="tcrn-doc-brand-card__lockups"
+                data-doc-brand-lockups=""
+                data-standard-conflict={productId === "tms" || productId === "design-system" ? "K1" : undefined}
+              >
+                {([
+                  { label: labels.full, size: 44, scale: "lockup" },
+                  { label: labels.compact, size: 22, scale: "rail" },
+                  { label: labels.fullLine, size: 44, firstLine: "lockup" },
+                  { label: labels.compactLine, size: 22, firstLine: "rail" },
+                ] as const).map(({ label, size, ...props }) => (
+                  <figure key={label} className="tcrn-doc-brand-sample">
+                    <ProductLockup productId={productId} locale={locale} {...props} />
+                    <figcaption>{label} · {size} px</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
   </>;
+}
+
+export function BrandProductSpecimen({ productId, locale, entry = "static" }: {
+  productId: TcrnProductMarkId;
+  locale: DocsLocale;
+  entry?: DocsEntry;
+}) {
+  const labels = specimenCopy[locale].brand;
+  const themeNames = specimenCopy[locale].themes;
+  const [scaleTheme, setScaleTheme] = useState<AnyThemeMode>("light");
+
+  return (
+    <>
+      <BrandQuickNav locale={locale} entry={entry} current={productId} />
+      <div className="tcrn-doc-themes tcrn-doc-themes--three" data-doc-brand-themes={productId}>
+        {brandThreeThemes.map(theme => (
+          <div key={theme} className="tcrn-doc-pane" data-tcrn-theme={theme} data-formal-theme={theme}>
+            <Heading level={2} visualLevel={4}>{themeNames[theme]}</Heading>
+            <div className="tcrn-doc-paper">
+              <div className="tcrn-doc-brand-renditions" data-doc-brand-renditions="">
+                {brandVariants.map(variant => (
+                  <figure key={variant} className="tcrn-doc-brand-sample" data-doc-brand-rendition={variant} data-doc-brand-size={44}>
+                    <ProductLogo productId={productId} markVariant={variant} locale={locale} />
+                    <figcaption>{brandVariantLabel(locale, variant)}</figcaption>
+                  </figure>
+                ))}
+              </div>
+              <div
+                className="tcrn-doc-section"
+                data-doc-brand-lockups=""
+                data-standard-conflict={productId === "tms" || productId === "design-system" ? "K1" : undefined}
+              >
+                <Heading level={3} visualLevel={4}>{labels.lockups}</Heading>
+                {([
+                  { label: labels.full, size: 44, scale: "lockup" },
+                  { label: labels.compact, size: 22, scale: "rail" },
+                  { label: labels.fullLine, size: 44, firstLine: "lockup" },
+                  { label: labels.compactLine, size: 22, firstLine: "rail" },
+                ] as const).map(({ label, size, ...props }) => (
+                  <figure key={label} className="tcrn-doc-brand-sample">
+                    <ProductLockup productId={productId} locale={locale} {...props} />
+                    <figcaption>{label} · {size} px</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <section className="tcrn-doc-section tcrn-doc-brand-scales" data-doc-brand-scales="">
+        <div className="tcrn-doc-brand-scales__head">
+          <Heading level={2} visualLevel={3}>{labels.scales}</Heading>
+          <ButtonGroup ariaLabel={labels.scales} size="sm" variant="secondary">
+            {brandThreeThemes.map(theme => (
+              <Button key={theme} aria-pressed={scaleTheme === theme} onClick={() => setScaleTheme(theme)}>
+                {themeNames[theme]}
+              </Button>
+            ))}
+          </ButtonGroup>
+        </div>
+        <div className="tcrn-doc-pane" data-tcrn-theme={scaleTheme}>
+          <div className="tcrn-doc-paper">
+            <div className="tcrn-doc-section" data-doc-brand-ladder="">
+              <Heading level={3} visualLevel={4}>{labels.ladder}</Heading>
+              <Row>{brandSizes.map(size => <BrandMarkSample key={size} productId={productId} size={size} />)}</Row>
+            </div>
+            <div className="tcrn-doc-section" data-doc-brand-tile-scales="">
+              <Heading level={3} visualLevel={4}>{labels.renditions}</Heading>
+              <Row>
+                <figure className="tcrn-doc-brand-sample" data-doc-brand-rendition="color" data-doc-brand-size={44}>
+                  <ProductLogo productId={productId} locale={locale} />
+                  <figcaption>{labels.color} · 44 px</figcaption>
+                </figure>
+                <BrandMarkSample productId={productId} size={56} variant="mono" label={labels.mono} />
+                {([["tile-tint", labels.tint], ["tile-deep", labels.deep]] as const).flatMap(([variant, label]) =>
+                  [64, 32].map(size => <BrandMarkSample key={`${variant}-${size}`} productId={productId} size={size} variant={variant} label={label} />))}
+              </Row>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
 
 const actionStates=["default","hover","active","focus","disabled","loading","selected"] as const;
@@ -459,5 +596,5 @@ function ShellLower({locale, shortcutOwner = false}: {locale: DocsLocale; shortc
     <Text>{docsCopy(locale).summaries[7]}</Text>
   </>;
 }
-export function BoardSpecimens({board,locale,apiHref="#api",shortcutOwner=false}:{board:ApprovedBoardId;locale:DocsLocale;apiHref?:string;shortcutOwner?:boolean}) {switch(board){case"01-tokens":return <Tokens locale={locale}/>;case"02-typography":return <Typography locale={locale} apiHref={apiHref}/>;case"03-icons":return <Icons locale={locale}/>;case"04-brand":return <Brand locale={locale}/>;case"05-actions":return <Actions locale={locale} apiHref={apiHref}/>;case"06-inputs":return <Inputs locale={locale}/>;case"07a-shell-upper":return <ShellUpper locale={locale} shortcutOwner={shortcutOwner}/>;case"07b-shell-lower":return <ShellLower locale={locale} shortcutOwner={shortcutOwner}/>;}}
+export function BoardSpecimens({board,locale,apiHref="#api",entry="static",shortcutOwner=false}:{board:ApprovedBoardId;locale:DocsLocale;apiHref?:string;entry?:DocsEntry;shortcutOwner?:boolean}) {switch(board){case"01-tokens":return <Tokens locale={locale}/>;case"02-typography":return <Typography locale={locale} apiHref={apiHref}/>;case"03-icons":return <Icons locale={locale}/>;case"04-brand":return <Brand locale={locale} entry={entry}/>;case"05-actions":return <Actions locale={locale} apiHref={apiHref}/>;case"06-inputs":return <Inputs locale={locale}/>;case"07a-shell-upper":return <ShellUpper locale={locale} shortcutOwner={shortcutOwner}/>;case"07b-shell-lower":return <ShellLower locale={locale} shortcutOwner={shortcutOwner}/>;}}
 export const formalBoardSource=(id:ApprovedBoardId)=>approvedSource.boards.find(b=>b.slug===id)!;

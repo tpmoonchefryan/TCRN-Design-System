@@ -10,9 +10,26 @@ import { approvedSource, type DocsLocale } from "./approved-source.js";
 import { docsCopy } from "./locales.js";
 import { Portal } from "./portal.js";
 import { portalCopy } from "./portal-copy.js";
-import { docsNavigation, docsPinnedNavigation, managerFragment, pageHref, searchDocs, type DocsEntry, type DocsPage } from "./portal-navigation.js";
+import {
+  brandProductPageMap,
+  docsNavigation,
+  docsPinnedNavigation,
+  isBrandProductPage,
+  isExtraDocsPage,
+  managerFragment,
+  pageHref,
+  searchDocs,
+  type DocsEntry,
+  type DocsPage,
+} from "./portal-navigation.js";
+import {
+  ExtendedShellSpecimen,
+  FeedbackDataSpecimen,
+  LayoutOverlaySpecimen,
+  SeasonalHalloweenSpecimen,
+} from "./portal-specimens.js";
 import { SourceMatrices } from "./source-matrices.js";
-import { BoardSpecimens } from "./specimens.js";
+import { BoardSpecimens, BrandProductSpecimen } from "./specimens.js";
 
 export interface PageProps {
   page: DocsPage;
@@ -317,7 +334,7 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
             <div className="docs-frame">
               <PageHeader
                 title={current.label}
-                description={board ? labels.summaries[index] : undefined}
+                description={board ? labels.summaries[index] : isExtraDocsPage(page) ? portalCopy[locale].extraPages[page].summary : undefined}
                 breadcrumbs={trail}
                 locale={locale}
                 headingLevel={1}
@@ -326,13 +343,33 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
                 {board ? (
                   <>
                     <article lang={locale} data-approved-board={board.slug} data-source-id={board.sourceId} className="tcrn-doc-board">
-                      <BoardSpecimens board={board.slug} locale={locale} apiHref={apiHref} />
+                      <BoardSpecimens board={board.slug} locale={locale} apiHref={apiHref} entry={entry} />
                       <SourceMatrices board={board.slug} locale={locale} apiHref={apiHref} />
                     </article>
                     {inStorybook && (
                       <section id="api"><ApiReference board={board.slug} locale={locale} entry={entry} /></section>
                     )}
                   </>
+                ) : isBrandProductPage(page) ? (
+                  <article lang={locale} data-docs-specimen={page} data-brand-product={brandProductPageMap[page]} className="tcrn-doc-board">
+                    <BrandProductSpecimen productId={brandProductPageMap[page]} locale={locale} entry={entry} />
+                  </article>
+                ) : page === "seasonal-halloween" ? (
+                  <article lang={locale} data-docs-specimen={page} className="tcrn-doc-board">
+                    <SeasonalHalloweenSpecimen locale={locale} />
+                  </article>
+                ) : page === "feedback-data" ? (
+                  <article lang={locale} data-docs-specimen={page} className="tcrn-doc-board">
+                    <FeedbackDataSpecimen locale={locale} />
+                  </article>
+                ) : page === "layout-overlays" ? (
+                  <article lang={locale} data-docs-specimen={page} className="tcrn-doc-board">
+                    <LayoutOverlaySpecimen locale={locale} />
+                  </article>
+                ) : page === "shell-extended" ? (
+                  <article lang={locale} data-docs-specimen={page} className="tcrn-doc-board">
+                    <ExtendedShellSpecimen locale={locale} entry={entry} />
+                  </article>
                 ) : <ApiReference locale={locale} entry={entry} />}
               </div>
             </div>

@@ -120,6 +120,7 @@ export const CURRENT_STORY_SOURCE_FILES = Object.freeze([
   "locales.ts",
   "portal-copy.ts",
   "portal-navigation.ts",
+  "portal-specimens.tsx",
   "portal.tsx",
   "seasonal-halloween.stories.tsx",
   "smoke.test.ts",
@@ -464,7 +465,18 @@ export function checkFonts(root=ROOT){const source=readApprovedSource(root),face
   for(const name of ["hanken-grotesk-OFL.txt","source-serif-4-OFL.txt","ibm-plex-mono-OFL.txt","noto-sans-sc-OFL.txt","noto-serif-sc-OFL.txt","approved-site-original-notice.txt"]){const p=path.join(root,"packages/ui-tokens/licenses",name);if(!fs.existsSync(p)||!fs.readFileSync(p,"utf8").includes("OPEN FONT LICENSE"))issues.push(`Missing SIL OFL notice ${name}`);}
   return {issues,files:expected.length,faces:faces.length,families:[...new Set(faces.map(f=>f.family))]};
 }
-export function expectedOutputPaths(root=ROOT){const source=readApprovedSource(root),faces=extractFontFaces(source),fonts=[...new Set(faces.map(f=>f.file))];return ["index.html","storybook.js","storybook.css","assets/ds-tile-deep.svg","fonts/fonts.css","fonts/manifest.json","ai-consumption-contract.json","design-authority.json","llms.txt","robots.txt","output-manifest.json",...AI_OUTPUT_FILES,...LOCALES.flatMap(l=>["index",...Object.keys(APPROVED_BOARD_IDS),"api"].map(p=>`${l}/${p}.html`)),...fonts.map(f=>`fonts/${f}`),...["hanken-grotesk-OFL.txt","source-serif-4-OFL.txt","ibm-plex-mono-OFL.txt","noto-sans-sc-OFL.txt","noto-serif-sc-OFL.txt","approved-site-original-notice.txt"].map(f=>`licenses/${f}`)].sort();}
+export const EXTRA_DOCS_PAGES = Object.freeze([
+  "seasonal-halloween",
+  "brand-tms",
+  "brand-einzbern",
+  "brand-mana-orchestrate",
+  "brand-design-system",
+  "brand-voxward",
+  "feedback-data",
+  "layout-overlays",
+  "shell-extended",
+]);
+export function expectedOutputPaths(root=ROOT){const source=readApprovedSource(root),faces=extractFontFaces(source),fonts=[...new Set(faces.map(f=>f.file))];return ["index.html","storybook.js","storybook.css","assets/ds-tile-deep.svg","fonts/fonts.css","fonts/manifest.json","ai-consumption-contract.json","design-authority.json","llms.txt","robots.txt","output-manifest.json",...AI_OUTPUT_FILES,...LOCALES.flatMap(l=>["index",...Object.keys(APPROVED_BOARD_IDS),...EXTRA_DOCS_PAGES,"api"].map(p=>`${l}/${p}.html`)),...fonts.map(f=>`fonts/${f}`),...["hanken-grotesk-OFL.txt","source-serif-4-OFL.txt","ibm-plex-mono-OFL.txt","noto-sans-sc-OFL.txt","noto-serif-sc-OFL.txt","approved-site-original-notice.txt"].map(f=>`licenses/${f}`)].sort();}
 export function validateOutputMembers(actual,expected){return [...actual.filter(f=>!expected.includes(f)).map(f=>`Stale or unpublished output file: ${f}`),...expected.filter(f=>!actual.includes(f)).map(f=>`Missing current output file: ${f}`)];}
 export function rejectedSvgGeometry(text){return [...text.replace(/\\"/g,'"').matchAll(/<svg\b[^>]*>([\s\S]*?)<\/svg>/g)].some(svg=>sha256([...svg[1].matchAll(/<path[^>]*\bd="([^"]+)"/g)].map(m=>m[1].replace(/[\s,]/g,"")).sort().join("|"))===OLD_MOTHER_GEOMETRY_SHA256);}
 const retiredSourceDestination = /\/(?:zh-CN|en|ja|ko|fr)\/source\.html\b|published-standards--source\b/;
@@ -651,9 +663,18 @@ export const MANAGER_STORY_IDS = Object.freeze([
   "published-standards--actions",
   "published-standards--api",
   "published-standards--brand",
+  "published-standards--brand-design-system",
+  "published-standards--brand-einzbern",
+  "published-standards--brand-mana-orchestrate",
+  "published-standards--brand-tms",
+  "published-standards--brand-voxward",
+  "published-standards--feedback-data",
   "published-standards--home",
   "published-standards--icons",
   "published-standards--inputs",
+  "published-standards--layout-overlays",
+  "published-standards--seasonal-halloween",
+  "published-standards--shell-extended",
   "published-standards--shell-lower",
   "published-standards--shell-upper",
   "published-standards--tokens",

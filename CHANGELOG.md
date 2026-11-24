@@ -35,12 +35,16 @@ and `docs/consumption/patterns/batch3-components-and-shell.md`.
   `Tooltip`, `Dialog`, `ConfirmActionDialog`, `InlineConfirmBar`) families into
   the formal state-pair stylesheet and approved barrel, while retaining existing
   4.0.x deprecated root exports for compatibility.
-- Storybook, AI contract, and red-first gates: add pure-package 3-theme specimen
-  stories (`Adopted support/Batch 3 components and VoxWard shell` and `Adopted
-  support/Seasonal Halloween theme`), emit `ai/4.1.0/` rule shards, and enforce
-  mutation-proven browser/static gates for `Menu`/`Popover` zero document-flow
-  shift and `bottom-end` 0 px right-edge alignment, `ProductShell` left/right pin
-  spacing and `topBanner` geometry, `voxward` `brandDigest` and zero custom
+- Storybook, portal navigation, AI contract, and red-first gates: split the
+  product brand catalog into dedicated per-product 3-theme pages (`brand-tms`,
+  `brand-einzbern`, `brand-mana-orchestrate`, `brand-design-system`,
+  `brand-voxward`) under the `04-brand` guidelines overview; expand portal and
+  Manager navigation with `seasonal-halloween`, `feedback-data`,
+  `layout-overlays`, and `shell-extended` pages alongside flush embedded shell
+  specimen framing; emit `ai/4.1.0/` rule shards; and enforce mutation-proven
+  browser/static gates for `Menu`/`Popover` zero document-flow shift and
+  `bottom-end` 0 px right-edge alignment, `ProductShell` left/right pin spacing
+  and `topBanner` geometry, `voxward` `brandDigest` and zero custom
   outside-package `tcrn-` classes, and 3-theme semantic contrast.
 
 ## 4.0.0

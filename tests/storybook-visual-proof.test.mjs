@@ -597,13 +597,14 @@ test('real adjacent shell searches reject wrong icon/track/origin/type/reserve a
 async function openContentPage(page, {base, entry, board, locale = 'zh-CN', width}) {
  const native = entry === 'native-manager';
  await page.setViewportSize({width: native ? width + 350 : width, height: 900});
- if (!native && board !== 'api') {
+ const isBoard = Object.hasOwn(APPROVED_BOARD_IDS, board);
+ if (!native && isBoard) {
   await openPublishedBoard(page, {base, entry, locale, board});
   return page.locator('[data-approved-board]');
  }
- const id = board === 'api' ? 'published-standards--api' : managerStoryId(board);
+ const id = isBoard ? managerStoryId(board) : `published-standards--${board}`;
  const route = native ? `/index.html?path=/story/${id}&globals=locale:${locale}`
-  : entry === 'static' ? `/${locale}/api.html` : `/iframe.html?id=${id}&viewMode=story&globals=locale:${locale}`;
+  : entry === 'static' ? `/${locale}/${board}.html` : `/iframe.html?id=${id}&viewMode=story&globals=locale:${locale}`;
  const response = await page.goto(base + route);
  assert.equal(response.status(), 200);
  let surface = page;
@@ -616,7 +617,7 @@ async function openContentPage(page, {base, entry, board, locale = 'zh-CN', widt
   surface = page.frameLocator('#storybook-preview-iframe');
  }
  const shell = surface.locator(`.docs-shell[data-docs-page="${board}"][lang="${locale}"][data-docs-ready="true"]`);
- const content = shell.locator(board === 'api' ? '[data-published-api-reference]' : '[data-approved-board]');
+ const content = shell.locator(board === 'api' ? '[data-published-api-reference]' : isBoard ? '[data-approved-board]' : `[data-docs-specimen="${board}"]`);
  await content.evaluate(el => el.ownerDocument.fonts.ready);
  return content;
 }
@@ -727,39 +728,77 @@ async function assertBrandCatalog(article,source){
  const usage = await guide.textContent();
  for (const use of uses[locale]) assert.match(usage, use, locale);
  assert.match(await guide.evaluate(el => el.nextElementSibling.textContent), /128.*22 px/, locale);
- const expected=extractMarks(source).map(({productId,name})=>[productId,name]);
- const themes=await article.locator('[data-formal-theme]').evaluateAll(panes=>panes.map(pane=>
-  [...pane.querySelectorAll('[data-formal-section]')].map(product=>{
-   const read=figure=>{
-    const caption=figure.querySelector('figcaption'),svg=figure.querySelector('svg');
-    const range=document.createRange();
-    if(caption)range.selectNodeContents(caption);
-    const rect=svg.getBoundingClientRect();
-    return {caption:caption?.textContent.trim(),lines:caption?new Set([...range.getClientRects()].map(box=>box.top)).size:0,
-     square:rect.width===rect.height,size:rect.width,mark:svg.dataset.productMark,variant:svg.dataset.productMarkVariant};
-   };
-   return {
-    id:product.dataset.formalSection,name:product.querySelector('h3').textContent.trim(),
-    ladder:[...product.querySelectorAll('[data-doc-brand-ladder] figure')].map(read),
-    renditions:[...product.querySelectorAll(':scope > .tcrn-doc-row figure')].map(read),
-    lockups:[...product.querySelectorAll('[data-doc-brand-lockups] figure')].map(read),
-   };
-  })));
- assert.equal(themes.length,2);
- for(const products of themes){
-  assert.deepEqual(products.map(({id,name})=>[id,name]),expected);
-  for(const {id,ladder,renditions,lockups} of products){
-   assert.deepEqual(ladder.map(sample=>sample.size),[128,64,48,32,24,16]);
-   assert.deepEqual(renditions.map(({variant,size})=>[variant,size]),[['color',44],['mono',56],['tile-tint',64],['tile-tint',32],['tile-deep',64],['tile-deep',32]]);
-   assert.deepEqual(lockups.map(sample=>sample.size),[44,22,44,22]);
-   assert.ok([...ladder,...renditions,...lockups].every(sample=>sample.square&&sample.mark===id&&sample.caption?.endsWith(`${sample.size} px`)&&sample.lines===1),'unclipped labeled rendition and size');
-   assert.equal(new Set(lockups.map(sample=>sample.caption)).size,4);
-  }
+ const expected=[...extractMarks(source).map(({productId,name})=>[productId,name]),['voxward','VoxWard']];
+ const cards=await article.locator('[data-doc-brand-directory] [data-doc-brand-card]').evaluateAll(nodes=>nodes.map(card=>{
+  const read=figure=>{
+   const caption=figure.querySelector('figcaption'),svg=figure.querySelector('svg');
+   const range=document.createRange();
+   if(caption)range.selectNodeContents(caption);
+   const rect=svg.getBoundingClientRect();
+   return {caption:caption?.textContent.trim(),lines:caption?new Set([...range.getClientRects()].map(box=>box.top)).size:0,
+    square:Math.abs(rect.width-rect.height)<=0.5,size:Math.round(rect.width),mark:svg.dataset.productMark,variant:svg.dataset.productMarkVariant};
+  };
+  return {
+   id:card.dataset.docBrandCard,
+   name:card.querySelector('h3')?.textContent.trim(),
+   href:card.querySelector('a')?.getAttribute('href'),
+   renditions:[...card.querySelectorAll('[data-doc-brand-renditions] figure')].map(read),
+   lockups:[...card.querySelectorAll('[data-doc-brand-lockups] figure')].map(read),
+  };
+ }));
+ assert.deepEqual(cards.map(({id,name})=>[id,name]),expected);
+ for(const {id,href,renditions,lockups} of cards){
+  assert.ok(href?.includes(`brand-${id}`),`brand overview links to brand-${id}`);
+  assert.deepEqual(renditions.map(({variant,size})=>[variant,size]),[['color',44],['mono',44],['tile-tint',44],['tile-deep',44]]);
+  assert.deepEqual(lockups.map(sample=>sample.size),[44,22,44,22]);
+  assert.ok(renditions.every(sample=>sample.square&&sample.mark===id&&sample.caption&&sample.lines===1),'unclipped labeled rendition and size');
+  assert.ok(lockups.every(sample=>sample.square&&sample.mark===id&&sample.caption?.endsWith(`${sample.size} px`)&&sample.lines===1),'unclipped labeled rendition and size');
+  assert.equal(new Set(lockups.map(sample=>sample.caption)).size,4);
  }
+}
+
+async function assertBrandProductPage(article,productId){
+ const data=await article.evaluate(root=>{
+  const read=figure=>{
+   const caption=figure.querySelector('figcaption'),svg=figure.querySelector('svg');
+   const range=document.createRange();
+   if(caption)range.selectNodeContents(caption);
+   const rect=svg.getBoundingClientRect();
+   return {caption:caption?.textContent.trim(),lines:caption?new Set([...range.getClientRects()].map(box=>box.top)).size:0,
+    square:Math.abs(rect.width-rect.height)<=0.5,size:Math.round(rect.width),mark:svg.dataset.productMark,variant:svg.dataset.productMarkVariant};
+  };
+  const themes=[...root.querySelectorAll('[data-doc-brand-themes] > [data-formal-theme]')].map(pane=>({
+   theme:pane.dataset.formalTheme,
+   renditions:[...pane.querySelectorAll('[data-doc-brand-renditions] figure')].map(read),
+   lockups:[...pane.querySelectorAll('[data-doc-brand-lockups] figure')].map(read),
+  }));
+  const ladder=[...root.querySelectorAll('[data-doc-brand-ladder] figure')].map(read);
+  const tileScales=[...root.querySelectorAll('[data-doc-brand-tile-scales] figure')].map(read);
+  return {themes,ladder,tileScales};
+ });
+ assert.deepEqual(data.themes.map(pane=>pane.theme),['light','dark','halloween']);
+ for(const {renditions,lockups} of data.themes){
+  assert.deepEqual(renditions.map(({variant,size})=>[variant,size]),[['color',44],['mono',44],['tile-tint',44],['tile-deep',44]]);
+  assert.deepEqual(lockups.map(sample=>sample.size),[44,22,44,22]);
+  assert.ok(renditions.every(sample=>sample.square&&sample.mark===productId&&sample.caption&&sample.lines===1),'unclipped labeled rendition and size');
+  assert.ok(lockups.every(sample=>sample.square&&sample.mark===productId&&sample.caption?.endsWith(`${sample.size} px`)&&sample.lines===1),'unclipped labeled rendition and size');
+  assert.equal(new Set(lockups.map(sample=>sample.caption)).size,4);
+ }
+ assert.deepEqual(data.ladder.map(sample=>sample.size),[128,64,48,32,24,16]);
+ assert.deepEqual(data.tileScales.map(({variant,size})=>[variant,size]),[['color',44],['mono',56],['tile-tint',64],['tile-tint',32],['tile-deep',64],['tile-deep',32]]);
+ assert.ok([...data.ladder,...data.tileScales].every(sample=>sample.square&&sample.mark===productId&&sample.caption?.endsWith(`${sample.size} px`)&&sample.lines===1),'unclipped labeled rendition and size');
 }
 
 const contentEntries=['static','manager','native-manager'];
 const formalBoards=Object.keys(APPROVED_BOARD_IDS);
+const splitBrandPages=[
+ ['brand-tms','tms'],
+ ['brand-einzbern','einzbern'],
+ ['brand-mana-orchestrate','mana-orchestrate'],
+ ['brand-design-system','design-system'],
+ ['brand-voxward','voxward'],
+];
+const extraPortalPages=['seasonal-halloween','feedback-data','layout-overlays','shell-extended'];
 
 test('content layout, icon groups and mark renditions render in all three entries',async()=>{
  for(const entry of contentEntries)await withPublishedBrowser(async({browser,base,source})=>{
@@ -780,10 +819,31 @@ test('content layout, icon groups and mark renditions render in all three entrie
     if(board==='03-icons')await assertIconCatalog(article,source);
     if(board==='04-brand')await assertBrandCatalog(article,source);
    }
+   for(const [board,productId] of splitBrandPages){
+    const article=await openContentPage(page,{base,entry,board,width:390});
+    const layout=await article.evaluate(root=>{
+     const main=root.closest('.docs-paper > main'),doc=root.ownerDocument;
+     return [getComputedStyle(root).rowGap,doc.documentElement.scrollWidth,doc.documentElement.clientWidth,main.scrollWidth,main.clientWidth];
+    });
+    assert.equal(layout[0],'28px',`${entry}/${board} document hierarchy`);
+    assert.ok(layout[1]<=layout[2]+1&&layout[3]<=layout[4]+1,`${entry}/${board} outer overflow ${layout}`);
+    await assertBrandProductPage(article,productId);
+   }
+   for(const board of extraPortalPages){
+    const article=await openContentPage(page,{base,entry,board,width:390});
+    const layout=await article.evaluate(root=>{
+     const main=root.closest('.docs-paper > main'),doc=root.ownerDocument;
+     return [getComputedStyle(root).rowGap,doc.documentElement.scrollWidth,doc.documentElement.clientWidth,main.scrollWidth,main.clientWidth];
+    });
+    assert.equal(layout[0],'28px',`${entry}/${board} document hierarchy`);
+    assert.ok(layout[1]<=layout[2]+1&&layout[3]<=layout[4]+1,`${entry}/${board} outer overflow ${layout}`);
+   }
    for(const locale of ['en','ja','ko','fr']){
     await assertDocumentLayoutGuide(await openContentPage(page,{base,entry,board:'01-tokens',locale,width:390}));
     const article=await openContentPage(page,{base,entry,board:'04-brand',locale,width:390});
     await assertBrandCatalog(article,source);
+    const voxward=await openContentPage(page,{base,entry,board:'brand-voxward',locale,width:390});
+    await assertBrandProductPage(voxward,'voxward');
    }
   }finally{await page.close();}
  },{entry:entry==='static'?'static':'manager'});
@@ -815,8 +875,12 @@ test('content regressions reject collapsed spacing and missing or repeated catal
    }
    const brand=await open('04-brand');
    await assertBrandCatalog(brand,source);
-   await brand.locator('[data-doc-brand-ladder] figcaption').first().evaluate(el=>el.remove());
+   await brand.locator('[data-doc-brand-renditions] figcaption').first().evaluate(el=>el.remove());
    await assert.rejects(assertBrandCatalog(brand,source),/unclipped labeled rendition and size/);
+   const brandTms=await open('brand-tms');
+   await assertBrandProductPage(brandTms,'tms');
+   await brandTms.locator('[data-doc-brand-ladder] figcaption').first().evaluate(el=>el.remove());
+   await assert.rejects(assertBrandProductPage(brandTms,'tms'),/unclipped labeled rendition and size/);
   }finally{await page.close();}
  });
 });

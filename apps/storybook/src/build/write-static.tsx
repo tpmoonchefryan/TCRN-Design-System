@@ -7,7 +7,7 @@ import { renderToString } from "react-dom/server";
 import { tcrnComponentCss, tcrnProductMarkSvg, tcrnIconNames, tcrnProductMarkIds } from "@tcrn/ui-react/approved";
 import { tcrnHalloweenThemeCss, tcrnTokenCss, tcrnTokens } from "@tcrn/ui-tokens";
 import { App, docsPreferenceKey } from "../app.js";
-import { docsNavigation, type DocsPage } from "../portal-navigation.js";
+import { allDocsPages, docsNavigation, type DocsPage } from "../portal-navigation.js";
 import { approvedSource, supportedLocales, type DocsLocale } from "../approved-source.js";
 import { approvedApi } from "../approved-api.js";
 import { docsCopy } from "../locales.js";
@@ -104,7 +104,7 @@ export async function writeStorybookStaticBuild(bundle: Uint8Array) {
   });
   const ai = createAiRuleBundle({ candidate, packageVersions, api, examples: manifestBuilder.extractComponentExamples(), tokens: tcrnTokens, sources, fonts: fonts.files, icons: tcrnIconNames, products: tcrnProductMarkIds });
   const files = new Map<string, Uint8Array | string>();
-  for (const locale of supportedLocales) for (const page of ["index", ...approvedSource.boards.map(board => board.slug), "api"] as DocsPage[]) {
+  for (const locale of supportedLocales) for (const page of allDocsPages) {
     files.set(`${locale}/${page}.html`, pageHtml(page, locale));
   }
   files.set("index.html", pageHtml("index", "en"));

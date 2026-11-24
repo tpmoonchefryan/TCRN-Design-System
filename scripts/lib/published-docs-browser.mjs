@@ -257,15 +257,38 @@ export async function exerciseDocsNavigation(page,{base,entry,locale,source,form
  }
  return {issues,observations};
 }
-const docsPages = ['index', ...Object.keys(APPROVED_BOARD_IDS), 'api'];
+const extraDocsPages = [
+  'seasonal-halloween',
+  'brand-tms',
+  'brand-einzbern',
+  'brand-mana-orchestrate',
+  'brand-design-system',
+  'brand-voxward',
+  'feedback-data',
+  'layout-overlays',
+  'shell-extended',
+];
+const docsPages = ['index', ...Object.keys(APPROVED_BOARD_IDS), ...extraDocsPages, 'api'];
 const primaryPages = ['index', '01-tokens', '04-brand', '05-actions', '07a-shell-upper'];
 const topicPages = {
-  foundations: ['01-tokens', '02-typography', '03-icons'],
-  brand: ['04-brand'],
-  components: ['05-actions', '06-inputs', 'api'],
-  shell: ['07a-shell-upper', '07b-shell-lower'],
+  foundations: ['01-tokens', '02-typography', '03-icons', 'seasonal-halloween'],
+  brand: ['04-brand', 'brand-tms', 'brand-einzbern', 'brand-mana-orchestrate', 'brand-design-system', 'brand-voxward'],
+  components: ['05-actions', '06-inputs', 'feedback-data', 'layout-overlays', 'api'],
+  shell: ['07a-shell-upper', '07b-shell-lower', 'shell-extended'],
 };
-const wrapperStories = { index: 'home', api: 'api' };
+const wrapperStories = {
+  index: 'home',
+  api: 'api',
+  'seasonal-halloween': 'seasonal-halloween',
+  'brand-tms': 'brand-tms',
+  'brand-einzbern': 'brand-einzbern',
+  'brand-mana-orchestrate': 'brand-mana-orchestrate',
+  'brand-design-system': 'brand-design-system',
+  'brand-voxward': 'brand-voxward',
+  'feedback-data': 'feedback-data',
+  'layout-overlays': 'layout-overlays',
+  'shell-extended': 'shell-extended',
+};
 const docsStoryId = page => Object.hasOwn(wrapperStories, page)
   ? `published-standards--${wrapperStories[page]}`
   : managerStoryId(page);
@@ -283,11 +306,12 @@ function headerHref({base,entry,locale,managerUi,managerPath},page,fragment=''){
  return entry==='static'?`/${locale}/${page}.html${suffix}`:`?id=${docsStoryId(page)}&viewMode=story&globals=locale:${locale}${suffix}`;
 }
 const docsTopicPages={
- foundations:['01-tokens','02-typography','03-icons'],
- brand:['04-brand'],
- components:['05-actions','06-inputs','api'],
- shell:['07a-shell-upper','07b-shell-lower'],
+ foundations:['01-tokens','02-typography','03-icons','seasonal-halloween'],
+ brand:['04-brand','brand-tms','brand-einzbern','brand-mana-orchestrate','brand-design-system','brand-voxward'],
+ components:['05-actions','06-inputs','feedback-data','layout-overlays','api'],
+ shell:['07a-shell-upper','07b-shell-lower','shell-extended'],
 };
+const componentChapterCount = docsTopicPages.components.filter(pageId => pageId !== 'api').length;
 
 // Exercise the actual docs-only hover cascade and keyboard path. This is deliberately separate
 // from ShellMenu/ProductShell proofs: the published product menu remains click-driven.
@@ -410,7 +434,7 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
   }
   await page.keyboard.press('Tab');
   if(!(await firstChapter.evaluate(el=>el===el.ownerDocument.activeElement)))issues.push(`${entry}/${locale}: Tab from category did not reach a real chapter link`);
-  await page.keyboard.press('Tab');await page.keyboard.press('Tab');
+  for(let step=0;step<componentChapterCount;step++)await page.keyboard.press('Tab');
   if(!(await branch.evaluate(el=>el===el.ownerDocument.activeElement))||await branch.getAttribute('aria-expanded')!=='true')issues.push(`${entry}/${locale}: Tab did not reach/open the API branch`);
   await page.keyboard.press('Tab');
   const overview=componentLayer.locator('.docs-topics__submenu-wrap a.docs-topic-menu__row').first();
@@ -593,7 +617,7 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
 
   const focusOverview=async()=>{
    await trigger.focus();
-   for(let step=0;step<4;step++)await page.keyboard.press('Tab');
+   for(let step=0;step<componentChapterCount+2;step++)await page.keyboard.press('Tab');
    if(!(await focused(overview)))throw new Error('keyboard did not enter the real API overview');
   };
   await focusOverview();
@@ -612,7 +636,7 @@ export async function exerciseDocsTopbarEdges(page,{base,entry,locale='zh-CN',ma
   await page.keyboard.press('Shift+Tab');
   // Walk back through the real links, category triggers and home into the brand button.
   const brand=shell.locator(':scope > header [data-shell-brand]');
-  for(let step=0;step<15&&!(await focused(brand));step++)await page.keyboard.press('Shift+Tab');
+  for(let step=0;step<25&&!(await focused(brand));step++)await page.keyboard.press('Shift+Tab');
   const keyboardExited=await focused(brand)&&!(await shell.locator('.docs-topics button[aria-expanded="true"]').count());
   await focusOverview();
   if(managerUi)await page.getByRole('tab',{name:'Controls',exact:true}).click();
@@ -777,10 +801,10 @@ async function readSheetApiRoutes(panel, formal) {
 export async function exerciseDocsSheet(page,{base,locale,formal,negative=locale==='zh-CN'}={}){
  const issues=[],observations=[];
  const expected={
-  foundations:['01-tokens','02-typography','03-icons'].map(page=>`/${locale}/${page}.html`),
-  brand:[`/${locale}/04-brand.html`],
-  components:[`/${locale}/05-actions.html`,`/${locale}/06-inputs.html`,'#'],
-  shell:[`/${locale}/07a-shell-upper.html`,`/${locale}/07b-shell-lower.html`],
+  foundations:docsTopicPages.foundations.map(page=>`/${locale}/${page}.html`),
+  brand:docsTopicPages.brand.map(page=>`/${locale}/${page}.html`),
+  components:[...docsTopicPages.components.filter(page=>page!=='api').map(page=>`/${locale}/${page}.html`),'#'],
+  shell:docsTopicPages.shell.map(page=>`/${locale}/${page}.html`),
  };
  const pages=Object.keys(docsTopicPages);
  const groupRow=(panel,id)=>panel.locator(`[data-shell-row][aria-controls$="-col-${id}"]`).first();
@@ -887,7 +911,7 @@ export async function exerciseManagerNarrowSheet(page,{base,locale,formal,negati
   if(await panel().locator('.tcrn-shell-menu__crumb--current').getAttribute('href')!==managerMenuHref(managerPath,locale,'index')||await panel().locator('.tcrn-shell-menu__crumb--current').getAttribute('aria-current')!=='page')issues.push(`${locale}: Manager Sheet current page crumb differs`);
   await group('components').tap();
   const rows=panel().locator('[data-shell-row][data-shell-level="2"]:visible');
-  const expected=[managerMenuHref(managerPath,locale,'05-actions'),managerMenuHref(managerPath,locale,'06-inputs'),'#'];
+  const expected=[...docsTopicPages.components.filter(page=>page!=='api').map(page=>managerMenuHref(managerPath,locale,page)),'#'];
   const actual=await rows.evaluateAll(els=>els.map(el=>el.getAttribute('href')));
   if(JSON.stringify(actual)!==JSON.stringify(expected))issues.push(`${locale}: narrow Manager component group routes differ`);
   const branch=panel().locator('[data-shell-row][data-shell-level="2"][aria-controls$="-col-api-branch"]').first();

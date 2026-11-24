@@ -16,7 +16,8 @@ type SpecimenCopy = {
     groups: Record<"navigation" | "find" | "actions" | "appearance" | "status" | "shell", string>;
   };
   brand: {
-    guide: string; ladder: string; color: string; mono: string; tint: string; deep: string;
+    guide: string; catalog: string; openProduct: string; guideLink: string;
+    renditions: string; scales: string; ladder: string; color: string; mono: string; tint: string; deep: string;
     tileUse: string; monoUse: string; lockups: string; shellUse: string; shellScale: string;
     full: string; compact: string; fullLine: string; compactLine: string;
   };
@@ -55,6 +56,11 @@ export const specimenCopy = {
     },
     brand: {
       guide: "产品标的尺寸与用法",
+      catalog: "产品标目录",
+      openProduct: "查看三主题详页",
+      guideLink: "品牌标志规范",
+      renditions: "四类变体与贴片",
+      scales: "尺寸阶梯与贴片尺度",
       ladder: "彩色标尺寸阶梯",
       color: "彩色标", mono: "单色标", tint: "淡底贴片", deep: "深底贴片",
       tileUse: "淡底贴片用于应用图标与产品切换菜单，深底贴片用于 favicon 和深色场合。",
@@ -98,6 +104,11 @@ export const specimenCopy = {
     },
     brand: {
       guide: "Product mark sizes and uses",
+      catalog: "Product marks",
+      openProduct: "Three-theme page",
+      guideLink: "Brand guidelines",
+      renditions: "Renditions and tiles",
+      scales: "Size ladder and tile scales",
       ladder: "Color mark size ladder",
       color: "Color mark", mono: "Mono mark", tint: "Tint tile", deep: "Deep tile",
       tileUse: "Use tint tiles for app icons and product switchers. Use deep tiles for favicons and dark contexts.",
@@ -141,6 +152,11 @@ export const specimenCopy = {
     },
     brand: {
       guide: "製品マークの寸法と用途",
+      catalog: "製品マーク一覧",
+      openProduct: "3テーマ詳細を見る",
+      guideLink: "ブランドガイドライン",
+      renditions: "バリアントとタイル",
+      scales: "サイズ一覧とタイル寸法",
       ladder: "カラーマークのサイズ一覧",
       color: "カラー", mono: "単色", tint: "淡色タイル", deep: "濃色タイル",
       tileUse: "淡色タイルはアプリアイコンと製品切り替えに、濃色タイルは favicon と暗色の場面に使います。",
@@ -184,6 +200,11 @@ export const specimenCopy = {
     },
     brand: {
       guide: "제품 마크 크기와 용도",
+      catalog: "제품 마크 목록",
+      openProduct: "3테마 상세 보기",
+      guideLink: "브랜드 가이드라인",
+      renditions: "변형 및 타일",
+      scales: "크기 단계 및 타일 치수",
       ladder: "컬러 마크 크기 단계",
       color: "컬러 마크", mono: "단색 마크", tint: "밝은 타일", deep: "짙은 타일",
       tileUse: "밝은 타일은 앱 아이콘과 제품 전환 메뉴에, 짙은 타일은 favicon과 어두운 환경에 사용합니다.",
@@ -227,6 +248,11 @@ export const specimenCopy = {
     },
     brand: {
       guide: "Tailles et usages des symboles",
+      catalog: "Catalogue des marques",
+      openProduct: "Voir les trois thèmes",
+      guideLink: "Guide des marques",
+      renditions: "Variantes et tuiles",
+      scales: "Échelle et tailles de tuiles",
       ladder: "Échelle du symbole couleur",
       color: "Couleur", mono: "Monochrome", tint: "Tuile claire", deep: "Tuile foncée",
       tileUse: "Les tuiles claires servent aux icônes d’application et au sélecteur de produits. Les tuiles foncées servent aux favicons et aux contextes sombres.",
