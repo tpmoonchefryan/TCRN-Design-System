@@ -24,11 +24,11 @@ export const tcrnAdoptedProductMarks: readonly TcrnProductMark[] = [
     tileTintBody: `<rect fill="#e3f3f1" height="48" rx="12" width="48"/><path d="${voxwardWingPath}" fill="#0b6b65"/><path d="${voxwardDiamondPath}" fill="#0b6b65"/>`,
     tileDeepBody: `<rect fill="#0b6b65" height="48" rx="12" width="48"/><path d="${voxwardWingPath}" fill="#ffffff"/><path d="${voxwardDiamondPath}" fill="#ffffff"/>`,
     taglines: {
-      "zh-CN": "直播互动审核与结界系统",
-      en: "Live chat moderation and ward system",
-      ja: "配信チャットモデレーション・結界システム",
-      ko: "라이브 채팅 모더레이션 및 결계 시스템",
-      fr: "Système de modération et de garde du chat en direct"
+      "zh-CN": "直播互动审核系统",
+      en: "Live chat moderation system",
+      ja: "配信チャットモデレーションシステム",
+      ko: "라이브 채팅 모더레이션 시스템",
+      fr: "Système de modération du chat en direct"
     },
     source: "minutes:577fa880f7f1b73b76eb2d0e#D1"
   }

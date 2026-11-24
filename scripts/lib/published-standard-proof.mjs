@@ -391,11 +391,11 @@ export const ADOPTED_VOXWARD_MARK = Object.freeze({
   tileTintBody: `<rect fill="#e3f3f1" height="48" rx="12" width="48"/><path d="${VOXWARD_WING_PATH}" fill="#0b6b65"/><path d="${VOXWARD_DIAMOND_PATH}" fill="#0b6b65"/>`,
   tileDeepBody: `<rect fill="#0b6b65" height="48" rx="12" width="48"/><path d="${VOXWARD_WING_PATH}" fill="#ffffff"/><path d="${VOXWARD_DIAMOND_PATH}" fill="#ffffff"/>`,
   taglines: Object.freeze({
-    "zh-CN": "直播互动审核与结界系统",
-    en: "Live chat moderation and ward system",
-    ja: "配信チャットモデレーション・結界システム",
-    ko: "라이브 채팅 모더레이션 및 결계 시스템",
-    fr: "Système de modération et de garde du chat en direct",
+    "zh-CN": "直播互动审核系统",
+    en: "Live chat moderation system",
+    ja: "配信チャットモデレーションシステム",
+    ko: "라이브 채팅 모더레이션 시스템",
+    fr: "Système de modération du chat en direct",
   }),
 });
 export const VOXWARD_BRAND_DIGEST = sha256(normalizeSvgBody(ADOPTED_VOXWARD_MARK.colorBody));
