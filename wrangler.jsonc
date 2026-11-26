@@ -1,0 +1,19 @@
+{
+  "name": "tcrn-design-system",
+  "main": "scripts/cloudflare-worker.mjs",
+  "compatibility_date": "2026-11-26",
+  "workers_dev": false,
+  "routes": [
+    {
+      "pattern": "design.tcrn-platform.com",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./apps/storybook/distribution-static",
+    "binding": "ASSETS",
+    "html_handling": "none",
+    "not_found_handling": "none",
+    "run_worker_first": false
+  }
+}
