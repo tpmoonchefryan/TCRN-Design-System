@@ -1,6 +1,7 @@
 export const componentLibraryPublicComponentNames = [
   "Button",
   "Icon",
+  "BrandIcon",
   "IconButton",
   "LinkButton",
   "ButtonGroup",
@@ -45,6 +46,10 @@ export const componentLibraryPublicComponentNames = [
   "CollapsibleRegion",
   "DisclosurePanel",
   "SettingsLayout",
+  "PublicSiteHeader",
+  "PublicSiteFooter",
+  "EditorialArticle",
+  "EditorialNote",
   "PageHierarchy",
   "KeyValueList",
   "DatePicker",
@@ -140,6 +145,8 @@ export type ComponentLibraryPublicComponentName = (typeof componentLibraryPublic
 
 export const componentLibraryPublicUtilityNames = [
   "tcrnIconNames",
+  "tcrnBrandIconNames",
+  "tcrnBrandIcons",
   "tcrnComponentCss",
   "tcrnProductMarkIds",
   "tcrnProductMarks",

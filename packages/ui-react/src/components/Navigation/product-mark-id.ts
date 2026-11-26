@@ -14,7 +14,7 @@
 import { tcrnAdoptedProductMarks } from "./adopted-product-marks.js";
 import { tcrnProductMarks, type TcrnProductMark } from "./product-marks.generated.js";
 
-export const tcrnProductMarkIds = ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward"] as const;
+export const tcrnProductMarkIds = ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward", "platform"] as const;
 export type TcrnProductMarkId = (typeof tcrnProductMarkIds)[number];
 
 /** Formal generated marks and explicitly adopted marks registered in the Design System. */

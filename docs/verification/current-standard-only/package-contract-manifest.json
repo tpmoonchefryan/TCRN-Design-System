@@ -87,6 +87,7 @@
   "engineeringComponents": [
     "Button",
     "Icon",
+    "BrandIcon",
     "IconButton",
     "LinkButton",
     "ButtonGroup",
@@ -131,6 +132,10 @@
     "CollapsibleRegion",
     "DisclosurePanel",
     "SettingsLayout",
+    "PublicSiteHeader",
+    "PublicSiteFooter",
+    "EditorialArticle",
+    "EditorialNote",
     "PageHierarchy",
     "KeyValueList",
     "DatePicker",
@@ -223,6 +228,8 @@
   ],
   "engineeringUtilities": [
     "tcrnIconNames",
+    "tcrnBrandIconNames",
+    "tcrnBrandIcons",
     "tcrnComponentCss",
     "tcrnProductMarkIds",
     "tcrnProductMarks",

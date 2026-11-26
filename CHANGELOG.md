@@ -21,6 +21,14 @@ publication remain separate pending decisions. See `docs/releases/4.2.0/README.m
   group avatar-menu preferences under the explicit `用户偏好` heading, and
   portal `Dialog` into `document.body > .tcrn-dialog-backdrop` in browser DOM
   environments while keeping SSR static output intact.
+- `@tcrn/ui-tokens`, `@tcrn/ui-react/approved`, Storybook & AI contract: add
+  `--tcrn-brand-suffix-platform` (WCAG AA across `light`, `dark`, `halloween`),
+  register the adopted `platform` (`TCRN Platform`) mother mark across all four
+  renditions and five localized taglines, add filled external mark primitive
+  `BrandIcon` (`github`), and add public portal & editorial components
+  (`PublicSiteHeader`, `PublicSiteFooter`, `EditorialArticle`, `EditorialNote`)
+  with dedicated Storybook pages (`brand-platform`, `public-site`) and
+  `ai/4.2.0/` contract shards.
 
 ## 4.1.0
 

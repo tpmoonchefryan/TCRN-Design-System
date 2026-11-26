@@ -4,9 +4,11 @@ import path from "node:path";
 import test from "node:test";
 import { ROOT, readApprovedSource, sha256 } from "../scripts/lib/approved-site-source.mjs";
 import {
+  ADOPTED_PLATFORM_MARK,
   ADOPTED_VOXWARD_MARK,
   AI_OUTPUT_FILES,
   LOCALES,
+  PLATFORM_BRAND_DIGEST,
   VOXWARD_BRAND_DIGEST,
   checkAIOutput,
   checkBrand,
@@ -23,7 +25,7 @@ test("actual component stories, both emitted AI trees and Manager retain the exa
   assert.deepEqual(checkSourceClosure(), []);
   assert.deepEqual(checkOutput().issues, []);
   assert.deepEqual(checkManagerOutput().issues, []);
-  assert.equal(AI_OUTPUT_FILES.length, 80);
+  assert.equal(AI_OUTPUT_FILES.length, 85);
 });
 
 test("only byte-identical pinned normative quotations are inert during executable-asset scanning", () => {
@@ -103,6 +105,11 @@ test("VoxWard Option C brandDigest and 5-locale taglines pass checkBrand and rej
   assert.ok(voxwardEntry, "voxward mark is present in checkBrand report");
   assert.equal(voxwardEntry.colorGeometrySha256, VOXWARD_BRAND_DIGEST);
   assert.equal(LOCALES.every((locale) => realUi.tcrnProductTagline("voxward", locale) === ADOPTED_VOXWARD_MARK.taglines[locale]), true);
+
+  const platformEntry = cleanBrand.marks.find((mark) => mark.productId === "platform");
+  assert.ok(platformEntry, "platform mark is present in checkBrand report");
+  assert.equal(platformEntry.colorGeometrySha256, PLATFORM_BRAND_DIGEST);
+  assert.equal(LOCALES.every((locale) => realUi.tcrnProductTagline("platform", locale) === ADOPTED_PLATFORM_MARK.taglines[locale]), true);
 });
 
 test("Storybook Batch 3 specimens have 0 outside-package tcrn- classes and 0 internal vocabulary hits with red-first mutations", async () => {

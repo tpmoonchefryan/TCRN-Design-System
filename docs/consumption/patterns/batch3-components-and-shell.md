@@ -10,8 +10,11 @@ This pattern records the cross-product component families, adopted `voxward` pro
   - `--tcrn-color-warn-bg`: `rgba(138,90,8,.08)` (`light`), `rgba(217,171,82,.10)` (`dark`), `rgba(235,181,82,.11)` (`halloween`), maintaining `>= 4.5:1` nominal text contrast for `--tcrn-color-warn` across `bg`, `panel`, and `panel-2`.
   - `--tcrn-color-ok-bg`: `rgba(47,107,58,.08)` (`light`), `rgba(111,207,151,.10)` (`dark`), `rgba(109,214,156,.11)` (`halloween`), maintaining `>= 4.5:1` nominal text contrast for `--tcrn-color-ok` across `bg`, `panel`, and `panel-2`.
   - `--tcrn-brand-suffix-voxward`: `#0b6b65` (`light`), `#3fc7b7` (`dark`), `#f58a33` (`halloween`), maintaining `>= 4.5:1` nominal contrast across `bg`, `panel`, and `hover`.
+  - `--tcrn-brand-suffix-platform`: `#0b6b65` (`light`), `#3fc7b7` (`dark`), `#f58a33` (`halloween`), maintaining `>= 4.5:1` nominal contrast across `bg`, `panel`, and `hover`.
 - **VoxWard brand mark (`productId="voxward"`)**:
   - Registered in `tcrnAdoptedProductMarks` and `tcrnProductMarkIds` alongside the four Site v2 marks (`tms`, `einzbern`, `mana-orchestrate`, `design-system`) across all four renditions (`color`, `mono`, `tile-tint`, `tile-deep`) and five localized taglines (`zh-CN`, `en`, `ja`, `ko`, `fr`).
+- **TCRN Platform mother mark (`productId="platform"`)**:
+  - Registered in `tcrnAdoptedProductMarks` and `tcrnProductMarkIds` across all four renditions (`color`, `mono`, `tile-tint`, `tile-deep`) and five localized taglines (`zh-CN`, `en`, `ja`, `ko`, `fr`), awaiting Owner visual acceptance.
 
 ## Extended `ProductShell` Capabilities
 
@@ -30,6 +33,7 @@ Import all adopted components exclusively from `@tcrn/ui-react/approved` alongsi
 - **Feedback**: `Badge`, `StatusBadge`, `StatusDot`, `InlineAlert`, `EnvironmentBanner`, `StateSurface`, `EmptyState`, `ErrorState`.
 - **DataDisplay**: `Card`, `Avatar`, `StatCard`, `TableShell`, `RecordTable`, `TableToolbar`, `KeyValueList`, `StagePipeline`, `RawPayloadBox`.
 - **Layout**: `Surface`, `Divider`, `SettingsLayout`, `SplitView`, `CollapsibleRegion`, `SegmentedNav`.
+- **Public Site & Editorial**: `PublicSiteHeader`, `PublicSiteFooter`, `EditorialArticle`, `EditorialNote`, `BrandIcon` (`github`, separate from the closed 38-icon `Icon` stroke roster).
 - **Overlay**: `Menu`, `Popover`, `Tooltip`, `Dialog`, `ConfirmActionDialog`, `InlineConfirmBar`.
 
 ## Geometry and Styling Rules

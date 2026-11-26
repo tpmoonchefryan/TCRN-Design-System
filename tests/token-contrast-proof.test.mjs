@@ -47,6 +47,7 @@ test("Batch 3 warn-bg, ok-bg, av-ink/av-bg, and voxward suffix pass across all 3
     assert.ok(themeResult.measurements.some((row) => row.role === "ok" && row.carrier.includes("ok-bg")));
     assert.ok(themeResult.measurements.some((row) => row.role === "av-ink" && row.carrier === "av-bg"));
     assert.ok(themeResult.measurements.some((row) => String(row.role).includes("voxward")));
+    assert.ok(themeResult.measurements.some((row) => String(row.role).includes("platform")));
   }
 
   // Red-first mutations: degraded warn-bg/ok-bg or av-ink/av-bg contrast must fail < 4.5.

@@ -47,6 +47,7 @@
   --tcrn-brand-suffix-tms: #2c63c8;
   --tcrn-brand-suffix-design-system: #4b59be;
   --tcrn-brand-suffix-voxward: #0b6b65;
+  --tcrn-brand-suffix-platform: #0b6b65;
 }
 :root {
   /* tcrn-token-block: theme-independent */
@@ -188,4 +189,5 @@
   --tcrn-brand-suffix-tms: #7aa0f5;
   --tcrn-brand-suffix-design-system: #6577f3;
   --tcrn-brand-suffix-voxward: #3fc7b7;
+  --tcrn-brand-suffix-platform: #3fc7b7;
 }

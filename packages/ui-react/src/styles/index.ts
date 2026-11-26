@@ -13,6 +13,7 @@ import { layoutCss } from "./layout.css.js";
 import { feedbackCss } from "./feedback.css.js";
 import { dataDisplayCss } from "./data-display.css.js";
 import { overlayCss } from "./overlay.css.js";
+import { publicSiteCss } from "./public-site.css.js";
 
 export const tcrnComponentCss = [
   formalLayoutCss,
@@ -34,5 +35,6 @@ export const tcrnComponentCss = [
   feedbackCss,
   dataDisplayCss,
   overlayCss,
+  publicSiteCss,
   formalDocsCss
 ].join("\n");

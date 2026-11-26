@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import {
   Avatar,
   Badge,
+  BrandIcon,
   Button,
   ButtonGroup,
   Card,
@@ -9,6 +10,8 @@ import {
   ConfirmActionDialog,
   Dialog,
   Divider,
+  EditorialArticle,
+  EditorialNote,
   EmptyState,
   EnvironmentBanner,
   ErrorState,
@@ -18,15 +21,19 @@ import {
   InlineConfirmBar,
   Input,
   KeyValueList,
+  LinkButton,
   Menu,
   Popover,
   ProductLockup,
   ProductLogo,
   ProductShell,
+  PublicSiteFooter,
+  PublicSiteHeader,
   RawPayloadBox,
   RecordTable,
   SegmentedNav,
   SettingsLayout,
+  ShellThemeToggle,
   SplitView,
   StagePipeline,
   StatCard,
@@ -571,4 +578,88 @@ export const LayoutAndOverlays = {
       </section>
     );
   },
+};
+
+export const PublicSiteAndEditorial = {
+  render: () => (
+    <section className="component-overview" lang="en">
+      <header>
+        <Heading level={1}>Public Site, Editorial &amp; Platform Mother Mark</Heading>
+        <Text>Adopted TCRN Platform mother mark, BrandIcon (github), sticky public site chrome, and long-form editorial sheets across all three themes.</Text>
+      </header>
+      <div className="tcrn-doc-themes">
+        {themeModes.map((theme) => (
+          <div key={theme} className="tcrn-doc-pane" data-tcrn-theme={theme} data-public-site-theme={theme}>
+            <Heading level={2} visualLevel={4}>{themeLabels[theme]}</Heading>
+            <div className="tcrn-doc-paper">
+              <PublicSiteHeader
+                productId="platform"
+                locale="en"
+                homeHref="#overview"
+                navLabel={`Public navigation ${theme}`}
+                navItems={[
+                  { id: "overview", label: "Overview", href: "#overview" },
+                  { id: "privacy", label: "Privacy", href: "#privacy", current: true },
+                  { id: "identity", label: "Identity", href: "#identity" },
+                  { id: "terms", label: "Terms", href: "#terms" },
+                ]}
+                controls={
+                  <ShellThemeToggle
+                    currentTheme={theme === "halloween" ? "dark" : theme}
+                    onThemeChange={() => {}}
+                    locale="en"
+                    variant="quiet"
+                  />
+                }
+              />
+              <div className="tcrn-doc-row">
+                <ProductLogo productId="platform" markVariant="color" locale="en" />
+                <ProductLogo productId="platform" markVariant="mono" locale="en" />
+                <ProductLogo productId="platform" markVariant="tile-tint" locale="en" />
+                <ProductLogo productId="platform" markVariant="tile-deep" locale="en" />
+                <ProductLockup productId="platform" locale="en" />
+              </div>
+              <EditorialArticle
+                title="Google API Services User Data Policy & Limited Use Compliance"
+                meta="Effective 2026-11-25 · TCRN Platform"
+                lead="How official hosted TCRN services handle sign-in verification and minimal account data."
+                backLink={{ label: "Back to overview", href: "#overview" }}
+                relatedLinks={[
+                  { id: "identity", label: "Unified Identity", href: "#identity" },
+                  { id: "terms", label: "Terms of Service", href: "#terms" },
+                ]}
+              >
+                <section>
+                  <h2>1. Hosted Scope and Local Tools</h2>
+                  <p>Official hosted services store only the minimum identifier needed for authenticated access.</p>
+                  <ul>
+                    <li>Local packages run offline with zero telemetry.</li>
+                    <li>Hosted sessions follow least-privilege OAuth scopes.</li>
+                  </ul>
+                  <EditorialNote>
+                    <strong>Zero built-in telemetry:</strong> open-source projects never phone home.
+                  </EditorialNote>
+                </section>
+              </EditorialArticle>
+              <div className="tcrn-doc-row">
+                <LinkButton variant="secondary" size="sm" href="https://github.com/The-Cloud-River-Network">
+                  <BrandIcon name="github" size="sm" />
+                  GitHub
+                </LinkButton>
+              </div>
+              <PublicSiteFooter
+                copyright="© 2026 TCRN Platform"
+                navLabel={`Footer ${theme}`}
+                links={[
+                  { id: "privacy", label: "Privacy", href: "#privacy" },
+                  { id: "terms", label: "Terms", href: "#terms" },
+                  { id: "github", label: "GitHub", href: "https://github.com/The-Cloud-River-Network", external: true, icon: <BrandIcon name="github" size="sm" /> },
+                ]}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  ),
 };

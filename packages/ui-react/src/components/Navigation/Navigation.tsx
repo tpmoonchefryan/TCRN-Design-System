@@ -330,6 +330,7 @@ const einzbernMark = productMark("einzbern");
 const manaOrchestrateMark = productMark("mana-orchestrate");
 const designSystemMark = productMark("design-system");
 const voxwardMark = productMark("voxward");
+const platformMark = productMark("platform");
 
 /**
  * The registered product lockups.
@@ -415,6 +416,19 @@ export const tcrnProductLogoRegistry = {
     byline: null,
     lineTwo: voxwardMark.taglines,
     alt: voxwardMark.name
+  },
+  platform: {
+    productId: "platform",
+    assetId: "tcrn-platform-two-line",
+    markId: "platform",
+    wordmark: platformMark.font,
+    lineOne: platformMark.name,
+    lineOneBase: platformMark.word,
+    lineOneSuffix: platformMark.suffix ?? null,
+    suffixClassName: "tcrn-brand-wordmark__suffix--platform",
+    byline: null,
+    lineTwo: platformMark.taglines,
+    alt: platformMark.name
   }
 } as const;
 

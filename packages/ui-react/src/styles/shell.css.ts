@@ -119,6 +119,9 @@ export const shellCss01 = `
 .tcrn-shell-brand__suffix--voxward {
   color: var(--tcrn-brand-suffix-voxward);
 }
+.tcrn-shell-brand__suffix--platform {
+  color: var(--tcrn-brand-suffix-platform);
+}
 .tcrn-shell-brand__toggle {
   display: inline-flex;
   align-items: center;

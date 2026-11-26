@@ -199,7 +199,7 @@ const storyTaglines = {
 test("Einzbern and Mana Orchestrate are whole serif names with the byline and no host name", () => {
   assert.equal(tcrnProductLogoRegistry.einzbern.lineOne, "Einzbern");
   assert.equal(tcrnProductLogoRegistry["mana-orchestrate"].lineOne, "Mana Orchestrate");
-  for (const productId of ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward"] as const) {
+  for (const productId of ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward", "platform"] as const) {
     const entry = tcrnProductLogoRegistry[productId], serif = productId === "einzbern" || productId === "mana-orchestrate";
     assert.equal(entry.wordmark, serif ? "serif" : "sans");
     if (serif) { assert.equal(entry.byline, "by TCRN");assert.equal(entry.lineOneSuffix, null); }
@@ -1772,11 +1772,11 @@ test("STORY-145 STORY-149 a measured lockup's data-logo is its mark's id, the lo
 
 
 test("published brand identities reject missing keys, AOS and free suffix fallbacks",()=>{
-  assert.deepEqual(Object.keys(tcrnProductLogoRegistry).sort(),["design-system","einzbern","mana-orchestrate","tms","voxward"]);
+  assert.deepEqual(Object.keys(tcrnProductLogoRegistry).sort(),["design-system","einzbern","mana-orchestrate","platform","tms","voxward"]);
   assert.throws(()=>renderToStaticMarkup(<ProductLogo productId={"aos" as never}/>));
   assert.throws(()=>TcrnBrandMark({} as never));
   assert.throws(()=>ProductLockup({suffix:"TMS"} as never));
-  for(const productId of ["tms","einzbern","mana-orchestrate","design-system","voxward"] as const){
+  for(const productId of ["tms","einzbern","mana-orchestrate","design-system","voxward","platform"] as const){
     const html=renderToStaticMarkup(<ProductLockup productId={productId} locale="zh-CN"/>);
     assert.match(html,/<svg/);assert.doesNotMatch(html,/<img|tcrn-brand-mark\.svg/);
   }
@@ -1842,6 +1842,31 @@ test("STORY-156 voxward Option C Acoustic Gate mark, renditions, five-locale tag
     </ProductShell>
   );
   assert.deepEqual([...shellHtml.matchAll(/data-logo="([^"]+)"/g)].map((m) => m[1]), ["voxward", "voxward"]);
+});
+
+test("adopted platform Mother Mark Scheme A renditions, five-locale taglines and ProductShell registration", () => {
+  assert.ok(tcrnProductMarkIds.includes("platform"));
+  const platform = tcrnAdoptedProductMarks.find((mark) => mark.productId === "platform");
+  assert.ok(platform);
+  assert.equal(platform.id, "platform");
+  assert.equal(platform.name, "TCRN Platform");
+  assert.equal(platform.word, "TCRN");
+  assert.equal(platform.suffix, "Platform");
+  assert.match(platform.colorBody, /x="19" y="6"/);
+  assert.match(platform.colorBody, /width="36" x="6" y="32"/);
+
+  for (const variant of ["color", "mono", "tile-tint", "tile-deep"] as const) {
+    const svg = tcrnProductMarkSvg("platform", variant);
+    assert.match(svg, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="TCRN Platform">/);
+    assert.match(svg, /x="19" y="6"/);
+  }
+  const taglines = (["zh-CN", "en", "ja", "ko", "fr"] as const).map((locale) => tcrnProductTagline("platform", locale));
+  assert.equal(taglines.every((text) => text.trim().length > 0), true);
+  assert.equal(new Set(taglines).size, 5, "all five locales carry distinct taglines");
+
+  const lockupHtml = renderToStaticMarkup(<ProductLockup productId="platform" locale="en" firstLine="rail" />);
+  assert.match(lockupHtml, /tcrn-brand-wordmark__suffix--platform/);
+  assert.match(lockupHtml, /data-logo="platform"/);
 });
 
 test("STORY-157 ProductShell renders right-aligned backoffice pins before cluster with 1x16 line-2 divider, symmetric pin-gap, external and disabled states", () => {

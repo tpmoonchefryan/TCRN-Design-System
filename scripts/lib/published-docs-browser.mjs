@@ -264,16 +264,18 @@ const extraDocsPages = [
   'brand-mana-orchestrate',
   'brand-design-system',
   'brand-voxward',
+  'brand-platform',
   'feedback-data',
   'layout-overlays',
+  'public-site',
   'shell-extended',
 ];
 const docsPages = ['index', ...Object.keys(APPROVED_BOARD_IDS), ...extraDocsPages, 'api'];
 const primaryPages = ['index', '01-tokens', '04-brand', '05-actions', '07a-shell-upper'];
 const topicPages = {
   foundations: ['01-tokens', '02-typography', '03-icons', 'seasonal-halloween'],
-  brand: ['04-brand', 'brand-tms', 'brand-einzbern', 'brand-mana-orchestrate', 'brand-design-system', 'brand-voxward'],
-  components: ['05-actions', '06-inputs', 'feedback-data', 'layout-overlays', 'api'],
+  brand: ['04-brand', 'brand-tms', 'brand-einzbern', 'brand-mana-orchestrate', 'brand-design-system', 'brand-voxward', 'brand-platform'],
+  components: ['05-actions', '06-inputs', 'feedback-data', 'layout-overlays', 'public-site', 'api'],
   shell: ['07a-shell-upper', '07b-shell-lower', 'shell-extended'],
 };
 const wrapperStories = {
@@ -285,8 +287,10 @@ const wrapperStories = {
   'brand-mana-orchestrate': 'brand-mana-orchestrate',
   'brand-design-system': 'brand-design-system',
   'brand-voxward': 'brand-voxward',
+  'brand-platform': 'brand-platform',
   'feedback-data': 'feedback-data',
   'layout-overlays': 'layout-overlays',
+  'public-site': 'public-site',
   'shell-extended': 'shell-extended',
 };
 const docsStoryId = page => Object.hasOwn(wrapperStories, page)
@@ -307,8 +311,8 @@ function headerHref({base,entry,locale,managerUi,managerPath},page,fragment=''){
 }
 const docsTopicPages={
  foundations:['01-tokens','02-typography','03-icons','seasonal-halloween'],
- brand:['04-brand','brand-tms','brand-einzbern','brand-mana-orchestrate','brand-design-system','brand-voxward'],
- components:['05-actions','06-inputs','feedback-data','layout-overlays','api'],
+ brand:['04-brand','brand-tms','brand-einzbern','brand-mana-orchestrate','brand-design-system','brand-voxward','brand-platform'],
+ components:['05-actions','06-inputs','feedback-data','layout-overlays','public-site','api'],
  shell:['07a-shell-upper','07b-shell-lower','shell-extended'],
 };
 const componentChapterCount = docsTopicPages.components.filter(pageId => pageId !== 'api').length;
@@ -486,6 +490,8 @@ export async function exerciseDocsTopbar(page,{base,entry,locale,managerUi=false
    await page.waitForURL(url=>url.searchParams.get('path')===`/story/${docsStoryId('api')}`&&url.searchParams.get('docsAnchor')===`${docsStoryId('api')}:api-Heading`,{timeout:10000});
   }else await page.waitForURL(new URL(anchorHref,page.url()).href,{timeout:10000});
   await surface.locator('#api-Heading').waitFor({state:'visible'});
+  await surface.locator('.docs-shell').evaluate(async element=>{const view=element.ownerDocument.defaultView;await new Promise(r=>view.requestAnimationFrame(()=>view.requestAnimationFrame(r)));await element.ownerDocument.fonts.ready;});
+  await page.waitForLoadState('networkidle');
   observations.push({kind:'topbar-route-activation',entry,locale,overviewHref,anchorHref,anchorVisible:true});
   observations.push({kind:'docs-topbar',entry,locale,opened,keyboard:true,focusRestored:true});
  }catch(error){issues.push(`${entry}/${locale}: topbar proof incomplete: ${error.message}`);}
@@ -980,7 +986,10 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
         issues.push(`manager-ui/${locale}/${docsPage}: ${error.message}`);
       }
     }
+    await page.waitForLoadState('networkidle');
+    await page.evaluate(() => document.fonts.ready);
    }catch(error){issues.push(`manager-ui/${locale}: ${error.message}`);}
+   await page.mouse.move(0, 0);
   }
   for(const locale of LOCALES){
    for(const id of docsPages){
@@ -1055,16 +1064,19 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
    const navigation=await exerciseDocsNavigation(page,{base,entry,locale,source,formal});issues.push(...navigation.issues);observations.push(...navigation.observations);
    // Interaction scenarios reveal new glyphs after initial route readiness.
    // Settle the active document before the next scenario navigates away.
-   await page.evaluate(()=>document.fonts.ready);
+   await page.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));await document.fonts.ready;});
+   await page.waitForLoadState('networkidle');
    if(entry==='static'||entry==='manager'){
     const desktop=await exerciseDocsTopbar(page,{base,entry:entry==='manager'?'manager':entry,locale,managerUi:entry==='manager',formal});
     issues.push(...desktop.issues);observations.push(...desktop.observations);
-    await (entry==='manager'?page.frameLocator('#storybook-preview-iframe').locator('.docs-shell'):page.locator('.docs-shell')).evaluate(()=>document.fonts.ready);
+    await (entry==='manager'?page.frameLocator('#storybook-preview-iframe').locator('.docs-shell'):page.locator('.docs-shell')).evaluate(async el=>{const v=el.ownerDocument.defaultView;await new Promise(r=>v.requestAnimationFrame(()=>v.requestAnimationFrame(r)));await el.ownerDocument.fonts.ready;});
+    await page.waitForLoadState('networkidle');
    }
    if(entry==='manager'){
     const canvas=await exerciseDocsTopbar(page,{base,entry:'canvas',locale,formal});
     issues.push(...canvas.issues);observations.push(...canvas.observations);
-    await page.evaluate(()=>document.fonts.ready);
+    await page.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));await document.fonts.ready;});
+    await page.waitForLoadState('networkidle');
     if(locale==='zh-CN'){
      const context=await browser.newContext({viewport:{width:1440,height:1000},hasTouch:true,reducedMotion:'reduce'});
      const narrowPage=await context.newPage();
@@ -1079,7 +1091,8 @@ export async function proveDocsRoutes({root=ROOT,entry='static'}={}){return with
     for(const [surface,managerUi] of surfaces){
      const edges=await exerciseDocsTopbarEdges(page,{base,entry:surface,locale,managerUi});
      issues.push(...edges.issues);observations.push(...edges.observations);
-     await (managerUi?page.frameLocator('#storybook-preview-iframe').locator('.docs-shell'):page.locator('.docs-shell')).evaluate(()=>document.fonts.ready);
+     await (managerUi?page.frameLocator('#storybook-preview-iframe').locator('.docs-shell'):page.locator('.docs-shell')).evaluate(async el=>{const v=el.ownerDocument.defaultView;await new Promise(r=>v.requestAnimationFrame(()=>v.requestAnimationFrame(r)));await el.ownerDocument.fonts.ready;});
+     await page.waitForLoadState('networkidle');
     }
    }
    if(entry==='static'){

@@ -172,6 +172,7 @@ export const AI_OUTPUT_FILES = Object.freeze([
   "ai/4.2.0/assets/icons.json",
   "ai/4.2.0/component/Avatar.json",
   "ai/4.2.0/component/Badge.json",
+  "ai/4.2.0/component/BrandIcon.json",
   "ai/4.2.0/component/Button.json",
   "ai/4.2.0/component/ButtonGroup.json",
   "ai/4.2.0/component/Card.json",
@@ -182,6 +183,8 @@ export const AI_OUTPUT_FILES = Object.freeze([
   "ai/4.2.0/component/DatePicker.json",
   "ai/4.2.0/component/Dialog.json",
   "ai/4.2.0/component/Divider.json",
+  "ai/4.2.0/component/EditorialArticle.json",
+  "ai/4.2.0/component/EditorialNote.json",
   "ai/4.2.0/component/EmptyState.json",
   "ai/4.2.0/component/EnvironmentBanner.json",
   "ai/4.2.0/component/ErrorState.json",
@@ -201,6 +204,8 @@ export const AI_OUTPUT_FILES = Object.freeze([
   "ai/4.2.0/component/ProductLockup.json",
   "ai/4.2.0/component/ProductLogo.json",
   "ai/4.2.0/component/ProductShell.json",
+  "ai/4.2.0/component/PublicSiteFooter.json",
+  "ai/4.2.0/component/PublicSiteHeader.json",
   "ai/4.2.0/component/RadioGroup.json",
   "ai/4.2.0/component/RawPayloadBox.json",
   "ai/4.2.0/component/RecordTable.json",
@@ -273,7 +278,8 @@ export function checkSourceClosure(root=ROOT){
 const BATCH3_ADOPTED_TOKENS = [
   { cssVar: "--tcrn-color-warn-bg", group: "color", light: "rgba(138,90,8,.08)", dark: "rgba(217,171,82,.10)", halloween: "rgba(235,181,82,.11)" },
   { cssVar: "--tcrn-color-ok-bg", group: "color", light: "rgba(47,107,58,.08)", dark: "rgba(111,207,151,.10)", halloween: "rgba(109,214,156,.11)" },
-  { cssVar: "--tcrn-brand-suffix-voxward", group: "brand", light: "#0b6b65", dark: "#3fc7b7", halloween: "#f58a33" }
+  { cssVar: "--tcrn-brand-suffix-voxward", group: "brand", light: "#0b6b65", dark: "#3fc7b7", halloween: "#f58a33" },
+  { cssVar: "--tcrn-brand-suffix-platform", group: "brand", light: "#0b6b65", dark: "#3fc7b7", halloween: "#f58a33" }
 ];
 export async function checkTokens(root=ROOT){
   const source=readApprovedSource(root),expected=extractTokens(source),bindings=extractPackageBindings(source),issues=[];
@@ -315,7 +321,13 @@ export function publishedShortcutContexts(source=readApprovedSource()){
 export function checkContrast(root=ROOT){
   const source=readApprovedSource(root),tokens=extractTokens(source),themes={light:Object.fromEntries(tokens.themed.map(t=>[t.key,t.light])),dark:Object.fromEntries(tokens.themed.map(t=>[t.key,t.dark]))},issues=[],measurements=[];
   for(const [theme,values] of Object.entries(themes))for(const role of ["ink","ink-2","ink-3","acc","red","ok","warn","bad"])for(const carrier of ["bg","panel"]){const ratio=contrast(values[role],values[carrier]);measurements.push({theme,role,carrier,ink:values[role],fill:values[carrier],ratio,min:4.5});if(ratio<4.5)issues.push(`Text contrast ${theme}/${role}/${carrier} ${ratio.toFixed(2)} < 4.5`);}
-  for (const suffix of [...extractBrandSuffixTokens(source), { key: "brand-suffix-voxward", ...BATCH3_ADOPTED_TOKENS.find((t) => t.cssVar === "--tcrn-brand-suffix-voxward"), value: BATCH3_ADOPTED_TOKENS.find((t) => t.cssVar === "--tcrn-brand-suffix-voxward").light }]) for (const [theme, values] of Object.entries(themes)) for (const carrier of ["bg", "panel", "hover"]) {
+  for (const suffix of [
+    ...extractBrandSuffixTokens(source),
+    ...["--tcrn-brand-suffix-voxward", "--tcrn-brand-suffix-platform"].map((cssVar) => {
+      const token = BATCH3_ADOPTED_TOKENS.find((t) => t.cssVar === cssVar);
+      return { key: cssVar.slice("--tcrn-".length), ...token, value: token.light };
+    }),
+  ]) for (const [theme, values] of Object.entries(themes)) for (const carrier of ["bg", "panel", "hover"]) {
     const ink = theme === "dark" ? suffix.dark : suffix.value;
     const surface = carrier === "hover" ? values.bg : values[carrier];
     const ratio = contrast(ink, values[carrier], surface);
@@ -367,7 +379,7 @@ export async function checkSeasonalHalloweenContrast(root=ROOT){
   const avRatio=contrast(get("av-ink"),get("av-bg"));
   measurements.push({theme:"halloween",role:"av-ink",carrier:"av-bg",ink:get("av-ink"),fill:get("av-bg"),ratio:avRatio,min:4.5});
   if(avRatio<4.5)issues.push(`Seasonal Halloween avatar contrast av-ink/av-bg ${avRatio.toFixed(2)} < 4.5`);
-  for(const variable of ["--tcrn-brand-suffix-tms","--tcrn-brand-suffix-design-system","--tcrn-brand-suffix-voxward"])for(const carrier of ["bg","panel","hover"]){
+  for(const variable of ["--tcrn-brand-suffix-tms","--tcrn-brand-suffix-design-system","--tcrn-brand-suffix-voxward","--tcrn-brand-suffix-platform"])for(const carrier of ["bg","panel","hover"]){
     const surface=carrier==="hover"?get("bg"):get(carrier);
     const ratio=contrast(values[variable],get(carrier),surface);
     measurements.push({theme:"halloween",role:variable,carrier,ink:values[variable],fill:get(carrier),surface,ratio,min:4.5});
@@ -400,6 +412,24 @@ export const ADOPTED_VOXWARD_MARK = Object.freeze({
 });
 export const VOXWARD_BRAND_DIGEST = sha256(normalizeSvgBody(ADOPTED_VOXWARD_MARK.colorBody));
 
+export const ADOPTED_PLATFORM_MARK = Object.freeze({
+  id: "platform",
+  productId: "platform",
+  source: "adopted-tcrn-platform-mother-mark",
+  colorBody: `<rect fill="var(--tcrn-color-ink, #16150f)" height="18" rx="4" width="9" x="6" y="10"/><rect fill="var(--tcrn-color-ink, #16150f)" height="18" rx="4" width="9" x="33" y="10"/><rect fill="var(--tcrn-color-acc, #0b6b65)" height="16" rx="4" width="10" x="19" y="6"/><rect fill="var(--tcrn-color-ink, #16150f)" height="10" rx="4" width="36" x="6" y="32"/>`,
+  inkBody: `<rect fill="currentColor" height="18" rx="4" width="9" x="6" y="10"/><rect fill="currentColor" height="18" rx="4" width="9" x="33" y="10"/><rect fill="currentColor" height="16" rx="4" width="10" x="19" y="6"/><rect fill="currentColor" height="10" rx="4" width="36" x="6" y="32"/>`,
+  tileTintBody: `<rect fill="#e3f3f1" height="48" rx="11" width="48"/><g transform="translate(7.2 7.2) scale(0.7)"><rect fill="#16150f" height="18" rx="4" width="9" x="6" y="10"/><rect fill="#16150f" height="18" rx="4" width="9" x="33" y="10"/><rect fill="#0b6b65" height="16" rx="4" width="10" x="19" y="6"/><rect fill="#16150f" height="10" rx="4" width="36" x="6" y="32"/></g>`,
+  tileDeepBody: `<rect fill="#0b6b65" height="48" rx="11" width="48"/><g transform="translate(7.2 7.2) scale(0.7)"><rect fill="#ffffff" height="18" rx="4" width="9" x="6" y="10"/><rect fill="#ffffff" height="18" rx="4" width="9" x="33" y="10"/><rect fill="#ffffff" height="16" rx="4" width="10" x="19" y="6"/><rect fill="#ffffff" height="10" rx="4" width="36" x="6" y="32"/></g>`,
+  taglines: Object.freeze({
+    "zh-CN": "官方平台与统一身份",
+    en: "Unified platform & identity",
+    ja: "統合プラットフォーム・認証",
+    ko: "통합 플랫폼 및 인증",
+    fr: "Plateforme unifiée et identité",
+  }),
+});
+export const PLATFORM_BRAND_DIGEST = sha256(normalizeSvgBody(ADOPTED_PLATFORM_MARK.colorBody));
+
 export async function checkBrand(root = ROOT, overrides = {}) {
   const source = readApprovedSource(root);
   const marks = extractMarks(source);
@@ -407,7 +437,11 @@ export async function checkBrand(root = ROOT, overrides = {}) {
   const ui = overrides.ui ?? await compiled(root, "packages/ui-react/dist/approved.js");
   const nav = overrides.nav ?? await compiled(root, "packages/ui-react/dist/components/Navigation/Navigation.js");
   const issues = [];
-  const expectedProductIds = [...marks.map(m => m.productId), ADOPTED_VOXWARD_MARK.productId].sort();
+  const adoptedMarks = [
+    { mark: ADOPTED_VOXWARD_MARK, digest: VOXWARD_BRAND_DIGEST, label: "VoxWard" },
+    { mark: ADOPTED_PLATFORM_MARK, digest: PLATFORM_BRAND_DIGEST, label: "Platform" },
+  ];
+  const expectedProductIds = [...marks.map(m => m.productId), ...adoptedMarks.map(entry => entry.mark.productId)].sort();
   if (JSON.stringify(Object.keys(nav.tcrnProductLogoRegistry ?? {}).sort()) !== JSON.stringify(expectedProductIds)) {
     issues.push("Product registry has an unapproved identity or misses a formal/adopted mark");
   }
@@ -418,28 +452,30 @@ export async function checkBrand(root = ROOT, overrides = {}) {
       if (normalizeSvgBody(actual) !== normalizeSvgBody(body)) issues.push(`Formal SVG rendition drift ${m.productId}/${variant}`);
     }
   }
-  for (const [variant, body] of [
-    ["color", ADOPTED_VOXWARD_MARK.colorBody],
-    ["mono", ADOPTED_VOXWARD_MARK.inkBody],
-    ["tile-tint", ADOPTED_VOXWARD_MARK.tileTintBody],
-    ["tile-deep", ADOPTED_VOXWARD_MARK.tileDeepBody],
-  ]) {
-    const svg = ui.tcrnProductMarkSvg(ADOPTED_VOXWARD_MARK.productId, variant);
-    const actual = svg.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
-    if (normalizeSvgBody(actual) !== normalizeSvgBody(body)) issues.push(`Adopted VoxWard SVG rendition drift voxward/${variant}`);
-    if (variant === "color" && sha256(normalizeSvgBody(actual)) !== VOXWARD_BRAND_DIGEST) {
-      issues.push("Adopted VoxWard brandDigest mismatch");
+  for (const { mark, digest, label } of adoptedMarks) {
+    for (const [variant, body] of [
+      ["color", mark.colorBody],
+      ["mono", mark.inkBody],
+      ["tile-tint", mark.tileTintBody],
+      ["tile-deep", mark.tileDeepBody],
+    ]) {
+      const svg = ui.tcrnProductMarkSvg(mark.productId, variant);
+      const actual = svg.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+      if (normalizeSvgBody(actual) !== normalizeSvgBody(body)) issues.push(`Adopted ${label} SVG rendition drift ${mark.productId}/${variant}`);
+      if (variant === "color" && sha256(normalizeSvgBody(actual)) !== digest) {
+        issues.push(`Adopted ${label} brandDigest mismatch`);
+      }
     }
-  }
-  const voxwardTaglines = LOCALES.map(locale => ui.tcrnProductTagline(ADOPTED_VOXWARD_MARK.productId, locale));
-  for (const locale of LOCALES) {
-    const actualTagline = ui.tcrnProductTagline(ADOPTED_VOXWARD_MARK.productId, locale);
-    if (actualTagline !== ADOPTED_VOXWARD_MARK.taglines[locale]) {
-      issues.push(`Adopted VoxWard tagline drift ${locale}`);
+    const taglines = LOCALES.map(locale => ui.tcrnProductTagline(mark.productId, locale));
+    for (const locale of LOCALES) {
+      const actualTagline = ui.tcrnProductTagline(mark.productId, locale);
+      if (actualTagline !== mark.taglines[locale]) {
+        issues.push(`Adopted ${label} tagline drift ${locale}`);
+      }
     }
-  }
-  if (new Set(voxwardTaglines).size !== LOCALES.length) {
-    issues.push("Adopted VoxWard 5-locale taglines must be distinct across all locales");
+    if (new Set(taglines).size !== LOCALES.length) {
+      issues.push(`Adopted ${label} 5-locale taglines must be distinct across all locales`);
+    }
   }
   const compiledIcons = await compiled(root, "packages/ui-react/dist/components/Icon/icon-paths.generated.js");
   for (const icon of icons) {
@@ -451,7 +487,7 @@ export async function checkBrand(root = ROOT, overrides = {}) {
     issues,
     marks: [
       ...marks.map(m => ({ id: m.id, productId: m.productId, source: m.source, colorGeometrySha256: sha256(m.colorBody) })),
-      { id: ADOPTED_VOXWARD_MARK.id, productId: ADOPTED_VOXWARD_MARK.productId, source: ADOPTED_VOXWARD_MARK.source, colorGeometrySha256: VOXWARD_BRAND_DIGEST },
+      ...adoptedMarks.map(({ mark, digest }) => ({ id: mark.id, productId: mark.productId, source: mark.source, colorGeometrySha256: digest })),
     ],
     iconCount: icons.length,
   };
@@ -472,8 +508,10 @@ export const EXTRA_DOCS_PAGES = Object.freeze([
   "brand-mana-orchestrate",
   "brand-design-system",
   "brand-voxward",
+  "brand-platform",
   "feedback-data",
   "layout-overlays",
+  "public-site",
   "shell-extended",
 ]);
 export function expectedOutputPaths(root=ROOT){const source=readApprovedSource(root),faces=extractFontFaces(source),fonts=[...new Set(faces.map(f=>f.file))];return ["index.html","storybook.js","storybook.css","assets/ds-tile-deep.svg","fonts/fonts.css","fonts/manifest.json","ai-consumption-contract.json","design-authority.json","llms.txt","robots.txt","output-manifest.json",...AI_OUTPUT_FILES,...LOCALES.flatMap(l=>["index",...Object.keys(APPROVED_BOARD_IDS),...EXTRA_DOCS_PAGES,"api"].map(p=>`${l}/${p}.html`)),...fonts.map(f=>`fonts/${f}`),...["hanken-grotesk-OFL.txt","source-serif-4-OFL.txt","ibm-plex-mono-OFL.txt","noto-sans-sc-OFL.txt","noto-serif-sc-OFL.txt","approved-site-original-notice.txt"].map(f=>`licenses/${f}`)].sort();}
@@ -522,6 +560,7 @@ export const MANAGER_STORY_IDS = Object.freeze([
   ...Object.entries(APPROVED_API_BOARDS).filter(([name, board]) => board === "06-inputs" && name !== "Switch").map(([name]) => `components-${name.toLowerCase()}--form-submission`),
   "adopted-support-batch-3-components-and-voxward-shell--feedback-and-data-display",
   "adopted-support-batch-3-components-and-voxward-shell--layout-and-overlays",
+  "adopted-support-batch-3-components-and-voxward-shell--public-site-and-editorial",
   "adopted-support-batch-3-components-and-voxward-shell--shell-and-brand",
   "adopted-support-customer-list-boundary--overview",
   "adopted-support-seasonal-halloween-theme--interactive-workspace",
@@ -666,6 +705,7 @@ export const MANAGER_STORY_IDS = Object.freeze([
   "published-standards--brand-design-system",
   "published-standards--brand-einzbern",
   "published-standards--brand-mana-orchestrate",
+  "published-standards--brand-platform",
   "published-standards--brand-tms",
   "published-standards--brand-voxward",
   "published-standards--feedback-data",
@@ -673,6 +713,7 @@ export const MANAGER_STORY_IDS = Object.freeze([
   "published-standards--icons",
   "published-standards--inputs",
   "published-standards--layout-overlays",
+  "published-standards--public-site",
   "published-standards--seasonal-halloween",
   "published-standards--shell-extended",
   "published-standards--shell-lower",

@@ -28,6 +28,7 @@ export const BATCH3_CSS_MODULES = Object.freeze([
   `${COMPONENT_CSS_DIR}/data-display.css.ts`,
   `${COMPONENT_CSS_DIR}/layout.css.ts`,
   `${COMPONENT_CSS_DIR}/overlay.css.ts`,
+  `${COMPONENT_CSS_DIR}/public-site.css.ts`,
 ]);
 
 // Repo-relative paths of every module under styles/, in a stable order.
@@ -132,7 +133,7 @@ export function checkBatch3CssClosure(root = REPO_ROOT) {
   if (formalIdx < 0 || layoutIdx < 0 || layoutIdx < formalIdx) {
     issues.push("styles/index.ts must wire layoutCss after formalLayoutCss");
   }
-  for (const symbol of ["feedbackCss", "dataDisplayCss", "layoutCss", "overlayCss"]) {
+  for (const symbol of ["feedbackCss", "dataDisplayCss", "layoutCss", "overlayCss", "publicSiteCss"]) {
     if (!new RegExp(`\\b${symbol}\\b`).test(indexText)) {
       issues.push(`styles/index.ts is missing Batch 3 stylesheet segment ${symbol}`);
     }

@@ -64,6 +64,15 @@ export const tcrnAdoptedBrandTokens = [
     dark: "#3fc7b7",
     halloween: "#f58a33",
     source: "Adopted Batch 3 token table"
+  },
+  {
+    key: "brand-suffix-platform",
+    cssVar: "--tcrn-brand-suffix-platform",
+    group: "brand",
+    value: "#0b6b65",
+    dark: "#3fc7b7",
+    halloween: "#f58a33",
+    source: "Adopted TCRN Platform brand token"
   }
 ] as const;
 

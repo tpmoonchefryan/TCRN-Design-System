@@ -728,7 +728,7 @@ async function assertBrandCatalog(article,source){
  const usage = await guide.textContent();
  for (const use of uses[locale]) assert.match(usage, use, locale);
  assert.match(await guide.evaluate(el => el.nextElementSibling.textContent), /128.*22 px/, locale);
- const expected=[...extractMarks(source).map(({productId,name})=>[productId,name]),['voxward','VoxWard']];
+ const expected=[...extractMarks(source).map(({productId,name})=>[productId,name]),['voxward','VoxWard'],['platform','TCRN Platform']];
  const cards=await article.locator('[data-doc-brand-directory] [data-doc-brand-card]').evaluateAll(nodes=>nodes.map(card=>{
   const read=figure=>{
    const caption=figure.querySelector('figcaption'),svg=figure.querySelector('svg');
@@ -797,8 +797,9 @@ const splitBrandPages=[
  ['brand-mana-orchestrate','mana-orchestrate'],
  ['brand-design-system','design-system'],
  ['brand-voxward','voxward'],
+ ['brand-platform','platform'],
 ];
-const extraPortalPages=['seasonal-halloween','feedback-data','layout-overlays','shell-extended'];
+const extraPortalPages=['seasonal-halloween','feedback-data','layout-overlays','public-site','shell-extended'];
 
 test('content layout, icon groups and mark renditions render in all three entries',async()=>{
  for(const entry of contentEntries)await withPublishedBrowser(async({browser,base,source})=>{
@@ -844,6 +845,8 @@ test('content layout, icon groups and mark renditions render in all three entrie
     await assertBrandCatalog(article,source);
     const voxward=await openContentPage(page,{base,entry,board:'brand-voxward',locale,width:390});
     await assertBrandProductPage(voxward,'voxward');
+    const platform=await openContentPage(page,{base,entry,board:'brand-platform',locale,width:390});
+    await assertBrandProductPage(platform,'platform');
    }
   }finally{await page.close();}
  },{entry:entry==='static'?'static':'manager'});

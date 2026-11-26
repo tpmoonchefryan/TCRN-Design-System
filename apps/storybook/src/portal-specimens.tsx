@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import {
   Avatar,
   Badge,
+  BrandIcon,
   Button,
   ButtonGroup,
   Card,
@@ -10,6 +11,8 @@ import {
   ConfirmActionDialog,
   Dialog,
   Divider,
+  EditorialArticle,
+  EditorialNote,
   EmptyState,
   EnvironmentBanner,
   ErrorState,
@@ -27,12 +30,15 @@ import {
   Popover,
   ProductLockup,
   ProductShell,
+  PublicSiteFooter,
+  PublicSiteHeader,
   RawPayloadBox,
   RecordTable,
   SearchInput,
   SegmentedNav,
   Select,
   SettingsLayout,
+  ShellThemeToggle,
   SplitView,
   StagePipeline,
   StatCard,
@@ -802,6 +808,123 @@ export function ExtendedShellSpecimen({ locale, entry }: { locale: DocsLocale; e
         </LinkButton>
         <a className="tcrn-link" href="/ai/4.2.0/pattern/batch3-components-and-shell.json">
           Extended ProductShell contract (JSON)
+        </a>
+      </div>
+    </>
+  );
+}
+
+function PublicSitePane({ theme, locale }: { theme: AnyThemeMode; locale: DocsLocale }) {
+  const themeLabel = specimenCopy[locale].themes[theme];
+  return (
+    <div className="tcrn-doc-pane" data-tcrn-theme={theme} data-formal-theme={theme}>
+      <Heading level={2} visualLevel={4}>{themeLabel}</Heading>
+      <div className="tcrn-doc-paper">
+        <PublicSiteHeader
+          productId="platform"
+          locale={locale}
+          homeHref="#public-site-overview"
+          navLabel={`Public site navigation (${theme})`}
+          navItems={[
+            { id: "overview", label: "Overview", href: "#overview" },
+            { id: "privacy", label: "Privacy", href: "#privacy", current: true },
+            { id: "identity", label: "Identity", href: "#identity" },
+            { id: "terms", label: "Terms", href: "#terms" },
+          ]}
+          controls={
+            <ShellThemeToggle
+              currentTheme={theme === "halloween" ? "dark" : theme}
+              onThemeChange={() => {}}
+              locale={locale}
+              variant="quiet"
+            />
+          }
+        />
+        <EditorialArticle
+          title="Privacy Policy & Hosted Service Data Handling"
+          meta="Effective 2026-11-25 · TCRN Platform · contact@tcrn-platform.com"
+          lead="How official hosted TCRN Platform services verify account ownership and keep third-party identity data minimal."
+          backLink={{ label: "Back to TCRN Platform", href: "#overview" }}
+          relatedLinks={[
+            { id: "identity", label: "Unified Identity", href: "#identity" },
+            { id: "terms", label: "Terms of Service", href: "#terms" },
+          ]}
+        >
+          <section>
+            <h2>1. Scope of Official Hosted Services</h2>
+            <p>
+              This policy applies only to official hosted deployments operated under TCRN Platform. Local tools and static packages run exclusively on your own machine.
+            </p>
+            <ul>
+              <li>Minimal account identifier and verified email for sign-in sessions.</li>
+              <li>No third-party advertising trackers or cross-site profiling cookies.</li>
+            </ul>
+            <EditorialNote>
+              <strong>Zero built-in telemetry:</strong> all open-source TCRN repositories ship without analytics beacons or background network telemetry.
+            </EditorialNote>
+          </section>
+        </EditorialArticle>
+        <div className="tcrn-doc-row">
+          <BrandIcon name="github" size="sm" title="GitHub 14px" />
+          <BrandIcon name="github" size="md" title="GitHub 16px" />
+          <BrandIcon name="github" size="lg" title="GitHub 20px" />
+          <LinkButton variant="secondary" size="sm" href="https://github.com/The-Cloud-River-Network">
+            <BrandIcon name="github" size="sm" />
+            GitHub
+          </LinkButton>
+        </div>
+        <PublicSiteFooter
+          copyright="© 2026 TCRN Platform"
+          navLabel={`Footer links (${theme})`}
+          links={[
+            { id: "privacy", label: "Privacy", href: "#privacy" },
+            { id: "identity", label: "Identity", href: "#identity" },
+            { id: "terms", label: "Terms", href: "#terms" },
+            {
+              id: "github",
+              label: "GitHub",
+              href: "https://github.com/The-Cloud-River-Network",
+              external: true,
+              icon: <BrandIcon name="github" size="sm" />,
+            },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}
+
+export function PublicSiteSpecimen({ locale, entry }: { locale: DocsLocale; entry: DocsEntry }) {
+  const { themes } = specimenCopy[locale];
+  const [filterTheme, setFilterTheme] = useState<"all" | AnyThemeMode>("all");
+  const visibleThemes = filterTheme === "all" ? threeThemes : [filterTheme];
+
+  return (
+    <>
+      <div className="tcrn-doc-row">
+        <ButtonGroup ariaLabel="Filter preview theme" size="sm" variant="secondary">
+          <Button aria-pressed={filterTheme === "all"} onClick={() => setFilterTheme("all")}>
+            {docsCopy(locale).all}
+          </Button>
+          {threeThemes.map((mode) => (
+            <Button key={mode} aria-pressed={filterTheme === mode} onClick={() => setFilterTheme(mode)}>
+              {themes[mode]}
+            </Button>
+          ))}
+        </ButtonGroup>
+      </div>
+      <div className="tcrn-doc-themes tcrn-doc-themes--stack">
+        {visibleThemes.map((theme) => (
+          <PublicSitePane key={theme} theme={theme} locale={locale} />
+        ))}
+      </div>
+      <div className="tcrn-doc-row">
+        <LinkButton variant="secondary" size="sm" href={pageHref(locale, "brand-platform", entry)}>
+          TCRN Platform · {specimenCopy[locale].brand.openProduct}
+          <Icon name="arrow-right" size="sm" />
+        </LinkButton>
+        <a className="tcrn-link" href="/ai/4.2.0/pattern/batch3-components-and-shell.json">
+          Public Site &amp; Editorial contract (JSON)
         </a>
       </div>
     </>

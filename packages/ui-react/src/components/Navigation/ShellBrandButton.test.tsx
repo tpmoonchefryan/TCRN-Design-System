@@ -229,3 +229,15 @@ test("STORY-156 ShellBrandButton supports adopted voxward Option C mark and --tc
   assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-voxward"], "#3fc7b7");
   assert.equal(createResolvedTokenMap("halloween")["--tcrn-brand-suffix-voxward"], "#f58a33");
 });
+
+test("ShellBrandButton supports adopted platform Mother Mark and --tcrn-brand-suffix-platform", () => {
+  const html = renderToStaticMarkup(<ShellBrandButton productId="platform" locale="zh-CN" />);
+  assert.match(html, /aria-label="展开导航 · TCRN Platform"/);
+  assert.match(html, /data-logo="platform"/);
+  assert.match(html, /class="tcrn-shell-brand__suffix tcrn-shell-brand__suffix--platform">Platform<\/em>/);
+  assert.match(ruleBody(".tcrn-shell-brand__suffix--platform"), /color: var\(--tcrn-brand-suffix-platform\);/);
+  assert.match(tcrnComponentCss, /\.tcrn-brand-wordmark__suffix--platform\{color:var\(--tcrn-brand-suffix-platform\)\}/);
+  assert.equal(createResolvedTokenMap("light")["--tcrn-brand-suffix-platform"], "#0b6b65");
+  assert.equal(createResolvedTokenMap("dark")["--tcrn-brand-suffix-platform"], "#3fc7b7");
+  assert.equal(createResolvedTokenMap("halloween")["--tcrn-brand-suffix-platform"], "#f58a33");
+});

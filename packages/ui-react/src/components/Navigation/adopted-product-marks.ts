@@ -31,5 +31,31 @@ export const tcrnAdoptedProductMarks: readonly TcrnProductMark[] = [
       fr: "Système de modération du chat en direct"
     },
     source: "minutes:577fa880f7f1b73b76eb2d0e#D1"
+  },
+  {
+    id: "platform",
+    productId: "platform",
+    name: "TCRN Platform",
+    word: "TCRN",
+    suffix: "Platform",
+    font: "sans",
+    palette: {
+      deep: "#0b6b65",
+      bright: "#3fc7b7",
+      tint: "#e3f3f1",
+      halloween: "#f58a33"
+    },
+    colorBody: `<rect fill="var(--tcrn-color-ink, #16150f)" height="18" rx="4" width="9" x="6" y="10"/><rect fill="var(--tcrn-color-ink, #16150f)" height="18" rx="4" width="9" x="33" y="10"/><rect fill="var(--tcrn-color-acc, #0b6b65)" height="16" rx="4" width="10" x="19" y="6"/><rect fill="var(--tcrn-color-ink, #16150f)" height="10" rx="4" width="36" x="6" y="32"/>`,
+    inkBody: `<rect fill="currentColor" height="18" rx="4" width="9" x="6" y="10"/><rect fill="currentColor" height="18" rx="4" width="9" x="33" y="10"/><rect fill="currentColor" height="16" rx="4" width="10" x="19" y="6"/><rect fill="currentColor" height="10" rx="4" width="36" x="6" y="32"/>`,
+    tileTintBody: `<rect fill="#e3f3f1" height="48" rx="11" width="48"/><g transform="translate(7.2 7.2) scale(0.7)"><rect fill="#16150f" height="18" rx="4" width="9" x="6" y="10"/><rect fill="#16150f" height="18" rx="4" width="9" x="33" y="10"/><rect fill="#0b6b65" height="16" rx="4" width="10" x="19" y="6"/><rect fill="#16150f" height="10" rx="4" width="36" x="6" y="32"/></g>`,
+    tileDeepBody: `<rect fill="#0b6b65" height="48" rx="11" width="48"/><g transform="translate(7.2 7.2) scale(0.7)"><rect fill="#ffffff" height="18" rx="4" width="9" x="6" y="10"/><rect fill="#ffffff" height="18" rx="4" width="9" x="33" y="10"/><rect fill="#ffffff" height="16" rx="4" width="10" x="19" y="6"/><rect fill="#ffffff" height="10" rx="4" width="36" x="6" y="32"/></g>`,
+    taglines: {
+      "zh-CN": "官方平台与统一身份",
+      en: "Unified platform & identity",
+      ja: "統合プラットフォーム・認証",
+      ko: "통합 플랫폼 및 인증",
+      fr: "Plateforme unifiée et identité"
+    },
+    source: "adopted-tcrn-platform-mother-mark"
   }
 ];

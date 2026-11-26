@@ -26,6 +26,7 @@ import {
   ExtendedShellSpecimen,
   FeedbackDataSpecimen,
   LayoutOverlaySpecimen,
+  PublicSiteSpecimen,
   SeasonalHalloweenSpecimen,
 } from "./portal-specimens.js";
 import { SourceMatrices } from "./source-matrices.js";
@@ -365,6 +366,10 @@ export function App({ page, locale, theme: initialTheme = "light", entry = "stat
                 ) : page === "layout-overlays" ? (
                   <article lang={locale} data-docs-specimen={page} className="tcrn-doc-board">
                     <LayoutOverlaySpecimen locale={locale} />
+                  </article>
+                ) : page === "public-site" ? (
+                  <article lang={locale} data-docs-specimen={page} className="tcrn-doc-board">
+                    <PublicSiteSpecimen locale={locale} entry={entry} />
                   </article>
                 ) : page === "shell-extended" ? (
                   <article lang={locale} data-docs-specimen={page} className="tcrn-doc-board">

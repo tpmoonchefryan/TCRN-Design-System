@@ -11,6 +11,7 @@ export const brandCss01 = `
 .tcrn-brand-wordmark__suffix--tms{color:var(--tcrn-brand-suffix-tms)}
 .tcrn-brand-wordmark__suffix--design-system{color:var(--tcrn-brand-suffix-design-system)}
 .tcrn-brand-wordmark__suffix--voxward{color:var(--tcrn-brand-suffix-voxward)}
+.tcrn-brand-wordmark__suffix--platform{color:var(--tcrn-brand-suffix-platform)}
 .tcrn-product-logo__line-two{display:block;min-width:0;font-size:11.5px;line-height:16px;color:var(--tcrn-color-ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tcrn-product-logo--serif .tcrn-product-logo__line-one{font-family:var(--tcrn-type-family-heading);font-weight:400;font-size:18px;letter-spacing:.03em}
 .tcrn-product-logo__byline{font-size:10px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--tcrn-color-ink-3)}

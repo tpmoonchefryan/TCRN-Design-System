@@ -42,8 +42,8 @@ test("portal routes, topic membership and document paths agree in all three entr
   const categoryIds = ["foundations", "brand", "components", "shell"] as const;
   const chapters = [
     ["01-tokens", "02-typography", "03-icons", "seasonal-halloween"],
-    ["04-brand", "brand-tms", "brand-einzbern", "brand-mana-orchestrate", "brand-design-system", "brand-voxward"],
-    ["05-actions", "06-inputs", "feedback-data", "layout-overlays", "api"],
+    ["04-brand", "brand-tms", "brand-einzbern", "brand-mana-orchestrate", "brand-design-system", "brand-voxward", "brand-platform"],
+    ["05-actions", "06-inputs", "feedback-data", "layout-overlays", "public-site", "api"],
     ["07a-shell-upper", "07b-shell-lower", "shell-extended"],
   ];
   const htmlHref = (href: string) => href.replaceAll("&", "&amp;");
@@ -59,8 +59,8 @@ test("portal routes, topic membership and document paths agree in all three entr
       assert.deepEqual(nav.directory.map(group => group.items.map(item => item.id)), [
         ["index"],
         ["01-tokens", "02-typography", "03-icons", "seasonal-halloween"],
-        ["04-brand", "brand-tms", "brand-einzbern", "brand-mana-orchestrate", "brand-design-system", "brand-voxward"],
-        ["05-actions", "06-inputs", "feedback-data", "layout-overlays", "api-branch"],
+        ["04-brand", "brand-tms", "brand-einzbern", "brand-mana-orchestrate", "brand-design-system", "brand-voxward", "brand-platform"],
+        ["05-actions", "06-inputs", "feedback-data", "layout-overlays", "public-site", "api-branch"],
         ["07a-shell-upper", "07b-shell-lower", "shell-extended"],
       ]);
       const apiBranch = nav.categories.find(category => category.id === "components")!.items.find(item => item.id === "api-branch")!;
@@ -152,7 +152,7 @@ test("pin preferences resolve groups, branches and leaves by stable ID across lo
     const nav = docsNavigation(locale, entry);
     const pins = docsPinnedNavigation(nav.directory, ids);
     assert.deepEqual(pins.map(pin => pin.id), ids.slice(0, 4));
-    assert.equal(pins[0].items.length, 5);
+    assert.equal(pins[0].items.length, 6);
     assert.equal(pins[1].items.length, new Set(approvedApi.map(component => component.board)).size + 2);
     assert.deepEqual(pins[2].items, []);
     assert.equal(pins[2].href, pageHref(locale, "api", entry, "api-Button"));
@@ -212,8 +212,9 @@ test("split per-product brand pages and Batch 3 / seasonal portal pages render c
     ["brand-mana-orchestrate", "mana-orchestrate"],
     ["brand-design-system", "design-system"],
     ["brand-voxward", "voxward"],
+    ["brand-platform", "platform"],
   ] as const;
-  const featurePages = ["seasonal-halloween", "feedback-data", "layout-overlays", "shell-extended"] as const;
+  const featurePages = ["seasonal-halloween", "feedback-data", "layout-overlays", "public-site", "shell-extended"] as const;
   for (const locale of supportedLocales) {
     const brandOverview = renderToStaticMarkup(createElement(App, { page: "04-brand", locale }));
     assert.equal((brandOverview.match(/<main\b/g) ?? []).length, 1);

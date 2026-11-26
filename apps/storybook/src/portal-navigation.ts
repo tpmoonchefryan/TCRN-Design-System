@@ -11,7 +11,8 @@ export type BrandProductPage =
   | "brand-einzbern"
   | "brand-mana-orchestrate"
   | "brand-design-system"
-  | "brand-voxward";
+  | "brand-voxward"
+  | "brand-platform";
 
 export type DocsPage = ApprovedBoardId | "index" | "api" | ExtraDocsPageId;
 export type DocsEntry = "static" | "canvas" | { managerPath: string };
@@ -22,6 +23,7 @@ export const brandProductPageMap: Readonly<Record<BrandProductPage, TcrnProductM
   "brand-mana-orchestrate": "mana-orchestrate",
   "brand-design-system": "design-system",
   "brand-voxward": "voxward",
+  "brand-platform": "platform",
 });
 
 export const productToBrandPage: Readonly<Record<TcrnProductMarkId, BrandProductPage>> = Object.freeze({
@@ -30,6 +32,7 @@ export const productToBrandPage: Readonly<Record<TcrnProductMarkId, BrandProduct
   "mana-orchestrate": "brand-mana-orchestrate",
   "design-system": "brand-design-system",
   voxward: "brand-voxward",
+  platform: "brand-platform",
 });
 
 export const extraDocsPages: readonly { id: ExtraDocsPageId; iconName: IconName; keywords: string }[] = [
@@ -39,8 +42,10 @@ export const extraDocsPages: readonly { id: ExtraDocsPageId; iconName: IconName;
   { id: "brand-mana-orchestrate", iconName: "layout-grid", keywords: "brand mark logo lockup mana orchestrate" },
   { id: "brand-design-system", iconName: "layout-grid", keywords: "brand mark logo lockup design system" },
   { id: "brand-voxward", iconName: "layout-grid", keywords: "brand mark logo lockup voxward" },
+  { id: "brand-platform", iconName: "layout-grid", keywords: "brand mark logo lockup platform mother" },
   { id: "feedback-data", iconName: "check", keywords: "feedback data display badge status dot alert banner stat card avatar table toolbar pipeline payload" },
   { id: "layout-overlays", iconName: "check", keywords: "layout overlays surface divider settings split view collapsible segmented nav menu popover tooltip confirm" },
+  { id: "public-site", iconName: "book-open", keywords: "public site header footer editorial article note legal policy brand icon github" },
   { id: "shell-extended", iconName: "layers", keywords: "shell voxward backoffice pins divider top banner external disabled seasonal" },
 ];
 
@@ -63,10 +68,12 @@ const managerStories = {
   "brand-mana-orchestrate": "brand-mana-orchestrate",
   "brand-design-system": "brand-design-system",
   "brand-voxward": "brand-voxward",
+  "brand-platform": "brand-platform",
   "05-actions": "actions",
   "06-inputs": "inputs",
   "feedback-data": "feedback-data",
   "layout-overlays": "layout-overlays",
+  "public-site": "public-site",
   "07a-shell-upper": "shell-upper",
   "07b-shell-lower": "shell-lower",
   "shell-extended": "shell-extended",
@@ -104,9 +111,9 @@ const topics = [
   {
     id: "brand",
     iconName: "layout-grid",
-    chapters: ["04-brand", "brand-tms", "brand-einzbern", "brand-mana-orchestrate", "brand-design-system", "brand-voxward"],
+    chapters: ["04-brand", "brand-tms", "brand-einzbern", "brand-mana-orchestrate", "brand-design-system", "brand-voxward", "brand-platform"],
   },
-  { id: "components", iconName: "check", chapters: ["05-actions", "06-inputs", "feedback-data", "layout-overlays", "api"] },
+  { id: "components", iconName: "check", chapters: ["05-actions", "06-inputs", "feedback-data", "layout-overlays", "public-site", "api"] },
   { id: "shell", iconName: "layers", chapters: ["07a-shell-upper", "07b-shell-lower", "shell-extended"] },
 ] as const satisfies readonly { id: string; iconName: IconName; chapters: readonly [ApprovedBoardId, ...DocsPage[]] }[];
 type DocsMenuItem = ShellMenuGroup["items"][number];

@@ -3,9 +3,9 @@
   "route": "route_tcrn_design_system_component_api_machine_manifest",
   "generatedFrom": "packages/ui-react/src/index.tsx",
   "typescriptVersion": "5.8.3",
-  "componentCount": 135,
+  "componentCount": 140,
   "coverage": {
-    "registryComponentCount": 135,
+    "registryComponentCount": 140,
     "publicComponentNames": [
       "ActionDrawer",
       "ActivityFeed",
@@ -13,6 +13,7 @@
       "AttachmentList",
       "Avatar",
       "Badge",
+      "BrandIcon",
       "Breadcrumb",
       "Button",
       "ButtonGroup",
@@ -33,6 +34,8 @@
       "DisclosurePanel",
       "Divider",
       "DocumentCanvas",
+      "EditorialArticle",
+      "EditorialNote",
       "EmptyState",
       "EnvironmentBanner",
       "ErrorState",
@@ -77,6 +80,8 @@
       "ProductShellSearch",
       "ProductSwitcher",
       "Progress",
+      "PublicSiteFooter",
+      "PublicSiteHeader",
       "QuickFilters",
       "RadioGroup",
       "RawPayloadBox",
@@ -150,6 +155,7 @@
       "AttachmentList",
       "Avatar",
       "Badge",
+      "BrandIcon",
       "Breadcrumb",
       "Button",
       "ButtonGroup",
@@ -170,6 +176,8 @@
       "DisclosurePanel",
       "Divider",
       "DocumentCanvas",
+      "EditorialArticle",
+      "EditorialNote",
       "EmptyState",
       "EnvironmentBanner",
       "ErrorState",
@@ -214,6 +222,8 @@
       "ProductShellSearch",
       "ProductSwitcher",
       "Progress",
+      "PublicSiteFooter",
+      "PublicSiteHeader",
       "QuickFilters",
       "RadioGroup",
       "RawPayloadBox",
@@ -628,6 +638,68 @@
         }
       ]
     },
+    "BrandIcon": {
+      "name": "BrandIcon",
+      "kind": "function",
+      "props": [
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "required": false,
+          "default": "true"
+        },
+        {
+          "name": "name",
+          "type": "BrandIconName",
+          "required": true,
+          "enumValues": [
+            "github"
+          ]
+        },
+        {
+          "name": "size",
+          "type": "BrandIconSize",
+          "required": false,
+          "default": "\"md\""
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "variants": {
+        "name": [
+          "github"
+        ]
+      },
+      "slots": [],
+      "source": {
+        "path": "packages/ui-react/src/components/Icon/BrandIcon.tsx",
+        "line": 50
+      },
+      "propsType": "BrandIconProps",
+      "typeDefinitions": [
+        {
+          "name": "BrandIconName",
+          "path": "packages/ui-react/src/components/Icon/BrandIcon.tsx",
+          "line": 25,
+          "declaration": "export type BrandIconName = keyof typeof tcrnBrandIcons;"
+        },
+        {
+          "name": "BrandIconSize",
+          "path": "packages/ui-react/src/components/Icon/BrandIcon.tsx",
+          "line": 26,
+          "declaration": "export type BrandIconSize = \"sm\" | \"md\" | \"lg\" | number;"
+        },
+        {
+          "name": "BrandIconProps",
+          "path": "packages/ui-react/src/components/Icon/BrandIcon.tsx",
+          "line": 43,
+          "declaration": "export interface BrandIconProps extends Omit<SVGProps<SVGSVGElement>, \"name\" | \"children\"> {\n  name: BrandIconName;\n  decorative?: boolean;\n  size?: BrandIconSize;\n  title?: string;\n}"
+        }
+      ]
+    },
     "Breadcrumb": {
       "name": "Breadcrumb",
       "kind": "function",
@@ -652,20 +724,20 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1126
+        "line": 1140
       },
       "propsType": "BreadcrumbProps",
       "typeDefinitions": [
         {
           "name": "BreadcrumbItem",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1076,
+          "line": 1090,
           "declaration": "export interface BreadcrumbItem extends NavItem {\n  /**\n   * Where this ancestor lives. Omit for the current page — the last crumb is\n   * where the reader already is, so a link to it is a link to nowhere.\n   */\n  href?: string;\n}"
         },
         {
           "name": "BreadcrumbProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1098,
+          "line": 1112,
           "declaration": "export interface BreadcrumbProps {\n  items: readonly BreadcrumbItem[];\n  /** Accessible name for the trail. Omit it and the reader's language is used. */\n  label?: string;\n  /** Which language the built-in label is said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n}"
         }
       ]
@@ -1843,6 +1915,138 @@
           "path": "packages/ui-react/src/components/DataDisplay/DomainDisplay.tsx",
           "line": 1218,
           "declaration": "export interface DocumentCanvasProps {\n  title: string;\n  summary?: ReactNode;\n  labels?: string[];\n  meta?: ReactNode;\n  sections: DocumentSection[];\n  density?: Density;\n}"
+        }
+      ]
+    },
+    "EditorialArticle": {
+      "name": "EditorialArticle",
+      "kind": "function",
+      "props": [
+        {
+          "name": "backLink",
+          "type": "{ label: ReactNode; href: string; labelProps?: HTMLAttributes<HTMLSpanElement>; }",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "lead",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "leadProps",
+          "type": "HTMLAttributes<HTMLParagraphElement>",
+          "required": false
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "metaProps",
+          "type": "HTMLAttributes<HTMLParagraphElement>",
+          "required": false
+        },
+        {
+          "name": "relatedLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Related documents\""
+        },
+        {
+          "name": "relatedLinks",
+          "type": "readonly EditorialRelatedLink[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "slot": true
+        },
+        {
+          "name": "titleProps",
+          "type": "HTMLAttributes<HTMLHeadingElement>",
+          "required": false
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "backLink",
+        "children",
+        "lead",
+        "meta",
+        "title"
+      ],
+      "source": {
+        "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+        "line": 205
+      },
+      "propsType": "EditorialArticleProps",
+      "typeDefinitions": [
+        {
+          "name": "EditorialRelatedLink",
+          "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+          "line": 170,
+          "declaration": "export interface EditorialRelatedLink {\n  id: string;\n  label: ReactNode;\n  href: string;\n  external?: boolean;\n  labelProps?: HTMLAttributes<HTMLSpanElement>;\n}"
+        },
+        {
+          "name": "EditorialArticleProps",
+          "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+          "line": 178,
+          "declaration": "export interface EditorialArticleProps extends Omit<HTMLAttributes<HTMLElement>, \"title\"> {\n  /** Wrapping serif document title (36/40, weight 400). */\n  title: ReactNode;\n  /** Optional plain meta byline (for example effective date, operator, contact). */\n  meta?: ReactNode;\n  /** Optional lead summary paragraph displayed above the body divider. */\n  lead?: ReactNode;\n  /** Optional parent/home back link shown above the title. */\n  backLink?: {\n    label: ReactNode;\n    href: string;\n    labelProps?: HTMLAttributes<HTMLSpanElement>;\n  };\n  /** Optional related document links shown at the foot of the paper sheet. */\n  relatedLinks?: readonly EditorialRelatedLink[];\n  /** Accessible label for the related links navigation. */\n  relatedLabel?: string;\n  /** Optional attributes merged onto the wrapping h1 title element. */\n  titleProps?: HTMLAttributes<HTMLHeadingElement>;\n  /** Optional attributes merged onto the meta paragraph element. */\n  metaProps?: HTMLAttributes<HTMLParagraphElement>;\n  /** Optional attributes merged onto the lead paragraph element. */\n  leadProps?: HTMLAttributes<HTMLParagraphElement>;\n  /** Main article content (sections, paragraphs, lists, and EditorialNote blocks). */\n  children: ReactNode;\n}"
+        }
+      ]
+    },
+    "EditorialNote": {
+      "name": "EditorialNote",
+      "kind": "function",
+      "props": [
+        {
+          "name": "tone",
+          "type": "EditorialNoteTone",
+          "required": false,
+          "default": "\"accent\"",
+          "enumValues": [
+            "neutral",
+            "accent"
+          ]
+        }
+      ],
+      "variants": {
+        "tone": [
+          "neutral",
+          "accent"
+        ]
+      },
+      "slots": [],
+      "source": {
+        "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+        "line": 158
+      },
+      "propsType": "EditorialNoteProps",
+      "typeDefinitions": [
+        {
+          "name": "EditorialNoteTone",
+          "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+          "line": 151,
+          "declaration": "export type EditorialNoteTone = \"accent\" | \"neutral\";"
+        },
+        {
+          "name": "EditorialNoteProps",
+          "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+          "line": 153,
+          "declaration": "export interface EditorialNoteProps extends HTMLAttributes<HTMLElement> {\n  /** Left rule color tone: accent (default) or neutral hairline. */\n  tone?: EditorialNoteTone;\n}"
         }
       ]
     },
@@ -3723,7 +3927,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 981
+        "line": 995
       },
       "propsType": "MobileNavToggleProps",
       "typeDefinitions": [
@@ -3754,7 +3958,7 @@
         {
           "name": "MobileNavToggleProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 954,
+          "line": 968,
           "declaration": "export interface MobileNavToggleProps extends Omit<IconButtonProps, \"ariaLabel\" | \"icon\" | \"iconName\" | \"children\"> {\n  expanded: boolean;\n  controls: string;\n  /** Which language the two built-in labels are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  onExpandedChange?: (expanded: boolean) => void;\n}"
         }
       ]
@@ -3788,7 +3992,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1251
+        "line": 1265
       },
       "propsType": "SelectableNavProps",
       "typeDefinitions": [
@@ -3801,7 +4005,7 @@
         {
           "name": "SelectableNavProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1275,
+          "line": 1289,
           "declaration": "export interface SelectableNavProps extends ProductLauncherProps {\n  /** Optional accessible name for a local navigation instance. */\n  label?: string;\n  /** Called with the item's `id`. Omit for a nav the consumer wires another way. */\n  onSelect?: (id: string) => void;\n}"
         }
       ]
@@ -3939,14 +4143,14 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1414
+        "line": 1428
       },
       "propsType": "NavGroupProps",
       "typeDefinitions": [
         {
           "name": "NavGroupProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1394,
+          "line": 1408,
           "declaration": "export interface NavGroupProps extends HTMLAttributes<HTMLDivElement>, NavPinProps {\n  label: string;\n  selected?: boolean;\n  /** Which language the built-in pin name is said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  /**\n   * What the group holds, said to a screen reader with its title row (aria-describedby to a\n   * .tcrn-sr-only element after the row); nothing is drawn, and without it the markup is unchanged\n   * (TCRN-DS-SUB-147).\n   */\n  description?: string;\n  children: ReactNode;\n}"
         }
       ]
@@ -4104,7 +4308,7 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1483
+        "line": 1497
       },
       "propsType": "NavItemProps",
       "typeDefinitions": [
@@ -4123,7 +4327,7 @@
         {
           "name": "NavItemProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1469,
+          "line": 1483,
           "declaration": "export interface NavItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, \"children\">, NavPinProps {\n  selected?: boolean;\n  disabled?: boolean;\n  disabledReason?: string;\n  /** External/secondary window link indicator and target attributes (STORY-157). */\n  external?: boolean;\n  /** Which language the built-in disabled reason and pin name are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  iconName?: IconName;\n  /** Data-owned nesting depth used to derive the item's visual inset. */\n  depth?: number;\n  children: ReactNode;\n}"
         }
       ]
@@ -4502,14 +4706,14 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 3103
+        "line": 3117
       },
       "propsType": "PaginationProps",
       "typeDefinitions": [
         {
           "name": "PaginationProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 3094,
+          "line": 3108,
           "declaration": "export interface PaginationProps {\n  label: string;\n  shown?: number;\n  total?: number;\n  nextHref?: string;\n  prevHref?: string;\n  locale?: TcrnLocale | string;\n}"
         }
       ]
@@ -4617,7 +4821,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1044
+        "line": 1058
       },
       "propsType": "ProductLauncherProps",
       "typeDefinitions": [
@@ -4630,7 +4834,7 @@
         {
           "name": "ProductLauncherProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1016,
+          "line": 1030,
           "declaration": "export interface ProductLauncherProps {\n  items: NavItem[];\n  /**\n   * Which language the built-in nav label is said in; defaults to the page's own.\n   *\n   * These five navs render only their items, so the label is the entire name\n   * their landmark has — and it was a literal in the JSX with no prop behind it,\n   * so a localized consumer could not override it either.\n   */\n  locale?: TcrnLocale | string;\n}"
         }
       ]
@@ -4673,7 +4877,8 @@
             "einzbern",
             "mana-orchestrate",
             "design-system",
-            "voxward"
+            "voxward",
+            "platform"
           ]
         },
         {
@@ -4702,7 +4907,8 @@
           "einzbern",
           "mana-orchestrate",
           "design-system",
-          "voxward"
+          "voxward",
+          "platform"
         ],
         "scale": [
           "rail",
@@ -4712,7 +4918,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 455
+        "line": 469
       },
       "propsType": "ProductLockupProps",
       "typeDefinitions": [
@@ -4725,19 +4931,19 @@
         {
           "name": "TcrnProductLogoId",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 421,
+          "line": 435,
           "declaration": "export type TcrnProductLogoId = keyof typeof tcrnProductLogoRegistry;"
         },
         {
           "name": "ProductLockupFirstLineScale",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 453,
+          "line": 467,
           "declaration": "export type ProductLockupFirstLineScale=\"rail\"|\"lockup\";"
         },
         {
           "name": "ProductLockupProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 454,
+          "line": 468,
           "declaration": "export interface ProductLockupProps extends ProductLogoProps { firstLine?:ProductLockupFirstLineScale;scale?:\"lockup\"|\"rail\" }"
         }
       ]
@@ -4772,7 +4978,8 @@
             "einzbern",
             "mana-orchestrate",
             "design-system",
-            "voxward"
+            "voxward",
+            "platform"
           ]
         }
       ],
@@ -4788,13 +4995,14 @@
           "einzbern",
           "mana-orchestrate",
           "design-system",
-          "voxward"
+          "voxward",
+          "platform"
         ]
       },
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 439
+        "line": 453
       },
       "propsType": "ProductLogoProps",
       "typeDefinitions": [
@@ -4807,13 +5015,13 @@
         {
           "name": "TcrnProductLogoId",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 421,
+          "line": 435,
           "declaration": "export type TcrnProductLogoId = keyof typeof tcrnProductLogoRegistry;"
         },
         {
           "name": "ProductLogoProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 433,
+          "line": 447,
           "declaration": "export interface ProductLogoProps extends HTMLAttributes<HTMLDivElement> {\n  productId:TcrnProductLogoId;\n  markVariant?:TcrnProductMarkVariant;\n  locale?:string;\n}"
         }
       ]
@@ -4846,7 +5054,8 @@
             "einzbern",
             "mana-orchestrate",
             "design-system",
-            "voxward"
+            "voxward",
+            "platform"
           ]
         },
         {
@@ -5113,7 +5322,8 @@
           "einzbern",
           "mana-orchestrate",
           "design-system",
-          "voxward"
+          "voxward",
+          "platform"
         ],
         "contentRole": [
           "main",
@@ -5137,7 +5347,7 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 2068
+        "line": 2082
       },
       "propsType": "ProductShellProps",
       "typeDefinitions": [
@@ -5180,79 +5390,79 @@
         {
           "name": "TcrnProductLogoId",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 421,
+          "line": 435,
           "declaration": "export type TcrnProductLogoId = keyof typeof tcrnProductLogoRegistry;"
         },
         {
           "name": "SeasonalShellThemeMode",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 470,
+          "line": 484,
           "declaration": "export type SeasonalShellThemeMode = \"halloween\";"
         },
         {
           "name": "ShellThemeMode",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 471,
+          "line": 485,
           "declaration": "export type ShellThemeMode = \"light\" | \"dark\" | SeasonalShellThemeMode;"
         },
         {
           "name": "ProductShellLocaleMenuChangeReason",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 472,
+          "line": 486,
           "declaration": "export type ProductShellLocaleMenuChangeReason = \"trigger\" | \"selection\" | \"outside-pointer\" | \"escape\" | \"controller\";"
         },
         {
           "name": "ShellLocaleOption",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 579,
+          "line": 593,
           "declaration": "export interface ShellLocaleOption {\n  locale: string;\n  /** BCP 47 language tag when the product locale id uses another vocabulary. */\n  lang?: string;\n  nativeName: string;\n}"
         },
         {
           "name": "ProductShellSearchResult",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1587,
+          "line": 1601,
           "declaration": "export interface ProductShellSearchResult {\n  id: string;\n  title: string;\n  titleKey?: string;\n  meta?: string;\n  metaKey?: string;\n  href: string;\n  selected?: boolean;\n}"
         },
         {
           "name": "ProductShellNavItem",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1797,
+          "line": 1811,
           "declaration": "export interface ProductShellNavItem extends ShellMenuItem {\n  labelKey?: string;\n  /** The current page: the shell derives the selected row, the selected pin and the current position from it. */\n  selected?: boolean;\n  children?: readonly ProductShellNavItem[];\n}"
         },
         {
           "name": "ProductShellNavGroup",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1810,
+          "line": 1824,
           "declaration": "export interface ProductShellNavGroup extends ShellMenuGroup {\n  labelKey?: string;\n  descriptionKey?: string;\n  sectionLabel?: string;\n  sectionLabelKey?: string;\n  selected?: boolean;\n  items: readonly ProductShellNavItem[];\n}"
         },
         {
           "name": "ProductShellMenuChangeReason",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1820,
+          "line": 1834,
           "declaration": "export type ProductShellMenuChangeReason = \"trigger\" | ShellMenuOpenChangeReason;"
         },
         {
           "name": "ProductShellAccount",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1823,
+          "line": 1837,
           "declaration": "export interface ProductShellAccount {\n  name: string;\n  /** What the avatar shows; the first character of the name when omitted. */\n  initials?: string;\n}"
         },
         {
           "name": "ProductShellProduct",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1830,
+          "line": 1844,
           "declaration": "export interface ProductShellProduct {\n  id: string;\n  label: string;\n  href: string;\n  /** The product this shell belongs to: aria-current=\"page\", the 6% wash and weight 600. */\n  current?: boolean;\n}"
         },
         {
           "name": "ProductShellNotifications",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1839,
+          "line": 1853,
           "declaration": "export interface ProductShellNotifications {\n  /** Unread notifications: more than none shows the dot and is said in the bell's name. */\n  unread?: number;\n  onOpen?: () => void;\n}"
         },
         {
           "name": "ProductShellProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1845,
+          "line": 1859,
           "declaration": "export interface ProductShellProps extends HTMLAttributes<HTMLDivElement>, ShellSeasonalThemeOptions {\n  productName: string;\n  moduleName: string;\n  /** The product key: the brand button's mark and wordmark and the full menu's lockup, from logos2 as they are. */\n  brandProductId: TcrnProductMarkId;\n  /** Name of the current page, the current position's last step when no menu entry is selected. */\n  currentRouteLabel: string;\n  currentRouteLabelKey?: string;\n  /** The menu model: groups → items → children → children (C-7). */\n  navGroups: readonly ProductShellNavGroup[];\n  /** Optional right-aligned backoffice nav groups included in the menu model and pinned right group (STORY-157). */\n  rightNavGroups?: readonly ProductShellNavGroup[];\n  /** Explicit right-aligned backoffice pin items rendered before the right account cluster (STORY-157). */\n  rightNavItems?: readonly ShellPinItem[];\n  /** Ids of right-aligned backoffice entries from `navGroups` / `rightNavGroups` (STORY-157). */\n  rightPinnedIds?: readonly string[];\n  /** Reorder handler for the right-aligned backoffice pinned group (STORY-157). */\n  onRightPinsReorder?: (orderedIds: readonly string[]) => void;\n  /**\n   * Optional full-width environment banner mounted between the top strip and `.tcrn-product-shell__paper`\n   * with `var(--tcrn-space-3)` horizontal inset alignment; omitted or null keeps the 2-row shell grid at 0px impact (STORY-158).\n   */\n  topBanner?: ReactNode;\n  locales: readonly ShellLocaleOption[];\n  currentLocale: string;\n  /** Complete product-owned copy and BCP 47 tag for currentLocale; scoped to this shell. */\n  localeDefinition?: ProductShellLocaleDefinition;\n  /**\n   * The page's header, the paper's first row: the trail, the title and the page's actions (07b\n   * board, section E, \"PageHeader 必有\"). Required, so a shell page without one does not type-check.\n   * An omitted trail is the current position in `navGroups` (group › … › page); an omitted locale is\n   * `currentLocale`; an omitted heading level is 1, the page's own title (TCRN-DS-SUB-163) — a shell\n   * shown inside another page's paper gives 2.\n   */\n  pageHeader: PageHeaderProps;\n  /** The page below its header. */\n  children: ReactNode;\n  currentTheme?: ShellThemeMode;\n  localeMenuOpen?: boolean;\n  /**\n   * Product-owned controls for the top-right cluster, before the bell and the avatar, which stay\n   * rightmost so their position does not move as products add controls. Omitting it renders the\n   * cluster without them.\n   */\n  headerActions?: ReactNode;\n  /** The signed-in reader; the avatar shows their initials. */\n  account?: ProductShellAccount;\n  /** The products the avatar menu switches between; the full menu and the lockup carry no product list. */\n  products?: readonly ProductShellProduct[];\n  notifications?: ProductShellNotifications;\n  /** Ids of the pinned groups, items and children in the reader's order; the band shows the first six. */\n  pinnedIds?: readonly string[];\n  /** Pins or unpins an entry; without it the menu rows have no pin. */\n  onPinnedChange?: (id: string, pinned: boolean) => void;\n  /**\n   * Takes the pins' new order, every id of `pinnedIds` in it, when the reader moves a pinned item\n   * in the band: a drag that ends with it in a new place, or Alt+← / Alt+→ on it (TCRN-DS-SUB-149).\n   * useProductShellController's productShellControlProps connect it to movePin, which keeps the\n   * order in the pins preference (the product's backend through onPinsChange; never a cookie).\n   * Without it the pinned items do not move.\n   */\n  onPinsReorder?: (orderedIds: readonly string[]) => void;\n  /** Whether the full menu is open; the shell keeps its own state when omitted. */\n  menuOpen?: boolean;\n  /**\n   * Whether ⌘K / Ctrl+K opens this shell's full menu: the key is registered on the document, once\n   * per shell, so a page with several shells lets one of them have it and passes false to the\n   * others. On by default (ShellMenu's `shortcut`; TCRN-DS-SUB-185).\n   */\n  menuShortcut?: boolean;\n  onMenuOpenChange?: (open: boolean, reason: ProductShellMenuChangeReason) => void;\n  /** The pinned item whose drop-down is open; the shell keeps its own state when omitted. */\n  openPinId?: string | null;\n  onOpenPinChange?: (id: string | null) => void;\n  /** Whether the open full menu or pin drop-down takes focus. Defaults to true. */\n  focusNavigationOnOpen?: boolean;\n  /** The scroll frame that clips pin drop-down cascades, when the shell is embedded. */\n  dropdownBoundaryRef?: RefObject<HTMLElement | null>;\n  /**\n   * Static states for documentation, by menu row or group id (data-tcrn-preview-state), passed to\n   * the full menu and the drop-downs; a drop-down row marked \"open\" starts with its next level open.\n   */\n  previewStates?: Readonly<Record<string, string>>;\n  /** Whether the avatar menu is open; the shell keeps its own state when omitted. */\n  accountMenuOpen?: boolean;\n  onAccountMenuOpenChange?: (open: boolean) => void;\n  /** Placeholder of the full menu's search. */\n  searchPlaceholder?: string;\n  /** The full menu's search provider (whole-site targets); the menu model is searched when omitted. */\n  searchProvider?: ShellMenuSearchProvider;\n  onSearchQueryChange?: (query: string) => void;\n  /**\n   * A name for this shell, which tells its landmarks from another shell's on the same page (axe\n   * landmark-unique): every named landmark of the shell — the band, the pinned items, the full menu\n   * (panel or Sheet) and its bottom bar's trail, the drop-downs, the avatar menu and its product\n   * switcher, the content region and the page header's trail — is named \"{landmarkLabel} · {name}\"\n   * in the reader's language. A `contentLabel` or a page header's own `landmarkLabel` is used as it\n   * is given. Omitted, they keep the built-in names (TCRN-DS-SUB-148, TCRN-DS-SUB-184).\n   */\n  landmarkLabel?: string;\n  /** The full menu's query, for a product that holds it; the menu keeps its own when omitted (ShellMenu's `query`). */\n  menuQuery?: string;\n  /** The query the full menu's own starts from, such as a page rendered with a query typed (ShellMenu's `defaultQuery`). */\n  defaultMenuQuery?: string;\n  /** Asks to change the full menu's query: as it is typed, and to empty when the menu closes (ShellMenu's `onQueryChange`). */\n  onMenuQueryChange?: (query: string) => void;\n  /** How theme selection renders inside the avatar menu: dropdown menu when >2 themes or explicitly \"menu\". */\n  themeControl?: \"auto\" | \"toggle\" | \"menu\";\n  onThemeChange?: (theme: ShellThemeMode) => void;\n  onLocaleMenuOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;\n  onLocaleChange?: (locale: string) => void;\n  contentId?: string;\n  contentRole?: \"main\" | \"region\";\n  contentLabel?: string;\n  skipLinkLabel?: string;\n}"
         },
         {
@@ -5427,7 +5637,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1618
+        "line": 1632
       },
       "propsType": "ProductShellSearchProps",
       "typeDefinitions": [
@@ -5440,25 +5650,25 @@
         {
           "name": "ProductShellSearchDismissReason",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 473,
+          "line": 487,
           "declaration": "export type ProductShellSearchDismissReason = \"blur\" | \"outside-pointer\" | \"tab\" | \"escape\" | \"result-activate\" | \"controller\";"
         },
         {
           "name": "ProductShellSearchExpandedChangeReason",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 474,
+          "line": 488,
           "declaration": "export type ProductShellSearchExpandedChangeReason = \"focus\" | \"input\" | ProductShellSearchDismissReason;"
         },
         {
           "name": "ProductShellSearchResult",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1587,
+          "line": 1601,
           "declaration": "export interface ProductShellSearchResult {\n  id: string;\n  title: string;\n  titleKey?: string;\n  meta?: string;\n  metaKey?: string;\n  href: string;\n  selected?: boolean;\n}"
         },
         {
           "name": "ProductShellSearchProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1597,
+          "line": 1611,
           "declaration": "export interface ProductShellSearchProps extends Omit<HTMLAttributes<HTMLDivElement>, \"onChange\" | \"results\"> {\n  label?: string;\n  placeholder?: string;\n  /** Which language the four built-in strings are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  shortcut?: SearchInputProps[\"shortcut\"];\n  query?: string;\n  expanded?: boolean;\n  results?: readonly ProductShellSearchResult[];\n  resultsLabel?: string;\n  emptyLabel?: string;\n  onQueryChange?: (query: string) => void;\n  onExpandedChange?: (expanded: boolean, reason: ProductShellSearchExpandedChangeReason) => void;\n  onDismiss?: (reason: ProductShellSearchDismissReason) => void;\n  onResultActivate?: (result: ProductShellSearchResult, event: ReactMouseEvent<HTMLAnchorElement>) => void;\n  inputProps?: Omit<SearchInputProps, \"type\" | \"placeholder\" | \"shortcut\" | \"value\" | \"defaultValue\" | \"onChange\" | \"onInput\" | \"onFocus\" | \"onBlur\" | \"onKeyDown\">;\n  \"data-product-shell-search-label-key\"?: string;\n  \"data-product-shell-search-results-label-key\"?: string;\n  \"data-product-shell-search-empty-label-key\"?: string;\n}"
         }
       ]
@@ -5482,7 +5692,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1057
+        "line": 1071
       },
       "propsType": "ProductLauncherProps",
       "typeDefinitions": [
@@ -5495,7 +5705,7 @@
         {
           "name": "ProductLauncherProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1016,
+          "line": 1030,
           "declaration": "export interface ProductLauncherProps {\n  items: NavItem[];\n  /**\n   * Which language the built-in nav label is said in; defaults to the page's own.\n   *\n   * These five navs render only their items, so the label is the entire name\n   * their landmark has — and it was a literal in the JSX with no prop behind it,\n   * so a localized consumer could not override it either.\n   */\n  locale?: TcrnLocale | string;\n}"
         }
       ]
@@ -5534,6 +5744,174 @@
           "path": "packages/ui-react/src/components/DataDisplay/DataDisplay.tsx",
           "line": 310,
           "declaration": "export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {\n  /** Omit for an indeterminate bar. */\n  value?: number;\n  max?: number;\n  /** Accessible name. A bar with no label is a bar nobody can ask about. */\n  label: string;\n}"
+        }
+      ]
+    },
+    "PublicSiteFooter": {
+      "name": "PublicSiteFooter",
+      "kind": "function",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "copyright",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "links",
+          "type": "readonly PublicSiteFooterLink[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "navLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Footer\""
+        }
+      ],
+      "variants": {},
+      "slots": [
+        "children",
+        "copyright"
+      ],
+      "source": {
+        "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+        "line": 117
+      },
+      "propsType": "PublicSiteFooterProps",
+      "typeDefinitions": [
+        {
+          "name": "PublicSiteFooterLink",
+          "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+          "line": 97,
+          "declaration": "export interface PublicSiteFooterLink {\n  id: string;\n  label: ReactNode;\n  href: string;\n  external?: boolean;\n  icon?: ReactNode;\n  labelProps?: HTMLAttributes<HTMLSpanElement>;\n}"
+        },
+        {
+          "name": "PublicSiteFooterProps",
+          "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+          "line": 106,
+          "declaration": "export interface PublicSiteFooterProps extends Omit<HTMLAttributes<HTMLElement>, \"children\"> {\n  /** Brand and copyright line rendered at the start of the footer bar. */\n  copyright?: ReactNode;\n  /** Horizontal wrapped navigation and compliance links. */\n  links?: readonly PublicSiteFooterLink[];\n  /** Accessible label for the footer navigation landmark. */\n  navLabel?: string;\n  /** Optional supplemental footer content. */\n  children?: ReactNode;\n}"
+        }
+      ]
+    },
+    "PublicSiteHeader": {
+      "name": "PublicSiteHeader",
+      "kind": "function",
+      "props": [
+        {
+          "name": "brandLinkProps",
+          "type": "AnchorHTMLAttributes<HTMLAnchorElement>",
+          "required": false
+        },
+        {
+          "name": "controls",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        },
+        {
+          "name": "homeHref",
+          "type": "string",
+          "required": false,
+          "default": "\"/\""
+        },
+        {
+          "name": "homeLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "TcrnLocale | string",
+          "required": false
+        },
+        {
+          "name": "navItems",
+          "type": "readonly PublicSiteNavLink[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "navLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Primary\""
+        },
+        {
+          "name": "navProps",
+          "type": "HTMLAttributes<HTMLElement>",
+          "required": false
+        },
+        {
+          "name": "productId",
+          "type": "TcrnProductMarkId",
+          "required": true,
+          "enumValues": [
+            "tms",
+            "einzbern",
+            "mana-orchestrate",
+            "design-system",
+            "voxward",
+            "platform"
+          ]
+        },
+        {
+          "name": "skipLinkHref",
+          "type": "string",
+          "required": false,
+          "default": "\"#main\""
+        },
+        {
+          "name": "skipLinkLabel",
+          "type": "ReactNode",
+          "required": false,
+          "slot": true
+        }
+      ],
+      "variants": {
+        "productId": [
+          "tms",
+          "einzbern",
+          "mana-orchestrate",
+          "design-system",
+          "voxward",
+          "platform"
+        ]
+      },
+      "slots": [
+        "controls",
+        "skipLinkLabel"
+      ],
+      "source": {
+        "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+        "line": 42
+      },
+      "propsType": "PublicSiteHeaderProps",
+      "typeDefinitions": [
+        {
+          "name": "PublicSiteNavLink",
+          "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+          "line": 8,
+          "declaration": "export interface PublicSiteNavLink {\n  id: string;\n  label: ReactNode;\n  href: string;\n  current?: boolean;\n  external?: boolean;\n  labelProps?: HTMLAttributes<HTMLSpanElement>;\n}"
+        },
+        {
+          "name": "PublicSiteHeaderProps",
+          "path": "packages/ui-react/src/components/Layout/PublicSite.tsx",
+          "line": 17,
+          "declaration": "export interface PublicSiteHeaderProps extends Omit<HTMLAttributes<HTMLElement>, \"children\"> {\n  /** Registered product mark rendered inside the compact header lockup. */\n  productId: TcrnProductMarkId;\n  /** Locale forwarded to ProductLockup and semantic labels. */\n  locale?: TcrnLocale | string;\n  /** Destination for the brand home link. Defaults to \"/\". */\n  homeHref?: string;\n  /** Accessible label for the brand home link. */\n  homeLabel?: string;\n  /** Accessible label for the primary navigation landmark. */\n  navLabel?: string;\n  /** Primary navigation links displayed across the top strip. */\n  navItems?: readonly PublicSiteNavLink[];\n  /** Right-side utility controls slot (for example ShellLocaleMenu and ShellThemeToggle). */\n  controls?: ReactNode;\n  /** Optional skip-to-content link label rendered before the header strip. */\n  skipLinkLabel?: ReactNode;\n  /** Optional skip-to-content target anchor. Defaults to \"#main\". */\n  skipLinkHref?: string;\n  /** Optional attributes merged onto the brand link element. */\n  brandLinkProps?: AnchorHTMLAttributes<HTMLAnchorElement>;\n  /** Optional attributes merged onto the primary navigation landmark. */\n  navProps?: HTMLAttributes<HTMLElement>;\n}"
+        },
+        {
+          "name": "TcrnProductMarkId",
+          "path": "packages/ui-react/src/components/Navigation/product-mark-id.ts",
+          "line": 18,
+          "declaration": "export type TcrnProductMarkId = (typeof tcrnProductMarkIds)[number];"
         }
       ]
     },
@@ -6673,7 +7051,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1257
+        "line": 1271
       },
       "propsType": "SelectableNavProps",
       "typeDefinitions": [
@@ -6686,7 +7064,7 @@
         {
           "name": "SelectableNavProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1275,
+          "line": 1289,
           "declaration": "export interface SelectableNavProps extends ProductLauncherProps {\n  /** Optional accessible name for a local navigation instance. */\n  label?: string;\n  /** Called with the item's `id`. Omit for a nav the consumer wires another way. */\n  onSelect?: (id: string) => void;\n}"
         }
       ]
@@ -6720,7 +7098,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1263
+        "line": 1277
       },
       "propsType": "SelectableNavProps",
       "typeDefinitions": [
@@ -6733,7 +7111,7 @@
         {
           "name": "SelectableNavProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1275,
+          "line": 1289,
           "declaration": "export interface SelectableNavProps extends ProductLauncherProps {\n  /** Optional accessible name for a local navigation instance. */\n  label?: string;\n  /** Called with the item's `id`. Omit for a nav the consumer wires another way. */\n  onSelect?: (id: string) => void;\n}"
         }
       ]
@@ -7123,7 +7501,8 @@
             "einzbern",
             "mana-orchestrate",
             "design-system",
-            "voxward"
+            "voxward",
+            "platform"
           ]
         },
         {
@@ -7144,7 +7523,8 @@
           "einzbern",
           "mana-orchestrate",
           "design-system",
-          "voxward"
+          "voxward",
+          "platform"
         ],
         "version": [
           "auto",
@@ -7207,7 +7587,8 @@
             "einzbern",
             "mana-orchestrate",
             "design-system",
-            "voxward"
+            "voxward",
+            "platform"
           ]
         },
         {
@@ -7232,7 +7613,8 @@
           "einzbern",
           "mana-orchestrate",
           "design-system",
-          "voxward"
+          "voxward",
+          "platform"
         ],
         "scale": [
           "rail",
@@ -7242,7 +7624,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 466
+        "line": 480
       },
       "propsType": "ShellBrandLockupProps",
       "typeDefinitions": [
@@ -7255,25 +7637,25 @@
         {
           "name": "TcrnProductLogoId",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 421,
+          "line": 435,
           "declaration": "export type TcrnProductLogoId = keyof typeof tcrnProductLogoRegistry;"
         },
         {
           "name": "ProductLockupFirstLineScale",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 453,
+          "line": 467,
           "declaration": "export type ProductLockupFirstLineScale=\"rail\"|\"lockup\";"
         },
         {
           "name": "ProductLockupProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 454,
+          "line": 468,
           "declaration": "export interface ProductLockupProps extends ProductLogoProps { firstLine?:ProductLockupFirstLineScale;scale?:\"lockup\"|\"rail\" }"
         },
         {
           "name": "ShellBrandLockupProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 464,
+          "line": 478,
           "declaration": "export interface ShellBrandLockupProps extends Omit<ProductLockupProps,\"firstLine\"> {}"
         }
       ]
@@ -7390,7 +7772,7 @@
         {
           "name": "ProductShellSearchResult",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1587,
+          "line": 1601,
           "declaration": "export interface ProductShellSearchResult {\n  id: string;\n  title: string;\n  titleKey?: string;\n  meta?: string;\n  metaKey?: string;\n  href: string;\n  selected?: boolean;\n}"
         },
         {
@@ -7454,7 +7836,8 @@
             "einzbern",
             "mana-orchestrate",
             "design-system",
-            "voxward"
+            "voxward",
+            "platform"
           ]
         },
         {
@@ -7475,7 +7858,8 @@
           "einzbern",
           "mana-orchestrate",
           "design-system",
-          "voxward"
+          "voxward",
+          "platform"
         ]
       },
       "slots": [
@@ -7551,26 +7935,26 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 597
+        "line": 611
       },
       "propsType": "ShellLocaleMenuProps",
       "typeDefinitions": [
         {
           "name": "ProductShellLocaleMenuChangeReason",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 472,
+          "line": 486,
           "declaration": "export type ProductShellLocaleMenuChangeReason = \"trigger\" | \"selection\" | \"outside-pointer\" | \"escape\" | \"controller\";"
         },
         {
           "name": "ShellLocaleOption",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 579,
+          "line": 593,
           "declaration": "export interface ShellLocaleOption {\n  locale: string;\n  /** BCP 47 language tag when the product locale id uses another vocabulary. */\n  lang?: string;\n  nativeName: string;\n}"
         },
         {
           "name": "ShellLocaleMenuProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 586,
+          "line": 600,
           "declaration": "export interface ShellLocaleMenuProps extends HTMLAttributes<HTMLDivElement> {\n  locales: readonly ShellLocaleOption[];\n  currentLocale: string;\n  label?: string;\n  open?: boolean;\n  menuId?: string;\n  triggerId?: string;\n  onOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;\n  onLocaleChange?: (locale: string) => void;\n}"
         }
       ]
@@ -7685,7 +8069,8 @@
             "einzbern",
             "mana-orchestrate",
             "design-system",
-            "voxward"
+            "voxward",
+            "platform"
           ]
         },
         {
@@ -7739,7 +8124,8 @@
           "einzbern",
           "mana-orchestrate",
           "design-system",
-          "voxward"
+          "voxward",
+          "platform"
         ]
       },
       "slots": [],
@@ -7764,13 +8150,13 @@
         {
           "name": "TcrnProductLogoId",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 421,
+          "line": 435,
           "declaration": "export type TcrnProductLogoId = keyof typeof tcrnProductLogoRegistry;"
         },
         {
           "name": "ProductShellSearchResult",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1587,
+          "line": 1601,
           "declaration": "export interface ProductShellSearchResult {\n  id: string;\n  title: string;\n  titleKey?: string;\n  meta?: string;\n  metaKey?: string;\n  href: string;\n  selected?: boolean;\n}"
         },
         {
@@ -8001,32 +8387,32 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 732
+        "line": 746
       },
       "propsType": "ShellThemeMenuProps",
       "typeDefinitions": [
         {
           "name": "SeasonalShellThemeMode",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 470,
+          "line": 484,
           "declaration": "export type SeasonalShellThemeMode = \"halloween\";"
         },
         {
           "name": "ShellThemeMode",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 471,
+          "line": 485,
           "declaration": "export type ShellThemeMode = \"light\" | \"dark\" | SeasonalShellThemeMode;"
         },
         {
           "name": "ProductShellLocaleMenuChangeReason",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 472,
+          "line": 486,
           "declaration": "export type ProductShellLocaleMenuChangeReason = \"trigger\" | \"selection\" | \"outside-pointer\" | \"escape\" | \"controller\";"
         },
         {
           "name": "ShellThemeMenuProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 716,
+          "line": 730,
           "declaration": "export interface ShellThemeMenuProps extends HTMLAttributes<HTMLDivElement>, ShellSeasonalThemeOptions {\n  currentTheme: ShellThemeMode;\n  locale?: TcrnLocale | string;\n  label?: string;\n  open?: boolean;\n  defaultOpen?: boolean;\n  menuId?: string;\n  triggerId?: string;\n  onOpenChange?: (open: boolean, reason: ProductShellLocaleMenuChangeReason) => void;\n  onThemeChange?: (nextTheme: ShellThemeMode) => void;\n}"
         }
       ]
@@ -8133,7 +8519,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 514
+        "line": 528
       },
       "propsType": "ShellThemeToggleProps",
       "typeDefinitions": [
@@ -8164,19 +8550,19 @@
         {
           "name": "SeasonalShellThemeMode",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 470,
+          "line": 484,
           "declaration": "export type SeasonalShellThemeMode = \"halloween\";"
         },
         {
           "name": "ShellThemeMode",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 471,
+          "line": 485,
           "declaration": "export type ShellThemeMode = \"light\" | \"dark\" | SeasonalShellThemeMode;"
         },
         {
           "name": "ShellThemeToggleProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 504,
+          "line": 518,
           "declaration": "export interface ShellThemeToggleProps extends Omit<IconButtonProps, \"ariaLabel\" | \"icon\" | \"iconName\" | \"children\">, ShellSeasonalThemeOptions {\n  currentTheme: ShellThemeMode;\n  lightLabel?: string;\n  darkLabel?: string;\n  halloweenLabel?: string;\n  /** Which language the built-in labels are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  onThemeChange?: (nextTheme: ShellThemeMode) => void;\n}"
         }
       ]
@@ -8203,14 +8589,14 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1318
+        "line": 1332
       },
       "propsType": "SideNavProps",
       "typeDefinitions": [
         {
           "name": "SideNavProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1308,
+          "line": 1322,
           "declaration": "export interface SideNavProps extends HTMLAttributes<HTMLElement> {\n  label: string;\n  children: ReactNode;\n}"
         }
       ]
@@ -8302,7 +8688,7 @@
       "slots": [],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 882
+        "line": 896
       },
       "propsType": "SideNavCollapseButtonProps",
       "typeDefinitions": [
@@ -8333,7 +8719,7 @@
         {
           "name": "SideNavCollapseButtonProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 866,
+          "line": 880,
           "declaration": "export interface SideNavCollapseButtonProps extends Omit<IconButtonProps, \"ariaLabel\" | \"icon\" | \"iconName\" | \"children\"> {\n  collapsed: boolean;\n  controls: string;\n  expandedLabel?: string;\n  collapsedLabel?: string;\n  /** Which language the two built-in labels are said in; defaults to the page's own. */\n  locale?: TcrnLocale | string;\n  disabledReason?: string;\n  persistedKey?: string;\n  onCollapsedChange?: (collapsed: boolean) => void;\n}"
         }
       ]
@@ -8399,14 +8785,14 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1579
+        "line": 1593
       },
       "propsType": "SkipLinkProps",
       "typeDefinitions": [
         {
           "name": "SkipLinkProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1575,
+          "line": 1589,
           "declaration": "export interface SkipLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {\n  children: ReactNode;\n}"
         }
       ]
@@ -9377,20 +9763,20 @@
       ],
       "source": {
         "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-        "line": 1196
+        "line": 1210
       },
       "propsType": "TabsProps",
       "typeDefinitions": [
         {
           "name": "TabItem",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1179,
+          "line": 1193,
           "declaration": "export interface TabItem {\n  id: string;\n  label: ReactNode;\n  disabled?: boolean;\n}"
         },
         {
           "name": "TabsProps",
           "path": "packages/ui-react/src/components/Navigation/Navigation.tsx",
-          "line": 1185,
+          "line": 1199,
           "declaration": "export interface TabsProps {\n  items: TabItem[];\n  /** The `id` of the selected tab. */\n  selectedId: string;\n  onSelect: (id: string) => void;\n  /** Accessible name for the tab strip. */\n  label: string;\n  /** Rendered inside the panel for the selected tab. */\n  children?: ReactNode;\n}"
         }
       ]
@@ -9418,7 +9804,8 @@
             "einzbern",
             "mana-orchestrate",
             "design-system",
-            "voxward"
+            "voxward",
+            "platform"
           ]
         },
         {
@@ -9440,7 +9827,8 @@
           "einzbern",
           "mana-orchestrate",
           "design-system",
-          "voxward"
+          "voxward",
+          "platform"
         ],
         "variant": [
           "color",

@@ -13,6 +13,12 @@ commit `e76b7272d98c0359a57c42d49bf70d64e5b4c2ad`, published under
   `"toggle"` / `"menu"`), an explicit `用户偏好` preferences group inside the
   avatar menu (`ProductShell`), and browser-portaled `.tcrn-dialog-backdrop`
   viewport centering for `Dialog` / `ConfirmActionDialog`.
+- `@tcrn/ui-tokens`, `@tcrn/ui-react/approved`, and Storybook: adds
+  `--tcrn-brand-suffix-platform`, registers the `platform` (`TCRN Platform`)
+  mother mark across all four renditions and five locales, adds `BrandIcon`
+  (`github`), and adds `PublicSiteHeader`, `PublicSiteFooter`,
+  `EditorialArticle`, and `EditorialNote` with `brand-platform` and
+  `public-site` documentation pages and `ai/4.2.0/` contract shards.
 - All `4.1.0` Batch 3 component families, VoxWard brand mark, right-hand
   backoffice navigation group, `topBanner`, and seasonal Halloween tokens remain
   present.

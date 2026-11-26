@@ -7,8 +7,8 @@ export { ClipboardCopyButton } from "./components/Clipboard/index.js";
 export type { ClipboardCopyButtonProps, ClipboardCopyState } from "./components/Clipboard/index.js";
 export { Heading, Text, Highlight } from "./components/Typography/index.js";
 export type { HeadingProps, TextProps, HighlightProps } from "./components/Typography/index.js";
-export { Icon, tcrnIconNames } from "./components/Icon/index.js";
-export type { IconName, IconProps } from "./components/Icon/index.js";
+export { Icon, tcrnIconNames, BrandIcon, tcrnBrandIconNames, tcrnBrandIcons } from "./components/Icon/index.js";
+export type { IconName, IconProps, BrandIconName, BrandIconProps, BrandIconSize, TcrnBrandIconDefinition } from "./components/Icon/index.js";
 export {
   Input,
   Textarea,
@@ -96,8 +96,29 @@ export type {
   PipelineStage,
   StagePipelineProps
 } from "./components/DataDisplay/DomainDisplay.js";
-export { Surface, Divider, CollapsibleRegion, SettingsLayout } from "./components/Layout/index.js";
-export type { SurfaceProps, CollapsibleRegionProps, SettingsLayoutProps } from "./components/Layout/index.js";
+export {
+  Surface,
+  Divider,
+  CollapsibleRegion,
+  SettingsLayout,
+  PublicSiteHeader,
+  PublicSiteFooter,
+  EditorialArticle,
+  EditorialNote
+} from "./components/Layout/index.js";
+export type {
+  SurfaceProps,
+  CollapsibleRegionProps,
+  SettingsLayoutProps,
+  PublicSiteNavLink,
+  PublicSiteHeaderProps,
+  PublicSiteFooterLink,
+  PublicSiteFooterProps,
+  EditorialNoteTone,
+  EditorialNoteProps,
+  EditorialRelatedLink,
+  EditorialArticleProps
+} from "./components/Layout/index.js";
 export {
   TcrnBrandMark,
   ProductLogo,

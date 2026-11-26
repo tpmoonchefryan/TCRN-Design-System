@@ -144,13 +144,14 @@ test("approved barrel exports all Batch 3 components and stays consistent with t
     "Card", "Surface", "Divider", "Avatar", "StatCard", "TableShell", "RecordTable", "TableToolbar", "KeyValueList", "StagePipeline", "RawPayloadBox",
     "SettingsLayout", "SplitView", "CollapsibleRegion", "SegmentedNav",
     "Menu", "Popover", "Tooltip", "Dialog", "ConfirmActionDialog", "InlineConfirmBar",
+    "BrandIcon", "PublicSiteHeader", "PublicSiteFooter", "EditorialArticle", "EditorialNote",
     "ProductShell"
   ];
   for (const name of requiredBatch3) {
     assert.ok(approvedComponentExports.includes(name), `${name} is exported from @tcrn/ui-react/approved`);
   }
-  assert.deepEqual([...approvedExports.tcrnProductMarkIds], ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward"]);
+  assert.deepEqual([...approvedExports.tcrnProductMarkIds], ["tms", "einzbern", "mana-orchestrate", "design-system", "voxward", "platform"]);
   assert.equal(approvedExports.tcrnProductMarks.length, 4);
-  assert.equal(approvedExports.tcrnAdoptedProductMarks.length, 1);
-  assert.equal(approvedExports.tcrnAdoptedProductMarks[0]?.productId, "voxward");
+  assert.equal(approvedExports.tcrnAdoptedProductMarks.length, 2);
+  assert.deepEqual(approvedExports.tcrnAdoptedProductMarks.map((mark) => mark.productId), ["voxward", "platform"]);
 });

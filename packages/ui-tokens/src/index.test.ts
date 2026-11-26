@@ -70,7 +70,7 @@ test("light subtrees rebind all theme values and dark blocks have identical name
 });
 
 test("all actual package dependencies resolve in both themes, including the source-local paper radius", () => {
-  assert.equal(tcrnTokens.length,128);
+  assert.equal(tcrnTokens.length,129);
   const shellCss=readFileSync(new URL("../../../docs/design/approved-site-v2/src/boards/07b-shell-lower/board.css",import.meta.url),"utf8");
   const localRadius=/\.scr\.ts\{[^}]*--paper-r:([^;}]*)/.exec(shellCss)?.[1];
   assert.ok(localRadius);
@@ -156,6 +156,11 @@ test("Batch 3 adopted tokens layer cleanly across light, dark, and halloween wit
   assert.equal(resolvedDark["--tcrn-brand-suffix-voxward"], "#3fc7b7");
   assert.equal(seasonal["--tcrn-brand-suffix-voxward"], "#f58a33");
   assert.equal(tcrnTokens.find((token) => token.variable === "--tcrn-brand-suffix-voxward")?.group, "brand");
+
+  assert.equal(resolvedLight["--tcrn-brand-suffix-platform"], "#0b6b65");
+  assert.equal(resolvedDark["--tcrn-brand-suffix-platform"], "#3fc7b7");
+  assert.equal(seasonal["--tcrn-brand-suffix-platform"], "#f58a33");
+  assert.equal(tcrnTokens.find((token) => token.variable === "--tcrn-brand-suffix-platform")?.group, "brand");
 
   const nonThemeGroups = new Set(["typography", "space", "radius", "motion", "icon", "control", "zIndex", "container"]);
   const seasonalGeometryOverrides = tcrnHalloweenThemeTokens.filter((override) => {
